@@ -28,6 +28,7 @@
 	</scm>
 	<modules>
 		<module>owlconnector-ui</module>
+		<module>emfconnector-ui</module>
     </modules>
 	<dependencyManagement>
 		<dependencies>

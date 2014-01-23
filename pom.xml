@@ -30,6 +30,7 @@
 	<modules>
 		<module>openflexo-technology-adapters-ui</module>
 		<module>owlconnector</module>
+		<module>emfconnector</module>
    </modules>
 	<dependencyManagement>
 		<dependencies>
@@ -407,6 +408,24 @@
 				<artifactId>jersey-json</artifactId>
 				<version>${jersey.version}</version>
 			</dependency>
+			
+			
+			<dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>common</artifactId>
+				<version>2.7.0.v20120127</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>ecore</artifactId>
+				<version>2.7.0.v20120127</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>ecore-xmi</artifactId>
+				<version>2.7.0.v20120127</version>
+			</dependency>
+			
 			
 		</dependencies>
   	</dependencyManagement>

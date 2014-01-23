@@ -7,9 +7,8 @@
 		<artifactId>openflexo-technology-adapters</artifactId>
 		<version>1.7-SNAPSHOT</version>
 	</parent>
-	<artifactId>owlconnector</artifactId>
-	<name>OWL technology connector</name>
-	<version>1.7-SNAPSHOT</version>
+	<artifactId>emfconnector</artifactId>
+	<name>EMF technology connector</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -28,6 +27,19 @@
 			<artifactId>flexo-foundation</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
+		</dependency>
+		<!-- Direct dependencies for EMF support -->
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>common</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>ecore</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.emf</groupId>
+			<artifactId>ecore-xmi</artifactId>
 		</dependency>
 	</dependencies>
 </project>
