@@ -9,7 +9,7 @@
 	<version>1.7-SNAPSHOT</version>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>openflexo-technology-adapters-ui</artifactId>
-	<name>Openflexo-Technology-Adapters</name>
+	<name>Openflexo-Technology-Adapters UI</name>
 	<packaging>pom</packaging>
 	<properties>
 		<gina.version>1.0-SNAPSHOT</gina.version>

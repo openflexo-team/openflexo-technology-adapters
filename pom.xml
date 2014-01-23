@@ -21,7 +21,7 @@
 		<flexowysiwyg.version>1.0-SNAPSHOT</flexowysiwyg.version>
 		<flexodocresourcecenter.version>1.0-SNAPSHOT</flexodocresourcecenter.version>
 		<flexodocresourcemanager.version>1.0-SNAPSHOT</flexodocresourcemanager.version>
-		<owlconnector.version>1.0-SNAPSHOT</owlconnector.version>
+		<owlconnector.version>1.7-SNAPSHOT</owlconnector.version>
 	</properties>
 	<scm>
 		<connection>scm:git:ssh://git@github.com:openflexo-team/openflexo-core.git</connection>
