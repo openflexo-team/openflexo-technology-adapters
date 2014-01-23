@@ -26,6 +26,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.logging.Logger;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.ontology.OntologyUtils;
@@ -38,7 +39,10 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 import org.openflexo.technologyadapter.owl.model.RDFSURIDefinitions;
 import org.openflexo.technologyadapter.owl.model.RDFURIDefinitions;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
+@RunWith(OrderedRunner.class)
 public class TestOntologyBrowserModel extends OpenflexoTestCase {
 
 	protected static final Logger logger = Logger.getLogger(TestOntologyBrowserModel.class.getPackage().getName());
@@ -51,6 +55,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	 * Instanciate new ResourceCenter
 	 */
 	@Test
+	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
 		log("test0LoadTestResourceCenter()");
 		instanciateTestServiceManager();
@@ -60,6 +65,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(2)
 	public void test1AssertRDFOntologyNoHierarchy() {
 		log("test1AssertRDFOntologyNoHierarchy()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -155,6 +161,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(3)
 	public void test2AssertRDFOntologyHierarchy() {
 		log("test2AssertRDFOntologyHierarchy()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -233,6 +240,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(4)
 	public void test3AssertRDFOntologyStrictMode() {
 		log("test3AssertRDFOntologyStrictMode()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -304,6 +312,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(5)
 	public void test4AssertRDFSOntologyNoHierarchy() {
 		log("test4AssertRDFSOntologyNoHierarchy()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -386,6 +395,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(6)
 	public void test5AssertRDFSOntologyHierarchy() {
 		log("test5AssertRDFSOntologyHierarchy()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -465,6 +475,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(7)
 	public void test6AssertRDFSOntologyStrictMode() {
 		log("test6AssertRDFSOntologyStrictMode()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -543,6 +554,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(8)
 	public void test7AssertOWLOntologyNoHierarchy() {
 		log("test7AssertOWLOntologyNoHierarchy()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -770,6 +782,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(9)
 	public void test8AssertOWLOntologyHierarchy() {
 		log("test8AssertOWLOntologyHierarchy()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -994,6 +1007,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(10)
 	public void test9AssertOWLOntologyStrictMode() {
 		log("test9AssertOWLOntologyStrictMode()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -1202,6 +1216,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(11)
 	public void test10AssertFlexoConceptOntologyNoHierarchy() {
 		log("test10AssertFlexoConceptOntologyNoHierarchy()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -1394,6 +1409,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(12)
 	public void test11AssertFlexoConceptOntologyHierarchy() {
 		log("test11AssertFlexoConceptOntologyHierarchy()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -1659,6 +1675,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(13)
 	public void test12AssertO5Ontology() {
 		log("test12AssertO5Ontology()");
 		OWLOntology o1 = ontologyLibrary.getOntology("http://www.openflexo.org/test/O1.owl");
@@ -1754,6 +1771,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(14)
 	public void test13AssertTestPropertiesOntology() {
 		log("test13AssertTestPropertiesOntology()");
 		OWLOntology ontology = ontologyLibrary.getOntology("http://www.openflexo.org/test/TestProperties.owl");
@@ -1813,6 +1831,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 	}
 
 	@Test
+	@TestOrder(15)
 	public void test14AssertSepelMappingOntology() {
 		log("test14AssertSepelMappingOntology()");
 
