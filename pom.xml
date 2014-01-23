@@ -30,8 +30,7 @@
 	<modules>
 		<module>openflexo-technology-adapters-ui</module>
 		<module>owlconnector</module>
-		<module>owlconnector-ui</module>
-    </modules>
+   </modules>
 	<dependencyManagement>
 		<dependencies>
 

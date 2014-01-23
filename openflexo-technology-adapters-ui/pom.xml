@@ -27,6 +27,7 @@
 		<url>https://github.com/openflexo-team/openflexo-technology-adapters</url>
 	</scm>
 	<modules>
+		<module>owlconnector-ui</module>
     </modules>
 	<dependencyManagement>
 		<dependencies>
