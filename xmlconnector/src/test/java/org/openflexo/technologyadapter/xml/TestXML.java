@@ -29,6 +29,7 @@ import java.io.IOException;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+import org.junit.Test;
 import org.openflexo.ApplicationContext;
 import org.openflexo.TestApplicationContext;
 import org.openflexo.foundation.FlexoException;
@@ -80,6 +81,7 @@ public class TestXML extends OpenflexoRunTimeTestCase {
 	 * 
 	 * @throws IOException
 	 */
+	@Test
 	public void test0LoadTestResourceCenter() throws IOException {
 		log("test0LoadTestResourceCenter()");
 		testApplicationContext = new TestApplicationContext();
@@ -93,6 +95,7 @@ public class TestXML extends OpenflexoRunTimeTestCase {
 		assertTrue(modelRepository.getAllResources().size() > 3);
 	}
 
+	@Test
 	public void test0LoadFileAndDump() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test1LoadFileAndDump()");
@@ -114,6 +117,7 @@ public class TestXML extends OpenflexoRunTimeTestCase {
 
 	}
 
+	@Test
 	public void test1LoadFileAndDump() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test1LoadFileAndDump()");
@@ -135,6 +139,7 @@ public class TestXML extends OpenflexoRunTimeTestCase {
 
 	}
 
+	@Test
 	public void test2LoadFileAndDump() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test2LoadFileAndDump()");
@@ -155,6 +160,7 @@ public class TestXML extends OpenflexoRunTimeTestCase {
 		// dumpIndividual(modelRes.getModelData().getRoot(),"");
 	}
 
+	@Test
 	public void test3LoadFileAndDump() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test3LoadFileAndDump()");
@@ -174,6 +180,7 @@ public class TestXML extends OpenflexoRunTimeTestCase {
 		// dumpIndividual(modelRes.getModelData().getRoot(),"");
 	}
 
+	@Test
 	public void test1CreateNewFile() throws Exception {
 
 		log("test1CreateNewFile()");

@@ -23,6 +23,14 @@
 			<artifactId>flexo-ui</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<!-- TODO: please remove this dependancy -->
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-ui</artifactId>
+			<version>${project.version}</version>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.jdom</groupId>
 			<artifactId>jdom2</artifactId>
