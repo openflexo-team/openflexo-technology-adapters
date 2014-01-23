@@ -29,6 +29,7 @@
 	<modules>
 		<module>owlconnector-ui</module>
 		<module>emfconnector-ui</module>
+		<module>flexodiagram-ui</module>
     </modules>
 	<dependencyManagement>
 		<dependencies>
