@@ -2,6 +2,7 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.DeleteAction;
@@ -13,6 +14,18 @@ import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.VEIconLibrary;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.controller.action.AddDiagramPaletteElementInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPaletteInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSpecificationInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInEditionPatternInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInEditionPatternInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramPaletteElementInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramPaletteInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramSpecificationInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeleteExampleDiagramElementsInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeleteExampleDiagramInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.PushToPaletteInitializer;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -23,6 +36,7 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
+import org.openflexo.toolbox.FileResource;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -32,6 +46,8 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 
 public class DiagramTechnologyAdapterController extends TechnologyAdapterController<DiagramTechnologyAdapter> {
 
+	private SwingToolFactory toolFactory;
+
 	@Override
 	public Class<DiagramTechnologyAdapter> getTechnologyAdapterClass() {
 		return DiagramTechnologyAdapter.class;
@@ -39,6 +55,30 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
+
+		toolFactory = new SwingToolFactory(actionInitializer.getController().getFlexoFrame());
+
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(new FileResource("Inspectors/OWL"));
+
+		// ExampleDiagram edition
+		new CreateDiagramSpecificationInitializer(actionInitializer);
+		new DeleteDiagramSpecificationInitializer(actionInitializer);
+		new CreateExampleDiagramInitializer(actionInitializer);
+		new DeleteExampleDiagramInitializer(actionInitializer);
+		new PushToPaletteInitializer(actionInitializer);
+		new DeclareShapeInEditionPatternInitializer(actionInitializer);
+		new DeclareConnectorInEditionPatternInitializer(actionInitializer);
+		new DeleteExampleDiagramElementsInitializer(actionInitializer);
+
+		// DiagramPalette edition
+		new CreateDiagramPaletteInitializer(actionInitializer);
+		new DeleteDiagramPaletteInitializer(actionInitializer);
+		new AddDiagramPaletteElementInitializer(actionInitializer);
+		new DeleteDiagramPaletteElementInitializer(actionInitializer);
+	}
+
+	public SwingToolFactory getToolFactory() {
+		return toolFactory;
 	}
 
 	@Override

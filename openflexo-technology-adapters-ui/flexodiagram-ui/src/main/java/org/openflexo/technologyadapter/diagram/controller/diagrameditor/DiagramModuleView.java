@@ -1,0 +1,94 @@
+/*
+ * (c) Copyright 2010-2011 AgileBirds
+ *
+ * This file is part of OpenFlexo.
+ *
+ * OpenFlexo is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenFlexo is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
+
+import java.awt.BorderLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.logging.Logger;
+
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.view.ModuleView;
+import org.openflexo.view.controller.model.FlexoPerspective;
+
+public class DiagramModuleView extends JPanel implements ModuleView<Diagram>, PropertyChangeListener {
+
+	@SuppressWarnings("unused")
+	private static final Logger logger = Logger.getLogger(DiagramModuleView.class.getPackage().getName());
+
+	private final DiagramEditor editor;
+	private final FlexoPerspective perspective;
+
+	public DiagramModuleView(DiagramEditor editor, FlexoPerspective perspective) {
+		super();
+		setLayout(new BorderLayout());
+		this.editor = editor;
+		this.perspective = perspective;
+		add(editor.getToolsPanel(), BorderLayout.NORTH);
+		add(new JScrollPane(editor.getDrawingView()), BorderLayout.CENTER);
+		validate();
+
+		getRepresentedObject().getPropertyChangeSupport().addPropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
+	}
+
+	public DiagramEditor getController() {
+		return editor;
+	}
+
+	@Override
+	public FlexoPerspective getPerspective() {
+		return perspective;
+	}
+
+	@Override
+	public void deleteModuleView() {
+		getRepresentedObject().getPropertyChangeSupport().removePropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
+		getController().delete();
+	}
+
+	@Override
+	public Diagram getRepresentedObject() {
+		return editor.getDiagram();
+	}
+
+	@Override
+	public boolean isAutoscrolled() {
+		return true;
+	}
+
+	@Override
+	public void willHide() {
+	}
+
+	@Override
+	public void willShow() {
+		getPerspective().focusOnObject(getRepresentedObject());
+	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getSource() == getRepresentedObject() && evt.getPropertyName().equals(getRepresentedObject().getDeletedProperty())) {
+			deleteModuleView();
+		}
+	}
+}

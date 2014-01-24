@@ -50,6 +50,11 @@ public interface DiagramContainerElement<G extends GraphicalRepresentation> exte
 	public static final String SHAPES = "shapes";
 	public static final String CONNECTORS = "connectors";
 
+	/**
+	 * Return the list of shapes contained in this container
+	 * 
+	 * @return
+	 */
 	@Getter(value = SHAPES, cardinality = Cardinality.LIST)
 	@XMLElement(primary = true)
 	@CloningStrategy(StrategyType.CLONE)
@@ -66,6 +71,11 @@ public interface DiagramContainerElement<G extends GraphicalRepresentation> exte
 	@Remover(SHAPES)
 	public void removeFromShapes(DiagramShape aShape);
 
+	/**
+	 * Return the list of connectors contained in this container
+	 * 
+	 * @return
+	 */
 	@Getter(value = CONNECTORS, cardinality = Cardinality.LIST)
 	@XMLElement(primary = true)
 	@CloningStrategy(StrategyType.CLONE)

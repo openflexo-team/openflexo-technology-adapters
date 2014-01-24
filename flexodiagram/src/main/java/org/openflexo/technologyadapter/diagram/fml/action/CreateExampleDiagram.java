@@ -35,6 +35,7 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.toolbox.StringUtils;
@@ -117,6 +118,10 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 			nameValidityMessage = NAME_IS_VALID;
 			return true;
 		}
+	}
+
+	public Diagram getNewDiagram() {
+		return newDiagramResource.getDiagram();
 	}
 
 }

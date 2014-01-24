@@ -23,6 +23,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
@@ -69,6 +70,8 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 	private String annotation;
 	private DiagramConnector newConnector;
 	private String newConnectorName;
+
+	private ConnectorGraphicalRepresentation graphicalRepresentation;
 
 	private boolean automaticallyCreateConnector = false;
 
@@ -124,6 +127,10 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 		return newConnector;
 	}
 
+	public DiagramConnector getNewConnector() {
+		return getConnector();
+	}
+
 	public boolean getAutomaticallyCreateConnector() {
 		return automaticallyCreateConnector;
 	}
@@ -146,6 +153,14 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 
 	public void setNewConnectorName(String newConnectorName) {
 		this.newConnectorName = newConnectorName;
+	}
+
+	public ConnectorGraphicalRepresentation getGraphicalRepresentation() {
+		return graphicalRepresentation;
+	}
+
+	public void setGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation) {
+		this.graphicalRepresentation = graphicalRepresentation;
 	}
 
 }

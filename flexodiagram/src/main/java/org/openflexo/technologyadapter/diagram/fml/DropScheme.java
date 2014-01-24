@@ -75,6 +75,8 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 	public void setTargetEditionPattern(EditionPattern targetEditionPattern);
 
+	public boolean isValidTarget(EditionPattern aTarget, PatternRole contextRole);
+
 	public static abstract class DropSchemeImpl extends AbstractCreationSchemeImpl implements DropScheme {
 
 		private String target;
@@ -152,6 +154,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 			this.targetPatternRole = targetPatternRole;
 		}
 
+		@Override
 		public boolean isValidTarget(EditionPattern aTarget, PatternRole contextRole) {
 			if (getTargetEditionPattern() != null && getTargetEditionPattern().isAssignableFrom(aTarget)) {
 				if (targetHasMultipleRoles()) {
