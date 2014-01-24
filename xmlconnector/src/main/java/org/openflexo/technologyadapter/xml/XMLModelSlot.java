@@ -37,7 +37,6 @@ import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualPatternRole;
@@ -55,10 +54,6 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLModel> {
 	public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLModel> implements XMLModelSlot {
 
 		private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
-
-		protected XMLModelSlotImpl(VirtualModel virtualModel, TechnologyAdapter technologyAdapter) {
-			super(virtualModel, technologyAdapter);
-		}
 
 		@Override
 		public Type getType() {

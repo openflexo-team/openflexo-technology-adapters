@@ -36,7 +36,6 @@ import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.viewpoint.PatternRole;
-import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
@@ -69,17 +68,13 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 
 		private static final Logger logger = Logger.getLogger(BasicPowerpointModelSlot.class.getPackage().getName());
 
-		private final BasicPowerpointModelSlotURIProcessor uriProcessor;
+		private BasicPowerpointModelSlotURIProcessor uriProcessor;
 
-		public BasicPowerpointModelSlotImpl(VirtualModel virtualModel, PowerpointTechnologyAdapter adapter) {
-			super(virtualModel, adapter);
-			uriProcessor = getVirtualModelFactory().newInstance(BasicPowerpointModelSlotURIProcessor.class);
-
-		}
-
-		public BasicPowerpointModelSlotImpl() {
-			super();
-			uriProcessor = getVirtualModelFactory().newInstance(BasicPowerpointModelSlotURIProcessor.class);
+		public BasicPowerpointModelSlotURIProcessor getUriProcessor() {
+			if (uriProcessor == null && getVirtualModelFactory() != null) {
+				uriProcessor = getVirtualModelFactory().newInstance(BasicPowerpointModelSlotURIProcessor.class);
+			}
+			return uriProcessor;
 		}
 
 		@Override
@@ -112,7 +107,7 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 		public String getURIForObject(FreeModelSlotInstance<PowerpointSlideshow, ? extends FreeModelSlot<PowerpointSlideshow>> msInstance,
 				Object o) {
 			PowerpointObject powerpointObject = (PowerpointObject) o;
-			return uriProcessor.getURIForObject(msInstance, powerpointObject);
+			return getUriProcessor().getURIForObject(msInstance, powerpointObject);
 		}
 
 		@Override
@@ -120,7 +115,7 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 				FreeModelSlotInstance<PowerpointSlideshow, ? extends FreeModelSlot<PowerpointSlideshow>> msInstance, String objectURI) {
 
 			try {
-				return uriProcessor.retrieveObjectWithURI(msInstance, objectURI);
+				return getUriProcessor().retrieveObjectWithURI(msInstance, objectURI);
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

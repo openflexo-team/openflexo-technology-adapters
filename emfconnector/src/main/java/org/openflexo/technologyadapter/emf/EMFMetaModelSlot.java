@@ -32,7 +32,6 @@ import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.PatternRole;
-import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassPatternRole;
 import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassPatternRole;
@@ -45,28 +44,20 @@ import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassPatternRole;
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "EMFClassClass", patternRoleClass = EMFClassClassPatternRole.class),
+		@DeclarePatternRole(FML = "EMFClassClass", patternRoleClass = EMFClassClassPatternRole.class),
 		@DeclarePatternRole(FML = "EMFEnumClass", patternRoleClass = EMFEnumClassPatternRole.class) })
-@DeclareEditionActions({ // All edition actions available through this model slot
+@DeclareEditionActions({ // All edition actions available through this model
+							// slot
 })
 @DeclareFetchRequests({ // All requests available through this model slot
 })
 public interface EMFMetaModelSlot extends ModelSlot<EMFMetaModel> {
 
-	public abstract static class EMFMetaModelSlotImpl extends ModelSlotImpl<EMFMetaModel> implements EMFMetaModelSlot {
+	public abstract static class EMFMetaModelSlotImpl extends
+			ModelSlotImpl<EMFMetaModel> implements EMFMetaModelSlot {
 
-		private static final Logger logger = Logger.getLogger(EMFMetaModelSlot.class.getPackage().getName());
-
-		/**
-		 * 
-		 * Constructor.
-		 * 
-		 * @param virtualModel
-		 * @param adapter
-		 */
-		public EMFMetaModelSlotImpl(VirtualModel virtualModel, EMFTechnologyAdapter adapter) {
-			super(virtualModel, adapter);
-		}
+		private static final Logger logger = Logger
+				.getLogger(EMFMetaModelSlot.class.getPackage().getName());
 
 		@Override
 		public Class<EMFTechnologyAdapter> getTechnologyAdapterClass() {
@@ -74,18 +65,23 @@ public interface EMFMetaModelSlot extends ModelSlot<EMFMetaModel> {
 		}
 
 		/**
-		 * Instanciate a new model slot instance configuration for this model slot
+		 * Instanciate a new model slot instance configuration for this model
+		 * slot
 		 */
 		@Override
-		public EMFMetaModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance<?> action) {
+		public EMFMetaModelSlotInstanceConfiguration createConfiguration(
+				CreateVirtualModelInstance<?> action) {
 			return new EMFMetaModelSlotInstanceConfiguration(this, action);
 		}
 
 		@Override
-		public <PR extends PatternRole<?>> String defaultPatternRoleName(Class<PR> patternRoleClass) {
-			if (EMFClassClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		public <PR extends PatternRole<?>> String defaultPatternRoleName(
+				Class<PR> patternRoleClass) {
+			if (EMFClassClassPatternRole.class
+					.isAssignableFrom(patternRoleClass)) {
 				return "class";
-			} else if (EMFEnumClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (EMFEnumClassPatternRole.class
+					.isAssignableFrom(patternRoleClass)) {
 				return "enum";
 			}
 			return super.defaultPatternRoleName(patternRoleClass);
@@ -102,13 +98,17 @@ public interface EMFMetaModelSlot extends ModelSlot<EMFMetaModel> {
 		}
 
 		@Override
-		public String getURIForObject(ModelSlotInstance<? extends ModelSlot<EMFMetaModel>, EMFMetaModel> msInstance, Object o) {
+		public String getURIForObject(
+				ModelSlotInstance<? extends ModelSlot<EMFMetaModel>, EMFMetaModel> msInstance,
+				Object o) {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(ModelSlotInstance<? extends ModelSlot<EMFMetaModel>, EMFMetaModel> msInstance, String objectURI) {
+		public Object retrieveObjectWithURI(
+				ModelSlotInstance<? extends ModelSlot<EMFMetaModel>, EMFMetaModel> msInstance,
+				String objectURI) {
 			// TODO Auto-generated method stub
 			return null;
 		}

@@ -39,7 +39,6 @@ import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.PatternRole;
-import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -96,28 +95,6 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 	public static abstract class EMFModelSlotImpl extends TypeAwareModelSlotImpl<EMFModel, EMFMetaModel> implements EMFModelSlot {
 
 		private static final Logger logger = Logger.getLogger(EMFModelSlot.class.getPackage().getName());
-
-		/**
-		 * 
-		 * Constructor.
-		 * 
-		 * @param viewPoint
-		 * @param adapter
-		 */
-		/*public EMFModelSlotImpl(ViewPoint viewPoint, EMFTechnologyAdapter adapter) {
-			super(viewPoint, adapter);
-		}*/
-
-		/**
-		 * 
-		 * Constructor.
-		 * 
-		 * @param virtualModel
-		 * @param adapter
-		 */
-		public EMFModelSlotImpl(VirtualModel virtualModel, EMFTechnologyAdapter adapter) {
-			super(virtualModel, adapter);
-		}
 
 		@Override
 		public Class<EMFTechnologyAdapter> getTechnologyAdapterClass() {

@@ -40,7 +40,6 @@ import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.PatternRole;
-import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -112,24 +111,8 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 		private List<XSURIProcessor> uriProcessors;
 		private Hashtable<String, XSURIProcessor> uriProcessorsMap;
 
-		/*public XSDModelSlotImpl(ViewPoint viewPoint, XSDTechnologyAdapter adapter) {
-			super(viewPoint, adapter);
-			if (uriProcessors == null)
-				uriProcessors = new Hashtable<String, XSURIProcessor>();
-		}*/
-
-		public XSDModelSlotImpl(VirtualModel virtualModel, XSDTechnologyAdapter adapter) {
-			super(virtualModel, adapter);
-			if (uriProcessorsMap == null) {
-				uriProcessorsMap = new Hashtable<String, XSURIProcessor>();
-			}
-			if (uriProcessors == null) {
-				uriProcessors = new ArrayList<XSURIProcessor>();
-			}
-		}
-
 		public XSDModelSlotImpl() {
-			super(null, null);
+			super();
 			if (uriProcessorsMap == null) {
 				uriProcessorsMap = new Hashtable<String, XSURIProcessor>();
 			}
@@ -137,12 +120,6 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 				uriProcessors = new ArrayList<XSURIProcessor>();
 			}
 		}
-
-		/*public XSDModelSlotImpl(ViewPointBuilder builder) {
-			super(builder);
-			if (uriProcessors == null)
-				uriProcessors = new Hashtable<String, XSURIProcessor>();
-		}*/
 
 		@Override
 		public Class<XSDTechnologyAdapter> getTechnologyAdapterClass() {

@@ -15,7 +15,6 @@ import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.PatternRole;
-import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -74,10 +73,6 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 	public static abstract class OWLModelSlotImpl extends TypeAwareModelSlotImpl<OWLOntology, OWLOntology> implements OWLModelSlot {
 
 		private static final Logger logger = Logger.getLogger(OWLModelSlot.class.getPackage().getName());
-
-		public OWLModelSlotImpl(VirtualModel virtualModel, OWLTechnologyAdapter adapter) {
-			super(virtualModel, adapter);
-		}
 
 		@Override
 		public Class<OWLTechnologyAdapter> getTechnologyAdapterClass() {

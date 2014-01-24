@@ -36,7 +36,6 @@ import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.viewpoint.PatternRole;
-import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.technologyadapter.excel.model.semantics.ExcelMetaModel;
 import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
 import org.openflexo.technologyadapter.excel.viewpoint.BusinessConceptInstancePatternRole;
@@ -66,10 +65,6 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 			SemanticsExcelModelSlot {
 
 		private static final Logger logger = Logger.getLogger(SemanticsExcelModelSlot.class.getPackage().getName());
-
-		public SemanticsExcelModelSlotImpl(VirtualModel virtualModel, ExcelTechnologyAdapter adapter) {
-			super(virtualModel, adapter);
-		}
 
 		@Override
 		public Class<ExcelTechnologyAdapter> getTechnologyAdapterClass() {

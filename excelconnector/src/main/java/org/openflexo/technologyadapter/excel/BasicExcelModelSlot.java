@@ -36,7 +36,6 @@ import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.viewpoint.PatternRole;
-import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -68,16 +67,27 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcel
 		@DeclarePatternRole(FML = "ExcelRow", patternRoleClass = ExcelRowPatternRole.class), // Row
 		@DeclarePatternRole(FML = "ExcelCell", patternRoleClass = ExcelCellPatternRole.class) // Cell
 })
-@DeclareEditionActions({ // All edition actions available through this model slot
-@DeclareEditionAction(FML = "AddExcelCell", editionActionClass = AddExcelCell.class), // Add cell
-		@DeclareEditionAction(FML = "AddExcelRow", editionActionClass = AddExcelRow.class), // Add row
-		@DeclareEditionAction(FML = "AddExcelSheet", editionActionClass = AddExcelSheet.class), // Add sheet
-		@DeclareEditionAction(FML = "CellStyleAction", editionActionClass = CellStyleAction.class) // Cell Style
+@DeclareEditionActions({ // All edition actions available through this model
+// slot
+@DeclareEditionAction(FML = "AddExcelCell", editionActionClass = AddExcelCell.class), // Add
+																						// cell
+		@DeclareEditionAction(FML = "AddExcelRow", editionActionClass = AddExcelRow.class), // Add
+																							// row
+		@DeclareEditionAction(FML = "AddExcelSheet", editionActionClass = AddExcelSheet.class), // Add
+																								// sheet
+		@DeclareEditionAction(FML = "CellStyleAction", editionActionClass = CellStyleAction.class) // Cell
+// Style
 })
 @DeclareFetchRequests({ // All requests available through this model slot
-@DeclareFetchRequest(FML = "SelectExcelSheet", fetchRequestClass = SelectExcelSheet.class), // Select Excel Sheet
-		@DeclareFetchRequest(FML = "SelectExcelRow", fetchRequestClass = SelectExcelRow.class), // Select Excel Row
-		@DeclareFetchRequest(FML = "SelectExcelCell", fetchRequestClass = SelectExcelCell.class) // Select Excel Cell
+@DeclareFetchRequest(FML = "SelectExcelSheet", fetchRequestClass = SelectExcelSheet.class), // Select
+																							// Excel
+																							// Sheet
+		@DeclareFetchRequest(FML = "SelectExcelRow", fetchRequestClass = SelectExcelRow.class), // Select
+																								// Excel
+																								// Row
+		@DeclareFetchRequest(FML = "SelectExcelCell", fetchRequestClass = SelectExcelCell.class) // Select
+// Excel
+// Cell
 })
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlot.BasicExcelModelSlotImpl.class)
@@ -88,12 +98,13 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
 		private static final Logger logger = Logger.getLogger(BasicExcelModelSlot.class.getPackage().getName());
 
-		private final BasicExcelModelSlotURIProcessor uriProcessor;
+		private BasicExcelModelSlotURIProcessor uriProcessor;
 
-		public BasicExcelModelSlotImpl(VirtualModel virtualModel, ExcelTechnologyAdapter adapter) {
-			super(virtualModel, adapter);
-			uriProcessor = virtualModel.getVirtualModelFactory().newInstance(BasicExcelModelSlotURIProcessor.class);
-
+		public BasicExcelModelSlotURIProcessor getUriProcessor() {
+			if (uriProcessor == null && getVirtualModelFactory() != null) {
+				uriProcessor = getVirtualModelFactory().newInstance(BasicExcelModelSlotURIProcessor.class);
+			}
+			return uriProcessor;
 		}
 
 		@Override
@@ -126,7 +137,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		@Override
 		public String getURIForObject(FreeModelSlotInstance<ExcelWorkbook, ? extends FreeModelSlot<ExcelWorkbook>> msInstance, Object o) {
 			ExcelObject excelObject = (ExcelObject) o;
-			return uriProcessor.getURIForObject(msInstance, excelObject);
+			return getUriProcessor().getURIForObject(msInstance, excelObject);
 		}
 
 		@Override
@@ -134,7 +145,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 				String objectURI) {
 
 			try {
-				return uriProcessor.retrieveObjectWithURI(msInstance, objectURI);
+				return getUriProcessor().retrieveObjectWithURI(msInstance, objectURI);
 
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
