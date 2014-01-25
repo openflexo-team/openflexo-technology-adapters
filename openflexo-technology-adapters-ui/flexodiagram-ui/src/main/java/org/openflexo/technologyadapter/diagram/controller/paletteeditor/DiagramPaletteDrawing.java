@@ -32,9 +32,9 @@ import org.openflexo.fge.GRStructureVisitor;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.impl.DrawingImpl;
-import org.openflexo.foundation.view.diagram.viewpoint.DiagramPalette;
-import org.openflexo.foundation.view.diagram.viewpoint.DiagramPaletteElement;
-import org.openflexo.foundation.view.diagram.viewpoint.DiagramPaletteFactory;
+import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteFactory;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.toolbox.ToolBox;
 
 public class DiagramPaletteDrawing extends DrawingImpl<DiagramPalette> {

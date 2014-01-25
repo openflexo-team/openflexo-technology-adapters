@@ -26,10 +26,9 @@ import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.view.diagram.viewpoint.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.view.ModuleView;
-import org.openflexo.vpm.controller.ViewPointPerspective;
+import org.openflexo.view.controller.model.FlexoPerspective;
 
 public class DiagramPaletteModuleView extends JPanel implements ModuleView<DiagramPalette>, PropertyChangeListener {
 
@@ -37,11 +36,13 @@ public class DiagramPaletteModuleView extends JPanel implements ModuleView<Diagr
 	private static final Logger logger = Logger.getLogger(DiagramPaletteModuleView.class.getPackage().getName());
 
 	private final DiagramPaletteEditor _controller;
+	private final FlexoPerspective perspective;
 
-	public DiagramPaletteModuleView(final DiagramPaletteEditor controller) {
+	public DiagramPaletteModuleView(final DiagramPaletteEditor controller, FlexoPerspective perspective) {
 		super();
 		setLayout(new BorderLayout());
 		_controller = controller;
+		this.perspective = perspective;
 
 		add(controller.getDrawingView(), BorderLayout.CENTER);
 		revalidate();
@@ -60,12 +61,8 @@ public class DiagramPaletteModuleView extends JPanel implements ModuleView<Diagr
 	}
 
 	@Override
-	public ViewPointPerspective getPerspective() {
-		return getController().getVPMController().VIEW_POINT_PERSPECTIVE;
-	}
-
-	public FlexoProject getProject() {
-		return getRepresentedObject().getProject();
+	public FlexoPerspective getPerspective() {
+		return perspective;
 	}
 
 	@Override
@@ -84,7 +81,7 @@ public class DiagramPaletteModuleView extends JPanel implements ModuleView<Diagr
 
 	@Override
 	public void willShow() {
-		getPerspective().focusOnPalette(getRepresentedObject());
+		getPerspective().focusOnObject(getRepresentedObject());
 	}
 
 	@Override

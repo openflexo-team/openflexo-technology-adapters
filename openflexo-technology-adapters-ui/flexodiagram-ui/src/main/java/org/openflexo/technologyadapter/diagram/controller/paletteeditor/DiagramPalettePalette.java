@@ -34,12 +34,12 @@ import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.Rectangle;
 import org.openflexo.fge.shapes.ShapeSpecification;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.view.diagram.viewpoint.DiagramPalette;
-import org.openflexo.foundation.view.diagram.viewpoint.DiagramPaletteElement;
-import org.openflexo.foundation.view.diagram.viewpoint.action.AddDiagramPaletteElement;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.CommonPalette;
+import org.openflexo.technologyadapter.diagram.fml.action.AddDiagramPaletteElement;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 
 public class DiagramPalettePalette extends DrawingPalette {
 
@@ -169,7 +169,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 				shapeGR.setY(dropLocation.y);
 
 				AddDiagramPaletteElement action = AddDiagramPaletteElement.actionType.makeNewAction(container, null, editor
-						.getVPMController().getEditor());
+						.getFlexoController().getEditor());
 				action.setGraphicalRepresentation(shapeGR);
 
 				action.doAction();

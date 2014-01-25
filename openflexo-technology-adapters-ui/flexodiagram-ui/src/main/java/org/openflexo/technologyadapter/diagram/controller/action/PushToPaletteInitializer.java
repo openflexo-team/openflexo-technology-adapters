@@ -64,9 +64,11 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 					ShapeGraphicalRepresentation gr = shapeNode.getGraphicalRepresentation();
 					ShapeBorder b = gr.getBorder();
 					ShadowStyle ss = gr.getShadowStyle();
-					action.setScreenshot(ScreenshotGenerator.makeImage(image, b.getLeft(), b.getTop(),
+					// TODO: refactor this (see ScreenshotBuilder)
+					logger.warning("Please repair ScreenshotGenerator");
+					/*action.setScreenshot(ScreenshotGenerator.makeImage(image, b.getLeft(), b.getTop(),
 							(int) gr.getWidth() + (ss.getDrawShadow() ? ss.getShadowBlur() : 0) + 1,
-							(int) gr.getHeight() + (ss.getDrawShadow() ? ss.getShadowBlur() : 0) + 1));
+							(int) gr.getHeight() + (ss.getDrawShadow() ? ss.getShadowBlur() : 0) + 1));*/
 					// action.setScreenshot(ScreenshotGenerator.trimImage(image));
 				}
 

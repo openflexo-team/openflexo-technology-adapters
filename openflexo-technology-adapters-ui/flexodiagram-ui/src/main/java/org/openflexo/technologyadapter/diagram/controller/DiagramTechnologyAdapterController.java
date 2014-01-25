@@ -3,6 +3,8 @@ package org.openflexo.technologyadapter.diagram.controller;
 import javax.swing.ImageIcon;
 
 import org.openflexo.fge.swing.control.SwingToolFactory;
+import org.openflexo.fge.swing.control.tools.JDianaInspectors;
+import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.DeleteAction;
@@ -48,6 +50,9 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 	private SwingToolFactory toolFactory;
 
+	private JDianaInspectors inspectors;
+	private JDianaScaleSelector scaleSelector;
+
 	@Override
 	public Class<DiagramTechnologyAdapter> getTechnologyAdapterClass() {
 		return DiagramTechnologyAdapter.class;
@@ -57,6 +62,17 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
 
 		toolFactory = new SwingToolFactory(actionInitializer.getController().getFlexoFrame());
+
+		scaleSelector = toolFactory.makeDianaScaleSelector(null);
+		inspectors = toolFactory.makeDianaInspectors();
+
+		inspectors.getForegroundStyleInspector().setLocation(1000, 100);
+		inspectors.getTextStyleInspector().setLocation(1000, 300);
+		inspectors.getShadowStyleInspector().setLocation(1000, 400);
+		inspectors.getBackgroundStyleInspector().setLocation(1000, 500);
+		inspectors.getShapeInspector().setLocation(1000, 600);
+		inspectors.getConnectorInspector().setLocation(1000, 700);
+		inspectors.getLocationSizeInspector().setLocation(1000, 50);
 
 		actionInitializer.getController().getModuleInspectorController().loadDirectory(new FileResource("Inspectors/OWL"));
 

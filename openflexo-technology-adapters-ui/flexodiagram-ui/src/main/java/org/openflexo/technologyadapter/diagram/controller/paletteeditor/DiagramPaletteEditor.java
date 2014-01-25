@@ -21,28 +21,32 @@ package org.openflexo.technologyadapter.diagram.controller.paletteeditor;
 
 import javax.swing.JTabbedPane;
 
+import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaPalette;
-import org.openflexo.foundation.view.diagram.viewpoint.DiagramPalette;
-import org.openflexo.foundation.view.diagram.viewpoint.DiagramPaletteFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.selection.SelectionManagingDianaEditor;
-import org.openflexo.vpm.controller.VPMController;
+import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteFactory;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.view.controller.FlexoController;
 
 public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPalette> {
 
-	private final VPMController vpmController;
+	private final FlexoController flexoController;
 	private DiagramPalettePalette palettePaletteModel;
 	private JDianaPalette palettePalette;
 	private DiagramPaletteModuleView moduleView;
 
-	public DiagramPaletteEditor(VPMController vpmController, DiagramPalette palette, boolean readOnly) {
-		super(new DiagramPaletteDrawing(palette, readOnly), vpmController.getSelectionManager(), palette.getResource().getFactory(),
-				vpmController.getToolFactory());
-		this.vpmController = vpmController;
+	private final SwingToolFactory swingToolFactory;
+
+	public DiagramPaletteEditor(DiagramPalette palette, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
+		super(new DiagramPaletteDrawing(palette, readOnly), controller.getSelectionManager(), palette.getResource().getFactory(),
+				swingToolFactory);
+		flexoController = controller;
+		this.swingToolFactory = swingToolFactory;
 
 		if (!readOnly) {
 			palettePaletteModel = new DiagramPalettePalette(this);
-			palettePalette = vpmController.getToolFactory().makeDianaPalette(palettePaletteModel);
+			palettePalette = swingToolFactory.makeDianaPalette(palettePaletteModel);
 			palettePalette.attachToEditor(this);
 		}
 
@@ -50,17 +54,17 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 
 	@Override
 	public void delete() {
-		if (vpmController != null) {
+		if (flexoController != null) {
 			if (getDrawingView() != null && moduleView != null) {
-				vpmController.removeModuleView(moduleView);
+				flexoController.removeModuleView(moduleView);
 			}
 		}
 		super.delete();
 		getDrawing().delete();
 	}
 
-	public VPMController getVPMController() {
-		return vpmController;
+	public FlexoController getFlexoController() {
+		return flexoController;
 	}
 
 	@Override
@@ -70,7 +74,7 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 
 	public DiagramPaletteModuleView getModuleView() {
 		if (moduleView == null) {
-			moduleView = new DiagramPaletteModuleView(this);
+			moduleView = new DiagramPaletteModuleView(this, flexoController.getCurrentPerspective());
 		}
 		return moduleView;
 	}
