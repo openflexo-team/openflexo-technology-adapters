@@ -27,7 +27,7 @@ import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.EditionSchemeAction;
-import org.openflexo.foundation.viewpoint.AddClass;
+import org.openflexo.foundation.viewpoint.editionaction.AddClass;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;

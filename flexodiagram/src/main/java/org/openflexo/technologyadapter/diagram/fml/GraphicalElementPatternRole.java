@@ -143,6 +143,10 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 
 	public boolean containsShapes();
 
+	public List<GraphicalElementAction> getActions(ActionMask mask);
+
+	public List<ActionMask> getReferencedMasks();
+
 	public static abstract class GraphicalElementPatternRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
 			PatternRoleImpl<T> implements GraphicalElementPatternRole<T, GR> {
 
@@ -359,6 +363,7 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 			notifyObservers(new GraphicalElementActionRemoved(anAction, this));
 		}*/
 
+		@Override
 		public List<ActionMask> getReferencedMasks() {
 			ArrayList<GraphicalElementAction.ActionMask> returned = new ArrayList<GraphicalElementAction.ActionMask>();
 			for (GraphicalElementAction a : getActions()) {
@@ -369,6 +374,7 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 			return returned;
 		}
 
+		@Override
 		public List<GraphicalElementAction> getActions(ActionMask mask) {
 			ArrayList<GraphicalElementAction> returned = new ArrayList<GraphicalElementAction>();
 			for (GraphicalElementAction a : getActions()) {

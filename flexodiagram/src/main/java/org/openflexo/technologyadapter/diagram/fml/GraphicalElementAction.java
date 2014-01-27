@@ -76,6 +76,8 @@ public interface GraphicalElementAction extends EditionPatternObject {
 	@Setter(ABSTRACT_ACTION_SCHEME_KEY)
 	public void setAbstractActionScheme(AbstractActionScheme abstractActionScheme);
 
+	public boolean evaluateCondition(EditionPatternInstance editionPatternInstance);
+
 	public static abstract class GraphicalElementActionImpl extends EditionPatternObjectImpl implements GraphicalElementAction {
 
 		private ActionMask actionMask = ActionMask.DoubleClick;
@@ -127,6 +129,7 @@ public interface GraphicalElementAction extends EditionPatternObject {
 			this.conditional = conditional;
 		}
 
+		@Override
 		public boolean evaluateCondition(EditionPatternInstance editionPatternInstance) {
 			if (getConditional().isValid()) {
 				try {

@@ -22,13 +22,22 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
+import java.util.logging.Logger;
 
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
+import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.ModelSlotInstance;
+import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
 
 public abstract class DiagramElementImpl<G extends GraphicalRepresentation> extends FlexoObjectImpl implements DiagramElement<G> {
+
+	private static final Logger logger = Logger.getLogger(DiagramElementImpl.class.getPackage().getName());
 
 	public DiagramElementImpl() {
 	}
@@ -122,4 +131,51 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 		return null;
 	}
 
+	/**
+	 * Return {@link EditionPatternInstance} where this {@link DiagramElement} is involved, asserting that this {@link DiagramElement} is
+	 * contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared in {@link VirtualModel} of supplied
+	 * {@link VirtualModelInstance}
+	 * 
+	 * @param vmInstance
+	 *            instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
+	 * @return
+	 */
+	@Override
+	public EditionPatternInstance getEditionPatternInstance(VirtualModelInstance vmInstance) {
+		ModelSlotInstance<DiagramModelSlot, Diagram> diagramModelSlotInstance = null;
+		for (ModelSlotInstance<?, ?> msInstance : vmInstance.getModelSlotInstances()) {
+			if (msInstance.getModelSlot() instanceof DiagramModelSlot && msInstance.getAccessedResourceData() == getDiagram()) {
+				diagramModelSlotInstance = (ModelSlotInstance<DiagramModelSlot, Diagram>) msInstance;
+			}
+		}
+		if (diagramModelSlotInstance == null) {
+			logger.warning("Cannot find DiagramModelSlot instance where related diagram is accessed");
+			return null;
+		}
+		// TODO: optimize this, use FlexoObjectReference<EditionPatternInstance> in FlexoObject
+		for (EditionPatternInstance epi : vmInstance.getEditionPatternInstancesList()) {
+			if (epi.getRoleForActor(this) != null) {
+				return epi;
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Return {@link GraphicalElementPatternRole} played by this {@link DiagramElement} in related {@link EditionPatternInstance}, asserting
+	 * that this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared
+	 * in {@link VirtualModel} of supplied {@link VirtualModelInstance}
+	 * 
+	 * @param vmInstance
+	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
+	 * @return
+	 */
+	@Override
+	public GraphicalElementPatternRole<?, ?> getPatternRole(VirtualModelInstance vmInstance) {
+		EditionPatternInstance epi = getEditionPatternInstance(vmInstance);
+		if (epi != null) {
+			return (GraphicalElementPatternRole<?, ?>) epi.getRoleForActor(this);
+		}
+		return null;
+	}
 }

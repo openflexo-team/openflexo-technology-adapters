@@ -42,8 +42,8 @@ import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.EditionSchemeAction;
-import org.openflexo.foundation.viewpoint.SetObjectPropertyValueAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
+import org.openflexo.foundation.viewpoint.editionaction.SetObjectPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -208,7 +208,7 @@ public interface AddEMFObjectIndividualAttributeObjectPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.AssignableAction#getAssignableType()
+		 * @see org.openflexo.foundation.viewpoint.editionaction.AssignableAction#getAssignableType()
 		 */
 		@Override
 		public Type getAssignableType() {

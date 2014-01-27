@@ -55,7 +55,13 @@ import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteRemoved;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.view.controller.FlexoController;
 
-public class DiagramEditor extends SelectionManagingDianaEditor<Diagram> implements GraphicalFlexoObserver {
+/**
+ * Abstraction of editor of a {@link Diagram}
+ * 
+ * @author sylvain
+ * 
+ */
+public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram> implements GraphicalFlexoObserver {
 
 	private static final Logger logger = Logger.getLogger(DiagramEditor.class.getPackage().getName());
 
@@ -76,14 +82,14 @@ public class DiagramEditor extends SelectionManagingDianaEditor<Diagram> impleme
 
 	private final SwingToolFactory swingToolFactory;
 
-	public DiagramEditor(Diagram diagram, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
-		super(new DiagramDrawing(diagram, readOnly), controller.getSelectionManager(), ((DiagramResource) diagram.getResource())
-				.getFactory(), swingToolFactory);
+	public DiagramEditor(FreeDiagramDrawing diagramDrawing, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
+		super(diagramDrawing, controller.getSelectionManager(), ((DiagramResource) diagramDrawing.getDiagram().getResource()).getFactory(),
+				swingToolFactory);
 
 		flexoController = controller;
 		this.swingToolFactory = swingToolFactory;
 
-		diagram.getDiagramSpecification().addObserver(this);
+		diagramDrawing.getDiagram().getDiagramSpecification().addObserver(this);
 
 		if (!readOnly) {
 
@@ -106,8 +112,8 @@ public class DiagramEditor extends SelectionManagingDianaEditor<Diagram> impleme
 			contextualPaletteModels = new Hashtable<DiagramPalette, ContextualPalette>();
 			contextualPalettes = new Hashtable<DiagramPalette, JDianaPalette>();
 
-			if (diagram.getDiagramSpecification() != null) {
-				for (DiagramPalette palette : diagram.getDiagramSpecification().getPalettes()) {
+			if (diagramDrawing.getDiagram().getDiagramSpecification() != null) {
+				for (DiagramPalette palette : diagramDrawing.getDiagram().getDiagramSpecification().getPalettes()) {
 					ContextualPalette contextualPaletteModel = new ContextualPalette(palette, this);
 					contextualPaletteModels.put(palette, contextualPaletteModel);
 					JDianaPalette dianaPalette = swingToolFactory.makeDianaPalette(contextualPaletteModel);

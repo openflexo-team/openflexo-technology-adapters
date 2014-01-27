@@ -20,6 +20,7 @@
 package org.openflexo.technologyadapter.diagram.model;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
+import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Embedded;
@@ -29,6 +30,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 
 @ModelEntity
 @ImplementationClass(DiagramConnectorImpl.class)
@@ -87,16 +89,19 @@ public interface DiagramConnector extends DiagramElement<ConnectorGraphicalRepre
 	public DiagramContainerElement<?> getParent();
 
 	// TODO: comment this when method clash in PAMELA will be solved
-	@Getter(value = GRAPHICAL_REPRESENTATION)
+	/*@Getter(value = GRAPHICAL_REPRESENTATION)
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
 	@XMLElement
 	@Override
-	public ConnectorGraphicalRepresentation getGraphicalRepresentation();
+	public ConnectorGraphicalRepresentation getGraphicalRepresentation();*/
 
 	// TODO: comment this when method clash in PAMELA will be solved
-	@Setter(value = GRAPHICAL_REPRESENTATION)
+	/*@Setter(value = GRAPHICAL_REPRESENTATION)
 	@Override
-	public void setGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation);
+	public void setGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation);*/
+
+	@Override
+	public ConnectorPatternRole getPatternRole(VirtualModelInstance vmInstance);
 
 }

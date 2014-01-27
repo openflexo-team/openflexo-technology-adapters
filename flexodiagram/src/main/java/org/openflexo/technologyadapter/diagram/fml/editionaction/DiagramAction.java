@@ -19,7 +19,7 @@
  */
 package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
-import org.openflexo.foundation.viewpoint.AssignableAction;
+import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;

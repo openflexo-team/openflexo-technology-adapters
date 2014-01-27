@@ -31,8 +31,8 @@ package org.openflexo.technologyadapter.emf.viewpoint.editionaction;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.action.EditionSchemeAction;
-import org.openflexo.foundation.viewpoint.AssignableAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
+import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -59,7 +59,7 @@ public interface RemoveEMFObjectIndividualReferenceObjectPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.AssignableAction#getAssignableType()
+		 * @see org.openflexo.foundation.viewpoint.editionaction.AssignableAction#getAssignableType()
 		 */
 		@Override
 		public Type getAssignableType() {

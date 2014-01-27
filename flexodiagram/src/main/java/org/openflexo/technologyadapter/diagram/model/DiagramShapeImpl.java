@@ -22,6 +22,8 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
 
 public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<ShapeGraphicalRepresentation> implements DiagramShape {
 
@@ -208,4 +210,10 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	public ShapePatternRole getPatternRole() {
 		return (ShapePatternRole) super.getPatternRole();
 	}*/
+
+	@Override
+	public ShapePatternRole getPatternRole(VirtualModelInstance vmInstance) {
+		return (ShapePatternRole) super.getPatternRole(vmInstance);
+	}
+
 }

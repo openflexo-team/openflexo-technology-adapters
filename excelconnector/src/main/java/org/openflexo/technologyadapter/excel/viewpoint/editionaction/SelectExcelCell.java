@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.view.action.EditionSchemeAction;
-import org.openflexo.foundation.viewpoint.FetchRequest;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
+import org.openflexo.foundation.viewpoint.editionaction.FetchRequest;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;

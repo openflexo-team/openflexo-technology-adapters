@@ -26,6 +26,9 @@ import java.util.Observer;
 import org.openflexo.antar.binding.BindingEvaluationContext;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Embedded;
@@ -35,6 +38,8 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
 
 /**
  * Root class for any object involved in Openflexo Diagram built-in technology
@@ -136,5 +141,27 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	public boolean hasChanged();
 
 	public List<DiagramContainerElement<?>> getAncestors();
+
+	/**
+	 * Return {@link EditionPatternInstance} where this {@link DiagramElement} is involved, asserting that this {@link DiagramElement} is
+	 * contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared in {@link VirtualModel} of supplied
+	 * {@link VirtualModelInstance}
+	 * 
+	 * @param vmInstance
+	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
+	 * @return
+	 */
+	public EditionPatternInstance getEditionPatternInstance(VirtualModelInstance vmInstance);
+
+	/**
+	 * Return {@link GraphicalElementPatternRole} played by this {@link DiagramElement} in related {@link EditionPatternInstance}, asserting
+	 * that this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared
+	 * in {@link VirtualModel} of supplied {@link VirtualModelInstance}
+	 * 
+	 * @param vmInstance
+	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
+	 * @return
+	 */
+	public GraphicalElementPatternRole<?, ?> getPatternRole(VirtualModelInstance vmInstance);
 
 }

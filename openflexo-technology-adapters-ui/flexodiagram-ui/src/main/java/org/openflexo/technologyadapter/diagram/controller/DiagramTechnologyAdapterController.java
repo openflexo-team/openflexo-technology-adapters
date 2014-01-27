@@ -5,13 +5,12 @@ import javax.swing.ImageIcon;
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.DeleteAction;
 import org.openflexo.foundation.viewpoint.EditionAction;
 import org.openflexo.foundation.viewpoint.EditionPatternInstancePatternRole;
 import org.openflexo.foundation.viewpoint.EditionScheme;
 import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.VEIconLibrary;
@@ -28,6 +27,11 @@ import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramSp
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteExampleDiagramElementsInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteExampleDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.PushToPaletteInitializer;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramModuleView;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramEditor;
+import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteEditor;
+import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteModuleView;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -38,6 +42,8 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.toolbox.FileResource;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -48,7 +54,7 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 
 public class DiagramTechnologyAdapterController extends TechnologyAdapterController<DiagramTechnologyAdapter> {
 
-	private SwingToolFactory toolFactory;
+	private SwingToolFactory swingToolFactory;
 
 	private JDianaInspectors inspectors;
 	private JDianaScaleSelector scaleSelector;
@@ -61,10 +67,10 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
 
-		toolFactory = new SwingToolFactory(actionInitializer.getController().getFlexoFrame());
+		swingToolFactory = new SwingToolFactory(actionInitializer.getController().getFlexoFrame());
 
-		scaleSelector = toolFactory.makeDianaScaleSelector(null);
-		inspectors = toolFactory.makeDianaInspectors();
+		scaleSelector = swingToolFactory.makeDianaScaleSelector(null);
+		inspectors = swingToolFactory.makeDianaInspectors();
 
 		inspectors.getForegroundStyleInspector().setLocation(1000, 100);
 		inspectors.getTextStyleInspector().setLocation(1000, 300);
@@ -94,7 +100,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	}
 
 	public SwingToolFactory getToolFactory() {
-		return toolFactory;
+		return swingToolFactory;
 	}
 
 	@Override
@@ -191,21 +197,58 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object) {
-		// TODO not applicable
-		return false;
+	public boolean hasModuleViewForObject(TechnologyObject<DiagramTechnologyAdapter> object, FlexoController controller) {
+		return object instanceof Diagram || object instanceof DiagramPalette;
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object) {
+	public String getWindowTitleforObject(TechnologyObject<DiagramTechnologyAdapter> object, FlexoController controller) {
 		return object.toString();
 	}
 
 	@Override
-	public <T extends FlexoObject> ModuleView<T> createModuleViewForObject(T object, FlexoController controller,
+	public ModuleView<?> createModuleViewForObject(TechnologyObject<DiagramTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
+
+		if (object instanceof Diagram) {
+			DiagramEditor editor = new FreeDiagramEditor((Diagram) object, false, controller, swingToolFactory);
+			return new DiagramModuleView(editor, perspective);
+		}
+
+		if (object instanceof DiagramPalette) {
+			DiagramPaletteEditor editor = new DiagramPaletteEditor((DiagramPalette) object, false, controller, swingToolFactory);
+			return new DiagramPaletteModuleView(editor, perspective);
+		}
+
+		// TODO: handle DiagramSpecification
+
+		// TODO: handle EditionPattern where many PR are parts of a diagram
+
+		// TODO: handle VirtualModel where one or many MS are diagram MS
+
+		/*if (object instanceof ViewPoint) {
+			return new ViewPointView((ViewPoint) object, controller, perspective);
+		}
+		if (object instanceof EditionPattern) {
+			EditionPattern ep = (EditionPattern) object;
+			if (ep instanceof VirtualModel) {
+				// if (ep instanceof DiagramSpecification) {
+				// return new DiagramSpecificationView(ep, (VPMController) controller);
+				// } else {
+				return new VirtualModelView(ep, controller, perspective);
+				// }
+			} else {
+				// if (ep.getVirtualModel() instanceof DiagramSpecification) {
+				// return new DiagramEditionPatternView(ep, (VPMController) controller);
+				// } else {
+				return new StandardEditionPatternView(ep, controller, perspective);
+				// }
+			}
+
+		*/
+
 		// TODO not applicable
-		return new EmptyPanel<T>(controller, perspective, object);
+		return new EmptyPanel<TechnologyObject<DiagramTechnologyAdapter>>(controller, perspective, object);
 	}
 
 }

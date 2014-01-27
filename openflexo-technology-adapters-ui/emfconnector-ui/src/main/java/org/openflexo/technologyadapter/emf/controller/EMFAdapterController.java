@@ -25,7 +25,6 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.components.widget.OntologyView;
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.EditionAction;
@@ -180,12 +179,12 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object) {
+	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
 		return object instanceof EMFModel || object instanceof EMFMetaModel;
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object) {
+	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
 		if (object instanceof EMFModel) {
 			return ((EMFModel) object).getName();
 		}
@@ -196,7 +195,7 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	}
 
 	@Override
-	public <T extends FlexoObject> ModuleView<T> createModuleViewForObject(T object, FlexoController controller,
+	public ModuleView<?> createModuleViewForObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof EMFModel) {
 			OntologyView<EMFModel> returned = new OntologyView<EMFModel>((EMFModel) object, controller, perspective);
@@ -204,15 +203,15 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 			returned.setShowDataProperties(false);
 			returned.setShowObjectProperties(false);
 			returned.setShowAnnotationProperties(false);
-			return (ModuleView<T>) returned;
+			return returned;
 		} else if (object instanceof EMFMetaModel) {
 			OntologyView<EMFMetaModel> returned = new OntologyView<EMFMetaModel>((EMFMetaModel) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);
 			returned.setShowObjectProperties(true);
 			returned.setShowAnnotationProperties(true);
-			return (ModuleView<T>) returned;
+			return returned;
 		}
-		return new EmptyPanel<T>(controller, perspective, object);
+		return new EmptyPanel<TechnologyObject<EMFTechnologyAdapter>>(controller, perspective, object);
 	}
 }

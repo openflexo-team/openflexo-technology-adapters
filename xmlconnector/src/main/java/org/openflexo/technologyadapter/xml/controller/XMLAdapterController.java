@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.EditionAction;
@@ -167,18 +166,18 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object) {
+	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object) {
+	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
 		return object.toString();
 	}
 
 	@Override
-	public <T extends FlexoObject> ModuleView<T> createModuleViewForObject(T object, FlexoController controller,
+	public ModuleView<?> createModuleViewForObject(TechnologyObject<XMLTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		// TODO Auto-generated method stub
 		return null;

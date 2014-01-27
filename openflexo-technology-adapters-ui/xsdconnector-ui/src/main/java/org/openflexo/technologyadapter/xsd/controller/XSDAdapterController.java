@@ -6,7 +6,6 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.components.widget.OntologyView;
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.EditionAction;
@@ -150,12 +149,12 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object) {
+	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
 		return object instanceof XSDMetaModel || object instanceof XMLXSDModel;
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object) {
+	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
 		if (object instanceof XMLXSDModel) {
 			return ((XMLXSDModel) object).getName();
 		}
@@ -166,7 +165,7 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 	}
 
 	@Override
-	public <T extends FlexoObject> ModuleView<T> createModuleViewForObject(T object, FlexoController controller,
+	public ModuleView<?> createModuleViewForObject(TechnologyObject<XSDTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof XMLXSDModel) {
 			OntologyView<XMLXSDModel> returned = new OntologyView<XMLXSDModel>((XMLXSDModel) object, controller, perspective);
@@ -174,16 +173,16 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 			returned.setShowDataProperties(false);
 			returned.setShowObjectProperties(false);
 			returned.setShowAnnotationProperties(false);
-			return (ModuleView<T>) returned;
+			return returned;
 		} else if (object instanceof XSDMetaModel) {
 			OntologyView<XSDMetaModel> returned = new OntologyView<XSDMetaModel>((XSDMetaModel) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);
 			returned.setShowObjectProperties(true);
 			returned.setShowAnnotationProperties(true);
-			return (ModuleView<T>) returned;
+			return returned;
 		}
-		return new EmptyPanel<T>(controller, perspective, object);
+		return new EmptyPanel<TechnologyObject<XSDTechnologyAdapter>>(controller, perspective, object);
 	}
 
 }

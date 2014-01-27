@@ -2,7 +2,6 @@ package org.openflexo.technologyadapter.powerpoint.controller;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
@@ -71,7 +70,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object) {
+	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
 		if (object instanceof PowerpointSlideshow) {
 			return true;
 		}
@@ -79,7 +78,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object) {
+	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
 		if (object instanceof PowerpointSlide) {
 			return ((PowerpointSlide) object).getName();
 		}
@@ -87,12 +86,12 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public <T extends FlexoObject> ModuleView<T> createModuleViewForObject(T object, FlexoController controller,
+	public ModuleView<?> createModuleViewForObject(TechnologyObject<PowerpointTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof PowerpointSlideshow) {
-			return (ModuleView<T>) new PowerpointSlideshowView((PowerpointSlideshow) object, controller, perspective);
+			return new PowerpointSlideshowView((PowerpointSlideshow) object, controller, perspective);
 		}
-		return new EmptyPanel<T>(controller, perspective, object);
+		return new EmptyPanel<TechnologyObject<PowerpointTechnologyAdapter>>(controller, perspective, object);
 	}
 
 }

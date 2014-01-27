@@ -2,7 +2,6 @@ package org.openflexo.technologyadapter.excel.controller;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.EditionAction;
 import org.openflexo.foundation.viewpoint.PatternRole;
@@ -81,7 +80,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Return icon representing supplied edition action
 	 * 
@@ -92,18 +91,18 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction<?, ?>> editionActionClass) {
 		if (AddExcelSheet.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelSheet.class), IconLibrary.DUPLICATE);
-		}else if (AddExcelCell.class.isAssignableFrom(editionActionClass)) {
+		} else if (AddExcelCell.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelCell.class), IconLibrary.DUPLICATE);
-		}else if (AddExcelRow.class.isAssignableFrom(editionActionClass)) {
+		} else if (AddExcelRow.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelRow.class), IconLibrary.DUPLICATE);
-		}else if (CellStyleAction.class.isAssignableFrom(editionActionClass)) {
+		} else if (CellStyleAction.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(ExcelIconLibrary.EXCEL_GRAPHICAL_ACTION_ICON, IconLibrary.DUPLICATE);
 		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
 
 	@Override
-	public boolean hasModuleViewForObject(TechnologyObject object) {
+	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
 		if (object instanceof ExcelWorkbook) {
 			return true;
 		}
@@ -111,7 +110,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject object) {
+	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
 		if (object instanceof ExcelWorkbook) {
 			return ((ExcelWorkbook) object).getName();
 		}
@@ -119,12 +118,12 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public <T extends FlexoObject> ModuleView<T> createModuleViewForObject(T object, FlexoController controller,
+	public ModuleView<?> createModuleViewForObject(TechnologyObject<ExcelTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof ExcelWorkbook) {
-			return (ModuleView<T>) new ExcelWorkbookView((ExcelWorkbook) object, controller, perspective);
+			return new ExcelWorkbookView((ExcelWorkbook) object, controller, perspective);
 		}
-		return new EmptyPanel<T>(controller, perspective, object);
+		return new EmptyPanel<TechnologyObject<ExcelTechnologyAdapter>>(controller, perspective, object);
 	}
 
 }

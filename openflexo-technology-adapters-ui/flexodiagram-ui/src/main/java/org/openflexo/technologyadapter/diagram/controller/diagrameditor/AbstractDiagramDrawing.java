@@ -43,16 +43,18 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.toolbox.ToolBox;
 
 /**
- * This is the abstraction of a drawing representing a {@link Diagram}
+ * This is the abstraction of a drawing representing a {@link Diagram}<br>
+ * Note that this class is abstract. There are two implementations. One for a {@link FreeDiagramEditor}, see {@link FreeDiagramDrawing}, and
+ * one for {@link FMLControlledDiagramEditor}, see {@link FMLControlledDiagramDrawing}
  * 
  * @author sylvain
  * 
  */
-public class DiagramDrawing extends DrawingImpl<Diagram> implements DiagramRepresentationConstants {
+public abstract class AbstractDiagramDrawing extends DrawingImpl<Diagram> implements DiagramRepresentationConstants {
 
-	private static final Logger logger = Logger.getLogger(DiagramDrawing.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(AbstractDiagramDrawing.class.getPackage().getName());
 
-	public DiagramDrawing(Diagram model, boolean readOnly) {
+	public AbstractDiagramDrawing(Diagram model, boolean readOnly) {
 		super(model, ((DiagramResource) model.getResource()).getFactory(), PersistenceMode.UniqueGraphicalRepresentations);
 		setEditable(!readOnly);
 	}
@@ -119,7 +121,7 @@ public class DiagramDrawing extends DrawingImpl<Diagram> implements DiagramRepre
 		return getModel();
 	}
 
-	private DrawingGraphicalRepresentation retrieveGraphicalRepresentation(Diagram diagram, DiagramFactory factory) {
+	protected DrawingGraphicalRepresentation retrieveGraphicalRepresentation(Diagram diagram, DiagramFactory factory) {
 		DrawingGraphicalRepresentation returned = null;
 		if (diagram.getGraphicalRepresentation() != null) {
 			diagram.getGraphicalRepresentation().setFactory(factory);
@@ -135,7 +137,7 @@ public class DiagramDrawing extends DrawingImpl<Diagram> implements DiagramRepre
 		return returned;
 	}
 
-	private ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramShape shape, DiagramFactory factory) {
+	protected ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramShape shape, DiagramFactory factory) {
 		ShapeGraphicalRepresentation returned = null;
 		if (shape.getGraphicalRepresentation() != null) {
 			shape.getGraphicalRepresentation().setFactory(factory);
@@ -149,10 +151,11 @@ public class DiagramDrawing extends DrawingImpl<Diagram> implements DiagramRepre
 			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory, true));
 		}
 		returned.addToMouseDragControls(new DrawEdgeControl(factory));
+
 		return returned;
 	}
 
-	private ConnectorGraphicalRepresentation retrieveGraphicalRepresentation(DiagramConnector connector, DiagramFactory factory) {
+	protected ConnectorGraphicalRepresentation retrieveGraphicalRepresentation(DiagramConnector connector, DiagramFactory factory) {
 		ConnectorGraphicalRepresentation returned = null;
 		if (connector.getGraphicalRepresentation() != null) {
 			connector.getGraphicalRepresentation().setFactory(factory);
