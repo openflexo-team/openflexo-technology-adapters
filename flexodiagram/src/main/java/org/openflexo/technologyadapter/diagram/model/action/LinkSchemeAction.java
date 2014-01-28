@@ -32,7 +32,7 @@ import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.view.EditionPatternInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
-import org.openflexo.foundation.viewpoint.EditionAction;
+import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;

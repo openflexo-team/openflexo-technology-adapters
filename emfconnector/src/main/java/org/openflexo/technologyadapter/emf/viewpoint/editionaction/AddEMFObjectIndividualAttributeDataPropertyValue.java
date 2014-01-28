@@ -211,7 +211,7 @@ public interface AddEMFObjectIndividualAttributeDataPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.EditionAction#performAction(org.openflexo.foundation.view.action.EditionSchemeAction)
+		 * @see org.openflexo.foundation.viewpoint.editionaction.EditionAction#performAction(org.openflexo.foundation.view.action.EditionSchemeAction)
 		 */
 		@Override
 		public EMFObjectIndividualAttributeDataPropertyValue performAction(EditionSchemeAction action) {
