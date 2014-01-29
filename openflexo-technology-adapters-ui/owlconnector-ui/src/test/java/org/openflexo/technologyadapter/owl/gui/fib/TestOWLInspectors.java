@@ -1,8 +1,8 @@
 package org.openflexo.technologyadapter.owl.gui.fib;
 
-import org.openflexo.fib.utils.FIBTestCase;
+import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
 
-public class TestOWLInspectors extends FIBTestCase {
+public class TestOWLInspectors extends GenericFIBInspectorTestCase {
 
 	public void testDataPropertyStatementPatternRoleInspector() {
 		validateFIB("Inspectors/OWL/DataPropertyStatementPatternRole.inspector");

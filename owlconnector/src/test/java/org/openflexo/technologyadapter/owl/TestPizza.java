@@ -25,10 +25,14 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Iterator;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.foundation.OpenflexoRunTimeTestCase;
 import org.openflexo.foundation.TestFlexoServiceManager;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FileResource;
 
 import com.hp.hpl.jena.ontology.OntClass;
@@ -37,6 +41,7 @@ import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
+@RunWith(OrderedRunner.class)
 public class TestPizza extends OpenflexoRunTimeTestCase {
 
 	private static TestFlexoServiceManager testServiceManager;
@@ -46,9 +51,11 @@ public class TestPizza extends OpenflexoRunTimeTestCase {
 	/**
 	 * Instanciate test ResourceCenter
 	 */
+	@Test
+	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
 		log("test0LoadTestResourceCenter()");
-		testServiceManager = new TestFlexoServiceManager(new FileResource("src/test/resources/Ontologies"));
+		testServiceManager = new TestFlexoServiceManager(new FileResource("TestResourceCenter/Ontologies"));
 		owlAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) testServiceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 	}
@@ -56,9 +63,11 @@ public class TestPizza extends OpenflexoRunTimeTestCase {
 	/**
 	 * Load an ontology
 	 */
+	@Test
+	@TestOrder(2)
 	public void test1LoadTestResourceCenter() {
 
-		File myOntology = new FileResource("MyOntologies/MyPizza.owl");
+		File myOntology = new FileResource("TestResourceCenter/Ontologies/Tests/PizzaOntology.owl");
 
 		System.out.println("Found: " + myOntology);
 		OWLOntology hop = new OWLOntology(OWLOntology.findOntologyURI(myOntology), myOntology, ontologyLibrary, owlAdapter);
@@ -127,8 +136,8 @@ public class TestPizza extends OpenflexoRunTimeTestCase {
 
 		String ONTOLOGY_C = URI;
 		String ONTOLOGY_A = OWLOntologyLibrary.FLEXO_CONCEPT_ONTOLOGY_URI;
-		String ONTOLOGY_B = "http://www.denali.be/flexo/ontologies/Calcs/PizzaEditor.owl";
-		String ONTOLOGY_D = "http://www.denali.be/flexo/ontologies/Calcs/PizzaIngredientEditor.owl";
+		String ONTOLOGY_B = "http://www.openflexo.org/test/Family.owl";
+		String ONTOLOGY_D = "http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl";
 
 		String SOURCE = "@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#>.\n"
 				+ "@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#>.\n"

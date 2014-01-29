@@ -1,8 +1,8 @@
 package org.openflexo.technologyadapter.emf.gui.fib;
 
-import org.openflexo.fib.utils.FIBTestCase;
+import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
 
-public class TestEMFInspectors extends FIBTestCase {
+public class TestEMFInspectors extends GenericFIBInspectorTestCase {
 
 	public void testEMFMetaModelInspector() {
 		validateFIB("Inspectors/EMF/EMFMetaModel.inspector");

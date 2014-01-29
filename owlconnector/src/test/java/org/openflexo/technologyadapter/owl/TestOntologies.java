@@ -26,6 +26,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.logging.Logger;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.foundation.OpenflexoRunTimeTestCase;
 import org.openflexo.foundation.TestFlexoServiceManager;
 import org.openflexo.localization.FlexoLocalization;
@@ -40,8 +42,11 @@ import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLProperty;
 import org.openflexo.technologyadapter.owl.model.RDFSURIDefinitions;
 import org.openflexo.technologyadapter.owl.model.RDFURIDefinitions;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FileResource;
 
+@RunWith(OrderedRunner.class)
 public class TestOntologies extends OpenflexoRunTimeTestCase {
 
 	protected static final Logger logger = Logger.getLogger(TestOntologies.class.getPackage().getName());
@@ -53,13 +58,17 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 	/**
 	 * Instanciate test ResourceCenter
 	 */
+	@Test
+	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
 		log("test0LoadTestResourceCenter()");
-		testServiceManager = new TestFlexoServiceManager(new FileResource("src/test/resources/Ontologies"));
+		testServiceManager = new TestFlexoServiceManager(new FileResource("TestResourceCenter/Ontologies"));
 		owlAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) testServiceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 	}
 
+	@Test
+	@TestOrder(2)
 	public void test1AssertRDFOntologyPresentAndLoaded() {
 		log("test1AssertRDFOntologyPresentAndLoaded()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -69,6 +78,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 		assertTrue(rdfOntology.getImportedOntologies().get(0) == ontologyLibrary.getRDFSOntology());
 	}
 
+	@Test
+	@TestOrder(3)
 	public void test2AssertRDFSOntologyPresentAndLoaded() {
 		log("test2AssertRDFSOntologyPresentAndLoaded()");
 		OWLOntology rdfsOntology = ontologyLibrary.getRDFSOntology();
@@ -125,6 +136,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 
 	}
 
+	@Test
+	@TestOrder(4)
 	public void test3AssertRDFAndRDFSOntologyCorrectImports() {
 		log("test3AssertRDFAndRDFSOntologyCorrectImports()");
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
@@ -135,6 +148,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 		assertTrue(rdfsOntology.getImportedOntologies().get(0) == rdfOntology);
 	}
 
+	@Test
+	@TestOrder(5)
 	public void test4AssertOWLOntologyPresentAndLoaded() {
 		log("test4AssertOWLOntologyPresentAndLoaded()");
 		OWLOntology owlOntology = ontologyLibrary.getOWLOntology();
@@ -146,6 +161,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 		assertNotNull(owlOntology.getRootConcept());
 	}
 
+	@Test
+	@TestOrder(6)
 	public void test5AssertFlexoConceptsOntologyIsCorrect() {
 		log("test5AssertFlexoConceptsOntologyIsCorrect()");
 		OWLOntology flexoConceptsOntology = ontologyLibrary.getFlexoConceptOntology();
@@ -242,6 +259,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 
 	}
 
+	@Test
+	@TestOrder(7)
 	public void test6TestMultiReferencesO3() {
 		log("test6TestMultiReferencesO3()");
 		OWLOntology o1 = ontologyLibrary.getOntology("http://www.openflexo.org/test/O1.owl");
@@ -281,6 +300,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 
 	}
 
+	@Test
+	@TestOrder(8)
 	public void test7TestMultiReferencesO4() {
 		log("test7TestMultiReferencesO4()");
 		OWLOntology o1 = ontologyLibrary.getOntology("http://www.openflexo.org/test/O1.owl");
@@ -338,6 +359,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 
 	}
 
+	@Test
+	@TestOrder(9)
 	public void test8TestMultiReferencesO5() {
 		log("test8TestMultiReferencesO5()");
 		OWLOntology o1 = ontologyLibrary.getOntology("http://www.openflexo.org/test/O1.owl");
@@ -395,6 +418,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 
 	}
 
+	@Test
+	@TestOrder(10)
 	public void test9TestInstances() {
 		log("test9TestInstances()");
 		OWLOntology ontology = ontologyLibrary.getOntology("http://www.openflexo.org/test/TestInstances.owl");
@@ -441,6 +466,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 
 	}
 
+	@Test
+	@TestOrder(11)
 	public void test10TestAnnotations() {
 		log("test10TestAnnotations()");
 		OWLOntology ontology = ontologyLibrary.getOntology("http://www.openflexo.org/test/TestInstances.owl");
@@ -491,6 +518,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 
 	}
 
+	@Test
+	@TestOrder(12)
 	public void test11TestLoadArchimateOntology() {
 		log("test11TestLoadArchimateOntology()");
 		OWLOntology ontology = ontologyLibrary.getOntology("http://www.bolton.ac.uk/archimate");
@@ -500,6 +529,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 		assertTrue(ontology.isLoaded());
 	}
 
+	@Test
+	@TestOrder(13)
 	public void test12TestLoadCPMFInstanceOntology() {
 		log("test12TestLoadCPMFInstanceOntology()");
 		OWLOntology ontology = ontologyLibrary.getOntology("http://www.cpmf.org/ontologies/cpmfInstance");
@@ -509,6 +540,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 		assertTrue(ontology.isLoaded());
 	}
 
+	@Test
+	@TestOrder(14)
 	public void test13TestLoadBPMNOntology() {
 		log("test13TestLoadBPMNOntology()");
 		OWLOntology ontology = ontologyLibrary.getOntology("http://dkm.fbk.eu/index.php/BPMN_Ontology");
@@ -518,6 +551,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 		assertTrue(ontology.isLoaded());
 	}
 
+	@Test
+	@TestOrder(15)
 	public void test14TestBasicOntologEditor() {
 		log("test14TestBasicOntologEditor()");
 		OWLOntology ontology = ontologyLibrary.getOntology("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");
@@ -527,6 +562,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 		assertTrue(ontology.isLoaded());
 	}
 
+	@Test
+	@TestOrder(16)
 	public void test15TestLoadSKOS() {
 		log("test15TestLoadSKOS()");
 		String SKOS_URI = "http://www.w3.org/2004/02/skos/core";
@@ -573,6 +610,8 @@ public class TestOntologies extends OpenflexoRunTimeTestCase {
 
 	}
 
+	@Test
+	@TestOrder(17)
 	public void test16TestAccessibleProperties() {
 		log("test16TestAccessibleProperties()");
 

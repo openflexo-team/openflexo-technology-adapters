@@ -1,9 +1,9 @@
 package org.openflexo.technologyadapter.owl.gui.fib;
 
-import org.openflexo.fib.utils.FIBTestCase;
+import org.openflexo.fib.utils.GenericFIBTestCase;
 import org.openflexo.technologyadapter.owl.controller.OWLFIBLibrary;
 
-public class TestOWLFibs extends FIBTestCase {
+public class TestOWLFibs extends GenericFIBTestCase {
 
 	public void testCreateOntologyClassDialog() {
 		validateFIB(OWLFIBLibrary.CREATE_ONTOLOGY_CLASS_DIALOG_FIB);

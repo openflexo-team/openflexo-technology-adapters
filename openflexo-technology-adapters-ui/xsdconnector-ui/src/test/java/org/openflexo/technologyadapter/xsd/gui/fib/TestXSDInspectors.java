@@ -1,8 +1,8 @@
 package org.openflexo.technologyadapter.xsd.gui.fib;
 
-import org.openflexo.fib.utils.FIBTestCase;
+import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
 
-public class TestXSDInspectors extends FIBTestCase {
+public class TestXSDInspectors extends GenericFIBInspectorTestCase {
 
 	public void testXMLXSDFileResourceInspector() {
 		validateFIB("Inspectors/XSD/XMLXSDFileResource.inspector");
