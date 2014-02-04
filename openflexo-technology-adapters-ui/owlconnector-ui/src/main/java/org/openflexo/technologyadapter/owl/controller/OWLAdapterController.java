@@ -16,6 +16,7 @@ import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.gui.OWLOntologyBrowserModel;
+import org.openflexo.technologyadapter.owl.gui.OWLOntologyView;
 import org.openflexo.technologyadapter.owl.model.DataPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
@@ -213,7 +214,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<OWLTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof OWLOntology) {
-			OntologyView<OWLOntology> returned = new OntologyView<OWLOntology>((OWLOntology) object, controller, perspective);
+			OntologyView<OWLOntology> returned = new OWLOntologyView((OWLOntology) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);
 			returned.setShowObjectProperties(true);

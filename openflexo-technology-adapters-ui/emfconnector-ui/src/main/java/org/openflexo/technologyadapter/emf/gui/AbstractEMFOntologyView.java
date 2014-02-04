@@ -17,13 +17,13 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.owl.gui;
+package org.openflexo.technologyadapter.emf.gui;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.components.widget.OntologyView;
-import org.openflexo.technologyadapter.owl.model.OWLOntology;
+import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -35,50 +35,46 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * 
  */
 @SuppressWarnings("serial")
-public class OWLOntologyView extends OntologyView<OWLOntology> {
+public abstract class AbstractEMFOntologyView<T extends FlexoObject & IFlexoOntology> extends OntologyView<T> {
 
-	public OWLOntologyView(OWLOntology object, FlexoController controller, FlexoPerspective perspective) {
+	public AbstractEMFOntologyView(T object, FlexoController controller, FlexoPerspective perspective) {
 		super(object, controller, perspective);
 	}
 
 	@Override
-	protected OntologyBrowserModel makeBrowserModel() {
-		return new OWLOntologyBrowserModel(getOntology());
-	}
-
-	@Override
 	public ImageIcon getOntologyClassIcon() {
-		return OWLIconLibrary.ONTOLOGY_CLASS_ICON;
+		return EMFIconLibrary.EMF_CLASS_ICON;
 	}
 
 	@Override
 	public ImageIcon getOntologyIndividualIcon() {
-		return OWLIconLibrary.ONTOLOGY_INDIVIDUAL_ICON;
+		return EMFIconLibrary.EMF_INDIVIDUAL_ICON;
 	}
 
 	@Override
 	public ImageIcon getOntologyDataPropertyIcon() {
-		return OWLIconLibrary.ONTOLOGY_DATA_PROPERTY_ICON;
+		return EMFIconLibrary.EMF_ATTRIBUTE_ICON;
 	}
 
 	@Override
 	public ImageIcon getOntologyObjectPropertyIcon() {
-		return OWLIconLibrary.ONTOLOGY_OBJECT_PROPERTY_ICON;
+		return EMFIconLibrary.EMF_ATTRIBUTE_ICON;
 	}
 
 	@Override
 	public ImageIcon getOntologyAnnotationIcon() {
-		return OWLIconLibrary.ONTOLOGY_ANNOTATION_PROPERTY_ICON;
+		return EMFIconLibrary.EMF_ATTRIBUTE_ICON;
 	}
 
 	@Override
 	public boolean supportTechnologySpecificHiddenConcepts() {
-		return true;
+		return false;
 	}
 
 	@Override
 	public String technologySpecificHiddenConceptsLabel() {
-		return "show_OWL_RDF_concepts";
+		// Not applicable
+		return null;
 	}
 
 }

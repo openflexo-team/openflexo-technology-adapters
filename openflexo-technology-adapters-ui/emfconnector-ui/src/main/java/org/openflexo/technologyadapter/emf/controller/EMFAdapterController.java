@@ -34,7 +34,9 @@ import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.gui.EMFIconLibrary;
 import org.openflexo.technologyadapter.emf.gui.EMFMetaModelBrowserModel;
+import org.openflexo.technologyadapter.emf.gui.EMFMetaModelView;
 import org.openflexo.technologyadapter.emf.gui.EMFModelBrowserModel;
+import org.openflexo.technologyadapter.emf.gui.EMFModelView;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
 import org.openflexo.technologyadapter.emf.metamodel.EMFEnumClass;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
@@ -198,14 +200,14 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<EMFTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof EMFModel) {
-			OntologyView<EMFModel> returned = new OntologyView<EMFModel>((EMFModel) object, controller, perspective);
+			OntologyView<EMFModel> returned = new EMFModelView((EMFModel) object, controller, perspective);
 			returned.setShowClasses(false);
 			returned.setShowDataProperties(false);
 			returned.setShowObjectProperties(false);
 			returned.setShowAnnotationProperties(false);
 			return returned;
 		} else if (object instanceof EMFMetaModel) {
-			OntologyView<EMFMetaModel> returned = new OntologyView<EMFMetaModel>((EMFMetaModel) object, controller, perspective);
+			OntologyView<EMFMetaModel> returned = new EMFMetaModelView((EMFMetaModel) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);
 			returned.setShowObjectProperties(true);

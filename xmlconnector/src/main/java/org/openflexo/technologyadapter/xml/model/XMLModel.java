@@ -48,7 +48,7 @@ import org.w3c.dom.Element;
  * 
  */
 public class XMLModel extends DefaultFlexoObject implements FlexoModel<XMLModel, XMLModel>, FlexoMetaModel<XMLModel>, IXMLMetaModel,
-		IXMLModel, TechnologyObject {
+		IXMLModel, TechnologyObject<XMLTechnologyAdapter> {
 
 	// Constants
 
@@ -154,7 +154,7 @@ public class XMLModel extends DefaultFlexoObject implements FlexoModel<XMLModel,
 	}
 
 	@Override
-	public TechnologyAdapter getTechnologyAdapter() {
+	public XMLTechnologyAdapter getTechnologyAdapter() {
 		return technologyAdapter;
 	}
 

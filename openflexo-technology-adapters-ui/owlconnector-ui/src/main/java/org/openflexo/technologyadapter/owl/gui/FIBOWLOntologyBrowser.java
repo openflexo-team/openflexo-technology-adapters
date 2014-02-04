@@ -21,6 +21,7 @@ package org.openflexo.technologyadapter.owl.gui;
 
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.components.widget.FIBOntologyBrowser;
@@ -38,8 +39,6 @@ public class FIBOWLOntologyBrowser extends FIBOntologyBrowser {
 	@SuppressWarnings("hiding")
 	static final Logger logger = Logger.getLogger(FIBOWLOntologyBrowser.class.getPackage().getName());
 
-	private boolean showOWLAndRDFConcepts = false;
-
 	public FIBOWLOntologyBrowser(OWLOntology ontology) {
 		super(ontology);
 	}
@@ -50,12 +49,12 @@ public class FIBOWLOntologyBrowser extends FIBOntologyBrowser {
 	}
 
 	public boolean getShowOWLAndRDFConcepts() {
-		return showOWLAndRDFConcepts;
+		return showTechnologySpecificConcepts();
 	}
 
 	@CustomComponentParameter(name = "showOWLAndRDFConcepts", type = CustomComponentParameter.Type.OPTIONAL)
 	public void setShowOWLAndRDFConcepts(boolean showOWLAndRDFConcepts) {
-		this.showOWLAndRDFConcepts = showOWLAndRDFConcepts;
+		setShowTechnologySpecificConcepts(showOWLAndRDFConcepts);
 		update();
 	}
 
@@ -83,13 +82,48 @@ public class FIBOWLOntologyBrowser extends FIBOntologyBrowser {
 			model.setShowObjectProperties(getShowObjectProperties());
 			model.setShowDataProperties(getShowDataProperties());
 			model.setShowAnnotationProperties(getShowAnnotationProperties());
-			((OWLOntologyBrowserModel) model).setShowOWLAndRDFConcepts(showOWLAndRDFConcepts);
+			((OWLOntologyBrowserModel) model).setShowOWLAndRDFConcepts(getShowOWLAndRDFConcepts());
 			model.setDomain(getDomain());
 			model.setRange(getRange());
 			model.setDataType(getDataType());
 			model.recomputeStructure();
 		}
 		return (OWLOntologyBrowserModel) model;
+	}
+
+	@Override
+	public ImageIcon getOntologyClassIcon() {
+		return OWLIconLibrary.ONTOLOGY_CLASS_ICON;
+	}
+
+	@Override
+	public ImageIcon getOntologyIndividualIcon() {
+		return OWLIconLibrary.ONTOLOGY_INDIVIDUAL_ICON;
+	}
+
+	@Override
+	public ImageIcon getOntologyDataPropertyIcon() {
+		return OWLIconLibrary.ONTOLOGY_DATA_PROPERTY_ICON;
+	}
+
+	@Override
+	public ImageIcon getOntologyObjectPropertyIcon() {
+		return OWLIconLibrary.ONTOLOGY_OBJECT_PROPERTY_ICON;
+	}
+
+	@Override
+	public ImageIcon getOntologyAnnotationIcon() {
+		return OWLIconLibrary.ONTOLOGY_ANNOTATION_PROPERTY_ICON;
+	}
+
+	@Override
+	public boolean supportTechnologySpecificHiddenConcepts() {
+		return true;
+	}
+
+	@Override
+	public String technologySpecificHiddenConceptsLabel() {
+		return "show_OWL_RDF_concepts";
 	}
 
 }

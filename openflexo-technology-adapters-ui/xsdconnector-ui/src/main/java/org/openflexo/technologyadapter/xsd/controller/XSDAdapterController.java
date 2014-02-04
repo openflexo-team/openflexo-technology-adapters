@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.components.widget.OntologyBrowserModel;
-import org.openflexo.components.widget.OntologyView;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.PatternRole;
@@ -14,8 +13,10 @@ import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.gui.XMLModelBrowserModel;
+import org.openflexo.technologyadapter.xsd.gui.XMLXSDModelView;
 import org.openflexo.technologyadapter.xsd.gui.XSDIconLibrary;
 import org.openflexo.technologyadapter.xsd.gui.XSDMetaModelBrowserModel;
+import org.openflexo.technologyadapter.xsd.gui.XSDMetaModelView;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xsd.model.AbstractXSOntObject;
@@ -168,14 +169,14 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<XSDTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
 		if (object instanceof XMLXSDModel) {
-			OntologyView<XMLXSDModel> returned = new OntologyView<XMLXSDModel>((XMLXSDModel) object, controller, perspective);
+			XMLXSDModelView returned = new XMLXSDModelView((XMLXSDModel) object, controller, perspective);
 			returned.setShowClasses(false);
 			returned.setShowDataProperties(false);
 			returned.setShowObjectProperties(false);
 			returned.setShowAnnotationProperties(false);
 			return returned;
 		} else if (object instanceof XSDMetaModel) {
-			OntologyView<XSDMetaModel> returned = new OntologyView<XSDMetaModel>((XSDMetaModel) object, controller, perspective);
+			XSDMetaModelView returned = new XSDMetaModelView((XSDMetaModel) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);
 			returned.setShowObjectProperties(true);
