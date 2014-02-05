@@ -26,7 +26,7 @@ import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.EditionSchemeAction;
-import org.openflexo.foundation.viewpoint.AddIndividual;
+import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
 import org.openflexo.foundation.viewpoint.editionaction.DataPropertyAssertion;
 import org.openflexo.foundation.viewpoint.editionaction.ObjectPropertyAssertion;
 import org.openflexo.model.annotations.ImplementationClass;
