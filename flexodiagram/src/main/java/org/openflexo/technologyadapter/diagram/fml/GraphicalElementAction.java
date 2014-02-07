@@ -29,7 +29,7 @@ import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.validation.Validable;
 import org.openflexo.foundation.view.EditionPatternInstance;
 import org.openflexo.foundation.viewpoint.AbstractActionScheme;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.EditionPatternObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.Getter;
@@ -146,18 +146,18 @@ public interface GraphicalElementAction extends EditionPatternObject {
 		}
 
 		@Override
-		public EditionPattern getEditionPattern() {
-			return getGraphicalElementPatternRole() != null ? getGraphicalElementPatternRole().getEditionPattern() : null;
+		public FlexoConcept getFlexoConcept() {
+			return getGraphicalElementPatternRole() != null ? getGraphicalElementPatternRole().getFlexoConcept() : null;
 		}
 
 		@Override
 		public BindingModel getBindingModel() {
-			return getEditionPattern().getBindingModel();
+			return getFlexoConcept().getBindingModel();
 		}
 
 		@Override
 		public VirtualModel getVirtualModel() {
-			return getEditionPattern().getVirtualModel();
+			return getFlexoConcept().getVirtualModel();
 		}
 
 		@Override

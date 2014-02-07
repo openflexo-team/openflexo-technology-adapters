@@ -15,7 +15,7 @@ import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.validation.Validable;
 import org.openflexo.foundation.view.EditionPatternInstance;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.EditionPatternObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.Getter;
@@ -194,23 +194,23 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		}
 
 		@Override
-		public EditionPattern getEditionPattern() {
-			return getPatternRole() != null ? getPatternRole().getEditionPattern() : null;
+		public FlexoConcept getFlexoConcept() {
+			return getPatternRole() != null ? getPatternRole().getFlexoConcept() : null;
 		}
 
 		@Override
 		public BindingFactory getBindingFactory() {
-			return getEditionPattern().getInspector().getBindingFactory();
+			return getFlexoConcept().getInspector().getBindingFactory();
 		}
 
 		@Override
 		public BindingModel getBindingModel() {
-			return getEditionPattern().getInspector().getBindingModel();
+			return getFlexoConcept().getInspector().getBindingModel();
 		}
 
 		@Override
 		public VirtualModel getVirtualModel() {
-			return getEditionPattern() != null ? getEditionPattern().getVirtualModel() : null;
+			return getFlexoConcept() != null ? getFlexoConcept().getVirtualModel() : null;
 		}
 
 		/**

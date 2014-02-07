@@ -246,15 +246,15 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 		// TODO: handle DiagramSpecification
 
-		// TODO: handle EditionPattern where many PR are parts of a diagram
+		// TODO: handle FlexoConcept where many PR are parts of a diagram
 
 		// TODO: handle VirtualModel where one or many MS are diagram MS
 
 		/*if (object instanceof ViewPoint) {
 			return new ViewPointView((ViewPoint) object, controller, perspective);
 		}
-		if (object instanceof EditionPattern) {
-			EditionPattern ep = (EditionPattern) object;
+		if (object instanceof FlexoConcept) {
+			FlexoConcept ep = (FlexoConcept) object;
 			if (ep instanceof VirtualModel) {
 				// if (ep instanceof DiagramSpecification) {
 				// return new DiagramSpecificationView(ep, (VPMController) controller);

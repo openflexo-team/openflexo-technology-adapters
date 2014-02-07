@@ -33,20 +33,20 @@ import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.controller.FIBSelectable;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
 
 // TODO: this should inherit from DefaultFIBCustomComponent
-public class EditionPatternPreviewComponent extends JPanel implements FIBCustomComponent<EditionPattern, JPanel>,
+public class EditionPatternPreviewComponent extends JPanel implements FIBCustomComponent<FlexoConcept, JPanel>,
 		FIBSelectable<GraphicalElementPatternRole<?, ?>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(EditionPatternPreviewComponent.class.getPackage().getName());
 
-	private EditionPattern editionPattern;
+	private FlexoConcept flexoConcept;
 
 	private SelectionManager selectionManager;
 	private EditionPatternPreviewController previewController;
@@ -68,9 +68,9 @@ public class EditionPatternPreviewComponent extends JPanel implements FIBCustomC
 		}
 	}
 
-	public EditionPatternPreviewComponent(EditionPattern editionPattern) {
+	public EditionPatternPreviewComponent(FlexoConcept flexoConcept) {
 		this();
-		setEditedObject(editionPattern);
+		setEditedObject(flexoConcept);
 	}
 
 	@Override
@@ -78,15 +78,15 @@ public class EditionPatternPreviewComponent extends JPanel implements FIBCustomC
 	}
 
 	@Override
-	public EditionPattern getEditedObject() {
-		return editionPattern;
+	public FlexoConcept getEditedObject() {
+		return flexoConcept;
 	}
 
 	@Override
-	public void setEditedObject(EditionPattern object) {
-		if (object != editionPattern) {
+	public void setEditedObject(FlexoConcept object) {
+		if (object != flexoConcept) {
 			logger.fine("EditionPatternPreview: setEditedObject: " + object);
-			editionPattern = object;
+			flexoConcept = object;
 			if (previewController != null && object != null) {
 				if (previewController.getDrawingView() != null) {
 					remove(previewController.getDrawingView());
@@ -120,17 +120,17 @@ public class EditionPatternPreviewComponent extends JPanel implements FIBCustomC
 	}
 
 	@Override
-	public Class<EditionPattern> getRepresentedType() {
-		return EditionPattern.class;
+	public Class<FlexoConcept> getRepresentedType() {
+		return FlexoConcept.class;
 	}
 
 	@Override
-	public EditionPattern getRevertValue() {
-		return editionPattern;
+	public FlexoConcept getRevertValue() {
+		return flexoConcept;
 	}
 
 	@Override
-	public void setRevertValue(EditionPattern object) {
+	public void setRevertValue(FlexoConcept object) {
 	}
 
 	@Override
@@ -176,7 +176,7 @@ public class EditionPatternPreviewComponent extends JPanel implements FIBCustomC
 
 	@Override
 	public boolean mayRepresent(GraphicalElementPatternRole<?, ?> o) {
-		return o instanceof PatternRole && ((PatternRole) o).getEditionPattern() == editionPattern;
+		return o instanceof PatternRole && ((PatternRole) o).getFlexoConcept() == flexoConcept;
 	}
 
 	@Override

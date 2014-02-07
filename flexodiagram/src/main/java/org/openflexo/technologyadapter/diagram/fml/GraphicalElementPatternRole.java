@@ -274,7 +274,7 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 
 		@Override
 		public BindingFactory getBindingFactory() {
-			return getEditionPattern().getInspector().getBindingFactory();
+			return getFlexoConcept().getInspector().getBindingFactory();
 		}
 
 		/*@Override
@@ -317,7 +317,7 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 
 		@Override
 		public boolean containsShapes() {
-			for (ShapePatternRole role : getEditionPattern().getPatternRoles(ShapePatternRole.class)) {
+			for (ShapePatternRole role : getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
 				if (role.getParentShapePatternRole() == this) {
 					return true;
 				}

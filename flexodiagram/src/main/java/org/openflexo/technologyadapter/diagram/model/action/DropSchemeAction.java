@@ -101,7 +101,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 		logger.info("project=" + getProject());
 		// getEditionPattern().getViewPoint().getViewpointOntology().loadWhenUnloaded();
 
-		editionPatternInstance = getVirtualModelInstance().makeNewEditionPatternInstance(getEditionPattern());
+		editionPatternInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 
 		logger.info("editionPatternInstance=" + editionPatternInstance);
 		logger.info("epi project=" + editionPatternInstance.getProject());
@@ -239,7 +239,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 
 	@Override
 	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals(DiagramEditionScheme.TARGET) && _dropScheme.getTargetEditionPattern() != null) {
+		if (variable.getVariableName().equals(DiagramEditionScheme.TARGET) && _dropScheme.getTargetFlexoConcept() != null) {
 			/*if (getParent() instanceof DiagramShape) {
 				return ((DiagramShape) getParent()).getEditionPatternInstance();
 			}*/

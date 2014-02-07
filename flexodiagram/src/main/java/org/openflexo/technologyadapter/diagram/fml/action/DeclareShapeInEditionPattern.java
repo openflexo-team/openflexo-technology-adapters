@@ -32,7 +32,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.EditionPatternInstancePatternRole;
 import org.openflexo.foundation.viewpoint.IndividualPatternRole;
 import org.openflexo.foundation.viewpoint.URIParameter;
@@ -106,14 +106,14 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 	private IFlexoOntologyClass concept;
 	private String individualPatternRoleName;
 	private String virtualModelPatternRoleName;
-	private EditionPattern newEditionPattern;
+	private FlexoConcept newFlexoConcept;
 	private LinkedHashMap<DrawingObjectEntry, GraphicalElementPatternRole> newGraphicalElementPatternRoles;
 	// public DiagramPalette palette;
 
 	private boolean isTopLevel = true;
 	// public boolean isPushedToPalette = false;
-	private EditionPattern containerEditionPattern;
-	private EditionPattern virtualModelConcept;
+	private FlexoConcept containerFlexoConcept;
+	private FlexoConcept virtualModelConcept;
 	private String dropSchemeName;
 
 	DeclareShapeInEditionPattern(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
@@ -127,20 +127,20 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 		}
 		switch (primaryChoice) {
 		case CHOOSE_EXISTING_EDITION_PATTERN:
-			return getEditionPattern() != null && getPatternRole() != null;
+			return getFlexoConcept() != null && getPatternRole() != null;
 		case CREATES_EDITION_PATTERN:
 			switch (patternChoice) {
 			case MAP_SINGLE_INDIVIDUAL:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && concept != null
 						&& StringUtils.isNotEmpty(getIndividualPatternRoleName()) && getSelectedEntriesCount() > 0
-						&& (isTopLevel || containerEditionPattern != null) && StringUtils.isNotEmpty(getDropSchemeName());
+						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
 			case MAP_SINGLE_EDITION_PATTERN:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && virtualModelConcept != null
 						&& StringUtils.isNotEmpty(getVirtualModelPatternRoleName()) && getSelectedEntriesCount() > 0
-						&& (isTopLevel || containerEditionPattern != null) && StringUtils.isNotEmpty(getDropSchemeName());
+						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
 			case BLANK_EDITION_PATTERN:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && getSelectedEntriesCount() > 0
-						&& (isTopLevel || containerEditionPattern != null) && StringUtils.isNotEmpty(getDropSchemeName());
+						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
 			default:
 				break;
 			}
@@ -181,18 +181,18 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 		}*/
 	}
 
-	public EditionPattern getVirtualModelConcept() {
+	public FlexoConcept getVirtualModelConcept() {
 		return virtualModelConcept;
 	}
 
-	public void setVirtualModelConcept(EditionPattern virtualModelConcept) {
+	public void setVirtualModelConcept(FlexoConcept virtualModelConcept) {
 		this.virtualModelConcept = virtualModelConcept;
 	}
 
 	public String getDropSchemeName() {
 		if (StringUtils.isEmpty(dropSchemeName)) {
 			return "drop" + (StringUtils.isEmpty(getEditionPatternName()) ? "" : getEditionPatternName())
-					+ (isTopLevel ? "AtTopLevel" : containerEditionPattern != null ? "In" + containerEditionPattern.getName() : "");
+					+ (isTopLevel ? "AtTopLevel" : containerFlexoConcept != null ? "In" + containerFlexoConcept.getName() : "");
 		}
 		return dropSchemeName;
 	}
@@ -202,11 +202,11 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 	}
 
 	@Override
-	public EditionPattern getEditionPattern() {
+	public FlexoConcept getFlexoConcept() {
 		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_EDITION_PATTERN) {
-			return newEditionPattern;
+			return newFlexoConcept;
 		}
-		return super.getEditionPattern();
+		return super.getFlexoConcept();
 	}
 
 	public String getEditionPatternName() {
@@ -320,12 +320,12 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 		this.isTopLevel = isTopLevel;
 	}
 
-	public EditionPattern getContainerEditionPattern() {
-		return containerEditionPattern;
+	public FlexoConcept getContainerFlexoConcept() {
+		return containerFlexoConcept;
 	}
 
-	public void setContainerEditionPattern(EditionPattern containerEditionPattern) {
-		this.containerEditionPattern = containerEditionPattern;
+	public void setContainerFlexoConcept(FlexoConcept containerFlexoConcept) {
+		this.containerFlexoConcept = containerFlexoConcept;
 	}
 
 	@Override
@@ -351,11 +351,11 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 				case BLANK_EDITION_PATTERN:
 
 					// Create new edition pattern
-					newEditionPattern = getFactory().newEditionPattern();
-					newEditionPattern.setName(getEditionPatternName());
+					newFlexoConcept = getFactory().newFlexoConcept();
+					newFlexoConcept.setName(getEditionPatternName());
 
 					// And add the newly created edition pattern
-					getDiagramModelSlot().getVirtualModel().addToEditionPatterns(newEditionPattern);
+					getDiagramModelSlot().getVirtualModel().addToFlexoConcepts(newFlexoConcept);
 
 					// Find best URI base candidate
 					// PropertyEntry mainPropertyDescriptor = selectBestEntryForURIBaseName();
@@ -370,17 +370,17 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 							individualPatternRole = flexoOntologyModelSlot.makeIndividualPatternRole(getConcept());
 							individualPatternRole.setPatternRoleName(getIndividualPatternRoleName());
 							individualPatternRole.setOntologicType(getConcept());
-							newEditionPattern.addToPatternRoles(individualPatternRole);
-							// newEditionPattern.setPrimaryConceptRole(individualPatternRole);
+							newFlexoConcept.addToPatternRoles(individualPatternRole);
+							// newFlexoConcept.setPrimaryConceptRole(individualPatternRole);
 						}
 					}
 					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
 						if (isVirtualModelModelSlot()) {
 							VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
 							editionPatternPatternRole = virtualModelModelSlot
-									.makeEditionPatternInstancePatternRole(getVirtualModelConcept());
+									.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
 							editionPatternPatternRole.setPatternRoleName(getVirtualModelPatternRoleName());
-							newEditionPattern.addToPatternRoles(editionPatternPatternRole);
+							newFlexoConcept.addToPatternRoles(editionPatternPatternRole);
 						}
 					}
 
@@ -410,7 +410,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 										.getGraphicalRepresentation().clone());
 								// Forces GR to be displayed in view
 								newShapePatternRole.getGraphicalRepresentation().setAllowToLeaveBounds(false);
-								newEditionPattern.addToPatternRoles(newShapePatternRole);
+								newFlexoConcept.addToPatternRoles(newShapePatternRole);
 								if (entry.getParentEntry() != null) {
 									newShapePatternRole.setParentShapePatternRole((ShapePatternRole) newGraphicalElementPatternRoles
 											.get(entry.getParentEntry()));
@@ -432,7 +432,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 								newConnectorPatternRole.setExampleLabel(grConnector.getGraphicalRepresentation().getText());
 								newConnectorPatternRole.setGraphicalRepresentation((ConnectorGraphicalRepresentation) grConnector
 										.getGraphicalRepresentation().clone());
-								newEditionPattern.addToPatternRoles(newConnectorPatternRole);
+								newFlexoConcept.addToPatternRoles(newConnectorPatternRole);
 								// Set the source/target
 								// newConnectorPatternRole.setEndShapePatternRole(endShapePatternRole);
 								if (entry.isMainEntry()) {
@@ -443,12 +443,12 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 
 						}
 					}
-					// newEditionPattern.setPrimaryRepresentationRole(primaryRepresentationRole);
+					// newFlexoConcept.setPrimaryRepresentationRole(primaryRepresentationRole);
 
 					/*	if (isPushedToPalette) {
-							DiagramPaletteElement _newPaletteElement = palette.addPaletteElement(newEditionPattern.getName(),
+							DiagramPaletteElement _newPaletteElement = palette.addPaletteElement(newFlexoConcept.getName(),
 									getFocusedObject().getGraphicalRepresentation());
-							_newPaletteElement.setEditionPattern(newEditionPattern);
+							_newPaletteElement.setEditionPattern(newFlexoConcept);
 						}*/
 
 					// Create other individual roles
@@ -462,7 +462,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 										IndividualPatternRole newPatternRole = null; // new IndividualPatternRole(builder);
 										newPatternRole.setPatternRoleName(e.property.getName());
 										newPatternRole.setOntologicType((IFlexoOntologyClass) range);
-										newEditionPattern.addToPatternRoles(newPatternRole);
+										newFlexoConcept.addToPatternRoles(newPatternRole);
 										otherRoles.add(newPatternRole);
 									}
 								}
@@ -475,11 +475,11 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 					newDropScheme.setName(getDropSchemeName());
 
 					// Add new drop scheme
-					newEditionPattern.addToEditionSchemes(newDropScheme);
+					newFlexoConcept.addToEditionSchemes(newDropScheme);
 
 					newDropScheme.setTopTarget(isTopLevel);
 					if (!isTopLevel) {
-						newDropScheme.setTargetEditionPattern(containerEditionPattern);
+						newDropScheme.setTargetFlexoConcept(containerFlexoConcept);
 					}
 
 					// Parameters
@@ -606,7 +606,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 									newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramEditionScheme.TOP_LEVEL));
 								} /*else {
 									newAddShape.setContainer(new DataBinding<DiagramElement<?>>(DiagramEditionScheme.TARGET + "."
-											+ containerEditionPattern.getPrimaryRepresentationRole().getPatternRoleName()));
+											+ containerFlexoConcept.getPrimaryRepresentationRole().getPatternRoleName()));
 									}*/
 							} else {
 								newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(grPatternRole
@@ -617,7 +617,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 					}
 
 					// Add inspector
-					EditionPatternInspector inspector = newEditionPattern.getInspector();
+					EditionPatternInspector inspector = newFlexoConcept.getInspector();
 					inspector.setInspectorTitle(getEditionPatternName());
 					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
 						/*for (PropertyEntry e : propertyEntries) {

@@ -109,7 +109,7 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 
 		// getEditionPattern().getViewPoint().getViewpointOntology().loadWhenUnloaded();
 
-		editionPatternInstance = getVirtualModelInstance().makeNewEditionPatternInstance(getEditionPattern());
+		editionPatternInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 
 		applyEditionActions();
 
@@ -173,12 +173,12 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 
 	@Override
 	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals(DiagramEditionScheme.FROM_TARGET) && getLinkScheme().getFromTargetEditionPattern() != null) {
+		if (variable.getVariableName().equals(DiagramEditionScheme.FROM_TARGET) && getLinkScheme().getFromTargetFlexoConcept() != null) {
 			// TODO
 			logger.warning("Please implement getValue() for target");
 			// return getFromShape().getEditionPatternInstance();
 		}
-		if (variable.getVariableName().equals(DiagramEditionScheme.TO_TARGET) && getLinkScheme().getToTargetEditionPattern() != null) {
+		if (variable.getVariableName().equals(DiagramEditionScheme.TO_TARGET) && getLinkScheme().getToTargetFlexoConcept() != null) {
 			// TODO
 			logger.warning("Please implement getValue() for target");
 			// return getToShape().getEditionPatternInstance();

@@ -93,11 +93,11 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 					// TODO: Choose one of 2 versions
 
 					/*if (fromShape.getDrawable().getVirtualModel() != null) {
-						Vector<EditionPattern> availableEditionPatterns = fromShape.getDrawable().getVirtualModel().getEditionPatterns();
+						Vector<FlexoConcept> availableEditionPatterns = fromShape.getDrawable().getVirtualModel().getEditionPatterns();
 						Vector<ConnectorPatternRole> aivalableConnectorPatternRoles = new Vector<ConnectorPatternRole>();
-						for (EditionPattern editionPattern : availableEditionPatterns) {
-							if (editionPattern.getConnectorPatternRoles() != null) {
-								aivalableConnectorPatternRoles.addAll(editionPattern.getConnectorPatternRoles());
+						for (FlexoConcept flexoConcept : availableEditionPatterns) {
+							if (flexoConcept.getConnectorPatternRoles() != null) {
+								aivalableConnectorPatternRoles.addAll(flexoConcept.getConnectorPatternRoles());
 							}
 						}
 

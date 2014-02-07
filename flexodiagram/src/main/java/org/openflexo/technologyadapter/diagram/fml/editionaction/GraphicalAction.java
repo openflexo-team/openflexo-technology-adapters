@@ -304,10 +304,10 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 				return null;
 			} else {
 				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>>();
-				for (ShapePatternRole pr : graphicalAction.getEditionPattern().getPatternRoles(ShapePatternRole.class)) {
+				for (ShapePatternRole pr : graphicalAction.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
 					v.add(new SetsPatternRoleForSubject(pr));
 				}
-				for (ConnectorPatternRole pr : graphicalAction.getEditionPattern().getPatternRoles(ConnectorPatternRole.class)) {
+				for (ConnectorPatternRole pr : graphicalAction.getFlexoConcept().getPatternRoles(ConnectorPatternRole.class)) {
 					v.add(new SetsPatternRoleForSubject(pr));
 				}
 				return new ValidationError<GraphicalActionMustHaveASubject, GraphicalAction>(this, graphicalAction,

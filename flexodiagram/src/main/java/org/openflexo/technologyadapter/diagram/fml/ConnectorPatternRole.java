@@ -162,8 +162,8 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 
 		@Override
 		public void setStartShapeAsDefinedInAction(boolean flag) {
-			if (!flag && getEditionPattern().getPatternRoles(ShapePatternRole.class).size() > 0) {
-				setStartShapePatternRole(getEditionPattern().getPatternRoles(ShapePatternRole.class).get(0));
+			if (!flag && getFlexoConcept().getPatternRoles(ShapePatternRole.class).size() > 0) {
+				setStartShapePatternRole(getFlexoConcept().getPatternRoles(ShapePatternRole.class).get(0));
 			} else {
 				// System.out.println("setStartShapePatternRole with null");
 				setStartShapePatternRole(null);
@@ -190,8 +190,8 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 
 		@Override
 		public void setEndShapeAsDefinedInAction(boolean flag) {
-			if (!flag && getEditionPattern().getPatternRoles(ShapePatternRole.class).size() > 0) {
-				setEndShapePatternRole(getEditionPattern().getPatternRoles(ShapePatternRole.class).get(0));
+			if (!flag && getFlexoConcept().getPatternRoles(ShapePatternRole.class).size() > 0) {
+				setEndShapePatternRole(getFlexoConcept().getPatternRoles(ShapePatternRole.class).get(0));
 			} else {
 				// System.out.println("setEndShapePatternRole with null");
 				setEndShapePatternRole(null);
@@ -242,7 +242,7 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 		public static GraphicalFeature<?, ?>[] AVAILABLE_FEATURES = {};
 
 		public List<ShapePatternRole> getShapePatternRoles() {
-			return getEditionPattern().getPatternRoles(ShapePatternRole.class);
+			return getFlexoConcept().getPatternRoles(ShapePatternRole.class);
 		}
 	}
 }

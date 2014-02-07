@@ -27,7 +27,7 @@ import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.foundation.DataModification;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.EditionScheme;
 import org.openflexo.foundation.viewpoint.EditionSchemeParameter;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
@@ -52,7 +52,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 /**
  * Encodes the binding between {@link DiagramPaletteElement} (part of {@link DiagramSpecification}) and the current {@link VirtualModel}<br>
  * 
- * The goal is for example to associate a {@link PaletteElement} to a given {@link DropScheme} of a particular {@link EditionPattern}
+ * The goal is for example to associate a {@link PaletteElement} to a given {@link DropScheme} of a particular {@link FlexoConcept}
  * 
  * @author sylvain
  * 
@@ -130,9 +130,9 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 
 	public VirtualModel getVirtualModel();
 
-	public EditionPattern getEditionPattern();
+	public FlexoConcept getFlexoConcept();
 
-	public void setEditionPattern(EditionPattern anEditionPattern);
+	public void setFlexoConcept(FlexoConcept anFlexoConcept);
 
 	public boolean getBoundLabelToElementName();
 
@@ -153,7 +153,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 		private String _editionPatternId;
 		private String _dropSchemeName;
 
-		private EditionPattern editionPattern;
+		private FlexoConcept flexoConcept;
 		private DropScheme dropScheme;
 		// private Vector<FMLDiagramPaletteElementBindingParameter> parameters;
 		private String patternRoleName;
@@ -194,8 +194,8 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 
 		// Deserialization only, do not use
 		public String _getEditionPatternId() {
-			if (getEditionPattern() != null) {
-				return getEditionPattern().getName();
+			if (getFlexoConcept() != null) {
+				return getFlexoConcept().getName();
 			}
 			return _editionPatternId;
 		}
@@ -229,21 +229,21 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 		}
 
 		@Override
-		public EditionPattern getEditionPattern() {
-			if (editionPattern != null) {
-				return editionPattern;
+		public FlexoConcept getFlexoConcept() {
+			if (flexoConcept != null) {
+				return flexoConcept;
 			}
 			if (_editionPatternId != null && getVirtualModel() != null) {
-				editionPattern = getVirtualModel().getEditionPattern(_editionPatternId);
+				flexoConcept = getVirtualModel().getFlexoConcept(_editionPatternId);
 				updateParameters();
 			}
-			return editionPattern;
+			return flexoConcept;
 		}
 
 		@Override
-		public void setEditionPattern(EditionPattern anEditionPattern) {
-			if (anEditionPattern != editionPattern) {
-				editionPattern = anEditionPattern;
+		public void setFlexoConcept(FlexoConcept anFlexoConcept) {
+			if (anFlexoConcept != flexoConcept) {
+				flexoConcept = anFlexoConcept;
 				updateParameters();
 			}
 		}
@@ -253,13 +253,13 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 			if (dropScheme != null) {
 				return dropScheme;
 			}
-			if (_dropSchemeName != null && getEditionPattern() != null
-					&& getEditionPattern().getEditionScheme(_dropSchemeName) instanceof DropScheme) {
-				dropScheme = (DropScheme) getEditionPattern().getEditionScheme(_dropSchemeName);
+			if (_dropSchemeName != null && getFlexoConcept() != null
+					&& getFlexoConcept().getEditionScheme(_dropSchemeName) instanceof DropScheme) {
+				dropScheme = (DropScheme) getFlexoConcept().getEditionScheme(_dropSchemeName);
 				updateParameters();
 			}
-			if (dropScheme == null && getEditionPattern() != null && getEditionPattern().getEditionSchemes(DropScheme.class).size() > 0) {
-				dropScheme = getEditionPattern().getEditionSchemes(DropScheme.class).get(0);
+			if (dropScheme == null && getFlexoConcept() != null && getFlexoConcept().getEditionSchemes(DropScheme.class).size() > 0) {
+				dropScheme = getFlexoConcept().getEditionSchemes(DropScheme.class).get(0);
 			}
 			return dropScheme;
 		}
@@ -300,13 +300,13 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 		}*/
 
 		private void updateParameters() {
-			if (editionPattern == null) {
+			if (flexoConcept == null) {
 				return;
 			}
 			List<FMLDiagramPaletteElementBindingParameter> unusedParameterInstances = new ArrayList<FMLDiagramPaletteElementBindingParameter>();
 			unusedParameterInstances.addAll(getParameters());
 
-			for (EditionScheme es : editionPattern.getEditionSchemes()) {
+			for (EditionScheme es : flexoConcept.getEditionSchemes()) {
 				for (EditionSchemeParameter parameter : es.getParameters()) {
 					FMLDiagramPaletteElementBindingParameter parameterInstance = getParameter(parameter.getName());
 					if (parameterInstance != null) {
@@ -362,7 +362,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 		}
 
 		public void finalizeDeserialization() {
-			getEditionPattern();
+			getFlexoConcept();
 			updateParameters();
 		}
 
@@ -384,10 +384,10 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 			return true;
 		}*/
 
-		public List<EditionPattern> allAvailableEditionPatterns() {
+		public List<FlexoConcept> allAvailableFlexoConcepts() {
 			if (getVirtualModel() != null) {
-				List<EditionPattern> returned = new ArrayList<EditionPattern>();
-				for (EditionPattern ep : getVirtualModel().getEditionPatterns()) {
+				List<FlexoConcept> returned = new ArrayList<FlexoConcept>();
+				for (FlexoConcept ep : getVirtualModel().getFlexoConcepts()) {
 					if (ep.getEditionSchemes(DropScheme.class).size() > 0) {
 						returned.add(ep);
 					}

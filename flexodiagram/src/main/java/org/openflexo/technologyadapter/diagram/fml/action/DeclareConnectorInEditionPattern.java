@@ -30,7 +30,7 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.EditionPatternInstancePatternRole;
 import org.openflexo.foundation.viewpoint.IndividualPatternRole;
 import org.openflexo.foundation.viewpoint.URIParameter;
@@ -103,13 +103,13 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 	private String objectPropertyStatementPatternRoleName;
 	private String virtualModelPatternRoleName;
 
-	public EditionPattern fromEditionPattern;
-	public EditionPattern toEditionPattern;
+	public FlexoConcept fromFlexoConcept;
+	public FlexoConcept toFlexoConcept;
 
 	private String linkSchemeName;
 
-	private EditionPattern newEditionPattern;
-	private EditionPattern virtualModelConcept;
+	private FlexoConcept newFlexoConcept;
+	private FlexoConcept virtualModelConcept;
 	private ConnectorPatternRole newConnectorPatternRole;
 
 	// public Vector<PropertyEntry> propertyEntries = new Vector<PropertyEntry>();
@@ -137,11 +137,11 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 						getFocusedObject().getDiagramSpecification().getResource());*/
 
 				// Create new edition pattern
-				newEditionPattern = getFactory().newEditionPattern();
-				newEditionPattern.setName(getEditionPatternName());
+				newFlexoConcept = getFactory().newFlexoConcept();
+				newFlexoConcept.setName(getEditionPatternName());
 
 				// And add the newly created edition pattern
-				getDiagramModelSlot().getVirtualModel().addToEditionPatterns(newEditionPattern);
+				getDiagramModelSlot().getVirtualModel().addToFlexoConcepts(newFlexoConcept);
 
 				// Find best URI base candidate
 				// PropertyEntry mainPropertyDescriptor = selectBestEntryForURIBaseName();
@@ -154,8 +154,8 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 						individualPatternRole = ontologyModelSlot.makeIndividualPatternRole(getConcept());
 						individualPatternRole.setPatternRoleName(getIndividualPatternRoleName());
 						individualPatternRole.setOntologicType(getConcept());
-						newEditionPattern.addToPatternRoles(individualPatternRole);
-						// newEditionPattern.setPrimaryConceptRole(individualPatternRole);
+						newFlexoConcept.addToPatternRoles(individualPatternRole);
+						// newFlexoConcept.setPrimaryConceptRole(individualPatternRole);
 					}
 				}
 
@@ -164,9 +164,9 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
 					if (isVirtualModelModelSlot()) {
 						VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
-						editionPatternPatternRole = virtualModelModelSlot.makeEditionPatternInstancePatternRole(getVirtualModelConcept());
+						editionPatternPatternRole = virtualModelModelSlot.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
 						editionPatternPatternRole.setPatternRoleName(getVirtualModelPatternRoleName());
-						newEditionPattern.addToPatternRoles(editionPatternPatternRole);
+						newFlexoConcept.addToPatternRoles(editionPatternPatternRole);
 					}
 				}
 
@@ -176,8 +176,8 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 					objectPropertyStatementPatternRole = new ObjectPropertyStatementPatternRole(builder);
 					objectPropertyStatementPatternRole.setPatternRoleName(getObjectPropertyStatementPatternRoleName());
 					objectPropertyStatementPatternRole.setObjectProperty(getObjectProperty());
-					newEditionPattern.addToPatternRoles(objectPropertyStatementPatternRole);
-					newEditionPattern.setPrimaryConceptRole(objectPropertyStatementPatternRole);
+					newFlexoConcept.addToPatternRoles(objectPropertyStatementPatternRole);
+					newFlexoConcept.setPrimaryConceptRole(objectPropertyStatementPatternRole);
 				}*/
 
 				// Create connector pattern role
@@ -194,8 +194,8 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 				// We clone here the GR (fixed unfocusable GR bug)
 				newConnectorPatternRole.setGraphicalRepresentation((ConnectorGraphicalRepresentation) getFocusedObject()
 						.getGraphicalRepresentation().clone());
-				newEditionPattern.addToPatternRoles(newConnectorPatternRole);
-				// newEditionPattern.setPrimaryRepresentationRole(newConnectorPatternRole);
+				newFlexoConcept.addToPatternRoles(newConnectorPatternRole);
+				// newFlexoConcept.setPrimaryRepresentationRole(newConnectorPatternRole);
 
 				// Create other individual roles
 				Vector<IndividualPatternRole> otherRoles = new Vector<IndividualPatternRole>();
@@ -208,7 +208,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 									IndividualPatternRole newPatternRole = null; // new IndividualPatternRole(builder);
 									newPatternRole.setPatternRoleName(e.property.getName());
 									newPatternRole.setOntologicType((IFlexoOntologyClass) range);
-									newEditionPattern.addToPatternRoles(newPatternRole);
+									newFlexoConcept.addToPatternRoles(newPatternRole);
 									otherRoles.add(newPatternRole);
 								}
 							}
@@ -219,8 +219,8 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 				// Create new link scheme
 				LinkScheme newLinkScheme = getFactory().newInstance(LinkScheme.class);
 				newLinkScheme.setName(getLinkSchemeName());
-				newLinkScheme.setFromTargetEditionPattern(fromEditionPattern);
-				newLinkScheme.setToTargetEditionPattern(toEditionPattern);
+				newLinkScheme.setFromTargetFlexoConcept(fromFlexoConcept);
+				newLinkScheme.setToTargetFlexoConcept(toFlexoConcept);
 
 				// Parameters
 				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
@@ -327,8 +327,8 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 				// Add connector action
 				AddConnector newAddConnector = getFactory().newInstance(AddConnector.class);
 				newAddConnector.setAssignation(new DataBinding<Object>(newConnectorPatternRole.getPatternRoleName()));
-				ShapePatternRole fromPatternRole = fromEditionPattern.getPatternRoles(ShapePatternRole.class).get(0);
-				ShapePatternRole toPatternRole = toEditionPattern.getPatternRoles(ShapePatternRole.class).get(0);
+				ShapePatternRole fromPatternRole = fromFlexoConcept.getPatternRoles(ShapePatternRole.class).get(0);
+				ShapePatternRole toPatternRole = toFlexoConcept.getPatternRoles(ShapePatternRole.class).get(0);
 
 				newAddConnector.setFromShape(new DataBinding<DiagramShape>(DiagramEditionScheme.FROM_TARGET + "."
 						+ fromPatternRole.getPatternRoleName()));
@@ -338,10 +338,10 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 				newLinkScheme.addToActions(newAddConnector);
 
 				// Add new drop scheme
-				newEditionPattern.addToEditionSchemes(newLinkScheme);
+				newFlexoConcept.addToEditionSchemes(newLinkScheme);
 
 				// Add inspector
-				EditionPatternInspector inspector = newEditionPattern.getInspector();
+				EditionPatternInspector inspector = newFlexoConcept.getInspector();
 				inspector.setInspectorTitle(getEditionPatternName());
 				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
 					/*for (PropertyEntry e : propertyEntries) {
@@ -406,25 +406,25 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 		}
 		switch (primaryChoice) {
 		case CHOOSE_EXISTING_EDITION_PATTERN:
-			return getEditionPattern() != null && getPatternRole() != null;
+			return getFlexoConcept() != null && getPatternRole() != null;
 		case CREATES_EDITION_PATTERN:
 			switch (patternChoice) {
 			case MAP_SINGLE_INDIVIDUAL:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && concept != null
 						&& StringUtils.isNotEmpty(getIndividualPatternRoleName()) && StringUtils.isNotEmpty(getConnectorPatternRoleName())
-						&& fromEditionPattern != null && toEditionPattern != null && StringUtils.isNotEmpty(getLinkSchemeName());
+						&& fromFlexoConcept != null && toFlexoConcept != null && StringUtils.isNotEmpty(getLinkSchemeName());
 			case MAP_OBJECT_PROPERTY:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && objectProperty != null
 						&& StringUtils.isNotEmpty(getObjectPropertyStatementPatternRoleName())
-						&& StringUtils.isNotEmpty(getConnectorPatternRoleName()) && fromEditionPattern != null && toEditionPattern != null
+						&& StringUtils.isNotEmpty(getConnectorPatternRoleName()) && fromFlexoConcept != null && toFlexoConcept != null
 						&& StringUtils.isNotEmpty(getLinkSchemeName());
 			case MAP_SINGLE_EDITION_PATTERN:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && virtualModelConcept != null
 						&& StringUtils.isNotEmpty(getVirtualModelPatternRoleName()) && getSelectedEntriesCount() > 0
-						&& fromEditionPattern != null && toEditionPattern != null && StringUtils.isNotEmpty(getLinkSchemeName());
+						&& fromFlexoConcept != null && toFlexoConcept != null && StringUtils.isNotEmpty(getLinkSchemeName());
 			case BLANK_EDITION_PATTERN:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && StringUtils.isNotEmpty(getConnectorPatternRoleName())
-						&& fromEditionPattern != null && toEditionPattern != null && StringUtils.isNotEmpty(getLinkSchemeName());
+						&& fromFlexoConcept != null && toFlexoConcept != null && StringUtils.isNotEmpty(getLinkSchemeName());
 			default:
 				break;
 			}
@@ -468,11 +468,11 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 		}*/
 	}
 
-	public EditionPattern getVirtualModelConcept() {
+	public FlexoConcept getVirtualModelConcept() {
 		return virtualModelConcept;
 	}
 
-	public void setVirtualModelConcept(EditionPattern virtualModelConcept) {
+	public void setVirtualModelConcept(FlexoConcept virtualModelConcept) {
 		this.virtualModelConcept = virtualModelConcept;
 	}
 
@@ -552,8 +552,8 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 
 	public String getLinkSchemeName() {
 		if (StringUtils.isEmpty(linkSchemeName)) {
-			return "link" + (fromEditionPattern != null ? fromEditionPattern.getName() : "") + "To"
-					+ (toEditionPattern != null ? toEditionPattern.getName() : "");
+			return "link" + (fromFlexoConcept != null ? fromFlexoConcept.getName() : "") + "To"
+					+ (toFlexoConcept != null ? toFlexoConcept.getName() : "");
 		}
 		return linkSchemeName;
 	}
@@ -563,11 +563,11 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 	}
 
 	@Override
-	public EditionPattern getEditionPattern() {
+	public FlexoConcept getFlexoConcept() {
 		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_EDITION_PATTERN) {
-			return newEditionPattern;
+			return newFlexoConcept;
 		}
-		return super.getEditionPattern();
+		return super.getFlexoConcept();
 	};
 
 	/*public class PropertyEntry {

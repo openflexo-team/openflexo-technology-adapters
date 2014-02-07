@@ -34,7 +34,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 /**
- * This action is called to force refresh elements, by resetting graphical representation to those defined in EditionPattern
+ * This action is called to force refresh elements, by resetting graphical representation to those defined in FlexoConcept
  * 
  * @author sylvain
  * 

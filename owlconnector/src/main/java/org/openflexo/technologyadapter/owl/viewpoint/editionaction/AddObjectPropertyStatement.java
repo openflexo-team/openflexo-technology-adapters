@@ -279,7 +279,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 				AddObjectPropertyStatement action) {
 			if (action.getObjectProperty() == null) {
 				Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>> v = new Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>>();
-				for (ObjectPropertyStatementPatternRole pr : action.getEditionPattern().getPatternRoles(
+				for (ObjectPropertyStatementPatternRole pr : action.getFlexoConcept().getPatternRoles(
 						ObjectPropertyStatementPatternRole.class)) {
 					v.add(new SetsPatternRole(pr));
 				}

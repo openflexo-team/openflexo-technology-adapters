@@ -33,7 +33,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 
 /**
- * This action reset all graphical representations found in view to conform to those described in EditionPattern
+ * This action reset all graphical representations found in view to conform to those described in FlexoConcept
  * 
  * @author sylvain
  * 

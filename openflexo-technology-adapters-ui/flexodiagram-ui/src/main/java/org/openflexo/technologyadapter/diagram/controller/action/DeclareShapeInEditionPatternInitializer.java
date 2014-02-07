@@ -60,8 +60,8 @@ public class DeclareShapeInEditionPatternInitializer extends
 		return new FlexoActionFinalizer<DeclareShapeInEditionPattern>() {
 			@Override
 			public boolean run(EventObject e, DeclareShapeInEditionPattern action) {
-				getController().setCurrentEditedObjectAsModuleView(action.getEditionPattern());
-				getController().getSelectionManager().setSelectedObject(action.getEditionPattern());
+				getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
+				getController().getSelectionManager().setSelectedObject(action.getFlexoConcept());
 				return true;
 			}
 		};

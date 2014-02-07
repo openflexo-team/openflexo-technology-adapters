@@ -36,7 +36,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.swing.ImageUtils;
@@ -92,7 +92,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	public DiagramPalette palette;
 	public int xLocation;
 	public int yLocation;;
-	private EditionPattern editionPattern;
+	private FlexoConcept flexoConcept;
 	public DropScheme dropScheme;
 	private String newElementName;
 	public boolean takeScreenshotForTopLevelElement = true;
@@ -174,7 +174,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 			FMLDiagramPaletteElementBinding newBinding = getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
 			newBinding.setPaletteElement(_newPaletteElement);
-			newBinding.setEditionPattern(editionPattern);
+			newBinding.setFlexoConcept(flexoConcept);
 			newBinding.setDropScheme(dropScheme);
 			newBinding.setBoundLabelToElementName(!takeScreenshotForTopLevelElement);
 
@@ -233,7 +233,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 	@Override
 	public boolean isValid() {
-		return StringUtils.isNotEmpty(newElementName) && palette != null && editionPattern != null && dropScheme != null;
+		return StringUtils.isNotEmpty(newElementName) && palette != null && flexoConcept != null && dropScheme != null;
 	}
 
 	private Vector<DrawingObjectEntry> drawingObjectEntries;
@@ -257,8 +257,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			this.graphicalObject = graphicalObject;
 			this.elementName = elementName;
 			this.selectThis = isMainEntry();
-			/*if (isMainEntry() && editionPattern != null) {
-				patternRole = editionPattern.getDefaultPrimaryRepresentationRole();
+			/*if (isMainEntry() && flexoConcept != null) {
+				patternRole = flexoConcept.getDefaultPrimaryRepresentationRole();
 			}*/
 		}
 
@@ -277,7 +277,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			selectThis = aFlag;
 			if (patternRole == null && graphicalObject instanceof DiagramShape) {
 				GraphicalElementPatternRole<?, ?> parentEntryPatternRole = getParentEntry().patternRole;
-				for (ShapePatternRole r : editionPattern.getPatternRoles(ShapePatternRole.class)) {
+				for (ShapePatternRole r : flexoConcept.getPatternRoles(ShapePatternRole.class)) {
 					if (r.getParentShapePatternRole() == parentEntryPatternRole && patternRole == null) {
 						patternRole = r;
 					}
@@ -291,9 +291,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 		public List<? extends GraphicalElementPatternRole<?, ?>> getAvailablePatternRoles() {
 			if (graphicalObject instanceof DiagramShape) {
-				return editionPattern.getPatternRoles(ShapePatternRole.class);
+				return flexoConcept.getPatternRoles(ShapePatternRole.class);
 			} else if (graphicalObject instanceof DiagramConnector) {
-				return editionPattern.getPatternRoles(ConnectorPatternRole.class);
+				return flexoConcept.getPatternRoles(ConnectorPatternRole.class);
 			}
 			return null;
 		}
@@ -318,12 +318,12 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		return null;
 	}
 
-	public EditionPattern getEditionPattern() {
-		return editionPattern;
+	public FlexoConcept getFlexoConcept() {
+		return flexoConcept;
 	}
 
-	public void setEditionPattern(EditionPattern editionPattern) {
-		this.editionPattern = editionPattern;
+	public void setFlexoConcept(FlexoConcept flexoConcept) {
+		this.flexoConcept = flexoConcept;
 		updateDrawingObjectEntries();
 	}
 

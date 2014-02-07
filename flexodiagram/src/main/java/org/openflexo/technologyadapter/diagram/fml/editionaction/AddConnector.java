@@ -37,7 +37,7 @@ import org.openflexo.foundation.validation.ValidationError;
 import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.action.EditionSchemeAction;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.viewpoint.PatternRole;
@@ -311,7 +311,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		public ValidationIssue<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector> applyValidation(AddConnector action) {
 			if (action.getPatternRole() == null) {
 				Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector>>();
-				for (ConnectorPatternRole pr : action.getEditionPattern().getPatternRoles(ConnectorPatternRole.class)) {
+				for (ConnectorPatternRole pr : action.getFlexoConcept().getPatternRoles(ConnectorPatternRole.class)) {
 					v.add(new SetsPatternRole(pr));
 				}
 				return new ValidationError<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector>(this, action,
@@ -355,14 +355,14 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			if (pr != null && pr.getStartShapeAsDefinedInAction() && !(db.isSet() && db.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>>();
 				if (action.getEditionScheme() instanceof LinkScheme) {
-					EditionPattern targetEditionPattern = ((LinkScheme) action.getEditionScheme()).getFromTargetEditionPattern();
-					if (targetEditionPattern != null) {
-						for (ShapePatternRole spr : action.getEditionPattern().getPatternRoles(ShapePatternRole.class)) {
-							v.add(new SetsStartingShapeToStartTargetShape(targetEditionPattern, spr));
+					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getEditionScheme()).getFromTargetFlexoConcept();
+					if (targetFlexoConcept != null) {
+						for (ShapePatternRole spr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+							v.add(new SetsStartingShapeToStartTargetShape(targetFlexoConcept, spr));
 						}
 					}
 				}
-				for (ShapePatternRole spr : action.getEditionPattern().getPatternRoles(ShapePatternRole.class)) {
+				for (ShapePatternRole spr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
 					v.add(new SetsStartingShapeToShape(spr));
 				}
 				return new ValidationError<AddConnectorActionMustHaveAValidStartingShape, AddConnector>(this, action,
@@ -394,10 +394,10 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		protected static class SetsStartingShapeToStartTargetShape extends
 				FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
 
-			private final EditionPattern target;
+			private final FlexoConcept target;
 			private final ShapePatternRole patternRole;
 
-			public SetsStartingShapeToStartTargetShape(EditionPattern target, ShapePatternRole patternRole) {
+			public SetsStartingShapeToStartTargetShape(FlexoConcept target, ShapePatternRole patternRole) {
 				super("sets_starting_shape_to_fromTarget.($patternRole.patternRoleName)");
 				this.target = target;
 				this.patternRole = patternRole;
@@ -407,7 +407,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				return patternRole;
 			}
 
-			public EditionPattern getTarget() {
+			public FlexoConcept getTarget() {
 				return target;
 			}
 
@@ -433,14 +433,14 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			if (pr != null && pr.getEndShapeAsDefinedInAction() && !(shape.isSet() && shape.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>>();
 				if (action.getEditionScheme() instanceof LinkScheme) {
-					EditionPattern targetEditionPattern = ((LinkScheme) action.getEditionScheme()).getToTargetEditionPattern();
-					if (targetEditionPattern != null) {
-						for (ShapePatternRole spr : action.getEditionPattern().getPatternRoles(ShapePatternRole.class)) {
-							v.add(new SetsEndingShapeToToTargetShape(targetEditionPattern, spr));
+					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getEditionScheme()).getToTargetFlexoConcept();
+					if (targetFlexoConcept != null) {
+						for (ShapePatternRole spr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+							v.add(new SetsEndingShapeToToTargetShape(targetFlexoConcept, spr));
 						}
 					}
 				}
-				for (ShapePatternRole spr : action.getEditionPattern().getPatternRoles(ShapePatternRole.class)) {
+				for (ShapePatternRole spr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
 					v.add(new SetsEndingShapeToShape(spr));
 				}
 				return new ValidationError<AddConnectorActionMustHaveAValidEndingShape, AddConnector>(this, action,
@@ -472,10 +472,10 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		protected static class SetsEndingShapeToToTargetShape extends
 				FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
 
-			private final EditionPattern target;
+			private final FlexoConcept target;
 			private final ShapePatternRole patternRole;
 
-			public SetsEndingShapeToToTargetShape(EditionPattern target, ShapePatternRole patternRole) {
+			public SetsEndingShapeToToTargetShape(FlexoConcept target, ShapePatternRole patternRole) {
 				super("sets_ending_shape_to_toTarget.($patternRole.patternRoleName)");
 				this.target = target;
 				this.patternRole = patternRole;
@@ -485,7 +485,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				return patternRole;
 			}
 
-			public EditionPattern getTarget() {
+			public FlexoConcept getTarget() {
 				return target;
 			}
 

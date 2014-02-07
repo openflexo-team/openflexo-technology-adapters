@@ -24,7 +24,7 @@ import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.viewpoint.AbstractCreationScheme;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.EditionPatternInstanceType;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -109,13 +109,13 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 	@Setter(WEST_DIRECTION_SUPPORTED_KEY)
 	public void setWestDirectionSupported(boolean westDirectionSupported);
 
-	public EditionPattern getFromTargetEditionPattern();
+	public FlexoConcept getFromTargetFlexoConcept();
 
-	public void setFromTargetEditionPattern(EditionPattern targetEditionPattern);
+	public void setFromTargetFlexoConcept(FlexoConcept targetFlexoConcept);
 
-	public EditionPattern getToTargetEditionPattern();
+	public FlexoConcept getToTargetFlexoConcept();
 
-	public void setToTargetEditionPattern(EditionPattern targetEditionPattern);
+	public void setToTargetFlexoConcept(FlexoConcept targetFlexoConcept);
 
 	public static abstract class LinkSchemeImpl extends AbstractCreationSchemeImpl implements LinkScheme {
 
@@ -154,62 +154,62 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 		}
 
 		@Override
-		public EditionPattern getFromTargetEditionPattern() {
+		public FlexoConcept getFromTargetFlexoConcept() {
 			if (StringUtils.isEmpty(_getFromTarget())) {
 				return null;
 			}
 			if (getVirtualModel() != null) {
-				return getVirtualModel().getEditionPattern(_getFromTarget());
+				return getVirtualModel().getFlexoConcept(_getFromTarget());
 			}
 			return null;
 		}
 
 		@Override
-		public void setFromTargetEditionPattern(EditionPattern targetEditionPattern) {
-			_setFromTarget(targetEditionPattern != null ? targetEditionPattern.getURI() : null);
+		public void setFromTargetFlexoConcept(FlexoConcept targetFlexoConcept) {
+			_setFromTarget(targetFlexoConcept != null ? targetFlexoConcept.getURI() : null);
 			updateBindingModels();
 		}
 
 		@Override
-		public EditionPattern getToTargetEditionPattern() {
+		public FlexoConcept getToTargetFlexoConcept() {
 			if (StringUtils.isEmpty(_getToTarget())) {
 				return null;
 			}
 			if (getVirtualModel() != null) {
-				return getVirtualModel().getEditionPattern(_getToTarget());
+				return getVirtualModel().getFlexoConcept(_getToTarget());
 			}
 			if (getViewPointLibrary() != null) {
-				return getViewPointLibrary().getEditionPattern(_getToTarget());
+				return getViewPointLibrary().getFlexoConcept(_getToTarget());
 			}
 			return null;
 		}
 
 		@Override
-		public void setToTargetEditionPattern(EditionPattern targetEditionPattern) {
-			_setToTarget(targetEditionPattern != null ? targetEditionPattern.getURI() : null);
+		public void setToTargetFlexoConcept(FlexoConcept targetFlexoConcept) {
+			_setToTarget(targetFlexoConcept != null ? targetFlexoConcept.getURI() : null);
 			updateBindingModels();
 		}
 
-		public boolean isValidTarget(EditionPattern actualFromTarget, EditionPattern actualToTarget) {
+		public boolean isValidTarget(FlexoConcept actualFromTarget, FlexoConcept actualToTarget) {
 			// TODO: improved this so that we can take into account adressed models restrictions. See also
 			// LinkScheme.isValidTarget on branch 1.5.1
-			return getFromTargetEditionPattern().isAssignableFrom(actualFromTarget)
-					&& getToTargetEditionPattern().isAssignableFrom(actualToTarget);
+			return getFromTargetFlexoConcept().isAssignableFrom(actualFromTarget)
+					&& getToTargetFlexoConcept().isAssignableFrom(actualToTarget);
 		}
 
 		@Override
 		protected void appendContextualBindingVariables(BindingModel bindingModel) {
 			super.appendContextualBindingVariables(bindingModel);
 			bindingModelNeedToBeRecomputed = false;
-			if (getFromTargetEditionPattern() != null) {
+			if (getFromTargetFlexoConcept() != null) {
 				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.FROM_TARGET, EditionPatternInstanceType
-						.getEditionPatternInstanceType(getFromTargetEditionPattern())));
+						.getFlexoConceptInstanceType(getFromTargetFlexoConcept())));
 			} else if (_getFromTarget() != null && !StringUtils.isEmpty(_getFromTarget())) {
 				bindingModelNeedToBeRecomputed = true;
 			}
-			if (getToTargetEditionPattern() != null) {
+			if (getToTargetFlexoConcept() != null) {
 				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TO_TARGET, EditionPatternInstanceType
-						.getEditionPatternInstanceType(getToTargetEditionPattern())));
+						.getFlexoConceptInstanceType(getToTargetFlexoConcept())));
 			} else if (_getToTarget() != null && !StringUtils.isEmpty(_getToTarget())) {
 				bindingModelNeedToBeRecomputed = true;
 			}
@@ -246,16 +246,16 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 			A returned = super.createAction(actionClass, modelSlot);
 			if (returned instanceof AddConnector) {
 				AddConnector newAction = (AddConnector) returned;
-				EditionPattern fromEditionPattern = this.getFromTargetEditionPattern();
-				if (fromEditionPattern != null) {
-					ShapePatternRole fromShapePatternRole = getDefaultShapePatternRole(fromEditionPattern);
+				FlexoConcept fromFlexoConcept = this.getFromTargetFlexoConcept();
+				if (fromFlexoConcept != null) {
+					ShapePatternRole fromShapePatternRole = getDefaultShapePatternRole(fromFlexoConcept);
 					if (fromShapePatternRole != null) {
 						newAction.setFromShape(new DataBinding<DiagramShape>("fromTarget." + fromShapePatternRole.getName()));
 					}
 				}
-				EditionPattern toEditionPattern = this.getToTargetEditionPattern();
-				if (toEditionPattern != null) {
-					ShapePatternRole toShapePatternRole = getDefaultShapePatternRole(toEditionPattern);
+				FlexoConcept toFlexoConcept = this.getToTargetFlexoConcept();
+				if (toFlexoConcept != null) {
+					ShapePatternRole toShapePatternRole = getDefaultShapePatternRole(toFlexoConcept);
 					if (toShapePatternRole != null) {
 						newAction.setToShape(new DataBinding<DiagramShape>("toTarget." + toShapePatternRole.getName()));
 					}
@@ -264,7 +264,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 			return returned;
 		}
 
-		private ShapePatternRole getDefaultShapePatternRole(EditionPattern ep) {
+		private ShapePatternRole getDefaultShapePatternRole(FlexoConcept ep) {
 			if (ep.getPatternRoles(ShapePatternRole.class).size() > 0) {
 				return ep.getPatternRoles(ShapePatternRole.class).get(0);
 			}

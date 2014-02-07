@@ -102,7 +102,7 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 				// Try to find one somewhere
 				TypedDiagramModelSlot ms = (TypedDiagramModelSlot) getModelSlot();
 				for (FMLDiagramPaletteElementBinding binding : ms.getPaletteElementBindings()) {
-					if (binding.getEditionPattern() == getEditionPattern()) {
+					if (binding.getFlexoConcept() == getFlexoConcept()) {
 						setGraphicalRepresentation(binding.getPaletteElement().getGraphicalRepresentation());
 					}
 				}
@@ -187,7 +187,7 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 		@Override
 		public List<ShapePatternRole> getPossibleParentShapePatternRoles() {
 			List<ShapePatternRole> returned = new ArrayList<ShapePatternRole>();
-			List<ShapePatternRole> shapesPatternRoles = getEditionPattern().getPatternRoles(ShapePatternRole.class);
+			List<ShapePatternRole> shapesPatternRoles = getFlexoConcept().getPatternRoles(ShapePatternRole.class);
 			for (ShapePatternRole shapePatternRole : shapesPatternRoles) {
 				if (!shapePatternRole.isContainedIn(this)) {
 					returned.add(shapePatternRole);

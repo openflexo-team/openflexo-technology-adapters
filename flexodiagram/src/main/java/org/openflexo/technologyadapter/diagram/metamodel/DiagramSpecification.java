@@ -211,13 +211,13 @@ public class DiagramSpecification extends DefaultFlexoObject /*FlexoObjectImpl*/
 		_allEditionPatternWithLinkScheme = null;
 	}
 
-	private Vector<EditionPattern> _allEditionPatternWithDropScheme;
-	private Vector<EditionPattern> _allEditionPatternWithLinkScheme;
+	private Vector<FlexoConcept> _allEditionPatternWithDropScheme;
+	private Vector<FlexoConcept> _allEditionPatternWithLinkScheme;
 
-	public Vector<EditionPattern> getAllEditionPatternWithDropScheme() {
+	public Vector<FlexoConcept> getAllEditionPatternWithDropScheme() {
 		if (_allEditionPatternWithDropScheme == null) {
-			_allEditionPatternWithDropScheme = new Vector<EditionPattern>();
-			for (EditionPattern p : getEditionPatterns()) {
+			_allEditionPatternWithDropScheme = new Vector<FlexoConcept>();
+			for (FlexoConcept p : getEditionPatterns()) {
 				if (p.hasDropScheme()) {
 					_allEditionPatternWithDropScheme.add(p);
 				}
@@ -226,10 +226,10 @@ public class DiagramSpecification extends DefaultFlexoObject /*FlexoObjectImpl*/
 		return _allEditionPatternWithDropScheme;
 	}
 
-	public Vector<EditionPattern> getAllEditionPatternWithLinkScheme() {
+	public Vector<FlexoConcept> getAllEditionPatternWithLinkScheme() {
 		if (_allEditionPatternWithLinkScheme == null) {
-			_allEditionPatternWithLinkScheme = new Vector<EditionPattern>();
-			for (EditionPattern p : getEditionPatterns()) {
+			_allEditionPatternWithLinkScheme = new Vector<FlexoConcept>();
+			for (FlexoConcept p : getEditionPatterns()) {
 				if (p.hasLinkScheme()) {
 					_allEditionPatternWithLinkScheme.add(p);
 				}
@@ -239,14 +239,14 @@ public class DiagramSpecification extends DefaultFlexoObject /*FlexoObjectImpl*/
 	}
 
 	@Override
-	public void addToEditionPatterns(EditionPattern pattern) {
+	public void addToEditionPatterns(FlexoConcept pattern) {
 		_allEditionPatternWithDropScheme = null;
 		_allEditionPatternWithLinkScheme = null;
 		super.addToEditionPatterns(pattern);
 	}
 
 	@Override
-	public void removeFromEditionPatterns(EditionPattern pattern) {
+	public void removeFromEditionPatterns(FlexoConcept pattern) {
 		_allEditionPatternWithDropScheme = null;
 		_allEditionPatternWithLinkScheme = null;
 		super.removeFromEditionPatterns(pattern);
@@ -254,7 +254,7 @@ public class DiagramSpecification extends DefaultFlexoObject /*FlexoObjectImpl*/
 
 	public Vector<LinkScheme> getAllConnectors() {
 		Vector<LinkScheme> returned = new Vector<LinkScheme>();
-		for (EditionPattern ep : getEditionPatterns()) {
+		for (FlexoConcept ep : getEditionPatterns()) {
 			for (LinkScheme s : ep.getLinkSchemes()) {
 				returned.add(s);
 			}
@@ -262,9 +262,9 @@ public class DiagramSpecification extends DefaultFlexoObject /*FlexoObjectImpl*/
 		return returned;
 	}
 
-	public Vector<LinkScheme> getConnectorsMatching(EditionPattern fromConcept, EditionPattern toConcept) {
+	public Vector<LinkScheme> getConnectorsMatching(FlexoConcept fromConcept, FlexoConcept toConcept) {
 		Vector<LinkScheme> returned = new Vector<LinkScheme>();
-		for (EditionPattern ep : getEditionPatterns()) {
+		for (FlexoConcept ep : getEditionPatterns()) {
 			for (LinkScheme s : ep.getLinkSchemes()) {
 				if (s.isValidTarget(fromConcept, toConcept)) {
 					returned.add(s);

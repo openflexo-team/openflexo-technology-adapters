@@ -24,7 +24,7 @@ import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.viewpoint.AbstractCreationScheme;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.EditionPatternInstanceType;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
@@ -71,11 +71,11 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 	public void setTopTarget(boolean flag);
 
-	public EditionPattern getTargetEditionPattern();
+	public FlexoConcept getTargetFlexoConcept();
 
-	public void setTargetEditionPattern(EditionPattern targetEditionPattern);
+	public void setTargetFlexoConcept(FlexoConcept targetFlexoConcept);
 
-	public boolean isValidTarget(EditionPattern aTarget, PatternRole contextRole);
+	public boolean isValidTarget(FlexoConcept aTarget, PatternRole contextRole);
 
 	public static abstract class DropSchemeImpl extends AbstractCreationSchemeImpl implements DropScheme {
 
@@ -97,7 +97,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 		}
 
 		@Override
-		public EditionPattern getTargetEditionPattern() {
+		public FlexoConcept getTargetFlexoConcept() {
 			if (StringUtils.isEmpty(_getTarget())) {
 				return null;
 			}
@@ -105,14 +105,14 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 				return null;
 			}
 			if (getVirtualModel() != null) {
-				return getVirtualModel().getEditionPattern(_getTarget());
+				return getVirtualModel().getFlexoConcept(_getTarget());
 			}
 			return null;
 		}
 
 		@Override
-		public void setTargetEditionPattern(EditionPattern targetEditionPattern) {
-			_setTarget(targetEditionPattern != null ? targetEditionPattern.getURI() : null);
+		public void setTargetFlexoConcept(FlexoConcept targetFlexoConcept) {
+			_setTarget(targetFlexoConcept != null ? targetFlexoConcept.getURI() : null);
 			updateBindingModels();
 		}
 
@@ -155,8 +155,8 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 		}
 
 		@Override
-		public boolean isValidTarget(EditionPattern aTarget, PatternRole contextRole) {
-			if (getTargetEditionPattern() != null && getTargetEditionPattern().isAssignableFrom(aTarget)) {
+		public boolean isValidTarget(FlexoConcept aTarget, PatternRole contextRole) {
+			if (getTargetFlexoConcept() != null && getTargetFlexoConcept().isAssignableFrom(aTarget)) {
 				if (targetHasMultipleRoles()) {
 					// TODO make proper implementation when role inheritance will be in use !!!
 					return getTargetPatternRole() == null
@@ -172,9 +172,9 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 		protected void appendContextualBindingVariables(BindingModel bindingModel) {
 			super.appendContextualBindingVariables(bindingModel);
 			bindingModelNeedToBeRecomputed = false;
-			if (getTargetEditionPattern() != null) {
+			if (getTargetFlexoConcept() != null) {
 				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TARGET, EditionPatternInstanceType
-						.getEditionPatternInstanceType(getTargetEditionPattern())));
+						.getFlexoConceptInstanceType(getTargetFlexoConcept())));
 			} else if (_getTarget() != null && !_getTarget().equals("top")) {
 				// logger.warning("Cannot find edition pattern " + _getTarget() + " !!!!!!!!!!!!!!");
 				bindingModelNeedToBeRecomputed = true;

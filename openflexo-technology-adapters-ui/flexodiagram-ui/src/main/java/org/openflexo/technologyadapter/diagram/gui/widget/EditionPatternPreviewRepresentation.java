@@ -40,13 +40,13 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
 
-public class EditionPatternPreviewRepresentation extends DrawingImpl<EditionPattern> implements EditionPatternPreviewConstants {
+public class EditionPatternPreviewRepresentation extends DrawingImpl<FlexoConcept> implements EditionPatternPreviewConstants {
 
 	private static final Logger logger = Logger.getLogger(EditionPatternPreviewRepresentation.class.getPackage().getName());
 
@@ -70,7 +70,7 @@ public class EditionPatternPreviewRepresentation extends DrawingImpl<EditionPatt
 	private final Hashtable<PatternRole, ConnectorFromArtifact> fromArtifacts;
 	private final Hashtable<PatternRole, ConnectorToArtifact> toArtifacts;
 
-	public EditionPatternPreviewRepresentation(EditionPattern model) {
+	public EditionPatternPreviewRepresentation(FlexoConcept model) {
 		super(model, PREVIEW_FACTORY, PersistenceMode.UniqueGraphicalRepresentations);
 		setEditable(false);
 
@@ -81,10 +81,10 @@ public class EditionPatternPreviewRepresentation extends DrawingImpl<EditionPatt
 	@Override
 	public void init() {
 
-		final DrawingGRBinding<EditionPattern> drawingBinding = bindDrawing(EditionPattern.class, "editionPattern",
-				new DrawingGRProvider<EditionPattern>() {
+		final DrawingGRBinding<FlexoConcept> drawingBinding = bindDrawing(FlexoConcept.class, "flexoConcept",
+				new DrawingGRProvider<FlexoConcept>() {
 					@Override
-					public DrawingGraphicalRepresentation provideGR(EditionPattern drawable, FGEModelFactory factory) {
+					public DrawingGraphicalRepresentation provideGR(FlexoConcept drawable, FGEModelFactory factory) {
 						DrawingGraphicalRepresentation returned = factory.makeDrawingGraphicalRepresentation();
 						returned.setWidth(WIDTH);
 						returned.setHeight(HEIGHT);
@@ -130,16 +130,16 @@ public class EditionPatternPreviewRepresentation extends DrawingImpl<EditionPatt
 
 				});
 
-		drawingBinding.addToWalkers(new GRStructureVisitor<EditionPattern>() {
+		drawingBinding.addToWalkers(new GRStructureVisitor<FlexoConcept>() {
 
 			@Override
-			public void visit(EditionPattern editionPattern) {
+			public void visit(FlexoConcept flexoConcept) {
 
-				for (PatternRole<?> role : editionPattern.getPatternRoles()) {
+				for (PatternRole<?> role : flexoConcept.getPatternRoles()) {
 					if (role instanceof ShapePatternRole) {
 						if (((ShapePatternRole) role).getParentShapeAsDefinedInAction()) {
-							drawShape(shapeBinding, (ShapePatternRole) role, getEditionPattern());
-							// System.out.println("Add shape " + role.getPatternRoleName() + " under EditionPattern");
+							drawShape(shapeBinding, (ShapePatternRole) role, getFlexoConcept());
+							// System.out.println("Add shape " + role.getPatternRoleName() + " under FlexoConcept");
 						} else {
 							drawShape(shapeBinding, (ShapePatternRole) role, ((ShapePatternRole) role).getParentShapePatternRole());
 							// System.out.println("Add shape " + role.getPatternRoleName() + " under "
@@ -152,24 +152,24 @@ public class EditionPatternPreviewRepresentation extends DrawingImpl<EditionPatt
 						Object fromDrawable;
 						Object toDrawable;
 						if (connectorPatternRole.getStartShapePatternRole() == null) {
-							drawShape(fromArtefactBinding, getFromArtifact(connectorPatternRole), getEditionPattern());
+							drawShape(fromArtefactBinding, getFromArtifact(connectorPatternRole), getFlexoConcept());
 							fromBinding = fromArtefactBinding;
 							fromDrawable = getFromArtifact(connectorPatternRole);
-							// System.out.println("Add From artifact under EditionPattern");
+							// System.out.println("Add From artifact under FlexoConcept");
 						} else {
 							fromBinding = shapeBinding;
 							fromDrawable = connectorPatternRole.getStartShapePatternRole();
 						}
 						if (connectorPatternRole.getEndShapePatternRole() == null) {
-							drawShape(toArtefactBinding, getToArtifact(connectorPatternRole), getEditionPattern());
-							// System.out.println("Add To artifact under EditionPattern");
+							drawShape(toArtefactBinding, getToArtifact(connectorPatternRole), getFlexoConcept());
+							// System.out.println("Add To artifact under FlexoConcept");
 							toBinding = toArtefactBinding;
 							toDrawable = getToArtifact(connectorPatternRole);
 						} else {
 							toBinding = shapeBinding;
 							toDrawable = connectorPatternRole.getEndShapePatternRole();
 						}
-						// System.out.println("Add connector " + role.getPatternRoleName() + " under EditionPattern");
+						// System.out.println("Add connector " + role.getPatternRoleName() + " under FlexoConcept");
 						drawConnector(connectorBinding, connectorPatternRole, fromBinding, fromDrawable, toBinding, toDrawable);
 					}
 				}
@@ -197,7 +197,7 @@ public class EditionPatternPreviewRepresentation extends DrawingImpl<EditionPatt
 		super.delete();
 	}
 
-	public EditionPattern getEditionPattern() {
+	public FlexoConcept getFlexoConcept() {
 		return getModel();
 	}
 

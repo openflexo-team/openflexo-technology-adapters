@@ -37,7 +37,7 @@ import org.openflexo.foundation.validation.ValidationError;
 import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.action.EditionSchemeAction;
-import org.openflexo.foundation.viewpoint.EditionPattern;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.viewpoint.PatternRole;
@@ -249,7 +249,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		public ValidationIssue<AddShapeActionMustAdressAValidShapePatternRole, AddShape> applyValidation(AddShape action) {
 			if (action.getPatternRole() == null) {
 				Vector<FixProposal<AddShapeActionMustAdressAValidShapePatternRole, AddShape>> v = new Vector<FixProposal<AddShapeActionMustAdressAValidShapePatternRole, AddShape>>();
-				for (ShapePatternRole pr : action.getEditionPattern().getPatternRoles(ShapePatternRole.class)) {
+				for (ShapePatternRole pr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
 					v.add(new SetsPatternRole(pr));
 				}
 				return new ValidationError<AddShapeActionMustAdressAValidShapePatternRole, AddShape>(this, action,
@@ -291,15 +291,15 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 					&& !(action.getContainer().isSet() && action.getContainer().isValid())) {
 				Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>> v = new Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>>();
 				if (action.getEditionScheme() instanceof DropScheme) {
-					EditionPattern targetEditionPattern = ((DropScheme) action.getEditionScheme()).getTargetEditionPattern();
-					if (targetEditionPattern != null) {
-						for (ShapePatternRole pr : action.getEditionPattern().getPatternRoles(ShapePatternRole.class)) {
-							v.add(new SetsContainerToTargetShape(targetEditionPattern, pr));
+					FlexoConcept targetFlexoConcept = ((DropScheme) action.getEditionScheme()).getTargetFlexoConcept();
+					if (targetFlexoConcept != null) {
+						for (ShapePatternRole pr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+							v.add(new SetsContainerToTargetShape(targetFlexoConcept, pr));
 						}
 					}
 				}
 				v.add(new SetsContainerToTopLevel());
-				for (ShapePatternRole pr : action.getEditionPattern().getPatternRoles(ShapePatternRole.class)) {
+				for (ShapePatternRole pr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
 					v.add(new SetsContainerToShape(pr));
 				}
 				return new ValidationError<AddShapeActionMustHaveAValidContainer, AddShape>(this, action,
@@ -344,10 +344,10 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 		protected static class SetsContainerToTargetShape extends FixProposal<AddShapeActionMustHaveAValidContainer, AddShape> {
 
-			private final EditionPattern target;
+			private final FlexoConcept target;
 			private final ShapePatternRole patternRole;
 
-			public SetsContainerToTargetShape(EditionPattern target, ShapePatternRole patternRole) {
+			public SetsContainerToTargetShape(FlexoConcept target, ShapePatternRole patternRole) {
 				super("sets_container_to_target.($patternRole.patternRoleName)");
 				this.target = target;
 				this.patternRole = patternRole;
@@ -357,7 +357,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				return patternRole;
 			}
 
-			public EditionPattern getTarget() {
+			public FlexoConcept getTarget() {
 				return target;
 			}
 

@@ -146,7 +146,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 
 	}
 
-	public Vector<DropAndLinkScheme> getAvailableDropAndLinkSchemeFromThisShape(EditionPattern targetEditionPattern) {
+	public Vector<DropAndLinkScheme> getAvailableDropAndLinkSchemeFromThisShape(FlexoConcept targetEditionPattern) {
 		if (getEditionPattern() == null) {
 			return null;
 		}
@@ -160,10 +160,10 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 
 		availableLinkSchemeFromThisShape = new Vector<DropAndLinkScheme>();
 
-		for (EditionPattern ep1 : getDiagramSpecification().getEditionPatterns()) {
+		for (FlexoConcept ep1 : getDiagramSpecification().getEditionPatterns()) {
 			for (DropScheme ds : ep1.getDropSchemes()) {
 				if (ds.getTargetEditionPattern() == targetEditionPattern || ds.getTopTarget() && targetEditionPattern == null) {
-					for (EditionPattern ep2 : getDiagramSpecification().getEditionPatterns()) {
+					for (FlexoConcept ep2 : getDiagramSpecification().getEditionPatterns()) {
 						for (LinkScheme ls : ep2.getLinkSchemes()) {
 							// Let's directly reuse the code that exists in the LinkScheme instead of re-writing it here.
 							if (ls.isValidTarget(ep2, ds.getEditionPattern()) && ls.getIsAvailableWithFloatingPalette()) {
@@ -193,7 +193,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 
 		availableLinkSchemeFromThisShape = new Vector<LinkScheme>();
 
-		for (EditionPattern ep : getDiagramSpecification().getEditionPatterns()) {
+		for (FlexoConcept ep : getDiagramSpecification().getEditionPatterns()) {
 			for (LinkScheme ls : ep.getLinkSchemes()) {
 				if (ls.getFromTargetEditionPattern() != null && ls.getFromTargetEditionPattern().isAssignableFrom(getEditionPattern())
 						&& ls.getIsAvailableWithFloatingPalette()) {

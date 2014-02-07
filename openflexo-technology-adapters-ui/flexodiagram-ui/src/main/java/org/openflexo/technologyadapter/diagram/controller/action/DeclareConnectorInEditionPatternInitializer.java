@@ -60,7 +60,7 @@ public class DeclareConnectorInEditionPatternInitializer extends
 		return new FlexoActionFinalizer<DeclareConnectorInEditionPattern>() {
 			@Override
 			public boolean run(EventObject e, DeclareConnectorInEditionPattern action) {
-				getController().setCurrentEditedObjectAsModuleView(action.getEditionPattern());
+				getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
 				getController().getSelectionManager().setSelectedObject(action.getPatternRole());
 				return true;
 			}
