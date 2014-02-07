@@ -97,7 +97,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLModel> {
 
 		@Override
 		public ModelSlotInstanceConfiguration<? extends TypeAwareModelSlot<XMLModel, XMLModel>, XMLModel> createConfiguration(
-				CreateVirtualModelInstance<?> action) {
+				CreateVirtualModelInstance action) {
 			// TODO Auto-generated method stub
 			return null;
 		}

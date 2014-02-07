@@ -19,7 +19,7 @@ public class BasicExcelModelSlotInstanceConfiguration extends FreeModelSlotInsta
 	protected FlexoResourceCenter<?> resourceCenter;
 	protected TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter> modelResource;
 
-	protected BasicExcelModelSlotInstanceConfiguration(BasicExcelModelSlot ms, CreateVirtualModelInstance<?> action) {
+	protected BasicExcelModelSlotInstanceConfiguration(BasicExcelModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 

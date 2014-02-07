@@ -32,7 +32,6 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.view.View;
-import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -42,7 +41,7 @@ import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * This action is called to create a new {@link Diagram} (a {@link VirtualModelInstance} in a {@link View}
+ * This action is called to create a new {@link Diagram}
  * 
  * @author sylvain
  */
@@ -76,6 +75,8 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, FlexoObject, Flexo
 	static {
 		FlexoObjectImpl.addActionForClass(CreateDiagram.actionType, View.class);
 	}
+
+	public boolean skipChoosePopup = false;
 
 	private DiagramSpecification diagramSpecification;
 	private String diagramName;

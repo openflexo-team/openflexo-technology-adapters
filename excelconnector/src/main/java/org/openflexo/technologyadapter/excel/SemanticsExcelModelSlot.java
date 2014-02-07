@@ -90,7 +90,7 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 		}
 
 		@Override
-		public ModelSlotInstanceConfiguration<SemanticsExcelModelSlot, ExcelModel> createConfiguration(CreateVirtualModelInstance<?> action) {
+		public ModelSlotInstanceConfiguration<SemanticsExcelModelSlot, ExcelModel> createConfiguration(CreateVirtualModelInstance action) {
 			// TODO Auto-generated method stub
 			return null;
 		}

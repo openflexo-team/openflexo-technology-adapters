@@ -20,7 +20,7 @@ public class BasicPowerpointModelSlotInstanceConfiguration extends
 	protected FlexoResourceCenter<?> resourceCenter;
 	protected PowerpointSlideshowResource modelResource;
 
-	protected BasicPowerpointModelSlotInstanceConfiguration(BasicPowerpointModelSlot ms, CreateVirtualModelInstance<?> action) {
+	protected BasicPowerpointModelSlotInstanceConfiguration(BasicPowerpointModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 

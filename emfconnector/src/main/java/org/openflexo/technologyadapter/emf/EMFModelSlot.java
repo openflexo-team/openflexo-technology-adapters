@@ -105,7 +105,7 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public EMFModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance<?> action) {
+		public EMFModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
 			return new EMFModelSlotInstanceConfiguration(this, action);
 		}
 

@@ -8,7 +8,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 
 public class EMFModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<EMFModel, EMFMetaModel, EMFModelSlot> {
 
-	protected EMFModelSlotInstanceConfiguration(EMFModelSlot ms, CreateVirtualModelInstance<?> action) {
+	protected EMFModelSlotInstanceConfiguration(EMFModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 

@@ -37,22 +37,20 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
 /**
- * Implementation of the ModelSlot class for the Openflexo built-in diagram
- * technology adapter<br>
+ * Implementation of the ModelSlot class for the Openflexo built-in diagram technology adapter<br>
  * 
- * We modelize here the access to a {@link Diagram} conform to a given
- * {@link DiagramSpecification}.
+ * We modelize here the access to a {@link Diagram} conform to a given {@link DiagramSpecification}.
  * 
  * @author sylvain
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-		@DeclarePatternRole(FML = "Diagram", patternRoleClass = DiagramPatternRole.class), // Diagrams
+@DeclarePatternRole(FML = "Diagram", patternRoleClass = DiagramPatternRole.class), // Diagrams
 		@DeclarePatternRole(FML = "ShapeSpecification", patternRoleClass = ShapePatternRole.class), // Shapes
 		@DeclarePatternRole(FML = "ConnectorSpecification", patternRoleClass = ConnectorPatternRole.class), // Connectors
 })
 @DeclareEditionActions({ // All edition actions available through this model
-							// slot
+		// slot
 		@DeclareEditionAction(FML = "AddDiagram", editionActionClass = AddDiagram.class),
 		@DeclareEditionAction(FML = "AddShape", editionActionClass = AddShape.class),
 		@DeclareEditionAction(FML = "AddConnector", editionActionClass = AddConnector.class),
@@ -62,34 +60,31 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 @ModelEntity
 @ImplementationClass(TypedDiagramModelSlot.TypedDiagramModelSlotImpl.class)
 @XMLElement(xmlTag = "DiagramModelSlot")
-public interface TypedDiagramModelSlot extends
-		TypeAwareModelSlot<Diagram, DiagramSpecification>, DiagramModelSlot {
+public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, DiagramSpecification>, DiagramModelSlot {
 
 	@PropertyIdentifier(type = List.class)
 	public static final String PALETTE_ELEMENTS_BINDING_KEY = "paletteElementBindings";
 
-	@Getter(value = PALETTE_ELEMENTS_BINDING_KEY, cardinality = Cardinality.LIST, inverse = FMLDiagramPaletteElementBinding.DIAGRAM_MODEL_SLOT_KEY)
+	@Getter(
+			value = PALETTE_ELEMENTS_BINDING_KEY,
+			cardinality = Cardinality.LIST,
+			inverse = FMLDiagramPaletteElementBinding.DIAGRAM_MODEL_SLOT_KEY)
 	@XMLElement
 	public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings();
 
 	@Setter(PALETTE_ELEMENTS_BINDING_KEY)
-	public void setPaletteElementBindings(
-			List<FMLDiagramPaletteElementBinding> paletteElementBindings);
+	public void setPaletteElementBindings(List<FMLDiagramPaletteElementBinding> paletteElementBindings);
 
 	@Adder(PALETTE_ELEMENTS_BINDING_KEY)
-	public void addToPaletteElementBindings(
-			FMLDiagramPaletteElementBinding paletteElementBinding);
+	public void addToPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding);
 
 	@Remover(PALETTE_ELEMENTS_BINDING_KEY)
-	public void removeFromPaletteElementBindings(
-			FMLDiagramPaletteElementBinding paletteElementBinding);
+	public void removeFromPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding);
 
-	public static abstract class TypedDiagramModelSlotImpl extends
-			TypeAwareModelSlotImpl<Diagram, DiagramSpecification> implements
+	public static abstract class TypedDiagramModelSlotImpl extends TypeAwareModelSlotImpl<Diagram, DiagramSpecification> implements
 			TypedDiagramModelSlot {
 
-		private static final Logger logger = Logger
-				.getLogger(TypedDiagramModelSlot.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(TypedDiagramModelSlot.class.getPackage().getName());
 
 		private List<FMLDiagramPaletteElementBinding> paletteElementBindings;
 
@@ -125,28 +120,20 @@ public interface TypedDiagramModelSlot extends
 		}
 
 		@Override
-		public TypedDiagramModelSlotInstanceConfiguration createConfiguration(
-				CreateVirtualModelInstance<?> action) {
+		public TypedDiagramModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
 			return new TypedDiagramModelSlotInstanceConfiguration(this, action);
 		}
 
 		@Override
-		public DiagramResource createProjectSpecificEmptyModel(
-				View view,
-				String filename,
-				String modelUri,
+		public DiagramResource createProjectSpecificEmptyModel(View view, String filename, String modelUri,
 				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public DiagramResource createSharedEmptyModel(
-				FlexoResourceCenter<?> resourceCenter,
-				String relativePath,
-				String filename,
-				String modelUri,
-				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
+		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
+				String modelUri, FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 			// TODO Auto-generated method stub
 			return null;
 		}
@@ -185,20 +172,17 @@ public interface TypedDiagramModelSlot extends
 		}
 
 		@Override
-		public void setPaletteElementBindings(
-				List<FMLDiagramPaletteElementBinding> paletteElementBindings) {
+		public void setPaletteElementBindings(List<FMLDiagramPaletteElementBinding> paletteElementBindings) {
 			this.paletteElementBindings = paletteElementBindings;
 		}
 
 		@Override
-		public void addToPaletteElementBindings(
-				FMLDiagramPaletteElementBinding paletteElementBinding) {
+		public void addToPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
 			paletteElementBindings.add(paletteElementBinding);
 		}
 
 		@Override
-		public void removeFromPaletteElementBindings(
-				FMLDiagramPaletteElementBinding paletteElementBinding) {
+		public void removeFromPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
 			paletteElementBindings.remove(paletteElementBinding);
 		}
 

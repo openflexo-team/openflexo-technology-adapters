@@ -14,7 +14,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 
 	private static final Logger logger = Logger.getLogger(TypeAwareModelSlotInstanceConfiguration.class.getPackage().getName());
 
-	protected OWLModelSlotInstanceConfiguration(OWLModelSlot ms, CreateVirtualModelInstance<?> action) {
+	protected OWLModelSlotInstanceConfiguration(OWLModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 		options.add(DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel);
 	}

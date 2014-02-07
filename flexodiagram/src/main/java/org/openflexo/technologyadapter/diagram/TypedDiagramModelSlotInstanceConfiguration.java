@@ -35,7 +35,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 public class TypedDiagramModelSlotInstanceConfiguration extends
 		TypeAwareModelSlotInstanceConfiguration<Diagram, DiagramSpecification, TypedDiagramModelSlot> {
 
-	protected TypedDiagramModelSlotInstanceConfiguration(TypedDiagramModelSlot ms, CreateVirtualModelInstance<?> action) {
+	protected TypedDiagramModelSlotInstanceConfiguration(TypedDiagramModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 

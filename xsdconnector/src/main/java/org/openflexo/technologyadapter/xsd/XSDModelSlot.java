@@ -130,7 +130,7 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public XSDModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance<?> action) {
+		public XSDModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
 			return new XSDModelSlotInstanceConfiguration(this, action);
 		}
 

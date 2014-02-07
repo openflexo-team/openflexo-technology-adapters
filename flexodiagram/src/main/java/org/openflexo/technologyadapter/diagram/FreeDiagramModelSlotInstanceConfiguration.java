@@ -19,7 +19,7 @@ public class FreeDiagramModelSlotInstanceConfiguration extends FreeModelSlotInst
 	protected FlexoResourceCenter<?> resourceCenter;
 	protected DiagramResource diagramResource;
 
-	protected FreeDiagramModelSlotInstanceConfiguration(FreeDiagramModelSlot ms, CreateVirtualModelInstance<?> action) {
+	protected FreeDiagramModelSlotInstanceConfiguration(FreeDiagramModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 

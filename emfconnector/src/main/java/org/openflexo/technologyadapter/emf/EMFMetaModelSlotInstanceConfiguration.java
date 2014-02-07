@@ -16,7 +16,7 @@ public class EMFMetaModelSlotInstanceConfiguration extends ModelSlotInstanceConf
 
 	protected List<ModelSlotInstanceConfigurationOption> options;
 
-	protected EMFMetaModelSlotInstanceConfiguration(EMFMetaModelSlot ms, CreateVirtualModelInstance<?> action) {
+	protected EMFMetaModelSlotInstanceConfiguration(EMFMetaModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 		options = new ArrayList<ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption>();
 		options.add(DefaultModelSlotInstanceConfigurationOption.SelectExistingMetaModel);

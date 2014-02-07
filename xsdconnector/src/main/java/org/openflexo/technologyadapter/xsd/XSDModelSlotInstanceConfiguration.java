@@ -7,7 +7,7 @@ import org.openflexo.technologyadapter.xsd.model.XMLXSDModel;
 
 public class XSDModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLXSDModel, XSDMetaModel, XSDModelSlot> {
 
-	protected XSDModelSlotInstanceConfiguration(XSDModelSlot ms, CreateVirtualModelInstance<?> action) {
+	protected XSDModelSlotInstanceConfiguration(XSDModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 

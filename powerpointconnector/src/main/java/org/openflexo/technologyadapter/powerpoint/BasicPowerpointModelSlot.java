@@ -99,7 +99,7 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 
 		@Override
 		public ModelSlotInstanceConfiguration<BasicPowerpointModelSlot, PowerpointSlideshow> createConfiguration(
-				CreateVirtualModelInstance<?> action) {
+				CreateVirtualModelInstance action) {
 			return new BasicPowerpointModelSlotInstanceConfiguration(this, action);
 		}
 

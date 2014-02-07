@@ -71,7 +71,7 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 		}
 
 		@Override
-		public FreeDiagramModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance<?> action) {
+		public FreeDiagramModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
 			return new FreeDiagramModelSlotInstanceConfiguration(this, action);
 		}
 

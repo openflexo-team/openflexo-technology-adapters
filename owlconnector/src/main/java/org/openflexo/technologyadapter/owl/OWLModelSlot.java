@@ -83,7 +83,7 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public OWLModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance<?> action) {
+		public OWLModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
 			return new OWLModelSlotInstanceConfiguration(this, action);
 		}
 
