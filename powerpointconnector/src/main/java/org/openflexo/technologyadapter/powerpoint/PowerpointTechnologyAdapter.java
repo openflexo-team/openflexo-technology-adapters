@@ -48,7 +48,7 @@ import org.openflexo.technologyadapter.powerpoint.viewpoint.binding.PowerpointBi
  * 
  */
 @DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "BasicPowerpointModelSlot", modelSlotClass = BasicPowerpointModelSlot.class) // Pure spreadsheet interpretation
+@DeclareModelSlot(FML = "BasicPowerpointModelSlot", modelSlotClass = BasicPowerpointModelSlot.class) 
 })
 @DeclareRepositoryType({ PowerpointSlideShowRepository.class })
 public class PowerpointTechnologyAdapter extends TechnologyAdapter {

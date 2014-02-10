@@ -15,7 +15,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 /**
- * This class represent the {@link BindingFactory} dedicated to handle Excel technology-specific binding elements
+ * This class represent the {@link BindingFactory} dedicated to handle Powerpoint technology-specific binding elements
  * 
  * @author sylvain, vincent
  * 

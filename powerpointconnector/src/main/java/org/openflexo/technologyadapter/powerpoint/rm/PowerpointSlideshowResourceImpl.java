@@ -64,7 +64,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoFileResourceI
 	 * @param ontologyLibrary
 	 * @return
 	 */
-	public static PowerpointSlideshowResource makePowerpointSlideshowResource(String modelURI, File excelFile,
+	public static PowerpointSlideshowResource makePowerpointSlideshowResource(String modelURI, File powerpointFile,
 			PowerpointTechnologyContextManager technologyContextManager) {
 		try {
 			ModelFactory factory = new ModelFactory(PowerpointSlideshowResource.class);
@@ -72,8 +72,8 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoFileResourceI
 					.newInstance(PowerpointSlideshowResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
-			returned.setName(excelFile.getName());
-			returned.setFile(excelFile);
+			returned.setName(powerpointFile.getName());
+			returned.setFile(powerpointFile);
 			returned.setURI(modelURI);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerResource(returned);
@@ -145,7 +145,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoFileResourceI
 				// Creates a new file
 				getFile().createNewFile();
 				ssOpenned = new SlideShow();
-				// XSSFWorkbook wbOpenned = new XSSFWorkbook(fis);
+			
 				BasicPowerpointModelConverter converter = new BasicPowerpointModelConverter();
 				resourceData = converter.convertPowerpointSlideshow(ssOpenned, getTechnologyAdapter());
 				// TODO how to change this?

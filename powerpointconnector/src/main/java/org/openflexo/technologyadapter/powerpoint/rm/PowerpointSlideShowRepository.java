@@ -25,9 +25,9 @@ import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
 /**
- * Excel workbook repository
+ * Powerpoint Slideshow repository
  * 
- * @author sylvain
+ * @author sylvain, vincent
  * 
  */
 public class PowerpointSlideShowRepository extends
