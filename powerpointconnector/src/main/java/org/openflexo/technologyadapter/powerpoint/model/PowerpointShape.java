@@ -4,7 +4,7 @@ import org.apache.poi.hslf.model.Shape;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 
 /**
- * Represents an Excel row, implemented as a wrapper of a POI row
+ * Represents a Powerpoint shape, implemented as a wrapper of a POI shape
  * 
  * @author vincent, sylvain
  * 

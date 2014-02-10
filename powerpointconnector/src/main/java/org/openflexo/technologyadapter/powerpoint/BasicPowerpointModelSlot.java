@@ -36,6 +36,9 @@ import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
@@ -61,8 +64,11 @@ import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.Select
 @DeclareFetchRequests({ // All requests available through this model slot
 @DeclareFetchRequest(FML = "RemoveReferencePropertyValue", fetchRequestClass = SelectPowerpointSlide.class),
 		@DeclareFetchRequest(FML = "RemoveReferencePropertyValue", fetchRequestClass = SelectPowerpointShape.class) })
-public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow> {
-
+@ModelEntity
+@ImplementationClass(BasicPowerpointModelSlot.BasicPowerpointModelSlotImpl.class)
+@XMLElement(xmlTag = "PowerpointModelSlot")
+public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow> , PowerpointModelSlot {
+	
 	public static abstract class BasicPowerpointModelSlotImpl extends FreeModelSlotImpl<PowerpointSlideshow> implements
 			BasicPowerpointModelSlot {
 
