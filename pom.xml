@@ -58,7 +58,7 @@
 				<classifier>resources</classifier>
 				<type>zip</type>
 			</dependency>
-		
+
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexoutils</artifactId>
@@ -76,6 +76,7 @@
 				<artifactId>flexoutils</artifactId>
 				<version>${connie.version}</version>
 				<classifier>tests</classifier>
+				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
