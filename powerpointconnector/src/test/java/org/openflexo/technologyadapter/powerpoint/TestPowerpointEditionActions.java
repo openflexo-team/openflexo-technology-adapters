@@ -20,12 +20,16 @@
 package org.openflexo.technologyadapter.powerpoint;
 
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
@@ -43,9 +47,11 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResourceImpl;
 import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointShape;
 import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointShape.AddPowerpointShapeImpl;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FileResource;
 
-
+@RunWith(OrderedRunner.class)
 public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected static final Logger logger = Logger.getLogger(TestPowerpointEditionActions.class.getPackage().getName());
@@ -60,7 +66,7 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	private static ViewPoint newViewPoint;
 	private static VirtualModel newVirtualModel;
 	
-	@Before
+	/*@Before
     public void setUp() {
 		File resourceCenterDirectory = new FileResource(
 				new File("src/test/resources").getAbsolutePath());
@@ -92,6 +98,30 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}*/
+	
+
+	/**
+	 * Instantiate test resource center
+	 */
+	@Test
+	@TestOrder(1)
+	public void test0InstantiateResourceCenter() {
+
+		log("test0InstantiateResourceCenter()");
+		testApplicationContext = instanciateTestServiceManager();
+		assertNotNull(testApplicationContext);
+		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(
+				PowerpointTechnologyAdapter.class);
+		assertNotNull(powerpointAdapter);
+		for(FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()){
+			if(rc.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter)!=null){
+				modelRepository = (PowerpointSlideShowRepository) rc.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter);
+			}
+		}
+		assertNotNull(modelRepository);
+		assertTrue(modelRepository.getSize()>0);
+		logger.info("Found "+modelRepository.getSize()+" powerpoint files");
 	}
 	
 	/**
@@ -100,6 +130,7 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	 * @throws IOException
 	 */
 	@Test
+	@TestOrder(2)
 	public void testAddPowerpointSlide() throws IOException {
 		logger.info("testAddPowerpointSlide()");
 		AddPowerpointShape addPowerpointShape = modelSlot.createAction(AddPowerpointShape.class);
@@ -115,6 +146,7 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	 * @throws IOException
 	 */
 	@Test
+	@TestOrder(3)
 	public void testAddPowerpointShape() throws IOException {
 		logger.info("testAddPowerpointShape()");
 		//assertNotNull(modelRes);
@@ -128,6 +160,7 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	 * @throws IOException
 	 */
 	@Test
+	@TestOrder(4)
 	public void testSelectPowerpointShape() throws IOException {
 		logger.info("testSelectPowerpointShape()");
 		//assertNotNull(modelRes);
@@ -139,6 +172,7 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	 * @throws IOException
 	 */
 	@Test
+	@TestOrder(5)
 	public void testSelectPowerpointSlide() throws IOException {
 		logger.info("testSelectPowerpointSlide()");
 		//assertNotNull(modelRes);
