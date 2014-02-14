@@ -26,6 +26,7 @@ import java.util.Observer;
 import org.openflexo.antar.binding.BindingEvaluationContext;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.view.EditionPatternInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.viewpoint.VirtualModel;
@@ -39,6 +40,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
 
 /**
@@ -51,7 +53,8 @@ import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
  */
 @ModelEntity
 @ImplementationClass(DiagramElementImpl.class)
-public interface DiagramElement<G extends GraphicalRepresentation> extends FlexoObject, BindingEvaluationContext, Cloneable, Observer {
+public interface DiagramElement<G extends GraphicalRepresentation> extends FlexoObject, TechnologyObject<DiagramTechnologyAdapter>,
+		BindingEvaluationContext, Cloneable, Observer {
 
 	public static final String GRAPHICAL_REPRESENTATION = "graphicalRepresentation";
 	public static final String NAME = "name";

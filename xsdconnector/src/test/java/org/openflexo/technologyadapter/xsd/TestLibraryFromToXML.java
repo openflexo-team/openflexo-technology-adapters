@@ -16,7 +16,7 @@ import javax.xml.transform.TransformerException;
 import org.openflexo.ApplicationContext;
 import org.openflexo.TestApplicationContext;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.OpenflexoRunTimeTestCase;
+import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -33,7 +33,7 @@ import org.openflexo.technologyadapter.xsd.rm.XMLXSDFileResource;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
 
-public class TestLibraryFromToXML extends OpenflexoRunTimeTestCase {
+public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(TestLibraryFromToXML.class
 			.getPackage().getName());

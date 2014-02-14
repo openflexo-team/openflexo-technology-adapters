@@ -31,4 +31,11 @@ public class EMFModelRepository extends ModelRepository<EMFModelResource, EMFMod
 		super(adapter, resourceCenter);
 	}
 
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/EMFTechnologyAdapter/Models";
+
+	@Override
+	public String getDefaultBaseURI() {
+		return DEFAULT_BASE_URI;
+	}
+
 }

@@ -22,8 +22,6 @@ package org.openflexo.technologyadapter.xml.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.MetaModelRepository;
-import org.openflexo.foundation.technologyadapter.ModelRepository;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
@@ -32,4 +30,12 @@ public class XMLMetaModelRepository extends MetaModelRepository<XMLFileResource,
 	public XMLMetaModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
 		super(adapter, resourceCenter);
 	}
+
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/XMLTechnologyAdapter/MetaModels";
+
+	@Override
+	public String getDefaultBaseURI() {
+		return DEFAULT_BASE_URI;
+	}
+
 }

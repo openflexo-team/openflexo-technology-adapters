@@ -57,7 +57,7 @@ public class ExportDiagramToImageInitializer extends ActionInitializer<ExportDia
 			public boolean run(EventObject e, ExportDiagramToImageAction action) {
 
 				if (getController().getCurrentModuleView() instanceof DiagramModuleView) {
-					DiagramEditor c = ((DiagramModuleView) getController().getCurrentModuleView()).getController();
+					DiagramEditor c = ((DiagramModuleView) getController().getCurrentModuleView()).getEditor();
 
 					if (action.getFocusedObject() instanceof DiagramShape) {
 						ShapeNode<DiagramShape> shapeNode = c.getDrawing().getShapeNode((DiagramShape) action.getFocusedObject());

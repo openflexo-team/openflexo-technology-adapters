@@ -57,7 +57,7 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 			public boolean run(EventObject e, PushToPalette action) {
 				if (getController().getCurrentModuleView() instanceof DiagramModuleView
 						&& action.getFocusedObject().getGraphicalRepresentation() instanceof ShapeGraphicalRepresentation) {
-					DiagramEditor c = ((DiagramModuleView) getController().getCurrentModuleView()).getController();
+					DiagramEditor c = ((DiagramModuleView) getController().getCurrentModuleView()).getEditor();
 					ShapeNode<DiagramShape> shapeNode = c.getDrawing().getShapeNode(action.getFocusedObject());
 					JShapeView shapeView = c.getDrawingView().shapeViewForNode(shapeNode);
 					BufferedImage image = shapeView.getScreenshot();

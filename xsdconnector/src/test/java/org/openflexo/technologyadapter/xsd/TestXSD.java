@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.OpenflexoRunTimeTestCase;
+import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.TestFlexoServiceManager;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -35,7 +35,7 @@ import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
 import org.openflexo.toolbox.FileResource;
 
-public class TestXSD extends OpenflexoRunTimeTestCase {
+public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected static final Logger logger = Logger.getLogger(TestXSD.class.getPackage().getName());
 

@@ -89,9 +89,9 @@ public class DropSchemeActionInitializer extends
 					ModuleView<?> moduleView = getController().moduleViewForObject(action.getPrimaryShape().getDiagram(), false);
 					if (moduleView instanceof DiagramModuleView) {
 
-						ShapeNode<DiagramShape> shapeNode = ((DiagramModuleView) moduleView).getController().getDrawing()
+						ShapeNode<DiagramShape> shapeNode = ((DiagramModuleView) moduleView).getEditor().getDrawing()
 								.getShapeNode(action.getPrimaryShape());
-						JShapeView<DiagramShape> shapeView = ((DiagramModuleView) moduleView).getController().getDrawingView()
+						JShapeView<DiagramShape> shapeView = ((DiagramModuleView) moduleView).getEditor().getDrawingView()
 								.shapeViewForNode(shapeNode);
 						if (shapeView != null) {
 							if (shapeView.getLabelView() != null) {

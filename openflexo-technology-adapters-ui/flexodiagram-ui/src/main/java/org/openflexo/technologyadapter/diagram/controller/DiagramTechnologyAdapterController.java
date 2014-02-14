@@ -1,6 +1,7 @@
 package org.openflexo.technologyadapter.diagram.controller;
 
 import javax.swing.ImageIcon;
+import javax.swing.SwingUtilities;
 
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaInspectors;
@@ -53,6 +54,8 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.FileResource;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -150,7 +153,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	 */
 	@Override
 	public ImageIcon getModelIcon() {
-		return VEIconLibrary.VIEW_ICON;
+		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 
 	/**
@@ -160,7 +163,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	 */
 	@Override
 	public ImageIcon getMetaModelIcon() {
-		return VEIconLibrary.VIEW_ICON;
+		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 
 	/**
@@ -171,7 +174,14 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	 */
 	@Override
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
-		return null;
+		if (Diagram.class.isAssignableFrom(objectClass)) {
+			return DiagramIconLibrary.DIAGRAM_ICON;
+		} else if (DiagramShape.class.isAssignableFrom(objectClass)) {
+			return DiagramIconLibrary.SHAPE_ICON;
+		} else if (DiagramConnector.class.isAssignableFrom(objectClass)) {
+			return DiagramIconLibrary.CONNECTOR_ICON;
+		}
+		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, IconLibrary.QUESTION);
 	}
 
 	/**
@@ -227,6 +237,10 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 	@Override
 	public String getWindowTitleforObject(TechnologyObject<DiagramTechnologyAdapter> object, FlexoController controller) {
+
+		if (object instanceof Diagram) {
+			return ((Diagram) object).getName();
+		}
 		return object.toString();
 	}
 
@@ -273,6 +287,27 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 		// TODO not applicable
 		return new EmptyPanel<TechnologyObject<DiagramTechnologyAdapter>>(controller, perspective, object);
+	}
+
+	@Override
+	public void notifyModuleViewDisplayed(ModuleView<?> moduleView, final FlexoController controller, FlexoPerspective perspective) {
+
+		System.out.println("Ici, moduleView = " + moduleView + " of " + moduleView.getClass());
+		super.notifyModuleViewDisplayed(moduleView, controller, perspective);
+		if (moduleView instanceof DiagramModuleView) {
+			System.out.println("Ici2");
+			// Sets palette view of editor to be the top right view
+			System.out.println("Ici3, paletteView=" + ((DiagramModuleView) moduleView).getEditor().getPaletteView());
+			perspective.setTopRightView(((DiagramModuleView) moduleView).getEditor().getPaletteView());
+			// perspective.setHeader(((DiagramModuleView) moduleView).getEditor().getS());
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					// Force right view to be visible
+					controller.getControllerModel().setRightViewVisible(true);
+				}
+			});
+		}
 	}
 
 }

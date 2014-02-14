@@ -27,7 +27,7 @@ import java.util.Iterator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.OpenflexoRunTimeTestCase;
+import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.TestFlexoServiceManager;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
@@ -42,7 +42,7 @@ import com.hp.hpl.jena.rdf.model.Model;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 
 @RunWith(OrderedRunner.class)
-public class TestPizza extends OpenflexoRunTimeTestCase {
+public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 
 	private static TestFlexoServiceManager testServiceManager;
 	private static OWLTechnologyAdapter owlAdapter;

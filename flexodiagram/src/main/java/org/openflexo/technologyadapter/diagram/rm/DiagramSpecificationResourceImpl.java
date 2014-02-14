@@ -73,6 +73,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			DiagramSpecificationInfo vpi = findDiagramSpecificationInfo(diagramSpecificationDirectory);
 			if (vpi == null) {
 				// Unable to retrieve infos, just abort
+				logger.warning("Cannot retrieve info for diagram specification " + diagramSpecificationDirectory);
 				return null;
 			}
 			returned.setURI(vpi.uri);

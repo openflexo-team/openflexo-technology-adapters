@@ -19,16 +19,27 @@
  */
 package org.openflexo.technologyadapter.diagram;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
+import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceImpl;
 
 /**
  * This class defines and implements the Openflexo built-in diagram technology adapter
@@ -54,9 +65,13 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
-		// TODO Auto-generated method stub
-		return null;
+	public DiagramTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
+		return new DiagramTechnologyContextManager(this, service);
+	}
+
+	@Override
+	public DiagramTechnologyContextManager getTechnologyContextManager() {
+		return (DiagramTechnologyContextManager) super.getTechnologyContextManager();
 	}
 
 	@Override
@@ -65,28 +80,212 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		return null;
 	}
 
+	/**
+	 * Initialize the supplied resource center with the technology<br>
+	 * ResourceCenter is scanned, ResourceRepositories are created and new technology-specific resources are build and registered.
+	 * 
+	 * @param resourceCenter
+	 */
 	@Override
 	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
-		// TODO Auto-generated method stub
 
+		DiagramTechnologyContextManager technologyContextManager = (DiagramTechnologyContextManager) getTechnologyAdapterService()
+				.getTechnologyContextManager(this);
+
+		// A single DiagramSpecification Repository for all ResourceCenters
+
+		DiagramSpecificationRepository dsRepository = resourceCenter.getRepository(DiagramSpecificationRepository.class, this);
+		if (dsRepository == null) {
+			dsRepository = createDiagramSpecificationRepository(resourceCenter);
+		}
+
+		DiagramRepository diagramRepository = resourceCenter.getRepository(DiagramRepository.class, this);
+		if (diagramRepository == null) {
+			diagramRepository = createDiagramRepository(resourceCenter);
+		}
+
+		// First pass on meta-models only
+		Iterator<I> it = resourceCenter.iterator();
+
+		while (it.hasNext()) {
+			I item = it.next();
+			if (item instanceof File) {
+				File candidateFile = (File) item;
+				DiagramSpecificationResource mmRes = tryToLookupDiagramSpecification(resourceCenter, candidateFile);
+			}
+		}
+
+		// Second pass on models
+		it = resourceCenter.iterator();
+
+		while (it.hasNext()) {
+			I item = it.next();
+			if (item instanceof File) {
+				File candidateFile = (File) item;
+				DiagramResource diagramRes = tryToLookupDiagram(resourceCenter, candidateFile);
+			}
+		}
+	}
+
+	/**
+	 * Creates and return a diagram repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
+	 */
+	public DiagramRepository createDiagramRepository(FlexoResourceCenter<?> resourceCenter) {
+		DiagramRepository returned = new DiagramRepository(this, resourceCenter);
+		resourceCenter.registerRepository(returned, DiagramRepository.class, this);
+		return returned;
+	}
+
+	/**
+	 * Creates and return a diagram specification repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
+	 */
+	public DiagramSpecificationRepository createDiagramSpecificationRepository(FlexoResourceCenter<?> resourceCenter) {
+		DiagramSpecificationRepository returned = new DiagramSpecificationRepository(this, resourceCenter);
+		resourceCenter.registerRepository(returned, DiagramSpecificationRepository.class, this);
+		return returned;
+	}
+
+	protected DiagramSpecificationResource tryToLookupDiagramSpecification(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
+		if (isValidDiagramSpecificationFile(candidateFile)) {
+			DiagramSpecificationResource dsRes = retrieveDiagramSpecificationResource(candidateFile);
+			DiagramSpecificationRepository dsRepo = resourceCenter.getRepository(DiagramSpecificationRepository.class, this);
+			if (dsRepo != null) {
+				RepositoryFolder<DiagramSpecificationResource> folder;
+				try {
+					folder = dsRepo.getRepositoryFolder(candidateFile, true);
+					dsRepo.registerResource(dsRes, folder);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				// Also register the resource in the ResourceCenter seen as a ResourceRepository
+				if (resourceCenter instanceof ResourceRepository) {
+					try {
+						((ResourceRepository) resourceCenter).registerResource(dsRes,
+								((ResourceRepository<?>) resourceCenter).getRepositoryFolder(candidateFile, true));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				return dsRes;
+			}
+		}
+		return null;
+	}
+
+	private boolean isValidDiagramSpecificationFile(File candidateFile) {
+		return candidateFile.exists() && candidateFile.isDirectory()
+				&& candidateFile.getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX);
+	}
+
+	private boolean isValidDiagramFile(File candidateFile) {
+		return candidateFile.exists() && candidateFile.getName().endsWith(DiagramResource.DIAGRAM_SUFFIX);
+	}
+
+	/**
+	 * Instantiate new model resource stored in supplied model file, given the conformant metamodel<br>
+	 * We assert here that model resource is conform to supplied metamodel, ie we will not try to lookup the metamodel but take the one
+	 * which was supplied
+	 * 
+	 */
+	private DiagramSpecificationResource retrieveDiagramSpecificationResource(File diagramSpecificationDirectory) {
+		DiagramSpecificationResource returned = getTechnologyContextManager()
+				.getDiagramSpecificationResource(diagramSpecificationDirectory);
+
+		if (returned == null) {
+			returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(diagramSpecificationDirectory,
+					getTechnologyAdapterService().getServiceManager());
+			if (returned != null) {
+				getTechnologyContextManager().registerDiagramSpecification(returned);
+			} else {
+				logger.warning("Cannot retrieve DiagramSpecificationResource for " + diagramSpecificationDirectory);
+			}
+		}
+
+		return returned;
+	}
+
+	/**
+	 * Instantiate new diagram resource stored in supplied diagram file
+	 * 
+	 */
+	private DiagramResource retrieveDiagramResource(File aDiagramFile) {
+		DiagramResource returned = getTechnologyContextManager().getDiagramResource(aDiagramFile);
+
+		if (returned == null) {
+			returned = DiagramResourceImpl.retrieveDiagramResource(aDiagramFile, getTechnologyAdapterService().getServiceManager());
+			if (returned != null) {
+				getTechnologyContextManager().registerDiagram(returned);
+			} else {
+				logger.warning("Cannot retrieve DiagramResource for " + aDiagramFile);
+			}
+		}
+
+		return returned;
+	}
+
+	protected DiagramResource tryToLookupDiagram(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
+		DiagramTechnologyContextManager technologyContextManager = getTechnologyContextManager();
+		// DiagramSpecificationRepository dsRepository; // = resourceCenter.getRepository(DiagramSpecificationRepository.class, this);
+		DiagramRepository diagramRepository = resourceCenter.getRepository(DiagramRepository.class, this);
+
+		List<FlexoResourceCenter> rscCenters = technologyContextManager.getResourceCenterService().getResourceCenters();
+
+		// for (FlexoResourceCenter<?> rscCenter : rscCenters) {
+		// dsRepository = rscCenter.getRepository(DiagramSpecificationRepository.class, this);
+		// if (dsRepository != null) {
+		// for (DiagramSpecificationResource dsRes : dsRepository.getAllResources()) {
+		if (isValidDiagramFile(candidateFile)) {
+			DiagramResource diagramResource = retrieveDiagramResource(candidateFile);
+			if (diagramResource != null) {
+				RepositoryFolder<DiagramResource> folder;
+				try {
+					folder = diagramRepository.getRepositoryFolder(candidateFile, true);
+					diagramRepository.registerResource(diagramResource, folder);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+				// Also register the resource in the ResourceCenter seen as a ResourceRepository
+				if (resourceCenter instanceof ResourceRepository) {
+					try {
+						((ResourceRepository) resourceCenter).registerResource(diagramResource,
+								((ResourceRepository<?>) resourceCenter).getRepositoryFolder(candidateFile, true));
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				return diagramResource;
+			}
+		}
+		// }
+		// }
+		// }
+		return null;
 	}
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
 	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-
+		if (contents instanceof File) {
+			System.out.println("File ADDED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
+			File candidateFile = (File) contents;
+			if (tryToLookupDiagramSpecification(resourceCenter, candidateFile) != null) {
+				// This is a meta-model, this one has just been registered
+			} else {
+				tryToLookupDiagram(resourceCenter, candidateFile);
+			}
+		}
 	}
 
 	@Override
 	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-
+		if (contents instanceof File) {
+			System.out
+					.println("File DELETED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
+		}
 	}
 
 }

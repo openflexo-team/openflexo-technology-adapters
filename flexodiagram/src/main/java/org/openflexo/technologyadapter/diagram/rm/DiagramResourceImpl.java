@@ -60,7 +60,12 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			returned.setFile(diagramFile);
 			returned.setURI(uri);
 			returned.setServiceManager(serviceManager);
-			returned.setMetaModelResource(diagramSpecification.getResource());
+			if (diagramSpecification != null) {
+				returned.setMetaModelResource(diagramSpecification.getResource());
+			}
+			Diagram newDiagram = returned.getFactory().makeNewDiagram();
+			newDiagram.setResource(returned);
+			returned.setResourceData(newDiagram);
 			return returned;
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
@@ -79,6 +84,7 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			DiagramInfo info = findDiagramInfo(diagramFile);
 			if (info == null) {
 				// Unable to retrieve infos, just abort
+				logger.warning("Cannot retrieve info for diagram " + diagramFile);
 				return null;
 			}
 			returned.setURI(info.uri);

@@ -33,6 +33,7 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
+import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
@@ -45,7 +46,7 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, FlexoObject, FlexoObject> {
+public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, RepositoryFolder, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
@@ -75,8 +76,11 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, F
 				if (action.skipChoosePopup) {
 					return true;
 				} else {
-					int step = 0;
-					boolean shouldContinue = true;
+
+					return instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_DIALOG_FIB);
+
+					// int step = 0;
+					// boolean shouldContinue = true;
 					/*while (shouldContinue) {
 						Status result;
 						if (step == 0) {
@@ -105,7 +109,7 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, F
 
 					// return instanciateAndShowDialog(action, VECst.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
 
-					return false;
+					// return false;
 				}
 
 			}

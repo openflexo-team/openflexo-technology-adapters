@@ -33,7 +33,7 @@ import org.junit.Test;
 import org.openflexo.ApplicationContext;
 import org.openflexo.TestApplicationContext;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.OpenflexoRunTimeTestCase;
+import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -47,7 +47,7 @@ import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 
-public class TestXML extends OpenflexoRunTimeTestCase {
+public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected static final Logger logger = Logger.getLogger(TestXML.class.getPackage().getName());
 

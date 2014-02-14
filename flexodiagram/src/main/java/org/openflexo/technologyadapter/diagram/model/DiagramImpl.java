@@ -217,4 +217,9 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 		return ((DiagramResource) getResource()).getFactory();
 	}
 
+	@Override
+	public Diagram getDiagram() {
+		return this;
+	}
+
 }

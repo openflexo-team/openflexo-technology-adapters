@@ -43,19 +43,19 @@ public class DiagramIconLibrary extends IconLibrary {
 
 	private static final Logger logger = Logger.getLogger(DiagramIconLibrary.class.getPackage().getName());
 
-	public static final ImageIconResource DIAGRAM_PALETTE_ICON = new ImageIconResource("Icons/Model/VPM/DiagramPalette.png");
-	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource("Icons/Model/VE/Diagram.png");
-	public static final ImageIconResource SHAPE_ICON = new ImageIconResource("Icons/Model/VE/DiagramShape.png");
-	public static final ImageIconResource CONNECTOR_ICON = new ImageIconResource("Icons/Model/VE/DiagramConnector.png");
+	public static final ImageIconResource DIAGRAM_PALETTE_ICON = new ImageIconResource("Icons/DiagramPalette.png");
+	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource("Icons/Diagram.png");
+	public static final ImageIconResource SHAPE_ICON = new ImageIconResource("Icons/DiagramShape.png");
+	public static final ImageIconResource CONNECTOR_ICON = new ImageIconResource("Icons/DiagramConnector.png");
 
-	public static final ImageIconResource DROP_SCHEME_ICON = new ImageIconResource("Icons/Model/VPM/DropSchemeIcon.png");
-	public static final ImageIconResource LINK_SCHEME_ICON = new ImageIconResource("Icons/Model/VPM/LinkSchemeIcon.png");
+	public static final ImageIconResource DROP_SCHEME_ICON = new ImageIconResource("Icons/DropSchemeIcon.png");
+	public static final ImageIconResource LINK_SCHEME_ICON = new ImageIconResource("Icons/LinkSchemeIcon.png");
 
-	public static final ImageIconResource DIAGRAM_SPECIFICATION_ICON = new ImageIconResource("Icons/Model/VPM/DiagramSpecification.png");
+	public static final ImageIconResource DIAGRAM_SPECIFICATION_ICON = new ImageIconResource("Icons/DiagramSpecification.png");
 
-	public static final ImageIconResource GRAPHICAL_ACTION_ICON = new ImageIconResource("Icons/Model/VPM/GraphicalActionIcon.png");
+	public static final ImageIconResource GRAPHICAL_ACTION_ICON = new ImageIconResource("Icons/GraphicalActionIcon.png");
 
-	public static final ImageIconResource UNKNOWN_ICON = new ImageIconResource("Icons/Model/VPM/UnknownIcon.gif");
+	public static final ImageIconResource UNKNOWN_ICON = new ImageIconResource("Icons/UnknownIcon.gif");
 
 	public static ImageIcon iconForObject(DiagramElement<?> object) {
 		if (object instanceof Diagram) {

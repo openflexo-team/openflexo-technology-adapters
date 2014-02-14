@@ -37,4 +37,11 @@ public class ExcelModelRepository extends ModelRepository<ExcelModelResource, Ex
 		super(adapter, resourceCenter);
 	}
 
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/ExcelTechnologyAdapter/Models";
+
+	@Override
+	public String getDefaultBaseURI() {
+		return DEFAULT_BASE_URI;
+	}
+
 }

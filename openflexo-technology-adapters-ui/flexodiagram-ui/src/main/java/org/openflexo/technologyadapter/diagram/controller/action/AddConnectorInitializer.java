@@ -88,9 +88,9 @@ public class AddConnectorInitializer extends ActionInitializer {
 				if (action.getConnector() != null) {
 					getController().getSelectionManager().setSelectedObject(action.getConnector());
 					ModuleView<?> moduleView = getController().moduleViewForObject(action.getConnector().getDiagram(), false);
-					ConnectorNode<DiagramConnector> connectorNode = ((DiagramModuleView) moduleView).getController().getDrawing()
+					ConnectorNode<DiagramConnector> connectorNode = ((DiagramModuleView) moduleView).getEditor().getDrawing()
 							.getConnectorNode(action.getConnector());
-					JConnectorView<DiagramConnector> connectorView = ((DiagramModuleView) moduleView).getController().getDrawingView()
+					JConnectorView<DiagramConnector> connectorView = ((DiagramModuleView) moduleView).getEditor().getDrawingView()
 							.connectorViewForNode(connectorNode);
 					if (action.getConnector() != null) {
 						if (connectorView.getLabelView() != null) {

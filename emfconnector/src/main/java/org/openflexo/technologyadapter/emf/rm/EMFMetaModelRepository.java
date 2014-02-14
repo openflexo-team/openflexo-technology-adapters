@@ -20,7 +20,6 @@
 package org.openflexo.technologyadapter.emf.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.MetaModelRepository;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
@@ -42,7 +41,12 @@ public class EMFMetaModelRepository extends MetaModelRepository<EMFMetaModelReso
 	public EMFMetaModelRepository(EMFTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
-	
 
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/EMFTechnologyAdapter/MetaModels";
+
+	@Override
+	public String getDefaultBaseURI() {
+		return DEFAULT_BASE_URI;
+	}
 
 }

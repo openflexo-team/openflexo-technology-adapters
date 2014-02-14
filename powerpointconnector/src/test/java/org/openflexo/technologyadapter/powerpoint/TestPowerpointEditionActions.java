@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.OpenflexoRunTimeTestCase;
+import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -46,7 +46,7 @@ import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPow
 import org.openflexo.toolbox.FileResource;
 
 
-public class TestPowerpointEditionActions extends OpenflexoRunTimeTestCase {
+public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected static final Logger logger = Logger.getLogger(TestPowerpointEditionActions.class.getPackage().getName());
 

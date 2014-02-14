@@ -34,7 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.OpenflexoRunTimeTestCase;
+import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -50,7 +50,7 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
 import org.openflexo.toolbox.FileResource;
 
 
-public class TestPowerpointModel extends OpenflexoRunTimeTestCase {
+public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected static final Logger logger = Logger.getLogger(TestPowerpointModel.class.getPackage().getName());
 

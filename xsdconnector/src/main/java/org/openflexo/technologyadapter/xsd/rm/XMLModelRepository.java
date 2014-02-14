@@ -32,4 +32,11 @@ public class XMLModelRepository extends ModelRepository<XMLXSDFileResource, XMLX
 		super(adapter, resourceCenter);
 	}
 
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/XSDTechnologyAdapter/Models";
+
+	@Override
+	public String getDefaultBaseURI() {
+		return DEFAULT_BASE_URI;
+	}
+
 }

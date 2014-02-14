@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.ApplicationContext;
 import org.openflexo.TestApplicationContext;
-import org.openflexo.foundation.OpenflexoRunTimeTestCase;
+import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
@@ -29,7 +29,7 @@ import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResourceImpl;
 
-public class TestLibrary extends OpenflexoRunTimeTestCase {
+public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 	private static final String FILE_NAME = "library";
 

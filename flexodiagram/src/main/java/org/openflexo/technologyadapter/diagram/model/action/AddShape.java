@@ -88,6 +88,10 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 			throw new InvalidParameterException("shape name is undefined");
 		}
 
+		System.out.println("getFocusedObject()=" + getFocusedObject());
+		System.out.println("getFocusedObject().getDiagram()=" + getFocusedObject().getDiagram());
+		System.out.println("getFocusedObject().getDiagram().getDiagramFactory()=" + getFocusedObject().getDiagram().getDiagramFactory());
+
 		newShape = getFocusedObject().getDiagram().getDiagramFactory().makeNewShape(getNewShapeName(), getParent());
 
 		if (getGraphicalRepresentation() != null) {
@@ -97,6 +101,9 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 		getParent().addToShapes(newShape);
 
 		logger.info("Added shape " + newShape + " under " + getParent());
+
+		System.out.println("newShape=" + newShape);
+		System.out.println("diagram=" + newShape.getDiagram());
 	}
 
 	public DiagramShape getNewShape() {

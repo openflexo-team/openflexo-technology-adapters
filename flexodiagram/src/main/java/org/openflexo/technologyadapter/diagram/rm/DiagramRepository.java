@@ -17,27 +17,27 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.excel.rm;
+package org.openflexo.technologyadapter.diagram.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
-import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
-import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
+import org.openflexo.foundation.technologyadapter.ModelRepository;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 /**
- * Excel workbook repository
+ * A repository storing {@link Diagram}
  * 
  * @author sylvain
  * 
  */
-public class ExcelWorkbookRepository extends
-		TechnologyAdapterFileResourceRepository<ExcelWorkbookResource, ExcelTechnologyAdapter, ExcelWorkbook> {
+public class DiagramRepository extends ModelRepository<DiagramResource, Diagram, DiagramSpecification, DiagramTechnologyAdapter> {
 
-	public ExcelWorkbookRepository(ExcelTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public DiagramRepository(DiagramTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/ExcelTechnologyAdapter/Workbooks";
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/DiagramTechnologyAdapter/Diagrams";
 
 	@Override
 	public String getDefaultBaseURI() {

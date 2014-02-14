@@ -32,8 +32,10 @@ import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
 public abstract class DiagramElementImpl<G extends GraphicalRepresentation> extends FlexoObjectImpl implements DiagramElement<G> {
 
@@ -43,13 +45,17 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	}
 
 	@Override
+	public DiagramTechnologyAdapter getTechnologyAdapter() {
+		if (getDiagram() != null && getDiagram().getResource() != null) {
+			return ((DiagramResource) getDiagram().getResource()).getTechnologyAdapter();
+		}
+		return null;
+	}
+
+	@Override
 	public Diagram getDiagram() {
 		if (getParent() != null) {
-			if (getParent() instanceof Diagram) {
-				return (Diagram) getParent();
-			} else {
-				return getParent().getDiagram();
-			}
+			return getParent().getDiagram();
 		}
 		return null;
 	}

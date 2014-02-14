@@ -1,2 +1,1 @@
-org.openflexo.diagram.controller.DiagramTechnologyAdapterController
-org.openflexo.vpm.controller.VirtualModelTechnologyAdapterController
+org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController

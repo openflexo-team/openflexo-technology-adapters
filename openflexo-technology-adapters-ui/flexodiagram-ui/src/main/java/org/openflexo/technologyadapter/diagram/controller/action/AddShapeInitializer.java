@@ -77,12 +77,18 @@ public class AddShapeInitializer extends ActionInitializer<AddShape, DiagramCont
 		return new FlexoActionFinalizer<AddShape>() {
 			@Override
 			public boolean run(EventObject e, AddShape action) {
+
 				getController().getSelectionManager().setSelectedObject(action.getNewShape());
 
+				System.out.println("Searching module view for " + action.getNewShape().getDiagram());
+
 				ModuleView<?> moduleView = getController().moduleViewForObject(action.getNewShape().getDiagram(), false);
-				ShapeNode<DiagramShape> shapeNode = ((DiagramModuleView) moduleView).getController().getDrawing()
+				System.out.println("moduleView=" + moduleView);
+				System.out.println("editor=" + ((DiagramModuleView) moduleView).getEditor());
+				System.out.println("drawing=" + ((DiagramModuleView) moduleView).getEditor().getDrawing());
+				ShapeNode<DiagramShape> shapeNode = ((DiagramModuleView) moduleView).getEditor().getDrawing()
 						.getShapeNode(action.getNewShape());
-				JShapeView<DiagramShape> shapeView = ((DiagramModuleView) moduleView).getController().getDrawingView()
+				JShapeView<DiagramShape> shapeView = ((DiagramModuleView) moduleView).getEditor().getDrawingView()
 						.shapeViewForNode(shapeNode);
 				if (action.getNewShape() != null) {
 					if (shapeView.getLabelView() != null) {

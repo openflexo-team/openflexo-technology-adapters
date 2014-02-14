@@ -28,6 +28,8 @@ public interface DiagramSpecificationResource extends PamelaResource<DiagramSpec
 		TechnologyAdapterResource<DiagramSpecification, DiagramTechnologyAdapter>,
 		FlexoMetaModelResource<Diagram, DiagramSpecification, DiagramTechnologyAdapter>, DirectoryContainerResource<DiagramSpecification> {
 
+	public static final String DIAGRAM_SPECIFICATION_SUFFIX = ".diagramspecification";
+
 	/**
 	 * Return virtual model stored by this resource<br>
 	 * Load the resource data when unloaded

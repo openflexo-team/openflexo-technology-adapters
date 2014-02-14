@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.OpenflexoRunTimeTestCase;
+import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.TestFlexoServiceManager;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
@@ -47,7 +47,7 @@ import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FileResource;
 
 @RunWith(OrderedRunner.class)
-public class TestOntologies extends OpenflexoRunTimeTestCase {
+public class TestOntologies extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected static final Logger logger = Logger.getLogger(TestOntologies.class.getPackage().getName());
 

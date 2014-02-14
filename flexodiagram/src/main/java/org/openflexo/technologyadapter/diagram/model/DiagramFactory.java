@@ -39,6 +39,7 @@ public class DiagramFactory extends FGEModelFactoryImpl {
 
 	public DiagramFactory() throws ModelDefinitionException {
 		super(Diagram.class, DiagramShape.class, DiagramConnector.class);
+		createUndoManager();
 	}
 
 	public Diagram makeNewDiagram() {

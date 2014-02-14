@@ -51,7 +51,7 @@ public class DiagramModuleView extends JPanel implements ModuleView<Diagram>, Pr
 		getRepresentedObject().getPropertyChangeSupport().addPropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
 	}
 
-	public DiagramEditor getController() {
+	public DiagramEditor getEditor() {
 		return editor;
 	}
 
@@ -63,7 +63,7 @@ public class DiagramModuleView extends JPanel implements ModuleView<Diagram>, Pr
 	@Override
 	public void deleteModuleView() {
 		getRepresentedObject().getPropertyChangeSupport().removePropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
-		getController().delete();
+		getEditor().delete();
 	}
 
 	@Override

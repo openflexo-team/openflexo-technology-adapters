@@ -30,50 +30,51 @@ import org.openflexo.foundation.InvalidArgumentException;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.resource.InvalidFileNameException;
+import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.foundation.view.View;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * This action is called to create a new {@link Diagram}
+ * This action is called to create a new {@link Diagram} in a repository folder
  * 
  * @author sylvain
  */
-public class CreateDiagram extends FlexoAction<CreateDiagram, FlexoObject, FlexoObject> {
+public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagram, FlexoObject, FlexoObject> actionType = new FlexoActionType<CreateDiagram, FlexoObject, FlexoObject>(
+	public static FlexoActionType<CreateDiagram, RepositoryFolder, FlexoObject> actionType = new FlexoActionType<CreateDiagram, RepositoryFolder, FlexoObject>(
 			"create_diagram", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateDiagram makeNewAction(FlexoObject focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+		public CreateDiagram makeNewAction(RepositoryFolder focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 			return new CreateDiagram(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(FlexoObject object, Vector<FlexoObject> globalSelection) {
+		public boolean isVisibleForSelection(RepositoryFolder object, Vector<FlexoObject> globalSelection) {
 			return true;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(FlexoObject object, Vector<FlexoObject> globalSelection) {
+		public boolean isEnabledForSelection(RepositoryFolder object, Vector<FlexoObject> globalSelection) {
 			return object != null;
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(CreateDiagram.actionType, View.class);
+		FlexoObjectImpl.addActionForClass(CreateDiagram.actionType, RepositoryFolder.class);
 	}
 
 	public boolean skipChoosePopup = false;
@@ -84,24 +85,19 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, FlexoObject, Flexo
 	private String diagramURI;
 	private File diagramFile;
 
-	public File getDiagramFile() {
-		return diagramFile;
-	}
-
-	public void setDiagramFile(File diagramFile) {
-		this.diagramFile = diagramFile;
-	}
-
 	private DiagramResource diagramResource;
 
-	CreateDiagram(FlexoObject focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	CreateDiagram(RepositoryFolder focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
 	@Override
 	protected void doAction(Object context) throws InvalidFileNameException, SaveResourceException, InvalidArgumentException {
-		// TODO
-		logger.info("Not implemented yet: Add diagram " + getFocusedObject());
+
+		diagramResource = DiagramResourceImpl.makeDiagramResource(getDiagramName(), getDiagramURI(), getDiagramFile(),
+				diagramSpecification, getServiceManager());
+
+		diagramResource.save(null);
 
 		/*	newVirtualModelInstanceName = JavaUtils.getClassName(newVirtualModelInstanceName);
 
@@ -170,10 +166,10 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, FlexoObject, Flexo
 
 	@Override
 	public boolean isValid() {
-		if (diagramSpecification == null) {
+		/*if (diagramSpecification == null) {
 			errorMessage = noDiagramSpecificationSelectedMessage();
 			return false;
-		}
+		}*/
 		if (StringUtils.isEmpty(diagramName)) {
 			errorMessage = noNameMessage();
 			return false;
@@ -253,7 +249,11 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, FlexoObject, Flexo
 	}
 
 	public void setDiagramName(String diagramName) {
+		boolean wasValid = isValid();
 		this.diagramName = diagramName;
+		getPropertyChangeSupport().firePropertyChange("diagramName", null, diagramName);
+		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
+		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
 	}
 
 	public String getDiagramTitle() {
@@ -261,14 +261,41 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, FlexoObject, Flexo
 	}
 
 	public void setDiagramTitle(String diagramTitle) {
+		boolean wasValid = isValid();
 		this.diagramTitle = diagramTitle;
+		getPropertyChangeSupport().firePropertyChange("diagramTitle", null, diagramTitle);
+		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
+		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
 	}
 
 	public String getDiagramURI() {
+		if (diagramURI == null) {
+			return getDefaultDiagramURI();
+		}
 		return diagramURI;
 	}
 
 	public void setDiagramURI(String diagramURI) {
 		this.diagramURI = diagramURI;
 	}
+
+	public String getDefaultDiagramURI() {
+		return getFocusedObject().getResourceRepository().generateURI(getDiagramName());
+	}
+
+	public File getDiagramFile() {
+		if (diagramFile == null) {
+			return getDefaultDiagramFile();
+		}
+		return diagramFile;
+	}
+
+	public void setDiagramFile(File diagramFile) {
+		this.diagramFile = diagramFile;
+	}
+
+	public File getDefaultDiagramFile() {
+		return new File(getFocusedObject().getFile(), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
+	}
+
 }

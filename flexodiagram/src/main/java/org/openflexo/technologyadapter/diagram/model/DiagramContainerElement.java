@@ -55,7 +55,7 @@ public interface DiagramContainerElement<G extends GraphicalRepresentation> exte
 	 * 
 	 * @return
 	 */
-	@Getter(value = SHAPES, cardinality = Cardinality.LIST)
+	@Getter(value = SHAPES, cardinality = Cardinality.LIST, inverse = DiagramElement.PARENT)
 	@XMLElement(primary = true)
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
@@ -76,7 +76,7 @@ public interface DiagramContainerElement<G extends GraphicalRepresentation> exte
 	 * 
 	 * @return
 	 */
-	@Getter(value = CONNECTORS, cardinality = Cardinality.LIST)
+	@Getter(value = CONNECTORS, cardinality = Cardinality.LIST, inverse = DiagramElement.PARENT)
 	@XMLElement(primary = true)
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded

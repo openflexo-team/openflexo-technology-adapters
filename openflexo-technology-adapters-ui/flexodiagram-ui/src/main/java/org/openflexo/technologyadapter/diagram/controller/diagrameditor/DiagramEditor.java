@@ -89,7 +89,9 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		flexoController = controller;
 		this.swingToolFactory = swingToolFactory;
 
-		diagramDrawing.getDiagram().getDiagramSpecification().addObserver(this);
+		if (diagramDrawing.getDiagram().getDiagramSpecification() != null) {
+			diagramDrawing.getDiagram().getDiagramSpecification().addObserver(this);
+		}
 
 		if (!readOnly) {
 
@@ -193,6 +195,9 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 
 	public JTabbedPane getPaletteView() {
 		if (paletteView == null) {
+
+			System.out.println("On se construit la PaletteView");
+
 			paletteView = new JTabbedPane();
 			orderedPalettes = new Vector<DiagramPalette>(contextualPalettes.keySet());
 			Collections.sort(orderedPalettes);
