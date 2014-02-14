@@ -28,7 +28,6 @@ import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 
@@ -85,7 +84,6 @@ public interface DiagramConnector extends DiagramElement<ConnectorGraphicalRepre
 	 */
 	@Override
 	@Getter(value = PARENT, inverse = DiagramContainerElement.CONNECTORS)
-	@XMLAttribute
 	public DiagramContainerElement<?> getParent();
 
 	// TODO: comment this when method clash in PAMELA will be solved

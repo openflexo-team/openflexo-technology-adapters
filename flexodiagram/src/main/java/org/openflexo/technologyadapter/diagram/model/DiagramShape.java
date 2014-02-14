@@ -24,7 +24,6 @@ import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
 
@@ -60,7 +59,6 @@ public interface DiagramShape extends DiagramContainerElement<ShapeGraphicalRepr
 	 */
 	@Override
 	@Getter(value = PARENT, inverse = DiagramContainerElement.SHAPES)
-	@XMLAttribute
 	public DiagramContainerElement<?> getParent();
 
 	@Override

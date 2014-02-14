@@ -83,7 +83,6 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	 * @return
 	 */
 	@Getter(value = PARENT)
-	@XMLAttribute
 	public DiagramContainerElement<?> getParent();
 
 	/**
