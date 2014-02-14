@@ -92,7 +92,10 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 		System.out.println("getFocusedObject().getDiagram()=" + getFocusedObject().getDiagram());
 		System.out.println("getFocusedObject().getDiagram().getDiagramFactory()=" + getFocusedObject().getDiagram().getDiagramFactory());
 
-		newShape = getFocusedObject().getDiagram().getDiagramFactory().makeNewShape(getNewShapeName(), getParent());
+		System.out.println("GR=" + getGraphicalRepresentation());
+
+		newShape = getFocusedObject().getDiagram().getDiagramFactory()
+				.makeNewShape(getNewShapeName(), getGraphicalRepresentation(), getParent());
 
 		if (getGraphicalRepresentation() != null) {
 			newShape.setGraphicalRepresentation(getGraphicalRepresentation());

@@ -52,6 +52,17 @@ public class DiagramFactory extends FGEModelFactoryImpl {
 		return returned;
 	}
 
+	public DiagramShape makeNewShape(String name, ShapeGraphicalRepresentation gr, DiagramContainerElement<?> container) {
+		if (gr == null) {
+			gr = makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
+		}
+		DiagramShape returned = newInstance(DiagramShape.class);
+		returned.setGraphicalRepresentation(gr);
+		returned.setName(name);
+		container.addToShapes(returned);
+		return returned;
+	}
+
 	public DiagramShape makeNewShape(String name, ShapeType shapeType, FGEPoint fgePoint, DiagramContainerElement<?> container) {
 		ShapeGraphicalRepresentation gr = makeShapeGraphicalRepresentation(shapeType);
 		if (fgePoint != null) {
@@ -69,11 +80,14 @@ public class DiagramFactory extends FGEModelFactoryImpl {
 		return makeNewShape(name, ShapeType.RECTANGLE, null, container);
 	}
 
-	public DiagramConnector makeNewConnector(String name, DiagramShape shape1, DiagramShape shape2, DiagramContainerElement<?> container) {
+	public DiagramConnector makeNewConnector(String name, DiagramShape startShape, DiagramShape endShape,
+			DiagramContainerElement<?> container) {
 		ConnectorGraphicalRepresentation gr = makeConnectorGraphicalRepresentation(ConnectorType.LINE);
 		DiagramConnector returned = newInstance(DiagramConnector.class);
 		returned.setGraphicalRepresentation(gr);
 		returned.setName(name);
+		returned.setStartShape(startShape);
+		returned.setEndShape(endShape);
 		container.addToConnectors(returned);
 		return returned;
 	}

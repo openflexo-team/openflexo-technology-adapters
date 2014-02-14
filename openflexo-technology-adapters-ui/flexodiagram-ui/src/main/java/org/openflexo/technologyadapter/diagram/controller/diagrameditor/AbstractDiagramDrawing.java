@@ -138,6 +138,7 @@ public abstract class AbstractDiagramDrawing extends DrawingImpl<Diagram> implem
 	}
 
 	protected ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramShape shape, DiagramFactory factory) {
+
 		ShapeGraphicalRepresentation returned = null;
 		if (shape.getGraphicalRepresentation() != null) {
 			shape.getGraphicalRepresentation().setFactory(factory);

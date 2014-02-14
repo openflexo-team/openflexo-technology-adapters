@@ -27,6 +27,7 @@ import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
 import org.openflexo.fge.FGEConstants;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.control.DianaInteractiveEditor.EditorTool;
 import org.openflexo.fge.control.DrawingPalette;
 import org.openflexo.fge.control.PaletteElement;
@@ -147,6 +148,12 @@ public class CommonPalette extends DrawingPalette {
 
 				ShapeGraphicalRepresentation shapeGR = getEditor().getFactory().makeShapeGraphicalRepresentation(
 						getGraphicalRepresentation());
+
+				shapeGR.setIsReadOnly(false);
+				shapeGR.setIsFocusable(true);
+				shapeGR.setIsSelectable(true);
+				shapeGR.setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
+
 				if (shapeGR.getShapeSpecification().getShapeType() == ShapeType.SQUARE
 						|| shapeGR.getShapeSpecification().getShapeType() == ShapeType.CIRCLE) {
 					shapeGR.setWidth(40);
@@ -172,6 +179,10 @@ public class CommonPalette extends DrawingPalette {
 				shapeGR.setY(dropLocation.y);
 				// shapeGR.setAllowToLeaveBounds(true);
 
+				System.out.println("OK, create AddShape");
+				System.out.println("location=" + shapeGR.getLocation());
+				System.out.println("size=" + shapeGR.getSize());
+
 				AddShape action = AddShape.actionType.makeNewAction(container, null, editor.getFlexoController().getEditor());
 				action.setGraphicalRepresentation(shapeGR);
 				action.setNewShapeName(shapeGR.getText());
@@ -185,6 +196,10 @@ public class CommonPalette extends DrawingPalette {
 				action.doAction();
 
 				DiagramShape newShape = action.getNewShape();
+
+				System.out.println("Apres la creation:");
+				System.out.println("location=" + newShape.getGraphicalRepresentation().getLocation());
+				System.out.println("size=" + newShape.getGraphicalRepresentation().getSize());
 
 				getEditor().getFactory().getUndoManager().stopRecording(edit);
 
