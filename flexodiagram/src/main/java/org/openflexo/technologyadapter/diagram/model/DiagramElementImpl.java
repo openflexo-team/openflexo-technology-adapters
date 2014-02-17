@@ -19,6 +19,8 @@
  */
 package org.openflexo.technologyadapter.diagram.model;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -31,13 +33,15 @@ import org.openflexo.foundation.view.EditionPatternInstance;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.model.factory.ProxyMethodHandler;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
-public abstract class DiagramElementImpl<G extends GraphicalRepresentation> extends FlexoObjectImpl implements DiagramElement<G> {
+public abstract class DiagramElementImpl<G extends GraphicalRepresentation> extends FlexoObjectImpl implements DiagramElement<G>,
+		PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(DiagramElementImpl.class.getPackage().getName());
 
@@ -50,6 +54,38 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 			return ((DiagramResource) getDiagram().getResource()).getTechnologyAdapter();
 		}
 		return null;
+	}
+
+	@Override
+	public void setGraphicalRepresentation(G graphicalRepresentation) {
+		if (graphicalRepresentation != getGraphicalRepresentation()) {
+			if (getGraphicalRepresentation() != null) {
+				if (getGraphicalRepresentation().getPropertyChangeSupport() != null) {
+					getGraphicalRepresentation().getPropertyChangeSupport().removePropertyChangeListener(this);
+				}
+			}
+			performSuperSetter(GRAPHICAL_REPRESENTATION, graphicalRepresentation);
+			if (graphicalRepresentation != null) {
+				if (graphicalRepresentation.getPropertyChangeSupport() != null) {
+					graphicalRepresentation.getPropertyChangeSupport().addPropertyChangeListener(this);
+				}
+			}
+		}
+	}
+
+	@Override
+	public boolean delete(Object... context) {
+		if (getGraphicalRepresentation() != null) {
+			if (getGraphicalRepresentation().getPropertyChangeSupport() != null) {
+				getGraphicalRepresentation().getPropertyChangeSupport().removePropertyChangeListener(this);
+			}
+		}
+		return performSuperDelete(context);
+	}
+
+	@Override
+	public Diagram getResourceData() {
+		return getDiagram();
 	}
 
 	@Override
@@ -184,4 +220,13 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 		}
 		return null;
 	}
+
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getPropertyName().equals(ProxyMethodHandler.MODIFIED)) {
+			System.out.println("Received MODIFIED for " + this + "!!!!!!!!!");
+			setModified(true);
+		}
+	}
+
 }
