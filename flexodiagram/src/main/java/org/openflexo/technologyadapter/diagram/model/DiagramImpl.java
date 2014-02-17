@@ -178,6 +178,12 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 		screenshotModified = true;
 	}
 
+	/*@Override
+	public boolean isModified() {
+		// TODO Auto-generated method stub
+		return super.isModified();
+	}*/
+
 	@Override
 	public String getName() {
 		if (getResource() != null) {

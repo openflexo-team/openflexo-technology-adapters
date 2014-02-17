@@ -15,6 +15,7 @@ import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.VEIconLibrary;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.action.AddConnectorInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.AddDiagramPaletteElementInitializer;
@@ -63,6 +64,8 @@ import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
+import org.openflexo.view.menu.WindowMenu;
+import org.openflexo.view.menu.WindowMenu.WindowMenuItem;
 
 public class DiagramTechnologyAdapterController extends TechnologyAdapterController<DiagramTechnologyAdapter> {
 
@@ -92,7 +95,33 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		inspectors.getConnectorInspector().setLocation(1000, 700);
 		inspectors.getLocationSizeInspector().setLocation(1000, 50);
 
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(new FileResource("Inspectors/OWL"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(new FileResource("Inspectors/Diagram"));
+
+		WindowMenu viewMenu = actionInitializer.getController().getMenuBar().getWindowMenu();
+		viewMenu.addSeparator();
+
+		WindowMenuItem foregroundInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("foreground_inspector"),
+				inspectors.getForegroundStyleInspector());
+		WindowMenuItem backgroundInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("background_inspector"),
+				inspectors.getBackgroundStyleInspector());
+		WindowMenuItem textInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("text_inspector"),
+				inspectors.getTextStyleInspector());
+		WindowMenuItem shapeInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("shape_inspector"),
+				inspectors.getShapeInspector());
+		WindowMenuItem connectorInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("connector_inspector"),
+				inspectors.getConnectorInspector());
+		WindowMenuItem shadowInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("shadow_inspector"),
+				inspectors.getShadowStyleInspector());
+		WindowMenuItem locationSizeInspectorItem = viewMenu.new WindowMenuItem(
+				FlexoLocalization.localizedForKey("location_size_inspector"), inspectors.getLocationSizeInspector());
+
+		viewMenu.add(foregroundInspectorItem);
+		viewMenu.add(backgroundInspectorItem);
+		viewMenu.add(textInspectorItem);
+		viewMenu.add(shapeInspectorItem);
+		viewMenu.add(connectorInspectorItem);
+		viewMenu.add(shadowInspectorItem);
+		viewMenu.add(locationSizeInspectorItem);
 
 		// ExampleDiagram edition
 		new CreateDiagramSpecificationInitializer(actionInitializer);
@@ -300,6 +329,9 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 			System.out.println("Ici3, paletteView=" + ((DiagramModuleView) moduleView).getEditor().getPaletteView());
 			perspective.setTopRightView(((DiagramModuleView) moduleView).getEditor().getPaletteView());
 			// perspective.setHeader(((DiagramModuleView) moduleView).getEditor().getS());
+
+			inspectors.attachToEditor(((DiagramModuleView) moduleView).getEditor());
+
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
