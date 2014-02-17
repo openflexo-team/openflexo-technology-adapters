@@ -44,7 +44,6 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
-import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeAction, DropScheme, VirtualModelInstanceObject> {
@@ -70,7 +69,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 
 		@Override
 		public boolean isEnabledForSelection(VirtualModelInstanceObject object, Vector<VirtualModelInstanceObject> globalSelection) {
-			return object instanceof DiagramElement<?>;
+			return true; // object instanceof DiagramElement<?>;
 		}
 
 	};

@@ -151,7 +151,10 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 	 */
 	@Override
 	public String getURI() {
-		return this.getFile().toURI().toString();
+		if (getFile() != null) {
+			return getFile().toURI().toString();
+		}
+		return "uri_not_found";
 	}
 
 	private void writeToFile() throws SaveResourceException {
