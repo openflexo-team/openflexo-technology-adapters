@@ -101,7 +101,6 @@ public class DiagramSpecification extends DefaultFlexoObject /*FlexoObjectImpl*/
 		palettes = new ArrayList<DiagramPalette>();
 	}
 
-	@Override
 	public FlexoServiceManager getServiceManager() {
 		return getResource().getServiceManager();
 	}
