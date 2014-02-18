@@ -56,7 +56,7 @@ public class ExcelActorReference<T extends ExcelObject> extends ActorReference<T
 	}
 
 	@Override
-	public T retrieveObject() {
+	public T getModellingElement() {
 		if (object == null) {
 			ModelSlotInstance msInstance = getModelSlotInstance();
 			if (msInstance.getResource() == null) {

@@ -35,7 +35,7 @@ public class DataPropertyStatementActorReference extends ActorReference<DataProp
 	}
 
 	@Override
-	public DataPropertyStatement retrieveObject() {
+	public DataPropertyStatement getModellingElement() {
 		if (statement == null) {
 			IFlexoOntologyObject subject = getProject().getOntologyObject(subjectURI);
 			if (subject instanceof OWLConcept == false) {

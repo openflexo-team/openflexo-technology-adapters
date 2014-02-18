@@ -56,7 +56,7 @@ public class PowerpointActorReference<T extends PowerpointObject> extends ActorR
 	}
 
 	@Override
-	public T retrieveObject() {
+	public T getModellingElement() {
 		if (object == null) {
 			ModelSlotInstance msInstance = getModelSlotInstance();
 			if (msInstance.getResource() == null) {

@@ -35,7 +35,7 @@ public class ObjectPropertyStatementActorReference extends ActorReference<Object
 	}
 
 	@Override
-	public ObjectPropertyStatement retrieveObject() {
+	public ObjectPropertyStatement getModellingElement() {
 		if (statement == null) {
 			OWLObject subject = (OWLObject) getProject().getOntologyObject(subjectURI);
 			if (subject == null) {

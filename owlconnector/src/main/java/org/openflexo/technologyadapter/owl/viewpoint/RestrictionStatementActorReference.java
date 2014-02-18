@@ -26,7 +26,7 @@ public class RestrictionStatementActorReference extends ActorReference<OWLRestri
 	}
 
 	@Override
-	public OWLRestriction retrieveObject() {
+	public OWLRestriction getModellingElement() {
 		return null;
 	}
 }

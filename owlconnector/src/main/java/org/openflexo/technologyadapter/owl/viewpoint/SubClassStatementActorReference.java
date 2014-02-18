@@ -31,7 +31,7 @@ public class SubClassStatementActorReference extends ActorReference<SubClassStat
 	}
 
 	@Override
-	public SubClassStatement retrieveObject() {
+	public SubClassStatement getModellingElement() {
 		if (statement == null) {
 			OWLObject subject = (OWLObject) getProject().getOntologyObject(subjectURI);
 			if (subject instanceof OWLConcept == false) {
