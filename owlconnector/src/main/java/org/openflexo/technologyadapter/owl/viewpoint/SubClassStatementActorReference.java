@@ -1,54 +1,109 @@
 package org.openflexo.technologyadapter.owl.viewpoint;
 
-import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.view.ActorReference;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.logging.FlexoLogger;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
-import org.openflexo.technologyadapter.owl.model.OWLObject;
+import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.SubClassStatement;
 
-public class SubClassStatementActorReference extends ActorReference<SubClassStatement> {
+public interface SubClassStatementActorReference extends ActorReference<SubClassStatement> {
 
-	public SubClassStatement statement;
-	public String subjectURI;
-	public String parentURI;
+	@PropertyIdentifier(type = String.class)
+	public static final String SUBJECT_URI_KEY = "subjectURI";
+	@PropertyIdentifier(type = String.class)
+	public static final String PARENT_URI_KEY = "parentURI";
 
-	public SubClassStatementActorReference(SubClassStatement o, SubClassStatementPatternRole aPatternRole,
-			EditionPatternInstance epi) {
-		super(epi.getProject());
-		setEditionPatternInstance(epi);
-		setPatternRole(aPatternRole);
-		statement = o;
-		subjectURI = o.getSubject().getURI();
-		parentURI = o.getParent().getURI();
-	}
+	@Getter(value = SUBJECT_URI_KEY)
+	@XMLAttribute
+	public String getSubjectURI();
 
-	// Constructor used during deserialization
-	public SubClassStatementActorReference(FlexoProject project) {
-		super(project);
-	}
+	@Setter(SUBJECT_URI_KEY)
+	public void setSubjectURI(String objectURI);
 
-	@Override
-	public SubClassStatement getModellingElement() {
-		if (statement == null) {
-			OWLObject subject = (OWLObject) getProject().getOntologyObject(subjectURI);
-			if (subject instanceof OWLConcept == false) {
-				if (SubClassStatementPatternRole.SubClassStatementPatternRoleImpl.logger.isLoggable(Level.WARNING)) {
-					SubClassStatementPatternRole.SubClassStatementPatternRoleImpl.logger.warning("Statements aren't supported by non-owl ontologies, subject's URI: " + subjectURI);
+	@Getter(value = PARENT_URI_KEY)
+	@XMLAttribute
+	public String getParentURI();
+
+	@Setter(PARENT_URI_KEY)
+	public void setParentURI(String parentURI);
+
+	public abstract static class SubClassStatementActorReferenceImpl extends ActorReferenceImpl<SubClassStatement> implements
+			SubClassStatementActorReference {
+
+		static final Logger logger = FlexoLogger.getLogger(SubClassStatementActorReferenceImpl.class.getPackage().toString());
+
+		private SubClassStatement statement;
+		private String subjectURI;
+		private String parentURI;
+
+		/*public SubClassStatementActorReference(SubClassStatement o, SubClassStatementPatternRole aPatternRole, EditionPatternInstance epi) {
+			super(epi.getProject());
+			setEditionPatternInstance(epi);
+			setPatternRole(aPatternRole);
+			statement = o;
+			subjectURI = o.getSubject().getURI();
+			parentURI = o.getParent().getURI();
+		}*/
+
+		// Constructor used during deserialization
+		/*public SubClassStatementActorReference(FlexoProject project) {
+			super(project);
+		}*/
+
+		@Override
+		public void setModellingElement(SubClassStatement statement) {
+			this.statement = statement;
+			if (statement != null && getModelSlotInstance() != null) {
+				subjectURI = statement.getSubject().getURI();
+				parentURI = statement.getParent().getURI();
+			}
+		}
+
+		@Override
+		public SubClassStatement getModellingElement() {
+			if (statement == null) {
+				OWLOntology ontology = (OWLOntology) getModelSlotInstance().getAccessedResourceData();
+				if (ontology != null) {
+					OWLConcept<?> subject = ontology.getOntologyObject(subjectURI);
+					OWLConcept<?> parent = ontology.getOntologyObject(parentURI);
+					if (subject != null && parent != null) {
+						// TODO: also handle value here
+						statement = ((OWLConcept<?>) subject).getSubClassStatement(parent);
+					}
+				} else {
+					logger.warning("Could not access to ontology referenced by " + getModelSlotInstance());
 				}
-				return null;
 			}
-			OWLConcept<?> parent = (OWLConcept<?>) getProject().getOntologyObject(parentURI);
-			if (subject != null && parent != null) {
-				statement = ((OWLConcept<?>) subject).getSubClassStatement(parent);
+			if (statement == null) {
+				logger.warning("Could not retrieve sub-class statement" + subjectURI + " " + parentURI);
 			}
-			SubClassStatementPatternRole.SubClassStatementPatternRoleImpl.logger.info("Found statement: " + statement);
+			return statement;
 		}
-		if (statement == null) {
-			SubClassStatementPatternRole.SubClassStatementPatternRoleImpl.logger.warning("Could not retrieve object " + parentURI);
+
+		@Override
+		public String getSubjectURI() {
+			return subjectURI;
 		}
-		return statement;
+
+		@Override
+		public void setSubjectURI(String subjectURI) {
+			this.subjectURI = subjectURI;
+		}
+
+		@Override
+		public String getParentURI() {
+			return parentURI;
+		}
+
+		@Override
+		public void setParentURI(String parentURI) {
+			this.parentURI = parentURI;
+		}
 	}
 }

@@ -22,69 +22,89 @@ package org.openflexo.technologyadapter.xml.viewpoint;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.view.ActorReference;
-import org.openflexo.foundation.view.EditionPatternInstance;
 import org.openflexo.foundation.view.ModelSlotInstance;
-import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.model.XMLObject;
 
-public class XMLActorReference<T extends XMLObject> extends ActorReference<T> {
+@ModelEntity
+@ImplementationClass(XMLActorReference.XMLActorReferenceImpl.class)
+@XMLElement
+public interface XMLActorReference<T extends XMLObject> extends ActorReference<T> {
 
-	private static final Logger logger = FlexoLogger.getLogger(XMLActorReference.class.getPackage().toString());
+	@PropertyIdentifier(type = String.class)
+	public static final String OBJECT_URI_KEY = "objectURI";
 
-	private T object;
-	private String objectURI;
+	@Getter(value = OBJECT_URI_KEY)
+	@XMLAttribute
+	public String getObjectURI();
 
-	// Constructor used during deserialization
-	public XMLActorReference(FlexoProject project) {
-		super(project);
-	}
+	@Setter(OBJECT_URI_KEY)
+	public void setObjectURI(String objectURI);
 
-	public XMLActorReference(T o, PatternRole<T> aPatternRole, EditionPatternInstance epi) {
+	public static abstract class XMLActorReferenceImpl<T extends XMLObject> extends ActorReferenceImpl<T> implements XMLActorReference<T> {
 
-		super(epi.getProject());
-		setEditionPatternInstance(epi);
-		setPatternRole(aPatternRole);
-		object = o;
+		private static final Logger logger = FlexoLogger.getLogger(XMLActorReferenceImpl.class.getPackage().toString());
 
-		ModelSlotInstance msInstance = getModelSlotInstance();
-		/** Model Slot is responsible for URI mapping */
-		objectURI = msInstance.getModelSlot().getURIForObject(msInstance, o);
+		private T object;
+		private String objectURI;
 
-	}
+		/**
+		 * Default constructor
+		 */
+		public XMLActorReferenceImpl() {
+			super();
+		}
 
-	@Override
-	public T getModellingElement() {
-		if (object == null) {
-			ModelSlotInstance msInstance = getModelSlotInstance();
-			if (msInstance.getResource() != null) {
-				// object = (T) getProject().getObject(objectURI);
+		@Override
+		public T getModellingElement() {
+			if (object == null) {
+				ModelSlotInstance msInstance = getModelSlotInstance();
+				if (msInstance.getAccessedResourceData() != null) {
+					/** Model Slot is responsible for URI mapping */
+					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
+				} else {
+					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
+				}
+			}
+			if (object == null) {
+				logger.warning("Could not retrieve object " + objectURI);
+			}
+			return object;
+
+		}
+
+		@Override
+		public void setModellingElement(T object) {
+			this.object = object;
+			if (object != null && getModelSlotInstance() != null) {
+				ModelSlotInstance msInstance = getModelSlotInstance();
 				/** Model Slot is responsible for URI mapping */
-				object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
-			} else {
-				logger.warning("Could not access to model in model slot " + getModelSlotInstance());
-				logger.warning("Searched " + getModelSlotInstance().getResource().getURI());
+				objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
 			}
 		}
-		if (object == null) {
-			logger.warning("Could not retrieve object " + objectURI);
+
+		@Override
+		public String getObjectURI() {
+			if (object != null) {
+				ModelSlotInstance msInstance = getModelSlotInstance();
+				objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
+			}
+			return objectURI;
 		}
-		return object;
 
-	}
-
-	public String _getObjectURI() {
-		if (object != null) {
-			ModelSlotInstance msInstance = getModelSlotInstance();
-			objectURI = msInstance.getModelSlot().getURIForObject(msInstance, object);
+		@Override
+		public void setObjectURI(String objectURI) {
+			this.objectURI = objectURI;
 		}
-		return objectURI;
-	}
 
-	public void _setObjectURI(String objectURI) {
-		this.objectURI = objectURI;
 	}
 
 }

@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -37,7 +38,12 @@ public interface SubClassStatementPatternRole extends StatementPatternRole<SubCl
 
 		@Override
 		public SubClassStatementActorReference makeActorReference(SubClassStatement object, EditionPatternInstance epi) {
-			return new SubClassStatementActorReference(object, this, epi);
+			VirtualModelInstanceModelFactory factory = epi.getFactory();
+			SubClassStatementActorReference returned = factory.newInstance(SubClassStatementActorReference.class);
+			returned.setPatternRole(this);
+			returned.setEditionPatternInstance(epi);
+			returned.setModellingElement(object);
+			return returned;
 		}
 	}
 }

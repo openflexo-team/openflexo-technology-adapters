@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -54,7 +55,12 @@ public interface PowerpointSlidePatternRole extends PatternRole<PowerpointSlide>
 
 		@Override
 		public ActorReference<PowerpointSlide> makeActorReference(PowerpointSlide object, EditionPatternInstance epi) {
-			return new PowerpointActorReference(object, this, epi);
+			VirtualModelInstanceModelFactory factory = epi.getFactory();
+			PowerpointActorReference returned = factory.newInstance(PowerpointActorReference.class);
+			returned.setPatternRole(this);
+			returned.setEditionPatternInstance(epi);
+			returned.setModellingElement(object);
+			return returned;
 		}
 
 	}

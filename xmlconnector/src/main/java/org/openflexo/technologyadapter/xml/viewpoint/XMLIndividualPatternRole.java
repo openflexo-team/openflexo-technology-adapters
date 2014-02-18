@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -75,7 +76,12 @@ public interface XMLIndividualPatternRole extends PatternRole<XMLIndividual> {
 
 		@Override
 		public ActorReference<XMLIndividual> makeActorReference(XMLIndividual object, EditionPatternInstance epi) {
-			return new XMLActorReference(object, this, epi);
+			VirtualModelInstanceModelFactory factory = epi.getFactory();
+			XMLActorReference returned = factory.newInstance(XMLActorReference.class);
+			returned.setPatternRole(this);
+			returned.setEditionPatternInstance(epi);
+			returned.setModellingElement(object);
+			return returned;
 		}
 
 		@Override
