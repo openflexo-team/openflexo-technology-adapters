@@ -25,7 +25,9 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.FGEObject;
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.FlexoUndoableAction;
@@ -108,7 +110,7 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 		return returned;
 	}
 
-	private List<DiagramElement<?>> diagramElementsToDelete;
+	private List<FlexoObject> diagramElementsToDelete;
 	private HashMap<EditionPatternInstance, DeletionScheme> selectedEditionPatternInstanceDeletionSchemes;
 	private DeletionScheme selectedDeletionScheme;
 	private EditionPatternInstance selectedEditionPatternInstance;
@@ -150,7 +152,7 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 			}
 		}*/
 
-		for (DiagramElement<?> o : getDiagramElementsToDelete()) {
+		for (FlexoObject o : getDiagramElementsToDelete()) {
 			if (!o.isDeleted()) {
 				logger.info("Delete undeleted DiagramElement " + o);
 				o.delete();
@@ -170,7 +172,7 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 		logger.warning("REDO DELETE not implemented yet !");
 	}
 
-	public List<DiagramElement<?>> getDiagramElementsToDelete() {
+	public List<FlexoObject> getDiagramElementsToDelete() {
 		if (diagramElementsToDelete == null) {
 			computeElementsToDelete();
 		}
@@ -183,7 +185,7 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 				.getDiagramFactory()
 				.getEmbeddedObjects(getFocusedObject(), EmbeddingType.DELETION,
 						getGlobalSelection().toArray(new DiagramElement<?>[getGlobalSelection().size()]));
-
+		
 	}
 
 	public DeletionScheme getSelectedDeletionScheme() {
