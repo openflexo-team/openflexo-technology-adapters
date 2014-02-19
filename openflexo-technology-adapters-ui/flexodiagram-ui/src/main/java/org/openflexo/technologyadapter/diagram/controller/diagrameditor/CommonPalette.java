@@ -21,10 +21,13 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.io.File;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.BackgroundStyle.BackgroundStyleType;
 import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
+import org.openflexo.fge.BackgroundImageBackgroundStyle;
 import org.openflexo.fge.FGEConstants;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
@@ -42,6 +45,7 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.AddShape;
+import org.openflexo.toolbox.FileResource;
 
 public class CommonPalette extends DrawingPalette {
 
@@ -52,6 +56,7 @@ public class CommonPalette extends DrawingPalette {
 	private static final int GRID_HEIGHT = 40;
 	public static final Font DEFAULT_TEXT_FONT = new Font("SansSerif", Font.PLAIN, 7);
 	public static final Font LABEL_FONT = new Font("SansSerif", Font.PLAIN, 11);
+	private static final File DEFAULT_IMAGE = new FileResource("Icons/Diagram.png");
 
 	private final DiagramEditor editor;
 
@@ -60,7 +65,7 @@ public class CommonPalette extends DrawingPalette {
 
 		this.editor = editor;
 
-		ShapeSpecification[] ssp = new ShapeSpecification[11];
+		ShapeSpecification[] ssp = new ShapeSpecification[12];
 
 		ssp[0] = FACTORY.makeShape(ShapeType.RECTANGLE);
 		ssp[1] = FACTORY.makeShape(ShapeType.RECTANGLE);
@@ -75,10 +80,14 @@ public class CommonPalette extends DrawingPalette {
 		ssp[8] = FACTORY.makeShape(ShapeType.TRIANGLE);
 		ssp[9] = FACTORY.makeShape(ShapeType.STAR);
 		ssp[10] = FACTORY.makeShape(ShapeType.ARC);
+		ssp[11] = FACTORY.makeShape(ShapeType.RECTANGLE);
 
 		int px = 0;
 		int py = 0;
 		for (ShapeSpecification sspi : ssp) {
+			if(sspi==ssp[11]){
+				addElement(makeImagePaletteElement(sspi, px, py, DEFAULT_IMAGE));
+			}
 			addElement(makePaletteElement(sspi, px, py));
 			px = px + 1;
 			if (px == 3) {
@@ -92,11 +101,8 @@ public class CommonPalette extends DrawingPalette {
 	public DiagramEditor getEditor() {
 		return editor;
 	}
-
-	private PaletteElement makePaletteElement(ShapeSpecification shapeSpecification, int px, int py) {
-		final ShapeGraphicalRepresentation gr = FACTORY.makeShapeGraphicalRepresentation(shapeSpecification);
-		FACTORY.applyDefaultProperties(gr);
-		// if (gr.getDimensionConstraints() == DimensionConstraints.CONSTRAINED_DIMENSIONS) {
+	
+	private void computePaletteElementPosition(ShapeSpecification shapeSpecification, int px, int py, ShapeGraphicalRepresentation gr){
 		if (shapeSpecification.getShapeType() == ShapeType.SQUARE || shapeSpecification.getShapeType() == ShapeType.CIRCLE) {
 			gr.setX(px * GRID_WIDTH + 15);
 			gr.setY(py * GRID_HEIGHT + 10);
@@ -108,6 +114,13 @@ public class CommonPalette extends DrawingPalette {
 			gr.setWidth(40);
 			gr.setHeight(30);
 		}
+	}
+
+	private PaletteElement makePaletteElement(ShapeSpecification shapeSpecification, int px, int py) {
+		final ShapeGraphicalRepresentation gr = FACTORY.makeShapeGraphicalRepresentation(shapeSpecification);
+		FACTORY.applyDefaultProperties(gr);
+		// if (gr.getDimensionConstraints() == DimensionConstraints.CONSTRAINED_DIMENSIONS) {
+		computePaletteElementPosition(shapeSpecification, px, py, gr);
 		// gr.setText(st.name());
 		gr.setTextStyle(FACTORY.makeTextStyle(Color.DARK_GRAY, DEFAULT_TEXT_FONT));
 		gr.setIsFloatingLabel(false);
@@ -118,6 +131,19 @@ public class CommonPalette extends DrawingPalette {
 
 		return makePaletteElement(gr, true, true, true, true);
 
+	}
+	
+	private PaletteElement makeImagePaletteElement(ShapeSpecification shapeSpecification, int px, int py, File image) {
+		final ShapeGraphicalRepresentation gr = FACTORY.makeShapeGraphicalRepresentation(shapeSpecification);
+		computePaletteElementPosition(shapeSpecification, px, py, gr);
+		gr.setBackgroundType(BackgroundStyleType.IMAGE);
+		gr.getForeground().setNoStroke(true);
+		gr.getShadowStyle().setDrawShadow(false);
+		((BackgroundImageBackgroundStyle)gr.getBackground()).setFitToShape(true);
+		((BackgroundImageBackgroundStyle)gr.getBackground()).setImageFile(image);
+		gr.setIsVisible(true);
+		gr.setAllowToLeaveBounds(false);
+		return makePaletteElement(gr, false, false, false, false);
 	}
 
 	private PaletteElement makePaletteElement(final ShapeGraphicalRepresentation gr, final boolean applyCurrentForeground,
