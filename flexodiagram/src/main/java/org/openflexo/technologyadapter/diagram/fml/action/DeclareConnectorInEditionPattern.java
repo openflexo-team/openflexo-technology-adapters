@@ -31,13 +31,13 @@ import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionPatternInstancePatternRole;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstancePatternRole;
 import org.openflexo.foundation.viewpoint.IndividualPatternRole;
 import org.openflexo.foundation.viewpoint.URIParameter;
 import org.openflexo.foundation.viewpoint.VirtualModelModelSlot;
 import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
 import org.openflexo.foundation.viewpoint.editionaction.DeclarePatternRole;
-import org.openflexo.foundation.viewpoint.inspector.EditionPatternInspector;
+import org.openflexo.foundation.viewpoint.inspector.FlexoConceptInspector;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
@@ -160,7 +160,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 				}
 
 				// Create an edition pattern pattern role if required
-				EditionPatternInstancePatternRole editionPatternPatternRole = null;
+				FlexoConceptInstancePatternRole editionPatternPatternRole = null;
 				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
 					if (isVirtualModelModelSlot()) {
 						VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
@@ -341,7 +341,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 				newFlexoConcept.addToEditionSchemes(newLinkScheme);
 
 				// Add inspector
-				EditionPatternInspector inspector = newFlexoConcept.getInspector();
+				FlexoConceptInspector inspector = newFlexoConcept.getInspector();
 				inspector.setInspectorTitle(getEditionPatternName());
 				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
 					/*for (PropertyEntry e : propertyEntries) {

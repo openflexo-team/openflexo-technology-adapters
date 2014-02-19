@@ -33,12 +33,12 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionPatternInstancePatternRole;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstancePatternRole;
 import org.openflexo.foundation.viewpoint.IndividualPatternRole;
 import org.openflexo.foundation.viewpoint.URIParameter;
 import org.openflexo.foundation.viewpoint.VirtualModelModelSlot;
 import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
-import org.openflexo.foundation.viewpoint.inspector.EditionPatternInspector;
+import org.openflexo.foundation.viewpoint.inspector.FlexoConceptInspector;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -363,7 +363,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 					// Create pattern role, if it is an ontology then we create an individual, otherwise if it is a virtual model we create
 					// an edition pattern instance
 					IndividualPatternRole<?> individualPatternRole = null;
-					EditionPatternInstancePatternRole editionPatternPatternRole = null;
+					FlexoConceptInstancePatternRole editionPatternPatternRole = null;
 					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
 						if (isTypeAwareModelSlot()) {
 							TypeAwareModelSlot<?, ?> flexoOntologyModelSlot = (TypeAwareModelSlot<?, ?>) getModelSlot();
@@ -617,7 +617,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 					}
 
 					// Add inspector
-					EditionPatternInspector inspector = newFlexoConcept.getInspector();
+					FlexoConceptInspector inspector = newFlexoConcept.getInspector();
 					inspector.setInspectorTitle(getEditionPatternName());
 					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
 						/*for (PropertyEntry e : propertyEntries) {

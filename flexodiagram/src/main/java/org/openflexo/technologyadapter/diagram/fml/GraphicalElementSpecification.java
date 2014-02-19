@@ -16,7 +16,7 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.validation.Validable;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionPatternObject;
+import org.openflexo.foundation.viewpoint.FlexoConceptObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -36,7 +36,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 @ModelEntity
 @ImplementationClass(GraphicalElementSpecification.GraphicalElementSpecificationImpl.class)
 @XMLElement(xmlTag = "GRSpec")
-public interface GraphicalElementSpecification<T, GR extends GraphicalRepresentation> extends EditionPatternObject, Bindable {
+public interface GraphicalElementSpecification<T, GR extends GraphicalRepresentation> extends FlexoConceptObject, Bindable {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String FEATURE_NAME_KEY = "featureName";
@@ -78,7 +78,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 
 	public void setMandatory(boolean mandatory);
 
-	public static abstract class GraphicalElementSpecificationImpl<T, GR extends GraphicalRepresentation> extends EditionPatternObjectImpl
+	public static abstract class GraphicalElementSpecificationImpl<T, GR extends GraphicalRepresentation> extends FlexoConceptObjectImpl
 			implements GraphicalElementSpecification<T, GR> {
 
 		@SuppressWarnings("unused")

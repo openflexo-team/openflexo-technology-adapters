@@ -25,7 +25,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.viewpoint.AbstractCreationScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionPatternInstanceType;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstanceType;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -173,7 +173,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 			super.appendContextualBindingVariables(bindingModel);
 			bindingModelNeedToBeRecomputed = false;
 			if (getTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TARGET, EditionPatternInstanceType
+				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getTargetFlexoConcept())));
 			} else if (_getTarget() != null && !_getTarget().equals("top")) {
 				// logger.warning("Cannot find edition pattern " + _getTarget() + " !!!!!!!!!!!!!!");

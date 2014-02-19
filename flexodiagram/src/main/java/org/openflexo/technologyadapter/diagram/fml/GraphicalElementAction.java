@@ -30,7 +30,7 @@ import org.openflexo.foundation.validation.Validable;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.AbstractActionScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionPatternObject;
+import org.openflexo.foundation.viewpoint.FlexoConceptObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -43,7 +43,7 @@ import org.openflexo.model.annotations.XMLElement;
 @ModelEntity
 @ImplementationClass(GraphicalElementAction.GraphicalElementActionImpl.class)
 @XMLElement(xmlTag = "Action")
-public interface GraphicalElementAction extends EditionPatternObject {
+public interface GraphicalElementAction extends FlexoConceptObject {
 
 	public static enum ActionMask {
 		SingleClick, DoubleClick, ShiftClick, AltClick, CtrlClick, MetaClick;
@@ -78,7 +78,7 @@ public interface GraphicalElementAction extends EditionPatternObject {
 
 	public boolean evaluateCondition(FlexoConceptInstance flexoConceptInstance);
 
-	public static abstract class GraphicalElementActionImpl extends EditionPatternObjectImpl implements GraphicalElementAction {
+	public static abstract class GraphicalElementActionImpl extends FlexoConceptObjectImpl implements GraphicalElementAction {
 
 		private ActionMask actionMask = ActionMask.DoubleClick;
 		private AbstractActionScheme abstractActionScheme;
