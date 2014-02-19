@@ -228,7 +228,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		} else if (ConnectorPatternRole.class.isAssignableFrom(patternRoleClass)) {
 			return DiagramIconLibrary.CONNECTOR_ICON;
 		} else if (FlexoConceptInstancePatternRole.class.isAssignableFrom(patternRoleClass)) {
-			return VEIconLibrary.EDITION_PATTERN_INSTANCE_ICON;
+			return VEIconLibrary.FLEXO_CONCEPT_INSTANCE_ICON;
 		}
 		return null;
 	}

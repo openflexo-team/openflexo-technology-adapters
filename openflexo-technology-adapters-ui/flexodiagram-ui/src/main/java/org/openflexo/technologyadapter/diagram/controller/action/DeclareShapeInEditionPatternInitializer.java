@@ -50,7 +50,7 @@ public class DeclareShapeInEditionPatternInitializer extends
 			@Override
 			public boolean run(EventObject e, DeclareShapeInEditionPattern action) {
 
-				return instanciateAndShowDialog(action, CommonFIB.DECLARE_SHAPE_IN_EDITION_PATTERN_DIALOG_FIB);
+				return instanciateAndShowDialog(action, CommonFIB.DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB);
 			}
 		};
 	}
@@ -69,6 +69,6 @@ public class DeclareShapeInEditionPatternInitializer extends
 
 	@Override
 	protected Icon getEnabledIcon() {
-		return VPMIconLibrary.EDITION_PATTERN_ICON;
+		return VPMIconLibrary.FLEXO_CONCEPT_ICON;
 	}
 }

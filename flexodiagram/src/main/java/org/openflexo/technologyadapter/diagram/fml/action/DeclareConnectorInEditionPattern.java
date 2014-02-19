@@ -90,7 +90,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 	}
 
 	public static enum NewEditionPatternChoices {
-		MAP_SINGLE_INDIVIDUAL, MAP_OBJECT_PROPERTY, MAP_SINGLE_EDITION_PATTERN, BLANK_EDITION_PATTERN
+		MAP_SINGLE_INDIVIDUAL, MAP_OBJECT_PROPERTY, MAP_SINGLE_FLEXO_CONCEPT, BLANK_FLEXO_CONCEPT
 	}
 
 	public NewEditionPatternChoices patternChoice = NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL;
@@ -123,14 +123,14 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 		logger.info("Declare connector in flexo concept");
 		if (isValid()) {
 			switch (primaryChoice) {
-			case CHOOSE_EXISTING_EDITION_PATTERN:
+			case CHOOSE_EXISTING_FLEXO_CONCEPT:
 				if (getPatternRole() != null) {
 					System.out.println("Connector representation updated");
 					// getPatternRole().setGraphicalRepresentation(getFocusedObject().getGraphicalRepresentation());
 					getPatternRole().updateGraphicalRepresentation(getFocusedObject().getGraphicalRepresentation());
 				}
 				break;
-			case CREATES_EDITION_PATTERN:
+			case CREATES_FLEXO_CONCEPT:
 
 				/*VirtualModel.VirtualModelBuilder builder = new VirtualModel.VirtualModelBuilder(getFocusedObject()
 						.getDiagramSpecification().getViewPointLibrary(), getFocusedObject().getDiagramSpecification().getViewPoint(),
@@ -161,7 +161,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 
 				// Create an flexo concept pattern role if required
 				FlexoConceptInstancePatternRole flexoConceptPatternRole = null;
-				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
+				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 					if (isVirtualModelModelSlot()) {
 						VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
 						flexoConceptPatternRole = virtualModelModelSlot.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
@@ -405,9 +405,9 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 			return false;
 		}
 		switch (primaryChoice) {
-		case CHOOSE_EXISTING_EDITION_PATTERN:
+		case CHOOSE_EXISTING_FLEXO_CONCEPT:
 			return getFlexoConcept() != null && getPatternRole() != null;
-		case CREATES_EDITION_PATTERN:
+		case CREATES_FLEXO_CONCEPT:
 			switch (patternChoice) {
 			case MAP_SINGLE_INDIVIDUAL:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && concept != null
@@ -418,11 +418,11 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 						&& StringUtils.isNotEmpty(getObjectPropertyStatementPatternRoleName())
 						&& StringUtils.isNotEmpty(getConnectorPatternRoleName()) && fromFlexoConcept != null && toFlexoConcept != null
 						&& StringUtils.isNotEmpty(getLinkSchemeName());
-			case MAP_SINGLE_EDITION_PATTERN:
+			case MAP_SINGLE_FLEXO_CONCEPT:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && virtualModelConcept != null
 						&& StringUtils.isNotEmpty(getVirtualModelPatternRoleName()) && getSelectedEntriesCount() > 0
 						&& fromFlexoConcept != null && toFlexoConcept != null && StringUtils.isNotEmpty(getLinkSchemeName());
-			case BLANK_EDITION_PATTERN:
+			case BLANK_FLEXO_CONCEPT:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && StringUtils.isNotEmpty(getConnectorPatternRoleName())
 						&& fromFlexoConcept != null && toFlexoConcept != null && StringUtils.isNotEmpty(getLinkSchemeName());
 			default:
@@ -437,7 +437,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 
 	@Override
 	public ConnectorPatternRole getPatternRole() {
-		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_EDITION_PATTERN) {
+		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_FLEXO_CONCEPT) {
 			return newConnectorPatternRole;
 		}
 		return patternRole;
@@ -564,7 +564,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 
 	@Override
 	public FlexoConcept getFlexoConcept() {
-		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_EDITION_PATTERN) {
+		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_FLEXO_CONCEPT) {
 			return newFlexoConcept;
 		}
 		return super.getFlexoConcept();

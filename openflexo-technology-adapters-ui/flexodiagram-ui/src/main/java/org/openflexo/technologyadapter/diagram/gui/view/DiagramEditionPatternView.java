@@ -35,7 +35,7 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 public class DiagramEditionPatternView extends FIBModuleView<FlexoConcept> {
 
 	public DiagramEditionPatternView(FlexoConcept flexoConcept, FlexoController controller) {
-		super(flexoConcept, controller, DiagramCst.DIAGRAM_EDITION_PATTERN_VIEW_FIB);
+		super(flexoConcept, controller, DiagramCst.DIAGRAM_FLEXO_CONCEPT_VIEW_FIB);
 	}
 
 	@Override

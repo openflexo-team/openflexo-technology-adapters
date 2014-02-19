@@ -97,7 +97,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 	}
 
 	public static enum NewEditionPatternChoices {
-		MAP_SINGLE_INDIVIDUAL, MAP_SINGLE_EDITION_PATTERN, BLANK_EDITION_PATTERN
+		MAP_SINGLE_INDIVIDUAL, MAP_SINGLE_FLEXO_CONCEPT, BLANK_FLEXO_CONCEPT
 	}
 
 	public NewEditionPatternChoices patternChoice = NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL;
@@ -126,19 +126,19 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 			return false;
 		}
 		switch (primaryChoice) {
-		case CHOOSE_EXISTING_EDITION_PATTERN:
+		case CHOOSE_EXISTING_FLEXO_CONCEPT:
 			return getFlexoConcept() != null && getPatternRole() != null;
-		case CREATES_EDITION_PATTERN:
+		case CREATES_FLEXO_CONCEPT:
 			switch (patternChoice) {
 			case MAP_SINGLE_INDIVIDUAL:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && concept != null
 						&& StringUtils.isNotEmpty(getIndividualPatternRoleName()) && getSelectedEntriesCount() > 0
 						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
-			case MAP_SINGLE_EDITION_PATTERN:
+			case MAP_SINGLE_FLEXO_CONCEPT:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && virtualModelConcept != null
 						&& StringUtils.isNotEmpty(getVirtualModelPatternRoleName()) && getSelectedEntriesCount() > 0
 						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
-			case BLANK_EDITION_PATTERN:
+			case BLANK_FLEXO_CONCEPT:
 				return StringUtils.isNotEmpty(getEditionPatternName()) && getSelectedEntriesCount() > 0
 						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
 			default:
@@ -203,7 +203,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 
 	@Override
 	public FlexoConcept getFlexoConcept() {
-		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_EDITION_PATTERN) {
+		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_FLEXO_CONCEPT) {
 			return newFlexoConcept;
 		}
 		return super.getFlexoConcept();
@@ -333,12 +333,12 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 		logger.info("Declare shape in flexo concept");
 		if (isValid()) {
 			switch (primaryChoice) {
-			case CHOOSE_EXISTING_EDITION_PATTERN:
+			case CHOOSE_EXISTING_FLEXO_CONCEPT:
 				if (getPatternRole() != null) {
 					getPatternRole().updateGraphicalRepresentation(getFocusedObject().getGraphicalRepresentation());
 				}
 				break;
-			case CREATES_EDITION_PATTERN:
+			case CREATES_FLEXO_CONCEPT:
 				// DiagramShape diagramShape = getFocusedObject();
 
 				/*VirtualModel.VirtualModelBuilder builder = new VirtualModel.VirtualModelBuilder(getFocusedObject()
@@ -347,8 +347,8 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 
 				switch (patternChoice) {
 				case MAP_SINGLE_INDIVIDUAL:
-				case MAP_SINGLE_EDITION_PATTERN:
-				case BLANK_EDITION_PATTERN:
+				case MAP_SINGLE_FLEXO_CONCEPT:
+				case BLANK_FLEXO_CONCEPT:
 
 					// Create new flexo concept
 					newFlexoConcept = getFactory().newFlexoConcept();
@@ -374,7 +374,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 							// newFlexoConcept.setPrimaryConceptRole(individualPatternRole);
 						}
 					}
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
+					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 						if (isVirtualModelModelSlot()) {
 							VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
 							flexoConceptPatternRole = virtualModelModelSlot
@@ -580,7 +580,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 					}
 
 					// Parameters for flexo concepts creation action
-					/*if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
+					/*if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 						if (isVirtualModelModelSlot()) {
 							VirtualModelModelSlot<?, ?> virtualModelModelSlot = (VirtualModelModelSlot<?, ?>) getModelSlot();
 

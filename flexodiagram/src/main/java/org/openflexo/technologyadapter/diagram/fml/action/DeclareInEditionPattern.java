@@ -115,10 +115,10 @@ public abstract class DeclareInEditionPattern<A extends DeclareInEditionPattern<
 	}
 
 	public static enum DeclareInEditionPatternChoices {
-		CREATES_EDITION_PATTERN, CHOOSE_EXISTING_EDITION_PATTERN
+		CREATES_FLEXO_CONCEPT, CHOOSE_EXISTING_FLEXO_CONCEPT
 	}
 
-	public DeclareInEditionPatternChoices primaryChoice = DeclareInEditionPatternChoices.CREATES_EDITION_PATTERN;
+	public DeclareInEditionPatternChoices primaryChoice = DeclareInEditionPatternChoices.CREATES_FLEXO_CONCEPT;
 
 	/**
 	 * Return the model slot which encodes the access to a {@link Diagram} conform to a {@link DiagramSpecification}, in the context of a
