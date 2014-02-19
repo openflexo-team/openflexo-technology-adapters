@@ -114,11 +114,11 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 		}
 	}
 
-	public static enum DeclareInEditionPatternChoices {
+	public static enum DeclareInFlexoConceptChoices {
 		CREATES_FLEXO_CONCEPT, CHOOSE_EXISTING_FLEXO_CONCEPT
 	}
 
-	public DeclareInEditionPatternChoices primaryChoice = DeclareInEditionPatternChoices.CREATES_FLEXO_CONCEPT;
+	public DeclareInFlexoConceptChoices primaryChoice = DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT;
 
 	/**
 	 * Return the model slot which encodes the access to a {@link Diagram} conform to a {@link DiagramSpecification}, in the context of a

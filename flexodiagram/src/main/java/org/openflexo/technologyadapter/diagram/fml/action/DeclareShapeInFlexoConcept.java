@@ -96,11 +96,11 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		FlexoObjectImpl.addActionForClass(DeclareShapeInFlexoConcept.actionType, DiagramShape.class);
 	}
 
-	public static enum NewEditionPatternChoices {
+	public static enum NewFlexoConceptChoices {
 		MAP_SINGLE_INDIVIDUAL, MAP_SINGLE_FLEXO_CONCEPT, BLANK_FLEXO_CONCEPT
 	}
 
-	public NewEditionPatternChoices patternChoice = NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL;
+	public NewFlexoConceptChoices patternChoice = NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL;
 
 	private String flexoConceptName;
 	private IFlexoOntologyClass concept;
@@ -203,7 +203,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 	@Override
 	public FlexoConcept getFlexoConcept() {
-		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_FLEXO_CONCEPT) {
+		if (primaryChoice == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
 			return newFlexoConcept;
 		}
 		return super.getFlexoConcept();
@@ -364,7 +364,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					// an flexo concept instance
 					IndividualPatternRole<?> individualPatternRole = null;
 					FlexoConceptInstancePatternRole flexoConceptPatternRole = null;
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						if (isTypeAwareModelSlot()) {
 							TypeAwareModelSlot<?, ?> flexoOntologyModelSlot = (TypeAwareModelSlot<?, ?>) getModelSlot();
 							individualPatternRole = flexoOntologyModelSlot.makeIndividualPatternRole(getConcept());
@@ -374,7 +374,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							// newFlexoConcept.setPrimaryConceptRole(individualPatternRole);
 						}
 					}
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_FLEXO_CONCEPT) {
+					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 						if (isVirtualModelModelSlot()) {
 							VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
 							flexoConceptPatternRole = virtualModelModelSlot
@@ -453,7 +453,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 					// Create other individual roles
 					/*Vector<IndividualPatternRole> otherRoles = new Vector<IndividualPatternRole>();
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						for (PropertyEntry e : propertyEntries) {
 							if (e.selectEntry) {
 								if (e.property instanceof IFlexoOntologyObjectProperty) {
@@ -483,7 +483,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					}
 
 					// Parameters
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						if (isTypeAwareModelSlot()) {
 							TypeAwareModelSlot<?, ?> flexoOntologyModelSlot = (TypeAwareModelSlot<?, ?>) getModelSlot();
 							// Vector<PropertyEntry> candidates = new Vector<PropertyEntry>();
@@ -580,7 +580,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					}
 
 					// Parameters for flexo concepts creation action
-					/*if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_FLEXO_CONCEPT) {
+					/*if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 						if (isVirtualModelModelSlot()) {
 							VirtualModelModelSlot<?, ?> virtualModelModelSlot = (VirtualModelModelSlot<?, ?>) getModelSlot();
 
@@ -619,7 +619,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					// Add inspector
 					FlexoConceptInspector inspector = newFlexoConcept.getInspector();
 					inspector.setInspectorTitle(getEditionPatternName());
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						/*for (PropertyEntry e : propertyEntries) {
 							if (e.selectEntry) {
 								if (e.property instanceof IFlexoOntologyObjectProperty) {

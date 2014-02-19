@@ -89,11 +89,11 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		FlexoObjectImpl.addActionForClass(DeclareConnectorInFlexoConcept.actionType, DiagramConnector.class);
 	}
 
-	public static enum NewEditionPatternChoices {
+	public static enum NewFlexoConceptChoices {
 		MAP_SINGLE_INDIVIDUAL, MAP_OBJECT_PROPERTY, MAP_SINGLE_FLEXO_CONCEPT, BLANK_FLEXO_CONCEPT
 	}
 
-	public NewEditionPatternChoices patternChoice = NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL;
+	public NewFlexoConceptChoices patternChoice = NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL;
 
 	private String flexoConceptName;
 	private IFlexoOntologyClass concept;
@@ -148,7 +148,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 				// Create individual pattern role if required
 				IndividualPatternRole individualPatternRole = null;
-				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+				if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 					if (isTypeAwareModelSlot()) {
 						TypeAwareModelSlot ontologyModelSlot = (TypeAwareModelSlot) getModelSlot();
 						individualPatternRole = ontologyModelSlot.makeIndividualPatternRole(getConcept());
@@ -161,7 +161,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 				// Create an flexo concept pattern role if required
 				FlexoConceptInstancePatternRole flexoConceptPatternRole = null;
-				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_FLEXO_CONCEPT) {
+				if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 					if (isVirtualModelModelSlot()) {
 						VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
 						flexoConceptPatternRole = virtualModelModelSlot.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
@@ -172,7 +172,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 				// Create individual pattern role if required
 				/*ObjectPropertyStatementPatternRole objectPropertyStatementPatternRole = null;
-				if (patternChoice == NewEditionPatternChoices.MAP_OBJECT_PROPERTY) {
+				if (patternChoice == NewFlexoConceptChoices.MAP_OBJECT_PROPERTY) {
 					objectPropertyStatementPatternRole = new ObjectPropertyStatementPatternRole(builder);
 					objectPropertyStatementPatternRole.setPatternRoleName(getObjectPropertyStatementPatternRoleName());
 					objectPropertyStatementPatternRole.setObjectProperty(getObjectProperty());
@@ -199,7 +199,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 				// Create other individual roles
 				Vector<IndividualPatternRole> otherRoles = new Vector<IndividualPatternRole>();
-				/*if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+				/*if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 					for (PropertyEntry e : propertyEntries) {
 						if (e.selectEntry) {
 							if (e.property instanceof IFlexoOntologyObjectProperty) {
@@ -223,7 +223,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				newLinkScheme.setToTargetFlexoConcept(toFlexoConcept);
 
 				// Parameters
-				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+				if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 					if (isTypeAwareModelSlot()) {
 						TypeAwareModelSlot<?, ?> typeAwareModelSlot = (TypeAwareModelSlot<?, ?>) getModelSlot();
 						/*Vector<PropertyEntry> candidates = new Vector<PropertyEntry>();
@@ -343,7 +343,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				// Add inspector
 				FlexoConceptInspector inspector = newFlexoConcept.getInspector();
 				inspector.setInspectorTitle(getEditionPatternName());
-				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+				if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 					/*for (PropertyEntry e : propertyEntries) {
 						if (e.selectEntry) {
 							if (e.property instanceof IFlexoOntologyObjectProperty) {
@@ -437,7 +437,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 	@Override
 	public ConnectorPatternRole getPatternRole() {
-		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_FLEXO_CONCEPT) {
+		if (primaryChoice == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
 			return newConnectorPatternRole;
 		}
 		return patternRole;
@@ -564,7 +564,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 	@Override
 	public FlexoConcept getFlexoConcept() {
-		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_FLEXO_CONCEPT) {
+		if (primaryChoice == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
 			return newFlexoConcept;
 		}
 		return super.getFlexoConcept();

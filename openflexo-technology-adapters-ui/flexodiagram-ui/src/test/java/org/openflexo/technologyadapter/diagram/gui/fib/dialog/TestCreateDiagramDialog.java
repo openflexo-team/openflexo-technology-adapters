@@ -19,7 +19,7 @@ import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FileResource;
 
 /**
- * Test StandardEditionPatternView fib
+ * Test StandardFlexoConceptView fib
  * 
  * @author sylvain
  * 

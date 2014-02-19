@@ -31,7 +31,7 @@ import org.openflexo.toolbox.FileResource;
 public class DiagramCst {
 
 	// UI components
-	public static File DIAGRAM_FLEXO_CONCEPT_VIEW_FIB = new FileResource("Fib/DiagramEditionPatternView.fib");
+	public static File DIAGRAM_FLEXO_CONCEPT_VIEW_FIB = new FileResource("Fib/DiagramFlexoConceptView.fib");
 	public static File DIAGRAM_SPECIFICATION_VIEW_FIB = new FileResource("Fib/DiagramSpecificationView.fib");
 	public static File CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB = new FileResource("Fib/Dialog/CreateExampleDrawingDialog.fib");
 	public static File CREATE_EXAMPLE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB = new FileResource("Fib/Dialog/CreateExampleDrawingDialog.fib");

@@ -306,9 +306,9 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 				// }
 			} else {
 				// if (ep.getVirtualModel() instanceof DiagramSpecification) {
-				// return new DiagramEditionPatternView(ep, (VPMController) controller);
+				// return new DiagramFlexoConceptView(ep, (VPMController) controller);
 				// } else {
-				return new StandardEditionPatternView(ep, controller, perspective);
+				return new StandardFlexoConceptView(ep, controller, perspective);
 				// }
 			}
 
