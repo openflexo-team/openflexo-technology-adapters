@@ -28,27 +28,27 @@ import org.openflexo.components.widget.CommonFIB;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.icon.VPMIconLibrary;
-import org.openflexo.technologyadapter.diagram.fml.action.DeclareShapeInEditionPattern;
+import org.openflexo.technologyadapter.diagram.fml.action.DeclareShapeInFlexoConcept;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class DeclareShapeInEditionPatternInitializer extends
-		ActionInitializer<DeclareShapeInEditionPattern, DiagramShape, DiagramElement<?>> {
+public class DeclareShapeInFlexoConceptInitializer extends
+		ActionInitializer<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
-	public DeclareShapeInEditionPatternInitializer(ControllerActionInitializer actionInitializer) {
-		super(DeclareShapeInEditionPattern.actionType, actionInitializer);
+	public DeclareShapeInFlexoConceptInitializer(ControllerActionInitializer actionInitializer) {
+		super(DeclareShapeInFlexoConcept.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeclareShapeInEditionPattern> getDefaultInitializer() {
-		return new FlexoActionInitializer<DeclareShapeInEditionPattern>() {
+	protected FlexoActionInitializer<DeclareShapeInFlexoConcept> getDefaultInitializer() {
+		return new FlexoActionInitializer<DeclareShapeInFlexoConcept>() {
 			@Override
-			public boolean run(EventObject e, DeclareShapeInEditionPattern action) {
+			public boolean run(EventObject e, DeclareShapeInFlexoConcept action) {
 
 				return instanciateAndShowDialog(action, CommonFIB.DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB);
 			}
@@ -56,10 +56,10 @@ public class DeclareShapeInEditionPatternInitializer extends
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DeclareShapeInEditionPattern> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DeclareShapeInEditionPattern>() {
+	protected FlexoActionFinalizer<DeclareShapeInFlexoConcept> getDefaultFinalizer() {
+		return new FlexoActionFinalizer<DeclareShapeInFlexoConcept>() {
 			@Override
-			public boolean run(EventObject e, DeclareShapeInEditionPattern action) {
+			public boolean run(EventObject e, DeclareShapeInFlexoConcept action) {
 				getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
 				getController().getSelectionManager().setSelectedObject(action.getFlexoConcept());
 				return true;

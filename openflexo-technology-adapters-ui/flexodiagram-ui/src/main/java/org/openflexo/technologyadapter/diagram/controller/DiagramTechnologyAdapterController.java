@@ -24,8 +24,8 @@ import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramIn
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPaletteInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSpecificationInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
-import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInEditionPatternInitializer;
-import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInEditionPatternInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramElementsInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramPaletteElementInitializer;
@@ -129,8 +129,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new CreateExampleDiagramInitializer(actionInitializer);
 		new DeleteExampleDiagramInitializer(actionInitializer);
 		new PushToPaletteInitializer(actionInitializer);
-		new DeclareShapeInEditionPatternInitializer(actionInitializer);
-		new DeclareConnectorInEditionPatternInitializer(actionInitializer);
+		new DeclareShapeInFlexoConceptInitializer(actionInitializer);
+		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
 		new DeleteExampleDiagramElementsInitializer(actionInitializer);
 
 		// DiagramPalette edition
@@ -148,8 +148,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new DropSchemeActionInitializer(actionInitializer);
 		new LinkSchemeActionInitializer(actionInitializer);
 		new ResetGraphicalRepresentationInitializer(actionInitializer);
-		new DeclareShapeInEditionPatternInitializer(actionInitializer);
-		new DeclareConnectorInEditionPatternInitializer(actionInitializer);
+		new DeclareShapeInFlexoConceptInitializer(actionInitializer);
+		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
 		new PushToPaletteInitializer(actionInitializer);
 		new ExportDiagramToImageInitializer(actionInitializer);
 

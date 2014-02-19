@@ -28,27 +28,27 @@ import org.openflexo.components.widget.CommonFIB;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.icon.VPMIconLibrary;
-import org.openflexo.technologyadapter.diagram.fml.action.DeclareConnectorInEditionPattern;
+import org.openflexo.technologyadapter.diagram.fml.action.DeclareConnectorInFlexoConcept;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class DeclareConnectorInEditionPatternInitializer extends
-		ActionInitializer<DeclareConnectorInEditionPattern, DiagramConnector, DiagramElement<?>> {
+public class DeclareConnectorInFlexoConceptInitializer extends
+		ActionInitializer<DeclareConnectorInFlexoConcept, DiagramConnector, DiagramElement<?>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
-	public DeclareConnectorInEditionPatternInitializer(ControllerActionInitializer actionInitializer) {
-		super(DeclareConnectorInEditionPattern.actionType, actionInitializer);
+	public DeclareConnectorInFlexoConceptInitializer(ControllerActionInitializer actionInitializer) {
+		super(DeclareConnectorInFlexoConcept.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<DeclareConnectorInEditionPattern> getDefaultInitializer() {
-		return new FlexoActionInitializer<DeclareConnectorInEditionPattern>() {
+	protected FlexoActionInitializer<DeclareConnectorInFlexoConcept> getDefaultInitializer() {
+		return new FlexoActionInitializer<DeclareConnectorInFlexoConcept>() {
 			@Override
-			public boolean run(EventObject e, DeclareConnectorInEditionPattern action) {
+			public boolean run(EventObject e, DeclareConnectorInFlexoConcept action) {
 
 				return instanciateAndShowDialog(action, CommonFIB.DECLARE_CONNECTOR_IN_FLEXO_CONCEPT_DIALOG_FIB);
 			}
@@ -56,10 +56,10 @@ public class DeclareConnectorInEditionPatternInitializer extends
 	}
 
 	@Override
-	protected FlexoActionFinalizer<DeclareConnectorInEditionPattern> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<DeclareConnectorInEditionPattern>() {
+	protected FlexoActionFinalizer<DeclareConnectorInFlexoConcept> getDefaultFinalizer() {
+		return new FlexoActionFinalizer<DeclareConnectorInFlexoConcept>() {
 			@Override
-			public boolean run(EventObject e, DeclareConnectorInEditionPattern action) {
+			public boolean run(EventObject e, DeclareConnectorInFlexoConcept action) {
 				getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
 				getController().getSelectionManager().setSelectedObject(action.getPatternRole());
 				return true;

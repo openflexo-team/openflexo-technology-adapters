@@ -61,20 +61,20 @@ import org.openflexo.toolbox.StringUtils;
  * @param <T1>
  */
 
-public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<DeclareShapeInEditionPattern, DiagramShape> {
+public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareShapeInFlexoConcept, DiagramShape> {
 
-	private static final Logger logger = Logger.getLogger(DeclareShapeInEditionPattern.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(DeclareShapeInFlexoConcept.class.getPackage().getName());
 
 	/**
 	 * Create a new Flexo Action Type
 	 */
-	public static FlexoActionType<DeclareShapeInEditionPattern, DiagramShape, DiagramElement<?>> actionType = new FlexoActionType<DeclareShapeInEditionPattern, DiagramShape, DiagramElement<?>>(
+	public static FlexoActionType<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>> actionType = new FlexoActionType<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>>(
 			"declare_in_flexo_concept", FlexoActionType.editGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
 
 		@Override
-		public DeclareShapeInEditionPattern makeNewAction(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection,
+		public DeclareShapeInFlexoConcept makeNewAction(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection,
 				FlexoEditor editor) {
-			return new DeclareShapeInEditionPattern(focusedObject, globalSelection, editor);
+			return new DeclareShapeInFlexoConcept(focusedObject, globalSelection, editor);
 		}
 
 		@Override
@@ -93,7 +93,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(DeclareShapeInEditionPattern.actionType, DiagramShape.class);
+		FlexoObjectImpl.addActionForClass(DeclareShapeInFlexoConcept.actionType, DiagramShape.class);
 	}
 
 	public static enum NewEditionPatternChoices {
@@ -116,7 +116,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 	private FlexoConcept virtualModelConcept;
 	private String dropSchemeName;
 
-	DeclareShapeInEditionPattern(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	DeclareShapeInFlexoConcept(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

@@ -53,10 +53,10 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @param <A>
  * @param <T1>
  */
-public abstract class DeclareInEditionPattern<A extends DeclareInEditionPattern<A, T>, T extends DiagramElement<?>> extends
+public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T>, T extends DiagramElement<?>> extends
 		FlexoAction<A, T, DiagramElement<?>> {
 
-	private static final Logger logger = Logger.getLogger(DeclareInEditionPattern.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(DeclareInFlexoConcept.class.getPackage().getName());
 
 	/**
 	 * Stores the model slot which encodes the access to a {@link Diagram} conform to a {@link DiagramSpecification}, in the context of a
@@ -82,7 +82,7 @@ public abstract class DeclareInEditionPattern<A extends DeclareInEditionPattern<
 	 * @param globalSelection
 	 * @param editor
 	 */
-	DeclareInEditionPattern(FlexoActionType<A, T, DiagramElement<?>> actionType, T focusedObject,
+	DeclareInFlexoConcept(FlexoActionType<A, T, DiagramElement<?>> actionType, T focusedObject,
 			Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		// Get the set of model slots that are available from the current virtual model

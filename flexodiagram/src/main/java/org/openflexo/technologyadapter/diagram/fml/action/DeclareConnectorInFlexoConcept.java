@@ -57,20 +57,20 @@ import org.openflexo.toolbox.StringUtils;
  * 
  * @param <T1>
  */
-public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<DeclareConnectorInEditionPattern, DiagramConnector> {
+public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<DeclareConnectorInFlexoConcept, DiagramConnector> {
 
-	private static final Logger logger = Logger.getLogger(DeclareConnectorInEditionPattern.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(DeclareConnectorInFlexoConcept.class.getPackage().getName());
 
-	public static FlexoActionType<DeclareConnectorInEditionPattern, DiagramConnector, DiagramElement<?>> actionType = new FlexoActionType<DeclareConnectorInEditionPattern, DiagramConnector, DiagramElement<?>>(
+	public static FlexoActionType<DeclareConnectorInFlexoConcept, DiagramConnector, DiagramElement<?>> actionType = new FlexoActionType<DeclareConnectorInFlexoConcept, DiagramConnector, DiagramElement<?>>(
 			"declare_in_flexo_concept", FlexoActionType.defaultGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public DeclareConnectorInEditionPattern makeNewAction(DiagramConnector focusedObject, Vector<DiagramElement<?>> globalSelection,
+		public DeclareConnectorInFlexoConcept makeNewAction(DiagramConnector focusedObject, Vector<DiagramElement<?>> globalSelection,
 				FlexoEditor editor) {
-			return new DeclareConnectorInEditionPattern(focusedObject, globalSelection, editor);
+			return new DeclareConnectorInFlexoConcept(focusedObject, globalSelection, editor);
 		}
 
 		@Override
@@ -86,7 +86,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(DeclareConnectorInEditionPattern.actionType, DiagramConnector.class);
+		FlexoObjectImpl.addActionForClass(DeclareConnectorInFlexoConcept.actionType, DiagramConnector.class);
 	}
 
 	public static enum NewEditionPatternChoices {
@@ -114,7 +114,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 
 	// public Vector<PropertyEntry> propertyEntries = new Vector<PropertyEntry>();
 
-	DeclareConnectorInEditionPattern(DiagramConnector focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	DeclareConnectorInFlexoConcept(DiagramConnector focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
