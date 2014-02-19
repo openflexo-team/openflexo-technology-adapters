@@ -33,6 +33,7 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.apache.poi.hslf.model.AutoShape;
+import org.apache.poi.hslf.model.Line;
 import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Picture;
 import org.apache.poi.hslf.model.Shape;
@@ -63,6 +64,7 @@ import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramImpl;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -345,18 +347,20 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		MasterSheet master = slide.getMasterSheet();
 
 		if (slide.getFollowMasterObjects()) {
-			Shape[] sh = master.getShapes();
-			for (int i = sh.length - 1; i >= 0; i--) {
-				if (MasterSheet.isPlaceholder(sh[i])) {
-					continue;
-				}
-				Shape shape = sh[i];
-				if (shape instanceof Picture) {
-					diagram.addToShapes(makePictureShape((Picture)shape));
-				} else if (shape instanceof AutoShape) {
-					diagram.addToShapes(makeAutoShape((AutoShape)shape));
-				} else if (shape instanceof TextBox) {
-					diagram.addToShapes(makeTextBox((TextBox)shape));
+			if(master.getShapes()!=null){
+				Shape[] sh = master.getShapes();
+				for (int i = sh.length - 1; i >= 0; i--) {
+					if (MasterSheet.isPlaceholder(sh[i])) {
+						continue;
+					}
+					Shape shape = sh[i];
+					if (shape instanceof Picture) {
+						diagram.addToShapes(makePictureShape((Picture)shape));
+					} else if (shape instanceof AutoShape) {
+						diagram.addToShapes(makeAutoShape((AutoShape)shape));
+					} else if (shape instanceof TextBox) {
+						diagram.addToShapes(makeTextBox((TextBox)shape));
+					}
 				}
 			}
 		}
@@ -368,7 +372,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 				diagram.addToShapes(makeAutoShape((AutoShape)shape));
 			} else if (shape instanceof TextBox) {
 				diagram.addToShapes(makeTextBox((TextBox)shape));
-			}
+			} 
 		}
 		return diagram;
 	}
@@ -376,7 +380,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	
 	private DiagramShape makeAutoShape(AutoShape autoShape) {
 		
-		DiagramShape newShape = getDiagramFactory().makeNewShape(autoShape.getShapeName(), getNewDiagram());
+		DiagramShape newShape = getDiagramFactory().makeNewShape(autoShape.getText(), getNewDiagram());
 		
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 		gr.setX(autoShape.getAnchor2D().getX());
@@ -403,13 +407,12 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 		setTextProperties(gr, autoShape);
 		newShape.setGraphicalRepresentation(gr);
-		
 		return newShape;
 	}
 
 	private DiagramShape makeTextBox(TextBox textBox) {
 		
-		DiagramShape newShape = getDiagramFactory().makeNewShape(textBox.getShapeName(), getNewDiagram());
+		DiagramShape newShape = getDiagramFactory().makeNewShape(textBox.getText(), getNewDiagram());
 		
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 		gr.setX(textBox.getAnchor2D().getX());
@@ -432,7 +435,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 	private DiagramShape makePictureShape(Picture pictureShape) {
 		
-		DiagramShape newShape = getDiagramFactory().makeNewShape(pictureShape.getShapeName(), getNewDiagram());
+		DiagramShape newShape = getDiagramFactory().makeNewShape(pictureShape.getPictureName(), getNewDiagram());
 		
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 		
@@ -463,6 +466,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 		return newShape;
 	}
+	
 	
 	private void setTextProperties(ShapeGraphicalRepresentation returned, TextShape textShape) {
 
