@@ -46,9 +46,9 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
 
-public class EditionPatternPreviewRepresentation extends DrawingImpl<FlexoConcept> implements EditionPatternPreviewConstants {
+public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept> implements FlexoConceptPreviewConstants {
 
-	private static final Logger logger = Logger.getLogger(EditionPatternPreviewRepresentation.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(FlexoConceptPreviewRepresentation.class.getPackage().getName());
 
 	// private EditionPatternPreviewShemaGR graphicalRepresentation;
 
@@ -70,7 +70,7 @@ public class EditionPatternPreviewRepresentation extends DrawingImpl<FlexoConcep
 	private final Hashtable<PatternRole, ConnectorFromArtifact> fromArtifacts;
 	private final Hashtable<PatternRole, ConnectorToArtifact> toArtifacts;
 
-	public EditionPatternPreviewRepresentation(FlexoConcept model) {
+	public FlexoConceptPreviewRepresentation(FlexoConcept model) {
 		super(model, PREVIEW_FACTORY, PersistenceMode.UniqueGraphicalRepresentations);
 		setEditable(false);
 

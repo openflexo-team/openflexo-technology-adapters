@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.diagram.gui.widget;
 import java.awt.Color;
 import java.awt.Font;
 
-public interface EditionPatternPreviewConstants {
+public interface FlexoConceptPreviewConstants {
 
 	public static final Font DEFAULT_FONT = new Font("SansSerif", Font.BOLD, 11);
 	public static final double WIDTH = 400;

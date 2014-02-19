@@ -40,21 +40,21 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
 
 // TODO: this should inherit from DefaultFIBCustomComponent
-public class EditionPatternPreviewComponent extends JPanel implements FIBCustomComponent<FlexoConcept, JPanel>,
+public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomComponent<FlexoConcept, JPanel>,
 		FIBSelectable<GraphicalElementPatternRole<?, ?>> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(EditionPatternPreviewComponent.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(FlexoConceptPreviewComponent.class.getPackage().getName());
 
 	private FlexoConcept flexoConcept;
 
 	private SelectionManager selectionManager;
-	private EditionPatternPreviewController previewController;
+	private FlexoConceptPreviewController previewController;
 	private final Vector<ApplyCancelListener> applyCancelListener;
 
 	private final JLabel EMPTY_LABEL = new JLabel("<empty>");
 
-	public EditionPatternPreviewComponent() {
+	public FlexoConceptPreviewComponent() {
 		super();
 		setLayout(new BorderLayout());
 		// add(EMPTY_LABEL,BorderLayout.CENTER);
@@ -68,7 +68,7 @@ public class EditionPatternPreviewComponent extends JPanel implements FIBCustomC
 		}
 	}
 
-	public EditionPatternPreviewComponent(FlexoConcept flexoConcept) {
+	public FlexoConceptPreviewComponent(FlexoConcept flexoConcept) {
 		this();
 		setEditedObject(flexoConcept);
 	}
@@ -95,7 +95,7 @@ public class EditionPatternPreviewComponent extends JPanel implements FIBCustomC
 				previewController = null;
 			}
 			if (object != null) {
-				previewController = new EditionPatternPreviewController(object, selectionManager);
+				previewController = new FlexoConceptPreviewController(object, selectionManager);
 				add(previewController.getDrawingView(), BorderLayout.CENTER);
 			}
 			revalidate();
