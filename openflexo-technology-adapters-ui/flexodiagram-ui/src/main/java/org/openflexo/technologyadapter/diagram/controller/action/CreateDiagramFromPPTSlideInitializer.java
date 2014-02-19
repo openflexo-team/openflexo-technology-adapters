@@ -26,39 +26,38 @@ import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
-import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagram;
-import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagramFromPPTSlide;
+import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramFromPPTSlide;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class CreateExampleDiagramFromPPTSlideInitializer extends ActionInitializer<CreateExampleDiagramFromPPTSlide, DiagramSpecification, ViewPointObject> {
+public class CreateDiagramFromPPTSlideInitializer extends ActionInitializer<CreateDiagramFromPPTSlide, RepositoryFolder, ViewPointObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
-	public CreateExampleDiagramFromPPTSlideInitializer(ControllerActionInitializer actionInitializer) {
-		super(CreateExampleDiagramFromPPTSlide.actionType, actionInitializer);
+	public CreateDiagramFromPPTSlideInitializer(ControllerActionInitializer actionInitializer) {
+		super(CreateDiagramFromPPTSlide.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateExampleDiagramFromPPTSlide> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateExampleDiagramFromPPTSlide>() {
+	protected FlexoActionInitializer<CreateDiagramFromPPTSlide> getDefaultInitializer() {
+		return new FlexoActionInitializer<CreateDiagramFromPPTSlide>() {
 			@Override
-			public boolean run(EventObject e, CreateExampleDiagramFromPPTSlide action) {
+			public boolean run(EventObject e, CreateDiagramFromPPTSlide action) {
 				return instanciateAndShowDialog(action, DiagramCst.CREATE_EXAMPLE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB);
 			}
 		};
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateExampleDiagramFromPPTSlide> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateExampleDiagramFromPPTSlide>() {
+	protected FlexoActionFinalizer<CreateDiagramFromPPTSlide> getDefaultFinalizer() {
+		return new FlexoActionFinalizer<CreateDiagramFromPPTSlide>() {
 			@Override
-			public boolean run(EventObject e, CreateExampleDiagramFromPPTSlide action) {
+			public boolean run(EventObject e, CreateDiagramFromPPTSlide action) {
 				getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
 				return true;
 			}

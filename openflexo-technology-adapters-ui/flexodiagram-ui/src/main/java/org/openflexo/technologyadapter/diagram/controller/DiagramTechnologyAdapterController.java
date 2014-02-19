@@ -23,6 +23,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.AddShapeInitial
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPaletteInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSpecificationInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInEditionPatternInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInEditionPatternInitializer;
@@ -132,6 +133,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new DeclareShapeInEditionPatternInitializer(actionInitializer);
 		new DeclareConnectorInEditionPatternInitializer(actionInitializer);
 		new DeleteExampleDiagramElementsInitializer(actionInitializer);
+		new CreateDiagramFromPPTSlideInitializer(actionInitializer);
+
 
 		// DiagramPalette edition
 		new CreateDiagramPaletteInitializer(actionInitializer);

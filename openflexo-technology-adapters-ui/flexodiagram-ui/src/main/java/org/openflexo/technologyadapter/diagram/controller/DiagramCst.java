@@ -34,7 +34,7 @@ public class DiagramCst {
 	public static File DIAGRAM_EDITION_PATTERN_VIEW_FIB = new FileResource("Fib/DiagramEditionPatternView.fib");
 	public static File DIAGRAM_SPECIFICATION_VIEW_FIB = new FileResource("Fib/DiagramSpecificationView.fib");
 	public static File CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB = new FileResource("Fib/Dialog/CreateExampleDrawingDialog.fib");
-	public static File CREATE_EXAMPLE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB = new FileResource("Fib/Dialog/CreateExampleDrawingDialog.fib");
+	public static File CREATE_EXAMPLE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB = new FileResource("Fib/Dialog/CreateDiagramFromPPTDialog.fib");
 	public static File CREATE_PALETTE_DIALOG_FIB = new FileResource("Fib/Dialog/CreatePaletteDialog.fib");
 	public static File CREATE_DIAGRAM_SPECIFICATION_DIALOG_FIB = new FileResource("Fib/Dialog/CreateDiagramSpecificationDialog.fib");
 	public static File PUSH_TO_PALETTE_DIALOG_FIB = new FileResource("Fib/Dialog/PushToPaletteDialog.fib");

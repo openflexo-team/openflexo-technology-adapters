@@ -25,6 +25,9 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -38,6 +41,7 @@ import org.apache.poi.hslf.model.TextBox;
 import org.apache.poi.hslf.model.TextRun;
 import org.apache.poi.hslf.model.TextShape;
 import org.apache.poi.hslf.usermodel.RichTextRun;
+import org.apache.poi.hslf.usermodel.SlideShow;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
@@ -53,6 +57,7 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.resource.InvalidFileNameException;
+import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
@@ -62,49 +67,56 @@ import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramImpl;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
+import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
-public class CreateExampleDiagramFromPPTSlide extends FlexoAction<CreateExampleDiagramFromPPTSlide, DiagramSpecification, ViewPointObject> {
+public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTSlide, RepositoryFolder, ViewPointObject> {
 
-	private static final Logger logger = Logger.getLogger(CreateExampleDiagramFromPPTSlide.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(CreateDiagramFromPPTSlide.class.getPackage().getName());
 
-	public static FlexoActionType<CreateExampleDiagramFromPPTSlide, DiagramSpecification, ViewPointObject> actionType = new FlexoActionType<CreateExampleDiagramFromPPTSlide, DiagramSpecification, ViewPointObject>(
-			"create_example_diagram", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+	public static FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, ViewPointObject> actionType = new FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, ViewPointObject>(
+			"create_diagram_from_ppt_slide", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateExampleDiagramFromPPTSlide makeNewAction(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateDiagramFromPPTSlide makeNewAction(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection,
 				FlexoEditor editor) {
-			return new CreateExampleDiagramFromPPTSlide(focusedObject, globalSelection, editor);
+			return new CreateDiagramFromPPTSlide(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
 			return object != null;
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(CreateExampleDiagramFromPPTSlide.actionType, DiagramSpecification.class);
+		FlexoObjectImpl.addActionForClass(CreateDiagramFromPPTSlide.actionType, RepositoryFolder.class);
 	}
 
-	public String newDiagramName;
-	public String newDiagramTitle;
-	public String description;
 	public DrawingGraphicalRepresentation graphicalRepresentation;
-	private Slide selectedSlide;
+	private SlideShow selectedSlideShow;
 
-	private DiagramResource newDiagramResource;
+	private DiagramSpecification diagramSpecification;
+	private String diagramName;
+	private String diagramTitle;
+	private String diagramURI;
+	private File diagramFile;
+	private File file;
+	private int slideNumber;
+	private int maxNumberOfSlides;
+	private DiagramResource diagramResource;
 
-	CreateExampleDiagramFromPPTSlide(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateDiagramFromPPTSlide(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
@@ -113,54 +125,219 @@ public class CreateExampleDiagramFromPPTSlide extends FlexoAction<CreateExampleD
 			InvalidFileNameException {
 		logger.info("Add example diagram");
 
-		String newDiagramURI = getFocusedObject().getURI() + "/" + newDiagramName;
-		File newDiagramFile = new File(getFocusedObject().getResource().getDirectory(), newDiagramName + DiagramResource.DIAGRAM_SUFFIX);
-		newDiagramResource = DiagramImpl.newDiagramResource(newDiagramName, newDiagramTitle, newDiagramURI, newDiagramFile,
-				getFocusedObject(), getServiceManager());
-		newDiagramResource.getDiagram().setDescription(description);
-		newDiagramResource.save(null);
-		convertSlideToDiagram(selectedSlide);
+		diagramResource = DiagramResourceImpl.makeDiagramResource(getDiagramName(), getDiagramURI(), getDiagramFile(),
+				getDiagramSpecification(), getServiceManager());
+
+		getFocusedObject().addToResources(diagramResource);
+
+		diagramResource.save(null);
+		
+		convertSlideToDiagram(loadSlide(slideNumber));
 	}
 
-	private String nameValidityMessage = EMPTY_NAME;
+	
+	/*
+	 * Diagram Configuration
+	 */
+	
+	private String errorMessage;
 
-	private static final String NAME_IS_VALID = FlexoLocalization.localizedForKey("name_is_valid");
-	private static final String DUPLICATED_NAME = FlexoLocalization.localizedForKey("this_name_is_already_used_please_choose_an_other_one");
-	private static final String EMPTY_NAME = FlexoLocalization.localizedForKey("empty_name");
-
-	public String getNameValidityMessage() {
-		return nameValidityMessage;
+	public String getErrorMessage() {
+		isValid();
+		return errorMessage;
 	}
 
-	public boolean isNameValid() {
-		if (StringUtils.isEmpty(newDiagramName)) {
-			nameValidityMessage = EMPTY_NAME;
+	@Override
+	public boolean isValid() {
+		if (StringUtils.isEmpty(diagramName)) {
+			errorMessage = noNameMessage();
 			return false;
-		} else if (getFocusedObject().getExampleDiagram(newDiagramName) != null) {
-			nameValidityMessage = DUPLICATED_NAME;
-			return false;
-		} else {
-			nameValidityMessage = NAME_IS_VALID;
-			return true;
 		}
+
+		if (!diagramName.equals(JavaUtils.getClassName(diagramName)) && !diagramName.equals(JavaUtils.getVariableName(diagramName))) {
+			errorMessage = invalidNameMessage();
+			return false;
+		}
+
+		if (StringUtils.isEmpty(diagramTitle)) {
+			errorMessage = noTitleMessage();
+			return false;
+		}
+		
+		if (getFile() == null) {
+			errorMessage = noFileMessage();
+			return false;
+		}
+		
+		if (getSlideNumber() < 0) {
+			errorMessage = noSlideNumberMessage();
+			return false;
+		}
+		
+		return true;
+	}
+
+	public String noDiagramSpecificationSelectedMessage() {
+		return FlexoLocalization.localizedForKey("no_diagram_type_selected");
+	}
+	
+	public String noTitleMessage() {
+		return FlexoLocalization.localizedForKey("no_diagram_title_defined");
+	}
+	
+	public String noFileMessage() {
+		return FlexoLocalization.localizedForKey("no_ppt_file_defined");
+	}
+	
+	public String existingFileMessage() {
+		return FlexoLocalization.localizedForKey("file_already_existing");
+	}
+	
+	public String noNameMessage() {
+		return FlexoLocalization.localizedForKey("no_diagram_name_defined");
+	}
+	
+	public String noSlideNumberMessage() {
+		return FlexoLocalization.localizedForKey("no_slide_number_defined");
+	}
+	
+	public String invalidNameMessage() {
+		return FlexoLocalization.localizedForKey("invalid_name_for_new_diagram");
+	}
+	
+	public String duplicatedNameMessage() {
+		return FlexoLocalization.localizedForKey("a_diagram_with_that_name_already_exists");
+	}
+
+	public DiagramSpecification getDiagramSpecification() {
+		return diagramSpecification;
+	}
+
+	public void setDiagramSpecification(DiagramSpecification diagramSpecification) {
+		this.diagramSpecification = diagramSpecification;
 	}
 
 	public Diagram getNewDiagram() {
-		return newDiagramResource.getDiagram();
+		if (getNewDiagramResource() != null) {
+			return getNewDiagramResource().getDiagram();
+		}
+		return null;
 	}
 
+	public DiagramResource getNewDiagramResource() {
+		return diagramResource;
+	}
+
+	public String getDiagramName() {
+		return diagramName;
+	}
+
+	public void setDiagramName(String diagramName) {
+		boolean wasValid = isValid();
+		this.diagramName = diagramName;
+		getPropertyChangeSupport().firePropertyChange("diagramName", null, diagramName);
+		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
+		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
+	}
+
+	public String getDiagramTitle() {
+		return diagramTitle;
+	}
+
+	public void setDiagramTitle(String diagramTitle) {
+		boolean wasValid = isValid();
+		this.diagramTitle = diagramTitle;
+		getPropertyChangeSupport().firePropertyChange("diagramTitle", null, diagramTitle);
+		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
+		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
+	}
+
+	public String getDiagramURI() {
+		if (diagramURI == null) {
+			return getDefaultDiagramURI();
+		}
+		return diagramURI;
+	}
+
+	public void setDiagramURI(String diagramURI) {
+		this.diagramURI = diagramURI;
+	}
+
+	public String getDefaultDiagramURI() {
+		return getFocusedObject().getResourceRepository().generateURI(getDiagramName());
+	}
+
+	public File getDiagramFile() {
+		if (diagramFile == null) {
+			return getDefaultDiagramFile();
+		}
+		return diagramFile;
+	}
+
+	public void setDiagramFile(File diagramFile) {
+		this.diagramFile = diagramFile;
+	}
+
+	public File getDefaultDiagramFile() {
+		return new File(getFocusedObject().getFile(), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
+	}
+
+	/*
+	 * PPT Configuration
+	 */
+	
 	public DiagramFactory getDiagramFactory() {
-		return newDiagramResource.getDiagram().getDiagramFactory();
-	}
-	
-	public Slide getSelectedSlide() {
-		return selectedSlide;
+		return diagramResource.getDiagram().getDiagramFactory();
 	}
 
-	public void setSelectedSlide(Slide selectedSlide) {
-		this.selectedSlide = selectedSlide;
+	public void loadSlideShow() {
+		try {
+			FileInputStream fis = new FileInputStream(getFile());
+			selectedSlideShow = new SlideShow(fis);
+			setMaxNumberOfSlides(selectedSlideShow.getSlides().length);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
+	public Slide loadSlide(int slideNumber){
+		return selectedSlideShow.getSlides()[slideNumber];
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+		if(file!=null){
+			loadSlideShow();
+		}
+		getPropertyChangeSupport().firePropertyChange("file", null, file);
+	}
+
+	public int getSlideNumber() {
+		return slideNumber;
+	}
+
+	public void setSlideNumber(int slideNumber) {
+		this.slideNumber = slideNumber;
+	}
+	
+	public int getMaxNumberOfSlides() {
+		return maxNumberOfSlides;
+	}
+
+	public void setMaxNumberOfSlides(int maxNumberOfSlides) {
+		this.maxNumberOfSlides = maxNumberOfSlides;
+	}
+	
+	
+	/*
+	 * Transfo PPT to Diagram
+	 */
 	private Diagram convertSlideToDiagram(Slide slide){
 		
 		Diagram diagram = getNewDiagram();
@@ -184,7 +361,7 @@ public class CreateExampleDiagramFromPPTSlide extends FlexoAction<CreateExampleD
 			}
 		}
 
-		for (Shape shape : selectedSlide.getShapes()) {
+		for (Shape shape : slide.getShapes()) {
 			if (shape instanceof Picture) {
 				diagram.addToShapes(makePictureShape((Picture)shape));
 			} else if (shape instanceof AutoShape) {
@@ -370,5 +547,4 @@ public class CreateExampleDiagramFromPPTSlide extends FlexoAction<CreateExampleD
 		returned.setLineWrap(true);
 
 	}
-
 }
