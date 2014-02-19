@@ -74,7 +74,7 @@ public interface DataPropertyStatementActorReference extends ActorReference<Data
 		}
 
 		/*public DataPropertyStatementActorReference(DataPropertyStatement o, DataPropertyStatementPatternRole aPatternRole,
-				EditionPatternInstance epi) {
+				FlexoConceptInstance epi) {
 			super(epi.getProject());
 			setEditionPatternInstance(epi);
 			setPatternRole(aPatternRole);

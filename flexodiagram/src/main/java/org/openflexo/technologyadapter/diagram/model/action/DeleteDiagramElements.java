@@ -29,7 +29,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.FlexoUndoableAction;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.DeletionScheme;
 import org.openflexo.model.factory.EmbeddingType;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
@@ -109,9 +109,9 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 	}
 
 	private List<DiagramElement<?>> diagramElementsToDelete;
-	private HashMap<EditionPatternInstance, DeletionScheme> selectedEditionPatternInstanceDeletionSchemes;
+	private HashMap<FlexoConceptInstance, DeletionScheme> selectedEditionPatternInstanceDeletionSchemes;
 	private DeletionScheme selectedDeletionScheme;
-	private EditionPatternInstance selectedEditionPatternInstance;
+	private FlexoConceptInstance selectedEditionPatternInstance;
 
 	protected DeleteDiagramElements(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
@@ -142,7 +142,7 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 			}
 		}*/
 
-		/*for (EditionPatternInstance epi : getEPIThatWillBeDeleted()) {
+		/*for (FlexoConceptInstance epi : getEPIThatWillBeDeleted()) {
 			if (selectedEditionPatternInstanceDeletionSchemes != null && selectedEditionPatternInstanceDeletionSchemes.get(epi) != null) {
 				epi.delete(selectedEditionPatternInstanceDeletionSchemes.get(epi));
 			} else {
@@ -193,7 +193,7 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 	public void setSelectedDeletionScheme(DeletionScheme selectedDeletionScheme) {
 		if (getSelectedEditionPatternInstance() != null) {
 			if (selectedEditionPatternInstanceDeletionSchemes == null) {
-				selectedEditionPatternInstanceDeletionSchemes = new HashMap<EditionPatternInstance, DeletionScheme>();
+				selectedEditionPatternInstanceDeletionSchemes = new HashMap<FlexoConceptInstance, DeletionScheme>();
 			}
 			selectedEditionPatternInstanceDeletionSchemes.put(getSelectedEditionPatternInstance(), selectedDeletionScheme);
 			this.selectedDeletionScheme = selectedDeletionScheme;
@@ -201,11 +201,11 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 		}
 	}
 
-	public EditionPatternInstance getSelectedEditionPatternInstance() {
+	public FlexoConceptInstance getSelectedEditionPatternInstance() {
 		return selectedEditionPatternInstance;
 	}
 
-	public void setSelectedEditionPatternInstance(EditionPatternInstance selectedEditionPatternInstance) {
+	public void setSelectedEditionPatternInstance(FlexoConceptInstance selectedEditionPatternInstance) {
 		this.selectedEditionPatternInstance = selectedEditionPatternInstance;
 	}
 }

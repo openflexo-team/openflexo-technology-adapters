@@ -14,7 +14,7 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.ModelObjectActorReference;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.PatternRole;
@@ -461,7 +461,7 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 		}
 
 		@Override
-		public ModelObjectActorReference<T> makeActorReference(T object, EditionPatternInstance epi) {
+		public ModelObjectActorReference<T> makeActorReference(T object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ModelObjectActorReference<T> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setPatternRole(this);

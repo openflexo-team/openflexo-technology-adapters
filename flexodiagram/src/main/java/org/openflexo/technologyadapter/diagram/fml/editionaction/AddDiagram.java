@@ -168,7 +168,7 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 				return newShema;
 			}
 			// logger.info("ShapeSpecification pattern role: " + shapePatternRole);
-			EditionPatternInstance newEditionPatternInstance = getProject().makeNewEditionPatternInstance(getEditionPattern());
+			FlexoConceptInstance newEditionPatternInstance = getProject().makeNewEditionPatternInstance(getEditionPattern());
 			DiagramShape newShape = new DiagramShape(newShema);
 			if (getEditionPatternInstance().getPatternActor(shapePatternRole) instanceof DiagramShape) {
 				DiagramShape primaryShape = (DiagramShape) getEditionPatternInstance().getPatternActor(shapePatternRole);

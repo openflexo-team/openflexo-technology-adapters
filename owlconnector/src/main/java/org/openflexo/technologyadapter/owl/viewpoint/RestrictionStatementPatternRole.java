@@ -3,7 +3,7 @@ package org.openflexo.technologyadapter.owl.viewpoint;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.ActorReference;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -34,7 +34,7 @@ public interface RestrictionStatementPatternRole extends StatementPatternRole {
 		}
 
 		@Override
-		public ActorReference makeActorReference(Object object, EditionPatternInstance epi) {
+		public ActorReference makeActorReference(Object object, FlexoConceptInstance epi) {
 			// TODO Auto-generated method stub
 			return null;
 		}

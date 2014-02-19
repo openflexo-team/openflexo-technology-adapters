@@ -7,7 +7,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.validation.ValidationError;
 import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.Getter;
@@ -87,7 +87,7 @@ public interface ObjectPropertyStatementPatternRole extends StatementPatternRole
 		}
 
 		@Override
-		public ObjectPropertyStatementActorReference makeActorReference(ObjectPropertyStatement object, EditionPatternInstance epi) {
+		public ObjectPropertyStatementActorReference makeActorReference(ObjectPropertyStatement object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ObjectPropertyStatementActorReference returned = factory.newInstance(ObjectPropertyStatementActorReference.class);
 			returned.setPatternRole(this);

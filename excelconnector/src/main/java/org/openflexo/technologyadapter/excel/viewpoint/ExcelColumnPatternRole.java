@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.excel.viewpoint;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.ActorReference;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -54,7 +54,7 @@ public interface ExcelColumnPatternRole extends PatternRole<ExcelColumn> {
 		}
 
 		@Override
-		public ActorReference<ExcelColumn> makeActorReference(ExcelColumn object, EditionPatternInstance epi) {
+		public ActorReference<ExcelColumn> makeActorReference(ExcelColumn object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ExcelActorReference<ExcelColumn> returned = factory.newInstance(ExcelActorReference.class);
 			returned.setPatternRole(this);

@@ -3,7 +3,7 @@ package org.openflexo.technologyadapter.diagram.fml;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.ModelObjectActorReference;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
@@ -119,7 +119,7 @@ public interface DiagramPatternRole extends PatternRole<Diagram> {
 		}
 
 		@Override
-		public ModelObjectActorReference<Diagram> makeActorReference(Diagram object, EditionPatternInstance epi) {
+		public ModelObjectActorReference<Diagram> makeActorReference(Diagram object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ModelObjectActorReference<Diagram> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setPatternRole(this);

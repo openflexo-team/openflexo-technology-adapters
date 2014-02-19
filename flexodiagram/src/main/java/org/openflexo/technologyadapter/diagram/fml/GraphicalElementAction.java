@@ -27,7 +27,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.validation.Validable;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.AbstractActionScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.EditionPatternObject;
@@ -76,7 +76,7 @@ public interface GraphicalElementAction extends EditionPatternObject {
 	@Setter(ABSTRACT_ACTION_SCHEME_KEY)
 	public void setAbstractActionScheme(AbstractActionScheme abstractActionScheme);
 
-	public boolean evaluateCondition(EditionPatternInstance editionPatternInstance);
+	public boolean evaluateCondition(FlexoConceptInstance flexoConceptInstance);
 
 	public static abstract class GraphicalElementActionImpl extends EditionPatternObjectImpl implements GraphicalElementAction {
 
@@ -130,10 +130,10 @@ public interface GraphicalElementAction extends EditionPatternObject {
 		}
 
 		@Override
-		public boolean evaluateCondition(EditionPatternInstance editionPatternInstance) {
+		public boolean evaluateCondition(FlexoConceptInstance flexoConceptInstance) {
 			if (getConditional().isValid()) {
 				try {
-					return getConditional().getBindingValue(editionPatternInstance);
+					return getConditional().getBindingValue(flexoConceptInstance);
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
 				} catch (NullReferenceException e) {

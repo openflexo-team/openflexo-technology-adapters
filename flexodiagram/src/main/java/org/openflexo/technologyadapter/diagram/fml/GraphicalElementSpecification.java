@@ -14,7 +14,7 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.validation.Validable;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.EditionPatternObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
@@ -221,7 +221,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		 * @param element
 		 */
 		// public void applyToGraphicalRepresentation(GR gr, DiagramElement<GR> element) {
-		public void applyToGraphicalRepresentation(EditionPatternInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
+		public void applyToGraphicalRepresentation(FlexoConceptInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
 			/*if (getValue().toString().equals(
 					"(property.label.asString + ((inputAttributeReference.value != \"\") ? (\"=\" + inputAttributeReference.value) : \"\"))")) {
 				System.out.println("value=" + getValue());
@@ -255,7 +255,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		 * @param element
 		 * @return
 		 */
-		public T applyToModel(EditionPatternInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
+		public T applyToModel(FlexoConceptInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
 			DiagramElement<GR> diagramElement = epi.getPatternActor(patternRole);
 			T newValue = getFeature().retrieveFromGraphicalRepresentation((GR) diagramElement.getGraphicalRepresentation());
 			try {

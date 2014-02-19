@@ -33,7 +33,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -91,7 +91,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 
 	// private Hashtable<EditionAction,FlexoObject> createdObjects;
 
-	private EditionPatternInstance editionPatternInstance;
+	private FlexoConceptInstance flexoConceptInstance;
 
 	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException {
@@ -100,11 +100,11 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 		logger.info("project=" + getProject());
 		// getEditionPattern().getViewPoint().getViewpointOntology().loadWhenUnloaded();
 
-		editionPatternInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
+		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 
-		logger.info("editionPatternInstance=" + editionPatternInstance);
-		logger.info("epi project=" + editionPatternInstance.getProject());
-		logger.info("epi resource data =" + editionPatternInstance.getResourceData());
+		logger.info("flexoConceptInstance=" + flexoConceptInstance);
+		logger.info("epi project=" + flexoConceptInstance.getProject());
+		logger.info("epi resource data =" + flexoConceptInstance.getResourceData());
 
 		applyEditionActions();
 
@@ -157,8 +157,8 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 	}
 
 	@Override
-	public EditionPatternInstance getEditionPatternInstance() {
-		return editionPatternInstance;
+	public FlexoConceptInstance getEditionPatternInstance() {
+		return flexoConceptInstance;
 	}
 
 	@Override

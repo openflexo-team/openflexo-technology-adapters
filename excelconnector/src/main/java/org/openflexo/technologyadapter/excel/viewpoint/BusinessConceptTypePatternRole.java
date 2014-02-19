@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.excel.viewpoint;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.ActorReference;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -56,7 +56,7 @@ public interface BusinessConceptTypePatternRole extends PatternRole<BusinessConc
 		}
 
 		@Override
-		public ActorReference<BusinessConceptType> makeActorReference(BusinessConceptType object, EditionPatternInstance epi) {
+		public ActorReference<BusinessConceptType> makeActorReference(BusinessConceptType object, FlexoConceptInstance epi) {
 			// TODO Auto-generated method stub
 			return null;
 		}

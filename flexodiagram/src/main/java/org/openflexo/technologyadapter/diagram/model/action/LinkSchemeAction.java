@@ -29,7 +29,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -78,7 +78,7 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 	static {
 		// VirtualModelInstanceObject.addActionForClass(actionType, DiagramElement.class);
 		// VirtualModelInstanceObject.addActionForClass(actionType, Diagram.class);
-		FlexoObjectImpl.addActionForClass(actionType, EditionPatternInstance.class);
+		FlexoObjectImpl.addActionForClass(actionType, FlexoConceptInstance.class);
 	}
 
 	private DiagramShape _fromShape;
@@ -101,7 +101,7 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 		_linkScheme = linkScheme;
 	}
 
-	private EditionPatternInstance editionPatternInstance;
+	private FlexoConceptInstance flexoConceptInstance;
 
 	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException {
@@ -109,7 +109,7 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 
 		// getEditionPattern().getViewPoint().getViewpointOntology().loadWhenUnloaded();
 
-		editionPatternInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
+		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 
 		applyEditionActions();
 
@@ -125,8 +125,8 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 	}
 
 	@Override
-	public EditionPatternInstance getEditionPatternInstance() {
-		return editionPatternInstance;
+	public FlexoConceptInstance getEditionPatternInstance() {
+		return flexoConceptInstance;
 	}
 
 	public DiagramShape getFromShape() {
