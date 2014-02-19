@@ -45,7 +45,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 /**
- * This abstract class is an action that allows to create an edition pattern from a graphical representation(for instance a shape or
+ * This abstract class is an action that allows to create an flexo concept from a graphical representation(for instance a shape or
  * connector)
  * 
  * @author Sylvain, Vincent

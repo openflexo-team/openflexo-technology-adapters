@@ -50,7 +50,7 @@ import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * This class represents an abstraction for a declare shape in edition pattern action among several kind of shapes.</br>
+ * This class represents an abstraction for a declare shape in flexo concept action among several kind of shapes.</br>
  * 
  * 
  * @author Vincent
@@ -120,7 +120,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 
 	@Override
 	protected void doAction(Object context) {
-		logger.info("Declare connector in edition pattern");
+		logger.info("Declare connector in flexo concept");
 		if (isValid()) {
 			switch (primaryChoice) {
 			case CHOOSE_EXISTING_EDITION_PATTERN:
@@ -136,11 +136,11 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 						.getDiagramSpecification().getViewPointLibrary(), getFocusedObject().getDiagramSpecification().getViewPoint(),
 						getFocusedObject().getDiagramSpecification().getResource());*/
 
-				// Create new edition pattern
+				// Create new flexo concept
 				newFlexoConcept = getFactory().newFlexoConcept();
 				newFlexoConcept.setName(getEditionPatternName());
 
-				// And add the newly created edition pattern
+				// And add the newly created flexo concept
 				getDiagramModelSlot().getVirtualModel().addToFlexoConcepts(newFlexoConcept);
 
 				// Find best URI base candidate
@@ -159,7 +159,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 					}
 				}
 
-				// Create an edition pattern pattern role if required
+				// Create an flexo concept pattern role if required
 				FlexoConceptInstancePatternRole flexoConceptPatternRole = null;
 				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
 					if (isVirtualModelModelSlot()) {

@@ -176,7 +176,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getTargetFlexoConcept())));
 			} else if (_getTarget() != null && !_getTarget().equals("top")) {
-				// logger.warning("Cannot find edition pattern " + _getTarget() + " !!!!!!!!!!!!!!");
+				// logger.warning("Cannot find flexo concept " + _getTarget() + " !!!!!!!!!!!!!!");
 				bindingModelNeedToBeRecomputed = true;
 			}
 		}

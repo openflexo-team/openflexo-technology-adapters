@@ -160,7 +160,7 @@
     <Localized key="pattern_role" lang="French">Pattern role</Localized>
     <Localized key="pattern_role" lang="English">Pattern role</Localized>
     <Localized key="please_choose_an_flexo_concept" lang="French">Veuillez choisir un Edition Pattern</Localized>
-    <Localized key="please_choose_an_flexo_concept" lang="English">Please choose an edition pattern</Localized>
+    <Localized key="please_choose_an_flexo_concept" lang="English">Please choose an flexo concept</Localized>
     <Localized key="create_new_flexo_concept" lang="English">Create new Edition Pattern</Localized>
     <Localized key="create_new_flexo_concept" lang="French">Créer un nouvel Edition Pattern</Localized>
     <Localized key="create_new_flexo_concept" lang="Dutch">new_entry</Localized>
@@ -169,8 +169,8 @@
     <Localized key="declare_in_existing_flexo_concept" lang="Dutch">new_entry</Localized>
     <Localized key="pattern_role_name" lang="French">Nom du pattern role</Localized>
     <Localized key="pattern_role_name" lang="English">Pattern Role name</Localized>
-    <Localized key="new_flexo_concept" lang="French">Nouvel edition pattern</Localized>
-    <Localized key="new_flexo_concept" lang="English">New edition pattern</Localized>
+    <Localized key="new_flexo_concept" lang="French">Nouvel flexo concept</Localized>
+    <Localized key="new_flexo_concept" lang="English">New flexo concept</Localized>
     <Localized key="ontologic_concept" lang="French">Concept ontologique</Localized>
     <Localized key="ontologic_concept" lang="English">Ontologic concept</Localized>
     <Localized key="CREATES_EDITION_PATTERN" lang="English">Create new Edition Pattern</Localized>
@@ -179,29 +179,29 @@
     <Localized key="CHOOSE_EXISTING_EDITION_PATTERN" lang="English">Declare in existing Edition Pattern</Localized>
     <Localized key="CHOOSE_EXISTING_EDITION_PATTERN" lang="French">Déclarer dans un Edition Pattern existant</Localized>
     <Localized key="CHOOSE_EXISTING_EDITION_PATTERN" lang="Dutch">new_entry</Localized>
-    <Localized key="declare_in_flexo_concept" lang="English">Declare in edition pattern</Localized>
+    <Localized key="declare_in_flexo_concept" lang="English">Declare in flexo concept</Localized>
     <Localized key="declare_in_flexo_concept" lang="French">Déclarer dans un Edition Pattern</Localized>
-    <Localized key="declare_in_flexo_concept" lang="Dutch">Declare in edition pattern</Localized>
+    <Localized key="declare_in_flexo_concept" lang="Dutch">Declare in flexo concept</Localized>
     <Localized key="MAP_SINGLE_INDIVIDUAL" lang="French">Correspondance simple vers un individual définit dans une ontologie</Localized>
     <Localized key="MAP_SINGLE_INDIVIDUAL" lang="English">Single mapping to individual</Localized>
     <Localized key="MAP_SINGLE_INDIVIDUAL_description" lang="English">&lt;html&gt;&lt;center&gt;This will create a simple mapping between a shape and&lt;br&gt;an individual stored in project ontology.&lt;/center&gt;&lt;/html&gt;</Localized>
     <Localized key="MAP_SINGLE_INDIVIDUAL_description" lang="French">&lt;html&gt;&lt;center&gt;This will create a simple mapping between a shape and&lt;br&gt;an individual stored in project ontology.&lt;/center&gt;&lt;/html&gt;</Localized>
     <Localized key="MAP_SINGLE_INDIVIDUAL_description" lang="Dutch">new_entry</Localized>
-    <Localized key="MAP_SINGLE_EDITION_PATTERN" lang="French">Correspondance simple vers un edition pattern définit dans un virtual model</Localized>
-    <Localized key="MAP_SINGLE_EDITION_PATTERN" lang="English">Single mapping to edition pattern</Localized>
-    <Localized key="MAP_SINGLE_EDITION_PATTERN_description" lang="English">&lt;html&gt;&lt;center&gt;This will create a simple mapping between a shape and&lt;br&gt;an edition pattern stored in project virtual model.&lt;/center&gt;&lt;/html&gt;</Localized>
-    <Localized key="MAP_SINGLE_EDITION_PATTERN_description" lang="French">&lt;html&gt;&lt;center&gt;This will create a simple mapping between a shape and&lt;br&gt;an edition pattern stored in project virtual model.&lt;/center&gt;&lt;/html&gt;</Localized>
+    <Localized key="MAP_SINGLE_EDITION_PATTERN" lang="French">Correspondance simple vers un flexo concept définit dans un virtual model</Localized>
+    <Localized key="MAP_SINGLE_EDITION_PATTERN" lang="English">Single mapping to flexo concept</Localized>
+    <Localized key="MAP_SINGLE_EDITION_PATTERN_description" lang="English">&lt;html&gt;&lt;center&gt;This will create a simple mapping between a shape and&lt;br&gt;an flexo concept stored in project virtual model.&lt;/center&gt;&lt;/html&gt;</Localized>
+    <Localized key="MAP_SINGLE_EDITION_PATTERN_description" lang="French">&lt;html&gt;&lt;center&gt;This will create a simple mapping between a shape and&lt;br&gt;an flexo concept stored in project virtual model.&lt;/center&gt;&lt;/html&gt;</Localized>
     <Localized key="MAP_SINGLE_EDITION_PATTERN_description" lang="Dutch">new_entry</Localized>
     <Localized key="new_flexo_concept_name" lang="French">Nom du nouvel Edition Pattern</Localized>
-    <Localized key="new_flexo_concept_name" lang="English">New edition pattern name</Localized>
+    <Localized key="new_flexo_concept_name" lang="English">New flexo concept name</Localized>
     <Localized key="shape_pattern_role_name" lang="English">Shape pattern role name</Localized>
     <Localized key="shape_pattern_role_name" lang="French">Nom du role de la forme</Localized>
     <Localized key="pattern" lang="French">Patron</Localized>
     <Localized key="pattern" lang="English">Pattern</Localized>
     <Localized key="individual_pattern_role_name" lang="French">Nom du role de l'individuel</Localized>
     <Localized key="individual_pattern_role_name" lang="English">Individual pattern role name</Localized>
-    <Localized key="DECLARE_IN_EXISTING_EDITION_PATTERN_description" lang="English">&lt;html&gt;&lt;center&gt;Will assign this shape as a shape to be used in supplied edition pattern&lt;/center&gt;&lt;/html&gt;</Localized>
-    <Localized key="DECLARE_IN_EXISTING_EDITION_PATTERN_description" lang="French">&lt;html&gt;&lt;center&gt;Will assign this shape as a shape to be used in supplied edition pattern&lt;/center&gt;&lt;/html&gt;</Localized>
+    <Localized key="DECLARE_IN_EXISTING_EDITION_PATTERN_description" lang="English">&lt;html&gt;&lt;center&gt;Will assign this shape as a shape to be used in supplied flexo concept&lt;/center&gt;&lt;/html&gt;</Localized>
+    <Localized key="DECLARE_IN_EXISTING_EDITION_PATTERN_description" lang="French">&lt;html&gt;&lt;center&gt;Will assign this shape as a shape to be used in supplied flexo concept&lt;/center&gt;&lt;/html&gt;</Localized>
     <Localized key="DECLARE_IN_EXISTING_EDITION_PATTERN_description" lang="Dutch">new_entry</Localized>
     <Localized key="property" lang="English">Property</Localized>
     <Localized key="label" lang="English">Label</Localized>
@@ -233,9 +233,9 @@
     <Localized key="BLANK_EDITION_PATTERN_description" lang="English">&lt;html&gt;&lt;center&gt;This will create a simple Edition Pattern only containing a shape&lt;br&gt;similar to the one which has just been selected.&lt;/center&gt;&lt;/html&gt;</Localized>
     <Localized key="BLANK_EDITION_PATTERN_description" lang="French">&lt;html&gt;&lt;center&gt;This will create a simple Edition Pattern only containing a shape&lt;br&gt;similar to the one which has just been selected.&lt;/center&gt;&lt;/html&gt;</Localized>
     <Localized key="BLANK_EDITION_PATTERN_description" lang="Dutch">new_entry</Localized>
-    <Localized key="declare_shape_in_flexo_concept" lang="English">Declare shape in edition pattern</Localized>
+    <Localized key="declare_shape_in_flexo_concept" lang="English">Declare shape in flexo concept</Localized>
     <Localized key="declare_shape_in_flexo_concept" lang="French">Déclarer la forme dans un Edition Pattern</Localized>
-    <Localized key="declare_shape_in_flexo_concept" lang="Dutch">Declare in edition pattern</Localized>
+    <Localized key="declare_shape_in_flexo_concept" lang="Dutch">Declare in flexo concept</Localized>
     <Localized key="graphical_elements" lang="French">Eléments graphiques</Localized>
     <Localized key="graphical_representation" lang="French">Représentation graphique</Localized>
     <Localized key="graphical_elements" lang="English">Graphical elements</Localized>

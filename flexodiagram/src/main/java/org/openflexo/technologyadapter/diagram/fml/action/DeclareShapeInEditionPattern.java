@@ -53,7 +53,7 @@ import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * This class represents an abstraction for a declare shape in edition pattern action among several kind of shapes.</br>
+ * This class represents an abstraction for a declare shape in flexo concept action among several kind of shapes.</br>
  * 
  * 
  * @author Vincent
@@ -330,7 +330,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 
 	@Override
 	protected void doAction(Object context) {
-		logger.info("Declare shape in edition pattern");
+		logger.info("Declare shape in flexo concept");
 		if (isValid()) {
 			switch (primaryChoice) {
 			case CHOOSE_EXISTING_EDITION_PATTERN:
@@ -350,18 +350,18 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 				case MAP_SINGLE_EDITION_PATTERN:
 				case BLANK_EDITION_PATTERN:
 
-					// Create new edition pattern
+					// Create new flexo concept
 					newFlexoConcept = getFactory().newFlexoConcept();
 					newFlexoConcept.setName(getEditionPatternName());
 
-					// And add the newly created edition pattern
+					// And add the newly created flexo concept
 					getDiagramModelSlot().getVirtualModel().addToFlexoConcepts(newFlexoConcept);
 
 					// Find best URI base candidate
 					// PropertyEntry mainPropertyDescriptor = selectBestEntryForURIBaseName();
 
 					// Create pattern role, if it is an ontology then we create an individual, otherwise if it is a virtual model we create
-					// an edition pattern instance
+					// an flexo concept instance
 					IndividualPatternRole<?> individualPatternRole = null;
 					FlexoConceptInstancePatternRole flexoConceptPatternRole = null;
 					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
@@ -579,7 +579,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 						}
 					}
 
-					// Parameters for edition patterns creation action
+					// Parameters for flexo concepts creation action
 					/*if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
 						if (isVirtualModelModelSlot()) {
 							VirtualModelModelSlot<?, ?> virtualModelModelSlot = (VirtualModelModelSlot<?, ?>) getModelSlot();

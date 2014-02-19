@@ -33,9 +33,9 @@
     <Localized key="reindex_contents" lang="English">Re-index content</Localized>
     <Localized key="reindex_contents" lang="French">Ré-indexer le contenu</Localized>
     <Localized key="reindex_contents" lang="Dutch">Re-index content</Localized>
-    <Localized key="&lt;html&gt;following_contents_will_be_reindexed&lt;br&gt;according_to_a_particular_flexo_concept&lt;/html&gt;" lang="English">&lt;html&gt;Following contents will be reindexed&lt;br&gt;according to a particular edition pattern&lt;/html&gt;</Localized>
+    <Localized key="&lt;html&gt;following_contents_will_be_reindexed&lt;br&gt;according_to_a_particular_flexo_concept&lt;/html&gt;" lang="English">&lt;html&gt;Following contents will be reindexed&lt;br&gt;according to a particular flexo concept&lt;/html&gt;</Localized>
     <Localized key="&lt;html&gt;following_contents_will_be_reindexed&lt;br&gt;according_to_a_particular_flexo_concept&lt;/html&gt;" lang="French">&lt;html&gt;Le contenu suivant va être ré-indexé&lt;br&gt;conformément à un EditionPattern donné&lt;/html&gt;</Localized>
-    <Localized key="&lt;html&gt;following_contents_will_be_reindexed&lt;br&gt;according_to_a_particular_flexo_concept&lt;/html&gt;" lang="Dutch">&lt;html&gt;Following contents will be reindexed&lt;br&gt;according to a particular edition pattern&lt;/html&gt;</Localized>
+    <Localized key="&lt;html&gt;following_contents_will_be_reindexed&lt;br&gt;according_to_a_particular_flexo_concept&lt;/html&gt;" lang="Dutch">&lt;html&gt;Following contents will be reindexed&lt;br&gt;according to a particular flexo concept&lt;/html&gt;</Localized>
     <Localized key="flexo_concept" lang="English">Edition Pattern</Localized>
     <Localized key="flexo_concept" lang="French">Edition Pattern</Localized>
     <Localized key="flexo_concept" lang="Dutch">Edition Pattern</Localized>
