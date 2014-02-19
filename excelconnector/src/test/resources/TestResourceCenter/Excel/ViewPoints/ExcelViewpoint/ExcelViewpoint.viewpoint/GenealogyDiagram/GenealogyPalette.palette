@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Palette id="1" index="0" name="GenealogyPalette">
-  <PaletteElement id="2" name="Man" editionPattern="Man" dropSchemeName="dropManAtTopLevel" boundLabelToElementName="false">
+  <PaletteElement id="2" name="Man" flexoConcept="Man" dropSchemeName="dropManAtTopLevel" boundLabelToElementName="false">
     <Parameter id="3" name="age" value="0" />
     <Parameter id="4" name="nameInGen" value="" />
     <Parameter id="5" name="nameInListing" value="" />
@@ -20,7 +20,7 @@
       <TextStyle id="19" font="Lucida Sans,0,11" color="0,0,0" orientation="0" isBackgroundColored="false" backgroundColor="255,255,255" />
     </ShapeGraphicalRepresentation>
   </PaletteElement>
-  <PaletteElement id="20" name="Woman" editionPattern="Woman" dropSchemeName="dropWomamAtTopLevel" boundLabelToElementName="false">
+  <PaletteElement id="20" name="Woman" flexoConcept="Woman" dropSchemeName="dropWomamAtTopLevel" boundLabelToElementName="false">
     <Parameter id="21" name="nameInGen" value="" />
     <Parameter id="22" name="nameInList" value="" />
     <Parameter id="23" name="age" value="" />

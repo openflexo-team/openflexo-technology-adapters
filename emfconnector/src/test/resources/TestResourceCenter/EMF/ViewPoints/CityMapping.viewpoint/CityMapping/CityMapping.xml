@@ -48,7 +48,7 @@
       <IndividualParameter id="28" conceptURI="http://www.thalesgroup.com/openflexo/emf/model/city2/Appartment" name="appartmentInModel2" label="appartmentInModel2" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedEMFModelSlot idref="7" />
       </IndividualParameter>
-      <EditionPatternInstanceParameter id="29" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="cityParameter" label="city" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="29" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="cityParameter" label="city" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedVirtualModelModelSlot id="30" virtualModelURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping" isRequired="false" isReadOnly="false" name="this" />
       </EditionPatternInstanceParameter>
       <DeclarePatternRole id="31" object="parameters.houseInModel1" name="" assignation="houseInModel1" />
@@ -65,7 +65,7 @@
     <ContainedEMFObjectIndividualPatternRole id="38" name="appartmentInModel2" patternRole="appartmentInModel2" ontologicType="http://www.thalesgroup.com/openflexo/emf/model/city2/Appartment">
       <AddressedEMFModelSlot idref="7" />
     </ContainedEMFObjectIndividualPatternRole>
-    <ContainedEditionPatternInstancePatternRole id="39" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="city" patternRole="city">
+    <ContainedEditionPatternInstancePatternRole id="39" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="city" patternRole="city">
       <AddressedVirtualModelModelSlot idref="30" />
     </ContainedEditionPatternInstancePatternRole>
     <PrimaryConceptEMFObjectIndividualPatternRole idref="37" />
@@ -81,7 +81,7 @@
       <IndividualParameter id="46" conceptURI="http://www.thalesgroup.com/openflexo/emf/model/city2/Mansion" name="mansionInModel2" label="mansionInModel2" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedEMFModelSlot idref="7" />
       </IndividualParameter>
-      <EditionPatternInstanceParameter id="47" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="cityParameter" label="city" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="47" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="cityParameter" label="city" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedVirtualModelModelSlot idref="30" />
       </EditionPatternInstanceParameter>
       <DeclarePatternRole id="48" object="parameters.houseInModel1" assignation="houseInModel1" />
@@ -98,7 +98,7 @@
     <ContainedEMFObjectIndividualPatternRole id="55" name="mansionInModel2" patternRole="mansionInModel2" ontologicType="http://www.thalesgroup.com/openflexo/emf/model/city2/Mansion">
       <AddressedEMFModelSlot idref="7" />
     </ContainedEMFObjectIndividualPatternRole>
-    <ContainedEditionPatternInstancePatternRole id="56" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="city" patternRole="city">
+    <ContainedEditionPatternInstancePatternRole id="56" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="city" patternRole="city">
       <AddressedVirtualModelModelSlot idref="30" />
     </ContainedEditionPatternInstancePatternRole>
     <PrimaryConceptEMFObjectIndividualPatternRole idref="54" />
@@ -160,7 +160,7 @@
           <CreateEditionPatternInstanceParameter id="89" paramName="cityInModel2" value="matchingCitiesInModel2.get(0)" />
         </MatchEditionPatternInstance>
       </ConditionalAction>
-      <SelectEditionPatternInstance id="90" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" variableName="tempList" assignation="tempList">
+      <SelectEditionPatternInstance id="90" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" variableName="tempList" assignation="tempList">
         <AddressedVirtualModelModelSlot idref="30" />
         <Condition id="91" condition="(selected.cityInModel1 = city1)" />
       </SelectEditionPatternInstance>
@@ -267,7 +267,7 @@
     </FetchRequestIterationAction>
   </SynchronizationScheme>
   <ActionScheme id="158" name="synchronizeModel2FromModel1" label="Synchronize model2 from model 1" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
-    <SelectEditionPatternInstance id="159" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" variableName="nonExistantCitiesInModel2" assignation="nonExistantCitiesInModel2">
+    <SelectEditionPatternInstance id="159" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" variableName="nonExistantCitiesInModel2" assignation="nonExistantCitiesInModel2">
       <Condition id="160" condition="(selected.cityInModel2 = null)" />
     </SelectEditionPatternInstance>
     <IterationAction id="161" iteration="nonExistantCitiesInModel2" iteratorName="nonExistantCity">
@@ -275,7 +275,7 @@
     </IterationAction>
   </ActionScheme>
   <ActionScheme id="163" name="synchronizeModel1FromModel2" label="synchronizeModel1FromModel2" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
-    <SelectEditionPatternInstance id="164" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" variableName="nonExistingCitiesInModel1" assignation="nonExistingCitiesInModel1">
+    <SelectEditionPatternInstance id="164" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" variableName="nonExistingCitiesInModel1" assignation="nonExistingCitiesInModel1">
       <Condition id="165" condition="(selected.cityInModel1 = null)" />
     </SelectEditionPatternInstance>
     <IterationAction id="166" iteration="nonExistingCitiesInModel1" iteratorName="nonExistingCity">

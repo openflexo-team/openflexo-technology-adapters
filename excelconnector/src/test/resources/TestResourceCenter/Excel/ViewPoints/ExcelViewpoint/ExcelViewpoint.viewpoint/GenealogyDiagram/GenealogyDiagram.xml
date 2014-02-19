@@ -5,7 +5,7 @@
       <IntegerParameter id="4" name="rowIndex" label="rowIndex" defaultValue="1" usePaletteLabelAsDefaultValue="false" isRequired="false" />
       <TextFieldParameter id="5" name="name" label="name" usePaletteLabelAsDefaultValue="false" isRequired="false" />
       <IntegerParameter id="6" name="age" label="age" defaultValue="1" usePaletteLabelAsDefaultValue="false" isRequired="false" />
-      <EditionPatternInstanceParameter id="7" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Genealogic" name="sheet" label="sheet" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="7" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Genealogic" name="sheet" label="sheet" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedDiagramModelSlot id="8" isRequired="true" isReadOnly="false" name="this" virtualModelURI="http://ExcelViewpoint/GenealogyDiagram" />
       </EditionPatternInstanceParameter>
       <AddShape id="9" container="topLevel" extendParentBoundsToHostThisShape="false" assignation="shape">
@@ -303,10 +303,10 @@
       </AddExcelCell>
     </LinkScheme>
     <CreationScheme id="170" name="creation" label="creation" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
-      <EditionPatternInstanceParameter id="171" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" label="source" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="171" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" label="source" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedDiagramModelSlot idref="8" />
       </EditionPatternInstanceParameter>
-      <EditionPatternInstanceParameter id="172" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" label="target" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="172" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" label="target" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedDiagramModelSlot idref="8" />
       </EditionPatternInstanceParameter>
       <TechnologyObjectParameter id="173" name="cell" label="cell" usePaletteLabelAsDefaultValue="false" isRequired="false" />
@@ -323,10 +323,10 @@
     <ContainedExcelCellPatternRole id="180" name="cell" patternRole="cell">
       <AddressedBasicExcelModelSlot idref="16" />
     </ContainedExcelCellPatternRole>
-    <ContainedEditionPatternInstancePatternRole id="181" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" patternRole="source">
+    <ContainedEditionPatternInstancePatternRole id="181" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" patternRole="source">
       <AddressedDiagramModelSlot idref="8" />
     </ContainedEditionPatternInstancePatternRole>
-    <ContainedEditionPatternInstancePatternRole id="182" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" patternRole="target">
+    <ContainedEditionPatternInstancePatternRole id="182" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" patternRole="target">
       <AddressedDiagramModelSlot idref="8" />
     </ContainedEditionPatternInstancePatternRole>
     <ContainedConnectorPatternRole id="183" patternRole="connector" name="connector" exampleLabel="label">
@@ -420,10 +420,10 @@
       <DeleteAction id="248" object="connector" />
     </DeletionScheme>
     <CreationScheme id="249" name="creation" label="creation" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
-      <EditionPatternInstanceParameter id="250" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" label="source" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="250" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" label="source" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedDiagramModelSlot idref="8" />
       </EditionPatternInstanceParameter>
-      <EditionPatternInstanceParameter id="251" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" label="target" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="251" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" label="target" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedDiagramModelSlot idref="8" />
       </EditionPatternInstanceParameter>
       <TechnologyObjectParameter id="252" name="cell" label="cell" usePaletteLabelAsDefaultValue="false" isRequired="false" />
@@ -472,10 +472,10 @@
     <ContainedExcelCellPatternRole id="285" name="cell" patternRole="cell">
       <AddressedBasicExcelModelSlot idref="16" />
     </ContainedExcelCellPatternRole>
-    <ContainedEditionPatternInstancePatternRole id="286" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" patternRole="source">
+    <ContainedEditionPatternInstancePatternRole id="286" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" patternRole="source">
       <AddressedDiagramModelSlot idref="8" />
     </ContainedEditionPatternInstancePatternRole>
-    <ContainedEditionPatternInstancePatternRole id="287" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" patternRole="target">
+    <ContainedEditionPatternInstancePatternRole id="287" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" patternRole="target">
       <AddressedDiagramModelSlot idref="8" />
     </ContainedEditionPatternInstancePatternRole>
     <PrimaryRepresentationConnectorPatternRole idref="257" />
@@ -491,10 +491,10 @@
       <DeleteAction id="293" object="connector" />
     </DeletionScheme>
     <CreationScheme id="294" name="creation" label="creation" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
-      <EditionPatternInstanceParameter id="295" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" label="source" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="295" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" label="source" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedDiagramModelSlot idref="8" />
       </EditionPatternInstanceParameter>
-      <EditionPatternInstanceParameter id="296" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" label="target" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="296" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" label="target" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedDiagramModelSlot idref="8" />
       </EditionPatternInstanceParameter>
       <TechnologyObjectParameter id="297" name="cell" label="cell" usePaletteLabelAsDefaultValue="false" isRequired="false" />
@@ -543,10 +543,10 @@
     <ContainedExcelCellPatternRole id="330" name="cell" patternRole="cell">
       <AddressedBasicExcelModelSlot idref="16" />
     </ContainedExcelCellPatternRole>
-    <ContainedEditionPatternInstancePatternRole id="331" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" patternRole="source">
+    <ContainedEditionPatternInstancePatternRole id="331" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="source" patternRole="source">
       <AddressedDiagramModelSlot idref="8" />
     </ContainedEditionPatternInstancePatternRole>
-    <ContainedEditionPatternInstancePatternRole id="332" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" patternRole="target">
+    <ContainedEditionPatternInstancePatternRole id="332" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="target" patternRole="target">
       <AddressedDiagramModelSlot idref="8" />
     </ContainedEditionPatternInstancePatternRole>
     <PrimaryRepresentationConnectorPatternRole idref="302" />
@@ -649,7 +649,7 @@
         </IterationAction>
       </FetchRequestIterationAction>
     </FetchRequestIterationAction>
-    <SelectEditionPatternInstance id="396" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" variableName="existingHuman" assignation="existingHuman">
+    <SelectEditionPatternInstance id="396" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" variableName="existingHuman" assignation="existingHuman">
       <AddressedDiagramModelSlot idref="8" />
     </SelectEditionPatternInstance>
     <SelectExcelRow id="397" excelSheet="Gen.genSheet" variableName="genRows" assignation="genRows">
@@ -700,13 +700,13 @@
       </IterationAction>
     </IterationAction>
   </SynchronizationScheme>
-  <ContainedEditionPatternInstancePatternRole id="432" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Genealogic" name="Gen" patternRole="Gen">
+  <ContainedEditionPatternInstancePatternRole id="432" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Genealogic" name="Gen" patternRole="Gen">
     <AddressedDiagramModelSlot idref="8" />
   </ContainedEditionPatternInstancePatternRole>
-  <ContainedEditionPatternInstancePatternRole id="433" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="sourceEPtemp" patternRole="sourceEPtemp">
+  <ContainedEditionPatternInstancePatternRole id="433" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="sourceEPtemp" patternRole="sourceEPtemp">
     <AddressedDiagramModelSlot idref="8" />
   </ContainedEditionPatternInstancePatternRole>
-  <ContainedEditionPatternInstancePatternRole id="434" editionPatternTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="targetEPtemp" patternRole="targetEPtemp">
+  <ContainedEditionPatternInstancePatternRole id="434" flexoConceptTypeURI="http://ExcelViewpoint/GenealogyDiagram#Human" name="targetEPtemp" patternRole="targetEPtemp">
     <AddressedDiagramModelSlot idref="8" />
   </ContainedEditionPatternInstancePatternRole>
   <Inspector id="435" inspectorTitle="GenealogyDiagram" />

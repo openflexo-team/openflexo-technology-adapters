@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Palette id="1" index="0" name="Palette">
-  <PaletteElement id="2" name="Row" editionPattern="Row" dropSchemeName="dropAtTopLevel" boundLabelToElementName="true">
+  <PaletteElement id="2" name="Row" flexoConcept="Row" dropSchemeName="dropAtTopLevel" boundLabelToElementName="true">
     <Parameter id="3" name="index" value="" />
-    <Parameter id="4" name="editionPatternInstance" value="" />
+    <Parameter id="4" name="flexoConceptInstance" value="" />
     <Parameter id="5" name="rowIndex" value="0" />
     <Parameter id="6" name="row" value="" />
     <ShapeGraphicalRepresentation id="7" className="org.openflexo.vpm.diagrampalette.DiagramPaletteElementGR" x="296.0" y="258.0" width="153.66227831574366" height="60.879120879120876" minimalWidth="0.0" minimalHeight="0.0" maximalWidth="Infinity" maximalHeight="Infinity" relativeTextX="0.5" relativeTextY="0.5" lineWrap="true" locationConstraints="FREELY_MOVABLE" dimensionConstraints="FREELY_RESIZABLE" adjustMinimalWidthToLabelWidth="true" adjustMinimalHeightToLabelHeight="true" adjustMaximalWidthToLabelWidth="false" adjustMaximalHeightToLabelHeight="false" hasSelectedForeground="false" hasSelectedBackground="false" hasFocusedForeground="false" hasFocusedBackground="false" isFloatingLabel="false" allowToLeaveBounds="true" identifier="object_0" layer="1" hasText="true" text="Row" isMultilineAllowed="true" continuousTextEditing="true" absoluteTextX="0.0" absoluteTextY="0.0" paragraphAlignment="CENTER" horizontalTextAlignment="CENTER" verticalTextAlignment="MIDDLE" isSelectable="true" isFocusable="true" drawControlPointsWhenFocused="true" drawControlPointsWhenSelected="true" isReadOnly="false" isLabelEditable="true" isVisible="true">
@@ -18,7 +18,7 @@
       <TextStyle id="17" font="Lucida Sans,0,11" color="0,0,0" orientation="0" isBackgroundColored="false" backgroundColor="255,255,255" />
     </ShapeGraphicalRepresentation>
   </PaletteElement>
-  <PaletteElement id="18" name="Cell" editionPattern="Cell" dropSchemeName="dropInASheet" boundLabelToElementName="true">
+  <PaletteElement id="18" name="Cell" flexoConcept="Cell" dropSchemeName="dropInASheet" boundLabelToElementName="true">
     <Parameter id="19" name="value" value="" />
     <Parameter id="20" name="technologyObject" value="" />
     <Parameter id="21" name="rowIndex" value="0" />
@@ -36,7 +36,7 @@
       <TextStyle id="32" font="Lucida Sans,0,11" color="0,0,0" orientation="0" isBackgroundColored="false" backgroundColor="255,255,255" />
     </ShapeGraphicalRepresentation>
   </PaletteElement>
-  <PaletteElement id="33" name="Sheet" editionPattern="Sheet" dropSchemeName="drop" boundLabelToElementName="true">
+  <PaletteElement id="33" name="Sheet" flexoConcept="Sheet" dropSchemeName="drop" boundLabelToElementName="true">
     <Parameter id="34" name="name" value="" />
     <Parameter id="35" name="technologyObject" value="" />
     <ShapeGraphicalRepresentation id="36" className="org.openflexo.vpm.diagrampalette.DiagramPaletteElementGR" x="2.0" y="250.0" width="294.0" height="262.0" minimalWidth="0.0" minimalHeight="0.0" maximalWidth="Infinity" maximalHeight="Infinity" relativeTextX="0.5" relativeTextY="0.5" lineWrap="true" locationConstraints="FREELY_MOVABLE" dimensionConstraints="UNRESIZABLE" adjustMinimalWidthToLabelWidth="true" adjustMinimalHeightToLabelHeight="true" adjustMaximalWidthToLabelWidth="false" adjustMaximalHeightToLabelHeight="false" hasSelectedForeground="false" hasSelectedBackground="false" hasFocusedForeground="false" hasFocusedBackground="false" isFloatingLabel="false" allowToLeaveBounds="true" identifier="object_2" layer="0" hasText="true" text="Sheet" isMultilineAllowed="true" continuousTextEditing="true" absoluteTextX="0.0" absoluteTextY="0.0" paragraphAlignment="CENTER" horizontalTextAlignment="CENTER" verticalTextAlignment="MIDDLE" isSelectable="true" isFocusable="true" drawControlPointsWhenFocused="true" drawControlPointsWhenSelected="true" isReadOnly="false" isLabelEditable="true" isVisible="true">
@@ -52,7 +52,7 @@
       <TextStyle id="45" font="Lucida Sans,0,11" color="0,0,0" orientation="0" isBackgroundColored="false" backgroundColor="255,255,255" />
     </ShapeGraphicalRepresentation>
   </PaletteElement>
-  <PaletteElement id="46" name="Person" editionPattern="Person" dropSchemeName="dropPersonAtTopLevel" boundLabelToElementName="false">
+  <PaletteElement id="46" name="Person" flexoConcept="Person" dropSchemeName="dropPersonAtTopLevel" boundLabelToElementName="false">
     <Parameter id="47" name="firstName" value="" />
     <Parameter id="48" name="lastName" value="" />
     <Parameter id="49" name="age" value="20" />

@@ -2,7 +2,7 @@
 <DiagramSpecification id="1" name="CityDiagram" modelVersion="1.0" parentEditionPattern="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping">
   <EditionPattern id="2" name="CityGR">
     <DropScheme id="3" target="top" name="dropCityGRAtTopLevel" label="dropCityGRAtTopLevel" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
-      <EditionPatternInstanceParameter id="4" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="city" label="city" usePaletteLabelAsDefaultValue="false" isRequired="true">
+      <EditionPatternInstanceParameter id="4" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="city" label="city" usePaletteLabelAsDefaultValue="false" isRequired="true">
         <AddressedVirtualModelModelSlot id="5" isRequired="true" isReadOnly="false" name="cityMapping" />
       </EditionPatternInstanceParameter>
       <AddShape id="6" container="topLevel" extendParentBoundsToHostThisShape="false" assignation="container">
@@ -17,7 +17,7 @@
       <DeclarePatternRole id="10" object="parameters.city" assignation="city" />
     </DropScheme>
     <CreationScheme id="11" name="createCityGR" label="createCityGR" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
-      <EditionPatternInstanceParameter id="12" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="cityParameter" label="city" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="12" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="cityParameter" label="city" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedVirtualModelModelSlot idref="5" />
       </EditionPatternInstanceParameter>
       <AddShape id="13" container="topLevel" extendParentBoundsToHostThisShape="false" assignation="container">
@@ -90,7 +90,7 @@
       <AddressedDiagramModelSlot idref="7" />
       <GRSpec id="62" featureName="label" value="city.render" readOnly="true" />
     </ContainedShapePatternRole>
-    <ContainedEditionPatternInstancePatternRole id="63" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="city" patternRole="city">
+    <ContainedEditionPatternInstancePatternRole id="63" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="city" patternRole="city">
       <AddressedVirtualModelModelSlot idref="5" />
     </ContainedEditionPatternInstancePatternRole>
     <PrimaryRepresentationShapePatternRole idref="26" />
@@ -103,7 +103,7 @@
       </AddShape>
     </DropScheme>
     <CreationScheme id="68" name="createMansionGR" label="createMansionGR" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
-      <EditionPatternInstanceParameter id="69" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Mansion" name="mansionParam" label="mansionParam" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="69" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Mansion" name="mansionParam" label="mansionParam" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedVirtualModelModelSlot idref="5" />
       </EditionPatternInstanceParameter>
       <DeclarePatternRole id="70" object="parameters.mansionParam" assignation="mansion" />
@@ -134,7 +134,7 @@
       <AddressedDiagramModelSlot idref="7" />
       <GRSpec id="89" featureName="label" value="mansion.render" readOnly="true" />
     </ContainedShapePatternRole>
-    <ContainedEditionPatternInstancePatternRole id="90" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Mansion" name="mansion" patternRole="mansion">
+    <ContainedEditionPatternInstancePatternRole id="90" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Mansion" name="mansion" patternRole="mansion">
       <AddressedVirtualModelModelSlot idref="5" />
     </ContainedEditionPatternInstancePatternRole>
     <PrimaryRepresentationShapePatternRole idref="78" />
@@ -147,7 +147,7 @@
       </AddShape>
     </DropScheme>
     <CreationScheme id="95" name="createAppartmentGR" label="createAppartmentGR" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
-      <EditionPatternInstanceParameter id="96" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Appartment" name="appartmentParam" label="appartmentParam" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="96" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Appartment" name="appartmentParam" label="appartmentParam" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedVirtualModelModelSlot idref="5" />
       </EditionPatternInstanceParameter>
       <DeclarePatternRole id="97" object="parameters.appartmentParam" assignation="appartment" />
@@ -178,7 +178,7 @@
       <AddressedDiagramModelSlot idref="7" />
       <GRSpec id="115" featureName="label" value="appartment.render" readOnly="true" />
     </ContainedShapePatternRole>
-    <ContainedEditionPatternInstancePatternRole id="116" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Appartment" name="appartment" patternRole="appartment">
+    <ContainedEditionPatternInstancePatternRole id="116" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Appartment" name="appartment" patternRole="appartment">
       <AddressedVirtualModelModelSlot idref="5" />
     </ContainedEditionPatternInstancePatternRole>
     <PrimaryRepresentationShapePatternRole idref="104" />
@@ -199,7 +199,7 @@
     &lt;/p&gt;
   &lt;/body&gt;
 &lt;/html&gt;</description>
-    <EditionPatternInstanceParameter id="121" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="cityParameter" label="city" usePaletteLabelAsDefaultValue="false" isRequired="true">
+    <EditionPatternInstanceParameter id="121" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="cityParameter" label="city" usePaletteLabelAsDefaultValue="false" isRequired="true">
       <AddressedVirtualModelModelSlot idref="119" />
     </EditionPatternInstanceParameter>
     <DeclarePatternRole id="122" object="parameters.cityParameter" name="" assignation="city" />
@@ -230,7 +230,7 @@
       <CreateEditionPatternInstanceParameter id="132" paramName="cityParameter" value="city" />
     </MatchEditionPatternInstance>
     <FetchRequestIterationAction id="133" iteratorName="appartment">
-      <AddressedSelectEditionPatternInstance id="134" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Appartment">
+      <AddressedSelectEditionPatternInstance id="134" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Appartment">
         <AddressedVirtualModelModelSlot idref="119" />
         <Condition id="135" condition="(selected.city = city)" />
       </AddressedSelectEditionPatternInstance>
@@ -242,7 +242,7 @@
       </MatchEditionPatternInstance>
     </FetchRequestIterationAction>
     <FetchRequestIterationAction id="140" iteratorName="mansion">
-      <AddressedSelectEditionPatternInstance id="141" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Mansion">
+      <AddressedSelectEditionPatternInstance id="141" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#Mansion">
         <AddressedVirtualModelModelSlot idref="119" />
         <Condition id="142" condition="(selected.city = city)" />
       </AddressedSelectEditionPatternInstance>
@@ -254,10 +254,10 @@
       </MatchEditionPatternInstance>
     </FetchRequestIterationAction>
   </SynchronizationScheme>
-  <ContainedEditionPatternInstancePatternRole id="147" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="city" patternRole="city">
+  <ContainedEditionPatternInstancePatternRole id="147" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMapping#City" name="city" patternRole="city">
     <AddressedVirtualModelModelSlot idref="5" />
   </ContainedEditionPatternInstancePatternRole>
-  <ContainedEditionPatternInstancePatternRole id="148" editionPatternTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityDiagram#CityGR" name="cityGR" patternRole="cityGR">
+  <ContainedEditionPatternInstancePatternRole id="148" flexoConceptTypeURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityDiagram#CityGR" name="cityGR" patternRole="cityGR">
     <AddressedDiagramModelSlot idref="72" />
   </ContainedEditionPatternInstancePatternRole>
   <Inspector id="149" inspectorTitle="CityDiagram" />

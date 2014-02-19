@@ -235,10 +235,10 @@
       </ArtifactToShapeGraphicalRepresentation>
       <AddressedDiagramModelSlot idref="6" />
     </ContainedConnectorPatternRole>
-    <ContainedEditionPatternInstancePatternRole id="154" editionPatternTypeURI="http://www.openflexo.org/cityviews/City1_View#HouseGR" name="house" patternRole="house">
+    <ContainedEditionPatternInstancePatternRole id="154" flexoConceptTypeURI="http://www.openflexo.org/cityviews/City1_View#HouseGR" name="house" patternRole="house">
       <AddressedDiagramModelSlot idref="6" />
     </ContainedEditionPatternInstancePatternRole>
-    <ContainedEditionPatternInstancePatternRole id="155" editionPatternTypeURI="http://www.openflexo.org/cityviews/City1_View#ResidentGR" name="owner" patternRole="owner">
+    <ContainedEditionPatternInstancePatternRole id="155" flexoConceptTypeURI="http://www.openflexo.org/cityviews/City1_View#ResidentGR" name="owner" patternRole="owner">
       <AddressedDiagramModelSlot idref="6" />
     </ContainedEditionPatternInstancePatternRole>
     <PrimaryRepresentationConnectorPatternRole idref="127" />
@@ -252,24 +252,24 @@
   <EMFModelSlot idref="9" />
   <ActionScheme id="160" name="showSemanticsElement" label="showSemanticsElement" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
     <IterationAction id="161" iteration="topLevel.childs" iteratorName="item">
-      <GraphicalAction id="162" subject="item" value="1.0" feature="transparency" conditional="(item.editionPatternInstance != null)">
+      <GraphicalAction id="162" subject="item" value="1.0" feature="transparency" conditional="(item.flexoConceptInstance != null)">
         <AddressedDiagramModelSlot idref="6" />
       </GraphicalAction>
-      <GraphicalAction id="163" subject="item" value="0.1" feature="transparency" conditional="(item.editionPatternInstance = null)">
+      <GraphicalAction id="163" subject="item" value="0.1" feature="transparency" conditional="(item.flexoConceptInstance = null)">
         <AddressedDiagramModelSlot idref="6" />
       </GraphicalAction>
       <IterationAction id="164" iteration="item.childs" iteratorName="subItem">
-        <GraphicalAction id="165" subject="subItem" value="1.0" feature="transparency" conditional="(subItem.editionPatternInstance != null)">
+        <GraphicalAction id="165" subject="subItem" value="1.0" feature="transparency" conditional="(subItem.flexoConceptInstance != null)">
           <AddressedDiagramModelSlot idref="6" />
         </GraphicalAction>
-        <GraphicalAction id="166" subject="subItem" value="0.1" feature="transparency" conditional="(subItem.editionPatternInstance = null)">
+        <GraphicalAction id="166" subject="subItem" value="0.1" feature="transparency" conditional="(subItem.flexoConceptInstance = null)">
           <AddressedDiagramModelSlot idref="6" />
         </GraphicalAction>
         <IterationAction id="167" iteration="subItem.childs" iteratorName="subsubItem">
-          <GraphicalAction id="168" subject="subsubItem" value="1.0" feature="transparency" conditional="(subsubItem.editionPatternInstance != null)">
+          <GraphicalAction id="168" subject="subsubItem" value="1.0" feature="transparency" conditional="(subsubItem.flexoConceptInstance != null)">
             <AddressedDiagramModelSlot idref="6" />
           </GraphicalAction>
-          <GraphicalAction id="169" subject="subsubItem" value="0.1" feature="transparency" conditional="(subsubItem.editionPatternInstance = null)">
+          <GraphicalAction id="169" subject="subsubItem" value="0.1" feature="transparency" conditional="(subsubItem.flexoConceptInstance = null)">
             <AddressedDiagramModelSlot idref="6" />
           </GraphicalAction>
         </IterationAction>
@@ -278,24 +278,24 @@
   </ActionScheme>
   <ActionScheme id="170" name="showNoSemanticsElement" label="showNoSemanticsElement" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
     <IterationAction id="171" iteration="topLevel.childs" iteratorName="item">
-      <GraphicalAction id="172" subject="item" value="1.0" feature="transparency" conditional="(item.editionPatternInstance = null)">
+      <GraphicalAction id="172" subject="item" value="1.0" feature="transparency" conditional="(item.flexoConceptInstance = null)">
         <AddressedDiagramModelSlot idref="6" />
       </GraphicalAction>
-      <GraphicalAction id="173" subject="item" value="0.1" feature="transparency" conditional="(item.editionPatternInstance != null)">
+      <GraphicalAction id="173" subject="item" value="0.1" feature="transparency" conditional="(item.flexoConceptInstance != null)">
         <AddressedDiagramModelSlot idref="6" />
       </GraphicalAction>
       <IterationAction id="174" iteration="item.childs" iteratorName="subItem">
-        <GraphicalAction id="175" subject="subItem" value="1.0" feature="transparency" conditional="(subItem.editionPatternInstance = null)">
+        <GraphicalAction id="175" subject="subItem" value="1.0" feature="transparency" conditional="(subItem.flexoConceptInstance = null)">
           <AddressedDiagramModelSlot idref="6" />
         </GraphicalAction>
-        <GraphicalAction id="176" subject="subItem" value="0.1" feature="transparency" conditional="(subItem.editionPatternInstance != null)">
+        <GraphicalAction id="176" subject="subItem" value="0.1" feature="transparency" conditional="(subItem.flexoConceptInstance != null)">
           <AddressedDiagramModelSlot idref="6" />
         </GraphicalAction>
         <IterationAction id="177" iteration="subItem.childs" iteratorName="subsubItem">
-          <GraphicalAction id="178" subject="subsubItem" value="1.0" feature="transparency" conditional="(subsubItem.editionPatternInstance = null)">
+          <GraphicalAction id="178" subject="subsubItem" value="1.0" feature="transparency" conditional="(subsubItem.flexoConceptInstance = null)">
             <AddressedDiagramModelSlot idref="6" />
           </GraphicalAction>
-          <GraphicalAction id="179" subject="subsubItem" value="0.1" feature="transparency" conditional="(subsubItem.editionPatternInstance != null)">
+          <GraphicalAction id="179" subject="subsubItem" value="0.1" feature="transparency" conditional="(subsubItem.flexoConceptInstance != null)">
             <AddressedDiagramModelSlot idref="6" />
           </GraphicalAction>
         </IterationAction>

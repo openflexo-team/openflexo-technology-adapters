@@ -71,7 +71,7 @@
                   <AddAction method="EditionSchemeTable.selected.createObjectPropertyParameter" name="add_object_property_parameter" />
                   <AddAction method="EditionSchemeTable.selected.createDataPropertyParameter" name="add_data_property_parameter" />
                   <AddAction method="EditionSchemeTable.selected.createListParameter" name="add_list_parameter" />
-                  <AddAction method="EditionSchemeTable.selected.createEditionPatternInstanceParameter" name="add_edition_pattern_instance_parameter" />
+                  <AddAction method="EditionSchemeTable.selected.createEditionPatternInstanceParameter" name="add_flexo_concept_instance_parameter" />
                   <AddAction method="EditionSchemeTable.selected.createPropertyParameter" name="add_property_parameter" />
                   <AddAction method="EditionSchemeTable.selected.createTechnologyObjectParameter" name="add_technology_object" />
                 </Table>

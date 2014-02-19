@@ -33,7 +33,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	// private Vector<DiagramConnector> incomingConnectors;
 	// private Vector<DiagramConnector> outgoingConnectors;
 
-	// private FlexoConceptInstance editionPatternInstance;
+	// private FlexoConceptInstance flexoConceptInstance;
 
 	/**
 	 * Constructor invoked during deserialization

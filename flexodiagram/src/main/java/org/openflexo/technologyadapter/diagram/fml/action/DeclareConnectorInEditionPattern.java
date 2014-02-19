@@ -62,7 +62,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 	private static final Logger logger = Logger.getLogger(DeclareConnectorInEditionPattern.class.getPackage().getName());
 
 	public static FlexoActionType<DeclareConnectorInEditionPattern, DiagramConnector, DiagramElement<?>> actionType = new FlexoActionType<DeclareConnectorInEditionPattern, DiagramConnector, DiagramElement<?>>(
-			"declare_in_edition_pattern", FlexoActionType.defaultGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
+			"declare_in_flexo_concept", FlexoActionType.defaultGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -95,7 +95,7 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 
 	public NewEditionPatternChoices patternChoice = NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL;
 
-	private String editionPatternName;
+	private String flexoConceptName;
 	private IFlexoOntologyClass concept;
 	private IFlexoOntologyObjectProperty objectProperty;
 	private String individualPatternRoleName;
@@ -160,13 +160,13 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 				}
 
 				// Create an edition pattern pattern role if required
-				FlexoConceptInstancePatternRole editionPatternPatternRole = null;
+				FlexoConceptInstancePatternRole flexoConceptPatternRole = null;
 				if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
 					if (isVirtualModelModelSlot()) {
 						VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
-						editionPatternPatternRole = virtualModelModelSlot.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
-						editionPatternPatternRole.setPatternRoleName(getVirtualModelPatternRoleName());
-						newFlexoConcept.addToPatternRoles(editionPatternPatternRole);
+						flexoConceptPatternRole = virtualModelModelSlot.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
+						flexoConceptPatternRole.setPatternRoleName(getVirtualModelPatternRoleName());
+						newFlexoConcept.addToPatternRoles(flexoConceptPatternRole);
 					}
 				}
 
@@ -486,24 +486,24 @@ public class DeclareConnectorInEditionPattern extends DeclareInEditionPattern<De
 
 	public String getEditionPatternName() {
 		if (isTypeAwareModelSlot()) {
-			if (StringUtils.isEmpty(editionPatternName) && concept != null) {
+			if (StringUtils.isEmpty(flexoConceptName) && concept != null) {
 				return concept.getName();
 			}
-			if (StringUtils.isEmpty(editionPatternName) && objectProperty != null) {
+			if (StringUtils.isEmpty(flexoConceptName) && objectProperty != null) {
 				return objectProperty.getName();
 			}
 		}
 		if (isVirtualModelModelSlot()) {
-			if (StringUtils.isEmpty(editionPatternName) && virtualModelConcept != null) {
+			if (StringUtils.isEmpty(flexoConceptName) && virtualModelConcept != null) {
 				return virtualModelConcept.getName();
 			}
 		}
 
-		return editionPatternName;
+		return flexoConceptName;
 	}
 
-	public void setEditionPatternName(String editionPatternName) {
-		this.editionPatternName = editionPatternName;
+	public void setEditionPatternName(String flexoConceptName) {
+		this.flexoConceptName = flexoConceptName;
 	}
 
 	public String getIndividualPatternRoleName() {

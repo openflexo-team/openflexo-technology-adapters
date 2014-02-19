@@ -109,13 +109,13 @@
   <EditionPattern id="62" name="Row">
     <DropScheme id="63" target="top" name="dropAtTopLevel" label="drop" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600">
       <IntegerParameter id="64" name="index" label="index" defaultValue="1" usePaletteLabelAsDefaultValue="false" isRequired="false" />
-      <EditionPatternInstanceParameter id="65" editionPatternTypeURI="http://ExcelViewpoint/Diagram#Sheet" name="editionPatternInstance" label="editionPatternInstance" usePaletteLabelAsDefaultValue="false" isRequired="false">
+      <EditionPatternInstanceParameter id="65" flexoConceptTypeURI="http://ExcelViewpoint/Diagram#Sheet" name="flexoConceptInstance" label="flexoConceptInstance" usePaletteLabelAsDefaultValue="false" isRequired="false">
         <AddressedDiagramModelSlot idref="27" />
       </EditionPatternInstanceParameter>
       <AddShape id="66" container="target.shape" extendParentBoundsToHostThisShape="false" assignation="shape">
         <AddressedDiagramModelSlot idref="8" />
       </AddShape>
-      <AddExcelRow id="67" excelSheet="parameters.editionPatternInstance.sheet" assignation="row">
+      <AddExcelRow id="67" excelSheet="parameters.flexoConceptInstance.sheet" assignation="row">
         <rowIndex>parameters.index</rowIndex>
         <AddressedBasicExcelModelSlot idref="6" />
       </AddExcelRow>
@@ -420,7 +420,7 @@
     </FetchRequestIterationAction>
   </SynchronizationScheme>
   <DeletionScheme id="242" name="deletion" label="deletion" skipConfirmationPanel="false" definePopupDefaultSize="false" width="800" height="600" />
-  <ContainedEditionPatternInstancePatternRole id="243" editionPatternTypeURI="http://ExcelViewpoint/IdentityDiagram#Sheet" name="personExcelSheet" patternRole="personExcelSheet">
+  <ContainedEditionPatternInstancePatternRole id="243" flexoConceptTypeURI="http://ExcelViewpoint/IdentityDiagram#Sheet" name="personExcelSheet" patternRole="personExcelSheet">
     <AddressedDiagramModelSlot idref="27" />
   </ContainedEditionPatternInstancePatternRole>
   <Inspector id="244" inspectorTitle="Diagram" />

@@ -16,7 +16,7 @@
       <Table iteratorClassName="org.openflexo.technologyadapter.diagram.fmlGraphicalElementAction" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" textSelectionColor="255,255,255" textNonSelectionColor="0,0,0" backgroundSelectionColor="41,90,209" backgroundSecondarySelectionColor="173,215,255" backgroundNonSelectionColor="255,255,255" localize="true" manageDynamicModel="true" index="17" data="data.actions" constraints="twocols(expandHorizontally=true;expandVertically=true;index=17;location=right)">
         <IconColumn data="controller.iconForObject(iterator.abstractActionScheme)" title="icon" columnWidth="25" resizable="false" displayTitle="false" name="icon" />
         <DropDownColumn data="iterator.actionMask" title="mask" columnWidth="100" resizable="true" displayTitle="true" name="dropdown" />
-        <DropDownColumn list="iterator.editionPattern.abstractActionSchemes" data="iterator.abstractActionScheme" format="object.name" title="action" columnWidth="100" resizable="true" displayTitle="true" name="dropdown" />
+        <DropDownColumn list="iterator.flexoConcept.abstractActionSchemes" data="iterator.abstractActionScheme" format="object.name" title="action" columnWidth="100" resizable="true" displayTitle="true" name="dropdown" />
         <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.conditional" title="conditional" columnWidth="300" resizable="true" displayTitle="true" name="value">
           <ColumnAssignment variable="component.bindable" value="iterator" />
         </CustomColumn>
