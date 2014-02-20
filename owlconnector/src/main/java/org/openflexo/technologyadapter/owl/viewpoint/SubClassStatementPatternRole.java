@@ -41,7 +41,7 @@ public interface SubClassStatementPatternRole extends StatementPatternRole<SubCl
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			SubClassStatementActorReference returned = factory.newInstance(SubClassStatementActorReference.class);
 			returned.setPatternRole(this);
-			returned.setEditionPatternInstance(epi);
+			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;
 		}

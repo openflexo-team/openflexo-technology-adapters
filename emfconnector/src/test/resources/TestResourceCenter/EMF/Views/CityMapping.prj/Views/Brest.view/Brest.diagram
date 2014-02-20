@@ -17,14 +17,14 @@
         <ShadowStyle id="12" drawShadow="true" shadowDarkness="150" shadowDepth="2" shadowBlur="4" />
         <TextStyle id="13" font="Lucida Sans,0,11" color="0,0,0" orientation="0" isBackgroundColored="false" backgroundColor="255,255,255" />
       </ShapeGraphicalRepresentation>
-      <EditionPatternReference>http://www.agilebirds.com/projects/2013/3/CityMapping_1362736592640|http://www.agilebirds.com/projects/2013/3/CityMapping_1362736592640/Brest#FLX_6</EditionPatternReference>
+      <FlexoConceptReference>http://www.agilebirds.com/projects/2013/3/CityMapping_1362736592640|http://www.agilebirds.com/projects/2013/3/CityMapping_1362736592640/Brest#FLX_6</FlexoConceptReference>
     </ContainedDiagramShape>
   </DiagramRootPane>
   <ModelSlotInstance id="FLX_2" modelSlotName="diagram" modelURI="TODO" userID="FLX" flexoID="2" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
   <ModelSlotInstance id="FLX_3" modelSlotName="city1" modelURI="file:/D:/Documents%20and%20Settings/gbesancon/Mes%20documents/FlexoUserResourceCenter/CityMapping.prj/Models/brest.city1" userID="FLX" flexoID="3" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
   <ModelSlotInstance id="FLX_4" modelSlotName="city2" modelURI="file:/D:/Documents%20and%20Settings/gbesancon/Mes%20documents/FlexoUserResourceCenter/CityMapping.prj/Models/brest.city2" userID="FLX" flexoID="4" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
-  <EditionPatternInstance id="FLX_9" flexoConceptURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMappingDiagramSpecification#Mansion" userID="FLX" flexoID="9" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
-  <EditionPatternInstance id="FLX_8" flexoConceptURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMappingDiagramSpecification#Resident" userID="FLX" flexoID="8" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
-  <EditionPatternInstance id="FLX_6" flexoConceptURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMappingDiagramSpecification#City" userID="FLX" flexoID="6" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
-  <EditionPatternInstance id="FLX_5" flexoConceptURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMappingDiagramSpecification#City" userID="FLX" flexoID="5" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
+  <FlexoConceptInstance id="FLX_9" flexoConceptURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMappingDiagramSpecification#Mansion" userID="FLX" flexoID="9" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
+  <FlexoConceptInstance id="FLX_8" flexoConceptURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMappingDiagramSpecification#Resident" userID="FLX" flexoID="8" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
+  <FlexoConceptInstance id="FLX_6" flexoConceptURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMappingDiagramSpecification#City" userID="FLX" flexoID="6" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
+  <FlexoConceptInstance id="FLX_5" flexoConceptURI="http://www.thalesgroup.com/openflexo/emf/CityMapping/CityMappingDiagramSpecification#City" userID="FLX" flexoID="5" docFormat="HTML" dontGenerate="false" useSpecificDescriptions="false" />
 </Diagram>

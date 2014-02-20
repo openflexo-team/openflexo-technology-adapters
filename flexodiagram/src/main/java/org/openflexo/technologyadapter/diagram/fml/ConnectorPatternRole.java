@@ -199,11 +199,11 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 		}
 
 		/*public ShapePatternRole getStartShape() {
-			for (EditionScheme es : getEditionPattern().getEditionSchemes()) {
+			for (EditionScheme es : getFlexoConcept().getEditionSchemes()) {
 				for (EditionAction action : es.getActions()) {
 					if ((action.getPatternRole() == this) && (action instanceof AddConnector)) {
 						AddConnector addConnector = (AddConnector) action;
-						for (PatternRole r : getEditionPattern().getPatternRoles()) {
+						for (PatternRole r : getFlexoConcept().getPatternRoles()) {
 							if ((r instanceof ShapePatternRole) && (addConnector.getFromShape() != null)
 									&& addConnector.getFromShape().toString().equals(r.getPatternRoleName())) {
 								return (ShapePatternRole) r;
@@ -217,11 +217,11 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 		}
 
 		public ShapePatternRole getEndShape() {
-			for (EditionScheme es : getEditionPattern().getEditionSchemes()) {
+			for (EditionScheme es : getFlexoConcept().getEditionSchemes()) {
 				for (EditionAction action : es.getActions()) {
 					if ((action.getPatternRole() == this) && (action instanceof AddConnector)) {
 						AddConnector addConnector = (AddConnector) action;
-						for (PatternRole r : getEditionPattern().getPatternRoles()) {
+						for (PatternRole r : getFlexoConcept().getPatternRoles()) {
 							if ((r instanceof ShapePatternRole) && (addConnector.getToShape() != null)
 									&& addConnector.getToShape().toString().equals(r.getPatternRoleName())) {
 								return (ShapePatternRole) r;

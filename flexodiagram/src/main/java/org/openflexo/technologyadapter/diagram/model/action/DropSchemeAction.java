@@ -98,7 +98,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 		logger.info("Drop palette element");
 
 		logger.info("project=" + getProject());
-		// getEditionPattern().getViewPoint().getViewpointOntology().loadWhenUnloaded();
+		// getFlexoConcept().getViewPoint().getViewpointOntology().loadWhenUnloaded();
 
 		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 
@@ -157,7 +157,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 	}
 
 	@Override
-	public FlexoConceptInstance getEditionPatternInstance() {
+	public FlexoConceptInstance getFlexoConceptInstance() {
 		return flexoConceptInstance;
 	}
 
@@ -217,7 +217,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 					}
 				}
 				/*} else if (action.getPatternRole().getParentShapeAsDefinedInAction()) {
-					Object graphicalRepresentation = action.getEditionPattern().getPrimaryRepresentationRole().getGraphicalRepresentation();
+					Object graphicalRepresentation = action.getFlexoConcept().getPrimaryRepresentationRole().getGraphicalRepresentation();
 					if (graphicalRepresentation instanceof ShapeGraphicalRepresentation) {
 						ShapeGraphicalRepresentation primaryGR = (ShapeGraphicalRepresentation) graphicalRepresentation;
 						gr.setX(dropLocation.x + gr.getX() - primaryGR.getX());
@@ -240,7 +240,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals(DiagramEditionScheme.TARGET) && _dropScheme.getTargetFlexoConcept() != null) {
 			/*if (getParent() instanceof DiagramShape) {
-				return ((DiagramShape) getParent()).getEditionPatternInstance();
+				return ((DiagramShape) getParent()).getFlexoConceptInstance();
 			}*/
 			// TODO
 			logger.warning("Please implement getValue() for target");

@@ -120,8 +120,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 		public DiagramContainerElement<?> getContainer(EditionSchemeAction action) {
 			if (getPatternRole() != null && !getPatternRole().getParentShapeAsDefinedInAction()) {
-				FlexoObject returned = action.getEditionPatternInstance().getPatternActor(getPatternRole().getParentShapePatternRole());
-				return action.getEditionPatternInstance().getPatternActor(getPatternRole().getParentShapePatternRole());
+				FlexoObject returned = action.getFlexoConceptInstance().getPatternActor(getPatternRole().getParentShapePatternRole());
+				return action.getFlexoConceptInstance().getPatternActor(getPatternRole().getParentShapePatternRole());
 			} else {
 				try {
 					return getContainer().getBindingValue(action);
@@ -213,7 +213,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			newShape.setGraphicalRepresentation(newGR);
 
 			// Register reference
-			newShape.registerEditionPatternReference(action.getEditionPatternInstance());
+			newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());
 
 			if (container == null) {
 				logger.warning("When adding shape, cannot find container for action " + getPatternRole() + " container="

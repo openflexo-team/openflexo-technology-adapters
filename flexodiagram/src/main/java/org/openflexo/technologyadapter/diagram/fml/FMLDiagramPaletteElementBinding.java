@@ -193,7 +193,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 		}
 
 		// Deserialization only, do not use
-		public String _getEditionPatternId() {
+		public String _getFlexoConceptId() {
 			if (getFlexoConcept() != null) {
 				return getFlexoConcept().getName();
 			}
@@ -201,7 +201,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 		}
 
 		// Deserialization only, do not use
-		public void _setEditionPatternId(String flexoConceptId) {
+		public void _setFlexoConceptId(String flexoConceptId) {
 			_flexoConceptId = flexoConceptId;
 		}
 

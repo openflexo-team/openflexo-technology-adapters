@@ -91,7 +91,7 @@ public interface ObjectPropertyStatementPatternRole extends StatementPatternRole
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ObjectPropertyStatementActorReference returned = factory.newInstance(ObjectPropertyStatementActorReference.class);
 			returned.setPatternRole(this);
-			returned.setEditionPatternInstance(epi);
+			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;
 		}

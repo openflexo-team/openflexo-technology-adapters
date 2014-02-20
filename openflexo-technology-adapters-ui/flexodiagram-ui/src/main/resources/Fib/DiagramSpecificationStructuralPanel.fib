@@ -14,12 +14,12 @@
         </ColSplit>
       </RowSplit>
     </ColSplit>
-    <Browser root="data" iteratorClassName="org.openflexo.foundation.viewpoint.FlexoConcept" visibleRowCount="3" rowHeight="18" boundToSelectionManager="true" selectionMode="DiscontiguousTreeSelection" selected="" showFooter="true" rootVisible="true" showRootsHandle="true" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" clickAction="" doubleClickAction="controller.doubleClick(EditionPatternBrowser.selected)" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" name="EditionPatternBrowser" data="" constraints="split(splitIdentifier=flexoConceptBrowser)" visible="">
+    <Browser root="data" iteratorClassName="org.openflexo.foundation.viewpoint.FlexoConcept" visibleRowCount="3" rowHeight="18" boundToSelectionManager="true" selectionMode="DiscontiguousTreeSelection" selected="" showFooter="true" rootVisible="true" showRootsHandle="true" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" clickAction="" doubleClickAction="controller.doubleClick(FlexoConceptBrowser.selected)" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" name="FlexoConceptBrowser" data="" constraints="split(splitIdentifier=flexoConceptBrowser)" visible="">
       <BrowserElement dataClassName="org.openflexo.foundation.viewpoint.VirtualModel" label="virtualModel.name" icon="controller.iconForObject(virtualModel)" tooltip="" enabled="" visible="" isEditable="false" editableLabel="" filtered="false" defaultVisible="true" dynamicFont="" name="virtualModel">
-        <Children data="data.allRootEditionPatterns" visible="" cast="" name="children" />
+        <Children data="data.allRootFlexoConcepts" visible="" cast="" name="children" />
       </BrowserElement>
       <BrowserElement dataClassName="org.openflexo.foundation.viewpoint.FlexoConcept" label="flexoConcept.name" icon="controller.iconForObject(flexoConcept)" tooltip="" enabled="" visible="" isEditable="false" editableLabel="" filtered="false" defaultVisible="true" dynamicFont="" name="flexoConcept">
-        <Children data="flexoConcept.childEditionPatterns" visible="" cast="" name="children" />
+        <Children data="flexoConcept.childFlexoConcepts" visible="" cast="" name="children" />
       </BrowserElement>
     </Browser>
     <Table iteratorClassName="org.openflexo.foundation.viewpoint.PatternRole" visibleRowCount="3" autoSelectFirstRow="true" createNewRowOnClick="false" boundToSelectionManager="true" showFooter="true" selectionMode="MultipleIntervalSelection" selected="" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" name="PatternRoleTable" index="0" data="data.patternRoles" constraints="split(index=0;location=north;splitIdentifier=structural)" visible="">
@@ -31,7 +31,7 @@
       <AddAction method="controller.createPatternRole(data)" isAvailable="" name="createPatternRole" />
     </Table>
     <Panel layout="border" border="rounded3d" borderTop="2" borderBottom="2" borderLeft="2" borderRight="2" darkLevel="0" index="0" data="" constraints="split(splitIdentifier=flexoConceptPreview)" visible="">
-      <Custom componentClassName="org.openflexo.vpm.view.widget.EditionPatternPreviewComponent" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" data="EditionPatternBrowser.selected" constraints="border(location=center)" visible="" width="100" height="100">
+      <Custom componentClassName="org.openflexo.vpm.view.widget.FlexoConceptPreviewComponent" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" data="FlexoConceptBrowser.selected" constraints="border(location=center)" visible="" width="100" height="100">
         <Assignment variable="component.selectionManager" value="controller.selectionManager" />
       </Custom>
     </Panel>

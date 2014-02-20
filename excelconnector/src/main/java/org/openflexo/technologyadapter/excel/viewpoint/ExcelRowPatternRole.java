@@ -75,7 +75,7 @@ public interface ExcelRowPatternRole extends PatternRole<ExcelRow> {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ExcelActorReference<ExcelRow> returned = factory.newInstance(ExcelActorReference.class);
 			returned.setPatternRole(this);
-			returned.setEditionPatternInstance(epi);
+			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;
 		}

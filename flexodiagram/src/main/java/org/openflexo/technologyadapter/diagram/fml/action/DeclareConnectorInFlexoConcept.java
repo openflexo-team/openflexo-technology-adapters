@@ -80,7 +80,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 		@Override
 		public boolean isEnabledForSelection(DiagramConnector connector, Vector<DiagramElement<?>> globalSelection) {
-			return connector != null /*&& connector.getDiagramSpecification().getEditionPatterns().size() > 0*/;
+			return connector != null /*&& connector.getDiagramSpecification().getFlexoConcepts().size() > 0*/;
 		}
 
 	};
@@ -138,7 +138,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 				// Create new flexo concept
 				newFlexoConcept = getFactory().newFlexoConcept();
-				newFlexoConcept.setName(getEditionPatternName());
+				newFlexoConcept.setName(getFlexoConceptName());
 
 				// And add the newly created flexo concept
 				getDiagramModelSlot().getVirtualModel().addToFlexoConcepts(newFlexoConcept);
@@ -342,7 +342,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 				// Add inspector
 				FlexoConceptInspector inspector = newFlexoConcept.getInspector();
-				inspector.setInspectorTitle(getEditionPatternName());
+				inspector.setInspectorTitle(getFlexoConceptName());
 				if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 					/*for (PropertyEntry e : propertyEntries) {
 						if (e.selectEntry) {
@@ -410,20 +410,20 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		case CREATES_FLEXO_CONCEPT:
 			switch (patternChoice) {
 			case MAP_SINGLE_INDIVIDUAL:
-				return StringUtils.isNotEmpty(getEditionPatternName()) && concept != null
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && concept != null
 						&& StringUtils.isNotEmpty(getIndividualPatternRoleName()) && StringUtils.isNotEmpty(getConnectorPatternRoleName())
 						&& fromFlexoConcept != null && toFlexoConcept != null && StringUtils.isNotEmpty(getLinkSchemeName());
 			case MAP_OBJECT_PROPERTY:
-				return StringUtils.isNotEmpty(getEditionPatternName()) && objectProperty != null
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && objectProperty != null
 						&& StringUtils.isNotEmpty(getObjectPropertyStatementPatternRoleName())
 						&& StringUtils.isNotEmpty(getConnectorPatternRoleName()) && fromFlexoConcept != null && toFlexoConcept != null
 						&& StringUtils.isNotEmpty(getLinkSchemeName());
 			case MAP_SINGLE_FLEXO_CONCEPT:
-				return StringUtils.isNotEmpty(getEditionPatternName()) && virtualModelConcept != null
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && virtualModelConcept != null
 						&& StringUtils.isNotEmpty(getVirtualModelPatternRoleName()) && getSelectedEntriesCount() > 0
 						&& fromFlexoConcept != null && toFlexoConcept != null && StringUtils.isNotEmpty(getLinkSchemeName());
 			case BLANK_FLEXO_CONCEPT:
-				return StringUtils.isNotEmpty(getEditionPatternName()) && StringUtils.isNotEmpty(getConnectorPatternRoleName())
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && StringUtils.isNotEmpty(getConnectorPatternRoleName())
 						&& fromFlexoConcept != null && toFlexoConcept != null && StringUtils.isNotEmpty(getLinkSchemeName());
 			default:
 				break;
@@ -484,7 +484,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		this.objectProperty = property;
 	}
 
-	public String getEditionPatternName() {
+	public String getFlexoConceptName() {
 		if (isTypeAwareModelSlot()) {
 			if (StringUtils.isEmpty(flexoConceptName) && concept != null) {
 				return concept.getName();
@@ -502,7 +502,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		return flexoConceptName;
 	}
 
-	public void setEditionPatternName(String flexoConceptName) {
+	public void setFlexoConceptName(String flexoConceptName) {
 		this.flexoConceptName = flexoConceptName;
 	}
 

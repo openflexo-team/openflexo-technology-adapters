@@ -123,7 +123,7 @@ public interface DiagramPatternRole extends PatternRole<Diagram> {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ModelObjectActorReference<Diagram> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setPatternRole(this);
-			returned.setEditionPatternInstance(epi);
+			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;
 		}

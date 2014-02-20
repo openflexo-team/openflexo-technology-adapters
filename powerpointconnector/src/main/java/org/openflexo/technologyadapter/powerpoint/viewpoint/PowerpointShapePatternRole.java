@@ -57,7 +57,7 @@ public interface PowerpointShapePatternRole extends PatternRole<PowerpointSlide>
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			PowerpointActorReference returned = factory.newInstance(PowerpointActorReference.class);
 			returned.setPatternRole(this);
-			returned.setEditionPatternInstance(epi);
+			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;
 		}

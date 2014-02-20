@@ -168,25 +168,25 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 				return newShema;
 			}
 			// logger.info("ShapeSpecification pattern role: " + shapePatternRole);
-			FlexoConceptInstance newEditionPatternInstance = getProject().makeNewEditionPatternInstance(getEditionPattern());
+			FlexoConceptInstance newFlexoConceptInstance = getProject().makeNewFlexoConceptInstance(getFlexoConcept());
 			DiagramShape newShape = new DiagramShape(newShema);
-			if (getEditionPatternInstance().getPatternActor(shapePatternRole) instanceof DiagramShape) {
-				DiagramShape primaryShape = (DiagramShape) getEditionPatternInstance().getPatternActor(shapePatternRole);
+			if (getFlexoConceptInstance().getPatternActor(shapePatternRole) instanceof DiagramShape) {
+				DiagramShape primaryShape = (DiagramShape) getFlexoConceptInstance().getPatternActor(shapePatternRole);
 				newShape.setGraphicalRepresentation(primaryShape.getGraphicalRepresentation());
 			} else if (shapePatternRole.getGraphicalRepresentation() != null) {
 				newShape.setGraphicalRepresentation(shapePatternRole.getGraphicalRepresentation());
 			}
 			// Register reference
-			newShape.registerEditionPatternReference(newEditionPatternInstance, shapePatternRole);
+			newShape.registerFlexoConceptReference(newFlexoConceptInstance, shapePatternRole);
 			newShema.addToChilds(newShape);
-			newEditionPatternInstance.setObjectForPatternRole(newShape, shapePatternRole);
+			newFlexoConceptInstance.setObjectForPatternRole(newShape, shapePatternRole);
 			// Duplicates all other pattern roles
-			for (PatternRole role : getEditionPattern().getPatternRoles()) {
+			for (PatternRole role : getFlexoConcept().getPatternRoles()) {
 				if (role != action.getPatternRole() && role != shapePatternRole) {
-					FlexoModelObject patternActor = getEditionPatternInstance().getPatternActor(role);
+					FlexoModelObject patternActor = getFlexoConceptInstance().getPatternActor(role);
 					logger.info("Duplicate pattern actor for role " + role + " value=" + patternActor);
-					newEditionPatternInstance.setObjectForPatternRole(patternActor, role);
-					patternActor.registerEditionPatternReference(newEditionPatternInstance, role);
+					newFlexoConceptInstance.setObjectForPatternRole(patternActor, role);
+					patternActor.registerFlexoConceptReference(newFlexoConceptInstance, role);
 				}
 			}*/
 

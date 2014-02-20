@@ -107,7 +107,7 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException {
 		logger.info("Link palette connector");
 
-		// getEditionPattern().getViewPoint().getViewpointOntology().loadWhenUnloaded();
+		// getFlexoConcept().getViewPoint().getViewpointOntology().loadWhenUnloaded();
 
 		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 
@@ -125,7 +125,7 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 	}
 
 	@Override
-	public FlexoConceptInstance getEditionPatternInstance() {
+	public FlexoConceptInstance getFlexoConceptInstance() {
 		return flexoConceptInstance;
 	}
 
@@ -176,12 +176,12 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 		if (variable.getVariableName().equals(DiagramEditionScheme.FROM_TARGET) && getLinkScheme().getFromTargetFlexoConcept() != null) {
 			// TODO
 			logger.warning("Please implement getValue() for target");
-			// return getFromShape().getEditionPatternInstance();
+			// return getFromShape().getFlexoConceptInstance();
 		}
 		if (variable.getVariableName().equals(DiagramEditionScheme.TO_TARGET) && getLinkScheme().getToTargetFlexoConcept() != null) {
 			// TODO
 			logger.warning("Please implement getValue() for target");
-			// return getToShape().getEditionPatternInstance();
+			// return getToShape().getFlexoConceptInstance();
 		}
 		return super.getValue(variable);
 	}

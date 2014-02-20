@@ -76,7 +76,7 @@ public interface DataPropertyStatementActorReference extends ActorReference<Data
 		/*public DataPropertyStatementActorReference(DataPropertyStatement o, DataPropertyStatementPatternRole aPatternRole,
 				FlexoConceptInstance epi) {
 			super(epi.getProject());
-			setEditionPatternInstance(epi);
+			setFlexoConceptInstance(epi);
 			setPatternRole(aPatternRole);
 			statement = o;
 			subjectURI = o.getSubject().getURI();

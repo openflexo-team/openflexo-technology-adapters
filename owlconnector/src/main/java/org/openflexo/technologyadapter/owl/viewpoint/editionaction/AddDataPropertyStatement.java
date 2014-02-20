@@ -112,7 +112,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 
 		/*@Override
 		public List<DataPropertyStatementPatternRole> getAvailablePatternRoles() {
-			return getEditionPattern().getPatternRoles(DataPropertyStatementPatternRole.class);
+			return getFlexoConcept().getPatternRoles(DataPropertyStatementPatternRole.class);
 		}*/
 
 		@Override

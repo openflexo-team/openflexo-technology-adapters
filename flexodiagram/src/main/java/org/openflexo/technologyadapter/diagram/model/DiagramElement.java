@@ -154,7 +154,7 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
 	 * @return
 	 */
-	public FlexoConceptInstance getEditionPatternInstance(VirtualModelInstance vmInstance);
+	public FlexoConceptInstance getFlexoConceptInstance(VirtualModelInstance vmInstance);
 
 	/**
 	 * Return {@link GraphicalElementPatternRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting

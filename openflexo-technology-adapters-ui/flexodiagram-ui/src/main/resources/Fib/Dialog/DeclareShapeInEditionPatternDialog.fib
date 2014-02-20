@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel layout="gridbag" darkLevel="0" dataClassName="org.openflexo.technologyadapter.diagram.fml.action.AbstractDeclareShapeInEditionPattern" controllerClassName="org.openflexo.view.controller.FlexoFIBController" opaque="false" width="800" height="750">
+<Panel layout="gridbag" darkLevel="0" dataClassName="org.openflexo.technologyadapter.diagram.fml.action.AbstractDeclareShapeInFlexoConcept" controllerClassName="org.openflexo.view.controller.FlexoFIBController" opaque="false" width="800" height="750">
   <Label label="declare_shape_in_flexo_concept" align="center" index="0" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=20;insetsLeft=0;insetsRight=0;insetsTop=20;padX=0;padY=0;weightX=1.0;weightY=0.0)" font="Lucida Grande,1,15" localize="true" />
   <RadioButtonList columns="1" hGap="0" vGap="-2" index="1" data="data.primaryChoice" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=15;insetsLeft=50;insetsRight=50;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" font="LucidaGrande,0,13" name="PaletteRadioButtonList" format="object.name" localize="true" manageDynamicModel="true" staticList="" iteratorClassName="java.lang.Object" autoSelectFirstRow="true">
     <LocalizedDictionary />
@@ -22,7 +22,7 @@
     </DropDown>
     <LocalizedDictionary />
   </Panel>
-  <Panel layout="twocols" border="rounded3d" borderTitle="" borderTop="2" borderBottom="2" borderLeft="20" borderRight="20" darkLevel="0" index="3" dataClassName="org.openflexo.technologyadapter.diagram.fml.action.AbstractDeclareShapeInEditionPattern" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)" visible="(PaletteRadioButtonList.selectedIndex = 0)" opaque="false">
+  <Panel layout="twocols" border="rounded3d" borderTitle="" borderTop="2" borderBottom="2" borderLeft="20" borderRight="20" darkLevel="0" index="3" dataClassName="org.openflexo.technologyadapter.diagram.fml.action.AbstractDeclareShapeInFlexoConcept" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)" visible="(PaletteRadioButtonList.selectedIndex = 0)" opaque="false">
     <Label label="label" align="center" index="0" data="(data.patternChoice.name + &quot;_description&quot;)" constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=10;insetsLeft=2;insetsRight=2;insetsTop=10;location=center)" localize="true">
       <LocalizedDictionary />
     </Label>
@@ -62,7 +62,7 @@
     <Label label="new_flexo_concept_name" index="7" constraints="twocols(expandHorizontally=false;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true">
       <LocalizedDictionary />
     </Label>
-    <TextField index="8" data="data.flexoConceptName" constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" name="newEditionPatternName" localize="true" columns="7" text="TextField">
+    <TextField index="8" data="data.flexoConceptName" constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" name="newFlexoConceptName" localize="true" columns="7" text="TextField">
       <Dependancy componentName="conceptSelector" />
       <Dependancy componentName="patternSelector" />
     </TextField>
@@ -81,7 +81,7 @@
     <Label label="graphical_elements" index="11" constraints="twocols(expandHorizontally=true;expandVertically=false;index=11;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true">
       <LocalizedDictionary />
     </Label>
-    <Table iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareInEditionPattern$DrawingObjectEntry" visibleRowCount="3" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="false" selectionMode="MultipleIntervalSelection" textSelectionColor="255,255,255" textNonSelectionColor="0,0,0" backgroundSelectionColor="41,90,209" backgroundSecondarySelectionColor="173,215,255" backgroundNonSelectionColor="255,255,255" localize="true" manageDynamicModel="true" name="drawingObjectEntriesTable" index="11" data="data.drawingObjectEntries" constraints="twocols(expandHorizontally=true;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_NEVER">
+    <Table iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareInFlexoConcept$DrawingObjectEntry" visibleRowCount="3" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="false" selectionMode="MultipleIntervalSelection" textSelectionColor="255,255,255" textNonSelectionColor="0,0,0" backgroundSelectionColor="41,90,209" backgroundSecondarySelectionColor="173,215,255" backgroundNonSelectionColor="255,255,255" localize="true" manageDynamicModel="true" name="drawingObjectEntriesTable" index="11" data="data.drawingObjectEntries" constraints="twocols(expandHorizontally=true;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_NEVER">
       <CheckBoxColumn data="iterator.selectThis" title="checkbox" columnWidth="20" resizable="false" displayTitle="false" name="checkbox" />
       <TextFieldColumn data="iterator.patternRoleName" title="role_name" columnWidth="50" resizable="true" displayTitle="true" />
       <LabelColumn data="iterator.parentEntry.patternRoleName" title="parent" columnWidth="50" resizable="true" displayTitle="true" name="label" />
@@ -90,7 +90,7 @@
     </Table>
     <Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING" borderTitle="" borderTop="2" borderBottom="2" borderLeft="2" borderRight="2" darkLevel="0" index="14" constraints="twocols(expandHorizontally=true;expandVertically=false;index=14;insetsBottom=0;insetsLeft=0;insetsRight=2;insetsTop=0;location=right)" opaque="false" />
     <Label label="edition_schemes" index="16" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="BehavioralSchemes" localize="true" />
-    <Table iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareInEditionPattern$EditionSchemeConfiguration" visibleRowCount="3" rowHeight="18" autoSelectFirstRow="true" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="EditionSchemesTable" index="16" data="data.editionSchemes" constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
+    <Table iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareInFlexoConcept$EditionSchemeConfiguration" visibleRowCount="3" rowHeight="18" autoSelectFirstRow="true" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="EditionSchemesTable" index="16" data="data.editionSchemes" constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
       <CheckBoxColumn data="iterator.isValid" title="checkbox" columnWidth="20" resizable="false" displayTitle="false" name="checkbox" />
       <IconColumn data="controller.iconForObject(iterator.editionScheme)" title="icon" columnWidth="20" resizable="false" displayTitle="false" name="icon" />
       <TextFieldColumn data="iterator.editionScheme.name" title="scheme_name" columnWidth="150" resizable="true" displayTitle="true" name="textfield" />
@@ -99,7 +99,7 @@
       <RemoveAction method="data.removeEditionSchemeConfiguration(selected)" name="delete_scheme" />
       <AddAction method="data.addEditionSchemeConfigurationDeleteGROnly()" name="add_delete_gr_only_scheme" />
       <AddAction method="data.addEditionSchemeConfigurationDropAndSelect()" name="add_drop_and_select_scheme" />
-      <Dependancy componentName="newEditionPatternName" />
+      <Dependancy componentName="newFlexoConceptName" />
       <Dependancy componentName="individualPatternRoleName" />
       <Dependancy componentName="virtualModelPatternRoleName" />
       <Dependancy componentName="flexoConceptDropdown" />
@@ -109,7 +109,7 @@
     </Label>
     <Panel layout="flow" hGap="5" vGap="0" flowAlignment="LEADING" border="rounded3d" borderTitle="" borderTop="2" borderBottom="2" borderRight="2" darkLevel="5" index="17" data="data.getDropScheme(EditionSchemesTable.selected)" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" visible="(data.getDropScheme(EditionSchemesTable.selected) != null)" name="DropScheme">
       <Label label="target" constraints="flow(location=west)" visible="(data.getDropScheme(EditionSchemesTable.selected) != null)" localize="true" />
-      <DropDown data="data.getDropScheme(EditionSchemesTable.selected).targetEditionPattern" constraints="flow(location=west)" visible="((!(isTopLevelWidget.data)) &amp; (data.getDropScheme(EditionSchemesTable.selected) != null))" name="targetEditionPatternDropdown" format="object.name" localize="true" manageDynamicModel="true" staticList="" list="data.getEditionPatternsDrop()" iteratorClassName="org.openflexo.foundation.viewpoint.FlexoConcept" autoSelectFirstRow="true">
+      <DropDown data="data.getDropScheme(EditionSchemesTable.selected).targetFlexoConcept" constraints="flow(location=west)" visible="((!(isTopLevelWidget.data)) &amp; (data.getDropScheme(EditionSchemesTable.selected) != null))" name="targetFlexoConceptDropdown" format="object.name" localize="true" manageDynamicModel="true" staticList="" list="data.getFlexoConceptsDrop()" iteratorClassName="org.openflexo.foundation.viewpoint.FlexoConcept" autoSelectFirstRow="true">
         <Dependancy componentName="isTopLevelWidget" />
         <Dependancy componentName="patternChoice" />
         <Dependancy componentName="virtualModelModelSlotDD" />
@@ -128,7 +128,7 @@
       <Dependancy componentName="ontologyModelSlotDD" />
       <Dependancy componentName="patternSelector" />
       <Dependancy componentName="conceptSelector" />
-      <Dependancy componentName="newEditionPatternName" />
+      <Dependancy componentName="newFlexoConceptName" />
       <Dependancy componentName="individualPatternRoleName" />
       <Dependancy componentName="virtualModelPatternRoleName" />
       <Dependancy componentName="drawingObjectEntriesTable" />
@@ -140,7 +140,7 @@
     <Button action="controller.validateAndDispose()" buttonType="Trigger" label="validate" localize="true" enable="data.isValid" index="0" constraints="flow(index=0)">
       <Dependancy componentName="flexoConceptDropdown" />
       <Dependancy componentName="patternRoleDropDown" />
-      <Dependancy componentName="newEditionPatternName" />
+      <Dependancy componentName="newFlexoConceptName" />
       <Dependancy componentName="individualPatternRoleName" />
       <Dependancy componentName="drawingObjectEntriesTable" />
       <Dependancy componentName="conceptSelector" />

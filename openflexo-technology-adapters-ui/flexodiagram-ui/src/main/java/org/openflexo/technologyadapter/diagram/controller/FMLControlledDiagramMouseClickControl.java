@@ -55,7 +55,7 @@ public class FMLControlledDiagramMouseClickControl extends MouseClickControlImpl
 			diagramElement = (DiagramElement<?>) dtn.getDrawable();
 		}
 		if (diagramElement != null) {
-			FlexoConceptInstance epi = diagramElement.getEditionPatternInstance(vmInstance);
+			FlexoConceptInstance epi = diagramElement.getFlexoConceptInstance(vmInstance);
 			if (epi != null) {
 				for (GraphicalElementAction action : patternRole.getActions(mask)) {
 					if (action.evaluateCondition(epi)) {

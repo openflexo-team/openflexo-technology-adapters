@@ -131,15 +131,15 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		case CREATES_FLEXO_CONCEPT:
 			switch (patternChoice) {
 			case MAP_SINGLE_INDIVIDUAL:
-				return StringUtils.isNotEmpty(getEditionPatternName()) && concept != null
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && concept != null
 						&& StringUtils.isNotEmpty(getIndividualPatternRoleName()) && getSelectedEntriesCount() > 0
 						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
 			case MAP_SINGLE_FLEXO_CONCEPT:
-				return StringUtils.isNotEmpty(getEditionPatternName()) && virtualModelConcept != null
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && virtualModelConcept != null
 						&& StringUtils.isNotEmpty(getVirtualModelPatternRoleName()) && getSelectedEntriesCount() > 0
 						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
 			case BLANK_FLEXO_CONCEPT:
-				return StringUtils.isNotEmpty(getEditionPatternName()) && getSelectedEntriesCount() > 0
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && getSelectedEntriesCount() > 0
 						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
 			default:
 				break;
@@ -191,7 +191,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 	public String getDropSchemeName() {
 		if (StringUtils.isEmpty(dropSchemeName)) {
-			return "drop" + (StringUtils.isEmpty(getEditionPatternName()) ? "" : getEditionPatternName())
+			return "drop" + (StringUtils.isEmpty(getFlexoConceptName()) ? "" : getFlexoConceptName())
 					+ (isTopLevel ? "AtTopLevel" : containerFlexoConcept != null ? "In" + containerFlexoConcept.getName() : "");
 		}
 		return dropSchemeName;
@@ -209,7 +209,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		return super.getFlexoConcept();
 	}
 
-	public String getEditionPatternName() {
+	public String getFlexoConceptName() {
 		if (isTypeAwareModelSlot()) {
 			if (StringUtils.isEmpty(flexoConceptName) && concept != null) {
 				return concept.getName();
@@ -224,7 +224,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		return flexoConceptName;
 	}
 
-	public void setEditionPatternName(String flexoConceptName) {
+	public void setFlexoConceptName(String flexoConceptName) {
 		this.flexoConceptName = flexoConceptName;
 	}
 
@@ -352,7 +352,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 					// Create new flexo concept
 					newFlexoConcept = getFactory().newFlexoConcept();
-					newFlexoConcept.setName(getEditionPatternName());
+					newFlexoConcept.setName(getFlexoConceptName());
 
 					// And add the newly created flexo concept
 					getDiagramModelSlot().getVirtualModel().addToFlexoConcepts(newFlexoConcept);
@@ -448,7 +448,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					/*	if (isPushedToPalette) {
 							DiagramPaletteElement _newPaletteElement = palette.addPaletteElement(newFlexoConcept.getName(),
 									getFocusedObject().getGraphicalRepresentation());
-							_newPaletteElement.setEditionPattern(newFlexoConcept);
+							_newPaletteElement.setFlexoConcept(newFlexoConcept);
 						}*/
 
 					// Create other individual roles
@@ -585,10 +585,10 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							VirtualModelModelSlot<?, ?> virtualModelModelSlot = (VirtualModelModelSlot<?, ?>) getModelSlot();
 
 							// Add individual action
-							EditionAction newAddEditionPattern = virtualModelModelSlot.makeAddEditionPatternInstanceEditionAction(
+							EditionAction newAddFlexoConcept = virtualModelModelSlot.makeAddFlexoConceptInstanceEditionAction(
 									flexoConceptPatternRole, newDropScheme);
 
-							newDropScheme.addToActions(newAddEditionPattern);
+							newDropScheme.addToActions(newAddFlexoConcept);
 						}
 					}*/
 
@@ -618,7 +618,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 					// Add inspector
 					FlexoConceptInspector inspector = newFlexoConcept.getInspector();
-					inspector.setInspectorTitle(getEditionPatternName());
+					inspector.setInspectorTitle(getFlexoConceptName());
 					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						/*for (PropertyEntry e : propertyEntries) {
 							if (e.selectEntry) {

@@ -280,24 +280,24 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 
 		/*@Override
 		public BindingModel getBindingModel() {
-			return getEditionPattern().getInspector().getBindingModel();
+			return getFlexoConcept().getInspector().getBindingModel();
 		}*/
 
 		/*public boolean getIsPrimaryRepresentationRole() {
-			if (getEditionPattern() == null) {
+			if (getFlexoConcept() == null) {
 				return false;
 			}
-			return getEditionPattern().getPrimaryRepresentationRole() == this;
+			return getFlexoConcept().getPrimaryRepresentationRole() == this;
 		}
 
 		public void setIsPrimaryRepresentationRole(boolean isPrimary) {
-			if (getEditionPattern() == null) {
+			if (getFlexoConcept() == null) {
 				return;
 			}
 			if (isPrimary) {
-				getEditionPattern().setPrimaryRepresentationRole(this);
+				getFlexoConcept().setPrimaryRepresentationRole(this);
 			} else {
-				getEditionPattern().setPrimaryRepresentationRole(null);
+				getFlexoConcept().setPrimaryRepresentationRole(null);
 			}
 		}
 
@@ -465,7 +465,7 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ModelObjectActorReference<T> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setPatternRole(this);
-			returned.setEditionPatternInstance(epi);
+			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;
 		}

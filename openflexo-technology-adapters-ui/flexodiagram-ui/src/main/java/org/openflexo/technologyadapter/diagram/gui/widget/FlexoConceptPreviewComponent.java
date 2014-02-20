@@ -85,7 +85,7 @@ public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomCom
 	@Override
 	public void setEditedObject(FlexoConcept object) {
 		if (object != flexoConcept) {
-			logger.fine("EditionPatternPreview: setEditedObject: " + object);
+			logger.fine("FlexoConceptPreview: setEditedObject: " + object);
 			flexoConcept = object;
 			if (previewController != null && object != null) {
 				if (previewController.getDrawingView() != null) {

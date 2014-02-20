@@ -76,7 +76,7 @@ public interface ObjectPropertyStatementActorReference extends ActorReference<Ob
 		/*public ObjectPropertyStatementActorReference(ObjectPropertyStatement o, ObjectPropertyStatementPatternRole aPatternRole,
 				FlexoConceptInstance epi) {
 			super(epi.getProject());
-			setEditionPatternInstance(epi);
+			setFlexoConceptInstance(epi);
 			setPatternRole(aPatternRole);
 			statement = o;
 			subjectURI = o.getSubject().getURI();

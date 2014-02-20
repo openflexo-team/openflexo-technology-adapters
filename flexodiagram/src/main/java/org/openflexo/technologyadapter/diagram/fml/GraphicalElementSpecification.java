@@ -228,8 +228,8 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 				System.out.println("hasBinding=" + getValue().hasBinding());
 				System.out.println("valid=" + getValue().isValid());
 				System.out.println("reason=" + getValue().getBinding().invalidBindingReason());
-				System.out.println("EPI=" + element.getEditionPatternInstance().debug());
-				System.out.println("Result=" + getValue().getBindingValue(element.getEditionPatternInstance()));
+				System.out.println("EPI=" + element.getFlexoConceptInstance().debug());
+				System.out.println("Result=" + getValue().getBindingValue(element.getFlexoConceptInstance()));
 				System.out.println("Hop");
 			}*/
 
@@ -237,7 +237,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 				DiagramElement<GR> diagramElement = epi.getPatternActor(patternRole);
 				getFeature().applyToGraphicalRepresentation((GR) diagramElement.getGraphicalRepresentation(),
 						(T) getValue().getBindingValue(epi));
-				// getFeature().applyToGraphicalRepresentation(gr, (T) getValue().getBindingValue(element.getEditionPatternInstance()));
+				// getFeature().applyToGraphicalRepresentation(gr, (T) getValue().getBindingValue(element.getFlexoConceptInstance()));
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {

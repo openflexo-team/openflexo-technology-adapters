@@ -50,12 +50,12 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 
 	private static final Logger logger = Logger.getLogger(FlexoConceptPreviewRepresentation.class.getPackage().getName());
 
-	// private EditionPatternPreviewShemaGR graphicalRepresentation;
+	// private FlexoConceptPreviewShemaGR graphicalRepresentation;
 
 	// private Boolean ignoreNotifications = true;
 
-	// private Hashtable<PatternRole, EditionPatternPreviewShapeGR> shapesGR;
-	// private Hashtable<PatternRole, EditionPatternPreviewConnectorGR> connectorsGR;
+	// private Hashtable<PatternRole, FlexoConceptPreviewShapeGR> shapesGR;
+	// private Hashtable<PatternRole, FlexoConceptPreviewConnectorGR> connectorsGR;
 
 	static FGEModelFactory PREVIEW_FACTORY;
 
@@ -188,10 +188,10 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		/*if (graphicalRepresentation != null) {
 			graphicalRepresentation.delete();
 		}*/
-		/*if (getEditionPattern() != null) {
-			getEditionPattern().deleteObserver(this);
+		/*if (getFlexoConcept() != null) {
+			getFlexoConcept().deleteObserver(this);
 		}*/
-		/*for (PatternRole role : getEditionPattern().getPatternRoles()) {
+		/*for (PatternRole role : getFlexoConcept().getPatternRoles()) {
 			role.deleteObserver(this);
 		}*/
 		super.delete();

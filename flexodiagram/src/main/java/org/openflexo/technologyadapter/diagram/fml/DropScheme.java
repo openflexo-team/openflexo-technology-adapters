@@ -140,7 +140,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 		@Deprecated
 		public boolean targetHasMultipleRoles() {
-			// return getTargetEditionPattern() != null && getTargetEditionPattern().getShapePatternRoles().size() > 1;
+			// return getTargetFlexoConcept() != null && getTargetFlexoConcept().getShapePatternRoles().size() > 1;
 			return false;
 		}
 

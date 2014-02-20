@@ -79,7 +79,7 @@ public interface XMLIndividualPatternRole extends PatternRole<XMLIndividual> {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			XMLActorReference returned = factory.newInstance(XMLActorReference.class);
 			returned.setPatternRole(this);
-			returned.setEditionPatternInstance(epi);
+			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;
 		}

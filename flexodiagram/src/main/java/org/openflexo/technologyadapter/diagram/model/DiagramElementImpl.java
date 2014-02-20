@@ -183,7 +183,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	 * @return
 	 */
 	@Override
-	public FlexoConceptInstance getEditionPatternInstance(VirtualModelInstance vmInstance) {
+	public FlexoConceptInstance getFlexoConceptInstance(VirtualModelInstance vmInstance) {
 		ModelSlotInstance<DiagramModelSlot, Diagram> diagramModelSlotInstance = null;
 		for (ModelSlotInstance<?, ?> msInstance : vmInstance.getModelSlotInstances()) {
 			if (msInstance.getModelSlot() instanceof DiagramModelSlot && msInstance.getAccessedResourceData() == getDiagram()) {
@@ -195,7 +195,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 			return null;
 		}
 		// TODO: optimize this, use FlexoObjectReference<FlexoConceptInstance> in FlexoObject
-		for (FlexoConceptInstance epi : vmInstance.getEditionPatternInstancesList()) {
+		for (FlexoConceptInstance epi : vmInstance.getFlexoConceptInstancesList()) {
 			if (epi.getRoleForActor(this) != null) {
 				return epi;
 			}
@@ -214,7 +214,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	 */
 	@Override
 	public GraphicalElementPatternRole<?, ?> getPatternRole(VirtualModelInstance vmInstance) {
-		FlexoConceptInstance epi = getEditionPatternInstance(vmInstance);
+		FlexoConceptInstance epi = getFlexoConceptInstance(vmInstance);
 		if (epi != null) {
 			return (GraphicalElementPatternRole<?, ?>) epi.getRoleForActor(this);
 		}
