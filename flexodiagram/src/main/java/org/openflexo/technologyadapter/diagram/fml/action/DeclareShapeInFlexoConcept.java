@@ -33,12 +33,12 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionPatternInstancePatternRole;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstancePatternRole;
 import org.openflexo.foundation.viewpoint.IndividualPatternRole;
 import org.openflexo.foundation.viewpoint.URIParameter;
 import org.openflexo.foundation.viewpoint.VirtualModelModelSlot;
 import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
-import org.openflexo.foundation.viewpoint.inspector.EditionPatternInspector;
+import org.openflexo.foundation.viewpoint.inspector.FlexoConceptInspector;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -53,7 +53,7 @@ import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * This class represents an abstraction for a declare shape in edition pattern action among several kind of shapes.</br>
+ * This class represents an abstraction for a declare shape in flexo concept action among several kind of shapes.</br>
  * 
  * 
  * @author Vincent
@@ -61,20 +61,20 @@ import org.openflexo.toolbox.StringUtils;
  * @param <T1>
  */
 
-public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<DeclareShapeInEditionPattern, DiagramShape> {
+public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareShapeInFlexoConcept, DiagramShape> {
 
-	private static final Logger logger = Logger.getLogger(DeclareShapeInEditionPattern.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(DeclareShapeInFlexoConcept.class.getPackage().getName());
 
 	/**
 	 * Create a new Flexo Action Type
 	 */
-	public static FlexoActionType<DeclareShapeInEditionPattern, DiagramShape, DiagramElement<?>> actionType = new FlexoActionType<DeclareShapeInEditionPattern, DiagramShape, DiagramElement<?>>(
-			"declare_in_edition_pattern", FlexoActionType.editGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
+	public static FlexoActionType<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>> actionType = new FlexoActionType<DeclareShapeInFlexoConcept, DiagramShape, DiagramElement<?>>(
+			"declare_in_flexo_concept", FlexoActionType.editGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
 
 		@Override
-		public DeclareShapeInEditionPattern makeNewAction(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection,
+		public DeclareShapeInFlexoConcept makeNewAction(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection,
 				FlexoEditor editor) {
-			return new DeclareShapeInEditionPattern(focusedObject, globalSelection, editor);
+			return new DeclareShapeInFlexoConcept(focusedObject, globalSelection, editor);
 		}
 
 		@Override
@@ -93,16 +93,16 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(DeclareShapeInEditionPattern.actionType, DiagramShape.class);
+		FlexoObjectImpl.addActionForClass(DeclareShapeInFlexoConcept.actionType, DiagramShape.class);
 	}
 
-	public static enum NewEditionPatternChoices {
-		MAP_SINGLE_INDIVIDUAL, MAP_SINGLE_EDITION_PATTERN, BLANK_EDITION_PATTERN
+	public static enum NewFlexoConceptChoices {
+		MAP_SINGLE_INDIVIDUAL, MAP_SINGLE_FLEXO_CONCEPT, BLANK_FLEXO_CONCEPT
 	}
 
-	public NewEditionPatternChoices patternChoice = NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL;
+	public NewFlexoConceptChoices patternChoice = NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL;
 
-	private String editionPatternName;
+	private String flexoConceptName;
 	private IFlexoOntologyClass concept;
 	private String individualPatternRoleName;
 	private String virtualModelPatternRoleName;
@@ -116,7 +116,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 	private FlexoConcept virtualModelConcept;
 	private String dropSchemeName;
 
-	DeclareShapeInEditionPattern(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	DeclareShapeInFlexoConcept(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
@@ -126,20 +126,20 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 			return false;
 		}
 		switch (primaryChoice) {
-		case CHOOSE_EXISTING_EDITION_PATTERN:
+		case CHOOSE_EXISTING_FLEXO_CONCEPT:
 			return getFlexoConcept() != null && getPatternRole() != null;
-		case CREATES_EDITION_PATTERN:
+		case CREATES_FLEXO_CONCEPT:
 			switch (patternChoice) {
 			case MAP_SINGLE_INDIVIDUAL:
-				return StringUtils.isNotEmpty(getEditionPatternName()) && concept != null
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && concept != null
 						&& StringUtils.isNotEmpty(getIndividualPatternRoleName()) && getSelectedEntriesCount() > 0
 						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
-			case MAP_SINGLE_EDITION_PATTERN:
-				return StringUtils.isNotEmpty(getEditionPatternName()) && virtualModelConcept != null
+			case MAP_SINGLE_FLEXO_CONCEPT:
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && virtualModelConcept != null
 						&& StringUtils.isNotEmpty(getVirtualModelPatternRoleName()) && getSelectedEntriesCount() > 0
 						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
-			case BLANK_EDITION_PATTERN:
-				return StringUtils.isNotEmpty(getEditionPatternName()) && getSelectedEntriesCount() > 0
+			case BLANK_FLEXO_CONCEPT:
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && getSelectedEntriesCount() > 0
 						&& (isTopLevel || containerFlexoConcept != null) && StringUtils.isNotEmpty(getDropSchemeName());
 			default:
 				break;
@@ -191,7 +191,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 
 	public String getDropSchemeName() {
 		if (StringUtils.isEmpty(dropSchemeName)) {
-			return "drop" + (StringUtils.isEmpty(getEditionPatternName()) ? "" : getEditionPatternName())
+			return "drop" + (StringUtils.isEmpty(getFlexoConceptName()) ? "" : getFlexoConceptName())
 					+ (isTopLevel ? "AtTopLevel" : containerFlexoConcept != null ? "In" + containerFlexoConcept.getName() : "");
 		}
 		return dropSchemeName;
@@ -203,29 +203,29 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 
 	@Override
 	public FlexoConcept getFlexoConcept() {
-		if (primaryChoice == DeclareInEditionPatternChoices.CREATES_EDITION_PATTERN) {
+		if (primaryChoice == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
 			return newFlexoConcept;
 		}
 		return super.getFlexoConcept();
 	}
 
-	public String getEditionPatternName() {
+	public String getFlexoConceptName() {
 		if (isTypeAwareModelSlot()) {
-			if (StringUtils.isEmpty(editionPatternName) && concept != null) {
+			if (StringUtils.isEmpty(flexoConceptName) && concept != null) {
 				return concept.getName();
 			}
 		}
 		if (isVirtualModelModelSlot()) {
-			if (StringUtils.isEmpty(editionPatternName) && virtualModelConcept != null) {
+			if (StringUtils.isEmpty(flexoConceptName) && virtualModelConcept != null) {
 				return virtualModelConcept.getName();
 			}
 		}
 
-		return editionPatternName;
+		return flexoConceptName;
 	}
 
-	public void setEditionPatternName(String editionPatternName) {
-		this.editionPatternName = editionPatternName;
+	public void setFlexoConceptName(String flexoConceptName) {
+		this.flexoConceptName = flexoConceptName;
 	}
 
 	public String getIndividualPatternRoleName() {
@@ -330,15 +330,15 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 
 	@Override
 	protected void doAction(Object context) {
-		logger.info("Declare shape in edition pattern");
+		logger.info("Declare shape in flexo concept");
 		if (isValid()) {
 			switch (primaryChoice) {
-			case CHOOSE_EXISTING_EDITION_PATTERN:
+			case CHOOSE_EXISTING_FLEXO_CONCEPT:
 				if (getPatternRole() != null) {
 					getPatternRole().updateGraphicalRepresentation(getFocusedObject().getGraphicalRepresentation());
 				}
 				break;
-			case CREATES_EDITION_PATTERN:
+			case CREATES_FLEXO_CONCEPT:
 				// DiagramShape diagramShape = getFocusedObject();
 
 				/*VirtualModel.VirtualModelBuilder builder = new VirtualModel.VirtualModelBuilder(getFocusedObject()
@@ -347,24 +347,24 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 
 				switch (patternChoice) {
 				case MAP_SINGLE_INDIVIDUAL:
-				case MAP_SINGLE_EDITION_PATTERN:
-				case BLANK_EDITION_PATTERN:
+				case MAP_SINGLE_FLEXO_CONCEPT:
+				case BLANK_FLEXO_CONCEPT:
 
-					// Create new edition pattern
+					// Create new flexo concept
 					newFlexoConcept = getFactory().newFlexoConcept();
-					newFlexoConcept.setName(getEditionPatternName());
+					newFlexoConcept.setName(getFlexoConceptName());
 
-					// And add the newly created edition pattern
+					// And add the newly created flexo concept
 					getDiagramModelSlot().getVirtualModel().addToFlexoConcepts(newFlexoConcept);
 
 					// Find best URI base candidate
 					// PropertyEntry mainPropertyDescriptor = selectBestEntryForURIBaseName();
 
 					// Create pattern role, if it is an ontology then we create an individual, otherwise if it is a virtual model we create
-					// an edition pattern instance
+					// an flexo concept instance
 					IndividualPatternRole<?> individualPatternRole = null;
-					EditionPatternInstancePatternRole editionPatternPatternRole = null;
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+					FlexoConceptInstancePatternRole flexoConceptPatternRole = null;
+					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						if (isTypeAwareModelSlot()) {
 							TypeAwareModelSlot<?, ?> flexoOntologyModelSlot = (TypeAwareModelSlot<?, ?>) getModelSlot();
 							individualPatternRole = flexoOntologyModelSlot.makeIndividualPatternRole(getConcept());
@@ -374,13 +374,13 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 							// newFlexoConcept.setPrimaryConceptRole(individualPatternRole);
 						}
 					}
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
+					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 						if (isVirtualModelModelSlot()) {
 							VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
-							editionPatternPatternRole = virtualModelModelSlot
+							flexoConceptPatternRole = virtualModelModelSlot
 									.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
-							editionPatternPatternRole.setPatternRoleName(getVirtualModelPatternRoleName());
-							newFlexoConcept.addToPatternRoles(editionPatternPatternRole);
+							flexoConceptPatternRole.setPatternRoleName(getVirtualModelPatternRoleName());
+							newFlexoConcept.addToPatternRoles(flexoConceptPatternRole);
 						}
 					}
 
@@ -448,12 +448,12 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 					/*	if (isPushedToPalette) {
 							DiagramPaletteElement _newPaletteElement = palette.addPaletteElement(newFlexoConcept.getName(),
 									getFocusedObject().getGraphicalRepresentation());
-							_newPaletteElement.setEditionPattern(newFlexoConcept);
+							_newPaletteElement.setFlexoConcept(newFlexoConcept);
 						}*/
 
 					// Create other individual roles
 					/*Vector<IndividualPatternRole> otherRoles = new Vector<IndividualPatternRole>();
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						for (PropertyEntry e : propertyEntries) {
 							if (e.selectEntry) {
 								if (e.property instanceof IFlexoOntologyObjectProperty) {
@@ -483,7 +483,7 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 					}
 
 					// Parameters
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						if (isTypeAwareModelSlot()) {
 							TypeAwareModelSlot<?, ?> flexoOntologyModelSlot = (TypeAwareModelSlot<?, ?>) getModelSlot();
 							// Vector<PropertyEntry> candidates = new Vector<PropertyEntry>();
@@ -579,16 +579,16 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 						}
 					}
 
-					// Parameters for edition patterns creation action
-					/*if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_EDITION_PATTERN) {
+					// Parameters for flexo concepts creation action
+					/*if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 						if (isVirtualModelModelSlot()) {
 							VirtualModelModelSlot<?, ?> virtualModelModelSlot = (VirtualModelModelSlot<?, ?>) getModelSlot();
 
 							// Add individual action
-							EditionAction newAddEditionPattern = virtualModelModelSlot.makeAddEditionPatternInstanceEditionAction(
-									editionPatternPatternRole, newDropScheme);
+							EditionAction newAddFlexoConcept = virtualModelModelSlot.makeAddFlexoConceptInstanceEditionAction(
+									flexoConceptPatternRole, newDropScheme);
 
-							newDropScheme.addToActions(newAddEditionPattern);
+							newDropScheme.addToActions(newAddFlexoConcept);
 						}
 					}*/
 
@@ -617,9 +617,9 @@ public class DeclareShapeInEditionPattern extends DeclareInEditionPattern<Declar
 					}
 
 					// Add inspector
-					EditionPatternInspector inspector = newFlexoConcept.getInspector();
-					inspector.setInspectorTitle(getEditionPatternName());
-					if (patternChoice == NewEditionPatternChoices.MAP_SINGLE_INDIVIDUAL) {
+					FlexoConceptInspector inspector = newFlexoConcept.getInspector();
+					inspector.setInspectorTitle(getFlexoConceptName());
+					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						/*for (PropertyEntry e : propertyEntries) {
 							if (e.selectEntry) {
 								if (e.property instanceof IFlexoOntologyObjectProperty) {

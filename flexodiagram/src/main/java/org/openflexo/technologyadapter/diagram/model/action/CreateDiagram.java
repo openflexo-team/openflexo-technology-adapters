@@ -136,7 +136,7 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 			}
 
 			if (creationSchemeAction != null) {
-				creationSchemeAction.initWithEditionPatternInstance(newVirtualModelInstance);
+				creationSchemeAction.initWithFlexoConceptInstance(newVirtualModelInstance);
 				creationSchemeAction.doAction();
 			}
 

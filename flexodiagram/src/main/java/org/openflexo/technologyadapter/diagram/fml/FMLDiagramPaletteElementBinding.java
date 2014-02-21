@@ -150,7 +150,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 
 		private TypedDiagramModelSlot diagramModelSlot;
 
-		private String _editionPatternId;
+		private String _flexoConceptId;
 		private String _dropSchemeName;
 
 		private FlexoConcept flexoConcept;
@@ -193,16 +193,16 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 		}
 
 		// Deserialization only, do not use
-		public String _getEditionPatternId() {
+		public String _getFlexoConceptId() {
 			if (getFlexoConcept() != null) {
 				return getFlexoConcept().getName();
 			}
-			return _editionPatternId;
+			return _flexoConceptId;
 		}
 
 		// Deserialization only, do not use
-		public void _setEditionPatternId(String editionPatternId) {
-			_editionPatternId = editionPatternId;
+		public void _setFlexoConceptId(String flexoConceptId) {
+			_flexoConceptId = flexoConceptId;
 		}
 
 		// Deserialization only, do not use
@@ -233,8 +233,8 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 			if (flexoConcept != null) {
 				return flexoConcept;
 			}
-			if (_editionPatternId != null && getVirtualModel() != null) {
-				flexoConcept = getVirtualModel().getFlexoConcept(_editionPatternId);
+			if (_flexoConceptId != null && getVirtualModel() != null) {
+				flexoConcept = getVirtualModel().getFlexoConcept(_flexoConceptId);
 				updateParameters();
 			}
 			return flexoConcept;

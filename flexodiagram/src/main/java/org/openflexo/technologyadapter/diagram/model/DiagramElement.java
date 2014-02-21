@@ -28,7 +28,7 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -146,7 +146,7 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	public List<DiagramContainerElement<?>> getAncestors();
 
 	/**
-	 * Return {@link EditionPatternInstance} where this {@link DiagramElement} is involved, asserting that this {@link DiagramElement} is
+	 * Return {@link FlexoConceptInstance} where this {@link DiagramElement} is involved, asserting that this {@link DiagramElement} is
 	 * contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared in {@link VirtualModel} of supplied
 	 * {@link VirtualModelInstance}
 	 * 
@@ -154,10 +154,10 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
 	 * @return
 	 */
-	public EditionPatternInstance getEditionPatternInstance(VirtualModelInstance vmInstance);
+	public FlexoConceptInstance getFlexoConceptInstance(VirtualModelInstance vmInstance);
 
 	/**
-	 * Return {@link GraphicalElementPatternRole} played by this {@link DiagramElement} in related {@link EditionPatternInstance}, asserting
+	 * Return {@link GraphicalElementPatternRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting
 	 * that this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared
 	 * in {@link VirtualModel} of supplied {@link VirtualModelInstance}
 	 * 

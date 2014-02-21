@@ -92,7 +92,7 @@ public abstract interface AddStatement<S extends OWLStatement> extends Assignabl
 			}
 		}*/
 
-		// FIXME: if we remove this useless code, some FIB won't work (see EditionPatternView.fib, inspect an AddIndividual)
+		// FIXME: if we remove this useless code, some FIB won't work (see FlexoConceptView.fib, inspect an AddIndividual)
 		// Need to be fixed in KeyValueProperty.java
 		/*@Override
 		public void setPatternRole(R patternRole) {

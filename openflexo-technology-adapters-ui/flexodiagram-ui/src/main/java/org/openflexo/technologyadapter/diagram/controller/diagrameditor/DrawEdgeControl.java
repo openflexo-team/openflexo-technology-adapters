@@ -93,9 +93,9 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 					// TODO: Choose one of 2 versions
 
 					/*if (fromShape.getDrawable().getVirtualModel() != null) {
-						Vector<FlexoConcept> availableEditionPatterns = fromShape.getDrawable().getVirtualModel().getEditionPatterns();
+						Vector<FlexoConcept> availableFlexoConcepts = fromShape.getDrawable().getVirtualModel().getFlexoConcepts();
 						Vector<ConnectorPatternRole> aivalableConnectorPatternRoles = new Vector<ConnectorPatternRole>();
-						for (FlexoConcept flexoConcept : availableEditionPatterns) {
+						for (FlexoConcept flexoConcept : availableFlexoConcepts) {
 							if (flexoConcept.getConnectorPatternRoles() != null) {
 								aivalableConnectorPatternRoles.addAll(flexoConcept.getConnectorPatternRoles());
 							}
@@ -105,7 +105,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 							JPopupMenu popup = new JPopupMenu();
 							for (final ConnectorPatternRole connectorPatternRole : aivalableConnectorPatternRoles) {
 								JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey(connectorPatternRole
-										.getEditionPattern().getName()));
+										.getFlexoConcept().getName()));
 								menuItem.addActionListener(new ActionListener() {
 									@Override
 									public void actionPerformed(ActionEvent e) {

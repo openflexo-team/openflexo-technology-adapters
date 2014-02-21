@@ -51,7 +51,7 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 
 	/**
 	 * Get the list of shape pattern roles that can be set as parent shape pattern role. This list contains all other shape pattern roles of
-	 * current edition pattern which are not already in the containment subtree
+	 * current flexo concept which are not already in the containment subtree
 	 * 
 	 * @return
 	 */
@@ -180,7 +180,7 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 
 		/**
 		 * Get the list of shape pattern roles that can be set as parent shape pattern role. This list contains all other shape pattern
-		 * roles of current edition pattern which are not already in the containment subtree
+		 * roles of current flexo concept which are not already in the containment subtree
 		 * 
 		 * @return
 		 */

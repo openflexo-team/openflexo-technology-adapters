@@ -14,8 +14,9 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.ModelObjectActorReference;
+import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
@@ -279,24 +280,24 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 
 		/*@Override
 		public BindingModel getBindingModel() {
-			return getEditionPattern().getInspector().getBindingModel();
+			return getFlexoConcept().getInspector().getBindingModel();
 		}*/
 
 		/*public boolean getIsPrimaryRepresentationRole() {
-			if (getEditionPattern() == null) {
+			if (getFlexoConcept() == null) {
 				return false;
 			}
-			return getEditionPattern().getPrimaryRepresentationRole() == this;
+			return getFlexoConcept().getPrimaryRepresentationRole() == this;
 		}
 
 		public void setIsPrimaryRepresentationRole(boolean isPrimary) {
-			if (getEditionPattern() == null) {
+			if (getFlexoConcept() == null) {
 				return;
 			}
 			if (isPrimary) {
-				getEditionPattern().setPrimaryRepresentationRole(this);
+				getFlexoConcept().setPrimaryRepresentationRole(this);
 			} else {
-				getEditionPattern().setPrimaryRepresentationRole(null);
+				getFlexoConcept().setPrimaryRepresentationRole(null);
 			}
 		}
 
@@ -460,10 +461,13 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 		}
 
 		@Override
-		public ModelObjectActorReference makeActorReference(T object, EditionPatternInstance epi) {
-			// TODO
-			// return new ModelObjectActorReference<T>(object, this, epi);
-			return null;
+		public ModelObjectActorReference<T> makeActorReference(T object, FlexoConceptInstance epi) {
+			VirtualModelInstanceModelFactory factory = epi.getFactory();
+			ModelObjectActorReference<T> returned = factory.newInstance(ModelObjectActorReference.class);
+			returned.setPatternRole(this);
+			returned.setFlexoConceptInstance(epi);
+			returned.setModellingElement(object);
+			return returned;
 		}
 
 		@Override

@@ -122,8 +122,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		/*@Override
 		public List<ConnectorPatternRole> getAvailablePatternRoles() {
-			if (getEditionPattern() != null) {
-				return getEditionPattern().getPatternRoles(ConnectorPatternRole.class);
+			if (getFlexoConcept() != null) {
+				return getFlexoConcept().getPatternRoles(ConnectorPatternRole.class);
 			}
 			return null;
 		}*/
@@ -142,8 +142,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		public DiagramShape getFromShape(EditionSchemeAction action) {
 			if (getPatternRole() != null && !getPatternRole().getStartShapeAsDefinedInAction()) {
-				FlexoObject returned = action.getEditionPatternInstance().getPatternActor(getPatternRole().getStartShapePatternRole());
-				return action.getEditionPatternInstance().getPatternActor(getPatternRole().getStartShapePatternRole());
+				FlexoObject returned = action.getFlexoConceptInstance().getPatternActor(getPatternRole().getStartShapePatternRole());
+				return action.getFlexoConceptInstance().getPatternActor(getPatternRole().getStartShapePatternRole());
 			} else {
 				try {
 					return getFromShape().getBindingValue(action);
@@ -160,7 +160,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		public DiagramShape getToShape(EditionSchemeAction action) {
 			if (getPatternRole() != null && !getPatternRole().getEndShapeAsDefinedInAction()) {
-				return action.getEditionPatternInstance().getPatternActor(getPatternRole().getEndShapePatternRole());
+				return action.getFlexoConceptInstance().getPatternActor(getPatternRole().getEndShapePatternRole());
 			} else {
 				try {
 					return getToShape().getBindingValue(action);
@@ -191,7 +191,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			}
 		}*/
 
-		// FIXME: if we remove this useless code, some FIB won't work (see EditionPatternView.fib, inspect an AddIndividual)
+		// FIXME: if we remove this useless code, some FIB won't work (see FlexoConceptView.fib, inspect an AddIndividual)
 		// Need to be fixed in KeyValueProperty.java
 		/*@Override
 		public void setPatternRole(ConnectorPatternRole patternRole) {
@@ -284,7 +284,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			parent.addToConnectors(newConnector);
 
 			// Register reference
-			newConnector.registerEditionPatternReference(action.getEditionPatternInstance());
+			newConnector.registerFlexoConceptReference(action.getFlexoConceptInstance());
 
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("Added connector " + newConnector + " under " + parent);

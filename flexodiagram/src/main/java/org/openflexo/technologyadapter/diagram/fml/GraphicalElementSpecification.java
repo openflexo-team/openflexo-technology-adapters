@@ -14,9 +14,9 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.validation.Validable;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionPatternObject;
+import org.openflexo.foundation.viewpoint.FlexoConceptObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -36,7 +36,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 @ModelEntity
 @ImplementationClass(GraphicalElementSpecification.GraphicalElementSpecificationImpl.class)
 @XMLElement(xmlTag = "GRSpec")
-public interface GraphicalElementSpecification<T, GR extends GraphicalRepresentation> extends EditionPatternObject, Bindable {
+public interface GraphicalElementSpecification<T, GR extends GraphicalRepresentation> extends FlexoConceptObject, Bindable {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String FEATURE_NAME_KEY = "featureName";
@@ -78,7 +78,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 
 	public void setMandatory(boolean mandatory);
 
-	public static abstract class GraphicalElementSpecificationImpl<T, GR extends GraphicalRepresentation> extends EditionPatternObjectImpl
+	public static abstract class GraphicalElementSpecificationImpl<T, GR extends GraphicalRepresentation> extends FlexoConceptObjectImpl
 			implements GraphicalElementSpecification<T, GR> {
 
 		@SuppressWarnings("unused")
@@ -221,15 +221,15 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		 * @param element
 		 */
 		// public void applyToGraphicalRepresentation(GR gr, DiagramElement<GR> element) {
-		public void applyToGraphicalRepresentation(EditionPatternInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
+		public void applyToGraphicalRepresentation(FlexoConceptInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
 			/*if (getValue().toString().equals(
 					"(property.label.asString + ((inputAttributeReference.value != \"\") ? (\"=\" + inputAttributeReference.value) : \"\"))")) {
 				System.out.println("value=" + getValue());
 				System.out.println("hasBinding=" + getValue().hasBinding());
 				System.out.println("valid=" + getValue().isValid());
 				System.out.println("reason=" + getValue().getBinding().invalidBindingReason());
-				System.out.println("EPI=" + element.getEditionPatternInstance().debug());
-				System.out.println("Result=" + getValue().getBindingValue(element.getEditionPatternInstance()));
+				System.out.println("EPI=" + element.getFlexoConceptInstance().debug());
+				System.out.println("Result=" + getValue().getBindingValue(element.getFlexoConceptInstance()));
 				System.out.println("Hop");
 			}*/
 
@@ -237,7 +237,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 				DiagramElement<GR> diagramElement = epi.getPatternActor(patternRole);
 				getFeature().applyToGraphicalRepresentation((GR) diagramElement.getGraphicalRepresentation(),
 						(T) getValue().getBindingValue(epi));
-				// getFeature().applyToGraphicalRepresentation(gr, (T) getValue().getBindingValue(element.getEditionPatternInstance()));
+				// getFeature().applyToGraphicalRepresentation(gr, (T) getValue().getBindingValue(element.getFlexoConceptInstance()));
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -255,7 +255,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		 * @param element
 		 * @return
 		 */
-		public T applyToModel(EditionPatternInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
+		public T applyToModel(FlexoConceptInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
 			DiagramElement<GR> diagramElement = epi.getPatternActor(patternRole);
 			T newValue = getFeature().retrieveFromGraphicalRepresentation((GR) diagramElement.getGraphicalRepresentation());
 			try {

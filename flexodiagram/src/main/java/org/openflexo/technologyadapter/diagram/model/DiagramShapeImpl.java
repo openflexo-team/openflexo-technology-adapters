@@ -33,7 +33,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	// private Vector<DiagramConnector> incomingConnectors;
 	// private Vector<DiagramConnector> outgoingConnectors;
 
-	// private EditionPatternInstance editionPatternInstance;
+	// private FlexoConceptInstance flexoConceptInstance;
 
 	/**
 	 * Constructor invoked during deserialization
@@ -131,7 +131,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 
 	/*@Override
 	public String getDisplayableDescription() {
-		return "ShapeSpecification" + (getEditionPattern() != null ? " representing " + getEditionPattern() : "");
+		return "ShapeSpecification" + (getFlexoConcept() != null ? " representing " + getFlexoConcept() : "");
 	}*/
 
 	/*public static class DropAndLinkScheme {
@@ -146,8 +146,8 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 
 	}
 
-	public Vector<DropAndLinkScheme> getAvailableDropAndLinkSchemeFromThisShape(FlexoConcept targetEditionPattern) {
-		if (getEditionPattern() == null) {
+	public Vector<DropAndLinkScheme> getAvailableDropAndLinkSchemeFromThisShape(FlexoConcept targetFlexoConcept) {
+		if (getFlexoConcept() == null) {
 			return null;
 		}
 
@@ -160,13 +160,13 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 
 		availableLinkSchemeFromThisShape = new Vector<DropAndLinkScheme>();
 
-		for (FlexoConcept ep1 : getDiagramSpecification().getEditionPatterns()) {
+		for (FlexoConcept ep1 : getDiagramSpecification().getFlexoConcepts()) {
 			for (DropScheme ds : ep1.getDropSchemes()) {
-				if (ds.getTargetEditionPattern() == targetEditionPattern || ds.getTopTarget() && targetEditionPattern == null) {
-					for (FlexoConcept ep2 : getDiagramSpecification().getEditionPatterns()) {
+				if (ds.getTargetFlexoConcept() == targetFlexoConcept || ds.getTopTarget() && targetFlexoConcept == null) {
+					for (FlexoConcept ep2 : getDiagramSpecification().getFlexoConcepts()) {
 						for (LinkScheme ls : ep2.getLinkSchemes()) {
 							// Let's directly reuse the code that exists in the LinkScheme instead of re-writing it here.
-							if (ls.isValidTarget(ep2, ds.getEditionPattern()) && ls.getIsAvailableWithFloatingPalette()) {
+							if (ls.isValidTarget(ep2, ds.getFlexoConcept()) && ls.getIsAvailableWithFloatingPalette()) {
 								// This candidate is acceptable
 								availableLinkSchemeFromThisShape.add(new DropAndLinkScheme(ds, ls));
 							}
@@ -180,7 +180,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	}
 
 	public Vector<LinkScheme> getAvailableLinkSchemeFromThisShape() {
-		if (getEditionPattern() == null) {
+		if (getFlexoConcept() == null) {
 			return null;
 		}
 
@@ -193,9 +193,9 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 
 		availableLinkSchemeFromThisShape = new Vector<LinkScheme>();
 
-		for (FlexoConcept ep : getDiagramSpecification().getEditionPatterns()) {
+		for (FlexoConcept ep : getDiagramSpecification().getFlexoConcepts()) {
 			for (LinkScheme ls : ep.getLinkSchemes()) {
-				if (ls.getFromTargetEditionPattern() != null && ls.getFromTargetEditionPattern().isAssignableFrom(getEditionPattern())
+				if (ls.getFromTargetFlexoConcept() != null && ls.getFromTargetFlexoConcept().isAssignableFrom(getFlexoConcept())
 						&& ls.getIsAvailableWithFloatingPalette()) {
 					// This candidate is acceptable
 					availableLinkSchemeFromThisShape.add(ls);

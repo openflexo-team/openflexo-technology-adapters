@@ -6,7 +6,7 @@ import org.openflexo.fge.control.MouseControlContext;
 import org.openflexo.fge.control.actions.MouseClickControlActionImpl;
 import org.openflexo.fge.control.actions.MouseClickControlImpl;
 import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.action.ActionSchemeAction;
 import org.openflexo.foundation.view.action.ActionSchemeActionType;
@@ -55,7 +55,7 @@ public class FMLControlledDiagramMouseClickControl extends MouseClickControlImpl
 			diagramElement = (DiagramElement<?>) dtn.getDrawable();
 		}
 		if (diagramElement != null) {
-			EditionPatternInstance epi = diagramElement.getEditionPatternInstance(vmInstance);
+			FlexoConceptInstance epi = diagramElement.getFlexoConceptInstance(vmInstance);
 			if (epi != null) {
 				for (GraphicalElementAction action : patternRole.getActions(mask)) {
 					if (action.evaluateCondition(epi)) {

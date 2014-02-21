@@ -46,16 +46,16 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
 
-public class EditionPatternPreviewRepresentation extends DrawingImpl<FlexoConcept> implements EditionPatternPreviewConstants {
+public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept> implements FlexoConceptPreviewConstants {
 
-	private static final Logger logger = Logger.getLogger(EditionPatternPreviewRepresentation.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(FlexoConceptPreviewRepresentation.class.getPackage().getName());
 
-	// private EditionPatternPreviewShemaGR graphicalRepresentation;
+	// private FlexoConceptPreviewShemaGR graphicalRepresentation;
 
 	// private Boolean ignoreNotifications = true;
 
-	// private Hashtable<PatternRole, EditionPatternPreviewShapeGR> shapesGR;
-	// private Hashtable<PatternRole, EditionPatternPreviewConnectorGR> connectorsGR;
+	// private Hashtable<PatternRole, FlexoConceptPreviewShapeGR> shapesGR;
+	// private Hashtable<PatternRole, FlexoConceptPreviewConnectorGR> connectorsGR;
 
 	static FGEModelFactory PREVIEW_FACTORY;
 
@@ -70,7 +70,7 @@ public class EditionPatternPreviewRepresentation extends DrawingImpl<FlexoConcep
 	private final Hashtable<PatternRole, ConnectorFromArtifact> fromArtifacts;
 	private final Hashtable<PatternRole, ConnectorToArtifact> toArtifacts;
 
-	public EditionPatternPreviewRepresentation(FlexoConcept model) {
+	public FlexoConceptPreviewRepresentation(FlexoConcept model) {
 		super(model, PREVIEW_FACTORY, PersistenceMode.UniqueGraphicalRepresentations);
 		setEditable(false);
 
@@ -188,10 +188,10 @@ public class EditionPatternPreviewRepresentation extends DrawingImpl<FlexoConcep
 		/*if (graphicalRepresentation != null) {
 			graphicalRepresentation.delete();
 		}*/
-		/*if (getEditionPattern() != null) {
-			getEditionPattern().deleteObserver(this);
+		/*if (getFlexoConcept() != null) {
+			getFlexoConcept().deleteObserver(this);
 		}*/
-		/*for (PatternRole role : getEditionPattern().getPatternRoles()) {
+		/*for (PatternRole role : getFlexoConcept().getPatternRoles()) {
 			role.deleteObserver(this);
 		}*/
 		super.delete();

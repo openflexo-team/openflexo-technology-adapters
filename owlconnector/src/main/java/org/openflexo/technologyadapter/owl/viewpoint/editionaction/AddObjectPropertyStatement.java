@@ -125,7 +125,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 		/*@Override
 		public List<ObjectPropertyStatementPatternRole> getAvailablePatternRoles() {
-			return getEditionPattern().getPatternRoles(ObjectPropertyStatementPatternRole.class);
+			return getFlexoConcept().getPatternRoles(ObjectPropertyStatementPatternRole.class);
 		}*/
 
 		@Override

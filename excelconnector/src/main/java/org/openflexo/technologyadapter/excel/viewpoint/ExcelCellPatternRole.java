@@ -22,7 +22,8 @@ package org.openflexo.technologyadapter.excel.viewpoint;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.ActorReference;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
+import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -70,8 +71,13 @@ public interface ExcelCellPatternRole extends PatternRole<ExcelCell> {
 		}
 
 		@Override
-		public ActorReference<ExcelCell> makeActorReference(ExcelCell object, EditionPatternInstance epi) {
-			return new ExcelActorReference(object, this, epi);
+		public ActorReference<ExcelCell> makeActorReference(ExcelCell object, FlexoConceptInstance epi) {
+			VirtualModelInstanceModelFactory factory = epi.getFactory();
+			ExcelActorReference<ExcelCell> returned = factory.newInstance(ExcelActorReference.class);
+			returned.setPatternRole(this);
+			returned.setFlexoConceptInstance(epi);
+			returned.setModellingElement(object);
+			return returned;
 		}
 
 	}

@@ -33,7 +33,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -91,20 +91,20 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 
 	// private Hashtable<EditionAction,FlexoObject> createdObjects;
 
-	private EditionPatternInstance editionPatternInstance;
+	private FlexoConceptInstance flexoConceptInstance;
 
 	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException {
 		logger.info("Drop palette element");
 
 		logger.info("project=" + getProject());
-		// getEditionPattern().getViewPoint().getViewpointOntology().loadWhenUnloaded();
+		// getFlexoConcept().getViewPoint().getViewpointOntology().loadWhenUnloaded();
 
-		editionPatternInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
+		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 
-		logger.info("editionPatternInstance=" + editionPatternInstance);
-		logger.info("epi project=" + editionPatternInstance.getProject());
-		logger.info("epi resource data =" + editionPatternInstance.getResourceData());
+		logger.info("flexoConceptInstance=" + flexoConceptInstance);
+		logger.info("epi project=" + flexoConceptInstance.getProject());
+		logger.info("epi resource data =" + flexoConceptInstance.getResourceData());
 
 		applyEditionActions();
 
@@ -157,8 +157,8 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 	}
 
 	@Override
-	public EditionPatternInstance getEditionPatternInstance() {
-		return editionPatternInstance;
+	public FlexoConceptInstance getFlexoConceptInstance() {
+		return flexoConceptInstance;
 	}
 
 	@Override
@@ -217,7 +217,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 					}
 				}
 				/*} else if (action.getPatternRole().getParentShapeAsDefinedInAction()) {
-					Object graphicalRepresentation = action.getEditionPattern().getPrimaryRepresentationRole().getGraphicalRepresentation();
+					Object graphicalRepresentation = action.getFlexoConcept().getPrimaryRepresentationRole().getGraphicalRepresentation();
 					if (graphicalRepresentation instanceof ShapeGraphicalRepresentation) {
 						ShapeGraphicalRepresentation primaryGR = (ShapeGraphicalRepresentation) graphicalRepresentation;
 						gr.setX(dropLocation.x + gr.getX() - primaryGR.getX());
@@ -240,7 +240,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals(DiagramEditionScheme.TARGET) && _dropScheme.getTargetFlexoConcept() != null) {
 			/*if (getParent() instanceof DiagramShape) {
-				return ((DiagramShape) getParent()).getEditionPatternInstance();
+				return ((DiagramShape) getParent()).getFlexoConceptInstance();
 			}*/
 			// TODO
 			logger.warning("Please implement getValue() for target");

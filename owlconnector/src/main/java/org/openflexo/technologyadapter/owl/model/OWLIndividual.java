@@ -109,7 +109,7 @@ public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntol
 		update();
 		setChanged();
 		notifyObservers(new NameChanged(oldName,aName));
-		logger.info("Les references: "+getEditionPatternReferences());
+		logger.info("Les references: "+getFlexoConceptReferences());
 	}*/
 
 	@Override

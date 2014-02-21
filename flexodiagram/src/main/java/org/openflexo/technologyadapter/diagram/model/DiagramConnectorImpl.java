@@ -100,8 +100,8 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 	 
 	public AddConnector getAddConnectorAction()
 	{
-		if (getEditionPattern() != null && getPatternRole() != null)
-			return getEditionPattern().getAddConnectorAction(getPatternRole());
+		if (getFlexoConcept() != null && getPatternRole() != null)
+			return getFlexoConcept().getAddConnectorAction(getPatternRole());
 		return null;
 	}*/
 
@@ -152,7 +152,7 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 
 	@Override
 	public String getDisplayableDescription() {
-		return "ConnectorSpecification" + (getEditionPattern() != null ? " representing " + getEditionPattern() : "");
+		return "ConnectorSpecification" + (getFlexoConcept() != null ? " representing " + getFlexoConcept() : "");
 	}
 
 	@Override

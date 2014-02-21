@@ -27,10 +27,10 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.validation.Validable;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.AbstractActionScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionPatternObject;
+import org.openflexo.foundation.viewpoint.FlexoConceptObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -43,7 +43,7 @@ import org.openflexo.model.annotations.XMLElement;
 @ModelEntity
 @ImplementationClass(GraphicalElementAction.GraphicalElementActionImpl.class)
 @XMLElement(xmlTag = "Action")
-public interface GraphicalElementAction extends EditionPatternObject {
+public interface GraphicalElementAction extends FlexoConceptObject {
 
 	public static enum ActionMask {
 		SingleClick, DoubleClick, ShiftClick, AltClick, CtrlClick, MetaClick;
@@ -76,9 +76,9 @@ public interface GraphicalElementAction extends EditionPatternObject {
 	@Setter(ABSTRACT_ACTION_SCHEME_KEY)
 	public void setAbstractActionScheme(AbstractActionScheme abstractActionScheme);
 
-	public boolean evaluateCondition(EditionPatternInstance editionPatternInstance);
+	public boolean evaluateCondition(FlexoConceptInstance flexoConceptInstance);
 
-	public static abstract class GraphicalElementActionImpl extends EditionPatternObjectImpl implements GraphicalElementAction {
+	public static abstract class GraphicalElementActionImpl extends FlexoConceptObjectImpl implements GraphicalElementAction {
 
 		private ActionMask actionMask = ActionMask.DoubleClick;
 		private AbstractActionScheme abstractActionScheme;
@@ -130,10 +130,10 @@ public interface GraphicalElementAction extends EditionPatternObject {
 		}
 
 		@Override
-		public boolean evaluateCondition(EditionPatternInstance editionPatternInstance) {
+		public boolean evaluateCondition(FlexoConceptInstance flexoConceptInstance) {
 			if (getConditional().isValid()) {
 				try {
-					return getConditional().getBindingValue(editionPatternInstance);
+					return getConditional().getBindingValue(flexoConceptInstance);
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
 				} catch (NullReferenceException e) {

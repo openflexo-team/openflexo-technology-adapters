@@ -25,7 +25,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.viewpoint.AbstractCreationScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionPatternInstanceType;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstanceType;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.model.annotations.Getter;
@@ -202,13 +202,13 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 			super.appendContextualBindingVariables(bindingModel);
 			bindingModelNeedToBeRecomputed = false;
 			if (getFromTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.FROM_TARGET, EditionPatternInstanceType
+				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.FROM_TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getFromTargetFlexoConcept())));
 			} else if (_getFromTarget() != null && !StringUtils.isEmpty(_getFromTarget())) {
 				bindingModelNeedToBeRecomputed = true;
 			}
 			if (getToTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TO_TARGET, EditionPatternInstanceType
+				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TO_TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getToTargetFlexoConcept())));
 			} else if (_getToTarget() != null && !StringUtils.isEmpty(_getToTarget())) {
 				bindingModelNeedToBeRecomputed = true;

@@ -3,9 +3,10 @@ package org.openflexo.technologyadapter.diagram.fml;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.ModelObjectActorReference;
 import org.openflexo.foundation.view.View;
+import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.viewpoint.PatternRole;
@@ -18,6 +19,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.toolbox.StringUtils;
 
@@ -25,7 +27,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(DiagramPatternRole.DiagramPatternRoleImpl.class)
 @XMLElement
-public interface DiagramPatternRole extends PatternRole<View> {
+public interface DiagramPatternRole extends PatternRole<Diagram> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String DIAGRAM_SPECIFICATION_URI_KEY = "diagramSpecificationURI";
@@ -41,7 +43,7 @@ public interface DiagramPatternRole extends PatternRole<View> {
 
 	public void setDiagramSpecification(DiagramSpecification diagramSpecification);
 
-	public static abstract class DiagramPatternRoleImpl extends PatternRoleImpl<View> implements DiagramPatternRole {
+	public static abstract class DiagramPatternRoleImpl extends PatternRoleImpl<Diagram> implements DiagramPatternRole {
 
 		private static final Logger logger = Logger.getLogger(DiagramPatternRole.class.getPackage().getName());
 
@@ -117,8 +119,13 @@ public interface DiagramPatternRole extends PatternRole<View> {
 		}
 
 		@Override
-		public ModelObjectActorReference<View> makeActorReference(View object, EditionPatternInstance epi) {
-			return new ModelObjectActorReference<View>(object, this, epi);
+		public ModelObjectActorReference<Diagram> makeActorReference(Diagram object, FlexoConceptInstance epi) {
+			VirtualModelInstanceModelFactory factory = epi.getFactory();
+			ModelObjectActorReference<Diagram> returned = factory.newInstance(ModelObjectActorReference.class);
+			returned.setPatternRole(this);
+			returned.setFlexoConceptInstance(epi);
+			returned.setModellingElement(object);
+			return returned;
 		}
 	}
 }

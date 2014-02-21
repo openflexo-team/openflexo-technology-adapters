@@ -43,7 +43,6 @@ public class DiagramPaletteElement extends DiagramPaletteObject {
 		super();
 	}
 
-	@Override
 	public FlexoServiceManager getServiceManager() {
 		return getPalette().getServiceManager();
 	}

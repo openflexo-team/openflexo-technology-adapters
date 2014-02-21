@@ -26,16 +26,16 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 /**
- * This is the module view representing a diagram FlexoConcept (an FlexoConcept which is part of a DiagramSpecification)<br>
+ * This is the module view representing FlexoConcept with some diagramming roles<br>
  * 
  * @author sguerin
  * 
  */
 @SuppressWarnings("serial")
-public class DiagramEditionPatternView extends FIBModuleView<FlexoConcept> {
+public class DiagramFlexoConceptView extends FIBModuleView<FlexoConcept> {
 
-	public DiagramEditionPatternView(FlexoConcept flexoConcept, FlexoController controller) {
-		super(flexoConcept, controller, DiagramCst.DIAGRAM_EDITION_PATTERN_VIEW_FIB);
+	public DiagramFlexoConceptView(FlexoConcept flexoConcept, FlexoController controller) {
+		super(flexoConcept, controller, DiagramCst.DIAGRAM_FLEXO_CONCEPT_VIEW_FIB);
 	}
 
 	@Override

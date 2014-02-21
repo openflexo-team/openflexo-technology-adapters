@@ -7,7 +7,7 @@ import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.EditionPatternInstancePatternRole;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstancePatternRole;
 import org.openflexo.foundation.viewpoint.EditionScheme;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
@@ -25,8 +25,8 @@ import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPa
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSpecificationInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
-import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInEditionPatternInitializer;
-import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInEditionPatternInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramElementsInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramPaletteElementInitializer;
@@ -130,8 +130,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new CreateExampleDiagramInitializer(actionInitializer);
 		new DeleteExampleDiagramInitializer(actionInitializer);
 		new PushToPaletteInitializer(actionInitializer);
-		new DeclareShapeInEditionPatternInitializer(actionInitializer);
-		new DeclareConnectorInEditionPatternInitializer(actionInitializer);
+		new DeclareShapeInFlexoConceptInitializer(actionInitializer);
+		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
 		new DeleteExampleDiagramElementsInitializer(actionInitializer);
 		new CreateDiagramFromPPTSlideInitializer(actionInitializer);
 
@@ -151,8 +151,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new DropSchemeActionInitializer(actionInitializer);
 		new LinkSchemeActionInitializer(actionInitializer);
 		new ResetGraphicalRepresentationInitializer(actionInitializer);
-		new DeclareShapeInEditionPatternInitializer(actionInitializer);
-		new DeclareConnectorInEditionPatternInitializer(actionInitializer);
+		new DeclareShapeInFlexoConceptInitializer(actionInitializer);
+		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
 		new PushToPaletteInitializer(actionInitializer);
 		new ExportDiagramToImageInitializer(actionInitializer);
 
@@ -230,8 +230,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 			return DiagramIconLibrary.SHAPE_ICON;
 		} else if (ConnectorPatternRole.class.isAssignableFrom(patternRoleClass)) {
 			return DiagramIconLibrary.CONNECTOR_ICON;
-		} else if (EditionPatternInstancePatternRole.class.isAssignableFrom(patternRoleClass)) {
-			return VEIconLibrary.EDITION_PATTERN_INSTANCE_ICON;
+		} else if (FlexoConceptInstancePatternRole.class.isAssignableFrom(patternRoleClass)) {
+			return VEIconLibrary.FLEXO_CONCEPT_INSTANCE_ICON;
 		}
 		return null;
 	}
@@ -309,9 +309,9 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 				// }
 			} else {
 				// if (ep.getVirtualModel() instanceof DiagramSpecification) {
-				// return new DiagramEditionPatternView(ep, (VPMController) controller);
+				// return new DiagramFlexoConceptView(ep, (VPMController) controller);
 				// } else {
-				return new StandardEditionPatternView(ep, controller, perspective);
+				return new StandardFlexoConceptView(ep, controller, perspective);
 				// }
 			}
 

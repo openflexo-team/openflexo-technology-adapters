@@ -27,32 +27,32 @@ import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.selection.SelectionManagingDianaEditor;
 
-public class EditionPatternPreviewController extends SelectionManagingDianaEditor<FlexoConcept> {
+public class FlexoConceptPreviewController extends SelectionManagingDianaEditor<FlexoConcept> {
 
-	private static final Logger logger = Logger.getLogger(EditionPatternPreviewController.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(FlexoConceptPreviewController.class.getPackage().getName());
 
-	// We share here instances of EditionPatternPreviewRepresentation because they can be accessed from multiple
-	// EditionPatternPreviewComponent
-	private static final Map<FlexoConcept, EditionPatternPreviewRepresentation> flexoConceptPreviewRepresentations = new Hashtable<FlexoConcept, EditionPatternPreviewRepresentation>();
+	// We share here instances of FlexoConceptPreviewRepresentation because they can be accessed from multiple
+	// FlexoConceptPreviewComponent
+	private static final Map<FlexoConcept, FlexoConceptPreviewRepresentation> flexoConceptPreviewRepresentations = new Hashtable<FlexoConcept, FlexoConceptPreviewRepresentation>();
 
 	/**
-	 * Obtain or build stored EditionPatternPreviewRepresentation (they are all shared because they can be accessed from multiple
-	 * EditionPatternPreviewComponent)
+	 * Obtain or build stored FlexoConceptPreviewRepresentation (they are all shared because they can be accessed from multiple
+	 * FlexoConceptPreviewComponent)
 	 * 
 	 * @param flexoConcept
 	 * @return
 	 */
-	private static final EditionPatternPreviewRepresentation obtainFlexoConceptPreviewRepresentations(FlexoConcept flexoConcept) {
-		EditionPatternPreviewRepresentation returned = flexoConceptPreviewRepresentations.get(flexoConcept);
+	private static final FlexoConceptPreviewRepresentation obtainFlexoConceptPreviewRepresentations(FlexoConcept flexoConcept) {
+		FlexoConceptPreviewRepresentation returned = flexoConceptPreviewRepresentations.get(flexoConcept);
 		if (returned == null) {
-			returned = new EditionPatternPreviewRepresentation(flexoConcept);
+			returned = new FlexoConceptPreviewRepresentation(flexoConcept);
 			flexoConceptPreviewRepresentations.put(flexoConcept, returned);
 		}
 		return returned;
 	}
 
-	public EditionPatternPreviewController(FlexoConcept flexoConcept, SelectionManager sm) {
-		super(obtainFlexoConceptPreviewRepresentations(flexoConcept), sm, EditionPatternPreviewRepresentation.PREVIEW_FACTORY, null);
+	public FlexoConceptPreviewController(FlexoConcept flexoConcept, SelectionManager sm) {
+		super(obtainFlexoConceptPreviewRepresentations(flexoConcept), sm, FlexoConceptPreviewRepresentation.PREVIEW_FACTORY, null);
 	}
 
 	@Override

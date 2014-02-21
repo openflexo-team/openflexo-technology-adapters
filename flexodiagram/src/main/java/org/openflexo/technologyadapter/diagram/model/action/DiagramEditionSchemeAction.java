@@ -64,9 +64,9 @@ public abstract class DiagramEditionSchemeAction<A extends EditionSchemeAction<A
 	@Override
 	public Object getValue(BindingVariable variable) {
 		if (variable instanceof PatternRoleBindingVariable) {
-			return getEditionPatternInstance().getPatternActor(((PatternRoleBindingVariable) variable).getPatternRole());
+			return getFlexoConceptInstance().getPatternActor(((PatternRoleBindingVariable) variable).getPatternRole());
 		} else if (variable.getVariableName().equals(EditionScheme.THIS)) {
-			return getEditionPatternInstance();
+			return getFlexoConceptInstance();
 		}
 		return super.getValue(variable);
 	}
@@ -74,7 +74,7 @@ public abstract class DiagramEditionSchemeAction<A extends EditionSchemeAction<A
 	@Override
 	public void setValue(Object value, BindingVariable variable) {
 		if (variable instanceof PatternRoleBindingVariable) {
-			getEditionPatternInstance().setPatternActor(value, ((PatternRoleBindingVariable) variable).getPatternRole());
+			getFlexoConceptInstance().setPatternActor(value, ((PatternRoleBindingVariable) variable).getPatternRole());
 			return;
 		}
 		super.setValue(value, variable);

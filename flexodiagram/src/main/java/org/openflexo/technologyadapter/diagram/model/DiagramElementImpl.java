@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.view.EditionPatternInstance;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.viewpoint.VirtualModel;
@@ -174,7 +174,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	}
 
 	/**
-	 * Return {@link EditionPatternInstance} where this {@link DiagramElement} is involved, asserting that this {@link DiagramElement} is
+	 * Return {@link FlexoConceptInstance} where this {@link DiagramElement} is involved, asserting that this {@link DiagramElement} is
 	 * contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared in {@link VirtualModel} of supplied
 	 * {@link VirtualModelInstance}
 	 * 
@@ -183,7 +183,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	 * @return
 	 */
 	@Override
-	public EditionPatternInstance getEditionPatternInstance(VirtualModelInstance vmInstance) {
+	public FlexoConceptInstance getFlexoConceptInstance(VirtualModelInstance vmInstance) {
 		ModelSlotInstance<DiagramModelSlot, Diagram> diagramModelSlotInstance = null;
 		for (ModelSlotInstance<?, ?> msInstance : vmInstance.getModelSlotInstances()) {
 			if (msInstance.getModelSlot() instanceof DiagramModelSlot && msInstance.getAccessedResourceData() == getDiagram()) {
@@ -194,8 +194,8 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 			logger.warning("Cannot find DiagramModelSlot instance where related diagram is accessed");
 			return null;
 		}
-		// TODO: optimize this, use FlexoObjectReference<EditionPatternInstance> in FlexoObject
-		for (EditionPatternInstance epi : vmInstance.getEditionPatternInstancesList()) {
+		// TODO: optimize this, use FlexoObjectReference<FlexoConceptInstance> in FlexoObject
+		for (FlexoConceptInstance epi : vmInstance.getFlexoConceptInstancesList()) {
 			if (epi.getRoleForActor(this) != null) {
 				return epi;
 			}
@@ -204,7 +204,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	}
 
 	/**
-	 * Return {@link GraphicalElementPatternRole} played by this {@link DiagramElement} in related {@link EditionPatternInstance}, asserting
+	 * Return {@link GraphicalElementPatternRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting
 	 * that this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared
 	 * in {@link VirtualModel} of supplied {@link VirtualModelInstance}
 	 * 
@@ -214,7 +214,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	 */
 	@Override
 	public GraphicalElementPatternRole<?, ?> getPatternRole(VirtualModelInstance vmInstance) {
-		EditionPatternInstance epi = getEditionPatternInstance(vmInstance);
+		FlexoConceptInstance epi = getFlexoConceptInstance(vmInstance);
 		if (epi != null) {
 			return (GraphicalElementPatternRole<?, ?>) epi.getRoleForActor(this);
 		}

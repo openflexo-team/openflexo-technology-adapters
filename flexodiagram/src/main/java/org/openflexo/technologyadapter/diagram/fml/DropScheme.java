@@ -25,7 +25,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.viewpoint.AbstractCreationScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionPatternInstanceType;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstanceType;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -140,7 +140,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 		@Deprecated
 		public boolean targetHasMultipleRoles() {
-			// return getTargetEditionPattern() != null && getTargetEditionPattern().getShapePatternRoles().size() > 1;
+			// return getTargetFlexoConcept() != null && getTargetFlexoConcept().getShapePatternRoles().size() > 1;
 			return false;
 		}
 
@@ -173,10 +173,10 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 			super.appendContextualBindingVariables(bindingModel);
 			bindingModelNeedToBeRecomputed = false;
 			if (getTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TARGET, EditionPatternInstanceType
+				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getTargetFlexoConcept())));
 			} else if (_getTarget() != null && !_getTarget().equals("top")) {
-				// logger.warning("Cannot find edition pattern " + _getTarget() + " !!!!!!!!!!!!!!");
+				// logger.warning("Cannot find flexo concept " + _getTarget() + " !!!!!!!!!!!!!!");
 				bindingModelNeedToBeRecomputed = true;
 			}
 		}
