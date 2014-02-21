@@ -19,7 +19,9 @@
  */
 package org.openflexo.technologyadapter.diagram.model.action;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -33,8 +35,10 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.FlexoUndoableAction;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.DeletionScheme;
+import org.openflexo.model.factory.DeletableProxyObject;
 import org.openflexo.model.factory.EmbeddingType;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
+import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
@@ -110,7 +114,7 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 		return returned;
 	}
 
-	private List<FlexoObject> diagramElementsToDelete;
+	private List<DeletableProxyObject> diagramElementsToDelete;
 	private HashMap<FlexoConceptInstance, DeletionScheme> selectedFlexoConceptInstanceDeletionSchemes;
 	private DeletionScheme selectedDeletionScheme;
 	private FlexoConceptInstance selectedFlexoConceptInstance;
@@ -122,12 +126,13 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 
 	@Override
 	protected void doAction(Object context) {
+		
 		if (logger.isLoggable(Level.INFO)) {
 			logger.info("DeleteDiagramElements");
 		}
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("selection is: " + getGlobalSelection());
-			logger.fine("selection to delete is: " + getDiagramElementsToDelete());
+			//logger.fine("selection to delete is: " + getDiagramElementsToDelete());
 			// logger.fine("all objects to delete are: " + getAllObjectsThatWillBeDeleted());
 		}
 
@@ -151,15 +156,67 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 				epi.delete();
 			}
 		}*/
-
-		for (FlexoObject o : getDiagramElementsToDelete()) {
+		
+		//computeElementsToDelete();
+		
+		//getFocusedObject().delete(getDiagramElementsToDelete());
+		
+		/*for (DeletableProxyObject o : getDiagramElementsToDelete()) {
 			if (!o.isDeleted()) {
 				logger.info("Delete undeleted DiagramElement " + o);
 				o.delete();
 			} else {
 				logger.info("DiagramElement " + o + " has been successfully deleted");
 			}
+		}*/
+		
+		List<DiagramConnector> impliedConnectors = new ArrayList<DiagramConnector>();
+		
+		for (DiagramElement<?> o : objectsToDelete(getFocusedObject(), getGlobalSelection())) {
+			if(o instanceof DiagramShape){
+				impliedConnectors.addAll(((DiagramShape)o).getEndConnectors());
+				impliedConnectors.addAll(((DiagramShape)o).getStartConnectors());
+			}
+			if (!o.isDeleted()) {	
+				logger.info("Delete undeleted DiagramElement " + o);
+				o.delete();
+			} else {
+				logger.info("DiagramElement " + o + " has been successfully deleted");
+			}
+			
 		}
+		
+		List<DiagramConnector> pendingConnectors = new ArrayList<DiagramConnector>();
+		
+		for(Iterator<DiagramConnector> connectors = impliedConnectors.iterator();connectors.hasNext();){
+			DiagramConnector connector = (DiagramConnector)connectors.next();
+			if(connector.getStartShape()==null || connector.getEndShape()==null){
+				pendingConnectors.add(connector);
+			}
+		}
+		
+		for(DiagramConnector connector : pendingConnectors){
+			if (!connector.isDeleted()) {	
+				logger.info("Delete undeleted DiagramConnector " + connector);
+				connector.delete();
+			} else {
+				logger.info("DiagramConnector " + connector + " has been successfully deleted");
+			}
+		}
+		
+		
+		
+		
+		//delete(getGlobalSelection());
+		
+		/*for (FlexoObject o : getDiagramElementsToDelete()) {
+			if (!o.isDeleted()) {
+				logger.info("Delete undeleted DiagramElement " + o);
+				o.delete();
+			} else {
+				logger.info("DiagramElement " + o + " has been successfully deleted");
+			}
+		}*/
 	}
 
 	@Override
@@ -172,7 +229,7 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 		logger.warning("REDO DELETE not implemented yet !");
 	}
 
-	public List<FlexoObject> getDiagramElementsToDelete() {
+	/*public List<DeletableProxyObject> getDiagramElementsToDelete() {
 		if (diagramElementsToDelete == null) {
 			computeElementsToDelete();
 		}
@@ -186,7 +243,7 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 				.getEmbeddedObjects(getFocusedObject(), EmbeddingType.DELETION,
 						getGlobalSelection().toArray(new DiagramElement<?>[getGlobalSelection().size()]));
 		
-	}
+	}*/
 
 	public DeletionScheme getSelectedDeletionScheme() {
 		return selectedDeletionScheme;
@@ -199,7 +256,7 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 			}
 			selectedFlexoConceptInstanceDeletionSchemes.put(getSelectedFlexoConceptInstance(), selectedDeletionScheme);
 			this.selectedDeletionScheme = selectedDeletionScheme;
-			computeElementsToDelete();
+			//computeElementsToDelete();
 		}
 	}
 
@@ -210,4 +267,5 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 	public void setSelectedFlexoConceptInstance(FlexoConceptInstance selectedFlexoConceptInstance) {
 		this.selectedFlexoConceptInstance = selectedFlexoConceptInstance;
 	}
+	
 }

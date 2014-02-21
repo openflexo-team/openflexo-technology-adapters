@@ -19,12 +19,22 @@
  */
 package org.openflexo.technologyadapter.diagram.model;
 
+import java.util.List;
+
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PastingPoint;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
 
 /**
@@ -39,6 +49,9 @@ import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
 @XMLElement(xmlTag = "Shape")
 public interface DiagramShape extends DiagramContainerElement<ShapeGraphicalRepresentation> {
 
+	public static final String START_CONNECTORS = "start_connectors";
+	public static final String END_CONNECTORS = "end_connectors";
+	
 	// TODO: comment this when method clash in PAMELA will be solved
 	/*@Getter(value = GRAPHICAL_REPRESENTATION)
 	@CloningStrategy(StrategyType.CLONE)
@@ -63,5 +76,33 @@ public interface DiagramShape extends DiagramContainerElement<ShapeGraphicalRepr
 
 	@Override
 	public ShapePatternRole getPatternRole(VirtualModelInstance vmInstance);
+	
+	@Getter(value = START_CONNECTORS, cardinality = Cardinality.LIST, inverse = DiagramConnector.START_SHAPE)
+	@CloningStrategy(StrategyType.IGNORE)
+	public List<DiagramConnector> getStartConnectors();
+
+	@Setter(START_CONNECTORS)
+	public void setStartConnectors(List<DiagramConnector> someConnectors);
+
+	@Adder(START_CONNECTORS)
+	@PastingPoint
+	public void addToStartConnectors(DiagramConnector aConnector);
+
+	@Remover(START_CONNECTORS)
+	public void removeFromStartConnectors(DiagramConnector aConnector);
+	
+	@Getter(value = END_CONNECTORS, cardinality = Cardinality.LIST, inverse = DiagramConnector.END_SHAPE)
+	@CloningStrategy(StrategyType.IGNORE)
+	public List<DiagramConnector> getEndConnectors();
+
+	@Setter(END_CONNECTORS)
+	public void setEndConnectors(List<DiagramConnector> someConnectors);
+
+	@Adder(END_CONNECTORS)
+	@PastingPoint
+	public void addToEndConnectors(DiagramConnector aConnector);
+
+	@Remover(END_CONNECTORS)
+	public void removeFromEndConnectors(DiagramConnector aConnector);
 
 }

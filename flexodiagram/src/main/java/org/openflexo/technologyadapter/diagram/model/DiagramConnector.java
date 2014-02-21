@@ -44,9 +44,8 @@ public interface DiagramConnector extends DiagramElement<ConnectorGraphicalRepre
 	 * 
 	 * @return
 	 */
-	@Getter(START_SHAPE)
+	@Getter(value = START_SHAPE , inverse = DiagramShape.START_CONNECTORS)
 	@XMLElement(context = "Start")
-	@Embedded
 	@CloningStrategy(StrategyType.CLONE)
 	public DiagramShape getStartShape();
 
@@ -63,11 +62,10 @@ public interface DiagramConnector extends DiagramElement<ConnectorGraphicalRepre
 	 * 
 	 * @return
 	 */
-	@Getter(END_SHAPE)
+	@Getter(value= END_SHAPE , inverse = DiagramShape.END_CONNECTORS)
 	@XMLElement(context = "End")
-	@Embedded
 	@CloningStrategy(StrategyType.CLONE)
-	public abstract DiagramShape getEndShape();
+	public DiagramShape getEndShape();
 
 	/**
 	 * Sets the end shape of this connector
@@ -75,7 +73,7 @@ public interface DiagramConnector extends DiagramElement<ConnectorGraphicalRepre
 	 * @return
 	 */
 	@Setter(END_SHAPE)
-	public abstract void setEndShape(DiagramShape endShape);
+	public void setEndShape(DiagramShape endShape);
 
 	/**
 	 * Return parent of this diagram element
