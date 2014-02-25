@@ -38,14 +38,20 @@ import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.Rectangle;
 import org.openflexo.fge.shapes.ShapeSpecification;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.fib.FIBLibrary;
+import org.openflexo.fib.controller.FIBDialog;
+import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.undo.CompoundEdit;
+import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.AddShape;
 import org.openflexo.toolbox.FileResource;
+import org.openflexo.view.FlexoFrame;
+import org.openflexo.view.controller.FlexoFIBController;
 
 public class CommonPalette extends DrawingPalette {
 
@@ -129,7 +135,7 @@ public class CommonPalette extends DrawingPalette {
 		gr.setIsVisible(true);
 		gr.setAllowToLeaveBounds(false);
 
-		return makePaletteElement(gr, true, true, true, true);
+		return makePaletteElement(gr, true, true, true, true, false);
 
 	}
 	
@@ -143,11 +149,11 @@ public class CommonPalette extends DrawingPalette {
 		((BackgroundImageBackgroundStyle)gr.getBackground()).setImageFile(image);
 		gr.setIsVisible(true);
 		gr.setAllowToLeaveBounds(false);
-		return makePaletteElement(gr, false, false, false, false);
+		return makePaletteElement(gr, false, false, false, false, true);
 	}
 
 	private PaletteElement makePaletteElement(final ShapeGraphicalRepresentation gr, final boolean applyCurrentForeground,
-			final boolean applyCurrentBackground, final boolean applyCurrentTextStyle, final boolean applyCurrentShadowStyle) {
+			final boolean applyCurrentBackground, final boolean applyCurrentTextStyle, final boolean applyCurrentShadowStyle, final boolean isImage) {
 		@SuppressWarnings("serial")
 		PaletteElement returned = new PaletteElement() {
 			@Override
@@ -208,7 +214,13 @@ public class CommonPalette extends DrawingPalette {
 				System.out.println("OK, create AddShape");
 				System.out.println("location=" + shapeGR.getLocation());
 				System.out.println("size=" + shapeGR.getSize());
-
+				
+				if(isImage){
+					FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
+					FIBDialog dialog = FIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
+							new FlexoFIBController(fibComponent, getEditor().getFlexoController()));
+				}
+				
 				AddShape action = AddShape.actionType.makeNewAction(container, null, editor.getFlexoController().getEditor());
 				action.setGraphicalRepresentation(shapeGR);
 				action.setNewShapeName(shapeGR.getText());
@@ -226,7 +238,7 @@ public class CommonPalette extends DrawingPalette {
 				System.out.println("Apres la creation:");
 				System.out.println("location=" + newShape.getGraphicalRepresentation().getLocation());
 				System.out.println("size=" + newShape.getGraphicalRepresentation().getSize());
-
+				
 				getEditor().getFactory().getUndoManager().stopRecording(edit);
 
 				getEditor().setCurrentTool(EditorTool.SelectionTool);
