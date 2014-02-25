@@ -29,7 +29,7 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -80,7 +80,7 @@ public interface AddSubClassStatement extends AddStatement<SubClassStatement> {
 			// TODO Auto-generated method stub
 		}
 
-		public OWLConcept<?> getPropertyFather(EditionSchemeAction action) {
+		public OWLConcept<?> getPropertyFather(FlexoBehaviourAction action) {
 			try {
 				return (OWLConcept<?>) getFather().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -121,7 +121,7 @@ public interface AddSubClassStatement extends AddStatement<SubClassStatement> {
 		}
 
 		@Override
-		public SubClassStatement performAction(EditionSchemeAction action) {
+		public SubClassStatement performAction(FlexoBehaviourAction action) {
 			OWLConcept<?> subject = getPropertySubject(action);
 			OWLConcept<?> father = getPropertyFather(action);
 			if (father instanceof OWLClass) {

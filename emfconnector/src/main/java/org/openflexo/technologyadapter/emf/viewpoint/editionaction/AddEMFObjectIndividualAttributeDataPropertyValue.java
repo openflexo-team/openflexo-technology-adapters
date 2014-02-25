@@ -40,7 +40,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.SetDataPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
@@ -155,7 +155,7 @@ public interface AddEMFObjectIndividualAttributeDataPropertyValue extends
 			this.dataPropertyURI = dataPropertyURI;
 		}
 
-		public Object getValue(EditionSchemeAction action) {
+		public Object getValue(FlexoBehaviourAction action) {
 			try {
 				return getValue().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -211,10 +211,10 @@ public interface AddEMFObjectIndividualAttributeDataPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.editionaction.EditionAction#performAction(org.openflexo.foundation.view.action.EditionSchemeAction)
+		 * @see org.openflexo.foundation.viewpoint.editionaction.EditionAction#performAction(org.openflexo.foundation.view.action.FlexoBehaviourAction)
 		 */
 		@Override
-		public EMFObjectIndividualAttributeDataPropertyValue performAction(EditionSchemeAction action) {
+		public EMFObjectIndividualAttributeDataPropertyValue performAction(FlexoBehaviourAction action) {
 			EMFObjectIndividualAttributeDataPropertyValue result = null;
 			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			EMFModel model = modelSlotInstance.getAccessedResourceData();

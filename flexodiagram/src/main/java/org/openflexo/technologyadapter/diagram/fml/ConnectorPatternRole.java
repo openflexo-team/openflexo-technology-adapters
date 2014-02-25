@@ -199,7 +199,7 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 		}
 
 		/*public ShapePatternRole getStartShape() {
-			for (EditionScheme es : getFlexoConcept().getEditionSchemes()) {
+			for (FlexoBehaviour es : getFlexoConcept().getEditionSchemes()) {
 				for (EditionAction action : es.getActions()) {
 					if ((action.getPatternRole() == this) && (action instanceof AddConnector)) {
 						AddConnector addConnector = (AddConnector) action;
@@ -217,7 +217,7 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 		}
 
 		public ShapePatternRole getEndShape() {
-			for (EditionScheme es : getFlexoConcept().getEditionSchemes()) {
+			for (FlexoBehaviour es : getFlexoConcept().getEditionSchemes()) {
 				for (EditionAction action : es.getActions()) {
 					if ((action.getPatternRole() == this) && (action instanceof AddConnector)) {
 						AddConnector addConnector = (AddConnector) action;

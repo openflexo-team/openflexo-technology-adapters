@@ -2,7 +2,7 @@ package org.openflexo.technologyadapter.excel.viewpoint.editionaction;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -27,7 +27,7 @@ public interface AddBusinessConceptInstance extends AssignableAction<SemanticsEx
 		}
 
 		@Override
-		public BusinessConceptInstance performAction(EditionSchemeAction action) {
+		public BusinessConceptInstance performAction(FlexoBehaviourAction action) {
 			// TODO Auto-generated method stub
 			return null;
 		}

@@ -27,7 +27,7 @@ import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
 import org.openflexo.foundation.viewpoint.editionaction.DataPropertyAssertion;
 import org.openflexo.foundation.viewpoint.editionaction.ObjectPropertyAssertion;
@@ -68,7 +68,7 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndivid
 		}
 
 		@Override
-		public OWLIndividual performAction(EditionSchemeAction action) {
+		public OWLIndividual performAction(FlexoBehaviourAction action) {
 			OWLClass father = getOntologyClass();
 			// IFlexoOntologyConcept father = action.getOntologyObject(getProject());
 			// System.out.println("Individual name param = "+action.getIndividualNameParameter());
@@ -150,7 +150,7 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndivid
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(EditionSchemeAction action) {
+		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
 			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(action);
 		}
 

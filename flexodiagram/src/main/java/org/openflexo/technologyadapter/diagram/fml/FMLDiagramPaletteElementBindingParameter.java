@@ -20,7 +20,7 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.foundation.viewpoint.EditionSchemeParameter;
+import org.openflexo.foundation.viewpoint.FlexoBehaviourParameter;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.NamedViewPointObject;
 import org.openflexo.foundation.viewpoint.URIParameter;
@@ -48,7 +48,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 
 	@PropertyIdentifier(type = FMLDiagramPaletteElementBinding.class)
 	public static final String PALETTE_ELEMENT_BINDING_KEY = "paletteElementBinding";
-	@PropertyIdentifier(type = EditionSchemeParameter.class)
+	@PropertyIdentifier(type = FlexoBehaviourParameter.class)
 	public static final String PARAMETER_KEY = "parameter";
 	@PropertyIdentifier(type = String.class)
 	public static final String VALUE_KEY = "value";
@@ -60,10 +60,10 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 	public void setDiagramPaletteElementBinding(FMLDiagramPaletteElementBinding diagramPaletteElementBinding);
 
 	@Getter(PARAMETER_KEY)
-	public EditionSchemeParameter getParameter();
+	public FlexoBehaviourParameter getParameter();
 
 	@Setter(PARAMETER_KEY)
-	public void setParameter(EditionSchemeParameter parameter);
+	public void setParameter(FlexoBehaviourParameter parameter);
 
 	@Getter(VALUE_KEY)
 	@XMLAttribute
@@ -75,7 +75,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 	public abstract class FMLDiagramPaletteElementBindingParameterImpl extends NamedViewPointObjectImpl implements
 			FMLDiagramPaletteElementBindingParameter {
 
-		private EditionSchemeParameter _parameter;
+		private FlexoBehaviourParameter _parameter;
 		private FMLDiagramPaletteElementBinding elementBinding;
 		private String value;
 
@@ -83,7 +83,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 			super();
 		}
 
-		public FMLDiagramPaletteElementBindingParameterImpl(EditionSchemeParameter p) {
+		public FMLDiagramPaletteElementBindingParameterImpl(FlexoBehaviourParameter p) {
 			super();
 			_parameter = p;
 			setName(p.getName());
@@ -148,12 +148,12 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 		}
 
 		@Override
-		public EditionSchemeParameter getParameter() {
+		public FlexoBehaviourParameter getParameter() {
 			return _parameter;
 		}
 
 		@Override
-		public void setParameter(EditionSchemeParameter parameter) {
+		public void setParameter(FlexoBehaviourParameter parameter) {
 			_parameter = parameter;
 		}
 

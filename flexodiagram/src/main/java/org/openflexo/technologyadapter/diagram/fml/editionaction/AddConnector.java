@@ -36,7 +36,7 @@ import org.openflexo.foundation.validation.FixProposal;
 import org.openflexo.foundation.validation.ValidationError;
 import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
@@ -140,7 +140,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			return null;
 		}
 
-		public DiagramShape getFromShape(EditionSchemeAction action) {
+		public DiagramShape getFromShape(FlexoBehaviourAction action) {
 			if (getPatternRole() != null && !getPatternRole().getStartShapeAsDefinedInAction()) {
 				FlexoObject returned = action.getFlexoConceptInstance().getPatternActor(getPatternRole().getStartShapePatternRole());
 				return action.getFlexoConceptInstance().getPatternActor(getPatternRole().getStartShapePatternRole());
@@ -158,7 +158,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			}
 		}
 
-		public DiagramShape getToShape(EditionSchemeAction action) {
+		public DiagramShape getToShape(FlexoBehaviourAction action) {
 			if (getPatternRole() != null && !getPatternRole().getEndShapeAsDefinedInAction()) {
 				return action.getFlexoConceptInstance().getPatternActor(getPatternRole().getEndShapePatternRole());
 			} else {
@@ -254,7 +254,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}
 
 		@Override
-		public DiagramConnector performAction(EditionSchemeAction action) {
+		public DiagramConnector performAction(FlexoBehaviourAction action) {
 
 			DiagramShape fromShape = getFromShape(action);
 			DiagramShape toShape = getToShape(action);
@@ -293,7 +293,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}
 
 		@Override
-		public void finalizePerformAction(EditionSchemeAction action, DiagramConnector newConnector) {
+		public void finalizePerformAction(FlexoBehaviourAction action, DiagramConnector newConnector) {
 			super.finalizePerformAction(action, newConnector);
 			// Be sure that the newly created connector is updated
 			// newConnector.update();
@@ -354,8 +354,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			DataBinding<DiagramShape> db = action.getFromShape();
 			if (pr != null && pr.getStartShapeAsDefinedInAction() && !(db.isSet() && db.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>>();
-				if (action.getEditionScheme() instanceof LinkScheme) {
-					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getEditionScheme()).getFromTargetFlexoConcept();
+				if (action.getFlexoBehaviour() instanceof LinkScheme) {
+					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getFlexoBehaviour()).getFromTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
 						for (ShapePatternRole spr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
 							v.add(new SetsStartingShapeToStartTargetShape(targetFlexoConcept, spr));
@@ -432,8 +432,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			DataBinding<DiagramShape> shape = action.getToShape();
 			if (pr != null && pr.getEndShapeAsDefinedInAction() && !(shape.isSet() && shape.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>>();
-				if (action.getEditionScheme() instanceof LinkScheme) {
-					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getEditionScheme()).getToTargetFlexoConcept();
+				if (action.getFlexoBehaviour() instanceof LinkScheme) {
+					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getFlexoBehaviour()).getToTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
 						for (ShapePatternRole spr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
 							v.add(new SetsEndingShapeToToTargetShape(targetFlexoConcept, spr));

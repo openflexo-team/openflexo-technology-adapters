@@ -10,7 +10,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.view.FreeModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -38,7 +38,7 @@ public interface AddPowerpointSlide extends AssignableAction<BasicPowerpointMode
 		}
 
 		@Override
-		public PowerpointSlide performAction(EditionSchemeAction action) {
+		public PowerpointSlide performAction(FlexoBehaviourAction action) {
 
 			PowerpointSlide result = null;
 
@@ -99,7 +99,7 @@ public interface AddPowerpointSlide extends AssignableAction<BasicPowerpointMode
 		}
 
 		@Override
-		public FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> getModelSlotInstance(EditionSchemeAction action) {
+		public FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
 			return (FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot>) super.getModelSlotInstance(action);
 		}
 	}

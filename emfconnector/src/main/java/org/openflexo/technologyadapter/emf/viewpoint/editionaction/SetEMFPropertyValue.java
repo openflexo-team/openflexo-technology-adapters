@@ -31,7 +31,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.foundation.viewpoint.editionaction.SetPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
@@ -79,7 +79,7 @@ public abstract interface SetEMFPropertyValue<T> extends AssignableAction<EMFMod
 			return IFlexoOntologyConcept.class;
 		}
 
-		public EMFObjectIndividual getSubject(EditionSchemeAction action) {
+		public EMFObjectIndividual getSubject(FlexoBehaviourAction action) {
 			try {
 				return (EMFObjectIndividual) getSubject().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -121,7 +121,7 @@ public abstract interface SetEMFPropertyValue<T> extends AssignableAction<EMFMod
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> getModelSlotInstance(EditionSchemeAction action) {
+		public TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
 			return (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) super.getModelSlotInstance(action);
 
 		}

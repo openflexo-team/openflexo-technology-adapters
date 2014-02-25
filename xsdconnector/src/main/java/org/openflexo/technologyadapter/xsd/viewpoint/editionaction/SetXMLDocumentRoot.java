@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.view.ModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.ProcedureAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -49,7 +49,7 @@ public interface SetXMLDocumentRoot extends ProcedureAction<XSDModelSlot, XSOntI
 		}
 
 		@Override
-		public XSOntIndividual performAction(EditionSchemeAction action) {
+		public XSOntIndividual performAction(FlexoBehaviourAction action) {
 
 			ModelSlotInstance<XSDModelSlot, XMLXSDModel> modelSlotInstance = (ModelSlotInstance<XSDModelSlot, XMLXSDModel>) getModelSlotInstance(action);
 			XMLXSDModel model = modelSlotInstance.getAccessedResourceData();

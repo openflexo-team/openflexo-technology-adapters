@@ -34,7 +34,7 @@ import org.openflexo.foundation.validation.FixProposal;
 import org.openflexo.foundation.validation.ValidationError;
 import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.model.annotations.Getter;
@@ -106,7 +106,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			return Object.class;
 		}
 
-		public Object getValue(EditionSchemeAction action) {
+		public Object getValue(FlexoBehaviourAction action) {
 			try {
 				return getValue().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -238,7 +238,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			this.subject = subject;
 		}
 
-		public DiagramElement getSubject(EditionSchemeAction action) {
+		public DiagramElement getSubject(FlexoBehaviourAction action) {
 			try {
 				return getSubject().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -265,7 +265,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 		}
 
 		@Override
-		public DiagramElement performAction(EditionSchemeAction action) {
+		public DiagramElement performAction(FlexoBehaviourAction action) {
 			logger.info("Perform graphical action " + action);
 			DiagramElement graphicalElement = getSubject(action);
 			Object value = null;
@@ -288,7 +288,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 		}
 
 		@Override
-		public void finalizePerformAction(EditionSchemeAction action, DiagramElement initialContext) {
+		public void finalizePerformAction(FlexoBehaviourAction action, DiagramElement initialContext) {
 		}
 
 	}

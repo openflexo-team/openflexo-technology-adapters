@@ -229,7 +229,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 						/*Vector<PropertyEntry> candidates = new Vector<PropertyEntry>();
 						for (PropertyEntry e : propertyEntries) {
 							if (e.selectEntry) {
-								EditionSchemeParameter newParameter = null;
+								FlexoBehaviourParameter newParameter = null;
 								if (e.property instanceof IFlexoOntologyDataProperty) {
 									switch (((IFlexoOntologyDataProperty) e.property).getRange().getBuiltInDataType()) {
 									case Boolean:
@@ -338,7 +338,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				newLinkScheme.addToActions(newAddConnector);
 
 				// Add new drop scheme
-				newFlexoConcept.addToEditionSchemes(newLinkScheme);
+				newFlexoConcept.addToFlexoBehaviours(newLinkScheme);
 
 				// Add inspector
 				FlexoConceptInspector inspector = newFlexoConcept.getInspector();

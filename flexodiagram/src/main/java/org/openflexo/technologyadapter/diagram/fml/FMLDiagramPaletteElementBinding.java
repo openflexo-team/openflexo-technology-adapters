@@ -28,8 +28,8 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.foundation.DataModification;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.EditionScheme;
-import org.openflexo.foundation.viewpoint.EditionSchemeParameter;
+import org.openflexo.foundation.viewpoint.FlexoBehaviour;
+import org.openflexo.foundation.viewpoint.FlexoBehaviourParameter;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.NamedViewPointObject;
 import org.openflexo.foundation.viewpoint.ViewPoint;
@@ -254,8 +254,8 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 				return dropScheme;
 			}
 			if (_dropSchemeName != null && getFlexoConcept() != null
-					&& getFlexoConcept().getEditionScheme(_dropSchemeName) instanceof DropScheme) {
-				dropScheme = (DropScheme) getFlexoConcept().getEditionScheme(_dropSchemeName);
+					&& getFlexoConcept().getFlexoBehaviour(_dropSchemeName) instanceof DropScheme) {
+				dropScheme = (DropScheme) getFlexoConcept().getFlexoBehaviour(_dropSchemeName);
 				updateParameters();
 			}
 			if (dropScheme == null && getFlexoConcept() != null && getFlexoConcept().getEditionSchemes(DropScheme.class).size() > 0) {
@@ -306,8 +306,8 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 			List<FMLDiagramPaletteElementBindingParameter> unusedParameterInstances = new ArrayList<FMLDiagramPaletteElementBindingParameter>();
 			unusedParameterInstances.addAll(getParameters());
 
-			for (EditionScheme es : flexoConcept.getEditionSchemes()) {
-				for (EditionSchemeParameter parameter : es.getParameters()) {
+			for (FlexoBehaviour es : flexoConcept.getFlexoBehaviours()) {
+				for (FlexoBehaviourParameter parameter : es.getParameters()) {
 					FMLDiagramPaletteElementBindingParameter parameterInstance = getParameter(parameter.getName());
 					if (parameterInstance != null) {
 						unusedParameterInstances.remove(parameterInstance);

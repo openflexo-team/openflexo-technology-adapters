@@ -475,7 +475,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					newDropScheme.setName(getDropSchemeName());
 
 					// Add new drop scheme
-					newFlexoConcept.addToEditionSchemes(newDropScheme);
+					newFlexoConcept.addToFlexoBehaviours(newDropScheme);
 
 					newDropScheme.setTopTarget(isTopLevel);
 					if (!isTopLevel) {
@@ -489,7 +489,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							// Vector<PropertyEntry> candidates = new Vector<PropertyEntry>();
 							/*for (PropertyEntry e : propertyEntries) {
 								if (e != null && e.selectEntry) {
-									EditionSchemeParameter newParameter = null;
+									FlexoBehaviourParameter newParameter = null;
 									if (e.property instanceof IFlexoOntologyDataProperty) {
 										switch (((IFlexoOntologyDataProperty) e.property).getRange().getBuiltInDataType()) {
 										case Boolean:

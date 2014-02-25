@@ -28,7 +28,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.FetchRequest;
 import org.openflexo.foundation.viewpoint.editionaction.SelectIndividual;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -62,7 +62,7 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 		}
 
 		@Override
-		public List<EMFObjectIndividual> performAction(EditionSchemeAction action) {
+		public List<EMFObjectIndividual> performAction(FlexoBehaviourAction action) {
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;
@@ -124,7 +124,7 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> getModelSlotInstance(EditionSchemeAction action) {
+		public TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
 			return (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) super.getModelSlotInstance(action);
 		}
 

@@ -4,7 +4,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.FetchRequest;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -29,7 +29,7 @@ public interface SelectPowerpointShape extends FetchRequest<BasicPowerpointModel
 		}
 
 		@Override
-		public List<PowerpointShape> performAction(EditionSchemeAction action) {
+		public List<PowerpointShape> performAction(FlexoBehaviourAction action) {
 
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");

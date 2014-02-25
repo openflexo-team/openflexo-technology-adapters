@@ -29,7 +29,7 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.foundation.viewpoint.editionaction.SetPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
@@ -68,7 +68,7 @@ public abstract interface AddStatement<S extends OWLStatement> extends Assignabl
 			super();
 		}
 
-		public OWLConcept<?> getPropertySubject(EditionSchemeAction action) {
+		public OWLConcept<?> getPropertySubject(FlexoBehaviourAction action) {
 			try {
 				return (OWLConcept<?>) getSubject().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -147,7 +147,7 @@ public abstract interface AddStatement<S extends OWLStatement> extends Assignabl
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(EditionSchemeAction action) {
+		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
 			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(action);
 		}
 

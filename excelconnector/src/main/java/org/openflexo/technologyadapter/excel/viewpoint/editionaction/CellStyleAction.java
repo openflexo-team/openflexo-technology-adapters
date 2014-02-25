@@ -29,7 +29,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.model.annotations.Getter;
@@ -95,7 +95,7 @@ public interface CellStyleAction extends EditionAction<BasicExcelModelSlot, Exce
 
 		private DataBinding<?> value;
 
-		public Object getValue(EditionSchemeAction action) {
+		public Object getValue(FlexoBehaviourAction action) {
 			try {
 				return getValue().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -150,7 +150,7 @@ public interface CellStyleAction extends EditionAction<BasicExcelModelSlot, Exce
 			this.subject = subject;
 		}
 
-		public ExcelCell getSubject(EditionSchemeAction action) {
+		public ExcelCell getSubject(FlexoBehaviourAction action) {
 			try {
 				return getSubject().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -330,7 +330,7 @@ public interface CellStyleAction extends EditionAction<BasicExcelModelSlot, Exce
 		// ACTION
 
 		@Override
-		public ExcelCell performAction(EditionSchemeAction action) {
+		public ExcelCell performAction(FlexoBehaviourAction action) {
 			logger.info("Perform graphical action " + action);
 			ExcelCell excelCell = getSubject(action);
 			Object value = null;
@@ -359,7 +359,7 @@ public interface CellStyleAction extends EditionAction<BasicExcelModelSlot, Exce
 		}
 
 		@Override
-		public void finalizePerformAction(EditionSchemeAction action, ExcelCell initialContext) {
+		public void finalizePerformAction(FlexoBehaviourAction action, ExcelCell initialContext) {
 			// TODO Auto-generated method stub
 
 		}

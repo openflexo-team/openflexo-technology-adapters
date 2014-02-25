@@ -30,7 +30,7 @@ package org.openflexo.technologyadapter.emf.viewpoint.editionaction;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -72,10 +72,10 @@ public interface RemoveEMFObjectIndividualAttributeDataPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.editionaction.EditionAction#performAction(org.openflexo.foundation.view.action.EditionSchemeAction)
+		 * @see org.openflexo.foundation.viewpoint.editionaction.EditionAction#performAction(org.openflexo.foundation.view.action.FlexoBehaviourAction)
 		 */
 		@Override
-		public EMFObjectIndividualAttributeDataPropertyValue performAction(EditionSchemeAction action) {
+		public EMFObjectIndividualAttributeDataPropertyValue performAction(FlexoBehaviourAction action) {
 			EMFObjectIndividualAttributeDataPropertyValue result = null;
 			// ModelSlotInstance<EMFModel, EMFMetaModel> modelSlotInstance = getModelSlotInstance(action);
 			// EMFModel model = modelSlotInstance.getModel();

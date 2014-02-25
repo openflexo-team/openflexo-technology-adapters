@@ -37,7 +37,7 @@ import org.openflexo.foundation.validation.FixProposal;
 import org.openflexo.foundation.validation.ValidationError;
 import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.viewpoint.PatternRole;
@@ -184,7 +184,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			this.objectPropertyURI = objectPropertyURI;
 		}
 
-		public OWLConcept<?> getPropertyObject(EditionSchemeAction action) {
+		public OWLConcept<?> getPropertyObject(FlexoBehaviourAction action) {
 			try {
 				return (OWLConcept<?>) getObject().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -250,7 +250,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		}
 
 		@Override
-		public ObjectPropertyStatement performAction(EditionSchemeAction action) {
+		public ObjectPropertyStatement performAction(FlexoBehaviourAction action) {
 			OWLObjectProperty property = (OWLObjectProperty) getObjectProperty();
 			OWLConcept<?> subject = getPropertySubject(action);
 			OWLConcept<?> object = getPropertyObject(action);

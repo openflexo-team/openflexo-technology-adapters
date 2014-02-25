@@ -11,7 +11,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.view.FreeModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.Getter;
@@ -69,7 +69,7 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 		}
 
 		@Override
-		public ExcelSheet performAction(EditionSchemeAction action) {
+		public ExcelSheet performAction(FlexoBehaviourAction action) {
 
 			ExcelSheet result = null;
 
@@ -114,7 +114,7 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 		}
 
 		@Override
-		public FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> getModelSlotInstance(EditionSchemeAction action) {
+		public FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
 			return (FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot>) super.getModelSlotInstance(action);
 		}
 

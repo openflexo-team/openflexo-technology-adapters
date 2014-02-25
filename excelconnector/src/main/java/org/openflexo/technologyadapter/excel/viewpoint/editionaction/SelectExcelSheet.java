@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.FetchRequest;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -36,7 +36,7 @@ public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, Exce
 		}
 
 		@Override
-		public List<ExcelSheet> performAction(EditionSchemeAction action) {
+		public List<ExcelSheet> performAction(FlexoBehaviourAction action) {
 
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");

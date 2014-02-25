@@ -23,7 +23,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.view.ModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -49,7 +49,7 @@ public interface GetXMLDocumentRoot extends AssignableAction<XSDModelSlot, XSOnt
 		}
 
 		@Override
-		public XSOntIndividual performAction(EditionSchemeAction action) {
+		public XSOntIndividual performAction(FlexoBehaviourAction action) {
 
 			ModelSlotInstance<XSDModelSlot, XMLXSDModel> modelSlotInstance = (ModelSlotInstance<XSDModelSlot, XMLXSDModel>) getModelSlotInstance(action);
 			XMLXSDModel model = modelSlotInstance.getAccessedResourceData();

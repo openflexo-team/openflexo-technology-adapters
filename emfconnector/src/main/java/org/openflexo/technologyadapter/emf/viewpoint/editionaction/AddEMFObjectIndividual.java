@@ -32,7 +32,7 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
 import org.openflexo.foundation.viewpoint.editionaction.DataPropertyAssertion;
@@ -91,7 +91,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 		}
 
 		@Override
-		public EMFObjectIndividual performAction(EditionSchemeAction action) {
+		public EMFObjectIndividual performAction(FlexoBehaviourAction action) {
 			EMFObjectIndividual result = null;
 			List container = null;
 			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(action);

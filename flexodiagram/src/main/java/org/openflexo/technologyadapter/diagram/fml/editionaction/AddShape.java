@@ -36,7 +36,7 @@ import org.openflexo.foundation.validation.FixProposal;
 import org.openflexo.foundation.validation.ValidationError;
 import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
@@ -118,7 +118,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			return out.toString();
 		}
 
-		public DiagramContainerElement<?> getContainer(EditionSchemeAction action) {
+		public DiagramContainerElement<?> getContainer(FlexoBehaviourAction action) {
 			if (getPatternRole() != null && !getPatternRole().getParentShapeAsDefinedInAction()) {
 				FlexoObject returned = action.getFlexoConceptInstance().getPatternActor(getPatternRole().getParentShapePatternRole());
 				return action.getFlexoConceptInstance().getPatternActor(getPatternRole().getParentShapePatternRole());
@@ -192,7 +192,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 
 		@Override
-		public DiagramShape performAction(EditionSchemeAction action) {
+		public DiagramShape performAction(FlexoBehaviourAction action) {
 			DiagramContainerElement<?> container = getContainer(action);
 			Diagram diagram = container.getDiagram();
 
@@ -232,7 +232,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 
 		@Override
-		public void finalizePerformAction(EditionSchemeAction action, DiagramShape newShape) {
+		public void finalizePerformAction(FlexoBehaviourAction action, DiagramShape newShape) {
 			super.finalizePerformAction(action, newShape);
 			// Be sure that the newly created shape is updated
 			// newShape.update();
@@ -290,8 +290,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			if (action.getPatternRole() != null && action.getPatternRole().getParentShapeAsDefinedInAction()
 					&& !(action.getContainer().isSet() && action.getContainer().isValid())) {
 				Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>> v = new Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>>();
-				if (action.getEditionScheme() instanceof DropScheme) {
-					FlexoConcept targetFlexoConcept = ((DropScheme) action.getEditionScheme()).getTargetFlexoConcept();
+				if (action.getFlexoBehaviour() instanceof DropScheme) {
+					FlexoConcept targetFlexoConcept = ((DropScheme) action.getFlexoBehaviour()).getTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
 						for (ShapePatternRole pr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
 							v.add(new SetsContainerToTargetShape(targetFlexoConcept, pr));

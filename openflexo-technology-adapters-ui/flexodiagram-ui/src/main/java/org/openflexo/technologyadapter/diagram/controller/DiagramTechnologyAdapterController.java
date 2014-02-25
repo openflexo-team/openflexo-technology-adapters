@@ -8,7 +8,7 @@ import org.openflexo.fge.swing.control.tools.JDianaInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoConceptInstancePatternRole;
-import org.openflexo.foundation.viewpoint.EditionScheme;
+import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.PatternRole;
 import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -253,13 +253,13 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	}
 
 	@Override
-	public ImageIcon getIconForEditionScheme(Class<? extends EditionScheme> editionSchemeClass) {
-		if (DropScheme.class.isAssignableFrom(editionSchemeClass)) {
+	public ImageIcon getIconForFlexoBehaviour(Class<? extends FlexoBehaviour> flexoBehaviourClass) {
+		if (DropScheme.class.isAssignableFrom(flexoBehaviourClass)) {
 			return DiagramIconLibrary.DROP_SCHEME_ICON;
-		} else if (LinkScheme.class.isAssignableFrom(editionSchemeClass)) {
+		} else if (LinkScheme.class.isAssignableFrom(flexoBehaviourClass)) {
 			return DiagramIconLibrary.LINK_SCHEME_ICON;
 		}
-		return super.getIconForEditionScheme(editionSchemeClass);
+		return super.getIconForFlexoBehaviour(flexoBehaviourClass);
 	}
 
 	@Override

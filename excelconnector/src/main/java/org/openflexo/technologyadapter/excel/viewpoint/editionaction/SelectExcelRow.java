@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.FetchRequest;
 import org.openflexo.model.annotations.Getter;
@@ -56,7 +56,7 @@ public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelR
 		}
 
 		@Override
-		public List<ExcelRow> performAction(EditionSchemeAction action) {
+		public List<ExcelRow> performAction(FlexoBehaviourAction action) {
 
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");

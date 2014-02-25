@@ -30,7 +30,7 @@ package org.openflexo.technologyadapter.emf.viewpoint.editionaction;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -56,10 +56,10 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFModelSlot, EM
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.editionaction.DeleteAction#performAction(org.openflexo.foundation.view.action.EditionSchemeAction)
+		 * @see org.openflexo.foundation.viewpoint.editionaction.DeleteAction#performAction(org.openflexo.foundation.view.action.FlexoBehaviourAction)
 		 */
 		@Override
-		public EMFObjectIndividual performAction(EditionSchemeAction action) {
+		public EMFObjectIndividual performAction(FlexoBehaviourAction action) {
 			// ModelSlotInstance<EMFModel, EMFMetaModel> modelSlotInstance = getModelSlotInstance(action);
 			// EObject object = objectIndividual.getObject();
 			// EObject container = object.eContainer();
@@ -82,11 +82,11 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFModelSlot, EM
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.viewpoint.editionaction.DeleteAction#finalizePerformAction(org.openflexo.foundation.view.action.EditionSchemeAction,
+		 * @see org.openflexo.foundation.viewpoint.editionaction.DeleteAction#finalizePerformAction(org.openflexo.foundation.view.action.FlexoBehaviourAction,
 		 *      org.openflexo.foundation.FlexoModelObject)
 		 */
 		@Override
-		public void finalizePerformAction(EditionSchemeAction action, EMFObjectIndividual initialContext) {
+		public void finalizePerformAction(FlexoBehaviourAction action, EMFObjectIndividual initialContext) {
 		}
 	}
 }

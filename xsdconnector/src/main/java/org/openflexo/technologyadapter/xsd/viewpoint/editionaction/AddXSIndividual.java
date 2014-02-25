@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
 import org.openflexo.foundation.viewpoint.editionaction.DataPropertyAssertion;
 import org.openflexo.foundation.viewpoint.editionaction.ObjectPropertyAssertion;
@@ -71,7 +71,7 @@ public interface AddXSIndividual extends AddIndividual<XSDModelSlot, XSOntIndivi
 		}
 
 		@Override
-		public XSOntIndividual performAction(EditionSchemeAction action) {
+		public XSOntIndividual performAction(FlexoBehaviourAction action) {
 			XSOntClass father = getOntologyClass();
 
 			XSOntIndividual newIndividual = null;

@@ -27,7 +27,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.view.View;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.viewpoint.PatternRole;
@@ -95,7 +95,7 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 			return null;
 		}
 
-		public String getDiagramName(EditionSchemeAction action) {
+		public String getDiagramName(FlexoBehaviourAction action) {
 			try {
 				return getDiagramName().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -149,7 +149,7 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 		}
 
 		@Override
-		public Diagram performAction(EditionSchemeAction action) {
+		public Diagram performAction(FlexoBehaviourAction action) {
 			// TODO: reimplement this
 			logger.warning("AddDiagram not implemented yet");
 			/*Diagram initialDiagram = (Diagram) action.retrieveVirtualModelInstance();

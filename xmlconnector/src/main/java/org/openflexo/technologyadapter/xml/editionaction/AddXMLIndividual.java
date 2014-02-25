@@ -23,7 +23,7 @@ package org.openflexo.technologyadapter.xml.editionaction;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -48,7 +48,7 @@ public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndi
 		}
 
 		@Override
-		public XMLIndividual performAction(EditionSchemeAction action) {
+		public XMLIndividual performAction(FlexoBehaviourAction action) {
 			// TODO Auto-generated method stub
 			return null;
 		}

@@ -26,7 +26,7 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.AddClass;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -61,7 +61,7 @@ public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass> {
 		}
 
 		@Override
-		public OWLClass performAction(EditionSchemeAction action) {
+		public OWLClass performAction(FlexoBehaviourAction action) {
 			OWLClass father = getOntologyClass();
 			String newClassName = null;
 			try {
@@ -85,7 +85,7 @@ public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass> {
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(EditionSchemeAction action) {
+		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
 			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(action);
 		}
 

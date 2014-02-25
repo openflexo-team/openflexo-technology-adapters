@@ -32,7 +32,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.IndividualOfClass;
-import org.openflexo.foundation.view.action.EditionSchemeAction;
+import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -135,7 +135,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 			_setPropertyURI(p != null ? p.getURI() : null);
 		}
 
-		public OWLConcept<?> getPropertyObject(EditionSchemeAction action) {
+		public OWLConcept<?> getPropertyObject(FlexoBehaviourAction action) {
 			try {
 				return (OWLConcept<?>) getObject().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -201,7 +201,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 			this.restrictionType = restrictionType;
 		}
 
-		public RestrictionType getRestrictionType(EditionSchemeAction action) {
+		public RestrictionType getRestrictionType(FlexoBehaviourAction action) {
 			RestrictionType restrictionType = null;
 			try {
 				restrictionType = getRestrictionType().getBindingValue(action);
@@ -240,7 +240,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 			this.cardinality = cardinality;
 		}
 
-		public int getCardinality(EditionSchemeAction action) {
+		public int getCardinality(FlexoBehaviourAction action) {
 			try {
 				return getCardinality().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -259,7 +259,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		}
 
 		@Override
-		public OWLStatement performAction(EditionSchemeAction action) {
+		public OWLStatement performAction(FlexoBehaviourAction action) {
 			OWLProperty property = getObjectProperty();
 			OWLConcept<?> subject = getPropertySubject(action);
 			OWLConcept<?> object = getPropertyObject(action);
