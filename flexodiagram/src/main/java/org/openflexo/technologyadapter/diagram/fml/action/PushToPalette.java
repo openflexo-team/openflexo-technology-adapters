@@ -42,11 +42,11 @@ import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
@@ -250,7 +250,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		private boolean selectThis;
 		public DiagramElement<?> graphicalObject;
 		public String elementName;
-		public GraphicalElementPatternRole<?, ?> patternRole;
+		public GraphicalElementRole<?, ?> patternRole;
 
 		public DrawingObjectEntry(DiagramElement<?> graphicalObject, String elementName) {
 			super();
@@ -276,9 +276,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		public void setSelectThis(boolean aFlag) {
 			selectThis = aFlag;
 			if (patternRole == null && graphicalObject instanceof DiagramShape) {
-				GraphicalElementPatternRole<?, ?> parentEntryPatternRole = getParentEntry().patternRole;
-				for (ShapePatternRole r : flexoConcept.getPatternRoles(ShapePatternRole.class)) {
-					if (r.getParentShapePatternRole() == parentEntryPatternRole && patternRole == null) {
+				GraphicalElementRole<?, ?> parentEntryPatternRole = getParentEntry().patternRole;
+				for (ShapeRole r : flexoConcept.getPatternRoles(ShapeRole.class)) {
+					if (r.getParentShapeRole() == parentEntryPatternRole && patternRole == null) {
 						patternRole = r;
 					}
 				}
@@ -289,11 +289,11 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			return getEntry(graphicalObject.getParent());
 		}
 
-		public List<? extends GraphicalElementPatternRole<?, ?>> getAvailablePatternRoles() {
+		public List<? extends GraphicalElementRole<?, ?>> getAvailablePatternRoles() {
 			if (graphicalObject instanceof DiagramShape) {
-				return flexoConcept.getPatternRoles(ShapePatternRole.class);
+				return flexoConcept.getPatternRoles(ShapeRole.class);
 			} else if (graphicalObject instanceof DiagramConnector) {
-				return flexoConcept.getPatternRoles(ConnectorPatternRole.class);
+				return flexoConcept.getPatternRoles(ConnectorRole.class);
 			}
 			return null;
 		}

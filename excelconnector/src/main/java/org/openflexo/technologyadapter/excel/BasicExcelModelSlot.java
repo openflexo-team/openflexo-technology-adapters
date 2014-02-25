@@ -42,10 +42,10 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.model.ExcelObject;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelCellPatternRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelColumnPatternRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelRowPatternRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelSheetPatternRole;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelCellRole;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelColumnRole;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelRowRole;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelSheetRole;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelCell;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelRow;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelSheet;
@@ -62,10 +62,10 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcel
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "ExcelSheet", flexoRoleClass = ExcelSheetPatternRole.class), // Sheet
-		@DeclarePatternRole(FML = "ExcelColumn", flexoRoleClass = ExcelColumnPatternRole.class), // Sheet
-		@DeclarePatternRole(FML = "ExcelRow", flexoRoleClass = ExcelRowPatternRole.class), // Row
-		@DeclarePatternRole(FML = "ExcelCell", flexoRoleClass = ExcelCellPatternRole.class) // Cell
+@DeclarePatternRole(FML = "ExcelSheet", flexoRoleClass = ExcelSheetRole.class), // Sheet
+		@DeclarePatternRole(FML = "ExcelColumn", flexoRoleClass = ExcelColumnRole.class), // Sheet
+		@DeclarePatternRole(FML = "ExcelRow", flexoRoleClass = ExcelRowRole.class), // Row
+		@DeclarePatternRole(FML = "ExcelCell", flexoRoleClass = ExcelCellRole.class) // Cell
 })
 @DeclareEditionActions({ // All edition actions available through this model
 // slot
@@ -114,11 +114,11 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (ExcelCellPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			if (ExcelCellRole.class.isAssignableFrom(patternRoleClass)) {
 				return "cell";
-			} else if (ExcelRowPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
 				return "row";
-			} else if (ExcelSheetPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
 				return "sheet";
 			}
 			return super.defaultFlexoRoleName(patternRoleClass);

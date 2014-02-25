@@ -45,10 +45,10 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalFeature;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -159,7 +159,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 		private List<GraphicalFeature<?, ?>> availableFeatures = null;
 
 		/*@Override
-		public GraphicalElementPatternRole getPatternRole() {
+		public GraphicalElementRole getPatternRole() {
 			try {
 				return super.getPatternRole();
 			} catch (ClassCastException e) {
@@ -170,7 +170,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 		}
 
 		@Override
-		public void setPatternRole(GraphicalElementPatternRole patternRole) {
+		public void setPatternRole(GraphicalElementRole patternRole) {
 			System.out.println("set pattern role with " + patternRole);
 			super.setPatternRole(patternRole);
 			availableFeatures = null;
@@ -182,16 +182,16 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 				if (getSubject().isSet() && getSubject().isValid()) {
 					Class accessedClass = TypeUtils.getBaseClass(getSubject().getAnalyzedType());
 					if (DiagramElement.class.isAssignableFrom(accessedClass)) {
-						for (GraphicalFeature<?, ?> GF : GraphicalElementPatternRole.AVAILABLE_FEATURES) {
+						for (GraphicalFeature<?, ?> GF : GraphicalElementRole.AVAILABLE_FEATURES) {
 							availableFeatures.add(GF);
 						}
 						if (DiagramShape.class.isAssignableFrom(accessedClass)) {
-							for (GraphicalFeature<?, ?> GF : ShapePatternRole.AVAILABLE_FEATURES) {
+							for (GraphicalFeature<?, ?> GF : ShapeRole.AVAILABLE_FEATURES) {
 								availableFeatures.add(GF);
 							}
 						}
 						if (DiagramConnector.class.isAssignableFrom(accessedClass)) {
-							for (GraphicalFeature<?, ?> GF : ConnectorPatternRole.AVAILABLE_FEATURES) {
+							for (GraphicalFeature<?, ?> GF : ConnectorRole.AVAILABLE_FEATURES) {
 								availableFeatures.add(GF);
 							}
 						}
@@ -304,10 +304,10 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 				return null;
 			} else {
 				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>>();
-				for (ShapePatternRole pr : graphicalAction.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+				for (ShapeRole pr : graphicalAction.getFlexoConcept().getPatternRoles(ShapeRole.class)) {
 					v.add(new SetsPatternRoleForSubject(pr));
 				}
-				for (ConnectorPatternRole pr : graphicalAction.getFlexoConcept().getPatternRoles(ConnectorPatternRole.class)) {
+				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getPatternRoles(ConnectorRole.class)) {
 					v.add(new SetsPatternRoleForSubject(pr));
 				}
 				return new ValidationError<GraphicalActionMustHaveASubject, GraphicalAction>(this, graphicalAction,
@@ -317,14 +317,14 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 
 		protected static class SetsPatternRoleForSubject extends FixProposal<GraphicalActionMustHaveASubject, GraphicalAction> {
 
-			private final GraphicalElementPatternRole patternRole;
+			private final GraphicalElementRole patternRole;
 
-			public SetsPatternRoleForSubject(GraphicalElementPatternRole patternRole) {
+			public SetsPatternRoleForSubject(GraphicalElementRole patternRole) {
 				super("set_subject_to_($patternRole.patternRoleName)");
 				this.patternRole = patternRole;
 			}
 
-			public GraphicalElementPatternRole getPatternRole() {
+			public GraphicalElementRole getPatternRole() {
 				return patternRole;
 			}
 

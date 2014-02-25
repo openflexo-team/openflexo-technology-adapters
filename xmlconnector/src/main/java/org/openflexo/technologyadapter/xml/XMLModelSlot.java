@@ -39,13 +39,13 @@ import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualPatternRole;
+import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualRole;
 
 /**
  * @author xtof
  * 
  */
-@DeclarePatternRoles({ @DeclarePatternRole(flexoRoleClass = XMLIndividualPatternRole.class, FML = "XMLIndividual"), // Instances
+@DeclarePatternRoles({ @DeclarePatternRole(flexoRoleClass = XMLIndividualRole.class, FML = "XMLIndividual"), // Instances
 })
 @DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add instance
 })

@@ -23,46 +23,31 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
-import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.excel.model.ExcelRow;
+import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptInstance;
 
 @ModelEntity
-@ImplementationClass(ExcelRowPatternRole.ExcelRowPatternRoleImpl.class)
+@ImplementationClass(BusinessConceptInstanceRole.BusinessConceptInstanceRoleImpl.class)
 @XMLElement
-public interface ExcelRowPatternRole extends FlexoRole<ExcelRow> {
+public interface BusinessConceptInstanceRole extends FlexoRole<BusinessConceptInstance> {
 
-	public static abstract class ExcelRowPatternRoleImpl extends PatternRoleImpl<ExcelRow> implements ExcelRowPatternRole {
-
-		public ExcelRowPatternRoleImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
+	public static abstract class BusinessConceptInstanceRoleImpl extends FlexoRoleImpl<BusinessConceptInstance> implements
+			BusinessConceptInstanceRole {
 
 		@Override
 		public Type getType() {
-			return ExcelRow.class;
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 		@Override
 		public String getPreciseType() {
-			return ExcelRow.class.getSimpleName();
-		}
-
-		/*@Override
-		public boolean getIsPrimaryRole() {
 			// TODO Auto-generated method stub
-			return false;
+			return null;
 		}
-
-		@Override
-		public void setIsPrimaryRole(boolean isPrimary) {
-			// TODO Auto-generated method stub
-
-		}*/
 
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
@@ -71,14 +56,11 @@ public interface ExcelRowPatternRole extends FlexoRole<ExcelRow> {
 		}
 
 		@Override
-		public ActorReference<ExcelRow> makeActorReference(ExcelRow object, FlexoConceptInstance epi) {
-			VirtualModelInstanceModelFactory factory = epi.getFactory();
-			ExcelActorReference<ExcelRow> returned = factory.newInstance(ExcelActorReference.class);
-			returned.setFlexoRole(this);
-			returned.setFlexoConceptInstance(epi);
-			returned.setModellingElement(object);
-			return returned;
+		public ActorReference<BusinessConceptInstance> makeActorReference(BusinessConceptInstance object, FlexoConceptInstance epi) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}
+
 }

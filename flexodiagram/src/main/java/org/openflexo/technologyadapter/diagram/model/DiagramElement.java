@@ -42,7 +42,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 
 /**
  * Root class for any object involved in Openflexo Diagram built-in technology
@@ -157,7 +157,7 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	public FlexoConceptInstance getFlexoConceptInstance(VirtualModelInstance vmInstance);
 
 	/**
-	 * Return {@link GraphicalElementPatternRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting
+	 * Return {@link GraphicalElementRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting
 	 * that this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared
 	 * in {@link VirtualModel} of supplied {@link VirtualModelInstance}
 	 * 
@@ -165,6 +165,6 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}
 	 * @return
 	 */
-	public GraphicalElementPatternRole<?, ?> getPatternRole(VirtualModelInstance vmInstance);
+	public GraphicalElementRole<?, ?> getPatternRole(VirtualModelInstance vmInstance);
 
 }

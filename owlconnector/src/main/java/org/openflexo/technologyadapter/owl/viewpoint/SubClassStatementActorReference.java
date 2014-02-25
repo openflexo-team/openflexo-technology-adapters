@@ -42,7 +42,7 @@ public interface SubClassStatementActorReference extends ActorReference<SubClass
 		private String subjectURI;
 		private String parentURI;
 
-		/*public SubClassStatementActorReference(SubClassStatement o, SubClassStatementPatternRole aPatternRole, FlexoConceptInstance epi) {
+		/*public SubClassStatementActorReference(SubClassStatement o, SubClassStatementRole aPatternRole, FlexoConceptInstance epi) {
 			super(epi.getProject());
 			setFlexoConceptInstance(epi);
 			setPatternRole(aPatternRole);

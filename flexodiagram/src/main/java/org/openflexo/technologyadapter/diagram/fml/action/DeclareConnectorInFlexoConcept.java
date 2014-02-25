@@ -31,17 +31,17 @@ import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.FlexoConceptInstancePatternRole;
-import org.openflexo.foundation.viewpoint.IndividualPatternRole;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstanceRole;
+import org.openflexo.foundation.viewpoint.IndividualRole;
 import org.openflexo.foundation.viewpoint.URIParameter;
 import org.openflexo.foundation.viewpoint.VirtualModelModelSlot;
 import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
 import org.openflexo.foundation.viewpoint.editionaction.DeclarePatternRole;
 import org.openflexo.foundation.viewpoint.inspector.FlexoConceptInspector;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -110,7 +110,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 	private FlexoConcept newFlexoConcept;
 	private FlexoConcept virtualModelConcept;
-	private ConnectorPatternRole newConnectorPatternRole;
+	private ConnectorRole newConnectorRole;
 
 	// public Vector<PropertyEntry> propertyEntries = new Vector<PropertyEntry>();
 
@@ -147,24 +147,24 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				// PropertyEntry mainPropertyDescriptor = selectBestEntryForURIBaseName();
 
 				// Create individual pattern role if required
-				IndividualPatternRole individualPatternRole = null;
+				IndividualRole individualRole = null;
 				if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 					if (isTypeAwareModelSlot()) {
 						TypeAwareModelSlot ontologyModelSlot = (TypeAwareModelSlot) getModelSlot();
-						individualPatternRole = ontologyModelSlot.makeIndividualPatternRole(getConcept());
-						individualPatternRole.setRoleName(getIndividualPatternRoleName());
-						individualPatternRole.setOntologicType(getConcept());
-						newFlexoConcept.addToPatternRoles(individualPatternRole);
+						individualRole = ontologyModelSlot.makeIndividualRole(getConcept());
+						individualRole.setRoleName(getIndividualPatternRoleName());
+						individualRole.setOntologicType(getConcept());
+						newFlexoConcept.addToPatternRoles(individualRole);
 						// newFlexoConcept.setPrimaryConceptRole(individualPatternRole);
 					}
 				}
 
 				// Create an flexo concept pattern role if required
-				FlexoConceptInstancePatternRole flexoConceptPatternRole = null;
+				FlexoConceptInstanceRole flexoConceptPatternRole = null;
 				if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 					if (isVirtualModelModelSlot()) {
 						VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
-						flexoConceptPatternRole = virtualModelModelSlot.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
+						flexoConceptPatternRole = virtualModelModelSlot.makeFlexoConceptInstanceRole(getVirtualModelConcept());
 						flexoConceptPatternRole.setRoleName(getVirtualModelPatternRoleName());
 						newFlexoConcept.addToPatternRoles(flexoConceptPatternRole);
 					}
@@ -181,31 +181,31 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				}*/
 
 				// Create connector pattern role
-				newConnectorPatternRole = getFactory().newInstance(ConnectorPatternRole.class);
-				newConnectorPatternRole.setRoleName(getConnectorPatternRoleName());
+				newConnectorRole = getFactory().newInstance(ConnectorRole.class);
+				newConnectorRole.setRoleName(getConnectorPatternRoleName());
 				/*if (mainPropertyDescriptor != null) {
-					newConnectorPatternRole.setLabel(new DataBinding<String>(getIndividualPatternRoleName() + "."
+					newConnectorRole.setLabel(new DataBinding<String>(getIndividualPatternRoleName() + "."
 							+ mainPropertyDescriptor.property.getName()));
 				} else {*/
-				newConnectorPatternRole.setReadOnlyLabel(true);
-				newConnectorPatternRole.setLabel(new DataBinding<String>("\"label\""));
-				newConnectorPatternRole.setExampleLabel(getFocusedObject().getGraphicalRepresentation().getText());
+				newConnectorRole.setReadOnlyLabel(true);
+				newConnectorRole.setLabel(new DataBinding<String>("\"label\""));
+				newConnectorRole.setExampleLabel(getFocusedObject().getGraphicalRepresentation().getText());
 				// }
 				// We clone here the GR (fixed unfocusable GR bug)
-				newConnectorPatternRole.setGraphicalRepresentation((ConnectorGraphicalRepresentation) getFocusedObject()
+				newConnectorRole.setGraphicalRepresentation((ConnectorGraphicalRepresentation) getFocusedObject()
 						.getGraphicalRepresentation().clone());
-				newFlexoConcept.addToPatternRoles(newConnectorPatternRole);
-				// newFlexoConcept.setPrimaryRepresentationRole(newConnectorPatternRole);
+				newFlexoConcept.addToPatternRoles(newConnectorRole);
+				// newFlexoConcept.setPrimaryRepresentationRole(newConnectorRole);
 
 				// Create other individual roles
-				Vector<IndividualPatternRole> otherRoles = new Vector<IndividualPatternRole>();
+				Vector<IndividualRole> otherRoles = new Vector<IndividualRole>();
 				/*if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 					for (PropertyEntry e : propertyEntries) {
 						if (e.selectEntry) {
 							if (e.property instanceof IFlexoOntologyObjectProperty) {
 								IFlexoOntologyConcept range = ((IFlexoOntologyObjectProperty) e.property).getRange();
 								if (range instanceof IFlexoOntologyClass) {
-									IndividualPatternRole newPatternRole = null; // new IndividualPatternRole(builder);
+									IndividualRole newPatternRole = null; // new IndividualRole(builder);
 									newPatternRole.setPatternRoleName(e.property.getName());
 									newPatternRole.setOntologicType((IFlexoOntologyClass) range);
 									newFlexoConcept.addToPatternRoles(newPatternRole);
@@ -283,7 +283,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 						newLinkScheme.addToParameters(uriParameter);
 
 						// Declare pattern role
-						for (IndividualPatternRole r : otherRoles) {
+						for (IndividualRole r : otherRoles) {
 							DeclarePatternRole action = getFactory().newDeclarePatternRole();
 							action.setAssignation(new DataBinding<Object>(r.getRoleName()));
 							action.setObject(new DataBinding<Object>("parameters." + r.getName()));
@@ -291,8 +291,8 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 						}
 
 						// Add individual action
-						if (individualPatternRole != null) {
-							AddIndividual newAddIndividual = typeAwareModelSlot.makeAddIndividualAction(individualPatternRole,
+						if (individualRole != null) {
+							AddIndividual newAddIndividual = typeAwareModelSlot.makeAddIndividualAction(individualRole,
 									newLinkScheme);
 							newLinkScheme.addToActions(newAddIndividual);
 						}
@@ -326,9 +326,9 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 				// Add connector action
 				AddConnector newAddConnector = getFactory().newInstance(AddConnector.class);
-				newAddConnector.setAssignation(new DataBinding<Object>(newConnectorPatternRole.getRoleName()));
-				ShapePatternRole fromPatternRole = fromFlexoConcept.getPatternRoles(ShapePatternRole.class).get(0);
-				ShapePatternRole toPatternRole = toFlexoConcept.getPatternRoles(ShapePatternRole.class).get(0);
+				newAddConnector.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));
+				ShapeRole fromPatternRole = fromFlexoConcept.getPatternRoles(ShapeRole.class).get(0);
+				ShapeRole toPatternRole = toFlexoConcept.getPatternRoles(ShapeRole.class).get(0);
 
 				newAddConnector.setFromShape(new DataBinding<DiagramShape>(DiagramEditionScheme.FROM_TARGET + "."
 						+ fromPatternRole.getRoleName()));
@@ -433,17 +433,17 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		}
 	}
 
-	private ConnectorPatternRole patternRole;
+	private ConnectorRole patternRole;
 
 	@Override
-	public ConnectorPatternRole getPatternRole() {
+	public ConnectorRole getPatternRole() {
 		if (primaryChoice == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
-			return newConnectorPatternRole;
+			return newConnectorRole;
 		}
 		return patternRole;
 	}
 
-	public void setPatternRole(ConnectorPatternRole patternRole) {
+	public void setPatternRole(ConnectorRole patternRole) {
 		this.patternRole = patternRole;
 	}
 

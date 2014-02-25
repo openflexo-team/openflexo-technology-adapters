@@ -126,7 +126,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 	@Remover(OVERRIDING_GRAPHICAL_REPRESENTATIONS_KEY)
 	public void removeFromOverridingGraphicalRepresentations(OverridingGraphicalRepresentation<?> anOverridingGraphicalRepresentation);
 
-	public GraphicalRepresentation getOverridingGraphicalRepresentation(GraphicalElementPatternRole<?, ?> patternRole);
+	public GraphicalRepresentation getOverridingGraphicalRepresentation(GraphicalElementRole<?, ?> patternRole);
 
 	public VirtualModel getVirtualModel();
 
@@ -352,7 +352,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 		}*/
 
 		@Override
-		public GraphicalRepresentation getOverridingGraphicalRepresentation(GraphicalElementPatternRole<?, ?> patternRole) {
+		public GraphicalRepresentation getOverridingGraphicalRepresentation(GraphicalElementRole<?, ?> patternRole) {
 			for (OverridingGraphicalRepresentation<?> ogr : getOverridingGraphicalRepresentations()) {
 				if (ogr.getPatternRole() == patternRole) {
 					return ogr.getGraphicalRepresentation();

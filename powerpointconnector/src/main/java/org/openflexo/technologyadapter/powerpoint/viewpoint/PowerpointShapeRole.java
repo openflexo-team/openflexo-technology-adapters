@@ -31,11 +31,11 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 
 @ModelEntity
-@ImplementationClass(PowerpointShapePatternRole.PowerpointShapePatternRoleImpl.class)
+@ImplementationClass(PowerpointShapeRole.PowerpointShapePatternRoleImpl.class)
 @XMLElement
-public interface PowerpointShapePatternRole extends FlexoRole<PowerpointSlide> {
+public interface PowerpointShapeRole extends FlexoRole<PowerpointSlide> {
 
-	public static abstract class PowerpointShapePatternRoleImpl extends PatternRoleImpl<PowerpointSlide> {
+	public static abstract class PowerpointShapePatternRoleImpl extends FlexoRoleImpl<PowerpointSlide> {
 
 		@Override
 		public Type getType() {

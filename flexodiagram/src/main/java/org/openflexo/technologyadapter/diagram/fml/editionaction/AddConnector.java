@@ -49,10 +49,10 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
@@ -94,7 +94,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	public void setToShape(DataBinding<DiagramShape> toShape);
 
 	@Override
-	public ConnectorPatternRole getFlexoRole();
+	public ConnectorRole getFlexoRole();
 
 	public static abstract class AddConnectorImpl extends AddDiagramElementActionImpl<DiagramConnector> implements AddConnector {
 
@@ -121,18 +121,18 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}
 
 		/*@Override
-		public List<ConnectorPatternRole> getAvailablePatternRoles() {
+		public List<ConnectorRole> getAvailablePatternRoles() {
 			if (getFlexoConcept() != null) {
-				return getFlexoConcept().getPatternRoles(ConnectorPatternRole.class);
+				return getFlexoConcept().getPatternRoles(ConnectorRole.class);
 			}
 			return null;
 		}*/
 
 		@Override
-		public ConnectorPatternRole getFlexoRole() {
+		public ConnectorRole getFlexoRole() {
 			FlexoRole superFlexoRole = super.getFlexoRole();
-			if (superFlexoRole instanceof ConnectorPatternRole) {
-				return (ConnectorPatternRole) superFlexoRole;
+			if (superFlexoRole instanceof ConnectorRole) {
+				return (ConnectorRole) superFlexoRole;
 			} else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
@@ -142,8 +142,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		public DiagramShape getFromShape(FlexoBehaviourAction action) {
 			if (getFlexoRole() != null && !getFlexoRole().getStartShapeAsDefinedInAction()) {
-				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getStartShapePatternRole());
-				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getStartShapePatternRole());
+				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getStartShapeRole());
+				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getStartShapeRole());
 			} else {
 				try {
 					return getFromShape().getBindingValue(action);
@@ -160,7 +160,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		public DiagramShape getToShape(FlexoBehaviourAction action) {
 			if (getFlexoRole() != null && !getFlexoRole().getEndShapeAsDefinedInAction()) {
-				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getEndShapePatternRole());
+				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getEndShapeRole());
 			} else {
 				try {
 					return getToShape().getBindingValue(action);
@@ -181,7 +181,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}
 
 		/*@Override
-		public ConnectorPatternRole getPatternRole() {
+		public ConnectorRole getPatternRole() {
 			try {
 				return super.getPatternRole();
 			} catch (ClassCastException e) {
@@ -194,7 +194,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		// FIXME: if we remove this useless code, some FIB won't work (see FlexoConceptView.fib, inspect an AddIndividual)
 		// Need to be fixed in KeyValueProperty.java
 		/*@Override
-		public void setPatternRole(ConnectorPatternRole patternRole) {
+		public void setPatternRole(ConnectorRole patternRole) {
 			super.setPatternRole(patternRole);
 		}*/
 
@@ -301,35 +301,35 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 	}
 
-	public static class AddConnectorActionMustAdressAValidConnectorPatternRole extends
-			ValidationRule<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector> {
-		public AddConnectorActionMustAdressAValidConnectorPatternRole() {
+	public static class AddConnectorActionMustAdressAValidConnectorRole extends
+			ValidationRule<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> {
+		public AddConnectorActionMustAdressAValidConnectorRole() {
 			super(AddConnector.class, "add_connector_action_must_address_a_valid_connector_pattern_role");
 		}
 
 		@Override
-		public ValidationIssue<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector> applyValidation(AddConnector action) {
+		public ValidationIssue<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> applyValidation(AddConnector action) {
 			if (action.getFlexoRole() == null) {
-				Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector>>();
-				for (ConnectorPatternRole pr : action.getFlexoConcept().getPatternRoles(ConnectorPatternRole.class)) {
+				Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>>();
+				for (ConnectorRole pr : action.getFlexoConcept().getPatternRoles(ConnectorRole.class)) {
 					v.add(new SetsPatternRole(pr));
 				}
-				return new ValidationError<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector>(this, action,
+				return new ValidationError<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>(this, action,
 						"add_connector_action_does_not_address_a_valid_connector_pattern_role", v);
 			}
 			return null;
 		}
 
-		protected static class SetsPatternRole extends FixProposal<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector> {
+		protected static class SetsPatternRole extends FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> {
 
-			private final ConnectorPatternRole patternRole;
+			private final ConnectorRole patternRole;
 
-			public SetsPatternRole(ConnectorPatternRole patternRole) {
+			public SetsPatternRole(ConnectorRole patternRole) {
 				super("assign_action_to_pattern_role_($patternRole.patternRoleName)");
 				this.patternRole = patternRole;
 			}
 
-			public ConnectorPatternRole getPatternRole() {
+			public ConnectorRole getPatternRole() {
 				return patternRole;
 			}
 
@@ -350,19 +350,19 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public ValidationIssue<AddConnectorActionMustHaveAValidStartingShape, AddConnector> applyValidation(AddConnector action) {
-			ConnectorPatternRole pr = action.getFlexoRole();
+			ConnectorRole pr = action.getFlexoRole();
 			DataBinding<DiagramShape> db = action.getFromShape();
 			if (pr != null && pr.getStartShapeAsDefinedInAction() && !(db.isSet() && db.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>>();
 				if (action.getFlexoBehaviour() instanceof LinkScheme) {
 					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getFlexoBehaviour()).getFromTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
-						for (ShapePatternRole spr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+						for (ShapeRole spr : action.getFlexoConcept().getPatternRoles(ShapeRole.class)) {
 							v.add(new SetsStartingShapeToStartTargetShape(targetFlexoConcept, spr));
 						}
 					}
 				}
-				for (ShapePatternRole spr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+				for (ShapeRole spr : action.getFlexoConcept().getPatternRoles(ShapeRole.class)) {
 					v.add(new SetsStartingShapeToShape(spr));
 				}
 				return new ValidationError<AddConnectorActionMustHaveAValidStartingShape, AddConnector>(this, action,
@@ -373,14 +373,14 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		protected static class SetsStartingShapeToShape extends FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
 
-			private final ShapePatternRole patternRole;
+			private final ShapeRole patternRole;
 
-			public SetsStartingShapeToShape(ShapePatternRole patternRole) {
+			public SetsStartingShapeToShape(ShapeRole patternRole) {
 				super("sets_starting_shape_to_($patternRole.patternRoleName)");
 				this.patternRole = patternRole;
 			}
 
-			public ShapePatternRole getPatternRole() {
+			public ShapeRole getPatternRole() {
 				return patternRole;
 			}
 
@@ -395,15 +395,15 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
 
 			private final FlexoConcept target;
-			private final ShapePatternRole patternRole;
+			private final ShapeRole patternRole;
 
-			public SetsStartingShapeToStartTargetShape(FlexoConcept target, ShapePatternRole patternRole) {
+			public SetsStartingShapeToStartTargetShape(FlexoConcept target, ShapeRole patternRole) {
 				super("sets_starting_shape_to_fromTarget.($patternRole.patternRoleName)");
 				this.target = target;
 				this.patternRole = patternRole;
 			}
 
-			public ShapePatternRole getPatternRole() {
+			public ShapeRole getPatternRole() {
 				return patternRole;
 			}
 
@@ -428,19 +428,19 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public ValidationIssue<AddConnectorActionMustHaveAValidEndingShape, AddConnector> applyValidation(AddConnector action) {
-			ConnectorPatternRole pr = action.getFlexoRole();
+			ConnectorRole pr = action.getFlexoRole();
 			DataBinding<DiagramShape> shape = action.getToShape();
 			if (pr != null && pr.getEndShapeAsDefinedInAction() && !(shape.isSet() && shape.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>>();
 				if (action.getFlexoBehaviour() instanceof LinkScheme) {
 					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getFlexoBehaviour()).getToTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
-						for (ShapePatternRole spr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+						for (ShapeRole spr : action.getFlexoConcept().getPatternRoles(ShapeRole.class)) {
 							v.add(new SetsEndingShapeToToTargetShape(targetFlexoConcept, spr));
 						}
 					}
 				}
-				for (ShapePatternRole spr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+				for (ShapeRole spr : action.getFlexoConcept().getPatternRoles(ShapeRole.class)) {
 					v.add(new SetsEndingShapeToShape(spr));
 				}
 				return new ValidationError<AddConnectorActionMustHaveAValidEndingShape, AddConnector>(this, action,
@@ -451,14 +451,14 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		protected static class SetsEndingShapeToShape extends FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
 
-			private final ShapePatternRole patternRole;
+			private final ShapeRole patternRole;
 
-			public SetsEndingShapeToShape(ShapePatternRole patternRole) {
+			public SetsEndingShapeToShape(ShapeRole patternRole) {
 				super("sets_ending_shape_to_($patternRole.patternRoleName)");
 				this.patternRole = patternRole;
 			}
 
-			public ShapePatternRole getPatternRole() {
+			public ShapeRole getPatternRole() {
 				return patternRole;
 			}
 
@@ -473,15 +473,15 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
 
 			private final FlexoConcept target;
-			private final ShapePatternRole patternRole;
+			private final ShapeRole patternRole;
 
-			public SetsEndingShapeToToTargetShape(FlexoConcept target, ShapePatternRole patternRole) {
+			public SetsEndingShapeToToTargetShape(FlexoConcept target, ShapeRole patternRole) {
 				super("sets_ending_shape_to_toTarget.($patternRole.patternRoleName)");
 				this.target = target;
 				this.patternRole = patternRole;
 			}
 
-			public ShapePatternRole getPatternRole() {
+			public ShapeRole getPatternRole() {
 				return patternRole;
 			}
 

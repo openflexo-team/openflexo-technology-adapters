@@ -29,15 +29,15 @@ import org.openflexo.technologyadapter.owl.model.OWLStatement;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.PropertyStatement;
 import org.openflexo.technologyadapter.owl.model.SubClassStatement;
-import org.openflexo.technologyadapter.owl.viewpoint.DataPropertyStatementPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLClassPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLDataPropertyPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLIndividualPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLObjectPropertyPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLPropertyPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.ObjectPropertyStatementPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.RestrictionStatementPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.SubClassStatementPatternRole;
+import org.openflexo.technologyadapter.owl.viewpoint.DataPropertyStatementRole;
+import org.openflexo.technologyadapter.owl.viewpoint.OWLClassRole;
+import org.openflexo.technologyadapter.owl.viewpoint.OWLDataPropertyRole;
+import org.openflexo.technologyadapter.owl.viewpoint.OWLIndividualRole;
+import org.openflexo.technologyadapter.owl.viewpoint.OWLObjectPropertyRole;
+import org.openflexo.technologyadapter.owl.viewpoint.OWLPropertyRole;
+import org.openflexo.technologyadapter.owl.viewpoint.ObjectPropertyStatementRole;
+import org.openflexo.technologyadapter.owl.viewpoint.RestrictionStatementRole;
+import org.openflexo.technologyadapter.owl.viewpoint.SubClassStatementRole;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddDataPropertyStatement;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddOWLClass;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddOWLIndividual;
@@ -147,23 +147,23 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	 */
 	@Override
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
-		if (OWLClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		if (OWLClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLClass.class);
-		} else if (OWLIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLIndividual.class);
-		} else if (OWLDataPropertyPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLDataProperty.class);
-		} else if (OWLObjectPropertyPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLObjectProperty.class);
-		} else if (OWLPropertyPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLProperty.class);
-		} else if (DataPropertyStatementPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(DataPropertyStatement.class);
-		} else if (ObjectPropertyStatementPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(ObjectPropertyStatement.class);
-		} else if (RestrictionStatementPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (RestrictionStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(PropertyStatement.class);
-		} else if (SubClassStatementPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(SubClassStatement.class);
 		}
 		return null;

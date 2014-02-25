@@ -25,9 +25,9 @@ import org.openflexo.toolbox.StringUtils;
 
 // TODO: change View to Diagram
 @ModelEntity
-@ImplementationClass(DiagramPatternRole.DiagramPatternRoleImpl.class)
+@ImplementationClass(DiagramRole.DiagramRoleImpl.class)
 @XMLElement
-public interface DiagramPatternRole extends FlexoRole<Diagram> {
+public interface DiagramRole extends FlexoRole<Diagram> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String DIAGRAM_SPECIFICATION_URI_KEY = "diagramSpecificationURI";
@@ -43,14 +43,14 @@ public interface DiagramPatternRole extends FlexoRole<Diagram> {
 
 	public void setDiagramSpecification(DiagramSpecification diagramSpecification);
 
-	public static abstract class DiagramPatternRoleImpl extends PatternRoleImpl<Diagram> implements DiagramPatternRole {
+	public static abstract class DiagramRoleImpl extends FlexoRoleImpl<Diagram> implements DiagramRole {
 
-		private static final Logger logger = Logger.getLogger(DiagramPatternRole.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(DiagramRole.class.getPackage().getName());
 
 		private DiagramSpecificationResource diagramSpecificationResource;
 		private String diagramSpecificationURI;
 
-		public DiagramPatternRoleImpl() {
+		public DiagramRoleImpl() {
 			super();
 		}
 

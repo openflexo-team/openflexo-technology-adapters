@@ -49,18 +49,18 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 		SingleClick, DoubleClick, ShiftClick, AltClick, CtrlClick, MetaClick;
 	}
 
-	@PropertyIdentifier(type = GraphicalElementPatternRole.class)
+	@PropertyIdentifier(type = GraphicalElementRole.class)
 	public static final String GRAPHICAL_ELEMENT_PATTERN_ROLE_KEY = "graphicalElementPatternRole";
 	@PropertyIdentifier(type = ActionMask.class)
 	public static final String ACTION_MASK_KEY = "actionMask";
 	@PropertyIdentifier(type = AbstractActionScheme.class)
 	public static final String ABSTRACT_ACTION_SCHEME_KEY = "abstractActionScheme";
 
-	@Getter(value = GRAPHICAL_ELEMENT_PATTERN_ROLE_KEY, inverse = GraphicalElementPatternRole.ACTIONS_KEY)
-	public GraphicalElementPatternRole<?, ?> getGraphicalElementPatternRole();
+	@Getter(value = GRAPHICAL_ELEMENT_PATTERN_ROLE_KEY, inverse = GraphicalElementRole.ACTIONS_KEY)
+	public GraphicalElementRole<?, ?> getGraphicalElementRole();
 
 	@Setter(GRAPHICAL_ELEMENT_PATTERN_ROLE_KEY)
-	public void setGraphicalElementPatternRole(GraphicalElementPatternRole<?, ?> patternRole);
+	public void setGraphicalElementPatternRole(GraphicalElementRole<?, ?> patternRole);
 
 	@Getter(value = ACTION_MASK_KEY)
 	@XMLAttribute
@@ -83,7 +83,7 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 		private ActionMask actionMask = ActionMask.DoubleClick;
 		private AbstractActionScheme abstractActionScheme;
 
-		// private GraphicalElementPatternRole graphicalElementPatternRole;
+		// private GraphicalElementRole graphicalElementPatternRole;
 
 		private DataBinding<Boolean> conditional;
 
@@ -102,12 +102,12 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 		}
 
 		/*@Override
-		public GraphicalElementPatternRole getGraphicalElementPatternRole() {
+		public GraphicalElementRole getGraphicalElementPatternRole() {
 			return graphicalElementPatternRole;
 		}
 
 		@Override
-		public void setGraphicalElementPatternRole(GraphicalElementPatternRole graphicalElementPatternRole) {
+		public void setGraphicalElementPatternRole(GraphicalElementRole graphicalElementPatternRole) {
 			this.graphicalElementPatternRole = graphicalElementPatternRole;
 		}*/
 
@@ -147,7 +147,7 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 
 		@Override
 		public FlexoConcept getFlexoConcept() {
-			return getGraphicalElementPatternRole() != null ? getGraphicalElementPatternRole().getFlexoConcept() : null;
+			return getGraphicalElementRole() != null ? getGraphicalElementRole().getFlexoConcept() : null;
 		}
 
 		@Override

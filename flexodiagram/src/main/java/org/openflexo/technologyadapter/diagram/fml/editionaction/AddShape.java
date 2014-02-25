@@ -51,7 +51,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
@@ -90,7 +90,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 	public void setExtendParentBoundsToHostThisShape(boolean extendParentBoundsToHostThisShape);
 
 	@Override
-	public ShapePatternRole getFlexoRole();
+	public ShapeRole getFlexoRole();
 
 	public static abstract class AddShapeImpl extends AddDiagramElementActionImpl<DiagramShape> implements AddShape {
 
@@ -120,8 +120,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 		public DiagramContainerElement<?> getContainer(FlexoBehaviourAction action) {
 			if (getFlexoRole() != null && !getFlexoRole().getParentShapeAsDefinedInAction()) {
-				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapePatternRole());
-				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapePatternRole());
+				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapeRole());
+				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapeRole());
 			} else {
 				try {
 					return getContainer().getBindingValue(action);
@@ -137,10 +137,10 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 
 		@Override
-		public ShapePatternRole getFlexoRole() {
+		public ShapeRole getFlexoRole() {
 			FlexoRole superFlexoRole = super.getFlexoRole();
-			if (superFlexoRole instanceof ShapePatternRole) {
-				return (ShapePatternRole) superFlexoRole;
+			if (superFlexoRole instanceof ShapeRole) {
+				return (ShapeRole) superFlexoRole;
 			} else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
@@ -239,35 +239,35 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 	}
 
-	public static class AddShapeActionMustAdressAValidShapePatternRole extends
-			ValidationRule<AddShapeActionMustAdressAValidShapePatternRole, AddShape> {
-		public AddShapeActionMustAdressAValidShapePatternRole() {
+	public static class AddShapeActionMustAdressAValidShapeRole extends
+			ValidationRule<AddShapeActionMustAdressAValidShapeRole, AddShape> {
+		public AddShapeActionMustAdressAValidShapeRole() {
 			super(AddShape.class, "add_shape_action_must_address_a_valid_shape_pattern_role");
 		}
 
 		@Override
-		public ValidationIssue<AddShapeActionMustAdressAValidShapePatternRole, AddShape> applyValidation(AddShape action) {
+		public ValidationIssue<AddShapeActionMustAdressAValidShapeRole, AddShape> applyValidation(AddShape action) {
 			if (action.getFlexoRole() == null) {
-				Vector<FixProposal<AddShapeActionMustAdressAValidShapePatternRole, AddShape>> v = new Vector<FixProposal<AddShapeActionMustAdressAValidShapePatternRole, AddShape>>();
-				for (ShapePatternRole pr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+				Vector<FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape>> v = new Vector<FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape>>();
+				for (ShapeRole pr : action.getFlexoConcept().getPatternRoles(ShapeRole.class)) {
 					v.add(new SetsPatternRole(pr));
 				}
-				return new ValidationError<AddShapeActionMustAdressAValidShapePatternRole, AddShape>(this, action,
+				return new ValidationError<AddShapeActionMustAdressAValidShapeRole, AddShape>(this, action,
 						"add_shape_action_does_not_address_a_valid_shape_pattern_role", v);
 			}
 			return null;
 		}
 
-		protected static class SetsPatternRole extends FixProposal<AddShapeActionMustAdressAValidShapePatternRole, AddShape> {
+		protected static class SetsPatternRole extends FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape> {
 
-			private final ShapePatternRole patternRole;
+			private final ShapeRole patternRole;
 
-			public SetsPatternRole(ShapePatternRole patternRole) {
+			public SetsPatternRole(ShapeRole patternRole) {
 				super("assign_action_to_pattern_role_($patternRole.patternRoleName)");
 				this.patternRole = patternRole;
 			}
 
-			public ShapePatternRole getPatternRole() {
+			public ShapeRole getPatternRole() {
 				return patternRole;
 			}
 
@@ -293,13 +293,13 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				if (action.getFlexoBehaviour() instanceof DropScheme) {
 					FlexoConcept targetFlexoConcept = ((DropScheme) action.getFlexoBehaviour()).getTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
-						for (ShapePatternRole pr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+						for (ShapeRole pr : action.getFlexoConcept().getPatternRoles(ShapeRole.class)) {
 							v.add(new SetsContainerToTargetShape(targetFlexoConcept, pr));
 						}
 					}
 				}
 				v.add(new SetsContainerToTopLevel());
-				for (ShapePatternRole pr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
+				for (ShapeRole pr : action.getFlexoConcept().getPatternRoles(ShapeRole.class)) {
 					v.add(new SetsContainerToShape(pr));
 				}
 				return new ValidationError<AddShapeActionMustHaveAValidContainer, AddShape>(this, action,
@@ -324,14 +324,14 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 		protected static class SetsContainerToShape extends FixProposal<AddShapeActionMustHaveAValidContainer, AddShape> {
 
-			private final ShapePatternRole patternRole;
+			private final ShapeRole patternRole;
 
-			public SetsContainerToShape(ShapePatternRole patternRole) {
+			public SetsContainerToShape(ShapeRole patternRole) {
 				super("sets_container_to_($patternRole.patternRoleName)");
 				this.patternRole = patternRole;
 			}
 
-			public ShapePatternRole getPatternRole() {
+			public ShapeRole getPatternRole() {
 				return patternRole;
 			}
 
@@ -345,15 +345,15 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		protected static class SetsContainerToTargetShape extends FixProposal<AddShapeActionMustHaveAValidContainer, AddShape> {
 
 			private final FlexoConcept target;
-			private final ShapePatternRole patternRole;
+			private final ShapeRole patternRole;
 
-			public SetsContainerToTargetShape(FlexoConcept target, ShapePatternRole patternRole) {
+			public SetsContainerToTargetShape(FlexoConcept target, ShapeRole patternRole) {
 				super("sets_container_to_target.($patternRole.patternRoleName)");
 				this.target = target;
 				this.patternRole = patternRole;
 			}
 
-			public ShapePatternRole getPatternRole() {
+			public ShapeRole getPatternRole() {
 				return patternRole;
 			}
 

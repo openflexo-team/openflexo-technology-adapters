@@ -10,8 +10,8 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.view.PowerpointSlideshowView;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointShapePatternRole;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointSlidePatternRole;
+import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointShapeRole;
+import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointSlideRole;
 import org.openflexo.toolbox.FileResource;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -60,10 +60,10 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 
 	@Override
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
-		if (PowerpointSlidePatternRole.class.isAssignableFrom(patternRoleClass)) {
+		if (PowerpointSlideRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(PowerpointSlide.class);
 		}
-		if (PowerpointShapePatternRole.class.isAssignableFrom(patternRoleClass)) {
+		if (PowerpointShapeRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(PowerpointShape.class);
 		}
 		return null;

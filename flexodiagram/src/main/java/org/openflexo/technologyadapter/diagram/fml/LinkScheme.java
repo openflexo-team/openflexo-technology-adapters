@@ -248,25 +248,25 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 				AddConnector newAction = (AddConnector) returned;
 				FlexoConcept fromFlexoConcept = this.getFromTargetFlexoConcept();
 				if (fromFlexoConcept != null) {
-					ShapePatternRole fromShapePatternRole = getDefaultShapePatternRole(fromFlexoConcept);
-					if (fromShapePatternRole != null) {
-						newAction.setFromShape(new DataBinding<DiagramShape>("fromTarget." + fromShapePatternRole.getName()));
+					ShapeRole fromShapeRole = getDefaultShapeRole(fromFlexoConcept);
+					if (fromShapeRole != null) {
+						newAction.setFromShape(new DataBinding<DiagramShape>("fromTarget." + fromShapeRole.getName()));
 					}
 				}
 				FlexoConcept toFlexoConcept = this.getToTargetFlexoConcept();
 				if (toFlexoConcept != null) {
-					ShapePatternRole toShapePatternRole = getDefaultShapePatternRole(toFlexoConcept);
-					if (toShapePatternRole != null) {
-						newAction.setToShape(new DataBinding<DiagramShape>("toTarget." + toShapePatternRole.getName()));
+					ShapeRole toShapeRole = getDefaultShapeRole(toFlexoConcept);
+					if (toShapeRole != null) {
+						newAction.setToShape(new DataBinding<DiagramShape>("toTarget." + toShapeRole.getName()));
 					}
 				}
 			}
 			return returned;
 		}
 
-		private ShapePatternRole getDefaultShapePatternRole(FlexoConcept ep) {
-			if (ep.getPatternRoles(ShapePatternRole.class).size() > 0) {
-				return ep.getPatternRoles(ShapePatternRole.class).get(0);
+		private ShapeRole getDefaultShapeRole(FlexoConcept ep) {
+			if (ep.getPatternRoles(ShapeRole.class).size() > 0) {
+				return ep.getPatternRoles(ShapeRole.class).get(0);
 			}
 			return null;
 		}

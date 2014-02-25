@@ -48,7 +48,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 	@PropertyIdentifier(type = String.class)
 	public static final String TARGET_KEY = "target";
-	@PropertyIdentifier(type = ShapePatternRole.class)
+	@PropertyIdentifier(type = ShapeRole.class)
 	public static final String TARGET_PATTERN_ROLE_KEY = "targetPatternRole";
 
 	@Getter(value = TARGET_KEY)
@@ -60,10 +60,10 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 	@Getter(value = TARGET_PATTERN_ROLE_KEY)
 	@XMLElement
-	public ShapePatternRole getTargetPatternRole();
+	public ShapeRole getTargetPatternRole();
 
 	@Setter(TARGET_PATTERN_ROLE_KEY)
-	public void setTargetPatternRole(ShapePatternRole targetPatternRole);
+	public void setTargetPatternRole(ShapeRole targetPatternRole);
 
 	public boolean isTopTarget();
 
@@ -80,7 +80,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 	public static abstract class DropSchemeImpl extends AbstractCreationSchemeImpl implements DropScheme {
 
 		private String target;
-		private ShapePatternRole targetPatternRole;
+		private ShapeRole targetPatternRole;
 
 		public DropSchemeImpl() {
 			super();
@@ -145,12 +145,12 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 		}
 
 		@Override
-		public ShapePatternRole getTargetPatternRole() {
+		public ShapeRole getTargetPatternRole() {
 			return targetPatternRole;
 		}
 
 		@Override
-		public void setTargetPatternRole(ShapePatternRole targetPatternRole) {
+		public void setTargetPatternRole(ShapeRole targetPatternRole) {
 			this.targetPatternRole = targetPatternRole;
 		}
 

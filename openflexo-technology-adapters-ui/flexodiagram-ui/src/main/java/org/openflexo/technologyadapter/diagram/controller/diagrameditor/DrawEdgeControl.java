@@ -94,7 +94,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
 					/*if (fromShape.getDrawable().getVirtualModel() != null) {
 						Vector<FlexoConcept> availableFlexoConcepts = fromShape.getDrawable().getVirtualModel().getFlexoConcepts();
-						Vector<ConnectorPatternRole> aivalableConnectorPatternRoles = new Vector<ConnectorPatternRole>();
+						Vector<ConnectorRole> aivalableConnectorPatternRoles = new Vector<ConnectorRole>();
 						for (FlexoConcept flexoConcept : availableFlexoConcepts) {
 							if (flexoConcept.getConnectorPatternRoles() != null) {
 								aivalableConnectorPatternRoles.addAll(flexoConcept.getConnectorPatternRoles());
@@ -103,7 +103,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
 						if (aivalableConnectorPatternRoles.size() > 0) {
 							JPopupMenu popup = new JPopupMenu();
-							for (final ConnectorPatternRole connectorPatternRole : aivalableConnectorPatternRoles) {
+							for (final ConnectorRole connectorPatternRole : aivalableConnectorPatternRoles) {
 								JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey(connectorPatternRole
 										.getFlexoConcept().getName()));
 								menuItem.addActionListener(new ActionListener() {
@@ -144,7 +144,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 									public void actionPerformed(ActionEvent e) {
 										for (EditionAction a : linkScheme.getActions()) {
 											if (a instanceof AddConnector) {
-												ConnectorPatternRole patternRole = ((AddConnector) a).getPatternRole();
+												ConnectorRole patternRole = ((AddConnector) a).getPatternRole();
 												logger.warning("Implement this !!!");
 												String text = patternRole.getLabel().getExpression().toString();// Value(null);
 												performAddConnector(controller, patternRole.getGraphicalRepresentation(), text);

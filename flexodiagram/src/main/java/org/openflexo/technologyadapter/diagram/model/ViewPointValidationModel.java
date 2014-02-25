@@ -36,10 +36,10 @@ public class ViewPointValidationModel extends ValidationModel {
 	public ViewPointValidationModel() {
 		super(null);
 
-		registerRule(new AddShape.AddShapeActionMustAdressAValidShapePatternRole());
+		registerRule(new AddShape.AddShapeActionMustAdressAValidShapeRole());
 		registerRule(new AddShape.AddShapeActionMustHaveAValidContainer());
 
-		registerRule(new AddConnector.AddConnectorActionMustAdressAValidConnectorPatternRole());
+		registerRule(new AddConnector.AddConnectorActionMustAdressAValidConnectorRole());
 		registerRule(new AddConnector.AddConnectorActionMustHaveAValidStartingShape());
 		registerRule(new AddConnector.AddConnectorActionMustHaveAValidEndingShape());
 

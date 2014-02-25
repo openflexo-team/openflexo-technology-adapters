@@ -20,14 +20,14 @@ import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 @ModelEntity
-@ImplementationClass(ShapePatternRole.ShapePatternRoleImpl.class)
+@ImplementationClass(ShapeRole.ShapeRoleImpl.class)
 @XMLElement
-public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramShape, ShapeGraphicalRepresentation> {
+public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraphicalRepresentation> {
 
 	@PropertyIdentifier(type = GraphicalRepresentation.class)
 	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
-	@PropertyIdentifier(type = ShapePatternRole.class)
-	public static final String PARENT_SHAPE_PATTERN_ROLE_KEY = "parentShapePatternRole";
+	@PropertyIdentifier(type = ShapeRole.class)
+	public static final String PARENT_SHAPE_PATTERN_ROLE_KEY = "parentShapeRole";
 
 	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
 	@XMLElement
@@ -38,12 +38,12 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 
 	@Getter(value = PARENT_SHAPE_PATTERN_ROLE_KEY)
 	@XMLElement
-	public ShapePatternRole getParentShapePatternRole();
+	public ShapeRole getParentShapeRole();
 
 	@Setter(PARENT_SHAPE_PATTERN_ROLE_KEY)
-	public void setParentShapePatternRole(ShapePatternRole parentShapePatternRole);
+	public void setParentShapeRole(ShapeRole parentShapeRole);
 
-	public boolean isContainedIn(ShapePatternRole container);
+	public boolean isContainedIn(ShapeRole container);
 
 	public boolean getParentShapeAsDefinedInAction();
 
@@ -55,18 +55,18 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 	 * 
 	 * @return
 	 */
-	public List<ShapePatternRole> getPossibleParentShapePatternRoles();
+	public List<ShapeRole> getPossibleParentShapeRoles();
 
-	public static abstract class ShapePatternRoleImpl extends GraphicalElementPatternRoleImpl<DiagramShape, ShapeGraphicalRepresentation>
-			implements ShapePatternRole {
+	public static abstract class ShapeRoleImpl extends GraphicalElementRoleImpl<DiagramShape, ShapeGraphicalRepresentation>
+			implements ShapeRole {
 
-		private static final Logger logger = Logger.getLogger(ShapePatternRole.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(ShapeRole.class.getPackage().getName());
 
-		private ShapePatternRole parentShapePatternRole;
+		private ShapeRole parentShapeRole;
 
-		// private List<ShapePatternRole> _possibleParentPatternRole;
+		// private List<ShapeRole> _possibleParentPatternRole;
 
-		public ShapePatternRoleImpl() {
+		public ShapeRoleImpl() {
 			super();
 		}
 
@@ -115,11 +115,11 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 		}
 
 		private boolean detectLoopInParentShapePatternRoleDefinition() {
-			List<ShapePatternRole> list = new ArrayList<ShapePatternRole>();
-			ShapePatternRole current = this;
+			List<ShapeRole> list = new ArrayList<ShapeRole>();
+			ShapeRole current = this;
 			while (!list.contains(current) && current != null) {
 				list.add(current);
-				current = current.getParentShapePatternRole();
+				current = current.getParentShapeRole();
 			}
 			if (current != null) {
 				return true;
@@ -128,19 +128,19 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 		}
 
 		@Override
-		public ShapePatternRole getParentShapePatternRole() {
-			return parentShapePatternRole;
+		public ShapeRole getParentShapeRole() {
+			return parentShapeRole;
 		}
 
 		@Override
-		public void setParentShapePatternRole(ShapePatternRole parentShapePatternRole) {
-			if (parentShapePatternRole != this.parentShapePatternRole) {
-				ShapePatternRole oldParentShapePatternRole = this.parentShapePatternRole;
-				logger.info(">>>> setParentShapePatternRole() with " + parentShapePatternRole);
-				this.parentShapePatternRole = parentShapePatternRole;
+		public void setParentShapeRole(ShapeRole parentShapeRole) {
+			if (parentShapeRole != this.parentShapeRole) {
+				ShapeRole oldParentShapeRole = this.parentShapeRole;
+				logger.info(">>>> setParentShapePatternRole() with " + parentShapeRole);
+				this.parentShapeRole = parentShapeRole;
 				if (detectLoopInParentShapePatternRoleDefinition()) {
 					logger.warning("Detecting a loop in parent shape pattern role definition. Resetting parent shape pattern role");
-					this.parentShapePatternRole = null;
+					this.parentShapeRole = null;
 				}
 				setChanged();
 				notifyObservers();
@@ -149,31 +149,31 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 
 		@Override
 		public boolean getParentShapeAsDefinedInAction() {
-			return getParentShapePatternRole() == null;
+			return getParentShapeRole() == null;
 		}
 
 		@Override
 		public void setParentShapeAsDefinedInAction(boolean flag) {
 			// System.out.println(">>>> setParentShapeAsDefinedInAction() with " + flag);
-			List<ShapePatternRole> possibleParentPatternRole = getPossibleParentShapePatternRoles();
+			List<ShapeRole> possibleParentPatternRole = getPossibleParentShapeRoles();
 			if (!flag) {
 				if (possibleParentPatternRole.size() > 0) {
-					setParentShapePatternRole(possibleParentPatternRole.get(0));
+					setParentShapeRole(possibleParentPatternRole.get(0));
 				}
 			} else {
 				// System.out.println("setParentShapePatternRole with null");
-				setParentShapePatternRole(null);
+				setParentShapeRole(null);
 				// flag = true;
 			}
 		}
 
 		@Override
-		public boolean isContainedIn(ShapePatternRole container) {
+		public boolean isContainedIn(ShapeRole container) {
 			if (container == this) {
 				return true;
 			}
-			if (getParentShapePatternRole() != null) {
-				return getParentShapePatternRole().isContainedIn(container);
+			if (getParentShapeRole() != null) {
+				return getParentShapeRole().isContainedIn(container);
 			}
 			return false;
 		}
@@ -185,19 +185,19 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 		 * @return
 		 */
 		@Override
-		public List<ShapePatternRole> getPossibleParentShapePatternRoles() {
-			List<ShapePatternRole> returned = new ArrayList<ShapePatternRole>();
-			List<ShapePatternRole> shapesPatternRoles = getFlexoConcept().getPatternRoles(ShapePatternRole.class);
-			for (ShapePatternRole shapePatternRole : shapesPatternRoles) {
-				if (!shapePatternRole.isContainedIn(this)) {
-					returned.add(shapePatternRole);
+		public List<ShapeRole> getPossibleParentShapeRoles() {
+			List<ShapeRole> returned = new ArrayList<ShapeRole>();
+			List<ShapeRole> shapesPatternRoles = getFlexoConcept().getPatternRoles(ShapeRole.class);
+			for (ShapeRole shapeRole : shapesPatternRoles) {
+				if (!shapeRole.isContainedIn(this)) {
+					returned.add(shapeRole);
 				}
 			}
 			return returned;
 		}
 
 		/*@Override
-		public boolean isEmbeddedIn(ShapePatternRole aPR) {
+		public boolean isEmbeddedIn(ShapeRole aPR) {
 			if (getParentShapePatternRole() != null) {
 				if (getParentShapePatternRole() == aPR) {
 					return true;

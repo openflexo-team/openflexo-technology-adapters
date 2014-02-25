@@ -29,14 +29,14 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.xml.XMLModelSlot;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
-import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualPatternRole;
+import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualRole;
 
 /**
  * @author xtof
  * 
  */
 @ModelEntity
-@ImplementationClass(XMLIndividualPatternRole.XMLIndividualPatternRoleImpl.class)
+@ImplementationClass(XMLIndividualRole.XMLIndividualRoleImpl.class)
 public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndividual> {
 
 	public abstract static class AddXMLIndividualImpl extends AssignableActionImpl<XMLModelSlot, XMLIndividual> implements AddXMLIndividual {

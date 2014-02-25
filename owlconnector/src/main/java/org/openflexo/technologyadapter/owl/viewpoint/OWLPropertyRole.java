@@ -1,6 +1,6 @@
 package org.openflexo.technologyadapter.owl.viewpoint;
 
-import org.openflexo.foundation.viewpoint.PropertyPatternRole;
+import org.openflexo.foundation.viewpoint.PropertyRole;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -11,9 +11,9 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.owl.model.OWLProperty;
 
 @ModelEntity
-@ImplementationClass(OWLPropertyPatternRole.OWLPropertyPatternRoleImpl.class)
+@ImplementationClass(OWLPropertyRole.OWLPropertyRoleImpl.class)
 @XMLElement
-public interface OWLPropertyPatternRole extends PropertyPatternRole<OWLProperty> {
+public interface OWLPropertyRole extends PropertyRole<OWLProperty> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String PARENT_PROPERTY_URI_KEY = "parentPropertyURI";
@@ -38,9 +38,9 @@ public interface OWLPropertyPatternRole extends PropertyPatternRole<OWLProperty>
 	@Setter(DOMAIN_URI_KEY)
 	public void _setDomainURI(String domainURI);
 
-	public static abstract class OWLPropertyPatternRoleImpl extends PropertyPatternRoleImpl<OWLProperty> implements OWLPropertyPatternRole {
+	public static abstract class OWLPropertyRoleImpl extends PropertyRoleImpl<OWLProperty> implements OWLPropertyRole {
 
-		public OWLPropertyPatternRoleImpl() {
+		public OWLPropertyRoleImpl() {
 			super();
 		}
 

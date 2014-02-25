@@ -23,7 +23,7 @@ import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementSpecification;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.toolbox.StringUtils;
@@ -45,10 +45,10 @@ public abstract interface AddDiagramElementAction<T extends DiagramElement<?>> e
 		}*/
 
 		@Override
-		public GraphicalElementPatternRole<?, ?> getFlexoRole() {
+		public GraphicalElementRole<?, ?> getFlexoRole() {
 			FlexoRole<?> superPatternRole = super.getFlexoRole();
-			if (superPatternRole instanceof GraphicalElementPatternRole) {
-				return (GraphicalElementPatternRole<?, ?>) superPatternRole;
+			if (superPatternRole instanceof GraphicalElementRole) {
+				return (GraphicalElementRole<?, ?>) superPatternRole;
 			} else if (superPatternRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;

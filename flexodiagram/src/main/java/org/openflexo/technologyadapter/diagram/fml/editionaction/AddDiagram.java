@@ -39,7 +39,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.toolbox.StringUtils;
@@ -84,10 +84,10 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 		}
 
 		@Override
-		public DiagramPatternRole getFlexoRole() {
+		public DiagramRole getFlexoRole() {
 			FlexoRole superFlexoRole = super.getFlexoRole();
-			if (superFlexoRole instanceof DiagramPatternRole) {
-				return (DiagramPatternRole) superFlexoRole;
+			if (superFlexoRole instanceof DiagramRole) {
+				return (DiagramRole) superFlexoRole;
 			} else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
@@ -131,14 +131,14 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 		}
 
 		public DiagramSpecification getDiagramSpecification() {
-			if (getFlexoRole() instanceof DiagramPatternRole) {
+			if (getFlexoRole() instanceof DiagramRole) {
 				return getFlexoRole().getDiagramSpecification();
 			}
 			return null;
 		}
 
 		public void setDiagramSpecification(DiagramSpecification diagramSpecification) {
-			if (getFlexoRole() instanceof DiagramPatternRole) {
+			if (getFlexoRole() instanceof DiagramRole) {
 				getFlexoRole().setDiagramSpecification(diagramSpecification);
 			}
 		}
@@ -162,7 +162,7 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 			addDiagramAction.doAction();*/
 			// if (addDiagramAction.hasActionExecutionSucceeded() && addDiagramAction.getNewDiagram() != null) {
 			// Diagram newDiagram = addDiagramAction.getNewDiagram();
-			/*ShapePatternRole shapePatternRole = action.getShapePatternRole();
+			/*ShapeRole shapePatternRole = action.getShapePatternRole();
 			if (shapePatternRole == null) {
 				logger.warning("Sorry, shape pattern role is undefined");
 				return newShema;

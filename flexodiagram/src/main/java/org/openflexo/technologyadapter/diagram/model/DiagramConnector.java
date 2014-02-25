@@ -29,7 +29,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 
 @ModelEntity
 @ImplementationClass(DiagramConnectorImpl.class)
@@ -98,6 +98,6 @@ public interface DiagramConnector extends DiagramElement<ConnectorGraphicalRepre
 	public void setGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation);*/
 
 	@Override
-	public ConnectorPatternRole getPatternRole(VirtualModelInstance vmInstance);
+	public ConnectorRole getPatternRole(VirtualModelInstance vmInstance);
 
 }

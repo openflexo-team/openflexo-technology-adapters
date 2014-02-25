@@ -70,9 +70,9 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 	@Setter(READ_ONLY_KEY)
 	public void setReadOnly(boolean readOnly);
 
-	public GraphicalElementPatternRole<?, GR> getPatternRole();
+	public GraphicalElementRole<?, GR> getPatternRole();
 
-	public void setPatternRole(GraphicalElementPatternRole<?, GR> patternRole);
+	public void setPatternRole(GraphicalElementRole<?, GR> patternRole);
 
 	public boolean getMandatory();
 
@@ -84,7 +84,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(GraphicalElementSpecification.class.getPackage().getName());
 
-		private GraphicalElementPatternRole<?, GR> patternRole;
+		private GraphicalElementRole<?, GR> patternRole;
 		private GraphicalFeature<T, GR> feature;
 		private String featureName;
 		private DataBinding<String> value;
@@ -96,7 +96,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 			super();
 		}
 
-		public GraphicalElementSpecificationImpl(GraphicalElementPatternRole<?, GR> patternRole, GraphicalFeature<T, GR> feature,
+		public GraphicalElementSpecificationImpl(GraphicalElementRole<?, GR> patternRole, GraphicalFeature<T, GR> feature,
 				boolean readOnly, boolean mandatory) {
 			super();
 			this.patternRole = patternRole;
@@ -184,12 +184,12 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		}
 
 		@Override
-		public GraphicalElementPatternRole<?, GR> getPatternRole() {
+		public GraphicalElementRole<?, GR> getPatternRole() {
 			return patternRole;
 		}
 
 		@Override
-		public void setPatternRole(GraphicalElementPatternRole<?, GR> patternRole) {
+		public void setPatternRole(GraphicalElementRole<?, GR> patternRole) {
 			this.patternRole = patternRole;
 		}
 
@@ -221,7 +221,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		 * @param element
 		 */
 		// public void applyToGraphicalRepresentation(GR gr, DiagramElement<GR> element) {
-		public void applyToGraphicalRepresentation(FlexoConceptInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
+		public void applyToGraphicalRepresentation(FlexoConceptInstance epi, GraphicalElementRole<?, GR> patternRole) {
 			/*if (getValue().toString().equals(
 					"(property.label.asString + ((inputAttributeReference.value != \"\") ? (\"=\" + inputAttributeReference.value) : \"\"))")) {
 				System.out.println("value=" + getValue());
@@ -255,7 +255,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		 * @param element
 		 * @return
 		 */
-		public T applyToModel(FlexoConceptInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
+		public T applyToModel(FlexoConceptInstance epi, GraphicalElementRole<?, GR> patternRole) {
 			DiagramElement<GR> diagramElement = epi.getFlexoActor(patternRole);
 			T newValue = getFeature().retrieveFromGraphicalRepresentation((GR) diagramElement.getGraphicalRepresentation());
 			try {

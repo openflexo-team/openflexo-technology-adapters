@@ -12,14 +12,14 @@ import org.openflexo.model.annotations.XMLElement;
 // TODO: Rewrite this
 @Deprecated
 @ModelEntity
-@ImplementationClass(RestrictionStatementPatternRole.RestrictionStatementPatternRoleImpl.class)
+@ImplementationClass(RestrictionStatementRole.RestrictionStatementRoleImpl.class)
 @XMLElement
-public interface RestrictionStatementPatternRole extends StatementPatternRole {
+public interface RestrictionStatementRole extends StatementRole {
 
-	public static abstract class RestrictionStatementPatternRoleImpl extends StatementPatternRoleImpl implements
-			RestrictionStatementPatternRole {
+	public static abstract class RestrictionStatementRoleImpl extends StatementRoleImpl implements
+			RestrictionStatementRole {
 
-		public RestrictionStatementPatternRoleImpl() {
+		public RestrictionStatementRoleImpl() {
 			super();
 		}
 

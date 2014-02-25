@@ -46,9 +46,9 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassPatternRole;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassPatternRole;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFObjectIndividualPatternRole;
+import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassRole;
+import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassRole;
+import org.openflexo.technologyadapter.emf.viewpoint.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.SelectEMFObjectIndividual;
 
@@ -60,9 +60,9 @@ import org.openflexo.technologyadapter.emf.viewpoint.editionaction.SelectEMFObje
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "EMFObjectIndividual", flexoRoleClass = EMFObjectIndividualPatternRole.class),
-		@DeclarePatternRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassPatternRole.class),
-		@DeclarePatternRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassPatternRole.class) })
+@DeclarePatternRole(FML = "EMFObjectIndividual", flexoRoleClass = EMFObjectIndividualRole.class),
+		@DeclarePatternRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassRole.class),
+		@DeclarePatternRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddEMFObjectIndividual", editionActionClass = AddEMFObjectIndividual.class)
 
@@ -111,7 +111,7 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (EMFObjectIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			if (EMFObjectIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
 			}
 			return super.defaultFlexoRoleName(patternRoleClass);

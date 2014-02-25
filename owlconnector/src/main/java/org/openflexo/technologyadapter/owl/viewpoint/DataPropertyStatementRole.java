@@ -22,9 +22,9 @@ import org.openflexo.technologyadapter.owl.model.DataPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 
 @ModelEntity
-@ImplementationClass(DataPropertyStatementPatternRole.DataPropertyStatementPatternRoleImpl.class)
+@ImplementationClass(DataPropertyStatementRole.DataPropertyStatementRoleImpl.class)
 @XMLElement
-public interface DataPropertyStatementPatternRole extends StatementPatternRole<DataPropertyStatement> {
+public interface DataPropertyStatementRole extends StatementRole<DataPropertyStatement> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String DATA_PROPERTY_URI_KEY = "dataPropertyURI";
@@ -40,12 +40,12 @@ public interface DataPropertyStatementPatternRole extends StatementPatternRole<D
 
 	public void setDataProperty(IFlexoOntologyStructuralProperty p);
 
-	public static abstract class DataPropertyStatementPatternRoleImpl extends StatementPatternRoleImpl<DataPropertyStatement> implements
-			DataPropertyStatementPatternRole {
+	public static abstract class DataPropertyStatementRoleImpl extends StatementRoleImpl<DataPropertyStatement> implements
+			DataPropertyStatementRole {
 
-		static final Logger logger = FlexoLogger.getLogger(DataPropertyStatementPatternRole.class.getPackage().toString());
+		static final Logger logger = FlexoLogger.getLogger(DataPropertyStatementRole.class.getPackage().toString());
 
-		public DataPropertyStatementPatternRoleImpl() {
+		public DataPropertyStatementRoleImpl() {
 			super();
 		}
 
@@ -100,16 +100,16 @@ public interface DataPropertyStatementPatternRole extends StatementPatternRole<D
 	}
 
 	public static class DataPropertyStatementPatternRoleMustDefineAValidProperty extends
-			ValidationRule<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementPatternRole> {
+			ValidationRule<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementRole> {
 		public DataPropertyStatementPatternRoleMustDefineAValidProperty() {
-			super(DataPropertyStatementPatternRole.class, "pattern_role_must_define_a_valid_data_property");
+			super(DataPropertyStatementRole.class, "pattern_role_must_define_a_valid_data_property");
 		}
 
 		@Override
-		public ValidationIssue<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementPatternRole> applyValidation(
-				DataPropertyStatementPatternRole patternRole) {
+		public ValidationIssue<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementRole> applyValidation(
+				DataPropertyStatementRole patternRole) {
 			if (patternRole.getDataProperty() == null) {
-				return new ValidationError<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementPatternRole>(
+				return new ValidationError<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementRole>(
 						this, patternRole, "pattern_role_does_not_define_any_valid_data_property");
 			}
 			return null;

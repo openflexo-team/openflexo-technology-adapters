@@ -21,9 +21,9 @@ import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 
 @ModelEntity
-@ImplementationClass(ObjectPropertyStatementPatternRole.ObjectPropertyStatementPatternRoleImpl.class)
+@ImplementationClass(ObjectPropertyStatementRole.ObjectPropertyStatementRoleImpl.class)
 @XMLElement
-public interface ObjectPropertyStatementPatternRole extends StatementPatternRole<ObjectPropertyStatement> {
+public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropertyStatement> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String OBJECT_PROPERTY_URI_KEY = "objectPropertyURI";
@@ -39,12 +39,12 @@ public interface ObjectPropertyStatementPatternRole extends StatementPatternRole
 
 	public void setObjectProperty(IFlexoOntologyStructuralProperty p);
 
-	public static abstract class ObjectPropertyStatementPatternRoleImpl extends StatementPatternRoleImpl<ObjectPropertyStatement> implements
-			ObjectPropertyStatementPatternRole {
+	public static abstract class ObjectPropertyStatementRoleImpl extends StatementRoleImpl<ObjectPropertyStatement> implements
+			ObjectPropertyStatementRole {
 
-		static final Logger logger = FlexoLogger.getLogger(ObjectPropertyStatementPatternRole.class.getPackage().toString());
+		static final Logger logger = FlexoLogger.getLogger(ObjectPropertyStatementRole.class.getPackage().toString());
 
-		public ObjectPropertyStatementPatternRoleImpl() {
+		public ObjectPropertyStatementRoleImpl() {
 			super();
 		}
 
@@ -99,16 +99,16 @@ public interface ObjectPropertyStatementPatternRole extends StatementPatternRole
 	}
 
 	public static class ObjectPropertyStatementPatternRoleMustDefineAValidProperty extends
-			ValidationRule<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementPatternRole> {
+			ValidationRule<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole> {
 		public ObjectPropertyStatementPatternRoleMustDefineAValidProperty() {
-			super(ObjectPropertyStatementPatternRole.class, "pattern_role_must_define_a_valid_object_property");
+			super(ObjectPropertyStatementRole.class, "pattern_role_must_define_a_valid_object_property");
 		}
 
 		@Override
-		public ValidationIssue<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementPatternRole> applyValidation(
-				ObjectPropertyStatementPatternRole patternRole) {
+		public ValidationIssue<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole> applyValidation(
+				ObjectPropertyStatementRole patternRole) {
 			if (patternRole.getObjectProperty() == null) {
-				return new ValidationError<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementPatternRole>(
+				return new ValidationError<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole>(
 						this, patternRole, "pattern_role_does_not_define_any_valid_object_property");
 			}
 			return null;

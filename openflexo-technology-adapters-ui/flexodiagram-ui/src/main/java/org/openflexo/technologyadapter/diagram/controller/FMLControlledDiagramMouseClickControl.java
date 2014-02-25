@@ -17,7 +17,7 @@ import org.openflexo.foundation.viewpoint.NavigationScheme;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction.ActionMask;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 
@@ -29,11 +29,11 @@ import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
  */
 public class FMLControlledDiagramMouseClickControl extends MouseClickControlImpl<DiagramEditor> {
 
-	private GraphicalElementPatternRole<?, ?> patternRole = null;
+	private GraphicalElementRole<?, ?> patternRole = null;
 	private GraphicalElementAction.ActionMask mask;
 	private VirtualModelInstance vmInstance;
 
-	public FMLControlledDiagramMouseClickControl(GraphicalElementAction.ActionMask mask, GraphicalElementPatternRole<?, ?> patternRole,
+	public FMLControlledDiagramMouseClickControl(GraphicalElementAction.ActionMask mask, GraphicalElementRole<?, ?> patternRole,
 			VirtualModelInstance vmInstance, DiagramFactory factory) {
 		super(mask.name(), MouseButton.LEFT, mask == ActionMask.DoubleClick ? 2 : 1, null, mask == ActionMask.ShiftClick,
 				mask == ActionMask.CtrlClick, mask == ActionMask.MetaClick, mask == ActionMask.AltClick, factory);

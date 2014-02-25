@@ -163,11 +163,11 @@ public class ContextualPalette extends DrawingPalette implements PropertyChangeL
 				logger.info("Drop scheme being applied: " + dropScheme);
 				System.out.println("Drop scheme being applied: " + dropScheme);
 
-				Hashtable<GraphicalElementPatternRole, ExampleDiagramObject> grHierarchy = new Hashtable<GraphicalElementPatternRole, ExampleDiagramObject>();
+				Hashtable<GraphicalElementRole, ExampleDiagramObject> grHierarchy = new Hashtable<GraphicalElementRole, ExampleDiagramObject>();
 
 				for (EditionAction action : dropScheme.getActions()) {
 					if (action instanceof AddShape) {
-						ShapePatternRole role = ((AddShape) action).getPatternRole();
+						ShapeRole role = ((AddShape) action).getPatternRole();
 						ShapeGraphicalRepresentation shapeGR = (ShapeGraphicalRepresentation) diagramPaletteElement
 								.getOverridingGraphicalRepresentation(role);
 						if (shapeGR == null) {

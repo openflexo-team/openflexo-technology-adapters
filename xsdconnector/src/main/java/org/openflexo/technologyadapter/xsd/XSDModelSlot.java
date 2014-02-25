@@ -56,8 +56,8 @@ import org.openflexo.technologyadapter.xsd.model.XMLXSDModel;
 import org.openflexo.technologyadapter.xsd.model.XSOntIndividual;
 import org.openflexo.technologyadapter.xsd.rm.XMLXSDFileResource;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
-import org.openflexo.technologyadapter.xsd.viewpoint.XSClassPatternRole;
-import org.openflexo.technologyadapter.xsd.viewpoint.XSIndividualPatternRole;
+import org.openflexo.technologyadapter.xsd.viewpoint.XSClassRole;
+import org.openflexo.technologyadapter.xsd.viewpoint.XSIndividualRole;
 import org.openflexo.technologyadapter.xsd.viewpoint.editionaction.AddXSClass;
 import org.openflexo.technologyadapter.xsd.viewpoint.editionaction.AddXSIndividual;
 import org.openflexo.technologyadapter.xsd.viewpoint.editionaction.GetXMLDocumentRoot;
@@ -71,8 +71,8 @@ import org.openflexo.technologyadapter.xsd.viewpoint.editionaction.SetXMLDocumen
  */
 
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "XSIndividual", flexoRoleClass = XSIndividualPatternRole.class),
-		@DeclarePatternRole(FML = "XSClass", flexoRoleClass = XSClassPatternRole.class), })
+@DeclarePatternRole(FML = "XSIndividual", flexoRoleClass = XSIndividualRole.class),
+		@DeclarePatternRole(FML = "XSClass", flexoRoleClass = XSClassRole.class), })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXSIndividual.class),
 		@DeclareEditionAction(FML = "SetXMLDocumentRoot", editionActionClass = SetXMLDocumentRoot.class),
@@ -136,9 +136,9 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (XSClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			if (XSClassRole.class.isAssignableFrom(patternRoleClass)) {
 				return "class";
-			} else if (XSIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (XSIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
 			}
 			return super.defaultFlexoRoleName(patternRoleClass);

@@ -7,7 +7,7 @@ import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.FlexoConceptInstancePatternRole;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstanceRole;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
@@ -44,11 +44,11 @@ import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramM
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramEditor;
 import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteEditor;
 import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteModuleView;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
@@ -224,13 +224,13 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	 */
 	@Override
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
-		if (DiagramPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		if (DiagramRole.class.isAssignableFrom(patternRoleClass)) {
 			return DiagramIconLibrary.DIAGRAM_ICON;
-		} else if (ShapePatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (ShapeRole.class.isAssignableFrom(patternRoleClass)) {
 			return DiagramIconLibrary.SHAPE_ICON;
-		} else if (ConnectorPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (ConnectorRole.class.isAssignableFrom(patternRoleClass)) {
 			return DiagramIconLibrary.CONNECTOR_ICON;
-		} else if (FlexoConceptInstancePatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (FlexoConceptInstanceRole.class.isAssignableFrom(patternRoleClass)) {
 			return VEIconLibrary.FLEXO_CONCEPT_INSTANCE_ICON;
 		}
 		return null;

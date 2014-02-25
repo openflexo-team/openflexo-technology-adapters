@@ -27,7 +27,7 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 
 	@PropertyIdentifier(type = FMLDiagramPaletteElementBinding.class)
 	public static final String PALETTE_ELEMENT_BINDING_KEY = "paletteElementBinding";
-	@PropertyIdentifier(type = GraphicalElementPatternRole.class)
+	@PropertyIdentifier(type = GraphicalElementRole.class)
 	public static final String PATTERN_ROLE_KEY = "patternRole";
 	@PropertyIdentifier(type = GraphicalRepresentation.class)
 	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
@@ -40,10 +40,10 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 
 	@Getter(value = PATTERN_ROLE_KEY)
 	@XMLAttribute
-	public GraphicalElementPatternRole<?, GR> getPatternRole();
+	public GraphicalElementRole<?, GR> getPatternRole();
 
 	@Setter(PATTERN_ROLE_KEY)
-	public void setPatternRole(GraphicalElementPatternRole<?, GR> aPatternRole);
+	public void setPatternRole(GraphicalElementRole<?, GR> aPatternRole);
 
 	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
 	@XMLElement
@@ -64,7 +64,7 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 		}
 
 		// Do not use, required for deserialization
-		public OverridingGraphicalRepresentationImpl(GraphicalElementPatternRole<?, GR> patternRole) {
+		public OverridingGraphicalRepresentationImpl(GraphicalElementRole<?, GR> patternRole) {
 			super();
 			setPatternRole(patternRole);
 			// patternRoleName = patternRole.getPatternRoleName();

@@ -37,8 +37,8 @@ import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationC
 import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationModified;
 
 @ModelEntity(isAbstract = true)
-@ImplementationClass(GraphicalElementPatternRole.GraphicalElementPatternRoleImpl.class)
-public abstract interface GraphicalElementPatternRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
+@ImplementationClass(GraphicalElementRole.GraphicalElementRoleImpl.class)
+public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
 		FlexoRole<T>, Bindable {
 
 	public static GraphicalFeature<String, GraphicalRepresentation> LABEL_FEATURE = new GraphicalFeature<String, GraphicalRepresentation>(
@@ -148,11 +148,11 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 
 	public List<ActionMask> getReferencedMasks();
 
-	public static abstract class GraphicalElementPatternRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
-			PatternRoleImpl<T> implements GraphicalElementPatternRole<T, GR> {
+	public static abstract class GraphicalElementRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
+			FlexoRoleImpl<T> implements GraphicalElementRole<T, GR> {
 
 		@SuppressWarnings("unused")
-		private static final Logger logger = Logger.getLogger(GraphicalElementPatternRole.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(GraphicalElementRole.class.getPackage().getName());
 
 		// private boolean readOnlyLabel;
 
@@ -164,7 +164,7 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 
 		private GR graphicalRepresentation;
 
-		public GraphicalElementPatternRoleImpl() {
+		public GraphicalElementRoleImpl() {
 			super();
 			initDefaultSpecifications();
 		}
@@ -318,8 +318,8 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 
 		@Override
 		public boolean containsShapes() {
-			for (ShapePatternRole role : getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
-				if (role.getParentShapePatternRole() == this) {
+			for (ShapeRole role : getFlexoConcept().getPatternRoles(ShapeRole.class)) {
+				if (role.getParentShapeRole() == this) {
 					return true;
 				}
 			}

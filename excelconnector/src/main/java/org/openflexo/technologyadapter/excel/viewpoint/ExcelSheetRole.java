@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2013 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -23,44 +23,44 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
+import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptInstance;
+import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 
 @ModelEntity
-@ImplementationClass(BusinessConceptInstancePatternRole.BusinessConceptInstancePatternRoleImpl.class)
+@ImplementationClass(ExcelSheetRole.ExcelSheetRoleImpl.class)
 @XMLElement
-public interface BusinessConceptInstancePatternRole extends FlexoRole<BusinessConceptInstance> {
+public interface ExcelSheetRole extends FlexoRole<ExcelSheet> {
 
-	public static abstract class BusinessConceptInstancePatternRoleImpl extends PatternRoleImpl<BusinessConceptInstance> implements
-			BusinessConceptInstancePatternRole {
+	public static abstract class ExcelSheetRoleImpl extends FlexoRoleImpl<ExcelSheet> implements ExcelSheetRole {
 
 		@Override
 		public Type getType() {
-			// TODO Auto-generated method stub
-			return null;
+			return ExcelSheet.class;
 		}
 
 		@Override
 		public String getPreciseType() {
-			// TODO Auto-generated method stub
-			return null;
+			return ExcelSheet.class.getSimpleName();
 		}
 
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
-			// TODO Auto-generated method stub
 			return false;
 		}
 
 		@Override
-		public ActorReference<BusinessConceptInstance> makeActorReference(BusinessConceptInstance object, FlexoConceptInstance epi) {
-			// TODO Auto-generated method stub
-			return null;
+		public ActorReference<ExcelSheet> makeActorReference(ExcelSheet object, FlexoConceptInstance epi) {
+			VirtualModelInstanceModelFactory factory = epi.getFactory();
+			ExcelActorReference<ExcelSheet> returned = factory.newInstance(ExcelActorReference.class);
+			returned.setFlexoRole(this);
+			returned.setFlexoConceptInstance(epi);
+			returned.setModellingElement(object);
+			return returned;
 		}
 
 	}
-
 }

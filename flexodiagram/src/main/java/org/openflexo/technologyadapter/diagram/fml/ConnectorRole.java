@@ -19,9 +19,9 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationChanged;
 
 @ModelEntity
-@ImplementationClass(ConnectorPatternRole.ConnectorPatternRoleImpl.class)
+@ImplementationClass(ConnectorRole.ConnectorRoleImpl.class)
 @XMLElement
-public interface ConnectorPatternRole extends GraphicalElementPatternRole<DiagramConnector, ConnectorGraphicalRepresentation> {
+public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, ConnectorGraphicalRepresentation> {
 
 	@PropertyIdentifier(type = GraphicalRepresentation.class)
 	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
@@ -29,10 +29,10 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 	public static final String ARTIFACT_FROM_GRAPHICAL_REPRESENTATION_KEY = "artifactFromGraphicalRepresentation";
 	@PropertyIdentifier(type = ShapeGraphicalRepresentation.class)
 	public static final String ARTIFACT_TO_GRAPHICAL_REPRESENTATION_KEY = "artifactToGraphicalRepresentation";
-	@PropertyIdentifier(type = ShapePatternRole.class)
-	public static final String START_SHAPE_PATTERN_ROLE_KEY = "startShapePatternRole";
-	@PropertyIdentifier(type = ShapePatternRole.class)
-	public static final String END_SHAPE_PATTERN_ROLE_KEY = "endShapePatternRole";
+	@PropertyIdentifier(type = ShapeRole.class)
+	public static final String START_SHAPE_PATTERN_ROLE_KEY = "startShapeRole";
+	@PropertyIdentifier(type = ShapeRole.class)
+	public static final String END_SHAPE_PATTERN_ROLE_KEY = "endShapeRole";
 
 	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
 	@XMLElement
@@ -57,17 +57,17 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 
 	@Getter(value = START_SHAPE_PATTERN_ROLE_KEY)
 	@XMLElement
-	public ShapePatternRole getStartShapePatternRole();
+	public ShapeRole getStartShapeRole();
 
 	@Setter(START_SHAPE_PATTERN_ROLE_KEY)
-	public void setStartShapePatternRole(ShapePatternRole startShapePatternRole);
+	public void setStartShapeRole(ShapeRole startShapeRole);
 
 	@Getter(value = END_SHAPE_PATTERN_ROLE_KEY)
 	@XMLElement
-	public ShapePatternRole getEndShapePatternRole();
+	public ShapeRole getEndShapeRole();
 
 	@Setter(END_SHAPE_PATTERN_ROLE_KEY)
-	public void setEndShapePatternRole(ShapePatternRole endShapePatternRole);
+	public void setEndShapeRole(ShapeRole endShapeRole);
 
 	public boolean getStartShapeAsDefinedInAction();
 
@@ -77,13 +77,13 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 
 	public void setEndShapeAsDefinedInAction(boolean flag);
 
-	public static abstract class ConnectorPatternRoleImpl extends
-			GraphicalElementPatternRoleImpl<DiagramConnector, ConnectorGraphicalRepresentation> implements ConnectorPatternRole {
+	public static abstract class ConnectorRoleImpl extends
+			GraphicalElementRoleImpl<DiagramConnector, ConnectorGraphicalRepresentation> implements ConnectorRole {
 
 		private ShapeGraphicalRepresentation artifactFromGraphicalRepresentation;
 		private ShapeGraphicalRepresentation artifactToGraphicalRepresentation;
 
-		public ConnectorPatternRoleImpl() {
+		public ConnectorRoleImpl() {
 			super();
 		}
 
@@ -138,75 +138,75 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 			notifyObservers(new GraphicalRepresentationChanged(this, artifactToGraphicalRepresentation));
 		}
 
-		private ShapePatternRole startShapePatternRole;
-		private ShapePatternRole endShapePatternRole;
+		private ShapeRole startShapeRole;
+		private ShapeRole endShapeRole;
 
 		@Override
-		public ShapePatternRole getStartShapePatternRole() {
-			return startShapePatternRole;
+		public ShapeRole getStartShapeRole() {
+			return startShapeRole;
 		}
 
 		@Override
-		public void setStartShapePatternRole(ShapePatternRole startShapePatternRole) {
-			this.startShapePatternRole = startShapePatternRole;
+		public void setStartShapeRole(ShapeRole startShapeRole) {
+			this.startShapeRole = startShapeRole;
 			setChanged();
 			notifyObservers(new GraphicalRepresentationChanged(this,
-					startShapePatternRole != null ? startShapePatternRole.getGraphicalRepresentation()
+					startShapeRole != null ? startShapeRole.getGraphicalRepresentation()
 							: artifactFromGraphicalRepresentation));
 		}
 
 		@Override
 		public boolean getStartShapeAsDefinedInAction() {
-			return getStartShapePatternRole() == null;
+			return getStartShapeRole() == null;
 		}
 
 		@Override
 		public void setStartShapeAsDefinedInAction(boolean flag) {
-			if (!flag && getFlexoConcept().getPatternRoles(ShapePatternRole.class).size() > 0) {
-				setStartShapePatternRole(getFlexoConcept().getPatternRoles(ShapePatternRole.class).get(0));
+			if (!flag && getFlexoConcept().getPatternRoles(ShapeRole.class).size() > 0) {
+				setStartShapeRole(getFlexoConcept().getPatternRoles(ShapeRole.class).get(0));
 			} else {
 				// System.out.println("setStartShapePatternRole with null");
-				setStartShapePatternRole(null);
+				setStartShapeRole(null);
 			}
 		}
 
 		@Override
-		public ShapePatternRole getEndShapePatternRole() {
-			return endShapePatternRole;
+		public ShapeRole getEndShapeRole() {
+			return endShapeRole;
 		}
 
 		@Override
-		public void setEndShapePatternRole(ShapePatternRole endShapePatternRole) {
-			this.endShapePatternRole = endShapePatternRole;
+		public void setEndShapeRole(ShapeRole endShapeRole) {
+			this.endShapeRole = endShapeRole;
 			setChanged();
 			notifyObservers(new GraphicalRepresentationChanged(this,
-					endShapePatternRole != null ? endShapePatternRole.getGraphicalRepresentation() : artifactToGraphicalRepresentation));
+					endShapeRole != null ? endShapeRole.getGraphicalRepresentation() : artifactToGraphicalRepresentation));
 		}
 
 		@Override
 		public boolean getEndShapeAsDefinedInAction() {
-			return getEndShapePatternRole() == null;
+			return getEndShapeRole() == null;
 		}
 
 		@Override
 		public void setEndShapeAsDefinedInAction(boolean flag) {
-			if (!flag && getFlexoConcept().getPatternRoles(ShapePatternRole.class).size() > 0) {
-				setEndShapePatternRole(getFlexoConcept().getPatternRoles(ShapePatternRole.class).get(0));
+			if (!flag && getFlexoConcept().getPatternRoles(ShapeRole.class).size() > 0) {
+				setEndShapeRole(getFlexoConcept().getPatternRoles(ShapeRole.class).get(0));
 			} else {
 				// System.out.println("setEndShapePatternRole with null");
-				setEndShapePatternRole(null);
+				setEndShapeRole(null);
 			}
 		}
 
-		/*public ShapePatternRole getStartShape() {
+		/*public ShapeRole getStartShape() {
 			for (FlexoBehaviour es : getFlexoConcept().getEditionSchemes()) {
 				for (EditionAction action : es.getActions()) {
 					if ((action.getPatternRole() == this) && (action instanceof AddConnector)) {
 						AddConnector addConnector = (AddConnector) action;
 						for (FlexoRole r : getFlexoConcept().getPatternRoles()) {
-							if ((r instanceof ShapePatternRole) && (addConnector.getFromShape() != null)
+							if ((r instanceof ShapeRole) && (addConnector.getFromShape() != null)
 									&& addConnector.getFromShape().toString().equals(r.getPatternRoleName())) {
-								return (ShapePatternRole) r;
+								return (ShapeRole) r;
 							}
 						}
 					}
@@ -216,15 +216,15 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 			return null;
 		}
 
-		public ShapePatternRole getEndShape() {
+		public ShapeRole getEndShape() {
 			for (FlexoBehaviour es : getFlexoConcept().getEditionSchemes()) {
 				for (EditionAction action : es.getActions()) {
 					if ((action.getPatternRole() == this) && (action instanceof AddConnector)) {
 						AddConnector addConnector = (AddConnector) action;
 						for (FlexoRole r : getFlexoConcept().getPatternRoles()) {
-							if ((r instanceof ShapePatternRole) && (addConnector.getToShape() != null)
+							if ((r instanceof ShapeRole) && (addConnector.getToShape() != null)
 									&& addConnector.getToShape().toString().equals(r.getPatternRoleName())) {
-								return (ShapePatternRole) r;
+								return (ShapeRole) r;
 							}
 						}
 					}
@@ -241,8 +241,8 @@ public interface ConnectorPatternRole extends GraphicalElementPatternRole<Diagra
 
 		public static GraphicalFeature<?, ?>[] AVAILABLE_FEATURES = {};
 
-		public List<ShapePatternRole> getShapePatternRoles() {
-			return getFlexoConcept().getPatternRoles(ShapePatternRole.class);
+		public List<ShapeRole> getShapeRoles() {
+			return getFlexoConcept().getPatternRoles(ShapeRole.class);
 		}
 	}
 }

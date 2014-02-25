@@ -28,41 +28,24 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.excel.model.ExcelCell;
+import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 
 @ModelEntity
-@ImplementationClass(ExcelCellPatternRole.ExcelCellPatternRoleImpl.class)
+@ImplementationClass(ExcelColumnRole.ExcelColumnRoleImpl.class)
 @XMLElement
-public interface ExcelCellPatternRole extends FlexoRole<ExcelCell> {
+public interface ExcelColumnRole extends FlexoRole<ExcelColumn> {
 
-	public static abstract class ExcelCellPatternRoleImpl extends PatternRoleImpl<ExcelCell> implements ExcelCellPatternRole {
-
-		public ExcelCellPatternRoleImpl() {
-			super();
-			// TODO Auto-generated constructor stub
-		}
+	public abstract static class ExcelColumnRoleImpl extends FlexoRoleImpl<ExcelColumn> implements ExcelColumnRole {
 
 		@Override
 		public Type getType() {
-			return ExcelCell.class;
+			return ExcelColumn.class;
 		}
 
 		@Override
 		public String getPreciseType() {
-			return ExcelCell.class.getSimpleName();
+			return ExcelColumn.class.getSimpleName();
 		}
-
-		/*@Override
-		public boolean getIsPrimaryRole() {
-			// TODO Auto-generated method stub
-			return false;
-		}
-
-		@Override
-		public void setIsPrimaryRole(boolean isPrimary) {
-			// TODO Auto-generated method stub
-
-		}*/
 
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
@@ -71,9 +54,9 @@ public interface ExcelCellPatternRole extends FlexoRole<ExcelCell> {
 		}
 
 		@Override
-		public ActorReference<ExcelCell> makeActorReference(ExcelCell object, FlexoConceptInstance epi) {
+		public ActorReference<ExcelColumn> makeActorReference(ExcelColumn object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
-			ExcelActorReference<ExcelCell> returned = factory.newInstance(ExcelActorReference.class);
+			ExcelActorReference<ExcelColumn> returned = factory.newInstance(ExcelActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
@@ -81,4 +64,5 @@ public interface ExcelCellPatternRole extends FlexoRole<ExcelCell> {
 		}
 
 	}
+
 }

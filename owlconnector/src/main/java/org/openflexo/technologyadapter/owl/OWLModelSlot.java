@@ -21,15 +21,15 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
-import org.openflexo.technologyadapter.owl.viewpoint.DataPropertyStatementPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLClassPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLDataPropertyPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLIndividualPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLObjectPropertyPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLPropertyPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.ObjectPropertyStatementPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.RestrictionStatementPatternRole;
-import org.openflexo.technologyadapter.owl.viewpoint.SubClassStatementPatternRole;
+import org.openflexo.technologyadapter.owl.viewpoint.DataPropertyStatementRole;
+import org.openflexo.technologyadapter.owl.viewpoint.OWLClassRole;
+import org.openflexo.technologyadapter.owl.viewpoint.OWLDataPropertyRole;
+import org.openflexo.technologyadapter.owl.viewpoint.OWLIndividualRole;
+import org.openflexo.technologyadapter.owl.viewpoint.OWLObjectPropertyRole;
+import org.openflexo.technologyadapter.owl.viewpoint.OWLPropertyRole;
+import org.openflexo.technologyadapter.owl.viewpoint.ObjectPropertyStatementRole;
+import org.openflexo.technologyadapter.owl.viewpoint.RestrictionStatementRole;
+import org.openflexo.technologyadapter.owl.viewpoint.SubClassStatementRole;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddDataPropertyStatement;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddOWLClass;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddOWLIndividual;
@@ -45,15 +45,15 @@ import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddSubClassSt
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "OWLIndividual", flexoRoleClass = OWLIndividualPatternRole.class),
-		@DeclarePatternRole(FML = "OWLClass", flexoRoleClass = OWLClassPatternRole.class),
-		@DeclarePatternRole(FML = "OWLDataProperty", flexoRoleClass = OWLDataPropertyPatternRole.class),
-		@DeclarePatternRole(FML = "OWLObjectProperty", flexoRoleClass = OWLObjectPropertyPatternRole.class),
-		@DeclarePatternRole(FML = "OWLProperty", flexoRoleClass = OWLPropertyPatternRole.class),
-		@DeclarePatternRole(FML = "DataPropertyStatement", flexoRoleClass = DataPropertyStatementPatternRole.class),
-		@DeclarePatternRole(FML = "ObjectPropertyStatement", flexoRoleClass = ObjectPropertyStatementPatternRole.class),
-		// @DeclarePatternRole(FML = "RestrictionStatement", flexoRoleClass = RestrictionStatementPatternRole.class),
-		@DeclarePatternRole(FML = "SubClassStatement", flexoRoleClass = SubClassStatementPatternRole.class) })
+@DeclarePatternRole(FML = "OWLIndividual", flexoRoleClass = OWLIndividualRole.class),
+		@DeclarePatternRole(FML = "OWLClass", flexoRoleClass = OWLClassRole.class),
+		@DeclarePatternRole(FML = "OWLDataProperty", flexoRoleClass = OWLDataPropertyRole.class),
+		@DeclarePatternRole(FML = "OWLObjectProperty", flexoRoleClass = OWLObjectPropertyRole.class),
+		@DeclarePatternRole(FML = "OWLProperty", flexoRoleClass = OWLPropertyRole.class),
+		@DeclarePatternRole(FML = "DataPropertyStatement", flexoRoleClass = DataPropertyStatementRole.class),
+		@DeclarePatternRole(FML = "ObjectPropertyStatement", flexoRoleClass = ObjectPropertyStatementRole.class),
+		// @DeclarePatternRole(FML = "RestrictionStatement", flexoRoleClass = RestrictionStatementRole.class),
+		@DeclarePatternRole(FML = "SubClassStatement", flexoRoleClass = SubClassStatementRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddOWLIndividual", editionActionClass = AddOWLIndividual.class), // Add instance
 		@DeclareEditionAction(FML = "AddOWLClass", editionActionClass = AddOWLClass.class), // Add class
@@ -89,23 +89,23 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (OWLClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			if (OWLClassRole.class.isAssignableFrom(patternRoleClass)) {
 				return "class";
-			} else if (OWLIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
-			} else if (OWLPropertyPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "property";
-			} else if (OWLDataPropertyPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "dataProperty";
-			} else if (OWLObjectPropertyPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "objectProperty";
-			} else if (DataPropertyStatementPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
-			} else if (ObjectPropertyStatementPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
-			} else if (RestrictionStatementPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (RestrictionStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "restriction";
-			} else if (SubClassStatementPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
 			}
 			return super.defaultFlexoRoleName(patternRoleClass);

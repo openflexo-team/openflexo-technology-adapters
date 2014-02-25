@@ -5,11 +5,11 @@ import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
 public class TestOWLInspectors extends GenericFIBInspectorTestCase {
 
 	public void testDataPropertyStatementPatternRoleInspector() {
-		validateFIB("Inspectors/OWL/DataPropertyStatementPatternRole.inspector");
+		validateFIB("Inspectors/OWL/DataPropertyStatementRole.inspector");
 	}
 
 	public void testObjectPropertyStatementPatternRoleInspector() {
-		validateFIB("Inspectors/OWL/ObjectPropertyStatementPatternRole.inspector");
+		validateFIB("Inspectors/OWL/ObjectPropertyStatementRole.inspector");
 	}
 
 	public void testOWLConceptInspector() {

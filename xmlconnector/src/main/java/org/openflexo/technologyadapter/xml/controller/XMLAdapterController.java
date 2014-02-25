@@ -37,7 +37,7 @@ import org.openflexo.technologyadapter.xml.gui.XMLIconLibrary;
 import org.openflexo.technologyadapter.xml.gui.XMLModelBrowserModel;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualPatternRole;
+import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualRole;
 import org.openflexo.toolbox.FileResource;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -130,8 +130,8 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	@Override
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 
-		if (XMLIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
-			return getIconForOntologyObject(XMLIndividualPatternRole.class);
+		if (XMLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+			return getIconForOntologyObject(XMLIndividualRole.class);
 		}
 		return null;
 	}

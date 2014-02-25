@@ -39,7 +39,7 @@ import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -249,7 +249,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 		return super.getValue(variable);
 	}
 
-	public GraphicalRepresentation getOverridingGraphicalRepresentation(GraphicalElementPatternRole patternRole) {
+	public GraphicalRepresentation getOverridingGraphicalRepresentation(GraphicalElementRole patternRole) {
 		/*if (getPaletteElement() != null) {
 			if (getPaletteElement().getOverridingGraphicalRepresentation(patternRole) != null) {
 				return getPaletteElement().getOverridingGraphicalRepresentation(patternRole);

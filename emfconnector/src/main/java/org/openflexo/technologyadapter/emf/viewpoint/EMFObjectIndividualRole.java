@@ -19,21 +19,21 @@
  */
 package org.openflexo.technologyadapter.emf.viewpoint;
 
-import org.openflexo.foundation.viewpoint.IndividualPatternRole;
+import org.openflexo.foundation.viewpoint.IndividualRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 @ModelEntity
-@ImplementationClass(EMFObjectIndividualPatternRole.EMFObjectIndividualPatternRoleImpl.class)
+@ImplementationClass(EMFObjectIndividualRole.EMFObjectIndividualRoleImpl.class)
 @XMLElement
-public interface EMFObjectIndividualPatternRole extends IndividualPatternRole<EMFObjectIndividual> {
+public interface EMFObjectIndividualRole extends IndividualRole<EMFObjectIndividual> {
 
-	public static abstract class EMFObjectIndividualPatternRoleImpl extends IndividualPatternRoleImpl<EMFObjectIndividual> implements
-			EMFObjectIndividualPatternRole {
+	public static abstract class EMFObjectIndividualRoleImpl extends IndividualRoleImpl<EMFObjectIndividual> implements
+			EMFObjectIndividualRole {
 
-		public EMFObjectIndividualPatternRoleImpl() {
+		public EMFObjectIndividualRoleImpl() {
 			super();
 		}
 

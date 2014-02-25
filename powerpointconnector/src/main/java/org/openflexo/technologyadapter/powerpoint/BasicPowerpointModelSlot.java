@@ -42,8 +42,8 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointShapePatternRole;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointSlidePatternRole;
+import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointShapeRole;
+import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointSlideRole;
 import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointShape;
 import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointSlide;
 import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.SelectPowerpointShape;
@@ -56,8 +56,8 @@ import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.Select
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "PowerpointSlide", flexoRoleClass = PowerpointSlidePatternRole.class),
-		@DeclarePatternRole(FML = "PowerpointShape", flexoRoleClass = PowerpointShapePatternRole.class) })
+@DeclarePatternRole(FML = "PowerpointSlide", flexoRoleClass = PowerpointSlideRole.class),
+		@DeclarePatternRole(FML = "PowerpointShape", flexoRoleClass = PowerpointShapeRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddPowerpointSlide", editionActionClass = AddPowerpointSlide.class),
 		@DeclareEditionAction(FML = "AddPowerpointShape", editionActionClass = AddPowerpointShape.class) })
@@ -90,9 +90,9 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (PowerpointSlidePatternRole.class.isAssignableFrom(patternRoleClass)) {
+			if (PowerpointSlideRole.class.isAssignableFrom(patternRoleClass)) {
 				return "slide";
-			} else if (PowerpointShapePatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (PowerpointShapeRole.class.isAssignableFrom(patternRoleClass)) {
 				return "shape";
 			}
 			return super.defaultFlexoRoleName(patternRoleClass);

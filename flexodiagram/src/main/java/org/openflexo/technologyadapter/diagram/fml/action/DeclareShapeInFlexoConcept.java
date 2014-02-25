@@ -33,17 +33,17 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.FlexoConceptInstancePatternRole;
-import org.openflexo.foundation.viewpoint.IndividualPatternRole;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstanceRole;
+import org.openflexo.foundation.viewpoint.IndividualRole;
 import org.openflexo.foundation.viewpoint.URIParameter;
 import org.openflexo.foundation.viewpoint.VirtualModelModelSlot;
 import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
 import org.openflexo.foundation.viewpoint.inspector.FlexoConceptInspector;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
@@ -107,7 +107,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 	private String individualPatternRoleName;
 	private String virtualModelPatternRoleName;
 	private FlexoConcept newFlexoConcept;
-	private LinkedHashMap<DrawingObjectEntry, GraphicalElementPatternRole> newGraphicalElementPatternRoles;
+	private LinkedHashMap<DrawingObjectEntry, GraphicalElementRole> newGraphicalElementRoles;
 	// public DiagramPalette palette;
 
 	private boolean isTopLevel = true;
@@ -149,14 +149,14 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		}
 	}
 
-	private ShapePatternRole patternRole;
+	private ShapeRole patternRole;
 
 	@Override
-	public ShapePatternRole getPatternRole() {
+	public ShapeRole getPatternRole() {
 		return patternRole;
 	}
 
-	public void setPatternRole(ShapePatternRole patternRole) {
+	public void setPatternRole(ShapeRole patternRole) {
 		this.patternRole = patternRole;
 	}
 
@@ -362,12 +362,12 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 					// Create pattern role, if it is an ontology then we create an individual, otherwise if it is a virtual model we create
 					// an flexo concept instance
-					IndividualPatternRole<?> individualPatternRole = null;
-					FlexoConceptInstancePatternRole flexoConceptPatternRole = null;
+					IndividualRole<?> individualPatternRole = null;
+					FlexoConceptInstanceRole flexoConceptPatternRole = null;
 					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						if (isTypeAwareModelSlot()) {
 							TypeAwareModelSlot<?, ?> flexoOntologyModelSlot = (TypeAwareModelSlot<?, ?>) getModelSlot();
-							individualPatternRole = flexoOntologyModelSlot.makeIndividualPatternRole(getConcept());
+							individualPatternRole = flexoOntologyModelSlot.makeIndividualRole(getConcept());
 							individualPatternRole.setRoleName(getIndividualPatternRoleName());
 							individualPatternRole.setOntologicType(getConcept());
 							newFlexoConcept.addToPatternRoles(individualPatternRole);
@@ -378,7 +378,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 						if (isVirtualModelModelSlot()) {
 							VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
 							flexoConceptPatternRole = virtualModelModelSlot
-									.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
+									.makeFlexoConceptInstanceRole(getVirtualModelConcept());
 							flexoConceptPatternRole.setRoleName(getVirtualModelPatternRoleName());
 							newFlexoConcept.addToPatternRoles(flexoConceptPatternRole);
 						}
@@ -386,59 +386,59 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 					// Create graphical elements pattern role
 
-					newGraphicalElementPatternRoles = new LinkedHashMap<DrawingObjectEntry, GraphicalElementPatternRole>();
+					newGraphicalElementRoles = new LinkedHashMap<DrawingObjectEntry, GraphicalElementRole>();
 
-					GraphicalElementPatternRole primaryRepresentationRole = null;
+					GraphicalElementRole primaryRepresentationRole = null;
 					for (DrawingObjectEntry entry : drawingObjectEntries) {
 						if (entry.getSelectThis()) {
 							if (entry.graphicalObject instanceof DiagramShape) {
 								DiagramShape grShape = (DiagramShape) entry.graphicalObject;
-								ShapePatternRole newShapePatternRole = getFactory().newInstance(ShapePatternRole.class);
-								newShapePatternRole.setRoleName(entry.patternRoleName);
+								ShapeRole newShapeRole = getFactory().newInstance(ShapeRole.class);
+								newShapeRole.setRoleName(entry.patternRoleName);
 								/*if (mainPropertyDescriptor != null && entry.isMainEntry()) {
 									newShapePatternRole.setLabel(new DataBinding<String>(getIndividualPatternRoleName() + "."
 											+ mainPropertyDescriptor.property.getName()));
 								} else {*/
-								newShapePatternRole.setReadOnlyLabel(true);
+								newShapeRole.setReadOnlyLabel(true);
 								if (StringUtils.isNotEmpty(entry.graphicalObject.getName())) {
-									newShapePatternRole.setLabel(new DataBinding<String>("\"" + entry.graphicalObject.getName() + "\""));
+									newShapeRole.setLabel(new DataBinding<String>("\"" + entry.graphicalObject.getName() + "\""));
 								}
 								// }
-								newShapePatternRole.setExampleLabel(grShape.getGraphicalRepresentation().getText());
+								newShapeRole.setExampleLabel(grShape.getGraphicalRepresentation().getText());
 								// We clone here the GR (fixed unfocusable GR bug)
-								newShapePatternRole.setGraphicalRepresentation((ShapeGraphicalRepresentation) grShape
+								newShapeRole.setGraphicalRepresentation((ShapeGraphicalRepresentation) grShape
 										.getGraphicalRepresentation().clone());
 								// Forces GR to be displayed in view
-								newShapePatternRole.getGraphicalRepresentation().setAllowToLeaveBounds(false);
-								newFlexoConcept.addToPatternRoles(newShapePatternRole);
+								newShapeRole.getGraphicalRepresentation().setAllowToLeaveBounds(false);
+								newFlexoConcept.addToPatternRoles(newShapeRole);
 								if (entry.getParentEntry() != null) {
-									newShapePatternRole.setParentShapePatternRole((ShapePatternRole) newGraphicalElementPatternRoles
+									newShapeRole.setParentShapeRole((ShapeRole) newGraphicalElementRoles
 											.get(entry.getParentEntry()));
 								}
 								if (entry.isMainEntry()) {
-									primaryRepresentationRole = newShapePatternRole;
+									primaryRepresentationRole = newShapeRole;
 								}
-								newGraphicalElementPatternRoles.put(entry, newShapePatternRole);
+								newGraphicalElementRoles.put(entry, newShapeRole);
 							}
 							if (entry.graphicalObject instanceof DiagramConnector) {
 								DiagramConnector grConnector = (DiagramConnector) entry.graphicalObject;
-								ConnectorPatternRole newConnectorPatternRole = getFactory().newInstance(ConnectorPatternRole.class);
-								newConnectorPatternRole.setRoleName(entry.patternRoleName);
-								newConnectorPatternRole.setReadOnlyLabel(true);
+								ConnectorRole newConnectorRole = getFactory().newInstance(ConnectorRole.class);
+								newConnectorRole.setRoleName(entry.patternRoleName);
+								newConnectorRole.setReadOnlyLabel(true);
 								if (StringUtils.isNotEmpty(entry.graphicalObject.getName())) {
-									newConnectorPatternRole
+									newConnectorRole
 											.setLabel(new DataBinding<String>("\"" + entry.graphicalObject.getName() + "\""));
 								}
-								newConnectorPatternRole.setExampleLabel(grConnector.getGraphicalRepresentation().getText());
-								newConnectorPatternRole.setGraphicalRepresentation((ConnectorGraphicalRepresentation) grConnector
+								newConnectorRole.setExampleLabel(grConnector.getGraphicalRepresentation().getText());
+								newConnectorRole.setGraphicalRepresentation((ConnectorGraphicalRepresentation) grConnector
 										.getGraphicalRepresentation().clone());
-								newFlexoConcept.addToPatternRoles(newConnectorPatternRole);
+								newFlexoConcept.addToPatternRoles(newConnectorRole);
 								// Set the source/target
 								// newConnectorPatternRole.setEndShapePatternRole(endShapePatternRole);
 								if (entry.isMainEntry()) {
-									primaryRepresentationRole = newConnectorPatternRole;
+									primaryRepresentationRole = newConnectorRole;
 								}
-								newGraphicalElementPatternRoles.put(entry, newConnectorPatternRole);
+								newGraphicalElementRoles.put(entry, newConnectorRole);
 							}
 
 						}
@@ -452,14 +452,14 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 						}*/
 
 					// Create other individual roles
-					/*Vector<IndividualPatternRole> otherRoles = new Vector<IndividualPatternRole>();
+					/*Vector<IndividualRole> otherRoles = new Vector<IndividualRole>();
 					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 						for (PropertyEntry e : propertyEntries) {
 							if (e.selectEntry) {
 								if (e.property instanceof IFlexoOntologyObjectProperty) {
 									IFlexoOntologyConcept range = ((IFlexoOntologyObjectProperty) e.property).getRange();
 									if (range instanceof IFlexoOntologyClass) {
-										IndividualPatternRole newPatternRole = null; // new IndividualPatternRole(builder);
+										IndividualRole newPatternRole = null; // new IndividualRole(builder);
 										newPatternRole.setPatternRoleName(e.property.getName());
 										newPatternRole.setOntologicType((IFlexoOntologyClass) range);
 										newFlexoConcept.addToPatternRoles(newPatternRole);
@@ -543,7 +543,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							newDropScheme.addToParameters(uriParameter);
 
 							// Declare pattern role
-							/*for (IndividualPatternRole r : otherRoles) {
+							/*for (IndividualRole r : otherRoles) {
 								DeclarePatternRole action = new DeclarePatternRole(builder);
 								action.setAssignation(new DataBinding<Object>(r.getPatternRoleName()));
 								action.setObject(new DataBinding<Object>("parameters." + r.getName()));
@@ -594,13 +594,13 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 					// Add shape/connector actions
 					boolean mainPatternRole = true;
-					for (GraphicalElementPatternRole graphicalElementPatternRole : newGraphicalElementPatternRoles.values()) {
-						if (graphicalElementPatternRole instanceof ShapePatternRole) {
-							ShapePatternRole grPatternRole = (ShapePatternRole) graphicalElementPatternRole;
+					for (GraphicalElementRole graphicalElementRole : newGraphicalElementRoles.values()) {
+						if (graphicalElementRole instanceof ShapeRole) {
+							ShapeRole grPatternRole = (ShapeRole) graphicalElementRole;
 							// Add shape action
 							AddShape newAddShape = getFactory().newInstance(AddShape.class);
 							newDropScheme.addToActions(newAddShape);
-							newAddShape.setAssignation(new DataBinding<Object>(graphicalElementPatternRole.getRoleName()));
+							newAddShape.setAssignation(new DataBinding<Object>(graphicalElementRole.getRoleName()));
 							if (mainPatternRole) {
 								if (isTopLevel) {
 									newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramEditionScheme.TOP_LEVEL));
@@ -610,7 +610,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 									}*/
 							} else {
 								newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(grPatternRole
-										.getParentShapePatternRole().getRoleName()));
+										.getParentShapeRole().getRoleName()));
 							}
 							mainPatternRole = false;
 						}

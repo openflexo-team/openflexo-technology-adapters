@@ -35,7 +35,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter.Cardinality;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 
 /**
  * Represents a Shape in Openflexo build-in diagram technology<br>
@@ -75,7 +75,7 @@ public interface DiagramShape extends DiagramContainerElement<ShapeGraphicalRepr
 	public DiagramContainerElement<?> getParent();
 
 	@Override
-	public ShapePatternRole getPatternRole(VirtualModelInstance vmInstance);
+	public ShapeRole getPatternRole(VirtualModelInstance vmInstance);
 	
 	@Getter(value = START_CONNECTORS, cardinality = Cardinality.LIST, inverse = DiagramConnector.START_SHAPE)
 	@CloningStrategy(StrategyType.IGNORE)

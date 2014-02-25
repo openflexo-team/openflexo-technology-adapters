@@ -41,11 +41,11 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.model.semantics.ExcelMetaModel;
 import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
-import org.openflexo.technologyadapter.excel.viewpoint.BusinessConceptInstancePatternRole;
-import org.openflexo.technologyadapter.excel.viewpoint.BusinessConceptTypePatternRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelCellPatternRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelRowPatternRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelSheetPatternRole;
+import org.openflexo.technologyadapter.excel.viewpoint.BusinessConceptInstanceRole;
+import org.openflexo.technologyadapter.excel.viewpoint.BusinessConceptTypeRole;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelCellRole;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelRowRole;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelSheetRole;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddBusinessConceptInstance;
 
 /**
@@ -56,8 +56,8 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddBusiness
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "BusinessConceptType", flexoRoleClass = BusinessConceptTypePatternRole.class), // Workbook
-		@DeclarePatternRole(FML = "BusinessConceptInstance", flexoRoleClass = BusinessConceptInstancePatternRole.class) // Cell
+@DeclarePatternRole(FML = "BusinessConceptType", flexoRoleClass = BusinessConceptTypeRole.class), // Workbook
+		@DeclarePatternRole(FML = "BusinessConceptInstance", flexoRoleClass = BusinessConceptInstanceRole.class) // Cell
 })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddBusinessConceptInstance", editionActionClass = AddBusinessConceptInstance.class) // Add instance of BC
@@ -79,11 +79,11 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (ExcelCellPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			if (ExcelCellRole.class.isAssignableFrom(patternRoleClass)) {
 				return "cell";
-			} else if (ExcelRowPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
 				return "row";
-			} else if (ExcelSheetPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
 				return "sheet";
 			}
 			return super.defaultFlexoRoleName(patternRoleClass);

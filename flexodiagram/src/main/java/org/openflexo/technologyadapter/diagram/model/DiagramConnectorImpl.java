@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 
 public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorGraphicalRepresentation> implements DiagramConnector {
 
@@ -156,8 +156,8 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 	}
 
 	@Override
-	public ConnectorPatternRole getPatternRole() {
-		return (ConnectorPatternRole) super.getPatternRole();
+	public ConnectorRole getPatternRole() {
+		return (ConnectorRole) super.getPatternRole();
 	}
 
 	private List<DiagramElement<?>> descendants;
@@ -181,8 +181,8 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 	}*/
 
 	@Override
-	public ConnectorPatternRole getPatternRole(VirtualModelInstance vmInstance) {
-		return (ConnectorPatternRole) super.getPatternRole(vmInstance);
+	public ConnectorRole getPatternRole(VirtualModelInstance vmInstance) {
+		return (ConnectorRole) super.getPatternRole(vmInstance);
 	}
 
 }

@@ -33,8 +33,8 @@ import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassPatternRole;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassPatternRole;
+import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassRole;
+import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassRole;
 
 /**
  * Implementation of the ModelSlot class for the EMF technology adapter<br>
@@ -44,8 +44,8 @@ import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassPatternRole;
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassPatternRole.class),
-		@DeclarePatternRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassPatternRole.class) })
+@DeclarePatternRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassRole.class),
+		@DeclarePatternRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model
 // slot
 })
@@ -72,9 +72,9 @@ public interface EMFMetaModelSlot extends ModelSlot<EMFMetaModel> {
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (EMFClassClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			if (EMFClassClassRole.class.isAssignableFrom(patternRoleClass)) {
 				return "class";
-			} else if (EMFEnumClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (EMFEnumClassRole.class.isAssignableFrom(patternRoleClass)) {
 				return "enum";
 			}
 			return super.defaultFlexoRoleName(patternRoleClass);

@@ -53,7 +53,7 @@ import org.openflexo.technologyadapter.owl.model.DataPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
-import org.openflexo.technologyadapter.owl.viewpoint.DataPropertyStatementPatternRole;
+import org.openflexo.technologyadapter.owl.viewpoint.DataPropertyStatementRole;
 import org.openflexo.toolbox.StringUtils;
 
 @FIBPanel("Fib/AddDataPropertyStatementPanel.fib")
@@ -111,15 +111,15 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		}
 
 		/*@Override
-		public List<DataPropertyStatementPatternRole> getAvailablePatternRoles() {
-			return getFlexoConcept().getPatternRoles(DataPropertyStatementPatternRole.class);
+		public List<DataPropertyStatementRole> getAvailablePatternRoles() {
+			return getFlexoConcept().getPatternRoles(DataPropertyStatementRole.class);
 		}*/
 
 		@Override
-		public DataPropertyStatementPatternRole getFlexoRole() {
+		public DataPropertyStatementRole getFlexoRole() {
 			FlexoRole superFlexoRole = super.getFlexoRole();
-			if (superFlexoRole instanceof DataPropertyStatementPatternRole) {
-				return (DataPropertyStatementPatternRole) superFlexoRole;
+			if (superFlexoRole instanceof DataPropertyStatementRole) {
+				return (DataPropertyStatementRole) superFlexoRole;
 			} else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
@@ -277,7 +277,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 				AddDataPropertyStatement action) {
 			if (action.getDataProperty() == null) {
 				Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>> v = new Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>>();
-				for (DataPropertyStatementPatternRole pr : action.getFlexoConcept().getPatternRoles(DataPropertyStatementPatternRole.class)) {
+				for (DataPropertyStatementRole pr : action.getFlexoConcept().getPatternRoles(DataPropertyStatementRole.class)) {
 					v.add(new SetsPatternRole(pr));
 				}
 				return new ValidationError<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>(this, action,
@@ -289,14 +289,14 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		protected static class SetsPatternRole extends
 				FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
 
-			private final DataPropertyStatementPatternRole patternRole;
+			private final DataPropertyStatementRole patternRole;
 
-			public SetsPatternRole(DataPropertyStatementPatternRole patternRole) {
+			public SetsPatternRole(DataPropertyStatementRole patternRole) {
 				super("assign_action_to_pattern_role_($patternRole.patternRoleName)");
 				this.patternRole = patternRole;
 			}
 
-			public DataPropertyStatementPatternRole getPatternRole() {
+			public DataPropertyStatementRole getPatternRole() {
 				return patternRole;
 			}
 

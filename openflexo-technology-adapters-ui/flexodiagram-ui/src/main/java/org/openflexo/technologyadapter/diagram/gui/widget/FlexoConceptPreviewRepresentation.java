@@ -43,8 +43,8 @@ import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 
 public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept> implements FlexoConceptPreviewConstants {
 
@@ -93,20 +93,20 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 						return returned;
 					}
 				});
-		final ShapeGRBinding<ShapePatternRole> shapeBinding = bindShape(ShapePatternRole.class, "shapePatternRole",
-				new ShapeGRProvider<ShapePatternRole>() {
+		final ShapeGRBinding<ShapeRole> shapeBinding = bindShape(ShapeRole.class, "shapePatternRole",
+				new ShapeGRProvider<ShapeRole>() {
 					@Override
-					public ShapeGraphicalRepresentation provideGR(ShapePatternRole drawable, FGEModelFactory factory) {
+					public ShapeGraphicalRepresentation provideGR(ShapeRole drawable, FGEModelFactory factory) {
 						if (drawable.getGraphicalRepresentation() == null) {
 							drawable.setGraphicalRepresentation(makeDefaultShapeGR());
 						}
 						return drawable.getGraphicalRepresentation();
 					}
 				});
-		final ConnectorGRBinding<ConnectorPatternRole> connectorBinding = bindConnector(ConnectorPatternRole.class, "connector",
-				shapeBinding, shapeBinding, new ConnectorGRProvider<ConnectorPatternRole>() {
+		final ConnectorGRBinding<ConnectorRole> connectorBinding = bindConnector(ConnectorRole.class, "connector",
+				shapeBinding, shapeBinding, new ConnectorGRProvider<ConnectorRole>() {
 					@Override
-					public ConnectorGraphicalRepresentation provideGR(ConnectorPatternRole drawable, FGEModelFactory factory) {
+					public ConnectorGraphicalRepresentation provideGR(ConnectorRole drawable, FGEModelFactory factory) {
 						if (drawable.getGraphicalRepresentation() == null) {
 							drawable.setGraphicalRepresentation(makeDefaultConnectorGR());
 						}
@@ -136,41 +136,41 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 			public void visit(FlexoConcept flexoConcept) {
 
 				for (FlexoRole<?> role : flexoConcept.getFlexoRoles()) {
-					if (role instanceof ShapePatternRole) {
-						if (((ShapePatternRole) role).getParentShapeAsDefinedInAction()) {
-							drawShape(shapeBinding, (ShapePatternRole) role, getFlexoConcept());
+					if (role instanceof ShapeRole) {
+						if (((ShapeRole) role).getParentShapeAsDefinedInAction()) {
+							drawShape(shapeBinding, (ShapeRole) role, getFlexoConcept());
 							// System.out.println("Add shape " + role.getPatternRoleName() + " under FlexoConcept");
 						} else {
-							drawShape(shapeBinding, (ShapePatternRole) role, ((ShapePatternRole) role).getParentShapePatternRole());
+							drawShape(shapeBinding, (ShapeRole) role, ((ShapeRole) role).getParentShapeRole());
 							// System.out.println("Add shape " + role.getPatternRoleName() + " under "
-							// + ((ShapePatternRole) role).getParentShapePatternRole().getPatternRoleName());
+							// + ((ShapeRole) role).getParentShapePatternRole().getPatternRoleName());
 						}
-					} else if (role instanceof ConnectorPatternRole) {
-						ConnectorPatternRole connectorPatternRole = (ConnectorPatternRole) role;
+					} else if (role instanceof ConnectorRole) {
+						ConnectorRole connectorRole = (ConnectorRole) role;
 						ShapeGRBinding fromBinding;
 						ShapeGRBinding toBinding;
 						Object fromDrawable;
 						Object toDrawable;
-						if (connectorPatternRole.getStartShapePatternRole() == null) {
-							drawShape(fromArtefactBinding, getFromArtifact(connectorPatternRole), getFlexoConcept());
+						if (connectorRole.getStartShapeRole() == null) {
+							drawShape(fromArtefactBinding, getFromArtifact(connectorRole), getFlexoConcept());
 							fromBinding = fromArtefactBinding;
-							fromDrawable = getFromArtifact(connectorPatternRole);
+							fromDrawable = getFromArtifact(connectorRole);
 							// System.out.println("Add From artifact under FlexoConcept");
 						} else {
 							fromBinding = shapeBinding;
-							fromDrawable = connectorPatternRole.getStartShapePatternRole();
+							fromDrawable = connectorRole.getStartShapeRole();
 						}
-						if (connectorPatternRole.getEndShapePatternRole() == null) {
-							drawShape(toArtefactBinding, getToArtifact(connectorPatternRole), getFlexoConcept());
+						if (connectorRole.getEndShapeRole() == null) {
+							drawShape(toArtefactBinding, getToArtifact(connectorRole), getFlexoConcept());
 							// System.out.println("Add To artifact under FlexoConcept");
 							toBinding = toArtefactBinding;
-							toDrawable = getToArtifact(connectorPatternRole);
+							toDrawable = getToArtifact(connectorRole);
 						} else {
 							toBinding = shapeBinding;
-							toDrawable = connectorPatternRole.getEndShapePatternRole();
+							toDrawable = connectorRole.getEndShapeRole();
 						}
 						// System.out.println("Add connector " + role.getPatternRoleName() + " under FlexoConcept");
-						drawConnector(connectorBinding, connectorPatternRole, fromBinding, fromDrawable, toBinding, toDrawable);
+						drawConnector(connectorBinding, connectorRole, fromBinding, fromDrawable, toBinding, toDrawable);
 					}
 				}
 
@@ -201,7 +201,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		return getModel();
 	}
 
-	protected ConnectorFromArtifact getFromArtifact(ConnectorPatternRole connector) {
+	protected ConnectorFromArtifact getFromArtifact(ConnectorRole connector) {
 		ConnectorFromArtifact returned = fromArtifacts.get(connector);
 		if (returned == null) {
 			returned = new ConnectorFromArtifact(connector);
@@ -210,7 +210,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		return returned;
 	}
 
-	protected ConnectorToArtifact getToArtifact(ConnectorPatternRole connector) {
+	protected ConnectorToArtifact getToArtifact(ConnectorRole connector) {
 		ConnectorToArtifact returned = toArtifacts.get(connector);
 		if (returned == null) {
 			returned = new ConnectorToArtifact(connector);
@@ -221,9 +221,9 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 
 	protected class ConnectorFromArtifact {
 
-		private final ConnectorPatternRole connector;
+		private final ConnectorRole connector;
 
-		protected ConnectorFromArtifact(ConnectorPatternRole aConnector) {
+		protected ConnectorFromArtifact(ConnectorRole aConnector) {
 			connector = aConnector;
 		}
 
@@ -231,9 +231,9 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 
 	protected class ConnectorToArtifact {
 
-		private final ConnectorPatternRole connector;
+		private final ConnectorRole connector;
 
-		protected ConnectorToArtifact(ConnectorPatternRole aConnector) {
+		protected ConnectorToArtifact(ConnectorRole aConnector) {
 			connector = aConnector;
 		}
 

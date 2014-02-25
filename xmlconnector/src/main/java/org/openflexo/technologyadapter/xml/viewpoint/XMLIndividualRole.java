@@ -39,8 +39,8 @@ import org.openflexo.technologyadapter.xml.model.XMLIndividual;
  * 
  */
 @ModelEntity
-@ImplementationClass(XMLIndividualPatternRole.XMLIndividualPatternRoleImpl.class)
-public interface XMLIndividualPatternRole extends FlexoRole<XMLIndividual> {
+@ImplementationClass(XMLIndividualRole.XMLIndividualRoleImpl.class)
+public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String INDIVIDUAL_URI_KEY = "individualURI";
@@ -52,7 +52,7 @@ public interface XMLIndividualPatternRole extends FlexoRole<XMLIndividual> {
 	@Setter(INDIVIDUAL_URI_KEY)
 	public void setIndividualURI(String conceptURI);
 
-	public static abstract class XMLIndividualPatternRoleImpl extends PatternRoleImpl<XMLIndividual> implements XMLIndividualPatternRole {
+	public static abstract class XMLIndividualRoleImpl extends FlexoRoleImpl<XMLIndividual> implements XMLIndividualRole {
 
 		private String individualURI;
 

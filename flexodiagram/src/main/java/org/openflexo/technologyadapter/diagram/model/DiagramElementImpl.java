@@ -37,7 +37,7 @@ import org.openflexo.model.factory.ProxyMethodHandler;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
 public abstract class DiagramElementImpl<G extends GraphicalRepresentation> extends FlexoObjectImpl implements DiagramElement<G>,
@@ -204,7 +204,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	}
 
 	/**
-	 * Return {@link GraphicalElementPatternRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting
+	 * Return {@link GraphicalElementRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting
 	 * that this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared
 	 * in {@link VirtualModel} of supplied {@link VirtualModelInstance}
 	 * 
@@ -213,10 +213,10 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	 * @return
 	 */
 	@Override
-	public GraphicalElementPatternRole<?, ?> getPatternRole(VirtualModelInstance vmInstance) {
+	public GraphicalElementRole<?, ?> getPatternRole(VirtualModelInstance vmInstance) {
 		FlexoConceptInstance epi = getFlexoConceptInstance(vmInstance);
 		if (epi != null) {
-			return (GraphicalElementPatternRole<?, ?>) epi.getRoleForActor(this);
+			return (GraphicalElementRole<?, ?>) epi.getRoleForActor(this);
 		}
 		return null;
 	}

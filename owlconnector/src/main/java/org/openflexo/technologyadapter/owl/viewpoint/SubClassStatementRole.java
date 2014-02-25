@@ -13,16 +13,16 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.owl.model.SubClassStatement;
 
 @ModelEntity
-@ImplementationClass(SubClassStatementPatternRole.SubClassStatementPatternRoleImpl.class)
+@ImplementationClass(SubClassStatementRole.SubClassStatementRoleImpl.class)
 @XMLElement
-public interface SubClassStatementPatternRole extends StatementPatternRole<SubClassStatement> {
+public interface SubClassStatementRole extends StatementRole<SubClassStatement> {
 
-	public static abstract class SubClassStatementPatternRoleImpl extends StatementPatternRoleImpl<SubClassStatement> implements
-			SubClassStatementPatternRole {
+	public static abstract class SubClassStatementRoleImpl extends StatementRoleImpl<SubClassStatement> implements
+			SubClassStatementRole {
 
-		static final Logger logger = FlexoLogger.getLogger(SubClassStatementPatternRole.class.getPackage().toString());
+		static final Logger logger = FlexoLogger.getLogger(SubClassStatementRole.class.getPackage().toString());
 
-		public SubClassStatementPatternRoleImpl() {
+		public SubClassStatementRoleImpl() {
 			super();
 		}
 

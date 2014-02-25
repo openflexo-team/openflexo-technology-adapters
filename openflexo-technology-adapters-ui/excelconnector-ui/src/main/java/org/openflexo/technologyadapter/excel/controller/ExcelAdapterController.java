@@ -14,9 +14,9 @@ import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.view.ExcelWorkbookView;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelCellPatternRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelRowPatternRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelSheetPatternRole;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelCellRole;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelRowRole;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelSheetRole;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelCell;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelRow;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelSheet;
@@ -69,13 +69,13 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 
 	@Override
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
-		if (ExcelSheetPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(ExcelSheet.class);
 		}
-		if (ExcelCellPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		if (ExcelCellRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(ExcelCell.class);
 		}
-		if (ExcelRowPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(ExcelRow.class);
 		}
 		return null;

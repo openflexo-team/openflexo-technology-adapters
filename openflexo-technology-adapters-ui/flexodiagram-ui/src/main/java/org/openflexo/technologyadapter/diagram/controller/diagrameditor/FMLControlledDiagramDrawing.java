@@ -30,9 +30,9 @@ import org.openflexo.fge.control.actions.MouseClickControlActionImpl;
 import org.openflexo.fge.control.actions.MouseClickControlImpl;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.controller.FMLControlledDiagramMouseClickControl;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction.ActionMask;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
@@ -66,7 +66,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 	protected ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramShape shape, DiagramFactory factory) {
 		ShapeGraphicalRepresentation returned = super.retrieveGraphicalRepresentation(shape, factory);
 		if (shape != null) {
-			ShapePatternRole patternRole = shape.getPatternRole(vmInstance);
+			ShapeRole patternRole = shape.getPatternRole(vmInstance);
 			if (patternRole != null) {
 				for (ActionMask mask : shape.getPatternRole(vmInstance).getReferencedMasks()) {
 					returned.addToMouseClickControls(new FMLControlledDiagramMouseClickControl(mask, patternRole, vmInstance, factory));
@@ -83,7 +83,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 
 		boolean doubleClickUsed = false;
 		if (connector != null) {
-			ConnectorPatternRole patternRole = connector.getPatternRole(vmInstance);
+			ConnectorRole patternRole = connector.getPatternRole(vmInstance);
 			if (patternRole != null) {
 				for (ActionMask mask : patternRole.getReferencedMasks()) {
 					returned.addToMouseClickControls(new FMLControlledDiagramMouseClickControl(mask, patternRole, vmInstance, factory));

@@ -42,9 +42,9 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFEnumClass;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassPatternRole;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassPatternRole;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFObjectIndividualPatternRole;
+import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassRole;
+import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassRole;
+import org.openflexo.technologyadapter.emf.viewpoint.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividual;
 import org.openflexo.toolbox.FileResource;
 import org.openflexo.view.EmptyPanel;
@@ -142,11 +142,11 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	 */
 	@Override
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
-		if (EMFObjectIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		if (EMFObjectIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFObjectIndividual.class);
-		} else if (EMFClassClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (EMFClassClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFClassClass.class);
-		} else if (EMFEnumClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (EMFEnumClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFEnumClass.class);
 		}
 		return null;

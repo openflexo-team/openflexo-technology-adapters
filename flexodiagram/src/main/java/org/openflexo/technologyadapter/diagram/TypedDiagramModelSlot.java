@@ -24,10 +24,10 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
@@ -45,9 +45,9 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "Diagram", flexoRoleClass = DiagramPatternRole.class), // Diagrams
-		@DeclarePatternRole(FML = "ShapeSpecification", flexoRoleClass = ShapePatternRole.class), // Shapes
-		@DeclarePatternRole(FML = "ConnectorSpecification", flexoRoleClass = ConnectorPatternRole.class), // Connectors
+@DeclarePatternRole(FML = "Diagram", flexoRoleClass = DiagramRole.class), // Diagrams
+		@DeclarePatternRole(FML = "ShapeSpecification", flexoRoleClass = ShapeRole.class), // Shapes
+		@DeclarePatternRole(FML = "ConnectorSpecification", flexoRoleClass = ConnectorRole.class), // Connectors
 })
 @DeclareEditionActions({ // All edition actions available through this model
 		// slot

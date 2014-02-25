@@ -17,7 +17,7 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.powerpoint.viewpoint;
+package org.openflexo.technologyadapter.excel.viewpoint;
 
 import java.lang.reflect.Type;
 
@@ -28,24 +28,41 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
+import org.openflexo.technologyadapter.excel.model.ExcelCell;
 
 @ModelEntity
-@ImplementationClass(PowerpointSlidePatternRole.PowerpointSlidePatternRoleImpl.class)
+@ImplementationClass(ExcelCellRole.ExcelCellRoleImpl.class)
 @XMLElement
-public interface PowerpointSlidePatternRole extends FlexoRole<PowerpointSlide> {
+public interface ExcelCellRole extends FlexoRole<ExcelCell> {
 
-	public static abstract class PowerpointSlidePatternRoleImpl extends PatternRoleImpl<PowerpointSlide> {
+	public static abstract class ExcelCellRoleImpl extends FlexoRoleImpl<ExcelCell> implements ExcelCellRole {
+
+		public ExcelCellRoleImpl() {
+			super();
+			// TODO Auto-generated constructor stub
+		}
 
 		@Override
 		public Type getType() {
-			return PowerpointSlide.class;
+			return ExcelCell.class;
 		}
 
 		@Override
 		public String getPreciseType() {
-			return PowerpointSlide.class.getSimpleName();
+			return ExcelCell.class.getSimpleName();
 		}
+
+		/*@Override
+		public boolean getIsPrimaryRole() {
+			// TODO Auto-generated method stub
+			return false;
+		}
+
+		@Override
+		public void setIsPrimaryRole(boolean isPrimary) {
+			// TODO Auto-generated method stub
+
+		}*/
 
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
@@ -54,9 +71,9 @@ public interface PowerpointSlidePatternRole extends FlexoRole<PowerpointSlide> {
 		}
 
 		@Override
-		public ActorReference<PowerpointSlide> makeActorReference(PowerpointSlide object, FlexoConceptInstance epi) {
+		public ActorReference<ExcelCell> makeActorReference(ExcelCell object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
-			PowerpointActorReference returned = factory.newInstance(PowerpointActorReference.class);
+			ExcelActorReference<ExcelCell> returned = factory.newInstance(ExcelActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
@@ -64,5 +81,4 @@ public interface PowerpointSlidePatternRole extends FlexoRole<PowerpointSlide> {
 		}
 
 	}
-
 }

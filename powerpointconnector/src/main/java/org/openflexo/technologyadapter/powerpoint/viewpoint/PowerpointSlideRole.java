@@ -17,36 +17,34 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.excel.viewpoint;
+package org.openflexo.technologyadapter.powerpoint.viewpoint;
 
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
+import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptType;
+import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 
 @ModelEntity
-@ImplementationClass(BusinessConceptTypePatternRole.BusinessConceptTypePatternRoleImpl.class)
+@ImplementationClass(PowerpointSlideRole.PowerpointSlidePatternRoleImpl.class)
 @XMLElement
-public interface BusinessConceptTypePatternRole extends FlexoRole<BusinessConceptType> {
+public interface PowerpointSlideRole extends FlexoRole<PowerpointSlide> {
 
-	public static abstract class BusinessConceptTypePatternRoleImpl extends PatternRoleImpl<BusinessConceptType> implements
-			BusinessConceptTypePatternRole {
+	public static abstract class PowerpointSlidePatternRoleImpl extends FlexoRoleImpl<PowerpointSlide> {
 
 		@Override
 		public Type getType() {
-			// TODO Auto-generated method stub
-			return null;
+			return PowerpointSlide.class;
 		}
 
 		@Override
 		public String getPreciseType() {
-			// TODO Auto-generated method stub
-			return null;
+			return PowerpointSlide.class.getSimpleName();
 		}
 
 		@Override
@@ -56,10 +54,15 @@ public interface BusinessConceptTypePatternRole extends FlexoRole<BusinessConcep
 		}
 
 		@Override
-		public ActorReference<BusinessConceptType> makeActorReference(BusinessConceptType object, FlexoConceptInstance epi) {
-			// TODO Auto-generated method stub
-			return null;
+		public ActorReference<PowerpointSlide> makeActorReference(PowerpointSlide object, FlexoConceptInstance epi) {
+			VirtualModelInstanceModelFactory factory = epi.getFactory();
+			PowerpointActorReference returned = factory.newInstance(PowerpointActorReference.class);
+			returned.setFlexoRole(this);
+			returned.setFlexoConceptInstance(epi);
+			returned.setModellingElement(object);
+			return returned;
 		}
 
 	}
+
 }

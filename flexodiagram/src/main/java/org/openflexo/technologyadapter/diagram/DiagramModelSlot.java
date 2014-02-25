@@ -6,9 +6,9 @@ import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPatternRole;
-import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 /**
@@ -27,11 +27,11 @@ public interface DiagramModelSlot extends ModelSlot<Diagram> {
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (DiagramPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			if (DiagramRole.class.isAssignableFrom(patternRoleClass)) {
 				return "diagram";
-			} else if (ShapePatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (ShapeRole.class.isAssignableFrom(patternRoleClass)) {
 				return "shape";
-			} else if (ConnectorPatternRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (ConnectorRole.class.isAssignableFrom(patternRoleClass)) {
 				return "connector";
 			}
 			logger.warning("Unexpected pattern role: " + patternRoleClass.getName());
