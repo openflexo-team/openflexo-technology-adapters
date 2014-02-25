@@ -35,7 +35,7 @@ import org.openflexo.foundation.view.FreeModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -56,8 +56,8 @@ import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.Select
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "PowerpointSlide", patternRoleClass = PowerpointSlidePatternRole.class),
-		@DeclarePatternRole(FML = "PowerpointShape", patternRoleClass = PowerpointShapePatternRole.class) })
+@DeclarePatternRole(FML = "PowerpointSlide", flexoRoleClass = PowerpointSlidePatternRole.class),
+		@DeclarePatternRole(FML = "PowerpointShape", flexoRoleClass = PowerpointShapePatternRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddPowerpointSlide", editionActionClass = AddPowerpointSlide.class),
 		@DeclareEditionAction(FML = "AddPowerpointShape", editionActionClass = AddPowerpointShape.class) })
@@ -89,13 +89,13 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 		}
 
 		@Override
-		public <PR extends PatternRole<?>> String defaultPatternRoleName(Class<PR> patternRoleClass) {
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (PowerpointSlidePatternRole.class.isAssignableFrom(patternRoleClass)) {
 				return "slide";
 			} else if (PowerpointShapePatternRole.class.isAssignableFrom(patternRoleClass)) {
 				return "shape";
 			}
-			return super.defaultPatternRoleName(patternRoleClass);
+			return super.defaultFlexoRoleName(patternRoleClass);
 		}
 
 		@Override

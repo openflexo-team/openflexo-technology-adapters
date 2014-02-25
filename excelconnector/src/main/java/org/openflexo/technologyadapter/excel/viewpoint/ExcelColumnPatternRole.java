@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -33,7 +33,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 @ModelEntity
 @ImplementationClass(ExcelColumnPatternRole.ExcelColumnPatternRoleImpl.class)
 @XMLElement
-public interface ExcelColumnPatternRole extends PatternRole<ExcelColumn> {
+public interface ExcelColumnPatternRole extends FlexoRole<ExcelColumn> {
 
 	public abstract static class ExcelColumnPatternRoleImpl extends PatternRoleImpl<ExcelColumn> implements ExcelColumnPatternRole {
 
@@ -57,7 +57,7 @@ public interface ExcelColumnPatternRole extends PatternRole<ExcelColumn> {
 		public ActorReference<ExcelColumn> makeActorReference(ExcelColumn object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ExcelActorReference<ExcelColumn> returned = factory.newInstance(ExcelActorReference.class);
-			returned.setPatternRole(this);
+			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;

@@ -27,7 +27,7 @@ import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.components.widget.OntologyView;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -141,7 +141,7 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends PatternRole<?>> patternRoleClass) {
+	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (EMFObjectIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFObjectIndividual.class);
 		} else if (EMFClassClassPatternRole.class.isAssignableFrom(patternRoleClass)) {

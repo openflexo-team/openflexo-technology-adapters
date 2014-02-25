@@ -19,18 +19,18 @@
  */
 package org.openflexo.technologyadapter.diagram.model.dm;
 
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 
 public class GraphicalRepresentationChanged extends DiagramDataModification {
-	private PatternRole patternRole;
+	private FlexoRole flexoRole;
 
-	public GraphicalRepresentationChanged(PatternRole patternRole, Object graphicalRepresentation) {
+	public GraphicalRepresentationChanged(FlexoRole flexoRole, Object graphicalRepresentation) {
 		super(null, graphicalRepresentation);
-		this.patternRole = patternRole;
+		this.flexoRole = flexoRole;
 	}
 
-	public PatternRole getPatternRole() {
-		return patternRole;
+	public FlexoRole getFlexoRole() {
+		return flexoRole;
 	}
 
 }

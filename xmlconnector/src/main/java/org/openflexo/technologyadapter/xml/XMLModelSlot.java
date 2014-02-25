@@ -45,7 +45,7 @@ import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualPatternRole;
  * @author xtof
  * 
  */
-@DeclarePatternRoles({ @DeclarePatternRole(patternRoleClass = XMLIndividualPatternRole.class, FML = "XMLIndividual"), // Instances
+@DeclarePatternRoles({ @DeclarePatternRole(flexoRoleClass = XMLIndividualPatternRole.class, FML = "XMLIndividual"), // Instances
 })
 @DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add instance
 })

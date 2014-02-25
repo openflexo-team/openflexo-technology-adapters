@@ -27,7 +27,7 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.gui.CSVIconLibrary;
 import org.openflexo.toolbox.FileResource;
@@ -82,7 +82,7 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends PatternRole<?>> patternRoleClass) {
+	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		// TODO Auto-generated method stub
 		return null;
 	}

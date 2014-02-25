@@ -14,7 +14,7 @@ import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -45,15 +45,15 @@ import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddSubClassSt
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "OWLIndividual", patternRoleClass = OWLIndividualPatternRole.class),
-		@DeclarePatternRole(FML = "OWLClass", patternRoleClass = OWLClassPatternRole.class),
-		@DeclarePatternRole(FML = "OWLDataProperty", patternRoleClass = OWLDataPropertyPatternRole.class),
-		@DeclarePatternRole(FML = "OWLObjectProperty", patternRoleClass = OWLObjectPropertyPatternRole.class),
-		@DeclarePatternRole(FML = "OWLProperty", patternRoleClass = OWLPropertyPatternRole.class),
-		@DeclarePatternRole(FML = "DataPropertyStatement", patternRoleClass = DataPropertyStatementPatternRole.class),
-		@DeclarePatternRole(FML = "ObjectPropertyStatement", patternRoleClass = ObjectPropertyStatementPatternRole.class),
-		// @DeclarePatternRole(FML = "RestrictionStatement", patternRoleClass = RestrictionStatementPatternRole.class),
-		@DeclarePatternRole(FML = "SubClassStatement", patternRoleClass = SubClassStatementPatternRole.class) })
+@DeclarePatternRole(FML = "OWLIndividual", flexoRoleClass = OWLIndividualPatternRole.class),
+		@DeclarePatternRole(FML = "OWLClass", flexoRoleClass = OWLClassPatternRole.class),
+		@DeclarePatternRole(FML = "OWLDataProperty", flexoRoleClass = OWLDataPropertyPatternRole.class),
+		@DeclarePatternRole(FML = "OWLObjectProperty", flexoRoleClass = OWLObjectPropertyPatternRole.class),
+		@DeclarePatternRole(FML = "OWLProperty", flexoRoleClass = OWLPropertyPatternRole.class),
+		@DeclarePatternRole(FML = "DataPropertyStatement", flexoRoleClass = DataPropertyStatementPatternRole.class),
+		@DeclarePatternRole(FML = "ObjectPropertyStatement", flexoRoleClass = ObjectPropertyStatementPatternRole.class),
+		// @DeclarePatternRole(FML = "RestrictionStatement", flexoRoleClass = RestrictionStatementPatternRole.class),
+		@DeclarePatternRole(FML = "SubClassStatement", flexoRoleClass = SubClassStatementPatternRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddOWLIndividual", editionActionClass = AddOWLIndividual.class), // Add instance
 		@DeclareEditionAction(FML = "AddOWLClass", editionActionClass = AddOWLClass.class), // Add class
@@ -88,7 +88,7 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		}
 
 		@Override
-		public <PR extends PatternRole<?>> String defaultPatternRoleName(Class<PR> patternRoleClass) {
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (OWLClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
 				return "class";
 			} else if (OWLIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
@@ -108,7 +108,7 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 			} else if (SubClassStatementPatternRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
 			}
-			return super.defaultPatternRoleName(patternRoleClass);
+			return super.defaultFlexoRoleName(patternRoleClass);
 		}
 
 		@Override

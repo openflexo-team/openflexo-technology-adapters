@@ -9,7 +9,7 @@ import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.components.widget.OntologyView;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -146,7 +146,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends PatternRole<?>> patternRoleClass) {
+	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (OWLClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLClass.class);
 		} else if (OWLIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {

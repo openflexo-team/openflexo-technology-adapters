@@ -182,7 +182,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 				gr.setY(dropLocation.getY());
 
 				// Temporary comment this portion of code if child shapes are declared inside this shape
-				if (!action.getPatternRole().containsShapes() && action.getContainer().toString().equals(DiagramEditionScheme.TOP_LEVEL)) {
+				if (!action.getFlexoRole().containsShapes() && action.getContainer().toString().equals(DiagramEditionScheme.TOP_LEVEL)) {
 					ShapeBorder border = gr.getBorder();
 					ShapeBorder newBorder = gr.getFactory().makeShapeBorder(border);
 					boolean requireNewBorder = false;

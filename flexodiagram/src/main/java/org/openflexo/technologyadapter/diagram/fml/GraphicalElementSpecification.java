@@ -234,7 +234,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 			}*/
 
 			try {
-				DiagramElement<GR> diagramElement = epi.getPatternActor(patternRole);
+				DiagramElement<GR> diagramElement = epi.getFlexoActor(patternRole);
 				getFeature().applyToGraphicalRepresentation((GR) diagramElement.getGraphicalRepresentation(),
 						(T) getValue().getBindingValue(epi));
 				// getFeature().applyToGraphicalRepresentation(gr, (T) getValue().getBindingValue(element.getFlexoConceptInstance()));
@@ -256,7 +256,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		 * @return
 		 */
 		public T applyToModel(FlexoConceptInstance epi, GraphicalElementPatternRole<?, GR> patternRole) {
-			DiagramElement<GR> diagramElement = epi.getPatternActor(patternRole);
+			DiagramElement<GR> diagramElement = epi.getFlexoActor(patternRole);
 			T newValue = getFeature().retrieveFromGraphicalRepresentation((GR) diagramElement.getGraphicalRepresentation());
 			try {
 				getValue().setBindingValue(newValue, epi);

@@ -331,7 +331,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			@Override
 			protected void fixAction() {
 				GraphicalAction graphicalAction = getObject();
-				graphicalAction.setSubject(new DataBinding<DiagramElement<?>>(patternRole.getPatternRoleName()));
+				graphicalAction.setSubject(new DataBinding<DiagramElement<?>>(patternRole.getRoleName()));
 			}
 
 		}

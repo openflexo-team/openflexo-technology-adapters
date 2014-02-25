@@ -40,7 +40,7 @@ import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.SetObjectPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
@@ -97,11 +97,11 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		}
 
 		@Override
-		public ObjectPropertyStatementPatternRole getPatternRole() {
-			PatternRole superPatternRole = super.getPatternRole();
-			if (superPatternRole instanceof ObjectPropertyStatementPatternRole) {
-				return (ObjectPropertyStatementPatternRole) superPatternRole;
-			} else if (superPatternRole != null) {
+		public ObjectPropertyStatementPatternRole getFlexoRole() {
+			FlexoRole superFlexoRole = super.getFlexoRole();
+			if (superFlexoRole instanceof ObjectPropertyStatementPatternRole) {
+				return (ObjectPropertyStatementPatternRole) superFlexoRole;
+			} else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -143,8 +143,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			if (getVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
 				return getVirtualModel().getOntologyObjectProperty(objectPropertyURI);
 			} else {
-				if (getPatternRole() != null) {
-					return (OWLObjectProperty) getPatternRole().getObjectProperty();
+				if (getFlexoRole() != null) {
+					return (OWLObjectProperty) getFlexoRole().getObjectProperty();
 				}
 			}
 			return null;
@@ -153,11 +153,11 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		@Override
 		public void setObjectProperty(IFlexoOntologyObjectProperty ontologyProperty) {
 			if (ontologyProperty != null) {
-				if (getPatternRole() != null) {
-					if (getPatternRole().getObjectProperty().isSuperConceptOf(ontologyProperty)) {
+				if (getFlexoRole() != null) {
+					if (getFlexoRole().getObjectProperty().isSuperConceptOf(ontologyProperty)) {
 						objectPropertyURI = ontologyProperty.getURI();
 					} else {
-						getPatternRole().setObjectProperty(ontologyProperty);
+						getFlexoRole().setObjectProperty(ontologyProperty);
 					}
 				} else {
 					objectPropertyURI = ontologyProperty.getURI();
@@ -170,7 +170,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		@Override
 		public String _getObjectPropertyURI() {
 			if (getObjectProperty() != null) {
-				if (getPatternRole() != null && getPatternRole().getObjectProperty() == getObjectProperty()) {
+				if (getFlexoRole() != null && getFlexoRole().getObjectProperty() == getObjectProperty()) {
 					// No need to store an overriding type, just use default provided by pattern role
 					return null;
 				}
@@ -306,7 +306,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			@Override
 			protected void fixAction() {
 				AddObjectPropertyStatement action = getObject();
-				action.setAssignation(new DataBinding<Object>(patternRole.getPatternRoleName()));
+				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
 			}
 
 		}

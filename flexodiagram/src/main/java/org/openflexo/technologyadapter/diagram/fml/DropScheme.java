@@ -26,7 +26,7 @@ import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.viewpoint.AbstractCreationScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FlexoConceptInstanceType;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.model.annotations.Getter;
@@ -75,7 +75,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 	public void setTargetFlexoConcept(FlexoConcept targetFlexoConcept);
 
-	public boolean isValidTarget(FlexoConcept aTarget, PatternRole contextRole);
+	public boolean isValidTarget(FlexoConcept aTarget, FlexoRole contextRole);
 
 	public static abstract class DropSchemeImpl extends AbstractCreationSchemeImpl implements DropScheme {
 
@@ -155,12 +155,12 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 		}
 
 		@Override
-		public boolean isValidTarget(FlexoConcept aTarget, PatternRole contextRole) {
+		public boolean isValidTarget(FlexoConcept aTarget, FlexoRole contextRole) {
 			if (getTargetFlexoConcept() != null && getTargetFlexoConcept().isAssignableFrom(aTarget)) {
 				if (targetHasMultipleRoles()) {
 					// TODO make proper implementation when role inheritance will be in use !!!
 					return getTargetPatternRole() == null
-							|| getTargetPatternRole().getPatternRoleName().equals(contextRole.getPatternRoleName());
+							|| getTargetPatternRole().getRoleName().equals(contextRole.getRoleName());
 				} else {
 					return true;
 				}

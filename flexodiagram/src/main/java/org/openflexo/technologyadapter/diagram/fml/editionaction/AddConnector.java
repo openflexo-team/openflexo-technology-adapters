@@ -40,7 +40,7 @@ import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -94,7 +94,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	public void setToShape(DataBinding<DiagramShape> toShape);
 
 	@Override
-	public ConnectorPatternRole getPatternRole();
+	public ConnectorPatternRole getFlexoRole();
 
 	public static abstract class AddConnectorImpl extends AddDiagramElementActionImpl<DiagramConnector> implements AddConnector {
 
@@ -129,11 +129,11 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}*/
 
 		@Override
-		public ConnectorPatternRole getPatternRole() {
-			PatternRole superPatternRole = super.getPatternRole();
-			if (superPatternRole instanceof ConnectorPatternRole) {
-				return (ConnectorPatternRole) superPatternRole;
-			} else if (superPatternRole != null) {
+		public ConnectorPatternRole getFlexoRole() {
+			FlexoRole superFlexoRole = super.getFlexoRole();
+			if (superFlexoRole instanceof ConnectorPatternRole) {
+				return (ConnectorPatternRole) superFlexoRole;
+			} else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -141,9 +141,9 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}
 
 		public DiagramShape getFromShape(FlexoBehaviourAction action) {
-			if (getPatternRole() != null && !getPatternRole().getStartShapeAsDefinedInAction()) {
-				FlexoObject returned = action.getFlexoConceptInstance().getPatternActor(getPatternRole().getStartShapePatternRole());
-				return action.getFlexoConceptInstance().getPatternActor(getPatternRole().getStartShapePatternRole());
+			if (getFlexoRole() != null && !getFlexoRole().getStartShapeAsDefinedInAction()) {
+				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getStartShapePatternRole());
+				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getStartShapePatternRole());
 			} else {
 				try {
 					return getFromShape().getBindingValue(action);
@@ -159,8 +159,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}
 
 		public DiagramShape getToShape(FlexoBehaviourAction action) {
-			if (getPatternRole() != null && !getPatternRole().getEndShapeAsDefinedInAction()) {
-				return action.getFlexoConceptInstance().getPatternActor(getPatternRole().getEndShapePatternRole());
+			if (getFlexoRole() != null && !getFlexoRole().getEndShapeAsDefinedInAction()) {
+				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getEndShapePatternRole());
 			} else {
 				try {
 					return getToShape().getBindingValue(action);
@@ -177,7 +177,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public String toString() {
-			return "AddConnector " + Integer.toHexString(hashCode()) + " patternRole=" + getPatternRole();
+			return "AddConnector " + Integer.toHexString(hashCode()) + " patternRole=" + getFlexoRole();
 		}
 
 		/*@Override
@@ -273,8 +273,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			// If an overriden graphical representation is defined, use it
 			/*if (action.getOverridingGraphicalRepresentation(getPatternRole()) != null) {
 				grToUse = action.getOverridingGraphicalRepresentation(getPatternRole());
-			} else*/if (getPatternRole().getGraphicalRepresentation() != null) {
-				grToUse = getPatternRole().getGraphicalRepresentation();
+			} else*/if (getFlexoRole().getGraphicalRepresentation() != null) {
+				grToUse = getFlexoRole().getGraphicalRepresentation();
 			}
 
 			ConnectorGraphicalRepresentation newGR = factory.makeConnectorGraphicalRepresentation();
@@ -309,7 +309,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public ValidationIssue<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector> applyValidation(AddConnector action) {
-			if (action.getPatternRole() == null) {
+			if (action.getFlexoRole() == null) {
 				Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorPatternRole, AddConnector>>();
 				for (ConnectorPatternRole pr : action.getFlexoConcept().getPatternRoles(ConnectorPatternRole.class)) {
 					v.add(new SetsPatternRole(pr));
@@ -336,7 +336,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			@Override
 			protected void fixAction() {
 				AddConnector action = getObject();
-				action.setAssignation(new DataBinding<Object>(patternRole.getPatternRoleName()));
+				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
 			}
 
 		}
@@ -350,7 +350,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public ValidationIssue<AddConnectorActionMustHaveAValidStartingShape, AddConnector> applyValidation(AddConnector action) {
-			ConnectorPatternRole pr = action.getPatternRole();
+			ConnectorPatternRole pr = action.getFlexoRole();
 			DataBinding<DiagramShape> db = action.getFromShape();
 			if (pr != null && pr.getStartShapeAsDefinedInAction() && !(db.isSet() && db.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>>();
@@ -387,7 +387,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			@Override
 			protected void fixAction() {
 				AddConnector action = getObject();
-				action.setFromShape(new DataBinding<DiagramShape>(patternRole.getPatternRoleName()));
+				action.setFromShape(new DataBinding<DiagramShape>(patternRole.getRoleName()));
 			}
 		}
 
@@ -414,7 +414,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			@Override
 			protected void fixAction() {
 				AddConnector action = getObject();
-				action.setFromShape(new DataBinding<DiagramShape>(DiagramEditionScheme.FROM_TARGET + "." + patternRole.getPatternRoleName()));
+				action.setFromShape(new DataBinding<DiagramShape>(DiagramEditionScheme.FROM_TARGET + "." + patternRole.getRoleName()));
 			}
 		}
 
@@ -428,7 +428,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public ValidationIssue<AddConnectorActionMustHaveAValidEndingShape, AddConnector> applyValidation(AddConnector action) {
-			ConnectorPatternRole pr = action.getPatternRole();
+			ConnectorPatternRole pr = action.getFlexoRole();
 			DataBinding<DiagramShape> shape = action.getToShape();
 			if (pr != null && pr.getEndShapeAsDefinedInAction() && !(shape.isSet() && shape.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>>();
@@ -465,7 +465,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			@Override
 			protected void fixAction() {
 				AddConnector action = getObject();
-				action.setToShape(new DataBinding<DiagramShape>(patternRole.getPatternRoleName()));
+				action.setToShape(new DataBinding<DiagramShape>(patternRole.getRoleName()));
 			}
 		}
 
@@ -492,7 +492,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			@Override
 			protected void fixAction() {
 				AddConnector action = getObject();
-				action.setToShape(new DataBinding<DiagramShape>(DiagramEditionScheme.TO_TARGET + "." + patternRole.getPatternRoleName()));
+				action.setToShape(new DataBinding<DiagramShape>(DiagramEditionScheme.TO_TARGET + "." + patternRole.getRoleName()));
 			}
 		}
 

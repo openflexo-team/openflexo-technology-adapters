@@ -41,7 +41,7 @@ import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
@@ -54,8 +54,8 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 
 	// private Boolean ignoreNotifications = true;
 
-	// private Hashtable<PatternRole, FlexoConceptPreviewShapeGR> shapesGR;
-	// private Hashtable<PatternRole, FlexoConceptPreviewConnectorGR> connectorsGR;
+	// private Hashtable<FlexoRole, FlexoConceptPreviewShapeGR> shapesGR;
+	// private Hashtable<FlexoRole, FlexoConceptPreviewConnectorGR> connectorsGR;
 
 	static FGEModelFactory PREVIEW_FACTORY;
 
@@ -67,15 +67,15 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		}
 	}
 
-	private final Hashtable<PatternRole, ConnectorFromArtifact> fromArtifacts;
-	private final Hashtable<PatternRole, ConnectorToArtifact> toArtifacts;
+	private final Hashtable<FlexoRole, ConnectorFromArtifact> fromArtifacts;
+	private final Hashtable<FlexoRole, ConnectorToArtifact> toArtifacts;
 
 	public FlexoConceptPreviewRepresentation(FlexoConcept model) {
 		super(model, PREVIEW_FACTORY, PersistenceMode.UniqueGraphicalRepresentations);
 		setEditable(false);
 
-		fromArtifacts = new Hashtable<PatternRole, ConnectorFromArtifact>();
-		toArtifacts = new Hashtable<PatternRole, ConnectorToArtifact>();
+		fromArtifacts = new Hashtable<FlexoRole, ConnectorFromArtifact>();
+		toArtifacts = new Hashtable<FlexoRole, ConnectorToArtifact>();
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 			@Override
 			public void visit(FlexoConcept flexoConcept) {
 
-				for (PatternRole<?> role : flexoConcept.getPatternRoles()) {
+				for (FlexoRole<?> role : flexoConcept.getFlexoRoles()) {
 					if (role instanceof ShapePatternRole) {
 						if (((ShapePatternRole) role).getParentShapeAsDefinedInAction()) {
 							drawShape(shapeBinding, (ShapePatternRole) role, getFlexoConcept());
@@ -191,7 +191,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		/*if (getFlexoConcept() != null) {
 			getFlexoConcept().deleteObserver(this);
 		}*/
-		/*for (PatternRole role : getFlexoConcept().getPatternRoles()) {
+		/*for (FlexoRole role : getFlexoConcept().getPatternRoles()) {
 			role.deleteObserver(this);
 		}*/
 		super.delete();

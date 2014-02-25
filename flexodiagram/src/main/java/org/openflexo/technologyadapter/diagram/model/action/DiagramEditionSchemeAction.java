@@ -64,7 +64,7 @@ public abstract class DiagramEditionSchemeAction<A extends FlexoBehaviourAction<
 	@Override
 	public Object getValue(BindingVariable variable) {
 		if (variable instanceof PatternRoleBindingVariable) {
-			return getFlexoConceptInstance().getPatternActor(((PatternRoleBindingVariable) variable).getPatternRole());
+			return getFlexoConceptInstance().getFlexoActor(((PatternRoleBindingVariable) variable).getFlexoRole());
 		} else if (variable.getVariableName().equals(FlexoBehaviour.THIS)) {
 			return getFlexoConceptInstance();
 		}
@@ -74,7 +74,7 @@ public abstract class DiagramEditionSchemeAction<A extends FlexoBehaviourAction<
 	@Override
 	public void setValue(Object value, BindingVariable variable) {
 		if (variable instanceof PatternRoleBindingVariable) {
-			getFlexoConceptInstance().setPatternActor(value, ((PatternRoleBindingVariable) variable).getPatternRole());
+			getFlexoConceptInstance().setFlexoActor(value, ((PatternRoleBindingVariable) variable).getFlexoRole());
 			return;
 		}
 		super.setValue(value, variable);

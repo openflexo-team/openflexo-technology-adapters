@@ -7,7 +7,7 @@ import javax.swing.ImageIcon;
 import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -112,7 +112,7 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends PatternRole<?>> patternRoleClass) {
+	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (XSClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(XSOntClass.class);
 		} else if (XSIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {

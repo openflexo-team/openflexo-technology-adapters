@@ -3,7 +3,7 @@ package org.openflexo.technologyadapter.excel.controller;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -68,7 +68,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends PatternRole<?>> patternRoleClass) {
+	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (ExcelSheetPatternRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(ExcelSheet.class);
 		}

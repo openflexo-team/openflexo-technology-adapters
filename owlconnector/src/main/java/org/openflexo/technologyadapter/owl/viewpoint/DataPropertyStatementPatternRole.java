@@ -91,7 +91,7 @@ public interface DataPropertyStatementPatternRole extends StatementPatternRole<D
 		public DataPropertyStatementActorReference makeActorReference(DataPropertyStatement object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			DataPropertyStatementActorReference returned = factory.newInstance(DataPropertyStatementActorReference.class);
-			returned.setPatternRole(this);
+			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;

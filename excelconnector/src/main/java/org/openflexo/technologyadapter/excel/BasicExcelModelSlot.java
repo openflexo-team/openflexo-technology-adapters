@@ -35,7 +35,7 @@ import org.openflexo.foundation.view.FreeModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -62,10 +62,10 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcel
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "ExcelSheet", patternRoleClass = ExcelSheetPatternRole.class), // Sheet
-		@DeclarePatternRole(FML = "ExcelColumn", patternRoleClass = ExcelColumnPatternRole.class), // Sheet
-		@DeclarePatternRole(FML = "ExcelRow", patternRoleClass = ExcelRowPatternRole.class), // Row
-		@DeclarePatternRole(FML = "ExcelCell", patternRoleClass = ExcelCellPatternRole.class) // Cell
+@DeclarePatternRole(FML = "ExcelSheet", flexoRoleClass = ExcelSheetPatternRole.class), // Sheet
+		@DeclarePatternRole(FML = "ExcelColumn", flexoRoleClass = ExcelColumnPatternRole.class), // Sheet
+		@DeclarePatternRole(FML = "ExcelRow", flexoRoleClass = ExcelRowPatternRole.class), // Row
+		@DeclarePatternRole(FML = "ExcelCell", flexoRoleClass = ExcelCellPatternRole.class) // Cell
 })
 @DeclareEditionActions({ // All edition actions available through this model
 // slot
@@ -113,7 +113,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		}
 
 		@Override
-		public <PR extends PatternRole<?>> String defaultPatternRoleName(Class<PR> patternRoleClass) {
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (ExcelCellPatternRole.class.isAssignableFrom(patternRoleClass)) {
 				return "cell";
 			} else if (ExcelRowPatternRole.class.isAssignableFrom(patternRoleClass)) {
@@ -121,7 +121,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 			} else if (ExcelSheetPatternRole.class.isAssignableFrom(patternRoleClass)) {
 				return "sheet";
 			}
-			return super.defaultPatternRoleName(patternRoleClass);
+			return super.defaultFlexoRoleName(patternRoleClass);
 		}
 
 		@Override

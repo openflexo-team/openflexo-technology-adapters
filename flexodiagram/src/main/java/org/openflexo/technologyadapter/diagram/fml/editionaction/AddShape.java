@@ -40,7 +40,7 @@ import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -90,7 +90,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 	public void setExtendParentBoundsToHostThisShape(boolean extendParentBoundsToHostThisShape);
 
 	@Override
-	public ShapePatternRole getPatternRole();
+	public ShapePatternRole getFlexoRole();
 
 	public static abstract class AddShapeImpl extends AddDiagramElementActionImpl<DiagramShape> implements AddShape {
 
@@ -119,9 +119,9 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 
 		public DiagramContainerElement<?> getContainer(FlexoBehaviourAction action) {
-			if (getPatternRole() != null && !getPatternRole().getParentShapeAsDefinedInAction()) {
-				FlexoObject returned = action.getFlexoConceptInstance().getPatternActor(getPatternRole().getParentShapePatternRole());
-				return action.getFlexoConceptInstance().getPatternActor(getPatternRole().getParentShapePatternRole());
+			if (getFlexoRole() != null && !getFlexoRole().getParentShapeAsDefinedInAction()) {
+				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapePatternRole());
+				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapePatternRole());
 			} else {
 				try {
 					return getContainer().getBindingValue(action);
@@ -137,11 +137,11 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 
 		@Override
-		public ShapePatternRole getPatternRole() {
-			PatternRole superPatternRole = super.getPatternRole();
-			if (superPatternRole instanceof ShapePatternRole) {
-				return (ShapePatternRole) superPatternRole;
-			} else if (superPatternRole != null) {
+		public ShapePatternRole getFlexoRole() {
+			FlexoRole superFlexoRole = super.getFlexoRole();
+			if (superFlexoRole instanceof ShapePatternRole) {
+				return (ShapePatternRole) superFlexoRole;
+			} else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -204,8 +204,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			// If an overriden graphical representation is defined, use it
 			/*if (action.getOverridingGraphicalRepresentation(getPatternRole()) != null) {
 				grToUse = action.getOverridingGraphicalRepresentation(getPatternRole());
-			} else*/if (getPatternRole().getGraphicalRepresentation() != null) {
-				grToUse = getPatternRole().getGraphicalRepresentation();
+			} else*/if (getFlexoRole().getGraphicalRepresentation() != null) {
+				grToUse = getFlexoRole().getGraphicalRepresentation();
 			}
 
 			ShapeGraphicalRepresentation newGR = factory.makeShapeGraphicalRepresentation();
@@ -216,7 +216,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());
 
 			if (container == null) {
-				logger.warning("When adding shape, cannot find container for action " + getPatternRole() + " container="
+				logger.warning("When adding shape, cannot find container for action " + getFlexoRole() + " container="
 						+ getContainer(action) + " container=" + getContainer());
 				return null;
 			}
@@ -247,7 +247,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 		@Override
 		public ValidationIssue<AddShapeActionMustAdressAValidShapePatternRole, AddShape> applyValidation(AddShape action) {
-			if (action.getPatternRole() == null) {
+			if (action.getFlexoRole() == null) {
 				Vector<FixProposal<AddShapeActionMustAdressAValidShapePatternRole, AddShape>> v = new Vector<FixProposal<AddShapeActionMustAdressAValidShapePatternRole, AddShape>>();
 				for (ShapePatternRole pr : action.getFlexoConcept().getPatternRoles(ShapePatternRole.class)) {
 					v.add(new SetsPatternRole(pr));
@@ -274,7 +274,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			@Override
 			protected void fixAction() {
 				AddShape action = getObject();
-				action.setAssignation(new DataBinding<Object>(patternRole.getPatternRoleName()));
+				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
 			}
 
 		}
@@ -287,7 +287,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 		@Override
 		public ValidationIssue<AddShapeActionMustHaveAValidContainer, AddShape> applyValidation(AddShape action) {
-			if (action.getPatternRole() != null && action.getPatternRole().getParentShapeAsDefinedInAction()
+			if (action.getFlexoRole() != null && action.getFlexoRole().getParentShapeAsDefinedInAction()
 					&& !(action.getContainer().isSet() && action.getContainer().isValid())) {
 				Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>> v = new Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>>();
 				if (action.getFlexoBehaviour() instanceof DropScheme) {
@@ -338,7 +338,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			@Override
 			protected void fixAction() {
 				AddShape action = getObject();
-				action.setContainer(new DataBinding<DiagramContainerElement<?>>(patternRole.getPatternRoleName()));
+				action.setContainer(new DataBinding<DiagramContainerElement<?>>(patternRole.getRoleName()));
 			}
 		}
 
@@ -365,7 +365,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			protected void fixAction() {
 				AddShape action = getObject();
 				action.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramEditionScheme.TARGET + "."
-						+ patternRole.getPatternRoleName()));
+						+ patternRole.getRoleName()));
 			}
 		}
 

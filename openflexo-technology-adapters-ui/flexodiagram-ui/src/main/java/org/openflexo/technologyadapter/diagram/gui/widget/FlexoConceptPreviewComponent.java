@@ -34,7 +34,7 @@ import org.openflexo.fib.controller.FIBSelectable;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
@@ -176,7 +176,7 @@ public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomCom
 
 	@Override
 	public boolean mayRepresent(GraphicalElementPatternRole<?, ?> o) {
-		return o instanceof PatternRole && ((PatternRole) o).getFlexoConcept() == flexoConcept;
+		return o instanceof FlexoRole && ((FlexoRole) o).getFlexoConcept() == flexoConcept;
 	}
 
 	@Override

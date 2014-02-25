@@ -20,7 +20,7 @@
 package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementPatternRole;
@@ -45,8 +45,8 @@ public abstract interface AddDiagramElementAction<T extends DiagramElement<?>> e
 		}*/
 
 		@Override
-		public GraphicalElementPatternRole<?, ?> getPatternRole() {
-			PatternRole<?> superPatternRole = super.getPatternRole();
+		public GraphicalElementPatternRole<?, ?> getFlexoRole() {
+			FlexoRole<?> superPatternRole = super.getFlexoRole();
 			if (superPatternRole instanceof GraphicalElementPatternRole) {
 				return (GraphicalElementPatternRole<?, ?>) superPatternRole;
 			} else if (superPatternRole != null) {
@@ -58,10 +58,10 @@ public abstract interface AddDiagramElementAction<T extends DiagramElement<?>> e
 
 		protected String getGraphicalElementSpecificationFMLRepresentation(FMLRepresentationContext context) {
 
-			if (getPatternRole() != null) {
-				if (getPatternRole().getGrSpecifications().size() > 0) {
+			if (getFlexoRole() != null) {
+				if (getFlexoRole().getGrSpecifications().size() > 0) {
 					StringBuffer sb = new StringBuffer();
-					for (GraphicalElementSpecification ges : getPatternRole().getGrSpecifications()) {
+					for (GraphicalElementSpecification ges : getFlexoRole().getGrSpecifications()) {
 						if (ges.getValue().isSet()) {
 							sb.append("  " + ges.getFeatureName() + " = " + ges.getValue().toString() + ";" + StringUtils.LINE_SEPARATOR);
 						}

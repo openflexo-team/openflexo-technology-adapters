@@ -9,7 +9,7 @@ import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -27,7 +27,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(DiagramPatternRole.DiagramPatternRoleImpl.class)
 @XMLElement
-public interface DiagramPatternRole extends PatternRole<Diagram> {
+public interface DiagramPatternRole extends FlexoRole<Diagram> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String DIAGRAM_SPECIFICATION_URI_KEY = "diagramSpecificationURI";
@@ -65,7 +65,7 @@ public interface DiagramPatternRole extends PatternRole<Diagram> {
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("PatternRole " + getName() + " as Diagram conform to " + getDiagramSpecificationURI() + ";", context);
+			out.append("FlexoRole " + getName() + " as Diagram conform to " + getDiagramSpecificationURI() + ";", context);
 			return out.toString();
 		}
 
@@ -122,7 +122,7 @@ public interface DiagramPatternRole extends PatternRole<Diagram> {
 		public ModelObjectActorReference<Diagram> makeActorReference(Diagram object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ModelObjectActorReference<Diagram> returned = factory.newInstance(ModelObjectActorReference.class);
-			returned.setPatternRole(this);
+			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;

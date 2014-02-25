@@ -38,7 +38,7 @@ import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -60,9 +60,9 @@ import org.openflexo.technologyadapter.emf.viewpoint.editionaction.SelectEMFObje
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "EMFObjectIndividual", patternRoleClass = EMFObjectIndividualPatternRole.class),
-		@DeclarePatternRole(FML = "EMFClassClass", patternRoleClass = EMFClassClassPatternRole.class),
-		@DeclarePatternRole(FML = "EMFEnumClass", patternRoleClass = EMFEnumClassPatternRole.class) })
+@DeclarePatternRole(FML = "EMFObjectIndividual", flexoRoleClass = EMFObjectIndividualPatternRole.class),
+		@DeclarePatternRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassPatternRole.class),
+		@DeclarePatternRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassPatternRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddEMFObjectIndividual", editionActionClass = AddEMFObjectIndividual.class)
 
@@ -110,11 +110,11 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 		}
 
 		@Override
-		public <PR extends PatternRole<?>> String defaultPatternRoleName(Class<PR> patternRoleClass) {
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (EMFObjectIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
 			}
-			return super.defaultPatternRoleName(patternRoleClass);
+			return super.defaultFlexoRoleName(patternRoleClass);
 		}
 
 		@Override

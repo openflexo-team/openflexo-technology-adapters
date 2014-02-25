@@ -39,7 +39,7 @@ import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.SetDataPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
@@ -116,11 +116,11 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		}*/
 
 		@Override
-		public DataPropertyStatementPatternRole getPatternRole() {
-			PatternRole superPatternRole = super.getPatternRole();
-			if (superPatternRole instanceof DataPropertyStatementPatternRole) {
-				return (DataPropertyStatementPatternRole) superPatternRole;
-			} else if (superPatternRole != null) {
+		public DataPropertyStatementPatternRole getFlexoRole() {
+			FlexoRole superFlexoRole = super.getFlexoRole();
+			if (superFlexoRole instanceof DataPropertyStatementPatternRole) {
+				return (DataPropertyStatementPatternRole) superFlexoRole;
+			} else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -142,8 +142,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			if (getVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
 				return getVirtualModel().getOntologyDataProperty(dataPropertyURI);
 			} else {
-				if (getPatternRole() != null) {
-					return getPatternRole().getDataProperty();
+				if (getFlexoRole() != null) {
+					return getFlexoRole().getDataProperty();
 				}
 			}
 			return null;
@@ -152,11 +152,11 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		@Override
 		public void setDataProperty(IFlexoOntologyDataProperty ontologyProperty) {
 			if (ontologyProperty != null) {
-				if (getPatternRole() != null) {
-					if (getPatternRole().getDataProperty().isSuperConceptOf(ontologyProperty)) {
+				if (getFlexoRole() != null) {
+					if (getFlexoRole().getDataProperty().isSuperConceptOf(ontologyProperty)) {
 						dataPropertyURI = ontologyProperty.getURI();
 					} else {
-						getPatternRole().setDataProperty(ontologyProperty);
+						getFlexoRole().setDataProperty(ontologyProperty);
 					}
 				} else {
 					dataPropertyURI = ontologyProperty.getURI();
@@ -169,7 +169,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		@Override
 		public String _getDataPropertyURI() {
 			if (getDataProperty() != null) {
-				if (getPatternRole() != null && getPatternRole().getDataProperty() == getDataProperty()) {
+				if (getFlexoRole() != null && getFlexoRole().getDataProperty() == getDataProperty()) {
 					// No need to store an overriding type, just use default provided by pattern role
 					return null;
 				}
@@ -277,8 +277,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 				AddDataPropertyStatement action) {
 			if (action.getDataProperty() == null) {
 				Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>> v = new Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>>();
-				for (DataPropertyStatementPatternRole pr : action.getFlexoConcept().getPatternRoles(
-						DataPropertyStatementPatternRole.class)) {
+				for (DataPropertyStatementPatternRole pr : action.getFlexoConcept().getPatternRoles(DataPropertyStatementPatternRole.class)) {
 					v.add(new SetsPatternRole(pr));
 				}
 				return new ValidationError<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>(this, action,
@@ -304,7 +303,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			@Override
 			protected void fixAction() {
 				AddDataPropertyStatement action = getObject();
-				action.setAssignation(new DataBinding<Object>(patternRole.getPatternRoleName()));
+				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
 			}
 
 		}

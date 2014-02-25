@@ -25,7 +25,7 @@ import java.lang.reflect.Type;
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -40,7 +40,7 @@ import org.openflexo.technologyadapter.xml.model.XMLIndividual;
  */
 @ModelEntity
 @ImplementationClass(XMLIndividualPatternRole.XMLIndividualPatternRoleImpl.class)
-public interface XMLIndividualPatternRole extends PatternRole<XMLIndividual> {
+public interface XMLIndividualPatternRole extends FlexoRole<XMLIndividual> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String INDIVIDUAL_URI_KEY = "individualURI";
@@ -78,7 +78,7 @@ public interface XMLIndividualPatternRole extends PatternRole<XMLIndividual> {
 		public ActorReference<XMLIndividual> makeActorReference(XMLIndividual object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			XMLActorReference returned = factory.newInstance(XMLActorReference.class);
-			returned.setPatternRole(this);
+			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;

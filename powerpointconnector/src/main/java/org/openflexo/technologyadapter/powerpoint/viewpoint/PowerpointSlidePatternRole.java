@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -33,7 +33,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 @ModelEntity
 @ImplementationClass(PowerpointSlidePatternRole.PowerpointSlidePatternRoleImpl.class)
 @XMLElement
-public interface PowerpointSlidePatternRole extends PatternRole<PowerpointSlide> {
+public interface PowerpointSlidePatternRole extends FlexoRole<PowerpointSlide> {
 
 	public static abstract class PowerpointSlidePatternRoleImpl extends PatternRoleImpl<PowerpointSlide> {
 
@@ -57,7 +57,7 @@ public interface PowerpointSlidePatternRole extends PatternRole<PowerpointSlide>
 		public ActorReference<PowerpointSlide> makeActorReference(PowerpointSlide object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			PowerpointActorReference returned = factory.newInstance(PowerpointActorReference.class);
-			returned.setPatternRole(this);
+			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;

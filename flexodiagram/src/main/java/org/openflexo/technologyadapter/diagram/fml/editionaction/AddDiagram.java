@@ -30,7 +30,7 @@ import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -84,11 +84,11 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 		}
 
 		@Override
-		public DiagramPatternRole getPatternRole() {
-			PatternRole superPatternRole = super.getPatternRole();
-			if (superPatternRole instanceof DiagramPatternRole) {
-				return (DiagramPatternRole) superPatternRole;
-			} else if (superPatternRole != null) {
+		public DiagramPatternRole getFlexoRole() {
+			FlexoRole superFlexoRole = super.getFlexoRole();
+			if (superFlexoRole instanceof DiagramPatternRole) {
+				return (DiagramPatternRole) superFlexoRole;
+			} else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -131,15 +131,15 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 		}
 
 		public DiagramSpecification getDiagramSpecification() {
-			if (getPatternRole() instanceof DiagramPatternRole) {
-				return getPatternRole().getDiagramSpecification();
+			if (getFlexoRole() instanceof DiagramPatternRole) {
+				return getFlexoRole().getDiagramSpecification();
 			}
 			return null;
 		}
 
 		public void setDiagramSpecification(DiagramSpecification diagramSpecification) {
-			if (getPatternRole() instanceof DiagramPatternRole) {
-				getPatternRole().setDiagramSpecification(diagramSpecification);
+			if (getFlexoRole() instanceof DiagramPatternRole) {
+				getFlexoRole().setDiagramSpecification(diagramSpecification);
 			}
 		}
 
@@ -181,7 +181,7 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 			newShema.addToChilds(newShape);
 			newFlexoConceptInstance.setObjectForPatternRole(newShape, shapePatternRole);
 			// Duplicates all other pattern roles
-			for (PatternRole role : getFlexoConcept().getPatternRoles()) {
+			for (FlexoRole role : getFlexoConcept().getPatternRoles()) {
 				if (role != action.getPatternRole() && role != shapePatternRole) {
 					FlexoModelObject patternActor = getFlexoConceptInstance().getPatternActor(role);
 					logger.info("Duplicate pattern actor for role " + role + " value=" + patternActor);

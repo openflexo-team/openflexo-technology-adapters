@@ -39,7 +39,7 @@ import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -71,8 +71,8 @@ import org.openflexo.technologyadapter.xsd.viewpoint.editionaction.SetXMLDocumen
  */
 
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "XSIndividual", patternRoleClass = XSIndividualPatternRole.class),
-		@DeclarePatternRole(FML = "XSClass", patternRoleClass = XSClassPatternRole.class), })
+@DeclarePatternRole(FML = "XSIndividual", flexoRoleClass = XSIndividualPatternRole.class),
+		@DeclarePatternRole(FML = "XSClass", flexoRoleClass = XSClassPatternRole.class), })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXSIndividual.class),
 		@DeclareEditionAction(FML = "SetXMLDocumentRoot", editionActionClass = SetXMLDocumentRoot.class),
@@ -135,13 +135,13 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 		}
 
 		@Override
-		public <PR extends PatternRole<?>> String defaultPatternRoleName(Class<PR> patternRoleClass) {
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (XSClassPatternRole.class.isAssignableFrom(patternRoleClass)) {
 				return "class";
 			} else if (XSIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
 			}
-			return super.defaultPatternRoleName(patternRoleClass);
+			return super.defaultFlexoRoleName(patternRoleClass);
 		}
 
 		/*=====================================================================================

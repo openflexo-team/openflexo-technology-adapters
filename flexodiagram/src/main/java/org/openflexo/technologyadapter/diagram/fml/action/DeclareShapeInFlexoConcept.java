@@ -368,7 +368,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 						if (isTypeAwareModelSlot()) {
 							TypeAwareModelSlot<?, ?> flexoOntologyModelSlot = (TypeAwareModelSlot<?, ?>) getModelSlot();
 							individualPatternRole = flexoOntologyModelSlot.makeIndividualPatternRole(getConcept());
-							individualPatternRole.setPatternRoleName(getIndividualPatternRoleName());
+							individualPatternRole.setRoleName(getIndividualPatternRoleName());
 							individualPatternRole.setOntologicType(getConcept());
 							newFlexoConcept.addToPatternRoles(individualPatternRole);
 							// newFlexoConcept.setPrimaryConceptRole(individualPatternRole);
@@ -379,7 +379,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
 							flexoConceptPatternRole = virtualModelModelSlot
 									.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
-							flexoConceptPatternRole.setPatternRoleName(getVirtualModelPatternRoleName());
+							flexoConceptPatternRole.setRoleName(getVirtualModelPatternRoleName());
 							newFlexoConcept.addToPatternRoles(flexoConceptPatternRole);
 						}
 					}
@@ -394,7 +394,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							if (entry.graphicalObject instanceof DiagramShape) {
 								DiagramShape grShape = (DiagramShape) entry.graphicalObject;
 								ShapePatternRole newShapePatternRole = getFactory().newInstance(ShapePatternRole.class);
-								newShapePatternRole.setPatternRoleName(entry.patternRoleName);
+								newShapePatternRole.setRoleName(entry.patternRoleName);
 								/*if (mainPropertyDescriptor != null && entry.isMainEntry()) {
 									newShapePatternRole.setLabel(new DataBinding<String>(getIndividualPatternRoleName() + "."
 											+ mainPropertyDescriptor.property.getName()));
@@ -423,7 +423,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							if (entry.graphicalObject instanceof DiagramConnector) {
 								DiagramConnector grConnector = (DiagramConnector) entry.graphicalObject;
 								ConnectorPatternRole newConnectorPatternRole = getFactory().newInstance(ConnectorPatternRole.class);
-								newConnectorPatternRole.setPatternRoleName(entry.patternRoleName);
+								newConnectorPatternRole.setRoleName(entry.patternRoleName);
 								newConnectorPatternRole.setReadOnlyLabel(true);
 								if (StringUtils.isNotEmpty(entry.graphicalObject.getName())) {
 									newConnectorPatternRole
@@ -600,7 +600,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							// Add shape action
 							AddShape newAddShape = getFactory().newInstance(AddShape.class);
 							newDropScheme.addToActions(newAddShape);
-							newAddShape.setAssignation(new DataBinding<Object>(graphicalElementPatternRole.getPatternRoleName()));
+							newAddShape.setAssignation(new DataBinding<Object>(graphicalElementPatternRole.getRoleName()));
 							if (mainPatternRole) {
 								if (isTopLevel) {
 									newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramEditionScheme.TOP_LEVEL));
@@ -610,7 +610,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 									}*/
 							} else {
 								newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(grPatternRole
-										.getParentShapePatternRole().getPatternRoleName()));
+										.getParentShapePatternRole().getRoleName()));
 							}
 							mainPatternRole = false;
 						}

@@ -3,7 +3,7 @@ package org.openflexo.technologyadapter.diagram;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
@@ -26,7 +26,7 @@ public interface DiagramModelSlot extends ModelSlot<Diagram> {
 		private static final Logger logger = Logger.getLogger(DiagramModelSlot.class.getPackage().getName());
 
 		@Override
-		public <PR extends PatternRole<?>> String defaultPatternRoleName(Class<PR> patternRoleClass) {
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (DiagramPatternRole.class.isAssignableFrom(patternRoleClass)) {
 				return "diagram";
 			} else if (ShapePatternRole.class.isAssignableFrom(patternRoleClass)) {

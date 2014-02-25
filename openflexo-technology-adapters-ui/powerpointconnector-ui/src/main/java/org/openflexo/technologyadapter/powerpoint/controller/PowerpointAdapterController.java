@@ -3,7 +3,7 @@ package org.openflexo.technologyadapter.powerpoint.controller;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.gui.PowerpointIconLibrary;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
@@ -59,7 +59,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends PatternRole<?>> patternRoleClass) {
+	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (PowerpointSlidePatternRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(PowerpointSlide.class);
 		}

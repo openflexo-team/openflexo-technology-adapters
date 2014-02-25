@@ -17,7 +17,7 @@ import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.ModelObjectActorReference;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -39,7 +39,7 @@ import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationM
 @ModelEntity(isAbstract = true)
 @ImplementationClass(GraphicalElementPatternRole.GraphicalElementPatternRoleImpl.class)
 public abstract interface GraphicalElementPatternRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
-		PatternRole<T>, Bindable {
+		FlexoRole<T>, Bindable {
 
 	public static GraphicalFeature<String, GraphicalRepresentation> LABEL_FEATURE = new GraphicalFeature<String, GraphicalRepresentation>(
 			"label", GraphicalRepresentation.TEXT) {
@@ -464,7 +464,7 @@ public abstract interface GraphicalElementPatternRole<T extends DiagramElement<G
 		public ModelObjectActorReference<T> makeActorReference(T object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
 			ModelObjectActorReference<T> returned = factory.newInstance(ModelObjectActorReference.class);
-			returned.setPatternRole(this);
+			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;

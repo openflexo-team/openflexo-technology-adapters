@@ -87,7 +87,7 @@ public interface ShapePatternRole extends GraphicalElementPatternRole<DiagramSha
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("PatternRole " + getName() + " as ShapeSpecification from " + getVirtualModel().getReflexiveModelSlot().getName()
+			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getVirtualModel().getReflexiveModelSlot().getName()
 					+ ";", context);
 			return out.toString();
 		}

@@ -49,7 +49,7 @@ public interface CloneConnector extends AddConnector {
 
 		@Override
 		public String toString() {
-			return "CloneConnector " + Integer.toHexString(hashCode()) + " patternRole=" + getPatternRole();
+			return "CloneConnector " + Integer.toHexString(hashCode()) + " patternRole=" + getFlexoRole();
 		}
 
 	}

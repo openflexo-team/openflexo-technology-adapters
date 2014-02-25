@@ -152,7 +152,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 					if (isTypeAwareModelSlot()) {
 						TypeAwareModelSlot ontologyModelSlot = (TypeAwareModelSlot) getModelSlot();
 						individualPatternRole = ontologyModelSlot.makeIndividualPatternRole(getConcept());
-						individualPatternRole.setPatternRoleName(getIndividualPatternRoleName());
+						individualPatternRole.setRoleName(getIndividualPatternRoleName());
 						individualPatternRole.setOntologicType(getConcept());
 						newFlexoConcept.addToPatternRoles(individualPatternRole);
 						// newFlexoConcept.setPrimaryConceptRole(individualPatternRole);
@@ -165,7 +165,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 					if (isVirtualModelModelSlot()) {
 						VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
 						flexoConceptPatternRole = virtualModelModelSlot.makeFlexoConceptInstancePatternRole(getVirtualModelConcept());
-						flexoConceptPatternRole.setPatternRoleName(getVirtualModelPatternRoleName());
+						flexoConceptPatternRole.setRoleName(getVirtualModelPatternRoleName());
 						newFlexoConcept.addToPatternRoles(flexoConceptPatternRole);
 					}
 				}
@@ -182,7 +182,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 				// Create connector pattern role
 				newConnectorPatternRole = getFactory().newInstance(ConnectorPatternRole.class);
-				newConnectorPatternRole.setPatternRoleName(getConnectorPatternRoleName());
+				newConnectorPatternRole.setRoleName(getConnectorPatternRoleName());
 				/*if (mainPropertyDescriptor != null) {
 					newConnectorPatternRole.setLabel(new DataBinding<String>(getIndividualPatternRoleName() + "."
 							+ mainPropertyDescriptor.property.getName()));
@@ -285,7 +285,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 						// Declare pattern role
 						for (IndividualPatternRole r : otherRoles) {
 							DeclarePatternRole action = getFactory().newDeclarePatternRole();
-							action.setAssignation(new DataBinding<Object>(r.getPatternRoleName()));
+							action.setAssignation(new DataBinding<Object>(r.getRoleName()));
 							action.setObject(new DataBinding<Object>("parameters." + r.getName()));
 							newLinkScheme.addToActions(action);
 						}
@@ -326,14 +326,14 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 				// Add connector action
 				AddConnector newAddConnector = getFactory().newInstance(AddConnector.class);
-				newAddConnector.setAssignation(new DataBinding<Object>(newConnectorPatternRole.getPatternRoleName()));
+				newAddConnector.setAssignation(new DataBinding<Object>(newConnectorPatternRole.getRoleName()));
 				ShapePatternRole fromPatternRole = fromFlexoConcept.getPatternRoles(ShapePatternRole.class).get(0);
 				ShapePatternRole toPatternRole = toFlexoConcept.getPatternRoles(ShapePatternRole.class).get(0);
 
 				newAddConnector.setFromShape(new DataBinding<DiagramShape>(DiagramEditionScheme.FROM_TARGET + "."
-						+ fromPatternRole.getPatternRoleName()));
+						+ fromPatternRole.getRoleName()));
 				newAddConnector.setToShape(new DataBinding<DiagramShape>(DiagramEditionScheme.TO_TARGET + "."
-						+ toPatternRole.getPatternRoleName()));
+						+ toPatternRole.getRoleName()));
 
 				newLinkScheme.addToActions(newAddConnector);
 

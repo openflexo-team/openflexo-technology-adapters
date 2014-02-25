@@ -27,7 +27,7 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -128,7 +128,7 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends PatternRole<?>> patternRoleClass) {
+	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 
 		if (XMLIndividualPatternRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForOntologyObject(XMLIndividualPatternRole.class);

@@ -15,7 +15,7 @@
         <Assignment variable="component.selectionManager" value="controller.selectionManager" />
       </Custom>
     </Panel>
-    <Table iteratorClassName="org.openflexo.foundation.viewpoint.PatternRole" autoSelectFirstRow="true" createNewRowOnClick="false" boundToSelectionManager="true" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="PatternRoleTable" index="0" data="data.patternRoles" constraints="split(index=0;location=north;splitIdentifier=patternRoles)">
+    <Table iteratorClassName="org.openflexo.foundation.viewpoint.FlexoRole" autoSelectFirstRow="true" createNewRowOnClick="false" boundToSelectionManager="true" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" name="PatternRoleTable" index="0" data="data.patternRoles" constraints="split(index=0;location=north;splitIdentifier=patternRoles)">
       <IconColumn data="controller.iconForObject(iterator)" title="icon" columnWidth="25" resizable="false" displayTitle="false" name="icon" />
       <TextFieldColumn data="iterator.patternRoleName" title="pattern_role" columnWidth="70" resizable="true" displayTitle="true" />
       <LabelColumn data="iterator.modelSlot.name" title="model_slot" columnWidth="50" resizable="true" displayTitle="true" name="label" />

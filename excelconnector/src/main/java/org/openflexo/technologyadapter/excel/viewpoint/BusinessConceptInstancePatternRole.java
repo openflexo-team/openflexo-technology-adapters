@@ -23,7 +23,7 @@ import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
-import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -32,7 +32,7 @@ import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptInst
 @ModelEntity
 @ImplementationClass(BusinessConceptInstancePatternRole.BusinessConceptInstancePatternRoleImpl.class)
 @XMLElement
-public interface BusinessConceptInstancePatternRole extends PatternRole<BusinessConceptInstance> {
+public interface BusinessConceptInstancePatternRole extends FlexoRole<BusinessConceptInstance> {
 
 	public static abstract class BusinessConceptInstancePatternRoleImpl extends PatternRoleImpl<BusinessConceptInstance> implements
 			BusinessConceptInstancePatternRole {
