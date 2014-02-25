@@ -95,7 +95,7 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 			} else if (PowerpointShapeRole.class.isAssignableFrom(patternRoleClass)) {
 				return "shape";
 			}
-			return super.defaultFlexoRoleName(patternRoleClass);
+			return null;
 		}
 
 		@Override

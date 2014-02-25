@@ -86,7 +86,7 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 			} else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
 				return "sheet";
 			}
-			return super.defaultFlexoRoleName(patternRoleClass);
+			return null;
 		}
 
 		@Override

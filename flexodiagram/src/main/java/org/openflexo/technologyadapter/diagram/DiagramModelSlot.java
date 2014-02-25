@@ -37,5 +37,6 @@ public interface DiagramModelSlot extends ModelSlot<Diagram> {
 			logger.warning("Unexpected pattern role: " + patternRoleClass.getName());
 			return null;
 		}
+
 	}
 }

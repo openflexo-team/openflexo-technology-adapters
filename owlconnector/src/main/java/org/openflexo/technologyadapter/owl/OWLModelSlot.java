@@ -108,7 +108,7 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 			} else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
 			}
-			return super.defaultFlexoRoleName(patternRoleClass);
+			return null;
 		}
 
 		@Override

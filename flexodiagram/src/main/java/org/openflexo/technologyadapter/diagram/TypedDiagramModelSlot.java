@@ -45,9 +45,9 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "Diagram", flexoRoleClass = DiagramRole.class), // Diagrams
-		@DeclarePatternRole(FML = "ShapeSpecification", flexoRoleClass = ShapeRole.class), // Shapes
+@DeclarePatternRole(FML = "ShapeSpecification", flexoRoleClass = ShapeRole.class), // Shapes
 		@DeclarePatternRole(FML = "ConnectorSpecification", flexoRoleClass = ConnectorRole.class), // Connectors
+		@DeclarePatternRole(FML = "Diagram", flexoRoleClass = DiagramRole.class) // Diagrams
 })
 @DeclareEditionActions({ // All edition actions available through this model
 		// slot

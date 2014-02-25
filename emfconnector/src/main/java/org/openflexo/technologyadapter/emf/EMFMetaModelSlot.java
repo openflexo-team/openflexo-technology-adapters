@@ -77,7 +77,7 @@ public interface EMFMetaModelSlot extends ModelSlot<EMFMetaModel> {
 			} else if (EMFEnumClassRole.class.isAssignableFrom(patternRoleClass)) {
 				return "enum";
 			}
-			return super.defaultFlexoRoleName(patternRoleClass);
+			return null;
 		}
 
 		@Override
