@@ -36,6 +36,9 @@ import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.viewpoint.PatternRole;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.model.semantics.ExcelMetaModel;
 import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
 import org.openflexo.technologyadapter.excel.viewpoint.BusinessConceptInstancePatternRole;
@@ -59,6 +62,9 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddBusiness
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddBusinessConceptInstance", editionActionClass = AddBusinessConceptInstance.class) // Add instance of BC
 })
+@ModelEntity
+@ImplementationClass(SemanticsExcelModelSlot.SemanticsExcelModelSlotImpl.class)
+@XMLElement
 public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, ExcelMetaModel> {
 
 	public abstract static class SemanticsExcelModelSlotImpl extends TypeAwareModelSlotImpl<ExcelModel, ExcelMetaModel> implements

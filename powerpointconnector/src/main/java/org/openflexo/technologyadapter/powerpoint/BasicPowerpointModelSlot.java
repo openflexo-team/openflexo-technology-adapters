@@ -66,9 +66,9 @@ import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.Select
 		@DeclareFetchRequest(FML = "RemoveReferencePropertyValue", fetchRequestClass = SelectPowerpointShape.class) })
 @ModelEntity
 @ImplementationClass(BasicPowerpointModelSlot.BasicPowerpointModelSlotImpl.class)
-@XMLElement(xmlTag = "PowerpointModelSlot")
-public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow> , PowerpointModelSlot {
-	
+@XMLElement
+public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow>, PowerpointModelSlot {
+
 	public static abstract class BasicPowerpointModelSlotImpl extends FreeModelSlotImpl<PowerpointSlideshow> implements
 			BasicPowerpointModelSlot {
 
