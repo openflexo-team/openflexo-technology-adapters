@@ -141,7 +141,7 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 			} else if (XSIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
 			}
-			return super.defaultFlexoRoleName(patternRoleClass);
+			return null;
 		}
 
 		/*=====================================================================================

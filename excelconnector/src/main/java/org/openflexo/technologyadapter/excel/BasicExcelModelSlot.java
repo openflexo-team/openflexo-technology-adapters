@@ -121,7 +121,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 			} else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
 				return "sheet";
 			}
-			return super.defaultFlexoRoleName(patternRoleClass);
+			return null;
 		}
 
 		@Override

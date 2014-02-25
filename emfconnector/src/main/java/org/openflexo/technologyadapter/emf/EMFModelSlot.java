@@ -114,7 +114,7 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 			if (EMFObjectIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
 			}
-			return super.defaultFlexoRoleName(patternRoleClass);
+			return null;
 		}
 
 		@Override
