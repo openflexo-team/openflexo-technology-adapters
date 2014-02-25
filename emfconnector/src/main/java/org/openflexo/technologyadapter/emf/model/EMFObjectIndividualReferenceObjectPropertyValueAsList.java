@@ -79,8 +79,28 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 
 	@Override
 	public Iterator<EMFObjectIndividual> iterator() {
-		// TODO Auto-generated method stub
-		return null;
+		List<EMFObjectIndividual> result = null;
+		if (object.eGet(reference) != null) {
+			if (reference.getUpperBound() == 1) {
+				if (ontology.getConverter().getIndividuals().get(object.eGet(reference)) != null) {
+					result = Collections.singletonList((EMFObjectIndividual) (ontology.getConverter().getIndividuals().get(object
+							.eGet(reference))));
+				} else {
+					result = Collections.emptyList();
+				}
+			} else {
+				result = new ArrayList<EMFObjectIndividual>();
+				List<?> valueList = (List<?>) object.eGet(reference);
+				for (Object value : valueList) {
+					if (ontology.getConverter().getIndividuals().get(value) != null) {
+						result.add((EMFObjectIndividual) (ontology.getConverter().getIndividuals().get(value)));
+					}
+				}
+			}
+		} else {
+			result = Collections.emptyList();
+		}
+		return Collections.unmodifiableList(result).iterator();
 	}
 
 	@Override
