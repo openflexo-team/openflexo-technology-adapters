@@ -31,10 +31,11 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteFactory;
 import org.openflexo.technologyadapter.diagram.fml.action.AddDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
+import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -66,7 +67,7 @@ public class AddDiagramPaletteElementInitializer extends ActionInitializer<AddDi
 	}
 
 	protected ShapeGraphicalRepresentation makePaletteElementGraphicalRepresentation(ShapeType st, AddDiagramPaletteElement action) {
-		DiagramPaletteFactory factory = action.getFocusedObject().getResource().getFactory();
+		DiagramPaletteFactory factory = ((DiagramPaletteResource) action.getFocusedObject().getResource()).getFactory();
 
 		ShapeGraphicalRepresentation gr = factory.makeShapeGraphicalRepresentation(st);
 		gr.setX(100);

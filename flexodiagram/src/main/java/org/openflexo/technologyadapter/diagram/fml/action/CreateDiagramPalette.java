@@ -33,7 +33,9 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette.DiagramPaletteImpl;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.toolbox.StringUtils;
 
 public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, DiagramSpecification, ViewPointObject> {
@@ -82,8 +84,10 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException {
 		logger.info("Add diagram palette to diagram specification");
 
-		_newPalette = DiagramPalette.newDiagramPalette(getFocusedObject(), newPaletteName,
+		DiagramPaletteResource paletteResource = DiagramPaletteImpl.newDiagramPalette(getFocusedObject(), newPaletteName,
 				(DrawingGraphicalRepresentation) graphicalRepresentation, getFocusedObject().getServiceManager());
+
+		_newPalette = paletteResource.getDiagramPalette();
 		_newPalette.setDescription(description);
 		getFocusedObject().addToPalettes(_newPalette);
 		_newPalette.getResource().save(null);

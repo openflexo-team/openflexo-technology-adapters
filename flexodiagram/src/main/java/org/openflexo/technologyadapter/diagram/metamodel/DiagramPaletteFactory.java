@@ -17,15 +17,13 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.diagram.fml;
+package org.openflexo.technologyadapter.diagram.metamodel;
 
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 
 /**
@@ -40,6 +38,16 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl {
 	public DiagramPaletteFactory(DiagramPaletteResource paletteResource) throws ModelDefinitionException {
 		super(DiagramPalette.class, DiagramPaletteElement.class);
 		addConverter(new RelativePathFileConverter(paletteResource.getFile().getParentFile()));
+	}
+
+	public DiagramPalette makeNewDiagramPalette() {
+		DiagramPalette returned = newInstance(DiagramPalette.class);
+		return returned;
+	}
+
+	public DiagramPaletteElement makeDiagramPaletteElement() {
+		DiagramPaletteElement returned = newInstance(DiagramPaletteElement.class);
+		return returned;
 	}
 
 	public ShapeGraphicalRepresentation makeNewShapeGR(ShapeGraphicalRepresentation aGR) {

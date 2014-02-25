@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Vector;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
@@ -37,291 +37,335 @@ import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
 import org.openflexo.foundation.validation.Validable;
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.Getter.Cardinality;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteFactory;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteObject;
-import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteElementInserted;
-import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteElementRemoved;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResourceImpl;
 
-public class DiagramPalette extends DiagramPaletteObject implements ResourceData<DiagramPalette>, Comparable<DiagramPalette> {
+@ModelEntity
+@ImplementationClass(DiagramPalette.DiagramPaletteImpl.class)
+@XMLElement
+public interface DiagramPalette extends DiagramPaletteObject, ResourceData<DiagramPalette>, Comparable<DiagramPalette> {
 
-	static final Logger logger = Logger.getLogger(DiagramPalette.class.getPackage().getName());
+	@PropertyIdentifier(type = DiagramPaletteElement.class, cardinality = Cardinality.LIST)
+	public static final String PALETTE_ELEMENTS_KEY = "elements";
+	@PropertyIdentifier(type = DrawingGraphicalRepresentation.class)
+	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
 
-	private int index;
-	private Vector<DiagramPaletteElement> _elements;
-	private DiagramPaletteResource resource;
-	private DrawingGraphicalRepresentation graphicalRepresentation;
+	@Getter(value = PALETTE_ELEMENTS_KEY, cardinality = Cardinality.LIST, inverse = DiagramPaletteElement.PALETTE_KEY)
+	@XMLElement
+	public List<DiagramPaletteElement> getElements();
 
-	private boolean screenshotModified = false;
-	private ScreenshotImage<DiagramPalette> screenshotImage;
-	private File expectedScreenshotImageFile = null;
+	@Setter(PALETTE_ELEMENTS_KEY)
+	public void setElements(List<DiagramPaletteElement> elements);
 
-	public static DiagramPalette newDiagramPalette(DiagramSpecification diagramSpecification, String diagramPaletteName,
-			DrawingGraphicalRepresentation graphicalRepresentation, FlexoServiceManager serviceManager) {
-		DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.makeDiagramPaletteResource(
-				diagramSpecification.getResource(), diagramPaletteName, serviceManager);
-		DiagramPalette diagramPalette = new DiagramPalette();
-		diagramPalette.setGraphicalRepresentation(graphicalRepresentation);
-		diagramPalette.init(diagramSpecification, diagramPaletteName);
-		diagramPaletteResource.setResourceData(diagramPalette);
-		diagramPalette.setResource(diagramPaletteResource);
-		try {
-			diagramPaletteResource.save(null);
-		} catch (SaveResourceException e) {
-			e.printStackTrace();
+	@Adder(PALETTE_ELEMENTS_KEY)
+	public void addToElements(DiagramPaletteElement obj);
+
+	@Remover(PALETTE_ELEMENTS_KEY)
+	public boolean removeFromElements(DiagramPaletteElement obj);
+
+	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
+	@XMLElement
+	public DrawingGraphicalRepresentation getGraphicalRepresentation();
+
+	@Setter(value = GRAPHICAL_REPRESENTATION_KEY)
+	public void setGraphicalRepresentation(DrawingGraphicalRepresentation graphicalRepresentation);
+
+	public String getURI();
+
+	public int getIndex();
+
+	public DiagramPaletteElement addPaletteElement(String name, Object graphicalRepresentation);
+
+	public abstract static class DiagramPaletteImpl extends DiagramPaletteObjectImpl implements DiagramPalette {
+
+		static final Logger logger = Logger.getLogger(DiagramPalette.class.getPackage().getName());
+
+		private int index;
+		// private Vector<DiagramPaletteElement> _elements;
+		private DiagramPaletteResource resource;
+		// private DrawingGraphicalRepresentation graphicalRepresentation;
+
+		private boolean screenshotModified = false;
+		private ScreenshotImage<DiagramPalette> screenshotImage;
+		private File expectedScreenshotImageFile = null;
+
+		public static DiagramPaletteResource newDiagramPalette(DiagramSpecification diagramSpecification, String diagramPaletteName,
+				DrawingGraphicalRepresentation graphicalRepresentation, FlexoServiceManager serviceManager) {
+			DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.makeDiagramPaletteResource(
+					diagramSpecification.getResource(), diagramPaletteName, serviceManager);
+			DiagramPalette diagramPalette = diagramPaletteResource.getFactory().makeNewDiagramPalette();
+			diagramPalette.setGraphicalRepresentation(graphicalRepresentation);
+			diagramPalette.setName(diagramPaletteName);
+			diagramPaletteResource.setResourceData(diagramPalette);
+			diagramPalette.setResource(diagramPaletteResource);
+			try {
+				diagramPaletteResource.save(null);
+			} catch (SaveResourceException e) {
+				e.printStackTrace();
+			}
+			return diagramPaletteResource;
 		}
-		return diagramPalette;
-	}
 
-	private DiagramPaletteFactory factory;
+		// private DiagramPaletteFactory factory;
 
-	// Used during deserialization, do not use it
-	public DiagramPalette() {
-		super();
-		_elements = new Vector<DiagramPaletteElement>();
-		/*if (builder != null) {
-			builder.diagramPalette = this;
-			diagramSpecification = builder.diagramSpecification;
-			resource = builder.resource;
-			factory = builder.getFactory();
+		// Used during deserialization, do not use it
+		/*public DiagramPaletteImpl() {
+			super();
+			//_elements = new Vector<DiagramPaletteElement>();
 		}*/
-	}
 
-	public FlexoServiceManager getServiceManager() {
-		return getResource().getServiceManager();
-	}
-
-	public DiagramPaletteFactory getFactory() {
-		return factory;
-	}
-
-	@Override
-	public DiagramPalette getPalette() {
-		return this;
-	}
-
-	public void init(DiagramSpecification diagramSpecification, String diagramPaletteName) {
-		setName(diagramPaletteName);
-		// this.diagramSpecification = diagramSpecification;
-		// xmlFile = paletteFile;
-		logger.info("Registering palette for DiagramSpecification " + getDiagramSpecification().getName());
-		tryToLoadScreenshotImage();
-		// initialized = true;
-	}
-
-	@Override
-	public DiagramSpecification getDiagramSpecification() {
-		return resource.getContainer().getDiagramSpecification();
-	}
-
-	@Override
-	public boolean delete() {
-		if (getDiagramSpecification() != null) {
-			getDiagramSpecification().removeFromPalettes(this);
+		public FlexoServiceManager getServiceManager() {
+			return getResource().getServiceManager();
 		}
-		super.delete();
-		deleteObservers();
-		return true;
-	}
 
-	public String getURI() {
-		return resource.getURI();
-	}
-
-	@Override
-	public Collection<? extends Validable> getEmbeddedValidableObjects() {
-		return getElements();
-	}
-
-	@Override
-	public String toString() {
-		return "DiagramPalette:" + (getDiagramSpecification() != null ? getDiagramSpecification().getName() : "null");
-	}
-
-	public int getIndex() {
-		return index;
-	}
-
-	public void setIndex(int index) {
-		this.index = index;
-	}
-
-	public String getName() {
-		if (getResource() != null) {
-			return getResource().getName();
+		@Override
+		public DiagramPalette getPalette() {
+			return this;
 		}
-		return null;
-	}
 
-	public void setName(String name) {
-		if (requireChange(getName(), name)) {
+		public void init(DiagramSpecification diagramSpecification, String diagramPaletteName) {
+			setName(diagramPaletteName);
+			// this.diagramSpecification = diagramSpecification;
+			// xmlFile = paletteFile;
+			logger.info("Registering palette for DiagramSpecification " + getDiagramSpecification().getName());
+			tryToLoadScreenshotImage();
+			// initialized = true;
+		}
+
+		@Override
+		public DiagramSpecification getDiagramSpecification() {
+			return resource.getContainer().getDiagramSpecification();
+		}
+
+		@Override
+		public boolean delete() {
+			if (getDiagramSpecification() != null) {
+				getDiagramSpecification().removeFromPalettes(this);
+			}
+			super.delete();
+			deleteObservers();
+			return true;
+		}
+
+		@Override
+		public String getURI() {
+			return resource.getURI();
+		}
+
+		@Override
+		public Collection<? extends Validable> getEmbeddedValidableObjects() {
+			return getElements();
+		}
+
+		@Override
+		public String toString() {
+			return "DiagramPalette:" + (getDiagramSpecification() != null ? getDiagramSpecification().getName() : "null");
+		}
+
+		@Override
+		public int getIndex() {
+			return index;
+		}
+
+		public void setIndex(int index) {
+			this.index = index;
+		}
+
+		@Override
+		public String getName() {
 			if (getResource() != null) {
-				getResource().setName(name);
-				// getResource().renameFileTo(name + ".palette");
+				return getResource().getName();
+			}
+			return null;
+		}
+
+		@Override
+		public void setName(String name) {
+			if (requireChange(getName(), name)) {
+				if (getResource() != null) {
+					getResource().setName(name);
+					// getResource().renameFileTo(name + ".palette");
+				}
 			}
 		}
-	}
 
-	public Vector<DiagramPaletteElement> getElements() {
-		return _elements;
-	}
-
-	public void setElements(Vector<DiagramPaletteElement> elements) {
-		_elements = elements;
-	}
-
-	public void addToElements(DiagramPaletteElement obj) {
-		obj.setPalette(this);
-		_elements.add(obj);
-		setChanged();
-		notifyObservers(new DiagramPaletteElementInserted(obj, this));
-	}
-
-	public boolean removeFromElements(DiagramPaletteElement obj) {
-		obj.setPalette(null);
-		boolean returned = _elements.remove(obj);
-		setChanged();
-		notifyObservers(new DiagramPaletteElementRemoved(obj, this));
-		return returned;
-	}
-
-	public DrawingGraphicalRepresentation getGraphicalRepresentation() {
-		return graphicalRepresentation;
-	}
-
-	public void setGraphicalRepresentation(DrawingGraphicalRepresentation graphicalRepresentation) {
-		this.graphicalRepresentation = graphicalRepresentation;
-	}
-
-	public RelativePathFileConverter getRelativePathFileConverter() {
-		return getResource().getContainer().getRelativePathFileConverter();
-	}
-
-	public DiagramPaletteElement addPaletteElement(String name, Object graphicalRepresentation) {
-		DiagramPaletteElement newElement = new DiagramPaletteElement();
-		newElement.setName(name);
-		newElement.setGraphicalRepresentation((ShapeGraphicalRepresentation) graphicalRepresentation);
-		addToElements(newElement);
-		return newElement;
-	}
-
-	@Override
-	public int compareTo(DiagramPalette o) {
-		return index - o.index;
-	}
-
-	public DiagramTechnologyAdapter getTechnologyAdapter() {
-		return getResource().getServiceManager().getService(TechnologyAdapterService.class)
-				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-	}
-
-	private File getExpectedScreenshotImageFile() {
-		if (expectedScreenshotImageFile == null && getResource() instanceof FlexoFileResource) {
-			expectedScreenshotImageFile = new File(((FlexoFileResource<DiagramPalette>) getResource()).getFile().getParentFile(), getName()
-					+ ".diagram.png");
-		}
-		return expectedScreenshotImageFile;
-	}
-
-	private ScreenshotImage<DiagramPalette> buildAndSaveScreenshotImage() {
-		ScreenshotBuilder<DiagramPalette> builder = new ScreenshotBuilder<DiagramPalette>() {
-			@Override
-			public String getScreenshotName(DiagramPalette o) {
-				return o.getName();
+		/*	@Override
+			public Vector<DiagramPaletteElement> getElements() {
+				return _elements;
 			}
 
 			@Override
-			public JComponent getScreenshotComponent(DiagramPalette object) {
-				/*ExternalVPMModule vpmModule = null;
-				try {
-					IModuleLoader moduleLoader = getViewPointLibrary().getServiceManager().getService(IModuleLoader.class);
-					if (moduleLoader != null) {
-						vpmModule = moduleLoader.getVPMModuleInstance();
-					}
-				} catch (ModuleLoadingException e) {
-					logger.warning("cannot load VPM module (and so can't create screenshoot." + e.getMessage());
-					e.printStackTrace();
+			public void setElements(Vector<DiagramPaletteElement> elements) {
+				_elements = elements;
+			}
+
+			@Override
+			public void addToElements(DiagramPaletteElement obj) {
+				obj.setPalette(this);
+				_elements.add(obj);
+				setChanged();
+				notifyObservers(new DiagramPaletteElementInserted(obj, this));
+			}
+
+			@Override
+			public boolean removeFromElements(DiagramPaletteElement obj) {
+				obj.setPalette(null);
+				boolean returned = _elements.remove(obj);
+				setChanged();
+				notifyObservers(new DiagramPaletteElementRemoved(obj, this));
+				return returned;
+			}*/
+
+		/*	@Override
+			public DrawingGraphicalRepresentation getGraphicalRepresentation() {
+				return graphicalRepresentation;
+			}
+
+			@Override
+			public void setGraphicalRepresentation(DrawingGraphicalRepresentation graphicalRepresentation) {
+				this.graphicalRepresentation = graphicalRepresentation;
+			}*/
+
+		public RelativePathFileConverter getRelativePathFileConverter() {
+			return getResource().getContainer().getRelativePathFileConverter();
+		}
+
+		@Override
+		public DiagramPaletteElement addPaletteElement(String name, Object graphicalRepresentation) {
+			DiagramPaletteElement newElement = getResource().getFactory().makeDiagramPaletteElement();
+			newElement.setName(name);
+			newElement.setGraphicalRepresentation((ShapeGraphicalRepresentation) graphicalRepresentation);
+			addToElements(newElement);
+			return newElement;
+		}
+
+		@Override
+		public int compareTo(DiagramPalette o) {
+			return index - o.getIndex();
+		}
+
+		public DiagramTechnologyAdapter getTechnologyAdapter() {
+			return getResource().getServiceManager().getService(TechnologyAdapterService.class)
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		}
+
+		private File getExpectedScreenshotImageFile() {
+			if (expectedScreenshotImageFile == null && getResource() instanceof FlexoFileResource) {
+				expectedScreenshotImageFile = new File(((FlexoFileResource<DiagramPalette>) getResource()).getFile().getParentFile(),
+						getName() + ".diagram.png");
+			}
+			return expectedScreenshotImageFile;
+		}
+
+		private ScreenshotImage<DiagramPalette> buildAndSaveScreenshotImage() {
+			ScreenshotBuilder<DiagramPalette> builder = new ScreenshotBuilder<DiagramPalette>() {
+				@Override
+				public String getScreenshotName(DiagramPalette o) {
+					return o.getName();
 				}
 
-				if (vpmModule == null) {
+				@Override
+				public JComponent getScreenshotComponent(DiagramPalette object) {
+					/*ExternalVPMModule vpmModule = null;
+					try {
+						IModuleLoader moduleLoader = getViewPointLibrary().getServiceManager().getService(IModuleLoader.class);
+						if (moduleLoader != null) {
+							vpmModule = moduleLoader.getVPMModuleInstance();
+						}
+					} catch (ModuleLoadingException e) {
+						logger.warning("cannot load VPM module (and so can't create screenshoot." + e.getMessage());
+						e.printStackTrace();
+					}
+
+					if (vpmModule == null) {
+						return null;
+					}
+
+					logger.info("Building " + getExpectedScreenshotImageFile().getAbsolutePath());
+
+					JComponent c = vpmModule.createScreenshotForExampleDiagram(this);
+					c.setOpaque(true);
+					c.setBackground(Color.WHITE);
+					JFrame frame = new JFrame();
+					frame.setBackground(Color.WHITE);
+					frame.setUndecorated(true);
+					frame.getContentPane().add(c);
+					frame.pack();
+					c.validate();*/
 					return null;
 				}
+			};
 
-				logger.info("Building " + getExpectedScreenshotImageFile().getAbsolutePath());
-
-				JComponent c = vpmModule.createScreenshotForExampleDiagram(this);
-				c.setOpaque(true);
-				c.setBackground(Color.WHITE);
-				JFrame frame = new JFrame();
-				frame.setBackground(Color.WHITE);
-				frame.setUndecorated(true);
-				frame.getContentPane().add(c);
-				frame.pack();
-				c.validate();*/
-				return null;
+			screenshotImage = builder.getImage(this);
+			try {
+				logger.info("Saving " + getExpectedScreenshotImageFile().getAbsolutePath());
+				ImageUtils.saveImageToFile(screenshotImage.image, getExpectedScreenshotImageFile(), ImageType.PNG);
+			} catch (IOException e) {
+				e.printStackTrace();
+				logger.warning("Could not save " + getExpectedScreenshotImageFile().getAbsolutePath());
 			}
-		};
+			screenshotModified = false;
+			getPropertyChangeSupport().firePropertyChange("screenshotImage", null, screenshotImage);
+			return screenshotImage;
 
-		screenshotImage = builder.getImage(this);
-		try {
-			logger.info("Saving " + getExpectedScreenshotImageFile().getAbsolutePath());
-			ImageUtils.saveImageToFile(screenshotImage.image, getExpectedScreenshotImageFile(), ImageType.PNG);
-		} catch (IOException e) {
-			e.printStackTrace();
-			logger.warning("Could not save " + getExpectedScreenshotImageFile().getAbsolutePath());
 		}
-		screenshotModified = false;
-		getPropertyChangeSupport().firePropertyChange("screenshotImage", null, screenshotImage);
-		return screenshotImage;
 
-	}
+		private ScreenshotImage<DiagramPalette> tryToLoadScreenshotImage() {
+			// TODO
+			/*if (getExpectedScreenshotImageFile() != null && getExpectedScreenshotImageFile().exists()) {
+				BufferedImage bi = ImageUtils.loadImageFromFile(getExpectedScreenshotImageFile());
+				if (bi != null) {
+					logger.info("Read " + getExpectedScreenshotImageFile().getAbsolutePath());
+					screenshotImage = ScreenshotGenerator.trimImage(bi);
+					screenshotModified = false;
+					return screenshotImage;
+				}
+			}*/
+			return null;
+		}
 
-	private ScreenshotImage<DiagramPalette> tryToLoadScreenshotImage() {
-		// TODO
-		/*if (getExpectedScreenshotImageFile() != null && getExpectedScreenshotImageFile().exists()) {
-			BufferedImage bi = ImageUtils.loadImageFromFile(getExpectedScreenshotImageFile());
-			if (bi != null) {
-				logger.info("Read " + getExpectedScreenshotImageFile().getAbsolutePath());
-				screenshotImage = ScreenshotGenerator.trimImage(bi);
-				screenshotModified = false;
-				return screenshotImage;
+		public ScreenshotImage<DiagramPalette> getScreenshotImage() {
+			if (screenshotImage == null || screenshotModified) {
+				if (screenshotModified) {
+					logger.info("Rebuilding screenshot for " + this + " because screenshot is modified");
+				}
+				buildAndSaveScreenshotImage();
 			}
-		}*/
-		return null;
-	}
+			return screenshotImage;
+		}
 
-	public ScreenshotImage<DiagramPalette> getScreenshotImage() {
-		if (screenshotImage == null || screenshotModified) {
-			if (screenshotModified) {
-				logger.info("Rebuilding screenshot for " + this + " because screenshot is modified");
+		@Override
+		public synchronized void setIsModified() {
+			super.setIsModified();
+			if (!isModified()) {
+				logger.info(">>>>>>>>>>>>>>> Palette " + this + " has been modified !!!");
 			}
-			buildAndSaveScreenshotImage();
+			screenshotModified = true;
 		}
-		return screenshotImage;
-	}
 
-	@Override
-	public synchronized void setIsModified() {
-		super.setIsModified();
-		if (!isModified()) {
-			logger.info(">>>>>>>>>>>>>>> Palette " + this + " has been modified !!!");
+		@Override
+		public DiagramPaletteResource getResource() {
+			return resource;
 		}
-		screenshotModified = true;
-	}
 
-	@Override
-	public DiagramPaletteResource getResource() {
-		return resource;
-	}
+		@Override
+		public void setResource(org.openflexo.foundation.resource.FlexoResource<DiagramPalette> resource) {
+			this.resource = (DiagramPaletteResource) resource;
+		}
 
-	@Override
-	public void setResource(org.openflexo.foundation.resource.FlexoResource<DiagramPalette> resource) {
-		this.resource = (DiagramPaletteResource) resource;
 	}
 
 }

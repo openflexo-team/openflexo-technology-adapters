@@ -22,97 +22,123 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.NameChanged;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteFactory;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteObject;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLElement;
 
-public class DiagramPaletteElement extends DiagramPaletteObject {
+@ModelEntity
+@ImplementationClass(DiagramPaletteElement.DiagramPaletteElementImpl.class)
+@XMLElement
+public interface DiagramPaletteElement extends DiagramPaletteObject {
 
-	private static final Logger logger = Logger.getLogger(DiagramPaletteElement.class.getPackage().getName());
-
-	// Represent graphical representation to be used as representation in the palette
-	private ShapeGraphicalRepresentation graphicalRepresentation;
-
-	private final DiagramPaletteElement parent = null;
-
-	private String name;
-	private DiagramPalette _palette;
-
-	public DiagramPaletteElement() {
-		super();
-	}
-
-	public FlexoServiceManager getServiceManager() {
-		return getPalette().getServiceManager();
-	}
-
-	public DiagramPaletteFactory getFactory() {
-		return _palette.getFactory();
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		if (requireChange(this.name, name)) {
-			String oldName = this.name;
-			this.name = name;
-			setChanged();
-			notifyObservers(new NameChanged(oldName, name));
-		}
-	}
-
-	public String getURI() {
-		return getPalette().getURI() + "/" + getName();
-	}
+	@PropertyIdentifier(type = DiagramPalette.class)
+	public static final String PALETTE_KEY = "palette";
+	@PropertyIdentifier(type = ShapeGraphicalRepresentation.class)
+	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
 
 	@Override
-	public DiagramSpecification getDiagramSpecification() {
-		if (getPalette() != null) {
-			return getPalette().getDiagramSpecification();
+	@Getter(value = PALETTE_KEY, ignoreType = true, inverse = DiagramPalette.PALETTE_ELEMENTS_KEY)
+	public DiagramPalette getPalette();
+
+	@Setter(PALETTE_KEY)
+	public void setPalette(DiagramPalette palette);
+
+	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
+	@XMLElement
+	public ShapeGraphicalRepresentation getGraphicalRepresentation();
+
+	@Setter(value = GRAPHICAL_REPRESENTATION_KEY)
+	public void setGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation);
+
+	public abstract static class DiagramPaletteElementImpl extends DiagramPaletteObjectImpl implements DiagramPaletteElement {
+
+		private static final Logger logger = Logger.getLogger(DiagramPaletteElement.class.getPackage().getName());
+
+		// Represent graphical representation to be used as representation in the palette
+		// private ShapeGraphicalRepresentation graphicalRepresentation;
+
+		private final DiagramPaletteElement parent = null;
+
+		private String name;
+		private DiagramPalette _palette;
+
+		/*public FlexoServiceManager getServiceManager() {
+			return getPalette().getServiceManager();
+		}*/
+
+		@Override
+		public String getName() {
+			return name;
 		}
-		return null;
-	}
 
-	@Override
-	public DiagramPalette getPalette() {
-		return _palette;
-	}
-
-	public void setPalette(DiagramPalette palette) {
-		_palette = palette;
-	}
-
-	public DiagramPaletteElement getParent() {
-		return parent;
-	}
-
-	@Override
-	public void setChanged() {
-		super.setChanged();
-		if (getPalette() != null) {
-			getPalette().setIsModified();
+		@Override
+		public void setName(String name) {
+			if (requireChange(this.name, name)) {
+				String oldName = this.name;
+				this.name = name;
+				setChanged();
+				notifyObservers(new NameChanged(oldName, name));
+			}
 		}
-	}
 
-	@Override
-	public boolean delete() {
-		if (getPalette() != null) {
-			getPalette().removeFromElements(this);
+		public String getURI() {
+			return getPalette().getURI() + "/" + getName();
 		}
-		super.delete();
-		deleteObservers();
-		return true;
-	}
 
-	public ShapeGraphicalRepresentation getGraphicalRepresentation() {
-		return graphicalRepresentation;
-	}
+		@Override
+		public DiagramSpecification getDiagramSpecification() {
+			if (getPalette() != null) {
+				return getPalette().getDiagramSpecification();
+			}
+			return null;
+		}
 
-	public void setGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation) {
-		this.graphicalRepresentation = graphicalRepresentation;
+		@Override
+		public DiagramPalette getPalette() {
+			return _palette;
+		}
+
+		@Override
+		public void setPalette(DiagramPalette palette) {
+			_palette = palette;
+		}
+
+		public DiagramPaletteElement getParent() {
+			return parent;
+		}
+
+		@Override
+		public void setChanged() {
+			super.setChanged();
+			if (getPalette() != null) {
+				getPalette().setIsModified();
+			}
+		}
+
+		@Override
+		public boolean delete() {
+			if (getPalette() != null) {
+				getPalette().removeFromElements(this);
+			}
+			super.delete();
+			deleteObservers();
+			return true;
+		}
+
+		/*@Override
+		public ShapeGraphicalRepresentation getGraphicalRepresentation() {
+			return graphicalRepresentation;
+		}
+
+		@Override
+		public void setGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation) {
+			this.graphicalRepresentation = graphicalRepresentation;
+		}*/
+
 	}
 
 }

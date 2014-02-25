@@ -29,9 +29,9 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteFactory;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
 
 public class AddDiagramPaletteElement extends FlexoAction<AddDiagramPaletteElement, DiagramPalette, ViewPointObject> {
 

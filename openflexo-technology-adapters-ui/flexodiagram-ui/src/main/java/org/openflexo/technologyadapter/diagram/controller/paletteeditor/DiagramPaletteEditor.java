@@ -25,8 +25,9 @@ import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaPalette;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.selection.SelectionManagingDianaEditor;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteFactory;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
+import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.view.controller.FlexoController;
 
 public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPalette> {
@@ -39,8 +40,8 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 	private final SwingToolFactory swingToolFactory;
 
 	public DiagramPaletteEditor(DiagramPalette palette, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
-		super(new DiagramPaletteDrawing(palette, readOnly), controller.getSelectionManager(), palette.getResource().getFactory(),
-				swingToolFactory);
+		super(new DiagramPaletteDrawing(palette, readOnly), controller.getSelectionManager(), ((DiagramPaletteResource) palette
+				.getResource()).getFactory(), swingToolFactory);
 		flexoController = controller;
 		this.swingToolFactory = swingToolFactory;
 

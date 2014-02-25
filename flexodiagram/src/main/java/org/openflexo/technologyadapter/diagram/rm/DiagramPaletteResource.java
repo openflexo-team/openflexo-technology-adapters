@@ -4,8 +4,8 @@ import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteFactory;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
 
 @ModelEntity
 @ImplementationClass(DiagramPaletteResourceImpl.class)

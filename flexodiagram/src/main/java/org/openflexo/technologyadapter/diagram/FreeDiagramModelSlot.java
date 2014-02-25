@@ -13,6 +13,9 @@ import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.view.FreeModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramPatternRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapePatternRole;
@@ -44,6 +47,9 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 		@DeclareEditionAction(FML = "GraphicalAction", editionActionClass = GraphicalAction.class) })
 @DeclareFetchRequests({ // All requests available through this model slot
 })
+@ModelEntity
+@ImplementationClass(FreeDiagramModelSlot.FreeDiagramModelSlotImpl.class)
+@XMLElement
 public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramModelSlot {
 
 	public abstract class FreeDiagramModelSlotImpl extends FreeModelSlotImpl<Diagram> implements FreeDiagramModelSlot {

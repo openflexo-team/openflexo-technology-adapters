@@ -59,7 +59,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 })
 @ModelEntity
 @ImplementationClass(TypedDiagramModelSlot.TypedDiagramModelSlotImpl.class)
-@XMLElement(xmlTag = "DiagramModelSlot")
+@XMLElement
 public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, DiagramSpecification>, DiagramModelSlot {
 
 	@PropertyIdentifier(type = List.class)

@@ -19,6 +19,8 @@
  */
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -29,9 +31,6 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.control.DrawingPalette;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.fge.geom.FGEPoint;
-import org.openflexo.foundation.DataModification;
-import org.openflexo.foundation.FlexoObservable;
-import org.openflexo.foundation.GraphicalFlexoObserver;
 import org.openflexo.foundation.utils.FlexoObjectReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
@@ -41,16 +40,14 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteElementInserted;
-import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteElementRemoved;
 
-public class ContextualPalette extends DrawingPalette implements GraphicalFlexoObserver {
+public class ContextualPalette extends DrawingPalette implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(ContextualPalette.class.getPackage().getName());
 
-	private final DiagramPalette diagramPalette;
+	private DiagramPalette diagramPalette;
 
-	private final DiagramEditor editor;
+	private DiagramEditor editor;
 
 	public ContextualPalette(DiagramPalette diagramPalette, DiagramEditor editor) {
 		super((int) diagramPalette.getGraphicalRepresentation().getWidth(), (int) diagramPalette.getGraphicalRepresentation().getHeight(),
@@ -63,7 +60,17 @@ public class ContextualPalette extends DrawingPalette implements GraphicalFlexoO
 			addElement(makePaletteElement(element));
 		}
 
-		diagramPalette.addObserver(this);
+		diagramPalette.getPropertyChangeSupport().addPropertyChangeListener(this);
+	}
+
+	@Override
+	public void delete() {
+		if (diagramPalette != null && diagramPalette.getPropertyChangeSupport() != null) {
+			diagramPalette.getPropertyChangeSupport().removePropertyChangeListener(this);
+		}
+		super.delete();
+		diagramPalette = null;
+		editor = null;
 	}
 
 	public DiagramEditor getEditor() {
@@ -71,27 +78,26 @@ public class ContextualPalette extends DrawingPalette implements GraphicalFlexoO
 	}
 
 	@Override
-	public void update(FlexoObservable observable, DataModification dataModification) {
-		if (observable == diagramPalette) {
-			if (dataModification instanceof DiagramPaletteElementInserted) {
-				logger.info("Notified new Palette Element added");
-				DiagramPaletteElementInserted dm = (DiagramPaletteElementInserted) dataModification;
-				ContextualPaletteElement e = makePaletteElement(dm.newValue());
-				addElement(e);
-				// e.getGraphicalRepresentation().notifyObjectHierarchyHasBeenUpdated();
-				// DrawingView<PaletteDrawing> oldPaletteView = getPaletteView();
-				// updatePalette();
-				// getController().updatePalette(diagramPalette, oldPaletteView);
-				logger.warning("Sans doute des choses a faire ici ???");
-			} else if (dataModification instanceof DiagramPaletteElementRemoved) {
-				logger.info("Notified new Palette Element removed");
-				DiagramPaletteElementRemoved dm = (DiagramPaletteElementRemoved) dataModification;
-				ContextualPaletteElement e = getContextualPaletteElement(dm.oldValue());
-				removeElement(e);
-				// DrawingView<PaletteDrawing> oldPaletteView = getPaletteView();
-				// updatePalette();
-				// getController().updatePalette(diagramPalette, oldPaletteView);
-				logger.warning("Sans doute des choses a faire ici ???");
+	public void propertyChange(PropertyChangeEvent evt) {
+		if (evt.getSource() == diagramPalette) {
+			if (evt.getPropertyName().equals(DiagramPalette.PALETTE_ELEMENTS_KEY)) {
+				if (evt.getNewValue() instanceof DiagramPaletteElement) {
+					// Adding of a new DiagramPaletteElement
+					ContextualPaletteElement e = makePaletteElement((DiagramPaletteElement) evt.getNewValue());
+					addElement(e);
+					// e.getGraphicalRepresentation().notifyObjectHierarchyHasBeenUpdated();
+					// DrawingView<PaletteDrawing> oldPaletteView = getPaletteView();
+					// updatePalette();
+					// getController().updatePalette(diagramPalette, oldPaletteView);
+					logger.warning("Sans doute des choses a faire ici ???");
+				} else if (evt.getOldValue() instanceof DiagramPaletteElement) {
+					ContextualPaletteElement e = getContextualPaletteElement((DiagramPaletteElement) evt.getOldValue());
+					removeElement(e);
+					// DrawingView<PaletteDrawing> oldPaletteView = getPaletteView();
+					// updatePalette();
+					// getController().updatePalette(diagramPalette, oldPaletteView);
+					logger.warning("Sans doute des choses a faire ici ???");
+				}
 			}
 		}
 	}

@@ -16,8 +16,8 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.AccessibleProxyObject;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.diagram.fml.DiagramPaletteFactory;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
 import org.openflexo.toolbox.IProgress;
 
 public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<DiagramPalette, DiagramPaletteFactory> implements
@@ -112,7 +112,8 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 			InconsistentDataException, InvalidModelDefinitionException {
 
 		DiagramPalette returned = super.loadResourceData(progress);
-		returned.init(getContainer().getDiagramSpecification(), getFile().getName().substring(0, getFile().getName().length() - 8));
+		returned.setName(getFile().getName().substring(0, getFile().getName().length() - 8));
+		// returned.init(getContainer().getDiagramSpecification(), getFile().getName().substring(0, getFile().getName().length() - 8));
 		getContainer().getDiagramSpecification().addToPalettes(returned);
 		setChanged();
 		notifyObservers(new DataModification("diagramPalette", null, returned));
