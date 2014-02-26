@@ -114,10 +114,10 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 		return returned;
 	}
 
-	private List<DeletableProxyObject> diagramElementsToDelete;
 	private HashMap<FlexoConceptInstance, DeletionScheme> selectedFlexoConceptInstanceDeletionSchemes;
 	private DeletionScheme selectedDeletionScheme;
 	private FlexoConceptInstance selectedFlexoConceptInstance;
+	public boolean removePendingConnectors = true;
 
 	protected DeleteDiagramElements(DiagramElement<?> focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
@@ -170,41 +170,37 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 			}
 		}*/
 		
-		List<DiagramConnector> impliedConnectors = new ArrayList<DiagramConnector>();
-		
-		for (DiagramElement<?> o : objectsToDelete(getFocusedObject(), getGlobalSelection())) {
-			if(o instanceof DiagramShape){
-				impliedConnectors.addAll(((DiagramShape)o).getEndConnectors());
-				impliedConnectors.addAll(((DiagramShape)o).getStartConnectors());
+		if(removePendingConnectors){
+			// A list of connectors that may be deleted if a shape is connected to it
+			List<DiagramConnector> impliedConnectors = new ArrayList<DiagramConnector>();
+			for (DiagramElement<?> o : objectsToDelete(getFocusedObject(), getGlobalSelection())) {
+				if(o instanceof DiagramShape){
+					impliedConnectors.addAll(((DiagramShape)o).getStartConnectors());
+					impliedConnectors.addAll(((DiagramShape)o).getEndConnectors());
+				}
 			}
+			
+			// Delete these connectors
+			for(Iterator<DiagramConnector> connectors = impliedConnectors.iterator();connectors.hasNext();){
+				DiagramConnector connector = (DiagramConnector)connectors.next();
+				if (!connector.isDeleted()) {	
+					logger.info("Delete undeleted DiagramConnector " + connector);
+					connector.delete();
+				} else {
+					logger.info("DiagramConnector " + connector + " has been successfully deleted");
+				}
+			}
+		}
+
+		// Remove of selected and their childs
+		for (DiagramElement<?> o : objectsToDelete(getFocusedObject(), getGlobalSelection())) {
 			if (!o.isDeleted()) {	
 				logger.info("Delete undeleted DiagramElement " + o);
 				o.delete();
 			} else {
 				logger.info("DiagramElement " + o + " has been successfully deleted");
 			}
-			
 		}
-		
-		List<DiagramConnector> pendingConnectors = new ArrayList<DiagramConnector>();
-		
-		for(Iterator<DiagramConnector> connectors = impliedConnectors.iterator();connectors.hasNext();){
-			DiagramConnector connector = (DiagramConnector)connectors.next();
-			if(connector.getStartShape()==null || connector.getEndShape()==null){
-				pendingConnectors.add(connector);
-			}
-		}
-		
-		for(DiagramConnector connector : pendingConnectors){
-			if (!connector.isDeleted()) {	
-				logger.info("Delete undeleted DiagramConnector " + connector);
-				connector.delete();
-			} else {
-				logger.info("DiagramConnector " + connector + " has been successfully deleted");
-			}
-		}
-		
-		
 		
 		
 		//delete(getGlobalSelection());

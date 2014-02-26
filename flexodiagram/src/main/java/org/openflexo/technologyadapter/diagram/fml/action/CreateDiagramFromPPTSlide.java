@@ -21,19 +21,23 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
+
 import org.apache.poi.hslf.model.AutoShape;
-import org.apache.poi.hslf.model.Line;
 import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Picture;
 import org.apache.poi.hslf.model.Shape;
@@ -44,14 +48,12 @@ import org.apache.poi.hslf.model.TextShape;
 import org.apache.poi.hslf.usermodel.RichTextRun;
 import org.apache.poi.hslf.usermodel.SlideShow;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.TextStyle;
 import org.openflexo.fge.ForegroundStyle.DashStyle;
 import org.openflexo.fge.GraphicalRepresentation.HorizontalTextAlignment;
 import org.openflexo.fge.GraphicalRepresentation.ParagraphAlignment;
 import org.openflexo.fge.GraphicalRepresentation.VerticalTextAlignment;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
@@ -64,9 +66,7 @@ import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
-import org.openflexo.technologyadapter.diagram.model.DiagramImpl;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
@@ -106,18 +106,19 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	}
 
 	public DrawingGraphicalRepresentation graphicalRepresentation;
-	private SlideShow selectedSlideShow;
-
 	private DiagramSpecification diagramSpecification;
 	private String diagramName;
 	private String diagramTitle;
 	private String diagramURI;
-	private File diagramFile;
-	private File file;
-	private int slideNumber;
-	private int maxNumberOfSlides;
 	private DiagramResource diagramResource;
-
+	private File diagramFile;
+	
+	private SlideShow selectedSlideShow;
+	private ArrayList<Slide> currentSlides;
+	private File file;
+	private Slide slide;
+	
+	
 	CreateDiagramFromPPTSlide(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
@@ -134,7 +135,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 		diagramResource.save(null);
 		
-		convertSlideToDiagram(loadSlide(slideNumber));
+		convertSlideToDiagram(slide);
 	}
 
 	
@@ -171,9 +172,13 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 			return false;
 		}
 		
-		if (getSlideNumber() < 0) {
-			errorMessage = noSlideNumberMessage();
+		if (getSlide() == null) {
+			errorMessage = noSlideMessage();
 			return false;
+		}
+		
+		else{
+			errorMessage ="";
 		}
 		
 		return true;
@@ -199,8 +204,8 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		return FlexoLocalization.localizedForKey("no_diagram_name_defined");
 	}
 	
-	public String noSlideNumberMessage() {
-		return FlexoLocalization.localizedForKey("no_slide_number_defined");
+	public String noSlideMessage() {
+		return FlexoLocalization.localizedForKey("no_slide_defined");
 	}
 	
 	public String invalidNameMessage() {
@@ -296,16 +301,21 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		try {
 			FileInputStream fis = new FileInputStream(getFile());
 			selectedSlideShow = new SlideShow(fis);
-			setMaxNumberOfSlides(selectedSlideShow.getSlides().length);
+			if(currentSlides==null){
+				currentSlides = new ArrayList<Slide>();
+			}
+			else{
+				currentSlides.clear();
+			}
+			for(Slide slide : selectedSlideShow.getSlides()){
+				currentSlides.add(slide);
+			}
+			setCurrentSlides(currentSlides);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public Slide loadSlide(int slideNumber){
-		return selectedSlideShow.getSlides()[slideNumber];
 	}
 
 	public File getFile() {
@@ -317,23 +327,49 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		if(file!=null){
 			loadSlideShow();
 		}
+		boolean wasValid = isValid();
 		getPropertyChangeSupport().firePropertyChange("file", null, file);
+		getPropertyChangeSupport().firePropertyChange("currentSlides", null, getCurrentSlides());
+		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
+		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
 	}
 
-	public int getSlideNumber() {
-		return slideNumber;
+	public Slide getSlide() {
+		return slide;
 	}
 
-	public void setSlideNumber(int slideNumber) {
-		this.slideNumber = slideNumber;
+	public void setSlide(Slide slide) {
+		this.slide = slide;
+		boolean wasValid = isValid();
+		getPropertyChangeSupport().firePropertyChange("slide", null, getSlide());
+		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
+		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
 	}
 	
-	public int getMaxNumberOfSlides() {
-		return maxNumberOfSlides;
+	public SlideShow getSelectedSlideShow() {
+		return selectedSlideShow;
 	}
 
-	public void setMaxNumberOfSlides(int maxNumberOfSlides) {
-		this.maxNumberOfSlides = maxNumberOfSlides;
+	public void setSelectedSlideShow(SlideShow selectedSlideShow) {
+		this.selectedSlideShow = selectedSlideShow;
+	}
+
+	public ArrayList<Slide> getCurrentSlides() {
+		return currentSlides;
+	}
+
+	public void setCurrentSlides(ArrayList<Slide> currentSlides) {
+		this.currentSlides = currentSlides;
+	}
+
+	public ImageIcon getMiniature(Slide s) {
+		double WIDTH = 150;
+		Dimension d = s.getSlideShow().getPageSize();
+		BufferedImage i = new BufferedImage((int) WIDTH, (int) (WIDTH * d.height / d.width), BufferedImage.TYPE_INT_RGB);
+		Graphics2D graphics = i.createGraphics();
+		graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
+		s.draw(graphics);
+		return new ImageIcon(i);
 	}
 	
 	
@@ -551,4 +587,5 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		returned.setLineWrap(true);
 
 	}
+
 }
