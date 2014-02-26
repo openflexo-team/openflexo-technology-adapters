@@ -88,10 +88,14 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 				return null;
 			}
 			returned.setURI(info.uri);
-			DiagramTechnologyAdapter ta = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-			DiagramSpecificationResource dsResource = (DiagramSpecificationResource) ta.getTechnologyContextManager().getResourceWithURI(
-					info.diagramSpecificationURI);
-			returned.setMetaModelResource(dsResource);
+			if (StringUtils.isNotEmpty(info.diagramSpecificationURI)) {
+				DiagramTechnologyAdapter ta = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+						DiagramTechnologyAdapter.class);
+				System.out.println("diagramSpecificationURI=" + info.diagramSpecificationURI);
+				DiagramSpecificationResource dsResource = (DiagramSpecificationResource) ta.getTechnologyContextManager()
+						.getResourceWithURI(info.diagramSpecificationURI);
+				returned.setMetaModelResource(dsResource);
+			}
 			returned.setServiceManager(serviceManager);
 			return returned;
 		} catch (ModelDefinitionException e) {
