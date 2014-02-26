@@ -73,16 +73,15 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase{
 				File pptFile = new FileResource(resourceCenterDirectory.list()[i]);
 				logger.info("Testing file "+pptFile.getName());
 				createExampleDiagramFromPPTSlide.setFile(pptFile);
-				for(int j=0;j<=createExampleDiagramFromPPTSlide.getMaxNumberOfSlides();j++){
-					logger.info("Testing Slide number "+j +" in file named "+pptFile.getName());
+				for(Slide slide : createExampleDiagramFromPPTSlide.getCurrentSlides()){
+					logger.info("Testing Slide number "+slide.getSlideNumber() +" in file named "+pptFile.getName());
 					createExampleDiagramFromPPTSlide.setDiagramName("diagramName");
 					createExampleDiagramFromPPTSlide.setDiagramTitle("diagramTitle");
-					createExampleDiagramFromPPTSlide.setSlideNumber(j);
 					createExampleDiagramFromPPTSlide.doAction();
 					
 					assertNotNull(createExampleDiagramFromPPTSlide.getNewDiagram());
 					
-					assertEquals(computedNumberOfShapes(createExampleDiagramFromPPTSlide.loadSlide(j)),
+					assertEquals(computedNumberOfShapes(slide),
 							createExampleDiagramFromPPTSlide.getNewDiagram().getShapes().size());
 				}
 			}
