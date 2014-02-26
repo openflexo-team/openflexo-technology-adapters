@@ -25,7 +25,6 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
-import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
