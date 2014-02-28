@@ -56,6 +56,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
@@ -363,8 +364,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public File saveScreenshot() {
-		File imageFile = new File(getDiagramSpecification().getResource().getDirectory(), JavaUtils.getClassName(newElementName)
-				+ ".palette-element" + ".png");
+		File imageFile = new File(((DiagramSpecificationResource) getDiagramSpecification().getResource()).getDirectory(),
+				JavaUtils.getClassName(newElementName) + ".palette-element" + ".png");
 		logger.info("Saving " + imageFile);
 		try {
 			ImageUtils.saveImageToFile(getScreenshot().image, imageFile, ImageType.PNG);

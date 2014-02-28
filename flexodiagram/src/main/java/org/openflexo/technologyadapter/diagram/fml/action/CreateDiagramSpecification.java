@@ -31,6 +31,7 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification.DiagramSpecificationImpl;
 import org.openflexo.toolbox.StringUtils;
 
 public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecification, ViewPoint, ViewPointObject> {
@@ -77,8 +78,8 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 	@Override
 	protected void doAction(Object context) throws IOFlexoException {
 
-		newDiagramSpecification = DiagramSpecification.newDiagramSpecification(newDiagramSpecificationName, newDiagramSpecificationURI,
-				newDiagramSpecificationDirectory, getFocusedObject().getServiceManager());
+		newDiagramSpecification = DiagramSpecificationImpl.newDiagramSpecification(newDiagramSpecificationName, newDiagramSpecificationURI,
+				newDiagramSpecificationDirectory, getServiceManager());
 		newDiagramSpecification.setDescription(newDiagramSpecificationDescription);
 		// getFocusedObject().addToVirtualModels(newDiagramSpecification);
 

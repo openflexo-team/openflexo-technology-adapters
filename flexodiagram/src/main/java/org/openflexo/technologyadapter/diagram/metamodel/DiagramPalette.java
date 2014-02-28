@@ -52,6 +52,7 @@ import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResourceImpl;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 
 @ModelEntity
 @ImplementationClass(DiagramPalette.DiagramPaletteImpl.class)
@@ -105,7 +106,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		public static DiagramPaletteResource newDiagramPalette(DiagramSpecification diagramSpecification, String diagramPaletteName,
 				DrawingGraphicalRepresentation graphicalRepresentation, FlexoServiceManager serviceManager) {
 			DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.makeDiagramPaletteResource(
-					diagramSpecification.getResource(), diagramPaletteName, serviceManager);
+					(DiagramSpecificationResource) diagramSpecification.getResource(), diagramPaletteName, serviceManager);
 			DiagramPalette diagramPalette = diagramPaletteResource.getFactory().makeNewDiagramPalette();
 			diagramPalette.setGraphicalRepresentation(graphicalRepresentation);
 			diagramPalette.setName(diagramPaletteName);

@@ -110,7 +110,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 
 		@Override
 		public void setDiagramSpecification(DiagramSpecification diagramSpecification) {
-			diagramSpecificationResource = diagramSpecification.getResource();
+			diagramSpecificationResource = (DiagramSpecificationResource) diagramSpecification.getResource();
 		}
 
 		@Override

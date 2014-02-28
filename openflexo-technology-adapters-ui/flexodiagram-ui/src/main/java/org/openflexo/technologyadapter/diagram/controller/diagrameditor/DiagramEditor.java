@@ -21,6 +21,8 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Collections;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -41,17 +43,13 @@ import org.openflexo.fge.swing.control.tools.JDianaPalette;
 import org.openflexo.fge.swing.control.tools.JDianaStyles;
 import org.openflexo.fge.swing.control.tools.JDianaToolSelector;
 import org.openflexo.fge.swing.view.JDrawingView;
-import org.openflexo.foundation.DataModification;
-import org.openflexo.foundation.FlexoObservable;
-import org.openflexo.foundation.GraphicalFlexoObserver;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.selection.SelectionManagingDianaEditor;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.action.AddShape;
-import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteInserted;
-import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteRemoved;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.view.controller.FlexoController;
 
@@ -61,7 +59,7 @@ import org.openflexo.view.controller.FlexoController;
  * @author sylvain
  * 
  */
-public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram> implements GraphicalFlexoObserver {
+public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram> implements PropertyChangeListener /* GraphicalFlexoObserver*/{
 
 	private static final Logger logger = Logger.getLogger(DiagramEditor.class.getPackage().getName());
 
@@ -90,7 +88,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		this.swingToolFactory = swingToolFactory;
 
 		if (diagramDrawing.getDiagram().getDiagramSpecification() != null) {
-			diagramDrawing.getDiagram().getDiagramSpecification().addObserver(this);
+			diagramDrawing.getDiagram().getDiagramSpecification().getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 
 		if (!readOnly) {
@@ -153,7 +151,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	@Override
 	public void delete() {
 		if (getDiagram() != null && getDiagram().getDiagramSpecification() != null) {
-			getDiagram().getDiagramSpecification().deleteObserver(this);
+			getDiagram().getDiagramSpecification().getPropertyChangeSupport().removePropertyChangeListener(this);
 		}
 		if (flexoController != null) {
 			if (getDrawingView() != null && moduleView != null) {
@@ -227,33 +225,35 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	}
 
 	@Override
-	public void update(FlexoObservable observable, DataModification dataModification) {
-		logger.fine("dataModification=" + dataModification);
-		if (observable == getDiagram().getDiagramSpecification() && paletteView != null) {
-			if (dataModification instanceof DiagramPaletteInserted) {
-				logger.info("Handling palette added");
-				DiagramPalette palette = ((DiagramPaletteInserted) dataModification).newValue();
-				ContextualPalette newContextualPalette = new ContextualPalette(palette, this);
-				contextualPaletteModels.put(palette, newContextualPalette);
-				JDianaPalette dianaPalette = swingToolFactory.makeDianaPalette(newContextualPalette);
-				dianaPalette.attachToEditor(this);
-				contextualPalettes.put(palette, dianaPalette);
-				paletteView.add(palette.getName(), dianaPalette.getPaletteViewInScrollPane());
-				paletteView.revalidate();
-				paletteView.repaint();
-			} else if (dataModification instanceof DiagramPaletteRemoved) {
-				logger.info("Handling palette removed");
-				DiagramPalette palette = ((DiagramPaletteRemoved) dataModification).oldValue();
-				JDianaPalette removedPalette = contextualPalettes.get(palette);
-				removedPalette.delete();
-				ContextualPalette removedPaletteModel = contextualPaletteModels.get(palette);
-				removedPaletteModel.delete();
-				// unregisterPalette(removedPalette);
-				contextualPalettes.remove(palette);
-				contextualPaletteModels.remove(palette);
-				paletteView.remove(removedPalette.getPaletteViewInScrollPane());
-				paletteView.revalidate();
-				paletteView.repaint();
+	public void propertyChange(PropertyChangeEvent evt) {
+		super.propertyChange(evt);
+		if (evt.getSource() == getDiagram().getDiagramSpecification() && paletteView != null) {
+			if (evt.getPropertyName().equals(DiagramSpecification.PALETTES_KEY)) {
+				if (evt.getNewValue() instanceof DiagramPalette) {
+					logger.info("Handling palette added");
+					DiagramPalette palette = (DiagramPalette) evt.getNewValue();
+					ContextualPalette newContextualPalette = new ContextualPalette(palette, this);
+					contextualPaletteModels.put(palette, newContextualPalette);
+					JDianaPalette dianaPalette = swingToolFactory.makeDianaPalette(newContextualPalette);
+					dianaPalette.attachToEditor(this);
+					contextualPalettes.put(palette, dianaPalette);
+					paletteView.add(palette.getName(), dianaPalette.getPaletteViewInScrollPane());
+					paletteView.revalidate();
+					paletteView.repaint();
+				} else if (evt.getOldValue() instanceof DiagramPalette) {
+					logger.info("Handling palette removed");
+					DiagramPalette palette = (DiagramPalette) evt.getOldValue();
+					JDianaPalette removedPalette = contextualPalettes.get(palette);
+					removedPalette.delete();
+					ContextualPalette removedPaletteModel = contextualPaletteModels.get(palette);
+					removedPaletteModel.delete();
+					// unregisterPalette(removedPalette);
+					contextualPalettes.remove(palette);
+					contextualPaletteModels.remove(palette);
+					paletteView.remove(removedPalette.getPaletteViewInScrollPane());
+					paletteView.revalidate();
+					paletteView.repaint();
+				}
 			}
 		}
 	}

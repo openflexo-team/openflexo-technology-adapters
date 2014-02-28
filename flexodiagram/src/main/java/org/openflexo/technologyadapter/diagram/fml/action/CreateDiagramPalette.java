@@ -85,7 +85,7 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 		logger.info("Add diagram palette to diagram specification");
 
 		DiagramPaletteResource paletteResource = DiagramPaletteImpl.newDiagramPalette(getFocusedObject(), newPaletteName,
-				(DrawingGraphicalRepresentation) graphicalRepresentation, getFocusedObject().getServiceManager());
+				(DrawingGraphicalRepresentation) graphicalRepresentation, getServiceManager());
 
 		_newPalette = paletteResource.getDiagramPalette();
 		_newPalette.setDescription(description);

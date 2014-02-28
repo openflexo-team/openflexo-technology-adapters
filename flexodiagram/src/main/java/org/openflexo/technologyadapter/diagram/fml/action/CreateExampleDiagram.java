@@ -38,6 +38,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.toolbox.StringUtils;
 
 public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, DiagramSpecification, ViewPointObject> {
@@ -89,7 +90,8 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 		logger.info("Add example diagram");
 
 		String newDiagramURI = getFocusedObject().getURI() + "/" + newDiagramName;
-		File newDiagramFile = new File(getFocusedObject().getResource().getDirectory(), newDiagramName + DiagramResource.DIAGRAM_SUFFIX);
+		File newDiagramFile = new File(((DiagramSpecificationResource) getFocusedObject().getResource()).getDirectory(), newDiagramName
+				+ DiagramResource.DIAGRAM_SUFFIX);
 		newDiagramResource = DiagramImpl.newDiagramResource(newDiagramName, newDiagramTitle, newDiagramURI, newDiagramFile,
 				getFocusedObject(), getServiceManager());
 		newDiagramResource.getDiagram().setDescription(description);

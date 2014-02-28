@@ -25,16 +25,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.DefaultFlexoObject;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
-import org.openflexo.foundation.validation.ValidationModel;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.Getter.Cardinality;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteInserted;
 import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteRemoved;
@@ -47,461 +55,341 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceIm
 import org.openflexo.toolbox.ChainedCollection;
 
 /**
- * A {@link DiagramSpecification} is the specification of a Diagram<br>
+ * A {@link DiagramSpecification} is the specification of a Diagram: this can be considered as the metamodel for a {@link Diagram} modelling
+ * element<br>
  * 
  * A {@link DiagramSpecification} contains some palettes and example diagrams
  * 
  * @author sylvain
  * 
  */
-public class DiagramSpecification extends DefaultFlexoObject /*FlexoObjectImpl*/implements FlexoMetaModel<DiagramSpecification>,
-		ResourceData<DiagramSpecification> {
+@ModelEntity
+@ImplementationClass(DiagramSpecification.DiagramSpecificationImpl.class)
+@XMLElement(xmlTag = "DiagramSpecification")
+public interface DiagramSpecification extends FlexoObject, FlexoMetaModel<DiagramSpecification>, ResourceData<DiagramSpecification> {
 
-	private static final Logger logger = Logger.getLogger(DiagramSpecification.class.getPackage().getName());
-
-	private DiagramSpecificationResource resource;
-
-	private final List<DiagramPalette> palettes;
-	private final List<Diagram> exampleDiagrams;
-
-	/**
-	 * Stores a chained collections of objects which are involved in validation
-	 */
-	private final ChainedCollection<ViewPointObject> validableObjects = null;
+	@PropertyIdentifier(type = String.class)
+	public static final String NAME_KEY = "name";
+	@PropertyIdentifier(type = DiagramPalette.class, cardinality = Cardinality.LIST)
+	public static final String PALETTES_KEY = "palettes";
+	@PropertyIdentifier(type = Diagram.class, cardinality = Cardinality.LIST)
+	public static final String EXAMPLE_DIAGRAMS_KEY = "exampleDiagrams";
 
 	/**
-	 * Creates a new VirtualModel on user request<br>
-	 * Creates both the resource and the object
+	 * Return title of this DiagramSpecification
 	 * 
-	 * 
-	 * @param baseName
-	 * @param viewPoint
 	 * @return
 	 */
-	public static DiagramSpecification newDiagramSpecification(String uri, String baseName, File diagramSpecificationDirectory,
-			FlexoServiceManager serviceManager) {
-		File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
-		DiagramSpecificationResource dsRes = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(uri,
-				diagramSpecificationDirectory, diagramSpecificationXMLFile, serviceManager);
-		DiagramSpecification diagramSpecification = new DiagramSpecification(serviceManager);
-		dsRes.setResourceData(diagramSpecification);
-		diagramSpecification.setResource(dsRes);
-		try {
-			dsRes.save(null);
-		} catch (SaveResourceException e) {
-			e.printStackTrace();
-		}
-		return diagramSpecification;
-	}
-
-	// Used during deserialization, do not use it
-	public DiagramSpecification(FlexoServiceManager serviceManager) {
-		super();
-		exampleDiagrams = new ArrayList<Diagram>();
-		palettes = new ArrayList<DiagramPalette>();
-	}
-
-	public FlexoServiceManager getServiceManager() {
-		return getResource().getServiceManager();
-	}
+	@Getter(value = NAME_KEY)
+	@XMLAttribute
+	public String getName();
 
 	/**
-	 * Load eventually unloaded VirtualModels<br>
-	 * After this call return, we can assert that all {@link VirtualModel} are loaded.
+	 * Sets title of this DiagramSpecification
 	 */
-	private void loadDiagramPalettesWhenUnloaded() {
-		for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
-			if (r instanceof DiagramPaletteResource) {
-				((DiagramPaletteResource) r).getDiagramPalette();
+	@Setter(value = NAME_KEY)
+	public void setName(String name);
+
+	@Getter(value = PALETTES_KEY, cardinality = Cardinality.LIST)
+	@XMLElement
+	public List<DiagramPalette> getPalettes();
+
+	public DiagramPalette getPalette(String paletteName);
+
+	@Setter(PALETTES_KEY)
+	public void setPalettes(List<DiagramPalette> palettes);
+
+	@Adder(PALETTES_KEY)
+	public void addToPalettes(DiagramPalette aPalette);
+
+	@Remover(PALETTES_KEY)
+	public void removeFromPalettes(DiagramPalette aPalette);
+
+	@Getter(value = EXAMPLE_DIAGRAMS_KEY, cardinality = Cardinality.LIST)
+	@XMLElement
+	public List<Diagram> getExampleDiagrams();
+
+	public Diagram getExampleDiagram(String diagramName);
+
+	@Setter(EXAMPLE_DIAGRAMS_KEY)
+	public void setExampleDiagrams(List<Diagram> exampleDiagrams);
+
+	@Adder(EXAMPLE_DIAGRAMS_KEY)
+	public void addToExampleDiagrams(Diagram aDiagram);
+
+	@Remover(EXAMPLE_DIAGRAMS_KEY)
+	public void removeFromExampleDiagrams(Diagram aDiagram);
+
+	@Override
+	public DiagramSpecificationResource getResource();
+
+	public static abstract class DiagramSpecificationImpl extends FlexoObjectImpl implements DiagramSpecification {
+
+		private static final Logger logger = Logger.getLogger(DiagramSpecification.class.getPackage().getName());
+
+		private DiagramSpecificationResource resource;
+
+		private final List<DiagramPalette> palettes;
+		private final List<Diagram> exampleDiagrams;
+
+		/**
+		 * Stores a chained collections of objects which are involved in validation
+		 */
+		private final ChainedCollection<ViewPointObject> validableObjects = null;
+
+		/**
+		 * Creates a new VirtualModel on user request<br>
+		 * Creates both the resource and the object
+		 * 
+		 * 
+		 * @param baseName
+		 * @param viewPoint
+		 * @return
+		 */
+		public static DiagramSpecification newDiagramSpecification(String uri, String baseName, File diagramSpecificationDirectory,
+				FlexoServiceManager serviceManager) {
+			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
+			DiagramSpecificationResource dsRes = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(uri,
+					diagramSpecificationDirectory, diagramSpecificationXMLFile, serviceManager);
+			DiagramSpecification diagramSpecification = dsRes.getFactory().newInstance(DiagramSpecification.class);
+			dsRes.setResourceData(diagramSpecification);
+			diagramSpecification.setResource(dsRes);
+			try {
+				dsRes.save(null);
+			} catch (SaveResourceException e) {
+				e.printStackTrace();
+			}
+			return diagramSpecification;
+		}
+
+		// Used during deserialization, do not use it
+		public DiagramSpecificationImpl() {
+			super();
+			exampleDiagrams = new ArrayList<Diagram>();
+			palettes = new ArrayList<DiagramPalette>();
+		}
+
+		public FlexoServiceManager getServiceManager() {
+			return getResource().getServiceManager();
+		}
+
+		/**
+		 * Load eventually unloaded VirtualModels<br>
+		 * After this call return, we can assert that all {@link VirtualModel} are loaded.
+		 */
+		private void loadDiagramPalettesWhenUnloaded() {
+			for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
+				if (r instanceof DiagramPaletteResource) {
+					((DiagramPaletteResource) r).getDiagramPalette();
+				}
 			}
 		}
-	}
 
-	/**
-	 * Load eventually unloaded VirtualModels<br>
-	 * After this call return, we can assert that all {@link VirtualModel} are loaded.
-	 */
-	private void loadExampleDiagramsWhenUnloaded() {
-		for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
-			if (r instanceof DiagramResource) {
-				((DiagramResource) r).getDiagram();
+		/**
+		 * Load eventually unloaded VirtualModels<br>
+		 * After this call return, we can assert that all {@link VirtualModel} are loaded.
+		 */
+		private void loadExampleDiagramsWhenUnloaded() {
+			for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
+				if (r instanceof DiagramResource) {
+					((DiagramResource) r).getDiagram();
+				}
 			}
 		}
-	}
 
-	@Override
-	public DiagramSpecificationResource getResource() {
-		return resource;
-	}
+		@Override
+		public DiagramSpecificationResource getResource() {
+			return resource;
+		}
 
-	@Override
-	public void setResource(FlexoResource<DiagramSpecification> resource) {
-		this.resource = (DiagramSpecificationResource) resource;
-	}
+		@Override
+		public void setResource(FlexoResource<DiagramSpecification> resource) {
+			this.resource = (DiagramSpecificationResource) resource;
+		}
 
-	@Override
-	public String toString() {
-		return "DiagramSpecification:" + getURI();
-	}
+		@Override
+		public String toString() {
+			return "DiagramSpecification:" + getURI();
+		}
 
-	public List<DiagramPalette> getPalettes() {
-		loadDiagramPalettesWhenUnloaded();
-		return palettes;
-	}
+		@Override
+		public List<DiagramPalette> getPalettes() {
+			loadDiagramPalettesWhenUnloaded();
+			return palettes;
+		}
 
-	public DiagramPalette getPalette(String paletteName) {
-		if (paletteName == null) {
+		@Override
+		public DiagramPalette getPalette(String paletteName) {
+			if (paletteName == null) {
+				return null;
+			}
+			loadDiagramPalettesWhenUnloaded();
+			for (DiagramPalette p : getPalettes()) {
+				if (paletteName.equals(p.getName())) {
+					return p;
+				}
+			}
 			return null;
 		}
-		loadDiagramPalettesWhenUnloaded();
-		for (DiagramPalette p : getPalettes()) {
-			if (paletteName.equals(p.getName())) {
-				return p;
-			}
+
+		@Override
+		public void addToPalettes(DiagramPalette aPalette) {
+			palettes.add(aPalette);
+			setChanged();
+			notifyObservers(new DiagramPaletteInserted(aPalette, this));
 		}
-		return null;
-	}
 
-	public void addToPalettes(DiagramPalette aPalette) {
-		palettes.add(aPalette);
-		setChanged();
-		notifyObservers(new DiagramPaletteInserted(aPalette, this));
-	}
+		@Override
+		public void removeFromPalettes(DiagramPalette aPalette) {
+			palettes.remove(aPalette);
+			setChanged();
+			notifyObservers(new DiagramPaletteRemoved(aPalette, this));
+		}
 
-	public void removeFromPalettes(DiagramPalette aPalette) {
-		palettes.remove(aPalette);
-		setChanged();
-		notifyObservers(new DiagramPaletteRemoved(aPalette, this));
-	}
+		@Override
+		public List<Diagram> getExampleDiagrams() {
+			loadExampleDiagramsWhenUnloaded();
+			return exampleDiagrams;
+		}
 
-	public List<Diagram> getExampleDiagrams() {
-		loadExampleDiagramsWhenUnloaded();
-		return exampleDiagrams;
-	}
-
-	public Diagram getExampleDiagram(String diagramName) {
-		if (diagramName == null) {
+		@Override
+		public Diagram getExampleDiagram(String diagramName) {
+			if (diagramName == null) {
+				return null;
+			}
+			loadExampleDiagramsWhenUnloaded();
+			for (Diagram s : getExampleDiagrams()) {
+				if (diagramName.equals(s.getName())) {
+					return s;
+				}
+			}
 			return null;
 		}
-		loadExampleDiagramsWhenUnloaded();
-		for (Diagram s : getExampleDiagrams()) {
-			if (diagramName.equals(s.getName())) {
-				return s;
-			}
+
+		@Override
+		public void addToExampleDiagrams(Diagram aDiagram) {
+			exampleDiagrams.add(aDiagram);
+			setChanged();
+			notifyObservers(new ExampleDiagramInserted(aDiagram, this));
 		}
-		return null;
-	}
 
-	public void addToExampleDiagrams(Diagram aDiagram) {
-		exampleDiagrams.add(aDiagram);
-		setChanged();
-		notifyObservers(new ExampleDiagramInserted(aDiagram, this));
-	}
+		@Override
+		public void removeFromExampleDiagrams(Diagram aDiagram) {
+			exampleDiagrams.remove(aDiagram);
+			setChanged();
+			notifyObservers(new ExampleDiagramRemoved(aDiagram, this));
+		}
 
-	public void removeFromExampleDiagrams(Diagram aDiagram) {
-		exampleDiagrams.remove(aDiagram);
-		setChanged();
-		notifyObservers(new ExampleDiagramRemoved(aDiagram, this));
-	}
-
-	/*@Override
-	protected void notifyEditionSchemeModified() {
+		/*@Override
+		protected void notifyEditionSchemeModified() {
 		_allFlexoConceptWithDropScheme = null;
 		_allFlexoConceptWithLinkScheme = null;
-	}
+		}
 
-	private Vector<FlexoConcept> _allFlexoConceptWithDropScheme;
-	private Vector<FlexoConcept> _allFlexoConceptWithLinkScheme;
+		private Vector<FlexoConcept> _allFlexoConceptWithDropScheme;
+		private Vector<FlexoConcept> _allFlexoConceptWithLinkScheme;
 
-	public Vector<FlexoConcept> getAllFlexoConceptWithDropScheme() {
+		public Vector<FlexoConcept> getAllFlexoConceptWithDropScheme() {
 		if (_allFlexoConceptWithDropScheme == null) {
-			_allFlexoConceptWithDropScheme = new Vector<FlexoConcept>();
-			for (FlexoConcept p : getFlexoConcepts()) {
-				if (p.hasDropScheme()) {
-					_allFlexoConceptWithDropScheme.add(p);
-				}
+		_allFlexoConceptWithDropScheme = new Vector<FlexoConcept>();
+		for (FlexoConcept p : getFlexoConcepts()) {
+			if (p.hasDropScheme()) {
+				_allFlexoConceptWithDropScheme.add(p);
 			}
+		}
 		}
 		return _allFlexoConceptWithDropScheme;
-	}
+		}
 
-	public Vector<FlexoConcept> getAllFlexoConceptWithLinkScheme() {
+		public Vector<FlexoConcept> getAllFlexoConceptWithLinkScheme() {
 		if (_allFlexoConceptWithLinkScheme == null) {
-			_allFlexoConceptWithLinkScheme = new Vector<FlexoConcept>();
-			for (FlexoConcept p : getFlexoConcepts()) {
-				if (p.hasLinkScheme()) {
-					_allFlexoConceptWithLinkScheme.add(p);
-				}
+		_allFlexoConceptWithLinkScheme = new Vector<FlexoConcept>();
+		for (FlexoConcept p : getFlexoConcepts()) {
+			if (p.hasLinkScheme()) {
+				_allFlexoConceptWithLinkScheme.add(p);
 			}
 		}
+		}
 		return _allFlexoConceptWithLinkScheme;
-	}
+		}
 
-	@Override
-	public void addToFlexoConcepts(FlexoConcept pattern) {
+		@Override
+		public void addToFlexoConcepts(FlexoConcept pattern) {
 		_allFlexoConceptWithDropScheme = null;
 		_allFlexoConceptWithLinkScheme = null;
 		super.addToFlexoConcepts(pattern);
-	}
+		}
 
-	@Override
-	public void removeFromFlexoConcepts(FlexoConcept pattern) {
+		@Override
+		public void removeFromFlexoConcepts(FlexoConcept pattern) {
 		_allFlexoConceptWithDropScheme = null;
 		_allFlexoConceptWithLinkScheme = null;
 		super.removeFromFlexoConcepts(pattern);
-	}
+		}
 
-	public Vector<LinkScheme> getAllConnectors() {
+		public Vector<LinkScheme> getAllConnectors() {
 		Vector<LinkScheme> returned = new Vector<LinkScheme>();
 		for (FlexoConcept ep : getFlexoConcepts()) {
-			for (LinkScheme s : ep.getLinkSchemes()) {
+		for (LinkScheme s : ep.getLinkSchemes()) {
+			returned.add(s);
+		}
+		}
+		return returned;
+		}
+
+		public Vector<LinkScheme> getConnectorsMatching(FlexoConcept fromConcept, FlexoConcept toConcept) {
+		Vector<LinkScheme> returned = new Vector<LinkScheme>();
+		for (FlexoConcept ep : getFlexoConcepts()) {
+		for (LinkScheme s : ep.getLinkSchemes()) {
+			if (s.isValidTarget(fromConcept, toConcept)) {
 				returned.add(s);
 			}
 		}
+		}
 		return returned;
-	}
+		}
 
-	public Vector<LinkScheme> getConnectorsMatching(FlexoConcept fromConcept, FlexoConcept toConcept) {
-		Vector<LinkScheme> returned = new Vector<LinkScheme>();
-		for (FlexoConcept ep : getFlexoConcepts()) {
-			for (LinkScheme s : ep.getLinkSchemes()) {
-				if (s.isValidTarget(fromConcept, toConcept)) {
-					returned.add(s);
+		@Override
+		public boolean handleVariable(BindingVariable variable) {
+		if (variable.getVariableName().equals(DiagramEditionScheme.TOP_LEVEL)) {
+		return true;
+		}
+		return super.handleVariable(variable);
+		}
+		 */
+
+		/*@Override
+		public Collection<ViewPointObject> getEmbeddedValidableObjects() {
+		if (validableObjects == null) {
+		validableObjects = new ChainedCollection<ViewPointObject>(getFlexoConcepts(), getModelSlots(), getPalettes(),
+				getExampleDiagrams());
+		}
+		return validableObjects;
+		}*/
+
+		/*@Override
+		public final void finalizeDeserialization(Object builder) {
+		super.finalizeDeserialization(builder);
+		updateBindingModel();
+		}*/
+
+		@Override
+		public String getName() {
+			if (getResource() != null) {
+				return getResource().getName();
+			}
+			return null;
+		}
+
+		@Override
+		public void setName(String name) {
+			if (requireChange(getName(), name)) {
+				if (getResource() != null) {
+					getResource().setName(name);
 				}
 			}
 		}
-		return returned;
-	}
 
-	@Override
-	public boolean handleVariable(BindingVariable variable) {
-		if (variable.getVariableName().equals(DiagramEditionScheme.TOP_LEVEL)) {
-			return true;
-		}
-		return super.handleVariable(variable);
-	}
-	*/
-
-	/*@Override
-	public Collection<ViewPointObject> getEmbeddedValidableObjects() {
-		if (validableObjects == null) {
-			validableObjects = new ChainedCollection<ViewPointObject>(getFlexoConcepts(), getModelSlots(), getPalettes(),
-					getExampleDiagrams());
-		}
-		return validableObjects;
-	}*/
-
-	/*@Override
-	public final void finalizeDeserialization(Object builder) {
-		super.finalizeDeserialization(builder);
-		updateBindingModel();
-	}*/
-
-	public String getName() {
-		if (getResource() != null) {
-			return getResource().getName();
-		}
-		return null;
-	}
-
-	public void setName(String name) {
-		if (requireChange(getName(), name)) {
-			if (getResource() != null) {
-				getResource().setName(name);
-			}
-		}
-	}
-
-	@Override
-	public Object performSuperGetter(String propertyIdentifier) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void performSuperSetter(String propertyIdentifier, Object value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void performSuperAdder(String propertyIdentifier, Object value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void performSuperRemover(String propertyIdentifier, Object value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Object performSuperGetter(String propertyIdentifier, Class<?> modelEntityInterface) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void performSuperSetter(String propertyIdentifier, Object value, Class<?> modelEntityInterface) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void performSuperAdder(String propertyIdentifier, Object value, Class<?> modelEntityInterface) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void performSuperRemover(String propertyIdentifier, Object value, Class<?> modelEntityInterface) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void performSuperSetModified(boolean modified) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Object performSuperFinder(String finderIdentifier, Object value) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object performSuperFinder(String finderIdentifier, Object value, Class<?> modelEntityInterface) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isSerializing() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isDeserializing() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setModified(boolean modified) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean equalsObject(Object obj) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void destroy() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean hasKey(String key) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean performSuperDelete(Object... context) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean performSuperUndelete() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void performSuperDelete(Class<?> modelEntityInterface, Object... context) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public boolean delete(Object... context) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean undelete() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Object cloneObject() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object cloneObject(Object... context) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isCreatedByCloning() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean isBeingCloned() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public ValidationModel getDefaultValidationModel() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getURI() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean isReadOnly() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void setIsReadOnly(boolean b) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public Object getObject(String objectURI) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public TechnologyAdapter getTechnologyAdapter() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }
