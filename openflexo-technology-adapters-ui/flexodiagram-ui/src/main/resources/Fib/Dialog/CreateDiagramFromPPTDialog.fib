@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false" opaque="false" layout="gridbag" controllerClassName="org.openflexo.view.controller.FlexoFIBController" border="empty" trackViewPortWidth="true" dataClassName="org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramFromPPTSlide" trackViewPortHeight="true">
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false" height="500" opaque="false" layout="gridbag" controllerClassName="org.openflexo.view.controller.FlexoFIBController" border="empty" trackViewPortWidth="true" width="600" dataClassName="org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramFromPPTSlide" trackViewPortHeight="true">
   <LocalizedDictionary id="1" />
   <Panel id="2" darkLevel="0" useScrollBar="false" protectContent="false" description="" layout="twocols" borderRight="2" border="empty" trackViewPortWidth="true" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" borderBottom="2" borderTop="2" trackViewPortHeight="true">
-    <Label id="3" manageDynamicModel="false" useScrollBar="false" localize="true" align="center" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" label="creates_example_drawing_from_ppt_slide" readOnly="false" font="Lucida Grande,1,15"/>
+    <Label id="3" manageDynamicModel="false" useScrollBar="false" localize="true" font="Lucida Grande,1,15" align="center" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" label="creates_example_drawing_from_ppt_slide" readOnly="false" />
     <Label id="4" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="diagram_name" readOnly="false" />
     <TextField id="5" passwd="false" manageDynamicModel="false" useScrollBar="false" data="data.diagramName" columns="7" name="DiagramName" text="TextField" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" readOnly="false" validateOnReturn="false" />
     <Label id="6" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="diagram_title" readOnly="false" />
     <TextField id="7" passwd="false" manageDynamicModel="false" useScrollBar="false" data="data.diagramTitle" columns="7" name="DiagramTitile" text="TextField" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" readOnly="false" validateOnReturn="false" />
     <Label id="8" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="select_a_ppt_file" readOnly="false" />
     <File id="9" manageDynamicModel="true" useScrollBar="false" data="data.file" mode="OpenMode" name="PPTFile" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" readOnly="false" isDirectory="false" filter=".ppt" />
-    <Label id="10" manageDynamicModel="false" useScrollBar="false" name="slide_number" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="slide_selection" readOnly="false" />
-    <Table id="11" showFooter="false" visible="(data.currentSlides.size &gt; 0)" manageDynamicModel="true" enable="(data.currentSlides.size &gt; 0)" selectionMode="SingleSelection" description="" boundToSelectionManager="false" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" visibleRowCount="3" createNewRowOnClick="false" rowHeight="100" iteratorClassName="org.apache.poi.hslf.model.Slide" useScrollBar="false" data="data.currentSlides" selected="data.slide" autoSelectFirstRow="true" readOnly="false">
-      <NumberColumn id="12" data="iterator.slideNumber" numberType="IntegerType" displayTitle="true" title="slide_number" name="number" columnWidth="40" resizable="true" />
-      <IconColumn id="13" data="data.getMiniature(iterator)" displayTitle="true" title="slide_snapshot" name="icon" columnWidth="200" resizable="true" />
+    <Table id="10" showFooter="false" visible="(data.selectedSlideShow != null)" manageDynamicModel="true" enable="(data.currentSlides.size &gt; 0)" selectionMode="SingleSelection" boundToSelectionManager="false" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" visibleRowCount="4" createNewRowOnClick="false" rowHeight="70" iteratorClassName="org.apache.poi.hslf.model.Slide" useScrollBar="false" data="data.currentSlides" selected="data.slide" autoSelectFirstRow="true" name="SelectedSlideTable" readOnly="false">
+      <NumberColumn id="11" data="iterator.slideNumber" numberType="IntegerType" displayTitle="false" title="slide_number" name="number" columnWidth="20" resizable="false" />
+      <IconColumn id="12" data="data.getMiniature(iterator)" displayTitle="false" title="slide_snapshot" name="icon" columnWidth="70" resizable="true" />
     </Table>
+    <Image id="13" manageDynamicModel="true" useScrollBar="false" data="data.getOverview(SelectedSlideTable.selected).getImage()" sizeAdjustment="OriginalSize" imageFile="../../../../../../../../gina/gina-swing-editor/target/classes/FIBEditorPalette/Image/Image.gif" imageHeight="32" localize="true" align="right" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" readOnly="false" imageWidth="32" />
     <Label id="14" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="" readOnly="false" />
     <Label id="15" manageDynamicModel="false" useScrollBar="false" data="data.errorMessage" opaque="false" foregroundColor="255,0,0" localize="true" font="Dialog,2,10" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" label="label" readOnly="false" />
     <Panel id="16" darkLevel="0" vGap="5" useScrollBar="false" protectContent="false" hGap="5" layout="flow" border="empty" flowAlignment="CENTER" trackViewPortWidth="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" trackViewPortHeight="true">
@@ -21,33 +21,4 @@
       <Button id="18" manageDynamicModel="false" useScrollBar="false" enable="data.isValid" buttonType="Trigger" action="controller.validateAndDispose()" localize="true" constraints="flow(location=east)" label="Validate" readOnly="false" />
     </Panel>
   </Panel>
-  <LocalizedDictionary>
-    <Localized key="validate" lang="English">Validate</Localized>
-    <Localized key="cancel" lang="English">Cancel</Localized>
-    <Localized key="validate" lang="French">Valider</Localized>
-    <Localized key="cancel" lang="French">Annuler</Localized>
-    <Localized key="validate" lang="Dutch">Validate</Localized>
-    <Localized key="cancel" lang="Dutch">Cancel</Localized>
-    <Localized key="creates_example_drawing_from_ppt_slide" lang="English">Creates example drawing from PPT slide</Localized>
-    <Localized key="creates_example_drawing_from_ppt_slide" lang="French">Creer un diagramme d'exemple à partir d'un fichier PPT</Localized>
-    <Localized key="creates_example_drawing_from_ppt_slide" lang="Dutch">creates_example_drawing_from_ppt_slide</Localized>
-    <Localized key="diagram_name" lang="English">Diagram name</Localized>
-    <Localized key="diagram_name" lang="French">Nom du diagramme</Localized>
-    <Localized key="diagram_name" lang="Dutch">diagram_name</Localized>
-    <Localized key="diagram_title" lang="English">Diagram title</Localized>
-    <Localized key="diagram_title" lang="French">Titre du diagramme</Localized>
-    <Localized key="diagram_title" lang="Dutch">diagram_title</Localized>
-    <Localized key="select_a_ppt_file" lang="English">Select a ppt file</Localized>
-    <Localized key="select_a_ppt_file" lang="French">Séléctionner un fichier PPT</Localized>
-    <Localized key="select_a_ppt_file" lang="Dutch">select_a_ppt_file</Localized>
-    <Localized key="slide_number" lang="English">Slide number</Localized>
-    <Localized key="slide_number" lang="French">Numéro de diapositive</Localized>
-    <Localized key="slide_number" lang="Dutch">slide_number</Localized>
-    <Localized key="slide_snapshot" lang="English">Slide snapshot</Localized>
-    <Localized key="slide_snapshot" lang="French">Aperçut de la diapositive</Localized>
-    <Localized key="slide_snapshot" lang="Dutch">slide_snapshot</Localized>
-    <Localized key="slide_selection" lang="English">Slide selection</Localized>
-    <Localized key="slide_selection" lang="French">Sélection de la diapositive</Localized>
-    <Localized key="slide_selection" lang="Dutch">slide_selection</Localized>
-  </LocalizedDictionary>
 </Panel>

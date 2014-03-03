@@ -311,6 +311,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 				currentSlides.add(slide);
 			}
 			setCurrentSlides(currentSlides);
+			getPropertyChangeSupport().firePropertyChange("selectedSlideShow", null, selectedSlideShow);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -363,7 +364,17 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	}
 
 	public ImageIcon getMiniature(Slide s) {
-		double WIDTH = 150;
+		double WIDTH = 75;
+		Dimension d = s.getSlideShow().getPageSize();
+		BufferedImage i = new BufferedImage((int) WIDTH, (int) (WIDTH * d.height / d.width), BufferedImage.TYPE_INT_RGB);
+		Graphics2D graphics = i.createGraphics();
+		graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
+		s.draw(graphics);
+		return new ImageIcon(i);
+	}
+	
+	public ImageIcon getOverview(Slide s) {
+		double WIDTH = 400;
 		Dimension d = s.getSlideShow().getPageSize();
 		BufferedImage i = new BufferedImage((int) WIDTH, (int) (WIDTH * d.height / d.width), BufferedImage.TYPE_INT_RGB);
 		Graphics2D graphics = i.createGraphics();
