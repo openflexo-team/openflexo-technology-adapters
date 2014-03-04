@@ -22,20 +22,20 @@ package org.openflexo.technologyadapter.diagram.fml.editionaction;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DiagramAction.DiagramActionImpl.class)
-public interface DiagramAction<T> extends AssignableAction<TypedDiagramModelSlot, T> {
+public interface DiagramAction<T> extends AssignableAction<DiagramModelSlot, T> {
 
-	public abstract class DiagramActionImpl<T> extends AssignableActionImpl<TypedDiagramModelSlot, T> {
+	public abstract class DiagramActionImpl<T> extends AssignableActionImpl<DiagramModelSlot, T> {
 
 		@Override
-		public TypedDiagramModelSlot getModelSlot() {
-			TypedDiagramModelSlot returned = super.getModelSlot();
+		public DiagramModelSlot getModelSlot() {
+			DiagramModelSlot returned = super.getModelSlot();
 			if (returned == null) {
-				if (getVirtualModel() != null && getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
-					return getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
+				if (getVirtualModel() != null && getVirtualModel().getModelSlots(DiagramModelSlot.class).size() > 0) {
+					return getVirtualModel().getModelSlots(DiagramModelSlot.class).get(0);
 				}
 			}
 			return returned;
