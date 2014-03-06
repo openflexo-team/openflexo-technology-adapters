@@ -48,7 +48,7 @@ public class CreateDiagramSpecificationInitializer extends ActionInitializer<Cre
 		return new FlexoActionInitializer<CreateDiagramSpecification>() {
 			@Override
 			public boolean run(EventObject e, CreateDiagramSpecification action) {
-				return instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_SPECIFICATION_DIALOG_FIB);
+				return instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_SPECIFICATION_DIALOG_FIB_NAME);
 			}
 		};
 	}

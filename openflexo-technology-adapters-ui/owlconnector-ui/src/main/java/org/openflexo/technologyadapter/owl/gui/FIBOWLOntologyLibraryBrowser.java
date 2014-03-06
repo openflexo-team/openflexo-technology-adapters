@@ -22,7 +22,6 @@ package org.openflexo.technologyadapter.owl.gui;
 import java.util.logging.Logger;
 
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
-import org.openflexo.toolbox.FileResource;
 import org.openflexo.view.FIBBrowserView;
 import org.openflexo.view.controller.FlexoController;
 
@@ -35,10 +34,10 @@ import org.openflexo.view.controller.FlexoController;
 public class FIBOWLOntologyLibraryBrowser extends FIBBrowserView<OWLOntologyLibrary> {
 	static final Logger logger = Logger.getLogger(FIBOWLOntologyLibraryBrowser.class.getPackage().getName());
 
-	public static final FileResource FIB_FILE = new FileResource("Fib/FIBOWLOntologyLibraryBrowser.fib");
+	public static final String FIB_FILE_NAME = "Fib/FIBOWLOntologyLibraryBrowser.fib";
 
 	public FIBOWLOntologyLibraryBrowser(OWLOntologyLibrary ontologyLibrary, FlexoController controller) {
-		super(ontologyLibrary, controller, FIB_FILE);
+		super(ontologyLibrary, controller, FIB_FILE_NAME);
 	}
 
 	// Please uncomment this for a live test

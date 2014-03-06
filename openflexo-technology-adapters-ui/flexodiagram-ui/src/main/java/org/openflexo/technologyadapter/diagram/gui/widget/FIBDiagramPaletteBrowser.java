@@ -22,7 +22,6 @@ package org.openflexo.technologyadapter.diagram.gui.widget;
 import java.util.logging.Logger;
 
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
-import org.openflexo.toolbox.FileResource;
 import org.openflexo.view.FIBBrowserView;
 import org.openflexo.view.controller.FlexoController;
 
@@ -36,10 +35,10 @@ import org.openflexo.view.controller.FlexoController;
 public class FIBDiagramPaletteBrowser extends FIBBrowserView<DiagramPalette> {
 	static final Logger logger = Logger.getLogger(FIBDiagramPaletteBrowser.class.getPackage().getName());
 
-	public static final FileResource FIB_FILE = new FileResource("Fib/Widget/FIBDiagramPaletteBrowser.fib");
+	public static final String FIB_FILE_NAME = "Fib/Widget/FIBDiagramPaletteBrowser.fib";
 
 	public FIBDiagramPaletteBrowser(DiagramPalette diagramPalette, FlexoController controller) {
-		super(diagramPalette, controller, FIB_FILE);
+		super(diagramPalette, controller, FIB_FILE_NAME);
 	}
 
 	// Please uncomment this for a live test

@@ -72,7 +72,7 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 					// action.setScreenshot(ScreenshotGenerator.trimImage(image));
 				}
 
-				return instanciateAndShowDialog(action, CommonFIB.PUSH_TO_PALETTE_DIALOG_FIB);
+				return instanciateAndShowDialog(action, CommonFIB.PUSH_TO_PALETTE_DIALOG_FIB_NAME);
 			}
 		};
 	}

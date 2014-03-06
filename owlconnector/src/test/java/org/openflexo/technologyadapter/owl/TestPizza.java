@@ -33,7 +33,7 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -55,7 +55,7 @@ public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
 		log("test0LoadTestResourceCenter()");
-		testServiceManager = new TestFlexoServiceManager(new FileResource("TestResourceCenter/Ontologies"));
+		testServiceManager = new TestFlexoServiceManager(ResourceLocator.locateDirectory("TestResourceCenter/Ontologies"));
 		owlAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) testServiceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 	}
@@ -67,7 +67,7 @@ public class TestPizza extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(2)
 	public void test1LoadTestResourceCenter() {
 
-		File myOntology = new FileResource("TestResourceCenter/Ontologies/Tests/PizzaOntology.owl");
+		File myOntology = ResourceLocator.locateFile("TestResourceCenter/Ontologies/Tests/PizzaOntology.owl");
 
 		System.out.println("Found: " + myOntology);
 		OWLOntology hop = new OWLOntology(OWLOntology.findOntologyURI(myOntology), myOntology, ontologyLibrary, owlAdapter);

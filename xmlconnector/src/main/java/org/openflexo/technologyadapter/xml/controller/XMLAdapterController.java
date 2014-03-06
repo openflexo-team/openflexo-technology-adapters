@@ -38,7 +38,7 @@ import org.openflexo.technologyadapter.xml.gui.XMLModelBrowserModel;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualRole;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -57,7 +57,7 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
 
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(new FileResource("Inspectors/XML"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateDirectory("Inspectors/XML"));
 	}
 
 	/**

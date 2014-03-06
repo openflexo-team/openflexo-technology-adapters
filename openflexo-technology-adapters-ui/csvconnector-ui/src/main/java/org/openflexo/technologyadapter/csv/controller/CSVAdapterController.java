@@ -30,7 +30,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.gui.CSVIconLibrary;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -48,7 +48,7 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
 		actionInitializer.getController().getModuleInspectorController()
-				.loadDirectory(new FileResource("src/main/resources/Inspectors/CSV"));
+				.loadDirectory(ResourceLocator.locateDirectory("Inspectors/CSV"));
 	}
 
 	@Override

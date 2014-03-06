@@ -47,7 +47,7 @@ public class CreateObjectPropertyInitializer extends ActionInitializer<CreateObj
 		return new FlexoActionInitializer<CreateObjectProperty>() {
 			@Override
 			public boolean run(EventObject e, CreateObjectProperty action) {
-				return instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_OBJECT_PROPERTY_DIALOG_FIB);
+				return instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_OBJECT_PROPERTY_DIALOG_FIB_NAME);
 			}
 		};
 	}

@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 import org.openflexo.components.widget.FIBFlexoObjectSelector;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
-import org.openflexo.toolbox.FileResource;
 
 /**
  * Widget allowing to select an OWL Ontology while browsing in OWL Ontology library
@@ -38,7 +37,7 @@ public class FIBOWLOntologySelector extends FIBFlexoObjectSelector<OWLOntology> 
 
 	static final Logger logger = Logger.getLogger(FIBOWLOntologySelector.class.getPackage().getName());
 
-	public static FileResource FIB_FILE = new FileResource("Fib/FIBOWLOntologySelector.fib");
+	public static String FIB_FILE_NAME = "Fib/FIBOWLOntologySelector.fib";
 
 	public FIBOWLOntologySelector(OWLOntology editedObject) {
 		super(editedObject);
@@ -51,8 +50,8 @@ public class FIBOWLOntologySelector extends FIBFlexoObjectSelector<OWLOntology> 
 	}*/
 
 	@Override
-	public File getFIBFile() {
-		return FIB_FILE;
+	public String getFIBFileName() {
+		return FIB_FILE_NAME;
 	}
 
 	@Override

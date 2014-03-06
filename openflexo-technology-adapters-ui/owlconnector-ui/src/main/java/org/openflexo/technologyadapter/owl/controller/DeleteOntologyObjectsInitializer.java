@@ -45,7 +45,7 @@ public class DeleteOntologyObjectsInitializer extends ActionInitializer<DeleteOn
 		return new FlexoActionInitializer<DeleteOntologyObjects>() {
 			@Override
 			public boolean run(EventObject e, DeleteOntologyObjects action) {
-				return instanciateAndShowDialog(action, OWLFIBLibrary.DELETE_ONTOLOGY_OBJECTS_DIALOG_FIB);
+				return instanciateAndShowDialog(action, OWLFIBLibrary.DELETE_ONTOLOGY_OBJECTS_DIALOG_FIB_NAME);
 			}
 		};
 	}

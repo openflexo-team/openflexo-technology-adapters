@@ -49,7 +49,6 @@ import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPow
 import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointShape.AddPowerpointShapeImpl;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileResource;
 
 @RunWith(OrderedRunner.class)
 public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestCase {

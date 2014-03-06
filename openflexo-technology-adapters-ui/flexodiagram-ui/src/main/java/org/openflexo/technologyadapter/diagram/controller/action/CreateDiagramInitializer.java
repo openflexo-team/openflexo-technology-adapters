@@ -55,11 +55,11 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 	}
 
 	private Status chooseVirtualModel(CreateDiagram action) {
-		return instanciateShowDialogAndReturnStatus(action, DiagramCst.CREATE_DIAGRAM_DIALOG_FIB);
+		return instanciateShowDialogAndReturnStatus(action, DiagramCst.CREATE_DIAGRAM_DIALOG_FIB_NAME);
 	}
 
 	private Status chooseAndConfigureCreationScheme(CreateDiagram action) {
-		return instanciateShowDialogAndReturnStatus(action, CommonFIB.CHOOSE_AND_CONFIGURE_CREATION_SCHEME_DIALOG_FIB);
+		return instanciateShowDialogAndReturnStatus(action, CommonFIB.CHOOSE_AND_CONFIGURE_CREATION_SCHEME_DIALOG_FIB_NAME);
 	}
 
 	private Status configureModelSlot(CreateDiagram action, ModelSlot configuredModelSlot) {
@@ -77,7 +77,7 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 					return true;
 				} else {
 
-					return instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_DIALOG_FIB);
+					return instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_DIALOG_FIB_NAME);
 
 					// int step = 0;
 					// boolean shouldContinue = true;
@@ -152,15 +152,15 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 	 *         separation of FIBs for Model Slot Configurations.
 	 * @return File that correspond to the FIB
 	 */
-	private File getModelSlotInstanceConfigurationFIB(Class modelSlotClass) {
+	private String getModelSlotInstanceConfigurationFIB(Class modelSlotClass) {
 		if (TypeAwareModelSlot.class.isAssignableFrom(modelSlotClass)) {
-			return CommonFIB.CONFIGURE_TYPE_AWARE_MODEL_SLOT_INSTANCE_DIALOG_FIB;
+			return CommonFIB.CONFIGURE_TYPE_AWARE_MODEL_SLOT_INSTANCE_DIALOG_FIB_NAME;
 		}
 		if (FreeModelSlot.class.isAssignableFrom(modelSlotClass)) {
-			return CommonFIB.CONFIGURE_FREE_MODEL_SLOT_INSTANCE_DIALOG_FIB;
+			return CommonFIB.CONFIGURE_FREE_MODEL_SLOT_INSTANCE_DIALOG_FIB_NAME;
 		}
 		if (VirtualModelModelSlot.class.isAssignableFrom(modelSlotClass)) {
-			return CommonFIB.CONFIGURE_VIRTUAL_MODEL_SLOT_INSTANCE_DIALOG_FIB;
+			return CommonFIB.CONFIGURE_VIRTUAL_MODEL_SLOT_INSTANCE_DIALOG_FIB_NAME;
 		}
 		return null;
 	}

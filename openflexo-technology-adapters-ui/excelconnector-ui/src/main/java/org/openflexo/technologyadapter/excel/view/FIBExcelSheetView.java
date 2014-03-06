@@ -22,7 +22,6 @@ package org.openflexo.technologyadapter.excel.view;
 import java.util.logging.Logger;
 
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
-import org.openflexo.toolbox.FileResource;
 import org.openflexo.view.SelectionSynchronizedFIBView;
 import org.openflexo.view.controller.FlexoController;
 
@@ -36,10 +35,10 @@ import org.openflexo.view.controller.FlexoController;
 public class FIBExcelSheetView extends SelectionSynchronizedFIBView {
 	static final Logger logger = Logger.getLogger(FIBExcelSheetView.class.getPackage().getName());
 
-	public static final FileResource FIB_FILE = new FileResource("Fib/ExcelSheetPanel.fib");
+	public static final String FIB_FILE_NAME = "Fib/ExcelSheetPanel.fib";
 
 	public FIBExcelSheetView(ExcelSheet sheet, FlexoController controller) {
-		super(sheet, controller, FIB_FILE);
+		super(sheet, controller, FIB_FILE_NAME);
 	}
 
 }

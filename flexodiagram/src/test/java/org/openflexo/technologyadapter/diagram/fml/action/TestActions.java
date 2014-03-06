@@ -21,7 +21,7 @@ import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Test actions
@@ -51,7 +51,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase{
 		testApplicationContext = instanciateTestServiceManager();
 		assertNotNull(testApplicationContext);
 		
-		resourceCenterDirectory = new FileResource(new File("src/test/resources").getAbsolutePath());
+		resourceCenterDirectory = ResourceLocator.locateDirectory(new File("src/test/resources").getAbsolutePath());
 		assertTrue(resourceCenterDirectory.exists());
 		editor = createProject("TestProject");
 		project = editor.getProject();
@@ -69,8 +69,11 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase{
 		CreateDiagramFromPPTSlide createExampleDiagramFromPPTSlide = CreateDiagramFromPPTSlide.actionType.makeNewAction(project.getRootFolder(), null,editor);
 		
 		for(int i=0;i<resourceCenterDirectory.list().length;i++){ 
-			if(resourceCenterDirectory.list()[i].endsWith(".ppt")==true){ 
-				File pptFile = new FileResource(resourceCenterDirectory.list()[i]);
+			if(resourceCenterDirectory.list()[i].endsWith(".ppt")==true){
+				//
+				// TODO Des choses à faire ici!!!!
+				///
+				File pptFile = ResourceLocator.locateFile(resourceCenterDirectory.list()[i]);
 				logger.info("Testing file "+pptFile.getName());
 				createExampleDiagramFromPPTSlide.setFile(pptFile);
 				for(Slide slide : createExampleDiagramFromPPTSlide.getCurrentSlides()){

@@ -50,7 +50,7 @@ public class DeclareConnectorInFlexoConceptInitializer extends
 			@Override
 			public boolean run(EventObject e, DeclareConnectorInFlexoConcept action) {
 
-				return instanciateAndShowDialog(action, CommonFIB.DECLARE_CONNECTOR_IN_FLEXO_CONCEPT_DIALOG_FIB);
+				return instanciateAndShowDialog(action, CommonFIB.DECLARE_CONNECTOR_IN_FLEXO_CONCEPT_DIALOG_FIB_NAME);
 			}
 		};
 	}

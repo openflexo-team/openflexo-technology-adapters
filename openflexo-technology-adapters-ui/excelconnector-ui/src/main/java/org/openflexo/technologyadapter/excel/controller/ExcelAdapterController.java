@@ -21,7 +21,7 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelCel
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelRow;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelSheet;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.CellStyleAction;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -38,7 +38,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(new FileResource("Inspectors/Excel"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateDirectory("Inspectors/Excel"));
 	}
 
 	@Override

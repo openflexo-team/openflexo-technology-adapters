@@ -21,7 +21,6 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import java.io.File;
 
-import org.openflexo.toolbox.FileResource;
 
 /**
  * Constants used by the CalcEditor module.
@@ -31,16 +30,16 @@ import org.openflexo.toolbox.FileResource;
 public class DiagramCst {
 
 	// UI components
-	public static File DIAGRAM_FLEXO_CONCEPT_VIEW_FIB = new FileResource("Fib/DiagramFlexoConceptView.fib");
-	public static File DIAGRAM_SPECIFICATION_VIEW_FIB = new FileResource("Fib/DiagramSpecificationView.fib");
-	public static File CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB = new FileResource("Fib/Dialog/CreateExampleDrawingDialog.fib");
-	public static File CREATE_EXAMPLE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB = new FileResource("Fib/Dialog/CreateDiagramFromPPTDialog.fib");
-	public static File CREATE_PALETTE_DIALOG_FIB = new FileResource("Fib/Dialog/CreatePaletteDialog.fib");
-	public static File CREATE_DIAGRAM_SPECIFICATION_DIALOG_FIB = new FileResource("Fib/Dialog/CreateDiagramSpecificationDialog.fib");
-	public static File PUSH_TO_PALETTE_DIALOG_FIB = new FileResource("Fib/Dialog/PushToPaletteDialog.fib");
-	public static File IMPORT_IMAGE_FILE_DIALOG_FIB = new FileResource("Fib/Dialog/ImportImageFileDialog.fib");
-	public static File CREATE_DIAGRAM_DIALOG_FIB = new FileResource("Fib/Dialog/CreateDiagramDialog.fib");
-	public static File DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB = new FileResource("Fib/Dialog/DeleteDiagramElementsDialog.fib");
-	public static File REINDEX_DIAGRAM_ELEMENTS_DIALOG_FIB = new FileResource("Fib/Dialog/ReindexDiagramElementsDialog.fib");
+	public static String DIAGRAM_FLEXO_CONCEPT_VIEW_FIB_NAME = "Fib/DiagramFlexoConceptView.fib";
+	public static String DIAGRAM_SPECIFICATION_VIEW_FIB_NAME = "Fib/DiagramSpecificationView.fib";
+	public static String CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB_NAME = "Fib/Dialog/CreateExampleDrawingDialog.fib";
+	public static String CREATE_EXAMPLE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB_NAME = "Fib/Dialog/CreateDiagramFromPPTDialog.fib";
+	public static String CREATE_PALETTE_DIALOG_FIB_NAME = "Fib/Dialog/CreatePaletteDialog.fib";
+	public static String CREATE_DIAGRAM_SPECIFICATION_DIALOG_FIB_NAME = "Fib/Dialog/CreateDiagramSpecificationDialog.fib";
+	public static String PUSH_TO_PALETTE_DIALOG_FIB_NAME = "Fib/Dialog/PushToPaletteDialog.fib";
+	public static String IMPORT_IMAGE_FILE_DIALOG_FIB_NAME = "Fib/Dialog/ImportImageFileDialog.fib";
+	public static String CREATE_DIAGRAM_DIALOG_FIB_NAME = "Fib/Dialog/CreateDiagramDialog.fib";
+	public static String DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB_NAME = "Fib/Dialog/DeleteDiagramElementsDialog.fib";
+	public static String REINDEX_DIAGRAM_ELEMENTS_DIALOG_FIB_NAME = "Fib/Dialog/ReindexDiagramElementsDialog.fib";
 
 }

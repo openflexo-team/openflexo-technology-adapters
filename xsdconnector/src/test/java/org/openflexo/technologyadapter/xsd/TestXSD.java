@@ -33,7 +33,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.xsd.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 
@@ -50,7 +50,7 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 	 */
 	public void test0LoadTestResourceCenter() {
 		log("test0LoadTestResourceCenter()");
-		testServiceManager = new TestFlexoServiceManager(new FileResource("src/test/resources/XSD"));
+		testServiceManager = new TestFlexoServiceManager(ResourceLocator.locateDirectory("src/test/resources/XSD"));
 		xsdAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(XSDTechnologyAdapter.class);
 		resourceCenter = new DirectoryResourceCenter(new File("src/test/resources/"));
 		testServiceManager.getResourceCenterService().addToResourceCenters(resourceCenter);

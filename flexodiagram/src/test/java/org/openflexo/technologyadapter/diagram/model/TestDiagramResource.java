@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.openflexo.foundation.TestFlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Test ProjectDataResource in Openflexo ResourceManager
@@ -23,8 +23,7 @@ public class TestDiagramResource {
 	public void testDiagramResource() {
 
 		// try {
-		TestFlexoServiceManager applicationContext = new TestFlexoServiceManager(new FileResource(
-				new File("src/test/resources").getAbsolutePath()));
+		TestFlexoServiceManager applicationContext = new TestFlexoServiceManager(ResourceLocator.locateDirectory("src/test/resources"));
 		DiagramTechnologyAdapter technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(
 				DiagramTechnologyAdapter.class);
 

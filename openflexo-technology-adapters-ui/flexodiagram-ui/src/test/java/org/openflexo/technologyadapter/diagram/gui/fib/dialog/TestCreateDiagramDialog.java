@@ -2,6 +2,8 @@ package org.openflexo.technologyadapter.diagram.gui.fib.dialog;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,7 +18,7 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Test StandardFlexoConceptView fib
@@ -29,7 +31,7 @@ public class TestCreateDiagramDialog extends OpenflexoFIBTestCaseWithProjectAtRu
 
 	private static GraphicalContextDelegate gcDelegate;
 
-	private static FileResource fibFile;
+	private static File fibFile;
 
 	static FlexoEditor editor;
 
@@ -43,7 +45,7 @@ public class TestCreateDiagramDialog extends OpenflexoFIBTestCaseWithProjectAtRu
 	@TestOrder(1)
 	public void testLoadWidget() {
 
-		fibFile = new FileResource("Fib/Dialog/CreateDiagramDialog.fib");
+		fibFile = ResourceLocator.locateFile("Fib/Dialog/CreateDiagramDialog.fib");
 		assertTrue(fibFile.exists());
 	}
 

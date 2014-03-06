@@ -54,7 +54,7 @@ import org.openflexo.technologyadapter.emf.viewpoint.editionaction.RemoveEMFObje
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.RemoveEMFObjectIndividualAttributeDataPropertyValue;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.RemoveEMFObjectIndividualAttributeObjectPropertyValue;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.RemoveEMFObjectIndividualReferenceObjectPropertyValue;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Test Class for EMF Model Edition.
@@ -68,12 +68,11 @@ public class TestEMFModelEdition {
 	@Test
 	public void test() {
 		try {
-			TestFlexoServiceManager applicationContext = new TestFlexoServiceManager(new FileResource(
-					new File("src/test/resources").getAbsolutePath()));
+			TestFlexoServiceManager applicationContext = new TestFlexoServiceManager(ResourceLocator.locateDirectory("src/test/resources"));
 			EMFTechnologyAdapter technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(
 					EMFTechnologyAdapter.class);
 
-			FlexoResourceCenter<?> resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(2);
+			FlexoResourceCenter<?> resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
 
 			EMFMetaModelRepository emfMetaModelRepository = resourceCenter
 					.getRepository(EMFMetaModelRepository.class, technologicalAdapter);

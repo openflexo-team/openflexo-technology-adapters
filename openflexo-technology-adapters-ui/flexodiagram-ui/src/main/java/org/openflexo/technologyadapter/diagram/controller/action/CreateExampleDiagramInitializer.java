@@ -49,7 +49,7 @@ public class CreateExampleDiagramInitializer extends ActionInitializer<CreateExa
 			@Override
 			public boolean run(EventObject e, CreateExampleDiagram action) {
 
-				return instanciateAndShowDialog(action, DiagramCst.CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB);
+				return instanciateAndShowDialog(action, DiagramCst.CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB_NAME);
 			}
 		};
 	}

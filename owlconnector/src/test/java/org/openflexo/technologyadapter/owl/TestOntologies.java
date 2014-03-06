@@ -44,7 +44,7 @@ import org.openflexo.technologyadapter.owl.model.RDFSURIDefinitions;
 import org.openflexo.technologyadapter.owl.model.RDFURIDefinitions;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 
 @RunWith(OrderedRunner.class)
 public class TestOntologies extends OpenflexoProjectAtRunTimeTestCase {
@@ -62,7 +62,7 @@ public class TestOntologies extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
 		log("test0LoadTestResourceCenter()");
-		testServiceManager = new TestFlexoServiceManager(new FileResource("TestResourceCenter/Ontologies"));
+		testServiceManager = new TestFlexoServiceManager(ResourceLocator.locateDirectory("TestResourceCenter/Ontologies"));
 		owlAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) testServiceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 	}

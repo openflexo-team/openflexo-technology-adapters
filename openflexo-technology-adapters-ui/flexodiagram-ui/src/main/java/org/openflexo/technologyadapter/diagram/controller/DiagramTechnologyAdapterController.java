@@ -58,7 +58,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.toolbox.FileResource;
+import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -96,7 +96,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		inspectors.getConnectorInspector().setLocation(1000, 700);
 		inspectors.getLocationSizeInspector().setLocation(1000, 50);
 
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(new FileResource("Inspectors/Diagram"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateDirectory("Inspectors/Diagram"));
 
 		WindowMenu viewMenu = actionInitializer.getController().getMenuBar().getWindowMenu();
 		viewMenu.addSeparator();
