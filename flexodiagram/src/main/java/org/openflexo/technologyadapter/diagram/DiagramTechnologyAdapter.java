@@ -147,7 +147,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	protected DiagramSpecificationResource tryToLookupDiagramSpecification(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
 		if (isValidDiagramSpecificationFile(candidateFile)) {
-			DiagramSpecificationResource dsRes = retrieveDiagramSpecificationResource(candidateFile);
+			DiagramSpecificationResource dsRes = retrieveDiagramSpecificationResource(candidateFile.getParentFile());
 			DiagramSpecificationRepository dsRepo = resourceCenter.getRepository(DiagramSpecificationRepository.class, this);
 			if (dsRepo != null) {
 				RepositoryFolder<DiagramSpecificationResource> folder;
@@ -173,8 +173,12 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	private boolean isValidDiagramSpecificationFile(File candidateFile) {
-		return candidateFile.exists() && candidateFile.isDirectory()
-				&& candidateFile.getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX);
+		if(candidateFile.exists() && candidateFile.getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)){
+			if(candidateFile.getParentFile().getName().equals(candidateFile.getName().replace(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX, ""))){
+				return true;
+			}
+		}
+		return false;
 	}
 
 	private boolean isValidDiagramFile(File candidateFile) {
@@ -189,7 +193,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	 */
 	private DiagramSpecificationResource retrieveDiagramSpecificationResource(File diagramSpecificationDirectory) {
 		DiagramSpecificationResource returned = getTechnologyContextManager()
-				.getDiagramSpecificationResource(diagramSpecificationDirectory);
+				.getDiagramSpecificationResource(new File(diagramSpecificationDirectory+"/"+diagramSpecificationDirectory.getName()+DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX));
 
 		if (returned == null) {
 			returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(diagramSpecificationDirectory,

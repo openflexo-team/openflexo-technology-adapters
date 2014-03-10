@@ -20,6 +20,7 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramSpecificationFactory;
 import org.openflexo.toolbox.FlexoVersion;
 import org.openflexo.toolbox.StringUtils;
@@ -54,6 +55,10 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			returned.setRelativePathFileConverter(new RelativePathFileConverter(diagramSpecificationDirectory));
 			// viewPointResource.addToContents(returned);
 			// viewPointResource.notifyContentsAdded(returned);
+			DiagramSpecification newDiagram = returned.getFactory().makeNewDiagramSpecification();
+			newDiagram.setResource(returned);
+			returned.setResourceData(newDiagram);
+			newDiagram.setUri(uri);
 			return returned;
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
@@ -69,15 +74,19 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 					.newInstance(DiagramSpecificationResource.class);
 			returned.setFactory(DIAGRAM_SPECIFICATION_FACTORY);
 			String baseName = diagramSpecificationDirectory.getName();
-			File xmlFile = new File(diagramSpecificationDirectory, baseName + ".xml");
-			DiagramSpecificationInfo vpi = findDiagramSpecificationInfo(diagramSpecificationDirectory);
+			
+			returned.setName(baseName);
+			File diagramFile = new File(diagramSpecificationDirectory, baseName + DIAGRAM_SPECIFICATION_SUFFIX);
+			//returned.setFile(diagramSpecificationDirectory);
+			
+			DiagramSpecificationInfo vpi = findDiagramSpecificationInfo(diagramFile);
 			if (vpi == null) {
 				// Unable to retrieve infos, just abort
 				logger.warning("Cannot retrieve info for diagram specification " + diagramSpecificationDirectory);
 				return null;
 			}
 			returned.setURI(vpi.uri);
-			returned.setFile(xmlFile);
+			returned.setFile(diagramFile);
 			returned.setDirectory(diagramSpecificationDirectory);
 			returned.setName(vpi.name);
 			if (StringUtils.isNotEmpty(vpi.version)) {
@@ -87,7 +96,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 
 			returned.setServiceManager(serviceManager);
 
-			logger.fine("DiagramSpecificationResource " + xmlFile.getAbsolutePath() + " version " + returned.getModelVersion());
+			logger.fine("DiagramSpecificationResource " + diagramSpecificationDirectory.getAbsolutePath() + " version " + returned.getModelVersion());
 
 			// Now look for example diagrams
 			if (diagramSpecificationDirectory.exists() && diagramSpecificationDirectory.isDirectory()) {
@@ -175,17 +184,18 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 		public String modelVersion;
 	}
 
-	private static DiagramSpecificationInfo findDiagramSpecificationInfo(File diagramSpecificationDirectory) {
+	private static DiagramSpecificationInfo findDiagramSpecificationInfo(File diagramSpecification) {
 		Document document;
 		try {
-			logger.fine("Try to find infos for " + diagramSpecificationDirectory);
+			logger.fine("Try to find infos for " + diagramSpecification);
 
-			String baseName = diagramSpecificationDirectory.getName();
-			File xmlFile = new File(diagramSpecificationDirectory, baseName + ".xml");
+			/*String baseName = diagramSpecificationDirectory.getName();
+			File xmlFile = new File(diagramSpecificationDirectory, baseName + ".xml");*/
+			
 
-			if (xmlFile.exists()) {
+			if (diagramSpecification.exists()) {
 
-				document = readXMLFile(xmlFile);
+				document = readXMLFile(diagramSpecification);
 				Element root = getElement(document, "DiagramSpecification");
 				if (root != null) {
 					DiagramSpecificationInfo returned = new DiagramSpecificationInfo();
@@ -207,13 +217,13 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 						}
 					}
 					if (StringUtils.isEmpty(returned.name)) {
-						returned.name = diagramSpecificationDirectory.getName();
+						returned.name = diagramSpecification.getName();
 					}
 					return returned;
 				}
 			} else {
-				logger.warning("While analysing diagram-spec candidate: " + diagramSpecificationDirectory.getAbsolutePath()
-						+ " cannot find file " + xmlFile.getAbsolutePath());
+				logger.warning("While analysing diagram-spec candidate: " + diagramSpecification.getAbsolutePath()
+						+ " cannot find file " + diagramSpecification.getAbsolutePath());
 			}
 		} catch (JDOMException e) {
 			e.printStackTrace();
