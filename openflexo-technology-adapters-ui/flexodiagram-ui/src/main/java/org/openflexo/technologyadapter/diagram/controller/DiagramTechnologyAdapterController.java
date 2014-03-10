@@ -55,6 +55,7 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -212,10 +213,13 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 			return DiagramIconLibrary.SHAPE_ICON;
 		} else if (DiagramConnector.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.CONNECTOR_ICON;
+		}else if (DiagramSpecification.class.isAssignableFrom(objectClass)) {
+			return DiagramIconLibrary.DIAGRAM_SPECIFICATION_ICON;
 		}
 		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, IconLibrary.QUESTION);
 	}
 
+	
 	/**
 	 * Return icon representing supplied pattern role
 	 * 
