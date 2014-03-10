@@ -43,6 +43,9 @@ public class DiagramIconLibrary extends IconLibrary {
 
 	private static final Logger logger = Logger.getLogger(DiagramIconLibrary.class.getPackage().getName());
 
+	public static final ImageIconResource DIAGRAM_BIG_ICON = new ImageIconResource("Icons/Diagram_big.png");
+	public static final ImageIconResource DIAGRAM_MEDIUM_ICON = new ImageIconResource("Icons/Diagram_medium.png");
+	
 	public static final ImageIconResource DIAGRAM_PALETTE_ICON = new ImageIconResource("Icons/DiagramPalette.png");
 	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource("Icons/Diagram.png");
 	public static final ImageIconResource SHAPE_ICON = new ImageIconResource("Icons/DiagramShape.png");

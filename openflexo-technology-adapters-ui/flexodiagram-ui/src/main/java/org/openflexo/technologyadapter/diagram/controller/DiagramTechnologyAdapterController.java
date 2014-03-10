@@ -165,8 +165,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 	@Override
 	public ImageIcon getTechnologyBigIcon() {
-		// TODO
-		return DiagramIconLibrary.DIAGRAM_ICON;
+		return DiagramIconLibrary.DIAGRAM_MEDIUM_ICON;
 	}
 
 	/**
