@@ -3,6 +3,7 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.io.File;
 
 import org.junit.Test;
+import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.TestFlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -14,7 +15,7 @@ import org.openflexo.toolbox.FileResource;
  * @author sylvain
  * 
  */
-public class TestDiagramResource {
+public class TestDiagramResource extends OpenflexoTestCase{
 
 	/**
 	 * Test the diagram resource

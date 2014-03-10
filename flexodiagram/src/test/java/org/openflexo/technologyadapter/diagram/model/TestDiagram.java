@@ -7,23 +7,29 @@ import static org.junit.Assert.fail;
 import java.awt.Color;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.model.ModelEntity;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test Diagram model
  * 
- * @author sylvain
+ * @author sylvain, vincent
  * 
  */
-public class TestDiagram {
+@RunWith(OrderedRunner.class)
+public class TestDiagram extends OpenflexoTestCase{
 
 	/**
 	 * Test the diagram factory
 	 */
 	@Test
+	@TestOrder(1)
 	public void testDiagramFactory() {
 
 		try {
@@ -47,6 +53,7 @@ public class TestDiagram {
 	 * Test the diagram factory
 	 */
 	@Test
+	@TestOrder(2)
 	public void testInstanciateDiagram() throws Exception {
 
 		DiagramFactory factory = new DiagramFactory();
