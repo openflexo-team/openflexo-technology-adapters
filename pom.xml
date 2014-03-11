@@ -18,7 +18,6 @@
 		<diana.version>1.0-SNAPSHOT</diana.version>
 		<jiraclient.version>1.0-SNAPSHOT</jiraclient.version>
 		<flexohelp.version>1.0-SNAPSHOT</flexohelp.version>
-		<flexowysiwyg.version>1.0-SNAPSHOT</flexowysiwyg.version>
 		<flexodocresourcecenter.version>1.0-SNAPSHOT</flexodocresourcecenter.version>
 		<flexodocresourcemanager.version>1.0-SNAPSHOT</flexodocresourcemanager.version>
 	</properties>
