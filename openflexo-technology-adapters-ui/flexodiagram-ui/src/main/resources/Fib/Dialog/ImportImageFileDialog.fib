@@ -1,59 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel layout="gridbag" dataClassName="org.openflexo.fge.ShapeGraphicalRepresentation" controllerClassName="org.openflexo.view.controller.FlexoFIBController"  opaque="false">
-  <Label label="creates_shape_from_image_file" align="center" constraints="gridbag(insetsLeft=0;insetsRight=0;gridHeight=1;padY=0;padX=0;anchor=center;gridY=-1;gridX=-1;index=0;gridWidth=0;insetsTop=20;insetsBottom=20;weightY=0.0;weightX=1.0;fill=horizontal)" font="Lucida Grande,1,15" />
- <Panel layout="twocols" border="rounded3d" borderTitle="" borderTop="2" borderBottom="2" borderLeft="10" borderRight="10" titleFont="SansSerif,0,11" darkLevel="0" index="5" data="($org.openflexo.fge.BackgroundImageBackgroundStyle)data.background" dataClassName="org.openflexo.fge.BackgroundImageBackgroundStyle" constraints="gridbag(anchor=center;expandHorizontally=true;expandVertically=false;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)" visible="(data.styleType.name = &quot;IMAGE&quot;)" opaque="false" name="ImageBackgroundPanel">
-    <Label label="image" index="0" constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true">
-      <LocalizedDictionary />
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false" opaque="false" layout="gridbag" controllerClassName="org.openflexo.view.controller.FlexoFIBController" border="empty" trackViewPortWidth="true" dataClassName="org.openflexo.fge.ShapeGraphicalRepresentation" trackViewPortHeight="true">
+  <LocalizedDictionary id="1" />
+  <Label id="2" manageDynamicModel="false" useScrollBar="false" index="0" localize="true" font="Lucida Grande,1,15" align="center" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=20;insetsLeft=0;insetsRight=0;insetsTop=20;padX=0;padY=0;weightX=1.0;weightY=0.0)" label="creates_shape_from_image_file" readOnly="false" />
+  <Panel id="3" darkLevel="0" useScrollBar="false" data="($org.openflexo.fge.BackgroundImageBackgroundStyle)data.background" borderLeft="10" protectContent="false" opaque="false" name="ImageBackgroundPanel" layout="twocols" borderRight="10" border="rounded3d" trackViewPortWidth="true" index="5" constraints="gridbag(anchor=center;expandHorizontally=true;expandVertically=false;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)" borderBottom="2" borderTitle="" dataClassName="org.openflexo.fge.BackgroundImageBackgroundStyle" titleFont="SansSerif,0,11" borderTop="2" trackViewPortHeight="true">
+    <Label id="4" manageDynamicModel="false" useScrollBar="false" index="0" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=0;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" label="image" readOnly="false">
+      <LocalizedDictionary id="5" />
     </Label>
-    <File mode="OpenMode" filter="" title="select_an_image" isDirectory="false" localize="true" index="1" data="ImageBackgroundPanel.data.imageFile" constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=5;insetsRight=2;insetsTop=0;location=right)" />
-    <Label label="fit_to_shape" index="4" constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true">
-      <LocalizedDictionary />
+    <File id="6" manageDynamicModel="false" useScrollBar="false" data="ImageBackgroundPanel.data.imageFile" mode="OpenMode" title="select_an_image" index="1" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=5;insetsRight=2;insetsTop=0;location=right)" readOnly="false" isDirectory="false" filter="" />
+    <Label id="7" manageDynamicModel="false" useScrollBar="false" index="4" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" label="fit_to_shape" readOnly="false">
+      <LocalizedDictionary id="8" />
     </Label>
-    <CheckBox selected="true" index="5" data="ImageBackgroundPanel.data.fitToShape" constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=5;insetsRight=2;insetsTop=0;location=right)" name="checkbox" localize="true" />
-    <Label label="scale" index="6" constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=7;location=left)" visible="(!(ImageBackgroundPanel.data.fitToShape))" localize="true">
-      <LocalizedDictionary />
+    <CheckBox id="9" manageDynamicModel="false" useScrollBar="false" data="ImageBackgroundPanel.data.fitToShape" selected="true" name="checkbox" index="5" negate="false" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=5;insetsRight=2;insetsTop=0;location=right)" readOnly="false" />
+    <Label id="10" visible="(!(ImageBackgroundPanel.data.fitToShape))" manageDynamicModel="false" useScrollBar="false" index="6" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=7;location=left)" label="scale" readOnly="false">
+      <LocalizedDictionary id="11" />
     </Label>
-    <Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING" borderTitle="Panel" titleFont="SansSerif,0,11" darkLevel="0" index="7" constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=7;insetsRight=2;insetsTop=0;location=right)" visible="(!(ImageBackgroundPanel.data.fitToShape))" opaque="false">
-      <Label label="x" index="0" constraints="flow(index=0)" localize="true">
-        <LocalizedDictionary />
+    <Panel id="12" darkLevel="0" visible="(!(ImageBackgroundPanel.data.fitToShape))" vGap="0" useScrollBar="false" protectContent="false" hGap="0" opaque="false" layout="flow" border="empty" flowAlignment="LEADING" trackViewPortWidth="true" index="7" constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=7;insetsRight=2;insetsTop=0;location=right)" borderTitle="Panel" titleFont="SansSerif,0,11" trackViewPortHeight="true">
+      <Label id="13" manageDynamicModel="false" useScrollBar="false" index="0" localize="true" align="left" constraints="flow(index=0)" label="x" readOnly="false">
+        <LocalizedDictionary id="14" />
       </Label>
-      <Number allowsNull="false" minValue="0" maxValue="1024" increment="0.2" numberType="DoubleType" columns="2" index="1" data="ImageBackgroundPanel.data.scaleX" constraints="flow(index=1)" name="Integer" localize="true" />
-      <Label label="y" index="2" constraints="flow(index=2)" localize="true">
-        <LocalizedDictionary />
+      <Number id="15" manageDynamicModel="false" minValue="0" useScrollBar="false" columns="2" data="ImageBackgroundPanel.data.scaleX" name="Integer" maxValue="1024" increment="0.2" index="1" localize="true" constraints="flow(index=1)" allowsNull="false" numberType="DoubleType" readOnly="false" validateOnReturn="false" />
+      <Label id="16" manageDynamicModel="false" useScrollBar="false" index="2" localize="true" align="left" constraints="flow(index=2)" label="y" readOnly="false">
+        <LocalizedDictionary id="17" />
       </Label>
-      <Number allowsNull="false" minValue="0" maxValue="1024" increment="0.2" numberType="DoubleType" columns="2" index="3" data="ImageBackgroundPanel.data.scaleY" constraints="flow(index=3)" name="Integer" localize="true" />
+      <Number id="18" manageDynamicModel="false" minValue="0" useScrollBar="false" columns="2" data="ImageBackgroundPanel.data.scaleY" name="Integer" maxValue="1024" increment="0.2" index="3" localize="true" constraints="flow(index=3)" allowsNull="false" numberType="DoubleType" readOnly="false" validateOnReturn="false" />
     </Panel>
-    <Label label="delta" index="8" constraints="twocols(expandHorizontally=true;expandVertically=false;index=8;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=7;location=left)" visible="(!(ImageBackgroundPanel.data.fitToShape))" localize="true">
-      <LocalizedDictionary />
+    <Label id="19" visible="(!(ImageBackgroundPanel.data.fitToShape))" manageDynamicModel="false" useScrollBar="false" index="8" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=8;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=7;location=left)" label="delta" readOnly="false">
+      <LocalizedDictionary id="20" />
     </Label>
-    <Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING" borderTitle="Panel" titleFont="SansSerif,0,11" darkLevel="0" index="9" constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=7;insetsRight=2;insetsTop=0;location=right)" visible="(!(ImageBackgroundPanel.data.fitToShape))" opaque="false">
-      <Label label="x" index="0" constraints="flow(index=0)" localize="true">
-        <LocalizedDictionary />
+    <Panel id="21" darkLevel="0" visible="(!(ImageBackgroundPanel.data.fitToShape))" vGap="0" useScrollBar="false" protectContent="false" hGap="0" opaque="false" layout="flow" border="empty" flowAlignment="LEADING" trackViewPortWidth="true" index="9" constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=7;insetsRight=2;insetsTop=0;location=right)" borderTitle="Panel" titleFont="SansSerif,0,11" trackViewPortHeight="true">
+      <Label id="22" manageDynamicModel="false" useScrollBar="false" index="0" localize="true" align="left" constraints="flow(index=0)" label="x" readOnly="false">
+        <LocalizedDictionary id="23" />
       </Label>
-      <Number allowsNull="false" minValue="-1024" maxValue="1024" increment="1" numberType="DoubleType" columns="2" index="1" data="ImageBackgroundPanel.data.deltaX" constraints="flow(index=1)" name="Integer" localize="true"  />
-      <Label label="y" index="2" constraints="flow(index=2)" localize="true">
-        <LocalizedDictionary />
+      <Number id="24" manageDynamicModel="false" minValue="-1024" useScrollBar="false" columns="2" data="ImageBackgroundPanel.data.deltaX" name="Integer" maxValue="1024" increment="1" index="1" localize="true" constraints="flow(index=1)" allowsNull="false" numberType="DoubleType" readOnly="false" validateOnReturn="false" />
+      <Label id="25" manageDynamicModel="false" useScrollBar="false" index="2" localize="true" align="left" constraints="flow(index=2)" label="y" readOnly="false">
+        <LocalizedDictionary id="26" />
       </Label>
-      <Number allowsNull="false" minValue="-1024" maxValue="1024" increment="1" numberType="DoubleType" columns="2" index="3" data="ImageBackgroundPanel.data.deltaY" constraints="flow(index=3)" name="Integer" localize="true"  />
+      <Number id="27" manageDynamicModel="false" minValue="-1024" useScrollBar="false" columns="2" data="ImageBackgroundPanel.data.deltaY" name="Integer" maxValue="1024" increment="1" index="3" localize="true" constraints="flow(index=3)" allowsNull="false" numberType="DoubleType" readOnly="false" validateOnReturn="false" />
     </Panel>
-    <Label label="background" index="3" constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true">
-      <LocalizedDictionary />
+    <Label id="28" manageDynamicModel="false" useScrollBar="false" index="3" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" label="background" readOnly="false">
+      <LocalizedDictionary id="29" />
     </Label>
-    <Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING" borderTitle="Panel" titleFont="SansSerif,0,11" darkLevel="0" index="3" constraints="twocols(expandHorizontally=false;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" opaque="false">
-      <DropDown index="0" data="ImageBackgroundPanel.data.imageBackgroundType" constraints="flow(index=0)" name="backgroundStyleDD" format="object.name.toLowerCase" localize="true" iteratorClassName="org.openflexo.fge.BackgroundImageBackgroundStyle$ImageBackgroundType" autoSelectFirstRow="false" />
-      <Color allowsNull="false" index="1" data="ImageBackgroundPanel.data.imageBackgroundColor" constraints="flow(index=1)" visible="(ImageBackgroundPanel.data.imageBackgroundType = &quot;OPAQUE&quot;)" localize="true">
-        <Dependancy componentName="backgroundStyleDD" />
+    <Panel id="30" darkLevel="0" vGap="0" useScrollBar="false" protectContent="false" hGap="0" opaque="false" layout="flow" border="empty" flowAlignment="LEADING" trackViewPortWidth="true" index="3" constraints="twocols(expandHorizontally=false;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" borderTitle="Panel" titleFont="SansSerif,0,11" trackViewPortHeight="true">
+      <DropDown id="31" manageDynamicModel="false" useScrollBar="false" data="ImageBackgroundPanel.data.imageBackgroundType" showReset="false" autoSelectFirstRow="false" name="backgroundStyleDD" index="0" localize="true" constraints="flow(index=0)" format="object.name.toLowerCase" showText="true" readOnly="false" iteratorClassName="org.openflexo.fge.BackgroundImageBackgroundStyle$ImageBackgroundType" showIcon="false" />
+      <Color id="32" visible="(ImageBackgroundPanel.data.imageBackgroundType = &quot;OPAQUE&quot;)" manageDynamicModel="false" useScrollBar="false" data="ImageBackgroundPanel.data.imageBackgroundColor" index="1" localize="true" constraints="flow(index=1)" allowsNull="false" readOnly="false">
+        <Dependancy id="33" componentName="backgroundStyleDD" />
+        <Dependancy idref="33" />
       </Color>
     </Panel>
-    </Panel>
-   <Panel layout="flow" hGap="5" vGap="5" flowAlignment="CENTER" borderTitle="Panel" titleFont="Lucida Grande,0,11" darkLevel="0" index="6" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=7;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=10;padX=0;padY=0;weightX=1.0;weightY=0.0)">
-    <Button action="controller.cancelAndDispose()" buttonType="Trigger" label="Cancel" localize="true" index="1" constraints="flow(index=1)" font="Lucida Grande,0,13">
-      <LocalizedDictionary />
+  </Panel>
+  <Panel id="34" darkLevel="0" vGap="5" useScrollBar="false" protectContent="false" hGap="5" layout="flow" border="empty" flowAlignment="CENTER" trackViewPortWidth="true" index="6" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=7;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=10;padX=0;padY=0;weightX=1.0;weightY=0.0)" borderTitle="Panel" titleFont="Lucida Grande,0,11" trackViewPortHeight="true">
+    <Button id="35" manageDynamicModel="false" useScrollBar="false" buttonType="Trigger" action="controller.cancelAndDispose()" index="1" localize="true" font="Lucida Grande,0,13" constraints="flow(index=1)" label="Cancel" readOnly="false">
+      <LocalizedDictionary id="36" />
     </Button>
-    <Button action="controller.validateAndDispose()" buttonType="Trigger" label="Validate" enable="(data.isValid)" localize="true" index="1" constraints="flow(index=1)" font="Lucida Grande,0,13">
-      <LocalizedDictionary />
+    <Button id="37" manageDynamicModel="false" useScrollBar="false" enable="data.isValid" buttonType="Trigger" action="controller.validateAndDispose()" index="1" localize="true" font="Lucida Grande,0,13" constraints="flow(index=1)" label="Validate" readOnly="false">
+      <LocalizedDictionary id="38" />
     </Button>
   </Panel>
-  <LocalizedDictionary />
 </Panel>
-
