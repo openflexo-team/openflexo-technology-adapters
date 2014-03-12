@@ -1,6 +1,5 @@
 package org.openflexo.technologyadapter.diagram.metamodel;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -9,7 +8,10 @@ import java.awt.Color;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.geom.FGEPoint;
+import org.openflexo.fge.shapes.ShapeSpecification;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.model.ModelEntity;
@@ -85,8 +87,13 @@ public class TestDiagramSpecification extends OpenflexoTestCase{
 		
 		DiagramPaletteFactory factory = new DiagramPaletteFactory();
 		DiagramPalette diagramPalette = factory.makeNewDiagramPalette();
+		DiagramPaletteElement diagramPaletteElement = factory.makeDiagramPaletteElement();
+		diagramPalette.addToElements(diagramPaletteElement);
 		assertNotNull(diagramPalette);
+		assertNotNull(diagramPaletteElement);
 		assertTrue(diagramPalette instanceof DiagramPalette);
+		assertTrue(diagramPaletteElement instanceof DiagramPaletteElement);
+		assertTrue(diagramPalette.getElements().size()==1);
 	}
 	
 	/**

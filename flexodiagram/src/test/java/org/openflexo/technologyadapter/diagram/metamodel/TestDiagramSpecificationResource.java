@@ -11,12 +11,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.TestFlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
+import org.openflexo.foundation.viewpoint.ViewPoint;
+import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.foundation.viewpoint.ViewPoint.ViewPointImpl;
+import org.openflexo.foundation.viewpoint.VirtualModel.VirtualModelImpl;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.FreeDiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.fml.DropScheme;
+import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
@@ -47,8 +57,11 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase{
 	public static DiagramPaletteResource paletteResource;
 	public static FlexoResourceCenter<?> resourceCenter;
 	public static DiagramTechnologyAdapter technologicalAdapter;
-	public static TestFlexoServiceManager applicationContext;
+	public static FlexoServiceManager applicationContext;
 	public static DiagramSpecificationRepository repository;
+	public static TypedDiagramModelSlot typedDiagramModelSlot;
+	public static VirtualModel newVirtualModel;
+	public static DiagramPaletteElement diagramPaletteElement;
 	
 	/**
 	 * Initialize
@@ -59,7 +72,9 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase{
 
 		log("testInitialize()");
 
-		applicationContext = new TestFlexoServiceManager(new FileResource(new File(resourcesFolder).getAbsolutePath()));
+		applicationContext = instanciateTestServiceManager();
+		
+		//applicationContext = new TestFlexoServiceManager(new FileResource(new File(resourcesFolder).getAbsolutePath()));
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(
 				DiagramTechnologyAdapter.class);
 		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
@@ -106,7 +121,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase{
 		
 		log("testLoadDiagramSpecificationResource()");
 		
-		DiagramSpecificationResource resource = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(new File(resourcesFolder+"/"+diagramFileName), applicationContext);
+		DiagramSpecificationResource resource = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(new File(repository.getDirectory()+"/"+diagramFileName), applicationContext);
 		assertNotNull(resource);
 	}
 	
@@ -141,24 +156,77 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase{
 			// Create an example diagram
 			DiagramFactory factory = new DiagramFactory();
 			Diagram diagram = factory.newInstance(Diagram.class);
-			DiagramShape shape1 = factory.makeNewShape("Shape1", ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);
+			DiagramShape shape1 = factory.makeNewShape("Shape1a", ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);
 			shape1.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.RED));
 			shape1.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.BLUE));
-			DiagramShape shape2 = factory.makeNewShape("Shape2", ShapeType.RECTANGLE, new FGEPoint(200, 100), diagram);
+			DiagramShape shape2 = factory.makeNewShape("Shape2a", ShapeType.RECTANGLE, new FGEPoint(200, 100), diagram);
 			shape2.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.BLUE));
 			shape2.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.WHITE));
 			DiagramConnector connector1 = factory.makeNewConnector("Connector", shape1, shape2, diagram);
+			diagramPaletteElement = paletteResource.getFactory().makeDiagramPaletteElement();
+			paletteResource.getDiagramPalette().addToElements(diagramPaletteElement);
 			
 			// Add the palette and the example diagram
 			diagramSpecificationResource.getDiagramSpecification().addToExampleDiagrams(diagram);
 			diagramSpecificationResource.getDiagramSpecification().addToPalettes(paletteResource.getDiagramPalette());
 			diagramSpecificationResource.save(null);
+			paletteResource.save(null);
 			
 		} catch (SaveResourceException e) {
 			fail(e.getMessage());
 		} catch (ModelDefinitionException e) {
 			fail(e.getMessage());
 		}
+		
+	}
+	
+	/**
+	 * Test update diagram specification resource with diagram resource
+	 */
+	@Test
+	@TestOrder(6)
+	public void testModelSlots() {
+		try {
+			ViewPoint newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint",
+					repository.getDirectory(), serviceManager.getViewPointLibrary());
+			
+			
+			newVirtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
+		
+			typedDiagramModelSlot = technologicalAdapter.makeModelSlot(TypedDiagramModelSlot.class, newVirtualModel);
+			assertNotNull(typedDiagramModelSlot);
+			
+			FreeDiagramModelSlot freeDiagramModelSlot = technologicalAdapter.makeModelSlot(FreeDiagramModelSlot.class, newVirtualModel);
+			assertNotNull(freeDiagramModelSlot);
+			
+			newVirtualModel.addToModelSlots(typedDiagramModelSlot);
+			newVirtualModel.addToModelSlots(freeDiagramModelSlot);
+			
+			assertTrue(newVirtualModel.getModelSlots(TypedDiagramModelSlot.class)!=null);
+			assertTrue(newVirtualModel.getModelSlots(FreeDiagramModelSlot.class)!=null);
+			
+		} catch (SaveResourceException e) {
+			fail(e.getMessage());
+		}
+	}
+	
+	/**
+	 * Test update diagram specification resource with diagram resource
+	 */
+	@Test
+	@TestOrder(7)
+	public void testPaletteElementBindings() {
+		
+		FMLDiagramPaletteElementBinding newBinding =  newVirtualModel.getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
+		FlexoConcept flexoConcept = newVirtualModel.getFactory().newInstance(FlexoConcept.class);
+		DropScheme newDropScheme = newVirtualModel.getFactory().newInstance(DropScheme.class);
+		flexoConcept.addToFlexoBehaviours(newDropScheme);
+		newBinding.setPaletteElement(diagramPaletteElement);
+		newBinding.setFlexoConcept(flexoConcept);
+		newBinding.setDropScheme(newDropScheme);
+		typedDiagramModelSlot.addToPaletteElementBindings(newBinding);
+		newVirtualModel.addToModelSlots(typedDiagramModelSlot);
+		assertNotNull(newBinding);
 		
 	}
 	
