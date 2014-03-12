@@ -171,15 +171,18 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		protected void initDefaultSpecifications() {
 			grSpecifications = new ArrayList<GraphicalElementSpecification<?, ?>>();
-			for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-				GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
-						GraphicalElementSpecification.class);
-				newGraphicalElementSpecification.setPatternRole(this);
-				newGraphicalElementSpecification.setFeature(GF);
-				newGraphicalElementSpecification.setReadOnly(false);
-				newGraphicalElementSpecification.setMandatory(true);
-				grSpecifications.add(newGraphicalElementSpecification);
+			if(getVirtualModelFactory()!=null){
+				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
+					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
+							GraphicalElementSpecification.class);
+					newGraphicalElementSpecification.setPatternRole(this);
+					newGraphicalElementSpecification.setFeature(GF);
+					newGraphicalElementSpecification.setReadOnly(false);
+					newGraphicalElementSpecification.setMandatory(true);
+					grSpecifications.add(newGraphicalElementSpecification);
+				}
 			}
+			
 		}
 
 		public DiagramSpecification getDiagramSpecification() {
