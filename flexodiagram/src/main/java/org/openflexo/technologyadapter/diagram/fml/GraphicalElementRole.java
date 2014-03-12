@@ -403,8 +403,11 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementSpecification<?, ?>> getGrSpecifications() {
-			if(grSpecifications==null){
+			if(grSpecifications==null && getVirtualModelFactory()!=null){
 				initDefaultSpecifications();
+			}
+			else if(grSpecifications==null){
+				grSpecifications = new ArrayList<GraphicalElementSpecification<?, ?>>();
 			}
 			return grSpecifications;
 		}
