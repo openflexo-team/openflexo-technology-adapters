@@ -1,2 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<DiagramSpecification id="0" flexoID="-1" useSpecificDescriptions="false" userID="FLX" name="myDiagramSpecification" uri="http://myDiagramSpecification" />
+<DiagramSpecification id="0" flexoID="-1" useSpecificDescriptions="false" userID="FLX" name="myDiagramSpecification" uri="http://myDiagramSpecification">
+  <DiagramPalette id="1" flexoID="-1" name="myDiagramSpecificationPalette.palette" userID="FLX" useSpecificDescriptions="false" />
+  <Diagram id="2" userID="FLX" useSpecificDescriptions="false" flexoID="-1">
+    <Shape id="3" flexoID="-1" useSpecificDescriptions="false" userID="FLX" name="Shape1">
+      <ShapeGraphicalRepresentation id="4" minimalHeight="0.0" relativeTextX="0.5" transparency="1.0" drawControlPointsWhenFocused="true" height="0.0" hasFocusedBackground="false" verticalTextAlignment="MIDDLE" adjustMinimalWidthToLabelWidth="true" width="0.0" hasFocusedForeground="false" hasSelectedBackground="false" allowToLeaveBounds="true" isFocusable="true" drawControlPointsWhenSelected="true" isSelectable="true" isLabelEditable="true" relativeTextY="0.5" continuousTextEditing="true" minimalWidth="0.0" identifier="2bab91af" lineWrap="false" locationConstraints="FREELY_MOVABLE" adjustMinimalHeightToLabelHeight="true" horizontalTextAlignment="CENTER" adaptBoundsToContents="false" maximalHeight="Infinity" isVisible="true" dimensionConstraints="FREELY_RESIZABLE" isReadOnly="false" adjustMaximalHeightToLabelHeight="false" isFloatingLabel="true" hasSelectedForeground="false" paragraphAlignment="CENTER" layer="1" absoluteTextX="0.0" absoluteTextY="0.0" adjustMaximalWidthToLabelWidth="false" isMultilineAllowed="false" y="100.0" maximalWidth="Infinity" x="100.0">
+        <FocusedForegroundStyle id="5" dashStyle="PLAIN_STROKE" color="255,0,0" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" joinStyle="JOIN_MITER" capStyle="CAP_SQUARE" />
+        <SelectedColorBackgroundStyle id="6" color="0,0,255" transparencyLevel="0.5" useTransparency="false" />
+        <TextStyle id="7" orientation="0" color="0,0,0" backgroundColor="255,255,255" font="Lucida Sans,0,11" isBackgroundColored="false" />
+        <ShapeBorder id="8" bottom="20" left="20" right="20" top="20" />
+        <ForegroundStyle id="9" dashStyle="PLAIN_STROKE" color="255,0,0" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" joinStyle="JOIN_MITER" capStyle="CAP_SQUARE" />
+        <SelectedForegroundStyle id="10" dashStyle="PLAIN_STROKE" color="255,0,0" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" joinStyle="JOIN_MITER" capStyle="CAP_SQUARE" />
+        <FocusedColorBackgroundStyle id="11" color="0,0,255" transparencyLevel="0.5" useTransparency="false" />
+        <RectangleShape id="12" arcSize="30.0" isRounded="false" />
+        <ShadowStyle id="13" shadowDepth="2" shadowBlur="4" drawShadow="true" shadowDarkness="150" />
+        <ColorBackgroundStyle id="14" color="0,0,255" transparencyLevel="0.5" useTransparency="false" />
+      </ShapeGraphicalRepresentation>
+    </Shape>
+    <Shape id="15" flexoID="-1" useSpecificDescriptions="false" userID="FLX" name="Shape2">
+      <ShapeGraphicalRepresentation id="16" minimalHeight="0.0" relativeTextX="0.5" transparency="1.0" drawControlPointsWhenFocused="true" height="0.0" hasFocusedBackground="false" verticalTextAlignment="MIDDLE" adjustMinimalWidthToLabelWidth="true" width="0.0" hasFocusedForeground="false" hasSelectedBackground="false" allowToLeaveBounds="true" isFocusable="true" drawControlPointsWhenSelected="true" isSelectable="true" isLabelEditable="true" relativeTextY="0.5" continuousTextEditing="true" minimalWidth="0.0" identifier="fa1567b" lineWrap="false" locationConstraints="FREELY_MOVABLE" adjustMinimalHeightToLabelHeight="true" horizontalTextAlignment="CENTER" adaptBoundsToContents="false" maximalHeight="Infinity" isVisible="true" dimensionConstraints="FREELY_RESIZABLE" isReadOnly="false" adjustMaximalHeightToLabelHeight="false" isFloatingLabel="true" hasSelectedForeground="false" paragraphAlignment="CENTER" layer="1" absoluteTextX="0.0" absoluteTextY="0.0" adjustMaximalWidthToLabelWidth="false" isMultilineAllowed="false" y="100.0" maximalWidth="Infinity" x="200.0">
+        <FocusedForegroundStyle id="17" dashStyle="PLAIN_STROKE" color="0,0,255" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" joinStyle="JOIN_MITER" capStyle="CAP_SQUARE" />
+        <SelectedColorBackgroundStyle id="18" color="255,255,255" transparencyLevel="0.5" useTransparency="false" />
+        <TextStyle id="19" orientation="0" color="0,0,0" backgroundColor="255,255,255" font="Lucida Sans,0,11" isBackgroundColored="false" />
+        <ShapeBorder id="20" bottom="20" left="20" right="20" top="20" />
+        <ForegroundStyle id="21" dashStyle="PLAIN_STROKE" color="0,0,255" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" joinStyle="JOIN_MITER" capStyle="CAP_SQUARE" />
+        <SelectedForegroundStyle id="22" dashStyle="PLAIN_STROKE" color="0,0,255" transparencyLevel="0.5" noStroke="false" useTransparency="false" lineWidth="1.0" joinStyle="JOIN_MITER" capStyle="CAP_SQUARE" />
+        <FocusedColorBackgroundStyle id="23" color="255,255,255" transparencyLevel="0.5" useTransparency="false" />
+        <RectangleShape id="24" arcSize="30.0" isRounded="false" />
+        <ShadowStyle id="25" shadowDepth="2" shadowBlur="4" drawShadow="true" shadowDarkness="150" />
+        <ColorBackgroundStyle id="26" color="255,255,255" transparencyLevel="0.5" useTransparency="false" />
+      </ShapeGraphicalRepresentation>
+    </Shape>
+    <Connector id="27" flexoID="-1" name="Connector" userID="FLX" useSpecificDescriptions="false">
+      <EndShape idref="15" />
+      <ConnectorGraphicalRepresentation xmlns:p="http://www.openflexo.org/pamela/" id="28" p:modelEntity="org.openflexo.fge.ConnectorGraphicalRepresentation" p:class="org.openflexo.fge.impl.ConnectorGraphicalRepresentationImpl" lineWrap="false" verticalTextAlignment="MIDDLE" horizontalTextAlignment="CENTER" absoluteTextX="0.0" layer="64" absoluteTextY="0.0" transparency="1.0" isFocusable="true" drawControlPointsWhenSelected="true" drawControlPointsWhenFocused="true" isSelectable="true" isLabelEditable="true" isVisible="true" continuousTextEditing="true" isMultilineAllowed="false" isReadOnly="false" identifier="6ad042d7" paragraphAlignment="CENTER">
+        <TextStyle id="29" orientation="0" color="0,0,0" backgroundColor="255,255,255" font="Lucida Sans,0,11" isBackgroundColored="false" />
+      </ConnectorGraphicalRepresentation>
+      <StartShape idref="3" />
+    </Connector>
+  </Diagram>
+</DiagramSpecification>
