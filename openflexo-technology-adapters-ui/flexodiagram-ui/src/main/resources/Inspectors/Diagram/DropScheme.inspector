@@ -17,7 +17,7 @@
         <Dependancy componentName="TargetFlexoConceptDropDown" />
         <LocalizedDictionary />
       </Label>
-      <DropDown index="7" data="data.targetPatternRole" constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" visible="data.targetHasMultipleRoles" name="dropdown" localize="true" staticList="" list="data.targetFlexoConcept.shapePatternRoles" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.ShapePatternRole" autoSelectFirstRow="true">
+      <DropDown index="7" data="data.targetPatternRole" constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" visible="data.targetHasMultipleRoles" name="dropdown" localize="true" staticList="" list="data.targetFlexoConcept.shapePatternRoles" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.ShapeRole" autoSelectFirstRow="true">
         <Dependancy componentName="TargetFlexoConceptDropDown" />
         <LocalizedDictionary />
       </DropDown>
