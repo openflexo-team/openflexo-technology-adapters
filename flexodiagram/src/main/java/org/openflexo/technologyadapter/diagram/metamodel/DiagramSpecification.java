@@ -223,7 +223,9 @@ public interface DiagramSpecification extends FlexoObject, FlexoMetaModel<Diagra
 
 		@Override
 		public List<DiagramPalette> getPalettes() {
-			loadDiagramPalettesWhenUnloaded();
+			if(palettes==null){
+				loadDiagramPalettesWhenUnloaded();
+			}
 			return palettes;
 		}
 
@@ -257,7 +259,9 @@ public interface DiagramSpecification extends FlexoObject, FlexoMetaModel<Diagra
 
 		@Override
 		public List<Diagram> getExampleDiagrams() {
-			loadExampleDiagramsWhenUnloaded();
+			if(exampleDiagrams==null){
+				loadExampleDiagramsWhenUnloaded();
+			}
 			return exampleDiagrams;
 		}
 
