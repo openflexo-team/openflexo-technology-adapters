@@ -48,7 +48,7 @@ public class CreateDiagramFromPPTSlideInitializer extends ActionInitializer<Crea
 		return new FlexoActionInitializer<CreateDiagramFromPPTSlide>() {
 			@Override
 			public boolean run(EventObject e, CreateDiagramFromPPTSlide action) {
-				return instanciateAndShowDialog(action, DiagramCst.CREATE_EXAMPLE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB_NAME);
+				return instanciateAndShowDialog(action, DiagramCst.CREATE_EXAMPLE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB);
 			}
 		};
 	}

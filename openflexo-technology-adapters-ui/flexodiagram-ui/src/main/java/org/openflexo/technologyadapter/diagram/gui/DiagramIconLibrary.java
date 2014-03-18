@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -42,20 +43,21 @@ import org.openflexo.toolbox.ImageIconResource;
 public class DiagramIconLibrary extends IconLibrary {
 
 	private static final Logger logger = Logger.getLogger(DiagramIconLibrary.class.getPackage().getName());
+	
 
-	public static final ImageIconResource DIAGRAM_PALETTE_ICON = new ImageIconResource("Icons/DiagramPalette.png");
-	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource("Icons/Diagram.png");
-	public static final ImageIconResource SHAPE_ICON = new ImageIconResource("Icons/DiagramShape.png");
-	public static final ImageIconResource CONNECTOR_ICON = new ImageIconResource("Icons/DiagramConnector.png");
+	public static final ImageIconResource DIAGRAM_PALETTE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DiagramPalette.png"));
+	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Diagram.png"));
+	public static final ImageIconResource SHAPE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DiagramShape.png"));
+	public static final ImageIconResource CONNECTOR_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DiagramConnector.png"));
 
-	public static final ImageIconResource DROP_SCHEME_ICON = new ImageIconResource("Icons/DropSchemeIcon.png");
-	public static final ImageIconResource LINK_SCHEME_ICON = new ImageIconResource("Icons/LinkSchemeIcon.png");
+	public static final ImageIconResource DROP_SCHEME_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DropSchemeIcon.png"));
+	public static final ImageIconResource LINK_SCHEME_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/LinkSchemeIcon.png"));
 
-	public static final ImageIconResource DIAGRAM_SPECIFICATION_ICON = new ImageIconResource("Icons/DiagramSpecification.png");
+	public static final ImageIconResource DIAGRAM_SPECIFICATION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DiagramSpecification.png"));
 
-	public static final ImageIconResource GRAPHICAL_ACTION_ICON = new ImageIconResource("Icons/GraphicalActionIcon.png");
+	public static final ImageIconResource GRAPHICAL_ACTION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GraphicalActionIcon.png"));
 
-	public static final ImageIconResource UNKNOWN_ICON = new ImageIconResource("Icons/UnknownIcon.gif");
+	public static final ImageIconResource UNKNOWN_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/UnknownIcon.gif"));
 
 	public static ImageIcon iconForObject(DiagramElement<?> object) {
 		if (object instanceof Diagram) {

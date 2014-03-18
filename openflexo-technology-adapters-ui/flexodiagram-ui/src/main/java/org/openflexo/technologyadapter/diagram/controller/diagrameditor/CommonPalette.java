@@ -45,13 +45,14 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.undo.CompoundEdit;
+import org.openflexo.rm.ResourceLocator;
+import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.AddShape;
 import org.openflexo.toolbox.ImageIconResource;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.FlexoFrame;
 import org.openflexo.view.controller.FlexoFIBController;
 
@@ -64,7 +65,7 @@ public class CommonPalette extends DrawingPalette {
 	private static final int GRID_HEIGHT = 40;
 	public static final Font DEFAULT_TEXT_FONT = new Font("SansSerif", Font.PLAIN, 7);
 	public static final Font LABEL_FONT = new Font("SansSerif", Font.PLAIN, 11);
-	private static final File DEFAULT_IMAGE = ResourceLocator.locateFile("Icons/Diagram.png");
+	private static final Resource DEFAULT_IMAGE = ResourceLocator.getResourceLocator().locateResource("Icons/Diagram.png");
 
 	private final DiagramEditor editor;
 
@@ -141,14 +142,14 @@ public class CommonPalette extends DrawingPalette {
 
 	}
 	
-	private PaletteElement makeImagePaletteElement(ShapeSpecification shapeSpecification, int px, int py, File image) {
+	private PaletteElement makeImagePaletteElement(ShapeSpecification shapeSpecification, int px, int py, Resource image) {
 		final ShapeGraphicalRepresentation gr = FACTORY.makeShapeGraphicalRepresentation(shapeSpecification);
 		computePaletteElementPosition(shapeSpecification, px, py, gr);
 		gr.setBackgroundType(BackgroundStyleType.IMAGE);
 		gr.getForeground().setNoStroke(true);
 		gr.getShadowStyle().setDrawShadow(false);
 		((BackgroundImageBackgroundStyle)gr.getBackground()).setFitToShape(true);
-		((BackgroundImageBackgroundStyle)gr.getBackground()).setImageFile(image);
+		((BackgroundImageBackgroundStyle)gr.getBackground()).setImageResource(image);
 		gr.setIsVisible(true);
 		gr.setAllowToLeaveBounds(false);
 		return makePaletteElement(gr, false, false, false, false, true);
@@ -218,7 +219,7 @@ public class CommonPalette extends DrawingPalette {
 				System.out.println("size=" + shapeGR.getSize());
 				
 				if(isImage){
-					FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB_NAME);
+					FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
 					FIBDialog dialog = FIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
 							new FlexoFIBController(fibComponent, getEditor().getFlexoController()));
 				}

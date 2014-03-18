@@ -4,6 +4,7 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.gui.PowerpointIconLibrary;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
@@ -12,7 +13,6 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.view.PowerpointSlideshowView;
 import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointShapeRole;
 import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointSlideRole;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -29,7 +29,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateDirectory("Inspectors/Excel"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.getResourceLocator().locateResource("Inspectors/Excel"));
 	}
 
 	@Override

@@ -19,10 +19,11 @@
  */
 package org.openflexo.technologyadapter.owl.gui;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import org.openflexo.components.widget.FIBFlexoObjectSelector;
+import org.openflexo.rm.ResourceLocator;
+import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 
@@ -37,7 +38,7 @@ public class FIBOWLOntologySelector extends FIBFlexoObjectSelector<OWLOntology> 
 
 	static final Logger logger = Logger.getLogger(FIBOWLOntologySelector.class.getPackage().getName());
 
-	public static String FIB_FILE_NAME = "Fib/FIBOWLOntologySelector.fib";
+	public static Resource FIB_FILE = ResourceLocator.getResourceLocator().locateResource("Fib/FIBOWLOntologySelector.fib");
 
 	public FIBOWLOntologySelector(OWLOntology editedObject) {
 		super(editedObject);
@@ -50,8 +51,8 @@ public class FIBOWLOntologySelector extends FIBFlexoObjectSelector<OWLOntology> 
 	}*/
 
 	@Override
-	public String getFIBFileName() {
-		return FIB_FILE_NAME;
+	public Resource getFIBResource() {
+		return FIB_FILE;
 	}
 
 	@Override

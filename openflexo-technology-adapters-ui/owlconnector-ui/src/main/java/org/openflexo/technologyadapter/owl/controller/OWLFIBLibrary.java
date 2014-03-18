@@ -1,5 +1,6 @@
 /*
  * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2013-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -19,7 +20,8 @@
  */
 package org.openflexo.technologyadapter.owl.controller;
 
-import java.io.File;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 
 /**
  * Encodes FIB components used in the context of OWL technology adapter
@@ -28,10 +30,12 @@ import java.io.File;
  */
 public class OWLFIBLibrary {
 
-	public static String CREATE_ONTOLOGY_CLASS_DIALOG_FIB_NAME = "Fib/Dialog/CreateOntologyClassDialog.fib";
-	public static String CREATE_ONTOLOGY_INDIVIDUAL_FIB_NAME = "Fib/Dialog/CreateOntologyIndividualDialog.fib";
-	public static String DELETE_ONTOLOGY_OBJECTS_DIALOG_FIB_NAME = "Fib/Dialog/DeleteOntologyObjectsDialog.fib";
-	public static String CREATE_DATA_PROPERTY_DIALOG_FIB_NAME = "Fib/Dialog/CreateDataPropertyDialog.fib";
-	public static String CREATE_OBJECT_PROPERTY_DIALOG_FIB_NAME = "Fib/Dialog/CreateObjectPropertyDialog.fib";
+	
+	
+	public static Resource CREATE_ONTOLOGY_CLASS_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateOntologyClassDialog.fib");
+	public static Resource CREATE_ONTOLOGY_INDIVIDUAL_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateOntologyIndividualDialog.fib");
+	public static Resource DELETE_ONTOLOGY_OBJECTS_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/DeleteOntologyObjectsDialog.fib");
+	public static Resource CREATE_DATA_PROPERTY_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateDataPropertyDialog.fib");
+	public static Resource CREATE_OBJECT_PROPERTY_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateObjectPropertyDialog.fib");
 
 }

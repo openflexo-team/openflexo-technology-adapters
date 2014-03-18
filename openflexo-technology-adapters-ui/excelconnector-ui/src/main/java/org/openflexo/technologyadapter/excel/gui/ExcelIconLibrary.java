@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
 import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
@@ -33,10 +34,11 @@ import org.openflexo.toolbox.ImageIconResource;
 public class ExcelIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(ExcelIconLibrary.class.getPackage().getName());
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static final ImageIconResource EXCEL_TECHNOLOGY_BIG_ICON = new ImageIconResource("Icons/ExcelBig.png");
-	public static final ImageIconResource EXCEL_TECHNOLOGY_ICON = new ImageIconResource("Icons/ExcelSmall.png");
-	public static final ImageIconResource EXCEL_GRAPHICAL_ACTION_ICON = new ImageIconResource("Icons/GraphicalActionIcon.png");
+	public static final ImageIconResource EXCEL_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelBig.png"));
+	public static final ImageIconResource EXCEL_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelSmall.png"));
+	public static final ImageIconResource EXCEL_GRAPHICAL_ACTION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GraphicalActionIcon.png"));
 	
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
 		if (ExcelWorkbook.class.isAssignableFrom(objectClass)) {

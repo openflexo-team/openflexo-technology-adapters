@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.OWLIndividual;
@@ -35,18 +36,19 @@ import org.openflexo.toolbox.ImageIconResource;
 public class OWLIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(OWLIconLibrary.class.getPackage().getName());
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static final ImageIconResource ONTOLOGY_LIBRARY_BIG_ICON = new ImageIconResource("Icons/32x32/OntologyLibrary.png");
+	public static final ImageIconResource ONTOLOGY_LIBRARY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/32x32/OntologyLibrary.png"));
 
-	public static final ImageIconResource ONTOLOGY_ICON = new ImageIconResource("Icons/Ontology.png");
-	public static final ImageIconResource ONTOLOGY_LIBRARY_ICON = new ImageIconResource("Icons/OntologyLibrary.png");
-	public static final ImageIconResource ONTOLOGY_CLASS_ICON = new ImageIconResource("Icons/OntologyClass.png");
-	public static final ImageIconResource ONTOLOGY_INDIVIDUAL_ICON = new ImageIconResource("Icons/OntologyIndividual.png");
-	public static final ImageIconResource ONTOLOGY_OBJECT_PROPERTY_ICON = new ImageIconResource("Icons/OntologyObjectProperty.png");
-	public static final ImageIconResource ONTOLOGY_DATA_PROPERTY_ICON = new ImageIconResource("Icons/OntologyDataProperty.png");
-	public static final ImageIconResource ONTOLOGY_PROPERTY_ICON = new ImageIconResource("Icons/OntologyProperty.png");
-	public static final ImageIconResource ONTOLOGY_ANNOTATION_PROPERTY_ICON = new ImageIconResource("Icons/OntologyAnnotationProperty.png");
-	public static final ImageIconResource ONTOLOGY_STATEMENT_ICON = new ImageIconResource("Icons/OntologyStatement.png");
+	public static final ImageIconResource ONTOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Ontology.png"));
+	public static final ImageIconResource ONTOLOGY_LIBRARY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyLibrary.png"));
+	public static final ImageIconResource ONTOLOGY_CLASS_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyClass.png"));
+	public static final ImageIconResource ONTOLOGY_INDIVIDUAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyIndividual.png"));
+	public static final ImageIconResource ONTOLOGY_OBJECT_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyObjectProperty.png"));
+	public static final ImageIconResource ONTOLOGY_DATA_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyDataProperty.png"));
+	public static final ImageIconResource ONTOLOGY_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyProperty.png"));
+	public static final ImageIconResource ONTOLOGY_ANNOTATION_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyAnnotationProperty.png"));
+	public static final ImageIconResource ONTOLOGY_STATEMENT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyStatement.png"));
 
 	public static ImageIcon iconForObject(Class<? extends OWLObject> objectClass) {
 		if (OWLOntology.class.isAssignableFrom(objectClass)) {

@@ -11,6 +11,7 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.gui.XMLModelBrowserModel;
 import org.openflexo.technologyadapter.xsd.gui.XMLXSDModelView;
@@ -26,7 +27,6 @@ import org.openflexo.technologyadapter.xsd.viewpoint.XSClassRole;
 import org.openflexo.technologyadapter.xsd.viewpoint.XSIndividualRole;
 import org.openflexo.technologyadapter.xsd.viewpoint.editionaction.AddXSClass;
 import org.openflexo.technologyadapter.xsd.viewpoint.editionaction.AddXSIndividual;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -48,7 +48,7 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
 
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateDirectory("Inspectors/XSD"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.getResourceLocator().locateResource("Inspectors/XSD"));
 	}
 
 	/**

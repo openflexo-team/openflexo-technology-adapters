@@ -50,7 +50,7 @@ public class DeclareShapeInFlexoConceptInitializer extends
 			@Override
 			public boolean run(EventObject e, DeclareShapeInFlexoConcept action) {
 
-				return instanciateAndShowDialog(action, CommonFIB.DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB_NAME);
+				return instanciateAndShowDialog(action, CommonFIB.DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB);
 			}
 		};
 	}

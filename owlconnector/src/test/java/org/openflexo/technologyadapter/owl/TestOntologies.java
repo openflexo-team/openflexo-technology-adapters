@@ -32,6 +32,7 @@ import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.TestFlexoServiceManager;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.model.OWL2URIDefinitions;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
@@ -44,7 +45,6 @@ import org.openflexo.technologyadapter.owl.model.RDFSURIDefinitions;
 import org.openflexo.technologyadapter.owl.model.RDFURIDefinitions;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.ResourceLocator;
 
 @RunWith(OrderedRunner.class)
 public class TestOntologies extends OpenflexoProjectAtRunTimeTestCase {
@@ -61,8 +61,9 @@ public class TestOntologies extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
+		final ResourceLocator rl = ResourceLocator.getResourceLocator();
 		log("test0LoadTestResourceCenter()");
-		testServiceManager = new TestFlexoServiceManager(ResourceLocator.locateDirectory("TestResourceCenter/Ontologies"));
+		testServiceManager = new TestFlexoServiceManager(rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/Ontologies")));
 		owlAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) testServiceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 	}

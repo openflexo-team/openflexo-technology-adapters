@@ -21,6 +21,7 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -39,6 +40,9 @@ import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
+import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.Resource;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -144,7 +148,14 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			DiagramPaletteFactory factory = palette.getFactory();
 
 			if (takeScreenshotForTopLevelElement) {
-				File screenshotFile = saveScreenshot();
+				Resource screenshotFile = null;
+				try {
+					screenshotFile = new FileResourceImpl(saveScreenshot());
+				} catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (LocatorNotFoundException e) {
+					e.printStackTrace();
+				}
 				ShapeGraphicalRepresentation gr = factory.makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
 				gr.setForeground(factory.makeNoneForegroundStyle());
 				gr.setBackground(factory.makeImageBackground(screenshotFile));

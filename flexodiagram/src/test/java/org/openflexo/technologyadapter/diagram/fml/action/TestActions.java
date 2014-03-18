@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Shape;
@@ -16,12 +17,14 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.FileSystemResourceLocatorImpl;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Test actions
@@ -33,13 +36,13 @@ import org.openflexo.toolbox.ResourceLocator;
 public class TestActions extends OpenflexoProjectAtRunTimeTestCase{
 
 	private static final Logger logger = FlexoLogger.getLogger(TestActions.class.getPackage().getName());
-	
+
 	private static FlexoServiceManager testApplicationContext;
 	private static DiagramTechnologyAdapter technologicalAdapter;
-	private static File resourceCenterDirectory;
+	private static Resource resourceCenterDirectory;
 	private static FlexoEditor editor;
 	private static FlexoProject project;
-	
+
 	/**
 	 * Instantiate test resource center
 	 */
@@ -47,18 +50,22 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase{
 	@TestOrder(1)
 	public void test0InstantiateResourceCenter() {
 
+		final FileSystemResourceLocatorImpl fsrl = new FileSystemResourceLocatorImpl();
+		fsrl.appendToDirectories(System.getProperty("user.dir"));
+		ResourceLocator.appendDelegate(fsrl);
+		
 		log("test0InstantiateResourceCenter()");
 		testApplicationContext = instanciateTestServiceManager();
 		assertNotNull(testApplicationContext);
-		
-		resourceCenterDirectory = ResourceLocator.locateDirectory(new File("src/test/resources").getAbsolutePath());
-		assertTrue(resourceCenterDirectory.exists());
+
+		resourceCenterDirectory = ResourceLocator.locateResource("src/test/resources");
+		assertTrue(resourceCenterDirectory != null);
 		editor = createProject("TestProject");
 		project = editor.getProject();
 		assertTrue(project.getProjectDirectory().exists());
 		assertTrue(project.getProjectDataResource().getFile().exists());
 	}
-	
+
 	/**
 	 * Test the Diagram from a PPT slide
 	 */
@@ -67,30 +74,25 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase{
 	public void testCreateExampleDiagramFrommPPTSlide() {
 
 		CreateDiagramFromPPTSlide createExampleDiagramFromPPTSlide = CreateDiagramFromPPTSlide.actionType.makeNewAction(project.getRootFolder(), null,editor);
-		
-		for(int i=0;i<resourceCenterDirectory.list().length;i++){ 
-			if(resourceCenterDirectory.list()[i].endsWith(".ppt")==true){
-				//
-				// TODO Des choses à faire ici!!!!
-				///
-				File pptFile = ResourceLocator.locateFile(resourceCenterDirectory.list()[i]);
-				logger.info("Testing file "+pptFile.getName());
-				createExampleDiagramFromPPTSlide.setFile(pptFile);
-				for(Slide slide : createExampleDiagramFromPPTSlide.getCurrentSlides()){
-					logger.info("Testing Slide number "+slide.getSlideNumber() +" in file named "+pptFile.getName());
-					createExampleDiagramFromPPTSlide.setDiagramName("diagramName");
-					createExampleDiagramFromPPTSlide.setDiagramTitle("diagramTitle");
-					createExampleDiagramFromPPTSlide.doAction();
-					
-					assertNotNull(createExampleDiagramFromPPTSlide.getNewDiagram());
-					
-					assertEquals(computedNumberOfShapes(slide),
-							createExampleDiagramFromPPTSlide.getNewDiagram().getShapes().size());
-				}
+
+		for(Resource rsc : resourceCenterDirectory.getContents(Pattern.compile(".*[.]ppt"))){ 
+			File pptFile = ((FileResourceImpl) rsc).getFile();
+			logger.info("Testing file "+pptFile.getName());
+			createExampleDiagramFromPPTSlide.setFile(pptFile);
+			for(Slide slide : createExampleDiagramFromPPTSlide.getCurrentSlides()){
+				logger.info("Testing Slide number "+slide.getSlideNumber() +" in file named "+pptFile.getName());
+				createExampleDiagramFromPPTSlide.setDiagramName("diagramName");
+				createExampleDiagramFromPPTSlide.setDiagramTitle("diagramTitle");
+				createExampleDiagramFromPPTSlide.doAction();
+
+				assertNotNull(createExampleDiagramFromPPTSlide.getNewDiagram());
+
+				assertEquals(computedNumberOfShapes(slide),
+						createExampleDiagramFromPPTSlide.getNewDiagram().getShapes().size());
 			}
 		}
 	}
-	
+
 	private int computedNumberOfShapes(Slide slide){
 		int numberOfShapes=0;
 		Shape[] sh = slide.getMasterSheet().getShapes();

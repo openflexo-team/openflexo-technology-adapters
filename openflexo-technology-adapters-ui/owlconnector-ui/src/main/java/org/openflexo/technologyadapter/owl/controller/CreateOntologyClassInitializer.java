@@ -46,7 +46,7 @@ public class CreateOntologyClassInitializer extends ActionInitializer<CreateOnto
 		return new FlexoActionInitializer<CreateOntologyClass>() {
 			@Override
 			public boolean run(EventObject e, CreateOntologyClass action) {
-				return instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_ONTOLOGY_CLASS_DIALOG_FIB_NAME);
+				return instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_ONTOLOGY_CLASS_DIALOG_FIB);
 			}
 		};
 	}

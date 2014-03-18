@@ -42,6 +42,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
@@ -54,7 +55,6 @@ import org.openflexo.technologyadapter.emf.viewpoint.editionaction.RemoveEMFObje
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.RemoveEMFObjectIndividualAttributeDataPropertyValue;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.RemoveEMFObjectIndividualAttributeObjectPropertyValue;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.RemoveEMFObjectIndividualReferenceObjectPropertyValue;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Test Class for EMF Model Edition.
@@ -64,11 +64,12 @@ import org.openflexo.toolbox.ResourceLocator;
  */
 public class TestEMFModelEdition {
 	protected static final Logger logger = Logger.getLogger(TestEMFModelEdition.class.getPackage().getName());
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
 	@Test
 	public void test() {
 		try {
-			TestFlexoServiceManager applicationContext = new TestFlexoServiceManager(ResourceLocator.locateDirectory("src/test/resources"));
+			TestFlexoServiceManager applicationContext = new TestFlexoServiceManager(rl.retrieveResourceAsFile(ResourceLocator.locateResource("src/test/resources")));
 			EMFTechnologyAdapter technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(
 					EMFTechnologyAdapter.class);
 

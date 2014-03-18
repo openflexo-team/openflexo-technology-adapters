@@ -36,7 +36,7 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 public class DiagramSpecificationView extends FIBModuleView<FlexoConcept> {
 
 	public DiagramSpecificationView(FlexoConcept flexoConcept, FlexoController controller) {
-		super(flexoConcept, controller, DiagramCst.DIAGRAM_SPECIFICATION_VIEW_FIB_NAME);
+		super(flexoConcept, controller, DiagramCst.DIAGRAM_SPECIFICATION_VIEW_FIB);
 	}
 
 	@Override

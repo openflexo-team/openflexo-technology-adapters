@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.toolbox.ImageIconResource;
@@ -33,11 +34,12 @@ import org.openflexo.toolbox.ImageIconResource;
 public class XMLIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(XMLIconLibrary.class.getPackage().getName());
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-	public static final ImageIconResource XSD_TECHNOLOGY_BIG_ICON = new ImageIconResource("Icons/XMLTechnology32.png");
-	public static final ImageIconResource XSD_TECHNOLOGY_ICON = new ImageIconResource("Icons/XMLTechnology.png");
-	public static final ImageIconResource XML_FILE_ICON = new ImageIconResource("Icons/XMLFile.png");
-	public static final ImageIconResource XML_INDIVIDUAL_ICON = new ImageIconResource("Icons/XMLIndividual.png");
+	public static final ImageIconResource XSD_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLTechnology32.png"));
+	public static final ImageIconResource XSD_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLTechnology.png"));
+	public static final ImageIconResource XML_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLFile.png"));
+	public static final ImageIconResource XML_INDIVIDUAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLIndividual.png"));
 
 	public static ImageIcon iconForObject(Class objectClass) {
 		if (XMLModel.class.isAssignableFrom(objectClass)) {

@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntDataProperty;
@@ -37,15 +38,17 @@ public class XSDIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(XSDIconLibrary.class.getPackage().getName());
 
-	public static final ImageIconResource XSD_TECHNOLOGY_BIG_ICON = new ImageIconResource("Icons/XSDTechnology32.png");
-	public static final ImageIconResource XSD_TECHNOLOGY_ICON = new ImageIconResource("Icons/XSDTechnology.png");
-	public static final ImageIconResource XSD_FILE_ICON = new ImageIconResource("Icons/XSDFile.png");
-	public static final ImageIconResource XML_FILE_ICON = new ImageIconResource("Icons/XMLFile.png");
-	public static final ImageIconResource XSD_CLASS_ICON = new ImageIconResource("Icons/XSDClass.png");
-	public static final ImageIconResource XSD_INDIVIDUAL_ICON = new ImageIconResource("Icons/XSDIndividual.png");
-	public static final ImageIconResource XSD_PROPERTY_ICON = new ImageIconResource("Icons/XSDProperty.png");
-	public static final ImageIconResource XSD_DATAPROPERTY_ICON = new ImageIconResource("Icons/XSDDataProperty.png");
-	public static final ImageIconResource XSD_OBJECTPROPERTY_ICON = new ImageIconResource("Icons/XSDObjectProperty.png");
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
+	public static final ImageIconResource XSD_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDTechnology32.png"));
+	public static final ImageIconResource XSD_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDTechnology.png"));
+	public static final ImageIconResource XSD_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDFile.png"));
+	public static final ImageIconResource XML_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLFile.png"));
+	public static final ImageIconResource XSD_CLASS_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDClass.png"));
+	public static final ImageIconResource XSD_INDIVIDUAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDIndividual.png"));
+	public static final ImageIconResource XSD_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDProperty.png"));
+	public static final ImageIconResource XSD_DATAPROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDDataProperty.png"));
+	public static final ImageIconResource XSD_OBJECTPROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDObjectProperty.png"));
 
 	public static ImageIcon iconForObject(Class<? extends AbstractXSOntObject> objectClass) {
 		if (XSDMetaModel.class.isAssignableFrom(objectClass)) {

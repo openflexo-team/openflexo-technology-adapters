@@ -31,6 +31,7 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.gui.XMLIconLibrary;
@@ -38,7 +39,6 @@ import org.openflexo.technologyadapter.xml.gui.XMLModelBrowserModel;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualRole;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -56,8 +56,9 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
+		final ResourceLocator rl = ResourceLocator.getResourceLocator();
 
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateDirectory("Inspectors/XML"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/XML"));
 	}
 
 	/**

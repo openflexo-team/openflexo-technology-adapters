@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
@@ -33,8 +34,10 @@ public class PowerpointIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(PowerpointIconLibrary.class.getPackage().getName());
 
-	public static final ImageIconResource POWERPOINT_TECHNOLOGY_BIG_ICON = new ImageIconResource("Icons/powerpoint_big.png");
-	public static final ImageIconResource POWERPOINT_TECHNOLOGY_ICON = new ImageIconResource("Icons/powerpoint_small.png");
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
+	public static final ImageIconResource POWERPOINT_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/powerpoint_big.png"));
+	public static final ImageIconResource POWERPOINT_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/powerpoint_small.png"));
 
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
 		if (PowerpointSlideshow.class.isAssignableFrom(objectClass)) {

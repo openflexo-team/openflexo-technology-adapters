@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeDataProperty;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeObjectProperty;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
@@ -42,16 +43,18 @@ public class EMFIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(EMFIconLibrary.class.getPackage().getName());
 
-	public static final ImageIconResource EMF_TECHNOLOGY_BIG_ICON = new ImageIconResource("Icons/EMFTechnology32.png");
-	public static final ImageIconResource EMF_TECHNOLOGY_ICON = new ImageIconResource("Icons/EMFTechnology.png");
-	public static final ImageIconResource ECORE_FILE_ICON = new ImageIconResource("Icons/EMFTechnology.png");
-	public static final ImageIconResource EMF_FILE_ICON = new ImageIconResource("Icons/EMFTechnology.png");
-	public static final ImageIconResource EMF_CLASS_ICON = new ImageIconResource("Icons/EClass.gif");
-	public static final ImageIconResource EMF_ENUM_ICON = new ImageIconResource("Icons/EEnum.gif");
-	public static final ImageIconResource EMF_ENUM_LITERAL_ICON = new ImageIconResource("Icons/EEnumLiteral.gif");
-	public static final ImageIconResource EMF_INDIVIDUAL_ICON = new ImageIconResource("Icons/EObject.gif");
-	public static final ImageIconResource EMF_REFERENCE_ICON = new ImageIconResource("Icons/EReference.gif");
-	public static final ImageIconResource EMF_ATTRIBUTE_ICON = new ImageIconResource("Icons/EAttribute.gif");
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
+	public static final ImageIconResource EMF_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EMFTechnology32.png"));
+	public static final ImageIconResource EMF_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EMFTechnology.png"));
+	public static final ImageIconResource ECORE_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EMFTechnology.png"));
+	public static final ImageIconResource EMF_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EMFTechnology.png"));
+	public static final ImageIconResource EMF_CLASS_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EClass.gif"));
+	public static final ImageIconResource EMF_ENUM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EEnum.gif"));
+	public static final ImageIconResource EMF_ENUM_LITERAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EEnumLiteral.gif"));
+	public static final ImageIconResource EMF_INDIVIDUAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EObject.gif"));
+	public static final ImageIconResource EMF_REFERENCE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EReference.gif"));
+	public static final ImageIconResource EMF_ATTRIBUTE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EAttribute.gif"));
 
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
 		if (EMFMetaModel.class.isAssignableFrom(objectClass)) {

@@ -15,10 +15,11 @@ import org.openflexo.fib.utils.OpenflexoFIBTestCaseWithProjectAtRunTime;
 import org.openflexo.fib.view.widget.DefaultFIBCustomComponent;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.ResourceLocator;
 
 /**
  * Test StandardFlexoConceptView fib
@@ -31,7 +32,7 @@ public class TestCreateDiagramDialog extends OpenflexoFIBTestCaseWithProjectAtRu
 
 	private static GraphicalContextDelegate gcDelegate;
 
-	private static File fibFile;
+	private static Resource fibResource;
 
 	static FlexoEditor editor;
 
@@ -45,15 +46,15 @@ public class TestCreateDiagramDialog extends OpenflexoFIBTestCaseWithProjectAtRu
 	@TestOrder(1)
 	public void testLoadWidget() {
 
-		fibFile = ResourceLocator.locateFile("Fib/Dialog/CreateDiagramDialog.fib");
-		assertTrue(fibFile.exists());
+		fibResource = ResourceLocator.locateResource("Fib/Dialog/CreateDiagramDialog.fib");
+		assertTrue(fibResource != null);
 	}
 
 	@Test
 	@TestOrder(2)
 	public void testValidateWidget() {
 
-		validateFIB(fibFile);
+		validateFIB(fibResource);
 	}
 
 	@Test
@@ -70,7 +71,7 @@ public class TestCreateDiagramDialog extends OpenflexoFIBTestCaseWithProjectAtRu
 
 		FlexoProject project = editor.getProject();
 		CreateDiagram createDiagram = CreateDiagram.actionType.makeNewAction(project.getRootFolder(), null, editor);
-		DefaultFIBCustomComponent<CreateDiagram> widget = instanciateFIB(fibFile, createDiagram, CreateDiagram.class);
+		DefaultFIBCustomComponent<CreateDiagram> widget = instanciateFIB(fibResource, createDiagram, CreateDiagram.class);
 
 		gcDelegate.addTab("CreateDiagram", widget.getController());
 	}

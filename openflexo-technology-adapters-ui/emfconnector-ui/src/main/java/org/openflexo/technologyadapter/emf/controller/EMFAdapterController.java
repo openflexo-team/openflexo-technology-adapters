@@ -31,6 +31,7 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.gui.EMFIconLibrary;
 import org.openflexo.technologyadapter.emf.gui.EMFMetaModelBrowserModel;
@@ -46,7 +47,6 @@ import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassRole;
 import org.openflexo.technologyadapter.emf.viewpoint.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividual;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -80,7 +80,7 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
 
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateDirectory("Inspectors/EMF"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.getResourceLocator().locateResource("Inspectors/EMF"));
 	}
 
 	/**

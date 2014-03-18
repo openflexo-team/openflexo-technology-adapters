@@ -13,6 +13,7 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.gui.OWLOntologyBrowserModel;
@@ -44,7 +45,6 @@ import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddOWLIndivid
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddRestrictionStatement;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddSubClassStatement;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -75,7 +75,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 
 		// TODO : Des choses à faire ici pour améliorer le support des répertoires dans le ClassPath
 		
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateDirectory("Inspectors/OWL"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.getResourceLocator().locateResource("Inspectors/OWL"));
 
 		new CreateOntologyClassInitializer(actionInitializer);
 		new CreateOntologyIndividualInitializer(actionInitializer);

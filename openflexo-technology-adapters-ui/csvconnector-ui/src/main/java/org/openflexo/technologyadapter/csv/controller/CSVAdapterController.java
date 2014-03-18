@@ -28,9 +28,9 @@ import javax.swing.ImageIcon;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.gui.CSVIconLibrary;
-import org.openflexo.toolbox.ResourceLocator;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -40,6 +40,8 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 public class CSVAdapterController extends TechnologyAdapterController<CSVTechnologyAdapter> {
 	static final Logger logger = Logger.getLogger(CSVAdapterController.class.getPackage().getName());
 
+	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+
 	@Override
 	public Class<CSVTechnologyAdapter> getTechnologyAdapterClass() {
 		return CSVTechnologyAdapter.class;
@@ -48,7 +50,7 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
 		actionInitializer.getController().getModuleInspectorController()
-				.loadDirectory(ResourceLocator.locateDirectory("Inspectors/CSV"));
+				.loadDirectory(ResourceLocator.getResourceLocator().locateResource("Inspectors/CSV"));
 	}
 
 	@Override

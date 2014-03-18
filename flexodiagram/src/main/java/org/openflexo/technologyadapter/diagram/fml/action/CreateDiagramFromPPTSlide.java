@@ -135,7 +135,12 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 		diagramResource.save(null);
 		
+		if (slide != null){
 		convertSlideToDiagram(slide);
+		}
+		else {
+			System.out.println("Error: no Slide");
+		}
 	}
 
 	

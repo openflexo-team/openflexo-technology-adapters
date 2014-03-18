@@ -49,7 +49,7 @@ public class DeleteDiagramElementsInitializer extends ActionInitializer<DeleteDi
 			@Override
 			public boolean run(EventObject e, DeleteDiagramElements action) {
 				getController().getSelectionManager().resetSelection();
-				return instanciateAndShowDialog(action, DiagramCst.DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB_NAME);
+				return instanciateAndShowDialog(action, DiagramCst.DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB);
 			}
 		};
 	}

@@ -46,7 +46,7 @@ public class CreateOntologyIndividualInitializer extends ActionInitializer<Creat
 		return new FlexoActionInitializer<CreateOntologyIndividual>() {
 			@Override
 			public boolean run(EventObject e, CreateOntologyIndividual action) {
-				return instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_ONTOLOGY_INDIVIDUAL_FIB_NAME);
+				return instanciateAndShowDialog(action, OWLFIBLibrary.CREATE_ONTOLOGY_INDIVIDUAL_FIB);
 			}
 		};
 	}
