@@ -217,13 +217,14 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase{
 	@TestOrder(7)
 	public void testPaletteElementBindings() {
 		
-		FMLDiagramPaletteElementBinding newBinding =  newVirtualModel.getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
-		FlexoConcept flexoConcept = newVirtualModel.getFactory().newInstance(FlexoConcept.class);
-		DropScheme newDropScheme = newVirtualModel.getFactory().newInstance(DropScheme.class);
+		FMLDiagramPaletteElementBinding newBinding =  newVirtualModel.getVirtualModelFactory().newInstance(FMLDiagramPaletteElementBinding.class);
+		FlexoConcept flexoConcept = newVirtualModel.getVirtualModelFactory().newInstance(FlexoConcept.class);
+		DropScheme newDropScheme = newVirtualModel.getVirtualModelFactory().newInstance(DropScheme.class);
 		flexoConcept.addToFlexoBehaviours(newDropScheme);
 		newBinding.setPaletteElement(diagramPaletteElement);
 		newBinding.setFlexoConcept(flexoConcept);
 		newBinding.setDropScheme(newDropScheme);
+		newVirtualModel.addToFlexoConcepts(flexoConcept);
 		typedDiagramModelSlot.addToPaletteElementBindings(newBinding);
 		newVirtualModel.addToModelSlots(typedDiagramModelSlot);
 		assertNotNull(newBinding);
