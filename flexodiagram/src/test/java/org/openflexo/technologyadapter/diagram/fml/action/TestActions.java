@@ -7,9 +7,12 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.util.logging.Logger;
 
+import org.apache.poi.hslf.model.AutoShape;
 import org.apache.poi.hslf.model.MasterSheet;
+import org.apache.poi.hslf.model.Picture;
 import org.apache.poi.hslf.model.Shape;
 import org.apache.poi.hslf.model.Slide;
+import org.apache.poi.hslf.model.TextBox;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
@@ -77,6 +80,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase{
 					logger.info("Testing Slide number "+slide.getSlideNumber() +" in file named "+pptFile.getName());
 					createExampleDiagramFromPPTSlide.setDiagramName("diagramName");
 					createExampleDiagramFromPPTSlide.setDiagramTitle("diagramTitle");
+					createExampleDiagramFromPPTSlide.setSlide(slide);
 					createExampleDiagramFromPPTSlide.doAction();
 					
 					assertNotNull(createExampleDiagramFromPPTSlide.getNewDiagram());
@@ -90,14 +94,21 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase{
 	
 	private int computedNumberOfShapes(Slide slide){
 		int numberOfShapes=0;
-		Shape[] sh = slide.getMasterSheet().getShapes();
-		for (int i = sh.length - 1; i >= 0; i--) {
-			if (MasterSheet.isPlaceholder(sh[i])) {
-				continue;
+		if (slide.getFollowMasterObjects()) {
+			Shape[] sh = slide.getMasterSheet().getShapes();
+			for (int i = sh.length - 1; i >= 0; i--) {
+				if (MasterSheet.isPlaceholder(sh[i])) {
+					continue;
+				} else if (sh[i] instanceof TextBox || sh[i] instanceof Picture || sh[i] instanceof AutoShape) {
+					numberOfShapes++;
+				}
 			}
-			numberOfShapes++;
 		}
-		numberOfShapes = numberOfShapes+slide.getShapes().length;
+		for (Shape shape : slide.getShapes()) {
+			if (shape instanceof TextBox || shape instanceof Picture || shape instanceof AutoShape) {
+				numberOfShapes++;
+			}
+		}
 		return numberOfShapes;
 	}
 }

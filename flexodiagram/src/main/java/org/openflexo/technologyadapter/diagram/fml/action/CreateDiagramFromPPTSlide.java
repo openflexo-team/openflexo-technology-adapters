@@ -38,6 +38,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.apache.poi.hslf.model.AutoShape;
+import org.apache.poi.hslf.model.Line;
 import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Picture;
 import org.apache.poi.hslf.model.Shape;
@@ -427,7 +428,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 		if (autoShape.getLineColor() != null) {
 			gr.setForeground(getDiagramFactory().makeForegroundStyle(autoShape.getLineColor(), (float) autoShape.getLineWidth(),
-					DashStyle.values()[autoShape.getLineDashing()]));
+					convertDashLineStyles(autoShape.getLineDashing())));
 		} else {
 			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
 		}
@@ -502,6 +503,29 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		return newShape;
 	}
 
+	private DashStyle convertDashLineStyles(int powerpointDashStyle){
+		
+		switch (powerpointDashStyle){
+			/*case Line.LINE_DOUBLE : return DashStyle.PLAIN_STROKE;
+			case Line.LINE_SIMPLE : return DashStyle.PLAIN_STROKE;
+			case Line.LINE_THICKTHIN : return DashStyle.PLAIN_STROKE;
+			case Line.LINE_THINTHICK : return DashStyle.PLAIN_STROKE;
+			case Line.LINE_TRIPLE : return DashStyle.PLAIN_STROKE;*/
+			case Line.PEN_DASH : return DashStyle.MEDIUM_DASHES;
+			case Line.PEN_DASHDOT : return DashStyle.DOTS_DASHES;
+			case Line.PEN_DASHDOTDOT : return DashStyle.DOT_LINES_DASHES;
+			case Line.PEN_DASHDOTGEL : return DashStyle.SMALL_DASHES;
+			case Line.PEN_DOT : return DashStyle.DOTS_DASHES;
+			case Line.PEN_DOTGEL : return DashStyle.DOTS_DASHES;
+			case Line.PEN_LONGDASHDOTDOTGEL : return DashStyle.BIG_DASHES;
+			case Line.PEN_LONGDASHDOTGEL : return DashStyle.BIG_DASHES;
+			case Line.PEN_LONGDASHGEL : return DashStyle.BIG_DASHES;
+			case Line.PEN_PS_DASH : return DashStyle.SMALL_DASHES;
+			case Line.PEN_SOLID : return DashStyle.PLAIN_STROKE;
+		}
+		return null;
+	}
+	
 	private void setTextProperties(ShapeGraphicalRepresentation returned, TextShape textShape) {
 
 		// TODO Handle several text styles in a text shape
