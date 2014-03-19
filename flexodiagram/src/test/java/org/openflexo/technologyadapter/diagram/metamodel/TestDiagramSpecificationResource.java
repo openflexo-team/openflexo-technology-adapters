@@ -38,7 +38,6 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceImpl;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileResource;
 
 /**
  * Test DiagramSpecification resource 
