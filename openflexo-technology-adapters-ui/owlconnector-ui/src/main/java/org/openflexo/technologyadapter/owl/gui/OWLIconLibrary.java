@@ -36,7 +36,7 @@ import org.openflexo.toolbox.ImageIconResource;
 public class OWLIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(OWLIconLibrary.class.getPackage().getName());
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	
 
 	public static final ImageIconResource ONTOLOGY_LIBRARY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/32x32/OntologyLibrary.png"));
 

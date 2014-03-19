@@ -61,9 +61,9 @@ public class TestOntologies extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
-		final ResourceLocator rl = ResourceLocator.getResourceLocator();
+		
 		log("test0LoadTestResourceCenter()");
-		testServiceManager = new TestFlexoServiceManager(rl.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/Ontologies")));
+		testServiceManager = new TestFlexoServiceManager(ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/Ontologies")));
 		owlAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) testServiceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 	}

@@ -29,7 +29,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.getResourceLocator().locateResource("Inspectors/Excel"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/Excel"));
 	}
 
 	@Override

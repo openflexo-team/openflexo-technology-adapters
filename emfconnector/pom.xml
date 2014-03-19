@@ -9,6 +9,10 @@
 	</parent>
 	<artifactId>emfconnector</artifactId>
 	<name>EMF technology connector</name>
+		<properties>
+		<emf.version>2.7.0.v20120127</emf.version>
+	</properties>
+	
 	<build>
 		<plugins>
 			<plugin>
@@ -29,18 +33,23 @@
 			<scope>test</scope>
 		</dependency>
 		<!-- Direct dependencies for EMF support -->
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>common</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>ecore</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.eclipse.emf</groupId>
-			<artifactId>ecore-xmi</artifactId>
-		</dependency>
+		<!--  3rd party -->
+			<dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>common</artifactId>
+				<version>${emf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>ecore</artifactId>
+				<version>${emf.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.emf</groupId>
+				<artifactId>ecore-xmi</artifactId>
+				<version>${emf.version}</version>
+			</dependency>
+			
 	</dependencies>
 </project>
 

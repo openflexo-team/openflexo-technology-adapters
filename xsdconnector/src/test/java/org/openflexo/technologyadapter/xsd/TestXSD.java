@@ -49,9 +49,9 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 	 * Instanciate test ResourceCenter
 	 */
 	public void test0LoadTestResourceCenter() {
-		final ResourceLocator rl = ResourceLocator.getResourceLocator();
+		
 		log("test0LoadTestResourceCenter()");
-		testServiceManager = new TestFlexoServiceManager(rl.retrieveResourceAsFile(ResourceLocator.locateResource("src/test/resources/XSD")));
+		testServiceManager = new TestFlexoServiceManager(ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("src/test/resources/XSD")));
 		xsdAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(XSDTechnologyAdapter.class);
 		resourceCenter = new DirectoryResourceCenter(new File("src/test/resources/"));
 		testServiceManager.getResourceCenterService().addToResourceCenters(resourceCenter);

@@ -34,7 +34,7 @@ import org.openflexo.toolbox.ImageIconResource;
 public class XMLIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(XMLIconLibrary.class.getPackage().getName());
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	
 
 	public static final ImageIconResource XSD_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLTechnology32.png"));
 	public static final ImageIconResource XSD_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLTechnology.png"));

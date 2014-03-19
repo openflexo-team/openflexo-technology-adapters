@@ -43,7 +43,7 @@ public class EMFIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(EMFIconLibrary.class.getPackage().getName());
 
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	
 
 	public static final ImageIconResource EMF_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EMFTechnology32.png"));
 	public static final ImageIconResource EMF_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/EMFTechnology.png"));

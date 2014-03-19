@@ -65,7 +65,7 @@ public class CommonPalette extends DrawingPalette {
 	private static final int GRID_HEIGHT = 40;
 	public static final Font DEFAULT_TEXT_FONT = new Font("SansSerif", Font.PLAIN, 7);
 	public static final Font LABEL_FONT = new Font("SansSerif", Font.PLAIN, 11);
-	private static final Resource DEFAULT_IMAGE = ResourceLocator.getResourceLocator().locateResource("Icons/Diagram.png");
+	private static final Resource DEFAULT_IMAGE = ResourceLocator.locateResource("Icons/Diagram.png");
 
 	private final DiagramEditor editor;
 

@@ -75,7 +75,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 
 		// TODO : Des choses à faire ici pour améliorer le support des répertoires dans le ClassPath
 		
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.getResourceLocator().locateResource("Inspectors/OWL"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/OWL"));
 
 		new CreateOntologyClassInitializer(actionInitializer);
 		new CreateOntologyIndividualInitializer(actionInitializer);

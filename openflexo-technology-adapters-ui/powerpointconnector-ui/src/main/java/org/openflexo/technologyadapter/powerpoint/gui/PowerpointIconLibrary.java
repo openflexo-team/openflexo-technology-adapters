@@ -34,7 +34,7 @@ public class PowerpointIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(PowerpointIconLibrary.class.getPackage().getName());
 
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	
 
 	public static final ImageIconResource POWERPOINT_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/powerpoint_big.png"));
 	public static final ImageIconResource POWERPOINT_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/powerpoint_small.png"));

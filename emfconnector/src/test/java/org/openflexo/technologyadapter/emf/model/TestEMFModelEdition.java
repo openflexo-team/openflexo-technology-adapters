@@ -64,12 +64,12 @@ import org.openflexo.technologyadapter.emf.viewpoint.editionaction.RemoveEMFObje
  */
 public class TestEMFModelEdition {
 	protected static final Logger logger = Logger.getLogger(TestEMFModelEdition.class.getPackage().getName());
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	
 
 	@Test
 	public void test() {
 		try {
-			TestFlexoServiceManager applicationContext = new TestFlexoServiceManager(rl.retrieveResourceAsFile(ResourceLocator.locateResource("src/test/resources")));
+			TestFlexoServiceManager applicationContext = new TestFlexoServiceManager(ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("src/test/resources")));
 			EMFTechnologyAdapter technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(
 					EMFTechnologyAdapter.class);
 

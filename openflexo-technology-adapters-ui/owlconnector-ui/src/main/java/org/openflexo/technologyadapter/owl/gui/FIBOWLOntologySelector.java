@@ -38,7 +38,7 @@ public class FIBOWLOntologySelector extends FIBFlexoObjectSelector<OWLOntology> 
 
 	static final Logger logger = Logger.getLogger(FIBOWLOntologySelector.class.getPackage().getName());
 
-	public static Resource FIB_FILE = ResourceLocator.getResourceLocator().locateResource("Fib/FIBOWLOntologySelector.fib");
+	public static Resource FIB_FILE = ResourceLocator.locateResource("Fib/FIBOWLOntologySelector.fib");
 
 	public FIBOWLOntologySelector(OWLOntology editedObject) {
 		super(editedObject);

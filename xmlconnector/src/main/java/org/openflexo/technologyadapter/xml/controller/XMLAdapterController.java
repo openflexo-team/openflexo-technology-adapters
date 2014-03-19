@@ -56,7 +56,7 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
-		final ResourceLocator rl = ResourceLocator.getResourceLocator();
+		
 
 		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/XML"));
 	}

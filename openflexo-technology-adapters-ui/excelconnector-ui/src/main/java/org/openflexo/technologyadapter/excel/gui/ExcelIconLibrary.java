@@ -34,7 +34,7 @@ import org.openflexo.toolbox.ImageIconResource;
 public class ExcelIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(ExcelIconLibrary.class.getPackage().getName());
-	private static final ResourceLocator rl = ResourceLocator.getResourceLocator();
+	
 
 	public static final ImageIconResource EXCEL_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelBig.png"));
 	public static final ImageIconResource EXCEL_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelSmall.png"));
