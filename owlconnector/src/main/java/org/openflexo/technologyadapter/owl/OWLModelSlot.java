@@ -3,6 +3,7 @@ package org.openflexo.technologyadapter.owl;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
@@ -12,7 +13,6 @@ import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -136,9 +136,9 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		}
 
 		@Override
-		public OWLOntologyResource createProjectSpecificEmptyModel(View view, String filename, String modelUri,
+		public OWLOntologyResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
 				FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
-			return getTechnologyAdapter().createNewOntology(view.getProject(), filename, modelUri, metaModelResource);
+			return getTechnologyAdapter().createNewOntology(project, filename, modelUri, metaModelResource);
 		}
 
 		@Override

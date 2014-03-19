@@ -24,6 +24,7 @@ package org.openflexo.technologyadapter.emf;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -36,7 +37,6 @@ import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -145,10 +145,9 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 		}
 
 		@Override
-		public EMFModelResource createProjectSpecificEmptyModel(View view, String filename, String modelUri,
+		public EMFModelResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
 				FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			return getTechnologyAdapter()
-					.createNewEMFModel(view.getProject(), filename, modelUri, (EMFMetaModelResource) metaModelResource);
+			return getTechnologyAdapter().createNewEMFModel(project, filename, modelUri, (EMFMetaModelResource) metaModelResource);
 		}
 
 		@Override

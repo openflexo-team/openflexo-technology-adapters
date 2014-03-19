@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
@@ -21,7 +22,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 
 	@Override
 	protected TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> configureModelSlotInstance(
-			TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> msInstance) {
+			TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> msInstance, View view) {
 		if (getOption() == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
 			modelResource = createSharedEmptyModel(msInstance, getModelSlot());
 			if (modelResource != null) {
@@ -32,7 +33,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 			}
 			return msInstance;
 		} else {
-			return super.configureModelSlotInstance(msInstance);
+			return super.configureModelSlotInstance(msInstance, view);
 		}
 	}
 

@@ -4,7 +4,10 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
@@ -13,7 +16,6 @@ import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
@@ -35,6 +37,7 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 
 /**
  * Implementation of the ModelSlot class for the Openflexo built-in diagram technology adapter<br>
@@ -86,7 +89,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 		private static final Logger logger = Logger.getLogger(TypedDiagramModelSlot.class.getPackage().getName());
 
-		//private List<FMLDiagramPaletteElementBinding> paletteElementBindings;
+		// private List<FMLDiagramPaletteElementBinding> paletteElementBindings;
 
 		/*
 		 * public TypedDiagramModelSlotImpl(VirtualModel virtualModel,
@@ -125,17 +128,38 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public DiagramResource createProjectSpecificEmptyModel(View view, String filename, String modelUri,
+		public DiagramResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String diagramUri,
 				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
-			// TODO Auto-generated method stub
-			return null;
+
+			System.out.println("Hop, je suis sense creer un diagramme ici, avec " + filename + " uri=" + diagramUri + " mmRes="
+					+ metaModelResource);
+
+			System.out.println("project=" + project);
+
+			System.out.println("OK, je cree le diagramme");
+
+			try {
+				return getTechnologyAdapter().createNewDiagram(project, filename, diagramUri,
+						(DiagramSpecificationResource) metaModelResource);
+			} catch (SaveResourceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+
 		}
 
 		@Override
 		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
-				String modelUri, FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
-			// TODO Auto-generated method stub
-			return null;
+				String diagramUri, FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
+			try {
+				return getTechnologyAdapter().createNewDiagram((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
+						diagramUri, (DiagramSpecificationResource) metaModelResource);
+			} catch (SaveResourceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
 		}
 
 		@Override
@@ -166,27 +190,26 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			return null;
 		}
 
-	
-		//TODO
-	/*	@Override
-		public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings() {
-			return paletteElementBindings;
-		}
+		// TODO
+		/*	@Override
+			public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings() {
+				return paletteElementBindings;
+			}
 
-		@Override
-		public void setPaletteElementBindings(List<FMLDiagramPaletteElementBinding> paletteElementBindings) {
-			this.paletteElementBindings = paletteElementBindings;
-		}
+			@Override
+			public void setPaletteElementBindings(List<FMLDiagramPaletteElementBinding> paletteElementBindings) {
+				this.paletteElementBindings = paletteElementBindings;
+			}
 
-		@Override
-		public void addToPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
-			paletteElementBindings.add(paletteElementBinding);
-		}
+			@Override
+			public void addToPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
+				paletteElementBindings.add(paletteElementBinding);
+			}
 
-		@Override
-		public void removeFromPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
-			paletteElementBindings.remove(paletteElementBinding);
-		}*/
+			@Override
+			public void removeFromPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
+				paletteElementBindings.remove(paletteElementBinding);
+			}*/
 
 	}
 }
