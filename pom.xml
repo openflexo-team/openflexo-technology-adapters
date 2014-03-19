@@ -20,6 +20,7 @@
 		<flexohelp.version>1.0-SNAPSHOT</flexohelp.version>
 		<flexodocresourcecenter.version>1.0-SNAPSHOT</flexodocresourcecenter.version>
 		<flexodocresourcemanager.version>1.0-SNAPSHOT</flexodocresourcemanager.version>
+		<poi.version>3.10-FINAL</poi.version>
 	</properties>
 	<scm>
 		<connection>scm:git:ssh://git@github.com:openflexo-team/openflexo-core.git</connection>
@@ -172,22 +173,22 @@
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-scratchpad</artifactId>
-				<version>3.10-beta1</version>
+				<version>${poi.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi</artifactId>
-				<version>3.10-beta2</version>
+				<version>${poi.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml</artifactId>
-				<version>3.8-beta4</version>
+				<version>${poi.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>poi-ooxml-schemas</artifactId>
-				<version>3.10-beta2</version>
+				<version>${poi.version}</version>
 			</dependency>
 
 
