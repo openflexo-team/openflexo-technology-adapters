@@ -23,7 +23,6 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.toolbox.IProgress;
@@ -50,8 +49,12 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		}
 	}
 
-	public static DiagramResource makeDiagramResource(String name, String uri, File diagramFile, DiagramSpecification diagramSpecification,
-			FlexoServiceManager serviceManager) {
+	public static DiagramResource makeDiagramResource(String name, String uri, File diagramFile, FlexoServiceManager serviceManager) {
+		return makeDiagramResource(name, uri, diagramFile, null, serviceManager);
+	}
+
+	public static DiagramResource makeDiagramResource(String name, String uri, File diagramFile,
+			DiagramSpecificationResource diagramSpecificationResource, FlexoServiceManager serviceManager) {
 		try {
 			ModelFactory factory = new ModelFactory(DiagramResource.class);
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
@@ -60,8 +63,8 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			returned.setFile(diagramFile);
 			returned.setURI(uri);
 			returned.setServiceManager(serviceManager);
-			if (diagramSpecification != null) {
-				returned.setMetaModelResource(diagramSpecification.getResource());
+			if (diagramSpecificationResource != null) {
+				returned.setMetaModelResource(diagramSpecificationResource);
 			}
 			Diagram newDiagram = returned.getFactory().makeNewDiagram();
 			newDiagram.setResource(returned);
@@ -116,6 +119,16 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	@Override
+	public Diagram getModel() {
+		return getModelData();
+	}
+
+	@Override
+	public Diagram getModelData() {
+		return getDiagram();
 	}
 
 	@Override

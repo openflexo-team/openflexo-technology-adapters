@@ -38,6 +38,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.apache.poi.hslf.model.AutoShape;
+import org.apache.poi.hslf.model.Line;
 import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Picture;
 import org.apache.poi.hslf.model.Shape;
@@ -48,12 +49,12 @@ import org.apache.poi.hslf.model.TextShape;
 import org.apache.poi.hslf.usermodel.RichTextRun;
 import org.apache.poi.hslf.usermodel.SlideShow;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.TextStyle;
 import org.openflexo.fge.ForegroundStyle.DashStyle;
 import org.openflexo.fge.GraphicalRepresentation.HorizontalTextAlignment;
 import org.openflexo.fge.GraphicalRepresentation.ParagraphAlignment;
 import org.openflexo.fge.GraphicalRepresentation.VerticalTextAlignment;
+import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.fge.TextStyle;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
@@ -64,12 +65,11 @@ import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
@@ -106,19 +106,17 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	}
 
 	public DrawingGraphicalRepresentation graphicalRepresentation;
-	private DiagramSpecification diagramSpecification;
 	private String diagramName;
 	private String diagramTitle;
 	private String diagramURI;
 	private DiagramResource diagramResource;
 	private File diagramFile;
-	
+
 	private SlideShow selectedSlideShow;
 	private ArrayList<Slide> currentSlides;
 	private File file;
 	private Slide slide;
-	
-	
+
 	CreateDiagramFromPPTSlide(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
@@ -126,15 +124,16 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException,
 			InvalidFileNameException {
-		logger.info("Add example diagram");
+		logger.info("Add diagram from ppt slide");
 
-		diagramResource = DiagramResourceImpl.makeDiagramResource(getDiagramName(), getDiagramURI(), getDiagramFile(),
-				getDiagramSpecification(), getServiceManager());
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
+				DiagramTechnologyAdapter.class);
+
+		diagramResource = diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), null);
 
 		getFocusedObject().addToResources(diagramResource);
 
 		diagramResource.save(null);
-		
 		if (slide != null){
 		convertSlideToDiagram(slide);
 		}
@@ -143,11 +142,10 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		}
 	}
 
-	
 	/*
 	 * Diagram Configuration
 	 */
-	
+
 	private String errorMessage;
 
 	public String getErrorMessage() {
@@ -171,62 +169,54 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 			errorMessage = noTitleMessage();
 			return false;
 		}
-		
+
 		if (getFile() == null) {
 			errorMessage = noFileMessage();
 			return false;
 		}
-		
+
 		if (getSlide() == null) {
 			errorMessage = noSlideMessage();
 			return false;
 		}
-		
-		else{
-			errorMessage ="";
+
+		else {
+			errorMessage = "";
 		}
-		
+
 		return true;
 	}
 
 	public String noDiagramSpecificationSelectedMessage() {
 		return FlexoLocalization.localizedForKey("no_diagram_type_selected");
 	}
-	
+
 	public String noTitleMessage() {
 		return FlexoLocalization.localizedForKey("no_diagram_title_defined");
 	}
-	
+
 	public String noFileMessage() {
 		return FlexoLocalization.localizedForKey("no_ppt_file_defined");
 	}
-	
+
 	public String existingFileMessage() {
 		return FlexoLocalization.localizedForKey("file_already_existing");
 	}
-	
+
 	public String noNameMessage() {
 		return FlexoLocalization.localizedForKey("no_diagram_name_defined");
 	}
-	
+
 	public String noSlideMessage() {
 		return FlexoLocalization.localizedForKey("no_slide_defined");
 	}
-	
+
 	public String invalidNameMessage() {
 		return FlexoLocalization.localizedForKey("invalid_name_for_new_diagram");
 	}
-	
+
 	public String duplicatedNameMessage() {
 		return FlexoLocalization.localizedForKey("a_diagram_with_that_name_already_exists");
-	}
-
-	public DiagramSpecification getDiagramSpecification() {
-		return diagramSpecification;
-	}
-
-	public void setDiagramSpecification(DiagramSpecification diagramSpecification) {
-		this.diagramSpecification = diagramSpecification;
 	}
 
 	public Diagram getNewDiagram() {
@@ -297,7 +287,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	/*
 	 * PPT Configuration
 	 */
-	
+
 	public DiagramFactory getDiagramFactory() {
 		return diagramResource.getDiagram().getDiagramFactory();
 	}
@@ -306,13 +296,12 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		try {
 			FileInputStream fis = new FileInputStream(getFile());
 			selectedSlideShow = new SlideShow(fis);
-			if(currentSlides==null){
+			if (currentSlides == null) {
 				currentSlides = new ArrayList<Slide>();
-			}
-			else{
+			} else {
 				currentSlides.clear();
 			}
-			for(Slide slide : selectedSlideShow.getSlides()){
+			for (Slide slide : selectedSlideShow.getSlides()) {
 				currentSlides.add(slide);
 			}
 			setCurrentSlides(currentSlides);
@@ -330,7 +319,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 	public void setFile(File file) {
 		this.file = file;
-		if(file!=null){
+		if (file != null) {
 			loadSlideShow();
 		}
 		boolean wasValid = isValid();
@@ -351,7 +340,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
 		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
 	}
-	
+
 	public SlideShow getSelectedSlideShow() {
 		return selectedSlideShow;
 	}
@@ -377,7 +366,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		s.draw(graphics);
 		return new ImageIcon(i);
 	}
-	
+
 	public ImageIcon getOverview(Slide s) {
 		double WIDTH = 400;
 		Dimension d = s.getSlideShow().getPageSize();
@@ -387,19 +376,18 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		s.draw(graphics);
 		return new ImageIcon(i);
 	}
-	
-	
+
 	/*
 	 * Transfo PPT to Diagram
 	 */
-	private Diagram convertSlideToDiagram(Slide slide){
-		
+	private Diagram convertSlideToDiagram(Slide slide) {
+
 		Diagram diagram = getNewDiagram();
-		
+
 		MasterSheet master = slide.getMasterSheet();
 
 		if (slide.getFollowMasterObjects()) {
-			if(master.getShapes()!=null){
+			if (master.getShapes() != null) {
 				Shape[] sh = master.getShapes();
 				for (int i = sh.length - 1; i >= 0; i--) {
 					if (MasterSheet.isPlaceholder(sh[i])) {
@@ -407,11 +395,11 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 					}
 					Shape shape = sh[i];
 					if (shape instanceof Picture) {
-						diagram.addToShapes(makePictureShape((Picture)shape));
+						diagram.addToShapes(makePictureShape((Picture) shape));
 					} else if (shape instanceof AutoShape) {
-						diagram.addToShapes(makeAutoShape((AutoShape)shape));
+						diagram.addToShapes(makeAutoShape((AutoShape) shape));
 					} else if (shape instanceof TextBox) {
-						diagram.addToShapes(makeTextBox((TextBox)shape));
+						diagram.addToShapes(makeTextBox((TextBox) shape));
 					}
 				}
 			}
@@ -419,21 +407,20 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 		for (Shape shape : slide.getShapes()) {
 			if (shape instanceof Picture) {
-				diagram.addToShapes(makePictureShape((Picture)shape));
+				diagram.addToShapes(makePictureShape((Picture) shape));
 			} else if (shape instanceof AutoShape) {
-				diagram.addToShapes(makeAutoShape((AutoShape)shape));
+				diagram.addToShapes(makeAutoShape((AutoShape) shape));
 			} else if (shape instanceof TextBox) {
-				diagram.addToShapes(makeTextBox((TextBox)shape));
-			} 
+				diagram.addToShapes(makeTextBox((TextBox) shape));
+			}
 		}
 		return diagram;
 	}
-	
-	
+
 	private DiagramShape makeAutoShape(AutoShape autoShape) {
-		
+
 		DiagramShape newShape = getDiagramFactory().makeNewShape(autoShape.getText(), getNewDiagram());
-		
+
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 		gr.setX(autoShape.getAnchor2D().getX());
 		gr.setY(autoShape.getAnchor2D().getY());
@@ -445,7 +432,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 		if (autoShape.getLineColor() != null) {
 			gr.setForeground(getDiagramFactory().makeForegroundStyle(autoShape.getLineColor(), (float) autoShape.getLineWidth(),
-					DashStyle.values()[autoShape.getLineDashing()]));
+					convertDashLineStyles(autoShape.getLineDashing())));
 		} else {
 			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
 		}
@@ -463,9 +450,9 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	}
 
 	private DiagramShape makeTextBox(TextBox textBox) {
-		
+
 		DiagramShape newShape = getDiagramFactory().makeNewShape(textBox.getText(), getNewDiagram());
-		
+
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 		gr.setX(textBox.getAnchor2D().getX());
 		gr.setY(textBox.getAnchor2D().getY());
@@ -479,23 +466,23 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 
 		setTextProperties(gr, textBox);
-		
+
 		newShape.setGraphicalRepresentation(gr);
 
 		return newShape;
 	}
 
 	private DiagramShape makePictureShape(Picture pictureShape) {
-		
+
 		DiagramShape newShape = getDiagramFactory().makeNewShape(pictureShape.getPictureName(), getNewDiagram());
-		
+
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
-		
+
 		gr.setX(pictureShape.getAnchor2D().getX());
 		gr.setY(pictureShape.getAnchor2D().getY());
 		gr.setWidth(pictureShape.getAnchor2D().getWidth());
 		gr.setHeight(pictureShape.getAnchor2D().getHeight());
-		//gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+		// gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
 
 		BufferedImage image = new BufferedImage((int) pictureShape.getAnchor2D().getWidth(), (int) pictureShape.getAnchor2D().getHeight(),
 				BufferedImage.TYPE_INT_RGB);
@@ -514,12 +501,34 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		gr.setBackground(getDiagramFactory().makeImageBackground(image));
 		gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
 		gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
-		
+
 		newShape.setGraphicalRepresentation(gr);
 
 		return newShape;
 	}
-	
+
+	private DashStyle convertDashLineStyles(int powerpointDashStyle){
+		
+		switch (powerpointDashStyle){
+			/*case Line.LINE_DOUBLE : return DashStyle.PLAIN_STROKE;
+			case Line.LINE_SIMPLE : return DashStyle.PLAIN_STROKE;
+			case Line.LINE_THICKTHIN : return DashStyle.PLAIN_STROKE;
+			case Line.LINE_THINTHICK : return DashStyle.PLAIN_STROKE;
+			case Line.LINE_TRIPLE : return DashStyle.PLAIN_STROKE;*/
+			case Line.PEN_DASH : return DashStyle.MEDIUM_DASHES;
+			case Line.PEN_DASHDOT : return DashStyle.DOTS_DASHES;
+			case Line.PEN_DASHDOTDOT : return DashStyle.DOT_LINES_DASHES;
+			case Line.PEN_DASHDOTGEL : return DashStyle.SMALL_DASHES;
+			case Line.PEN_DOT : return DashStyle.DOTS_DASHES;
+			case Line.PEN_DOTGEL : return DashStyle.DOTS_DASHES;
+			case Line.PEN_LONGDASHDOTDOTGEL : return DashStyle.BIG_DASHES;
+			case Line.PEN_LONGDASHDOTGEL : return DashStyle.BIG_DASHES;
+			case Line.PEN_LONGDASHGEL : return DashStyle.BIG_DASHES;
+			case Line.PEN_PS_DASH : return DashStyle.SMALL_DASHES;
+			case Line.PEN_SOLID : return DashStyle.PLAIN_STROKE;
+		}
+		return null;
+	}
 	
 	private void setTextProperties(ShapeGraphicalRepresentation returned, TextShape textShape) {
 

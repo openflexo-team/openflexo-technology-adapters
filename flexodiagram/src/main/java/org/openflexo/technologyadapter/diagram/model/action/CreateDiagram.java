@@ -33,10 +33,10 @@ import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
@@ -93,8 +93,11 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 	@Override
 	protected void doAction(Object context) throws InvalidFileNameException, SaveResourceException, InvalidArgumentException {
 
-		diagramResource = DiagramResourceImpl.makeDiagramResource(getDiagramName(), getDiagramURI(), getDiagramFile(),
-				getDiagramSpecification(), getServiceManager());
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
+				DiagramTechnologyAdapter.class);
+
+		diagramResource = diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), getDiagramSpecification()
+				.getResource());
 
 		getFocusedObject().addToResources(diagramResource);
 

@@ -70,9 +70,9 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 		FlexoObjectImpl.addActionForClass(CreateDiagramPalette.actionType, DiagramSpecification.class);
 	}
 
-	public String newPaletteName;
-	public String description;
-	public Object graphicalRepresentation;
+	private String newPaletteName;
+	private String description;
+	private Object graphicalRepresentation;
 
 	private DiagramPalette _newPalette;
 
@@ -119,5 +119,29 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 			nameValidityMessage = NAME_IS_VALID;
 			return true;
 		}
+	}
+
+	public String getNewPaletteName() {
+		return newPaletteName;
+	}
+
+	public void setNewPaletteName(String newPaletteName) {
+		this.newPaletteName = newPaletteName;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Object getGraphicalRepresentation() {
+		return graphicalRepresentation;
+	}
+
+	public void setGraphicalRepresentation(Object graphicalRepresentation) {
+		this.graphicalRepresentation = graphicalRepresentation;
 	}
 }

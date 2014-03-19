@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.view.ModelSlotInstance;
+import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
@@ -28,7 +29,7 @@ public class EMFMetaModelSlotInstanceConfiguration extends ModelSlotInstanceConf
 	}
 
 	@Override
-	public ModelSlotInstance<EMFMetaModelSlot, EMFMetaModel> createModelSlotInstance(VirtualModelInstance msInstance) {
+	public ModelSlotInstance<EMFMetaModelSlot, EMFMetaModel> createModelSlotInstance(VirtualModelInstance msInstance, View view) {
 		logger.warning("Please implement me !!!!");
 		return null;
 	}

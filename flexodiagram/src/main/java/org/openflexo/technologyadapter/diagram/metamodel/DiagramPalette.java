@@ -52,7 +52,6 @@ import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResourceImpl;
-import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 
 @ModelEntity
 @ImplementationClass(DiagramPalette.DiagramPaletteImpl.class)
@@ -90,6 +89,9 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 
 	public DiagramPaletteElement addPaletteElement(String name, Object graphicalRepresentation);
 
+	@Override
+	public DiagramPaletteResource getResource();
+
 	public abstract static class DiagramPaletteImpl extends DiagramPaletteObjectImpl implements DiagramPalette {
 
 		static final Logger logger = Logger.getLogger(DiagramPalette.class.getPackage().getName());
@@ -106,8 +108,8 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		public static DiagramPaletteResource newDiagramPalette(DiagramSpecification diagramSpecification, String diagramPaletteName,
 				DrawingGraphicalRepresentation graphicalRepresentation, FlexoServiceManager serviceManager) {
 			DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.makeDiagramPaletteResource(
-					(DiagramSpecificationResource) diagramSpecification.getResource(), diagramPaletteName, serviceManager);
-			DiagramPalette diagramPalette = diagramPaletteResource.getFactory().makeNewDiagramPalette();
+					diagramSpecification.getResource(), diagramPaletteName, serviceManager);
+			DiagramPalette diagramPalette = diagramPaletteResource.getDiagramPalette();
 			diagramPalette.setGraphicalRepresentation(graphicalRepresentation);
 			diagramPalette.setName(diagramPaletteName);
 			diagramPaletteResource.setResourceData(diagramPalette);
@@ -148,7 +150,10 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 
 		@Override
 		public DiagramSpecification getDiagramSpecification() {
-			return resource.getContainer().getDiagramSpecification();
+			if (resource != null && resource.getContainer() != null) {
+				return resource.getContainer().getDiagramSpecification();
+			}
+			return null;
 		}
 
 		@Override
@@ -246,12 +251,12 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 
 		@Override
 		public DiagramPaletteElement addPaletteElement(String name, Object graphicalRepresentation) {
-			if(getResource()!=null){
+			if (getResource() != null) {
 				DiagramPaletteElement newElement = getResource().getFactory().makeDiagramPaletteElement();
 				newElement.setName(name);
 				newElement.setGraphicalRepresentation((ShapeGraphicalRepresentation) graphicalRepresentation);
 				addToElements(newElement);
-				return newElement;	
+				return newElement;
 			}
 			return null;
 		}

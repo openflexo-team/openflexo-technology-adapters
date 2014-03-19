@@ -25,10 +25,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceRepository;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -147,12 +150,13 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	protected DiagramSpecificationResource tryToLookupDiagramSpecification(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
 		if (isValidDiagramSpecificationFile(candidateFile)) {
-			DiagramSpecificationResource dsRes = retrieveDiagramSpecificationResource(candidateFile.getParentFile());
 			DiagramSpecificationRepository dsRepo = resourceCenter.getRepository(DiagramSpecificationRepository.class, this);
 			if (dsRepo != null) {
+				DiagramSpecificationResource dsRes = null;
 				RepositoryFolder<DiagramSpecificationResource> folder;
 				try {
 					folder = dsRepo.getRepositoryFolder(candidateFile, true);
+					dsRes = retrieveDiagramSpecificationResource(candidateFile, folder);
 					dsRepo.registerResource(dsRes, folder);
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -173,10 +177,10 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	private boolean isValidDiagramSpecificationFile(File candidateFile) {
-		if(candidateFile.exists() && candidateFile.getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)){
-			if(candidateFile.getParentFile().getName().equals(candidateFile.getName().replace(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX, ""))){
-				return true;
-			}
+		if (candidateFile.exists() && candidateFile.isDirectory()
+				&& candidateFile.getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)) {
+			System.out.println("Found valid candidate for DiagramSpecification: " + candidateFile);
+			return true;
 		}
 		return false;
 	}
@@ -191,12 +195,12 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	 * which was supplied
 	 * 
 	 */
-	private DiagramSpecificationResource retrieveDiagramSpecificationResource(File diagramSpecificationDirectory) {
+	private DiagramSpecificationResource retrieveDiagramSpecificationResource(File diagramSpecificationDirectory, RepositoryFolder<?> folder) {
 		DiagramSpecificationResource returned = getTechnologyContextManager()
-				.getDiagramSpecificationResource(new File(diagramSpecificationDirectory+"/"+diagramSpecificationDirectory.getName()+DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX));
+				.getDiagramSpecificationResource(diagramSpecificationDirectory);
 
 		if (returned == null) {
-			returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(diagramSpecificationDirectory,
+			returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(diagramSpecificationDirectory, folder,
 					getTechnologyAdapterService().getServiceManager());
 			if (returned != null) {
 				getTechnologyContextManager().registerDiagramSpecification(returned);
@@ -274,7 +278,8 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
-			System.out.println("File ADDED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
+			System.out.println("DiagramTechnologyAdapter: File ADDED " + ((File) contents).getName() + " in "
+					+ ((File) contents).getParentFile().getAbsolutePath());
 			File candidateFile = (File) contents;
 			if (tryToLookupDiagramSpecification(resourceCenter, candidateFile) != null) {
 				// This is a meta-model, this one has just been registered
@@ -287,9 +292,39 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
-			System.out
-					.println("File DELETED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
+			System.out.println("DiagramTechnologyAdapter: File DELETED " + ((File) contents).getName() + " in "
+					+ ((File) contents).getParentFile().getAbsolutePath());
 		}
+	}
+
+	public DiagramResource createNewDiagram(FlexoProject project, String filename, String diagramUri,
+			DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
+		File diagramFile = new File(getProjectSpecificDiagramsDirectory(project), filename);
+		return createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource);
+	}
+
+	public DiagramResource createNewDiagram(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
+			String diagramUri, DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
+		File diagramDirectory = new File(resourceCenter.getRootDirectory(), relativePath);
+		File diagramFile = new File(diagramDirectory, filename);
+		return createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource);
+	}
+
+	public DiagramResource createNewDiagram(String diagramName, String diagramlUri, File diagramFile,
+			DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
+
+		DiagramResource diagramResource = DiagramResourceImpl.makeDiagramResource(diagramName, diagramlUri, diagramFile,
+				diagramSpecificationResource, getTechnologyAdapterService().getServiceManager());
+
+		diagramResource.save(null);
+
+		return diagramResource;
+	}
+
+	public static File getProjectSpecificDiagramsDirectory(FlexoProject project) {
+		File returned = new File(project.getProjectDirectory(), "Diagrams");
+		returned.mkdirs();
+		return returned;
 	}
 
 }

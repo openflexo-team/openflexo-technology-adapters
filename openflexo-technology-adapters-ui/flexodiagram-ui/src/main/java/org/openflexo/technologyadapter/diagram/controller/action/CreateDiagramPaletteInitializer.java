@@ -55,7 +55,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 				FGEModelFactory factory;
 				try {
 					factory = new FGEModelFactoryImpl();
-					action.graphicalRepresentation = makePaletteGraphicalRepresentation(factory);
+					action.setGraphicalRepresentation(makePaletteGraphicalRepresentation(factory));
 					return instanciateAndShowDialog(action, DiagramCst.CREATE_PALETTE_DIALOG_FIB);
 				} catch (ModelDefinitionException e1) {
 					e1.printStackTrace();

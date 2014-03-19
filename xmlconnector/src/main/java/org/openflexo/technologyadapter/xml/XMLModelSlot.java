@@ -24,6 +24,7 @@ package org.openflexo.technologyadapter.xml;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
@@ -34,7 +35,6 @@ import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
@@ -67,8 +67,8 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLModel> {
 		}
 
 		@Override
-		public FlexoModelResource<XMLModel, XMLModel, ?> createProjectSpecificEmptyModel(View view, String filename, String modelUri,
-				FlexoMetaModelResource<XMLModel, XMLModel, ?> metaModelResource) {
+		public FlexoModelResource<XMLModel, XMLModel, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
+				String modelUri, FlexoMetaModelResource<XMLModel, XMLModel, ?> metaModelResource) {
 			// TODO Auto-generated method stub
 			return null;
 		}

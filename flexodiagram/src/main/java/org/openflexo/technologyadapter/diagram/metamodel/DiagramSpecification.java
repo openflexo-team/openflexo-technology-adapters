@@ -20,14 +20,13 @@
  */
 package org.openflexo.technologyadapter.diagram.metamodel;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
@@ -68,12 +67,13 @@ import org.openflexo.toolbox.ChainedCollection;
 @ModelEntity
 @ImplementationClass(DiagramSpecification.DiagramSpecificationImpl.class)
 @XMLElement(xmlTag = "DiagramSpecification")
-public interface DiagramSpecification extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification>, ResourceData<DiagramSpecification> {
+public interface DiagramSpecification extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification>,
+		ResourceData<DiagramSpecification> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
 	@PropertyIdentifier(type = String.class)
-	public static final String URI_KEY = "uri";
+	public static final String URI_KEY = "URI";
 	@PropertyIdentifier(type = DiagramPalette.class, cardinality = Cardinality.LIST)
 	public static final String PALETTES_KEY = "palettes";
 	@PropertyIdentifier(type = Diagram.class, cardinality = Cardinality.LIST)
@@ -94,15 +94,16 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 	@Setter(value = NAME_KEY)
 	public void setName(String name);
 
+	@Override
 	@Getter(value = URI_KEY)
-	@XMLAttribute
-	public String getUri();
+	@XMLAttribute(xmlTag = "uri")
+	public String getURI();
 
 	@Setter(value = URI_KEY)
-	public void setUri(String uri);
-	
-	@Getter(value = PALETTES_KEY, cardinality = Cardinality.LIST)
-	@XMLElement
+	public void setURI(String uri);
+
+	// Palettes are not serialized in DiagramSpecification
+	@Getter(value = PALETTES_KEY, cardinality = Cardinality.LIST, ignoreType = true)
 	public List<DiagramPalette> getPalettes();
 
 	public DiagramPalette getPalette(String paletteName);
@@ -116,8 +117,8 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 	@Remover(PALETTES_KEY)
 	public void removeFromPalettes(DiagramPalette aPalette);
 
-	@Getter(value = EXAMPLE_DIAGRAMS_KEY, cardinality = Cardinality.LIST)
-	@XMLElement
+	// Palettes are not serialized in DiagramSpecification
+	@Getter(value = EXAMPLE_DIAGRAMS_KEY, cardinality = Cardinality.LIST, ignoreType = true)
 	public List<Diagram> getExampleDiagrams();
 
 	public Diagram getExampleDiagram(String diagramName);
@@ -140,8 +141,8 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 
 		private DiagramSpecificationResource resource;
 
-		private final List<DiagramPalette> palettes;
-		private final List<Diagram> exampleDiagrams;
+		private List<DiagramPalette> palettes;
+		private List<Diagram> exampleDiagrams;
 
 		/**
 		 * Stores a chained collections of objects which are involved in validation
@@ -157,11 +158,12 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		 * @param viewPoint
 		 * @return
 		 */
-		public static DiagramSpecification newDiagramSpecification(String uri, String baseName, File diagramSpecificationDirectory,
+		public static DiagramSpecification newDiagramSpecification(String uri, String baseName, RepositoryFolder<?> folder,
 				FlexoServiceManager serviceManager) {
-			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX);
-			DiagramSpecificationResource dsRes = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(uri,
-					diagramSpecificationDirectory, diagramSpecificationXMLFile, serviceManager);
+			// File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName +
+			// DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX);
+			DiagramSpecificationResource dsRes = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(baseName, folder, uri,
+					serviceManager);
 			DiagramSpecification diagramSpecification = dsRes.getFactory().newInstance(DiagramSpecification.class);
 			dsRes.setResourceData(diagramSpecification);
 			diagramSpecification.setResource(dsRes);
@@ -176,8 +178,8 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		// Used during deserialization, do not use it
 		public DiagramSpecificationImpl() {
 			super();
-			exampleDiagrams = new ArrayList<Diagram>();
-			palettes = new ArrayList<DiagramPalette>();
+			exampleDiagrams = null;
+			palettes = null;
 		}
 
 		public FlexoServiceManager getServiceManager() {
@@ -189,9 +191,15 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		 * After this call return, we can assert that all {@link VirtualModel} are loaded.
 		 */
 		private void loadDiagramPalettesWhenUnloaded() {
-			for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
-				if (r instanceof DiagramPaletteResource) {
-					((DiagramPaletteResource) r).getDiagramPalette();
+			palettes = new ArrayList<DiagramPalette>();
+			if (getResource() != null) {
+				for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
+					if (r instanceof DiagramPaletteResource) {
+						DiagramPalette palette = ((DiagramPaletteResource) r).getDiagramPalette();
+						if (!palettes.contains(palette)) {
+							addToPalettes(palette);
+						}
+					}
 				}
 			}
 		}
@@ -201,9 +209,15 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		 * After this call return, we can assert that all {@link VirtualModel} are loaded.
 		 */
 		private void loadExampleDiagramsWhenUnloaded() {
-			for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
-				if (r instanceof DiagramResource) {
-					((DiagramResource) r).getDiagram();
+			exampleDiagrams = new ArrayList<Diagram>();
+			if (getResource() != null) {
+				for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
+					if (r instanceof DiagramResource) {
+						Diagram exampleDiagram = ((DiagramResource) r).getDiagram();
+						if (!exampleDiagrams.contains(exampleDiagram)) {
+							addToExampleDiagrams(exampleDiagram);
+						}
+					}
 				}
 			}
 		}
@@ -219,13 +233,28 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 
 		@Override
+		public String getURI() {
+			if (getResource() != null) {
+				return getResource().getURI();
+			}
+			return null;
+		}
+
+		@Override
+		public void setURI(String uri) {
+			if (getResource() != null) {
+				getResource().setURI(uri);
+			}
+		}
+
+		@Override
 		public String toString() {
 			return "DiagramSpecification:" + getURI();
 		}
 
 		@Override
 		public List<DiagramPalette> getPalettes() {
-			if(palettes==null){
+			if (palettes == null) {
 				loadDiagramPalettesWhenUnloaded();
 			}
 			return palettes;
@@ -233,6 +262,9 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 
 		@Override
 		public DiagramPalette getPalette(String paletteName) {
+			if (palettes == null) {
+				loadDiagramPalettesWhenUnloaded();
+			}
 			if (paletteName == null) {
 				return null;
 			}
@@ -247,21 +279,32 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 
 		@Override
 		public void addToPalettes(DiagramPalette aPalette) {
-			palettes.add(aPalette);
-			setChanged();
-			notifyObservers(new DiagramPaletteInserted(aPalette, this));
+			if (palettes == null) {
+				loadDiagramPalettesWhenUnloaded();
+			}
+			if (!palettes.contains(aPalette)) {
+				System.out.println("Adding palette " + aPalette.hashCode());
+				palettes.add(aPalette);
+				setChanged();
+				notifyObservers(new DiagramPaletteInserted(aPalette, this));
+			}
 		}
 
 		@Override
 		public void removeFromPalettes(DiagramPalette aPalette) {
-			palettes.remove(aPalette);
-			setChanged();
-			notifyObservers(new DiagramPaletteRemoved(aPalette, this));
+			if (palettes == null) {
+				loadDiagramPalettesWhenUnloaded();
+			}
+			if (palettes.contains(aPalette)) {
+				palettes.remove(aPalette);
+				setChanged();
+				notifyObservers(new DiagramPaletteRemoved(aPalette, this));
+			}
 		}
 
 		@Override
 		public List<Diagram> getExampleDiagrams() {
-			if(exampleDiagrams==null){
+			if (exampleDiagrams == null) {
 				loadExampleDiagramsWhenUnloaded();
 			}
 			return exampleDiagrams;
@@ -269,6 +312,9 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 
 		@Override
 		public Diagram getExampleDiagram(String diagramName) {
+			if (exampleDiagrams == null) {
+				loadExampleDiagramsWhenUnloaded();
+			}
 			if (diagramName == null) {
 				return null;
 			}
@@ -283,18 +329,28 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 
 		@Override
 		public void addToExampleDiagrams(Diagram aDiagram) {
-			exampleDiagrams.add(aDiagram);
-			setChanged();
-			notifyObservers(new ExampleDiagramInserted(aDiagram, this));
+			if (exampleDiagrams == null) {
+				loadExampleDiagramsWhenUnloaded();
+			}
+			if (!exampleDiagrams.contains(aDiagram)) {
+				exampleDiagrams.add(aDiagram);
+				setChanged();
+				notifyObservers(new ExampleDiagramInserted(aDiagram, this));
+			}
 		}
 
 		@Override
 		public void removeFromExampleDiagrams(Diagram aDiagram) {
-			exampleDiagrams.remove(aDiagram);
-			setChanged();
-			notifyObservers(new ExampleDiagramRemoved(aDiagram, this));
+			if (exampleDiagrams == null) {
+				loadExampleDiagramsWhenUnloaded();
+			}
+			if (exampleDiagrams.contains(aDiagram)) {
+				exampleDiagrams.remove(aDiagram);
+				setChanged();
+				notifyObservers(new ExampleDiagramRemoved(aDiagram, this));
+			}
 		}
-		
+
 		@Override
 		public DiagramTechnologyAdapter getTechnologyAdapter() {
 			if (getResource() != null) {

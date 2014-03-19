@@ -58,8 +58,8 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 			DiagramSpecification diagramSpecification, FlexoServiceManager serviceManager) throws InvalidFileNameException,
 			SaveResourceException {
 
-		DiagramResource newDiagramResource = DiagramResourceImpl.makeDiagramResource(diagramName, uri, diagramFile, diagramSpecification,
-				serviceManager);
+		DiagramResource newDiagramResource = DiagramResourceImpl.makeDiagramResource(diagramName, uri, diagramFile,
+				diagramSpecification.getResource(), serviceManager);
 
 		Diagram newDiagram = newDiagramResource.getFactory().makeNewDiagram(diagramSpecification);
 		newDiagramResource.setResourceData(newDiagram);

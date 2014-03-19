@@ -30,6 +30,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
 /**
  * Represents a diagram in Openflexo build-in diagram technology<br>
@@ -108,7 +109,7 @@ public interface Diagram extends DiagramContainerElement<DrawingGraphicalReprese
 	 */
 	@Override
 	@Getter(value = RESOURCE, ignoreType = true)
-	public FlexoResource<Diagram> getResource();
+	public DiagramResource getResource();
 
 	/**
 	 * Sets resource for this diagram

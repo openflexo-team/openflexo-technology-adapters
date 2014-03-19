@@ -26,6 +26,7 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -37,7 +38,6 @@ import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Adder;
@@ -303,9 +303,9 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 		}
 
 		@Override
-		public XMLXSDFileResource createProjectSpecificEmptyModel(View view, String filename, String modelUri,
+		public XMLXSDFileResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
 				FlexoMetaModelResource<XMLXSDModel, XSDMetaModel, ?> metaModelResource) {
-			return getTechnologyAdapter().createNewXMLFile(view.getProject(), filename, modelUri, metaModelResource);
+			return getTechnologyAdapter().createNewXMLFile(project, filename, modelUri, metaModelResource);
 		}
 
 		@Override
