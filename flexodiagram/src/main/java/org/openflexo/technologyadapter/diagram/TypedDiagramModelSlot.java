@@ -86,7 +86,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 		private static final Logger logger = Logger.getLogger(TypedDiagramModelSlot.class.getPackage().getName());
 
-		private List<FMLDiagramPaletteElementBinding> paletteElementBindings;
+		//private List<FMLDiagramPaletteElementBinding> paletteElementBindings;
 
 		/*
 		 * public TypedDiagramModelSlotImpl(VirtualModel virtualModel,
@@ -166,7 +166,9 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			return null;
 		}
 
-		@Override
+	
+		//TODO
+	/*	@Override
 		public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings() {
 			return paletteElementBindings;
 		}
@@ -184,7 +186,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		@Override
 		public void removeFromPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
 			paletteElementBindings.remove(paletteElementBinding);
-		}
+		}*/
 
 	}
 }

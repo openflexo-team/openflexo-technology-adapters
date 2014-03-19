@@ -246,11 +246,14 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 
 		@Override
 		public DiagramPaletteElement addPaletteElement(String name, Object graphicalRepresentation) {
-			DiagramPaletteElement newElement = getResource().getFactory().makeDiagramPaletteElement();
-			newElement.setName(name);
-			newElement.setGraphicalRepresentation((ShapeGraphicalRepresentation) graphicalRepresentation);
-			addToElements(newElement);
-			return newElement;
+			if(getResource()!=null){
+				DiagramPaletteElement newElement = getResource().getFactory().makeDiagramPaletteElement();
+				newElement.setName(name);
+				newElement.setGraphicalRepresentation((ShapeGraphicalRepresentation) graphicalRepresentation);
+				addToElements(newElement);
+				return newElement;	
+			}
+			return null;
 		}
 
 		@Override

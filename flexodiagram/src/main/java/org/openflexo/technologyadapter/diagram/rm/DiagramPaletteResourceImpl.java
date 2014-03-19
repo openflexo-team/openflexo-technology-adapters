@@ -35,6 +35,10 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 			returned.setServiceManager(serviceManager);
 			returned.setFactory(new DiagramPaletteFactory(returned));
 			dsResource.addToContents(returned);
+			DiagramPalette newPalette = returned.getFactory().makeNewDiagramPalette();
+			newPalette.setResource(returned);
+			returned.setResourceData(newPalette);
+			dsResource.getDiagramPaletteResources().add(returned);
 			return returned;
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();

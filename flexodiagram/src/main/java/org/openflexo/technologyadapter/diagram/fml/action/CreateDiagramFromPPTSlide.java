@@ -495,7 +495,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		gr.setY(pictureShape.getAnchor2D().getY());
 		gr.setWidth(pictureShape.getAnchor2D().getWidth());
 		gr.setHeight(pictureShape.getAnchor2D().getHeight());
-		gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+		//gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
 
 		BufferedImage image = new BufferedImage((int) pictureShape.getAnchor2D().getWidth(), (int) pictureShape.getAnchor2D().getHeight(),
 				BufferedImage.TYPE_INT_RGB);
@@ -513,6 +513,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		pictureShape.getPictureData().draw(graphics, pictureShape);
 		gr.setBackground(getDiagramFactory().makeImageBackground(image));
 		gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+		gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 		
 		newShape.setGraphicalRepresentation(gr);
 
@@ -522,6 +523,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	
 	private void setTextProperties(ShapeGraphicalRepresentation returned, TextShape textShape) {
 
+		// TODO Handle several text styles in a text shape
 		if (textShape.getTextRun() != null) {
 			TextRun textRun = textShape.getTextRun();
 			RichTextRun[] rt = textRun.getRichTextRuns();

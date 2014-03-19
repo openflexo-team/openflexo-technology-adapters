@@ -19,7 +19,6 @@
  */
 package org.openflexo.technologyadapter.diagram.gui.view;
 
-import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.view.FIBModuleView;
@@ -33,9 +32,9 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * 
  */
 @SuppressWarnings("serial")
-public class DiagramSpecificationView extends FIBModuleView<FlexoConcept> {
+public class DiagramSpecificationView extends FIBModuleView<DiagramSpecification> {
 
-	public DiagramSpecificationView(FlexoConcept flexoConcept, FlexoController controller) {
+	public DiagramSpecificationView(DiagramSpecification flexoConcept, FlexoController controller) {
 		super(flexoConcept, controller, DiagramCst.DIAGRAM_SPECIFICATION_VIEW_FIB);
 	}
 

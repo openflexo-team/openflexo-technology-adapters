@@ -31,6 +31,7 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
+import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.Adder;
@@ -43,6 +44,7 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteInserted;
 import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteRemoved;
@@ -66,10 +68,12 @@ import org.openflexo.toolbox.ChainedCollection;
 @ModelEntity
 @ImplementationClass(DiagramSpecification.DiagramSpecificationImpl.class)
 @XMLElement(xmlTag = "DiagramSpecification")
-public interface DiagramSpecification extends FlexoObject, FlexoMetaModel<DiagramSpecification>, ResourceData<DiagramSpecification> {
+public interface DiagramSpecification extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification>, ResourceData<DiagramSpecification> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
+	@PropertyIdentifier(type = String.class)
+	public static final String URI_KEY = "uri";
 	@PropertyIdentifier(type = DiagramPalette.class, cardinality = Cardinality.LIST)
 	public static final String PALETTES_KEY = "palettes";
 	@PropertyIdentifier(type = Diagram.class, cardinality = Cardinality.LIST)
@@ -90,6 +94,13 @@ public interface DiagramSpecification extends FlexoObject, FlexoMetaModel<Diagra
 	@Setter(value = NAME_KEY)
 	public void setName(String name);
 
+	@Getter(value = URI_KEY)
+	@XMLAttribute
+	public String getUri();
+
+	@Setter(value = URI_KEY)
+	public void setUri(String uri);
+	
 	@Getter(value = PALETTES_KEY, cardinality = Cardinality.LIST)
 	@XMLElement
 	public List<DiagramPalette> getPalettes();
@@ -148,7 +159,7 @@ public interface DiagramSpecification extends FlexoObject, FlexoMetaModel<Diagra
 		 */
 		public static DiagramSpecification newDiagramSpecification(String uri, String baseName, File diagramSpecificationDirectory,
 				FlexoServiceManager serviceManager) {
-			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
+			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX);
 			DiagramSpecificationResource dsRes = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(uri,
 					diagramSpecificationDirectory, diagramSpecificationXMLFile, serviceManager);
 			DiagramSpecification diagramSpecification = dsRes.getFactory().newInstance(DiagramSpecification.class);
@@ -214,7 +225,9 @@ public interface DiagramSpecification extends FlexoObject, FlexoMetaModel<Diagra
 
 		@Override
 		public List<DiagramPalette> getPalettes() {
-			loadDiagramPalettesWhenUnloaded();
+			if(palettes==null){
+				loadDiagramPalettesWhenUnloaded();
+			}
 			return palettes;
 		}
 
@@ -248,7 +261,9 @@ public interface DiagramSpecification extends FlexoObject, FlexoMetaModel<Diagra
 
 		@Override
 		public List<Diagram> getExampleDiagrams() {
-			loadExampleDiagramsWhenUnloaded();
+			if(exampleDiagrams==null){
+				loadExampleDiagramsWhenUnloaded();
+			}
 			return exampleDiagrams;
 		}
 
@@ -278,6 +293,14 @@ public interface DiagramSpecification extends FlexoObject, FlexoMetaModel<Diagra
 			exampleDiagrams.remove(aDiagram);
 			setChanged();
 			notifyObservers(new ExampleDiagramRemoved(aDiagram, this));
+		}
+		
+		@Override
+		public DiagramTechnologyAdapter getTechnologyAdapter() {
+			if (getResource() != null) {
+				return getResource().getTechnologyAdapter();
+			}
+			return null;
 		}
 
 		/*@Override

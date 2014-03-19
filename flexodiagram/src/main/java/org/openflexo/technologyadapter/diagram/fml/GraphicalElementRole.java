@@ -170,16 +170,19 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		protected void initDefaultSpecifications() {
-			grSpecifications = new ArrayList<GraphicalElementSpecification<?, ?>>();
-			for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-				GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
-						GraphicalElementSpecification.class);
-				newGraphicalElementSpecification.setPatternRole(this);
-				newGraphicalElementSpecification.setFeature(GF);
-				newGraphicalElementSpecification.setReadOnly(false);
-				newGraphicalElementSpecification.setMandatory(true);
-				grSpecifications.add(newGraphicalElementSpecification);
+			if(getVirtualModelFactory()!=null){
+				grSpecifications = new ArrayList<GraphicalElementSpecification<?, ?>>();
+				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
+					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
+							GraphicalElementSpecification.class);
+					newGraphicalElementSpecification.setPatternRole(this);
+					newGraphicalElementSpecification.setFeature(GF);
+					newGraphicalElementSpecification.setReadOnly(false);
+					newGraphicalElementSpecification.setMandatory(true);
+					grSpecifications.add(newGraphicalElementSpecification);
+				}
 			}
+			
 		}
 
 		public DiagramSpecification getDiagramSpecification() {
@@ -400,12 +403,18 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementSpecification<?, ?>> getGrSpecifications() {
+			if(grSpecifications==null && getVirtualModelFactory()!=null){
+				initDefaultSpecifications();
+			}
+			else if(grSpecifications==null){
+				grSpecifications = new ArrayList<GraphicalElementSpecification<?, ?>>();
+			}
 			return grSpecifications;
 		}
 
 		@Override
 		public GraphicalElementSpecification<?, ?> getGraphicalElementSpecification(String featureName) {
-			for (GraphicalElementSpecification<?, ?> spec : grSpecifications) {
+			for (GraphicalElementSpecification<?, ?> spec : getGrSpecifications()) {
 				if (spec.getFeatureName().equals(featureName)) {
 					return spec;
 				}
@@ -424,7 +433,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		@Override
 		public List<GraphicalElementSpecification<?, GR>> _getDeclaredGRSpecifications() {
 			List<GraphicalElementSpecification<?, GR>> returned = new ArrayList<GraphicalElementSpecification<?, GR>>();
-			for (GraphicalElementSpecification<?, ?> spec : grSpecifications) {
+			for (GraphicalElementSpecification<?, ?> spec : getGrSpecifications()) {
 				if (spec.getValue().isSet()) {
 					returned.add((GraphicalElementSpecification<?, GR>) spec);
 				}

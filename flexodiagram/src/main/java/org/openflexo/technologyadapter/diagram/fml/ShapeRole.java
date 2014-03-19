@@ -73,14 +73,16 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		@Override
 		protected void initDefaultSpecifications() {
 			super.initDefaultSpecifications();
-			for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-				GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
-						GraphicalElementSpecification.class);
-				newGraphicalElementSpecification.setPatternRole(this);
-				newGraphicalElementSpecification.setFeature(GF);
-				newGraphicalElementSpecification.setReadOnly(false);
-				newGraphicalElementSpecification.setMandatory(true);
-				grSpecifications.add(newGraphicalElementSpecification);
+			if(getVirtualModelFactory()!=null){
+				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
+					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
+							GraphicalElementSpecification.class);
+					newGraphicalElementSpecification.setPatternRole(this);
+					newGraphicalElementSpecification.setFeature(GF);
+					newGraphicalElementSpecification.setReadOnly(false);
+					newGraphicalElementSpecification.setMandatory(true);
+					grSpecifications.add(newGraphicalElementSpecification);
+				}
 			}
 		}
 

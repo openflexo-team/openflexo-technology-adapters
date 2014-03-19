@@ -7,6 +7,7 @@ import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FlexoConceptInstanceRole;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.FlexoRole;
@@ -55,7 +56,9 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
+import org.openflexo.technologyadapter.diagram.gui.view.DiagramSpecificationView;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -164,8 +167,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 	@Override
 	public ImageIcon getTechnologyBigIcon() {
-		// TODO
-		return DiagramIconLibrary.DIAGRAM_ICON;
+		return DiagramIconLibrary.DIAGRAM_MEDIUM_ICON;
 	}
 
 	/**
@@ -212,10 +214,13 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 			return DiagramIconLibrary.SHAPE_ICON;
 		} else if (DiagramConnector.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.CONNECTOR_ICON;
+		}else if (DiagramSpecification.class.isAssignableFrom(objectClass)) {
+			return DiagramIconLibrary.DIAGRAM_SPECIFICATION_ICON;
 		}
 		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, IconLibrary.QUESTION);
 	}
 
+	
 	/**
 	 * Return icon representing supplied pattern role
 	 * 
@@ -264,7 +269,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 	@Override
 	public boolean hasModuleViewForObject(TechnologyObject<DiagramTechnologyAdapter> object, FlexoController controller) {
-		return object instanceof Diagram || object instanceof DiagramPalette;
+		return object instanceof Diagram || object instanceof DiagramPalette || object instanceof DiagramSpecification;
 	}
 
 	@Override
@@ -291,6 +296,10 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		}
 
 		// TODO: handle DiagramSpecification
+		if (object instanceof DiagramSpecification) {
+			//DiagramSpecificationView diagramSpecificationView = new DiagramSpecificationView(object, controller);
+			return new DiagramSpecificationView((DiagramSpecification)object, controller);
+		}
 
 		// TODO: handle FlexoConcept where many PR are parts of a diagram
 

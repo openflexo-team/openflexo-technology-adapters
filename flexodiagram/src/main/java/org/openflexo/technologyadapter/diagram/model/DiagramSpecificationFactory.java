@@ -37,4 +37,8 @@ public class DiagramSpecificationFactory extends ModelFactory {
 		super(ModelContextLibrary.getModelContext(DiagramSpecification.class));
 	}
 
+	public DiagramSpecification makeNewDiagramSpecification() {
+		return newInstance(DiagramSpecification.class);
+	}
+	
 }
