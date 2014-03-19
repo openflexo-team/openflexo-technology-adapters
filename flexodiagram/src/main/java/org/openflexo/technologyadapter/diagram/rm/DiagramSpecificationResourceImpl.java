@@ -14,13 +14,13 @@ import org.jdom2.JDOMException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
+import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
-import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramSpecificationFactory;
 import org.openflexo.toolbox.FlexoVersion;
 import org.openflexo.toolbox.StringUtils;
@@ -40,14 +40,17 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 		}
 	}
 
-	public static DiagramSpecificationResource makeDiagramSpecificationResource(String uri, File diagramSpecificationDirectory,
-			File diagramSpecificationXMLFile, FlexoServiceManager serviceManager) {
+	public static DiagramSpecificationResource makeDiagramSpecificationResource(String name, RepositoryFolder<?> folder, String uri,
+			FlexoServiceManager serviceManager) {
 		try {
+			File diagramSpecificationDirectory = new File(folder.getFile(), name + DIAGRAM_SPECIFICATION_SUFFIX);
 			ModelFactory factory = new ModelFactory(DiagramSpecificationResource.class);
 			DiagramSpecificationResourceImpl returned = (DiagramSpecificationResourceImpl) factory
 					.newInstance(DiagramSpecificationResource.class);
 			returned.setFactory(DIAGRAM_SPECIFICATION_FACTORY);
-			returned.setName(diagramSpecificationDirectory.getName());
+			String baseName = name;
+			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
+			returned.setName(name);
 			returned.setDirectory(diagramSpecificationDirectory);
 			returned.setFile(diagramSpecificationXMLFile);
 			returned.setURI(uri);
@@ -58,7 +61,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			DiagramSpecification newDiagram = returned.getFactory().makeNewDiagramSpecification();
 			newDiagram.setResource(returned);
 			returned.setResourceData(newDiagram);
-			newDiagram.setUri(uri);
+			newDiagram.setURI(uri);
 			return returned;
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
@@ -67,26 +70,29 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 	}
 
 	public static DiagramSpecificationResource retrieveDiagramSpecificationResource(File diagramSpecificationDirectory,
-			FlexoServiceManager serviceManager) {
+			RepositoryFolder<?> folder, FlexoServiceManager serviceManager) {
 		try {
 			ModelFactory factory = new ModelFactory(DiagramSpecificationResource.class);
 			DiagramSpecificationResourceImpl returned = (DiagramSpecificationResourceImpl) factory
 					.newInstance(DiagramSpecificationResource.class);
 			returned.setFactory(DIAGRAM_SPECIFICATION_FACTORY);
-			String baseName = diagramSpecificationDirectory.getName();
-			
+			String baseName = diagramSpecificationDirectory.getName().substring(0,
+					diagramSpecificationDirectory.getName().length() - DIAGRAM_SPECIFICATION_SUFFIX.length());
+
 			returned.setName(baseName);
-			File diagramFile = new File(diagramSpecificationDirectory, baseName + DIAGRAM_SPECIFICATION_SUFFIX);
-			//returned.setFile(diagramSpecificationDirectory);
-			
-			DiagramSpecificationInfo vpi = findDiagramSpecificationInfo(diagramFile);
+			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
+			// returned.setFile(diagramSpecificationDirectory);
+
+			System.out.println("Looking infos in " + diagramSpecificationXMLFile);
+
+			DiagramSpecificationInfo vpi = findDiagramSpecificationInfo(diagramSpecificationXMLFile);
 			if (vpi == null) {
 				// Unable to retrieve infos, just abort
 				logger.warning("Cannot retrieve info for diagram specification " + diagramSpecificationDirectory);
 				return null;
 			}
 			returned.setURI(vpi.uri);
-			returned.setFile(diagramFile);
+			returned.setFile(diagramSpecificationXMLFile);
 			returned.setDirectory(diagramSpecificationDirectory);
 			returned.setName(vpi.name);
 			if (StringUtils.isNotEmpty(vpi.version)) {
@@ -96,12 +102,18 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 
 			returned.setServiceManager(serviceManager);
 
-			logger.fine("DiagramSpecificationResource " + diagramSpecificationDirectory.getAbsolutePath() + " version " + returned.getModelVersion());
+			logger.fine("DiagramSpecificationResource " + diagramSpecificationDirectory.getAbsolutePath() + " version "
+					+ returned.getModelVersion());
+
+			System.out.println("OK, je regarde les example diagrams maintenant");
 
 			// Now look for example diagrams
 			if (diagramSpecificationDirectory.exists() && diagramSpecificationDirectory.isDirectory()) {
 				for (File f : diagramSpecificationDirectory.listFiles()) {
 					if (f.getName().endsWith(".diagram")) {
+
+						System.out.println("Trouve un example diagram: " + f);
+
 						DiagramResource exampleDiagramResource = DiagramResourceImpl.retrieveDiagramResource(f, serviceManager);
 						returned.addToContents(exampleDiagramResource);
 						logger.fine("ExampleDiagramResource " + exampleDiagramResource.getFile().getAbsolutePath() + " version "
@@ -110,10 +122,15 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 				}
 			}
 
+			System.out.println("OK, je regarde les palettes maintenant");
+
 			// Now look for palettes
 			if (diagramSpecificationDirectory.exists() && diagramSpecificationDirectory.isDirectory()) {
 				for (File f : diagramSpecificationDirectory.listFiles()) {
 					if (f.getName().endsWith(".palette")) {
+
+						System.out.println("Trouve une palette : " + f);
+
 						DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.retrieveDiagramPaletteResource(returned,
 								f, serviceManager);
 						logger.fine("DiagramPaletteResource " + diagramPaletteResource.getFile().getAbsolutePath() + " version "
@@ -121,6 +138,8 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 					}
 				}
 			}
+
+			System.out.println("Finalement, mes contents c'est: " + returned.getContents());
 
 			returned.setRelativePathFileConverter(new RelativePathFileConverter(diagramSpecificationDirectory));
 
@@ -191,7 +210,6 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 
 			/*String baseName = diagramSpecificationDirectory.getName();
 			File xmlFile = new File(diagramSpecificationDirectory, baseName + ".xml");*/
-			
 
 			if (diagramSpecification.exists()) {
 
@@ -222,8 +240,8 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 					return returned;
 				}
 			} else {
-				logger.warning("While analysing diagram-spec candidate: " + diagramSpecification.getAbsolutePath()
-						+ " cannot find file " + diagramSpecification.getAbsolutePath());
+				logger.warning("While analysing diagram-spec candidate: " + diagramSpecification.getAbsolutePath() + " cannot find file "
+						+ diagramSpecification.getAbsolutePath());
 			}
 		} catch (JDOMException e) {
 			e.printStackTrace();

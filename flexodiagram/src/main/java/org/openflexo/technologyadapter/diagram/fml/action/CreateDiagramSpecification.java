@@ -19,7 +19,6 @@
  */
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.io.File;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -28,60 +27,62 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.viewpoint.ViewPoint;
+import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification.DiagramSpecificationImpl;
 import org.openflexo.toolbox.StringUtils;
 
-public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecification, ViewPoint, ViewPointObject> {
+public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecification, RepositoryFolder, ViewPointObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramSpecification.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramSpecification, ViewPoint, ViewPointObject> actionType = new FlexoActionType<CreateDiagramSpecification, ViewPoint, ViewPointObject>(
+	public static FlexoActionType<CreateDiagramSpecification, RepositoryFolder, ViewPointObject> actionType = new FlexoActionType<CreateDiagramSpecification, RepositoryFolder, ViewPointObject>(
 			"create_diagram_specification", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateDiagramSpecification makeNewAction(ViewPoint focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+		public CreateDiagramSpecification makeNewAction(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection,
+				FlexoEditor editor) {
 			return new CreateDiagramSpecification(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(ViewPoint object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
 			return true;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(ViewPoint object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
 			return object != null;
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(CreateDiagramSpecification.actionType, ViewPoint.class);
+		FlexoObjectImpl.addActionForClass(CreateDiagramSpecification.actionType, RepositoryFolder.class);
 	}
 
-	public String newDiagramSpecificationName;
-	public String newDiagramSpecificationURI;
-	public File newDiagramSpecificationDirectory;
-	public String newDiagramSpecificationDescription;
+	private String newDiagramSpecificationName;
+	private String newDiagramSpecificationURI;
+	private String newDiagramSpecificationDescription;
+
 	private DiagramSpecification newDiagramSpecification;
 
-	CreateDiagramSpecification(ViewPoint focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateDiagramSpecification(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
 	@Override
 	protected void doAction(Object context) throws IOFlexoException {
 
-		newDiagramSpecification = DiagramSpecificationImpl.newDiagramSpecification(newDiagramSpecificationName, newDiagramSpecificationURI,
-				newDiagramSpecificationDirectory, getServiceManager());
+		newDiagramSpecification = DiagramSpecificationImpl.newDiagramSpecification(newDiagramSpecificationURI, newDiagramSpecificationName,
+				getFocusedObject(), getServiceManager());
 		newDiagramSpecification.setDescription(newDiagramSpecificationDescription);
 		// getFocusedObject().addToVirtualModels(newDiagramSpecification);
+		getFocusedObject().getResourceRepository().registerResource(newDiagramSpecification.getResource());
 
 	}
 
@@ -105,6 +106,30 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 	public DiagramSpecification getNewDiagramSpecification() {
 		return newDiagramSpecification;
+	}
+
+	public String getNewDiagramSpecificationName() {
+		return newDiagramSpecificationName;
+	}
+
+	public void setNewDiagramSpecificationName(String newDiagramSpecificationName) {
+		this.newDiagramSpecificationName = newDiagramSpecificationName;
+	}
+
+	public String getNewDiagramSpecificationURI() {
+		return newDiagramSpecificationURI;
+	}
+
+	public void setNewDiagramSpecificationURI(String newDiagramSpecificationURI) {
+		this.newDiagramSpecificationURI = newDiagramSpecificationURI;
+	}
+
+	public String getNewDiagramSpecificationDescription() {
+		return newDiagramSpecificationDescription;
+	}
+
+	public void setNewDiagramSpecificationDescription(String newDiagramSpecificationDescription) {
+		this.newDiagramSpecificationDescription = newDiagramSpecificationDescription;
 	}
 
 }

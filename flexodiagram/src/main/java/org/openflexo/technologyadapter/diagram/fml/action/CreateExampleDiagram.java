@@ -24,7 +24,6 @@ import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
@@ -38,7 +37,6 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.toolbox.StringUtils;
 
 public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, DiagramSpecification, ViewPointObject> {
@@ -73,10 +71,10 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 		FlexoObjectImpl.addActionForClass(CreateExampleDiagram.actionType, DiagramSpecification.class);
 	}
 
-	public String newDiagramName;
-	public String newDiagramTitle;
-	public String description;
-	public DrawingGraphicalRepresentation graphicalRepresentation;
+	private String newDiagramName;
+	private String newDiagramTitle;
+	private String description;
+	// public DrawingGraphicalRepresentation graphicalRepresentation;
 
 	private DiagramResource newDiagramResource;
 
@@ -90,10 +88,11 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 		logger.info("Add example diagram");
 
 		String newDiagramURI = getFocusedObject().getURI() + "/" + newDiagramName;
-		File newDiagramFile = new File(((DiagramSpecificationResource) getFocusedObject().getResource()).getDirectory(), newDiagramName
-				+ DiagramResource.DIAGRAM_SUFFIX);
+		File newDiagramFile = new File(getFocusedObject().getResource().getDirectory(), newDiagramName + DiagramResource.DIAGRAM_SUFFIX);
 		newDiagramResource = DiagramImpl.newDiagramResource(newDiagramName, newDiagramTitle, newDiagramURI, newDiagramFile,
 				getFocusedObject(), getServiceManager());
+		getFocusedObject().getResource().addToContents(newDiagramResource);
+
 		newDiagramResource.getDiagram().setDescription(description);
 		newDiagramResource.save(null);
 
@@ -124,6 +123,30 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 
 	public Diagram getNewDiagram() {
 		return newDiagramResource.getDiagram();
+	}
+
+	public String getNewDiagramName() {
+		return newDiagramName;
+	}
+
+	public void setNewDiagramName(String newDiagramName) {
+		this.newDiagramName = newDiagramName;
+	}
+
+	public String getNewDiagramTitle() {
+		return newDiagramTitle;
+	}
+
+	public void setNewDiagramTitle(String newDiagramTitle) {
+		this.newDiagramTitle = newDiagramTitle;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

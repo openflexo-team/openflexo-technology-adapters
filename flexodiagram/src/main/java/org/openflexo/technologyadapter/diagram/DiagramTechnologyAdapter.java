@@ -150,12 +150,13 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	protected DiagramSpecificationResource tryToLookupDiagramSpecification(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
 		if (isValidDiagramSpecificationFile(candidateFile)) {
-			DiagramSpecificationResource dsRes = retrieveDiagramSpecificationResource(candidateFile.getParentFile());
 			DiagramSpecificationRepository dsRepo = resourceCenter.getRepository(DiagramSpecificationRepository.class, this);
 			if (dsRepo != null) {
+				DiagramSpecificationResource dsRes = null;
 				RepositoryFolder<DiagramSpecificationResource> folder;
 				try {
 					folder = dsRepo.getRepositoryFolder(candidateFile, true);
+					dsRes = retrieveDiagramSpecificationResource(candidateFile, folder);
 					dsRepo.registerResource(dsRes, folder);
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -176,11 +177,10 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	private boolean isValidDiagramSpecificationFile(File candidateFile) {
-		if (candidateFile.exists() && candidateFile.getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)) {
-			if (candidateFile.getParentFile().getName()
-					.equals(candidateFile.getName().replace(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX, ""))) {
-				return true;
-			}
+		if (candidateFile.exists() && candidateFile.isDirectory()
+				&& candidateFile.getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)) {
+			System.out.println("Found valid candidate for DiagramSpecification: " + candidateFile);
+			return true;
 		}
 		return false;
 	}
@@ -195,13 +195,12 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	 * which was supplied
 	 * 
 	 */
-	private DiagramSpecificationResource retrieveDiagramSpecificationResource(File diagramSpecificationDirectory) {
-		DiagramSpecificationResource returned = getTechnologyContextManager().getDiagramSpecificationResource(
-				new File(diagramSpecificationDirectory + "/" + diagramSpecificationDirectory.getName()
-						+ DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX));
+	private DiagramSpecificationResource retrieveDiagramSpecificationResource(File diagramSpecificationDirectory, RepositoryFolder<?> folder) {
+		DiagramSpecificationResource returned = getTechnologyContextManager()
+				.getDiagramSpecificationResource(diagramSpecificationDirectory);
 
 		if (returned == null) {
-			returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(diagramSpecificationDirectory,
+			returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(diagramSpecificationDirectory, folder,
 					getTechnologyAdapterService().getServiceManager());
 			if (returned != null) {
 				getTechnologyContextManager().registerDiagramSpecification(returned);
@@ -279,7 +278,8 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
-			System.out.println("File ADDED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
+			System.out.println("DiagramTechnologyAdapter: File ADDED " + ((File) contents).getName() + " in "
+					+ ((File) contents).getParentFile().getAbsolutePath());
 			File candidateFile = (File) contents;
 			if (tryToLookupDiagramSpecification(resourceCenter, candidateFile) != null) {
 				// This is a meta-model, this one has just been registered
@@ -292,8 +292,8 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
-			System.out
-					.println("File DELETED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
+			System.out.println("DiagramTechnologyAdapter: File DELETED " + ((File) contents).getName() + " in "
+					+ ((File) contents).getParentFile().getAbsolutePath());
 		}
 	}
 

@@ -38,6 +38,7 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 			DiagramPalette newPalette = returned.getFactory().makeNewDiagramPalette();
 			newPalette.setResource(returned);
 			returned.setResourceData(newPalette);
+			dsResource.getDiagramSpecification().addToPalettes(newPalette);
 			dsResource.getDiagramPaletteResources().add(returned);
 			return returned;
 		} catch (ModelDefinitionException e) {
@@ -118,9 +119,11 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 		DiagramPalette returned = super.loadResourceData(progress);
 		returned.setName(getFile().getName().substring(0, getFile().getName().length() - 8));
 		// returned.init(getContainer().getDiagramSpecification(), getFile().getName().substring(0, getFile().getName().length() - 8));
-		getContainer().getDiagramSpecification().addToPalettes(returned);
-		setChanged();
-		notifyObservers(new DataModification("diagramPalette", null, returned));
+		if (!getContainer().getDiagramSpecification().getPalettes().contains(returned)) {
+			getContainer().getDiagramSpecification().addToPalettes(returned);
+			setChanged();
+			notifyObservers(new DataModification("diagramPalette", null, returned));
+		}
 		setChanged();
 		notifyObservers(new DataModification("loadedDiagramPalette", null, returned));
 		returned.clearIsModified();

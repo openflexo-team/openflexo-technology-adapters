@@ -49,6 +49,10 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		}
 	}
 
+	public static DiagramResource makeDiagramResource(String name, String uri, File diagramFile, FlexoServiceManager serviceManager) {
+		return makeDiagramResource(name, uri, diagramFile, null, serviceManager);
+	}
+
 	public static DiagramResource makeDiagramResource(String name, String uri, File diagramFile,
 			DiagramSpecificationResource diagramSpecificationResource, FlexoServiceManager serviceManager) {
 		try {

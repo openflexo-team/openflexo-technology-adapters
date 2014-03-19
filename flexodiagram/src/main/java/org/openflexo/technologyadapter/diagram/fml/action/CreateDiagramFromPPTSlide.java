@@ -65,7 +65,6 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -106,7 +105,6 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	}
 
 	public DrawingGraphicalRepresentation graphicalRepresentation;
-	private DiagramSpecification diagramSpecification;
 	private String diagramName;
 	private String diagramTitle;
 	private String diagramURI;
@@ -130,8 +128,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
 				DiagramTechnologyAdapter.class);
 
-		diagramResource = diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), getDiagramSpecification()
-				.getResource());
+		diagramResource = diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), null);
 
 		getFocusedObject().addToResources(diagramResource);
 
@@ -215,14 +212,6 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 	public String duplicatedNameMessage() {
 		return FlexoLocalization.localizedForKey("a_diagram_with_that_name_already_exists");
-	}
-
-	public DiagramSpecification getDiagramSpecification() {
-		return diagramSpecification;
-	}
-
-	public void setDiagramSpecification(DiagramSpecification diagramSpecification) {
-		this.diagramSpecification = diagramSpecification;
 	}
 
 	public Diagram getNewDiagram() {
