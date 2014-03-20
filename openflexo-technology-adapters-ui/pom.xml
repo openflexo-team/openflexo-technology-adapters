@@ -34,7 +34,6 @@
 		<module>excelconnector-ui</module>
 		<module>powerpointconnector-ui</module>
 		<module>xsdconnector-ui</module>
-		<module>?</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
