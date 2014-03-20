@@ -63,6 +63,11 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 	@PropertyIdentifier(type = DrawingGraphicalRepresentation.class)
 	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
 
+	/**
+	 * Return palette element identified by its name
+	 */
+	public DiagramPaletteElement getPaletteElement(String elementName);
+
 	@Getter(value = PALETTE_ELEMENTS_KEY, cardinality = Cardinality.LIST, inverse = DiagramPaletteElement.PALETTE_KEY)
 	@XMLElement
 	public List<DiagramPaletteElement> getElements();
@@ -169,6 +174,19 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		@Override
 		public String getURI() {
 			return resource.getURI();
+		}
+
+		/**
+		 * Return palette element identified by its name
+		 */
+		@Override
+		public DiagramPaletteElement getPaletteElement(String elementName) {
+			for (DiagramPaletteElement e : getElements()) {
+				if (elementName.equals(e.getName())) {
+					return e;
+				}
+			}
+			return null;
 		}
 
 		@Override

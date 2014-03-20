@@ -37,7 +37,6 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FileUtils;
 
-
 /**
  * Test DiagramSpecification features using low level primitives
  * 
@@ -255,56 +254,5 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		System.out.println("Example diagrams= " + retrievedResource.getDiagramSpecification().getExampleDiagrams());
 
 	}
-
-	/**
-	 * Test update diagram specification resource with diagram resource
-	 */
-	/*@Test
-	@TestOrder(6)
-	public void testModelSlots() {
-		try {
-			ViewPoint newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint",
-					repository.getDirectory(), serviceManager.getViewPointLibrary());
-			
-			
-			newVirtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
-		
-			typedDiagramModelSlot = technologicalAdapter.makeModelSlot(TypedDiagramModelSlot.class, newVirtualModel);
-			assertNotNull(typedDiagramModelSlot);
-			
-			FreeDiagramModelSlot freeDiagramModelSlot = technologicalAdapter.makeModelSlot(FreeDiagramModelSlot.class, newVirtualModel);
-			assertNotNull(freeDiagramModelSlot);
-			
-			newVirtualModel.addToModelSlots(typedDiagramModelSlot);
-			newVirtualModel.addToModelSlots(freeDiagramModelSlot);
-			
-			assertTrue(newVirtualModel.getModelSlots(TypedDiagramModelSlot.class)!=null);
-			assertTrue(newVirtualModel.getModelSlots(FreeDiagramModelSlot.class)!=null);
-			
-		} catch (SaveResourceException e) {
-			fail(e.getMessage());
-		}
-	}*/
-
-	/**
-	 * Test update diagram specification resource with diagram resource
-	 */
-	/*@Test
-	@TestOrder(7)
-	public void testPaletteElementBindings() {
-		
-		FMLDiagramPaletteElementBinding newBinding =  newVirtualModel.getVirtualModelFactory().newInstance(FMLDiagramPaletteElementBinding.class);
-		FlexoConcept flexoConcept = newVirtualModel.getVirtualModelFactory().newInstance(FlexoConcept.class);
-		DropScheme newDropScheme = newVirtualModel.getVirtualModelFactory().newInstance(DropScheme.class);
-		flexoConcept.addToFlexoBehaviours(newDropScheme);
-		newBinding.setPaletteElement(diagramPaletteElement);
-		newBinding.setFlexoConcept(flexoConcept);
-		newBinding.setDropScheme(newDropScheme);
-		newVirtualModel.addToFlexoConcepts(flexoConcept);
-		typedDiagramModelSlot.addToPaletteElementBindings(newBinding);
-		newVirtualModel.addToModelSlots(typedDiagramModelSlot);
-		assertNotNull(newBinding);
-		
-	}*/
 
 }

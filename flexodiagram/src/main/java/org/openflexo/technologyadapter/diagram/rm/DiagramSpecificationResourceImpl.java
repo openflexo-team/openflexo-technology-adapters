@@ -263,4 +263,9 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 		return getContents(DiagramPaletteResource.class);
 	}
 
+	@Override
+	public DiagramSpecification getMetaModelData() {
+		return getDiagramSpecification();
+	}
+
 }

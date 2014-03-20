@@ -106,7 +106,10 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 	@Getter(value = PALETTES_KEY, cardinality = Cardinality.LIST, ignoreType = true)
 	public List<DiagramPalette> getPalettes();
 
-	public DiagramPalette getPalette(String paletteName);
+	/**
+	 * Return palette identified by its name or uri
+	 */
+	public DiagramPalette getPalette(String paletteId);
 
 	@Setter(PALETTES_KEY)
 	public void setPalettes(List<DiagramPalette> palettes);
@@ -260,17 +263,23 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			return palettes;
 		}
 
+		/**
+		 * Return palette identified by its name or uri
+		 */
 		@Override
-		public DiagramPalette getPalette(String paletteName) {
+		public DiagramPalette getPalette(String paletteId) {
 			if (palettes == null) {
 				loadDiagramPalettesWhenUnloaded();
 			}
-			if (paletteName == null) {
+			if (paletteId == null) {
 				return null;
 			}
 			loadDiagramPalettesWhenUnloaded();
 			for (DiagramPalette p : getPalettes()) {
-				if (paletteName.equals(p.getName())) {
+				if (paletteId.equals(p.getName())) {
+					return p;
+				}
+				if (paletteId.equals(p.getURI())) {
 					return p;
 				}
 			}

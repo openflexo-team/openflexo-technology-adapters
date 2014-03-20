@@ -27,10 +27,10 @@ import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.foundation.DataModification;
-import org.openflexo.foundation.viewpoint.FlexoConcept;
+import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.FlexoBehaviourParameter;
-import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.NamedViewPointObject;
 import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.foundation.viewpoint.VirtualModel;
@@ -44,8 +44,10 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 
@@ -66,6 +68,8 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 	public static final String DIAGRAM_MODEL_SLOT_KEY = "diagramModelSlot";
 	@PropertyIdentifier(type = DiagramPaletteElement.class)
 	public static final String PALETTE_ELEMENT_KEY = "paletteElement";
+	@PropertyIdentifier(type = String.class)
+	public static final String PALETTE_ELEMENT_ID_KEY = "paletteElementId";
 	@PropertyIdentifier(type = DropScheme.class)
 	public static final String DROP_SCHEME_KEY = "dropScheme";
 	@PropertyIdentifier(type = List.class)
@@ -85,7 +89,15 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 	@Setter(PALETTE_ELEMENT_KEY)
 	public void setPaletteElement(DiagramPaletteElement aPaletteElement);
 
+	@Getter(value = PALETTE_ELEMENT_ID_KEY)
+	@XMLAttribute
+	public String getPaletteElementId();
+
+	@Setter(PALETTE_ELEMENT_ID_KEY)
+	public void setPaletteElementId(String aPaletteElementId);
+
 	@Getter(value = DROP_SCHEME_KEY)
+	@XMLElement(primary = false)
 	public DropScheme getDropScheme();
 
 	@Setter(DROP_SCHEME_KEY)
@@ -175,21 +187,27 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 		public TypedDiagramModelSlot getDiagramModelSlot() {
 			if (diagramModelSlot == null && dropScheme != null) {
 				VirtualModel vm = dropScheme.getVirtualModel();
-				if (vm.getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
+				if (vm != null && vm.getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
 					diagramModelSlot = vm.getModelSlots(TypedDiagramModelSlot.class).get(0);
 				}
+			}
+			return diagramModelSlot;
+		}
+
+		@Override
+		public ViewPoint getViewPoint() {
+			if (getVirtualModel() != null) {
+				return getVirtualModel().getViewPoint();
 			}
 			return null;
 		}
 
 		@Override
-		public ViewPoint getViewPoint() {
-			return getVirtualModel().getViewPoint();
-		}
-
-		@Override
 		public VirtualModel getVirtualModel() {
-			return getDiagramModelSlot().getVirtualModel();
+			if (getDiagramModelSlot() != null) {
+				return getDiagramModelSlot().getVirtualModel();
+			}
+			return null;
 		}
 
 		// Deserialization only, do not use
@@ -220,12 +238,45 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 
 		@Override
 		public DiagramPaletteElement getPaletteElement() {
+			decodePaletteElementId();
 			return paletteElement;
 		}
 
 		@Override
 		public void setPaletteElement(DiagramPaletteElement paletteElement) {
 			this.paletteElement = paletteElement;
+		}
+
+		private String paletteElementId = null;
+
+		@Override
+		public String getPaletteElementId() {
+			if (getPaletteElement() != null) {
+				return getPaletteElement().getPalette().getURI() + "#" + getPaletteElement().getName();
+			}
+			return paletteElementId;
+		}
+
+		@Override
+		public void setPaletteElementId(String aPaletteElementId) {
+			this.paletteElementId = aPaletteElementId;
+			decodePaletteElementId();
+		}
+
+		private void decodePaletteElementId() {
+			if (paletteElementId != null) {
+			}
+			if (paletteElement == null && getDiagramModelSlot() != null && paletteElementId != null && paletteElementId.indexOf("#") > 0) {
+				String paletteURI = paletteElementId.substring(0, paletteElementId.indexOf("#"));
+				String elementName = paletteElementId.substring(paletteElementId.indexOf("#") + 1);
+				DiagramSpecification ds = getDiagramModelSlot().getMetaModelResource().getMetaModelData();
+				if (ds != null) {
+					DiagramPalette palette = ds.getPalette(paletteURI);
+					if (palette != null) {
+						paletteElement = palette.getPaletteElement(elementName);
+					}
+				}
+			}
 		}
 
 		@Override
