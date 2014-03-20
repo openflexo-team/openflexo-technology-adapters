@@ -136,6 +136,13 @@
 				<version>${diana.version}</version>
 				<classifier>tests</classifier>
 			</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-ui</artifactId>
+			<scope>test</scope>
+				<classifier>tests</classifier>
+				<version>${project.version}</version>
+		</dependency>
 
 
 			<!-- Openflexo utils -->
