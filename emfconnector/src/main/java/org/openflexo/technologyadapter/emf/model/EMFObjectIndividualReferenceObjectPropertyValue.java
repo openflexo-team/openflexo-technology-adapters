@@ -38,6 +38,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * EMF Object Individual Reference Object Property Value.
@@ -45,7 +46,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
  * @author gbesancon
  */
 public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelObjectImpl<EObject> implements
-		IFlexoOntologyObjectPropertyValue {
+		IFlexoOntologyObjectPropertyValue<EMFTechnologyAdapter> {
 
 	/** Reference. */
 	protected final EReference reference;
@@ -88,7 +89,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelOb
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyObjectPropertyValue#getObjectProperty()
 	 */
 	@Override
-	public IFlexoOntologyObjectProperty getObjectProperty() {
+	public IFlexoOntologyObjectProperty<EMFTechnologyAdapter> getObjectProperty() {
 		return ontology.getMetaModel().getConverter().convertReferenceObjectProperty(ontology.getMetaModel(), reference);
 	}
 
@@ -98,7 +99,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelOb
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue#getProperty()
 	 */
 	@Override
-	public IFlexoOntologyStructuralProperty getProperty() {
+	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> getProperty() {
 		return getObjectProperty();
 	}
 
@@ -108,18 +109,18 @@ public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelOb
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyObjectPropertyValue#getValue()
 	 */
 	@Override
-	public List<IFlexoOntologyConcept> getValues() {
-		List<IFlexoOntologyConcept> result = null;
+	public List<IFlexoOntologyConcept<EMFTechnologyAdapter>> getValues() {
+		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = null;
 		if (object.eGet(reference) != null) {
 			if (reference.getUpperBound() == 1) {
 				if (ontology.getConverter().getIndividuals().get(object.eGet(reference)) != null) {
-					result = Collections.singletonList((IFlexoOntologyConcept) (ontology.getConverter().getIndividuals().get(object
-							.eGet(reference))));
+					result = Collections.singletonList((IFlexoOntologyConcept<EMFTechnologyAdapter>) (ontology.getConverter()
+							.getIndividuals().get(object.eGet(reference))));
 				} else {
 					result = Collections.emptyList();
 				}
 			} else {
-				result = new ArrayList<IFlexoOntologyConcept>();
+				result = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
 				List<?> valueList = (List<?>) object.eGet(reference);
 				for (Object value : valueList) {
 					if (ontology.getConverter().getIndividuals().get(value) != null) {

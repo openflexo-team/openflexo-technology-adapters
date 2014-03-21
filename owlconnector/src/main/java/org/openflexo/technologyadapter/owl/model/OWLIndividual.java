@@ -40,7 +40,8 @@ import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.rdf.model.Resource;
 
-public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntologyIndividual, Comparable<IFlexoOntologyIndividual> {
+public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntologyIndividual<OWLTechnologyAdapter>,
+		Comparable<IFlexoOntologyIndividual<OWLTechnologyAdapter>> {
 
 	private static final Logger logger = Logger.getLogger(IFlexoOntologyIndividual.class.getPackage().getName());
 
@@ -184,15 +185,15 @@ public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntol
 		logger.warning("Type " + aType + " is not a OWLClass");
 	}
 
-	public static final Comparator<IFlexoOntologyIndividual> COMPARATOR = new Comparator<IFlexoOntologyIndividual>() {
+	public static final Comparator<IFlexoOntologyIndividual<OWLTechnologyAdapter>> COMPARATOR = new Comparator<IFlexoOntologyIndividual<OWLTechnologyAdapter>>() {
 		@Override
-		public int compare(IFlexoOntologyIndividual o1, IFlexoOntologyIndividual o2) {
+		public int compare(IFlexoOntologyIndividual<OWLTechnologyAdapter> o1, IFlexoOntologyIndividual<OWLTechnologyAdapter> o2) {
 			return Collator.getInstance().compare(o1.getName(), o2.getName());
 		}
 	};
 
 	@Override
-	public int compareTo(IFlexoOntologyIndividual o) {
+	public int compareTo(IFlexoOntologyIndividual<OWLTechnologyAdapter> o) {
 		return COMPARATOR.compare(this, o);
 	}
 
@@ -206,7 +207,7 @@ public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntol
 	}
 
 	@Override
-	public boolean isSuperConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSuperConceptOf(IFlexoOntologyConcept<OWLTechnologyAdapter> concept) {
 		return false;
 	}
 
@@ -214,7 +215,7 @@ public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntol
 	public String getDisplayableDescription() {
 		String extendsLabel = " extends ";
 		boolean isFirst = true;
-		for (IFlexoOntologyClass s : types) {
+		for (IFlexoOntologyClass<OWLTechnologyAdapter> s : types) {
 			extendsLabel += (isFirst ? "" : ",") + s.getName();
 			isFirst = false;
 		}
@@ -288,34 +289,37 @@ public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntol
 	}
 
 	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation> getStructuralFeatureAssociations() {
+	public List<? extends IFlexoOntologyFeatureAssociation<OWLTechnologyAdapter>> getStructuralFeatureAssociations() {
 		// No feature associations for this kind of concept
 		return Collections.emptyList();
 	}
 
 	@Override
-	public boolean isIndividualOf(IFlexoOntologyClass aClass) {
+	public boolean isIndividualOf(IFlexoOntologyClass<OWLTechnologyAdapter> aClass) {
 		return aClass.isSuperConceptOf(this);
 	}
 
 	@Override
-	public List<? extends IFlexoOntologyPropertyValue> getPropertyValues() {
+	public List<? extends IFlexoOntologyPropertyValue<OWLTechnologyAdapter>> getPropertyValues() {
 		return getAllPropertyStatements();
 	}
 
 	@Override
-	public IFlexoOntologyPropertyValue getPropertyValue(IFlexoOntologyStructuralProperty property) {
+	public IFlexoOntologyPropertyValue<OWLTechnologyAdapter> getPropertyValue(
+			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property) {
 		return getPropertyStatement(property);
 	}
 
 	@Override
-	public IFlexoOntologyPropertyValue addToPropertyValue(IFlexoOntologyStructuralProperty property, Object newValue) {
+	public IFlexoOntologyPropertyValue<OWLTechnologyAdapter> addToPropertyValue(
+			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property, Object newValue) {
 		logger.warning("Not implemented yet");
 		return null;
 	}
 
 	@Override
-	public IFlexoOntologyPropertyValue removeFromPropertyValue(IFlexoOntologyStructuralProperty property, Object valueToRemove) {
+	public IFlexoOntologyPropertyValue<OWLTechnologyAdapter> removeFromPropertyValue(
+			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property, Object valueToRemove) {
 		logger.warning("Not implemented yet");
 		return null;
 	}

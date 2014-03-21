@@ -28,17 +28,15 @@ import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.technologyadapter.xml.model.IXMLAttribute;
 import org.openflexo.technologyadapter.xml.model.IXMLIndividual;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.model.XSOntIndividual;
 import org.openflexo.technologyadapter.xsd.model.XSOntology;
-import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResourceImpl;
 import org.openflexo.toolbox.StringUtils;
 
 import com.sun.xml.xsom.XSAttributeUse;
 
-public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDataProperty {
+public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDataProperty<XSDTechnologyAdapter> {
 
 	private XSDDataType dataType;
 	private boolean isFromAttribute = false;
@@ -54,12 +52,12 @@ public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDa
 		this.domain = domainClass;
 	}
 
-	protected XSOntDataProperty(XSOntology ontology, String name, String uri, XSOntClass domainClass,XSAttributeUse attributeUse, XSDTechnologyAdapter adapter) {
+	protected XSOntDataProperty(XSOntology ontology, String name, String uri, XSOntClass domainClass, XSAttributeUse attributeUse,
+			XSDTechnologyAdapter adapter) {
 		super(ontology, name, uri, adapter);
 		this.domain = domainClass;
 		this.attributeUse = attributeUse;
 	}
-
 
 	@Override
 	public List<XSOntDataProperty> getSuperProperties() {
@@ -68,7 +66,7 @@ public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDa
 	}
 
 	@Override
-	public List<XSOntDataProperty> getSubProperties(IFlexoOntology context) {
+	public List<XSOntDataProperty> getSubProperties(IFlexoOntology<XSDTechnologyAdapter> context) {
 		// TODO Make sure it's always empty
 		return new ArrayList<XSOntDataProperty>();
 	}
@@ -94,14 +92,12 @@ public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDa
 		return isFromAttribute;
 	}
 
-
-
 	public boolean hasDefaultValue() {
 		return StringUtils.isNotEmpty(getDefaultValue());
 	}
 
 	public String getDefaultValue() {
-		if (attributeUse != null){
+		if (attributeUse != null) {
 			if (attributeUse.getDefaultValue() != null) {
 				return attributeUse.getDefaultValue().toString();
 			}
@@ -114,7 +110,7 @@ public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDa
 	}
 
 	public String getFixedValue() {
-		if (attributeUse != null){
+		if (attributeUse != null) {
 			if (attributeUse.getFixedValue() != null) {
 				return attributeUse.getFixedValue().toString();
 			}
@@ -123,7 +119,7 @@ public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDa
 	}
 
 	public boolean isRequired() {
-		if (attributeUse != null){
+		if (attributeUse != null) {
 			return attributeUse.isRequired();
 		}
 		return false;
@@ -148,7 +144,6 @@ public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDa
 		return buffer.toString();
 	}
 
-
 	@Override
 	public Integer getLowerBound() {
 		if (isRequired())
@@ -162,7 +157,6 @@ public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDa
 		return 1;
 	}
 
-
 	@Override
 	public boolean isSimpleAttribute() {
 		return true;
@@ -172,7 +166,6 @@ public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDa
 	public boolean isElement() {
 		return !isFromAttribute;
 	}
-
 
 	@Override
 	public void addValue(IXMLIndividual<?, ?> indiv, Object value) {
@@ -188,12 +181,12 @@ public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDa
 	}
 
 	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation> getReferencingFeatureAssociations() {
+	public List<? extends IFlexoOntologyFeatureAssociation<XSDTechnologyAdapter>> getReferencingFeatureAssociations() {
 		return Collections.emptyList();
 	}
 
 	@Override
-	public IFlexoOntologyFeature getFeature() {
+	public IFlexoOntologyFeature<XSDTechnologyAdapter> getFeature() {
 		return this;
 	}
 

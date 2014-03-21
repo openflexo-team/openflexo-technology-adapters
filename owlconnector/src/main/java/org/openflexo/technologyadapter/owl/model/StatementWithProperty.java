@@ -3,30 +3,30 @@ package org.openflexo.technologyadapter.owl.model;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
-public class StatementWithProperty implements TechnologySpecificCustomType {
+public class StatementWithProperty implements TechnologySpecificCustomType<OWLTechnologyAdapter> {
 
-	public static StatementWithProperty getStatementWithProperty(IFlexoOntologyStructuralProperty aProperty) {
+	public static StatementWithProperty getStatementWithProperty(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> aProperty) {
 		if (aProperty == null) {
 			return null;
 		}
-		return ((OWLOntologyLibrary) aProperty.getTechnologyAdapter().getTechnologyContextManager()).getStatementWithProperty(aProperty);
+		return aProperty.getTechnologyAdapter().getTechnologyContextManager().getStatementWithProperty(aProperty);
 	}
 
-	private IFlexoOntologyStructuralProperty property;
+	private final IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property;
 
-	public StatementWithProperty(IFlexoOntologyStructuralProperty aProperty) {
+	public StatementWithProperty(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> aProperty) {
 		this.property = aProperty;
 	}
 
-	public IFlexoOntologyStructuralProperty getProperty() {
+	public IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> getProperty() {
 		return property;
 	}
 
 	@Override
-	public Class getBaseClass() {
+	public Class<?> getBaseClass() {
 		if (property != null) {
 			return property.getClass();
 		}
@@ -58,7 +58,7 @@ public class StatementWithProperty implements TechnologySpecificCustomType {
 	}
 
 	@Override
-	public TechnologyAdapter getTechnologyAdapter() {
+	public OWLTechnologyAdapter getTechnologyAdapter() {
 		if (getProperty() != null) {
 			return getProperty().getTechnologyAdapter();
 		}

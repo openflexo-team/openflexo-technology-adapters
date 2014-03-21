@@ -39,7 +39,8 @@ import org.openflexo.toolbox.StringUtils;
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 
-public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClass, Comparable<IFlexoOntologyClass> {
+public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClass<OWLTechnologyAdapter>,
+		Comparable<IFlexoOntologyClass<OWLTechnologyAdapter>> {
 
 	private static final Logger logger = Logger.getLogger(IFlexoOntologyClass.class.getPackage().getName());
 
@@ -169,15 +170,15 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 		}
 	}
 
-	public static final Comparator<IFlexoOntologyClass> COMPARATOR = new Comparator<IFlexoOntologyClass>() {
+	public static final Comparator<IFlexoOntologyClass<OWLTechnologyAdapter>> COMPARATOR = new Comparator<IFlexoOntologyClass<OWLTechnologyAdapter>>() {
 		@Override
-		public int compare(IFlexoOntologyClass o1, IFlexoOntologyClass o2) {
+		public int compare(IFlexoOntologyClass<OWLTechnologyAdapter> o1, IFlexoOntologyClass<OWLTechnologyAdapter> o2) {
 			return Collator.getInstance().compare(o1.getName(), o2.getName());
 		}
 	};
 
 	@Override
-	public int compareTo(IFlexoOntologyClass o) {
+	public int compareTo(IFlexoOntologyClass<OWLTechnologyAdapter> o) {
 		return COMPARATOR.compare(this, o);
 	}
 
@@ -230,7 +231,7 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 	}
 
 	@Override
-	public boolean isSuperConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSuperConceptOf(IFlexoOntologyConcept<OWLTechnologyAdapter> concept) {
 		if (OWL2URIDefinitions.OWL_THING_URI.equals(getURI())) {
 			return true;
 		}
@@ -251,7 +252,7 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 	}
 
 	@Override
-	public boolean isSuperClassOf(IFlexoOntologyClass aClass) {
+	public boolean isSuperClassOf(IFlexoOntologyClass<OWLTechnologyAdapter> aClass) {
 		if (aClass == this) {
 			return true;
 		}
@@ -288,7 +289,7 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 	 */
 	public List<OWLClass> getAllSuperClasses() {
 		ArrayList<OWLClass> allSuperClasses = new ArrayList<OWLClass>();
-		for (IFlexoOntologyClass cl : OntologyUtils.getAllSuperClasses(this)) {
+		for (IFlexoOntologyClass<OWLTechnologyAdapter> cl : OntologyUtils.getAllSuperClasses(this)) {
 			if (cl instanceof OWLClass) {
 				allSuperClasses.add((OWLClass) cl);
 			}
@@ -326,9 +327,9 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 	 * @return
 	 */
 	@Override
-	public List<OWLClass> getSubClasses(IFlexoOntology context) {
+	public List<OWLClass> getSubClasses(IFlexoOntology<OWLTechnologyAdapter> context) {
 		ArrayList<OWLClass> returned = new ArrayList<OWLClass>();
-		for (IFlexoOntologyClass aClass : context.getAccessibleClasses()) {
+		for (IFlexoOntologyClass<OWLTechnologyAdapter> aClass : context.getAccessibleClasses()) {
 			if (aClass instanceof OWLClass && isSuperClassOf(aClass)) {
 				returned.add((OWLClass) aClass);
 			}
@@ -408,8 +409,8 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 		}
 	}*/
 
-	private IFlexoOntologyClass equivalentClass;
-	private List<IFlexoOntologyClass> equivalentClasses = new ArrayList<IFlexoOntologyClass>();
+	private IFlexoOntologyClass<OWLTechnologyAdapter> equivalentClass;
+	private final List<IFlexoOntologyClass<OWLTechnologyAdapter>> equivalentClasses = new ArrayList<IFlexoOntologyClass<OWLTechnologyAdapter>>();
 
 	@Override
 	public void updateOntologyStatements(OntClass anOntResource) {
@@ -418,7 +419,7 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 		for (OWLStatement s : getSemanticStatements()) {
 			if (s instanceof EquivalentClassStatement) {
 				if (((EquivalentClassStatement) s).getEquivalentObject() instanceof IFlexoOntologyClass) {
-					equivalentClass = (IFlexoOntologyClass) ((EquivalentClassStatement) s).getEquivalentObject();
+					equivalentClass = (IFlexoOntologyClass<OWLTechnologyAdapter>) ((EquivalentClassStatement) s).getEquivalentObject();
 					equivalentClasses.add(equivalentClass);
 				}
 			}
@@ -430,7 +431,7 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 	 * 
 	 * @return
 	 */
-	public IFlexoOntologyClass getEquivalentClass() {
+	public IFlexoOntologyClass<OWLTechnologyAdapter> getEquivalentClass() {
 		return equivalentClass;
 	}
 
@@ -440,9 +441,9 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 	 * @param property
 	 * @return
 	 */
-	public List<OWLRestriction> getRestrictions(IFlexoOntologyStructuralProperty property) {
+	public List<OWLRestriction> getRestrictions(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property) {
 		List<OWLRestriction> returned = new ArrayList<OWLRestriction>();
-		for (IFlexoOntologyClass c : getSuperClasses()) {
+		for (IFlexoOntologyClass<OWLTechnologyAdapter> c : getSuperClasses()) {
 			if (c instanceof OWLRestriction) {
 				OWLRestriction r = (OWLRestriction) c;
 				if (r.getProperty() == property) {

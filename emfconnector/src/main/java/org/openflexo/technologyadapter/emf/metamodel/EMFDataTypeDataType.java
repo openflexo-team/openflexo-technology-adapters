@@ -31,14 +31,14 @@ package org.openflexo.technologyadapter.emf.metamodel;
 import org.eclipse.emf.ecore.EDataType;
 import org.openflexo.foundation.ontology.BuiltInDataType;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * EMF Data Type.
  * 
  * @author gbesancon
  */
-public class EMFDataTypeDataType extends AEMFMetaModelObjectImpl<EDataType> implements IFlexoOntologyDataType {
+public class EMFDataTypeDataType extends AEMFMetaModelObjectImpl<EDataType> implements IFlexoOntologyDataType<EMFTechnologyAdapter> {
 
 	/**
 	 * Constructor.
@@ -104,7 +104,7 @@ public class EMFDataTypeDataType extends AEMFMetaModelObjectImpl<EDataType> impl
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyObject#getTechnologyAdapter()
 	 */
 	@Override
-	public TechnologyAdapter getTechnologyAdapter() {
+	public EMFTechnologyAdapter getTechnologyAdapter() {
 		return ontology.getTechnologyAdapter();
 	}
 

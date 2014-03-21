@@ -28,6 +28,7 @@ import com.hp.hpl.jena.rdf.model.Resource;
 
 public class HasValueRestrictionClass extends OWLRestriction {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(HasValueRestrictionClass.class.getPackage().getName());
 
 	private final HasValueRestriction restriction;

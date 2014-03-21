@@ -27,6 +27,7 @@ import com.hp.hpl.jena.ontology.UnionClass;
 
 public class OWLUnionClass extends OWLOperatorClass {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(OWLUnionClass.class.getPackage().getName());
 
 	private final UnionClass ontClass;

@@ -33,13 +33,15 @@ import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * EMF Reference association.
  * 
  * @author gbesancon
  */
-public class EMFAttributeAssociation extends AEMFMetaModelObjectImpl<EAttribute> implements IFlexoOntologyFeatureAssociation {
+public class EMFAttributeAssociation extends AEMFMetaModelObjectImpl<EAttribute> implements
+		IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> {
 
 	/**
 	 * Constructor.
@@ -85,14 +87,14 @@ public class EMFAttributeAssociation extends AEMFMetaModelObjectImpl<EAttribute>
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation#getFeature()
 	 */
 	@Override
-	public IFlexoOntologyFeature getFeature() {
+	public IFlexoOntologyFeature<EMFTechnologyAdapter> getFeature() {
 		return ontology.getConverter().convertAttributeProperty(ontology, object);
 	}
 
 	@Override
-	public IFlexoOntologyObject getRange() {
+	public IFlexoOntologyObject<EMFTechnologyAdapter> getRange() {
 		if (getFeature() instanceof IFlexoOntologyStructuralProperty) {
-			return ((IFlexoOntologyStructuralProperty) getFeature()).getRange();
+			return ((IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>) getFeature()).getRange();
 		}
 		return null;
 	}

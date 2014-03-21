@@ -26,7 +26,8 @@ import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 
-public abstract class AbstractXSOntObject extends FlexoOntologyObjectImpl implements IFlexoOntologyObject, XSOntologyURIDefinitions {
+public abstract class AbstractXSOntObject extends FlexoOntologyObjectImpl<XSDTechnologyAdapter> implements
+		IFlexoOntologyObject<XSDTechnologyAdapter>, XSOntologyURIDefinitions {
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(AbstractXSOntObject.class
 			.getPackage().getName());

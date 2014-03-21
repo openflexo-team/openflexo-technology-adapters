@@ -36,7 +36,7 @@ import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import com.hp.hpl.jena.ontology.ConversionException;
 import com.hp.hpl.jena.ontology.OntProperty;
 
-public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFlexoOntologyStructuralProperty {
+public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(IFlexoOntologyStructuralProperty.class.getPackage().getName());
 
@@ -44,8 +44,8 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 
 	private DomainStatement domainStatement;
 	private RangeStatement rangeStatement;
-	private List<DomainStatement> domainStatementList;
-	private List<RangeStatement> rangeStatementList;
+	private final List<DomainStatement> domainStatementList;
+	private final List<RangeStatement> rangeStatementList;
 	private List<OWLConcept<?>> domainList;
 	private List<OWLConcept<?>> rangeList;
 
@@ -54,7 +54,7 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 
 	private final Vector<OWLProperty> superProperties;
 
-	private List<OWLRestriction> referencingRestrictions;
+	private final List<OWLRestriction> referencingRestrictions;
 
 	protected OWLProperty(OntProperty anOntProperty, OWLOntology ontology, OWLTechnologyAdapter adapter) {
 		super(anOntProperty, ontology, adapter);
@@ -104,9 +104,10 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 		ontProperty = r;
 	}
 
-	public static final Comparator<IFlexoOntologyStructuralProperty> COMPARATOR = new Comparator<IFlexoOntologyStructuralProperty>() {
+	public static final Comparator<IFlexoOntologyStructuralProperty<OWLTechnologyAdapter>> COMPARATOR = new Comparator<IFlexoOntologyStructuralProperty<OWLTechnologyAdapter>>() {
 		@Override
-		public int compare(IFlexoOntologyStructuralProperty o1, IFlexoOntologyStructuralProperty o2) {
+		public int compare(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> o1,
+				IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> o2) {
 			return Collator.getInstance().compare(o1.getName(), o2.getName());
 		}
 	};
@@ -232,7 +233,7 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	 * @return
 	 */
 	@Override
-	public IFlexoOntologyConcept getDomain() {
+	public IFlexoOntologyConcept<OWLTechnologyAdapter> getDomain() {
 		/*		if (getURI().equals("http://www.w3.org/2000/01/rdf-schema#label")) {
 		//			System.out.println("Pour "+getURI()+" le domain statement est "+getDomainStatement());
 		//			return getOntologyLibrary().getOntologyObject("http://www.w3.org/2000/01/rdf-schema#Resource");
@@ -256,7 +257,7 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 				}*/
 		if (getDomainStatement() == null) {
 			for (OWLProperty p : getSuperProperties()) {
-				IFlexoOntologyConcept o = p.getDomain();
+				IFlexoOntologyConcept<OWLTechnologyAdapter> o = p.getDomain();
 				if (o != null) {
 					return o;
 				}
@@ -349,7 +350,7 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	}
 
 	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation> getStructuralFeatureAssociations() {
+	public List<? extends IFlexoOntologyFeatureAssociation<OWLTechnologyAdapter>> getStructuralFeatureAssociations() {
 		// No feature associations for this kind of concept
 		return Collections.emptyList();
 	}

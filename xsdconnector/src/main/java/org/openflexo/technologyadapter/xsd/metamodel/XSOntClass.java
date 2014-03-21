@@ -21,7 +21,6 @@
 
 package org.openflexo.technologyadapter.xsd.metamodel;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -40,20 +39,21 @@ import org.openflexo.technologyadapter.xsd.model.XSOntology;
 import org.openflexo.technologyadapter.xsd.model.XSOntologyURIDefinitions;
 import org.openflexo.toolbox.StringUtils;
 
-public class XSOntClass extends AbstractXSOntConcept implements IFlexoOntologyClass, XSOntologyURIDefinitions, IXMLType {
+public class XSOntClass extends AbstractXSOntConcept implements IFlexoOntologyClass<XSDTechnologyAdapter>, XSOntologyURIDefinitions,
+		IXMLType {
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XSOntClass.class.getPackage()
 			.getName());
 
 	private final List<XSOntClass> superClasses = new ArrayList<XSOntClass>();
-	private final HashMap<String,XSOntProperty> properties = new HashMap<String,XSOntProperty>();
+	private final HashMap<String, XSOntProperty> properties = new HashMap<String, XSOntProperty>();
 
 	protected XSOntClass(XSOntology ontology, String name, String uri, XSDTechnologyAdapter adapter) {
 		super(ontology, name, uri, adapter);
 	}
 
 	@Override
-	public boolean isSuperClassOf(IFlexoOntologyClass aClass) {
+	public boolean isSuperClassOf(IFlexoOntologyClass<XSDTechnologyAdapter> aClass) {
 		if (aClass instanceof XSOntClass == false) {
 			return false;
 		}
@@ -69,25 +69,25 @@ public class XSOntClass extends AbstractXSOntConcept implements IFlexoOntologyCl
 	}
 
 	@Override
-	public boolean isSuperConceptOf(IFlexoOntologyConcept concept) {
-		if (concept instanceof XSOntClass){
-		return isSuperClassOf((IFlexoOntologyClass) concept);
-		}
-		else return false;
+	public boolean isSuperConceptOf(IFlexoOntologyConcept<XSDTechnologyAdapter> concept) {
+		if (concept instanceof XSOntClass) {
+			return isSuperClassOf((IFlexoOntologyClass<XSDTechnologyAdapter>) concept);
+		} else
+			return false;
 	}
 
 	@Override
-	public boolean isSubConceptOf(IFlexoOntologyConcept concept) {
-		if (concept instanceof XSOntClass){
-		return concept.isSuperConceptOf(this);
-		}
-		else return false;
+	public boolean isSubConceptOf(IFlexoOntologyConcept<XSDTechnologyAdapter> concept) {
+		if (concept instanceof XSOntClass) {
+			return concept.isSuperConceptOf(this);
+		} else
+			return false;
 	}
 
 	@Override
 	public void addPropertyTakingMyselfAsDomain(XSOntProperty property) {
 		super.addPropertyTakingMyselfAsDomain(property);
-			properties.put(property.getName(), property);
+		properties.put(property.getName(), property);
 	}
 
 	@Override
@@ -95,7 +95,7 @@ public class XSOntClass extends AbstractXSOntConcept implements IFlexoOntologyCl
 		return superClasses;
 	}
 
-	public void addToSuperClasses(IFlexoOntologyClass aClass) {
+	public void addToSuperClasses(IFlexoOntologyClass<XSDTechnologyAdapter> aClass) {
 		if (!(aClass instanceof XSOntClass)) {
 			if (logger.isLoggable(Level.WARNING)) {
 				logger.warning("Class " + aClass + " is not a XSOntClass");
@@ -105,17 +105,17 @@ public class XSOntClass extends AbstractXSOntConcept implements IFlexoOntologyCl
 		superClasses.add((XSOntClass) aClass);
 	}
 
-	public void removeFromSuperClasses(IFlexoOntologyClass aClass) {
+	public void removeFromSuperClasses(IFlexoOntologyClass<XSDTechnologyAdapter> aClass) {
 		superClasses.remove(aClass);
 	}
 
 	@Override
-	public List<? extends IFlexoOntologyClass> getSubClasses(IFlexoOntology context) {
+	public List<? extends IFlexoOntologyClass<XSDTechnologyAdapter>> getSubClasses(IFlexoOntology<XSDTechnologyAdapter> context) {
 		List<XSOntClass> listAllClasses = getOntology().getAccessibleClasses();
 		ArrayList<XSOntClass> returned = new ArrayList<XSOntClass>();
-		for (XSOntClass aClass : listAllClasses){
+		for (XSOntClass aClass : listAllClasses) {
 			if (aClass instanceof XSOntClass && isSuperClassOf(aClass)) {
-				returned.add((XSOntClass) aClass);
+				returned.add(aClass);
 			}
 		}
 		return returned;
@@ -148,26 +148,25 @@ public class XSOntClass extends AbstractXSOntConcept implements IFlexoOntologyCl
 	}
 
 	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation> getStructuralFeatureAssociations() {
+	public List<? extends IFlexoOntologyFeatureAssociation<XSDTechnologyAdapter>> getStructuralFeatureAssociations() {
 		List<XSOntProperty> returned = new ArrayList<XSOntProperty>();
 		for (XSOntProperty xsOntRest : properties.values()) {
 			returned.add(xsOntRest);
 		}
-		for (XSOntClass sc: this.getSuperClasses()) {
+		for (XSOntClass sc : this.getSuperClasses()) {
 			returned.addAll((Collection<? extends XSOntProperty>) sc.getStructuralFeatureAssociations());
-			}
-		return (List<? extends IFlexoOntologyFeatureAssociation>) returned;
+		}
+		return returned;
 	}
-
 
 	public XSOntProperty getPropertyByName(String name) {
 		XSOntProperty returned = null;
 		returned = properties.get(name);
 		if (returned == null) {
 			// Check if property exists in superclasses
-			for (XSOntClass sc: this.getSuperClasses()) {
+			for (XSOntClass sc : this.getSuperClasses()) {
 				returned = sc.getPropertyByName(name);
-				if (returned != null){
+				if (returned != null) {
 					return returned;
 				}
 			}

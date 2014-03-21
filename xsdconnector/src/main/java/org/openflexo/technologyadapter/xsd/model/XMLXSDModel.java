@@ -47,7 +47,8 @@ import org.openflexo.technologyadapter.xsd.rm.XMLXSDFileResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, XSDMetaModel>, IXMLModel, TechnologyObject {
+public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, XSDMetaModel>, IXMLModel,
+		TechnologyObject<XSDTechnologyAdapter> {
 
 	private XSDMetaModel metaModel = null;
 	private XSOntIndividual rootElem = null;
@@ -94,9 +95,9 @@ public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, X
 	}
 
 	@Override
-	public List<IFlexoOntologyMetaModel> getMetaModels() {
-		List<IFlexoOntologyMetaModel> list = new ArrayList<IFlexoOntologyMetaModel>();
-		list.add((IFlexoOntologyMetaModel) metaModel);
+	public List<IFlexoOntologyMetaModel<XSDTechnologyAdapter>> getMetaModels() {
+		List<IFlexoOntologyMetaModel<XSDTechnologyAdapter>> list = new ArrayList<IFlexoOntologyMetaModel<XSDTechnologyAdapter>>();
+		list.add((IFlexoOntologyMetaModel<XSDTechnologyAdapter>) metaModel);
 		return list;
 	}
 
@@ -140,7 +141,7 @@ public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, X
 	}
 
 	@Override
-	public List<? extends IFlexoOntologyDataProperty> getAccessibleDataProperties() {
+	public List<? extends IFlexoOntologyDataProperty<XSDTechnologyAdapter>> getAccessibleDataProperties() {
 		// Those should only be available for MetaModels
 		return Collections.emptyList();
 	}
@@ -153,7 +154,7 @@ public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, X
 	}
 
 	@Override
-	public List<? extends IFlexoOntologyDataProperty> getDataProperties() {
+	public List<? extends IFlexoOntologyDataProperty<XSDTechnologyAdapter>> getDataProperties() {
 		// Those should only be available for MetaModels
 		return Collections.emptyList();
 	}

@@ -29,12 +29,12 @@ import org.openflexo.toolbox.StringUtils;
 
 import com.hp.hpl.jena.rdf.model.Literal;
 
-public class OWLDataType extends OWLObject implements IFlexoOntologyDataType, W3URIDefinitions {
+public class OWLDataType extends OWLObject implements IFlexoOntologyDataType<OWLTechnologyAdapter>, W3URIDefinitions {
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(OWLDataType.class.getPackage()
 			.getName());
 
-	private String dataTypeURI;
+	private final String dataTypeURI;
 	private BuiltInDataType builtInDataType;
 
 	protected OWLDataType(String dataTypeURI, OWLTechnologyAdapter adapter) {

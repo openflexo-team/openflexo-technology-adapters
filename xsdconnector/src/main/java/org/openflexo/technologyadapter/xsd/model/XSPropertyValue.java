@@ -21,7 +21,7 @@ package org.openflexo.technologyadapter.xsd.model;
 
 import org.openflexo.foundation.DefaultFlexoObject;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
 
 /**
@@ -29,13 +29,13 @@ import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
  * 
  * @author sylvain
  */
-public abstract class XSPropertyValue extends DefaultFlexoObject implements IFlexoOntologyPropertyValue {
+public abstract class XSPropertyValue extends DefaultFlexoObject implements IFlexoOntologyPropertyValue<XSDTechnologyAdapter> {
 
 	@Override
 	public abstract XSOntProperty getProperty();
 
 	@Override
-	public TechnologyAdapter getTechnologyAdapter() {
+	public XSDTechnologyAdapter getTechnologyAdapter() {
 		return getProperty().getTechnologyAdapter();
 	}
 }

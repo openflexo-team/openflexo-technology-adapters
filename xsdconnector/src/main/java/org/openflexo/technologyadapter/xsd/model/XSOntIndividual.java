@@ -46,8 +46,8 @@ import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-public class XSOntIndividual extends AbstractXSOntConcept implements IFlexoOntologyIndividual, XSOntologyURIDefinitions,
-		IXMLIndividual<XSOntIndividual, XSOntProperty> {
+public class XSOntIndividual extends AbstractXSOntConcept implements IFlexoOntologyIndividual<XSDTechnologyAdapter>,
+		XSOntologyURIDefinitions, IXMLIndividual<XSOntIndividual, XSOntProperty> {
 
 	private XSOntClass type;
 	private final Map<XSOntProperty, XSPropertyValue> values = new HashMap<XSOntProperty, XSPropertyValue>();

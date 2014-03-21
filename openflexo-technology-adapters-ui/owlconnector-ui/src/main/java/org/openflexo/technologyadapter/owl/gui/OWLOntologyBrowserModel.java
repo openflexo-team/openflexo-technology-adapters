@@ -29,6 +29,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWL2URIDefinitions;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
@@ -51,7 +52,7 @@ import org.openflexo.toolbox.StringUtils;
  * 
  * @author sguerin
  */
-public class OWLOntologyBrowserModel extends OntologyBrowserModel {
+public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyAdapter> {
 
 	static final Logger logger = Logger.getLogger(OWLOntologyBrowserModel.class.getPackage().getName());
 
@@ -62,7 +63,7 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel {
 	}
 
 	@Override
-	public boolean isDisplayable(IFlexoOntologyObject object) {
+	public boolean isDisplayable(IFlexoOntologyObject<OWLTechnologyAdapter> object) {
 
 		if (object instanceof OWLOntology) {
 			if ((object == ((OWLOntology) object).getOntologyLibrary().getRDFOntology()
@@ -74,7 +75,7 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel {
 		}
 
 		if (!getShowOWLAndRDFConcepts() && StringUtils.isNotEmpty(object.getURI()) && object instanceof IFlexoOntologyConcept
-				&& ((IFlexoOntologyConcept) object).getOntology() != getContext()) {
+				&& ((IFlexoOntologyConcept<OWLTechnologyAdapter>) object).getOntology() != getContext()) {
 			if (object.getURI().startsWith(RDFURIDefinitions.RDF_ONTOLOGY_URI)
 					|| object.getURI().startsWith(RDFSURIDefinitions.RDFS_ONTOLOGY_URI)
 					|| object.getURI().startsWith(OWL2URIDefinitions.OWL_ONTOLOGY_URI)) {
@@ -83,7 +84,7 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel {
 		}
 
 		if (object instanceof IFlexoOntologyStructuralProperty && getDomain() != null) {
-			IFlexoOntologyStructuralProperty p = (IFlexoOntologyStructuralProperty) object;
+			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> p = (IFlexoOntologyStructuralProperty<OWLTechnologyAdapter>) object;
 			if (p instanceof OWLProperty && (((OWLProperty) p).getDomainList().size() > 0)) {
 				OWLProperty owlProperty = (OWLProperty) p;
 				boolean hasASuperClass = false;
@@ -110,8 +111,9 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel {
 	 * @return
 	 */
 	@Override
-	protected List<IFlexoOntologyClass> getPreferredStorageLocations(IFlexoOntologyStructuralProperty p, IFlexoOntology searchedOntology) {
-		List<IFlexoOntologyClass> potentialStorageClasses = super.getPreferredStorageLocations(p, searchedOntology);
+	protected List<IFlexoOntologyClass<OWLTechnologyAdapter>> getPreferredStorageLocations(
+			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> p, IFlexoOntology<OWLTechnologyAdapter> searchedOntology) {
+		List<IFlexoOntologyClass<OWLTechnologyAdapter>> potentialStorageClasses = super.getPreferredStorageLocations(p, searchedOntology);
 
 		if (p instanceof OWLProperty && ((OWLProperty) p).getDomainList().size() > 0) {
 			OWLProperty owlProperty = (OWLProperty) p;
@@ -127,9 +129,9 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel {
 			}
 		}
 
-		for (IFlexoOntologyClass c : getContext().getAccessibleClasses()) {
+		for (IFlexoOntologyClass<OWLTechnologyAdapter> c : getContext().getAccessibleClasses()) {
 			if (c.isNamedClass()) {
-				for (IFlexoOntologyClass superClass : c.getSuperClasses()) {
+				for (IFlexoOntologyClass<OWLTechnologyAdapter> superClass : c.getSuperClasses()) {
 					if (superClass instanceof OWLRestriction && ((OWLRestriction) superClass).getProperty().equalsToConcept(p)) {
 						if (searchedOntology == null || c.getOntology() == searchedOntology) {
 							potentialStorageClasses.add(c);
@@ -158,8 +160,8 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel {
 	 * @param list
 	 */
 	@Override
-	protected void removeOriginalFromRedefinedObjects(List<? extends IFlexoOntologyConcept> list) {
-		for (IFlexoOntologyConcept c : new ArrayList<IFlexoOntologyConcept>(list)) {
+	protected void removeOriginalFromRedefinedObjects(List<? extends IFlexoOntologyConcept<OWLTechnologyAdapter>> list) {
+		for (IFlexoOntologyConcept<OWLTechnologyAdapter> c : new ArrayList<IFlexoOntologyConcept<OWLTechnologyAdapter>>(list)) {
 			if (c instanceof OWLConcept<?> && ((OWLConcept<?>) c).redefinesOriginalDefinition()) {
 				list.remove(((OWLConcept<?>) c).getOriginalDefinition());
 			}

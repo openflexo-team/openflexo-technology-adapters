@@ -35,7 +35,6 @@ import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.openflexo.technologyadapter.emf.rm.EMFModelResourceImpl;
 
 /**
  * EMF Uri Builder from Object.
@@ -44,10 +43,9 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResourceImpl;
  */
 public class EMFModelURIBuilder {
 
-
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(EMFModelURIBuilder.class.getPackage().getName());
 
-	
 	/**
 	 * Name of resource.
 	 * 
@@ -67,7 +65,7 @@ public class EMFModelURIBuilder {
 	public static String getName(EObject eObject) {
 		StringBuilder builder = new StringBuilder();
 		// NPE protection
-		if (eObject != null){
+		if (eObject != null) {
 			List<EAttribute> eAttributes = eObject.eClass().getEAllAttributes();
 			if (eAttributes.size() != 0) {
 				for (EAttribute eAttribute : eAttributes) {
@@ -82,13 +80,12 @@ public class EMFModelURIBuilder {
 			// If no name use URI Fragment
 			if (builder.length() == 0) {
 				Resource res = eObject.eResource();
-				if (res != null){
+				if (res != null) {
 					builder.append(eObject.eResource().getURIFragment(eObject));
-				}
-				else {
+				} else {
 					// If no resource use Class SimpleName
 					builder.append(eObject.getClass().getSimpleName());
-					}
+				}
 			}
 		}
 		return builder.toString();

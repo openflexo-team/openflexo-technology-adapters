@@ -29,11 +29,11 @@ import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Statement;
 
-public class DataPropertyStatement extends PropertyStatement implements IFlexoOntologyDataPropertyValue {
+public class DataPropertyStatement extends PropertyStatement implements IFlexoOntologyDataPropertyValue<OWLTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(DataPropertyStatement.class.getPackage().getName());
 
-	private OWLDataProperty property;
+	private final OWLDataProperty property;
 	private Literal literal;
 
 	public DataPropertyStatement(OWLConcept<?> subject, Statement s, OWLTechnologyAdapter adapter) {

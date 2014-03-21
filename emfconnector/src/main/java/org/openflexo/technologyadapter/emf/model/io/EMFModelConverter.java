@@ -28,7 +28,6 @@
  */
 package org.openflexo.technologyadapter.emf.model.io;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -40,11 +39,10 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EObjectEList;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.EMFReferenceObjectProperty;
-import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObjectPropertyValueAsList;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualAttributeDataPropertyValue;
@@ -65,7 +63,7 @@ public class EMFModelConverter {
 	/** Concepts. */
 	protected final Map<EObject, EMFObjectIndividual> individuals = new HashMap<EObject, EMFObjectIndividual>();
 	/** Property Values. */
-	protected final Map<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue>> propertyValues = new HashMap<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue>>();
+	protected final Map<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>> propertyValues = new HashMap<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>>();
 
 	/**
 	 * Constructor.
@@ -130,15 +128,15 @@ public class EMFModelConverter {
 	 * Convert single EMF Object or EObjectList of EMF Object to EMF Object Individual or List of EMF Object Individual
 	 * 
 	 * @param model
-	 * @param emfAnswer 
+	 * @param emfAnswer
 	 * @param eObject
 	 * @return
 	 */
-	public Object convertIndividualReference(EMFModel model,Object reference) {
+	public Object convertIndividualReference(EMFModel model, Object reference) {
 
 		if (reference instanceof EObject) {
 			return convertObjectIndividual(model, (EObject) reference);
-		}else if (reference instanceof Enum) {
+		} else if (reference instanceof Enum) {
 			return reference;
 		} else {
 			logger.warning("Unexpected " + reference + " of " + (reference != null ? reference.getClass() : null));
@@ -146,8 +144,7 @@ public class EMFModelConverter {
 		}
 	}
 
-
-	public Object convertIndividualReferenceList(EMFModel model,EObject object, EMFReferenceObjectProperty property) {
+	public Object convertIndividualReferenceList(EMFModel model, EObject object, EMFReferenceObjectProperty property) {
 
 		EMFObjectIndividual individual;
 
@@ -156,7 +153,8 @@ public class EMFModelConverter {
 			individuals.put(object, individual);
 		}
 
-		EMFObjectIndividualReferenceObjectPropertyValue propertyValue = convertObjectIndividualReferenceObjectPropertyValue(model, object, property.getObject());
+		EMFObjectIndividualReferenceObjectPropertyValue propertyValue = convertObjectIndividualReferenceObjectPropertyValue(model, object,
+				property.getObject());
 
 		return propertyValue;
 
@@ -192,7 +190,7 @@ public class EMFModelConverter {
 			EAttribute eAttribute) {
 		EMFObjectIndividualAttributeDataPropertyValue propertyValue = null;
 		if (propertyValues.get(eObject) == null) {
-			propertyValues.put(eObject, new HashMap<EStructuralFeature, IFlexoOntologyPropertyValue>());
+			propertyValues.put(eObject, new HashMap<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>());
 		}
 		if (propertyValues.get(eObject).get(eAttribute) == null) {
 			propertyValue = builder.buildObjectIndividualAttributeDataPropertyValue(model, eObject, eAttribute);
@@ -215,7 +213,7 @@ public class EMFModelConverter {
 			EObject eObject, EAttribute eAttribute) {
 		EMFObjectIndividualAttributeObjectPropertyValue propertyValue = null;
 		if (propertyValues.get(eObject) == null) {
-			propertyValues.put(eObject, new HashMap<EStructuralFeature, IFlexoOntologyPropertyValue>());
+			propertyValues.put(eObject, new HashMap<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>());
 		}
 		if (propertyValues.get(eObject).get(eAttribute) == null) {
 			propertyValue = builder.buildObjectIndividualAttributeObjectPropertyValue(model, eObject, eAttribute);
@@ -238,7 +236,7 @@ public class EMFModelConverter {
 			EObject eObject, EReference eReference) {
 		EMFObjectIndividualReferenceObjectPropertyValue propertyValue = null;
 		if (propertyValues.get(eObject) == null) {
-			propertyValues.put(eObject, new HashMap<EStructuralFeature, IFlexoOntologyPropertyValue>());
+			propertyValues.put(eObject, new HashMap<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>());
 		}
 		if (propertyValues.get(eObject).get(eReference) == null) {
 			propertyValue = builder.buildObjectIndividualReferenceObjectPropertyValue(model, eObject, eReference);
@@ -281,7 +279,7 @@ public class EMFModelConverter {
 	 * 
 	 * @return the propertyValues value
 	 */
-	public Map<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue>> getPropertyValues() {
+	public Map<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>> getPropertyValues() {
 		return propertyValues;
 	}
 

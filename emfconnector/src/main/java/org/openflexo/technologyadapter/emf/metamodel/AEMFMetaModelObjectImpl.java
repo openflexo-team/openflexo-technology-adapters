@@ -31,6 +31,7 @@ package org.openflexo.technologyadapter.emf.metamodel;
 import org.eclipse.emf.ecore.EObject;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * Abstract Simple implementation of Flexo ontology object.
@@ -38,7 +39,7 @@ import org.openflexo.foundation.ontology.IFlexoOntology;
  * @author gbesancon
  * 
  */
-public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl {
+public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> {
 
 	/** MetaModel. */
 	protected final EMFMetaModel ontology;
@@ -59,7 +60,7 @@ public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOn
 	 * @see org.openflexo.foundation.ontology.FlexoOntologyObjectImpl#getFlexoOntology()
 	 */
 	@Override
-	public IFlexoOntology getFlexoOntology() {
+	public IFlexoOntology<EMFTechnologyAdapter> getFlexoOntology() {
 		return ontology;
 	}
 

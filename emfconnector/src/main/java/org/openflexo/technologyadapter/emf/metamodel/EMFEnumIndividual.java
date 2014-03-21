@@ -44,14 +44,14 @@ import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * EMF Enum Literal.
  * 
  * @author gbesancon
  */
-public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> implements IFlexoOntologyIndividual {
+public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> implements IFlexoOntologyIndividual<EMFTechnologyAdapter> {
 	/**
 	 * Constructor.
 	 */
@@ -135,7 +135,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getContainer()
 	 */
 	@Override
-	public IFlexoOntologyConceptContainer getContainer() {
+	public IFlexoOntologyConceptContainer<EMFTechnologyAdapter> getContainer() {
 		return ontology.getConverter().convertPackage(ontology, object.getEEnum().getEPackage());
 	}
 
@@ -145,7 +145,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getStructuralFeatureAssociations()
 	 */
 	@Override
-	public List<IFlexoOntologyFeatureAssociation> getStructuralFeatureAssociations() {
+	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getStructuralFeatureAssociations() {
 		return Collections.emptyList();
 	}
 
@@ -155,7 +155,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getBehaviouralFeatureAssociations()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation> getBehaviouralFeatureAssociations() {
+	public List<? extends IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getBehaviouralFeatureAssociations() {
 		return Collections.emptyList();
 	}
 
@@ -165,7 +165,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#isSuperConceptOf(org.openflexo.foundation.ontology.IFlexoOntologyConcept)
 	 */
 	@Override
-	public boolean isSuperConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSuperConceptOf(IFlexoOntologyConcept<EMFTechnologyAdapter> concept) {
 		return false;
 	}
 
@@ -175,7 +175,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#equalsToConcept(org.openflexo.foundation.ontology.IFlexoOntologyConcept)
 	 */
 	@Override
-	public boolean equalsToConcept(IFlexoOntologyConcept concept) {
+	public boolean equalsToConcept(IFlexoOntologyConcept<EMFTechnologyAdapter> concept) {
 		return concept == this;
 	}
 
@@ -185,7 +185,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#isSubConceptOf(org.openflexo.foundation.ontology.IFlexoOntologyConcept)
 	 */
 	@Override
-	public boolean isSubConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSubConceptOf(IFlexoOntologyConcept<EMFTechnologyAdapter> concept) {
 		return false;
 	}
 
@@ -205,8 +205,9 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyIndividual#getTypes()
 	 */
 	@Override
-	public List<IFlexoOntologyClass> getTypes() {
-		return Collections.singletonList((IFlexoOntologyClass) ontology.getConverter().convertEnum(ontology, object.getEEnum()));
+	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getTypes() {
+		return Collections.singletonList((IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getConverter().convertEnum(ontology,
+				object.getEEnum()));
 	}
 
 	/**
@@ -215,7 +216,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyIndividual#isIndividualOf(org.openflexo.foundation.ontology.IFlexoOntologyClass)
 	 */
 	@Override
-	public boolean isIndividualOf(IFlexoOntologyClass aClass) {
+	public boolean isIndividualOf(IFlexoOntologyClass<EMFTechnologyAdapter> aClass) {
 		return getTypes().contains(aClass);
 	}
 
@@ -225,7 +226,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyIndividual#getPropertyValues()
 	 */
 	@Override
-	public List<IFlexoOntologyPropertyValue> getPropertyValues() {
+	public List<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> getPropertyValues() {
 		return Collections.emptyList();
 	}
 
@@ -236,7 +237,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 */
 	@Override
 	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty> getPropertiesTakingMySelfAsRange() {
+	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
 		return Collections.emptyList();
 	}
 
@@ -247,7 +248,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 */
 	@Override
 	@Deprecated
-	public List<? extends IFlexoOntologyFeature> getPropertiesTakingMySelfAsDomain() {
+	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
 		return Collections.emptyList();
 	}
 
@@ -257,7 +258,8 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyIndividual#getPropertyValue(org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty)
 	 */
 	@Override
-	public IFlexoOntologyPropertyValue getPropertyValue(IFlexoOntologyStructuralProperty property) {
+	public IFlexoOntologyPropertyValue<EMFTechnologyAdapter> getPropertyValue(
+			IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property) {
 		System.out.println("No Property Values.");
 		return null;
 	}
@@ -269,7 +271,8 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 *      java.lang.Object)
 	 */
 	@Override
-	public IFlexoOntologyPropertyValue addToPropertyValue(IFlexoOntologyStructuralProperty property, Object newValue) {
+	public IFlexoOntologyPropertyValue<EMFTechnologyAdapter> addToPropertyValue(
+			IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property, Object newValue) {
 		System.out.println("Property Values can't be modified.");
 		return null;
 	}
@@ -281,7 +284,8 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 *      java.lang.Object)
 	 */
 	@Override
-	public IFlexoOntologyPropertyValue removeFromPropertyValue(IFlexoOntologyStructuralProperty property, Object valueToRemove) {
+	public IFlexoOntologyPropertyValue<EMFTechnologyAdapter> removeFromPropertyValue(
+			IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property, Object valueToRemove) {
 		System.out.println("Property Values can't be modified.");
 		return null;
 	}
@@ -292,7 +296,7 @@ public class EMFEnumIndividual extends AEMFMetaModelObjectImpl<EEnumLiteral> imp
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyObject#getTechnologyAdapter()
 	 */
 	@Override
-	public TechnologyAdapter getTechnologyAdapter() {
+	public EMFTechnologyAdapter getTechnologyAdapter() {
 		return ontology.getTechnologyAdapter();
 	}
 }

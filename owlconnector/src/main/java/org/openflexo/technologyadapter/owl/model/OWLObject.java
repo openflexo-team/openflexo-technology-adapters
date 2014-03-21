@@ -25,9 +25,10 @@ import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
-public abstract class OWLObject extends FlexoOntologyObjectImpl implements IFlexoOntologyObject, OWL2URIDefinitions, RDFURIDefinitions,
-		RDFSURIDefinitions {
+public abstract class OWLObject extends FlexoOntologyObjectImpl<OWLTechnologyAdapter> implements
+		IFlexoOntologyObject<OWLTechnologyAdapter>, OWL2URIDefinitions, RDFURIDefinitions, RDFSURIDefinitions {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(OWLObject.class.getPackage().getName());
 
 	private final OWLTechnologyAdapter technologyAdapter;

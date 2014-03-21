@@ -46,14 +46,14 @@ import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * EMF Enum.
  * 
  * @author gbesancon
  */
-public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFlexoOntologyClass {
+public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFlexoOntologyClass<EMFTechnologyAdapter> {
 	/**
 	 * Constructor.
 	 */
@@ -137,7 +137,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getContainer()
 	 */
 	@Override
-	public IFlexoOntologyConceptContainer getContainer() {
+	public IFlexoOntologyConceptContainer<EMFTechnologyAdapter> getContainer() {
 		return ontology.getConverter().convertPackage(ontology, object.getEPackage());
 	}
 
@@ -147,7 +147,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getStructuralFeatureAssociations()
 	 */
 	@Override
-	public List<IFlexoOntologyFeatureAssociation> getStructuralFeatureAssociations() {
+	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getStructuralFeatureAssociations() {
 		return Collections.emptyList();
 	}
 
@@ -157,7 +157,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getBehaviouralFeatureAssociations()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation> getBehaviouralFeatureAssociations() {
+	public List<? extends IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getBehaviouralFeatureAssociations() {
 		return Collections.emptyList();
 	}
 
@@ -167,7 +167,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#isSuperConceptOf(org.openflexo.foundation.ontology.IFlexoOntologyConcept)
 	 */
 	@Override
-	public boolean isSuperConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSuperConceptOf(IFlexoOntologyConcept<EMFTechnologyAdapter> concept) {
 		return false;
 	}
 
@@ -177,7 +177,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#equalsToConcept(org.openflexo.foundation.ontology.IFlexoOntologyConcept)
 	 */
 	@Override
-	public boolean equalsToConcept(IFlexoOntologyConcept concept) {
+	public boolean equalsToConcept(IFlexoOntologyConcept<EMFTechnologyAdapter> concept) {
 		return concept == this;
 	}
 
@@ -187,7 +187,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#isSubConceptOf(org.openflexo.foundation.ontology.IFlexoOntologyConcept)
 	 */
 	@Override
-	public boolean isSubConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSubConceptOf(IFlexoOntologyConcept<EMFTechnologyAdapter> concept) {
 		return false;
 	}
 
@@ -197,7 +197,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyClass#getSuperClasses()
 	 */
 	@Override
-	public List<IFlexoOntologyClass> getSuperClasses() {
+	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getSuperClasses() {
 		return Collections.emptyList();
 	}
 
@@ -207,7 +207,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyClass#getSubClasses(org.openflexo.foundation.ontology.IFlexoOntology)
 	 */
 	@Override
-	public List<? extends IFlexoOntologyClass> getSubClasses(IFlexoOntology context) {
+	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getSubClasses(IFlexoOntology<EMFTechnologyAdapter> context) {
 		return Collections.emptyList();
 	}
 
@@ -217,7 +217,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyClass#isSuperClassOf(org.openflexo.foundation.ontology.IFlexoOntologyClass)
 	 */
 	@Override
-	public boolean isSuperClassOf(IFlexoOntologyClass aClass) {
+	public boolean isSuperClassOf(IFlexoOntologyClass<EMFTechnologyAdapter> aClass) {
 		return false;
 	}
 
@@ -238,18 +238,18 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 */
 	@Override
 	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty> getPropertiesTakingMySelfAsRange() {
-		List<IFlexoOntologyStructuralProperty> result = new ArrayList<IFlexoOntologyStructuralProperty>();
+	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
+		List<IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>>();
 		for (EObject crossReference : object.eCrossReferences()) {
 			if (crossReference instanceof EAttribute) {
-				IFlexoOntologyStructuralProperty property = ontology.getConverter().convertAttributeProperty(ontology,
-						(EAttribute) crossReference);
+				IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property = ontology.getConverter().convertAttributeProperty(
+						ontology, (EAttribute) crossReference);
 				if (!result.contains(property)) {
 					result.add(property);
 				}
 			} else if (crossReference instanceof EReference) {
-				IFlexoOntologyStructuralProperty property = ontology.getConverter().convertReferenceObjectProperty(ontology,
-						(EReference) crossReference);
+				IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property = ontology.getConverter().convertReferenceObjectProperty(
+						ontology, (EReference) crossReference);
 				if (!result.contains(property)) {
 					result.add(property);
 				}
@@ -265,7 +265,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 */
 	@Override
 	@Deprecated
-	public List<? extends IFlexoOntologyFeature> getPropertiesTakingMySelfAsDomain() {
+	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
 		return Collections.emptyList();
 	}
 
@@ -275,7 +275,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyObject#getTechnologyAdapter()
 	 */
 	@Override
-	public TechnologyAdapter getTechnologyAdapter() {
+	public EMFTechnologyAdapter getTechnologyAdapter() {
 		return ontology.getTechnologyAdapter();
 	}
 

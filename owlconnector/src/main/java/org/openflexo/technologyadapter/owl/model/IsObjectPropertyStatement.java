@@ -27,6 +27,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 
 public class IsObjectPropertyStatement extends IsAStatement {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(IsObjectPropertyStatement.class.getPackage().getName());
 
 	public IsObjectPropertyStatement(OWLConcept<?> subject, Statement s, OWLTechnologyAdapter adapter) {

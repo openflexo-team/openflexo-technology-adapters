@@ -19,7 +19,6 @@
  *
  */
 
-
 package org.openflexo.technologyadapter.xsd.model;
 
 import java.io.File;
@@ -53,30 +52,26 @@ import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntDataProperty;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntObjectProperty;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
-import org.openflexo.technologyadapter.xsd.rm.XMLXSDNameSpaceFinder;
 import org.w3c.dom.Document;
 
 import com.sun.xml.xsom.XSSimpleType;
 
-
-
-
 /**
- *
+ * 
  * This class defines and implements the XSD/XML Abstract Ontology Class
  * 
  * @author sylvain, luka, Christophe
  * 
  */
 
-public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOntology, XSOntologyURIDefinitions, W3URIDefinitions, IFlexoOntologyModel {
+public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOntology<XSDTechnologyAdapter>, XSOntologyURIDefinitions,
+		W3URIDefinitions, IFlexoOntologyModel<XSDTechnologyAdapter> {
 
+	protected FlexoResource<?> modelResource;
 
-	protected FlexoResource<?>  modelResource;
-
+	@SuppressWarnings("unused")
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XSOntology.class.getPackage()
 			.getName());
-
 
 	// Objects contained in the Model + MetaModel / Ontology
 
@@ -102,7 +97,6 @@ public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOn
 	public List<XSOntology> getImportedOntologies() {
 		return Collections.emptyList();
 	}
-
 
 	@Override
 	public XSOntClass getRootConcept() {
@@ -143,7 +137,6 @@ public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOn
 		return new ArrayList<XSOntClass>(result.values());
 	}
 
-
 	@Override
 	public List<XSOntObjectProperty> getObjectProperties() {
 		return new ArrayList<XSOntObjectProperty>(objectProperties.values());
@@ -166,8 +159,8 @@ public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOn
 	}
 
 	@Override
-	public IFlexoOntologyStructuralProperty getProperty(String objectURI) {
-		IFlexoOntologyStructuralProperty result = getDataProperty(objectURI);
+	public IFlexoOntologyStructuralProperty<XSDTechnologyAdapter> getProperty(String objectURI) {
+		IFlexoOntologyStructuralProperty<XSDTechnologyAdapter> result = getDataProperty(objectURI);
 		if (result == null) {
 			result = getObjectProperty(objectURI);
 		}
@@ -179,13 +172,12 @@ public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOn
 		return new ArrayList<XSOntIndividual>(individuals.values());
 	}
 
-
 	// TODO, TO BE OPTIMIZED
 	public List<XSOntIndividual> getIndividualsOfClass(IXMLType aClass) {
 		ArrayList<XSOntIndividual> returned = new ArrayList<XSOntIndividual>();
-		for (XSOntIndividual o : individuals.values()){
-			
-			if (((XSOntClass)aClass).isSuperClassOf((IFlexoOntologyClass) o.getType())) {
+		for (XSOntIndividual o : individuals.values()) {
+
+			if (((XSOntClass) aClass).isSuperClassOf((IFlexoOntologyClass<XSDTechnologyAdapter>) o.getType())) {
 				returned.add(o);
 			}
 		}
@@ -212,30 +204,30 @@ public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOn
 	 * 
 	 * createOntologyIndividual
 	 * 
-	 * 			Creates a new ontology individual WITHOUT adding it to the individuals of that particular ontology yet
-	 * 			This is because we need to have all the object property values before calculating URIs (by ModelSlot) 
-	 * 	
+	 * Creates a new ontology individual WITHOUT adding it to the individuals of that particular ontology yet This is because we need to
+	 * have all the object property values before calculating URIs (by ModelSlot)
+	 * 
 	 * @param type
 	 * @return
 	 * @throws DuplicateURIException
 	 */
 
-	public XSOntIndividual createOntologyIndividual(XSOntClass type)  {
+	public XSOntIndividual createOntologyIndividual(XSOntClass type) {
 
 		XSOntIndividual individual = new XSOntIndividual(getTechnologyAdapter());
-		if (type != null){
+		if (type != null) {
 			individual.setName(type.getName());
 			individual.setType(type);
 		}
 		return individual;
-	}	
+	}
 
 	/**
 	 * 
 	 * addIndividual
 	 * 
-	 * 			add a new Individual to the ontoloty
-	 * 	
+	 * add a new Individual to the ontoloty
+	 * 
 	 * @param name
 	 * @param type
 	 * @return
@@ -247,11 +239,9 @@ public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOn
 		individuals.put(indUri, individual);
 	}
 
-
-
 	@Override
-	public IFlexoOntologyConcept getOntologyObject(String objectURI) {
-		IFlexoOntologyConcept result = getClass(objectURI);
+	public IFlexoOntologyConcept<XSDTechnologyAdapter> getOntologyObject(String objectURI) {
+		IFlexoOntologyConcept<XSDTechnologyAdapter> result = getClass(objectURI);
 		if (result == null) {
 			result = getProperty(objectURI);
 		}
@@ -270,7 +260,6 @@ public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOn
 		return getOntologyObject(objectURI);
 	}
 
-
 	private Set<XSOntIndividual> getRootElements() {
 		Set<XSOntIndividual> result = new HashSet<XSOntIndividual>();
 		for (XSOntIndividual individual : this.getIndividuals()) {
@@ -282,7 +271,7 @@ public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOn
 	}
 
 	@Override
-	public List<IFlexoOntologyContainer> getSubContainers() {
+	public List<IFlexoOntologyContainer<XSDTechnologyAdapter>> getSubContainers() {
 		// TODO implement this
 		return null;
 	}
@@ -356,7 +345,6 @@ public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOn
 		return result;
 	}
 
-
 	public void clearAllRangeAndDomain() {
 		for (XSOntClass o : classes.values()) {
 			o.clearPropertiesTakingMyselfAsRangeOrDomain();
@@ -387,6 +375,5 @@ public abstract class XSOntology extends AbstractXSOntObject implements IFlexoOn
 
 		return doc;
 	}
-
 
 }

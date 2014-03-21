@@ -27,6 +27,7 @@ import com.hp.hpl.jena.ontology.IntersectionClass;
 
 public class OWLIntersectionClass extends OWLOperatorClass {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(OWLIntersectionClass.class.getPackage().getName());
 
 	private final IntersectionClass ontClass;

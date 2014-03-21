@@ -29,8 +29,9 @@ import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.Restriction;
 
-public abstract class OWLRestriction extends OWLClass implements IFlexoOntologyFeatureAssociation {
+public abstract class OWLRestriction extends OWLClass implements IFlexoOntologyFeatureAssociation<OWLTechnologyAdapter> {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(OWLRestriction.class.getPackage().getName());
 
 	static final String ON_CLASS = "onClass";
@@ -69,7 +70,7 @@ public abstract class OWLRestriction extends OWLClass implements IFlexoOntologyF
 		retrieveRestrictionInformations();
 	}
 
-	private boolean addedToReferencingRestriction = false;
+	private final boolean addedToReferencingRestriction = false;
 
 	protected void retrieveRestrictionInformations() {
 		property = getOntology().retrieveOntologyProperty(restriction.getOnProperty());
@@ -122,9 +123,9 @@ public abstract class OWLRestriction extends OWLClass implements IFlexoOntologyF
 	}
 
 	@Override
-	public IFlexoOntologyObject getRange() {
+	public IFlexoOntologyObject<OWLTechnologyAdapter> getRange() {
 		if (getFeature() instanceof IFlexoOntologyStructuralProperty) {
-			return ((IFlexoOntologyStructuralProperty) getFeature()).getRange();
+			return getFeature().getRange();
 		}
 		return null;
 	}

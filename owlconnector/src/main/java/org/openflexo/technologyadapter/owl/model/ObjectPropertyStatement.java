@@ -30,11 +30,11 @@ import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Resource;
 import com.hp.hpl.jena.rdf.model.Statement;
 
-public class ObjectPropertyStatement extends PropertyStatement implements IFlexoOntologyObjectPropertyValue {
+public class ObjectPropertyStatement extends PropertyStatement implements IFlexoOntologyObjectPropertyValue<OWLTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(ObjectPropertyStatement.class.getPackage().getName());
 
-	private OWLObjectProperty property;
+	private final OWLObjectProperty property;
 	private OWLConcept<?> statementObject;
 	private Literal literal;
 
@@ -115,8 +115,8 @@ public class ObjectPropertyStatement extends PropertyStatement implements IFlexo
 	}
 
 	@Override
-	public List<OWLConcept> getValues() {
-		return Collections.singletonList((OWLConcept) getStatementObject());
+	public List<? extends OWLConcept<?>> getValues() {
+		return Collections.singletonList(getStatementObject());
 	}
 
 }

@@ -23,23 +23,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openflexo.foundation.ontology.IFlexoOntology;
-import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
-import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.xml.model.IXMLIndividual;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
-import org.openflexo.technologyadapter.xsd.model.XSObjectPropertyValue;
 import org.openflexo.technologyadapter.xsd.model.XSOntIndividual;
 import org.openflexo.technologyadapter.xsd.model.XSOntology;
-import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResourceImpl;
 import org.openflexo.toolbox.StringUtils;
 
 import com.sun.xml.xsom.XSAttributeUse;
 
-public class XSOntObjectProperty extends XSOntProperty implements IFlexoOntologyObjectProperty {
+public class XSOntObjectProperty extends XSOntProperty implements IFlexoOntologyObjectProperty<XSDTechnologyAdapter> {
 
 	private XSOntClass range;
 	private boolean noRangeFoundYet = true;
@@ -55,18 +50,15 @@ public class XSOntObjectProperty extends XSOntProperty implements IFlexoOntology
 	protected XSOntObjectProperty(XSOntology ontology, String name, XSDTechnologyAdapter adapter) {
 		this(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
 	}
-	
-	protected XSOntObjectProperty(XSOntology ontology,String name, 
-			XSOntClass domainClass, XSDTechnologyAdapter adapter) {
+
+	protected XSOntObjectProperty(XSOntology ontology, String name, XSOntClass domainClass, XSDTechnologyAdapter adapter) {
 		super(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
 	}
-
 
 	protected XSOntObjectProperty(XSOntology ontology, String name, XSOntClass domainClass, XSAttributeUse attributeUse,
 			XSDTechnologyAdapter adapter) {
 		super(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
 	}
-
 
 	public void addSuperProperty(XSOntObjectProperty parent) {
 		superProperties.add(parent);
@@ -82,7 +74,7 @@ public class XSOntObjectProperty extends XSOntProperty implements IFlexoOntology
 	}
 
 	@Override
-	public List<XSOntObjectProperty> getSubProperties(IFlexoOntology context) {
+	public List<XSOntObjectProperty> getSubProperties(IFlexoOntology<XSDTechnologyAdapter> context) {
 		// TODO
 		return new ArrayList<XSOntObjectProperty>();
 	}
@@ -163,7 +155,6 @@ public class XSOntObjectProperty extends XSOntProperty implements IFlexoOntology
 		return -1;
 	}
 
-
 	@Override
 	public boolean isSimpleAttribute() {
 		return false;
@@ -174,15 +165,13 @@ public class XSOntObjectProperty extends XSOntProperty implements IFlexoOntology
 		return true;
 	}
 
-
 	@Override
 	public void addValue(IXMLIndividual<?, ?> indiv, Object value) {
 
 		XSOntIndividual anIndividual = (XSOntIndividual) indiv;
 
-		anIndividual.addToPropertyValue(this,(XSOntIndividual) value);
+		anIndividual.addToPropertyValue(this, value);
 	}
-
 
 	@Override
 	public <T> T accept(IFlexoOntologyConceptVisitor<T> visitor) {
@@ -190,10 +179,9 @@ public class XSOntObjectProperty extends XSOntProperty implements IFlexoOntology
 	}
 
 	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation> getReferencingFeatureAssociations() {
+	public List<? extends IFlexoOntologyFeatureAssociation<XSDTechnologyAdapter>> getReferencingFeatureAssociations() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 }

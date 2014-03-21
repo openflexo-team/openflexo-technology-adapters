@@ -36,13 +36,15 @@ import org.eclipse.emf.ecore.EObject;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * EMF Object Individual Attribute Data Property Value.
  * 
  * @author gbesancon
  */
-public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObjectImpl<EObject> implements IFlexoOntologyDataPropertyValue {
+public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObjectImpl<EObject> implements
+		IFlexoOntologyDataPropertyValue<EMFTechnologyAdapter> {
 
 	/** Attribute. */
 	protected final EAttribute attribute;
@@ -82,7 +84,7 @@ public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObje
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyDataPropertyValue#getDataProperty()
 	 */
 	@Override
-	public IFlexoOntologyDataProperty getDataProperty() {
+	public IFlexoOntologyDataProperty<EMFTechnologyAdapter> getDataProperty() {
 		return ontology.getMetaModel().getConverter().convertAttributeDataProperty(ontology.getMetaModel(), attribute);
 	}
 
@@ -92,7 +94,7 @@ public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObje
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue#getProperty()
 	 */
 	@Override
-	public IFlexoOntologyStructuralProperty getProperty() {
+	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> getProperty() {
 		return getDataProperty();
 	}
 

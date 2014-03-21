@@ -33,6 +33,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
+import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.xml.model.IXMLAttribute;
 import org.openflexo.technologyadapter.xml.model.IXMLIndividual;
 import org.openflexo.technologyadapter.xml.model.IXMLModel;
@@ -45,7 +46,7 @@ import org.openflexo.technologyadapter.xml.model.IXMLModel;
  * 
  */
 
-public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends ResourceData<RD>> {
+public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends ResourceData<RD> & TechnologyObject<?>> {
 
 	private R taRes = null;
 	private OutputStreamWriter outputStr = null;

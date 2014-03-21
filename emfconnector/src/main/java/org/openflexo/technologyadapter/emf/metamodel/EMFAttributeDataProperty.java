@@ -44,14 +44,15 @@ import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * EMF Attribute Data Property.
  * 
  * @author gbesancon
  */
-public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute> implements IFlexoOntologyDataProperty {
+public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute> implements
+		IFlexoOntologyDataProperty<EMFTechnologyAdapter> {
 	/**
 	 * Constructor.
 	 */
@@ -116,7 +117,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getContainer()
 	 */
 	@Override
-	public IFlexoOntologyConceptContainer getContainer() {
+	public IFlexoOntologyConceptContainer<EMFTechnologyAdapter> getContainer() {
 		return ontology.getConverter().convertPackage(ontology, object.getEContainingClass().getEPackage());
 	}
 
@@ -145,7 +146,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getStructuralFeatureAssociations()
 	 */
 	@Override
-	public List<IFlexoOntologyFeatureAssociation> getStructuralFeatureAssociations() {
+	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getStructuralFeatureAssociations() {
 		return Collections.emptyList();
 	}
 
@@ -155,7 +156,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getBehaviouralFeatureAssociations()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation> getBehaviouralFeatureAssociations() {
+	public List<? extends IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getBehaviouralFeatureAssociations() {
 		return Collections.emptyList();
 	}
 
@@ -165,7 +166,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#isSuperConceptOf(org.openflexo.foundation.ontology.IFlexoOntologyConcept)
 	 */
 	@Override
-	public boolean isSuperConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSuperConceptOf(IFlexoOntologyConcept<EMFTechnologyAdapter> concept) {
 		return false;
 	}
 
@@ -175,7 +176,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#equalsToConcept(org.openflexo.foundation.ontology.IFlexoOntologyConcept)
 	 */
 	@Override
-	public boolean equalsToConcept(IFlexoOntologyConcept concept) {
+	public boolean equalsToConcept(IFlexoOntologyConcept<EMFTechnologyAdapter> concept) {
 		return concept == this;
 	}
 
@@ -185,7 +186,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#isSubConceptOf(org.openflexo.foundation.ontology.IFlexoOntologyConcept)
 	 */
 	@Override
-	public boolean isSubConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSubConceptOf(IFlexoOntologyConcept<EMFTechnologyAdapter> concept) {
 		return false;
 	}
 
@@ -205,8 +206,8 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyFeature#getReferencingFeatureAssociations()
 	 */
 	@Override
-	public List<IFlexoOntologyFeatureAssociation> getReferencingFeatureAssociations() {
-		List<IFlexoOntologyFeatureAssociation> referencingFeatureAssociation = new ArrayList<IFlexoOntologyFeatureAssociation>();
+	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getReferencingFeatureAssociations() {
+		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> referencingFeatureAssociation = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>();
 		referencingFeatureAssociation.add(ontology.getConverter().convertAttributeAssociation(ontology, object));
 		return Collections.unmodifiableList(referencingFeatureAssociation);
 	}
@@ -217,7 +218,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyDataProperty#getRange()
 	 */
 	@Override
-	public IFlexoOntologyDataType getRange() {
+	public IFlexoOntologyDataType<EMFTechnologyAdapter> getRange() {
 		return ontology.getConverter().convertDataType(ontology, object.getEAttributeType());
 	}
 
@@ -227,7 +228,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty#getDomain()
 	 */
 	@Override
-	public IFlexoOntologyConcept getDomain() {
+	public IFlexoOntologyConcept<EMFTechnologyAdapter> getDomain() {
 		return ontology.getConverter().convertClass(ontology, object.getEContainingClass());
 	}
 
@@ -247,7 +248,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty#getSuperProperties()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyStructuralProperty> getSuperProperties() {
+	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getSuperProperties() {
 		return Collections.emptyList();
 	}
 
@@ -257,7 +258,8 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty#getSubProperties(org.openflexo.foundation.ontology.IFlexoOntology)
 	 */
 	@Override
-	public List<? extends IFlexoOntologyStructuralProperty> getSubProperties(IFlexoOntology context) {
+	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getSubProperties(
+			IFlexoOntology<EMFTechnologyAdapter> context) {
 		return Collections.emptyList();
 	}
 
@@ -268,7 +270,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 */
 	@Override
 	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty> getPropertiesTakingMySelfAsRange() {
+	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
 		return Collections.emptyList();
 	}
 
@@ -279,7 +281,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 */
 	@Override
 	@Deprecated
-	public List<? extends IFlexoOntologyFeature> getPropertiesTakingMySelfAsDomain() {
+	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
 		return Collections.emptyList();
 	}
 
@@ -289,7 +291,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyObject#getTechnologyAdapter()
 	 */
 	@Override
-	public TechnologyAdapter getTechnologyAdapter() {
+	public EMFTechnologyAdapter getTechnologyAdapter() {
 		return ontology.getTechnologyAdapter();
 	}
 

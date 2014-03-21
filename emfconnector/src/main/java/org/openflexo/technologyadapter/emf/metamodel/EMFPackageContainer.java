@@ -51,13 +51,14 @@ import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * EMF Package Container.
  * 
  * @author gbesancon
  */
-public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> implements IFlexoOntologyContainer {
+public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> implements IFlexoOntologyContainer<EMFTechnologyAdapter> {
 	/**
 	 * Constructor.
 	 */
@@ -102,8 +103,8 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyContainer#getParent()
 	 */
 	@Override
-	public IFlexoOntologyConceptContainer getParent() {
-		IFlexoOntologyConceptContainer result = null;
+	public IFlexoOntologyConceptContainer<EMFTechnologyAdapter> getParent() {
+		IFlexoOntologyConceptContainer<EMFTechnologyAdapter> result = null;
 		if (object.getESuperPackage() != null) {
 			result = ontology.getConverter().convertPackage(ontology, object.getESuperPackage());
 		} else {
@@ -118,8 +119,8 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyContainer#getSubContainers()
 	 */
 	@Override
-	public List<IFlexoOntologyContainer> getSubContainers() {
-		List<IFlexoOntologyContainer> containers = new ArrayList<IFlexoOntologyContainer>();
+	public List<IFlexoOntologyContainer<EMFTechnologyAdapter>> getSubContainers() {
+		List<IFlexoOntologyContainer<EMFTechnologyAdapter>> containers = new ArrayList<IFlexoOntologyContainer<EMFTechnologyAdapter>>();
 		for (EPackage eSubPackage : object.getESubpackages()) {
 			containers.add(ontology.getConverter().convertPackage(ontology, eSubPackage));
 		}
@@ -132,8 +133,8 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getConcepts()
 	 */
 	@Override
-	public List<IFlexoOntologyConcept> getConcepts() {
-		List<IFlexoOntologyConcept> result = new ArrayList<IFlexoOntologyConcept>();
+	public List<IFlexoOntologyConcept<EMFTechnologyAdapter>> getConcepts() {
+		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
 		result.addAll(getClasses());
 		result.addAll(getIndividuals());
 		result.addAll(getDataProperties());
@@ -147,9 +148,9 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getOntologyObject(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyConcept getOntologyObject(String objectURI) {
-		IFlexoOntologyConcept result = null;
-		for (IFlexoOntologyConcept concept : getConcepts()) {
+	public IFlexoOntologyConcept<EMFTechnologyAdapter> getOntologyObject(String objectURI) {
+		IFlexoOntologyConcept<EMFTechnologyAdapter> result = null;
+		for (IFlexoOntologyConcept<EMFTechnologyAdapter> concept : getConcepts()) {
 			if (concept.getURI().equalsIgnoreCase(objectURI)) {
 				result = concept;
 			}
@@ -163,8 +164,8 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getIndividuals()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyIndividual> getIndividuals() {
-		List<IFlexoOntologyIndividual> concepts = new ArrayList<IFlexoOntologyIndividual>();
+	public List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> getIndividuals() {
+		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyIndividual<EMFTechnologyAdapter>>();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.EENUM) {
 				EEnum eEnum = (EEnum) classifier;
@@ -182,9 +183,9 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getIndividual(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyIndividual getIndividual(String individualURI) {
-		IFlexoOntologyIndividual result = null;
-		for (IFlexoOntologyIndividual individual : getIndividuals()) {
+	public IFlexoOntologyIndividual<EMFTechnologyAdapter> getIndividual(String individualURI) {
+		IFlexoOntologyIndividual<EMFTechnologyAdapter> result = null;
+		for (IFlexoOntologyIndividual<EMFTechnologyAdapter> individual : getIndividuals()) {
 			if (individual.getURI().equalsIgnoreCase(individualURI)) {
 				result = individual;
 			}
@@ -198,8 +199,8 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getClasses()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyClass> getClasses() {
-		List<IFlexoOntologyClass> concepts = new ArrayList<IFlexoOntologyClass>();
+	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getClasses() {
+		List<IFlexoOntologyClass<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
 				EClass eClass = (EClass) classifier;
@@ -218,9 +219,9 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getClass(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyClass getClass(String classURI) {
-		IFlexoOntologyClass result = null;
-		for (IFlexoOntologyClass aClass : getClasses()) {
+	public IFlexoOntologyClass<EMFTechnologyAdapter> getClass(String classURI) {
+		IFlexoOntologyClass<EMFTechnologyAdapter> result = null;
+		for (IFlexoOntologyClass<EMFTechnologyAdapter> aClass : getClasses()) {
 			if (aClass.getURI().equalsIgnoreCase(classURI)) {
 				result = aClass;
 			}
@@ -234,8 +235,8 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getProperty(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyStructuralProperty getProperty(String objectURI) {
-		IFlexoOntologyStructuralProperty result = null;
+	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> getProperty(String objectURI) {
+		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> result = null;
 		if (result == null) {
 			result = getDataProperty(objectURI);
 		}
@@ -251,8 +252,8 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getDataProperties()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyDataProperty> getDataProperties() {
-		List<IFlexoOntologyDataProperty> concepts = new ArrayList<IFlexoOntologyDataProperty>();
+	public List<? extends IFlexoOntologyDataProperty<EMFTechnologyAdapter>> getDataProperties() {
+		List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyDataProperty<EMFTechnologyAdapter>>();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
 				EClass eClass = (EClass) classifier;
@@ -275,9 +276,9 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getDataProperty(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyDataProperty getDataProperty(String propertyURI) {
-		IFlexoOntologyDataProperty result = null;
-		for (IFlexoOntologyDataProperty dataProperty : getDataProperties()) {
+	public IFlexoOntologyDataProperty<EMFTechnologyAdapter> getDataProperty(String propertyURI) {
+		IFlexoOntologyDataProperty<EMFTechnologyAdapter> result = null;
+		for (IFlexoOntologyDataProperty<EMFTechnologyAdapter> dataProperty : getDataProperties()) {
 			if (dataProperty.getURI().equalsIgnoreCase(propertyURI)) {
 				result = dataProperty;
 			}
@@ -291,8 +292,8 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getObjectProperties()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyObjectProperty> getObjectProperties() {
-		List<IFlexoOntologyObjectProperty> concepts = new ArrayList<IFlexoOntologyObjectProperty>();
+	public List<? extends IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> getObjectProperties() {
+		List<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>>();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
 				EClass eClass = (EClass) classifier;
@@ -318,9 +319,9 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getObjectProperty(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyObjectProperty getObjectProperty(String propertyURI) {
-		IFlexoOntologyObjectProperty result = null;
-		for (IFlexoOntologyObjectProperty objectProperty : getObjectProperties()) {
+	public IFlexoOntologyObjectProperty<EMFTechnologyAdapter> getObjectProperty(String propertyURI) {
+		IFlexoOntologyObjectProperty<EMFTechnologyAdapter> result = null;
+		for (IFlexoOntologyObjectProperty<EMFTechnologyAdapter> objectProperty : getObjectProperties()) {
 			if (objectProperty.getURI().equalsIgnoreCase(propertyURI)) {
 				result = objectProperty;
 			}
@@ -334,8 +335,8 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getDataTypes()
 	 */
 	@Override
-	public List<IFlexoOntologyDataType> getDataTypes() {
-		List<IFlexoOntologyDataType> dataTypes = new ArrayList<IFlexoOntologyDataType>();
+	public List<IFlexoOntologyDataType<EMFTechnologyAdapter>> getDataTypes() {
+		List<IFlexoOntologyDataType<EMFTechnologyAdapter>> dataTypes = new ArrayList<IFlexoOntologyDataType<EMFTechnologyAdapter>>();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
 				EDataType eDataType = (EDataType) classifier;

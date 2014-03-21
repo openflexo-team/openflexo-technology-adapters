@@ -30,7 +30,7 @@ import org.openflexo.toolbox.StringUtils;
 import com.hp.hpl.jena.rdf.model.Literal;
 import com.hp.hpl.jena.rdf.model.Statement;
 
-public abstract class PropertyStatement extends OWLStatement implements IFlexoOntologyPropertyValue {
+public abstract class PropertyStatement extends OWLStatement implements IFlexoOntologyPropertyValue<OWLTechnologyAdapter> {
 
 	public static final String AS_STRING = "asString";
 	public static final String AS_BOOLEAN = "asBoolean";
@@ -42,7 +42,7 @@ public abstract class PropertyStatement extends OWLStatement implements IFlexoOn
 	public static final String AS_FLOAT = "asFloat";
 	public static final String AS_DOUBLE = "asDouble";
 
-	public PropertyStatement(OWLConcept subject, Statement s, OWLTechnologyAdapter adapter) {
+	public PropertyStatement(OWLConcept<?> subject, Statement s, OWLTechnologyAdapter adapter) {
 		super(subject, s, adapter);
 	}
 

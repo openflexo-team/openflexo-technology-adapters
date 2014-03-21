@@ -4,7 +4,7 @@ import org.openflexo.foundation.DefaultFlexoObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 
-public abstract class PowerpointObject extends DefaultFlexoObject implements TechnologyObject {
+public abstract class PowerpointObject extends DefaultFlexoObject implements TechnologyObject<PowerpointTechnologyAdapter> {
 
 	private final PowerpointTechnologyAdapter technologyAdapter;
 

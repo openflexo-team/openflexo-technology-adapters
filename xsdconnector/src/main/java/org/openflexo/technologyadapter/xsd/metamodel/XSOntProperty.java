@@ -20,7 +20,6 @@
 package org.openflexo.technologyadapter.xsd.metamodel;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,7 +31,8 @@ import org.openflexo.technologyadapter.xsd.model.AbstractXSOntConcept;
 import org.openflexo.technologyadapter.xsd.model.XSOntology;
 import org.openflexo.technologyadapter.xsd.model.XSOntologyURIDefinitions;
 
-public abstract class XSOntProperty extends AbstractXSOntConcept implements IFlexoOntologyFeatureAssociation,  IFlexoOntologyStructuralProperty, XSOntologyURIDefinitions, IXMLAttribute {
+public abstract class XSOntProperty extends AbstractXSOntConcept implements IFlexoOntologyFeatureAssociation<XSDTechnologyAdapter>,
+		IFlexoOntologyStructuralProperty<XSDTechnologyAdapter>, XSOntologyURIDefinitions, IXMLAttribute {
 
 	protected XSOntClass domain;
 	private boolean noDomainFoundYet = true;
@@ -60,13 +60,11 @@ public abstract class XSOntProperty extends AbstractXSOntConcept implements IFle
 		this.domain = getOntology().getRootConcept();
 		noDomainFoundYet = true;
 	}
-	
 
 	@Override
 	public XSOntClass getDomain() {
 		return domain;
 	}
-
 
 	@Override
 	public Type getAttributeType() {
@@ -79,7 +77,7 @@ public abstract class XSOntProperty extends AbstractXSOntConcept implements IFle
 	}
 
 	@Override
-	public List<IFlexoOntologyFeatureAssociation> getStructuralFeatureAssociations() {
+	public List<IFlexoOntologyFeatureAssociation<XSDTechnologyAdapter>> getStructuralFeatureAssociations() {
 		return Collections.emptyList();
 	}
 }

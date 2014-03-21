@@ -47,12 +47,9 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
-import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyContainer;
-import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
-import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.dm.OntologyClassInserted;
 import org.openflexo.foundation.ontology.dm.OntologyClassRemoved;
 import org.openflexo.foundation.ontology.dm.OntologyDataPropertyInserted;
@@ -110,8 +107,8 @@ import com.hp.hpl.jena.util.ResourceUtils;
  * @author sylvain
  * 
  */
-public class OWLOntology extends OWLObject implements IFlexoOntology, ResourceData<OWLOntology>, FlexoMetaModel<OWLOntology>,
-		FlexoModel<OWLOntology, OWLOntology> {
+public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnologyAdapter>, ResourceData<OWLOntology>,
+		FlexoMetaModel<OWLOntology>, FlexoModel<OWLOntology, OWLOntology> {
 
 	private static final Logger logger = Logger.getLogger(IFlexoOntology.class.getPackage().getName());
 
@@ -518,10 +515,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology, ResourceDa
 		return true;
 	}
 
+	@SuppressWarnings("serial")
 	public static class OntologyNotFoundException extends Exception {
 
 	};
 
+	@SuppressWarnings("serial")
 	public static class DuplicatedOntologyException extends Exception {
 
 	};
@@ -1282,7 +1281,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology, ResourceDa
 	 * @param list
 	 */
 	private void removeOriginalFromRedefinedObjects(List<? extends OWLConcept<?>> list) {
-		for (OWLConcept c : new ArrayList<OWLConcept>(list)) {
+		for (OWLConcept<?> c : new ArrayList<OWLConcept<?>>(list)) {
 			if (c.redefinesOriginalDefinition()) {
 				if (c instanceof OWLClass && ((OWLClass) c).isRootConcept()) {
 					list.remove(c);
@@ -1789,22 +1788,22 @@ public class OWLOntology extends OWLObject implements IFlexoOntology, ResourceDa
 		return null;
 	}
 
-	public IFlexoOntologyClass newOntologyClass(FlexoEditor editor) {
+	public OWLClass newOntologyClass(FlexoEditor editor) {
 		CreateOntologyClass action = CreateOntologyClass.actionType.makeNewAction(this, null, editor).doAction();
 		return action.getNewClass();
 	}
 
-	public IFlexoOntologyIndividual newOntologyIndividual(FlexoEditor editor) {
+	public OWLIndividual newOntologyIndividual(FlexoEditor editor) {
 		CreateOntologyIndividual action = CreateOntologyIndividual.actionType.makeNewAction(this, null, editor).doAction();
 		return action.getNewIndividual();
 	}
 
-	public IFlexoOntologyObjectProperty newOntologyObjectProperty(FlexoEditor editor) {
+	public OWLObjectProperty newOntologyObjectProperty(FlexoEditor editor) {
 		CreateObjectProperty action = CreateObjectProperty.actionType.makeNewAction(this, null, editor).doAction();
 		return action.getNewProperty();
 	}
 
-	public IFlexoOntologyDataProperty newCreateDataProperty(FlexoEditor editor) {
+	public OWLDataProperty newCreateDataProperty(FlexoEditor editor) {
 		CreateDataProperty action = CreateDataProperty.actionType.makeNewAction(this, null, editor).doAction();
 		return action.getNewProperty();
 	}
@@ -1895,7 +1894,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology, ResourceDa
 	}
 
 	@Override
-	public IFlexoOntologyConcept getDeclaredOntologyObject(String objectURI) {
+	public IFlexoOntologyConcept<OWLTechnologyAdapter> getDeclaredOntologyObject(String objectURI) {
 		OWLConcept<?> returned = null;
 
 		returned = getDeclaredClass(objectURI);
@@ -2144,7 +2143,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology, ResourceDa
 	}
 
 	@Override
-	public List<? extends IFlexoOntologyContainer> getSubContainers() {
+	public List<? extends IFlexoOntologyContainer<OWLTechnologyAdapter>> getSubContainers() {
 		// TODO
 		return null;
 	}

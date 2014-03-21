@@ -22,6 +22,7 @@
 package org.openflexo.technologyadapter.csv.model;
 
 import java.util.List;
+
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
@@ -36,200 +37,198 @@ import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 
-public class CSVMetaModel extends FlexoOntologyObjectImpl
-implements FlexoMetaModel<CSVMetaModel>, IFlexoOntologyMetaModel
-{
-	public FlexoResource<CSVMetaModel> getResource()
-	{
+public class CSVMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaModel<CSVMetaModel>,
+		IFlexoOntologyMetaModel<CSVTechnologyAdapter> {
+	@Override
+	public FlexoResource<CSVMetaModel> getResource() {
 		return null;
 	}
 
-	public void setResource(FlexoResource<CSVMetaModel> resource)
-	{
+	@Override
+	public void setResource(FlexoResource<CSVMetaModel> resource) {
 	}
 
-	public String getVersion()
-	{
+	@Override
+	public String getVersion() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntology> getImportedOntologies()
-	{
+	@Override
+	public List<? extends IFlexoOntology<CSVTechnologyAdapter>> getImportedOntologies() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyAnnotation> getAnnotations()
-	{
+	@Override
+	public List<? extends IFlexoOntologyAnnotation> getAnnotations() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyClass> getAccessibleClasses()
-	{
+	@Override
+	public List<? extends IFlexoOntologyClass<CSVTechnologyAdapter>> getAccessibleClasses() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyIndividual> getAccessibleIndividuals()
-	{
+	@Override
+	public List<? extends IFlexoOntologyIndividual<CSVTechnologyAdapter>> getAccessibleIndividuals() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyObjectProperty> getAccessibleObjectProperties()
-	{
+	@Override
+	public List<? extends IFlexoOntologyObjectProperty<CSVTechnologyAdapter>> getAccessibleObjectProperties() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataProperty> getAccessibleDataProperties()
-	{
+	@Override
+	public List<? extends IFlexoOntologyDataProperty<CSVTechnologyAdapter>> getAccessibleDataProperties() {
 		return null;
 	}
 
-	public IFlexoOntologyConcept getDeclaredOntologyObject(String objectURI)
-	{
+	@Override
+	public IFlexoOntologyConcept<CSVTechnologyAdapter> getDeclaredOntologyObject(String objectURI) {
 		return null;
 	}
 
-	public IFlexoOntologyClass getDeclaredClass(String classURI)
-	{
+	@Override
+	public IFlexoOntologyClass<CSVTechnologyAdapter> getDeclaredClass(String classURI) {
 		return null;
 	}
 
-	public IFlexoOntologyIndividual getDeclaredIndividual(String individualURI)
-	{
+	@Override
+	public IFlexoOntologyIndividual<CSVTechnologyAdapter> getDeclaredIndividual(String individualURI) {
 		return null;
 	}
 
-	public IFlexoOntologyObjectProperty getDeclaredObjectProperty(String propertyURI)
-	{
+	@Override
+	public IFlexoOntologyObjectProperty<CSVTechnologyAdapter> getDeclaredObjectProperty(String propertyURI) {
 		return null;
 	}
 
-	public IFlexoOntologyDataProperty getDeclaredDataProperty(String propertyURI)
-	{
+	@Override
+	public IFlexoOntologyDataProperty<CSVTechnologyAdapter> getDeclaredDataProperty(String propertyURI) {
 		return null;
 	}
 
-	public IFlexoOntologyStructuralProperty getDeclaredProperty(String objectURI)
-	{
+	@Override
+	public IFlexoOntologyStructuralProperty<CSVTechnologyAdapter> getDeclaredProperty(String objectURI) {
 		return null;
 	}
 
-	public IFlexoOntologyClass getRootConcept()
-	{
+	@Override
+	public IFlexoOntologyClass<CSVTechnologyAdapter> getRootConcept() {
 		return null;
 	}
 
-	public void setName(String name)
-			throws Exception
-			{
-			}
+	@Override
+	public void setName(String name) throws Exception {
+	}
 
-	public List<? extends IFlexoOntologyContainer> getSubContainers()
-	{
+	@Override
+	public List<? extends IFlexoOntologyContainer<CSVTechnologyAdapter>> getSubContainers() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyConcept> getConcepts()
-	{
+	@Override
+	public List<? extends IFlexoOntologyConcept<CSVTechnologyAdapter>> getConcepts() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataType> getDataTypes()
-	{
+	@Override
+	public List<? extends IFlexoOntologyDataType<CSVTechnologyAdapter>> getDataTypes() {
 		return null;
 	}
 
-	public IFlexoOntologyConcept getOntologyObject(String objectURI)
-	{
+	@Override
+	public IFlexoOntologyConcept<CSVTechnologyAdapter> getOntologyObject(String objectURI) {
 		return null;
 	}
 
-	public IFlexoOntologyClass getClass(String classURI)
-	{
+	@Override
+	public IFlexoOntologyClass<CSVTechnologyAdapter> getClass(String classURI) {
 		return null;
 	}
 
-	public IFlexoOntologyIndividual getIndividual(String individualURI)
-	{
+	@Override
+	public IFlexoOntologyIndividual<CSVTechnologyAdapter> getIndividual(String individualURI) {
 		return null;
 	}
 
-	public IFlexoOntologyObjectProperty getObjectProperty(String propertyURI)
-	{
+	@Override
+	public IFlexoOntologyObjectProperty<CSVTechnologyAdapter> getObjectProperty(String propertyURI) {
 		return null;
 	}
 
-	public IFlexoOntologyDataProperty getDataProperty(String propertyURI)
-	{
+	@Override
+	public IFlexoOntologyDataProperty<CSVTechnologyAdapter> getDataProperty(String propertyURI) {
 		return null;
 	}
 
-	public IFlexoOntologyStructuralProperty getProperty(String objectURI)
-	{
+	@Override
+	public IFlexoOntologyStructuralProperty<CSVTechnologyAdapter> getProperty(String objectURI) {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyClass> getClasses()
-	{
+	@Override
+	public List<? extends IFlexoOntologyClass<CSVTechnologyAdapter>> getClasses() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyIndividual> getIndividuals()
-	{
+	@Override
+	public List<? extends IFlexoOntologyIndividual<CSVTechnologyAdapter>> getIndividuals() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataProperty> getDataProperties()
-	{
+	@Override
+	public List<? extends IFlexoOntologyDataProperty<CSVTechnologyAdapter>> getDataProperties() {
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyObjectProperty> getObjectProperties()
-	{
+	@Override
+	public List<? extends IFlexoOntologyObjectProperty<CSVTechnologyAdapter>> getObjectProperties() {
 		return null;
 	}
 
-	public String getURI()
-	{
+	@Override
+	public String getURI() {
 		return null;
 	}
 
-	public boolean isReadOnly()
-	{
+	@Override
+	public boolean isReadOnly() {
 		return false;
 	}
 
-	public void setIsReadOnly(boolean b)
-	{
+	@Override
+	public void setIsReadOnly(boolean b) {
 	}
 
-	public Object getObject(String objectURI)
-	{
+	@Override
+	public Object getObject(String objectURI) {
 		return null;
 	}
 
-	public TechnologyAdapter getTechnologyAdapter()
-	{
+	@Override
+	public CSVTechnologyAdapter getTechnologyAdapter() {
 		return null;
 	}
 
-	public String getName()
-	{
+	@Override
+	public String getName() {
 		return null;
 	}
 
-	public IFlexoOntology getFlexoOntology()
-	{
+	@Override
+	public IFlexoOntology<CSVTechnologyAdapter> getFlexoOntology() {
 		return null;
 	}
 
-	public String getDisplayableDescription()
-	{
+	@Override
+	public String getDisplayableDescription() {
 		return null;
 	}
-	public String getFullyQualifiedName()
-	{
+
+	public String getFullyQualifiedName() {
 		return null;
 	}
 }

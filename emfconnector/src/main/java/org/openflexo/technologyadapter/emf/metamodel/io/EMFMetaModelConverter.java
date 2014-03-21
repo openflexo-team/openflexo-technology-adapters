@@ -349,8 +349,8 @@ public class EMFMetaModelConverter {
 	 * @param aAttribute
 	 * @return
 	 */
-	public IFlexoOntologyStructuralProperty convertAttributeProperty(EMFMetaModel metaModel, EAttribute aAttribute) {
-		IFlexoOntologyStructuralProperty structuralProperty = null;
+	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> convertAttributeProperty(EMFMetaModel metaModel, EAttribute aAttribute) {
+		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> structuralProperty = null;
 		if (aAttribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
 			structuralProperty = convertAttributeDataProperty(metaModel, aAttribute);
 		} else if (aAttribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EENUM) {

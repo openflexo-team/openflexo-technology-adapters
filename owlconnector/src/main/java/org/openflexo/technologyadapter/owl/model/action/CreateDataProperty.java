@@ -27,10 +27,10 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.ontology.DuplicateURIException;
-import org.openflexo.foundation.ontology.IFlexoOntologyClass;
-import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
+import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.OWLDataType;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
@@ -69,13 +69,13 @@ public class CreateDataProperty extends FlexoAction<CreateDataProperty, OWLObjec
 
 	public String newPropertyName;
 	public String description;
-	public IFlexoOntologyDataProperty parentProperty;
-	public IFlexoOntologyClass domainClass;
+	public OWLDataProperty parentProperty;
+	public OWLClass domainClass;
 	public OWLDataType dataType;
 
 	public String validURILabel;
 
-	private IFlexoOntologyDataProperty newProperty;
+	private OWLDataProperty newProperty;
 
 	private static final String VALID_URI_LABEL = FlexoLocalization.localizedForKey("uri_is_well_formed_and_valid_regarding_its_unicity");
 	private static final String INVALID_URI_LABEL = FlexoLocalization.localizedForKey("uri_is_not_valid_please_choose_another_class_name");
@@ -92,7 +92,7 @@ public class CreateDataProperty extends FlexoAction<CreateDataProperty, OWLObjec
 		logger.info("Create IFlexoOntologyDataProperty on " + getFocusedObject());
 	}
 
-	public IFlexoOntologyDataProperty getNewProperty() {
+	public OWLDataProperty getNewProperty() {
 		return newProperty;
 	}
 

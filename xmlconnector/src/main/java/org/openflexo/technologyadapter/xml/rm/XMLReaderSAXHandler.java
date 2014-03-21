@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
+import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.xml.model.IXMLAttribute;
 import org.openflexo.technologyadapter.xml.model.IXMLIndividual;
 import org.openflexo.technologyadapter.xml.model.IXMLMetaModel;
@@ -48,8 +49,8 @@ import org.xml.sax.ext.DefaultHandler2;
  * @param <AC>, The Class of Attributes (mapping to XML Attributes)
  */
 
-public class XMLReaderSAXHandler<M extends FlexoModel<M, MM>, MM extends FlexoMetaModel<MM>, IC, AC extends IXMLAttribute> extends
-		DefaultHandler2 {
+public class XMLReaderSAXHandler<M extends FlexoModel<M, MM> & TechnologyObject<?>, MM extends FlexoMetaModel<MM> & TechnologyObject<?>, IC, AC extends IXMLAttribute>
+		extends DefaultHandler2 {
 
 	protected static final Logger logger = Logger.getLogger(XMLReaderSAXHandler.class.getPackage().getName());
 

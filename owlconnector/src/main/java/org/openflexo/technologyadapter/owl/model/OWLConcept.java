@@ -51,7 +51,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import com.hp.hpl.jena.util.ResourceUtils;
 
-public abstract class OWLConcept<R extends OntResource> extends OWLObject implements IFlexoOntologyConcept {
+public abstract class OWLConcept<R extends OntResource> extends OWLObject implements IFlexoOntologyConcept<OWLTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(IFlexoOntologyConcept.class.getPackage().getName());
 
@@ -233,7 +233,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 				} else if (predicate.getURI().equals(OWL_EQUIVALENT_CLASS_URI)) {
 					newStatement = new EquivalentClassStatement(this, s, getTechnologyAdapter());
 				} else {
-					IFlexoOntologyConcept predicateProperty = getOntology().getOntologyObject(predicate.getURI());
+					IFlexoOntologyConcept<OWLTechnologyAdapter> predicateProperty = getOntology().getOntologyObject(predicate.getURI());
 					if (predicateProperty instanceof IFlexoOntologyObjectProperty) {
 						newStatement = new ObjectPropertyStatement(this, s, getTechnologyAdapter());
 					} else if (predicateProperty instanceof IFlexoOntologyDataProperty) {
@@ -279,9 +279,9 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 
 		}
 
-		for (OWLStatement s : _statements) {
-			// System.out.println("> "+s.toString());
-		}
+		// for (OWLStatement s : _statements) {
+		// System.out.println("> "+s.toString());
+		// }
 
 		setChanged();
 		notifyObservers(new OntologyObjectStatementsChanged(this));
@@ -310,7 +310,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public Vector<PropertyStatement> getPropertyStatements(IFlexoOntologyStructuralProperty property) {
+	public Vector<PropertyStatement> getPropertyStatements(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property) {
 		Vector<PropertyStatement> returned = new Vector<PropertyStatement>();
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof PropertyStatement) {
@@ -329,7 +329,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public Vector<DataPropertyStatement> getAnnotationStatements(IFlexoOntologyDataProperty property) {
+	public Vector<DataPropertyStatement> getAnnotationStatements(IFlexoOntologyDataProperty<OWLTechnologyAdapter> property) {
 		Vector<DataPropertyStatement> returned = new Vector<DataPropertyStatement>();
 		for (OWLStatement statement : getAnnotationStatements()) {
 			if (statement instanceof DataPropertyStatement) {
@@ -348,7 +348,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public Vector<ObjectPropertyStatement> getAnnotationObjectStatements(IFlexoOntologyStructuralProperty property) {
+	public Vector<ObjectPropertyStatement> getAnnotationObjectStatements(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property) {
 		Vector<ObjectPropertyStatement> returned = new Vector<ObjectPropertyStatement>();
 		for (OWLStatement statement : getAnnotationObjectStatements()) {
 			if (statement instanceof PropertyStatement) {
@@ -367,7 +367,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public Vector<ObjectPropertyStatement> getObjectPropertyStatements(IFlexoOntologyObjectProperty property) {
+	public Vector<ObjectPropertyStatement> getObjectPropertyStatements(IFlexoOntologyObjectProperty<OWLTechnologyAdapter> property) {
 		Vector<ObjectPropertyStatement> returned = new Vector<ObjectPropertyStatement>();
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof ObjectPropertyStatement) {
@@ -386,7 +386,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public Vector<DataPropertyStatement> getDataPropertyStatements(IFlexoOntologyDataProperty property) {
+	public Vector<DataPropertyStatement> getDataPropertyStatements(IFlexoOntologyDataProperty<OWLTechnologyAdapter> property) {
 		Vector<DataPropertyStatement> returned = new Vector<DataPropertyStatement>();
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof DataPropertyStatement) {
@@ -456,7 +456,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public PropertyStatement getPropertyStatement(IFlexoOntologyStructuralProperty property) {
+	public PropertyStatement getPropertyStatement(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property) {
 		Vector<PropertyStatement> returned = getPropertyStatements(property);
 		if (returned.size() > 0) {
 			return returned.firstElement();
@@ -470,7 +470,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public DataPropertyStatement getDataPropertyStatement(IFlexoOntologyDataProperty property, Object value) {
+	public DataPropertyStatement getDataPropertyStatement(IFlexoOntologyDataProperty<OWLTechnologyAdapter> property, Object value) {
 		Vector<DataPropertyStatement> returned = getDataPropertyStatements(property);
 		for (DataPropertyStatement statement : returned) {
 			if (statement.getValue().equals(value)) {
@@ -486,7 +486,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public PropertyStatement getPropertyStatement(IFlexoOntologyStructuralProperty property, String value) {
+	public PropertyStatement getPropertyStatement(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property, String value) {
 		Vector<PropertyStatement> returned = getPropertyStatements(property);
 		for (PropertyStatement statement : returned) {
 			if (statement.hasLitteralValue() && statement.getStringValue().equals(value)) {
@@ -502,7 +502,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public PropertyStatement getPropertyStatement(IFlexoOntologyStructuralProperty property, Object value) {
+	public PropertyStatement getPropertyStatement(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property, Object value) {
 		Vector<PropertyStatement> returned = getPropertyStatements(property);
 		for (PropertyStatement statement : returned) {
 			if (statement.hasLitteralValue() && statement.getLiteral().getValue().equals(value)) {
@@ -518,7 +518,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public ObjectPropertyStatement getPropertyStatement(IFlexoOntologyObjectProperty property, IFlexoOntologyConcept object) {
+	public ObjectPropertyStatement getPropertyStatement(IFlexoOntologyObjectProperty<OWLTechnologyAdapter> property,
+			IFlexoOntologyConcept<OWLTechnologyAdapter> object) {
 		Vector<ObjectPropertyStatement> returned = getObjectPropertyStatements(property);
 		for (ObjectPropertyStatement statement : returned) {
 			if (statement.getStatementObject() == object) {
@@ -534,7 +535,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @param property
 	 * @return
 	 */
-	public PropertyStatement getPropertyStatement(IFlexoOntologyStructuralProperty property, String value, Language language) {
+	public PropertyStatement getPropertyStatement(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property, String value,
+			Language language) {
 		Vector<PropertyStatement> returned = getPropertyStatements(property);
 		for (PropertyStatement statement : returned) {
 			if (statement.hasLitteralValue() && statement.getStringValue().equals(value)
@@ -552,7 +554,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	// TODO: need to handle multiple statements
-	public DataPropertyStatement getDataPropertyStatement(IFlexoOntologyDataProperty property) {
+	public DataPropertyStatement getDataPropertyStatement(IFlexoOntologyDataProperty<OWLTechnologyAdapter> property) {
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof DataPropertyStatement && ((DataPropertyStatement) statement).getProperty() == property) {
 				return (DataPropertyStatement) statement;
@@ -568,7 +570,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	// TODO: need to handle multiple statements
-	public ObjectPropertyStatement getObjectPropertyStatement(IFlexoOntologyObjectProperty property) {
+	public ObjectPropertyStatement getObjectPropertyStatement(IFlexoOntologyObjectProperty<OWLTechnologyAdapter> property) {
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof ObjectPropertyStatement && ((ObjectPropertyStatement) statement).getProperty() == property) {
 				return (ObjectPropertyStatement) statement;
@@ -600,7 +602,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	// TODO: need to handle multiple statements
-	public SubClassStatement getSubClassStatement(IFlexoOntologyConcept father) {
+	public SubClassStatement getSubClassStatement(IFlexoOntologyConcept<OWLTechnologyAdapter> father) {
 		for (OWLStatement statement : getStatements()) {
 			if (statement instanceof SubClassStatement && ((SubClassStatement) statement).getParent().equals(father)) {
 				return (SubClassStatement) statement;
@@ -610,10 +612,10 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	}
 
 	@Override
-	public abstract boolean isSuperConceptOf(IFlexoOntologyConcept concept);
+	public abstract boolean isSuperConceptOf(IFlexoOntologyConcept<OWLTechnologyAdapter> concept);
 
 	@Override
-	public boolean isSubConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSubConceptOf(IFlexoOntologyConcept<OWLTechnologyAdapter> concept) {
 		return concept.isSuperConceptOf(this);
 	}
 
@@ -770,7 +772,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	public Object getAnnotationObjectValue(OWLObjectProperty property) {
 		List<ObjectPropertyStatement> annotations = getAnnotationObjectStatements(property);
 		for (ObjectPropertyStatement annotation : annotations) {
-			IFlexoOntologyConcept returned = annotation.getStatementObject();
+			IFlexoOntologyConcept<OWLTechnologyAdapter> returned = annotation.getStatementObject();
 			if (returned != null) {
 				return returned;
 			}
@@ -963,7 +965,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	private Vector<OWLProperty> getPropertiesTakingMyselfAsDomain(boolean includeDataProperties, boolean includeObjectProperties,
 			boolean includeAnnotationProperties, boolean includeBaseOntologies, OWLConcept<?> range, OWLDataType dataType,
 			OWLOntology... ontologies) {
-		Vector<OWLProperty> allProperties = new Vector(getPropertiesTakingMySelfAsDomain());
+		Vector<OWLProperty> allProperties = new Vector<OWLProperty>(getPropertiesTakingMySelfAsDomain());
 		Vector<OWLProperty> returnedProperties = new Vector<OWLProperty>();
 		for (OWLProperty p : allProperties) {
 			boolean takeIt = includeDataProperties && p instanceof OWLDataProperty || includeObjectProperties
@@ -1114,7 +1116,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @return
 	 */
 	@Override
-	public boolean equalsToConcept(IFlexoOntologyConcept o) {
+	public boolean equalsToConcept(IFlexoOntologyConcept<OWLTechnologyAdapter> o) {
 		if (o == null) {
 			return false;
 		}
@@ -1165,7 +1167,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getBehaviouralFeatureAssociations()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation> getBehaviouralFeatureAssociations() {
+	public List<? extends IFlexoOntologyFeatureAssociation<OWLTechnologyAdapter>> getBehaviouralFeatureAssociations() {
 		return Collections.emptyList();
 	}
 

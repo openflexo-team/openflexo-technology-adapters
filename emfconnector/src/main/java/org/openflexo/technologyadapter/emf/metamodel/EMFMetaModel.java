@@ -57,7 +57,8 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
  * 
  * @author gbesancon
  */
-public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaModel<EMFMetaModel>, IFlexoOntologyMetaModel {
+public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements FlexoMetaModel<EMFMetaModel>,
+		IFlexoOntologyMetaModel<EMFTechnologyAdapter> {
 	/** MetaModel Resource. */
 	protected EMFMetaModelResource metaModelResource;
 	/** Adapter. */
@@ -181,7 +182,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getRootConcept()
 	 */
 	@Override
-	public IFlexoOntologyClass getRootConcept() {
+	public IFlexoOntologyClass<EMFTechnologyAdapter> getRootConcept() {
 		return getClass(EcorePackage.eNS_URI + "/" + EObject.class.getSimpleName());
 	}
 
@@ -191,7 +192,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getImportedOntologies()
 	 */
 	@Override
-	public List<IFlexoOntology> getImportedOntologies() {
+	public List<IFlexoOntology<EMFTechnologyAdapter>> getImportedOntologies() {
 		return Collections.emptyList();
 	}
 
@@ -221,9 +222,9 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getOntologyObject(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyConcept getOntologyObject(String objectURI) {
-		IFlexoOntologyConcept result = null;
-		for (IFlexoOntologyConcept concept : getConcepts()) {
+	public IFlexoOntologyConcept<EMFTechnologyAdapter> getOntologyObject(String objectURI) {
+		IFlexoOntologyConcept<EMFTechnologyAdapter> result = null;
+		for (IFlexoOntologyConcept<EMFTechnologyAdapter> concept : getConcepts()) {
 			if (concept.getURI().equalsIgnoreCase(objectURI)) {
 				result = concept;
 			}
@@ -237,7 +238,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getDeclaredOntologyObject(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyConcept getDeclaredOntologyObject(String objectURI) {
+	public IFlexoOntologyConcept<EMFTechnologyAdapter> getDeclaredOntologyObject(String objectURI) {
 		return null;
 	}
 
@@ -267,9 +268,9 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getDataTypes()
 	 */
 	@Override
-	public List<IFlexoOntologyDataType> getDataTypes() {
-		List<IFlexoOntologyDataType> result = new ArrayList<IFlexoOntologyDataType>();
-		for (IFlexoOntologyDataType dataType : converter.getDataTypes().values()) {
+	public List<IFlexoOntologyDataType<EMFTechnologyAdapter>> getDataTypes() {
+		List<IFlexoOntologyDataType<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyDataType<EMFTechnologyAdapter>>();
+		for (IFlexoOntologyDataType<EMFTechnologyAdapter> dataType : converter.getDataTypes().values()) {
 			result.add(dataType);
 		}
 		return Collections.unmodifiableList(result);
@@ -282,8 +283,8 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getConcepts()
 	 */
 	@Override
-	public List<IFlexoOntologyConcept> getConcepts() {
-		List<IFlexoOntologyConcept> result = new ArrayList<IFlexoOntologyConcept>();
+	public List<IFlexoOntologyConcept<EMFTechnologyAdapter>> getConcepts() {
+		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
 		result.addAll(getClasses());
 		result.addAll(getIndividuals());
 		result.addAll(getDataProperties());
@@ -297,8 +298,8 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getClasses()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyClass> getClasses() {
-		List<IFlexoOntologyClass> result = new ArrayList<IFlexoOntologyClass>();
+	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getClasses() {
+		List<IFlexoOntologyClass<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
 		for (EMFClassClass aClass : converter.getClasses().values()) {
 			result.add(aClass);
 		}
@@ -314,9 +315,9 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getClass(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyClass getClass(String classURI) {
-		IFlexoOntologyClass result = null;
-		for (IFlexoOntologyClass aClass : getClasses()) {
+	public IFlexoOntologyClass<EMFTechnologyAdapter> getClass(String classURI) {
+		IFlexoOntologyClass<EMFTechnologyAdapter> result = null;
+		for (IFlexoOntologyClass<EMFTechnologyAdapter> aClass : getClasses()) {
 			if (aClass.getURI().equalsIgnoreCase(classURI)) {
 				result = aClass;
 			}
@@ -330,7 +331,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getDeclaredClass(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyClass getDeclaredClass(String classURI) {
+	public IFlexoOntologyClass<EMFTechnologyAdapter> getDeclaredClass(String classURI) {
 		return null;
 	}
 
@@ -340,7 +341,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getAccessibleClasses()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyClass> getAccessibleClasses() {
+	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getAccessibleClasses() {
 		return getClasses();
 	}
 
@@ -350,9 +351,9 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getIndividuals()
 	 */
 	@Override
-	public List<IFlexoOntologyIndividual> getIndividuals() {
-		List<IFlexoOntologyIndividual> result = new ArrayList<IFlexoOntologyIndividual>();
-		for (IFlexoOntologyIndividual individual : converter.getEnumLiterals().values()) {
+	public List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> getIndividuals() {
+		List<IFlexoOntologyIndividual<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyIndividual<EMFTechnologyAdapter>>();
+		for (IFlexoOntologyIndividual<EMFTechnologyAdapter> individual : converter.getEnumLiterals().values()) {
 			result.add(individual);
 		}
 		return Collections.unmodifiableList(result);
@@ -364,9 +365,9 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getIndividual(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyIndividual getIndividual(String individualURI) {
-		IFlexoOntologyIndividual result = null;
-		for (IFlexoOntologyIndividual individual : getIndividuals()) {
+	public IFlexoOntologyIndividual<EMFTechnologyAdapter> getIndividual(String individualURI) {
+		IFlexoOntologyIndividual<EMFTechnologyAdapter> result = null;
+		for (IFlexoOntologyIndividual<EMFTechnologyAdapter> individual : getIndividuals()) {
 			if (individual.getURI().equalsIgnoreCase(individualURI)) {
 				result = individual;
 			}
@@ -380,7 +381,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getDeclaredIndividual(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyIndividual getDeclaredIndividual(String individualURI) {
+	public IFlexoOntologyIndividual<EMFTechnologyAdapter> getDeclaredIndividual(String individualURI) {
 		return null;
 	}
 
@@ -390,7 +391,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getAccessibleIndividuals()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyIndividual> getAccessibleIndividuals() {
+	public List<? extends IFlexoOntologyIndividual<EMFTechnologyAdapter>> getAccessibleIndividuals() {
 		return getIndividuals();
 	}
 
@@ -400,8 +401,8 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getProperty(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyStructuralProperty getProperty(String objectURI) {
-		IFlexoOntologyStructuralProperty result = null;
+	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> getProperty(String objectURI) {
+		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> result = null;
 		if (result == null) {
 			result = getDataProperty(objectURI);
 		}
@@ -417,7 +418,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getDeclaredProperty(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyStructuralProperty getDeclaredProperty(String objectURI) {
+	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> getDeclaredProperty(String objectURI) {
 		return getProperty(objectURI);
 	}
 
@@ -427,9 +428,9 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getDataProperties()
 	 */
 	@Override
-	public List<IFlexoOntologyDataProperty> getDataProperties() {
-		List<IFlexoOntologyDataProperty> result = new ArrayList<IFlexoOntologyDataProperty>();
-		for (IFlexoOntologyDataProperty dataProperty : converter.getDataAttributes().values()) {
+	public List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> getDataProperties() {
+		List<IFlexoOntologyDataProperty<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyDataProperty<EMFTechnologyAdapter>>();
+		for (IFlexoOntologyDataProperty<EMFTechnologyAdapter> dataProperty : converter.getDataAttributes().values()) {
 			result.add(dataProperty);
 		}
 		return Collections.unmodifiableList(result);
@@ -441,9 +442,9 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getDataProperty(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyDataProperty getDataProperty(String propertyURI) {
-		IFlexoOntologyDataProperty result = null;
-		for (IFlexoOntologyDataProperty dataProperty : getDataProperties()) {
+	public IFlexoOntologyDataProperty<EMFTechnologyAdapter> getDataProperty(String propertyURI) {
+		IFlexoOntologyDataProperty<EMFTechnologyAdapter> result = null;
+		for (IFlexoOntologyDataProperty<EMFTechnologyAdapter> dataProperty : getDataProperties()) {
 			if (dataProperty.getURI().equalsIgnoreCase(propertyURI)) {
 				result = dataProperty;
 			}
@@ -457,7 +458,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getDeclaredDataProperty(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyDataProperty getDeclaredDataProperty(String propertyURI) {
+	public IFlexoOntologyDataProperty<EMFTechnologyAdapter> getDeclaredDataProperty(String propertyURI) {
 		return getDataProperty(propertyURI);
 	}
 
@@ -467,7 +468,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getAccessibleDataProperties()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyDataProperty> getAccessibleDataProperties() {
+	public List<? extends IFlexoOntologyDataProperty<EMFTechnologyAdapter>> getAccessibleDataProperties() {
 		return getDataProperties();
 	}
 
@@ -477,12 +478,12 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getObjectProperties()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyObjectProperty> getObjectProperties() {
-		List<IFlexoOntologyObjectProperty> result = new ArrayList<IFlexoOntologyObjectProperty>();
-		for (IFlexoOntologyObjectProperty objectProperty : converter.getObjectAttributes().values()) {
+	public List<? extends IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> getObjectProperties() {
+		List<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>>();
+		for (IFlexoOntologyObjectProperty<EMFTechnologyAdapter> objectProperty : converter.getObjectAttributes().values()) {
 			result.add(objectProperty);
 		}
-		for (IFlexoOntologyObjectProperty objectProperty : converter.getReferences().values()) {
+		for (IFlexoOntologyObjectProperty<EMFTechnologyAdapter> objectProperty : converter.getReferences().values()) {
 			result.add(objectProperty);
 		}
 		return Collections.unmodifiableList(result);
@@ -494,9 +495,9 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer#getObjectProperty(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyObjectProperty getObjectProperty(String propertyURI) {
-		IFlexoOntologyObjectProperty result = null;
-		for (IFlexoOntologyObjectProperty objectProperty : getObjectProperties()) {
+	public IFlexoOntologyObjectProperty<EMFTechnologyAdapter> getObjectProperty(String propertyURI) {
+		IFlexoOntologyObjectProperty<EMFTechnologyAdapter> result = null;
+		for (IFlexoOntologyObjectProperty<EMFTechnologyAdapter> objectProperty : getObjectProperties()) {
 			if (objectProperty.getURI().equalsIgnoreCase(propertyURI)) {
 				result = objectProperty;
 			}
@@ -510,7 +511,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getAccessibleObjectProperties()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyObjectProperty> getAccessibleObjectProperties() {
+	public List<? extends IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> getAccessibleObjectProperties() {
 		return getObjectProperties();
 	}
 
@@ -520,7 +521,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.IFlexoOntology#getDeclaredObjectProperty(java.lang.String)
 	 */
 	@Override
-	public IFlexoOntologyObjectProperty getDeclaredObjectProperty(String propertyURI) {
+	public IFlexoOntologyObjectProperty<EMFTechnologyAdapter> getDeclaredObjectProperty(String propertyURI) {
 		return getObjectProperty(propertyURI);
 	}
 
@@ -540,7 +541,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	 * @see org.openflexo.foundation.ontology.FlexoOntologyObjectImpl#getFlexoOntology()
 	 */
 	@Override
-	public IFlexoOntology getFlexoOntology() {
+	public IFlexoOntology<EMFTechnologyAdapter> getFlexoOntology() {
 		return this;
 	}
 

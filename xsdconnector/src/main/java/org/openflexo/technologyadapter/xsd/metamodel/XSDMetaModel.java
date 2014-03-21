@@ -42,7 +42,7 @@ import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
 import com.sun.xml.xsom.XSSimpleType;
 import com.sun.xml.xsom.XSType;
 
-public class XSDMetaModel extends XSOntology implements FlexoMetaModel<XSDMetaModel>, IXMLMetaModel, TechnologyObject {
+public class XSDMetaModel extends XSOntology implements FlexoMetaModel<XSDMetaModel>, IXMLMetaModel, TechnologyObject<XSDTechnologyAdapter> {
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XSDMetaModel.class.getPackage()
 			.getName());
@@ -71,7 +71,7 @@ public class XSDMetaModel extends XSOntology implements FlexoMetaModel<XSDMetaMo
 	}
 
 	@Override
-	public List<IFlexoOntologyMetaModel> getMetaModels() {
+	public List<IFlexoOntologyMetaModel<XSDTechnologyAdapter>> getMetaModels() {
 		// TODO Auto-generated method stub
 		return null;
 	}

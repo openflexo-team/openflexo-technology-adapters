@@ -28,6 +28,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 
 public abstract class IsAStatement extends OWLStatement {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(IsAStatement.class.getPackage().getName());
 
 	private OWLConcept<?> parentObject;

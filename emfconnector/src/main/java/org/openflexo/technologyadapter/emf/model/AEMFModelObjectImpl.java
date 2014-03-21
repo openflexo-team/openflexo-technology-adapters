@@ -30,7 +30,7 @@ package org.openflexo.technologyadapter.emf.model;
 
 import org.eclipse.emf.ecore.EObject;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * Abstract Simple implementation of Flexo ontology object.
@@ -38,7 +38,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
  * @author gbesancon
  * 
  */
-public abstract class AEMFModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl {
+public abstract class AEMFModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> {
 
 	/** MetaModel. */
 	protected final EMFModel ontology;
@@ -53,7 +53,7 @@ public abstract class AEMFModelObjectImpl<T extends EObject> extends FlexoOntolo
 		this.object = object;
 	}
 
-	public TechnologyAdapter getTechnologyAdapter() {
+	public EMFTechnologyAdapter getTechnologyAdapter() {
 		return getEMFModel().getTechnologyAdapter();
 	}
 

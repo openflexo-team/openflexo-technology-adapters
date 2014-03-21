@@ -35,6 +35,7 @@ import com.hp.hpl.jena.rdf.model.Statement;
 
 public class CardinalityRestrictionClass extends OWLRestriction {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(CardinalityRestrictionClass.class.getPackage().getName());
 
 	private final Restriction restriction;

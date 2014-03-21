@@ -29,8 +29,9 @@ import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
 
-public abstract class AbstractXSOntConcept extends AbstractXSOntObject implements IFlexoOntologyConcept {
+public abstract class AbstractXSOntConcept extends AbstractXSOntObject implements IFlexoOntologyConcept<XSDTechnologyAdapter> {
 
+	@SuppressWarnings("unused")
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(AbstractXSOntConcept.class
 			.getPackage().getName());
 
@@ -49,19 +50,19 @@ public abstract class AbstractXSOntConcept extends AbstractXSOntObject implement
 	}
 
 	@Override
-	public boolean isSuperConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSuperConceptOf(IFlexoOntologyConcept<XSDTechnologyAdapter> concept) {
 		// TODO Ask Sylvain
 		return false;
 	}
 
 	@Override
-	public boolean isSubConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSubConceptOf(IFlexoOntologyConcept<XSDTechnologyAdapter> concept) {
 		// TODO Ask Sylvain
 		return false;
 	}
 
 	@Override
-	public boolean equalsToConcept(IFlexoOntologyConcept o) {
+	public boolean equalsToConcept(IFlexoOntologyConcept<XSDTechnologyAdapter> o) {
 		// TODO Ask Sylvain
 		return false;
 	}
@@ -102,7 +103,7 @@ public abstract class AbstractXSOntConcept extends AbstractXSOntObject implement
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getBehaviouralFeatureAssociations()
 	 */
 	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation> getBehaviouralFeatureAssociations() {
+	public List<? extends IFlexoOntologyFeatureAssociation<XSDTechnologyAdapter>> getBehaviouralFeatureAssociations() {
 		return Collections.emptyList();
 	}
 

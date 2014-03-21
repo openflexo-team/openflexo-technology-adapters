@@ -27,6 +27,7 @@ import com.hp.hpl.jena.ontology.ComplementClass;
 
 public class OWLComplementClass extends OWLOperatorClass {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(OWLComplementClass.class.getPackage().getName());
 
 	private final ComplementClass ontClass;

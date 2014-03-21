@@ -28,6 +28,7 @@ import com.hp.hpl.jena.ontology.SomeValuesFromRestriction;
 
 public class SomeValuesFromRestrictionClass extends OWLRestriction {
 
+	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(SomeValuesFromRestrictionClass.class.getPackage().getName());
 
 	private final SomeValuesFromRestriction restriction;

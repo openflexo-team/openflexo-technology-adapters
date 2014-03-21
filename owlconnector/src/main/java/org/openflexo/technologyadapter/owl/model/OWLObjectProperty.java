@@ -30,7 +30,8 @@ import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
 import com.hp.hpl.jena.ontology.OntProperty;
 
-public class OWLObjectProperty extends OWLProperty implements IFlexoOntologyObjectProperty, Comparable<IFlexoOntologyObjectProperty> {
+public class OWLObjectProperty extends OWLProperty implements IFlexoOntologyObjectProperty<OWLTechnologyAdapter>,
+		Comparable<IFlexoOntologyObjectProperty<OWLTechnologyAdapter>> {
 
 	static final Logger logger = Logger.getLogger(IFlexoOntologyObjectProperty.class.getPackage().getName());
 
@@ -54,12 +55,12 @@ public class OWLObjectProperty extends OWLProperty implements IFlexoOntologyObje
 	}
 
 	@Override
-	public int compareTo(IFlexoOntologyObjectProperty o) {
+	public int compareTo(IFlexoOntologyObjectProperty<OWLTechnologyAdapter> o) {
 		return COMPARATOR.compare(this, o);
 	}
 
 	@Override
-	public boolean isSuperConceptOf(IFlexoOntologyConcept concept) {
+	public boolean isSuperConceptOf(IFlexoOntologyConcept<OWLTechnologyAdapter> concept) {
 		if (concept instanceof OWLObjectProperty) {
 			OWLObjectProperty ontologyObjectProperty = (OWLObjectProperty) concept;
 			return ontologyObjectProperty.getOntProperty().hasSuperProperty(getOntProperty(), false);
@@ -80,7 +81,7 @@ public class OWLObjectProperty extends OWLProperty implements IFlexoOntologyObje
 	 * @return
 	 */
 	@Override
-	public List<OWLObjectProperty> getSubProperties(IFlexoOntology context) {
+	public List<OWLObjectProperty> getSubProperties(IFlexoOntology<OWLTechnologyAdapter> context) {
 		if (context instanceof OWLOntology) {
 			List<OWLObjectProperty> returned = new Vector<OWLObjectProperty>();
 			for (OWLObjectProperty p : ((OWLOntology) context).getAccessibleObjectProperties()) {
