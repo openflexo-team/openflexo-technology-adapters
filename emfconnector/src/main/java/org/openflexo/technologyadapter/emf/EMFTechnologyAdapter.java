@@ -38,8 +38,6 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.resource.ResourceRepository;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
 import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
@@ -167,15 +165,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				// Also register the resource in the ResourceCenter seen as a ResourceRepository
-				if (resourceCenter instanceof ResourceRepository) {
-					try {
-						((ResourceRepository) resourceCenter).registerResource(mmRes,
-								((ResourceRepository<?>) resourceCenter).getRepositoryFolder(candidateFile, true));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+				referenceResource(mmRes, resourceCenter);
 				return mmRes;
 			}
 		}
@@ -204,15 +194,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 							} catch (IOException e1) {
 								e1.printStackTrace();
 							}
-							// Also register the resource in the ResourceCenter seen as a ResourceRepository
-							if (resourceCenter instanceof ResourceRepository) {
-								try {
-									((ResourceRepository) resourceCenter).registerResource(mmRes,
-											((ResourceRepository<?>) resourceCenter).getRepositoryFolder(candidateFile, true));
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
-							}
+							referenceResource(mRes, resourceCenter);
 							return mRes;
 						}
 					}

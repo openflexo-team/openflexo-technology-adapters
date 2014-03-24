@@ -40,8 +40,6 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 public class CSVAdapterController extends TechnologyAdapterController<CSVTechnologyAdapter> {
 	static final Logger logger = Logger.getLogger(CSVAdapterController.class.getPackage().getName());
 
-	
-
 	@Override
 	public Class<CSVTechnologyAdapter> getTechnologyAdapterClass() {
 		return CSVTechnologyAdapter.class;
@@ -49,8 +47,7 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
-		actionInitializer.getController().getModuleInspectorController()
-				.loadDirectory(ResourceLocator.locateResource("Inspectors/CSV"));
+		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/CSV"));
 	}
 
 	@Override
@@ -78,7 +75,7 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<CSVTechnologyAdapter>> objectClass) {
 		// TODO Auto-generated method stub
 		return null;
 	}

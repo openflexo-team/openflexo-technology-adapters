@@ -1,6 +1,5 @@
 package org.openflexo.technologyadapter.owl.controller;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
@@ -74,7 +73,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
 
 		// TODO : Des choses à faire ici pour améliorer le support des répertoires dans le ClassPath
-		
+
 		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/OWL"));
 
 		new CreateOntologyClassInitializer(actionInitializer);
@@ -132,7 +131,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<OWLTechnologyAdapter>> objectClass) {
 		if (OWLObject.class.isAssignableFrom(objectClass)) {
 			return OWLIconLibrary.iconForObject((Class<? extends OWLObject>) objectClass);
 		} else if (OWLStatement.class.isAssignableFrom(objectClass)) {

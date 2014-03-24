@@ -130,7 +130,7 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<EMFTechnologyAdapter>> objectClass) {
 		return EMFIconLibrary.iconForObject(objectClass);
 	}
 

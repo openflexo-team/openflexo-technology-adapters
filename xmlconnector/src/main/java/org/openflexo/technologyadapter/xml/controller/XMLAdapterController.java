@@ -56,7 +56,6 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 
 	@Override
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
-		
 
 		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/XML"));
 	}
@@ -161,7 +160,7 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<XMLTechnologyAdapter>> objectClass) {
 		// TODO Auto-generated method stub
 		return XMLIconLibrary.XML_FILE_ICON;
 	}

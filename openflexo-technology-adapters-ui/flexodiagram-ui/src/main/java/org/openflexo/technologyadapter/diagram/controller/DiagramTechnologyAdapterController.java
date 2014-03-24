@@ -7,9 +7,8 @@ import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.FlexoConceptInstanceRole;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
+import org.openflexo.foundation.viewpoint.FlexoConceptInstanceRole;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -22,10 +21,10 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.action.AddConnectorInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.AddDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.AddShapeInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPaletteInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSpecificationInitializer;
-import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptInitializer;
@@ -99,7 +98,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		inspectors.getConnectorInspector().setLocation(1000, 700);
 		inspectors.getLocationSizeInspector().setLocation(1000, 50);
 
-		actionInitializer.getController().getModuleInspectorController().loadDirectory( ResourceLocator.locateResource("Inspectors/Diagram"));
+		actionInitializer.getController().getModuleInspectorController()
+				.loadDirectory(ResourceLocator.locateResource("Inspectors/Diagram"));
 
 		WindowMenu viewMenu = actionInitializer.getController().getMenuBar().getWindowMenu();
 		viewMenu.addSeparator();
@@ -137,7 +137,6 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
 		new DeleteExampleDiagramElementsInitializer(actionInitializer);
 		new CreateDiagramFromPPTSlideInitializer(actionInitializer);
-
 
 		// DiagramPalette edition
 		new CreateDiagramPaletteInitializer(actionInitializer);
@@ -207,20 +206,19 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<DiagramTechnologyAdapter>> objectClass) {
 		if (Diagram.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.DIAGRAM_ICON;
 		} else if (DiagramShape.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.SHAPE_ICON;
 		} else if (DiagramConnector.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.CONNECTOR_ICON;
-		}else if (DiagramSpecification.class.isAssignableFrom(objectClass)) {
+		} else if (DiagramSpecification.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.DIAGRAM_SPECIFICATION_ICON;
 		}
 		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, IconLibrary.QUESTION);
 	}
 
-	
 	/**
 	 * Return icon representing supplied pattern role
 	 * 
@@ -297,8 +295,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 		// TODO: handle DiagramSpecification
 		if (object instanceof DiagramSpecification) {
-			//DiagramSpecificationView diagramSpecificationView = new DiagramSpecificationView(object, controller);
-			return new DiagramSpecificationView((DiagramSpecification)object, controller);
+			// DiagramSpecificationView diagramSpecificationView = new DiagramSpecificationView(object, controller);
+			return new DiagramSpecificationView((DiagramSpecification) object, controller);
 		}
 
 		// TODO: handle FlexoConcept where many PR are parts of a diagram

@@ -28,7 +28,6 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
 import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
@@ -48,8 +47,7 @@ import org.openflexo.technologyadapter.powerpoint.viewpoint.binding.PowerpointBi
  * 
  */
 @DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "BasicPowerpointModelSlot", modelSlotClass = BasicPowerpointModelSlot.class) 
-})
+@DeclareModelSlot(FML = "BasicPowerpointModelSlot", modelSlotClass = BasicPowerpointModelSlot.class) })
 @DeclareRepositoryType({ PowerpointSlideShowRepository.class })
 public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 
@@ -121,15 +119,7 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				// Also register the resource in the ResourceCenter seen as a ResourceRepository
-				if (resourceCenter instanceof ResourceRepository) {
-					try {
-						((ResourceRepository) resourceCenter).registerResource(ssRes,
-								((ResourceRepository<?>) resourceCenter).getRepositoryFolder(candidateFile, true));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+				referenceResource(ssRes, resourceCenter);
 				return ssRes;
 			}
 		}

@@ -34,7 +34,6 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
 import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
@@ -129,15 +128,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				// Also register the resource in the ResourceCenter seen as a ResourceRepository
-				if (resourceCenter instanceof ResourceRepository) {
-					try {
-						((ResourceRepository) resourceCenter).registerResource(ontRes,
-								((ResourceRepository<?>) resourceCenter).getRepositoryFolder(candidateFile, true));
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				}
+				referenceResource(ontRes, resourceCenter);
 				return ontRes;
 			}
 		}

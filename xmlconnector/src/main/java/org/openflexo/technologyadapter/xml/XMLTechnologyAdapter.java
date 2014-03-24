@@ -32,7 +32,6 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
@@ -185,15 +184,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 						} catch (IOException e1) {
 							e1.printStackTrace();
 						}
-						// Also register the resource in the ResourceCenter seen as a ResourceRepository
-						if (resourceCenter instanceof ResourceRepository) {
-							try {
-								((ResourceRepository) resourceCenter).registerResource(res,
-										((ResourceRepository<?>) resourceCenter).getRepositoryFolder(candidateFile, true));
-							} catch (IOException e) {
-								e.printStackTrace();
-							}
-						}
+						referenceResource(res, resourceCenter);
 					}
 
 				}

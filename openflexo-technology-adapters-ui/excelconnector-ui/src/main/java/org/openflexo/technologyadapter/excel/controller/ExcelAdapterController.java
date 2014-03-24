@@ -63,7 +63,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<ExcelTechnologyAdapter>> objectClass) {
 		return ExcelIconLibrary.iconForObject(objectClass);
 	}
 

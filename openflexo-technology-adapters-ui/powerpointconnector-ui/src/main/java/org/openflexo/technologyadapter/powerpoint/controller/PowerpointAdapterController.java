@@ -54,7 +54,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<PowerpointTechnologyAdapter>> objectClass) {
 		return PowerpointIconLibrary.iconForObject(objectClass);
 	}
 

@@ -98,7 +98,7 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<XSDTechnologyAdapter>> objectClass) {
 		if (AbstractXSOntObject.class.isAssignableFrom(objectClass)) {
 			return XSDIconLibrary.iconForObject((Class<? extends AbstractXSOntObject>) objectClass);
 		}
