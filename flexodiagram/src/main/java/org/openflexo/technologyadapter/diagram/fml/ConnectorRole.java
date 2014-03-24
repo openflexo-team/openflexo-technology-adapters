@@ -42,28 +42,28 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	public void setGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation);
 
 	@Getter(value = ARTIFACT_FROM_GRAPHICAL_REPRESENTATION_KEY)
-	@XMLElement
+	@XMLElement(context = "ArtifactFromGraphicalRepresentation_")
 	public ShapeGraphicalRepresentation getArtifactFromGraphicalRepresentation();
 
 	@Setter(ARTIFACT_FROM_GRAPHICAL_REPRESENTATION_KEY)
 	public void setArtifactFromGraphicalRepresentation(ShapeGraphicalRepresentation artifactFromGraphicalRepresentation);
 
 	@Getter(value = ARTIFACT_TO_GRAPHICAL_REPRESENTATION_KEY)
-	@XMLElement
+	@XMLElement(context = "ArtifactToGraphicalRepresentation_")
 	public ShapeGraphicalRepresentation getArtifactToGraphicalRepresentation();
 
 	@Setter(ARTIFACT_TO_GRAPHICAL_REPRESENTATION_KEY)
 	public void setArtifactToGraphicalRepresentation(ShapeGraphicalRepresentation artifactToGraphicalRepresentation);
 
 	@Getter(value = START_SHAPE_PATTERN_ROLE_KEY)
-	@XMLElement
+	@XMLElement(context = "StartShape_")
 	public ShapeRole getStartShapeRole();
 
 	@Setter(START_SHAPE_PATTERN_ROLE_KEY)
 	public void setStartShapeRole(ShapeRole startShapeRole);
 
 	@Getter(value = END_SHAPE_PATTERN_ROLE_KEY)
-	@XMLElement
+	@XMLElement(context = "EndShape_")
 	public ShapeRole getEndShapeRole();
 
 	@Setter(END_SHAPE_PATTERN_ROLE_KEY)
