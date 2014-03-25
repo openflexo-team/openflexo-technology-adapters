@@ -37,6 +37,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.toolbox.StringUtils;
 
@@ -159,8 +160,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 			if (getTargetFlexoConcept() != null && getTargetFlexoConcept().isAssignableFrom(aTarget)) {
 				if (targetHasMultipleRoles()) {
 					// TODO make proper implementation when role inheritance will be in use !!!
-					return getTargetPatternRole() == null
-							|| getTargetPatternRole().getRoleName().equals(contextRole.getRoleName());
+					return getTargetPatternRole() == null || getTargetPatternRole().getRoleName().equals(contextRole.getRoleName());
 				} else {
 					return true;
 				}
@@ -172,6 +172,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 		protected void appendContextualBindingVariables(BindingModel bindingModel) {
 			super.appendContextualBindingVariables(bindingModel);
 			bindingModelNeedToBeRecomputed = false;
+			bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TOP_LEVEL, Diagram.class));
 			if (getTargetFlexoConcept() != null) {
 				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getTargetFlexoConcept())));

@@ -236,8 +236,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		System.out.println(virtualModel.getVirtualModelFactory().stringRepresentation(virtualModel));
 
-		assertTrue(ControlledDiagramNature.INSTANCE.hasNature(virtualModel));
-		assertEquals(typedDiagramModelSlot, ControlledDiagramNature.INSTANCE.getTypedDiagramModelSlot(virtualModel));
+		assertTrue(virtualModel.hasNature(ControlledDiagramNature.INSTANCE));
+		assertEquals(typedDiagramModelSlot, ControlledDiagramNature.getTypedDiagramModelSlot(virtualModel));
 	}
 
 	/**
@@ -287,8 +287,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		assertTrue(ControlledDiagramNature.INSTANCE.hasNature(retrievedVMResource.getVirtualModel()));
 
-		TypedDiagramModelSlot retrievedDiagramMS = ControlledDiagramNature.INSTANCE.getTypedDiagramModelSlot(retrievedVMResource
-				.getVirtualModel());
+		TypedDiagramModelSlot retrievedDiagramMS = ControlledDiagramNature.getTypedDiagramModelSlot(retrievedVMResource.getVirtualModel());
 		assertNotNull(retrievedDiagramMS);
 		assertEquals(1, retrievedDiagramMS.getPaletteElementBindings().size());
 

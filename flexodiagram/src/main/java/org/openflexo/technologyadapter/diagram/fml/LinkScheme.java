@@ -36,6 +36,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.StringUtils;
 
@@ -201,6 +202,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 		protected void appendContextualBindingVariables(BindingModel bindingModel) {
 			super.appendContextualBindingVariables(bindingModel);
 			bindingModelNeedToBeRecomputed = false;
+			bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TOP_LEVEL, Diagram.class));
 			if (getFromTargetFlexoConcept() != null) {
 				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.FROM_TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getFromTargetFlexoConcept())));
