@@ -57,7 +57,7 @@ public interface AddExcelCell extends AssignableAction<BasicExcelModelSlot, Exce
 	public void setRow(DataBinding<ExcelRow> row);
 
 	@Getter(value = VALUE_KEY)
-	@XMLElement
+	@XMLElement(context="Value_")
 	public DataBinding<String> getValue();
 
 	@Setter(VALUE_KEY)
@@ -71,21 +71,21 @@ public interface AddExcelCell extends AssignableAction<BasicExcelModelSlot, Exce
 	public void setCellType(CellType cellType);
 
 	@Getter(value = COLUMN_INDEX_KEY)
-	@XMLElement
+	@XMLElement(context="ColumnIndex_")
 	public DataBinding<Integer> getColumnIndex();
 
 	@Setter(COLUMN_INDEX_KEY)
 	public void setColumnIndex(DataBinding<Integer> columnIndex);
 
 	@Getter(value = ROW_INDEX_KEY)
-	@XMLElement
+	@XMLElement(context="RowIndex_")
 	public DataBinding<Integer> getRowIndex();
 
 	@Setter(ROW_INDEX_KEY)
 	public void setRowIndex(DataBinding<Integer> rowIndex);
 
 	@Getter(value = SHEET_KEY)
-	@XMLElement
+	@XMLElement(context = "Sheet_")
 	public DataBinding<ExcelSheet> getSheet();
 
 	@Setter(SHEET_KEY)

@@ -47,14 +47,14 @@ public interface AddExcelRow extends AssignableAction<BasicExcelModelSlot, Excel
 	public void setExcelSheet(DataBinding<ExcelSheet> excelSheet);
 
 	@Getter(value = EXCEL_CELLS_KEY)
-	@XMLElement
+	@XMLElement(context="ExcelCells_")
 	public DataBinding<List<ExcelCell>> getExcelCells();
 
 	@Setter(EXCEL_CELLS_KEY)
 	public void setExcelCells(DataBinding<List<ExcelCell>> excelCells);
 
 	@Getter(value = ROW_INDEX_KEY)
-	@XMLElement
+	@XMLElement(context="RowIndex_")
 	public DataBinding<Integer> getRowIndex();
 
 	@Setter(ROW_INDEX_KEY)
