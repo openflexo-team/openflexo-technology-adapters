@@ -222,9 +222,11 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
-		if (evt.getPropertyName().equals(ProxyMethodHandler.MODIFIED)) {
-			System.out.println("Received MODIFIED for " + this + "!!!!!!!!!");
-			setModified(true);
+		if(evt.getPropertyName()!=null){
+			if (evt.getPropertyName().equals(ProxyMethodHandler.MODIFIED)) {
+				System.out.println("Received MODIFIED for " + this + "!!!!!!!!!");
+				setModified(true);
+			}
 		}
 	}
 
