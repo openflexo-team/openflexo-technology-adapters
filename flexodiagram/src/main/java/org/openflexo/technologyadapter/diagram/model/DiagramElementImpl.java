@@ -143,8 +143,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 
 	@Override
 	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals(DiagramEditionScheme.DIAGRAM)
-				|| variable.getVariableName().equals(DiagramEditionScheme.TOP_LEVEL)) {
+		if (variable.getVariableName().equals(DiagramEditionScheme.TOP_LEVEL)) {
 			return this;
 		}
 		return null;
@@ -195,18 +194,18 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 			return null;
 		}
 		// TODO: optimize this, use FlexoObjectReference<FlexoConceptInstance> in FlexoObject
-		for (FlexoConceptInstance epi : vmInstance.getFlexoConceptInstancesList()) {
-			if (epi.getRoleForActor(this) != null) {
-				return epi;
+		for (FlexoConceptInstance fci : vmInstance.getFlexoConceptInstances()) {
+			if (fci.getRoleForActor(this) != null) {
+				return fci;
 			}
 		}
 		return null;
 	}
 
 	/**
-	 * Return {@link GraphicalElementRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting
-	 * that this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared
-	 * in {@link VirtualModel} of supplied {@link VirtualModelInstance}
+	 * Return {@link GraphicalElementRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting that
+	 * this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared in
+	 * {@link VirtualModel} of supplied {@link VirtualModelInstance}
 	 * 
 	 * @param vmInstance
 	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}

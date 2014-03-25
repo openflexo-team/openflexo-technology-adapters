@@ -155,7 +155,7 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 
 		assertTrue(action.hasActionExecutionSucceeded());
 
-		exampleDiagramResource = action.getNewDiagram().getResource();
+		exampleDiagramResource = (DiagramResource) action.getNewDiagram().getResource();
 
 		assertNotNull(exampleDiagramResource);
 		assertTrue(exampleDiagramResource.getFile().exists());

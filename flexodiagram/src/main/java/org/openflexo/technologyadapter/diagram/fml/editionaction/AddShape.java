@@ -25,6 +25,8 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.openflexo.antar.binding.BindingModel;
+import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
@@ -37,9 +39,9 @@ import org.openflexo.foundation.validation.ValidationError;
 import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
-import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.model.annotations.Getter;
@@ -119,10 +121,21 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 
 		public DiagramContainerElement<?> getContainer(FlexoBehaviourAction action) {
+			System.out.println("computing getContainer()");
+			System.out.println("getFlexoRole()=" + getFlexoRole());
+			System.out.println("getContainer()=" + getContainer());
 			if (getFlexoRole() != null && !getFlexoRole().getParentShapeAsDefinedInAction()) {
 				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapeRole());
 				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapeRole());
 			} else {
+				System.out.println("la avec getContainer()=" + getContainer() + " valid=" + getContainer().isValid() + "  reason="
+						+ getContainer().invalidBindingReason());
+				BindingModel bm = getContainer().getOwner().getBindingModel();
+				System.out.println("BindingModel=" + bm);
+				for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
+					BindingVariable bv = bm.getBindingVariableAt(i);
+					System.out.println(" > bv=" + bv);
+				}
 				try {
 					return getContainer().getBindingValue(action);
 				} catch (TypeMismatchException e) {
@@ -239,8 +252,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 	}
 
-	public static class AddShapeActionMustAdressAValidShapeRole extends
-			ValidationRule<AddShapeActionMustAdressAValidShapeRole, AddShape> {
+	public static class AddShapeActionMustAdressAValidShapeRole extends ValidationRule<AddShapeActionMustAdressAValidShapeRole, AddShape> {
 		public AddShapeActionMustAdressAValidShapeRole() {
 			super(AddShape.class, "add_shape_action_must_address_a_valid_shape_pattern_role");
 		}

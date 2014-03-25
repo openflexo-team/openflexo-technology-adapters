@@ -29,7 +29,9 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.ShapeBorder;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
+import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.action.NotImplementedException;
@@ -37,6 +39,7 @@ import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
+import org.openflexo.technologyadapter.diagram.fml.ControlledDiagramInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
@@ -46,36 +49,44 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
-public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeAction, DropScheme, VirtualModelInstanceObject> {
+/**
+ * Tooling for DropScheme in Openflexo<br>
+ * This feature is wrapped into a {@link FlexoAction}<br>
+ * The focused object is a VirtualModelInstance with a ControlledDiagramInstanceNature
+ * 
+ * @author sylvain
+ * 
+ */
+public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeAction, DropScheme, VirtualModelInstance> {
 
 	private static final Logger logger = Logger.getLogger(DropSchemeAction.class.getPackage().getName());
 
-	public static FlexoActionType<DropSchemeAction, VirtualModelInstanceObject, VirtualModelInstanceObject> actionType = new FlexoActionType<DropSchemeAction, VirtualModelInstanceObject, VirtualModelInstanceObject>(
+	public static FlexoActionType<DropSchemeAction, VirtualModelInstance, VirtualModelInstanceObject> actionType = new FlexoActionType<DropSchemeAction, VirtualModelInstance, VirtualModelInstanceObject>(
 			"drop_palette_element", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public DropSchemeAction makeNewAction(VirtualModelInstanceObject focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
+		public DropSchemeAction makeNewAction(VirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection,
 				FlexoEditor editor) {
 			return new DropSchemeAction(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(VirtualModelInstanceObject object, Vector<VirtualModelInstanceObject> globalSelection) {
+		public boolean isVisibleForSelection(VirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
 			return false;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(VirtualModelInstanceObject object, Vector<VirtualModelInstanceObject> globalSelection) {
-			return true; // object instanceof DiagramElement<?>;
+		public boolean isEnabledForSelection(VirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
+			return object.hasNature(ControlledDiagramInstanceNature.INSTANCE);
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(actionType, VirtualModelInstanceObject.class);
+		FlexoObjectImpl.addActionForClass(actionType, VirtualModelInstance.class);
 	}
 
 	private DiagramContainerElement<?> _parent;
@@ -83,9 +94,9 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 	private DropScheme _dropScheme;
 	private DiagramShape _primaryShape;
 
-	public FGEPoint dropLocation;
+	private FGEPoint dropLocation;
 
-	DropSchemeAction(VirtualModelInstanceObject focusedObject, Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
+	DropSchemeAction(VirtualModelInstance focusedObject, Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
@@ -94,11 +105,13 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 	private FlexoConceptInstance flexoConceptInstance;
 
 	@Override
-	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException {
+	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException, FlexoException {
 		logger.info("Drop palette element");
 
 		logger.info("project=" + getProject());
 		// getFlexoConcept().getViewPoint().getViewpointOntology().loadWhenUnloaded();
+
+		System.out.println("1-isModified=" + getVirtualModelInstance().isModified());
 
 		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 
@@ -106,8 +119,11 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 		logger.info("epi project=" + flexoConceptInstance.getProject());
 		logger.info("epi resource data =" + flexoConceptInstance.getResourceData());
 
+		System.out.println("2-isModified=" + getVirtualModelInstance().isModified());
+
 		applyEditionActions();
 
+		System.out.println("3-isModified=" + getVirtualModelInstance().isModified());
 	}
 
 	public DiagramContainerElement<?> getParent() {
@@ -163,11 +179,11 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 
 	@Override
 	public VirtualModelInstance retrieveVirtualModelInstance() {
-		return getFocusedObject().getVirtualModelInstance();
+		return getFocusedObject();
 	}
 
 	@Override
-	protected Object performAction(EditionAction anAction, Hashtable<EditionAction, Object> performedActions) {
+	protected Object performAction(EditionAction anAction, Hashtable<EditionAction, Object> performedActions) throws FlexoException {
 		Object assignedObject = super.performAction(anAction, performedActions);
 		if (anAction instanceof AddShape) {
 			AddShape action = (AddShape) anAction;
@@ -259,6 +275,14 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 		// return overridenGraphicalRepresentations.get(patternRole);
 		// TODO temporary desactivate overriden GR
 		return null;
+	}
+
+	public FGEPoint getDropLocation() {
+		return dropLocation;
+	}
+
+	public void setDropLocation(FGEPoint dropLocation) {
+		this.dropLocation = dropLocation;
 	}
 
 }

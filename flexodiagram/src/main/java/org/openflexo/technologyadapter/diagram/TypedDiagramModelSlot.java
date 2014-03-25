@@ -131,16 +131,11 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		public DiagramResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String diagramUri,
 				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 
-			System.out.println("Hop, je suis sense creer un diagramme ici, avec " + filename + " uri=" + diagramUri + " mmRes="
-					+ metaModelResource);
-
-			System.out.println("project=" + project);
-
-			System.out.println("OK, je cree le diagramme");
-
 			try {
-				return getTechnologyAdapter().createNewDiagram(project, filename, diagramUri,
+				DiagramResource returned = getTechnologyAdapter().createNewDiagram(project, filename, diagramUri,
 						(DiagramSpecificationResource) metaModelResource);
+				return returned;
+
 			} catch (SaveResourceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -29,6 +29,7 @@ import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.binding.PatternRoleBindingVariable;
+import org.openflexo.technologyadapter.diagram.fml.ControlledDiagramInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
@@ -67,6 +68,8 @@ public abstract class DiagramEditionSchemeAction<A extends FlexoBehaviourAction<
 			return getFlexoConceptInstance().getFlexoActor(((PatternRoleBindingVariable) variable).getFlexoRole());
 		} else if (variable.getVariableName().equals(FlexoBehaviour.THIS)) {
 			return getFlexoConceptInstance();
+		} else if (variable.getVariableName().equals(DiagramEditionScheme.TOP_LEVEL)) {
+			return ControlledDiagramInstanceNature.getDiagram(getVirtualModelInstance());
 		}
 		return super.getValue(variable);
 	}

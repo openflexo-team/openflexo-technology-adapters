@@ -63,7 +63,11 @@ public class ControlledDiagramNature implements VirtualModelNature {
 		return true;
 	}
 
-	public TypedDiagramModelSlot getTypedDiagramModelSlot(VirtualModel virtualModel) {
+	public static TypedDiagramModelSlot getTypedDiagramModelSlot(VirtualModel virtualModel) {
+		return INSTANCE._getTypedDiagramModelSlot(virtualModel);
+	}
+
+	private TypedDiagramModelSlot _getTypedDiagramModelSlot(VirtualModel virtualModel) {
 		if (virtualModel != null && virtualModel.getModelSlots(TypedDiagramModelSlot.class).size() == 1) {
 			return virtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
 		}

@@ -51,7 +51,7 @@ public class ControlledDiagramInstanceNature implements VirtualModelInstanceNatu
 	public boolean hasNature(VirtualModelInstance virtualModelInstance) {
 
 		// The corresponding VirtualModel should have ControlledDiagramNature
-		if (ControlledDiagramNature.INSTANCE.hasNature(virtualModelInstance.getVirtualModel())) {
+		if (!virtualModelInstance.getVirtualModel().hasNature(ControlledDiagramNature.INSTANCE)) {
 			return false;
 		}
 
@@ -70,4 +70,28 @@ public class ControlledDiagramInstanceNature implements VirtualModelInstanceNatu
 
 		return true;
 	}
+
+	public static TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> getModelSlotInstance(
+			VirtualModelInstance virtualModelInstance) {
+		return INSTANCE._getModelSlotInstance(virtualModelInstance);
+
+	}
+
+	public static Diagram getDiagram(VirtualModelInstance virtualModelInstance) {
+		return INSTANCE._getDiagram(virtualModelInstance);
+	}
+
+	private TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot> _getModelSlotInstance(
+			VirtualModelInstance virtualModelInstance) {
+		TypedDiagramModelSlot diagramMS = virtualModelInstance.getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
+
+		return (TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot>) virtualModelInstance
+				.getModelSlotInstance(diagramMS);
+
+	}
+
+	private Diagram _getDiagram(VirtualModelInstance virtualModelInstance) {
+		return _getModelSlotInstance(virtualModelInstance).getAccessedResourceData();
+	}
+
 }

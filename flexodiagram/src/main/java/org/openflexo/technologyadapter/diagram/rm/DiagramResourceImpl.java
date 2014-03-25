@@ -139,6 +139,9 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 	@Override
 	public Diagram loadResourceData(IProgress progress) throws FlexoFileNotFoundException, IOFlexoException, InvalidXMLException,
 			InconsistentDataException, InvalidModelDefinitionException {
+
+		System.out.println("Hop, on recharge le diagramme");
+
 		Diagram returned = super.loadResourceData(progress);
 		/*if (returned.isSynchronizable()) {
 			returned.synchronize(null);

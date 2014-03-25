@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.InvalidParametersException;
@@ -104,7 +105,7 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 	private FlexoConceptInstance flexoConceptInstance;
 
 	@Override
-	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException {
+	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException, FlexoException {
 		logger.info("Link palette connector");
 
 		// getFlexoConcept().getViewPoint().getViewpointOntology().loadWhenUnloaded();
@@ -162,7 +163,7 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 	}
 
 	@Override
-	protected Object performAction(EditionAction anAction, Hashtable<EditionAction, Object> performedActions) {
+	protected Object performAction(EditionAction anAction, Hashtable<EditionAction, Object> performedActions) throws FlexoException {
 		Object assignedObject = super.performAction(anAction, performedActions);
 		if (anAction instanceof AddConnector) {
 			AddConnector action = (AddConnector) anAction;
