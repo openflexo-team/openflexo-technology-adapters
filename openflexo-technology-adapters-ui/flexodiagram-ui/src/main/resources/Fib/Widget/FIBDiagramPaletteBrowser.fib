@@ -4,10 +4,10 @@
     <BrowserElement dataClassName="org.openflexo.technologyadapter.diagram.fmlDiagramPalette" label="diagramPalette.name" icon="controller.iconForObject(diagramPalette)" isEditable="false" filtered="false" defaultVisible="true" name="diagramPalette">
       <Children data="diagramPalette.elements" name="childs" />
     </BrowserElement>
-    <BrowserElement dataClassName="org.openflexo.technologyadapter.diagram.fmlDiagramPaletteElement" label="element.name" icon="controller.iconForObject(element)" isEditable="false" filtered="false" defaultVisible="true" name="element">
+    <BrowserElement dataClassName="org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement" label="element.name" icon="controller.iconForObject(element)" isEditable="false" filtered="false" defaultVisible="true" name="element">
       <Children data="element.overridingGraphicalRepresentations" name="overridingGR" />
     </BrowserElement>
-    <BrowserElement dataClassName="org.openflexo.technologyadapter.diagram.fmlDiagramPaletteElement$OverridingGraphicalRepresentation" icon="controller.iconForObject(overridingGraphicalRepresentation)" isEditable="false" filtered="false" defaultVisible="true" name="overridingGraphicalRepresentation" />
+    <BrowserElement dataClassName="org.openflexo.technologyadapter.diagram.fml.OverridingGraphicalRepresentation" icon="controller.iconForObject(overridingGraphicalRepresentation)" isEditable="false" filtered="false" defaultVisible="true" name="overridingGraphicalRepresentation" />
   </Browser>
   <LocalizedDictionary />
 </Panel>
