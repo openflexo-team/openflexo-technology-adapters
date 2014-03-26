@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <VirtualModel id="0" useSpecificDescriptions="false" userID="FLX" flexoID="4" name="TestVirtualModel">
-  <FlexoConcept id="1" useSpecificDescriptions="false" userID="FLX" flexoID="10">
+  <FlexoConcept id="1" name="TestConcept" useSpecificDescriptions="false" userID="FLX" flexoID="10">
     <Inspector id="2" flexoID="5" userID="FLX" useSpecificDescriptions="false" />
     <DropScheme id="3" width="800" userID="FLX" useSpecificDescriptions="false" label="drop" definePopupDefaultSize="false" height="600" flexoID="6" skipConfirmationPanel="false" name="drop">
       <AddShape id="4" assignation="shape" container="topLevel" extendParentBoundsToHostThisShape="false" userID="FLX" useSpecificDescriptions="false" flexoID="9">
