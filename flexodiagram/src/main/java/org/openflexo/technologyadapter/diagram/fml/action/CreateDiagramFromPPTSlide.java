@@ -43,6 +43,8 @@ import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Picture;
 import org.apache.poi.hslf.model.Shape;
 import org.apache.poi.hslf.model.Slide;
+import org.apache.poi.hslf.model.Table;
+import org.apache.poi.hslf.model.TableCell;
 import org.apache.poi.hslf.model.TextBox;
 import org.apache.poi.hslf.model.TextRun;
 import org.apache.poi.hslf.model.TextShape;
@@ -369,12 +371,16 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 	public ImageIcon getOverview(Slide s) {
 		double WIDTH = 400;
-		Dimension d = s.getSlideShow().getPageSize();
-		BufferedImage i = new BufferedImage((int) WIDTH, (int) (WIDTH * d.height / d.width), BufferedImage.TYPE_INT_RGB);
-		Graphics2D graphics = i.createGraphics();
-		graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
-		s.draw(graphics);
-		return new ImageIcon(i);
+		if(s!=null & s.getSlideShow()!=null){
+			Dimension d = s.getSlideShow().getPageSize();
+			BufferedImage i = new BufferedImage((int) WIDTH, (int) (WIDTH * d.height / d.width), BufferedImage.TYPE_INT_RGB);
+			Graphics2D graphics = i.createGraphics();
+			graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
+			s.draw(graphics);
+			return new ImageIcon(i);
+		}
+		return null;
+		
 	}
 
 	/*
@@ -401,6 +407,17 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 					} else if (shape instanceof TextBox) {
 						diagram.addToShapes(makeTextBox((TextBox) shape));
 					}
+					else if (shape instanceof Table){
+						Table t = (Table) shape;
+						/*
+		                List<XSLFTableRow> r = t.getRows();
+		                for (int i = 1; i < r.size(); i++) {
+		                    String text = r.get(i).getCells().get(1).getText();
+		                    if(text.contains("#ID")) {
+		                        r.get(i).getCells().get(1).setText("20131028152343");
+		                    }
+		                }*/
+		            }
 				}
 			}
 		}
@@ -412,10 +429,39 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 				diagram.addToShapes(makeAutoShape((AutoShape) shape));
 			} else if (shape instanceof TextBox) {
 				diagram.addToShapes(makeTextBox((TextBox) shape));
+			}else if (shape instanceof Table){
+				diagram.addToShapes(makeTable((Table) shape));
 			}
 		}
 		return diagram;
 	}
+	
+	private DiagramShape makeTable(Table table) {
+
+		DiagramShape newTable = getDiagramFactory().makeNewShape(table.getShapeName(), getNewDiagram());
+		ShapeGraphicalRepresentation gr = newTable.getGraphicalRepresentation();
+		gr.setX(table.getAnchor2D().getX());
+		gr.setY(table.getAnchor2D().getY());
+		gr.setWidth(table.getCoordinates().getWidth());
+		gr.setHeight(table.getCoordinates().getHeight());
+		gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+		gr.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
+		gr.getForeground().setNoStroke(true);
+		gr.setTransparency(1);
+		
+        for (int col = 0; col < table.getNumberOfColumns(); col++) {
+        	for (int row = 0; row < table.getNumberOfRows(); row++) {
+        		TableCell cell = table.getCell(row, col);
+        		DiagramShape newCell = makeTextBox(cell);
+        		newCell.getGraphicalRepresentation().getForeground().setNoStroke(false);
+        		newTable.addToShapes(newCell);
+        	}
+        }
+		
+        newTable.setGraphicalRepresentation(gr);
+		return newTable;
+	}
+
 
 	private DiagramShape makeAutoShape(AutoShape autoShape) {
 
@@ -510,11 +556,6 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	private DashStyle convertDashLineStyles(int powerpointDashStyle){
 		
 		switch (powerpointDashStyle){
-			/*case Line.LINE_DOUBLE : return DashStyle.PLAIN_STROKE;
-			case Line.LINE_SIMPLE : return DashStyle.PLAIN_STROKE;
-			case Line.LINE_THICKTHIN : return DashStyle.PLAIN_STROKE;
-			case Line.LINE_THINTHICK : return DashStyle.PLAIN_STROKE;
-			case Line.LINE_TRIPLE : return DashStyle.PLAIN_STROKE;*/
 			case Line.PEN_DASH : return DashStyle.MEDIUM_DASHES;
 			case Line.PEN_DASHDOT : return DashStyle.DOTS_DASHES;
 			case Line.PEN_DASHDOTDOT : return DashStyle.DOT_LINES_DASHES;
