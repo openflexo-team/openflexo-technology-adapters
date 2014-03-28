@@ -29,7 +29,7 @@ import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramModuleView;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -84,11 +84,11 @@ public class AddShapeInitializer extends ActionInitializer<AddShape, DiagramCont
 
 				ModuleView<?> moduleView = getController().moduleViewForObject(action.getNewShape().getDiagram(), false);
 				System.out.println("moduleView=" + moduleView);
-				System.out.println("editor=" + ((DiagramModuleView) moduleView).getEditor());
-				System.out.println("drawing=" + ((DiagramModuleView) moduleView).getEditor().getDrawing());
-				ShapeNode<DiagramShape> shapeNode = ((DiagramModuleView) moduleView).getEditor().getDrawing()
+				System.out.println("editor=" + ((FreeDiagramModuleView) moduleView).getEditor());
+				System.out.println("drawing=" + ((FreeDiagramModuleView) moduleView).getEditor().getDrawing());
+				ShapeNode<DiagramShape> shapeNode = ((FreeDiagramModuleView) moduleView).getEditor().getDrawing()
 						.getShapeNode(action.getNewShape());
-				JShapeView<DiagramShape> shapeView = ((DiagramModuleView) moduleView).getEditor().getDrawingView()
+				JShapeView<DiagramShape> shapeView = ((FreeDiagramModuleView) moduleView).getEditor().getDrawingView()
 						.shapeViewForNode(shapeNode);
 				if (action.getNewShape() != null) {
 					if (shapeView.getLabelView() != null) {

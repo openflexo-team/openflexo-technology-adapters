@@ -1,5 +1,8 @@
 package org.openflexo.technologyadapter.diagram.controller;
 
+import java.util.Collections;
+import java.util.List;
+
 import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
@@ -7,6 +10,8 @@ import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.foundation.view.VirtualModelInstanceNature;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.FlexoConceptInstanceRole;
 import org.openflexo.foundation.viewpoint.FlexoRole;
@@ -42,14 +47,16 @@ import org.openflexo.technologyadapter.diagram.controller.action.LinkSchemeActio
 import org.openflexo.technologyadapter.diagram.controller.action.OpenControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.PushToPaletteInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.ResetGraphicalRepresentationInitializer;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramModuleView;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramEditor;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteEditor;
 import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteModuleView;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
@@ -66,12 +73,16 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
+import org.openflexo.view.controller.DeclareVirtualModelInstanceNature;
+import org.openflexo.view.controller.DeclareVirtualModelInstanceNatures;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 import org.openflexo.view.menu.WindowMenu;
 import org.openflexo.view.menu.WindowMenu.WindowMenuItem;
 
+@DeclareVirtualModelInstanceNatures({ // Natures declaration
+@DeclareVirtualModelInstanceNature(nature = FMLControlledDiagramVirtualModelInstanceNature.class) })
 public class DiagramTechnologyAdapterController extends TechnologyAdapterController<DiagramTechnologyAdapter> {
 
 	private SwingToolFactory swingToolFactory;
@@ -287,8 +298,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 			FlexoPerspective perspective) {
 
 		if (object instanceof Diagram) {
-			DiagramEditor editor = new FreeDiagramEditor((Diagram) object, false, controller, swingToolFactory);
-			return new DiagramModuleView(editor, perspective);
+			FreeDiagramEditor editor = new FreeDiagramEditor((Diagram) object, false, controller, swingToolFactory);
+			return new FreeDiagramModuleView(editor, perspective);
 		}
 
 		if (object instanceof DiagramPalette) {
@@ -334,16 +345,27 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	@Override
 	public void notifyModuleViewDisplayed(ModuleView<?> moduleView, final FlexoController controller, FlexoPerspective perspective) {
 
-		System.out.println("Ici, moduleView = " + moduleView + " of " + moduleView.getClass());
 		super.notifyModuleViewDisplayed(moduleView, controller, perspective);
-		if (moduleView instanceof DiagramModuleView) {
-			System.out.println("Ici2");
+		if (moduleView instanceof FreeDiagramModuleView) {
 			// Sets palette view of editor to be the top right view
-			System.out.println("Ici3, paletteView=" + ((DiagramModuleView) moduleView).getEditor().getPaletteView());
-			perspective.setTopRightView(((DiagramModuleView) moduleView).getEditor().getPaletteView());
-			// perspective.setHeader(((DiagramModuleView) moduleView).getEditor().getS());
+			perspective.setTopRightView(((FreeDiagramModuleView) moduleView).getEditor().getPaletteView());
+			// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
 
-			inspectors.attachToEditor(((DiagramModuleView) moduleView).getEditor());
+			inspectors.attachToEditor(((FreeDiagramModuleView) moduleView).getEditor());
+
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					// Force right view to be visible
+					controller.getControllerModel().setRightViewVisible(true);
+				}
+			});
+		} else if (moduleView instanceof FMLControlledDiagramModuleView) {
+			// Sets palette view of editor to be the top right view
+			perspective.setTopRightView(((FMLControlledDiagramModuleView) moduleView).getEditor().getPaletteView());
+			// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
+
+			inspectors.attachToEditor(((FMLControlledDiagramModuleView) moduleView).getEditor());
 
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -353,6 +375,26 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 				}
 			});
 		}
+	}
+
+	@Override
+	public List<? extends VirtualModelInstanceNature> getSpecificNatures(VirtualModelInstance vmInstance) {
+		if (vmInstance.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE)) {
+			return Collections.singletonList(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
+		}
+
+		return Collections.emptyList();
+	}
+
+	@Override
+	public ModuleView<VirtualModelInstance> createVirtualModelInstanceModuleViewForSpecificNature(VirtualModelInstance vmInstance,
+			VirtualModelInstanceNature nature, FlexoController controller, FlexoPerspective perspective) {
+		if (vmInstance.hasNature(nature) && nature == FMLControlledDiagramVirtualModelInstanceNature.INSTANCE) {
+			System.out.println("Ah ah, je le tiens !!!");
+			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor(vmInstance, false, controller, swingToolFactory);
+			return new FMLControlledDiagramModuleView(editor, perspective);
+		}
+		return null;
 	}
 
 }

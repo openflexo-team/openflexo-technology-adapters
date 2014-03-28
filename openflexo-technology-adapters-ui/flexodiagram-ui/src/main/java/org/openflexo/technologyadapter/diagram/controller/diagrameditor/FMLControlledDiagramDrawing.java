@@ -31,6 +31,7 @@ import org.openflexo.fge.control.actions.MouseClickControlImpl;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.controller.FMLControlledDiagramMouseClickControl;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction.ActionMask;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -51,8 +52,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 
 	private final VirtualModelInstance vmInstance;
 
-	public FMLControlledDiagramDrawing(Diagram model, VirtualModelInstance vmInstance, boolean readOnly) {
-		super(model, readOnly);
+	public FMLControlledDiagramDrawing(VirtualModelInstance vmInstance, boolean readOnly) {
+		super(FMLControlledDiagramVirtualModelInstanceNature.getDiagram(vmInstance), readOnly);
 		this.vmInstance = vmInstance;
 	}
 
