@@ -29,19 +29,19 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 /**
  * Define the "controlled-diagram" nature of a {@link VirtualModelInstance}<br>
  * 
- * A {@link ControlledDiagramInstanceNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
+ * A {@link FMLControlledDiagramVirtualModelInstanceNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
  * 
  * @author sylvain
  * 
  * @param <E>
  *            type of introspected concept
  */
-public class ControlledDiagramInstanceNature implements VirtualModelInstanceNature {
+public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualModelInstanceNature {
 
-	public static ControlledDiagramInstanceNature INSTANCE = new ControlledDiagramInstanceNature();
+	public static FMLControlledDiagramVirtualModelInstanceNature INSTANCE = new FMLControlledDiagramVirtualModelInstanceNature();
 
 	// Prevent external instantiation
-	private ControlledDiagramInstanceNature() {
+	private FMLControlledDiagramVirtualModelInstanceNature() {
 	}
 
 	/**
@@ -50,8 +50,8 @@ public class ControlledDiagramInstanceNature implements VirtualModelInstanceNatu
 	@Override
 	public boolean hasNature(VirtualModelInstance virtualModelInstance) {
 
-		// The corresponding VirtualModel should have ControlledDiagramNature
-		if (!virtualModelInstance.getVirtualModel().hasNature(ControlledDiagramNature.INSTANCE)) {
+		// The corresponding VirtualModel should have FMLControlledDiagramVirtualModelNature
+		if (!virtualModelInstance.getVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
 			return false;
 		}
 

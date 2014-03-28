@@ -19,8 +19,8 @@ import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelModelSlotInstance;
+import org.openflexo.foundation.view.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.view.action.CreateView;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.view.rm.ViewResource;
 import org.openflexo.foundation.viewpoint.ViewPoint;
@@ -148,7 +148,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	@Test
 	@TestOrder(5)
 	public void testCreateVirtualModelInstance() {
-		CreateVirtualModelInstance action = CreateVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
+		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
 		action.setNewVirtualModelInstanceName("MyVirtualModelInstance");
 		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance");
 		action.setVirtualModel(newVirtualModel);

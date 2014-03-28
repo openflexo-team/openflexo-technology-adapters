@@ -13,7 +13,7 @@
   </FlexoConcept>
   <Inspector id="9" flexoID="2" userID="FLX" useSpecificDescriptions="false" inspectorTitle="TestVirtualModel" />
   <ModelSlot_VirtualModelModelSlot id="8" userID="FLX" useSpecificDescriptions="false" flexoID="3" isRequired="false" name="this" isReadOnly="false" virtualModelURI="http://openflexo.org/test/TestControlledDiagramViewPoint/TestVirtualModel" />
-  <ModelSlot_TypedDiagramModelSlot id="5" userID="FLX" useSpecificDescriptions="false" flexoID="8" isRequired="true" metaModelURI="http://openflexo.org/test/TestDiagramSpecification" isReadOnly="false">
+  <ModelSlot_TypedDiagramModelSlot id="5" userID="FLX" useSpecificDescriptions="false" flexoID="8" isRequired="true" name="diagram" metaModelURI="http://openflexo.org/test/TestDiagramSpecification" isReadOnly="false">
     <FMLDiagramPaletteElementBinding id="6" paletteElementId="http://openflexo.org/test/TestDiagramSpecification/TestPalette.palette#TestPaletteElement" userID="FLX" useSpecificDescriptions="false" flexoID="7">
       <DropScheme idref="3" />
     </FMLDiagramPaletteElementBinding>

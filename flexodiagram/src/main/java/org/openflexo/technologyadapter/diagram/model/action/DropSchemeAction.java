@@ -39,7 +39,7 @@ import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
-import org.openflexo.technologyadapter.diagram.fml.ControlledDiagramInstanceNature;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
@@ -52,7 +52,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 /**
  * Tooling for DropScheme in Openflexo<br>
  * This feature is wrapped into a {@link FlexoAction}<br>
- * The focused object is a VirtualModelInstance with a ControlledDiagramInstanceNature
+ * The focused object is a VirtualModelInstance with a FMLControlledDiagramVirtualModelInstanceNature
  * 
  * @author sylvain
  * 
@@ -80,7 +80,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 
 		@Override
 		public boolean isEnabledForSelection(VirtualModelInstance object, Vector<VirtualModelInstanceObject> globalSelection) {
-			return object.hasNature(ControlledDiagramInstanceNature.INSTANCE);
+			return object.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
 		}
 
 	};

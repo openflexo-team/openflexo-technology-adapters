@@ -25,21 +25,21 @@ import org.openflexo.foundation.viewpoint.VirtualModelNature;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 
 /**
- * Define the "controlled-diagram" nature of a {@link VirtualModelInstance}<br>
+ * Define the "controlled-diagram" nature of a {@link VirtualModel}<br>
  * 
- * A {@link ControlledDiagramNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
+ * A {@link FMLControlledDiagramVirtualModelNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
  * 
  * @author sylvain
  * 
  * @param <E>
  *            type of introspected concept
  */
-public class ControlledDiagramNature implements VirtualModelNature {
+public class FMLControlledDiagramVirtualModelNature implements VirtualModelNature {
 
-	public static ControlledDiagramNature INSTANCE = new ControlledDiagramNature();
+	public static FMLControlledDiagramVirtualModelNature INSTANCE = new FMLControlledDiagramVirtualModelNature();
 
 	// Prevent external instantiation
-	private ControlledDiagramNature() {
+	private FMLControlledDiagramVirtualModelNature() {
 	}
 
 	/**

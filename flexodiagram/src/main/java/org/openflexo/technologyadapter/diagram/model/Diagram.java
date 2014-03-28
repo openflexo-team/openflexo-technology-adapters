@@ -108,6 +108,7 @@ public interface Diagram extends DiagramContainerElement<DrawingGraphicalReprese
 	 */
 	@Override
 	@Getter(value = RESOURCE, ignoreType = true)
+	// TODO: Ask Sylvain to investigate
 	// Bug if we return DiagramResource instead of FlexoResource<Diagram>: investigate on PAMELA
 	public FlexoResource<Diagram> getResource();
 

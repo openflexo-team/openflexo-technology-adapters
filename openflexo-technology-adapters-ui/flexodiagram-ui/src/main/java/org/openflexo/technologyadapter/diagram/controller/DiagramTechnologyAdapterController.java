@@ -21,6 +21,7 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.action.AddConnectorInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.AddDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.AddShapeInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPaletteInitializer;
@@ -38,6 +39,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.DeleteExampleDi
 import org.openflexo.technologyadapter.diagram.controller.action.DropSchemeActionInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.ExportDiagramToImageInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.LinkSchemeActionInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.OpenControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.PushToPaletteInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.ResetGraphicalRepresentationInitializer;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
@@ -127,7 +129,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		viewMenu.add(shadowInspectorItem);
 		viewMenu.add(locationSizeInspectorItem);
 
-		// ExampleDiagram edition
+		// Diagram edition
 		new CreateDiagramSpecificationInitializer(actionInitializer);
 		new DeleteDiagramSpecificationInitializer(actionInitializer);
 		new CreateExampleDiagramInitializer(actionInitializer);
@@ -144,7 +146,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new AddDiagramPaletteElementInitializer(actionInitializer);
 		new DeleteDiagramPaletteElementInitializer(actionInitializer);
 
-		// Diagram perspective
+		new CreateControlledDiagramVirtualModelInstanceInitializer(actionInitializer);
+		new OpenControlledDiagramVirtualModelInstanceInitializer(actionInitializer);
 		new CreateDiagramInitializer(actionInitializer);
 		new DeleteDiagramInitializer(actionInitializer);
 		new AddShapeInitializer(actionInitializer);
