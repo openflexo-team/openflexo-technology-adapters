@@ -778,10 +778,9 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 	}
 
 	
+	// there is still an issue for connectors ends, even if we can find at least that there is specific ends(such as arrows) it seems that there is no information on the side they are applied...
 	private void setConnectorType(ConnectorGraphicalRepresentation returned, SimpleShape connectorShape){
-		// Select the type of connector(Curved...)
-		System.out.println("@@@@" + connectorShape.getShapeType());
-
+		
 		switch(connectorShape.getShapeType()){
 		case ShapeTypes.CurvedConnector2:
 			returned.setConnectorType(ConnectorType.CURVE);
