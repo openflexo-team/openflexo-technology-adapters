@@ -28,7 +28,7 @@ import org.openflexo.fge.Drawing.ConnectorNode;
 import org.openflexo.fge.swing.view.JConnectorView;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramModuleView;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.action.AddConnector;
@@ -88,9 +88,9 @@ public class AddConnectorInitializer extends ActionInitializer {
 				if (action.getConnector() != null) {
 					getController().getSelectionManager().setSelectedObject(action.getConnector());
 					ModuleView<?> moduleView = getController().moduleViewForObject(action.getConnector().getDiagram(), false);
-					ConnectorNode<DiagramConnector> connectorNode = ((DiagramModuleView) moduleView).getEditor().getDrawing()
+					ConnectorNode<DiagramConnector> connectorNode = ((FreeDiagramModuleView) moduleView).getEditor().getDrawing()
 							.getConnectorNode(action.getConnector());
-					JConnectorView<DiagramConnector> connectorView = ((DiagramModuleView) moduleView).getEditor().getDrawingView()
+					JConnectorView<DiagramConnector> connectorView = ((FreeDiagramModuleView) moduleView).getEditor().getDrawingView()
 							.connectorViewForNode(connectorNode);
 					if (action.getConnector() != null) {
 						if (connectorView.getLabelView() != null) {
