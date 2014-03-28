@@ -64,7 +64,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	private static final Logger logger = Logger.getLogger(DiagramEditor.class.getPackage().getName());
 
 	private final FlexoController flexoController;
-	private DiagramModuleView moduleView;
+	// private FreeDiagramModuleView moduleView;
 
 	private JTabbedPane paletteView;
 	private Vector<DiagramPalette> orderedPalettes;
@@ -80,7 +80,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 
 	private final SwingToolFactory swingToolFactory;
 
-	public DiagramEditor(FreeDiagramDrawing diagramDrawing, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
+	public DiagramEditor(AbstractDiagramDrawing diagramDrawing, boolean readOnly, FlexoController controller,
+			SwingToolFactory swingToolFactory) {
 		super(diagramDrawing, controller.getSelectionManager(), ((DiagramResource) diagramDrawing.getDiagram().getResource()).getFactory(),
 				swingToolFactory);
 
@@ -153,11 +154,11 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		if (getDiagram() != null && getDiagram().getDiagramSpecification() != null) {
 			getDiagram().getDiagramSpecification().getPropertyChangeSupport().removePropertyChangeListener(this);
 		}
-		if (flexoController != null) {
+		/*if (flexoController != null) {
 			if (getDrawingView() != null && moduleView != null) {
 				flexoController.removeModuleView(moduleView);
 			}
-		}
+		}*/
 		super.delete();
 		getDrawing().delete();
 	}
@@ -180,12 +181,12 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		return (DiagramView) super.getDrawingView();
 	}
 
-	public DiagramModuleView getModuleView() {
+	/*public FreeDiagramModuleView getModuleView() {
 		if (moduleView == null) {
-			moduleView = new DiagramModuleView(this, flexoController.getCurrentPerspective());
+			moduleView = new FreeDiagramModuleView(this, flexoController.getCurrentPerspective());
 		}
 		return moduleView;
-	}
+	}*/
 
 	public JDianaPalette getCommonPalette() {
 		return commonPalette;

@@ -34,7 +34,7 @@ import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramModuleView;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -56,8 +56,8 @@ public class ExportDiagramToImageInitializer extends ActionInitializer<ExportDia
 			@Override
 			public boolean run(EventObject e, ExportDiagramToImageAction action) {
 
-				if (getController().getCurrentModuleView() instanceof DiagramModuleView) {
-					DiagramEditor c = ((DiagramModuleView) getController().getCurrentModuleView()).getEditor();
+				if (getController().getCurrentModuleView() instanceof FreeDiagramModuleView) {
+					DiagramEditor c = ((FreeDiagramModuleView) getController().getCurrentModuleView()).getEditor();
 
 					if (action.getFocusedObject() instanceof DiagramShape) {
 						ShapeNode<DiagramShape> shapeNode = c.getDrawing().getShapeNode((DiagramShape) action.getFocusedObject());

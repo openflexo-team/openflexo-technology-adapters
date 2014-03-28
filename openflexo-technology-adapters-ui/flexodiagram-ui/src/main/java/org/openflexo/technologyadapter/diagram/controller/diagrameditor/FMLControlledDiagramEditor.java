@@ -23,7 +23,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.view.controller.FlexoController;
 
 /**
@@ -37,8 +36,15 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramEditor.class.getPackage().getName());
 
-	public FMLControlledDiagramEditor(Diagram diagram, VirtualModelInstance vmInstance, boolean readOnly, FlexoController controller,
+	private final VirtualModelInstance virtualModelInstance;
+
+	public FMLControlledDiagramEditor(VirtualModelInstance vmInstance, boolean readOnly, FlexoController controller,
 			SwingToolFactory swingToolFactory) {
-		super(new FreeDiagramDrawing(diagram, readOnly), readOnly, controller, swingToolFactory);
+		super(new FMLControlledDiagramDrawing(vmInstance, readOnly), readOnly, controller, swingToolFactory);
+		this.virtualModelInstance = vmInstance;
+	}
+
+	public VirtualModelInstance getVirtualModelInstance() {
+		return virtualModelInstance;
 	}
 }

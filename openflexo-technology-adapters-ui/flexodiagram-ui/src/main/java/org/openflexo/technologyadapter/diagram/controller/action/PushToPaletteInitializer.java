@@ -34,7 +34,7 @@ import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramModuleView;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.fml.action.PushToPalette;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -55,9 +55,9 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 		return new FlexoActionInitializer<PushToPalette>() {
 			@Override
 			public boolean run(EventObject e, PushToPalette action) {
-				if (getController().getCurrentModuleView() instanceof DiagramModuleView
+				if (getController().getCurrentModuleView() instanceof FreeDiagramModuleView
 						&& action.getFocusedObject().getGraphicalRepresentation() instanceof ShapeGraphicalRepresentation) {
-					DiagramEditor c = ((DiagramModuleView) getController().getCurrentModuleView()).getEditor();
+					DiagramEditor c = ((FreeDiagramModuleView) getController().getCurrentModuleView()).getEditor();
 					ShapeNode<DiagramShape> shapeNode = c.getDrawing().getShapeNode(action.getFocusedObject());
 					JShapeView shapeView = c.getDrawingView().shapeViewForNode(shapeNode);
 					BufferedImage image = shapeView.getScreenshot();

@@ -3,21 +3,28 @@ package org.openflexo.technologyadapter.diagram.fml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+
+import java.io.FileNotFoundException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.view.FlexoConceptInstance;
+import org.openflexo.foundation.view.ModelObjectActorReference;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelModelSlotInstance;
+import org.openflexo.foundation.view.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.view.action.CreateView;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.view.rm.ViewResource;
 import org.openflexo.foundation.view.rm.VirtualModelInstanceResource;
@@ -33,6 +40,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
@@ -41,7 +49,7 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the instantiation of a VirtualModel whose instances have {@link ControlledDiagramNature}
+ * Test the instantiation of a VirtualModel whose instances have {@link FMLControlledDiagramVirtualModelNature}
  * 
  * @author sylvain
  * 
@@ -78,7 +86,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 
 		virtualModel = viewPoint.getVirtualModelNamed("TestVirtualModel");
 		assertNotNull(virtualModel);
-		assertTrue(virtualModel.hasNature(ControlledDiagramNature.INSTANCE));
+		assertTrue(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE));
 
 		flexoConcept = virtualModel.getFlexoConcepts().get(0);
 		assertNotNull(flexoConcept);
@@ -142,7 +150,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		TypedDiagramModelSlot ms = virtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
 		assertNotNull(ms);
 
-		CreateVirtualModelInstance action = CreateVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
+		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
 		action.setNewVirtualModelInstanceName("MyVirtualModelInstance");
 		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance");
 		action.setVirtualModel(virtualModel);
@@ -174,7 +182,10 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertNotNull(diagramMSInstance.getResource());
 		assertTrue(((DiagramResource) diagramMSInstance.getResource()).getFile().exists());
 
-		assertTrue(newVirtualModelInstance.hasNature(ControlledDiagramInstanceNature.INSTANCE));
+		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE));
+
+		assertNotNull(FMLControlledDiagramVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
+		assertNotNull(FMLControlledDiagramVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
 
 		assertFalse(diagram.isModified());
 		assertFalse(newVirtualModelInstance.isModified());
@@ -230,6 +241,58 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertTrue(((DiagramResource) diagram.getResource()).getFile().exists());
 		assertFalse(diagram.isModified());
 
+		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());
 	}
 
+	/**
+	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
+	 * 
+	 * @throws FlexoException
+	 * @throws ResourceLoadingCancelledException
+	 * @throws FileNotFoundException
+	 */
+	@Test
+	@TestOrder(6)
+	public void testReloadProject() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+
+		log("testReloadProject()");
+
+		instanciateTestServiceManager();
+		editor = reloadProject(project.getDirectory());
+		project = editor.getProject();
+		assertNotNull(editor);
+		assertNotNull(project);
+
+		assertEquals(2, project.getAllResources().size());
+		System.out.println("All resources=" + project.getAllResources());
+		assertNotNull(project.getResource(newView.getURI()));
+
+		ViewResource newViewResource = project.getViewLibrary().getView(newView.getURI());
+		assertNotNull(newViewResource);
+		assertNull(newViewResource.getLoadedResourceData());
+		newViewResource.loadResourceData(null);
+		assertNotNull(newView = newViewResource.getView());
+
+		assertEquals(1, newViewResource.getVirtualModelInstanceResources().size());
+		VirtualModelInstanceResource vmiResource = newViewResource.getVirtualModelInstanceResources().get(0);
+		assertNotNull(vmiResource);
+		assertNull(vmiResource.getLoadedResourceData());
+		vmiResource.loadResourceData(null);
+		assertNotNull(newVirtualModelInstance = vmiResource.getVirtualModelInstance());
+
+		assertEquals(1, newVirtualModelInstance.getFlexoConceptInstances().size());
+		FlexoConceptInstance fci = newVirtualModelInstance.getFlexoConceptInstances().get(0);
+		assertNotNull(fci);
+
+		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE));
+		assertNotNull(FMLControlledDiagramVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
+		assertNotNull(FMLControlledDiagramVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
+
+		assertEquals(1, fci.getActors().size());
+
+		ModelObjectActorReference<DiagramShape> actorReference = (ModelObjectActorReference<DiagramShape>) fci.getActors().get(0);
+		assertNotNull(actorReference);
+		assertNotNull(actorReference.getModellingElement());
+
+	}
 }

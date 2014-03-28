@@ -35,7 +35,7 @@ import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.controller.DropSchemeParametersRetriever;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramModuleView;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
@@ -87,11 +87,11 @@ public class DropSchemeActionInitializer extends ActionInitializer<DropSchemeAct
 				getController().getSelectionManager().setSelectedObject(action.getPrimaryShape());
 				if (action.getPrimaryShape() != null) {
 					ModuleView<?> moduleView = getController().moduleViewForObject(action.getPrimaryShape().getDiagram(), false);
-					if (moduleView instanceof DiagramModuleView) {
+					if (moduleView instanceof FreeDiagramModuleView) {
 
-						ShapeNode<DiagramShape> shapeNode = ((DiagramModuleView) moduleView).getEditor().getDrawing()
+						ShapeNode<DiagramShape> shapeNode = ((FreeDiagramModuleView) moduleView).getEditor().getDrawing()
 								.getShapeNode(action.getPrimaryShape());
-						JShapeView<DiagramShape> shapeView = ((DiagramModuleView) moduleView).getEditor().getDrawingView()
+						JShapeView<DiagramShape> shapeView = ((FreeDiagramModuleView) moduleView).getEditor().getDrawingView()
 								.shapeViewForNode(shapeNode);
 						if (shapeView != null) {
 							if (shapeView.getLabelView() != null) {

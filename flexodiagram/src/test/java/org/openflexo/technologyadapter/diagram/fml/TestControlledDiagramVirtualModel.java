@@ -43,7 +43,7 @@ import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FileUtils;
 
 /**
- * Test the creation of a VirtualModel whose instances have {@link ControlledDiagramNature}
+ * Test the creation of a VirtualModel whose instances have {@link FMLControlledDiagramVirtualModelNature}
  * 
  * @author sylvain
  * 
@@ -196,6 +196,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		typedDiagramModelSlot = technologicalAdapter.makeModelSlot(TypedDiagramModelSlot.class, virtualModel);
 		typedDiagramModelSlot.setMetaModelResource(diagramSpecificationResource);
+		typedDiagramModelSlot.setName("diagram");
 		assertNotNull(typedDiagramModelSlot);
 
 		virtualModel.addToModelSlots(typedDiagramModelSlot);
@@ -236,8 +237,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		System.out.println(virtualModel.getVirtualModelFactory().stringRepresentation(virtualModel));
 
-		assertTrue(virtualModel.hasNature(ControlledDiagramNature.INSTANCE));
-		assertEquals(typedDiagramModelSlot, ControlledDiagramNature.getTypedDiagramModelSlot(virtualModel));
+		assertTrue(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE));
+		assertEquals(typedDiagramModelSlot, FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(virtualModel));
 	}
 
 	/**
@@ -285,9 +286,10 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		assertEquals(1, retrievedVPResource.getVirtualModelResources().size());
 		VirtualModelResource retrievedVMResource = retrievedVPResource.getVirtualModelResources().get(0);
 
-		assertTrue(ControlledDiagramNature.INSTANCE.hasNature(retrievedVMResource.getVirtualModel()));
+		assertTrue(FMLControlledDiagramVirtualModelNature.INSTANCE.hasNature(retrievedVMResource.getVirtualModel()));
 
-		TypedDiagramModelSlot retrievedDiagramMS = ControlledDiagramNature.getTypedDiagramModelSlot(retrievedVMResource.getVirtualModel());
+		TypedDiagramModelSlot retrievedDiagramMS = FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(retrievedVMResource
+				.getVirtualModel());
 		assertNotNull(retrievedDiagramMS);
 		assertEquals(1, retrievedDiagramMS.getPaletteElementBindings().size());
 

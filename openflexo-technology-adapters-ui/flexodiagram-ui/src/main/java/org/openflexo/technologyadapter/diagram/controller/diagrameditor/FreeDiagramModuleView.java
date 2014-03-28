@@ -31,15 +31,16 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
-public class DiagramModuleView extends JPanel implements ModuleView<Diagram>, PropertyChangeListener {
+@SuppressWarnings("serial")
+public class FreeDiagramModuleView extends JPanel implements ModuleView<Diagram>, PropertyChangeListener {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(DiagramModuleView.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(FreeDiagramModuleView.class.getPackage().getName());
 
 	private final DiagramEditor editor;
 	private final FlexoPerspective perspective;
 
-	public DiagramModuleView(DiagramEditor editor, FlexoPerspective perspective) {
+	public FreeDiagramModuleView(FreeDiagramEditor editor, FlexoPerspective perspective) {
 		super();
 		setLayout(new BorderLayout());
 		this.editor = editor;
