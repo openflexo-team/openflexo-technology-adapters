@@ -1,5 +1,4 @@
 /*
- * (c) Copyright 2010-2012 AgileBirds
  * (c) Copyright 2013 Openflexo
  *
  * This file is part of OpenFlexo.
@@ -19,7 +18,7 @@
  *
  */
 
-package org.openflexo.technologyadapter.csv.model;
+package org.openflexo.technologyadapter.csv.metamodel;
 
 import java.util.List;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
@@ -36,10 +35,10 @@ import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 
-public class CSVMetaModel extends FlexoOntologyObjectImpl
-implements FlexoMetaModel<CSVMetaModel>, IFlexoOntologyMetaModel
+public class CSVMetaModel extends FlexoOntologyObjectImpl<CSVTechnologyAdapter>
+implements FlexoMetaModel<CSVMetaModel>, IFlexoOntologyMetaModel<CSVTechnologyAdapter>
 {
 	public FlexoResource<CSVMetaModel> getResource()
 	{
@@ -55,7 +54,7 @@ implements FlexoMetaModel<CSVMetaModel>, IFlexoOntologyMetaModel
 		return null;
 	}
 
-	public List<? extends IFlexoOntology> getImportedOntologies()
+	public List<? extends IFlexoOntology<CSVTechnologyAdapter>> getImportedOntologies()
 	{
 		return null;
 	}
@@ -65,57 +64,57 @@ implements FlexoMetaModel<CSVMetaModel>, IFlexoOntologyMetaModel
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyClass> getAccessibleClasses()
+	public List<? extends IFlexoOntologyClass<CSVTechnologyAdapter>> getAccessibleClasses()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyIndividual> getAccessibleIndividuals()
+	public List<? extends IFlexoOntologyIndividual<CSVTechnologyAdapter>> getAccessibleIndividuals()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyObjectProperty> getAccessibleObjectProperties()
+	public List<? extends IFlexoOntologyObjectProperty<CSVTechnologyAdapter>> getAccessibleObjectProperties()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataProperty> getAccessibleDataProperties()
+	public List<? extends IFlexoOntologyDataProperty<CSVTechnologyAdapter>> getAccessibleDataProperties()
 	{
 		return null;
 	}
 
-	public IFlexoOntologyConcept getDeclaredOntologyObject(String objectURI)
+	public IFlexoOntologyConcept<CSVTechnologyAdapter> getDeclaredOntologyObject(String objectURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyClass getDeclaredClass(String classURI)
+	public IFlexoOntologyClass<CSVTechnologyAdapter> getDeclaredClass(String classURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyIndividual getDeclaredIndividual(String individualURI)
+	public IFlexoOntologyIndividual<CSVTechnologyAdapter> getDeclaredIndividual(String individualURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyObjectProperty getDeclaredObjectProperty(String propertyURI)
+	public IFlexoOntologyObjectProperty<CSVTechnologyAdapter> getDeclaredObjectProperty(String propertyURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyDataProperty getDeclaredDataProperty(String propertyURI)
+	public IFlexoOntologyDataProperty<CSVTechnologyAdapter> getDeclaredDataProperty(String propertyURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyStructuralProperty getDeclaredProperty(String objectURI)
+	public IFlexoOntologyStructuralProperty<CSVTechnologyAdapter> getDeclaredProperty(String objectURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyClass getRootConcept()
+	public IFlexoOntologyClass<CSVTechnologyAdapter> getRootConcept()
 	{
 		return null;
 	}
@@ -125,67 +124,67 @@ implements FlexoMetaModel<CSVMetaModel>, IFlexoOntologyMetaModel
 			{
 			}
 
-	public List<? extends IFlexoOntologyContainer> getSubContainers()
+	public List<? extends IFlexoOntologyContainer<CSVTechnologyAdapter>> getSubContainers()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyConcept> getConcepts()
+	public List<? extends IFlexoOntologyConcept<CSVTechnologyAdapter>> getConcepts()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataType> getDataTypes()
+	public List<? extends IFlexoOntologyDataType<CSVTechnologyAdapter>> getDataTypes()
 	{
 		return null;
 	}
 
-	public IFlexoOntologyConcept getOntologyObject(String objectURI)
+	public IFlexoOntologyConcept<CSVTechnologyAdapter> getOntologyObject(String objectURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyClass getClass(String classURI)
+	public IFlexoOntologyClass<CSVTechnologyAdapter> getClass(String classURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyIndividual getIndividual(String individualURI)
+	public IFlexoOntologyIndividual<CSVTechnologyAdapter> getIndividual(String individualURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyObjectProperty getObjectProperty(String propertyURI)
+	public IFlexoOntologyObjectProperty<CSVTechnologyAdapter> getObjectProperty(String propertyURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyDataProperty getDataProperty(String propertyURI)
+	public IFlexoOntologyDataProperty<CSVTechnologyAdapter> getDataProperty(String propertyURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyStructuralProperty getProperty(String objectURI)
+	public IFlexoOntologyStructuralProperty<CSVTechnologyAdapter> getProperty(String objectURI)
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyClass> getClasses()
+	public List<? extends IFlexoOntologyClass<CSVTechnologyAdapter>> getClasses()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyIndividual> getIndividuals()
+	public List<? extends IFlexoOntologyIndividual<CSVTechnologyAdapter>> getIndividuals()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataProperty> getDataProperties()
+	public List<? extends IFlexoOntologyDataProperty<CSVTechnologyAdapter>> getDataProperties()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyObjectProperty> getObjectProperties()
+	public List<? extends IFlexoOntologyObjectProperty<CSVTechnologyAdapter>> getObjectProperties()
 	{
 		return null;
 	}
@@ -209,7 +208,7 @@ implements FlexoMetaModel<CSVMetaModel>, IFlexoOntologyMetaModel
 		return null;
 	}
 
-	public TechnologyAdapter getTechnologyAdapter()
+	public CSVTechnologyAdapter getTechnologyAdapter()
 	{
 		return null;
 	}

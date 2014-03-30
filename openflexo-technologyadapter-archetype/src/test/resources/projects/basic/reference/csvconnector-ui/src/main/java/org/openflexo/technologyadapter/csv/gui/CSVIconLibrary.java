@@ -1,6 +1,5 @@
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2013 Openflexo
+ * (c) Copyright 2013- Openflexo
  *
  * This file is part of OpenFlexo.
  *

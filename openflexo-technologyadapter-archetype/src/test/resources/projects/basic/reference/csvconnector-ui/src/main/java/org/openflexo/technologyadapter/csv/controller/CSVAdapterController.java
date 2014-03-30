@@ -1,6 +1,5 @@
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2013 Openflexo
+ * (c) Copyright 2013- Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -30,6 +29,8 @@ import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
+
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.gui.CSVIconLibrary;
 import org.openflexo.view.ModuleView;
@@ -72,12 +73,12 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 		return CSVIconLibrary.CSV_FILE_ICON;
 	}
 
-	public ImageIcon getIconForOntologyObject(Class<? extends IFlexoOntologyObject> objectClass) {
+	public ImageIcon getIconForOntologyObject(Class<? extends IFlexoOntologyObject<CSVTechnologyAdapter>> objectClass) {
 		return CSVIconLibrary.iconForObject(objectClass);
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<CSVTechnologyAdapter>> objectClass) {
 		// TODO Auto-generated method stub
 		return null;
 	}

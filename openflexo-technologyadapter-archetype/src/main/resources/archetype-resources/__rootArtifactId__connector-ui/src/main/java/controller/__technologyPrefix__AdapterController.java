@@ -80,7 +80,7 @@ public class ${technologyPrefix}AdapterController extends TechnologyAdapterContr
 		return ${technologyPrefix}IconLibrary.iconForObject(objectClass);
 	}
 
-	@Overwride
+	@Override
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<${technologyPrefix}TechnologyAdapter>> objectClass) {
 		// TODO Auto-generated method stub
 		return null;
