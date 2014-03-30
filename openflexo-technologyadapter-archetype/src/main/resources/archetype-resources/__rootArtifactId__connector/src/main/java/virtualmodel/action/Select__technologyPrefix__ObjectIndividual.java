@@ -72,7 +72,7 @@ public interface Select${technologyPrefix}ObjectIndividual extends SelectIndivid
 				return null;
 			}
 
-			List<${technologyPrefix}ObjectIndividual> returned null;
+			List<${technologyPrefix}ObjectIndividual> returned = null;
 
 			// TODO : Implement Action
 

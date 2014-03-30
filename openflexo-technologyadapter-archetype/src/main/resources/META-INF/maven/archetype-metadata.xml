@@ -63,6 +63,7 @@
 					<directory>src/main/resources</directory>
 					<includes>
 						<include>**/*.TechnologyAdapterController</include>
+						<include>**/*.fib</include>
 					</includes>
 				</fileSet>
 				<fileSet filtered="false" encoding="UTF-8">

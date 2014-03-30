@@ -36,7 +36,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.foundation.viewpoint.VirtualModel;
-import ${package}.${technologyPrefix}ModelSlot;
+import ${package}.${technologyPrefix}TypeAwareModelSlot;
 import ${package}.rm.${technologyPrefix}MetaModelRepository;
 import ${package}.rm.${technologyPrefix}ModelRepository;
 
@@ -49,7 +49,7 @@ import ${package}.rm.${technologyPrefix}ModelRepository;
  */
 
 @DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "${technologyPrefix}ModelSlot", modelSlotClass = ${technologyPrefix}ModelSlot.class), 
+@DeclareModelSlot(FML = "${technologyPrefix}TypeAwareModelSlot", modelSlotClass = ${technologyPrefix}TypeAwareModelSlot.class), 
 })
 @DeclareRepositoryType({ ${technologyPrefix}MetaModelRepository.class, ${technologyPrefix}ModelRepository.class })
 public class ${technologyPrefix}TechnologyAdapter extends TechnologyAdapter {

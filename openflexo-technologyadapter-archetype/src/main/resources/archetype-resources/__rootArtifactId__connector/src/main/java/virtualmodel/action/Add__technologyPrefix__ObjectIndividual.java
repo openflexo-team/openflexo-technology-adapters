@@ -41,15 +41,9 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import ${package}.${technologyPrefix}ModelSlot;
-import ${package}.metamodel.A${technologyPrefix}MetaModelObjectImpl;
-import ${package}.metamodel.${technologyPrefix}AttributeDataProperty;
-import ${package}.metamodel.${technologyPrefix}AttributeObjectProperty;
-import ${package}.metamodel.${technologyPrefix}ClassClass;
 import ${package}.metamodel.${technologyPrefix}MetaModel;
-import ${package}.metamodel.${technologyPrefix}ReferenceObjectProperty;
 import ${package}.model.${technologyPrefix}Model;
 import ${package}.model.${technologyPrefix}ObjectIndividual;
-import ${package}.model.${technologyPrefix}ObjectIndividualReferenceObjectPropertyValueAsList;
 
 /**
  * Create ${technologyPrefix} Object.
@@ -72,12 +66,6 @@ public interface Add${technologyPrefix}ObjectIndividual extends AddIndividual<${
 		public Add${technologyPrefix}ObjectIndividualImpl() {
 			super();
 		}
-
-		@Override
-		public ${technologyPrefix}ClassClass getOntologyClass() {
-			return (${technologyPrefix}ClassClass) super.getOntologyClass();
-		}
-
 
 		@Override
 		public Class<${technologyPrefix}ObjectIndividual> getOntologyIndividualClass() {

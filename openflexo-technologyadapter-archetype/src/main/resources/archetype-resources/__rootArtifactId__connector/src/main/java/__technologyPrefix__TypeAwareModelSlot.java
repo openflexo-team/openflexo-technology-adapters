@@ -44,6 +44,8 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
+
 import ${package}.metamodel.${technologyPrefix}MetaModel;
 import ${package}.model.${technologyPrefix}Model;
 import ${package}.rm.${technologyPrefix}MetaModelResource;
@@ -69,16 +71,16 @@ import ${package}.virtualmodel.action.Select${technologyPrefix}ObjectIndividual;
 	@DeclareFetchRequest(FML = "Select${technologyPrefix}ObjectIndividual", fetchRequestClass = Select${technologyPrefix}ObjectIndividual.class) 
 	})
 @ModelEntity
-@ImplementationClass(${technologyPrefix}ModelSlot.${technologyPrefix}ModelSlotImpl.class)
+@ImplementationClass(${technologyPrefix}TypeAwareModelSlot.${technologyPrefix}TypeAwareModelSlotImpl.class)
 @XMLElement
-public interface ${technologyPrefix}ModelSlot extends TypeAwareModelSlot<${technologyPrefix}Model, ${technologyPrefix}MetaModel> {
+public interface ${technologyPrefix}TypeAwareModelSlot extends TypeAwareModelSlot<${technologyPrefix}Model, ${technologyPrefix}MetaModel> {
 
 	@Override
 	public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter();
 
-	public static abstract class ${technologyPrefix}ModelSlotImpl extends TypeAwareModelSlotImpl<${technologyPrefix}Model, ${technologyPrefix}MetaModel> implements ${technologyPrefix}ModelSlot {
+	public static abstract class ${technologyPrefix}TypeAwareModelSlotImpl extends TypeAwareModelSlotImpl<${technologyPrefix}Model, ${technologyPrefix}MetaModel> implements ${technologyPrefix}TypeAwareModelSlot {
 
-		private static final Logger logger = Logger.getLogger(${technologyPrefix}ModelSlot.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(${technologyPrefix}TypeAwareModelSlot.class.getPackage().getName());
 
 		@Override
 		public Class<${technologyPrefix}TechnologyAdapter> getTechnologyAdapterClass() {
@@ -89,8 +91,8 @@ public interface ${technologyPrefix}ModelSlot extends TypeAwareModelSlot<${techn
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public ${technologyPrefix}ModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new ${technologyPrefix}ModelSlotInstanceConfiguration(this, action);
+		public ${technologyPrefix}TypeAwareModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+			return new ${technologyPrefix}TypeAwareModelSlotInstanceConfiguration(this, action);
 		}
 
 		@Override
@@ -131,13 +133,13 @@ public interface ${technologyPrefix}ModelSlot extends TypeAwareModelSlot<${techn
 		@Override
 		public ${technologyPrefix}ModelResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
 				FlexoMetaModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ?> metaModelResource) {
-			return getTechnologyAdapter().createNew${technologyPrefix}Model(project, filename, modelUri, (${technologyPrefix}MetaModelResource) metaModelResource);
+			return ((${technologyPrefix}TechnologyAdapter) getTechnologyAdapter()).createNew${technologyPrefix}Model(project, filename, modelUri, (${technologyPrefix}MetaModelResource) metaModelResource);
 		}
 
 		@Override
 		public ${technologyPrefix}ModelResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ?> metaModelResource) {
-			return getTechnologyAdapter().createNew${technologyPrefix}Model((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
+			return ((${technologyPrefix}TechnologyAdapter) getTechnologyAdapter()).createNew${technologyPrefix}Model((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
 					modelUri, (${technologyPrefix}MetaModelResource) metaModelResource);
 		}
 
