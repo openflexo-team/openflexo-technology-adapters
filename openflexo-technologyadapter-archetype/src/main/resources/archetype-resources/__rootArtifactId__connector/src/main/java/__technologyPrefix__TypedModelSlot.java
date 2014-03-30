@@ -1,6 +1,8 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2013 Openflexo
+ * (c) Copyright 2013- Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -19,7 +21,7 @@
  *
  */
 
-package org.openflexo.technologyadapter.${technologyExtension};
+package ${package};
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
@@ -38,24 +40,24 @@ import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.foundation.virtualmodel.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.${technologyExtension}.metamodel.${technologyPrefix}MetaModel;
-import org.openflexo.technologyadapter.${technologyExtension}.model.${technologyPrefix}Model;
-import org.openflexo.technologyadapter.${technologyExtension}.rm.${technologyPrefix}MetaModelResource;
-import org.openflexo.technologyadapter.${technologyExtension}.rm.${technologyPrefix}ModelResource;
-import org.openflexo.technologyadapter.${technologyExtension}.viewpoint.${technologyPrefix}ClassClassRole;
-import org.openflexo.technologyadapter.${technologyExtension}.viewpoint.${technologyPrefix}ObjectIndividualRole;
-import org.openflexo.technologyadapter.${technologyExtension}.viewpoint.editionaction.Add${technologyPrefix}ObjectIndividual;
-import org.openflexo.technologyadapter.${technologyExtension}.viewpoint.editionaction.Select${technologyPrefix}ObjectIndividual;
+import ${package}.metamodel.${technologyPrefix}MetaModel;
+import ${package}.model.${technologyPrefix}Model;
+import ${package}.rm.${technologyPrefix}MetaModelResource;
+import ${package}.rm.${technologyPrefix}ModelResource;
+import ${package}.virtualmodel.${technologyPrefix}ClassClassRole;
+import ${package}.virtualmodel.${technologyPrefix}ObjectIndividualRole;
+import ${package}.virtualmodel.editionaction.Add${technologyPrefix}ObjectIndividual;
+import ${package}.virtualmodel.editionaction.Select${technologyPrefix}ObjectIndividual;
 
 /**
  * Implementation of the ModelSlot class for the ${technologyPrefix} technology adapter<br>
  * We expect here to connect an ${technologyPrefix} model conform to an ${technologyPrefix}MetaModel
  * 
- * @author Someone
+ * @author ${author}
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot

@@ -2,7 +2,6 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 /*
- * (c) Copyright 2010-2012 AgileBirds
  * (c) Copyright 2013 Openflexo
  *
  * This file is part of OpenFlexo.
@@ -24,233 +23,270 @@
 
 package ${package}.model;
 
-import java.io.File;
 import java.util.List;
+
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntology;
-import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
-import org.openflexo.foundation.ontology.IFlexoOntologyContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
-import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
-import org.openflexo.foundation.ontology.IFlexoOntologyMetaModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
-import org.openflexo.technologyadapter.${rootArtifactId}.${technologyPrefix}TechnologyAdapter;
-import org.openflexo.technologyadapter.${rootArtifactId}.rm.${technologyPrefix}ModelResource;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
+import org.openflexo.technologyadapter.csv.model.CSVMetaModel;
 
-public class ${technologyPrefix}Model extends FlexoOntologyObjectImpl
-implements FlexoModel<${technologyPrefix}Model, ${technologyPrefix}MetaModel>, IFlexoOntologyModel
+import ${package}.${technologyPrefix}TechnologyAdapter;
+import ${package}.rm.${technologyPrefix}ModelResource;
+
+public class ${technologyPrefix}Model extends FlexoOntologyObjectImpl<${technologyPrefix}TechnologyAdapter>
+implements FlexoModel<${technologyPrefix}Model, ${technologyPrefix}MetaModel>, IFlexoOntologyModel<${technologyPrefix}TechnologyAdapter>
 {
 	private ${technologyPrefix}ModelResource ${rootArtifactId}Resource;
 
 	public ${technologyPrefix}Model(String uri, File file, ${technologyPrefix}TechnologyAdapter technologyAdapter)
 	{
+		super(uri, file,technologyAdapter);
+		// TODO Auto-generated method stub
 	}
 
+	@Override
+	@Getter(value = "${rootArtifactId}Resource", ignoreType = true)
 	public FlexoResource<${technologyPrefix}Model> getResource()
 	{
 		return this.${rootArtifactId}Resource;
 	}
 
+	@Override
+	@Setter("${rootArtifactId}Resource")
 	public void setResource(FlexoResource<${technologyPrefix}Model> resource)
 	{
 		this.${rootArtifactId}Resource = ((${technologyPrefix}ModelResource)resource);
 	}
 
-	public String getVersion()
-	{
+
+	@Override
+	public String getVersion() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntology> getImportedOntologies()
-	{
+	@Override
+	public List getImportedOntologies() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyAnnotation> getAnnotations()
-	{
+	@Override
+	public List getAnnotations() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyClass> getAccessibleClasses()
-	{
+	@Override
+	public List getAccessibleClasses() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyIndividual> getAccessibleIndividuals()
-	{
+	@Override
+	public List getAccessibleIndividuals() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyObjectProperty> getAccessibleObjectProperties()
-	{
+	@Override
+	public List getAccessibleObjectProperties() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataProperty> getAccessibleDataProperties()
-	{
+	@Override
+	public List getAccessibleDataProperties() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyConcept getDeclaredOntologyObject(String objectURI)
-	{
+	@Override
+	public IFlexoOntologyConcept getDeclaredOntologyObject(String objectURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyClass getDeclaredClass(String classURI)
-	{
+	@Override
+	public IFlexoOntologyClass getDeclaredClass(String classURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyIndividual getDeclaredIndividual(String individualURI)
-	{
+	@Override
+	public IFlexoOntologyIndividual getDeclaredIndividual(String individualURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyObjectProperty getDeclaredObjectProperty(String propertyURI)
-	{
+	@Override
+	public IFlexoOntologyObjectProperty getDeclaredObjectProperty(
+			String propertyURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyDataProperty getDeclaredDataProperty(String propertyURI)
-	{
+	@Override
+	public IFlexoOntologyDataProperty getDeclaredDataProperty(String propertyURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyStructuralProperty getDeclaredProperty(String objectURI)
-	{
+	@Override
+	public IFlexoOntologyStructuralProperty getDeclaredProperty(String objectURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyClass getRootConcept()
-	{
+	@Override
+	public IFlexoOntologyClass getRootConcept() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void setName(String name)
-			throws Exception
-			{
-			}
+	@Override
+	public void setName(String name) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 
-	public List<? extends IFlexoOntologyContainer> getSubContainers()
-	{
+	@Override
+	public List getSubContainers() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyConcept> getConcepts()
-	{
+	@Override
+	public List getConcepts() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataType> getDataTypes()
-	{
+	@Override
+	public List getDataTypes() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyConcept getOntologyObject(String objectURI)
-	{
+	@Override
+	public IFlexoOntologyConcept getOntologyObject(String objectURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyClass getClass(String classURI)
-	{
+	@Override
+	public IFlexoOntologyClass getClass(String classURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyIndividual getIndividual(String individualURI)
-	{
+	@Override
+	public IFlexoOntologyIndividual getIndividual(String individualURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyObjectProperty getObjectProperty(String propertyURI)
-	{
+	@Override
+	public IFlexoOntologyObjectProperty getObjectProperty(String propertyURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyDataProperty getDataProperty(String propertyURI)
-	{
+	@Override
+	public IFlexoOntologyDataProperty getDataProperty(String propertyURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntologyStructuralProperty getProperty(String objectURI)
-	{
+	@Override
+	public IFlexoOntologyStructuralProperty getProperty(String objectURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyClass> getClasses()
-	{
+	@Override
+	public List getClasses() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyIndividual> getIndividuals()
-	{
+	@Override
+	public List getIndividuals() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataProperty> getDataProperties()
-	{
+	@Override
+	public List getDataProperties() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyObjectProperty> getObjectProperties()
-	{
+	@Override
+	public List getObjectProperties() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<IFlexoOntologyMetaModel> getMetaModels()
-	{
+	@Override
+	public List getMetaModels() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public ${technologyPrefix}MetaModel getMetaModel()
-	{
+	@Override
+	public CSVMetaModel getMetaModel() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String getURI()
-	{
+	@Override
+	public String getURI() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public Object getObject(String objectURI)
-	{
+	@Override
+	public Object getObject(String objectURI) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public TechnologyAdapter getTechnologyAdapter()
-	{
+	@Override
+	public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String getName()
-	{
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IFlexoOntology getFlexoOntology()
-	{
+	@Override
+	public IFlexoOntology getFlexoOntology() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public String getDisplayableDescription()
-	{
+	@Override
+	public String getDisplayableDescription() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-
-	public String getFullyQualifiedName()
-	{
-		return null;
-	}
-
-	public void loadWhenUnloaded()
-	{
-	}
+		
 }

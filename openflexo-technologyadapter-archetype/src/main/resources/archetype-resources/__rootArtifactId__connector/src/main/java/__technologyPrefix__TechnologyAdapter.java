@@ -2,7 +2,6 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 /*
- * (c) Copyright 2010-2012 AgileBirds
  * (c) Copyright 2013- Openflexo
  *
  * This file is part of OpenFlexo.
@@ -37,9 +36,9 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.foundation.viewpoint.VirtualModel;
-import org.openflexo.technologyadapter.${technologyExtension}.${technologyPrefix}ModelSlot;
-// import org.openflexo.technologyadapter.${technologyExtension}.rm.${technologyPrefix}MetaModelRepository;
-import org.openflexo.technologyadapter.${technologyExtension}.rm.${technologyPrefix}ModelRepository;
+import ${package}.${technologyPrefix}ModelSlot;
+import ${package}.rm.${technologyPrefix}MetaModelRepository;
+import ${package}.rm.${technologyPrefix}ModelRepository;
 
 
 /**

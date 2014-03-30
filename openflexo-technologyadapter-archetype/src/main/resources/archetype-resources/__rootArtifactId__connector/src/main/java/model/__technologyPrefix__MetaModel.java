@@ -2,7 +2,6 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 /*
- * (c) Copyright 2010-2012 AgileBirds
  * (c) Copyright 2013 Openflexo
  *
  * This file is part of OpenFlexo.
@@ -41,8 +40,8 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 
-public class ${technologyPrefix}MetaModel extends FlexoOntologyObjectImpl
-implements FlexoMetaModel<${technologyPrefix}MetaModel>, IFlexoOntologyMetaModel
+public class ${technologyPrefix}MetaModel extends FlexoOntologyObjectImpl<${technologyPrefix}TechnologyAdapter>
+implements FlexoMetaModel<${technologyPrefix}MetaModel>, IFlexoOntologyMetaModel<${technologyPrefix}TechnologyAdapter>
 {
 	public FlexoResource<${technologyPrefix}MetaModel> getResource()
 	{
@@ -58,67 +57,67 @@ implements FlexoMetaModel<${technologyPrefix}MetaModel>, IFlexoOntologyMetaModel
 		return null;
 	}
 
-	public List<? extends IFlexoOntology> getImportedOntologies()
+	public List<? extends IFlexoOntology<${technologyPrefix}TechnologyAdapter>> getImportedOntologies()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyAnnotation> getAnnotations()
+	public List<? extends IFlexoOntologyAnnotation<${technologyPrefix}TechnologyAdapter>> getAnnotations()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyClass> getAccessibleClasses()
+	public List<? extends IFlexoOntologyClass<${technologyPrefix}TechnologyAdapter>> getAccessibleClasses()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyIndividual> getAccessibleIndividuals()
+	public List<? extends IFlexoOntologyIndividual<${technologyPrefix}TechnologyAdapter>> getAccessibleIndividuals()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyObjectProperty> getAccessibleObjectProperties()
+	public List<? extends IFlexoOntologyObjectProperty<${technologyPrefix}TechnologyAdapter>> getAccessibleObjectProperties()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataProperty> getAccessibleDataProperties()
+	public List<? extends IFlexoOntologyDataProperty<${technologyPrefix}TechnologyAdapter>> getAccessibleDataProperties()
 	{
 		return null;
 	}
 
-	public IFlexoOntologyConcept getDeclaredOntologyObject(String objectURI)
+	public IFlexoOntologyConcept<${technologyPrefix}TechnologyAdapter> getDeclaredOntologyObject(String objectURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyClass getDeclaredClass(String classURI)
+	public IFlexoOntologyClass<${technologyPrefix}TechnologyAdapter> getDeclaredClass(String classURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyIndividual getDeclaredIndividual(String individualURI)
+	public IFlexoOntologyIndividual<${technologyPrefix}TechnologyAdapter> getDeclaredIndividual(String individualURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyObjectProperty getDeclaredObjectProperty(String propertyURI)
+	public IFlexoOntologyObjectProperty<${technologyPrefix}TechnologyAdapter> getDeclaredObjectProperty(String propertyURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyDataProperty getDeclaredDataProperty(String propertyURI)
+	public IFlexoOntologyDataProperty<${technologyPrefix}TechnologyAdapter> getDeclaredDataProperty(String propertyURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyStructuralProperty getDeclaredProperty(String objectURI)
+	public IFlexoOntologyStructuralProperty<${technologyPrefix}TechnologyAdapter> getDeclaredProperty(String objectURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyClass getRootConcept()
+	public IFlexoOntologyClass<${technologyPrefix}TechnologyAdapter> getRootConcept()
 	{
 		return null;
 	}
@@ -128,67 +127,67 @@ implements FlexoMetaModel<${technologyPrefix}MetaModel>, IFlexoOntologyMetaModel
 			{
 			}
 
-	public List<? extends IFlexoOntologyContainer> getSubContainers()
+	public List<? extends IFlexoOntologyContainer<${technologyPrefix}TechnologyAdapter>> getSubContainers()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyConcept> getConcepts()
+	public List<? extends IFlexoOntologyConcept<${technologyPrefix}TechnologyAdapter>> getConcepts()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataType> getDataTypes()
+	public List<? extends IFlexoOntologyDataType<${technologyPrefix}TechnologyAdapter>> getDataTypes()
 	{
 		return null;
 	}
 
-	public IFlexoOntologyConcept getOntologyObject(String objectURI)
+	public IFlexoOntologyConcept<${technologyPrefix}TechnologyAdapter> getOntologyObject(String objectURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyClass getClass(String classURI)
+	public IFlexoOntologyClass<${technologyPrefix}TechnologyAdapter> getClass(String classURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyIndividual getIndividual(String individualURI)
+	public IFlexoOntologyIndividual<${technologyPrefix}TechnologyAdapter> getIndividual(String individualURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyObjectProperty getObjectProperty(String propertyURI)
+	public IFlexoOntologyObjectProperty<${technologyPrefix}TechnologyAdapter> getObjectProperty(String propertyURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyDataProperty getDataProperty(String propertyURI)
+	public IFlexoOntologyDataProperty<${technologyPrefix}TechnologyAdapter> getDataProperty(String propertyURI)
 	{
 		return null;
 	}
 
-	public IFlexoOntologyStructuralProperty getProperty(String objectURI)
+	public IFlexoOntologyStructuralProperty<${technologyPrefix}TechnologyAdapter> getProperty(String objectURI)
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyClass> getClasses()
+	public List<? extends IFlexoOntologyClass<${technologyPrefix}TechnologyAdapter>> getClasses()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyIndividual> getIndividuals()
+	public List<? extends IFlexoOntologyIndividual<${technologyPrefix}TechnologyAdapter>> getIndividuals()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyDataProperty> getDataProperties()
+	public List<? extends IFlexoOntologyDataProperty<${technologyPrefix}TechnologyAdapter>> getDataProperties()
 	{
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyObjectProperty> getObjectProperties()
+	public List<? extends IFlexoOntologyObjectProperty<${technologyPrefix}TechnologyAdapter>> getObjectProperties()
 	{
 		return null;
 	}
@@ -212,7 +211,7 @@ implements FlexoMetaModel<${technologyPrefix}MetaModel>, IFlexoOntologyMetaModel
 		return null;
 	}
 
-	public TechnologyAdapter getTechnologyAdapter()
+	public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter()
 	{
 		return null;
 	}

@@ -21,19 +21,38 @@
  *
  */
 
-package ${package};
+package ${package}.model;
 
-import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import java.util.List;
+import java.util.logging.Logger;
 
-public class ${technologyPrefix}TechnologyContextManager extends TechnologyContextManager {
 
-	public ${technologyPrefix}TechnologyContextManager(${technologyPrefix}TechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
-		super(adapter, resourceCenterService);
+/**
+ * ${technologyPrefix} Uri Builder from Object.
+ * 
+ * @author ${author}
+ */
+public class ${technologyPrefix}ModelURIBuilder {
+
+	/**
+	 * Name of object.
+	 * 
+	 * @param eObject
+	 * @return
+	 */
+	public static String getName(Object object) {
+		// TODO : Implement This
+		return "The name of an object";
 	}
 
-	@Override
-	public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter() {
-		return (${technologyPrefix}TechnologyAdapter) super.getTechnologyAdapter();
+	/**
+	 * URI of object.
+	 * 
+	 * @param eObject
+	 * @return
+	 */
+	public static String getUri(Object object) {
+		// TODO : Implement This
+		return "The URI of an object";
 	}
 }

@@ -26,6 +26,10 @@
 		<requiredProperty key="package">
 			<defaultValue>org.openflexo.technologyadapter.${artifactId}</defaultValue>
 		</requiredProperty>
+		<requiredProperty key="author">
+			<defaultValue>SomeOne</defaultValue>
+		</requiredProperty>
+		
 
 	</requiredProperties>
 	<modules>

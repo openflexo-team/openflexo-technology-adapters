@@ -2,7 +2,6 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 /*
- * (c) Copyright 2010-2012 AgileBirds
  * (c) Copyright 2013 Openflexo
  *
  * This file is part of OpenFlexo.
@@ -39,14 +38,13 @@ import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoFileResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.FlexoFileResource;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.${rootArtifactId}.${technologyPrefix}TechnologyAdapter;
-import org.openflexo.technologyadapter.${rootArtifactId}.${technologyPrefix}TechnologyContextManager;
-import org.openflexo.technologyadapter.${rootArtifactId}.model.${technologyPrefix}Model;
+import ${package}.${technologyPrefix}TechnologyAdapter;
+import ${package}.${technologyPrefix}TechnologyContextManager;
+import ${package}.model.${technologyPrefix}Model;
 import org.openflexo.toolbox.IProgress;
 
 public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoFileResourceImpl<${technologyPrefix}Model> implements ${technologyPrefix}ModelResource {
