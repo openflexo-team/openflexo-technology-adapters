@@ -30,9 +30,9 @@ import ${package}.metamodel.${technologyPrefix}MetaModel;
 import ${package}.model.${technologyPrefix}Model;
 import ${package}.rm.${technologyPrefix}MetaModelResource;
 
-public class ${technologyPrefix}ModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}ModelSlot> {
+public class ${technologyPrefix}TypeAwareModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TypeAwareModelSlot> {
 
-	protected ${technologyPrefix}ModelSlotInstanceConfiguration(${technologyPrefix}ModelSlot ms, CreateVirtualModelInstance action) {
+	protected ${technologyPrefix}TypeAwareModelSlotInstanceConfiguration(${technologyPrefix}TypeAwareModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 
