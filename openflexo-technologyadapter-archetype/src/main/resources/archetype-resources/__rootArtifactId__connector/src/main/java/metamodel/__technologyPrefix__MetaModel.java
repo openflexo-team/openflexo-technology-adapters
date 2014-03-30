@@ -21,7 +21,7 @@
  *
  */
 
-package ${package}.model;
+package ${package}.metamodel;
 
 import java.util.List;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
@@ -38,7 +38,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import ${package}.${technologyPrefix}TechnologyAdapter;
 
 public class ${technologyPrefix}MetaModel extends FlexoOntologyObjectImpl<${technologyPrefix}TechnologyAdapter>
 implements FlexoMetaModel<${technologyPrefix}MetaModel>, IFlexoOntologyMetaModel<${technologyPrefix}TechnologyAdapter>
@@ -62,7 +62,7 @@ implements FlexoMetaModel<${technologyPrefix}MetaModel>, IFlexoOntologyMetaModel
 		return null;
 	}
 
-	public List<? extends IFlexoOntologyAnnotation<${technologyPrefix}TechnologyAdapter>> getAnnotations()
+	public List<? extends IFlexoOntologyAnnotation> getAnnotations()
 	{
 		return null;
 	}

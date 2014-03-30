@@ -44,14 +44,14 @@ import ${package}.rm.${technologyPrefix}ModelRepository;
 /**
  * This class defines and implements the ${technologyPrefix} technology adapter
  * 
- * @author Someone
+ * @author ${author}
  * 
  */
 
 @DeclareModelSlots({ // ModelSlot(s) declaration
 @DeclareModelSlot(FML = "${technologyPrefix}ModelSlot", modelSlotClass = ${technologyPrefix}ModelSlot.class), 
 })
-@DeclareRepositoryType({ EMFMetaModelRepository.class, EMFModelRepository.class })
+@DeclareRepositoryType({ ${technologyPrefix}MetaModelRepository.class, ${technologyPrefix}ModelRepository.class })
 public class ${technologyPrefix}TechnologyAdapter extends TechnologyAdapter {
 	private static String ${technologyPrefix}_FILE_EXTENSION = ".${technologyExtension}";
 

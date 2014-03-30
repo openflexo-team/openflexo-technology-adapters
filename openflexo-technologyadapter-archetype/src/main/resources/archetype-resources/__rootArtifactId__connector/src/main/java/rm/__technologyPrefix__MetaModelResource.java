@@ -24,26 +24,46 @@
 package ${package}.rm;
 
 import org.openflexo.foundation.resource.FlexoFileResource;
-import org.openflexo.foundation.technologyadapter.FlexoModelResource;
+import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLElement;
 import ${package}.${technologyPrefix}TechnologyAdapter;
-import ${package}.${technologyPrefix}TechnologyContextManager;
 import ${package}.metamodel.${technologyPrefix}MetaModel;
 import ${package}.model.${technologyPrefix}Model;
 
 @ModelEntity
-@ImplementationClass(${technologyPrefix}ModelResourceImpl.class)
-public abstract interface ${technologyPrefix}ModelResource extends FlexoFileResource<${technologyPrefix}Model>, FlexoModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TechnologyAdapter>
-{
-  public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
+@ImplementationClass(${technologyPrefix}MetaModelResourceImpl.class)
+@XMLElement
+public interface ${technologyPrefix}MetaModelResource extends FlexoFileResource<${technologyPrefix}MetaModel>,
+		FlexoMetaModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TechnologyAdapter> {
 
-  @Getter(value="technologyContextManager", ignoreType=true)
-  public abstract ${technologyPrefix}TechnologyContextManager getTechnologyContextManager();
+	public static final String EXTENSION = "${technologyExtension}";
 
-  @Setter("technologyContextManager")
-  public abstract void setTechnologyContextManager(${technologyPrefix}TechnologyContextManager param${technologyPrefix}TechnologyContextManager);
+	/**
+	 * Setter of extension for model files related to this MetaModel.
+	 * 
+	 * @return
+	 */
+	@Setter(EXTENSION)
+	void setModelFileExtension(String modelFileExtension);
+
+	/**
+	 * Getter of extension for model files related to this MetaModel.
+	 * 
+	 * @return
+	 */
+	@Getter(EXTENSION)
+	String getModelFileExtension();
+
+	
+	/**
+	 * Get the MetaModel stored in the Resource..
+	 * 
+	 * @return
+	 */
+	@Override
+	public ${technologyPrefix}MetaModel getMetaModelData();
 }
-

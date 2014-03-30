@@ -24,6 +24,7 @@
 package ${package}.model;
 
 import java.util.List;
+import java.io.File;
 
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntology;
@@ -39,8 +40,8 @@ import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
-import org.openflexo.technologyadapter.csv.model.CSVMetaModel;
+import ${package}.${technologyPrefix}TechnologyAdapter;
+import ${package}.metamodel.${technologyPrefix}MetaModel;
 
 import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.rm.${technologyPrefix}ModelResource;
@@ -52,7 +53,7 @@ implements FlexoModel<${technologyPrefix}Model, ${technologyPrefix}MetaModel>, I
 
 	public ${technologyPrefix}Model(String uri, File file, ${technologyPrefix}TechnologyAdapter technologyAdapter)
 	{
-		super(uri, file,technologyAdapter);
+		super();
 		// TODO Auto-generated method stub
 	}
 
@@ -70,6 +71,13 @@ implements FlexoModel<${technologyPrefix}Model, ${technologyPrefix}MetaModel>, I
 		this.${rootArtifactId}Resource = ((${technologyPrefix}ModelResource)resource);
 	}
 
+
+	public void loadWhenUnloaded() {
+		// TODO Auto-generated method stub
+		
+	}
+
+		
 
 	@Override
 	public String getVersion() {
@@ -247,7 +255,7 @@ implements FlexoModel<${technologyPrefix}Model, ${technologyPrefix}MetaModel>, I
 	}
 
 	@Override
-	public CSVMetaModel getMetaModel() {
+	public ${technologyPrefix}MetaModel getMetaModel() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -25,16 +25,16 @@ package ${package}.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.MetaModelRepository;
-import ${package}.EMFTechnologyAdapter;
-import ${package}.metamodel.EMFMetaModel;
-import ${package}.model.EMFModel;
+import ${package}.${technologyPrefix}TechnologyAdapter;
+import ${package}.metamodel.${technologyPrefix}MetaModel;
+import ${package}.model.${technologyPrefix}Model;
 
 /**
- * EMF Meta Model Repository.
+ * ${technologyPrefix} Meta Model Repository.
  * 
  * @author gbesancon
  */
-public class EMFMetaModelRepository extends MetaModelRepository<EMFMetaModelResource, EMFModel, EMFMetaModel, EMFTechnologyAdapter> {
+public class ${technologyPrefix}MetaModelRepository extends MetaModelRepository<${technologyPrefix}MetaModelResource, ${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TechnologyAdapter> {
 
 	/**
 	 * Constructor.
@@ -42,11 +42,11 @@ public class EMFMetaModelRepository extends MetaModelRepository<EMFMetaModelReso
 	 * @param adapter
 	 * @param resourceCenter
 	 */
-	public EMFMetaModelRepository(EMFTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public ${technologyPrefix}MetaModelRepository(${technologyPrefix}TechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/EMFTechnologyAdapter/MetaModels";
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/${technologyPrefix}TechnologyAdapter/MetaModels";
 
 	@Override
 	public String getDefaultBaseURI() {
