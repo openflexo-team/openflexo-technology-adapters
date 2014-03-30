@@ -25,6 +25,8 @@ package ${package};
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
@@ -36,6 +38,9 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.technologyadapter.csv.rm.${technologyPrefix}MetaModelResource;
+import org.openflexo.technologyadapter.csv.rm.${technologyPrefix}ModelResource;
+
 import ${package}.${technologyPrefix}TypeAwareModelSlot;
 import ${package}.rm.${technologyPrefix}MetaModelRepository;
 import ${package}.rm.${technologyPrefix}ModelRepository;
@@ -100,4 +105,21 @@ public class ${technologyPrefix}TechnologyAdapter extends TechnologyAdapter {
 		// TODO Auto-generated method stub
 
 	}
+	
+
+	public ${technologyPrefix}ModelResource createNew${technologyPrefix}Model(FlexoProject project,
+			String filename, String modelUri,
+			${technologyPrefix}MetaModelResource metaModelResource) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public ${technologyPrefix}ModelResource createNew${technologyPrefix}Model(
+			FileSystemBasedResourceCenter resourceCenter, String relativePath,
+			String filename, String modelUri,
+			${technologyPrefix}MetaModelResource metaModelResource) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 }

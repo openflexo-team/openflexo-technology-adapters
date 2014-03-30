@@ -40,7 +40,7 @@ import org.openflexo.foundation.viewpoint.editionaction.ObjectPropertyAssertion;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import ${package}.${technologyPrefix}ModelSlot;
+import ${package}.${technologyPrefix}TypeAwareModelSlot;
 import ${package}.metamodel.${technologyPrefix}MetaModel;
 import ${package}.model.${technologyPrefix}Model;
 import ${package}.model.${technologyPrefix}ObjectIndividual;
@@ -56,9 +56,9 @@ import ${package}.model.${technologyPrefix}ObjectIndividual;
 @ModelEntity
 @ImplementationClass(Add${technologyPrefix}ObjectIndividual.Add${technologyPrefix}ObjectIndividualImpl.class)
 @XMLElement
-public interface Add${technologyPrefix}ObjectIndividual extends AddIndividual<${technologyPrefix}ModelSlot, ${technologyPrefix}ObjectIndividual> {
+public interface Add${technologyPrefix}ObjectIndividual extends AddIndividual<${technologyPrefix}TypeAwareModelSlot, ${technologyPrefix}ObjectIndividual> {
 
-	public static abstract class Add${technologyPrefix}ObjectIndividualImpl extends AddIndividualImpl<${technologyPrefix}ModelSlot, ${technologyPrefix}ObjectIndividual> implements
+	public static abstract class Add${technologyPrefix}ObjectIndividualImpl extends AddIndividualImpl<${technologyPrefix}TypeAwareModelSlot, ${technologyPrefix}ObjectIndividual> implements
 			Add${technologyPrefix}ObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(Add${technologyPrefix}ObjectIndividual.class.getPackage().getName());

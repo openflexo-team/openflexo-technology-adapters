@@ -35,7 +35,7 @@ import org.openflexo.foundation.viewpoint.editionaction.SelectIndividual;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import ${package}.${technologyPrefix}ModelSlot;
+import ${package}.${technologyPrefix}TypeAwareModelSlot;
 import ${package}.metamodel.${technologyPrefix}MetaModel;
 import ${package}.model.${technologyPrefix}Model;
 import ${package}.model.${technologyPrefix}ObjectIndividual;
@@ -50,9 +50,9 @@ import ${package}.model.${technologyPrefix}ObjectIndividual;
 @ModelEntity
 @ImplementationClass(Select${technologyPrefix}ObjectIndividual.Select${technologyPrefix}ObjectIndividualImpl.class)
 @XMLElement
-public interface Select${technologyPrefix}ObjectIndividual extends SelectIndividual<${technologyPrefix}ModelSlot, ${technologyPrefix}ObjectIndividual> {
+public interface Select${technologyPrefix}ObjectIndividual extends SelectIndividual<${technologyPrefix}TypeAwareModelSlot, ${technologyPrefix}ObjectIndividual> {
 
-	public static abstract class Select${technologyPrefix}ObjectIndividualImpl extends SelectIndividualImpl<${technologyPrefix}ModelSlot, ${technologyPrefix}ObjectIndividual> implements
+	public static abstract class Select${technologyPrefix}ObjectIndividualImpl extends SelectIndividualImpl<${technologyPrefix}TypeAwareModelSlot, ${technologyPrefix}ObjectIndividual> implements
 			Select${technologyPrefix}ObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(Select${technologyPrefix}ObjectIndividual.class.getPackage().getName());
@@ -80,8 +80,8 @@ public interface Select${technologyPrefix}ObjectIndividual extends SelectIndivid
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}ModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (TypeAwareModelSlotInstance<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}ModelSlot>) super.getModelSlotInstance(action);
+		public TypeAwareModelSlotInstance<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TypeAwareModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
+			return (TypeAwareModelSlotInstance<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TypeAwareModelSlot>) super.getModelSlotInstance(action);
 		}
 
 	}
