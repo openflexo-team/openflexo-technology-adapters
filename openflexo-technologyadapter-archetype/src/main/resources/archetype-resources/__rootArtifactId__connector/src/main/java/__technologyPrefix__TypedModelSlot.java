@@ -48,10 +48,9 @@ import ${package}.metamodel.${technologyPrefix}MetaModel;
 import ${package}.model.${technologyPrefix}Model;
 import ${package}.rm.${technologyPrefix}MetaModelResource;
 import ${package}.rm.${technologyPrefix}ModelResource;
-import ${package}.virtualmodel.${technologyPrefix}ClassClassRole;
 import ${package}.virtualmodel.${technologyPrefix}ObjectIndividualRole;
-import ${package}.virtualmodel.editionaction.Add${technologyPrefix}ObjectIndividual;
-import ${package}.virtualmodel.editionaction.Select${technologyPrefix}ObjectIndividual;
+import ${package}.virtualmodel.action.Add${technologyPrefix}ObjectIndividual;
+import ${package}.virtualmodel.action.Select${technologyPrefix}ObjectIndividual;
 
 /**
  * Implementation of the ModelSlot class for the ${technologyPrefix} technology adapter<br>
@@ -61,13 +60,14 @@ import ${package}.virtualmodel.editionaction.Select${technologyPrefix}ObjectIndi
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "${technologyPrefix}ObjectIndividual", flexoRoleClass = ${technologyPrefix}ObjectIndividualRole.class),
-		@DeclarePatternRole(FML = "${technologyPrefix}ClassClass", flexoRoleClass = ${technologyPrefix}ClassClassRole.class)})
+	@DeclarePatternRole(FML = "${technologyPrefix}ObjectIndividual", flexoRoleClass = ${technologyPrefix}ObjectIndividualRole.class)
+	})
 @DeclareEditionActions({ // All edition actions available through this model slot
-@DeclareEditionAction(FML = "Add${technologyPrefix}ObjectIndividual", editionActionClass = Add${technologyPrefix}ObjectIndividual.class)
-})
+	@DeclareEditionAction(FML = "Add${technologyPrefix}ObjectIndividual", editionActionClass = Add${technologyPrefix}ObjectIndividual.class)
+	})
 @DeclareFetchRequests({ // All requests available through this model slot
-@DeclareFetchRequest(FML = "Select${technologyPrefix}ObjectIndividual", fetchRequestClass = Select${technologyPrefix}ObjectIndividual.class) })
+	@DeclareFetchRequest(FML = "Select${technologyPrefix}ObjectIndividual", fetchRequestClass = Select${technologyPrefix}ObjectIndividual.class) 
+	})
 @ModelEntity
 @ImplementationClass(${technologyPrefix}ModelSlot.${technologyPrefix}ModelSlotImpl.class)
 @XMLElement

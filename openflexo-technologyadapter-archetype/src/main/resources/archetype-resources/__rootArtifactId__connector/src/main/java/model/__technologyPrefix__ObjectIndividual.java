@@ -50,8 +50,6 @@ public class ${technologyPrefix}ObjectIndividual extends ${technologyPrefix}Mode
 
 	private static final Logger logger = Logger.getLogger(${technologyPrefix}ObjectIndividual.class.getPackage().getName());
 
-	private static ${technologyPrefix}ObjectIndividualReferenceObjectPropertyValueAsList containingPropertyValue;
-
 	/**
 	 * Constructor.
 	 * 
@@ -201,8 +199,8 @@ public class ${technologyPrefix}ObjectIndividual extends ${technologyPrefix}Mode
 	 */
 	@Override
 	public List<IFlexoOntologyClass<${technologyPrefix}TechnologyAdapter>> getTypes() {
-		return Collections.unmodifiableList(Collections.singletonList((IFlexoOntologyClass<${technologyPrefix}TechnologyAdapter>) ontology.getMetaModel()
-				.getConverter().convertClass(ontology.getMetaModel(), object.eClass())));
+		// TODO
+		return null;
 	}
 
 	/**
@@ -255,22 +253,15 @@ public class ${technologyPrefix}ObjectIndividual extends ${technologyPrefix}Mode
 	@Override
 	public List<IFlexoOntologyPropertyValue<${technologyPrefix}TechnologyAdapter>> getPropertyValues() {
 		List<IFlexoOntologyPropertyValue<${technologyPrefix}TechnologyAdapter>> propertyValues = new ArrayList<IFlexoOntologyPropertyValue<${technologyPrefix}TechnologyAdapter>>();
-		for (EStructuralFeature structuralFeature : object.eClass().getEAllStructuralFeatures()) {
-			propertyValues.add(ontology.getConverter().getPropertyValues().get(object).get(structuralFeature));
-		}
+		
+		// TODO : implement the List
+		
 		return Collections.unmodifiableList(propertyValues);
 	}
 
 	@Override
 	public boolean delete() {
-		// TODO XTOF => implement an actual deletion mechanism
-		// TODO URGENT => there might be a memory leak here !
-		logger.warning("YOU NEED TO IMPLEMENT AN ACTUAL DELETION MECHANISM");
-		if (this.containingPropertyValue == null) {
-			this.get${technologyPrefix}Model().get${technologyPrefix}Resource().getContents().remove(this.getObject());
-		} else {
-			containingPropertyValue.remove(this);
-		}
+		// TODO 
 		return super.delete();
 	}
 
@@ -321,14 +312,6 @@ public class ${technologyPrefix}ObjectIndividual extends ${technologyPrefix}Mode
 	public String toString() {
 		// return "${technologyPrefix}ObjectIndividual/" + getTypes().get(0) + ":" + getName() + "uri=" + getURI();
 		return getTypes().get(0).getName() + ":" + getName();
-	}
-
-	public ${technologyPrefix}ObjectIndividualReferenceObjectPropertyValueAsList getContainingPropertyValue() {
-		return this.containingPropertyValue;
-	}
-
-	public void setContainPropertyValue(${technologyPrefix}ObjectIndividualReferenceObjectPropertyValueAsList container) {
-		containingPropertyValue = container;
 	}
 
 }
