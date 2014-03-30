@@ -2,8 +2,7 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2013 Openflexo
+ * (c) Copyright 2013- Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -33,6 +32,8 @@ import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
+
 import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.gui.${technologyPrefix}IconLibrary;
 import org.openflexo.view.ModuleView;
@@ -75,12 +76,12 @@ public class ${technologyPrefix}AdapterController extends TechnologyAdapterContr
 		return ${technologyPrefix}IconLibrary.${technologyPrefix}_FILE_ICON;
 	}
 
-	public ImageIcon getIconForOntologyObject(Class<? extends IFlexoOntologyObject> objectClass) {
+	public ImageIcon getIconForOntologyObject(Class<? extends IFlexoOntologyObject<${technologyPrefix}TechnologyAdapter>> objectClass) {
 		return ${technologyPrefix}IconLibrary.iconForObject(objectClass);
 	}
 
-	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject> objectClass) {
+	@Overwride
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<${technologyPrefix}TechnologyAdapter>> objectClass) {
 		// TODO Auto-generated method stub
 		return null;
 	}
