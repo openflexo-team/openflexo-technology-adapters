@@ -3,7 +3,7 @@
 #set( $symbol_escape = '\' )
 /*
  * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2013 Openflexo
+ * (c) Copyright 2013- Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -28,13 +28,31 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
+import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
+import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
+import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.technologyadapter.${technologyExtension}.${technologyPrefix}ModelSlot;
+// import org.openflexo.technologyadapter.${technologyExtension}.rm.${technologyPrefix}MetaModelRepository;
+import org.openflexo.technologyadapter.${technologyExtension}.rm.${technologyPrefix}ModelRepository;
 
+
+/**
+ * This class defines and implements the ${technologyPrefix} technology adapter
+ * 
+ * @author Someone
+ * 
+ */
+
+@DeclareModelSlots({ // ModelSlot(s) declaration
+@DeclareModelSlot(FML = "${technologyPrefix}ModelSlot", modelSlotClass = ${technologyPrefix}ModelSlot.class), 
+})
+@DeclareRepositoryType({ EMFMetaModelRepository.class, EMFModelRepository.class })
 public class ${technologyPrefix}TechnologyAdapter extends TechnologyAdapter {
 	private static String ${technologyPrefix}_FILE_EXTENSION = ".${technologyExtension}";
 

@@ -1,0 +1,148 @@
+/*
+ * (c) Copyright 2010-2012 AgileBirds
+ * (c) Copyright 2013 Openflexo
+ *
+ * This file is part of OpenFlexo.
+ *
+ * OpenFlexo is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenFlexo is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
+package org.openflexo.technologyadapter.${technologyExtension};
+
+import java.lang.reflect.Type;
+import java.util.logging.Logger;
+
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.ontology.IFlexoOntologyObject;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
+import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
+import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
+import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
+import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
+import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
+import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
+import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
+import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.${technologyExtension}.metamodel.${technologyPrefix}MetaModel;
+import org.openflexo.technologyadapter.${technologyExtension}.model.${technologyPrefix}Model;
+import org.openflexo.technologyadapter.${technologyExtension}.rm.${technologyPrefix}MetaModelResource;
+import org.openflexo.technologyadapter.${technologyExtension}.rm.${technologyPrefix}ModelResource;
+import org.openflexo.technologyadapter.${technologyExtension}.viewpoint.${technologyPrefix}ClassClassRole;
+import org.openflexo.technologyadapter.${technologyExtension}.viewpoint.${technologyPrefix}ObjectIndividualRole;
+import org.openflexo.technologyadapter.${technologyExtension}.viewpoint.editionaction.Add${technologyPrefix}ObjectIndividual;
+import org.openflexo.technologyadapter.${technologyExtension}.viewpoint.editionaction.Select${technologyPrefix}ObjectIndividual;
+
+/**
+ * Implementation of the ModelSlot class for the ${technologyPrefix} technology adapter<br>
+ * We expect here to connect an ${technologyPrefix} model conform to an ${technologyPrefix}MetaModel
+ * 
+ * @author Someone
+ * 
+ */
+@DeclarePatternRoles({ // All pattern roles available through this model slot
+@DeclarePatternRole(FML = "${technologyPrefix}ObjectIndividual", flexoRoleClass = ${technologyPrefix}ObjectIndividualRole.class),
+		@DeclarePatternRole(FML = "${technologyPrefix}ClassClass", flexoRoleClass = ${technologyPrefix}ClassClassRole.class)})
+@DeclareEditionActions({ // All edition actions available through this model slot
+@DeclareEditionAction(FML = "Add${technologyPrefix}ObjectIndividual", editionActionClass = Add${technologyPrefix}ObjectIndividual.class)
+})
+@DeclareFetchRequests({ // All requests available through this model slot
+@DeclareFetchRequest(FML = "Select${technologyPrefix}ObjectIndividual", fetchRequestClass = Select${technologyPrefix}ObjectIndividual.class) })
+@ModelEntity
+@ImplementationClass(${technologyPrefix}ModelSlot.${technologyPrefix}ModelSlotImpl.class)
+@XMLElement
+public interface ${technologyPrefix}ModelSlot extends TypeAwareModelSlot<${technologyPrefix}Model, ${technologyPrefix}MetaModel> {
+
+	@Override
+	public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter();
+
+	public static abstract class ${technologyPrefix}ModelSlotImpl extends TypeAwareModelSlotImpl<${technologyPrefix}Model, ${technologyPrefix}MetaModel> implements ${technologyPrefix}ModelSlot {
+
+		private static final Logger logger = Logger.getLogger(${technologyPrefix}ModelSlot.class.getPackage().getName());
+
+		@Override
+		public Class<${technologyPrefix}TechnologyAdapter> getTechnologyAdapterClass() {
+			return ${technologyPrefix}TechnologyAdapter.class;
+		}
+
+		/**
+		 * Instanciate a new model slot instance configuration for this model slot
+		 */
+		@Override
+		public ${technologyPrefix}ModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+			return new ${technologyPrefix}ModelSlotInstanceConfiguration(this, action);
+		}
+
+		@Override
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
+			if (${technologyPrefix}ObjectIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+				return "individual";
+			}
+			return null;
+		}
+
+		@Override
+		public String getURIForObject(
+				TypeAwareModelSlotInstance<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ? extends TypeAwareModelSlot<${technologyPrefix}Model, ${technologyPrefix}MetaModel>> msInstance,
+				Object o) {
+			if (o instanceof IFlexoOntologyObject) {
+				return ((IFlexoOntologyObject) o).getURI();
+			}
+			return null;
+		}
+
+		@Override
+		public Object retrieveObjectWithURI(
+				TypeAwareModelSlotInstance<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ? extends TypeAwareModelSlot<${technologyPrefix}Model, ${technologyPrefix}MetaModel>> msInstance,
+				String objectURI) {
+			return msInstance.getResourceData().getObject(objectURI);
+		}
+
+		@Override
+		public Type getType() {
+			return ${technologyPrefix}Model.class;
+		}
+
+		@Override
+		public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter() {
+			return (${technologyPrefix}TechnologyAdapter) super.getTechnologyAdapter();
+		}
+
+		@Override
+		public ${technologyPrefix}ModelResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
+				FlexoMetaModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ?> metaModelResource) {
+			return getTechnologyAdapter().createNew${technologyPrefix}Model(project, filename, modelUri, (${technologyPrefix}MetaModelResource) metaModelResource);
+		}
+
+		@Override
+		public ${technologyPrefix}ModelResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
+				String modelUri, FlexoMetaModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ?> metaModelResource) {
+			return getTechnologyAdapter().createNew${technologyPrefix}Model((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
+					modelUri, (${technologyPrefix}MetaModelResource) metaModelResource);
+		}
+
+		@Override
+		public boolean isStrictMetaModelling() {
+			return true;
+		}
+
+	}
+}
