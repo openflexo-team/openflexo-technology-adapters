@@ -32,16 +32,21 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.apache.poi.ddf.EscherProperties;
 import org.apache.poi.hslf.model.AutoShape;
 import org.apache.poi.hslf.model.Line;
 import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Picture;
 import org.apache.poi.hslf.model.Shape;
+import org.apache.poi.hslf.model.ShapeTypes;
+import org.apache.poi.hslf.model.SimpleShape;
 import org.apache.poi.hslf.model.Slide;
 import org.apache.poi.hslf.model.Table;
 import org.apache.poi.hslf.model.TableCell;
@@ -50,13 +55,19 @@ import org.apache.poi.hslf.model.TextRun;
 import org.apache.poi.hslf.model.TextShape;
 import org.apache.poi.hslf.usermodel.RichTextRun;
 import org.apache.poi.hslf.usermodel.SlideShow;
+import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ForegroundStyle.DashStyle;
 import org.openflexo.fge.GraphicalRepresentation.HorizontalTextAlignment;
 import org.openflexo.fge.GraphicalRepresentation.ParagraphAlignment;
 import org.openflexo.fge.GraphicalRepresentation.VerticalTextAlignment;
+import org.openflexo.fge.ShapeGraphicalRepresentation.DimensionConstraints;
+import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.TextStyle;
+import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
+import org.openflexo.fge.connectors.ConnectorSymbol.EndSymbolType;
+import org.openflexo.fge.connectors.ConnectorSymbol.StartSymbolType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
@@ -69,6 +80,7 @@ import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
@@ -371,7 +383,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 	public ImageIcon getOverview(Slide s) {
 		double WIDTH = 400;
-		if(s!=null & s.getSlideShow()!=null){
+		if(s!=null && s.getSlideShow()!=null){
 			Dimension d = s.getSlideShow().getPageSize();
 			BufferedImage i = new BufferedImage((int) WIDTH, (int) (WIDTH * d.height / d.width), BufferedImage.TYPE_INT_RGB);
 			Graphics2D graphics = i.createGraphics();
@@ -391,6 +403,9 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		Diagram diagram = getNewDiagram();
 
 		MasterSheet master = slide.getMasterSheet();
+		
+		ArrayList<AutoShape> connectors = new ArrayList<AutoShape>();
+		HashMap<DiagramShape,Shape> shapesMap = new HashMap<DiagramShape,Shape>();
 
 		if (slide.getFollowMasterObjects()) {
 			if (master.getShapes() != null) {
@@ -401,38 +416,63 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 					}
 					Shape shape = sh[i];
 					if (shape instanceof Picture) {
-						diagram.addToShapes(makePictureShape((Picture) shape));
+						DiagramShape newShape = makePictureShape((Picture) shape);
+						shapesMap.put(newShape, shape);
+						diagram.addToShapes(newShape);
 					} else if (shape instanceof AutoShape) {
-						diagram.addToShapes(makeAutoShape((AutoShape) shape));
+						if(!isConnector(shape.getShapeType())){
+							DiagramShape newShape = makeAutoShape((AutoShape) shape);
+							shapesMap.put(newShape, shape);
+							diagram.addToShapes(newShape);
+						} else{
+							connectors.add((AutoShape)shape);
+						}
 					} else if (shape instanceof TextBox) {
-						diagram.addToShapes(makeTextBox((TextBox) shape));
+						DiagramShape newShape = makeTextBox((TextBox) shape);
+						shapesMap.put(newShape, shape);
+						diagram.addToShapes(newShape);
+					} else if (shape instanceof Table){
+						DiagramShape newShape = makeTable((Table) shape);
+						shapesMap.put(newShape, shape);
+						diagram.addToShapes(newShape);
+					} else if (shape instanceof Line){
+						diagram.addToConnectors(makeLine((Line) shape));
 					}
-					else if (shape instanceof Table){
-						Table t = (Table) shape;
-						/*
-		                List<XSLFTableRow> r = t.getRows();
-		                for (int i = 1; i < r.size(); i++) {
-		                    String text = r.get(i).getCells().get(1).getText();
-		                    if(text.contains("#ID")) {
-		                        r.get(i).getCells().get(1).setText("20131028152343");
-		                    }
-		                }*/
-		            }
 				}
 			}
 		}
 
 		for (Shape shape : slide.getShapes()) {
 			if (shape instanceof Picture) {
-				diagram.addToShapes(makePictureShape((Picture) shape));
+				DiagramShape newShape = makePictureShape((Picture) shape);
+				shapesMap.put(newShape, shape);
+				diagram.addToShapes(newShape);
 			} else if (shape instanceof AutoShape) {
-				diagram.addToShapes(makeAutoShape((AutoShape) shape));
+				if(!isConnector(shape.getShapeType())){
+					DiagramShape newShape = makeAutoShape((AutoShape) shape);
+					shapesMap.put(newShape, shape);
+					diagram.addToShapes(newShape);
+				} else{
+					connectors.add((AutoShape)shape);
+				}
 			} else if (shape instanceof TextBox) {
-				diagram.addToShapes(makeTextBox((TextBox) shape));
-			}else if (shape instanceof Table){
-				diagram.addToShapes(makeTable((Table) shape));
+				DiagramShape newShape = makeTextBox((TextBox) shape);
+				shapesMap.put(newShape, shape);
+				diagram.addToShapes(newShape);
+			} else if (shape instanceof Table){
+				DiagramShape newShape = makeTable((Table) shape);
+				shapesMap.put(newShape, shape);
+				diagram.addToShapes(newShape);
+			} else if (shape instanceof Line){
+				diagram.addToConnectors(makeLine((Line) shape));
 			}
 		}
+		
+		// Handle connectors
+		for(AutoShape connector : connectors){
+			makeConnector(connector, shapesMap);
+		}
+		
 		return diagram;
 	}
 	
@@ -454,6 +494,7 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
         		TableCell cell = table.getCell(row, col);
         		DiagramShape newCell = makeTextBox(cell);
         		newCell.getGraphicalRepresentation().getForeground().setNoStroke(false);
+        		newCell.getGraphicalRepresentation().setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
         		newTable.addToShapes(newCell);
         	}
         }
@@ -464,7 +505,6 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 
 	private DiagramShape makeAutoShape(AutoShape autoShape) {
-
 		DiagramShape newShape = getDiagramFactory().makeNewShape(autoShape.getText(), getNewDiagram());
 
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
@@ -489,12 +529,81 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 			gr.setBackground(getDiagramFactory().makeEmptyBackground());
 			gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 		}
-
+		
 		setTextProperties(gr, autoShape);
 		newShape.setGraphicalRepresentation(gr);
 		return newShape;
 	}
 
+	/**
+	 * A line is without start/end shapes
+	 * @param line
+	 * @return
+	 */
+	private DiagramConnector makeLine(Line line){
+		//Create a virtual start/end shape.
+		DiagramShape sourceShape = getDiagramFactory().makeNewShape("", getNewDiagram());
+		DiagramShape targetShape = getDiagramFactory().makeNewShape("", getNewDiagram());
+		ShapeGraphicalRepresentation sourceShapeGR = sourceShape.getGraphicalRepresentation();
+		sourceShapeGR.setX(line.getAnchor2D().getMinX());
+		sourceShapeGR.setY(line.getAnchor2D().getMaxY());
+		sourceShapeGR.setWidth(2);
+		sourceShapeGR.setHeight(2);
+		sourceShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
+		ShapeGraphicalRepresentation targetShapeGR = targetShape.getGraphicalRepresentation();
+		targetShapeGR.setX(line.getAnchor2D().getMaxX());
+		targetShapeGR.setY(line.getAnchor2D().getMinY());
+		targetShapeGR.setWidth(2);
+		targetShapeGR.setHeight(2);
+		targetShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
+		
+		DiagramConnector newConnector = getDiagramFactory().makeNewConnector(line.getShapeName(), sourceShape, targetShape, getNewDiagram());
+		ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
+		
+		if (line.getLineColor() != null) {
+			gr.setForeground(getDiagramFactory().makeForegroundStyle(line.getLineColor(), (float) line.getLineWidth(),
+					convertDashLineStyles(line.getLineDashing())));
+		} else {
+			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+		}
+		setConnectorType(gr, line);
+		newConnector.setGraphicalRepresentation(gr);
+		return newConnector;
+	}
+	
+	private DiagramConnector makeConnector(AutoShape poiConnector , HashMap<DiagramShape,Shape> possibleShapes) {
+		DiagramShape sourceShape=null,targetShape = null;
+		
+		for (DiagramShape diagramShape : possibleShapes.keySet()) {
+			Shape poiShape = possibleShapes.get(diagramShape);
+			
+			if(poiConnector.getAnchor().intersects(poiShape.getAnchor())){
+				if(sourceShape==null && targetShape == null){
+					sourceShape = diagramShape;
+				}
+				else if(sourceShape!=null && targetShape == null){
+					targetShape = diagramShape;
+				}
+			}
+		}
+		
+		if(sourceShape !=null && targetShape !=null){
+			DiagramConnector newConnector = getDiagramFactory().makeNewConnector(poiConnector.getShapeName(), sourceShape, targetShape, getNewDiagram());
+			ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
+			if (poiConnector.getLineColor() != null) {
+				gr.setForeground(getDiagramFactory().makeForegroundStyle(poiConnector.getLineColor(), (float) poiConnector.getLineWidth(),
+						convertDashLineStyles(poiConnector.getLineDashing())));
+			} else {
+				gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+			}
+			setConnectorType(gr, poiConnector);
+			newConnector.setGraphicalRepresentation(gr);
+			return newConnector;
+		}
+		
+		return null;
+	}
+	
 	private DiagramShape makeTextBox(TextBox textBox) {
 
 		DiagramShape newShape = getDiagramFactory().makeNewShape(textBox.getText(), getNewDiagram());
@@ -569,6 +678,18 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 			case Line.PEN_SOLID : return DashStyle.PLAIN_STROKE;
 		}
 		return null;
+	}
+	
+	private boolean isConnector(int shapeType){
+		switch(shapeType){
+			case ShapeTypes.CurvedConnector2:return true;
+			case ShapeTypes.CurvedConnector3:return true;
+			case ShapeTypes.CurvedConnector4:return true;
+			case ShapeTypes.CurvedConnector5:return true;
+			case ShapeTypes.Line:return true;
+			case ShapeTypes.StraightConnector1:return true;
+		}
+		return false;
 	}
 	
 	private void setTextProperties(ShapeGraphicalRepresentation returned, TextShape textShape) {
@@ -656,4 +777,39 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 
 	}
 
+	
+	// there is still an issue for connectors ends, even if we can find at least that there is specific ends(such as arrows) it seems that there is no information on the side they are applied...
+	private void setConnectorType(ConnectorGraphicalRepresentation returned, SimpleShape connectorShape){
+		
+		switch(connectorShape.getShapeType()){
+		case ShapeTypes.CurvedConnector2:
+			returned.setConnectorType(ConnectorType.CURVE);
+			break;
+		case ShapeTypes.CurvedConnector3:
+			returned.setConnectorType(ConnectorType.CURVE);
+			break;
+		case ShapeTypes.CurvedConnector4:
+			returned.setConnectorType(ConnectorType.CURVE);
+			break;
+		case ShapeTypes.CurvedConnector5:
+			returned.setConnectorType(ConnectorType.CURVE);
+			break;
+		case ShapeTypes.Line:
+			returned.setConnectorType(ConnectorType.LINE);
+			break;
+		case ShapeTypes.StraightConnector1:
+			returned.setConnectorType(ConnectorType.RECT_POLYLIN);
+			break;
+		}
+	
+		if(connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWHEAD)!=0){
+			returned.getConnectorSpecification().setStartSymbol(StartSymbolType.ARROW);
+		}if(connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH)!=0){
+			returned.getConnectorSpecification().setStartSymbolSize(connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH)*10);
+		}if(connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWHEAD)!=0){
+			returned.getConnectorSpecification().setEndSymbol(EndSymbolType.ARROW);
+		}if(connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH)!=0){
+			returned.getConnectorSpecification().setEndSymbolSize(connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH)*10);
+		}
+	}
 }
