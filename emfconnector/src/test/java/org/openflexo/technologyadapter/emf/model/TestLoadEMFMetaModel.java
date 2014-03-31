@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
@@ -53,10 +54,11 @@ public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestLoadEMFMetaModel.class.getPackage().getName());
 
 	@Before
-	protected void setUp() throws Exception {
+	public void setUp() throws Exception {
 		instanciateTestServiceManager();
 	}
-
+	
+	@Test
 	public void testLoadEMFMetaModel() {
 		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				EMFTechnologyAdapter.class);

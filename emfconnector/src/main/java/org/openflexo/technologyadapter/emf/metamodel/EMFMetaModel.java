@@ -58,7 +58,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
  * @author gbesancon
  */
 public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements FlexoMetaModel<EMFMetaModel>,
-		IFlexoOntologyMetaModel<EMFTechnologyAdapter> {
+IFlexoOntologyMetaModel<EMFTechnologyAdapter> {
 	/** MetaModel Resource. */
 	protected EMFMetaModelResource metaModelResource;
 	/** Adapter. */
@@ -321,6 +321,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> 
 			if (aClass.getURI().equalsIgnoreCase(classURI)) {
 				result = aClass;
 			}
+			if (result != null) break;
 		}
 		return result;
 	}
@@ -447,6 +448,7 @@ public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> 
 		for (IFlexoOntologyDataProperty<EMFTechnologyAdapter> dataProperty : getDataProperties()) {
 			if (dataProperty.getURI().equalsIgnoreCase(propertyURI)) {
 				result = dataProperty;
+				if (result != null) break;
 			}
 		}
 		return result;

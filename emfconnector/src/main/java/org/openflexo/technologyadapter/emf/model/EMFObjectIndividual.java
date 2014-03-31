@@ -54,6 +54,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
@@ -67,6 +68,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
+import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeDataProperty;
 
 /**
  * EMF Object Individual.
@@ -327,7 +329,16 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public IFlexoOntologyPropertyValue<EMFTechnologyAdapter> addToPropertyValue(
 			IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property, Object newValue) {
-		System.out.println("Property Values can't be modified.");
+
+		EObject obj = this.getObject();
+		if (property instanceof EMFAttributeDataProperty) {
+			EAttribute Eattr = (EAttribute) ((EMFAttributeDataProperty) property).getObject();
+			obj.eSet(Eattr, newValue);
+		}
+		else {
+			System.out.println("Property Values can't be modified : " + property);
+		}
+		
 		return null;
 	}
 

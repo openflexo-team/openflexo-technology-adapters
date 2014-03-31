@@ -50,6 +50,8 @@ import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassRole;
 import org.openflexo.technologyadapter.emf.viewpoint.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividualAttributeDataPropertyValue;
+import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividualAttributeObjectPropertyValue;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.SelectEMFObjectIndividual;
 
 /**
@@ -64,11 +66,9 @@ import org.openflexo.technologyadapter.emf.viewpoint.editionaction.SelectEMFObje
 		@DeclarePatternRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassRole.class),
 		@DeclarePatternRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
-@DeclareEditionAction(FML = "AddEMFObjectIndividual", editionActionClass = AddEMFObjectIndividual.class)
-
-// Removed because it is unusable
-// @DeclareEditionAction(FML = "AddDataPropertyValue", editionActionClass = AddEMFObjectIndividualAttributeDataPropertyValue.class),
-// @DeclareEditionAction(FML = "AddObjectPropertyValue", editionActionClass = AddEMFObjectIndividualAttributeObjectPropertyValue.class),
+	@DeclareEditionAction(FML = "AddEMFObjectIndividual", editionActionClass = AddEMFObjectIndividual.class),
+	@DeclareEditionAction(FML = "AddDataPropertyValue", editionActionClass = AddEMFObjectIndividualAttributeDataPropertyValue.class),
+	@DeclareEditionAction(FML = "AddObjectPropertyValue", editionActionClass = AddEMFObjectIndividualAttributeObjectPropertyValue.class),
 // @DeclareEditionAction(
 // FML = "AddReferencePropertyValue",
 // editionActionClass = AddEMFObjectIndividualReferenceObjectPropertyValue.class),

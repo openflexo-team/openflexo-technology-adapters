@@ -117,4 +117,5 @@ public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObje
 		}
 		return Collections.unmodifiableList(result);
 	}
+	
 }
