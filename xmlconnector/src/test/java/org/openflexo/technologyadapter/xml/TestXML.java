@@ -30,6 +30,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.ApplicationContext;
 import org.openflexo.TestApplicationContext;
 import org.openflexo.foundation.FlexoException;
@@ -46,14 +47,17 @@ import org.openflexo.technologyadapter.xml.model.XMLType;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
+@RunWith(OrderedRunner.class)
 public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected static final Logger logger = Logger.getLogger(TestXML.class.getPackage().getName());
 
 	private static ApplicationContext testApplicationContext;
 	private static XMLTechnologyAdapter xmlAdapter;
-	private static FlexoResourceCenter resourceCenter;
+	private static FlexoResourceCenter<?> resourceCenter;
 	private static XMLModelRepository modelRepository;
 	private static String baseDirName;
 
@@ -82,6 +86,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	 * @throws IOException
 	 */
 	@Test
+	@TestOrder(1)
 	public void test0LoadTestResourceCenter() throws IOException {
 		log("test0LoadTestResourceCenter()");
 		testApplicationContext = new TestApplicationContext();
@@ -96,6 +101,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	@Test
+	@TestOrder(2)
 	public void test0LoadFileAndDump() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test1LoadFileAndDump()");
@@ -118,6 +124,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	@Test
+	@TestOrder(3)
 	public void test1LoadFileAndDump() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test1LoadFileAndDump()");
@@ -140,6 +147,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	@Test
+	@TestOrder(4)
 	public void test2LoadFileAndDump() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test2LoadFileAndDump()");
@@ -161,6 +169,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	@Test
+	@TestOrder(5)
 	public void test3LoadFileAndDump() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("test3LoadFileAndDump()");
@@ -181,6 +190,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	@Test
+	@TestOrder(6)
 	public void test1CreateNewFile() throws Exception {
 
 		log("test1CreateNewFile()");
