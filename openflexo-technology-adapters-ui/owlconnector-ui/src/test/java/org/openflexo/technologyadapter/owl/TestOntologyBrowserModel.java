@@ -1948,7 +1948,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setShowClasses(false);
 		obm.recomputeStructure();
 
-		assertSameList(obm.getRoots(), ontology.getRootConcept());
+		assertEquals(obm.getRoots().get(0), ontology.getRootConcept());
 		assertSameList(obm.getChildren(ontology.getRootConcept()), rootClassForInputModel1, rootClassForOutputModel1,
 				mappingSpecificationObject);
 
@@ -1966,16 +1966,18 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		assertNotNull(descriptionSpectrale);
 		OWLClass descriptionTemporelle = ontology.getClass(inputModel1Ontology.getURI() + "#DescriptionTemporelle");
 		assertNotNull(descriptionTemporelle);
-		OWLClass intervalleComplexe = ontology.getClass(inputModel1Ontology.getURI() + "#IntervalleComplexe");
-		assertNotNull(intervalleComplexe);
+		OWLClass intervalle = ontology.getClass(inputModel1Ontology.getURI() + "#Intervalle");
+		assertNotNull(intervalle);
 		OWLClass frequence = ontology.getClass(inputModel1Ontology.getURI() + "#Frequence");
 		assertNotNull(frequence);
+		OWLClass groupefrequence = ontology.getClass(inputModel1Ontology.getURI() + "#GroupeFrequence");
+		assertNotNull(groupefrequence);
 		OWLClass contenu = ontology.getClass(inputModel1Ontology.getURI() + "#Contenu");
 		assertNotNull(contenu);
 
 		assertSameList(obm.getRoots(), rootClassForInputModel1);
 		assertSameList(obm.getChildren(rootClassForInputModel1), etat, descriptionSpatiale, emetteur, descriptionSpectrale,
-				descriptionTemporelle, intervalleComplexe, frequence, contenu);
+				descriptionTemporelle,intervalle, frequence, groupefrequence, contenu);
 
 	}
 }
