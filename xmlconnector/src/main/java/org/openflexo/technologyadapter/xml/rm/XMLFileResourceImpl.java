@@ -162,7 +162,6 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 		OutputStreamWriter out = null;
 		try {
 			out = new OutputStreamWriter(new FileOutputStream(getFile()), "UTF-8");
-			out = new FileWriter(getFile());
 			XMLWriter<XMLFileResource, XMLModel> writer = new XMLWriter<XMLFileResource, XMLModel>(this, out);
 
 			writer.writeDocument();
