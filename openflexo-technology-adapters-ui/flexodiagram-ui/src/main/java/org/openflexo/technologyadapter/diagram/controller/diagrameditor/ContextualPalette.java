@@ -113,7 +113,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 
 	private Vector<DropScheme> getAvailableDropSchemes(FlexoConcept pattern, DrawingTreeNode<?, ?> target) {
 		Vector<DropScheme> returned = new Vector<DropScheme>();
-		for (DropScheme dropScheme : pattern.getEditionSchemes(DropScheme.class)) {
+		for (DropScheme dropScheme : pattern.getFlexoBehaviours(DropScheme.class)) {
 			if (dropScheme.isTopTarget() && target instanceof DrawingGraphicalRepresentation) {
 				returned.add(dropScheme);
 			}

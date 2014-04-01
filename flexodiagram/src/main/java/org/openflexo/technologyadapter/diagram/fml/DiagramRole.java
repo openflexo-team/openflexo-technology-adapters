@@ -18,6 +18,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
@@ -42,6 +43,12 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 	public DiagramSpecification getDiagramSpecification();
 
 	public void setDiagramSpecification(DiagramSpecification diagramSpecification);
+
+	public DiagramSpecificationResource getDiagramSpecificationResource();
+
+	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource);
+
+	public DiagramTechnologyAdapter getTechnologyAdapter();
 
 	public static abstract class DiagramRoleImpl extends FlexoRoleImpl<Diagram> implements DiagramRole {
 
@@ -74,6 +81,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 			return View.class;
 		}
 
+		@Override
 		public DiagramSpecificationResource getDiagramSpecificationResource() {
 			if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI)) {
 				diagramSpecificationResource = (DiagramSpecificationResource) getModelSlot().getTechnologyAdapter()
@@ -83,6 +91,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 			return diagramSpecificationResource;
 		}
 
+		@Override
 		public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource) {
 			this.diagramSpecificationResource = diagramSpecificationResource;
 		}
@@ -110,7 +119,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 
 		@Override
 		public void setDiagramSpecification(DiagramSpecification diagramSpecification) {
-			diagramSpecificationResource = (DiagramSpecificationResource) diagramSpecification.getResource();
+			diagramSpecificationResource = diagramSpecification.getResource();
 		}
 
 		@Override
@@ -126,6 +135,11 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
 			return returned;
+		}
+
+		@Override
+		public DiagramTechnologyAdapter getTechnologyAdapter() {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		}
 	}
 }

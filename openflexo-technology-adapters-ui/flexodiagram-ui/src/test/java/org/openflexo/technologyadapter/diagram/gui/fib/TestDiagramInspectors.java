@@ -18,13 +18,13 @@ public class TestDiagramInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
-	public void testConnectorOverridingGraphicalRepresentationInspector() {
-		validateFIB("Inspectors/Diagram/ConnectorOverridingGraphicalRepresentation.inspector");
+	public void testConnectorRoleInspector() {
+		validateFIB("Inspectors/Diagram/ConnectorRole.inspector");
 	}
 
 	@Test
-	public void testConnectorRoleInspector() {
-		validateFIB("Inspectors/Diagram/ConnectorRole.inspector");
+	public void testDiagramInspector() {
+		validateFIB("Inspectors/Diagram/Diagram.inspector");
 	}
 
 	@Test
@@ -43,8 +43,8 @@ public class TestDiagramInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
-	public void testDiagramPatternRoleInspector() {
-		validateFIB("Inspectors/Diagram/DiagramPatternRole.inspector");
+	public void testDiagramRoleInspector() {
+		validateFIB("Inspectors/Diagram/DiagramRole.inspector");
 	}
 
 	@Test
@@ -63,28 +63,13 @@ public class TestDiagramInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
-	public void testExampleDiagramInspector() {
-		validateFIB("Inspectors/Diagram/ExampleDiagram.inspector");
+	public void testFMLDiagramPaletteElementBindingInspector() {
+		validateFIB("Inspectors/Diagram/FMLDiagramPaletteElementBinding.inspector");
 	}
 
 	@Test
-	public void testExampleDiagramConnectorInspector() {
-		validateFIB("Inspectors/Diagram/ExampleDiagramConnector.inspector");
-	}
-
-	@Test
-	public void testExampleDiagramObjectInspector() {
-		validateFIB("Inspectors/Diagram/ExampleDiagramObject.inspector");
-	}
-
-	@Test
-	public void testExampleDiagramShapeInspector() {
-		validateFIB("Inspectors/Diagram/ExampleDiagramShape.inspector");
-	}
-
-	@Test
-	public void testGraphicalElementPatternRoleInspector() {
-		validateFIB("Inspectors/Diagram/GraphicalElementPatternRole.inspector");
+	public void testGraphicalElementRoleInspector() {
+		validateFIB("Inspectors/Diagram/GraphicalElementRole.inspector");
 	}
 
 	@Test
@@ -93,13 +78,8 @@ public class TestDiagramInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
-	public void testShapeOverridingGraphicalRepresentationInspector() {
-		validateFIB("Inspectors/Diagram/ShapeOverridingGraphicalRepresentation.inspector");
-	}
-
-	@Test
-	public void testShapePatternRoleInspector() {
-		validateFIB("Inspectors/Diagram/ShapePatternRole.inspector");
+	public void testShapeRoleInspector() {
+		validateFIB("Inspectors/Diagram/ShapeRole.inspector");
 	}
 
 }

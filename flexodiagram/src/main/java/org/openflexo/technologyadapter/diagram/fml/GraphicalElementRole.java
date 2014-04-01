@@ -38,8 +38,8 @@ import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationM
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(GraphicalElementRole.GraphicalElementRoleImpl.class)
-public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
-		FlexoRole<T>, Bindable {
+public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends FlexoRole<T>,
+		Bindable {
 
 	public static GraphicalFeature<String, GraphicalRepresentation> LABEL_FEATURE = new GraphicalFeature<String, GraphicalRepresentation>(
 			"label", GraphicalRepresentation.TEXT) {
@@ -96,7 +96,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 	@Setter(EXAMPLE_LABEL_KEY)
 	public void setExampleLabel(String exampleLabel);
 
-	@Getter(value = ACTIONS_KEY, cardinality = Cardinality.LIST, inverse = GraphicalElementAction.GRAPHICAL_ELEMENT_PATTERN_ROLE_KEY)
+	@Getter(value = ACTIONS_KEY, cardinality = Cardinality.LIST, inverse = GraphicalElementAction.GRAPHICAL_ELEMENT_ROLE_KEY)
 	@XMLElement
 	public List<GraphicalElementAction> getActions();
 
@@ -148,6 +148,10 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 	public List<ActionMask> getReferencedMasks();
 
+	public GraphicalElementAction createAction();
+
+	public GraphicalElementAction deleteAction(GraphicalElementAction anAction);
+
 	public static abstract class GraphicalElementRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
 			FlexoRoleImpl<T> implements GraphicalElementRole<T, GR> {
 
@@ -170,7 +174,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		protected void initDefaultSpecifications() {
-			if(getVirtualModelFactory()!=null){
+			if (getVirtualModelFactory() != null) {
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, ?>>();
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
 					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
@@ -182,7 +186,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
 			}
-			
+
 		}
 
 		public DiagramSpecification getDiagramSpecification() {
@@ -389,12 +393,14 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			return returned;
 		}
 
+		@Override
 		public GraphicalElementAction createAction() {
 			GraphicalElementAction newAction = getVirtualModelFactory().newInstance(GraphicalElementAction.class);
 			addToActions(newAction);
 			return newAction;
 		}
 
+		@Override
 		public GraphicalElementAction deleteAction(GraphicalElementAction anAction) {
 			removeFromActions(anAction);
 			anAction.delete();
@@ -403,10 +409,9 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementSpecification<?, ?>> getGrSpecifications() {
-			if(grSpecifications==null && getVirtualModelFactory()!=null){
+			if (grSpecifications == null && getVirtualModelFactory() != null) {
 				initDefaultSpecifications();
-			}
-			else if(grSpecifications==null){
+			} else if (grSpecifications == null) {
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, ?>>();
 			}
 			return grSpecifications;

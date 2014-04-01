@@ -150,6 +150,10 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 
 	public void setBoundLabelToElementName(boolean boundLabelToElementName);
 
+	public List<FlexoConcept> allAvailableFlexoConcepts();
+
+	public List<DropScheme> allAvailableDropSchemes();
+
 	public abstract class FMLDiagramPaletteElementBindingImpl extends NamedViewPointObjectImpl implements FMLDiagramPaletteElementBinding {
 
 		@SuppressWarnings("unused")
@@ -309,8 +313,8 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 				dropScheme = (DropScheme) getFlexoConcept().getFlexoBehaviour(_dropSchemeName);
 				updateParameters();
 			}
-			if (dropScheme == null && getFlexoConcept() != null && getFlexoConcept().getEditionSchemes(DropScheme.class).size() > 0) {
-				dropScheme = getFlexoConcept().getEditionSchemes(DropScheme.class).get(0);
+			if (dropScheme == null && getFlexoConcept() != null && getFlexoConcept().getFlexoBehaviours(DropScheme.class).size() > 0) {
+				dropScheme = getFlexoConcept().getFlexoBehaviours(DropScheme.class).get(0);
 			}
 			return dropScheme;
 		}
@@ -435,15 +439,24 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 			return true;
 		}*/
 
+		@Override
 		public List<FlexoConcept> allAvailableFlexoConcepts() {
 			if (getVirtualModel() != null) {
 				List<FlexoConcept> returned = new ArrayList<FlexoConcept>();
 				for (FlexoConcept ep : getVirtualModel().getFlexoConcepts()) {
-					if (ep.getEditionSchemes(DropScheme.class).size() > 0) {
+					if (ep.getFlexoBehaviours(DropScheme.class).size() > 0) {
 						returned.add(ep);
 					}
 				}
 				return returned;
+			}
+			return null;
+		}
+
+		@Override
+		public List<DropScheme> allAvailableDropSchemes() {
+			if (getFlexoConcept() != null) {
+				return getFlexoConcept().getFlexoBehaviours(DropScheme.class);
 			}
 			return null;
 		}

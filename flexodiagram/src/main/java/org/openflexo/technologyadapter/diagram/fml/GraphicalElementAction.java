@@ -50,17 +50,19 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 	}
 
 	@PropertyIdentifier(type = GraphicalElementRole.class)
-	public static final String GRAPHICAL_ELEMENT_PATTERN_ROLE_KEY = "graphicalElementPatternRole";
+	public static final String GRAPHICAL_ELEMENT_ROLE_KEY = "graphicalElementRole";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String CONDITIONAL_KEY = "conditional";
 	@PropertyIdentifier(type = ActionMask.class)
 	public static final String ACTION_MASK_KEY = "actionMask";
 	@PropertyIdentifier(type = AbstractActionScheme.class)
 	public static final String ABSTRACT_ACTION_SCHEME_KEY = "abstractActionScheme";
 
-	@Getter(value = GRAPHICAL_ELEMENT_PATTERN_ROLE_KEY, inverse = GraphicalElementRole.ACTIONS_KEY)
+	@Getter(value = GRAPHICAL_ELEMENT_ROLE_KEY, inverse = GraphicalElementRole.ACTIONS_KEY)
 	public GraphicalElementRole<?, ?> getGraphicalElementRole();
 
-	@Setter(GRAPHICAL_ELEMENT_PATTERN_ROLE_KEY)
-	public void setGraphicalElementPatternRole(GraphicalElementRole<?, ?> patternRole);
+	@Setter(GRAPHICAL_ELEMENT_ROLE_KEY)
+	public void setGraphicalElementRole(GraphicalElementRole<?, ?> role);
 
 	@Getter(value = ACTION_MASK_KEY)
 	@XMLAttribute
@@ -75,6 +77,13 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 
 	@Setter(ABSTRACT_ACTION_SCHEME_KEY)
 	public void setAbstractActionScheme(AbstractActionScheme abstractActionScheme);
+
+	@Getter(value = CONDITIONAL_KEY)
+	@XMLElement
+	public DataBinding<Boolean> getConditional();
+
+	@Setter(CONDITIONAL_KEY)
+	public void setConditional(DataBinding<Boolean> conditional);
 
 	public boolean evaluateCondition(FlexoConceptInstance flexoConceptInstance);
 
@@ -111,6 +120,7 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 			this.graphicalElementPatternRole = graphicalElementPatternRole;
 		}*/
 
+		@Override
 		public DataBinding<Boolean> getConditional() {
 			if (conditional == null) {
 				conditional = new DataBinding<Boolean>(this, Boolean.class, DataBinding.BindingDefinitionType.GET);
@@ -119,6 +129,7 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 			return conditional;
 		}
 
+		@Override
 		public void setConditional(DataBinding<Boolean> conditional) {
 			if (conditional != null) {
 				conditional.setOwner(this);

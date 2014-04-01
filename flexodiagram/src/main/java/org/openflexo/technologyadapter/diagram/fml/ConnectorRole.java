@@ -77,8 +77,10 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 	public void setEndShapeAsDefinedInAction(boolean flag);
 
-	public static abstract class ConnectorRoleImpl extends
-			GraphicalElementRoleImpl<DiagramConnector, ConnectorGraphicalRepresentation> implements ConnectorRole {
+	public List<ShapeRole> getAvailableShapeRoles();
+
+	public static abstract class ConnectorRoleImpl extends GraphicalElementRoleImpl<DiagramConnector, ConnectorGraphicalRepresentation>
+			implements ConnectorRole {
 
 		private ShapeGraphicalRepresentation artifactFromGraphicalRepresentation;
 		private ShapeGraphicalRepresentation artifactToGraphicalRepresentation;
@@ -90,7 +92,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		@Override
 		protected void initDefaultSpecifications() {
 			super.initDefaultSpecifications();
-			if(getVirtualModelFactory()!=null){
+			if (getVirtualModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
 					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
 							GraphicalElementSpecification.class);
@@ -106,8 +108,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("FlexoRole " + getName() + " as ConnectorSpecification from "
-					+ getVirtualModel().getReflexiveModelSlot().getName() + ";", context);
+			out.append("FlexoRole " + getName() + " as ConnectorSpecification from " + getVirtualModel().getReflexiveModelSlot().getName()
+					+ ";", context);
 			return out.toString();
 		}
 
@@ -152,9 +154,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		public void setStartShapeRole(ShapeRole startShapeRole) {
 			this.startShapeRole = startShapeRole;
 			setChanged();
-			notifyObservers(new GraphicalRepresentationChanged(this,
-					startShapeRole != null ? startShapeRole.getGraphicalRepresentation()
-							: artifactFromGraphicalRepresentation));
+			notifyObservers(new GraphicalRepresentationChanged(this, startShapeRole != null ? startShapeRole.getGraphicalRepresentation()
+					: artifactFromGraphicalRepresentation));
 		}
 
 		@Override
@@ -181,8 +182,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		public void setEndShapeRole(ShapeRole endShapeRole) {
 			this.endShapeRole = endShapeRole;
 			setChanged();
-			notifyObservers(new GraphicalRepresentationChanged(this,
-					endShapeRole != null ? endShapeRole.getGraphicalRepresentation() : artifactToGraphicalRepresentation));
+			notifyObservers(new GraphicalRepresentationChanged(this, endShapeRole != null ? endShapeRole.getGraphicalRepresentation()
+					: artifactToGraphicalRepresentation));
 		}
 
 		@Override
@@ -243,7 +244,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		public static GraphicalFeature<?, ?>[] AVAILABLE_FEATURES = {};
 
-		public List<ShapeRole> getShapeRoles() {
+		@Override
+		public List<ShapeRole> getAvailableShapeRoles() {
 			return getFlexoConcept().getPatternRoles(ShapeRole.class);
 		}
 	}

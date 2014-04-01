@@ -19,6 +19,8 @@
  */
 package org.openflexo.technologyadapter.diagram.fml;
 
+import java.util.List;
+
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
@@ -50,7 +52,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 	@PropertyIdentifier(type = String.class)
 	public static final String TARGET_KEY = "target";
 	@PropertyIdentifier(type = ShapeRole.class)
-	public static final String TARGET_PATTERN_ROLE_KEY = "targetPatternRole";
+	public static final String TARGET_SHAPE_ROLE_KEY = "targetShapeRole";
 
 	@Getter(value = TARGET_KEY)
 	@XMLAttribute
@@ -59,12 +61,12 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 	@Setter(TARGET_KEY)
 	public void _setTarget(String target);
 
-	@Getter(value = TARGET_PATTERN_ROLE_KEY)
+	@Getter(value = TARGET_SHAPE_ROLE_KEY)
 	@XMLElement
-	public ShapeRole getTargetPatternRole();
+	public ShapeRole getTargetShapeRole();
 
-	@Setter(TARGET_PATTERN_ROLE_KEY)
-	public void setTargetPatternRole(ShapeRole targetPatternRole);
+	@Setter(TARGET_SHAPE_ROLE_KEY)
+	public void setTargetShapeRole(ShapeRole targetShapeRole);
 
 	public boolean isTopTarget();
 
@@ -77,6 +79,10 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 	public void setTargetFlexoConcept(FlexoConcept targetFlexoConcept);
 
 	public boolean isValidTarget(FlexoConcept aTarget, FlexoRole contextRole);
+
+	public List<ShapeRole> getAvailableTargetShapeRoles();
+
+	public boolean targetHasMultipleRoles();
 
 	public static abstract class DropSchemeImpl extends AbstractCreationSchemeImpl implements DropScheme {
 
@@ -139,19 +145,26 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 			}
 		}
 
-		@Deprecated
+		@Override
 		public boolean targetHasMultipleRoles() {
-			// return getTargetFlexoConcept() != null && getTargetFlexoConcept().getShapePatternRoles().size() > 1;
-			return false;
+			return getTargetFlexoConcept() != null && getAvailableTargetShapeRoles().size() > 1;
 		}
 
 		@Override
-		public ShapeRole getTargetPatternRole() {
+		public List<ShapeRole> getAvailableTargetShapeRoles() {
+			if (getTargetFlexoConcept() != null) {
+				return getTargetFlexoConcept().getPatternRoles(ShapeRole.class);
+			}
+			return null;
+		}
+
+		@Override
+		public ShapeRole getTargetShapeRole() {
 			return targetPatternRole;
 		}
 
 		@Override
-		public void setTargetPatternRole(ShapeRole targetPatternRole) {
+		public void setTargetShapeRole(ShapeRole targetPatternRole) {
 			this.targetPatternRole = targetPatternRole;
 		}
 
@@ -160,7 +173,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 			if (getTargetFlexoConcept() != null && getTargetFlexoConcept().isAssignableFrom(aTarget)) {
 				if (targetHasMultipleRoles()) {
 					// TODO make proper implementation when role inheritance will be in use !!!
-					return getTargetPatternRole() == null || getTargetPatternRole().getRoleName().equals(contextRole.getRoleName());
+					return getTargetShapeRole() == null || getTargetShapeRole().getRoleName().equals(contextRole.getRoleName());
 				} else {
 					return true;
 				}

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.inspector.FIBInspector" layout="border" titleFont="SansSerif,0,12" darkLevel="0" dataClassName="org.openflexo.technologyadapter.diagram.fml.ConnectorRole" controllerClassName="org.openflexo.inspector.FIBInspectorController" font="SansSerif,0,12" name="Inspector">
+<Panel className="org.openflexo.inspector.FIBInspector" layout="border" titleFont="SansSerif,0,12" darkLevel="0" dataClassName="org.openflexo.technologyadapter.diagram.fml.ShapeRole" controllerClassName="org.openflexo.inspector.FIBInspectorController" font="SansSerif,0,12" name="Inspector">
   <TabPanel name="Tab" index="0" constraints="border(index=0;location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="label" align="right" index="6" constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" localize="true" />
@@ -14,22 +14,13 @@
       </Panel>
       <Label label="example_label" index="8" constraints="twocols(expandHorizontally=false;expandVertically=false;index=8;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" localize="true" />
       <TextField index="9" data="data.exampleLabel" constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" localize="true" columns="6" text="ShapeExampleLabelTextField" />
-      <Label label="from_shape" index="10" constraints="twocols(expandHorizontally=false;expandVertically=false;index=10;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" localize="true" />
+      <Label label="parent_shape" index="10" constraints="twocols(expandHorizontally=false;expandVertically=false;index=10;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" localize="true" />
       <Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING" borderTitle="Panel" titleFont="SansSerif,0,11" darkLevel="0" index="11" constraints="twocols(expandHorizontally=true;expandVertically=false;index=11;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
-        <DropDown index="0" data="data.startShapeRole" constraints="flow(anchor=west;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)" visible="((!(StartShapeCheckbox.data)) &amp; (data.availableShapeRoles.size &gt; 0))" name="dropdown" localize="true" staticList="" list="data.availableShapeRoles" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.ShapeRole" autoSelectFirstRow="true">
+        <DropDown index="0" data="data.parentShapeRole" constraints="flow(anchor=west;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)" visible="(!(ParentShapeCheckbox.data))" name="dropdown" localize="true" list="data.possibleParentShapeRoles" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.ShapeRole" autoSelectFirstRow="false" format="object.name">
+          <Dependancy componentName="ParentShapeCheckbox" />
           <LocalizedDictionary />
         </DropDown>
-        <CheckBox selected="true" index="1" data="data.startShapeAsDefinedInAction" constraints="flow(index=1)" name="StartShapeCheckbox" localize="true" manageDynamicModel="true" />
-        <Label label="as_described_in_action" index="2" constraints="flow(index=2)" localize="true">
-          <LocalizedDictionary />
-        </Label>
-      </Panel>
-      <Label label="to_shape" index="12" constraints="twocols(expandHorizontally=false;expandVertically=false;index=12;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" localize="true" />
-      <Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING" borderTitle="Panel" titleFont="SansSerif,0,11" darkLevel="0" index="13" constraints="twocols(expandHorizontally=true;expandVertically=false;index=13;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
-        <DropDown index="0" data="data.endShapeRole" constraints="flow(anchor=west;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)" visible="((!(EndShapeCheckbox.data)) &amp; (data.availableShapeRoles.size &gt; 0))" name="dropdown" localize="true" staticList="" list="data.availableShapeRoles" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.ShapeRole" autoSelectFirstRow="true">
-          <LocalizedDictionary />
-        </DropDown>
-        <CheckBox selected="true" index="1" data="data.endShapeAsDefinedInAction" constraints="flow(index=1)" name="EndShapeCheckbox" localize="true" manageDynamicModel="true" />
+        <CheckBox selected="true" index="1" data="data.parentShapeAsDefinedInAction" constraints="flow(index=1)" name="ParentShapeCheckbox" localize="true" manageDynamicModel="true" />
         <Label label="as_described_in_action" index="2" constraints="flow(index=2)" localize="true">
           <LocalizedDictionary />
         </Label>
@@ -37,6 +28,6 @@
     </Tab>
   </TabPanel>
   <LocalizedDictionary>
-   </LocalizedDictionary>
-  <Parameter name="title" value="Connector Role" />
+  </LocalizedDictionary>
+  <Parameter name="title" value="Shape Role" />
 </Panel>
