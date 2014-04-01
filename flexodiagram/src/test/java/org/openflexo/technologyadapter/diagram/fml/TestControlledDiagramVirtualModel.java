@@ -11,6 +11,8 @@ import java.io.IOException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.fge.shapes.Rectangle;
+import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoTestCase;
@@ -22,6 +24,7 @@ import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.foundation.viewpoint.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModel.VirtualModelImpl;
+import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.foundation.viewpoint.action.CreateEditionAction;
 import org.openflexo.foundation.viewpoint.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.viewpoint.action.CreateEditionScheme;
@@ -156,8 +159,13 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		diagramPaletteElement = paletteResource.getFactory().makeDiagramPaletteElement();
 		diagramPaletteElement.setName(PALETTE_ELEMENT_NAME);
 		ShapeGraphicalRepresentation shapeGR = paletteResource.getFactory().makeShapeGraphicalRepresentation();
+		shapeGR.setShapeSpecification(paletteResource.getFactory().makeShape(ShapeType.RECTANGLE));
 		shapeGR.setForeground(paletteResource.getFactory().makeForegroundStyle(Color.RED));
 		shapeGR.setBackground(paletteResource.getFactory().makeColoredBackground(Color.BLUE));
+		shapeGR.setX(10);
+		shapeGR.setY(10);
+		shapeGR.setWidth(100);
+		shapeGR.setHeight(80);
 		diagramPaletteElement.setGraphicalRepresentation(shapeGR);
 		paletteResource.getDiagramPalette().addToElements(diagramPaletteElement);
 
@@ -210,6 +218,13 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		createShapeRole.setFlexoRoleClass(ShapeRole.class);
 		createShapeRole.doAction();
 		assertTrue(createShapeRole.hasActionExecutionSucceeded());
+
+		ShapeRole role = (ShapeRole) createShapeRole.getNewFlexoRole();
+		VirtualModelModelFactory factory = flexoConcept.getVirtualModelFactory();
+		ShapeGraphicalRepresentation shapeGR = factory.newInstance(ShapeGraphicalRepresentation.class);
+		Rectangle rectangleShape = factory.newInstance(Rectangle.class);
+		shapeGR.setShapeSpecification(rectangleShape);
+		role.setGraphicalRepresentation(shapeGR);
 
 		CreateEditionScheme createDropScheme = CreateEditionScheme.actionType.makeNewAction(flexoConcept, null, editor);
 		createDropScheme.setFlexoBehaviourName("drop");

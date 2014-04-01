@@ -25,9 +25,13 @@ import java.beans.PropertyChangeListener;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
+import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.view.ModuleView;
+import org.openflexo.view.controller.FlexoController;
+import org.openflexo.view.controller.TechnologyAdapterControllerService;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 public class DiagramPaletteModuleView extends JPanel implements ModuleView<DiagramPalette>, PropertyChangeListener {
@@ -82,6 +86,30 @@ public class DiagramPaletteModuleView extends JPanel implements ModuleView<Diagr
 	@Override
 	public void willShow() {
 		getPerspective().focusOnObject(getRepresentedObject());
+	}
+
+	public DiagramTechnologyAdapterController getDiagramTechnologyAdapterController(FlexoController controller) {
+		TechnologyAdapterControllerService tacService = controller.getApplicationContext().getTechnologyAdapterControllerService();
+		return tacService.getTechnologyAdapterController(DiagramTechnologyAdapterController.class);
+	}
+
+	@Override
+	public void show(final FlexoController controller, FlexoPerspective perspective) {
+		// Sets palette view of editor to be the top right view
+		perspective.setTopRightView(getController().getPaletteView());
+		// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
+
+		getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getController());
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// Force right view to be visible
+				controller.getControllerModel().setRightViewVisible(true);
+			}
+		});
+
+		controller.getControllerModel().setRightViewVisible(true);
 	}
 
 	@Override

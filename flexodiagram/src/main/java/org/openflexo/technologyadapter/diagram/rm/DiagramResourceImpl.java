@@ -195,7 +195,7 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 						} else if (at.getName().equals("modelVersion")) {
 							logger.fine("Returned " + at.getValue());
 							returned.modelVersion = at.getValue();
-						} else if (at.getName().equals("diagramSpecificationURI")) {
+						} else if (at.getName().equals(Diagram.DIAGRAM_SPECIFICATION_URI)) {
 							logger.fine("Returned " + at.getValue());
 							returned.diagramSpecificationURI = at.getValue();
 						}

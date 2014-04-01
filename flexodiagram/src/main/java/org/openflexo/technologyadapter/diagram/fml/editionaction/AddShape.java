@@ -33,6 +33,7 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.validation.FixProposal;
 import org.openflexo.foundation.validation.ValidationError;
@@ -224,6 +225,25 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			ShapeGraphicalRepresentation newGR = factory.makeShapeGraphicalRepresentation();
 			newGR.setsWith(grToUse);
 			newShape.setGraphicalRepresentation(newGR);
+
+			// Handle default ShapeSpecification when not set
+			if (newGR.getShapeSpecification() == null) {
+				newGR.setShapeSpecification(factory.makeShape(ShapeType.RECTANGLE));
+				newGR.setWidth(50);
+				newGR.setHeight(40);
+			}
+			// Handle default Foreground when not set
+			if (newGR.getForeground() == null) {
+				newGR.setForeground(factory.makeDefaultForegroundStyle());
+			}
+			// Handle default Background when not set
+			if (newGR.getBackground() == null) {
+				newGR.setBackground(factory.makeDefaultBackgroundStyle());
+			}
+			// Handle default Border when not set
+			if (newGR.getBorder() == null) {
+				newGR.setBorder(factory.makeShapeBorder());
+			}
 
 			// Register reference
 			newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());

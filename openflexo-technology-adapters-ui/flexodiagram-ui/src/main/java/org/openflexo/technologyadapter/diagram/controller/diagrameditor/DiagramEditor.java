@@ -46,6 +46,7 @@ import org.openflexo.fge.swing.view.JDrawingView;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.selection.SelectionManagingDianaEditor;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
@@ -113,8 +114,17 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			contextualPaletteModels = new Hashtable<DiagramPalette, ContextualPalette>();
 			contextualPalettes = new Hashtable<DiagramPalette, JDianaPalette>();
 
+			System.out.println("Hop, je regarde les palettes pour le DiagramSpecification="
+					+ diagramDrawing.getDiagram().getDiagramSpecification());
+
 			if (diagramDrawing.getDiagram().getDiagramSpecification() != null) {
+				System.out.println("Les palettes=" + diagramDrawing.getDiagram().getDiagramSpecification().getPalettes());
 				for (DiagramPalette palette : diagramDrawing.getDiagram().getDiagramSpecification().getPalettes()) {
+					System.out.println("Palette " + palette);
+					System.out.println("elements " + palette.getElements());
+					for (DiagramPaletteElement e : palette.getElements()) {
+						System.out.println("e: " + e + " gr=" + e.getGraphicalRepresentation());
+					}
 					ContextualPalette contextualPaletteModel = new ContextualPalette(palette, this);
 					contextualPaletteModels.put(palette, contextualPaletteModel);
 					JDianaPalette dianaPalette = swingToolFactory.makeDianaPalette(contextualPaletteModel);
@@ -195,11 +205,14 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	public JTabbedPane getPaletteView() {
 		if (paletteView == null) {
 
-			System.out.println("On se construit la PaletteView");
+			logger.info("Building PaletteView with " + contextualPalettes);
 
 			paletteView = new JTabbedPane();
 			orderedPalettes = new Vector<DiagramPalette>(contextualPalettes.keySet());
 			Collections.sort(orderedPalettes);
+
+			System.out.println("orderedPalettes=" + orderedPalettes);
+
 			for (DiagramPalette palette : orderedPalettes) {
 				paletteView.add(palette.getName(), contextualPalettes.get(palette).getPaletteViewInScrollPane());
 			}

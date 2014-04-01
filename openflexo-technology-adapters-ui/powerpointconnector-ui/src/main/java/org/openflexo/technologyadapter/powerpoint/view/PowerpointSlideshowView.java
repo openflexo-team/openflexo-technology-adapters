@@ -42,7 +42,7 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 public class PowerpointSlideshowView extends JTabbedPane implements SelectionSynchronizedModuleView<PowerpointSlideshow> {
 
 	private PowerpointSlideshow slideshow;
-	private FlexoPerspective declaredPerspective;
+	private final FlexoPerspective declaredPerspective;
 
 	public PowerpointSlideshowView(PowerpointSlideshow slideshow, FlexoController controller, FlexoPerspective perspective) {
 		super();
@@ -74,6 +74,10 @@ public class PowerpointSlideshowView extends JTabbedPane implements SelectionSyn
 
 	@Override
 	public void willShow() {
+	}
+
+	@Override
+	public void show(FlexoController controller, FlexoPerspective perspective) {
 	}
 
 	@Override

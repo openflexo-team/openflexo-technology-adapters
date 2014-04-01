@@ -41,8 +41,8 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 @SuppressWarnings("serial")
 public class ExcelWorkbookView extends JTabbedPane implements SelectionSynchronizedModuleView<ExcelWorkbook> {
 
-	private ExcelWorkbook workbook;
-	private FlexoPerspective declaredPerspective;
+	private final ExcelWorkbook workbook;
+	private final FlexoPerspective declaredPerspective;
 
 	public ExcelWorkbookView(ExcelWorkbook workbook, FlexoController controller, FlexoPerspective perspective) {
 		super();
@@ -76,6 +76,10 @@ public class ExcelWorkbookView extends JTabbedPane implements SelectionSynchroni
 
 	@Override
 	public void willShow() {
+	}
+
+	@Override
+	public void show(FlexoController controller, FlexoPerspective perspective) {
 	}
 
 	@Override

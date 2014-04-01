@@ -19,6 +19,8 @@
  */
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
+import static org.junit.Assert.assertTrue;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Vector;
@@ -28,33 +30,35 @@ import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.control.DrawingPalette;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.utils.FlexoObjectReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
+import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
+import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
+import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
+import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
 
-public class ContextualPalette extends DrawingPalette implements PropertyChangeListener {
+public class ContextualPalette extends AbstractDiagramPalette implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(ContextualPalette.class.getPackage().getName());
 
 	private DiagramPalette diagramPalette;
 
-	private DiagramEditor editor;
-
 	public ContextualPalette(DiagramPalette diagramPalette, DiagramEditor editor) {
-		super((int) diagramPalette.getGraphicalRepresentation().getWidth(), (int) diagramPalette.getGraphicalRepresentation().getHeight(),
-				diagramPalette.getName());
+		super(editor, diagramPalette.getGraphicalRepresentation() != null ? (int) diagramPalette.getGraphicalRepresentation().getWidth()
+				: 300, diagramPalette.getGraphicalRepresentation() != null ? (int) diagramPalette.getGraphicalRepresentation().getHeight()
+				: 300, diagramPalette.getName());
 
 		this.diagramPalette = diagramPalette;
-		this.editor = editor;
 
 		for (DiagramPaletteElement element : diagramPalette.getElements()) {
 			addElement(makePaletteElement(element));
@@ -70,11 +74,6 @@ public class ContextualPalette extends DrawingPalette implements PropertyChangeL
 		}
 		super.delete();
 		diagramPalette = null;
-		editor = null;
-	}
-
-	public DiagramEditor getEditor() {
-		return editor;
 	}
 
 	@Override
@@ -131,6 +130,7 @@ public class ContextualPalette extends DrawingPalette implements PropertyChangeL
 	}
 
 	private ContextualPaletteElement makePaletteElement(final DiagramPaletteElement element) {
+		System.out.println("******* makePaletteElement with " + element);
 		return new ContextualPaletteElement(element);
 	}
 
@@ -152,9 +152,12 @@ public class ContextualPalette extends DrawingPalette implements PropertyChangeL
 		public boolean elementDragged(DrawingTreeNode<?, ?> target, FGEPoint dropLocation) {
 			if (target.getDrawable() instanceof DiagramContainerElement) {
 
-				DiagramContainerElement<?> rootContainer = (DiagramContainerElement<?>) target.getDrawable();
-
-				logger.warning("Please implement elementDragged() when diagram is FML-managed");
+				if (getEditor() instanceof FMLControlledDiagramEditor) {
+					return handleFMLControlledDrop(target, diagramPaletteElement, dropLocation, (FMLControlledDiagramEditor) getEditor());
+				} else {
+					return handleBasicGraphicalRepresentationDrop(target, getGraphicalRepresentation(), dropLocation, false, false, false,
+							false, false, false);
+				}
 
 				// TODO: uncomment and fix following
 
@@ -220,7 +223,7 @@ public class ContextualPalette extends DrawingPalette implements PropertyChangeL
 				action.doAction();
 				return action.hasActionExecutionSucceeded();*/
 
-				return true;
+				// return true;
 			}
 
 			return false;
@@ -238,4 +241,29 @@ public class ContextualPalette extends DrawingPalette implements PropertyChangeL
 
 	}
 
+	public boolean handleFMLControlledDrop(DrawingTreeNode<?, ?> target, DiagramPaletteElement paletteElement, FGEPoint dropLocation,
+			FMLControlledDiagramEditor editor) {
+
+		DiagramContainerElement<?> rootContainer = (DiagramContainerElement<?>) target.getDrawable();
+		VirtualModelInstance vmi = editor.getVirtualModelInstance();
+		TypedDiagramModelSlot ms = FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(vmi.getVirtualModel());
+		System.out.println("ms=" + ms);
+		System.out.println("bindings=" + ms.getPaletteElementBindings());
+		FMLDiagramPaletteElementBinding binding = ms.getPaletteElementBinding(paletteElement);
+		System.out.println("binding=" + binding);
+		DropScheme dropScheme = binding.getDropScheme();
+		System.out.println("dropScheme=" + dropScheme);
+
+		DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(vmi, null, editor.getFlexoController().getEditor());
+		action.setDropScheme(dropScheme);
+		action.setParent(rootContainer);
+		action.setPaletteElement(paletteElement);
+		action.setDropLocation(dropLocation);
+
+		action.doAction();
+		assertTrue(action.hasActionExecutionSucceeded());
+
+		return false;
+
+	}
 }

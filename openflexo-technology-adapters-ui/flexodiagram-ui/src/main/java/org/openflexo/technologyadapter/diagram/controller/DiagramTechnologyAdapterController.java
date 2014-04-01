@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
 
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaInspectors;
@@ -213,6 +212,10 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		return DiagramIconLibrary.DIAGRAM_ICON;
 	}
 
+	public JDianaInspectors getInspectors() {
+		return inspectors;
+	}
+
 	/**
 	 * Return icon representing supplied ontology object
 	 * 
@@ -342,7 +345,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		return new EmptyPanel<TechnologyObject<DiagramTechnologyAdapter>>(controller, perspective, object);
 	}
 
-	@Override
+	/*@Override
 	public void notifyModuleViewDisplayed(ModuleView<?> moduleView, final FlexoController controller, FlexoPerspective perspective) {
 
 		super.notifyModuleViewDisplayed(moduleView, controller, perspective);
@@ -375,7 +378,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 				}
 			});
 		}
-	}
+	}*/
 
 	@Override
 	public List<? extends VirtualModelInstanceNature> getSpecificNatures(VirtualModelInstance vmInstance) {

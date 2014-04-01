@@ -48,6 +48,7 @@ public interface Diagram extends DiagramContainerElement<DrawingGraphicalReprese
 	public static final String URI = "uri";
 	public static final String TITLE = "title";
 	public static final String DIAGRAM_SPECIFICATION = "diagramSpecification";
+	public static final String DIAGRAM_SPECIFICATION_URI = "diagramSpecificationURI";
 	public static final String RESOURCE = "resource";
 
 	/**
@@ -100,6 +101,23 @@ public interface Diagram extends DiagramContainerElement<DrawingGraphicalReprese
 	 */
 	@Setter(value = DIAGRAM_SPECIFICATION)
 	public void setDiagramSpecification(DiagramSpecification aDiagramSpecification);
+
+	/**
+	 * Return the diagram specification URI of this diagram (might be null)
+	 * 
+	 * @return
+	 */
+	@Getter(value = DIAGRAM_SPECIFICATION_URI)
+	@XMLAttribute
+	public String getDiagramSpecificationURI();
+
+	/**
+	 * Sets the diagram specification URI of this diagram (might be null)
+	 * 
+	 * @param aName
+	 */
+	@Setter(value = DIAGRAM_SPECIFICATION_URI)
+	public void setDiagramSpecificationURI(String aDiagramSpecificationURI);
 
 	/**
 	 * Return resource for this diagram

@@ -21,19 +21,16 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.io.File;
-import java.io.InputStream;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.BackgroundImageBackgroundStyle;
 import org.openflexo.fge.BackgroundStyle.BackgroundStyleType;
 import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
-import org.openflexo.fge.BackgroundImageBackgroundStyle;
 import org.openflexo.fge.FGEConstants;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.control.DianaInteractiveEditor.EditorTool;
-import org.openflexo.fge.control.DrawingPalette;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.Rectangle;
@@ -45,18 +42,17 @@ import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.undo.CompoundEdit;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.AddShape;
-import org.openflexo.toolbox.ImageIconResource;
 import org.openflexo.view.FlexoFrame;
 import org.openflexo.view.controller.FlexoFIBController;
 
-public class CommonPalette extends DrawingPalette {
+public class CommonPalette extends AbstractDiagramPalette {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = FlexoLogger.getLogger(CommonPalette.class.getPackage().getName());
@@ -67,12 +63,10 @@ public class CommonPalette extends DrawingPalette {
 	public static final Font LABEL_FONT = new Font("SansSerif", Font.PLAIN, 11);
 	private static final Resource DEFAULT_IMAGE = ResourceLocator.locateResource("Icons/Diagram.png");
 
-	private final DiagramEditor editor;
+	// private final DiagramEditor editor;
 
 	public CommonPalette(DiagramEditor editor) {
-		super(200, 200, "default");
-
-		this.editor = editor;
+		super(editor, 200, 200, "default");
 
 		ShapeSpecification[] ssp = new ShapeSpecification[12];
 
@@ -94,7 +88,7 @@ public class CommonPalette extends DrawingPalette {
 		int px = 0;
 		int py = 0;
 		for (ShapeSpecification sspi : ssp) {
-			if(sspi==ssp[11]){
+			if (sspi == ssp[11]) {
 				addElement(makeImagePaletteElement(sspi, px, py, DEFAULT_IMAGE));
 			}
 			addElement(makePaletteElement(sspi, px, py));
@@ -107,11 +101,7 @@ public class CommonPalette extends DrawingPalette {
 
 	}
 
-	public DiagramEditor getEditor() {
-		return editor;
-	}
-	
-	private void computePaletteElementPosition(ShapeSpecification shapeSpecification, int px, int py, ShapeGraphicalRepresentation gr){
+	private void computePaletteElementPosition(ShapeSpecification shapeSpecification, int px, int py, ShapeGraphicalRepresentation gr) {
 		if (shapeSpecification.getShapeType() == ShapeType.SQUARE || shapeSpecification.getShapeType() == ShapeType.CIRCLE) {
 			gr.setX(px * GRID_WIDTH + 15);
 			gr.setY(py * GRID_HEIGHT + 10);
@@ -141,22 +131,23 @@ public class CommonPalette extends DrawingPalette {
 		return makePaletteElement(gr, true, true, true, true, false);
 
 	}
-	
+
 	private PaletteElement makeImagePaletteElement(ShapeSpecification shapeSpecification, int px, int py, Resource image) {
 		final ShapeGraphicalRepresentation gr = FACTORY.makeShapeGraphicalRepresentation(shapeSpecification);
 		computePaletteElementPosition(shapeSpecification, px, py, gr);
 		gr.setBackgroundType(BackgroundStyleType.IMAGE);
 		gr.getForeground().setNoStroke(true);
 		gr.getShadowStyle().setDrawShadow(false);
-		((BackgroundImageBackgroundStyle)gr.getBackground()).setFitToShape(true);
-		((BackgroundImageBackgroundStyle)gr.getBackground()).setImageResource(image);
+		((BackgroundImageBackgroundStyle) gr.getBackground()).setFitToShape(true);
+		((BackgroundImageBackgroundStyle) gr.getBackground()).setImageResource(image);
 		gr.setIsVisible(true);
 		gr.setAllowToLeaveBounds(false);
 		return makePaletteElement(gr, false, false, false, false, true);
 	}
 
 	private PaletteElement makePaletteElement(final ShapeGraphicalRepresentation gr, final boolean applyCurrentForeground,
-			final boolean applyCurrentBackground, final boolean applyCurrentTextStyle, final boolean applyCurrentShadowStyle, final boolean isImage) {
+			final boolean applyCurrentBackground, final boolean applyCurrentTextStyle, final boolean applyCurrentShadowStyle,
+			final boolean isImage) {
 		@SuppressWarnings("serial")
 		PaletteElement returned = new PaletteElement() {
 			@Override
@@ -167,6 +158,10 @@ public class CommonPalette extends DrawingPalette {
 
 			@Override
 			public boolean elementDragged(DrawingTreeNode<?, ?> target, FGEPoint dropLocation) {
+
+				if (true)
+					return handleBasicGraphicalRepresentationDrop(target, getGraphicalRepresentation(), dropLocation,
+							applyCurrentForeground, applyCurrentBackground, applyCurrentTextStyle, applyCurrentShadowStyle, isImage, true);
 
 				if (getEditor() == null) {
 					return false;
@@ -217,14 +212,14 @@ public class CommonPalette extends DrawingPalette {
 				System.out.println("OK, create AddShape");
 				System.out.println("location=" + shapeGR.getLocation());
 				System.out.println("size=" + shapeGR.getSize());
-				
-				if(isImage){
+
+				if (isImage) {
 					FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
 					FIBDialog dialog = FIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
 							new FlexoFIBController(fibComponent, getEditor().getFlexoController()));
 				}
-				
-				AddShape action = AddShape.actionType.makeNewAction(container, null, editor.getFlexoController().getEditor());
+
+				AddShape action = AddShape.actionType.makeNewAction(container, null, getEditor().getFlexoController().getEditor());
 				action.setGraphicalRepresentation(shapeGR);
 				action.setNewShapeName(shapeGR.getText());
 				if (action.getNewShapeName() == null) {
@@ -241,7 +236,7 @@ public class CommonPalette extends DrawingPalette {
 				System.out.println("Apres la creation:");
 				System.out.println("location=" + newShape.getGraphicalRepresentation().getLocation());
 				System.out.println("size=" + newShape.getGraphicalRepresentation().getSize());
-				
+
 				getEditor().getFactory().getUndoManager().stopRecording(edit);
 
 				getEditor().setCurrentTool(EditorTool.SelectionTool);

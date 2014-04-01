@@ -34,6 +34,7 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
@@ -84,6 +85,8 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 	@Remover(PALETTE_ELEMENTS_BINDING_KEY)
 	public void removeFromPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding);
 
+	public FMLDiagramPaletteElementBinding getPaletteElementBinding(DiagramPaletteElement paletteElement);
+
 	public static abstract class TypedDiagramModelSlotImpl extends TypeAwareModelSlotImpl<Diagram, DiagramSpecification> implements
 			TypedDiagramModelSlot {
 
@@ -120,6 +123,16 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		@Override
 		public boolean getIsRequired() {
 			return true;
+		}
+
+		@Override
+		public FMLDiagramPaletteElementBinding getPaletteElementBinding(DiagramPaletteElement paletteElement) {
+			for (FMLDiagramPaletteElementBinding binding : getPaletteElementBindings()) {
+				if (binding.getPaletteElement() == paletteElement) {
+					return binding;
+				}
+			}
+			return null;
 		}
 
 		@Override

@@ -20,15 +20,18 @@
 package org.openflexo.technologyadapter.diagram.model;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 
 import org.openflexo.fge.DrawingGraphicalRepresentation;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoFileResource;
 import org.openflexo.foundation.resource.InvalidFileNameException;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
@@ -227,5 +230,61 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	public Diagram getDiagram() {
 		return this;
 	}
+
+	@Override
+	public DiagramSpecification getDiagramSpecification() {
+		if (getResource() != null) {
+			DiagramResource resource = (DiagramResource) getResource();
+			if (resource.getMetaModelResource() != null) {
+				try {
+					return resource.getMetaModelResource().getResourceData(null);
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ResourceLoadingCancelledException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FlexoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public void setDiagramSpecification(DiagramSpecification aDiagramSpecification) {
+		if (getResource() != null) {
+			DiagramResource resource = (DiagramResource) getResource();
+			resource.setMetaModelResource(aDiagramSpecification.getResource());
+			// TODO: i'm sure there are other things to do....
+		}
+	}
+
+	/**
+	 * Return the diagram specification URI of this diagram (might be null)
+	 * 
+	 * @return
+	 */
+	@Override
+	public String getDiagramSpecificationURI() {
+		if (getDiagramSpecification() != null) {
+			return getDiagramSpecification().getURI();
+		}
+		return diagramSpecificationURI;
+	}
+
+	/**
+	 * Sets the diagram specification URI of this diagram (might be null)
+	 * 
+	 * @param aName
+	 */
+	@Override
+	public void setDiagramSpecificationURI(String aDiagramSpecificationURI) {
+		this.diagramSpecificationURI = aDiagramSpecificationURI;
+	}
+
+	private String diagramSpecificationURI;
 
 }
