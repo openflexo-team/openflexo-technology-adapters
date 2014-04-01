@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import org.openflexo.fge.swing.control.SwingToolFactory;
+import org.openflexo.fge.swing.control.tools.JDianaDialogInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -87,6 +88,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	private SwingToolFactory swingToolFactory;
 
 	private JDianaInspectors inspectors;
+	private JDianaDialogInspectors dialogInspectors;
 	private JDianaScaleSelector scaleSelector;
 
 	@Override
@@ -100,15 +102,16 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		swingToolFactory = new SwingToolFactory(actionInitializer.getController().getFlexoFrame());
 
 		scaleSelector = swingToolFactory.makeDianaScaleSelector(null);
+		dialogInspectors = swingToolFactory.makeDianaDialogInspectors();
 		inspectors = swingToolFactory.makeDianaInspectors();
 
-		inspectors.getForegroundStyleInspector().setLocation(1000, 100);
-		inspectors.getTextStyleInspector().setLocation(1000, 300);
-		inspectors.getShadowStyleInspector().setLocation(1000, 400);
-		inspectors.getBackgroundStyleInspector().setLocation(1000, 500);
-		inspectors.getShapeInspector().setLocation(1000, 600);
-		inspectors.getConnectorInspector().setLocation(1000, 700);
-		inspectors.getLocationSizeInspector().setLocation(1000, 50);
+		dialogInspectors.getForegroundStyleInspector().setLocation(1000, 100);
+		dialogInspectors.getTextStyleInspector().setLocation(1000, 300);
+		dialogInspectors.getShadowStyleInspector().setLocation(1000, 400);
+		dialogInspectors.getBackgroundStyleInspector().setLocation(1000, 500);
+		dialogInspectors.getShapeInspector().setLocation(1000, 600);
+		dialogInspectors.getConnectorInspector().setLocation(1000, 700);
+		dialogInspectors.getLocationSizeInspector().setLocation(1000, 50);
 
 		actionInitializer.getController().getModuleInspectorController()
 				.loadDirectory(ResourceLocator.locateResource("Inspectors/Diagram"));
@@ -117,19 +120,19 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		viewMenu.addSeparator();
 
 		WindowMenuItem foregroundInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("foreground_inspector"),
-				inspectors.getForegroundStyleInspector());
+				dialogInspectors.getForegroundStyleInspector());
 		WindowMenuItem backgroundInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("background_inspector"),
-				inspectors.getBackgroundStyleInspector());
+				dialogInspectors.getBackgroundStyleInspector());
 		WindowMenuItem textInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("text_inspector"),
-				inspectors.getTextStyleInspector());
+				dialogInspectors.getTextStyleInspector());
 		WindowMenuItem shapeInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("shape_inspector"),
-				inspectors.getShapeInspector());
+				dialogInspectors.getShapeInspector());
 		WindowMenuItem connectorInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("connector_inspector"),
-				inspectors.getConnectorInspector());
+				dialogInspectors.getConnectorInspector());
 		WindowMenuItem shadowInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("shadow_inspector"),
-				inspectors.getShadowStyleInspector());
+				dialogInspectors.getShadowStyleInspector());
 		WindowMenuItem locationSizeInspectorItem = viewMenu.new WindowMenuItem(
-				FlexoLocalization.localizedForKey("location_size_inspector"), inspectors.getLocationSizeInspector());
+				FlexoLocalization.localizedForKey("location_size_inspector"), dialogInspectors.getLocationSizeInspector());
 
 		viewMenu.add(foregroundInspectorItem);
 		viewMenu.add(backgroundInspectorItem);
@@ -210,6 +213,10 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	@Override
 	public ImageIcon getMetaModelIcon() {
 		return DiagramIconLibrary.DIAGRAM_ICON;
+	}
+
+	public JDianaDialogInspectors getDialogInspectors() {
+		return dialogInspectors;
 	}
 
 	public JDianaInspectors getInspectors() {

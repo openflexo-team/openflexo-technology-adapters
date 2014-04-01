@@ -103,6 +103,9 @@ public class FreeDiagramModuleView extends JPanel implements ModuleView<Diagram>
 		// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
 
 		getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getEditor());
+		getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());
+
+		perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

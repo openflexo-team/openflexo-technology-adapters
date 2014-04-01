@@ -100,6 +100,9 @@ public class DiagramPaletteModuleView extends JPanel implements ModuleView<Diagr
 		// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
 
 		getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getController());
+		getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getController());
+
+		perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
