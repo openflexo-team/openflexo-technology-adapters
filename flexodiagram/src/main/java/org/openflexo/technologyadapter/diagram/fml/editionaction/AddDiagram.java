@@ -42,6 +42,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.toolbox.StringUtils;
 
 @FIBPanel("Fib/AddDiagramPanel.fib")
@@ -52,6 +53,8 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String DIAGRAM_NAME_KEY = "diagramName";
+	@PropertyIdentifier(type = String.class)
+	public static final String DIAGRAM_SPECIFICATION_URI_KEY = "diagramSpecificationURI";
 
 	@Getter(value = DIAGRAM_NAME_KEY)
 	@XMLAttribute
@@ -60,9 +63,27 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 	@Setter(DIAGRAM_NAME_KEY)
 	public void setDiagramName(DataBinding<String> diagramName);
 
+	@Getter(value = DIAGRAM_SPECIFICATION_URI_KEY)
+	@XMLAttribute
+	public String getDiagramSpecificationURI();
+
+	@Setter(DIAGRAM_SPECIFICATION_URI_KEY)
+	public void setDiagramSpecificationURI(String diagramSpecificationURI);
+
+	public DiagramSpecification getDiagramSpecification();
+
+	public void setDiagramSpecification(DiagramSpecification diagramSpecification);
+
+	public DiagramSpecificationResource getDiagramSpecificationResource();
+
+	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource);
+
 	public static abstract class AddDiagramImpl extends DiagramActionImpl<Diagram> implements AddDiagram {
 
 		private static final Logger logger = Logger.getLogger(AddDiagram.class.getPackage().getName());
+
+		private DiagramSpecificationResource diagramSpecificationResource;
+		private String diagramSpecificationURI;
 
 		public AddDiagramImpl() {
 			super();
@@ -130,17 +151,51 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 			this.diagramName = diagramName;
 		}
 
-		public DiagramSpecification getDiagramSpecification() {
+		@Override
+		public DiagramSpecificationResource getDiagramSpecificationResource() {
 			if (getFlexoRole() instanceof DiagramRole) {
-				return getFlexoRole().getDiagramSpecification();
+				return getFlexoRole().getDiagramSpecificationResource();
+			}
+			if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI)) {
+				diagramSpecificationResource = (DiagramSpecificationResource) getModelSlot().getTechnologyAdapter()
+						.getTechnologyContextManager().getResourceWithURI(diagramSpecificationURI);
+				logger.info("Looked-up " + diagramSpecificationResource);
+			}
+			return diagramSpecificationResource;
+		}
+
+		@Override
+		public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource) {
+			if (getFlexoRole() instanceof DiagramRole) {
+				getFlexoRole().setDiagramSpecificationResource(diagramSpecificationResource);
+			}
+			this.diagramSpecificationResource = diagramSpecificationResource;
+		}
+
+		@Override
+		public String getDiagramSpecificationURI() {
+			if (diagramSpecificationResource != null) {
+				return diagramSpecificationResource.getURI();
+			}
+			return diagramSpecificationURI;
+		}
+
+		@Override
+		public void setDiagramSpecificationURI(String diagramSpecificationURI) {
+			this.diagramSpecificationURI = diagramSpecificationURI;
+		}
+
+		@Override
+		public DiagramSpecification getDiagramSpecification() {
+			if (getDiagramSpecificationResource() != null) {
+				return getDiagramSpecificationResource().getDiagramSpecification();
 			}
 			return null;
 		}
 
+		@Override
 		public void setDiagramSpecification(DiagramSpecification diagramSpecification) {
-			if (getFlexoRole() instanceof DiagramRole) {
-				getFlexoRole().setDiagramSpecification(diagramSpecification);
-			}
+			diagramSpecificationResource = diagramSpecification.getResource();
 		}
 
 		@Override
