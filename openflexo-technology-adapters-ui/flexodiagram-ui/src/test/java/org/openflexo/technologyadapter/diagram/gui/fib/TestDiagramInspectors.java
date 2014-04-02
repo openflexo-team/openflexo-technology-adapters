@@ -11,7 +11,6 @@ public class TestDiagramInspectors extends GenericFIBInspectorTestCase {
 	 * Use this method to print all
 	 * Then copy-paste 
 	 */
-
 	public static void main(String[] args) {
 		System.out.println(generateInspectorTestCaseClass(
 				((FileResourceImpl) ResourceLocator.locateResource("Inspectors/Diagram")).getFile(), "Inspectors/Diagram/"));
