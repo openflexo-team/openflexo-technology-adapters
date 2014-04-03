@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 
@@ -32,6 +33,8 @@ import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.foundation.viewpoint.ViewPointLibrary;
 import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.foundation.viewpoint.VirtualModelModelSlot;
+import org.openflexo.foundation.viewpoint.VirtualModelModelSlotInstanceConfiguration;
 import org.openflexo.foundation.viewpoint.rm.ViewPointResource;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -146,14 +149,26 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 
 		log("testCreateVirtualModelInstance()");
 
+		assertEquals(2, virtualModel.getModelSlots().size());
+
+		VirtualModelModelSlot reflexiveModelSlot = virtualModel.getReflexiveModelSlot();
+		assertTrue(reflexiveModelSlot.isReflexiveModelSlot());
+
 		assertEquals(1, virtualModel.getModelSlots(TypedDiagramModelSlot.class).size());
 		TypedDiagramModelSlot ms = virtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
 		assertNotNull(ms);
+
+		assertTrue(virtualModel.getModelSlots().contains(reflexiveModelSlot));
+		assertTrue(virtualModel.getModelSlots().contains(ms));
 
 		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
 		action.setNewVirtualModelInstanceName("MyVirtualModelInstance");
 		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance");
 		action.setVirtualModel(virtualModel);
+
+		VirtualModelModelSlotInstanceConfiguration reflexiveModelSlotInstanceConfiguration = (VirtualModelModelSlotInstanceConfiguration) action
+				.getModelSlotInstanceConfiguration(reflexiveModelSlot);
+		assertTrue(reflexiveModelSlotInstanceConfiguration.isValidConfiguration());
 
 		TypedDiagramModelSlotInstanceConfiguration diagramModelSlotInstanceConfiguration = (TypedDiagramModelSlotInstanceConfiguration) action
 				.getModelSlotInstanceConfiguration(ms);
@@ -162,6 +177,11 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertTrue(diagramModelSlotInstanceConfiguration.isValidConfiguration());
 
 		action.doAction();
+
+		if (!action.hasActionExecutionSucceeded()) {
+			fail(action.getThrownException().getMessage());
+		}
+
 		assertTrue(action.hasActionExecutionSucceeded());
 		newVirtualModelInstance = action.getNewVirtualModelInstance();
 		assertNotNull(newVirtualModelInstance);
