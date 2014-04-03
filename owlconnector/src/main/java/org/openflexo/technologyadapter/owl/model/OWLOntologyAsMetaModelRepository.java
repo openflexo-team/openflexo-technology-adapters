@@ -20,13 +20,13 @@
 package org.openflexo.technologyadapter.owl.model;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.ModelRepository;
+import org.openflexo.foundation.technologyadapter.MetaModelRepository;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 
-public class OWLOntologyRepository extends ModelRepository<OWLOntologyResource, OWLOntology, OWLOntology, OWLTechnologyAdapter> {
+public class OWLOntologyAsMetaModelRepository extends MetaModelRepository<OWLOntologyResource, OWLOntology, OWLOntology, OWLTechnologyAdapter> {
 
-	public OWLOntologyRepository(OWLTechnologyAdapter adapter, FlexoResourceCenter<?> rc) {
+	public OWLOntologyAsMetaModelRepository(OWLTechnologyAdapter adapter, FlexoResourceCenter<?> rc) {
 		super(adapter, rc);
 	}
 
