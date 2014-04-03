@@ -31,11 +31,13 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
@@ -57,6 +59,8 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceIm
 public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	private static final Logger logger = Logger.getLogger(DiagramTechnologyAdapter.class.getPackage().getName());
+
+	private ScreenshotBuilder<Diagram> screenshotBuilder;
 
 	public DiagramTechnologyAdapter() throws TechnologyAdapterInitializationException {
 	}
@@ -308,6 +312,14 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		File returned = new File(project.getProjectDirectory(), "Diagrams");
 		returned.mkdirs();
 		return returned;
+	}
+
+	public ScreenshotBuilder<Diagram> getScreenshotBuilder() {
+		return screenshotBuilder;
+	}
+
+	public void setScreenshotBuilder(ScreenshotBuilder<Diagram> screenshotBuilder) {
+		this.screenshotBuilder = screenshotBuilder;
 	}
 
 }

@@ -83,8 +83,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 
 	public DiagramEditor(AbstractDiagramDrawing diagramDrawing, boolean readOnly, FlexoController controller,
 			SwingToolFactory swingToolFactory) {
-		super(diagramDrawing, controller.getSelectionManager(), ((DiagramResource) diagramDrawing.getDiagram().getResource()).getFactory(),
-				swingToolFactory);
+		super(diagramDrawing, controller != null ? controller.getSelectionManager() : null, ((DiagramResource) diagramDrawing.getDiagram()
+				.getResource()).getFactory(), swingToolFactory);
 
 		flexoController = controller;
 		this.swingToolFactory = swingToolFactory;
