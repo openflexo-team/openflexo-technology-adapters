@@ -36,6 +36,10 @@ public class FreeDiagramEditor extends DiagramEditor {
 
 	private static final Logger logger = Logger.getLogger(FreeDiagramEditor.class.getPackage().getName());
 
+	public FreeDiagramEditor(Diagram diagram, boolean readOnly) {
+		super(new FreeDiagramDrawing(diagram, readOnly), readOnly, null, null);
+	}
+
 	public FreeDiagramEditor(Diagram diagram, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
 		super(new FreeDiagramDrawing(diagram, readOnly), readOnly, controller, swingToolFactory);
 	}
