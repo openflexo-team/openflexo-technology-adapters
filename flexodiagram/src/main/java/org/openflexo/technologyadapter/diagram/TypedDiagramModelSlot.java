@@ -195,7 +195,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		@Override
 		public Type getType() {
 			// TODO Auto-generated method stub
-			return null;
+			return DiagramSpecification.class;
 		}
 
 		// TODO
