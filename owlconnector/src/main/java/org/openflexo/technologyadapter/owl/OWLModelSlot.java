@@ -1,6 +1,8 @@
 package org.openflexo.technologyadapter.owl;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
@@ -14,6 +16,7 @@ import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -159,6 +162,12 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		@Override
 		public String getModelSlotDescription() {
 			return "Ontology importing " + getMetaModelURI();
+		}
+		
+		@Override
+		public List<Class<? extends FlexoBehaviour>> getAvailableFlexoBehaviourTypes() {
+			List<Class<? extends FlexoBehaviour>> types = new ArrayList<Class<? extends FlexoBehaviour>>();
+			return types;
 		}
 
 	}
