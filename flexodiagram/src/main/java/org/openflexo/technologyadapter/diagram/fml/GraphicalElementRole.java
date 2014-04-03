@@ -259,25 +259,31 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		// Convenient method to access spec for label feature
 		@Override
 		public DataBinding<String> getLabel() {
-			return getGraphicalElementSpecification(LABEL_FEATURE).getValue();
+			if (getGraphicalElementSpecification(LABEL_FEATURE) != null)
+				return getGraphicalElementSpecification(LABEL_FEATURE).getValue();
+			return null;
 		}
 
 		// Convenient method to access spec for label feature
 		@Override
 		public void setLabel(DataBinding<String> label) {
-			getGraphicalElementSpecification(LABEL_FEATURE).setValue(label);
+			if (getGraphicalElementSpecification(LABEL_FEATURE) != null)
+				getGraphicalElementSpecification(LABEL_FEATURE).setValue(label);
 		}
 
 		// Convenient method to access read-only property for spec for label feature
 		@Override
 		public boolean getReadOnlyLabel() {
-			return getGraphicalElementSpecification(LABEL_FEATURE).getReadOnly();
+			if (getGraphicalElementSpecification(LABEL_FEATURE) != null)
+				return getGraphicalElementSpecification(LABEL_FEATURE).getReadOnly();
+			return true;
 		}
 
 		// Convenient method to access read-only property for spec for label feature
 		@Override
 		public void setReadOnlyLabel(boolean readOnlyLabel) {
-			getGraphicalElementSpecification(LABEL_FEATURE).setReadOnly(readOnlyLabel);
+			if (getGraphicalElementSpecification(LABEL_FEATURE) != null)
+				getGraphicalElementSpecification(LABEL_FEATURE).setReadOnly(readOnlyLabel);
 		}
 
 		@Override
