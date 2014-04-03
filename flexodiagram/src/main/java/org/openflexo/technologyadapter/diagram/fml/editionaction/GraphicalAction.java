@@ -87,6 +87,12 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 	@Setter(GRAPHICAL_FEATURE_NAME_KEY)
 	public void _setGraphicalFeatureName(String graphicalFeatureName);
 
+	public GraphicalFeature<?, ?> getGraphicalFeature();
+
+	public void setGraphicalFeature(GraphicalFeature<?, ?> graphicalFeature);
+
+	public List<GraphicalFeature<?, ?>> getAvailableGraphicalFeatures();
+
 	public static abstract class GraphicalActionImpl extends EditionActionImpl<TypedDiagramModelSlot, DiagramElement<?>> implements
 			GraphicalAction {
 
@@ -139,7 +145,8 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			this.value = value;
 		}
 
-		public GraphicalFeature getGraphicalFeature() {
+		@Override
+		public GraphicalFeature<?, ?> getGraphicalFeature() {
 			if (graphicalFeature == null) {
 				if (_graphicalFeatureName != null) {
 					for (GraphicalFeature<?, ?> GF : getAvailableGraphicalFeatures()) {
@@ -152,7 +159,8 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			return graphicalFeature;
 		}
 
-		public void setGraphicalFeature(GraphicalFeature graphicalFeature) {
+		@Override
+		public void setGraphicalFeature(GraphicalFeature<?, ?> graphicalFeature) {
 			this.graphicalFeature = graphicalFeature;
 		}
 
@@ -176,6 +184,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			availableFeatures = null;
 		}*/
 
+		@Override
 		public List<GraphicalFeature<?, ?>> getAvailableGraphicalFeatures() {
 			if (availableFeatures == null) {
 				availableFeatures = new Vector<GraphicalFeature<?, ?>>();
@@ -283,7 +292,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 				logger.fine("Feature is " + getGraphicalFeature());
 				logger.fine("Value is " + value);
 			}
-			getGraphicalFeature().applyToGraphicalRepresentation(graphicalElement.getGraphicalRepresentation(), value);
+			((GraphicalFeature) getGraphicalFeature()).applyToGraphicalRepresentation(graphicalElement.getGraphicalRepresentation(), value);
 			return graphicalElement;
 		}
 

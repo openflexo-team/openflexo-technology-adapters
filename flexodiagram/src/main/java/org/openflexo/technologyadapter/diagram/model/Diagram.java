@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.diagram.model;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
+import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -140,4 +141,11 @@ public interface Diagram extends DiagramContainerElement<DrawingGraphicalReprese
 	public void setResource(FlexoResource<Diagram> aDiagramResource);
 
 	public DiagramFactory getDiagramFactory();
+
+	/**
+	 * Return screenshot of this diagram, when available
+	 * 
+	 * @return
+	 */
+	public ScreenshotImage<Diagram> getScreenshotImage();
 }

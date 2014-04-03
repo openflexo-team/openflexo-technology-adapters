@@ -31,13 +31,8 @@ public class TestDiagramFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testDiagramEditionPatternView() {
-		validateFIB("Fib/DiagramEditionPatternView.fib");
-	}
-
-	@Test
-	public void testDiagramSpecificationStructuralPanel() {
-		validateFIB("Fib/DiagramSpecificationStructuralPanel.fib");
+	public void testDiagramFlexoConceptView() {
+		validateFIB("Fib/DiagramFlexoConceptView.fib");
 	}
 
 	@Test
