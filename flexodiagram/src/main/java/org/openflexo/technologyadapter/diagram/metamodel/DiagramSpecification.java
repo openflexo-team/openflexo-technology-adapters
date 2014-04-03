@@ -20,6 +20,7 @@
  */
 package org.openflexo.technologyadapter.diagram.metamodel;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -31,6 +32,7 @@ import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.Adder;
@@ -68,7 +70,7 @@ import org.openflexo.toolbox.ChainedCollection;
 @ImplementationClass(DiagramSpecification.DiagramSpecificationImpl.class)
 @XMLElement(xmlTag = "DiagramSpecification")
 public interface DiagramSpecification extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification>,
-		ResourceData<DiagramSpecification> {
+		ResourceData<DiagramSpecification> , TechnologySpecificCustomType<DiagramTechnologyAdapter> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
@@ -368,6 +370,20 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			return null;
 		}
 
+		@Override
+		public Class getBaseClass() {
+			return DiagramSpecification.class;
+		}
+
+		@Override
+		public boolean isTypeAssignableFrom(Type aType, boolean permissive) {
+			// System.out.println("isTypeAssignableFrom " + aType + " (i am a " + this + ")");
+			if (aType instanceof DiagramSpecification) {
+				return true;
+			}
+			return false;
+		}
+		
 		/*@Override
 		protected void notifyEditionSchemeModified() {
 		_allFlexoConceptWithDropScheme = null;
@@ -478,6 +494,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			}
 		}
 
+		
 	}
 
 }
