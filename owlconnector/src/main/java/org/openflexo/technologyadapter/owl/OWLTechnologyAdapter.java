@@ -42,8 +42,9 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializatio
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntology.OntologyNotFoundException;
+import org.openflexo.technologyadapter.owl.model.OWLOntologyAsMetaModelRepository;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
-import org.openflexo.technologyadapter.owl.model.OWLOntologyRepository;
+import org.openflexo.technologyadapter.owl.model.OWLOntologyAsModelRepository;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceImpl;
 import org.openflexo.technologyadapter.owl.viewpoint.binding.OWLBindingFactory;
@@ -57,7 +58,7 @@ import org.openflexo.technologyadapter.owl.viewpoint.binding.OWLBindingFactory;
 @DeclareModelSlots({ // ModelSlot(s) declaration
 @DeclareModelSlot(FML = "OWLModelSlot", modelSlotClass = OWLModelSlot.class) // Classical type-safe interpretation
 })
-@DeclareRepositoryType({ OWLOntologyRepository.class })
+@DeclareRepositoryType({ OWLOntologyAsModelRepository.class })
 public class OWLTechnologyAdapter extends TechnologyAdapter {
 
 	private static final Logger logger = Logger.getLogger(OWLTechnologyAdapter.class.getPackage().getName());
@@ -98,9 +99,13 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 
 		OWLOntologyLibrary ontologyLibrary = getOntologyLibrary();
 
-		OWLOntologyRepository ontRepository = resourceCenter.getRepository(OWLOntologyRepository.class, this);
-		if (ontRepository == null) {
-			ontRepository = createOntologyRepository(resourceCenter);
+		OWLOntologyAsModelRepository ontModelRepository = resourceCenter.getRepository(OWLOntologyAsModelRepository.class, this);
+		OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter.getRepository(OWLOntologyAsMetaModelRepository.class, this);
+		if (ontModelRepository == null) {
+			ontModelRepository = createOntologyAsModelRepository(resourceCenter);
+		}
+		if (ontMetaModelRepository == null) {
+			ontMetaModelRepository = createOntologyAsMetaModelRepository(resourceCenter);
 		}
 
 		Iterator<I> it = resourceCenter.iterator();
@@ -119,12 +124,15 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	protected OWLOntologyResource tryToLookupOntology(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
 		if (isValidOntologyFile(candidateFile)) {
 			OWLOntologyResource ontRes = retrieveOntologyResource(candidateFile);
-			OWLOntologyRepository ontRepository = resourceCenter.getRepository(OWLOntologyRepository.class, this);
+			OWLOntologyAsModelRepository ontModelRepository = resourceCenter.getRepository(OWLOntologyAsModelRepository.class, this);
+			OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter.getRepository(OWLOntologyAsMetaModelRepository.class, this);
 			if (ontRes != null) {
 				RepositoryFolder<OWLOntologyResource> folder;
 				try {
-					folder = ontRepository.getRepositoryFolder(candidateFile, true);
-					ontRepository.registerResource(ontRes, folder);
+					folder = ontModelRepository.getRepositoryFolder(candidateFile, true);
+					ontModelRepository.registerResource(ontRes, folder);
+					folder = ontMetaModelRepository.getRepositoryFolder(candidateFile, true);
+					ontMetaModelRepository.registerResource(ontRes, folder);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -225,9 +233,15 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		return null;
 	}
 
-	public OWLOntologyRepository createOntologyRepository(FlexoResourceCenter resourceCenter) {
-		OWLOntologyRepository returned = new OWLOntologyRepository(this, resourceCenter);
-		resourceCenter.registerRepository(returned, OWLOntologyRepository.class, this);
+	public OWLOntologyAsModelRepository createOntologyAsModelRepository(FlexoResourceCenter resourceCenter) {
+		OWLOntologyAsModelRepository returned = new OWLOntologyAsModelRepository(this, resourceCenter);
+		resourceCenter.registerRepository(returned, OWLOntologyAsModelRepository.class, this);
+		return returned;
+	}
+	
+	public OWLOntologyAsMetaModelRepository createOntologyAsMetaModelRepository(FlexoResourceCenter resourceCenter) {
+		OWLOntologyAsMetaModelRepository returned = new OWLOntologyAsMetaModelRepository(this, resourceCenter);
+		resourceCenter.registerRepository(returned, OWLOntologyAsMetaModelRepository.class, this);
 		return returned;
 	}
 
