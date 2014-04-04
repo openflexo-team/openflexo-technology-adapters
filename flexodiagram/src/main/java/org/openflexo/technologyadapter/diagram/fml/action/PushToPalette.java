@@ -60,7 +60,6 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
@@ -115,7 +114,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 	protected PushToPalette(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
-		drawingObjectEntries = new Vector<DrawingObjectEntry>();
+		diagramElementEntries = new Vector<DiagramElementEntry>();
 		updateDrawingObjectEntries();
 	}
 
@@ -192,7 +191,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 			diagramModelSlot.addToPaletteElementBindings(newBinding);
 
-			/*for (DrawingObjectEntry entry : drawingObjectEntries) {
+			/*for (DrawingObjectEntry entry : diagramElementEntries) {
 				if(!entry.isMainEntry()){
 					if (entry.graphicalObject.getGraphicalRepresentation() instanceof ShapeGraphicalRepresentation) {
 						ShapeGraphicalRepresentation subGr = new ShapeGraphicalRepresentation();
@@ -211,7 +210,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			}*/
 
 			if (overrideDefaultGraphicalRepresentations) {
-				for (DrawingObjectEntry entry : drawingObjectEntries) {
+				for (DiagramElementEntry entry : diagramElementEntries) {
 					if (entry.getSelectThis()) {
 						// TODO
 						/*if (entry.graphicalObject instanceof GRShapeTemplate) {
@@ -248,23 +247,23 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		return StringUtils.isNotEmpty(newElementName) && palette != null && flexoConcept != null && dropScheme != null;
 	}
 
-	private Vector<DrawingObjectEntry> drawingObjectEntries;
+	private List<DiagramElementEntry> diagramElementEntries;
 
-	public Vector<DrawingObjectEntry> getDrawingObjectEntries() {
-		return drawingObjectEntries;
+	public List<DiagramElementEntry> getDiagramElementEntries() {
+		return diagramElementEntries;
 	}
 
-	public void setDrawingObjectEntries(Vector<DrawingObjectEntry> drawingObjectEntries) {
-		this.drawingObjectEntries = drawingObjectEntries;
+	public void setDiagramElementEntries(List<DiagramElementEntry> diagramElementEntries) {
+		this.diagramElementEntries = diagramElementEntries;
 	}
 
-	public class DrawingObjectEntry {
+	public class DiagramElementEntry {
 		private boolean selectThis;
 		public DiagramElement<?> graphicalObject;
 		public String elementName;
 		public GraphicalElementRole<?, ?> patternRole;
 
-		public DrawingObjectEntry(DiagramElement<?> graphicalObject, String elementName) {
+		public DiagramElementEntry(DiagramElement<?> graphicalObject, String elementName) {
 			super();
 			this.graphicalObject = graphicalObject;
 			this.elementName = elementName;
@@ -297,7 +296,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			}
 		}
 
-		public DrawingObjectEntry getParentEntry() {
+		public DiagramElementEntry getParentEntry() {
 			return getEntry(graphicalObject.getParent());
 		}
 
@@ -313,7 +312,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 	public int getSelectedEntriesCount() {
 		int returned = 0;
-		for (DrawingObjectEntry e : drawingObjectEntries) {
+		for (DiagramElementEntry e : diagramElementEntries) {
 			if (e.selectThis) {
 				returned++;
 			}
@@ -321,8 +320,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		return returned;
 	}
 
-	public DrawingObjectEntry getEntry(DiagramElement<?> o) {
-		for (DrawingObjectEntry e : drawingObjectEntries) {
+	public DiagramElementEntry getEntry(DiagramElement<?> o) {
+		for (DiagramElementEntry e : diagramElementEntries) {
 			if (e.graphicalObject == o) {
 				return e;
 			}
@@ -339,8 +338,15 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		updateDrawingObjectEntries();
 	}
 
+	public List<DropScheme> getAvailableDropSchemes() {
+		if (getFlexoConcept() != null) {
+			return getFlexoConcept().getFlexoBehaviours(DropScheme.class);
+		}
+		return null;
+	}
+
 	private void updateDrawingObjectEntries() {
-		drawingObjectEntries.clear();
+		diagramElementEntries.clear();
 		int shapeIndex = 1;
 		int connectorIndex = 1;
 		List<? extends DiagramElement<?>> elements = (getFocusedObject() instanceof DiagramContainerElement ? ((DiagramContainerElement<?>) getFocusedObject())
@@ -351,13 +357,13 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 				DiagramShape shape = (DiagramShape) o;
 				String shapeRoleName = StringUtils.isEmpty(shape.getName()) ? "shape" + (shapeIndex > 1 ? shapeIndex : "") : shape
 						.getName();
-				drawingObjectEntries.add(new DrawingObjectEntry(shape, shapeRoleName));
+				diagramElementEntries.add(new DiagramElementEntry(shape, shapeRoleName));
 				shapeIndex++;
 			}
 			if (o instanceof DiagramConnector) {
 				DiagramConnector connector = (DiagramConnector) o;
 				String connectorRoleName = "connector" + (connectorIndex > 1 ? connectorIndex : "");
-				drawingObjectEntries.add(new DrawingObjectEntry(connector, connectorRoleName));
+				diagramElementEntries.add(new DiagramElementEntry(connector, connectorRoleName));
 				connectorIndex++;
 			}
 		}
@@ -375,8 +381,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public File saveScreenshot() {
-		File imageFile = new File(((DiagramSpecificationResource) getDiagramSpecification().getResource()).getDirectory(),
-				JavaUtils.getClassName(newElementName) + ".palette-element" + ".png");
+		File imageFile = new File(getDiagramSpecification().getResource().getDirectory(), JavaUtils.getClassName(newElementName)
+				+ ".palette-element" + ".png");
 		logger.info("Saving " + imageFile);
 		try {
 			ImageUtils.saveImageToFile(getScreenshot().image, imageFile, ImageType.PNG);
@@ -392,8 +398,17 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		return diagramModelSlot.getMetaModelResource().getLoadedResourceData();
 	}
 
-	// TODO
+	public VirtualModel getVirtualModel() {
+		if (diagramModelSlot != null) {
+			return diagramModelSlot.getVirtualModel();
+		}
+		return null;
+	}
+
 	public VirtualModelModelFactory getFactory() {
+		if (getVirtualModel() != null) {
+			return getVirtualModel().getVirtualModelFactory();
+		}
 		return null;
 	}
 

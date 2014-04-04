@@ -66,9 +66,4 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 		validateFIB("Fib/Dialog/PushToPaletteDialog.fib");
 	}
 
-	@Test
-	public void testReindexDiagramElementsDialog() {
-		validateFIB("Fib/Dialog/ReindexDiagramElementsDialog.fib");
-	}
-
 }

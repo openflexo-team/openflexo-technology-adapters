@@ -52,7 +52,7 @@
     <Button id="35" manageDynamicModel="false" useScrollBar="false" buttonType="Trigger" action="controller.cancelAndDispose()" index="1" localize="true" font="Lucida Grande,0,13" constraints="flow(index=1)" label="Cancel" readOnly="false">
       <LocalizedDictionary id="36" />
     </Button>
-    <Button id="37" manageDynamicModel="false" useScrollBar="false" enable="data.isValid" buttonType="Trigger" action="controller.validateAndDispose()" index="1" localize="true" font="Lucida Grande,0,13" constraints="flow(index=1)" label="Validate" readOnly="false">
+    <Button id="37" manageDynamicModel="false" useScrollBar="false" buttonType="Trigger" action="controller.validateAndDispose()" index="1" localize="true" font="Lucida Grande,0,13" constraints="flow(index=1)" label="Validate" readOnly="false">
       <LocalizedDictionary id="38" />
     </Button>
   </Panel>
