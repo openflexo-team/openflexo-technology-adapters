@@ -12,11 +12,11 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
 
 public class PowerpointSlideshow extends PowerpointObject implements ResourceData<PowerpointSlideshow> {
 
-	private SlideShow slideshow;
+	private final SlideShow slideshow;
 	private PowerpointSlideshowResource resource;
 	private List<PowerpointSlide> powerpointSlides;
 	private BasicPowerpointModelConverter converter;
-	
+
 	public SlideShow getSlideShow() {
 		return slideshow;
 	}
@@ -30,8 +30,9 @@ public class PowerpointSlideshow extends PowerpointObject implements ResourceDat
 	public PowerpointSlideshow(PowerpointTechnologyAdapter adapter) {
 		super(adapter);
 		powerpointSlides = new ArrayList<PowerpointSlide>();
+		this.slideshow = new SlideShow();
 	}
-	
+
 	public PowerpointSlideshow(SlideShow slideshow, BasicPowerpointModelConverter converter, PowerpointTechnologyAdapter adapter) {
 		super(adapter);
 		this.slideshow = slideshow;
@@ -74,11 +75,10 @@ public class PowerpointSlideshow extends PowerpointObject implements ResourceDat
 		this.powerpointSlides.remove(deletedPowerpointSlide);
 	}
 
-
 	@Override
 	public String getUri() {
-		String uri = "PowerpointSlideshow="+getResource().getName();
+		String uri = "PowerpointSlideshow=" + getResource().getName();
 		return uri;
 	}
-	
+
 }
