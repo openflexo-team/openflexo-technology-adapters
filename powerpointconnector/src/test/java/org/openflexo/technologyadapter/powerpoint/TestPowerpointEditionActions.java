@@ -19,34 +19,21 @@
  */
 package org.openflexo.technologyadapter.powerpoint;
 
-
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.foundation.viewpoint.VirtualModel;
-import org.openflexo.foundation.viewpoint.ViewPoint.ViewPointImpl;
-import org.openflexo.foundation.viewpoint.VirtualModel.VirtualModelImpl;
-import org.openflexo.foundation.viewpoint.VirtualModelTechnologyAdapter;
-import org.openflexo.technologyadapter.powerpoint.BasicPowerpointModelSlot;
-import org.openflexo.technologyadapter.powerpoint.BasicPowerpointModelSlot.BasicPowerpointModelSlotImpl;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideShowRepository;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
-import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResourceImpl;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointShape;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointShape.AddPowerpointShapeImpl;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -64,9 +51,9 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	private static BasicPowerpointModelSlot modelSlot;
 	private static ViewPoint newViewPoint;
 	private static VirtualModel newVirtualModel;
-	
+
 	/*@Before
-    public void setUp() {
+	public void setUp() {
 		File resourceCenterDirectory = new FileResource(
 				new File("src/test/resources").getAbsolutePath());
 		
@@ -98,7 +85,6 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 			e.printStackTrace();
 		}
 	}*/
-	
 
 	/**
 	 * Instantiate test resource center
@@ -110,19 +96,18 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 		log("test0InstantiateResourceCenter()");
 		testApplicationContext = instanciateTestServiceManager();
 		assertNotNull(testApplicationContext);
-		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(
-				PowerpointTechnologyAdapter.class);
+		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		assertNotNull(powerpointAdapter);
-		for(FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()){
-			if(rc.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter)!=null){
+		for (FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
+			if (rc.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter) != null) {
 				modelRepository = (PowerpointSlideShowRepository) rc.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter);
 			}
 		}
 		assertNotNull(modelRepository);
-		assertTrue(modelRepository.getSize()>0);
-		logger.info("Found "+modelRepository.getSize()+" powerpoint files");
+		assertTrue(modelRepository.getSize() > 0);
+		logger.info("Found " + modelRepository.getSize() + " powerpoint files");
 	}
-	
+
 	/**
 	 * Add a powerpoint slide
 	 * 
@@ -132,13 +117,12 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	@TestOrder(2)
 	public void testAddPowerpointSlide() throws IOException {
 		logger.info("testAddPowerpointSlide()");
-		AddPowerpointShape addPowerpointShape = modelSlot.createAction(AddPowerpointShape.class);
-		
-	
-		//assertNotNull(modelRes);
-		
+		// AddPowerpointShape addPowerpointShape = modelSlot.createAction(AddPowerpointShape.class);
+
+		// assertNotNull(modelRes);
+
 	}
-	
+
 	/**
 	 * Add a powerpoint shape
 	 * 
@@ -148,11 +132,10 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	@TestOrder(3)
 	public void testAddPowerpointShape() throws IOException {
 		logger.info("testAddPowerpointShape()");
-		//assertNotNull(modelRes);
-		
-		
+		// assertNotNull(modelRes);
+
 	}
-	
+
 	/**
 	 * Select a powerpoint shape
 	 * 
@@ -162,9 +145,9 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	@TestOrder(4)
 	public void testSelectPowerpointShape() throws IOException {
 		logger.info("testSelectPowerpointShape()");
-		//assertNotNull(modelRes);
+		// assertNotNull(modelRes);
 	}
-	
+
 	/**
 	 * Select a powerpoint slide
 	 * 
@@ -174,6 +157,6 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	@TestOrder(5)
 	public void testSelectPowerpointSlide() throws IOException {
 		logger.info("testSelectPowerpointSlide()");
-		//assertNotNull(modelRes);
+		// assertNotNull(modelRes);
 	}
 }
