@@ -801,7 +801,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 	@Override
 	public void initializeBehaviours() {
-		if (!getVirtualModel().getFlexoConcepts().isEmpty()) {
+		if (getVirtualModel() != null && getVirtualModel().getFlexoConcepts() != null && !getVirtualModel().getFlexoConcepts().isEmpty()) {
 			FlexoBehaviourConfiguration linkFlexoBehaviour = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.LINK);
 			getFlexoBehaviours().add(linkFlexoBehaviour);
 			((LinkScheme) linkFlexoBehaviour.getFlexoBehaviour()).setToTargetFlexoConcept(getVirtualModel().getFlexoConcepts().get(0));
