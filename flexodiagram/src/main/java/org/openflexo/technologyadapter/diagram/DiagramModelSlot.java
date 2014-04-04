@@ -1,15 +1,15 @@
 package org.openflexo.technologyadapter.diagram;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviour;
+import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviours;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.DiagramNavigationScheme;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
@@ -22,6 +22,11 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  * @author sylvain
  * 
  */
+@DeclareFlexoBehaviours({ // All edition actions available through this model slot
+@DeclareFlexoBehaviour(FML = "DropScheme", flexoBehaviourClass = DropScheme.class),
+@DeclareFlexoBehaviour(FML = "LinkScheme", flexoBehaviourClass = LinkScheme.class),
+@DeclareFlexoBehaviour(FML = "NavigationScheme", flexoBehaviourClass = DiagramNavigationScheme.class)})
+
 @ModelEntity(isAbstract = true)
 public interface DiagramModelSlot extends ModelSlot<Diagram> {
 
@@ -43,13 +48,5 @@ public interface DiagramModelSlot extends ModelSlot<Diagram> {
 			return null;
 		}
 		
-		@Override
-		public List<Class<? extends FlexoBehaviour>> getAvailableFlexoBehaviourTypes() {
-			List<Class<? extends FlexoBehaviour>> types = new ArrayList<Class<? extends FlexoBehaviour>>();
-			types.add(DropScheme.class);
-			types.add(LinkScheme.class);
-			return types;
-		}
-
 	}
 }
