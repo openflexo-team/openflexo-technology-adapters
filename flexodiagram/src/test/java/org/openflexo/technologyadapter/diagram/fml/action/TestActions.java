@@ -5,17 +5,25 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.apache.poi.hslf.model.AutoShape;
+import org.apache.poi.hslf.model.Line;
 import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Picture;
 import org.apache.poi.hslf.model.Shape;
+import org.apache.poi.hslf.model.ShapeTypes;
 import org.apache.poi.hslf.model.Slide;
+import org.apache.poi.hslf.model.Table;
+import org.apache.poi.hslf.model.TableCell;
 import org.apache.poi.hslf.model.TextBox;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.fge.ShapeGraphicalRepresentation.DimensionConstraints;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.FlexoServiceManager;
@@ -26,6 +34,9 @@ import org.openflexo.rm.FileSystemResourceLocatorImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
+import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -69,6 +80,10 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase{
 		assertTrue(project.getProjectDataResource().getFile().exists());
 	}
 
+	
+	private int realNumberOfShapesAndConnectors = 0;
+	private int expectedNumberOfShapesAndConnectors = 0;
+	
 	/**
 	 * Test the Diagram from a PPT slide
 	 */
@@ -89,31 +104,102 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase{
 				createExampleDiagramFromPPTSlide.setSlide(slide);
 				createExampleDiagramFromPPTSlide.doAction();
 
-				assertNotNull(createExampleDiagramFromPPTSlide.getNewDiagram());
-
-				assertEquals(computedNumberOfShapes(slide),
-						createExampleDiagramFromPPTSlide.getNewDiagram().getShapes().size());
+				DiagramContainerElement diag = (DiagramContainerElement)createExampleDiagramFromPPTSlide.getNewDiagram();
+				assertNotNull(diag);
+				
+				realNumberOfShapesAndConnectors= 0;
+				expectedNumberOfShapesAndConnectors=1;
+				
+				computeExpectedNumberOfShapesAndConnectors(slide);
+				computeRealNumberOfShapesAndConnectors(diag);
+				
+				logger.info("Testing file "+pptFile.getName() + " slide number " + slide.getSlideNumber() + 
+						" expecting " + expectedNumberOfShapesAndConnectors +
+						" in reality " + realNumberOfShapesAndConnectors);
+				assertEquals(expectedNumberOfShapesAndConnectors,realNumberOfShapesAndConnectors);
 			}
 		}
 	}
 
-	private int computedNumberOfShapes(Slide slide){
-		int numberOfShapes=0;
+	private ArrayList<Shape> expectedShapes;
+	private void computeExpectedNumberOfShapesAndConnectors(Slide slide){
+		expectedShapes = new ArrayList<Shape>();
 		if (slide.getFollowMasterObjects()) {
 			Shape[] sh = slide.getMasterSheet().getShapes();
 			for (int i = sh.length - 1; i >= 0; i--) {
 				if (MasterSheet.isPlaceholder(sh[i])) {
 					continue;
-				} else if (sh[i] instanceof TextBox || sh[i] instanceof Picture || sh[i] instanceof AutoShape) {
-					numberOfShapes++;
+				} else {
+					expectedShapes.add(sh[i]);
 				}
 			}
 		}
 		for (Shape shape : slide.getShapes()) {
-			if (shape instanceof TextBox || shape instanceof Picture || shape instanceof AutoShape) {
-				numberOfShapes++;
+			expectedShapes.add(shape);
+		}
+		for(Shape shape : expectedShapes){
+			newExpectedShape(shape);
+		}
+	}
+	
+	private void newExpectedShape(Shape shape){
+		if (shape instanceof Table) {
+			expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors+1+(((Table)shape).getNumberOfColumns()*((Table)shape).getNumberOfRows());
+		} else if (shape instanceof TextBox || shape instanceof Picture) {
+			expectedNumberOfShapesAndConnectors++;
+		} else if (shape instanceof Line){
+			expectedNumberOfShapesAndConnectors= expectedNumberOfShapesAndConnectors+3;
+		} else if (shape instanceof AutoShape){
+			if(!isConnector(shape.getShapeType())){
+				expectedNumberOfShapesAndConnectors++;
+			}
+			else {
+				expectedNumberOfShapesAndConnectors = expectedNumberOfShapesAndConnectors + elementToCreate(shape, expectedShapes);
 			}
 		}
-		return numberOfShapes;
+	}
+	
+	private void computeRealNumberOfShapesAndConnectors(DiagramContainerElement parentShape){
+		List<DiagramShape> shapes = parentShape.getShapes();
+		for(DiagramShape shape : shapes){
+			computeRealNumberOfShapesAndConnectors(shape);
+		}
+		List<DiagramConnector> connectors = parentShape.getConnectors();
+		for(DiagramConnector connector : connectors){
+			realNumberOfShapesAndConnectors++;
+		}
+		realNumberOfShapesAndConnectors++;;
+	}
+	
+	private boolean isConnector(int shapeType){
+		switch(shapeType){
+			case ShapeTypes.CurvedConnector2:return true;
+			case ShapeTypes.CurvedConnector3:return true;
+			case ShapeTypes.CurvedConnector4:return true;
+			case ShapeTypes.CurvedConnector5:return true;
+			case ShapeTypes.Line:return true;
+			case ShapeTypes.StraightConnector1:return true;
+		}
+		return false;
+	}
+	
+	private int elementToCreate(Shape poiConnector , ArrayList<Shape> expectedShapes){
+		int elementToCreate = 0;
+		Shape sourceShape=null,targetShape = null;
+		for (Shape diagramShape : expectedShapes) {
+			
+			if(poiConnector.getAnchor().intersects(diagramShape.getAnchor())){
+				if(sourceShape==null && targetShape == null){
+					sourceShape = diagramShape;
+				}
+				else if(sourceShape!=null && targetShape == null){
+					targetShape = diagramShape;
+				}
+			}
+		}
+		if(sourceShape==null && targetShape==null){
+			return elementToCreate = 3;
+		}
+		return 1;
 	}
 }

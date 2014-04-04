@@ -197,6 +197,11 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			// TODO Auto-generated method stub
 			return DiagramSpecification.class;
 		}
+		
+		@Override
+		public String getPreciseType() {
+			return "Diagram Specification";
+		}
 
 		// TODO
 		/*	@Override

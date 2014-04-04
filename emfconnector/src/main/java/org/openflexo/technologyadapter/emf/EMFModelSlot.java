@@ -140,6 +140,11 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 		}
 
 		@Override
+		public String getPreciseType() {
+			return "EMF Model";
+		};
+		
+		@Override
 		public EMFTechnologyAdapter getTechnologyAdapter() {
 			return (EMFTechnologyAdapter) super.getTechnologyAdapter();
 		}

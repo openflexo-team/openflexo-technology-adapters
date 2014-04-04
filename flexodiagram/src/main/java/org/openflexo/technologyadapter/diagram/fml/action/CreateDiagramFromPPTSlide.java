@@ -394,19 +394,22 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		return null;
 		
 	}
+	
+	private HashMap<DiagramShape,Shape> shapesMap;
+	private List<Shape> poiShapes;
+	private List<AutoShape> connectors;
 
 	/*
 	 * Transfo PPT to Diagram
 	 */
-	private Diagram convertSlideToDiagram(Slide slide) {
-
-		Diagram diagram = getNewDiagram();
-
+	private void convertSlideToDiagram(Slide slide) {
 		MasterSheet master = slide.getMasterSheet();
 		
-		ArrayList<AutoShape> connectors = new ArrayList<AutoShape>();
-		HashMap<DiagramShape,Shape> shapesMap = new HashMap<DiagramShape,Shape>();
+		connectors = new ArrayList<AutoShape>();
+		shapesMap = new HashMap<DiagramShape,Shape>();
+		poiShapes = new ArrayList<Shape>();
 
+		// Handle Shapes
 		if (slide.getFollowMasterObjects()) {
 			if (master.getShapes() != null) {
 				Shape[] sh = master.getShapes();
@@ -414,66 +417,56 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 					if (MasterSheet.isPlaceholder(sh[i])) {
 						continue;
 					}
-					Shape shape = sh[i];
-					if (shape instanceof Picture) {
-						DiagramShape newShape = makePictureShape((Picture) shape);
-						shapesMap.put(newShape, shape);
-						diagram.addToShapes(newShape);
-					} else if (shape instanceof AutoShape) {
-						if(!isConnector(shape.getShapeType())){
-							DiagramShape newShape = makeAutoShape((AutoShape) shape);
-							shapesMap.put(newShape, shape);
-							diagram.addToShapes(newShape);
-						} else{
-							connectors.add((AutoShape)shape);
-						}
-					} else if (shape instanceof TextBox) {
-						DiagramShape newShape = makeTextBox((TextBox) shape);
-						shapesMap.put(newShape, shape);
-						diagram.addToShapes(newShape);
-					} else if (shape instanceof Table){
-						DiagramShape newShape = makeTable((Table) shape);
-						shapesMap.put(newShape, shape);
-						diagram.addToShapes(newShape);
-					} else if (shape instanceof Line){
-						diagram.addToConnectors(makeLine((Line) shape));
-					}
+					poiShapes.add(sh[i]);
 				}
 			}
 		}
-
 		for (Shape shape : slide.getShapes()) {
-			if (shape instanceof Picture) {
-				DiagramShape newShape = makePictureShape((Picture) shape);
-				shapesMap.put(newShape, shape);
-				diagram.addToShapes(newShape);
-			} else if (shape instanceof AutoShape) {
-				if(!isConnector(shape.getShapeType())){
-					DiagramShape newShape = makeAutoShape((AutoShape) shape);
-					shapesMap.put(newShape, shape);
-					diagram.addToShapes(newShape);
-				} else{
-					connectors.add((AutoShape)shape);
-				}
-			} else if (shape instanceof TextBox) {
-				DiagramShape newShape = makeTextBox((TextBox) shape);
-				shapesMap.put(newShape, shape);
-				diagram.addToShapes(newShape);
-			} else if (shape instanceof Table){
-				DiagramShape newShape = makeTable((Table) shape);
-				shapesMap.put(newShape, shape);
-				diagram.addToShapes(newShape);
-			} else if (shape instanceof Line){
-				diagram.addToConnectors(makeLine((Line) shape));
-			}
+			poiShapes.add(shape);
+		}
+		
+		for(Shape shape : poiShapes){
+			transformPowerpointShape(shape);
 		}
 		
 		// Handle connectors
 		for(AutoShape connector : connectors){
-			makeConnector(connector, shapesMap);
+			DiagramConnector con = makeConnector(connector, shapesMap);
+			if(con==null){
+				 makeLine(connector);
+			}
+		}
+
+	}
+	
+	private void transformPowerpointShape(Shape shape){
+		if (shape instanceof Picture) {
+			DiagramShape newShape = makePictureShape((Picture) shape);
+			shapesMap.put(newShape, shape);
+			getNewDiagram().addToShapes(newShape);
+		} else if (shape instanceof AutoShape) {
+			if(!isConnector(shape.getShapeType())){
+				DiagramShape newShape = makeAutoShape((AutoShape) shape);
+				shapesMap.put(newShape, shape);
+				getNewDiagram().addToShapes(newShape);
+			} else{
+				connectors.add((AutoShape)shape);
+			}
+		} else if (shape instanceof TextBox) {
+			DiagramShape newShape = makeTextBox((TextBox) shape);
+			shapesMap.put(newShape, shape);
+			getNewDiagram().addToShapes(newShape);
+		} else if (shape instanceof Table){
+			DiagramShape newShape = makeTable((Table) shape);
+			shapesMap.put(newShape, shape);
+			getNewDiagram().addToShapes(newShape);
+		} else if (shape instanceof Line){
+			DiagramConnector con = makeLine((Line) shape);
+			getNewDiagram().addToConnectors(con);
+			getNewDiagram().addToShapes(con.getStartShape());
+			getNewDiagram().addToShapes(con.getEndShape());
 		}
 		
-		return diagram;
 	}
 	
 	private DiagramShape makeTable(Table table) {
@@ -571,6 +564,41 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 		return newConnector;
 	}
 	
+	/**
+	 * A line is without start/end shapes
+	 * @param line
+	 * @return
+	 */
+	private DiagramConnector makeLine(AutoShape poiConnector){
+		//Create a virtual start/end shape.
+		DiagramShape sourceShape = getDiagramFactory().makeNewShape("", getNewDiagram());
+		DiagramShape targetShape = getDiagramFactory().makeNewShape("", getNewDiagram());
+		ShapeGraphicalRepresentation sourceShapeGR = sourceShape.getGraphicalRepresentation();
+		sourceShapeGR.setX(poiConnector.getAnchor2D().getMinX());
+		sourceShapeGR.setY(poiConnector.getAnchor2D().getMaxY());
+		sourceShapeGR.setWidth(2);
+		sourceShapeGR.setHeight(2);
+		sourceShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
+		ShapeGraphicalRepresentation targetShapeGR = targetShape.getGraphicalRepresentation();
+		targetShapeGR.setX(poiConnector.getAnchor2D().getMaxX());
+		targetShapeGR.setY(poiConnector.getAnchor2D().getMinY());
+		targetShapeGR.setWidth(2);
+		targetShapeGR.setHeight(2);
+		targetShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
+		
+		DiagramConnector newConnector = getDiagramFactory().makeNewConnector(poiConnector.getShapeName(), sourceShape, targetShape, getNewDiagram());
+		ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
+		
+		if (poiConnector.getLineColor() != null) {
+			gr.setForeground(getDiagramFactory().makeForegroundStyle(poiConnector.getLineColor(), (float) poiConnector.getLineWidth(),
+					convertDashLineStyles(poiConnector.getLineDashing())));
+		} else {
+			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+		}
+		newConnector.setGraphicalRepresentation(gr);
+		return newConnector;
+	}
+	
 	private DiagramConnector makeConnector(AutoShape poiConnector , HashMap<DiagramShape,Shape> possibleShapes) {
 		DiagramShape sourceShape=null,targetShape = null;
 		
@@ -586,7 +614,11 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 				}
 			}
 		}
-		
+		if(sourceShape!=null && targetShape==null){
+			targetShape =sourceShape;
+		} else if(targetShape!=null && sourceShape==null){
+			sourceShape =targetShape;
+		}
 		if(sourceShape !=null && targetShape !=null){
 			DiagramConnector newConnector = getDiagramFactory().makeNewConnector(poiConnector.getShapeName(), sourceShape, targetShape, getNewDiagram());
 			ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
@@ -600,8 +632,9 @@ public class CreateDiagramFromPPTSlide extends FlexoAction<CreateDiagramFromPPTS
 			newConnector.setGraphicalRepresentation(gr);
 			return newConnector;
 		}
-		
-		return null;
+		else{
+			return null;
+		}
 	}
 	
 	private DiagramShape makeTextBox(TextBox textBox) {
