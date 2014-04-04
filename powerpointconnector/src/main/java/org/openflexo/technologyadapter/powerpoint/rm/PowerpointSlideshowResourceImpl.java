@@ -52,8 +52,6 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoFileResourceI
 
 	private static final Logger logger = Logger.getLogger(PowerpointSlideshowResourceImpl.class.getPackage().getName());
 
-	private boolean isLoaded = false;
-
 	/**
 	 * Creates a new {@link ExcelModelResource} asserting this is an explicit creation: no file is present on file system<br>
 	 * This method should not be used to retrieve the resource from a file in the file system, use
@@ -78,19 +76,10 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoFileResourceI
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerResource(returned);
 
-			try {
-				PowerpointSlideshow resourceData = returned.loadResourceData(null);
-				returned.setResourceData(resourceData);
-				resourceData.setResource(returned);
-				returned.save(null);
-				returned.isLoaded = true;
-			} catch (SaveResourceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidPowerpointFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			PowerpointSlideshow resourceData = new PowerpointSlideshow(technologyContextManager.getTechnologyAdapter());
+			returned.setResourceData(resourceData);
+			resourceData.setResource(returned);
+
 			return returned;
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
@@ -116,6 +105,20 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoFileResourceI
 			returned.setURI(modelFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerResource(returned);
+
+			/*try {
+				PowerpointSlideshow resourceData = returned.loadResourceData(null);
+				returned.setResourceData(resourceData);
+				resourceData.setResource(returned);
+				returned.save(null);
+			} catch (SaveResourceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidPowerpointFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+
 			return returned;
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
@@ -145,7 +148,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoFileResourceI
 				// Creates a new file
 				getFile().createNewFile();
 				ssOpenned = new SlideShow();
-			
+
 				BasicPowerpointModelConverter converter = new BasicPowerpointModelConverter();
 				resourceData = converter.convertPowerpointSlideshow(ssOpenned, getTechnologyAdapter());
 				// TODO how to change this?
