@@ -29,5 +29,12 @@ public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
 			logger.warning("Unexpected pattern role: " + patternRoleClass.getName());
 			return null;
 		}
+		
+		@Override
+		public String getPreciseType() {
+			return "Powerpoint Slide Show";
+		};
 	}
+	
+	
 }
