@@ -11,6 +11,8 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
+import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviour;
+import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviours;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
@@ -27,8 +29,11 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.DiagramNavigationScheme;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
+import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
+import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
@@ -52,6 +57,11 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 @DeclarePatternRole(FML = "ShapeSpecification", flexoRoleClass = ShapeRole.class), // Shapes
 		@DeclarePatternRole(FML = "ConnectorSpecification", flexoRoleClass = ConnectorRole.class), // Connectors
 		@DeclarePatternRole(FML = "Diagram", flexoRoleClass = DiagramRole.class) // Diagrams
+})
+@DeclareFlexoBehaviours({ // All edition actions available through this model slot
+		@DeclareFlexoBehaviour(FML = "DropScheme", flexoBehaviourClass = DropScheme.class),
+		@DeclareFlexoBehaviour(FML = "LinkScheme", flexoBehaviourClass = LinkScheme.class),
+		@DeclareFlexoBehaviour(FML = "NavigationScheme", flexoBehaviourClass = DiagramNavigationScheme.class)
 })
 @DeclareEditionActions({ // All edition actions available through this model
 		// slot
