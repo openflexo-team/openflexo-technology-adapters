@@ -495,6 +495,11 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 
 		
+		@Override
+		public Object getObject(String objectURI) {
+			return null;
+		}
+		
 	}
 
 }
