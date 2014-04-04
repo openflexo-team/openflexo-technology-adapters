@@ -33,8 +33,6 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  * 
  * @author sylvain
  * 
- * @param <E>
- *            type of introspected concept
  */
 public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualModelInstanceNature {
 

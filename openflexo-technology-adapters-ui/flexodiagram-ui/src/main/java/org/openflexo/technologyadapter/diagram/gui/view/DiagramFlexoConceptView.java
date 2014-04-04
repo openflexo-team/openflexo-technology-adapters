@@ -19,28 +19,64 @@
  */
 package org.openflexo.technologyadapter.diagram.gui.view;
 
+import org.openflexo.components.widget.CommonFIB;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
-import org.openflexo.view.FIBModuleView;
+import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
+import org.openflexo.technologyadapter.diagram.gui.widget.FlexoConceptPreviewComponent;
 import org.openflexo.view.controller.FlexoController;
+import org.openflexo.view.controller.TechnologyAdapterControllerService;
 import org.openflexo.view.controller.model.FlexoPerspective;
+import org.openflexo.vpm.view.FlexoConceptView;
 
 /**
- * This is the module view representing FlexoConcept with some diagramming roles<br>
+ * This is the module view representing a standard FlexoConcept (an FlexoConcept which is not a VirtualModel, nor part of a
+ * DiagramSpecification)<br>
  * 
  * @author sguerin
  * 
  */
-@SuppressWarnings("serial")
-public class DiagramFlexoConceptView extends FIBModuleView<FlexoConcept> {
+public class DiagramFlexoConceptView extends FlexoConceptView<FlexoConcept> {
 
-	public DiagramFlexoConceptView(FlexoConcept flexoConcept, FlexoController controller) {
-		super(flexoConcept, controller, DiagramCst.DIAGRAM_FLEXO_CONCEPT_VIEW_FIB);
+	private final FlexoConceptPreviewComponent previewComponent;
+
+	public DiagramFlexoConceptView(FlexoConcept flexoConcept, FlexoController controller, FlexoPerspective perspective) {
+		super(flexoConcept, CommonFIB.STANDARD_FLEXO_CONCEPT_VIEW_FIB, controller, perspective);
+		previewComponent = new FlexoConceptPreviewComponent(flexoConcept);
+		previewComponent.setSelectionManager(controller.getSelectionManager());
+		System.out.println(">>>>>>> Prefered size=" + previewComponent.getPreferredSize());
+	}
+
+	public DiagramTechnologyAdapterController getDiagramTechnologyAdapterController(FlexoController controller) {
+		TechnologyAdapterControllerService tacService = controller.getApplicationContext().getTechnologyAdapterControllerService();
+		return tacService.getTechnologyAdapterController(DiagramTechnologyAdapterController.class);
 	}
 
 	@Override
-	public FlexoPerspective getPerspective() {
-		return getFlexoController().getCurrentPerspective();
+	public void show(final FlexoController controller, FlexoPerspective perspective) {
+
+		System.out.println(">>>>>>>>>>> show() for " + this);
+		System.out.println(">>>>>>> Prefered size=" + previewComponent.getPreferredSize());
+
+		// Sets palette view of editor to be the top right view
+		perspective.setTopRightView(previewComponent);
+
+		getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(previewComponent.getPreviewController());
+		getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(previewComponent.getPreviewController());
+
+		perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
+
+		/*SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// Force right view to be visible
+				controller.getControllerModel().setRightViewVisible(true);
+			}
+		});*/
+
+		controller.getControllerModel().setRightViewVisible(true);
+
+		revalidate();
+		repaint();
 	}
 
 }

@@ -30,7 +30,7 @@ import org.openflexo.rm.ResourceLocator;
 public class DiagramCst {
 
 	// UI components
-	public static Resource DIAGRAM_FLEXO_CONCEPT_VIEW_FIB = ResourceLocator.locateResource("Fib/DiagramFlexoConceptView.fib");
+	// public static Resource DIAGRAM_FLEXO_CONCEPT_VIEW_FIB = ResourceLocator.locateResource("Fib/DiagramFlexoConceptView.fib");
 	public static Resource DIAGRAM_SPECIFICATION_VIEW_FIB = ResourceLocator.locateResource("Fib/DiagramSpecificationView.fib");
 
 	// Dialog components
