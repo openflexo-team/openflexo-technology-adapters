@@ -32,8 +32,8 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testCreateExampleDrawingDialog() {
-		validateFIB("Fib/Dialog/CreateExampleDrawingDialog.fib");
+	public void testCreateExampleDiagramDialog() {
+		validateFIB("Fib/Dialog/CreateExampleDiagramDialog.fib");
 	}
 
 	@Test
@@ -42,13 +42,13 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testDeclareConnectorInEditionPatternDialog() {
-		validateFIB("Fib/Dialog/DeclareConnectorInEditionPatternDialog.fib");
+	public void testDeclareConnectorInFlexoConceptDialog() {
+		validateFIB("Fib/Dialog/DeclareConnectorInFlexoConceptDialog.fib");
 	}
 
 	@Test
-	public void testDeclareShapeInEditionPatternDialog() {
-		validateFIB("Fib/Dialog/DeclareShapeInEditionPatternDialog.fib");
+	public void testDeclareShapeInFlexoConceptDialog() {
+		validateFIB("Fib/Dialog/DeclareShapeInFlexoConceptDialog.fib");
 	}
 
 	@Test

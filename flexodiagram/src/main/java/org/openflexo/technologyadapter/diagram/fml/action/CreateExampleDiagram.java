@@ -37,6 +37,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, DiagramSpecification, ViewPointObject> {
@@ -98,27 +99,67 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 
 	}
 
-	private String nameValidityMessage = EMPTY_NAME;
+	private String errorMessage;
 
-	private static final String NAME_IS_VALID = FlexoLocalization.localizedForKey("name_is_valid");
-	private static final String DUPLICATED_NAME = FlexoLocalization.localizedForKey("this_name_is_already_used_please_choose_an_other_one");
-	private static final String EMPTY_NAME = FlexoLocalization.localizedForKey("empty_name");
-
-	public String getNameValidityMessage() {
-		return nameValidityMessage;
+	public String getErrorMessage() {
+		isValid();
+		// System.out.println("valid=" + isValid());
+		// System.out.println("errorMessage=" + errorMessage);
+		return errorMessage;
 	}
 
-	public boolean isNameValid() {
+	@Override
+	public boolean isValid() {
+		/*if (diagramSpecification == null) {
+			errorMessage = noDiagramSpecificationSelectedMessage();
+			return false;
+		}*/
 		if (StringUtils.isEmpty(newDiagramName)) {
-			nameValidityMessage = EMPTY_NAME;
+			errorMessage = noNameMessage();
 			return false;
-		} else if (getFocusedObject().getExampleDiagram(newDiagramName) != null) {
-			nameValidityMessage = DUPLICATED_NAME;
-			return false;
-		} else {
-			nameValidityMessage = NAME_IS_VALID;
-			return true;
 		}
+
+		if (!newDiagramName.equals(JavaUtils.getClassName(newDiagramName))
+				&& !newDiagramName.equals(JavaUtils.getVariableName(newDiagramName))) {
+			errorMessage = invalidNameMessage();
+			return false;
+		}
+
+		if (StringUtils.isEmpty(newDiagramTitle)) {
+			errorMessage = noTitleMessage();
+			return false;
+		}
+
+		// TODO: handle duplicated name and uri
+		return true;
+	}
+
+	public String noDiagramSpecificationSelectedMessage() {
+		return FlexoLocalization.localizedForKey("no_diagram_type_selected");
+	}
+
+	public String noTitleMessage() {
+		return FlexoLocalization.localizedForKey("no_diagram_title_defined");
+	}
+
+	public String noFileMessage() {
+		return FlexoLocalization.localizedForKey("no_diagram_file_defined");
+	}
+
+	public String existingFileMessage() {
+		return FlexoLocalization.localizedForKey("file_already_existing");
+	}
+
+	public String noNameMessage() {
+		return FlexoLocalization.localizedForKey("no_diagram_name_defined");
+	}
+
+	public String invalidNameMessage() {
+		return FlexoLocalization.localizedForKey("invalid_name_for_new_diagram");
+	}
+
+	public String duplicatedNameMessage() {
+		return FlexoLocalization.localizedForKey("a_diagram_with_that_name_already_exists");
 	}
 
 	public Diagram getNewDiagram() {

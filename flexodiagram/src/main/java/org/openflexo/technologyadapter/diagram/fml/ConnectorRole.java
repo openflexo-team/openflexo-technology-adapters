@@ -165,8 +165,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public void setStartShapeAsDefinedInAction(boolean flag) {
-			if (!flag && getFlexoConcept().getPatternRoles(ShapeRole.class).size() > 0) {
-				setStartShapeRole(getFlexoConcept().getPatternRoles(ShapeRole.class).get(0));
+			if (!flag && getFlexoConcept().getFlexoRoles(ShapeRole.class).size() > 0) {
+				setStartShapeRole(getFlexoConcept().getFlexoRoles(ShapeRole.class).get(0));
 			} else {
 				// System.out.println("setStartShapePatternRole with null");
 				setStartShapeRole(null);
@@ -193,8 +193,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public void setEndShapeAsDefinedInAction(boolean flag) {
-			if (!flag && getFlexoConcept().getPatternRoles(ShapeRole.class).size() > 0) {
-				setEndShapeRole(getFlexoConcept().getPatternRoles(ShapeRole.class).get(0));
+			if (!flag && getFlexoConcept().getFlexoRoles(ShapeRole.class).size() > 0) {
+				setEndShapeRole(getFlexoConcept().getFlexoRoles(ShapeRole.class).get(0));
 			} else {
 				// System.out.println("setEndShapePatternRole with null");
 				setEndShapeRole(null);
@@ -246,7 +246,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public List<ShapeRole> getAvailableShapeRoles() {
-			return getFlexoConcept().getPatternRoles(ShapeRole.class);
+			return getFlexoConcept().getFlexoRoles(ShapeRole.class);
 		}
 	}
 }

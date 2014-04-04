@@ -67,7 +67,7 @@ import org.openflexo.foundation.viewpoint.action.AddFlexoConcept;
 import org.openflexo.foundation.viewpoint.action.CreateEditionAction;
 import org.openflexo.foundation.viewpoint.action.CreateEditionScheme;
 import org.openflexo.foundation.viewpoint.action.CreateEditionAction.CreateEditionActionChoice;
-import org.openflexo.foundation.viewpoint.editionaction.DeclarePatternRole;
+import org.openflexo.foundation.viewpoint.editionaction.DeclareFlexoRole;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.foundation.viewpoint.rm.ViewPointResource;
 import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;

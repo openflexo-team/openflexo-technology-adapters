@@ -31,18 +31,22 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
+import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.foundation.viewpoint.VirtualModelModelSlot;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
+import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * This abstract class is an action that allows to create an flexo concept from a graphical representation(for instance a shape or
@@ -57,6 +61,12 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 		FlexoAction<A, T, DiagramElement<?>> {
 
 	private static final Logger logger = Logger.getLogger(DeclareInFlexoConcept.class.getPackage().getName());
+
+	/**
+	 * Stores the VirtualModel on which we are working<br>
+	 * This {@link VirtualModel} must be set with external API.
+	 */
+	private VirtualModel virtualModel;
 
 	/**
 	 * Stores the model slot which encodes the access to a {@link Diagram} conform to a {@link DiagramSpecification}, in the context of a
@@ -82,12 +92,12 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	 * @param globalSelection
 	 * @param editor
 	 */
-	DeclareInFlexoConcept(FlexoActionType<A, T, DiagramElement<?>> actionType, T focusedObject,
-			Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
+	DeclareInFlexoConcept(FlexoActionType<A, T, DiagramElement<?>> actionType, T focusedObject, Vector<DiagramElement<?>> globalSelection,
+			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		// Get the set of model slots that are available from the current virtual model
 		List<ModelSlot<?>> availableModelSlots = getModelSlots();
-		if (availableModelSlots.size() > 0) {
+		if (availableModelSlots != null && availableModelSlots.size() > 0) {
 			modelSlot = availableModelSlots.get(0);
 		}
 		// Get the set of internal elements inside the current focused object
@@ -112,6 +122,22 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 				connectorIndex++;
 			}
 		}
+	}
+
+	/**
+	 * Return the VirtualModel on which we are working<br>
+	 * This {@link VirtualModel} must be set with external API.
+	 */
+	public VirtualModel getVirtualModel() {
+		return virtualModel;
+	}
+
+	/**
+	 * Sets the VirtualModel on which we are working<br>
+	 * This {@link VirtualModel} must be set with external API.
+	 */
+	public void setVirtualModel(VirtualModel virtualModel) {
+		this.virtualModel = virtualModel;
 	}
 
 	public static enum DeclareInFlexoConceptChoices {
@@ -150,49 +176,17 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	public void setFlexoConcept(FlexoConcept flexoConcept) {
 		if (flexoConcept != this.flexoConcept) {
 			this.flexoConcept = flexoConcept;
-			resetPatternRole();
+			resetFlexoRole();
 		}
 	}
 
-	public abstract GraphicalElementRole getPatternRole();
+	public abstract GraphicalElementRole<T, ?> getFlexoRole();
 
-	public abstract void resetPatternRole();
+	public abstract List<? extends GraphicalElementRole<T, ?>> getAvailableFlexoRoles();
+
+	public abstract void resetFlexoRole();
 
 	public Vector<DrawingObjectEntry> drawingObjectEntries;
-
-	public class DrawingObjectEntry {
-		private boolean selectThis;
-		public DiagramElement<?> graphicalObject;
-		public String patternRoleName;
-
-		public DrawingObjectEntry(DiagramElement<?> graphicalObject, String patternRoleName) {
-			super();
-			this.graphicalObject = graphicalObject;
-			this.patternRoleName = patternRoleName;
-			this.selectThis = isMainEntry();
-		}
-
-		public boolean isMainEntry() {
-			return graphicalObject == getFocusedObject();
-		}
-
-		public boolean getSelectThis() {
-			if (isMainEntry()) {
-				return true;
-			}
-			return selectThis;
-		}
-
-		public void setSelectThis(boolean aFlag) {
-			if (!isMainEntry()) {
-				selectThis = aFlag;
-			}
-		}
-
-		public DrawingObjectEntry getParentEntry() {
-			return getEntry(graphicalObject.getParent());
-		}
-	}
 
 	public int getSelectedEntriesCount() {
 		int returned = 0;
@@ -241,7 +235,10 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	 * @return
 	 */
 	public List<ModelSlot<?>> getModelSlots() {
-		return getModelSlot().getVirtualModel().getModelSlots();
+		if (getModelSlot() != null) {
+			return getModelSlot().getVirtualModel().getModelSlots();
+		}
+		return null;
 	}
 
 	/**
@@ -324,6 +321,170 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 			return getFlexoConcept().getVirtualModelFactory();
 		}
 		return null;
+	}
+
+	private ArrayList<FlexoBehaviourConfiguration> flexoBehaviours;
+
+	public void setFlexoBehaviours(ArrayList<FlexoBehaviourConfiguration> editionSchemes) {
+		this.flexoBehaviours = editionSchemes;
+	}
+
+	public List<FlexoBehaviourConfiguration> getFlexoBehaviours() {
+		if (flexoBehaviours == null) {
+			flexoBehaviours = new ArrayList<FlexoBehaviourConfiguration>();
+
+			initializeBehaviours();
+
+			FlexoBehaviourConfiguration deleteShapeBehaviour = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.DELETE_GR_ONLY);
+			FlexoBehaviourConfiguration deleteShapeAndModelAllBehaviours = new FlexoBehaviourConfiguration(
+					FlexoBehaviourChoice.DELETE_GR_AND_MODEL);
+
+			flexoBehaviours.add(deleteShapeBehaviour);
+			flexoBehaviours.add(deleteShapeAndModelAllBehaviours);
+		}
+		return flexoBehaviours;
+	}
+
+	public void updateEditionSchemesName(String name) {
+		for (FlexoBehaviourConfiguration editionSchemeConfiguration : getFlexoBehaviours()) {
+			if (editionSchemeConfiguration.getType() == FlexoBehaviourChoice.DELETE_GR_ONLY) {
+				editionSchemeConfiguration.getFlexoBehaviour().setName("deleteGR");
+			}
+			if (editionSchemeConfiguration.getType() == FlexoBehaviourChoice.DELETE_GR_AND_MODEL) {
+				editionSchemeConfiguration.getFlexoBehaviour().setName("deleteGRandModel");
+			}
+			if (name != null) {
+				editionSchemeConfiguration.getFlexoBehaviour().setName(editionSchemeConfiguration.getFlexoBehaviour().getName() + name);
+			}
+		}
+		updateSpecialSchemeNames();
+	}
+
+	public void updateSpecialSchemeNames() {
+
+	}
+
+	public abstract void initializeBehaviours();
+
+	public boolean editionSchemesNamedAreValid() {
+		for (FlexoBehaviourConfiguration editionSchemeConfiguration : getFlexoBehaviours()) {
+			if (editionSchemeConfiguration == null || editionSchemeConfiguration.getFlexoBehaviour() == null
+					|| StringUtils.isEmpty(editionSchemeConfiguration.getFlexoBehaviour().getName()))
+				return false;
+		}
+		return true;
+	}
+
+	public void addFlexoBehaviourConfigurationDeleteGROnly() {
+		FlexoBehaviourConfiguration editionSchemeConfiguration = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.DELETE_GR_ONLY);
+		getFlexoBehaviours().add(editionSchemeConfiguration);
+	}
+
+	public void addFlexoBehaviourConfigurationDeleteGRAndModel() {
+		FlexoBehaviourConfiguration editionSchemeConfiguration = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.DELETE_GR_AND_MODEL);
+		getFlexoBehaviours().add(editionSchemeConfiguration);
+	}
+
+	public void removeFlexoBehaviourConfiguration(FlexoBehaviourConfiguration editionSchemeConfiguration) {
+		getFlexoBehaviours().remove(editionSchemeConfiguration);
+	}
+
+	public static enum FlexoBehaviourChoice {
+		DELETE_GR_ONLY, DELETE_GR_AND_MODEL, DROP_AND_CREATE, DROP_AND_SELECT, LINK, CREATION
+	}
+
+	public class FlexoBehaviourConfiguration {
+
+		private FlexoBehaviourChoice type;
+
+		private boolean isValid;
+
+		private FlexoBehaviour flexoBehaviour;
+
+		public FlexoBehaviourConfiguration(FlexoBehaviourChoice type) {
+			super();
+			this.type = type;
+			this.isValid = true;
+			if (getFactory() != null) {
+				if (type == FlexoBehaviourChoice.DELETE_GR_ONLY) {
+					flexoBehaviour = getFactory().newDeletionScheme();
+					flexoBehaviour.setName("defaultDeleteGROnly");
+				}
+				if (type == FlexoBehaviourChoice.DELETE_GR_AND_MODEL) {
+					flexoBehaviour = getFactory().newDeletionScheme();
+					flexoBehaviour.setName("defaultDeleteGRandModel");
+				}
+				if (type == FlexoBehaviourChoice.DROP_AND_CREATE) {
+					flexoBehaviour = getFactory().newInstance(DropScheme.class);
+					((DropScheme) flexoBehaviour).setTopTarget(true);
+					flexoBehaviour.setName("defaultDropAndCreate");
+				}
+				if (type == FlexoBehaviourChoice.DROP_AND_SELECT) {
+					flexoBehaviour = getFactory().newInstance(DropScheme.class);
+					((DropScheme) flexoBehaviour).setTopTarget(true);
+					flexoBehaviour.setName("defaultDropAndSelect");
+				}
+				if (type == FlexoBehaviourChoice.LINK) {
+					flexoBehaviour = getFactory().newInstance(LinkScheme.class);
+					flexoBehaviour.setName("defaultLink");
+				}
+			}
+		}
+
+		public FlexoBehaviourChoice getType() {
+			return type;
+		}
+
+		public void setType(FlexoBehaviourChoice type) {
+			this.type = type;
+		}
+
+		public FlexoBehaviour getFlexoBehaviour() {
+			return flexoBehaviour;
+		}
+
+		public boolean isValid() {
+			return isValid;
+		}
+
+		public void setValid(boolean isValid) {
+			this.isValid = isValid;
+		}
+
+	}
+
+	public class DrawingObjectEntry {
+		private boolean selectThis;
+		public DiagramElement<?> graphicalObject;
+		public String patternRoleName;
+
+		public DrawingObjectEntry(DiagramElement<?> graphicalObject, String patternRoleName) {
+			super();
+			this.graphicalObject = graphicalObject;
+			this.patternRoleName = patternRoleName;
+			this.selectThis = isMainEntry();
+		}
+
+		public boolean isMainEntry() {
+			return graphicalObject == getFocusedObject();
+		}
+
+		public boolean getSelectThis() {
+			if (isMainEntry()) {
+				return true;
+			}
+			return selectThis;
+		}
+
+		public void setSelectThis(boolean aFlag) {
+			if (!isMainEntry()) {
+				selectThis = aFlag;
+			}
+		}
+
+		public DrawingObjectEntry getParentEntry() {
+			return getEntry(graphicalObject.getParent());
+		}
 	}
 
 }

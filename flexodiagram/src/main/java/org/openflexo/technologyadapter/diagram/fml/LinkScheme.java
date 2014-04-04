@@ -267,8 +267,8 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 		}
 
 		private ShapeRole getDefaultShapeRole(FlexoConcept ep) {
-			if (ep.getPatternRoles(ShapeRole.class).size() > 0) {
-				return ep.getPatternRoles(ShapeRole.class).get(0);
+			if (ep.getFlexoRoles(ShapeRole.class).size() > 0) {
+				return ep.getFlexoRoles(ShapeRole.class).get(0);
 			}
 			return null;
 		}

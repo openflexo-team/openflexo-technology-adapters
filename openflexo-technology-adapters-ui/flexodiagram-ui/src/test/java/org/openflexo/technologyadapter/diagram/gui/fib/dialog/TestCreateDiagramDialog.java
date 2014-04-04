@@ -2,8 +2,6 @@ package org.openflexo.technologyadapter.diagram.gui.fib.dialog;
 
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -16,13 +14,13 @@ import org.openflexo.fib.view.widget.DefaultFIBCustomComponent;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.rm.Resource;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test StandardFlexoConceptView fib
+ * Test CreateDiagramDialog fib
  * 
  * @author sylvain
  * 
@@ -46,7 +44,7 @@ public class TestCreateDiagramDialog extends OpenflexoFIBTestCaseWithProjectAtRu
 	@TestOrder(1)
 	public void testLoadWidget() {
 
-		fibResource = ResourceLocator.locateResource("Fib/Dialog/CreateDiagramDialog.fib");
+		fibResource = DiagramCst.CREATE_DIAGRAM_DIALOG_FIB;
 		assertTrue(fibResource != null);
 	}
 

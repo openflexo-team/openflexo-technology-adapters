@@ -52,7 +52,7 @@ import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddSubClassSt
 		@DeclarePatternRole(FML = "OWLProperty", flexoRoleClass = OWLPropertyRole.class),
 		@DeclarePatternRole(FML = "DataPropertyStatement", flexoRoleClass = DataPropertyStatementRole.class),
 		@DeclarePatternRole(FML = "ObjectPropertyStatement", flexoRoleClass = ObjectPropertyStatementRole.class),
-		// @DeclarePatternRole(FML = "RestrictionStatement", flexoRoleClass = RestrictionStatementRole.class),
+		// @DeclareFlexoRole(FML = "RestrictionStatement", flexoRoleClass = RestrictionStatementRole.class),
 		@DeclarePatternRole(FML = "SubClassStatement", flexoRoleClass = SubClassStatementRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddOWLIndividual", editionActionClass = AddOWLIndividual.class), // Add instance

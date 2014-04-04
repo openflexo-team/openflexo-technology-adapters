@@ -24,10 +24,10 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.components.widget.CommonFIB;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.icon.VPMIconLibrary;
+import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.fml.action.DeclareConnectorInFlexoConcept;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -50,7 +50,7 @@ public class DeclareConnectorInFlexoConceptInitializer extends
 			@Override
 			public boolean run(EventObject e, DeclareConnectorInFlexoConcept action) {
 
-				return instanciateAndShowDialog(action, CommonFIB.DECLARE_CONNECTOR_IN_FLEXO_CONCEPT_DIALOG_FIB);
+				return instanciateAndShowDialog(action, DiagramCst.DECLARE_CONNECTOR_IN_FLEXO_CONCEPT_DIALOG_FIB);
 			}
 		};
 	}
@@ -61,7 +61,7 @@ public class DeclareConnectorInFlexoConceptInitializer extends
 			@Override
 			public boolean run(EventObject e, DeclareConnectorInFlexoConcept action) {
 				getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
-				getController().getSelectionManager().setSelectedObject(action.getPatternRole());
+				getController().getSelectionManager().setSelectedObject(action.getFlexoRole());
 				return true;
 			}
 		};

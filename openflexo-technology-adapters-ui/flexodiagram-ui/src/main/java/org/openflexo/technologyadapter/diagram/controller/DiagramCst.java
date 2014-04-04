@@ -34,18 +34,23 @@ public class DiagramCst {
 	public static Resource DIAGRAM_SPECIFICATION_VIEW_FIB = ResourceLocator.locateResource("Fib/DiagramSpecificationView.fib");
 
 	// Dialog components
-	public static Resource CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateExampleDrawingDialog.fib");
+	public static Resource CREATE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateDiagramDialog.fib");
+	public static Resource CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateExampleDiagramDialog.fib");
 	public static Resource CREATE_EXAMPLE_DIAGRAM_FROM_PPTSLIDE_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/CreateDiagramFromPPTDialog.fib");
 	public static Resource CREATE_PALETTE_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreatePaletteDialog.fib");
 	public static Resource CREATE_DIAGRAM_SPECIFICATION_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/CreateDiagramSpecificationDialog.fib");
-	public static Resource PUSH_TO_PALETTE_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/PushToPaletteDialog.fib");
 	public static Resource IMPORT_IMAGE_FILE_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/ImportImageFileDialog.fib");
-	public static Resource CREATE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateDiagramDialog.fib");
 	public static Resource DELETE_DIAGRAM_ELEMENTS_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/DeleteDiagramElementsDialog.fib");
 	public static Resource REINDEX_DIAGRAM_ELEMENTS_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/ReindexDiagramElementsDialog.fib");
+
+	public static Resource DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB = ResourceLocator
+			.locateResource("Fib/Dialog/DeclareShapeInFlexoConceptDialog.fib");
+	public static Resource DECLARE_CONNECTOR_IN_FLEXO_CONCEPT_DIALOG_FIB = ResourceLocator
+			.locateResource("Fib/Dialog/DeclareConnectorInFlexoConceptDialog.fib");
+	public static Resource PUSH_TO_PALETTE_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/PushToPaletteDialog.fib");
 
 }

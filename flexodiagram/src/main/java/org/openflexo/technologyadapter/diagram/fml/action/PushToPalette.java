@@ -289,7 +289,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			selectThis = aFlag;
 			if (patternRole == null && graphicalObject instanceof DiagramShape) {
 				GraphicalElementRole<?, ?> parentEntryPatternRole = getParentEntry().patternRole;
-				for (ShapeRole r : flexoConcept.getPatternRoles(ShapeRole.class)) {
+				for (ShapeRole r : flexoConcept.getFlexoRoles(ShapeRole.class)) {
 					if (r.getParentShapeRole() == parentEntryPatternRole && patternRole == null) {
 						patternRole = r;
 					}
@@ -303,9 +303,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 		public List<? extends GraphicalElementRole<?, ?>> getAvailablePatternRoles() {
 			if (graphicalObject instanceof DiagramShape) {
-				return flexoConcept.getPatternRoles(ShapeRole.class);
+				return flexoConcept.getFlexoRoles(ShapeRole.class);
 			} else if (graphicalObject instanceof DiagramConnector) {
-				return flexoConcept.getPatternRoles(ConnectorRole.class);
+				return flexoConcept.getFlexoRoles(ConnectorRole.class);
 			}
 			return null;
 		}

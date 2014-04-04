@@ -86,6 +86,8 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 
 	private DiagramResource diagramResource;
 
+	private String description;
+
 	CreateDiagram(RepositoryFolder focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
@@ -96,8 +98,8 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
 				DiagramTechnologyAdapter.class);
 
-		diagramResource = diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), getDiagramSpecification() !=null ?
-				getDiagramSpecification().getResource() :null);
+		diagramResource = diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(),
+				getDiagramSpecification() != null ? getDiagramSpecification().getResource() : null);
 
 		getFocusedObject().addToResources(diagramResource);
 
@@ -193,10 +195,6 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 
 		}
 
-		/*if (getFocusedObject().getVirtualModelInstance(diagramName) != null) {
-			errorMessage = duplicatedNameMessage();
-			return false;
-		}*/
 		// TODO: handle duplicated name and uri
 		return true;
 	}
@@ -300,6 +298,14 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 
 	public File getDefaultDiagramFile() {
 		return new File(getFocusedObject().getFile(), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 }

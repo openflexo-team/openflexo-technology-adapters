@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.components.widget.CommonFIB;
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.ShadowStyle;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
@@ -33,6 +32,7 @@ import org.openflexo.fge.ShapeGraphicalRepresentation.ShapeBorder;
 import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.fml.action.PushToPalette;
@@ -72,7 +72,7 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 					// action.setScreenshot(ScreenshotGenerator.trimImage(image));
 				}
 
-				return instanciateAndShowDialog(action, CommonFIB.PUSH_TO_PALETTE_DIALOG_FIB);
+				return instanciateAndShowDialog(action, DiagramCst.PUSH_TO_PALETTE_DIALOG_FIB);
 			}
 		};
 	}

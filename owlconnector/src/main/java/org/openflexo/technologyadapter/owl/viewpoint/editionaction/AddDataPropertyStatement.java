@@ -277,7 +277,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 				AddDataPropertyStatement action) {
 			if (action.getDataProperty() == null) {
 				Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>> v = new Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>>();
-				for (DataPropertyStatementRole pr : action.getFlexoConcept().getPatternRoles(DataPropertyStatementRole.class)) {
+				for (DataPropertyStatementRole pr : action.getFlexoConcept().getFlexoRoles(DataPropertyStatementRole.class)) {
 					v.add(new SetsPatternRole(pr));
 				}
 				return new ValidationError<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>(this, action,
