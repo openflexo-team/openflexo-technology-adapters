@@ -213,13 +213,13 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			DiagramFactory factory = diagram.getDiagramFactory();
 			DiagramShape newShape = factory.newInstance(DiagramShape.class);
 
-			GraphicalRepresentation grToUse = null;
+			ShapeGraphicalRepresentation grToUse = null;
 
 			// If an overriden graphical representation is defined, use it
 			/*if (action.getOverridingGraphicalRepresentation(getPatternRole()) != null) {
 				grToUse = action.getOverridingGraphicalRepresentation(getPatternRole());
 			} else*/if (getFlexoRole().getGraphicalRepresentation() != null) {
-				grToUse = getFlexoRole().getGraphicalRepresentation();
+				grToUse = (ShapeGraphicalRepresentation)getFlexoRole().getGraphicalRepresentation();
 			}
 
 			ShapeGraphicalRepresentation newGR = factory.makeShapeGraphicalRepresentation();
