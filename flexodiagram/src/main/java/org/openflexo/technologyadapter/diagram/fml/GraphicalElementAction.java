@@ -168,7 +168,10 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 
 		@Override
 		public VirtualModel getVirtualModel() {
-			return getFlexoConcept().getVirtualModel();
+			if(getFlexoConcept()!=null){
+				return getFlexoConcept().getVirtualModel();
+			}
+			return null;
 		}
 
 		@Override
