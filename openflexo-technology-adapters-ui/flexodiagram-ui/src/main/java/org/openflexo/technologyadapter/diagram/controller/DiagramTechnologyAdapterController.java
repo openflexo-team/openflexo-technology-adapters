@@ -32,7 +32,9 @@ import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceNature;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FlexoConceptInstanceRole;
+import org.openflexo.foundation.viewpoint.FlexoConceptNature;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -75,6 +77,7 @@ import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramP
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramFlexoConceptNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -83,6 +86,7 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
+import org.openflexo.technologyadapter.diagram.gui.view.DiagramFlexoConceptView;
 import org.openflexo.technologyadapter.diagram.gui.view.DiagramSpecificationView;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -364,7 +368,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 				// if (ep.getVirtualModel() instanceof DiagramSpecification) {
 				// return new DiagramFlexoConceptView(ep, (VPMController) controller);
 				// } else {
-				return new StandardFlexoConceptView(ep, controller, perspective);
+				return new DiagramFlexoConceptView(ep, controller, perspective);
 				// }
 			}
 
@@ -410,7 +414,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	}*/
 
 	@Override
-	public List<? extends VirtualModelInstanceNature> getSpecificNatures(VirtualModelInstance vmInstance) {
+	public List<? extends VirtualModelInstanceNature> getSpecificVirtualModelInstanceNatures(VirtualModelInstance vmInstance) {
 		if (vmInstance.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE)) {
 			return Collections.singletonList(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
 		}
@@ -422,9 +426,26 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	public ModuleView<VirtualModelInstance> createVirtualModelInstanceModuleViewForSpecificNature(VirtualModelInstance vmInstance,
 			VirtualModelInstanceNature nature, FlexoController controller, FlexoPerspective perspective) {
 		if (vmInstance.hasNature(nature) && nature == FMLControlledDiagramVirtualModelInstanceNature.INSTANCE) {
-			System.out.println("Ah ah, je le tiens !!!");
 			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor(vmInstance, false, controller, swingToolFactory);
 			return new FMLControlledDiagramModuleView(editor, perspective);
+		}
+		return null;
+	}
+
+	@Override
+	public List<? extends FlexoConceptNature> getSpecificFlexoConceptNatures(FlexoConcept concept) {
+		if (concept.hasNature(FMLControlledDiagramFlexoConceptNature.INSTANCE)) {
+			return Collections.singletonList(FMLControlledDiagramFlexoConceptNature.INSTANCE);
+		}
+
+		return Collections.emptyList();
+	}
+
+	@Override
+	public ModuleView<FlexoConcept> createFlexoConceptModuleViewForSpecificNature(FlexoConcept concept, FlexoConceptNature nature,
+			FlexoController controller, FlexoPerspective perspective) {
+		if (concept.hasNature(nature) && nature == FMLControlledDiagramFlexoConceptNature.INSTANCE) {
+			return new DiagramFlexoConceptView(concept, controller, perspective);
 		}
 		return null;
 	}

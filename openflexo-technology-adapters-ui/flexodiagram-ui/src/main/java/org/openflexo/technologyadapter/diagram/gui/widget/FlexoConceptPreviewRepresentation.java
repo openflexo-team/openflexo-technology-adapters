@@ -27,7 +27,6 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactory;
-import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.fge.GRBinding.ConnectorGRBinding;
 import org.openflexo.fge.GRBinding.DrawingGRBinding;
 import org.openflexo.fge.GRBinding.ShapeGRBinding;
@@ -42,7 +41,7 @@ import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FlexoRole;
-import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 
@@ -57,7 +56,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 	// private Hashtable<FlexoRole, FlexoConceptPreviewShapeGR> shapesGR;
 	// private Hashtable<FlexoRole, FlexoConceptPreviewConnectorGR> connectorsGR;
 
-	static FGEModelFactory PREVIEW_FACTORY;
+	/*static FGEModelFactory PREVIEW_FACTORY;
 
 	static {
 		try {
@@ -65,18 +64,23 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}
-	}
+	}*/
 
 	private final Hashtable<FlexoRole, ConnectorFromArtifact> fromArtifacts;
 	private final Hashtable<FlexoRole, ConnectorToArtifact> toArtifacts;
 
 	public FlexoConceptPreviewRepresentation(FlexoConcept model) {
-		super(model, PREVIEW_FACTORY, PersistenceMode.UniqueGraphicalRepresentations);
-		setEditable(false);
+		super(model, model.getVirtualModelFactory(), PersistenceMode.UniqueGraphicalRepresentations);
+		// Sylvain: commented this because not movable nor rezizable shapes
+		// setEditable(false);
+
+		factory = model.getVirtualModelFactory();
 
 		fromArtifacts = new Hashtable<FlexoRole, ConnectorFromArtifact>();
 		toArtifacts = new Hashtable<FlexoRole, ConnectorToArtifact>();
 	}
+
+	private final VirtualModelModelFactory factory;
 
 	@Override
 	public void init() {
@@ -93,18 +97,17 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 						return returned;
 					}
 				});
-		final ShapeGRBinding<ShapeRole> shapeBinding = bindShape(ShapeRole.class, "shapePatternRole",
-				new ShapeGRProvider<ShapeRole>() {
-					@Override
-					public ShapeGraphicalRepresentation provideGR(ShapeRole drawable, FGEModelFactory factory) {
-						if (drawable.getGraphicalRepresentation() == null) {
-							drawable.setGraphicalRepresentation(makeDefaultShapeGR());
-						}
-						return drawable.getGraphicalRepresentation();
-					}
-				});
-		final ConnectorGRBinding<ConnectorRole> connectorBinding = bindConnector(ConnectorRole.class, "connector",
-				shapeBinding, shapeBinding, new ConnectorGRProvider<ConnectorRole>() {
+		final ShapeGRBinding<ShapeRole> shapeBinding = bindShape(ShapeRole.class, "shapePatternRole", new ShapeGRProvider<ShapeRole>() {
+			@Override
+			public ShapeGraphicalRepresentation provideGR(ShapeRole drawable, FGEModelFactory factory) {
+				if (drawable.getGraphicalRepresentation() == null) {
+					drawable.setGraphicalRepresentation(makeDefaultShapeGR());
+				}
+				return drawable.getGraphicalRepresentation();
+			}
+		});
+		final ConnectorGRBinding<ConnectorRole> connectorBinding = bindConnector(ConnectorRole.class, "connector", shapeBinding,
+				shapeBinding, new ConnectorGRProvider<ConnectorRole>() {
 					@Override
 					public ConnectorGraphicalRepresentation provideGR(ConnectorRole drawable, FGEModelFactory factory) {
 						if (drawable.getGraphicalRepresentation() == null) {
@@ -240,46 +243,46 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 	}
 
 	private ShapeGraphicalRepresentation makeFromArtefactGR() {
-		ShapeGraphicalRepresentation returned = PREVIEW_FACTORY.makeShapeGraphicalRepresentation(ShapeType.CIRCLE);
+		ShapeGraphicalRepresentation returned = factory.makeShapeGraphicalRepresentation(ShapeType.CIRCLE);
 		returned.setX(80);
 		returned.setY(80);
 		returned.setWidth(20);
 		returned.setHeight(20);
-		returned.setForeground(PREVIEW_FACTORY.makeForegroundStyle(new Color(255, 204, 0)));
-		returned.setBackground(PREVIEW_FACTORY.makeColoredBackground(new Color(255, 255, 204)));
+		returned.setForeground(factory.makeForegroundStyle(new Color(255, 204, 0)));
+		returned.setBackground(factory.makeColoredBackground(new Color(255, 255, 204)));
 		returned.setIsFocusable(true);
 		returned.setIsSelectable(false);
 		return returned;
 	}
 
 	private ShapeGraphicalRepresentation makeToArtefactGR() {
-		ShapeGraphicalRepresentation returned = PREVIEW_FACTORY.makeShapeGraphicalRepresentation(ShapeType.CIRCLE);
+		ShapeGraphicalRepresentation returned = factory.makeShapeGraphicalRepresentation(ShapeType.CIRCLE);
 		returned.setX(350);
 		returned.setY(80);
 		returned.setWidth(20);
 		returned.setHeight(20);
-		returned.setForeground(PREVIEW_FACTORY.makeForegroundStyle(new Color(255, 204, 0)));
-		returned.setBackground(PREVIEW_FACTORY.makeColoredBackground(new Color(255, 255, 204)));
+		returned.setForeground(factory.makeForegroundStyle(new Color(255, 204, 0)));
+		returned.setBackground(factory.makeColoredBackground(new Color(255, 255, 204)));
 		returned.setIsFocusable(true);
 		returned.setIsSelectable(false);
 		return returned;
 	}
 
 	private ShapeGraphicalRepresentation makeDefaultShapeGR() {
-		ShapeGraphicalRepresentation returned = PREVIEW_FACTORY.makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
-		returned.setTextStyle(PREVIEW_FACTORY.makeTextStyle(DEFAULT_SHAPE_TEXT_COLOR, DEFAULT_FONT));
+		ShapeGraphicalRepresentation returned = factory.makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
+		returned.setTextStyle(factory.makeTextStyle(DEFAULT_SHAPE_TEXT_COLOR, DEFAULT_FONT));
 		returned.setX((WIDTH - DEFAULT_SHAPE_WIDTH) / 2);
 		returned.setY((HEIGHT - DEFAULT_SHAPE_HEIGHT) / 2);
 		returned.setWidth(DEFAULT_SHAPE_WIDTH);
 		returned.setHeight(DEFAULT_SHAPE_HEIGHT);
-		returned.setBackground(PREVIEW_FACTORY.makeColoredBackground(DEFAULT_SHAPE_BACKGROUND_COLOR));
+		returned.setBackground(factory.makeColoredBackground(DEFAULT_SHAPE_BACKGROUND_COLOR));
 		returned.setIsFloatingLabel(false);
 		return returned;
 	}
 
 	private ConnectorGraphicalRepresentation makeDefaultConnectorGR() {
-		ConnectorGraphicalRepresentation returned = PREVIEW_FACTORY.makeConnectorGraphicalRepresentation(ConnectorType.LINE);
-		returned.setTextStyle(PREVIEW_FACTORY.makeTextStyle(DEFAULT_SHAPE_TEXT_COLOR, DEFAULT_FONT));
+		ConnectorGraphicalRepresentation returned = factory.makeConnectorGraphicalRepresentation(ConnectorType.LINE);
+		returned.setTextStyle(factory.makeTextStyle(DEFAULT_SHAPE_TEXT_COLOR, DEFAULT_FONT));
 		return returned;
 	}
 

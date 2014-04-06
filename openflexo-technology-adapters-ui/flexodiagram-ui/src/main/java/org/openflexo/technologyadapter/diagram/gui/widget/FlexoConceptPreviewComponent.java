@@ -226,4 +226,7 @@ public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomCom
 		return true;
 	}
 
+	public FlexoConceptPreviewController getPreviewController() {
+		return previewController;
+	}
 }

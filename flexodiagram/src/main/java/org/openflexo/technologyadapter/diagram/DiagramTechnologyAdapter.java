@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -37,6 +38,8 @@ import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
+import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
@@ -320,6 +323,16 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	public void setScreenshotBuilder(ScreenshotBuilder<Diagram> screenshotBuilder) {
 		this.screenshotBuilder = screenshotBuilder;
+	}
+
+	// Override when required
+	@Override
+	public void initVirtualModelFactory(VirtualModelModelFactory virtualModelModelFactory) {
+		try {
+			FGEModelFactoryImpl.installImplementingClasses(virtualModelModelFactory);
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

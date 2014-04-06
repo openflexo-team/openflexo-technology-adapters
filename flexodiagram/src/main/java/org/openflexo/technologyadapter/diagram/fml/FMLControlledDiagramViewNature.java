@@ -28,8 +28,6 @@ import org.openflexo.foundation.view.VirtualModelInstance;
  * 
  * @author sylvain
  * 
- * @param <E>
- *            type of introspected concept
  */
 public class FMLControlledDiagramViewNature implements ViewNature {
 
