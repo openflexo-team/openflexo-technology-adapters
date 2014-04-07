@@ -35,6 +35,7 @@ import org.openflexo.fge.control.MouseControlContext;
 import org.openflexo.fge.control.actions.MouseDragControlActionImpl;
 import org.openflexo.fge.control.actions.MouseDragControlImpl;
 import org.openflexo.fge.swing.control.JMouseControlContext;
+import org.openflexo.model.factory.EditingContext;
 import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
@@ -50,7 +51,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 	protected boolean drawEdge = false;
 
 	public DrawEdgeControl(DiagramFactory factory) {
-		super("Draw edge", MouseButton.LEFT, new DrawEdgeAction(factory), false, true, false, false, factory); // CTRL-DRAG
+		super("Draw edge", MouseButton.LEFT, new DrawEdgeAction(factory), false, true, false, false, factory.getEditingContext()); // CTRL-DRAG
 	}
 
 	protected static class DrawEdgeAction extends MouseDragControlActionImpl<DiagramEditor> {
@@ -60,9 +61,11 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 		ShapeNode<DiagramShape> fromShape = null;
 		ShapeNode<DiagramShape> toShape = null;
 		private final DiagramFactory factory;
+		private final EditingContext editingContext;
 
 		public DrawEdgeAction(DiagramFactory factory) {
 			this.factory = factory;
+			this.editingContext = factory.getEditingContext();
 		}
 
 		@Override
@@ -172,13 +175,13 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 					}*/
 
 					// System.out.println("Add ConnectorSpecification contextualMenuInvoker="+contextualMenuInvoker+" point="+contextualMenuClickedPoint);
-					CompoundEdit drawEdge = factory.getUndoManager().startRecording("Draw edge");
+					CompoundEdit drawEdge = editingContext.getUndoManager().startRecording("Draw edge");
 					DiagramConnector newConnector = factory.makeNewConnector("edge", fromShape.getDrawable(), toShape.getDrawable(),
 							controller.getDrawing().getModel());
 					DrawingTreeNode<?, ?> fatherNode = FGEUtils.getFirstCommonAncestor(fromShape, toShape);
 					((DiagramContainerElement<?>) fatherNode.getDrawable()).addToConnectors(newConnector);
 					System.out.println("Add new connector !");
-					factory.getUndoManager().stopRecording(drawEdge);
+					editingContext.getUndoManager().stopRecording(drawEdge);
 					controller.setSelectedObject(controller.getDrawing().getDrawingTreeNode(newConnector));
 				}
 				drawEdge = false;
@@ -192,7 +195,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 		}
 
 		private void performAddDefaultConnector(DiagramEditor controller) {
-			CompoundEdit drawEdgeEdit = factory.getUndoManager().startRecording("Draw edge");
+			CompoundEdit drawEdgeEdit = editingContext.getUndoManager().startRecording("Draw edge");
 			AddConnector action = AddConnector.actionType.makeNewAction(fromShape.getDrawable(), null, controller.getFlexoController()
 					.getEditor());
 			action.setToShape(toShape.getDrawable());
@@ -210,7 +213,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 			action.doAction();
 
 			System.out.println("Added new connector !");
-			factory.getUndoManager().stopRecording(drawEdgeEdit);
+			editingContext.getUndoManager().stopRecording(drawEdgeEdit);
 			controller.setSelectedObject(controller.getDrawing().getDrawingTreeNode(action.getNewConnector()));
 
 			drawEdge = false;
@@ -221,7 +224,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 		}
 
 		private void performAddConnector(DiagramEditor controller, ConnectorGraphicalRepresentation connectorGR, String text) {
-			CompoundEdit drawEdgeEdit = factory.getUndoManager().startRecording("Draw edge");
+			CompoundEdit drawEdgeEdit = editingContext.getUndoManager().startRecording("Draw edge");
 			AddConnector action = AddConnector.actionType.makeNewAction(fromShape.getDrawable(), null, controller.getFlexoController()
 					.getEditor());
 			action.setToShape(toShape.getDrawable());
@@ -230,7 +233,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 			action.doAction();
 
 			System.out.println("Added new connector !");
-			factory.getUndoManager().stopRecording(drawEdgeEdit);
+			editingContext.getUndoManager().stopRecording(drawEdgeEdit);
 			controller.setSelectedObject(controller.getDrawing().getDrawingTreeNode(action.getNewConnector()));
 
 			drawEdge = false;

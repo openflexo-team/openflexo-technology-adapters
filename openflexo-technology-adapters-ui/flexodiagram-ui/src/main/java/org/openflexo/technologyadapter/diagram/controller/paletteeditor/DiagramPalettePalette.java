@@ -141,7 +141,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 				// getController().addNewShape(new Shape(getGraphicalRepresentation().getShapeType(), dropLocation,
 				// getController().getDrawing()),container);
 
-				CompoundEdit edit = getEditor().getFactory().getUndoManager().startRecording("Dragging new element in palette");
+				CompoundEdit edit = getEditor().getUndoManager().startRecording("Dragging new element in palette");
 
 				ShapeGraphicalRepresentation shapeGR = getEditor().getFactory().makeNewShapeGR(getGraphicalRepresentation());
 				if (shapeGR.getShapeSpecification().getShapeType() == ShapeType.SQUARE
@@ -176,7 +176,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 
 				DiagramPaletteElement newElement = action.getNewElement();
 
-				getEditor().getFactory().getUndoManager().stopRecording(edit);
+				getEditor().getUndoManager().stopRecording(edit);
 
 				getEditor().setCurrentTool(EditorTool.SelectionTool);
 				getEditor().setSelectedObject(getEditor().getDrawing().getDrawingTreeNode(newElement));

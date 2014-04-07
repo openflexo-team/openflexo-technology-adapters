@@ -14,12 +14,12 @@ import org.openflexo.foundation.view.action.NavigationSchemeAction;
 import org.openflexo.foundation.view.action.NavigationSchemeActionType;
 import org.openflexo.foundation.viewpoint.ActionScheme;
 import org.openflexo.foundation.viewpoint.NavigationScheme;
+import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction.ActionMask;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
-import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 
 /**
  * A {@link MouseClickControl} which handle special controls required for diagram edition in FML-controlled context
@@ -34,9 +34,9 @@ public class FMLControlledDiagramMouseClickControl extends MouseClickControlImpl
 	private VirtualModelInstance vmInstance;
 
 	public FMLControlledDiagramMouseClickControl(GraphicalElementAction.ActionMask mask, GraphicalElementRole<?, ?> patternRole,
-			VirtualModelInstance vmInstance, DiagramFactory factory) {
+			VirtualModelInstance vmInstance, EditingContext editingContext) {
 		super(mask.name(), MouseButton.LEFT, mask == ActionMask.DoubleClick ? 2 : 1, null, mask == ActionMask.ShiftClick,
-				mask == ActionMask.CtrlClick, mask == ActionMask.MetaClick, mask == ActionMask.AltClick, factory);
+				mask == ActionMask.CtrlClick, mask == ActionMask.MetaClick, mask == ActionMask.AltClick, editingContext);
 		this.vmInstance = vmInstance;
 		this.patternRole = patternRole;
 		this.mask = mask;

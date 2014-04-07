@@ -35,7 +35,6 @@ import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
-import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.toolbox.ToolBox;
 
 public class DiagramPaletteDrawing extends DrawingImpl<DiagramPalette> {
@@ -43,7 +42,7 @@ public class DiagramPaletteDrawing extends DrawingImpl<DiagramPalette> {
 	private static final Logger logger = Logger.getLogger(DiagramPaletteDrawing.class.getPackage().getName());
 
 	public DiagramPaletteDrawing(DiagramPalette model, boolean readOnly) {
-		super(model, ((DiagramPaletteResource) model.getResource()).getFactory(), PersistenceMode.UniqueGraphicalRepresentations);
+		super(model, model.getResource().getFactory(), PersistenceMode.UniqueGraphicalRepresentations);
 		setEditable(!readOnly);
 	}
 
@@ -97,9 +96,9 @@ public class DiagramPaletteDrawing extends DrawingImpl<DiagramPalette> {
 			returned = factory.makeDrawingGraphicalRepresentation();
 			palette.setGraphicalRepresentation(returned);
 		}
-		returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory));
+		returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory.getEditingContext()));
 		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
-			returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory, true));
+			returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
 		}
 		return returned;
 	}
@@ -113,9 +112,9 @@ public class DiagramPaletteDrawing extends DrawingImpl<DiagramPalette> {
 			returned = factory.makeShapeGraphicalRepresentation();
 			element.setGraphicalRepresentation(returned);
 		}
-		returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory));
+		returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory.getEditingContext()));
 		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
-			returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory, true));
+			returned.addToMouseClickControls(new DiagramPaletteEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
 		}
 		return returned;
 	}

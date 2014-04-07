@@ -130,9 +130,9 @@ public abstract class AbstractDiagramDrawing extends DrawingImpl<Diagram> implem
 			returned = factory.makeDrawingGraphicalRepresentation();
 			diagram.setGraphicalRepresentation(returned);
 		}
-		returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory));
+		returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext()));
 		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
-			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory, true));
+			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
 		}
 		return returned;
 	}
@@ -147,9 +147,9 @@ public abstract class AbstractDiagramDrawing extends DrawingImpl<Diagram> implem
 			returned = factory.makeShapeGraphicalRepresentation();
 			shape.setGraphicalRepresentation(returned);
 		}
-		returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory));
+		returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext()));
 		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
-			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory, true));
+			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
 		}
 		returned.addToMouseDragControls(new DrawEdgeControl(factory));
 
@@ -165,9 +165,9 @@ public abstract class AbstractDiagramDrawing extends DrawingImpl<Diagram> implem
 			returned = factory.makeConnectorGraphicalRepresentation();
 			connector.setGraphicalRepresentation(returned);
 		}
-		returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory));
+		returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext()));
 		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
-			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory, true));
+			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
 		}
 		return returned;
 	}

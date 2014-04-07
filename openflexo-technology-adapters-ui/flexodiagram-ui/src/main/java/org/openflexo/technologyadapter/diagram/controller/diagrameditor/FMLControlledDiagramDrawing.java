@@ -70,7 +70,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 			ShapeRole patternRole = shape.getPatternRole(vmInstance);
 			if (patternRole != null) {
 				for (ActionMask mask : shape.getPatternRole(vmInstance).getReferencedMasks()) {
-					returned.addToMouseClickControls(new FMLControlledDiagramMouseClickControl(mask, patternRole, vmInstance, factory));
+					returned.addToMouseClickControls(new FMLControlledDiagramMouseClickControl(mask, patternRole, vmInstance, factory
+							.getEditingContext()));
 				}
 			}
 		}
@@ -87,7 +88,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 			ConnectorRole patternRole = connector.getPatternRole(vmInstance);
 			if (patternRole != null) {
 				for (ActionMask mask : patternRole.getReferencedMasks()) {
-					returned.addToMouseClickControls(new FMLControlledDiagramMouseClickControl(mask, patternRole, vmInstance, factory));
+					returned.addToMouseClickControls(new FMLControlledDiagramMouseClickControl(mask, patternRole, vmInstance, factory
+							.getEditingContext()));
 					doubleClickUsed |= mask == ActionMask.DoubleClick;
 				}
 			}
@@ -105,7 +107,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 							}
 							return true;
 						}
-					}, false, false, false, false, factory));
+					}, false, false, false, false, factory.getEditingContext()));
 		}
 
 		return returned;

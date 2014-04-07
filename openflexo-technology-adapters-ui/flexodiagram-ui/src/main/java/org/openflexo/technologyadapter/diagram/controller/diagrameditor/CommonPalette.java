@@ -174,7 +174,7 @@ public class CommonPalette extends AbstractDiagramPalette {
 				// getController().addNewShape(new Shape(getGraphicalRepresentation().getShapeType(), dropLocation,
 				// getController().getDrawing()),container);
 
-				CompoundEdit edit = getEditor().getFactory().getUndoManager().startRecording("Dragging new Element");
+				CompoundEdit edit = getEditor().getUndoManager().startRecording("Dragging new Element");
 
 				ShapeGraphicalRepresentation shapeGR = getEditor().getFactory().makeShapeGraphicalRepresentation(
 						getGraphicalRepresentation());
@@ -237,7 +237,7 @@ public class CommonPalette extends AbstractDiagramPalette {
 				System.out.println("location=" + newShape.getGraphicalRepresentation().getLocation());
 				System.out.println("size=" + newShape.getGraphicalRepresentation().getSize());
 
-				getEditor().getFactory().getUndoManager().stopRecording(edit);
+				getEditor().getUndoManager().stopRecording(edit);
 
 				getEditor().setCurrentTool(EditorTool.SelectionTool);
 				getEditor().setSelectedObject(getEditor().getDrawing().getDrawingTreeNode(newShape));
