@@ -30,8 +30,8 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
+import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.FlexoUndoableAction;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.DeletionScheme;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
@@ -39,7 +39,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 // TODO: to be fully reimplemented !!!
-public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> {
+public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> {
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramElements.class.getPackage().getName());
 
@@ -209,16 +209,6 @@ public class DeleteDiagramElements extends FlexoUndoableAction<DeleteDiagramElem
 				logger.info("DiagramElement " + o + " has been successfully deleted");
 			}
 		}*/
-	}
-
-	@Override
-	protected void undoAction(Object context) {
-		logger.warning("UNDO DELETE not implemented yet !");
-	}
-
-	@Override
-	protected void redoAction(Object context) {
-		logger.warning("REDO DELETE not implemented yet !");
 	}
 
 	/*public List<DeletableProxyObject> getDiagramElementsToDelete() {

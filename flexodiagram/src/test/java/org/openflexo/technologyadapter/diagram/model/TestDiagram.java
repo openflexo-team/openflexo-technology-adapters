@@ -23,7 +23,7 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestDiagram extends OpenflexoTestCase{
+public class TestDiagram extends OpenflexoTestCase {
 
 	/**
 	 * Test the diagram factory
@@ -33,7 +33,7 @@ public class TestDiagram extends OpenflexoTestCase{
 	public void testDiagramFactory() {
 
 		try {
-			DiagramFactory factory = new DiagramFactory();
+			DiagramFactory factory = new DiagramFactory(null);
 
 			ModelEntity<Diagram> diagramEntity = factory.getModelContext().getModelEntity(Diagram.class);
 			ModelEntity<DiagramShape> shapeEntity = factory.getModelContext().getModelEntity(DiagramShape.class);
@@ -56,7 +56,7 @@ public class TestDiagram extends OpenflexoTestCase{
 	@TestOrder(2)
 	public void testInstanciateDiagram() throws Exception {
 
-		DiagramFactory factory = new DiagramFactory();
+		DiagramFactory factory = new DiagramFactory(null);
 
 		Diagram diagram = factory.newInstance(Diagram.class);
 		assertTrue(diagram instanceof Diagram);

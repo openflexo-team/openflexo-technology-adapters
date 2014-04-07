@@ -39,16 +39,6 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 
 	static final Logger logger = Logger.getLogger(DiagramResourceImpl.class.getPackage().getName());
 
-	private static DiagramFactory DIAGRAM_FACTORY;
-
-	static {
-		try {
-			DIAGRAM_FACTORY = new DiagramFactory();
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public static DiagramResource makeDiagramResource(String name, String uri, File diagramFile, FlexoServiceManager serviceManager) {
 		return makeDiagramResource(name, uri, diagramFile, null, serviceManager);
 	}
@@ -58,7 +48,8 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		try {
 			ModelFactory factory = new ModelFactory(DiagramResource.class);
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
-			returned.setFactory(DIAGRAM_FACTORY);
+			DiagramFactory diagramFactory = new DiagramFactory(serviceManager.getEditingContext());
+			returned.setFactory(diagramFactory);
 			returned.setName(name);
 			returned.setFile(diagramFile);
 			returned.setURI(uri);
@@ -80,7 +71,8 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		try {
 			ModelFactory factory = new ModelFactory(DiagramResource.class);
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
-			returned.setFactory(DIAGRAM_FACTORY);
+			DiagramFactory diagramFactory = new DiagramFactory(serviceManager.getEditingContext());
+			returned.setFactory(diagramFactory);
 			String baseName = diagramFile.getName().substring(0, diagramFile.getName().length() - DiagramResource.DIAGRAM_SUFFIX.length());
 			returned.setName(baseName);
 			returned.setFile(diagramFile);

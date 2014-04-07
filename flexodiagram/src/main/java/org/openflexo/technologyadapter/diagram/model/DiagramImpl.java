@@ -81,8 +81,11 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter() {
-		return getResource().getServiceManager().getService(TechnologyAdapterService.class)
-				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		if (getResource() != null && getResource().getServiceManager() != null) {
+			return getResource().getServiceManager().getService(TechnologyAdapterService.class)
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		}
+		return null;
 	}
 
 	private File getExpectedScreenshotImageFile() {

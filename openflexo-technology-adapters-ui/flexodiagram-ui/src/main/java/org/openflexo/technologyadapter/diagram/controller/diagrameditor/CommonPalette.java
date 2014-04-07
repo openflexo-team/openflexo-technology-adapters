@@ -29,28 +29,16 @@ import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
 import org.openflexo.fge.FGEConstants;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
-import org.openflexo.fge.control.DianaInteractiveEditor.EditorTool;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.Rectangle;
 import org.openflexo.fge.shapes.ShapeSpecification;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.controller.FIBDialog;
-import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.technologyadapter.diagram.model.action.AddShape;
-import org.openflexo.view.FlexoFrame;
-import org.openflexo.view.controller.FlexoFIBController;
 
 public class CommonPalette extends AbstractDiagramPalette {
 
@@ -159,11 +147,11 @@ public class CommonPalette extends AbstractDiagramPalette {
 			@Override
 			public boolean elementDragged(DrawingTreeNode<?, ?> target, FGEPoint dropLocation) {
 
-				if (true)
-					return handleBasicGraphicalRepresentationDrop(target, getGraphicalRepresentation(), dropLocation,
-							applyCurrentForeground, applyCurrentBackground, applyCurrentTextStyle, applyCurrentShadowStyle, isImage, true);
+				// if (true)
+				return handleBasicGraphicalRepresentationDrop(target, getGraphicalRepresentation(), dropLocation, applyCurrentForeground,
+						applyCurrentBackground, applyCurrentTextStyle, applyCurrentShadowStyle, isImage, true);
 
-				if (getEditor() == null) {
+				/*if (getEditor() == null) {
 					return false;
 				}
 
@@ -242,7 +230,7 @@ public class CommonPalette extends AbstractDiagramPalette {
 				getEditor().setCurrentTool(EditorTool.SelectionTool);
 				getEditor().setSelectedObject(getEditor().getDrawing().getDrawingTreeNode(newShape));
 
-				return action.hasActionExecutionSucceeded();
+				return action.hasActionExecutionSucceeded();*/
 			}
 
 			@Override

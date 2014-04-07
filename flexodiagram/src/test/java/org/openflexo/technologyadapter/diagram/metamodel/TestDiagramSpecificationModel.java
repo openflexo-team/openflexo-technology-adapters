@@ -100,7 +100,7 @@ public class TestDiagramSpecificationModel extends OpenflexoTestCase {
 		log("testFillDiagramSpecification()");
 
 		// Create an example diagram
-		DiagramFactory factory = new DiagramFactory();
+		DiagramFactory factory = new DiagramFactory(null);
 		Diagram diagram = factory.newInstance(Diagram.class);
 		assertTrue(diagram instanceof Diagram);
 		DiagramShape shape1 = factory.makeNewShape("Shape1", ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);

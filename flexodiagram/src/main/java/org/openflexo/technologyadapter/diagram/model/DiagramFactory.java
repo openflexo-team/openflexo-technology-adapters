@@ -26,6 +26,7 @@ import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 
 /**
@@ -37,8 +38,9 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
  */
 public class DiagramFactory extends FGEModelFactoryImpl {
 
-	public DiagramFactory() throws ModelDefinitionException {
+	public DiagramFactory(EditingContext editingContext) throws ModelDefinitionException {
 		super(Diagram.class, DiagramShape.class, DiagramConnector.class);
+		setEditingContext(editingContext);
 	}
 
 	public Diagram makeNewDiagram() {

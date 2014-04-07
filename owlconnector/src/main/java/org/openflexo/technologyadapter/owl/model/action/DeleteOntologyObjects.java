@@ -25,8 +25,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
+import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.FlexoUndoableAction;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
@@ -34,7 +34,7 @@ import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 
-public class DeleteOntologyObjects extends FlexoUndoableAction<DeleteOntologyObjects, OWLConcept, OWLConcept> {
+public class DeleteOntologyObjects extends FlexoAction<DeleteOntologyObjects, OWLConcept, OWLConcept> {
 
 	private static final Logger logger = Logger.getLogger(DeleteOntologyObjects.class.getPackage().getName());
 
@@ -109,16 +109,6 @@ public class DeleteOntologyObjects extends FlexoUndoableAction<DeleteOntologyObj
 		for (OWLConcept o : getObjectsToDelete()) {
 			o.delete();
 		}
-	}
-
-	@Override
-	protected void undoAction(Object context) {
-		logger.warning("UNDO DELETE not implemented yet !");
-	}
-
-	@Override
-	protected void redoAction(Object context) {
-		logger.warning("REDO DELETE not implemented yet !");
 	}
 
 	private Vector<OWLConcept> _objectsToDelete;

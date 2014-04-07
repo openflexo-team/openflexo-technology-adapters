@@ -31,9 +31,9 @@ import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.fib.FIBLibrary;
 import org.openflexo.fib.controller.FIBDialog;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
-import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -78,7 +78,7 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 		// getController().addNewShape(new Shape(getGraphicalRepresentation().getShapeType(), dropLocation,
 		// getController().getDrawing()),container);
 
-		CompoundEdit edit = getEditor().getUndoManager().startRecording("Dragging new Element");
+		FlexoActionCompoundEdit edit = (FlexoActionCompoundEdit) getEditor().getUndoManager().startRecording("Dragging new Element");
 
 		ShapeGraphicalRepresentation shapeGR = getEditor().getFactory().makeShapeGraphicalRepresentation(gr);
 
@@ -134,6 +134,7 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 		// action.nameSetToNull = true;
 		// action.setNewShapeName(FlexoLocalization.localizedForKey("unnamed"));
 
+		action.setCompoundEdit(edit);
 		action.doAction();
 
 		DiagramShape newShape = action.getNewShape();
@@ -142,12 +143,11 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 		System.out.println("location=" + newShape.getGraphicalRepresentation().getLocation());
 		System.out.println("size=" + newShape.getGraphicalRepresentation().getSize());
 
-		getEditor().getUndoManager().stopRecording(edit);
+		// getEditor().getUndoManager().stopRecording(edit);
 
 		getEditor().setCurrentTool(EditorTool.SelectionTool);
 		getEditor().setSelectedObject(getEditor().getDrawing().getDrawingTreeNode(newShape));
 
 		return action.hasActionExecutionSucceeded();
 	}
-
 }
