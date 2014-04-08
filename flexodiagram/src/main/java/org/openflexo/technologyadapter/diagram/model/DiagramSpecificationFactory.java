@@ -21,24 +21,25 @@ package org.openflexo.technologyadapter.diagram.model;
 
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.EditingContext;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 
 /**
  * Diagram specification factory<br>
- * Only one instance of this class should be used
  * 
  * @author sylvain
  * 
  */
 public class DiagramSpecificationFactory extends ModelFactory {
 
-	public DiagramSpecificationFactory() throws ModelDefinitionException {
+	public DiagramSpecificationFactory(EditingContext editingContext) throws ModelDefinitionException {
 		super(ModelContextLibrary.getModelContext(DiagramSpecification.class));
+		setEditingContext(editingContext);
 	}
 
 	public DiagramSpecification makeNewDiagramSpecification() {
 		return newInstance(DiagramSpecification.class);
 	}
-	
+
 }

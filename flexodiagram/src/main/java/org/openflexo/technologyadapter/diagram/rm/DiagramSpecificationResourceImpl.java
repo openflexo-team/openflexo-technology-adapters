@@ -30,16 +30,6 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 
 	static final Logger logger = Logger.getLogger(DiagramSpecificationResourceImpl.class.getPackage().getName());
 
-	private static DiagramSpecificationFactory DIAGRAM_SPECIFICATION_FACTORY;
-
-	static {
-		try {
-			DIAGRAM_SPECIFICATION_FACTORY = new DiagramSpecificationFactory();
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public static DiagramSpecificationResource makeDiagramSpecificationResource(String name, RepositoryFolder<?> folder, String uri,
 			FlexoServiceManager serviceManager) {
 		try {
@@ -47,7 +37,8 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			ModelFactory factory = new ModelFactory(DiagramSpecificationResource.class);
 			DiagramSpecificationResourceImpl returned = (DiagramSpecificationResourceImpl) factory
 					.newInstance(DiagramSpecificationResource.class);
-			returned.setFactory(DIAGRAM_SPECIFICATION_FACTORY);
+			DiagramSpecificationFactory diagramSpecificationFactory = new DiagramSpecificationFactory(serviceManager.getEditingContext());
+			returned.setFactory(diagramSpecificationFactory);
 			String baseName = name;
 			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
 			returned.setName(name);
@@ -75,7 +66,8 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			ModelFactory factory = new ModelFactory(DiagramSpecificationResource.class);
 			DiagramSpecificationResourceImpl returned = (DiagramSpecificationResourceImpl) factory
 					.newInstance(DiagramSpecificationResource.class);
-			returned.setFactory(DIAGRAM_SPECIFICATION_FACTORY);
+			DiagramSpecificationFactory diagramSpecificationFactory = new DiagramSpecificationFactory(serviceManager.getEditingContext());
+			returned.setFactory(diagramSpecificationFactory);
 			String baseName = diagramSpecificationDirectory.getName().substring(0,
 					diagramSpecificationDirectory.getName().length() - DIAGRAM_SPECIFICATION_SUFFIX.length());
 

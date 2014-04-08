@@ -42,6 +42,7 @@ import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.VEIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.action.AddConnectorInitializer;
@@ -334,7 +335,19 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 			FlexoPerspective perspective) {
 
 		if (object instanceof Diagram) {
+			// Initialization of Diagram representation may rise PAMELA edits
+			// The goal is here to embed all those edits in a special edit record
+			// Which is to be discarded as undoable action at the end of this initialization
+			CompoundEdit edit = null;
+			if (controller.getEditor().getUndoManager() != null) {
+				edit = controller.getEditor().getUndoManager().startRecording("Initialize diagram");
+			}
 			FreeDiagramEditor editor = new FreeDiagramEditor((Diagram) object, false, controller, swingToolFactory);
+			if (edit != null) {
+				controller.getEditor().getUndoManager().stopRecording(edit);
+				// Make this edit not-undoable
+				edit.die();
+			}
 			return new FreeDiagramModuleView(editor, perspective);
 		}
 

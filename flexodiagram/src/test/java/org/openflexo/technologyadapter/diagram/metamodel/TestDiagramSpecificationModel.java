@@ -44,7 +44,7 @@ public class TestDiagramSpecificationModel extends OpenflexoTestCase {
 		log("testDiagramSpecificationFactory()");
 
 		try {
-			factory = new DiagramSpecificationFactory();
+			factory = new DiagramSpecificationFactory(null);
 
 			ModelEntity<DiagramSpecification> diagramSpecificationEntity = factory.getModelContext().getModelEntity(
 					DiagramSpecification.class);
@@ -79,7 +79,7 @@ public class TestDiagramSpecificationModel extends OpenflexoTestCase {
 
 		log("testInstanciatePalette()");
 
-		DiagramPaletteFactory factory = new DiagramPaletteFactory();
+		DiagramPaletteFactory factory = new DiagramPaletteFactory(null);
 		diagramPalette = factory.makeNewDiagramPalette();
 		DiagramPaletteElement diagramPaletteElement = factory.makeDiagramPaletteElement();
 		diagramPalette.addToElements(diagramPaletteElement);

@@ -33,7 +33,7 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 			returned.setFile(diagramPaletteFile);
 			returned.setURI(dsResource.getURI() + "/" + diagramPaletteFile.getName());
 			returned.setServiceManager(serviceManager);
-			returned.setFactory(new DiagramPaletteFactory(returned));
+			returned.setFactory(new DiagramPaletteFactory(serviceManager.getEditingContext(), returned));
 			dsResource.addToContents(returned);
 			DiagramPalette newPalette = returned.getFactory().makeNewDiagramPalette();
 			newPalette.setResource(returned);
@@ -56,7 +56,7 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 			returned.setFile(diagramPaletteFile);
 			returned.setURI(dsResource.getURI() + "/" + diagramPaletteFile.getName());
 			returned.setServiceManager(serviceManager);
-			returned.setFactory(new DiagramPaletteFactory(returned));
+			returned.setFactory(new DiagramPaletteFactory(serviceManager.getEditingContext(), returned));
 			dsResource.addToContents(returned);
 			return returned;
 		} catch (ModelDefinitionException e) {
