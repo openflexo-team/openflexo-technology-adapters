@@ -241,27 +241,33 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	public List<ModelSlot<?>> getModelSlots() {
 		if (getModelSlot() != null) {
 			return getModelSlot().getVirtualModel().getModelSlots();
-		}else{
-			return retrieveCurrentVirtualModelInstance().getVirtualModel().getModelSlots();
+		}else if(retrieveCurrentVirtualModelInstance()!=null){
+			retrieveCurrentVirtualModelInstance().getVirtualModel().getModelSlots();
 		}
+		return null;
 	}
 
 	private VirtualModelInstance retrieveCurrentVirtualModelInstance(){
 		// Get the current Diagram
 		Diagram currentDiagram = ((DiagramElement)getFocusedObject()).getDiagram();
 		// Browse views resource
-		for(ViewResource vr : getEditor().getProject().getViewLibrary().getAllResources()){
-			if(vr.getView()!=null && vr.getView().getVirtualModelInstances()!=null){
-				for(VirtualModelInstance vmi : vr.getView().getVirtualModelInstances()){
-					for(ModelSlotInstance msi : vmi.getModelSlotInstances()){
-						if(msi.getAccessedResourceData()!=null && msi.getAccessedResourceData().equals(currentDiagram)){
-							return vmi;
+		if(getEditor() !=null && getEditor().getProject() !=null 
+				&& getEditor().getProject().getViewLibrary()!=null 
+				&& getEditor().getProject().getViewLibrary().getAllResources()!=null){
+			for(ViewResource vr : getEditor().getProject().getViewLibrary().getAllResources()){
+				if(vr.getView()!=null && vr.getView().getVirtualModelInstances()!=null){
+					for(VirtualModelInstance vmi : vr.getView().getVirtualModelInstances()){
+						for(ModelSlotInstance msi : vmi.getModelSlotInstances()){
+							if(msi.getAccessedResourceData()!=null && msi.getAccessedResourceData().equals(currentDiagram)){
+								return vmi;
+							}
 						}
 					}
 				}
+				
 			}
-			
 		}
+		
 		return null;
 	}
 
