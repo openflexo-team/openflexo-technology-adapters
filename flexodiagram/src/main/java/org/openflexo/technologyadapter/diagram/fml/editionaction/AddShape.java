@@ -31,7 +31,6 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoObject;
@@ -138,7 +137,13 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 					System.out.println(" > bv=" + bv);
 				}
 				try {
-					return getContainer().getBindingValue(action);
+					if(getContainer().getBindingValue(action)!=null){
+						return getContainer().getBindingValue(action);
+					} else{
+						// In case the toplevel is not specified set o the diagram top level.
+						return (DiagramContainerElement<?>) getModelSlotInstance(action).getAccessedResourceData();
+					}
+
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
