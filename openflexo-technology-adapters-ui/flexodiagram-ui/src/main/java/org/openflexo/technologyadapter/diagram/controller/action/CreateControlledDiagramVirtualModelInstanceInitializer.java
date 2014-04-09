@@ -55,6 +55,10 @@ public class CreateControlledDiagramVirtualModelInstanceInitializer extends
 		super(CreateFMLControlledDiagramVirtualModelInstance.actionType, actionInitializer);
 	}
 
+	private Status chooseAndConfigureCreationScheme(CreateFMLControlledDiagramVirtualModelInstance action) {
+		return instanciateShowDialogAndReturnStatus(action, CommonFIB.CHOOSE_AND_CONFIGURE_CREATION_SCHEME_DIALOG_FIB);
+	}
+	
 	@Override
 	protected FlexoActionInitializer<CreateFMLControlledDiagramVirtualModelInstance> getDefaultInitializer() {
 		return new FlexoActionInitializer<CreateFMLControlledDiagramVirtualModelInstance>() {
@@ -69,7 +73,10 @@ public class CreateControlledDiagramVirtualModelInstanceInitializer extends
 						Status result;
 						if (step == 0) {
 							result = instanciateShowDialogAndReturnStatus(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
-						} else {
+						} else if (step == action.getStepsNumber() - 1 && action.getVirtualModel() != null
+								&& action.getVirtualModel().hasCreationScheme()) {
+							result = chooseAndConfigureCreationScheme(action);
+						}else {
 							ModelSlot<?> configuredModelSlot = action.getVirtualModel().getModelSlots().get(step - 1);
 							result = instanciateShowDialogAndReturnStatus(action.getModelSlotInstanceConfiguration(configuredModelSlot),
 									getModelSlotInstanceConfigurationFIB(configuredModelSlot.getClass()));
@@ -78,7 +85,7 @@ public class CreateControlledDiagramVirtualModelInstanceInitializer extends
 							return false;
 						} else if (result == Status.VALIDATED) {
 							return true;
-						} else if (result == Status.NEXT && step + 1 <= action.getVirtualModel().getModelSlots().size()) {
+						} else if (result == Status.NEXT && step + 1 <= action.getStepsNumber()) {
 							step = step + 1;
 						} else if (result == Status.BACK && step - 1 >= 0) {
 							step = step - 1;
