@@ -31,11 +31,15 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
+import org.openflexo.foundation.view.ModelSlotInstance;
+import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.foundation.view.rm.ViewResource;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.foundation.viewpoint.VirtualModelModelSlot;
+import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
@@ -237,6 +241,26 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	public List<ModelSlot<?>> getModelSlots() {
 		if (getModelSlot() != null) {
 			return getModelSlot().getVirtualModel().getModelSlots();
+		}else{
+			return retrieveCurrentVirtualModelInstance().getVirtualModel().getModelSlots();
+		}
+	}
+
+	private VirtualModelInstance retrieveCurrentVirtualModelInstance(){
+		// Get the current Diagram
+		Diagram currentDiagram = ((DiagramElement)getFocusedObject()).getDiagram();
+		// Browse views resource
+		for(ViewResource vr : getEditor().getProject().getViewLibrary().getAllResources()){
+			if(vr.getView()!=null && vr.getView().getVirtualModelInstances()!=null){
+				for(VirtualModelInstance vmi : vr.getView().getVirtualModelInstances()){
+					for(ModelSlotInstance msi : vmi.getModelSlotInstances()){
+						if(msi.getAccessedResourceData()!=null && msi.getAccessedResourceData().equals(currentDiagram)){
+							return vmi;
+						}
+					}
+				}
+			}
+			
 		}
 		return null;
 	}
