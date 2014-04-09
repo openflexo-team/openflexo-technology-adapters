@@ -9,6 +9,9 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -35,6 +38,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	public static final String END_SHAPE_PATTERN_ROLE_KEY = "endShapeRole";
 
 	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
+	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
 	@XMLElement
 	public ConnectorGraphicalRepresentation getGraphicalRepresentation();
 

@@ -84,6 +84,8 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	 * @return
 	 */
 	@Getter(value = PARENT)
+	// We set here the CloningStrategy to IGNORE, otherwise clone will be added again to parent when cloning
+	@CloningStrategy(StrategyType.IGNORE)
 	public DiagramContainerElement<?> getParent();
 
 	/**
@@ -157,9 +159,9 @@ public interface DiagramElement<G extends GraphicalRepresentation> extends Flexo
 	public FlexoConceptInstance getFlexoConceptInstance(VirtualModelInstance vmInstance);
 
 	/**
-	 * Return {@link GraphicalElementRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting
-	 * that this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared
-	 * in {@link VirtualModel} of supplied {@link VirtualModelInstance}
+	 * Return {@link GraphicalElementRole} played by this {@link DiagramElement} in related {@link FlexoConceptInstance}, asserting that
+	 * this {@link DiagramElement} is contained in a {@link Diagram} which is the bound diagram of a {@link DiagramModelSlot} declared in
+	 * {@link VirtualModel} of supplied {@link VirtualModelInstance}
 	 * 
 	 * @param vmInstance
 	 *            : instance of {@link VirtualModel} where is declared a {@link DiagramModelSlot}

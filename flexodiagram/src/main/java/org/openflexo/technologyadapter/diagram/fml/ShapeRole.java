@@ -10,6 +10,9 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -30,6 +33,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	public static final String PARENT_SHAPE_PATTERN_ROLE_KEY = "parentShapeRole";
 
 	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
+	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
 	@XMLElement
 	public ShapeGraphicalRepresentation getGraphicalRepresentation();
 
@@ -57,8 +62,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	 */
 	public List<ShapeRole> getPossibleParentShapeRoles();
 
-	public static abstract class ShapeRoleImpl extends GraphicalElementRoleImpl<DiagramShape, ShapeGraphicalRepresentation>
-			implements ShapeRole {
+	public static abstract class ShapeRoleImpl extends GraphicalElementRoleImpl<DiagramShape, ShapeGraphicalRepresentation> implements
+			ShapeRole {
 
 		private static final Logger logger = Logger.getLogger(ShapeRole.class.getPackage().getName());
 
@@ -73,7 +78,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		@Override
 		protected void initDefaultSpecifications() {
 			super.initDefaultSpecifications();
-			if(getVirtualModelFactory()!=null){
+			if (getVirtualModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
 					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
 							GraphicalElementSpecification.class);

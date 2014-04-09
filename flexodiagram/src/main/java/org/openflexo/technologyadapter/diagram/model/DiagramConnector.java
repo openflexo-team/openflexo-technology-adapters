@@ -23,6 +23,7 @@ import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -43,9 +44,10 @@ public interface DiagramConnector extends DiagramElement<ConnectorGraphicalRepre
 	 * 
 	 * @return
 	 */
-	@Getter(value = START_SHAPE , inverse = DiagramShape.START_CONNECTORS)
+	@Getter(value = START_SHAPE, inverse = DiagramShape.START_CONNECTORS)
 	@XMLElement(context = "Start")
 	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
 	public DiagramShape getStartShape();
 
 	/**
@@ -61,9 +63,10 @@ public interface DiagramConnector extends DiagramElement<ConnectorGraphicalRepre
 	 * 
 	 * @return
 	 */
-	@Getter(value= END_SHAPE , inverse = DiagramShape.END_CONNECTORS)
+	@Getter(value = END_SHAPE, inverse = DiagramShape.END_CONNECTORS)
 	@XMLElement(context = "End")
 	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
 	public DiagramShape getEndShape();
 
 	/**
@@ -74,27 +77,9 @@ public interface DiagramConnector extends DiagramElement<ConnectorGraphicalRepre
 	@Setter(END_SHAPE)
 	public void setEndShape(DiagramShape endShape);
 
-	/**
-	 * Return parent of this diagram element
-	 * 
-	 * @return
-	 */
 	@Override
 	@Getter(value = PARENT, inverse = DiagramContainerElement.CONNECTORS)
 	public DiagramContainerElement<?> getParent();
-
-	// TODO: comment this when method clash in PAMELA will be solved
-	/*@Getter(value = GRAPHICAL_REPRESENTATION)
-	@CloningStrategy(StrategyType.CLONE)
-	@Embedded
-	@XMLElement
-	@Override
-	public ConnectorGraphicalRepresentation getGraphicalRepresentation();*/
-
-	// TODO: comment this when method clash in PAMELA will be solved
-	/*@Setter(value = GRAPHICAL_REPRESENTATION)
-	@Override
-	public void setGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation);*/
 
 	@Override
 	public ConnectorRole getPatternRole(VirtualModelInstance vmInstance);
