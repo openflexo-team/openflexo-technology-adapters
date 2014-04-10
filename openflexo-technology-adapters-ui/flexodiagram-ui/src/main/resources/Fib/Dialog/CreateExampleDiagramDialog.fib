@@ -17,6 +17,8 @@
     <Button action="controller.validateAndDispose()" buttonType="Trigger" label="Validate" enable="(data.isValid)" localize="true" index="1" constraints="flow(index=1)" font="Lucida Grande,0,13">
       <LocalizedDictionary />
     </Button>
+    <Dependancy componentName="VirtualModelNameTextField" />
+    <Dependancy componentName="VirtualModelTitleTextField" />
   </Panel>
   <LocalizedDictionary>
     <Localized key="uri" lang="English">URI</Localized>
