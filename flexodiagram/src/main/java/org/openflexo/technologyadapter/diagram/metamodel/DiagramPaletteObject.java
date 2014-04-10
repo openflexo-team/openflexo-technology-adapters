@@ -19,7 +19,6 @@
  */
 package org.openflexo.technologyadapter.diagram.metamodel;
 
-import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -69,6 +68,14 @@ public interface DiagramPaletteObject extends TechnologyObject<DiagramTechnology
 		@Override
 		public final DiagramPaletteFactory getFactory() {
 			return ((DiagramPaletteResource) getPalette().getResource()).getFactory();
+		}
+		
+		@Override
+		public DiagramTechnologyAdapter getTechnologyAdapter() {
+			if (getPalette().getResource() != null) {
+				return getPalette().getResource().getTechnologyAdapter();
+			}
+			return null;
 		}
 
 	}
