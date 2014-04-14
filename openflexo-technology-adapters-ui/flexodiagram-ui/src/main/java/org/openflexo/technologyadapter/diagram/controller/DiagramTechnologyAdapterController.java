@@ -63,6 +63,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramPa
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramSpecificationInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteExampleDiagramElementsInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteExampleDiagramInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DiagramElementPasteHandler;
 import org.openflexo.technologyadapter.diagram.controller.action.DropSchemeActionInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.ExportDiagramToImageInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.LinkSchemeActionInitializer;
@@ -93,6 +94,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -201,7 +203,13 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		// Set the screenshot builder
 		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());
 
+		// Add paste handlers
+		diagramElementPasteHandler = new DiagramElementPasteHandler(actionInitializer.getController().getSelectionManager());
+		actionInitializer.getEditingContext().registerPasteHandler(DiagramElement.class, diagramElementPasteHandler);
+
 	}
+
+	private DiagramElementPasteHandler diagramElementPasteHandler;
 
 	public SwingToolFactory getToolFactory() {
 		return swingToolFactory;
