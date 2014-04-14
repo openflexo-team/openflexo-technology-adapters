@@ -225,8 +225,10 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	public void setDiagramSpecification(DiagramSpecification aDiagramSpecification) {
 		if (getResource() != null) {
 			DiagramResource resource = (DiagramResource) getResource();
-			resource.setMetaModelResource(aDiagramSpecification.getResource());
-			// TODO: i'm sure there are other things to do....
+			if (aDiagramSpecification != null) {
+				resource.setMetaModelResource(aDiagramSpecification.getResource());
+				// TODO: i'm pretty sure there are other things to do....
+			}
 		}
 	}
 
