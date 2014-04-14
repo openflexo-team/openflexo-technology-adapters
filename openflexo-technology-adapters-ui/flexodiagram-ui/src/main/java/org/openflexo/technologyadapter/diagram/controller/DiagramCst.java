@@ -52,5 +52,6 @@ public class DiagramCst {
 	public static Resource DECLARE_CONNECTOR_IN_FLEXO_CONCEPT_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/DeclareConnectorInFlexoConceptDialog.fib");
 	public static Resource PUSH_TO_PALETTE_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/PushToPaletteDialog.fib");
-
+	public static Resource CREATE_FML_DIAGRAM_PALETTE_ELEMENT_BINDING_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateFMLPaletteElementBindingDialog.fib");
+	
 }
