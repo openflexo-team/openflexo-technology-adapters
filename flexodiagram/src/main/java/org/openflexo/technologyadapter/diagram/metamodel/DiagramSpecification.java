@@ -70,7 +70,7 @@ import org.openflexo.toolbox.ChainedCollection;
 @ImplementationClass(DiagramSpecification.DiagramSpecificationImpl.class)
 @XMLElement(xmlTag = "DiagramSpecification")
 public interface DiagramSpecification extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification>,
-		ResourceData<DiagramSpecification> , TechnologySpecificCustomType<DiagramTechnologyAdapter> {
+		ResourceData<DiagramSpecification> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
@@ -221,6 +221,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 						Diagram exampleDiagram = ((DiagramResource) r).getDiagram();
 						if (!exampleDiagrams.contains(exampleDiagram)) {
 							addToExampleDiagrams(exampleDiagram);
+							exampleDiagram.setDiagramSpecification(this);
 						}
 					}
 				}
@@ -345,6 +346,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			}
 			if (!exampleDiagrams.contains(aDiagram)) {
 				exampleDiagrams.add(aDiagram);
+				aDiagram.setDiagramSpecification(this);
 				setChanged();
 				notifyObservers(new ExampleDiagramInserted(aDiagram, this));
 			}
@@ -368,20 +370,6 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 				return getResource().getTechnologyAdapter();
 			}
 			return null;
-		}
-
-		@Override
-		public Class getBaseClass() {
-			return DiagramSpecification.class;
-		}
-
-		@Override
-		public boolean isTypeAssignableFrom(Type aType, boolean permissive) {
-			// System.out.println("isTypeAssignableFrom " + aType + " (i am a " + this + ")");
-			if (aType instanceof DiagramSpecification) {
-				return true;
-			}
-			return false;
 		}
 		
 		/*@Override

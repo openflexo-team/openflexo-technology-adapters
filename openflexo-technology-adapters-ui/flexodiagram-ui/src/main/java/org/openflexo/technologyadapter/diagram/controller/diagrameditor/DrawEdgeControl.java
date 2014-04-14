@@ -20,10 +20,19 @@
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 import java.util.logging.Logger;
+
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
@@ -35,13 +44,21 @@ import org.openflexo.fge.control.MouseControlContext;
 import org.openflexo.fge.control.actions.MouseDragControlActionImpl;
 import org.openflexo.fge.control.actions.MouseDragControlImpl;
 import org.openflexo.fge.swing.control.JMouseControlContext;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
+import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.model.undo.CompoundEdit;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.AddConnector;
+import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
+import org.openflexo.technologyadapter.diagram.model.action.LinkSchemeAction;
 
 public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
@@ -62,7 +79,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 		ShapeNode<DiagramShape> toShape = null;
 		private final DiagramFactory factory;
 		private final EditingContext editingContext;
-
+		
 		public DrawEdgeAction(DiagramFactory factory) {
 			this.factory = factory;
 			this.editingContext = factory.getEditingContext();
@@ -92,97 +109,22 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 					// of the connector pattern roles available for this virtual model
 
 					logger.warning("Please implement DrawEdge when diagram is FML-managed");
-
-					// TODO: Choose one of 2 versions
-
-					/*if (fromShape.getDrawable().getVirtualModel() != null) {
-						Vector<FlexoConcept> availableFlexoConcepts = fromShape.getDrawable().getVirtualModel().getFlexoConcepts();
-						Vector<ConnectorRole> aivalableConnectorPatternRoles = new Vector<ConnectorRole>();
-						for (FlexoConcept flexoConcept : availableFlexoConcepts) {
-							if (flexoConcept.getConnectorPatternRoles() != null) {
-								aivalableConnectorPatternRoles.addAll(flexoConcept.getConnectorPatternRoles());
-							}
-						}
-
-						if (aivalableConnectorPatternRoles.size() > 0) {
-							JPopupMenu popup = new JPopupMenu();
-							for (final ConnectorRole connectorPatternRole : aivalableConnectorPatternRoles) {
-								JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey(connectorPatternRole
-										.getFlexoConcept().getName()));
-								menuItem.addActionListener(new ActionListener() {
-									@Override
-									public void actionPerformed(ActionEvent e) {
-										String text = connectorPatternRole.getLabel().getExpression().toString();// Value(null);
-										performAddConnector(controller, connectorPatternRole.getGraphicalRepresentation(), text);
-										return;
-									}
-								});
-								popup.add(menuItem);
-							}
-							JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey("graphical_connector_only"));
-							menuItem.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									performAddDefaultConnector(controller);
-								}
-							});
-							popup.add(menuItem);
-							popup.show((Component) context.getSource(), context.getPoint().x, context.getPoint().y);
-							return false;
-						} else {
-							performAddDefaultConnector(controller);
-						}
-					}*/
-
-					/*if (fromShape.getDrawable().getVirtualModel() != null) {
-						Vector<LinkScheme> availableConnectors = fromShape.getDrawable().getVirtualModel().getAllConnectors();
-
-						if (availableConnectors.size() > 0) {
-							JPopupMenu popup = new JPopupMenu();
-							for (final LinkScheme linkScheme : availableConnectors) {
-								JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey(linkScheme.getLabel() != null ? linkScheme
-										.getLabel() : linkScheme.getName()));
-								menuItem.addActionListener(new ActionListener() {
-									@Override
-									public void actionPerformed(ActionEvent e) {
-										for (EditionAction a : linkScheme.getActions()) {
-											if (a instanceof AddConnector) {
-												ConnectorRole patternRole = ((AddConnector) a).getPatternRole();
-												logger.warning("Implement this !!!");
-												String text = patternRole.getLabel().getExpression().toString();// Value(null);
-												performAddConnector(controller, patternRole.getGraphicalRepresentation(), text);
-												return;
-											}
-										}
-										performAddDefaultConnector(controller);
-									}
-								});
-								popup.add(menuItem);
-							}
-							JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey("graphical_connector_only"));
-							menuItem.addActionListener(new ActionListener() {
-								@Override
-								public void actionPerformed(ActionEvent e) {
-									performAddDefaultConnector(controller);
-								}
-							});
-							popup.add(menuItem);
-							popup.show(event.getComponent(), event.getX(), event.getY());
-							return false;
-						} else {
-							performAddDefaultConnector(controller);
-						}
-					}*/
-
+					
+					if (controller instanceof FMLControlledDiagramEditor) {
+						handleFMLControlledEdge(controller,context);
+					} else {
+						performAddDefaultConnector(controller);
+					}
+					
 					// System.out.println("Add ConnectorSpecification contextualMenuInvoker="+contextualMenuInvoker+" point="+contextualMenuClickedPoint);
-					CompoundEdit drawEdge = editingContext.getUndoManager().startRecording("Draw edge");
+					/*CompoundEdit drawEdge = editingContext.getUndoManager().startRecording("Draw edge");
 					DiagramConnector newConnector = factory.makeNewConnector("edge", fromShape.getDrawable(), toShape.getDrawable(),
 							controller.getDrawing().getModel());
 					DrawingTreeNode<?, ?> fatherNode = FGEUtils.getFirstCommonAncestor(fromShape, toShape);
 					((DiagramContainerElement<?>) fatherNode.getDrawable()).addToConnectors(newConnector);
 					System.out.println("Add new connector !");
 					editingContext.getUndoManager().stopRecording(drawEdge);
-					controller.setSelectedObject(controller.getDrawing().getDrawingTreeNode(newConnector));
+					controller.setSelectedObject(controller.getDrawing().getDrawingTreeNode(newConnector));*/
 				}
 				drawEdge = false;
 				fromShape = null;
@@ -220,7 +162,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 			fromShape = null;
 			toShape = null;
 			controller.getDrawingView().setDrawEdgeAction(null);
-
+			
 		}
 
 		private void performAddConnector(DiagramEditor controller, ConnectorGraphicalRepresentation connectorGR, String text) {
@@ -240,6 +182,81 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 			fromShape = null;
 			toShape = null;
 			controller.getDrawingView().setDrawEdgeAction(null);
+
+		}
+		
+		private void handleFMLControlledEdge(final DiagramEditor controller,MouseControlContext context){
+			// TODO: Choose one of 2 versions
+			VirtualModel virtualModel = ((FMLControlledDiagramEditor)controller).getVirtualModelInstance().getVirtualModel();
+			
+			if (virtualModel != null) {
+				List<FlexoConcept> availableFlexoConcepts = virtualModel.getFlexoConcepts();
+				List<LinkScheme> availableConnectors = new ArrayList<LinkScheme>();
+				for (FlexoConcept flexoConcept : availableFlexoConcepts) {
+					if (flexoConcept.getFlexoBehaviours(LinkScheme.class) != null) {
+						availableConnectors.addAll(flexoConcept.getFlexoBehaviours(LinkScheme.class));
+					}
+				}
+				if (availableConnectors.size() > 0) {
+					JPopupMenu popup = new JPopupMenu();
+					for (final LinkScheme linkScheme : availableConnectors) {
+						JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey(linkScheme.getLabel() != null ? linkScheme
+								.getLabel() : linkScheme.getName()));
+						menuItem.addActionListener(new DrawingEdgeActionListener((FMLControlledDiagramEditor) controller, fromShape.getDrawable(), toShape.getDrawable(), linkScheme));
+						popup.add(menuItem);
+					}
+					JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey("graphical_connector_only"));
+					menuItem.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							performAddDefaultConnector(controller);
+						}
+					});
+					popup.add(menuItem);
+					popup.show(controller.getDrawingView(), context.getPoint().x, context.getPoint().y);
+				} else {
+					performAddDefaultConnector(controller);
+				}
+			}
+			
+			/*if (virtualModel != null) {
+				List<FlexoConcept> availableFlexoConcepts = virtualModel.getFlexoConcepts();
+				List<ConnectorRole> aivalableConnectorFlexoRoles = new ArrayList<ConnectorRole>();
+				for (FlexoConcept flexoConcept : availableFlexoConcepts) {
+					if (flexoConcept.getFlexoRoles(ConnectorRole.class) != null) {
+						aivalableConnectorFlexoRoles.addAll(flexoConcept.getFlexoRoles(ConnectorRole.class));
+					}
+				}
+
+				if (aivalableConnectorFlexoRoles.size() > 0) {
+					JPopupMenu popup = new JPopupMenu();
+					for (final ConnectorRole connectorPatternFlexoRole : aivalableConnectorFlexoRoles) {
+						JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey(connectorPatternFlexoRole
+								.getFlexoConcept().getName()));
+						menuItem.addActionListener(new ActionListener() {
+							@Override
+							public void actionPerformed(ActionEvent e) {
+								String text="";
+								if(connectorPatternFlexoRole.getLabel()!=null){
+									text = connectorPatternFlexoRole.getLabel().getExpression().toString();// Value(null);
+								}
+								performAddConnector((DiagramEditor)controller, connectorPatternFlexoRole.getGraphicalRepresentation(), text);
+								return;
+							}
+						});
+						popup.add(menuItem);
+					}
+					JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey("graphical_connector_only"));
+					menuItem.addActionListener(new ActionListener() {
+						@Override
+						public void actionPerformed(ActionEvent e) {
+							performAddDefaultConnector(controller);
+						}
+					});
+					popup.add(menuItem);
+					popup.show(controller.getDrawingView(), context.getPoint().x, context.getPoint().y);
+				} 
+			}*/
 
 		}
 
@@ -281,6 +298,34 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 				g.drawLine(from.x, from.y, to.x, to.y);
 			}
 		}
-	}
+		
+		public class DrawingEdgeActionListener implements ActionListener{
 
+			private DiagramShape sourceShape;
+			private DiagramShape targetShape;
+			private FMLControlledDiagramEditor controller;
+			private LinkScheme linkScheme;
+			
+			DrawingEdgeActionListener(FMLControlledDiagramEditor controller,DiagramShape sourceShape,DiagramShape targetShape, LinkScheme linkScheme){
+				this.sourceShape = sourceShape;
+				this.targetShape = targetShape;
+				this.controller = controller;
+				this.linkScheme = linkScheme;
+			}
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(controller.getVirtualModelInstance(),
+						null, controller.getFlexoController().getEditor());
+				action.setLinkScheme(linkScheme);
+				action.setFromShape(sourceShape);
+				action.setToShape(targetShape);
+				action.doAction();
+			}
+
+		}
+
+	}
+	
+	
 }

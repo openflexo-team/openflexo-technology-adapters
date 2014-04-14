@@ -395,12 +395,12 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public DiagramSpecification getDiagramSpecification() {
-		return diagramModelSlot.getMetaModelResource().getLoadedResourceData();
+		return getFocusedObject().getDiagram().getDiagramSpecification();
 	}
 
 	public VirtualModel getVirtualModel() {
-		if (diagramModelSlot != null) {
-			return diagramModelSlot.getVirtualModel();
+		if (getDiagramModelSlot() != null) {
+			return getDiagramModelSlot().getVirtualModel();
 		}
 		return null;
 	}

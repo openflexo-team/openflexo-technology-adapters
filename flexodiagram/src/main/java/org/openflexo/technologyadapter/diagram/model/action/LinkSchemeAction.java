@@ -20,6 +20,7 @@
 package org.openflexo.technologyadapter.diagram.model.action;
 
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -30,6 +31,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.action.NotImplementedException;
+import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
@@ -175,14 +177,23 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 	@Override
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals(DiagramEditionScheme.FROM_TARGET) && getLinkScheme().getFromTargetFlexoConcept() != null) {
-			// TODO
-			logger.warning("Please implement getValue() for target");
-			// return getFromShape().getFlexoConceptInstance();
+			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
+			for(FlexoConceptInstance fci : fcis){
+				for(ActorReference actor : fci.getActors()){
+					if(actor.getModellingElement().equals(getFromShape()))
+						return fci;
+				}
+			}
+			
 		}
 		if (variable.getVariableName().equals(DiagramEditionScheme.TO_TARGET) && getLinkScheme().getToTargetFlexoConcept() != null) {
-			// TODO
-			logger.warning("Please implement getValue() for target");
-			// return getToShape().getFlexoConceptInstance();
+			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
+			for(FlexoConceptInstance fci : fcis){
+				for(ActorReference actor : fci.getActors()){
+					if(actor.getModellingElement().equals(getToShape()))
+						return fci;
+				}
+			}
 		}
 		return super.getValue(variable);
 	}

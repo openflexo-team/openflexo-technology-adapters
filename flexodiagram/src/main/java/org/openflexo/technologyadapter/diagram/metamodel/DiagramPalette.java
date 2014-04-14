@@ -94,6 +94,13 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 
 	public DiagramPaletteElement addPaletteElement(String name, Object graphicalRepresentation);
 
+	/**
+	 * Return screenshot of this palette, when available
+	 * 
+	 * @return
+	 */
+	public ScreenshotImage<DiagramPalette> getScreenshotImage();
+	
 	@Override
 	public DiagramPaletteResource getResource();
 
