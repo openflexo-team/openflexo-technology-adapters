@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -38,8 +39,11 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
+import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
+import org.openflexo.foundation.viewpoint.rm.ViewPointResource;
+import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
@@ -48,6 +52,7 @@ import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -91,6 +96,10 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	};
 
 	private TypedDiagramModelSlot diagramModelSlot;
+	
+	private VirtualModel virtualModel;
+	
+	private VirtualModelResource virtualModelResource;
 
 	public GraphicalRepresentation graphicalRepresentation;
 	public DiagramPalette palette;
@@ -125,7 +134,10 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	 * @return
 	 */
 	public TypedDiagramModelSlot getDiagramModelSlot() {
-		return diagramModelSlot;
+		if(virtualModel!=null){
+			return FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(virtualModel);
+		}
+		return null;
 	}
 
 	/**
@@ -134,9 +146,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	 * 
 	 * @return
 	 */
-	public void setDiagramModelSlot(TypedDiagramModelSlot diagramModelSlot) {
+	/*public void setDiagramModelSlot(TypedDiagramModelSlot diagramModelSlot) {
 		this.diagramModelSlot = diagramModelSlot;
-	}
+	}*/
 
 	@Override
 	protected void doAction(Object context) {
@@ -185,11 +197,12 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 			FMLDiagramPaletteElementBinding newBinding = getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
 			newBinding.setPaletteElement(_newPaletteElement);
+			newBinding.setDiagramModelSlot(getDiagramModelSlot());
 			newBinding.setFlexoConcept(flexoConcept);
 			newBinding.setDropScheme(dropScheme);
 			newBinding.setBoundLabelToElementName(!takeScreenshotForTopLevelElement);
-
-			diagramModelSlot.addToPaletteElementBindings(newBinding);
+			
+			getDiagramModelSlot().addToPaletteElementBindings(newBinding);
 
 			/*for (DrawingObjectEntry entry : diagramElementEntries) {
 				if(!entry.isMainEntry()){
@@ -371,7 +384,10 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public ScreenshotImage<DiagramShape> getScreenshot() {
-		return screenshot;
+		if(this.screenshot==null ||this.screenshot != ((DiagramShape)getFocusedObject()).getScreenshotImage()){
+			this.screenshot = (ScreenshotImage<DiagramShape>) ((DiagramShape)getFocusedObject()).getScreenshotImage();
+		}
+		return this.screenshot;
 	}
 
 	public void setScreenshot(ScreenshotImage<DiagramShape> screenshot) {
@@ -399,10 +415,11 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public VirtualModel getVirtualModel() {
-		if (getDiagramModelSlot() != null) {
-			return getDiagramModelSlot().getVirtualModel();
-		}
-		return null;
+		return virtualModel;
+	}
+	
+	public void setVirtualModel(VirtualModel virtualModel) {
+		this.virtualModel = virtualModel;
 	}
 
 	public VirtualModelModelFactory getFactory() {
@@ -410,6 +427,15 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			return getVirtualModel().getVirtualModelFactory();
 		}
 		return null;
+	}
+
+	public VirtualModelResource getVirtualModelResource() {
+		return virtualModelResource;
+	}
+
+	public void setVirtualModelResource(VirtualModelResource virtualModelResource) {
+		this.virtualModelResource = virtualModelResource;
+		setVirtualModel(virtualModelResource.getVirtualModel());
 	}
 
 }
