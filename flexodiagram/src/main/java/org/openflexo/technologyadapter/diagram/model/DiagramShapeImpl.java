@@ -19,16 +19,26 @@
  */
 package org.openflexo.technologyadapter.diagram.model;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.resource.FlexoFileResource;
+import org.openflexo.foundation.resource.ScreenshotBuilder;
+import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.swing.ImageUtils;
+import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 
 public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<ShapeGraphicalRepresentation> implements DiagramShape {
 
 	private static final Logger logger = Logger.getLogger(DiagramShapeImpl.class.getPackage().getName());
 
+	private boolean screenshotModified = false;
+	private ScreenshotImage<DiagramShape> screenshotImage;
+	private File expectedScreenshotImageFile = null;
 	// private String multilineText;
 	// private Vector<DiagramConnector> incomingConnectors;
 	// private Vector<DiagramConnector> outgoingConnectors;
@@ -216,4 +226,56 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 		return (ShapeRole) super.getPatternRole(vmInstance);
 	}
 
+	private File getExpectedScreenshotImageFile() {
+		if (expectedScreenshotImageFile == null && getDiagram().getResource() instanceof FlexoFileResource) {
+			expectedScreenshotImageFile = new File(((FlexoFileResource<Diagram>) getDiagram().getResource()).getFile().getParentFile(), getName()
+					+ ".diagram_container_element.png");
+		}
+		return expectedScreenshotImageFile;
+	}
+
+	private ScreenshotImage<DiagramShape> buildAndSaveScreenshotImage() {
+		if (getTechnologyAdapter().getScreenshotBuilder() != null) {
+			ScreenshotBuilder<DiagramShape> builder = (ScreenshotBuilder<DiagramShape>) getTechnologyAdapter().getDiagramShapeScreenshotBuilder();
+
+			screenshotImage = builder.getImage(this);
+			try {
+				logger.info("Saving " + getExpectedScreenshotImageFile().getAbsolutePath());
+				ImageUtils.saveImageToFile(screenshotImage.image, getExpectedScreenshotImageFile(), ImageType.PNG);
+			} catch (IOException e) {
+				e.printStackTrace();
+				logger.warning("Could not save " + getExpectedScreenshotImageFile().getAbsolutePath());
+			}
+			screenshotModified = false;
+			getPropertyChangeSupport().firePropertyChange("screenshotImage", null, screenshotImage);
+			return screenshotImage;
+		}
+		return null;
+	}
+
+	private ScreenshotImage<DiagramShape> tryToLoadScreenshotImage() {
+		// TODO
+		/*if (getExpectedScreenshotImageFile() != null && getExpectedScreenshotImageFile().exists()) {
+			BufferedImage bi = ImageUtils.loadImageFromFile(getExpectedScreenshotImageFile());
+			if (bi != null) {
+				logger.info("Read " + getExpectedScreenshotImageFile().getAbsolutePath());
+				screenshotImage = ScreenshotGenerator.trimImage(bi);
+				screenshotModified = false;
+				return screenshotImage;
+			}
+		}*/
+		return null;
+	}
+
+	@Override
+	public ScreenshotImage<DiagramShape> getScreenshotImage() {
+		if (screenshotImage == null || screenshotModified) {
+			if (screenshotModified) {
+				logger.info("Rebuilding screenshot for " + this + " because screenshot is modified");
+			}
+			buildAndSaveScreenshotImage();
+		}
+		return screenshotImage;
+	}
+	
 }
