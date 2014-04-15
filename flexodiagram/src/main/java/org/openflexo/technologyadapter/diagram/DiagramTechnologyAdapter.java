@@ -41,6 +41,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializatio
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
@@ -64,6 +65,8 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	private static final Logger logger = Logger.getLogger(DiagramTechnologyAdapter.class.getPackage().getName());
 
 	private ScreenshotBuilder<Diagram> screenshotBuilder;
+	
+	private ScreenshotBuilder<DiagramShape> diagramShapeScreenshotBuilder;
 
 	public DiagramTechnologyAdapter() throws TechnologyAdapterInitializationException {
 	}
@@ -323,6 +326,14 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	public void setScreenshotBuilder(ScreenshotBuilder<Diagram> screenshotBuilder) {
 		this.screenshotBuilder = screenshotBuilder;
+	}
+	
+	public ScreenshotBuilder<DiagramShape> getDiagramShapeScreenshotBuilder() {
+		return diagramShapeScreenshotBuilder;
+	}
+
+	public void setDiagramShapeScreenshotBuilder(ScreenshotBuilder<DiagramShape> screenshotBuilder) {
+		this.diagramShapeScreenshotBuilder = screenshotBuilder;
 	}
 
 	// Override when required
