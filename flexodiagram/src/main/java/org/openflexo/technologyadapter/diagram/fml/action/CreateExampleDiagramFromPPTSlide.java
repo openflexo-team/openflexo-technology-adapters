@@ -29,45 +29,45 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.resource.InvalidFileNameException;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
-public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide<CreateDiagramFromPPTSlide, RepositoryFolder> {
+public class CreateExampleDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide<CreateExampleDiagramFromPPTSlide, DiagramSpecification> {
 
-	private static final Logger logger = Logger.getLogger(CreateDiagramFromPPTSlide.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(CreateExampleDiagramFromPPTSlide.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, ViewPointObject> actionType = new FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, ViewPointObject>(
+	public static FlexoActionType<CreateExampleDiagramFromPPTSlide, DiagramSpecification, ViewPointObject> actionType = new FlexoActionType<CreateExampleDiagramFromPPTSlide, DiagramSpecification, ViewPointObject>(
 			"create_diagram_from_ppt_slide", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateDiagramFromPPTSlide makeNewAction(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateExampleDiagramFromPPTSlide makeNewAction(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection,
 				FlexoEditor editor) {
-			return new CreateDiagramFromPPTSlide(focusedObject, globalSelection, editor);
+			return new CreateExampleDiagramFromPPTSlide(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
 			return object != null;
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(CreateDiagramFromPPTSlide.actionType, RepositoryFolder.class);
+		FlexoObjectImpl.addActionForClass(CreateExampleDiagramFromPPTSlide.actionType, DiagramSpecification.class);
 	}
 
-	CreateDiagramFromPPTSlide(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateExampleDiagramFromPPTSlide(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
@@ -79,31 +79,19 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
 				DiagramTechnologyAdapter.class);
 
-		setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), null));
-
-		getFocusedObject().addToResources(getDiagramResource());
+		setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), getFocusedObject().getResource()));
+		getFocusedObject().getResource().addToContents(getDiagramResource());
 
 		getDiagramResource().save(null);
 		if (getSlide() != null){
-		convertSlideToDiagram(getSlide());
+		super.convertSlideToDiagram(getSlide());
 		}
 		else {
 			System.out.println("Error: no Slide");
 		}
 	}
-
+	
 	@Override
-	public String getDiagramURI() {
-		if (super.getDiagramURI() == null) {
-			return getDefaultDiagramURI();
-		}
-		return super.getDiagramURI();
-	}
-
-	public String getDefaultDiagramURI() {
-		return getFocusedObject().getResourceRepository().generateURI(getDiagramName());
-	}
-
 	public File getDiagramFile() {
 		if (super.getDiagramFile() == null) {
 			return getDefaultDiagramFile();
@@ -111,8 +99,12 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		return super.getDiagramFile();
 	}
 
-	public File getDefaultDiagramFile() {
-		return new File(getFocusedObject().getFile(), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
+	@Override
+	public void setDiagramFile(File diagramFile) {
+		setDiagramFile(diagramFile);
 	}
 
+	public File getDefaultDiagramFile() {
+		return new File(getFocusedObject().getResource().getDirectory(), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
+	}
 }
