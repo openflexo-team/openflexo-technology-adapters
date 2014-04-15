@@ -52,6 +52,7 @@ import org.openflexo.foundation.viewpoint.editionaction.DeclareFlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
 import org.openflexo.foundation.viewpoint.inspector.FlexoConceptInspector;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -145,7 +146,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 	private IndividualRole<?> individualFlexoRole;
 
-	private DropScheme selectedDropScheme;
+	private DropScheme dropScheme;
 
 	DeclareShapeInFlexoConcept(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
@@ -189,12 +190,12 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 				if (getSelectedEntriesCount() == 0) {
 					errorMessage = NO_SELECTED_ENTRY;
 				}
-				if (!editionSchemesNamedAreValid()) {
+				/*if (!editionSchemesNamedAreValid()) {
 					errorMessage = A_SCHEME_NAME_IS_NOT_VALID;
-				}
+				}*/
 				return StringUtils.isNotEmpty(getFlexoConceptName()) && concept != null
-						&& StringUtils.isNotEmpty(getIndividualFlexoRoleName()) && getSelectedEntriesCount() > 0
-						&& editionSchemesNamedAreValid();
+						&& StringUtils.isNotEmpty(getIndividualFlexoRoleName()) && getSelectedEntriesCount() > 0;
+						//&& editionSchemesNamedAreValid();
 
 			case MAP_SINGLE_FLEXO_CONCEPT:
 				if (StringUtils.isEmpty(getFlexoConceptName())) {
@@ -209,12 +210,12 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 				if (getSelectedEntriesCount() == 0) {
 					errorMessage = NO_SELECTED_ENTRY;
 				}
-				if (!editionSchemesNamedAreValid()) {
+				/*if (!editionSchemesNamedAreValid()) {
 					errorMessage = A_SCHEME_NAME_IS_NOT_VALID;
-				}
+				}*/
 				return StringUtils.isNotEmpty(getFlexoConceptName()) && virtualModelConcept != null
-						&& StringUtils.isNotEmpty(getVirtualModelFlexoRoleName()) && getSelectedEntriesCount() > 0
-						&& editionSchemesNamedAreValid();
+						&& StringUtils.isNotEmpty(getVirtualModelFlexoRoleName()) && getSelectedEntriesCount() > 0;
+						//&& editionSchemesNamedAreValid();
 
 			case BLANK_FLEXO_CONCEPT:
 				if (StringUtils.isEmpty(getFlexoConceptName())) {
@@ -223,10 +224,10 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 				if (getSelectedEntriesCount() == 0) {
 					errorMessage = NO_SELECTED_ENTRY;
 				}
-				if (!editionSchemesNamedAreValid()) {
+				/*if (!editionSchemesNamedAreValid()) {
 					errorMessage = A_SCHEME_NAME_IS_NOT_VALID;
-				}
-				return StringUtils.isNotEmpty(getFlexoConceptName()) && getSelectedEntriesCount() > 0 && editionSchemesNamedAreValid();
+				}*/
+				return StringUtils.isNotEmpty(getFlexoConceptName()) && getSelectedEntriesCount() > 0; //&& editionSchemesNamedAreValid();
 			default:
 				break;
 			}
@@ -265,14 +266,6 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 	public void setConcept(IFlexoOntologyClass concept) {
 		this.concept = concept;
-		/*propertyEntries.clear();
-		IFlexoOntology ownerOntology = concept.getOntology();
-		for (IFlexoOntologyFeature p : concept.getPropertiesTakingMySelfAsDomain()) {
-			if (p.getOntology() == ownerOntology && p instanceof IFlexoOntologyStructuralProperty) {
-				PropertyEntry newEntry = new PropertyEntry((IFlexoOntologyStructuralProperty) p);
-				propertyEntries.add(newEntry);
-			}
-		}*/
 	}
 
 	public FlexoConcept getVirtualModelConcept() {
@@ -445,11 +438,11 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 				case BLANK_FLEXO_CONCEPT:
 
 					// Create new flexo concept
-					newFlexoConcept = getFactory().newFlexoConcept();
+					newFlexoConcept = getVirtualModel().getVirtualModelFactory().newFlexoConcept();
 					newFlexoConcept.setName(getFlexoConceptName());
 
 					// And add the newly created flexo concept
-					getDiagramModelSlot().getVirtualModel().addToFlexoConcepts(newFlexoConcept);
+					getVirtualModel().addToFlexoConcepts(newFlexoConcept);
 
 					// Find best URI base candidate
 					// PropertyEntry mainPropertyDescriptor = selectBestEntryForURIBaseName();
@@ -488,6 +481,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 								DiagramShape grShape = (DiagramShape) entry.graphicalObject;
 								ShapeRole newShapeRole = getFactory().newInstance(ShapeRole.class);
 								newShapeRole.setRoleName(entry.patternRoleName);
+								newShapeRole.setModelSlot(getTypedDiagramModelSlot());
 								/*if (mainPropertyDescriptor != null && entry.isMainEntry()) {
 									newShapeFlexoRole.setLabel(new DataBinding<String>(getIndividualFlexoRoleName() + "."
 											+ mainPropertyDescriptor.property.getName()));
@@ -930,7 +924,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		return editionScheme;
 	}
 
-	public DropScheme getDropScheme(FlexoBehaviourConfiguration conf) {
+	/*public DropScheme getDropScheme(FlexoBehaviourConfiguration conf) {
 		if (conf != null) {
 			if (conf.getFlexoBehaviour() instanceof DropScheme) {
 				selectedDropScheme = (DropScheme) conf.getFlexoBehaviour();
@@ -938,9 +932,9 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 			}
 		}
 		return null;
-	}
+	}*/
 
-	public void addFlexoBehaviourConfigurationDropAndCreate() {
+	/*public void addFlexoBehaviourConfigurationDropAndCreate() {
 		FlexoBehaviourConfiguration editionSchemeConfiguration = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.DROP_AND_CREATE);
 		getFlexoBehaviours().add(editionSchemeConfiguration);
 	}
@@ -948,23 +942,25 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 	public void addFlexoBehaviourConfigurationDropAndSelect() {
 		FlexoBehaviourConfiguration editionSchemeConfiguration = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.DROP_AND_SELECT);
 		getFlexoBehaviours().add(editionSchemeConfiguration);
-	}
+	}*/
 
 	@Override
 	public void initializeBehaviours() {
-		FlexoBehaviourConfiguration dropFlexoBehaviour = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.DROP_AND_CREATE);
+	/*	FlexoBehaviourConfiguration dropFlexoBehaviour = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.DROP_AND_CREATE);
 		if (dropFlexoBehaviour.getFlexoBehaviour() != null) {
 			dropFlexoBehaviour.getFlexoBehaviour().setName("drop");
 		}
-		getFlexoBehaviours().add(dropFlexoBehaviour);
+		getFlexoBehaviours().add(dropFlexoBehaviour);*/
 	}
-
+/*
 	private List<FlexoConcept> editionPatternsDropList;
 
 	public List<FlexoConcept> getFlexoConceptsDrop() {
 		if (editionPatternsDropList == null) {
 			editionPatternsDropList = new ArrayList<FlexoConcept>();
-			editionPatternsDropList.addAll(getVirtualModel().getFlexoConcepts());
+			if(getVirtualModel()!=null){
+				editionPatternsDropList.addAll(getVirtualModel().getFlexoConcepts());
+			}
 		}
 		if (selectedDropScheme != null && getVirtualModel().getFlexoConcept(selectedDropScheme._getTarget()) != null) {
 			FlexoConcept currentFromEp = getVirtualModel().getFlexoConcept(selectedDropScheme._getTarget());
@@ -977,6 +973,14 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 			}
 		}
 		return editionPatternsDropList;
+	}*/
+
+	public DropScheme getDropScheme() {
+		return dropScheme;
+	}
+
+	public void setDropScheme(DropScheme dropScheme) {
+		this.dropScheme = dropScheme;
 	}
 
 }
