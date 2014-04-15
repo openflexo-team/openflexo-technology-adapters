@@ -202,8 +202,9 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new ExportDiagramToImageInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingInitializer(actionInitializer);
 
-		// Set the screenshot builder
+		// Set the screenshot builders
 		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());
+		getTechnologyAdapter().setDiagramShapeScreenshotBuilder(new DiagramShapeScreenshotBuilder());
 
 		// Add paste handlers
 		diagramElementPasteHandler = new DiagramElementPasteHandler(actionInitializer.getController().getSelectionManager());
