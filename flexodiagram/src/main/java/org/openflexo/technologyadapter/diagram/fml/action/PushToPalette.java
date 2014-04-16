@@ -44,6 +44,7 @@ import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.foundation.viewpoint.rm.ViewPointResource;
 import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
@@ -110,6 +111,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	private String newElementName;
 	public boolean takeScreenshotForTopLevelElement = true;
 	public boolean overrideDefaultGraphicalRepresentations = false;
+	
+	private String errorMessage;
 
 	private ScreenshotImage<DiagramShape> screenshot;
 	public int imageWidth;
@@ -257,9 +260,54 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 	@Override
 	public boolean isValid() {
-		return StringUtils.isNotEmpty(newElementName) && palette != null && flexoConcept != null && dropScheme != null;
+		if(!StringUtils.isNotEmpty(newElementName)){
+			setErrorMessage(noNameMessage());
+			return false;
+		}
+		
+		if(palette==null){
+			setErrorMessage(noPaletteSelectedMessage());
+			return false;
+		}
+		
+		if(flexoConcept==null){
+			setErrorMessage(noFlexoConceptSelectedMessage());
+			return false;
+		}
+		
+		if(dropScheme==null){
+			setErrorMessage(noDropSchemeSelectedMessage());
+			return false;
+		}
+		
+		if(virtualModel==null){
+			setErrorMessage(noVirtualModelSelectedMessage());
+			return false;
+		}
+		
+		return true;
 	}
 
+	public String noNameMessage() {
+		return FlexoLocalization.localizedForKey("no_palette_element_name_defined");
+	}
+
+	public String noPaletteSelectedMessage() {
+		return FlexoLocalization.localizedForKey("no_palette_selected");
+	}
+	
+	public String noFlexoConceptSelectedMessage() {
+		return FlexoLocalization.localizedForKey("no_flexo_concept_selected");
+	}
+	
+	public String noDropSchemeSelectedMessage() {
+		return FlexoLocalization.localizedForKey("no_drop_scheme_selected");
+	}
+	
+	public String noVirtualModelSelectedMessage() {
+		return FlexoLocalization.localizedForKey("no_virtual_model_selected");
+	}
+	
 	private List<DiagramElementEntry> diagramElementEntries;
 
 	public List<DiagramElementEntry> getDiagramElementEntries() {
@@ -438,4 +486,14 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		setVirtualModel(virtualModelResource.getVirtualModel());
 	}
 
+	public String getErrorMessage() {
+		isValid();
+		// System.out.println("valid=" + isValid());
+		// System.out.println("errorMessage=" + errorMessage);
+		return errorMessage;
+	}
+	
+	public void setErrorMessage(String message){
+		this.errorMessage = message;
+	}
 }
