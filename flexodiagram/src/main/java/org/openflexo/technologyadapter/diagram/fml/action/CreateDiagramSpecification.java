@@ -19,6 +19,8 @@
  */
 package org.openflexo.technologyadapter.diagram.fml.action;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -86,9 +88,30 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 	}
 
-	public boolean isNewVirtualModelNameValid() {
+	public boolean isNewDiagramSpecificationNameValid() {
 		if (StringUtils.isEmpty(newDiagramSpecificationName)) {
-			errorMessage = "please_supply_valid_virtual_model_name";
+			errorMessage = "please_supply_valid_diagram_specification_name";
+			return false;
+		}
+		return true;
+	}
+	
+	public boolean isNewDiagramSpecificationUriValid() {
+		if (StringUtils.isEmpty(newDiagramSpecificationURI)) {
+			errorMessage = "please_supply_valid_diagram_specification_uri";
+			return false;
+		} try {
+			new URL(newDiagramSpecificationURI);
+		} catch (MalformedURLException e) {
+			errorMessage = "malformed_uri";
+			return false;
+		}
+		if (getFocusedObject().getResourceRepository() == null) {
+			errorMessage = "could_not_access_registered_resources";
+			return false;
+		}
+		if (getFocusedObject().getResourceRepository().getResource(newDiagramSpecificationURI) != null) {
+			errorMessage = "already_existing_diagram_specification_uri";
 			return false;
 		}
 		return true;
@@ -98,7 +121,9 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 	@Override
 	public boolean isValid() {
-		if (!isNewVirtualModelNameValid()) {
+		if (!isNewDiagramSpecificationNameValid()) {
+			return false;
+		} if (!isNewDiagramSpecificationUriValid()) {
 			return false;
 		}
 		return true;
