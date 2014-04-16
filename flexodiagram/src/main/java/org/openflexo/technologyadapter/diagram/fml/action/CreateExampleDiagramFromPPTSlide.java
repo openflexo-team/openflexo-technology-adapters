@@ -75,13 +75,13 @@ public class CreateExampleDiagramFromPPTSlide extends AbstractCreateDiagramFromP
 	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException,
 			InvalidFileNameException {
 		logger.info("Add diagram from ppt slide");
-
+		String newDiagramURI = getFocusedObject().getURI() + "/" + getDiagramName();
 		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
 				DiagramTechnologyAdapter.class);
 
-		setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), getFocusedObject().getResource()));
+		setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), newDiagramURI, getDiagramFile(), getFocusedObject().getResource()));
 		getFocusedObject().getResource().addToContents(getDiagramResource());
-
+		getFocusedObject().addToExampleDiagrams(getDiagramResource().getDiagram());
 		getDiagramResource().save(null);
 		if (getSlide() != null){
 		super.convertSlideToDiagram(getSlide());

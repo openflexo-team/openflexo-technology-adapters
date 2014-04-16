@@ -93,7 +93,7 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 		newDiagramResource = DiagramImpl.newDiagramResource(newDiagramName, newDiagramTitle, newDiagramURI, newDiagramFile,
 				getFocusedObject(), getServiceManager());
 		getFocusedObject().getResource().addToContents(newDiagramResource);
-
+		getFocusedObject().addToExampleDiagrams(newDiagramResource.getDiagram());
 		newDiagramResource.getDiagram().setDescription(description);
 		newDiagramResource.save(null);
 
