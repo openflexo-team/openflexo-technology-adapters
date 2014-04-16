@@ -57,6 +57,7 @@ import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualMo
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
+import org.openflexo.technologyadapter.diagram.fml.action.DeclareInFlexoConcept.DeclareInFlexoConceptChoices;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
@@ -123,6 +124,12 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	static {
 		FlexoObjectImpl.addActionForClass(PushToPalette.actionType, DiagramShape.class);
 	}
+	
+	public static enum PushToPaletteChoices {
+		CONFIGURE_FML_CONTROL, FREE
+	}
+	
+	public PushToPaletteChoices primaryChoice = PushToPaletteChoices.CONFIGURE_FML_CONTROL;
 
 	protected PushToPalette(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
@@ -198,14 +205,17 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 			_newPaletteElement = palette.addPaletteElement(newElementName, graphicalRepresentation);
 
-			FMLDiagramPaletteElementBinding newBinding = getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
-			newBinding.setPaletteElement(_newPaletteElement);
-			newBinding.setDiagramModelSlot(getDiagramModelSlot());
-			newBinding.setFlexoConcept(flexoConcept);
-			newBinding.setDropScheme(dropScheme);
-			newBinding.setBoundLabelToElementName(!takeScreenshotForTopLevelElement);
-			
-			getDiagramModelSlot().addToPaletteElementBindings(newBinding);
+			if(primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)){
+				FMLDiagramPaletteElementBinding newBinding = getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
+				newBinding.setPaletteElement(_newPaletteElement);
+				newBinding.setDiagramModelSlot(getDiagramModelSlot());
+				newBinding.setFlexoConcept(flexoConcept);
+				newBinding.setDropScheme(dropScheme);
+				newBinding.setBoundLabelToElementName(!takeScreenshotForTopLevelElement);
+				
+				getDiagramModelSlot().addToPaletteElementBindings(newBinding);
+			}
+		
 
 			/*for (DrawingObjectEntry entry : diagramElementEntries) {
 				if(!entry.isMainEntry()){
@@ -270,19 +280,21 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			return false;
 		}
 		
-		if(flexoConcept==null){
-			setErrorMessage(noFlexoConceptSelectedMessage());
-			return false;
-		}
-		
-		if(dropScheme==null){
-			setErrorMessage(noDropSchemeSelectedMessage());
-			return false;
-		}
-		
-		if(virtualModel==null){
-			setErrorMessage(noVirtualModelSelectedMessage());
-			return false;
+		if(primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)){
+			if(flexoConcept==null){
+				setErrorMessage(noFlexoConceptSelectedMessage());
+				return false;
+			}
+			
+			if(dropScheme==null){
+				setErrorMessage(noDropSchemeSelectedMessage());
+				return false;
+			}
+			
+			if(virtualModel==null){
+				setErrorMessage(noVirtualModelSelectedMessage());
+				return false;
+			}
 		}
 		
 		return true;
