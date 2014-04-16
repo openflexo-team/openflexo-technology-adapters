@@ -21,11 +21,13 @@ package org.openflexo.technologyadapter.diagram.controller.paletteeditor;
 
 import javax.swing.JTabbedPane;
 
+import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaPalette;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.selection.SelectionManagingDianaEditor;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.view.controller.FlexoController;
@@ -60,8 +62,9 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 				flexoController.removeModuleView(moduleView);
 			}
 		}
-		super.delete();
 		getDrawing().delete();
+		getPalettePalette().delete();
+		super.delete();
 	}
 
 	public FlexoController getFlexoController() {
@@ -96,6 +99,13 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 	}
 
 	public DiagramPalette getDiagramPalette() {
+		// Temporary code to Ensure GRs can be edited
+		for(DiagramPaletteElement pal : getDrawing().getRoot().getDrawable().getElements()){
+			pal.getGraphicalRepresentation().setIsFocusable(true);
+			pal.getGraphicalRepresentation().setIsSelectable(true);
+			pal.getGraphicalRepresentation().setIsReadOnly(false);
+			pal.getGraphicalRepresentation().setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
+		}
 		return getDrawing().getModel();
 	}
 

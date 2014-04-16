@@ -23,6 +23,8 @@ import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModelNature;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 
 /**
  * Define the "controlled-diagram" nature of a {@link VirtualModel}<br>
@@ -61,6 +63,10 @@ public class FMLControlledDiagramVirtualModelNature implements VirtualModelNatur
 		return true;
 	}
 
+	public static boolean hasDiagramSpecification(VirtualModel virtualModel,DiagramSpecification diagramSpecification) {
+		return (((DiagramSpecificationResource)getTypedDiagramModelSlot(virtualModel).getMetaModelResource()).getDiagramSpecification().equals(diagramSpecification));
+	}
+	
 	public static TypedDiagramModelSlot getTypedDiagramModelSlot(VirtualModel virtualModel) {
 		return INSTANCE._getTypedDiagramModelSlot(virtualModel);
 	}

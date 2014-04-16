@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.List;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -82,5 +83,7 @@ public interface DiagramShape extends DiagramContainerElement<ShapeGraphicalRepr
 
 	@Remover(END_CONNECTORS)
 	public void removeFromEndConnectors(DiagramConnector aConnector);
+	
+	public ScreenshotImage<DiagramShape> getScreenshotImage();
 
 }

@@ -197,6 +197,11 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 			}
 			return diagramModelSlot;
 		}
+		
+		@Override
+		public void setDiagramModelSlot(TypedDiagramModelSlot diagramModelSlot) {
+			this.diagramModelSlot = diagramModelSlot;
+		}
 
 		@Override
 		public ViewPoint getViewPoint() {

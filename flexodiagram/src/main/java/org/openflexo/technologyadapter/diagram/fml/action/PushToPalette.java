@@ -31,6 +31,7 @@ import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.DimensionConstraints;
+import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
@@ -40,6 +41,8 @@ import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
+import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
@@ -48,6 +51,7 @@ import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -91,6 +95,10 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	};
 
 	private TypedDiagramModelSlot diagramModelSlot;
+	
+	private VirtualModel virtualModel;
+	
+	private VirtualModelResource virtualModelResource;
 
 	public GraphicalRepresentation graphicalRepresentation;
 	public DiagramPalette palette;
@@ -101,6 +109,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	private String newElementName;
 	public boolean takeScreenshotForTopLevelElement = true;
 	public boolean overrideDefaultGraphicalRepresentations = false;
+	
+	private String errorMessage;
 
 	private ScreenshotImage<DiagramShape> screenshot;
 	public int imageWidth;
@@ -111,6 +121,12 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	static {
 		FlexoObjectImpl.addActionForClass(PushToPalette.actionType, DiagramShape.class);
 	}
+	
+	public static enum PushToPaletteChoices {
+		CONFIGURE_FML_CONTROL, FREE
+	}
+	
+	public PushToPaletteChoices primaryChoice = PushToPaletteChoices.CONFIGURE_FML_CONTROL;
 
 	protected PushToPalette(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
@@ -125,7 +141,10 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	 * @return
 	 */
 	public TypedDiagramModelSlot getDiagramModelSlot() {
-		return diagramModelSlot;
+		if(virtualModel!=null){
+			return FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(virtualModel);
+		}
+		return null;
 	}
 
 	/**
@@ -134,9 +153,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	 * 
 	 * @return
 	 */
-	public void setDiagramModelSlot(TypedDiagramModelSlot diagramModelSlot) {
+	/*public void setDiagramModelSlot(TypedDiagramModelSlot diagramModelSlot) {
 		this.diagramModelSlot = diagramModelSlot;
-	}
+	}*/
 
 	@Override
 	protected void doAction(Object context) {
@@ -181,15 +200,20 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 				}
 			}
 
+			((ShapeGraphicalRepresentation)graphicalRepresentation).setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
 			_newPaletteElement = palette.addPaletteElement(newElementName, graphicalRepresentation);
 
-			FMLDiagramPaletteElementBinding newBinding = getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
-			newBinding.setPaletteElement(_newPaletteElement);
-			newBinding.setFlexoConcept(flexoConcept);
-			newBinding.setDropScheme(dropScheme);
-			newBinding.setBoundLabelToElementName(!takeScreenshotForTopLevelElement);
-
-			diagramModelSlot.addToPaletteElementBindings(newBinding);
+			if(primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)){
+				FMLDiagramPaletteElementBinding newBinding = getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
+				newBinding.setPaletteElement(_newPaletteElement);
+				newBinding.setDiagramModelSlot(getDiagramModelSlot());
+				newBinding.setFlexoConcept(flexoConcept);
+				newBinding.setDropScheme(dropScheme);
+				newBinding.setBoundLabelToElementName(!takeScreenshotForTopLevelElement);
+				
+				getDiagramModelSlot().addToPaletteElementBindings(newBinding);
+			}
+		
 
 			/*for (DrawingObjectEntry entry : diagramElementEntries) {
 				if(!entry.isMainEntry()){
@@ -244,9 +268,56 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 	@Override
 	public boolean isValid() {
-		return StringUtils.isNotEmpty(newElementName) && palette != null && flexoConcept != null && dropScheme != null;
+		if(!StringUtils.isNotEmpty(newElementName)){
+			setErrorMessage(noNameMessage());
+			return false;
+		}
+		
+		if(palette==null){
+			setErrorMessage(noPaletteSelectedMessage());
+			return false;
+		}
+		
+		if(primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)){
+			if(flexoConcept==null){
+				setErrorMessage(noFlexoConceptSelectedMessage());
+				return false;
+			}
+			
+			if(dropScheme==null){
+				setErrorMessage(noDropSchemeSelectedMessage());
+				return false;
+			}
+			
+			if(virtualModel==null){
+				setErrorMessage(noVirtualModelSelectedMessage());
+				return false;
+			}
+		}
+		
+		return true;
 	}
 
+	public String noNameMessage() {
+		return FlexoLocalization.localizedForKey("no_palette_element_name_defined");
+	}
+
+	public String noPaletteSelectedMessage() {
+		return FlexoLocalization.localizedForKey("no_palette_selected");
+	}
+	
+	public String noFlexoConceptSelectedMessage() {
+		return FlexoLocalization.localizedForKey("no_flexo_concept_selected");
+	}
+	
+	public String noDropSchemeSelectedMessage() {
+		return FlexoLocalization.localizedForKey("no_drop_scheme_selected");
+	}
+	
+	public String noVirtualModelSelectedMessage() {
+		return FlexoLocalization.localizedForKey("no_virtual_model_selected");
+	}
+	
 	private List<DiagramElementEntry> diagramElementEntries;
 
 	public List<DiagramElementEntry> getDiagramElementEntries() {
@@ -371,7 +442,10 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public ScreenshotImage<DiagramShape> getScreenshot() {
-		return screenshot;
+		if(this.screenshot==null ||this.screenshot != ((DiagramShape)getFocusedObject()).getScreenshotImage()){
+			setScreenshot((ScreenshotImage<DiagramShape>) ((DiagramShape)getFocusedObject()).getScreenshotImage());
+		}
+		return this.screenshot;
 	}
 
 	public void setScreenshot(ScreenshotImage<DiagramShape> screenshot) {
@@ -399,10 +473,11 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public VirtualModel getVirtualModel() {
-		if (getDiagramModelSlot() != null) {
-			return getDiagramModelSlot().getVirtualModel();
-		}
-		return null;
+		return virtualModel;
+	}
+	
+	public void setVirtualModel(VirtualModel virtualModel) {
+		this.virtualModel = virtualModel;
 	}
 
 	public VirtualModelModelFactory getFactory() {
@@ -412,4 +487,23 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		return null;
 	}
 
+	public VirtualModelResource getVirtualModelResource() {
+		return virtualModelResource;
+	}
+
+	public void setVirtualModelResource(VirtualModelResource virtualModelResource) {
+		this.virtualModelResource = virtualModelResource;
+		setVirtualModel(virtualModelResource.getVirtualModel());
+	}
+
+	public String getErrorMessage() {
+		isValid();
+		// System.out.println("valid=" + isValid());
+		// System.out.println("errorMessage=" + errorMessage);
+		return errorMessage;
+	}
+	
+	public void setErrorMessage(String message){
+		this.errorMessage = message;
+	}
 }

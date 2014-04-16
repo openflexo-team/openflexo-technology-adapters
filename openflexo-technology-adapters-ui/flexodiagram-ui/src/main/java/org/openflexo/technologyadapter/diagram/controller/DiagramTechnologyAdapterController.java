@@ -53,6 +53,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramFr
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPaletteInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSpecificationInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
@@ -179,6 +180,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new DeclareConnectorInFlexoConceptInitializer(actionInitializer);
 		new DeleteExampleDiagramElementsInitializer(actionInitializer);
 		new CreateDiagramFromPPTSlideInitializer(actionInitializer);
+		new CreateExampleDiagramFromPPTSlideInitializer(actionInitializer);
 
 		// DiagramPalette edition
 		new CreateDiagramPaletteInitializer(actionInitializer);
@@ -202,8 +204,9 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new ExportDiagramToImageInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingInitializer(actionInitializer);
 
-		// Set the screenshot builder
+		// Set the screenshot builders
 		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());
+		getTechnologyAdapter().setDiagramShapeScreenshotBuilder(new DiagramShapeScreenshotBuilder());
 
 		// Add paste handlers
 		diagramElementPasteHandler = new DiagramElementPasteHandler(actionInitializer.getController().getSelectionManager());
