@@ -55,7 +55,7 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 		return new FlexoActionInitializer<PushToPalette>() {
 			@Override
 			public boolean run(EventObject e, PushToPalette action) {
-				if (getController().getCurrentModuleView() instanceof FreeDiagramModuleView
+			/*	if (getController().getCurrentModuleView() instanceof FreeDiagramModuleView
 						&& action.getFocusedObject().getGraphicalRepresentation() instanceof ShapeGraphicalRepresentation) {
 					DiagramEditor c = ((FreeDiagramModuleView) getController().getCurrentModuleView()).getEditor();
 					ShapeNode<DiagramShape> shapeNode = c.getDrawing().getShapeNode(action.getFocusedObject());
@@ -66,11 +66,11 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 					ShadowStyle ss = gr.getShadowStyle();
 					// TODO: refactor this (see ScreenshotBuilder)
 					logger.warning("Please repair ScreenshotGenerator");
-					/*action.setScreenshot(ScreenshotGenerator.makeImage(image, b.getLeft(), b.getTop(),
+					action.setScreenshot(ScreenshotGenerator.makeImage(image, b.getLeft(), b.getTop(),
 							(int) gr.getWidth() + (ss.getDrawShadow() ? ss.getShadowBlur() : 0) + 1,
-							(int) gr.getHeight() + (ss.getDrawShadow() ? ss.getShadowBlur() : 0) + 1));*/
+							(int) gr.getHeight() + (ss.getDrawShadow() ? ss.getShadowBlur() : 0) + 1));
 					// action.setScreenshot(ScreenshotGenerator.trimImage(image));
-				}
+				}*/
 
 				return instanciateAndShowDialog(action, DiagramCst.PUSH_TO_PALETTE_DIALOG_FIB);
 			}

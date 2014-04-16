@@ -19,21 +19,20 @@
  */
 package org.openflexo.technologyadapter.diagram.controller;
 
-import java.io.File;
-
 import javax.swing.JComponent;
 
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramEditor;
-import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
 
 public class DiagramShapeScreenshotBuilder extends ScreenshotBuilder<DiagramShape> {
+	
+	public DiagramShapeScreenshotBuilder() {
+		setHasParent(true);
+	}
+	
 	@Override
 	public String getScreenshotName(DiagramShape o) {
 		return o.getName();
@@ -41,20 +40,10 @@ public class DiagramShapeScreenshotBuilder extends ScreenshotBuilder<DiagramShap
 
 	@Override
 	public JComponent getScreenshotComponent(DiagramShape diagramShape) {
-		/*DiagramFactory df = diagramShape.getDiagram().getDiagramFactory(); 
-		Diagram newDiagram = df.makeNewDiagram();
-		DiagramResource diagramResource = DiagramResourceImpl.makeDiagramResource(diagramShape.getName(),"",new File(""),
-				diagramShape.getDiagram().getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-		newDiagram.setResource(diagramResource);
-		DiagramShape newShape = df.makeNewShape(diagramShape.getName(), newDiagram);
-		newShape.getGraphicalRepresentation().setsWith(diagramShape.getGraphicalRepresentation());
-		*/
-		
-		// TODO Investigate why this causes an exception
 		FreeDiagramEditor editor = new FreeDiagramEditor(diagramShape.getDiagram(), true);
 		ShapeNode<DiagramShape> shapeNode = editor.getDrawing().getShapeNode(diagramShape);
 		JShapeView<DiagramShape> shapeView = editor.getDrawingView().shapeViewForNode(shapeNode);
-		
-		return null;
+		return shapeView;
 	}
+	
 }

@@ -22,7 +22,6 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
@@ -32,6 +31,7 @@ import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.DimensionConstraints;
+import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
@@ -39,10 +39,8 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
-import org.openflexo.foundation.viewpoint.rm.ViewPointResource;
 import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
@@ -57,7 +55,6 @@ import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualMo
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
-import org.openflexo.technologyadapter.diagram.fml.action.DeclareInFlexoConcept.DeclareInFlexoConceptChoices;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
@@ -203,6 +200,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 				}
 			}
 
+			((ShapeGraphicalRepresentation)graphicalRepresentation).setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
 			_newPaletteElement = palette.addPaletteElement(newElementName, graphicalRepresentation);
 
 			if(primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)){
@@ -445,7 +443,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 	public ScreenshotImage<DiagramShape> getScreenshot() {
 		if(this.screenshot==null ||this.screenshot != ((DiagramShape)getFocusedObject()).getScreenshotImage()){
-			this.screenshot = (ScreenshotImage<DiagramShape>) ((DiagramShape)getFocusedObject()).getScreenshotImage();
+			setScreenshot((ScreenshotImage<DiagramShape>) ((DiagramShape)getFocusedObject()).getScreenshotImage());
 		}
 		return this.screenshot;
 	}
