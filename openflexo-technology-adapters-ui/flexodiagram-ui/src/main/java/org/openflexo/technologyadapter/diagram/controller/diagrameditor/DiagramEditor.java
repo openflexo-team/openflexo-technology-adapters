@@ -75,11 +75,15 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	private JDianaLayoutWidget layoutWidget;
 	private JDianaStyles stylesWidget;
 	private JDianaPalette commonPalette;
-	private CommonPalette commonPaletteModel;
-	private Hashtable<DiagramPalette, ContextualPalette> contextualPaletteModels;
+	private AbstractDiagramPalette commonPaletteModel;
+	private Hashtable<DiagramPalette, AbstractDiagramPalette> contextualPaletteModels;
 	private Hashtable<DiagramPalette, JDianaPalette> contextualPalettes;
 
 	private final SwingToolFactory swingToolFactory;
+
+	public AbstractDiagramPalette makeCommonPalette() {
+		return new CommonPalette(this);
+	}
 
 	public DiagramEditor(AbstractDiagramDrawing diagramDrawing, boolean readOnly, FlexoController controller,
 			SwingToolFactory swingToolFactory) {
@@ -106,12 +110,12 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			toolsPanel.add(stylesWidget.getComponent());
 			toolsPanel.add(layoutWidget.getComponent());
 
-			commonPaletteModel = new CommonPalette(this);
+			commonPaletteModel = makeCommonPalette();
 
 			commonPalette = swingToolFactory.makeDianaPalette(commonPaletteModel);
 			commonPalette.attachToEditor(this);
 
-			contextualPaletteModels = new Hashtable<DiagramPalette, ContextualPalette>();
+			contextualPaletteModels = new Hashtable<DiagramPalette, AbstractDiagramPalette>();
 			contextualPalettes = new Hashtable<DiagramPalette, JDianaPalette>();
 
 			System.out.println("Hop, je regarde les palettes pour le DiagramSpecification="
@@ -259,7 +263,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 					DiagramPalette palette = (DiagramPalette) evt.getOldValue();
 					JDianaPalette removedPalette = contextualPalettes.get(palette);
 					removedPalette.delete();
-					ContextualPalette removedPaletteModel = contextualPaletteModels.get(palette);
+					AbstractDiagramPalette removedPaletteModel = contextualPaletteModels.get(palette);
 					removedPaletteModel.delete();
 					// unregisterPalette(removedPalette);
 					contextualPalettes.remove(palette);

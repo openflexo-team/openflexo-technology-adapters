@@ -233,7 +233,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(newVirtualModelInstance, null, editor);
 		action.setDropScheme(dropScheme);
 		action.setParent(diagram);
-		action.setPaletteElement(paletteElement);
+		// action.setPaletteElement(paletteElement);
 		action.setDropLocation(new FGEPoint(100, 100));
 
 		action.doAction();

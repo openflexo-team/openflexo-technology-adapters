@@ -56,6 +56,7 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 		@Override
 		public boolean isEnabledForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
+			System.out.println("enabled ???? " + object);
 			return object != null;
 		}
 

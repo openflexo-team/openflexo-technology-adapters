@@ -69,7 +69,7 @@ public class CreateFMLControlledDiagramVirtualModelInstance extends
 
 	@Override
 	public CreateFMLControlledDiagramVirtualModelInstance doAction() {
-		System.out.println("Creating ControlledDiagramVirtualModelInstance");
+		System.out.println("Creating FMLControlledDiagramVirtualModelInstance");
 		return super.doAction();
 	}
 

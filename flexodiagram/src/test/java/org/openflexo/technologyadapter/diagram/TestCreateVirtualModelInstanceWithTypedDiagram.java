@@ -190,11 +190,11 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	}
 
 	/**
-	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
+	 * Reload project, check that everything is still ok
 	 * 
-	 * @throws FlexoException
-	 * @throws ResourceLoadingCancelledException
 	 * @throws FileNotFoundException
+	 * @throws ResourceLoadingCancelledException
+	 * @throws FlexoException
 	 */
 	@Test
 	@TestOrder(6)
