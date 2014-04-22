@@ -454,19 +454,23 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public void _setDeclaredGRSpecifications(List<GraphicalElementSpecification<?, GR>> someSpecs) {
-			for (GraphicalElementSpecification<?, GR> s : someSpecs) {
-				_addToDeclaredGRSpecifications(s);
+			if (someSpecs != null) {
+				for (GraphicalElementSpecification<?, GR> s : someSpecs) {
+					_addToDeclaredGRSpecifications(s);
+				}
 			}
 		}
 
 		@Override
 		public void _addToDeclaredGRSpecifications(GraphicalElementSpecification<?, GR> aSpec) {
-			GraphicalElementSpecification<?, ?> existingSpec = getGraphicalElementSpecification(aSpec.getFeatureName());
-			if (existingSpec == null) {
-				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
-			} else {
-				existingSpec.setValue(aSpec.getValue());
-				existingSpec.setReadOnly(aSpec.getReadOnly());
+			if (aSpec != null) {
+				GraphicalElementSpecification<?, ?> existingSpec = getGraphicalElementSpecification(aSpec.getFeatureName());
+				if (existingSpec == null) {
+					logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
+				} else {
+					existingSpec.setValue(aSpec.getValue());
+					existingSpec.setReadOnly(aSpec.getReadOnly());
+				}
 			}
 		}
 
