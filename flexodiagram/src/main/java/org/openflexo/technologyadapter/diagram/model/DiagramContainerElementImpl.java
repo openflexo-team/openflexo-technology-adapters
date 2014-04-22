@@ -46,8 +46,6 @@ public abstract class DiagramContainerElementImpl<G extends GraphicalRepresentat
 
 	@Override
 	public void addToShapes(DiagramShape aShape) {
-		System.out.println("addToShapes() !!!!! Adding shape " + aShape);
-		System.out.println("Already present=" + getShapes().contains(aShape));
 		if (getShapes().contains(aShape)) {
 		}
 		performSuperAdder(SHAPES, aShape);

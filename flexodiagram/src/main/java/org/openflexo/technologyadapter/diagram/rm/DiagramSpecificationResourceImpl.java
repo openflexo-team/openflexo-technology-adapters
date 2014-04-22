@@ -75,7 +75,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
 			// returned.setFile(diagramSpecificationDirectory);
 
-			System.out.println("Looking infos in " + diagramSpecificationXMLFile);
+			// System.out.println("Looking infos in " + diagramSpecificationXMLFile);
 
 			DiagramSpecificationInfo vpi = findDiagramSpecificationInfo(diagramSpecificationXMLFile);
 			if (vpi == null) {
@@ -97,14 +97,12 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			logger.fine("DiagramSpecificationResource " + diagramSpecificationDirectory.getAbsolutePath() + " version "
 					+ returned.getModelVersion());
 
-			System.out.println("OK, je regarde les example diagrams maintenant");
-
 			// Now look for example diagrams
 			if (diagramSpecificationDirectory.exists() && diagramSpecificationDirectory.isDirectory()) {
 				for (File f : diagramSpecificationDirectory.listFiles()) {
 					if (f.getName().endsWith(".diagram")) {
 
-						System.out.println("Trouve un example diagram: " + f);
+						// System.out.println("Found example diagram: " + f);
 
 						DiagramResource exampleDiagramResource = DiagramResourceImpl.retrieveDiagramResource(f, serviceManager);
 						returned.addToContents(exampleDiagramResource);
@@ -114,14 +112,12 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 				}
 			}
 
-			System.out.println("OK, je regarde les palettes maintenant");
-
 			// Now look for palettes
 			if (diagramSpecificationDirectory.exists() && diagramSpecificationDirectory.isDirectory()) {
 				for (File f : diagramSpecificationDirectory.listFiles()) {
 					if (f.getName().endsWith(".palette")) {
 
-						System.out.println("Trouve une palette : " + f);
+						// System.out.println("Found a palette : " + f);
 
 						DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.retrieveDiagramPaletteResource(returned,
 								f, serviceManager);
@@ -130,8 +126,6 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 					}
 				}
 			}
-
-			System.out.println("Finalement, mes contents c'est: " + returned.getContents());
 
 			returned.setRelativePathFileConverter(new RelativePathFileConverter(diagramSpecificationDirectory));
 

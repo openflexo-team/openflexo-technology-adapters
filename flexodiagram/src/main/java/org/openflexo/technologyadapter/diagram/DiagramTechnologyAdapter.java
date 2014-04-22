@@ -65,7 +65,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	private static final Logger logger = Logger.getLogger(DiagramTechnologyAdapter.class.getPackage().getName());
 
 	private ScreenshotBuilder<Diagram> screenshotBuilder;
-	
+
 	private ScreenshotBuilder<DiagramShape> diagramShapeScreenshotBuilder;
 
 	public DiagramTechnologyAdapter() throws TechnologyAdapterInitializationException {
@@ -180,7 +180,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	private boolean isValidDiagramSpecificationFile(File candidateFile) {
 		if (candidateFile.exists() && candidateFile.isDirectory()
 				&& candidateFile.getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)) {
-			System.out.println("Found valid candidate for DiagramSpecification: " + candidateFile);
+			// System.out.println("Found valid candidate for DiagramSpecification: " + candidateFile);
 			return true;
 		}
 		return false;
@@ -327,7 +327,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	public void setScreenshotBuilder(ScreenshotBuilder<Diagram> screenshotBuilder) {
 		this.screenshotBuilder = screenshotBuilder;
 	}
-	
+
 	public ScreenshotBuilder<DiagramShape> getDiagramShapeScreenshotBuilder() {
 		return diagramShapeScreenshotBuilder;
 	}
