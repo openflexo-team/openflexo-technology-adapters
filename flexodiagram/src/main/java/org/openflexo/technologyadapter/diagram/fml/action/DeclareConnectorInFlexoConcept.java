@@ -172,7 +172,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				newFlexoConcept.setName(getFlexoConceptName());
 
 				// And add the newly created flexo concept
-				getDiagramModelSlot().getVirtualModel().addToFlexoConcepts(newFlexoConcept);
+				getVirtualModel().addToFlexoConcepts(newFlexoConcept);
 
 				// Find best URI base candidate
 				// PropertyEntry mainPropertyDescriptor = selectBestEntryForURIBaseName();
@@ -464,16 +464,16 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				if (StringUtils.isEmpty(getConnectorPatternRoleName())) {
 					errorMessage = CONNECTOR_PATTERN_ROLE_NAME_IS_NULL;
 				}
-				if (!editionSchemesNamedAreValid()) {
+				if (!StringUtils.isNotEmpty(linkSchemeName)) {
 					errorMessage = A_SCHEME_NAME_IS_NOT_VALID;
 				}
 				return StringUtils.isNotEmpty(getFlexoConceptName()) && concept != null
 						&& StringUtils.isNotEmpty(getIndividualPatternRoleName()) && StringUtils.isNotEmpty(getConnectorPatternRoleName())
-						&& editionSchemesNamedAreValid();
+						&& StringUtils.isNotEmpty(linkSchemeName);
 			case MAP_OBJECT_PROPERTY:
 				return StringUtils.isNotEmpty(getFlexoConceptName()) && objectProperty != null
 						&& StringUtils.isNotEmpty(getObjectPropertyStatementPatternRoleName())
-						&& StringUtils.isNotEmpty(getConnectorPatternRoleName()) && editionSchemesNamedAreValid();
+						&& StringUtils.isNotEmpty(getConnectorPatternRoleName()) && StringUtils.isNotEmpty(linkSchemeName);
 			case MAP_SINGLE_FLEXO_CONCEPT:
 				if (StringUtils.isEmpty(getFlexoConceptName())) {
 					errorMessage = EDITION_PATTERN_NAME_IS_NULL;
@@ -487,12 +487,12 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				if (StringUtils.isEmpty(getConnectorPatternRoleName())) {
 					errorMessage = CONNECTOR_PATTERN_ROLE_NAME_IS_NULL;
 				}
-				if (!editionSchemesNamedAreValid()) {
+				if (!StringUtils.isNotEmpty(linkSchemeName)) {
 					errorMessage = A_SCHEME_NAME_IS_NOT_VALID;
 				}
 				return StringUtils.isNotEmpty(getFlexoConceptName()) && virtualModelConcept != null
 						&& StringUtils.isNotEmpty(getVirtualModelPatternRoleName()) && getSelectedEntriesCount() > 0
-						&& editionSchemesNamedAreValid();
+						&& StringUtils.isNotEmpty(linkSchemeName);
 			case BLANK_FLEXO_CONCEPT:
 				if (StringUtils.isEmpty(getFlexoConceptName())) {
 					errorMessage = EDITION_PATTERN_NAME_IS_NULL;
@@ -500,11 +500,11 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				if (StringUtils.isEmpty(getConnectorPatternRoleName())) {
 					errorMessage = CONNECTOR_PATTERN_ROLE_NAME_IS_NULL;
 				}
-				if (!editionSchemesNamedAreValid()) {
+				if (!StringUtils.isNotEmpty(linkSchemeName)) {
 					errorMessage = A_SCHEME_NAME_IS_NOT_VALID;
 				}
 				return StringUtils.isNotEmpty(getFlexoConceptName()) && StringUtils.isNotEmpty(getConnectorPatternRoleName())
-						&& editionSchemesNamedAreValid();
+						&& StringUtils.isNotEmpty(linkSchemeName);
 			default:
 				break;
 			}
@@ -818,9 +818,14 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 	public List<FlexoConcept> getFlexoConceptsFrom() {
 		if (flexoConceptsFromList == null) {
 			flexoConceptsFromList = new ArrayList<FlexoConcept>();
+		}
+		if(getVirtualModel()!=null){
+			flexoConceptsFromList.clear();
 			flexoConceptsFromList.addAll(getVirtualModel().getFlexoConcepts());
 		}
-		if (selectedLinkScheme != null && getVirtualModel().getFlexoConcept(selectedLinkScheme._getFromTarget()) != null) {
+		/*if (selectedLinkScheme != null && 
+				getVirtualModel()!=null &&
+				getVirtualModel().getFlexoConcept(selectedLinkScheme._getFromTarget()) != null) {
 			FlexoConcept currentFromEp = getVirtualModel().getFlexoConcept(selectedLinkScheme._getFromTarget());
 			FlexoConcept firstEp = flexoConceptsFromList.get(0);
 			if (!currentFromEp.equals(firstEp)) {
@@ -829,16 +834,19 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				flexoConceptsFromList.set(0, currentFromEp);
 				flexoConceptsFromList.set(lastIndex, firstEp);
 			}
-		}
+		}*/
 		return flexoConceptsFromList;
 	}
 
 	public List<FlexoConcept> getFlexoConceptsTo() {
 		if (flexoConceptsToList == null) {
 			flexoConceptsToList = new ArrayList<FlexoConcept>();
+		}
+		if(getVirtualModel()!=null){
+			flexoConceptsToList.clear();
 			flexoConceptsToList.addAll(getVirtualModel().getFlexoConcepts());
 		}
-		if (selectedLinkScheme != null && getVirtualModel().getFlexoConcept(selectedLinkScheme._getToTarget()) != null) {
+		/*if (selectedLinkScheme != null && getVirtualModel()!=null && getVirtualModel().getFlexoConcept(selectedLinkScheme._getToTarget()) != null) {
 			FlexoConcept currentToEp = getVirtualModel().getFlexoConcept(selectedLinkScheme._getToTarget());
 			FlexoConcept firstEp = flexoConceptsToList.get(0);
 			if (!currentToEp.equals(firstEp)) {
@@ -846,7 +854,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				flexoConceptsToList.set(0, currentToEp);
 				flexoConceptsToList.set(lastIndex, firstEp);
 			}
-		}
+		}*/
 		return flexoConceptsToList;
 	}
 }

@@ -294,7 +294,9 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	public FlexoMetaModel getAdressedFlexoMetaModel() {
 		if (isTypeAwareModelSlot()) {
 			TypeAwareModelSlot typeAwareModelSlot = (TypeAwareModelSlot) getModelSlot();
-			return typeAwareModelSlot.getMetaModelResource().getMetaModelData();
+			if(typeAwareModelSlot!=null && typeAwareModelSlot.getMetaModelResource()!=null){
+				return typeAwareModelSlot.getMetaModelResource().getMetaModelData();
+			}
 		}
 		return null;
 	}
@@ -351,6 +353,8 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	public VirtualModelModelFactory getFactory() {
 		if (getFlexoConcept() != null) {
 			return getFlexoConcept().getVirtualModelFactory();
+		}else if(virtualModel!=null){
+			return virtualModel.getVirtualModelFactory();
 		}
 		return null;
 	}
@@ -412,14 +416,14 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 
 	public abstract void initializeBehaviours();
 
-	public boolean editionSchemesNamedAreValid() {
+	/*public boolean editionSchemesNamedAreValid() {
 		for (FlexoBehaviourConfiguration editionSchemeConfiguration : getFlexoBehaviours()) {
 			if (editionSchemeConfiguration == null || editionSchemeConfiguration.getFlexoBehaviour() == null
 					|| StringUtils.isEmpty(editionSchemeConfiguration.getFlexoBehaviour().getName()))
 				return false;
 		}
 		return true;
-	}
+	}*/
 
 	public void addFlexoBehaviourConfigurationDeleteGROnly() {
 		FlexoBehaviourConfiguration editionSchemeConfiguration = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.DELETE_GR_ONLY);
