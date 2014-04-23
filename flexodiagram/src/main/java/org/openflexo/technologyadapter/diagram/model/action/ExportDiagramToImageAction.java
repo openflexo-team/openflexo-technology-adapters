@@ -233,7 +233,7 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 	public File saveScreenshot() {
 		logger.info("Saving " + dest);
 		try {
-			ImageUtils.saveImageToFile(getScreenshot().image, dest, ImageType.PNG);
+			ImageUtils.saveImageToFile(getScreenshot().image, dest, imageType);
 			return dest;
 		} catch (IOException e) {
 			e.printStackTrace();
