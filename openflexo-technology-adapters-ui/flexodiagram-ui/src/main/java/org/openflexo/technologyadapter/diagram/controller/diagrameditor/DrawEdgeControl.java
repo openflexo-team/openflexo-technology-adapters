@@ -141,7 +141,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 			AddConnector action = AddConnector.actionType.makeNewAction(fromShape.getDrawable(), null, controller.getFlexoController()
 					.getEditor());
 			action.setToShape(toShape.getDrawable());
-
+			action.setAutomaticallyCreateConnector(true);
 			ConnectorGraphicalRepresentation connectorGR = factory.makeConnectorGraphicalRepresentation();
 			connectorGR.setConnectorType(ConnectorType.LINE);
 			connectorGR.setIsSelectable(true);
