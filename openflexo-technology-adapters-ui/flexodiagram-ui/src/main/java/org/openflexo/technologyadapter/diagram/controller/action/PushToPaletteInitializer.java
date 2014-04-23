@@ -19,22 +19,14 @@
  */
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.awt.image.BufferedImage;
 import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.fge.Drawing.ShapeNode;
-import org.openflexo.fge.ShadowStyle;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation.ShapeBorder;
-import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.DiagramEditor;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.fml.action.PushToPalette;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
