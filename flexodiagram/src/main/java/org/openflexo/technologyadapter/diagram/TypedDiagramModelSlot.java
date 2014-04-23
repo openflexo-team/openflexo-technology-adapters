@@ -42,6 +42,7 @@ import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramType;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 
@@ -97,6 +98,8 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 	public FMLDiagramPaletteElementBinding getPaletteElementBinding(DiagramPaletteElement paletteElement);
 
+	public FMLDiagramPaletteElementBinding addNewFMLDiagramPaletteElementBinding();
+	
 	public static abstract class TypedDiagramModelSlotImpl extends TypeAwareModelSlotImpl<Diagram, DiagramSpecification> implements
 			TypedDiagramModelSlot {
 
@@ -205,7 +208,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		@Override
 		public Type getType() {
 			// TODO Auto-generated method stub
-			return DiagramSpecification.class;
+			return DiagramType.class;
 		}
 		
 		@Override
@@ -213,6 +216,14 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			return "Diagram Specification";
 		}
 
+		@Override
+		public FMLDiagramPaletteElementBinding addNewFMLDiagramPaletteElementBinding(){
+			FMLDiagramPaletteElementBinding newBinding = getVirtualModelFactory().newInstance(
+					FMLDiagramPaletteElementBinding.class);
+			addToPaletteElementBindings(newBinding);
+			return newBinding;
+		}
+		
 		// TODO
 		/*	@Override
 			public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings() {

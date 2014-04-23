@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -139,6 +140,8 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 
 	@Override
 	public DiagramSpecificationResource getResource();
+	
+	public List<DiagramPaletteElement> getAllPaletteElements();
 
 	public static abstract class DiagramSpecificationImpl extends FlexoObjectImpl implements DiagramSpecification {
 
@@ -370,6 +373,19 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 				return getResource().getTechnologyAdapter();
 			}
 			return null;
+		}
+		
+		private List<DiagramPaletteElement> paletteElements;
+		
+		@Override
+		public List<DiagramPaletteElement> getAllPaletteElements(){
+			if(paletteElements==null){
+				paletteElements = new ArrayList<DiagramPaletteElement>();
+			}
+			for(DiagramPalette palette: palettes){
+				paletteElements.addAll(palette.getElements());
+			}
+			return paletteElements;
 		}
 		
 		/*@Override
