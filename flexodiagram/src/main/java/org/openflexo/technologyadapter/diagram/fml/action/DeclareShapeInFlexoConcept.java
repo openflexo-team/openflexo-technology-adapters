@@ -20,7 +20,6 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -52,7 +51,6 @@ import org.openflexo.foundation.viewpoint.editionaction.DeclareFlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
 import org.openflexo.foundation.viewpoint.inspector.FlexoConceptInspector;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -114,17 +112,17 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		MAP_SINGLE_INDIVIDUAL, MAP_SINGLE_FLEXO_CONCEPT, BLANK_FLEXO_CONCEPT
 	}
 
-	private static final String PATTERN_ROLE_IS_NULL = FlexoLocalization.localizedForKey("pattern_role_is_null");
-	private static final String EDITION_PATTERN_IS_NULL = FlexoLocalization.localizedForKey("edition_pattern_is_null");
-	private static final String EDITION_PATTERN_NAME_IS_NULL = FlexoLocalization.localizedForKey("edition_pattern_name_is_null");
+	private static final String FLEXO_ROLE_IS_NULL = FlexoLocalization.localizedForKey("flexo_role_is_null");
+	private static final String FLEXO_CONCEPT_IS_NULL = FlexoLocalization.localizedForKey("flexo_concept_is_null");
+	private static final String FLEXO_CONCEPT_NAME_IS_NULL = FlexoLocalization.localizedForKey("flexo_concept_name_is_null");
 	private static final String FOCUSED_OBJECT_IS_NULL = FlexoLocalization.localizedForKey("focused_object_is_null");
-	private static final String INDIVIDUAL_PATTERN_ROLE_NAME_IS_NULL = FlexoLocalization
-			.localizedForKey("individual_pattern_role_name_is_null");
+	private static final String INDIVIDUAL_FLEXO_ROLE_NAME_IS_NULL = FlexoLocalization
+			.localizedForKey("individual_flexo_role_name_is_null");
 	private static final String CONCEPT_IS_NULL = FlexoLocalization.localizedForKey("concept_is_null");
 	private static final String NO_SELECTED_ENTRY = FlexoLocalization.localizedForKey("no_selected_entry");
 	private static final String A_SCHEME_NAME_IS_NOT_VALID = FlexoLocalization.localizedForKey("a_scheme_name_is_not_valid");
-	private static final String VIRTUAL_MODEL_PATTERN_ROLE_NAME_IS_NULL = FlexoLocalization
-			.localizedForKey("virtual_model_pattern_role_name_is_null");
+	private static final String VIRTUAL_MODEL_FLEXO_ROLE_NAME_IS_NULL = FlexoLocalization
+			.localizedForKey("virtual_model_flexo_role_name_is_null");
 	private static final String VIRTUAL_MODEL_CONCEPT_IS_NULL = FlexoLocalization.localizedForKey("virtual_model_concept_is_null");
 
 	public NewFlexoConceptChoices patternChoice = NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL;
@@ -168,10 +166,10 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		switch (primaryChoice) {
 		case CHOOSE_EXISTING_FLEXO_CONCEPT: {
 			if (getFlexoRole() == null) {
-				errorMessage = PATTERN_ROLE_IS_NULL;
+				errorMessage = FLEXO_ROLE_IS_NULL;
 			}
 			if (getFlexoConcept() == null) {
-				errorMessage = EDITION_PATTERN_IS_NULL;
+				errorMessage = FLEXO_CONCEPT_IS_NULL;
 			}
 			return getFlexoConcept() != null && getFlexoRole() != null;
 		}
@@ -179,10 +177,10 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 			switch (patternChoice) {
 			case MAP_SINGLE_INDIVIDUAL:
 				if (StringUtils.isEmpty(getFlexoConceptName())) {
-					errorMessage = EDITION_PATTERN_NAME_IS_NULL;
+					errorMessage = FLEXO_CONCEPT_NAME_IS_NULL;
 				}
 				if (StringUtils.isEmpty(getIndividualFlexoRoleName())) {
-					errorMessage = INDIVIDUAL_PATTERN_ROLE_NAME_IS_NULL;
+					errorMessage = INDIVIDUAL_FLEXO_ROLE_NAME_IS_NULL;
 				}
 				if (concept == null) {
 					errorMessage = CONCEPT_IS_NULL;
@@ -199,10 +197,10 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 			case MAP_SINGLE_FLEXO_CONCEPT:
 				if (StringUtils.isEmpty(getFlexoConceptName())) {
-					errorMessage = EDITION_PATTERN_NAME_IS_NULL;
+					errorMessage = FLEXO_CONCEPT_NAME_IS_NULL;
 				}
 				if (StringUtils.isEmpty(getVirtualModelFlexoRoleName())) {
-					errorMessage = VIRTUAL_MODEL_PATTERN_ROLE_NAME_IS_NULL;
+					errorMessage = VIRTUAL_MODEL_FLEXO_ROLE_NAME_IS_NULL;
 				}
 				if (virtualModelConcept == null) {
 					errorMessage = VIRTUAL_MODEL_CONCEPT_IS_NULL;
@@ -219,7 +217,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 			case BLANK_FLEXO_CONCEPT:
 				if (StringUtils.isEmpty(getFlexoConceptName())) {
-					errorMessage = EDITION_PATTERN_NAME_IS_NULL;
+					errorMessage = FLEXO_CONCEPT_NAME_IS_NULL;
 				}
 				if (getSelectedEntriesCount() == 0) {
 					errorMessage = NO_SELECTED_ENTRY;
@@ -243,8 +241,8 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		return flexoRole;
 	}
 
-	public void setFlexoRole(ShapeRole patternRole) {
-		this.flexoRole = patternRole;
+	public void setFlexoRole(ShapeRole flexoRole) {
+		this.flexoRole = flexoRole;
 	}
 
 	@Override
@@ -480,7 +478,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							if (entry.graphicalObject instanceof DiagramShape) {
 								DiagramShape grShape = (DiagramShape) entry.graphicalObject;
 								ShapeRole newShapeRole = getFactory().newInstance(ShapeRole.class);
-								newShapeRole.setRoleName(entry.patternRoleName);
+								newShapeRole.setRoleName(entry.flexoRoleName);
 								newShapeRole.setModelSlot(getTypedDiagramModelSlot());
 								/*if (mainPropertyDescriptor != null && entry.isMainEntry()) {
 									newShapeFlexoRole.setLabel(new DataBinding<String>(getIndividualFlexoRoleName() + "."
@@ -509,7 +507,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							if (entry.graphicalObject instanceof DiagramConnector) {
 								DiagramConnector grConnector = (DiagramConnector) entry.graphicalObject;
 								ConnectorRole newConnectorRole = getFactory().newInstance(ConnectorRole.class);
-								newConnectorRole.setRoleName(entry.patternRoleName);
+								newConnectorRole.setRoleName(entry.flexoRoleName);
 								newConnectorRole.setReadOnlyLabel(true);
 								if (StringUtils.isNotEmpty(entry.graphicalObject.getName())) {
 									newConnectorRole.setLabel(new DataBinding<String>("\"" + entry.graphicalObject.getName() + "\""));
@@ -874,15 +872,15 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 				VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
 
 				if (editionSchemeConfiguration.getType() == FlexoBehaviourChoice.DROP_AND_SELECT) {
-					FlexoConceptInstanceParameter editionPatternInstanceParameter = getFactory().newFlexoConceptInstanceParameter();
-					editionPatternInstanceParameter.setName(flexoConceptInstanceRole.getName());
-					editionPatternInstanceParameter.setLabel(flexoConceptInstanceRole.getName());
-					editionPatternInstanceParameter.setModelSlot((VirtualModelModelSlot) flexoConceptInstanceRole.getModelSlot());
+					FlexoConceptInstanceParameter flexoConceptInstanceParameter = getFactory().newFlexoConceptInstanceParameter();
+					flexoConceptInstanceParameter.setName(flexoConceptInstanceRole.getName());
+					flexoConceptInstanceParameter.setLabel(flexoConceptInstanceRole.getName());
+					flexoConceptInstanceParameter.setModelSlot((VirtualModelModelSlot) flexoConceptInstanceRole.getModelSlot());
 					// editionPatternInstanceParameter.setFlexoConceptType(editionPatternFlexoRole.getFlexoConceptType());
-					editionScheme.addToParameters(editionPatternInstanceParameter);
+					editionScheme.addToParameters(flexoConceptInstanceParameter);
 					// Add individual action
 					DeclareFlexoRole declareFlexoRole = getFactory().newDeclareFlexoRole();
-					declareFlexoRole.setObject(new DataBinding<Object>("parameters." + editionPatternInstanceParameter.getName()));
+					declareFlexoRole.setObject(new DataBinding<Object>("parameters." + flexoConceptInstanceParameter.getName()));
 					declareFlexoRole.setAssignation(new DataBinding<Object>(flexoConceptInstanceRole.getName()));
 					editionScheme.addToActions(declareFlexoRole);
 				}

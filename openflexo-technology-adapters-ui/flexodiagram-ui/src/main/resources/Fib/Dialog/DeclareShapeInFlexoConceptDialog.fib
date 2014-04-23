@@ -23,10 +23,10 @@
       <Dependancy idref="16" />
       <LocalizedDictionary id="17" />
     </DropDown>
-    <Label id="18" manageDynamicModel="false" useScrollBar="false" index="3" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" label="pattern_role" readOnly="false">
+    <Label id="18" manageDynamicModel="false" useScrollBar="false" index="3" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" label="flexo_role" readOnly="false">
       <LocalizedDictionary id="19" />
     </Label>
-    <DropDown id="20" manageDynamicModel="false" useScrollBar="false" data="data.flexoRole" showReset="false" staticList="" autoSelectFirstRow="true" name="patternRoleDropDown" index="4" localize="true" constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" list="data.availableFlexoRoles" showText="true" readOnly="false" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.ShapeRole" showIcon="false">
+    <DropDown id="20" manageDynamicModel="false" useScrollBar="false" data="data.flexoRole" showReset="false" staticList="" autoSelectFirstRow="true" name="flexoRoleDropDown" index="4" localize="true" constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" list="data.availableFlexoRoles" showText="true" readOnly="false" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.ShapeRole" showIcon="false">
       <Dependancy id="21" componentName="virtualModelSelector" />
       <Dependancy idref="21" />
       <LocalizedDictionary id="22" />
@@ -94,17 +94,17 @@
       <Dependancy id="61" componentName="patternSelector" />
       <Dependancy idref="61" />
     </TextField>
-    <Label id="62" visible="(patternChoice.selectedIndex = 0)" manageDynamicModel="false" useScrollBar="false" index="9" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" label="individual_pattern_role_name" readOnly="false">
+    <Label id="62" visible="(patternChoice.selectedIndex = 0)" manageDynamicModel="false" useScrollBar="false" index="9" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" label="individual_flexo_role_name" readOnly="false">
       <LocalizedDictionary id="63" />
     </Label>
     <Label id="64" visible="(patternChoice.selectedIndex = 1)" manageDynamicModel="false" useScrollBar="false" index="9" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" label="flexo_concept_role_name" readOnly="false">
       <LocalizedDictionary id="65" />
     </Label>
-    <TextField id="66" passwd="false" visible="(patternChoice.selectedIndex = 0)" manageDynamicModel="false" useScrollBar="false" data="data.individualFlexoRoleName" columns="7" name="individualPatternRoleName" text="TextField" index="10" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" readOnly="false" validateOnReturn="true">
+    <TextField id="66" passwd="false" visible="(patternChoice.selectedIndex = 0)" manageDynamicModel="false" useScrollBar="false" data="data.individualFlexoRoleName" columns="7" name="individualFlexoRoleName" text="TextField" index="10" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" readOnly="false" validateOnReturn="true">
       <Dependancy id="67" componentName="conceptSelector" />
       <Dependancy idref="67" />
     </TextField>
-    <TextField id="68" passwd="false" visible="(patternChoice.selectedIndex = 1)" manageDynamicModel="false" useScrollBar="false" data="data.virtualModelFlexoRoleName" columns="7" name="virtualModelPatternRoleName" text="TextField" index="10" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" readOnly="false" validateOnReturn="true">
+    <TextField id="68" passwd="false" visible="(patternChoice.selectedIndex = 1)" manageDynamicModel="false" useScrollBar="false" data="data.virtualModelFlexoRoleName" columns="7" name="virtualModelFlexoRoleName" text="TextField" index="10" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" readOnly="false" validateOnReturn="true">
       <Dependancy id="69" componentName="patternSelector" />
       <Dependancy idref="69" />
     </TextField>
@@ -113,8 +113,8 @@
     </Label>
     <Table id="72" showFooter="false" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" manageDynamicModel="true" selectionMode="MultipleIntervalSelection" boundToSelectionManager="false" index="11" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" visibleRowCount="3" createNewRowOnClick="false" rowHeight="18" textSelectionColor="255,255,255" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareInFlexoConcept$DrawingObjectEntry" backgroundSelectionColor="41,90,209" useScrollBar="true" backgroundNonSelectionColor="255,255,255" data="data.drawingObjectEntries" autoSelectFirstRow="false" name="drawingObjectEntriesTable" textNonSelectionColor="0,0,0" readOnly="false" backgroundSecondarySelectionColor="173,215,255">
       <CheckBoxColumn id="73" data="iterator.selectThis" displayTitle="false" title="checkbox" name="checkbox" columnWidth="20" resizable="false" />
-      <TextFieldColumn id="74" data="iterator.patternRoleName" displayTitle="true" title="role_name" columnWidth="50" resizable="true" />
-      <LabelColumn id="75" data="iterator.parentEntry.patternRoleName" displayTitle="true" title="parent" name="label" columnWidth="50" resizable="true" />
+      <TextFieldColumn id="74" data="iterator.flexoRoleName" displayTitle="true" title="role_name" columnWidth="50" resizable="true" />
+      <LabelColumn id="75" data="iterator.parentEntry.flexoRoleName" displayTitle="true" title="parent" name="label" columnWidth="50" resizable="true" />
       <TextFieldColumn id="76" data="iterator.graphicalObject.graphicalRepresentation.toString" displayTitle="true" title="graphical_representation" columnWidth="300" resizable="true" />
       <LocalizedDictionary id="77" />
     </Table>
@@ -150,7 +150,7 @@
     <Label id="107" visible="(!(data.isValid))" manageDynamicModel="false" useScrollBar="false" data="data.errorMessage" foregroundColor="255,0,0" index="17" localize="true" font="Dialog,2,10" align="right" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" label="" readOnly="false">
       <Dependancy id="108" componentName="flexoConceptDropdown" />
       <Dependancy idref="108" />
-      <Dependancy id="109" componentName="patternRoleDropDown" />
+      <Dependancy id="109" componentName="flexoRoleDropDown" />
       <Dependancy idref="109" />
       <Dependancy id="110" componentName="patternChoice" />
       <Dependancy idref="110" />
@@ -164,9 +164,9 @@
       <Dependancy idref="114" />
       <Dependancy id="115" componentName="newFlexoConceptName" />
       <Dependancy idref="115" />
-      <Dependancy id="116" componentName="individualPatternRoleName" />
+      <Dependancy id="116" componentName="individualFlexoRoleName" />
       <Dependancy idref="116" />
-      <Dependancy id="117" componentName="virtualModelPatternRoleName" />
+      <Dependancy id="117" componentName="virtualModelFlexoRoleName" />
       <Dependancy idref="117" />
       <Dependancy id="118" componentName="drawingObjectEntriesTable" />
       <Dependancy idref="118" />
@@ -178,11 +178,11 @@
     <Button id="121" manageDynamicModel="false" useScrollBar="false" enable="data.isValid" buttonType="Trigger" action="controller.validateAndDispose()" index="0" localize="true" constraints="flow(index=0)" label="validate" readOnly="false">
       <Dependancy id="122" componentName="flexoConceptDropdown" />
       <Dependancy idref="122" />
-      <Dependancy id="123" componentName="patternRoleDropDown" />
+      <Dependancy id="123" componentName="flexoRoleDropDown" />
       <Dependancy idref="123" />
       <Dependancy id="124" componentName="newFlexoConceptName" />
       <Dependancy idref="124" />
-      <Dependancy id="125" componentName="individualPatternRoleName" />
+      <Dependancy id="125" componentName="individualFlexoRoleName" />
       <Dependancy idref="125" />
       <Dependancy id="126" componentName="drawingObjectEntriesTable" />
       <Dependancy idref="126" />

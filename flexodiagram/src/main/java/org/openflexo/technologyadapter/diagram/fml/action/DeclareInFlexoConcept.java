@@ -510,12 +510,12 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	public class DrawingObjectEntry {
 		private boolean selectThis;
 		public DiagramElement<?> graphicalObject;
-		public String patternRoleName;
+		public String flexoRoleName;
 
-		public DrawingObjectEntry(DiagramElement<?> graphicalObject, String patternRoleName) {
+		public DrawingObjectEntry(DiagramElement<?> graphicalObject, String flexoRoleName) {
 			super();
 			this.graphicalObject = graphicalObject;
-			this.patternRoleName = patternRoleName;
+			this.flexoRoleName = flexoRoleName;
 			this.selectThis = isMainEntry();
 		}
 
