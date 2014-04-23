@@ -36,7 +36,9 @@ import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 /**
  * @author vincent leilde
@@ -85,7 +87,7 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 
 	private File dest;
 
-	public boolean saveAsJpeg() {
+	/*public boolean saveAsImage() {
 		dest = null;
 		JFileChooser chooser = new JFileChooser() {
 			@Override
@@ -137,10 +139,91 @@ public class ExportDiagramToImageAction extends FlexoGUIAction<ExportDiagramToIm
 		} else {
 			return false;
 		}
+	}*/
+	
+	private ImageType imageType;
+
+	public boolean saveAsImage() {
+		dest = null;
+		JFileChooser chooser = new JFileChooser() {
+			@Override
+			public void approveSelection() {
+				File f = getSelectedFile();
+				if (f.exists() && getDialogType() == SAVE_DIALOG) {
+					int result = JOptionPane.showConfirmDialog(this, "The file exists, overwrite?", "Existing file",
+							JOptionPane.YES_NO_CANCEL_OPTION);
+					switch (result) {
+					case JOptionPane.YES_OPTION:
+						super.approveSelection();
+						return;
+					case JOptionPane.NO_OPTION:
+						return;
+					case JOptionPane.CLOSED_OPTION:
+						return;
+					case JOptionPane.CANCEL_OPTION:
+						cancelSelection();
+						return;
+					}
+				}
+				if (!f.exists() && getDialogType() == SAVE_DIALOG) {
+					super.approveSelection();
+					return;
+				}
+			}
+		};
+		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
+		chooser.setDialogTitle(FlexoLocalization.localizedForKey("save_as_image", chooser));
+
+		for (ImageType type : ImageType.values()) {
+			FileNameExtensionFilter filter = new FileNameExtensionFilter(type.name(), type.getExtension());
+			chooser.addChoosableFileFilter(filter);
+		}
+
+		int returnVal = chooser.showSaveDialog(null);
+		if (returnVal == JFileChooser.CANCEL_OPTION) {
+			return false;
+		}
+		if (returnVal == JFileChooser.APPROVE_OPTION) {
+			for (ImageType type : ImageType.values()) {
+				if (type.getExtension().toUpperCase().equals(chooser.getFileFilter().getDescription().toUpperCase())) {
+					dest = new File(chooser.getSelectedFile().getAbsolutePath() + "." + type.getExtension());
+					imageType = type;
+				}
+				/*if (!chooser.getSelectedFile().getName().toLowerCase().endsWith("."+type.getExtension())) {
+					dest = new File(chooser.getSelectedFile().getAbsolutePath() + "."+type.getExtension());
+					imageType = type;
+				}*/
+			}
+
+			/*if(imageType!=null){
+				chooser.getFileFilter()
+			}
+			if(imageType==null){
+				dest = chooser.getSelectedFile();
+			}	*/
+		}
+		if (dest == null) {
+			return false;
+		}
+		if (saveScreenshot() != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
-	public ScreenshotImage getScreenshot() {
-		return screenshot;
+	public ScreenshotImage<DiagramElement> getScreenshot() {
+		if(getFocusedObject() instanceof DiagramShape){
+			if(this.screenshot==null ||this.screenshot != ((DiagramShape)getFocusedObject()).getScreenshotImage()){
+				setScreenshot((ScreenshotImage<DiagramShape>) ((DiagramShape)getFocusedObject()).getScreenshotImage());
+			}
+		}
+		if(getFocusedObject() instanceof Diagram){
+			if(this.screenshot==null ||this.screenshot != ((Diagram)getFocusedObject()).getScreenshotImage()){
+				setScreenshot((ScreenshotImage<Diagram>) ((Diagram)getFocusedObject()).getScreenshotImage());
+			}
+		}
+		return this.screenshot;
 	}
 
 	public void setScreenshot(ScreenshotImage screenshot) {
