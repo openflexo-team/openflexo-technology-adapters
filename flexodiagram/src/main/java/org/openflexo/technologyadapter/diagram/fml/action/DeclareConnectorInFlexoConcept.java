@@ -141,7 +141,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 	private IndividualRole individualRole;
 	private FlexoConceptInstanceRole flexoConceptPatternRole;
 
-	private LinkScheme selectedLinkScheme;
+	//private LinkScheme selectedLinkScheme;
 
 	private String errorMessage;
 
@@ -357,9 +357,14 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				// Add connector action
 				AddConnector newAddConnector = getFactory().newInstance(AddConnector.class);
 				newAddConnector.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));
-				ShapeRole fromPatternRole = fromFlexoConcept.getFlexoRoles(ShapeRole.class).get(0);
-				ShapeRole toPatternRole = toFlexoConcept.getFlexoRoles(ShapeRole.class).get(0);
-
+				ShapeRole fromPatternRole=null;
+				ShapeRole toPatternRole = null;
+				if(fromFlexoConcept.getFlexoRoles(ShapeRole.class).size()>0){
+					fromPatternRole = fromFlexoConcept.getFlexoRoles(ShapeRole.class).get(0);
+				}if(fromFlexoConcept.getFlexoRoles(ShapeRole.class).size()>0){
+					toPatternRole = toFlexoConcept.getFlexoRoles(ShapeRole.class).get(0);
+				}
+				 
 				newAddConnector.setFromShape(new DataBinding<DiagramShape>(DiagramEditionScheme.FROM_TARGET + "."
 						+ fromPatternRole.getRoleName()));
 				newAddConnector
@@ -464,16 +469,16 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				if (StringUtils.isEmpty(getConnectorPatternRoleName())) {
 					errorMessage = CONNECTOR_PATTERN_ROLE_NAME_IS_NULL;
 				}
-				if (!StringUtils.isNotEmpty(linkSchemeName)) {
+				if (!StringUtils.isNotEmpty(getLinkSchemeName())) {
 					errorMessage = A_SCHEME_NAME_IS_NOT_VALID;
 				}
 				return StringUtils.isNotEmpty(getFlexoConceptName()) && concept != null
 						&& StringUtils.isNotEmpty(getIndividualPatternRoleName()) && StringUtils.isNotEmpty(getConnectorPatternRoleName())
-						&& StringUtils.isNotEmpty(linkSchemeName);
+						&& StringUtils.isNotEmpty(getLinkSchemeName());
 			case MAP_OBJECT_PROPERTY:
 				return StringUtils.isNotEmpty(getFlexoConceptName()) && objectProperty != null
 						&& StringUtils.isNotEmpty(getObjectPropertyStatementPatternRoleName())
-						&& StringUtils.isNotEmpty(getConnectorPatternRoleName()) && StringUtils.isNotEmpty(linkSchemeName);
+						&& StringUtils.isNotEmpty(getConnectorPatternRoleName()) && StringUtils.isNotEmpty(getLinkSchemeName());
 			case MAP_SINGLE_FLEXO_CONCEPT:
 				if (StringUtils.isEmpty(getFlexoConceptName())) {
 					errorMessage = EDITION_PATTERN_NAME_IS_NULL;
@@ -487,12 +492,12 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				if (StringUtils.isEmpty(getConnectorPatternRoleName())) {
 					errorMessage = CONNECTOR_PATTERN_ROLE_NAME_IS_NULL;
 				}
-				if (!StringUtils.isNotEmpty(linkSchemeName)) {
+				if (!StringUtils.isNotEmpty(getLinkSchemeName())) {
 					errorMessage = A_SCHEME_NAME_IS_NOT_VALID;
 				}
 				return StringUtils.isNotEmpty(getFlexoConceptName()) && virtualModelConcept != null
 						&& StringUtils.isNotEmpty(getVirtualModelPatternRoleName()) && getSelectedEntriesCount() > 0
-						&& StringUtils.isNotEmpty(linkSchemeName);
+						&& StringUtils.isNotEmpty(getLinkSchemeName());
 			case BLANK_FLEXO_CONCEPT:
 				if (StringUtils.isEmpty(getFlexoConceptName())) {
 					errorMessage = EDITION_PATTERN_NAME_IS_NULL;
@@ -500,11 +505,11 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				if (StringUtils.isEmpty(getConnectorPatternRoleName())) {
 					errorMessage = CONNECTOR_PATTERN_ROLE_NAME_IS_NULL;
 				}
-				if (!StringUtils.isNotEmpty(linkSchemeName)) {
+				if (!StringUtils.isNotEmpty(getLinkSchemeName())) {
 					errorMessage = A_SCHEME_NAME_IS_NOT_VALID;
 				}
 				return StringUtils.isNotEmpty(getFlexoConceptName()) && StringUtils.isNotEmpty(getConnectorPatternRoleName())
-						&& StringUtils.isNotEmpty(linkSchemeName);
+						&& StringUtils.isNotEmpty(getLinkSchemeName());
 			default:
 				break;
 			}
@@ -639,7 +644,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 	}
 
 	public String getLinkSchemeName() {
-		if (StringUtils.isEmpty(linkSchemeName)) {
+		if (StringUtils.isEmpty(linkSchemeName) && fromFlexoConcept!=null && toFlexoConcept!=null) {
 			return "link" + (fromFlexoConcept != null ? fromFlexoConcept.getName() : "") + "To"
 					+ (toFlexoConcept != null ? toFlexoConcept.getName() : "");
 		}
@@ -658,7 +663,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		return super.getFlexoConcept();
 	};
 
-	private void createSchemeActions(FlexoBehaviourConfiguration configuration) {
+	/*private void createSchemeActions(FlexoBehaviourConfiguration configuration) {
 		FlexoBehaviour FlexoBehaviour = null;
 
 		// Create new link scheme
@@ -676,9 +681,9 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 			FlexoBehaviour = createDeleteFlexoBehaviourActions(configuration, true);
 		}
 		newFlexoConcept.addToFlexoBehaviours(FlexoBehaviour);
-	}
+	}*/
 
-	private FlexoBehaviour createDeleteFlexoBehaviourActions(FlexoBehaviourConfiguration configuration, boolean shapeOnly) {
+	/*private FlexoBehaviour createDeleteFlexoBehaviourActions(FlexoBehaviourConfiguration configuration, boolean shapeOnly) {
 
 		DeletionScheme FlexoBehaviour = (DeletionScheme) configuration.getFlexoBehaviour();
 
@@ -725,9 +730,9 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 			FlexoBehaviour.addToActions(a);
 		}
 		return FlexoBehaviour;
-	}
+	}*/
 
-	private FlexoBehaviour createLinkSchemeEditionActions(FlexoBehaviourConfiguration FlexoBehaviourConfiguration) {
+	/*private FlexoBehaviour createLinkSchemeEditionActions(FlexoBehaviourConfiguration FlexoBehaviourConfiguration) {
 		LinkScheme FlexoBehaviour = (LinkScheme) FlexoBehaviourConfiguration.getFlexoBehaviour();
 
 		// Parameters
@@ -738,9 +743,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				URIParameter uriParameter = getFactory().newURIParameter();
 				uriParameter.setName("uri");
 				uriParameter.setLabel("uri");
-				/*if (mainPropertyDescriptor != null) {
-					uriParameter.setBaseURI(new DataBinding<String>(mainPropertyDescriptor.property.getName()));
-				}*/
+
 				FlexoBehaviour.addToParameters(uriParameter);
 
 				// Declare pattern role
@@ -782,9 +785,9 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 		FlexoBehaviour.addToActions(newAddConnector);
 		return FlexoBehaviour;
-	}
+	}*/
 
-	public LinkScheme getLinkScheme(FlexoBehaviourConfiguration conf) {
+	/*public LinkScheme getLinkScheme(FlexoBehaviourConfiguration conf) {
 		if (conf != null) {
 			if (conf.getFlexoBehaviour() instanceof LinkScheme) {
 				selectedLinkScheme = (LinkScheme) conf.getFlexoBehaviour();
@@ -798,7 +801,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		FlexoBehaviourConfiguration FlexoBehaviourConfiguration = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.LINK);
 		getFlexoBehaviours().add(FlexoBehaviourConfiguration);
 	}
-
+*/
 	@Override
 	public void initializeBehaviours() {
 		if (getVirtualModel() != null && getVirtualModel().getFlexoConcepts() != null && !getVirtualModel().getFlexoConcepts().isEmpty()) {

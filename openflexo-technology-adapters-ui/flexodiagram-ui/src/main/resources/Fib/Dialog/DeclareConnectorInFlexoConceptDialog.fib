@@ -25,6 +25,7 @@
     </Label>
     <DropDown index="2" data="data.flexoRole" constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" name="patternRoleDropDown" localize="true" staticList="" list="data.availableFlexoRoles" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.ConnectorRole" autoSelectFirstRow="true">
       <LocalizedDictionary />
+      <Dependancy componentName="flexoConceptDropdown" />
       <Dependancy componentName="virtualModelSelector" />
     </DropDown>
     <LocalizedDictionary />
@@ -38,13 +39,16 @@
     </Label>
     <DropDown index="0" data="data.patternChoice" constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" name="patternChoice" format="object.name" localize="true" manageDynamicModel="true" staticList="" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareConnectorInFlexoConcept$NewFlexoConceptChoices" autoSelectFirstRow="true">
       <LocalizedDictionary />
+      <Dependancy componentName="virtualModelSelector" />
     </DropDown>
     <Label label="model_slot" index="1" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" visible="(!((patternChoice.selectedIndex = 3)))" localize="true" />
     <DropDown index="2" data="data.modelSlot" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" visible="(patternChoice.selectedIndex = 2)" name="virtualModelModelSlotDD" format="object.name" icon="controller.getTechnologyAdapterController(object.technologyAdapter).technologyIcon" localize="true" list="data.virtualModelModelSlots" showIcon="true" iteratorClassName="org.openflexo.foundation.technologyadapter.ModelSlot" autoSelectFirstRow="true" >
     	<Dependancy componentName="virtualModelSelector" />
+    	<Dependancy componentName="patternChoice" />
     </DropDown>
     <DropDown index="2" data="data.modelSlot" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" visible="((patternChoice.selectedIndex = 0) | (patternChoice.selectedIndex = 1))" name="ontologyModelSlotDD" format="object.name" icon="controller.getTechnologyAdapterController(object.technologyAdapter).technologyIcon" localize="true" list="data.typeAwareModelSlots" showIcon="true" iteratorClassName="org.openflexo.foundation.technologyadapter.ModelSlot" autoSelectFirstRow="true" >
      	<Dependancy componentName="virtualModelSelector" />
+     	<Dependancy componentName="patternChoice" />
     </DropDown>
     <Label label="ontologic_concept" index="3" constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" visible="(patternChoice.selectedIndex = 0)" localize="true">
       <LocalizedDictionary />
@@ -61,6 +65,7 @@
       <Assignment variable="component.virtualModel" value="data.adressedVirtualModel" />
       <Dependancy componentName="virtualModelModelSlotDD" />
       <Dependancy componentName="virtualModelSelector" />
+      <Dependancy componentName="patternChoice" />
     </Custom>
     <Label label="ontologic_property" index="4" constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" visible="(patternChoice.selectedIndex = 1)" localize="true">
       <LocalizedDictionary />
@@ -69,6 +74,7 @@
       <Assignment variable="component.context" value="data.adressedFlexoMetaModel" />
       <Dependancy componentName="ontologyModelSlotDD" />
       <Dependancy componentName="virtualModelSelector" />
+      <Dependancy componentName="patternChoice" />
     </Custom>
     <Custom componentClassName="org.openflexo.components.widget.FIBPropertySelector" localize="true" manageDynamicModel="true" name="propertySelector" index="6" data="data.objectProperty" constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" visible="(patternChoice.selectedIndex = 1)">
       <Assignment variable="component.selectObjectProperties" value="$true" />
@@ -76,6 +82,8 @@
       <Assignment variable="component.selectAnnotationProperties" value="$false" />
       <Assignment variable="component.context" value="data.adressedFlexoMetaModel" />
       <Dependancy componentName="ontologyModelSlotDD" />
+      <Dependancy componentName="virtualModelSelector" />
+      <Dependancy componentName="patternChoice" />
     </Custom>
     <Label label="new_flexo_concept_name" index="7" constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true">
       <LocalizedDictionary />
@@ -108,7 +116,10 @@
     </Label>
     <TextField index="16" data="data.connectorPatternRoleName" constraints="twocols(expandHorizontally=true;expandVertically=false;index=16;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" name="connectorPatternRoleName" localize="true" validateOnReturn="true" columns="7" text="TextField" />
     <Label label="link_scheme_name" index="22" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" localize="true" />
-    <TextField index="16" data="data.linkSchemeName" constraints="twocols(expandHorizontally=true;expandVertically=false;index=16;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" name="linkSchemeName" localize="true" columns="7" text="TextField" />
+    <TextField index="16" data="data.linkSchemeName" constraints="twocols(expandHorizontally=true;expandVertically=false;index=16;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" name="linkSchemeName" localize="true" columns="7" text="TextField" >
+      <Dependancy componentName="fromDropDown" />
+      <Dependancy componentName="toDropDown" />
+    </TextField>
     <Label label="from_target" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" localize="true" />
     <DropDown data="data.fromFlexoConcept" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" name="fromDropDown" format="object.name" localize="true" staticList="" list="data.getFlexoConceptsFrom()" iteratorClassName="org.openflexo.foundation.viewpoint.FlexoConcept" autoSelectFirstRow="true">
         <Dependancy componentName="patternSelector" />
