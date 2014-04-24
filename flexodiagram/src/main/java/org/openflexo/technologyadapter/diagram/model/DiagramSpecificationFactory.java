@@ -19,10 +19,10 @@
  */
 package org.openflexo.technologyadapter.diagram.model;
 
+import org.openflexo.foundation.DefaultFlexoModelFactory;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
-import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 
 /**
@@ -31,7 +31,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
  * @author sylvain
  * 
  */
-public class DiagramSpecificationFactory extends ModelFactory {
+public class DiagramSpecificationFactory extends DefaultFlexoModelFactory {
 
 	public DiagramSpecificationFactory(EditingContext editingContext) throws ModelDefinitionException {
 		super(ModelContextLibrary.getModelContext(DiagramSpecification.class));

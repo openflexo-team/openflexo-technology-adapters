@@ -19,12 +19,17 @@
  */
 package org.openflexo.technologyadapter.diagram.model;
 
+import java.util.logging.Logger;
+
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.foundation.FlexoModelFactory;
+import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -36,7 +41,9 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
  * @author sylvain
  * 
  */
-public class DiagramFactory extends FGEModelFactoryImpl {
+public class DiagramFactory extends FGEModelFactoryImpl implements FlexoModelFactory {
+
+	private static final Logger logger = Logger.getLogger(DiagramFactory.class.getPackage().getName());
 
 	public DiagramFactory(EditingContext editingContext) throws ModelDefinitionException {
 		super(Diagram.class, DiagramShape.class, DiagramConnector.class);
@@ -93,4 +100,33 @@ public class DiagramFactory extends FGEModelFactoryImpl {
 		return returned;
 	}
 
+	private PamelaResource<?, ?> resourceBeeingDeserialized = null;
+
+	@Override
+	public synchronized void startDeserializing(PamelaResource<?, ?> resource) throws ConcurrentDeserializationException {
+		if (resourceBeeingDeserialized == null) {
+			resourceBeeingDeserialized = resource;
+		} else {
+			throw new ConcurrentDeserializationException(resource);
+		}
+	}
+
+	@Override
+	public synchronized void stopDeserializing(PamelaResource<?, ?> resource) {
+		if (resourceBeeingDeserialized == resource) {
+			resourceBeeingDeserialized = null;
+		}
+	}
+
+	@Override
+	public <I> void objectHasBeenDeserialized(I newlyCreatedObject, Class<I> implementedInterface) {
+		super.objectHasBeenDeserialized(newlyCreatedObject, implementedInterface);
+		if (newlyCreatedObject instanceof FlexoObject) {
+			if (resourceBeeingDeserialized != null) {
+				resourceBeeingDeserialized.setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
+			} else {
+				logger.warning("Could not access resource beeing deserialized");
+			}
+		}
+	}
 }

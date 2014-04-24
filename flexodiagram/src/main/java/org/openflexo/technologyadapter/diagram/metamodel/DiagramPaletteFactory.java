@@ -22,6 +22,9 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
+import org.openflexo.foundation.FlexoModelFactory;
+import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
@@ -34,7 +37,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
  * @author sylvain
  * 
  */
-public class DiagramPaletteFactory extends FGEModelFactoryImpl {
+public class DiagramPaletteFactory extends FGEModelFactoryImpl implements FlexoModelFactory {
 
 	public DiagramPaletteFactory(EditingContext editingContext, DiagramPaletteResource paletteResource) throws ModelDefinitionException {
 		super(DiagramPalette.class, DiagramPaletteElement.class);
@@ -66,6 +69,32 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl {
 		returned.setIsReadOnly(false);
 		returned.setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
 		return returned;
+	}
+
+	private PamelaResource<?, ?> resourceBeeingDeserialized = null;
+
+	@Override
+	public synchronized void startDeserializing(PamelaResource<?, ?> resource) throws ConcurrentDeserializationException {
+		if (resourceBeeingDeserialized == null) {
+			resourceBeeingDeserialized = resource;
+		} else {
+			throw new ConcurrentDeserializationException(resource);
+		}
+	}
+
+	@Override
+	public synchronized void stopDeserializing(PamelaResource<?, ?> resource) {
+		if (resourceBeeingDeserialized == resource) {
+			resourceBeeingDeserialized = null;
+		}
+	}
+
+	@Override
+	public <I> void objectHasBeenDeserialized(I newlyCreatedObject, Class<I> implementedInterface) {
+		super.objectHasBeenDeserialized(newlyCreatedObject, implementedInterface);
+		if (newlyCreatedObject instanceof FlexoObject) {
+			resourceBeeingDeserialized.setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
+		}
 	}
 
 }
