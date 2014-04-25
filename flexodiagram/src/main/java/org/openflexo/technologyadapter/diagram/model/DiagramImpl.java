@@ -143,17 +143,8 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	@Override
 	public synchronized void setIsModified() {
 		super.setIsModified();
-		if (!isModified()) {
-			logger.info(">>>>>>>>>>>>>>> Diagram " + this + " has been modified !!!");
-		}
 		screenshotModified = true;
 	}
-
-	/*@Override
-	public boolean isModified() {
-		// TODO Auto-generated method stub
-		return super.isModified();
-	}*/
 
 	@Override
 	public String getName() {
