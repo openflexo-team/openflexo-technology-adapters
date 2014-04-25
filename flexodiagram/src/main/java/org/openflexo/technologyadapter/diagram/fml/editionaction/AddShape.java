@@ -137,9 +137,9 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 					System.out.println(" > bv=" + bv);
 				}
 				try {
-					if(getContainer().getBindingValue(action)!=null){
+					if (getContainer().getBindingValue(action) != null) {
 						return getContainer().getBindingValue(action);
-					} else{
+					} else {
 						// In case the toplevel is not specified set o the diagram top level.
 						return (DiagramContainerElement<?>) getModelSlotInstance(action).getAccessedResourceData();
 					}
@@ -224,7 +224,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			/*if (action.getOverridingGraphicalRepresentation(getPatternRole()) != null) {
 				grToUse = action.getOverridingGraphicalRepresentation(getPatternRole());
 			} else*/if (getFlexoRole().getGraphicalRepresentation() != null) {
-				grToUse = (ShapeGraphicalRepresentation)getFlexoRole().getGraphicalRepresentation();
+				grToUse = getFlexoRole().getGraphicalRepresentation();
 			}
 
 			ShapeGraphicalRepresentation newGR = factory.makeShapeGraphicalRepresentation();
@@ -272,8 +272,14 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		@Override
 		public void finalizePerformAction(FlexoBehaviourAction action, DiagramShape newShape) {
 			super.finalizePerformAction(action, newShape);
-			// Be sure that the newly created shape is updated
-			// newShape.update();
+
+			// Well, not easy to understand here
+			// The new shape has well be added to the diagram, and the drawing (which listen to the diagram) has well received the event
+			// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
+			// Since the shape has been added BEFORE the FlexoConceptInstance has been set, the drawing only knows about the DiagamShape,
+			// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
+			// sure that the Drawing can discover that the new shape is FML-controlled
+			newShape.getParent().getPropertyChangeSupport().firePropertyChange("invalidate", null, newShape.getParent());
 		}
 	}
 

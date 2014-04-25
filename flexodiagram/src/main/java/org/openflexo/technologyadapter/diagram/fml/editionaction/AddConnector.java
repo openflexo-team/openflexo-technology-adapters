@@ -37,9 +37,9 @@ import org.openflexo.foundation.validation.ValidationError;
 import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
-import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.model.annotations.Getter;
@@ -295,8 +295,15 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		@Override
 		public void finalizePerformAction(FlexoBehaviourAction action, DiagramConnector newConnector) {
 			super.finalizePerformAction(action, newConnector);
-			// Be sure that the newly created connector is updated
-			// newConnector.update();
+
+			// Well, not easy to understand here
+			// The new connector has well be added to the diagram, and the drawing (which listen to the diagram) has well received the event
+			// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
+			// Since the connector has been added BEFORE the FlexoConceptInstance has been set, the drawing only knows about the
+			// DiagamShape,
+			// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
+			// sure that the Drawing can discover that the new shape is FML-controlled
+			newConnector.getParent().getPropertyChangeSupport().firePropertyChange("invalidate", null, newConnector.getParent());
 		}
 
 	}
