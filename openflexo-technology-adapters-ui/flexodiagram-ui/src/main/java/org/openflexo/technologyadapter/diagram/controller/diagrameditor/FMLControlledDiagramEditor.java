@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2013-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -19,9 +19,13 @@
  */
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
+import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.Drawing.DrawingTreeNode;
 import org.openflexo.fge.swing.control.SwingToolFactory;
+import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.view.controller.FlexoController;
 
@@ -46,5 +50,47 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 
 	public VirtualModelInstance getVirtualModelInstance() {
 		return virtualModelInstance;
+	}
+
+	@Override
+	public FMLControlledDiagramDrawing getDrawing() {
+		return (FMLControlledDiagramDrawing) super.getDrawing();
+	}
+
+	/**
+	 * Return the {@link FlexoObject} beeing represented through the supplied {@link DrawingTreeNode}.<br>
+	 * This hook allows to implement a disalignment between the representation and the represented object<br>
+	 * Here, we have to translate {@link FMLControlledDiagramElement} to {@link FlexoConceptInstance}<br>
+	 * 
+	 * @param node
+	 * @return
+	 */
+	@Override
+	protected FlexoObject getDrawableForDrawingTreeNode(DrawingTreeNode<?, ?> node) {
+		if (node.getDrawable() instanceof FMLControlledDiagramElement) {
+			return ((FMLControlledDiagramElement<?, ?>) node.getDrawable()).getFlexoConceptInstance();
+		}
+		return super.getDrawableForDrawingTreeNode(node);
+	}
+
+	/**
+	 * Return the {@link FlexoObject} which is used as drawable in DrawingTreeNode<br>
+	 * This hook allows to implement a disalignment between the representation and the represented object<br>
+	 * Here, we have to translate {@link FlexoConceptInstance} to {@link FMLControlledDiagramElement}<br>
+	 * 
+	 * @param object
+	 * @return
+	 */
+	@Override
+	protected FlexoObject getRepresentedFlexoObject(FlexoObject object) {
+		if (object instanceof FlexoConceptInstance) {
+			List<FMLControlledDiagramElement<?, ?>> allFMLControlledDiagramElements = getDrawing().getFMLControlledDiagramElements(
+					(FlexoConceptInstance) object);
+			if (allFMLControlledDiagramElements != null && allFMLControlledDiagramElements.size() > 0) {
+				// Return first one !
+				return allFMLControlledDiagramElements.get(0);
+			}
+		}
+		return super.getRepresentedFlexoObject(object);
 	}
 }

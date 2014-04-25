@@ -19,23 +19,37 @@
  */
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
+import org.openflexo.fge.FGEModelFactory;
+import org.openflexo.fge.GRBinding.ConnectorGRBinding;
+import org.openflexo.fge.GRBinding.DrawingGRBinding;
+import org.openflexo.fge.GRBinding.ShapeGRBinding;
+import org.openflexo.fge.GRProvider.ConnectorGRProvider;
+import org.openflexo.fge.GRProvider.DrawingGRProvider;
+import org.openflexo.fge.GRProvider.ShapeGRProvider;
+import org.openflexo.fge.GRStructureVisitor;
+import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.control.MouseControl.MouseButton;
-import org.openflexo.fge.control.MouseControlContext;
-import org.openflexo.fge.control.actions.MouseClickControlActionImpl;
-import org.openflexo.fge.control.actions.MouseClickControlImpl;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.technologyadapter.diagram.controller.FMLControlledDiagramMouseClickControl;
+import org.openflexo.foundation.view.VirtualModelInstance.ObjectLookupResult;
+import org.openflexo.model.ModelContextLibrary;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction.ActionMask;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
@@ -46,25 +60,197 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author sylvain
  * 
  */
-public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
+public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implements DiagramRepresentationConstants {
 
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramDrawing.class.getPackage().getName());
 
-	private final VirtualModelInstance vmInstance;
+	private final VirtualModelInstance virtualModelInstance;
+
+	private ModelFactory MODEL_FACTORY = null;
+
+	private final Map<FlexoConceptInstance, List<FMLControlledDiagramElement<?, ?>>> diagramElementsForFlexoConceptInstances;
+	private final Map<DiagramShape, FMLControlledDiagramShape> federatedShapes;
+	private final Map<DiagramConnector, FMLControlledDiagramConnector> federatedConnectors;
 
 	public FMLControlledDiagramDrawing(VirtualModelInstance vmInstance, boolean readOnly) {
 		super(FMLControlledDiagramVirtualModelInstanceNature.getDiagram(vmInstance), readOnly);
-		this.vmInstance = vmInstance;
+		this.virtualModelInstance = vmInstance;
+		diagramElementsForFlexoConceptInstances = new HashMap<FlexoConceptInstance, List<FMLControlledDiagramElement<?, ?>>>();
+		federatedShapes = new HashMap<DiagramShape, FMLControlledDiagramShape>();
+		federatedConnectors = new HashMap<DiagramConnector, FMLControlledDiagramConnector>();
+		try {
+			MODEL_FACTORY = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FMLControlledDiagramShape.class,
+					FMLControlledDiagramConnector.class));
+			MODEL_FACTORY.setEditingContext(vmInstance.getServiceManager().getEditingContext());
+		} catch (ModelDefinitionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public VirtualModelInstance getVirtualModelInstance() {
+		return virtualModelInstance;
 	}
 
 	@Override
-	protected DrawingGraphicalRepresentation retrieveGraphicalRepresentation(Diagram diagram, DiagramFactory factory) {
-		DrawingGraphicalRepresentation returned = super.retrieveGraphicalRepresentation(diagram, factory);
+	public Diagram getDiagram() {
+		return FMLControlledDiagramVirtualModelInstanceNature.getDiagram(getVirtualModelInstance());
+	}
+
+	@Override
+	public <O> void invalidateGraphicalObjectsHierarchy(O drawable) {
+		super.invalidateGraphicalObjectsHierarchy(drawable);
+		clearCache();
+	}
+
+	@Override
+	public void invalidateGraphicalObjectsHierarchy() {
+		super.invalidateGraphicalObjectsHierarchy();
+		clearCache();
+	}
+
+	ObjectLookupResult getObjectLookupResult(DiagramElement<?> element) {
+		return getVirtualModelInstance().lookup(element);
+	}
+
+	private void clearCache() {
+		// TODO
+	}
+
+	// TODO: implements cache to not always try to retrieve FMLControlledDiagramElement when DiagramElement is not federated
+	FMLControlledDiagramShape getFederatedShape(DiagramShape shape) {
+		FMLControlledDiagramShape returned = federatedShapes.get(shape);
+		if (returned == null) {
+			ObjectLookupResult r = getObjectLookupResult(shape);
+			if (r != null) {
+				returned = MODEL_FACTORY.newInstance(FMLControlledDiagramShape.class);
+				returned.setDiagramElement(shape);
+				returned.setFlexoConceptInstance(r.flexoConceptInstance);
+				returned.setRole((ShapeRole) r.role);
+				federatedShapes.put(shape, returned);
+				registerNewFMLControlledDiagramElement(returned);
+			} else {
+				// TODO: perfs issue: when not found it will be costly !!!
+			}
+		}
 		return returned;
 	}
 
+	// TODO: implements cache to not always try to retrieve FMLControlledDiagramElement when DiagramElement is not federated
+	FMLControlledDiagramConnector getFederatedConnector(DiagramConnector connector) {
+		FMLControlledDiagramConnector returned = federatedConnectors.get(connector);
+		if (returned == null) {
+			ObjectLookupResult r = getObjectLookupResult(connector);
+			if (r != null) {
+				returned = MODEL_FACTORY.newInstance(FMLControlledDiagramConnector.class);
+				returned.setDiagramElement(connector);
+				returned.setFlexoConceptInstance(r.flexoConceptInstance);
+				returned.setRole((ConnectorRole) r.role);
+				federatedConnectors.put(connector, returned);
+				registerNewFMLControlledDiagramElement(returned);
+			} else {
+				// TODO: perfs issue: when not found it will be costly !!!
+			}
+		}
+		return returned;
+	}
+
+	private void registerNewFMLControlledDiagramElement(FMLControlledDiagramElement<?, ?> fmlControlledDiagramElement) {
+		List<FMLControlledDiagramElement<?, ?>> list = diagramElementsForFlexoConceptInstances.get(fmlControlledDiagramElement
+				.getFlexoConceptInstance());
+		if (list == null) {
+			list = new ArrayList<FMLControlledDiagramElement<?, ?>>();
+			diagramElementsForFlexoConceptInstances.put(fmlControlledDiagramElement.getFlexoConceptInstance(), list);
+		}
+		if (!list.contains(fmlControlledDiagramElement)) {
+			list.add(fmlControlledDiagramElement);
+		}
+	}
+
+	/**
+	 * Return the list of all {@link FMLControlledDiagramElement} addressing supplied {@link FlexoConceptInstance}
+	 * 
+	 * @param flexoConceptInstance
+	 * @return
+	 */
+	List<FMLControlledDiagramElement<?, ?>> getFMLControlledDiagramElements(FlexoConceptInstance flexoConceptInstance) {
+		return diagramElementsForFlexoConceptInstances.get(flexoConceptInstance);
+	}
+
 	@Override
-	protected ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramShape shape, DiagramFactory factory) {
+	public void init() {
+
+		final DrawingGRBinding<Diagram> drawingBinding = bindDrawing(Diagram.class, "drawing", new DrawingGRProvider<Diagram>() {
+			@Override
+			public DrawingGraphicalRepresentation provideGR(Diagram drawable, FGEModelFactory factory) {
+				return retrieveGraphicalRepresentation(drawable, (DiagramFactory) factory);
+			}
+		});
+		final ShapeGRBinding<DiagramShape> shapeBinding = bindShape(DiagramShape.class, "shape", new ShapeGRProvider<DiagramShape>() {
+			@Override
+			public ShapeGraphicalRepresentation provideGR(DiagramShape drawable, FGEModelFactory factory) {
+				return retrieveGraphicalRepresentation(drawable, (DiagramFactory) factory);
+			}
+		});
+		final ShapeGRBinding<FMLControlledDiagramShape> fmlControlledShapeBinding = bindShape(FMLControlledDiagramShape.class,
+				"fmlControlledShape", new ShapeGRProvider<FMLControlledDiagramShape>() {
+					@Override
+					public ShapeGraphicalRepresentation provideGR(FMLControlledDiagramShape drawable, FGEModelFactory factory) {
+						return retrieveGraphicalRepresentation(drawable.getDiagramElement(), (DiagramFactory) factory);
+					}
+				});
+		final ConnectorGRBinding<DiagramConnector> connectorBinding = bindConnector(DiagramConnector.class, "connector", shapeBinding,
+				shapeBinding, new ConnectorGRProvider<DiagramConnector>() {
+					@Override
+					public ConnectorGraphicalRepresentation provideGR(DiagramConnector drawable, FGEModelFactory factory) {
+						return retrieveGraphicalRepresentation(drawable, (DiagramFactory) factory);
+					}
+				});
+
+		final ConnectorGRBinding<FMLControlledDiagramConnector> fmlControlledConnectorBinding = bindConnector(
+				FMLControlledDiagramConnector.class, "fmlControlledConnector", new ConnectorGRProvider<FMLControlledDiagramConnector>() {
+					@Override
+					public ConnectorGraphicalRepresentation provideGR(FMLControlledDiagramConnector drawable, FGEModelFactory factory) {
+						return retrieveGraphicalRepresentation(drawable.getDiagramElement(), (DiagramFactory) factory);
+					}
+				});
+		drawingBinding.addToWalkers(new GRStructureVisitor<Diagram>() {
+
+			@Override
+			public void visit(Diagram diagram) {
+				for (DiagramShape shape : diagram.getShapes()) {
+					FMLControlledDiagramShape fmlShape = getFederatedShape(shape);
+					if (fmlShape != null) {
+						// In this case, the shape is federated in a certain FlexoConceptInstance : we will address this concept instead
+						drawShape(fmlControlledShapeBinding, fmlShape, diagram);
+					} else {
+						drawShape(shapeBinding, shape, diagram);
+					}
+				}
+				for (DiagramConnector connector : diagram.getConnectors()) {
+					drawConnector(connectorBinding, connector, connector.getStartShape(), connector.getEndShape(), diagram);
+				}
+			}
+		});
+
+		shapeBinding.addToWalkers(new GRStructureVisitor<DiagramShape>() {
+			@Override
+			public void visit(DiagramShape aShape) {
+				for (DiagramShape shape : aShape.getShapes()) {
+					drawShape(shapeBinding, shape, aShape);
+				}
+				for (DiagramConnector connector : aShape.getConnectors()) {
+					drawConnector(connectorBinding, connector, connector.getStartShape(), connector.getEndShape(), aShape);
+				}
+			}
+		});
+
+		shapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
+		connectorBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
+
+	}
+
+	/*protected ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramShape shape, DiagramFactory factory) {
 		ShapeGraphicalRepresentation returned = super.retrieveGraphicalRepresentation(shape, factory);
 		if (shape != null) {
 			ShapeRole patternRole = shape.getPatternRole(vmInstance);
@@ -77,9 +263,9 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 		}
 
 		return returned;
-	}
+	}*/
 
-	@Override
+	/*@Override
 	protected ConnectorGraphicalRepresentation retrieveGraphicalRepresentation(DiagramConnector connector, DiagramFactory factory) {
 		ConnectorGraphicalRepresentation returned = super.retrieveGraphicalRepresentation(connector, factory);
 
@@ -111,6 +297,6 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing {
 		}
 
 		return returned;
-	}
+	}*/
 
 }

@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import org.openflexo.fge.Drawing;
 import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.control.actions.DrawShapeAction;
@@ -85,16 +86,15 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		return new CommonPalette(this);
 	}
 
-	public DiagramEditor(AbstractDiagramDrawing diagramDrawing, boolean readOnly, FlexoController controller,
-			SwingToolFactory swingToolFactory) {
-		super(diagramDrawing, controller != null ? controller.getSelectionManager() : null, ((DiagramResource) diagramDrawing.getDiagram()
+	public DiagramEditor(Drawing<Diagram> diagramDrawing, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
+		super(diagramDrawing, controller != null ? controller.getSelectionManager() : null, ((DiagramResource) diagramDrawing.getModel()
 				.getResource()).getFactory(), swingToolFactory);
 
 		flexoController = controller;
 		this.swingToolFactory = swingToolFactory;
 
-		if (diagramDrawing.getDiagram().getDiagramSpecification() != null) {
-			diagramDrawing.getDiagram().getDiagramSpecification().getPropertyChangeSupport().addPropertyChangeListener(this);
+		if (diagramDrawing.getModel().getDiagramSpecification() != null) {
+			diagramDrawing.getModel().getDiagramSpecification().getPropertyChangeSupport().addPropertyChangeListener(this);
 		}
 
 		if (!readOnly) {
@@ -119,11 +119,11 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			contextualPalettes = new Hashtable<DiagramPalette, JDianaPalette>();
 
 			System.out.println("Hop, je regarde les palettes pour le DiagramSpecification="
-					+ diagramDrawing.getDiagram().getDiagramSpecification());
+					+ diagramDrawing.getModel().getDiagramSpecification());
 
-			if (diagramDrawing.getDiagram().getDiagramSpecification() != null) {
-				System.out.println("Les palettes=" + diagramDrawing.getDiagram().getDiagramSpecification().getPalettes());
-				for (DiagramPalette palette : diagramDrawing.getDiagram().getDiagramSpecification().getPalettes()) {
+			if (diagramDrawing.getModel().getDiagramSpecification() != null) {
+				System.out.println("Les palettes=" + diagramDrawing.getModel().getDiagramSpecification().getPalettes());
+				for (DiagramPalette palette : diagramDrawing.getModel().getDiagramSpecification().getPalettes()) {
 					System.out.println("Palette " + palette);
 					System.out.println("elements " + palette.getElements());
 					for (DiagramPaletteElement e : palette.getElements()) {
