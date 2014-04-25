@@ -366,7 +366,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 		if (object instanceof DiagramPalette) {
 			DiagramPaletteEditor editor = new DiagramPaletteEditor((DiagramPalette) object, false, controller, swingToolFactory);
-			return new DiagramPaletteModuleView(editor, perspective);
+			//return new DiagramPaletteModuleView(editor, perspective);
+			return editor.getModuleView();
 		}
 
 		// TODO: handle DiagramSpecification

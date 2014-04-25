@@ -52,19 +52,27 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 			palettePalette = swingToolFactory.makeDianaPalette(palettePaletteModel);
 			palettePalette.attachToEditor(this);
 		}
-
+		moduleView = new DiagramPaletteModuleView(this, flexoController.getCurrentPerspective());
 	}
 
 	@Override
 	public void delete() {
-		if (flexoController != null) {
+		/*if (flexoController != null) {
 			if (getDrawingView() != null && moduleView != null) {
 				flexoController.removeModuleView(moduleView);
 			}
 		}
 		getDrawing().delete();
 		getPalettePalette().delete();
+		super.delete();*/
+		if (flexoController != null) {
+			if (getDrawingView() != null && moduleView != null) {
+				flexoController.removeModuleView(moduleView);
+			}
+		}
 		super.delete();
+		getDrawing().delete();
+		//flexoController.removeModuleView(moduleView);
 	}
 
 	public FlexoController getFlexoController() {
@@ -100,12 +108,16 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 
 	public DiagramPalette getDiagramPalette() {
 		// Temporary code to Ensure GRs can be edited
-		for(DiagramPaletteElement pal : getDrawing().getRoot().getDrawable().getElements()){
-			pal.getGraphicalRepresentation().setIsFocusable(true);
-			pal.getGraphicalRepresentation().setIsSelectable(true);
-			pal.getGraphicalRepresentation().setIsReadOnly(false);
-			pal.getGraphicalRepresentation().setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
+		DiagramPalette diagramPalette = getDrawing().getRoot().getDrawable();
+		if(diagramPalette!=null && diagramPalette.getElements()!=null){
+			for(DiagramPaletteElement pal : diagramPalette.getElements()){
+				pal.getGraphicalRepresentation().setIsFocusable(true);
+				pal.getGraphicalRepresentation().setIsSelectable(true);
+				pal.getGraphicalRepresentation().setIsReadOnly(false);
+				pal.getGraphicalRepresentation().setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
+			}
 		}
+		
 		return getDrawing().getModel();
 	}
 
