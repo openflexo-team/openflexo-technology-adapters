@@ -49,7 +49,7 @@ public class DeleteDiagramSpecification extends FlexoAction<DeleteDiagramSpecifi
 
 		@Override
 		public boolean isVisibleForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
-			return object != null && object.getClass().equals(DiagramSpecification.class);
+			return object != null ;
 		}
 
 		@Override
@@ -69,7 +69,7 @@ public class DeleteDiagramSpecification extends FlexoAction<DeleteDiagramSpecifi
 
 	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException {
-		logger.info("Delete VirtualModel");
+		logger.info("Delete Diagram Specification");
 		if (getFocusedObject().getResource() != null) {
 			getFocusedObject().getResource().delete();
 		}
