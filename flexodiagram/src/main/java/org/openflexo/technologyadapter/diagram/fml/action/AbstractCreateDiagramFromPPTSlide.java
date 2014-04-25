@@ -71,9 +71,11 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.rm.ResourceLocator;
+import org.openflexo.swing.ImageUtils;
+import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
-import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
@@ -83,15 +85,24 @@ import org.openflexo.toolbox.StringUtils;
 public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreateDiagramFromPPTSlide<A, T>, T extends FlexoObject>
 	extends FlexoAction<A,T,ViewPointObject> {
 
+	public DrawingGraphicalRepresentation graphicalRepresentation;
+	private String diagramName;
+	private String diagramTitle;
+	private String diagramURI;
+	private DiagramResource diagramResource;
+	private File diagramFile;
+
+	private SlideShow selectedSlideShow;
+	private ArrayList<Slide> currentSlides;
+	private File file;
+	private Slide slide;
+	
 	public AbstractCreateDiagramFromPPTSlide(
 			FlexoActionType<A, T, ViewPointObject> actionType,
 			T focusedObject, Vector<ViewPointObject> globalSelection,
 			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
-
-	public DrawingGraphicalRepresentation graphicalRepresentation;
-	private String diagramName;
 	
 	public DrawingGraphicalRepresentation getGraphicalRepresentation() {
 		return graphicalRepresentation;
@@ -137,16 +148,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}
-
-	private String diagramTitle;
-	private String diagramURI;
-	private DiagramResource diagramResource;
-	private File diagramFile;
-
-	private SlideShow selectedSlideShow;
-	private ArrayList<Slide> currentSlides;
-	private File file;
-	private Slide slide;
 
 	/*
 	 * Diagram Configuration
@@ -662,15 +663,26 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		graphics.setPaint(Color.WHITE);
 		graphics.fillRect((int) pictureShape.getAnchor2D().getX(), (int) pictureShape.getAnchor2D().getY(), (int) pictureShape
 				.getAnchor2D().getWidth(), (int) pictureShape.getAnchor2D().getHeight());
-
 		pictureShape.getPictureData().draw(graphics, pictureShape);
-		gr.setBackground(getDiagramFactory().makeImageBackground(image));
+		File imageFile = saveImageFile(image, getDiagramName()+getSlide().getTitle()+pictureShape.getShapeId());
+		gr.setBackground(getDiagramFactory().makeImageBackground(ResourceLocator.locateResource(imageFile.getAbsolutePath())));
 		gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
 		gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 
 		newShape.setGraphicalRepresentation(gr);
 
 		return newShape;
+	}
+	
+	public File saveImageFile(BufferedImage image, String name) {
+		File imageFile = new File(getDiagramFile().getParent(), JavaUtils.getClassName(name) + ".diagram-element" + ".png");
+		try {
+			ImageUtils.saveImageToFile(image, imageFile, ImageType.PNG);
+			return imageFile;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private DashStyle convertDashLineStyles(int powerpointDashStyle){
