@@ -34,6 +34,7 @@ import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.TechnologyAdapterControllerService;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
+@SuppressWarnings("serial")
 public class DiagramPaletteModuleView extends JPanel implements ModuleView<DiagramPalette>, PropertyChangeListener {
 
 	@SuppressWarnings("unused")
@@ -45,7 +46,7 @@ public class DiagramPaletteModuleView extends JPanel implements ModuleView<Diagr
 	public DiagramPaletteModuleView(final DiagramPaletteEditor controller, FlexoPerspective perspective) {
 		super();
 		setLayout(new BorderLayout());
-		_controller = controller;
+		this._controller = controller;
 		this.perspective = perspective;
 
 		add(controller.getDrawingView(), BorderLayout.CENTER);
