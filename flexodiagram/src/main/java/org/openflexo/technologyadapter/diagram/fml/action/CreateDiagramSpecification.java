@@ -58,7 +58,6 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 		@Override
 		public boolean isEnabledForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
-			System.out.println("enabled ???? " + object);
 			return object != null;
 		}
 
@@ -96,12 +95,13 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 		}
 		return true;
 	}
-	
+
 	public boolean isNewDiagramSpecificationUriValid() {
 		if (StringUtils.isEmpty(newDiagramSpecificationURI)) {
 			errorMessage = "please_supply_valid_diagram_specification_uri";
 			return false;
-		} try {
+		}
+		try {
 			new URL(newDiagramSpecificationURI);
 		} catch (MalformedURLException e) {
 			errorMessage = "malformed_uri";
@@ -124,7 +124,8 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 	public boolean isValid() {
 		if (!isNewDiagramSpecificationNameValid()) {
 			return false;
-		} if (!isNewDiagramSpecificationUriValid()) {
+		}
+		if (!isNewDiagramSpecificationUriValid()) {
 			return false;
 		}
 		return true;
