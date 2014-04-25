@@ -224,11 +224,24 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 						// In this case, the shape is federated in a certain FlexoConceptInstance : we will address this concept instead
 						drawShape(fmlControlledShapeBinding, fmlShape, diagram);
 					} else {
+						// Otherwise, this is a normal shape, we just display the shape
 						drawShape(shapeBinding, shape, diagram);
 					}
 				}
 				for (DiagramConnector connector : diagram.getConnectors()) {
-					drawConnector(connectorBinding, connector, connector.getStartShape(), connector.getEndShape(), diagram);
+					FMLControlledDiagramConnector fmlConnector = getFederatedConnector(connector);
+					FMLControlledDiagramShape fmlStartShape = getFederatedShape(connector.getStartShape());
+					FMLControlledDiagramShape fmlEndShape = getFederatedShape(connector.getEndShape());
+					if (fmlConnector != null) {
+						// In this case, the connector is federated in a certain FlexoConceptInstance : we will address this concept instead
+						drawConnector(fmlControlledConnectorBinding, fmlConnector,
+								fmlStartShape != null ? fmlStartShape : connector.getStartShape(), fmlEndShape != null ? fmlEndShape
+										: connector.getEndShape(), diagram);
+					} else {
+						// Otherwise, this is a normal connector, we just display the connector
+						drawConnector(connectorBinding, connector, fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
+								fmlEndShape != null ? fmlEndShape : connector.getEndShape(), diagram);
+					}
 				}
 			}
 		});
@@ -237,10 +250,29 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 			@Override
 			public void visit(DiagramShape aShape) {
 				for (DiagramShape shape : aShape.getShapes()) {
-					drawShape(shapeBinding, shape, aShape);
+					FMLControlledDiagramShape fmlShape = getFederatedShape(shape);
+					if (fmlShape != null) {
+						// In this case, the shape is federated in a certain FlexoConceptInstance : we will address this concept instead
+						drawShape(fmlControlledShapeBinding, fmlShape, aShape);
+					} else {
+						// Otherwise, this is a normal shape, we just display the shape
+						drawShape(shapeBinding, shape, aShape);
+					}
 				}
 				for (DiagramConnector connector : aShape.getConnectors()) {
-					drawConnector(connectorBinding, connector, connector.getStartShape(), connector.getEndShape(), aShape);
+					FMLControlledDiagramConnector fmlConnector = getFederatedConnector(connector);
+					FMLControlledDiagramShape fmlStartShape = getFederatedShape(connector.getStartShape());
+					FMLControlledDiagramShape fmlEndShape = getFederatedShape(connector.getEndShape());
+					if (fmlConnector != null) {
+						// In this case, the connector is federated in a certain FlexoConceptInstance : we will address this concept instead
+						drawConnector(fmlControlledConnectorBinding, fmlConnector,
+								fmlStartShape != null ? fmlStartShape : connector.getStartShape(), fmlEndShape != null ? fmlEndShape
+										: connector.getEndShape(), aShape);
+					} else {
+						// Otherwise, this is a normal connector, we just display the connector
+						drawConnector(connectorBinding, connector, fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
+								fmlEndShape != null ? fmlEndShape : connector.getEndShape(), aShape);
+					}
 				}
 			}
 		});
