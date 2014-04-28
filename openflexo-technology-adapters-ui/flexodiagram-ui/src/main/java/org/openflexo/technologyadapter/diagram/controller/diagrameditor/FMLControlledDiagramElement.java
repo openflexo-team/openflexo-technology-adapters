@@ -19,10 +19,16 @@
  */
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.openflexo.antar.expr.NotSettableContextException;
+import org.openflexo.antar.expr.NullReferenceException;
+import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
@@ -38,6 +44,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
  * 
  */
 @ModelEntity(isAbstract = true)
+@ImplementationClass(FMLControlledDiagramElement.FMLControlledDiagramElementImpl.class)
 public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends FlexoObject {
 
 	public static final String FLEXO_CONCEPT_INSTANCE_KEY = "flexoConceptInstance";
@@ -91,4 +98,73 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 	@Setter(ROLE_KEY)
 	public void setRole(GraphicalElementRole<E, GR> aRole);
 
+	public String getLabel();
+
+	public void setLabel(String aName);
+
+	public static abstract class FMLControlledDiagramElementImpl implements FMLControlledDiagramElement {
+
+		// TODO: quick and dirty for easy testing
+		@Override
+		public String getLabel() {
+			/*System.out.println("OK, on me demande le label");
+			System.out.println("binding: " + getRole().getLabel());
+			System.out.println("role=" + getRole());
+			System.out.println("specs=" + getRole().getGrSpecifications());
+			System.out.println("specs2=" + getRole()._getDeclaredGRSpecifications());*/
+
+			if (getRole().getLabel() != null) {
+				try {
+					// System.out.println("Je retourne " + getRole().getLabel().getBindingValue(getFlexoConceptInstance()));
+					return (String) getRole().getLabel().getBindingValue(getFlexoConceptInstance());
+				} catch (TypeMismatchException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			/*System.out.println("Ask for name");
+			PrimitiveRole nameRole = (PrimitiveRole) getFlexoConceptInstance().getFlexoConcept().getFlexoRole("name");
+			if (nameRole != null) {
+				System.out.println("return " + getFlexoConceptInstance().getFlexoActor(nameRole));
+				return (String) getFlexoConceptInstance().getFlexoActor(nameRole);
+			}*/
+			return null;
+		}
+
+		// TODO: quick and dirty for easy testing
+		@Override
+		public void setLabel(String aLabel) {
+			System.out.println("OK, j'essaie de setter le label avec " + aLabel);
+			System.out.println("binding: " + getRole().getLabel());
+			if (getRole().getLabel() != null) {
+				try {
+					getRole().getLabel().setBindingValue(aLabel, getFlexoConceptInstance());
+				} catch (TypeMismatchException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotSettableContextException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			/*System.out.println("try to set name with " + aName);
+			PrimitiveRole nameRole = (PrimitiveRole) getFlexoConceptInstance().getFlexoConcept().getFlexoRole("name");
+			if (nameRole != null) {
+				getFlexoConceptInstance().setFlexoActor(aName, nameRole);
+			}*/
+		}
+
+	}
 }

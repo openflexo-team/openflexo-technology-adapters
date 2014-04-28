@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.antar.binding.BindingFactory;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
@@ -41,6 +42,7 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstance.ObjectLookupResult;
+import org.openflexo.foundation.viewpoint.binding.FlexoConceptBindingFactory;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -86,6 +88,12 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		if ((virtualModelInstance != null) && (virtualModelInstance.getVirtualModel() != null)) {
+			BindingFactory bindingFactory = new FlexoConceptBindingFactory(virtualModelInstance.getVirtualModel().getViewPoint());
+			fmlControlledShapeBinding.setBindingFactory(bindingFactory);
+			fmlControlledConnectorBinding.setBindingFactory(bindingFactory);
+		}
+
 	}
 
 	public VirtualModelInstance getVirtualModelInstance() {
@@ -177,6 +185,9 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 		return diagramElementsForFlexoConceptInstances.get(flexoConceptInstance);
 	}
 
+	private ShapeGRBinding<FMLControlledDiagramShape> fmlControlledShapeBinding;
+	private ConnectorGRBinding<FMLControlledDiagramConnector> fmlControlledConnectorBinding;
+
 	@Override
 	public void init() {
 
@@ -192,13 +203,15 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				return retrieveGraphicalRepresentation(drawable, (DiagramFactory) factory);
 			}
 		});
-		final ShapeGRBinding<FMLControlledDiagramShape> fmlControlledShapeBinding = bindShape(FMLControlledDiagramShape.class,
-				"fmlControlledShape", new ShapeGRProvider<FMLControlledDiagramShape>() {
+
+		fmlControlledShapeBinding = bindShape(FMLControlledDiagramShape.class, "fmlControlledShape",
+				new ShapeGRProvider<FMLControlledDiagramShape>() {
 					@Override
 					public ShapeGraphicalRepresentation provideGR(FMLControlledDiagramShape drawable, FGEModelFactory factory) {
 						return retrieveGraphicalRepresentation(drawable.getDiagramElement(), (DiagramFactory) factory);
 					}
 				});
+
 		final ConnectorGRBinding<DiagramConnector> connectorBinding = bindConnector(DiagramConnector.class, "connector", shapeBinding,
 				shapeBinding, new ConnectorGRProvider<DiagramConnector>() {
 					@Override
@@ -207,13 +220,14 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 					}
 				});
 
-		final ConnectorGRBinding<FMLControlledDiagramConnector> fmlControlledConnectorBinding = bindConnector(
-				FMLControlledDiagramConnector.class, "fmlControlledConnector", new ConnectorGRProvider<FMLControlledDiagramConnector>() {
+		fmlControlledConnectorBinding = bindConnector(FMLControlledDiagramConnector.class, "fmlControlledConnector",
+				new ConnectorGRProvider<FMLControlledDiagramConnector>() {
 					@Override
 					public ConnectorGraphicalRepresentation provideGR(FMLControlledDiagramConnector drawable, FGEModelFactory factory) {
 						return retrieveGraphicalRepresentation(drawable.getDiagramElement(), (DiagramFactory) factory);
 					}
 				});
+
 		drawingBinding.addToWalkers(new GRStructureVisitor<Diagram>() {
 
 			@Override
@@ -277,11 +291,15 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 			}
 		});
 
+		// TODO: move this to FME !!!
+		fmlControlledShapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.label"), true);
+		fmlControlledConnectorBinding
+				.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.label"), true);
+
 		shapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
 		connectorBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
 
 	}
-
 	/*protected ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramShape shape, DiagramFactory factory) {
 		ShapeGraphicalRepresentation returned = super.retrieveGraphicalRepresentation(shape, factory);
 		if (shape != null) {

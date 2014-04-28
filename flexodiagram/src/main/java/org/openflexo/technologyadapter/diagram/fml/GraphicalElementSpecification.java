@@ -235,7 +235,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 
 			try {
 				DiagramElement<GR> diagramElement = epi.getFlexoActor(patternRole);
-				getFeature().applyToGraphicalRepresentation((GR) diagramElement.getGraphicalRepresentation(),
+				getFeature().applyToGraphicalRepresentation(diagramElement.getGraphicalRepresentation(),
 						(T) getValue().getBindingValue(epi));
 				// getFeature().applyToGraphicalRepresentation(gr, (T) getValue().getBindingValue(element.getFlexoConceptInstance()));
 			} catch (TypeMismatchException e) {
@@ -257,7 +257,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		 */
 		public T applyToModel(FlexoConceptInstance epi, GraphicalElementRole<?, GR> patternRole) {
 			DiagramElement<GR> diagramElement = epi.getFlexoActor(patternRole);
-			T newValue = getFeature().retrieveFromGraphicalRepresentation((GR) diagramElement.getGraphicalRepresentation());
+			T newValue = getFeature().retrieveFromGraphicalRepresentation(diagramElement.getGraphicalRepresentation());
 			try {
 				getValue().setBindingValue(newValue, epi);
 			} catch (TypeMismatchException e) {
