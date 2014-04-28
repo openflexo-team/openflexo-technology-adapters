@@ -27,6 +27,7 @@ import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.foundation.DataModification;
+import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.FlexoBehaviourParameter;
@@ -46,6 +47,7 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
@@ -62,7 +64,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 @ModelEntity
 @ImplementationClass(FMLDiagramPaletteElementBinding.FMLDiagramPaletteElementBindingImpl.class)
 @XMLElement
-public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
+public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, TechnologyObject<DiagramTechnologyAdapter> {
 
 	@PropertyIdentifier(type = TypedDiagramModelSlot.class)
 	public static final String DIAGRAM_MODEL_SLOT_KEY = "diagramModelSlot";
@@ -426,6 +428,11 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject {
 			updateParameters();
 		}
 
+		@Override
+		public DiagramTechnologyAdapter getTechnologyAdapter() {
+			return (DiagramTechnologyAdapter) getDiagramModelSlot().getTechnologyAdapter();
+		}
+		
 		/*@Override
 		public void setChanged() {
 			super.setChanged();

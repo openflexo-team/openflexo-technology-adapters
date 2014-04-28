@@ -19,6 +19,7 @@
  */
 package org.openflexo.technologyadapter.diagram.fml.action;
 
+import java.awt.Image;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +104,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	private VirtualModel virtualModel;
 	private List<DropScheme> dropSchemes;
 	private List<FlexoConcept> flexoConcepts;
+	private Image image;
 	
 	private String errorMessage = EMPTY_NAME;
 
@@ -251,8 +253,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 		}
 		//getPropertyChangeSupport().firePropertyChange("flexoConcepts", null, flexoConcepts);
 	}
-	
-	
+
 	@Override
 	public boolean isValid() {
 		if (!isNameValid()) {
@@ -265,6 +266,14 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 			return false;
 		}
 		return true;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
 	}
 
 	

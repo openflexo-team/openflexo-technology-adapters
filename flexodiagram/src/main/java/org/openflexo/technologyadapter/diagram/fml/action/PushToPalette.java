@@ -19,6 +19,7 @@
  */
 package org.openflexo.technologyadapter.diagram.fml.action;
 
+import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -115,6 +116,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	private ScreenshotImage<DiagramShape> screenshot;
 	public int imageWidth;
 	public int imageHeight;
+	
+	private Image image;
 
 	private DiagramPaletteElement _newPaletteElement;
 
@@ -505,5 +508,13 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	
 	public void setErrorMessage(String message){
 		this.errorMessage = message;
+	}
+
+	public Image getImage() {
+		return image;
+	}
+
+	public void setImage(Image image) {
+		this.image = image;
 	}
 }

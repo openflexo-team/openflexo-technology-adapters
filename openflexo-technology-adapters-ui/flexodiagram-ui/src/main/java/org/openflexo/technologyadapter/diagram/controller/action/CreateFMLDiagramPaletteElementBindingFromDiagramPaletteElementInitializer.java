@@ -30,6 +30,7 @@ import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
@@ -52,6 +53,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementIniti
 		return new FlexoActionInitializer<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement>() {
 			@Override
 			public boolean run(EventObject e, CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement action) {
+				action.setImage((DiagramIconLibrary.FML_PALETTE_ELEMENT_BINDING_ICON_64X64).getImage());
 				return instanciateAndShowDialog(action, DiagramCst.CREATE_FML_DIAGRAM_PALETTE_ELEMENT_BINDING_FROM_DIAGRAM_PALETTE_DIALOG_FIB);
 			}
 		};

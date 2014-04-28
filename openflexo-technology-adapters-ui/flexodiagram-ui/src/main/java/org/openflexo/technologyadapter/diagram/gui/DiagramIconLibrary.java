@@ -52,9 +52,14 @@ public class DiagramIconLibrary extends IconLibrary {
 	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Diagram.png"));
 	public static final ImageIconResource SHAPE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DiagramShape.png"));
 	public static final ImageIconResource CONNECTOR_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DiagramConnector.png"));
-
+	
+	public static final ImageIconResource FML_PALETTE_ELEMENT_BINDING_ICON_16X16 = new ImageIconResource(ResourceLocator.locateResource("Icons/FMLPaletteElementBindingIcon16x16.png"));
+	public static final ImageIconResource FML_PALETTE_ELEMENT_BINDING_ICON_32X32 = new ImageIconResource(ResourceLocator.locateResource("Icons/FMLPaletteElementBindingIcon32x32.png"));
+	public static final ImageIconResource FML_PALETTE_ELEMENT_BINDING_ICON_64X64 = new ImageIconResource(ResourceLocator.locateResource("Icons/FMLPaletteElementBindingIcon64x64.png"));
+	
 	public static final ImageIconResource DROP_SCHEME_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DropSchemeIcon.png"));
 	public static final ImageIconResource LINK_SCHEME_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/LinkSchemeIcon.png"));
+	public static final ImageIconResource NAVIGATION_SCHEME_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/NavigationSchemeIcon.png"));
 
 	public static final ImageIconResource DIAGRAM_SPECIFICATION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DiagramSpecification.png"));
 
@@ -75,7 +80,7 @@ public class DiagramIconLibrary extends IconLibrary {
 			return DIAGRAM_PALETTE_ICON;
 		} else if (object instanceof DiagramPaletteElement) {
 			return SHAPE_ICON;
-		}
+		} 
 		logger.warning("No icon for " + object.getClass());
 		return UNKNOWN_ICON;
 	}
