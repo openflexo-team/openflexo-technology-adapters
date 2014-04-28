@@ -55,6 +55,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPa
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSpecificationInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptInitializer;
@@ -77,7 +78,6 @@ import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLContr
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramEditor;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteEditor;
-import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteModuleView;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -203,6 +203,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new PushToPaletteInitializer(actionInitializer);
 		new ExportDiagramToImageInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingInitializer(actionInitializer);
+		new CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer(actionInitializer);
 
 		// Set the screenshot builders
 		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());
