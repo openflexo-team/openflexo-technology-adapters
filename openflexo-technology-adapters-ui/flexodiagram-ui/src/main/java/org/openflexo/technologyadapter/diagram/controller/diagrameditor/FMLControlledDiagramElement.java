@@ -19,10 +19,16 @@
  */
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
+import java.lang.reflect.InvocationTargetException;
+
+import org.openflexo.antar.expr.NotSettableContextException;
+import org.openflexo.antar.expr.NullReferenceException;
+import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
@@ -38,6 +44,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
  * 
  */
 @ModelEntity(isAbstract = true)
+@ImplementationClass(FMLControlledDiagramElement.FMLControlledDiagramElementImpl.class)
 public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends FlexoObject {
 
 	public static final String FLEXO_CONCEPT_INSTANCE_KEY = "flexoConceptInstance";
@@ -91,4 +98,53 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 	@Setter(ROLE_KEY)
 	public void setRole(GraphicalElementRole<E, GR> aRole);
 
+	public String getLabel();
+
+	public void setLabel(String aName);
+
+	public static abstract class FMLControlledDiagramElementImpl implements FMLControlledDiagramElement {
+
+		// TODO: to it generically for all GRSpecs
+		@Override
+		public String getLabel() {
+			if (getRole().getLabel() != null) {
+				try {
+					return (String) getRole().getLabel().getBindingValue(getFlexoConceptInstance());
+				} catch (TypeMismatchException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+
+		// TODO: to it generically for all GRSpecs
+		@Override
+		public void setLabel(String aLabel) {
+			if (getRole().getLabel() != null) {
+				try {
+					getRole().getLabel().setBindingValue(aLabel, getFlexoConceptInstance());
+				} catch (TypeMismatchException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NotSettableContextException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+
+	}
 }

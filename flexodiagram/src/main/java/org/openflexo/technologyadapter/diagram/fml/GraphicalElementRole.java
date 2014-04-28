@@ -168,8 +168,18 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		private GR graphicalRepresentation;
 
+		private final List<GraphicalElementSpecification<?, GR>> pendingGRSpecs;
+
 		public GraphicalElementRoleImpl() {
 			super();
+			pendingGRSpecs = new ArrayList<GraphicalElementSpecification<?, GR>>();
+			initDefaultSpecifications();
+		}
+
+		@Override
+		public void finalizeFlexoRoleDeserialization() {
+			super.finalizeFlexoRoleDeserialization();
+			// Give a chance to GRSpecs to be well deserialized
 			initDefaultSpecifications();
 		}
 
@@ -185,6 +195,11 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					newGraphicalElementSpecification.setMandatory(true);
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
+				for (GraphicalElementSpecification<?, GR> grSpec : pendingGRSpecs) {
+					System.out.println("Register pending GRSpec: " + grSpec);
+					registerGRSpecification(grSpec);
+				}
+
 			}
 
 		}
@@ -461,15 +476,26 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			}
 		}
 
+		private void registerGRSpecification(GraphicalElementSpecification<?, GR> aSpec) {
+			GraphicalElementSpecification<?, ?> existingSpec = getGraphicalElementSpecification(aSpec.getFeatureName());
+			if (existingSpec == null) {
+				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
+			} else {
+				existingSpec.setValue(aSpec.getValue());
+				existingSpec.setReadOnly(aSpec.getReadOnly());
+			}
+		}
+
 		@Override
 		public void _addToDeclaredGRSpecifications(GraphicalElementSpecification<?, GR> aSpec) {
 			if (aSpec != null) {
-				GraphicalElementSpecification<?, ?> existingSpec = getGraphicalElementSpecification(aSpec.getFeatureName());
-				if (existingSpec == null) {
-					logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
+				if (getGraphicalElementSpecification(aSpec.getFeatureName()) == null) {
+					// This might happen during deserialization
+					// Factory is not accessible yet, and thus, GRSpecs not available yet
+					// We store it in pendingGRSpecs for future use
+					pendingGRSpecs.add(aSpec);
 				} else {
-					existingSpec.setValue(aSpec.getValue());
-					existingSpec.setReadOnly(aSpec.getReadOnly());
+					registerGRSpecification(aSpec);
 				}
 			}
 		}
