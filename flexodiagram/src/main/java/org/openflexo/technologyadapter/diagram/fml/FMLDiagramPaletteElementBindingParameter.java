@@ -76,7 +76,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 			FMLDiagramPaletteElementBindingParameter {
 
 		private FlexoBehaviourParameter _parameter;
-		private FMLDiagramPaletteElementBinding elementBinding;
+		//private FMLDiagramPaletteElementBinding elementBinding;
 		private String value;
 
 		public FMLDiagramPaletteElementBindingParameterImpl() {
@@ -121,8 +121,8 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 		}
 
 		public DiagramPalette getPalette() {
-			if (getElementBinding() != null) {
-				return getElementBinding().getPaletteElement().getPalette();
+			if (getDiagramPaletteElementBinding() != null) {
+				return getDiagramPaletteElementBinding().getPaletteElement().getPalette();
 			}
 			return null;
 		}
@@ -133,19 +133,19 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 		}
 
 		public VirtualModel getVirtualModel() {
-			if (getElementBinding() != null) {
-				return getElementBinding().getVirtualModel();
+			if (getDiagramPaletteElementBinding() != null) {
+				return getDiagramPaletteElementBinding().getVirtualModel();
 			}
 			return null;
 		}
 
-		public void setElementBinding(FMLDiagramPaletteElementBinding elementBinding) {
+		/*public void setElementBinding(FMLDiagramPaletteElementBinding elementBinding) {
 			this.elementBinding = elementBinding;
 		}
 
 		public FMLDiagramPaletteElementBinding getElementBinding() {
 			return elementBinding;
-		}
+		}*/
 
 		@Override
 		public FlexoBehaviourParameter getParameter() {

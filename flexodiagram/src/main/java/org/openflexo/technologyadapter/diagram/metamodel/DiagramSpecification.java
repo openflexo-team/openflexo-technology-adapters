@@ -382,7 +382,8 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			if(paletteElements==null){
 				paletteElements = new ArrayList<DiagramPaletteElement>();
 			}
-			for(DiagramPalette palette: palettes){
+			paletteElements.clear();
+			for(DiagramPalette palette: getPalettes()){
 				paletteElements.addAll(palette.getElements());
 			}
 			return paletteElements;
