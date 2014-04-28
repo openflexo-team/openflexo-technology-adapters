@@ -98,7 +98,9 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 	public FMLDiagramPaletteElementBinding getPaletteElementBinding(DiagramPaletteElement paletteElement);
 
-	public FMLDiagramPaletteElementBinding addNewFMLDiagramPaletteElementBinding();
+	public FMLDiagramPaletteElementBinding addFMLDiagramPaletteElementBinding();
+	
+	public DiagramSpecification getDiagramSpecification();
 	
 	public static abstract class TypedDiagramModelSlotImpl extends TypeAwareModelSlotImpl<Diagram, DiagramSpecification> implements
 			TypedDiagramModelSlot {
@@ -217,11 +219,16 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public FMLDiagramPaletteElementBinding addNewFMLDiagramPaletteElementBinding(){
+		public FMLDiagramPaletteElementBinding addFMLDiagramPaletteElementBinding(){
 			FMLDiagramPaletteElementBinding newBinding = getVirtualModelFactory().newInstance(
 					FMLDiagramPaletteElementBinding.class);
 			addToPaletteElementBindings(newBinding);
 			return newBinding;
+		}
+		
+		@Override
+		public DiagramSpecification getDiagramSpecification(){
+			return getMetaModelResource().getMetaModelData();
 		}
 		
 		// TODO
