@@ -104,18 +104,11 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 
 	public static abstract class FMLControlledDiagramElementImpl implements FMLControlledDiagramElement {
 
-		// TODO: quick and dirty for easy testing
+		// TODO: to it generically for all GRSpecs
 		@Override
 		public String getLabel() {
-			/*System.out.println("OK, on me demande le label");
-			System.out.println("binding: " + getRole().getLabel());
-			System.out.println("role=" + getRole());
-			System.out.println("specs=" + getRole().getGrSpecifications());
-			System.out.println("specs2=" + getRole()._getDeclaredGRSpecifications());*/
-
 			if (getRole().getLabel() != null) {
 				try {
-					// System.out.println("Je retourne " + getRole().getLabel().getBindingValue(getFlexoConceptInstance()));
 					return (String) getRole().getLabel().getBindingValue(getFlexoConceptInstance());
 				} catch (TypeMismatchException e) {
 					// TODO Auto-generated catch block
@@ -128,20 +121,12 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 					e.printStackTrace();
 				}
 			}
-			/*System.out.println("Ask for name");
-			PrimitiveRole nameRole = (PrimitiveRole) getFlexoConceptInstance().getFlexoConcept().getFlexoRole("name");
-			if (nameRole != null) {
-				System.out.println("return " + getFlexoConceptInstance().getFlexoActor(nameRole));
-				return (String) getFlexoConceptInstance().getFlexoActor(nameRole);
-			}*/
 			return null;
 		}
 
-		// TODO: quick and dirty for easy testing
+		// TODO: to it generically for all GRSpecs
 		@Override
 		public void setLabel(String aLabel) {
-			System.out.println("OK, j'essaie de setter le label avec " + aLabel);
-			System.out.println("binding: " + getRole().getLabel());
 			if (getRole().getLabel() != null) {
 				try {
 					getRole().getLabel().setBindingValue(aLabel, getFlexoConceptInstance());
@@ -159,11 +144,6 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 					e.printStackTrace();
 				}
 			}
-			/*System.out.println("try to set name with " + aName);
-			PrimitiveRole nameRole = (PrimitiveRole) getFlexoConceptInstance().getFlexoConcept().getFlexoRole("name");
-			if (nameRole != null) {
-				getFlexoConceptInstance().setFlexoActor(aName, nameRole);
-			}*/
 		}
 
 	}
