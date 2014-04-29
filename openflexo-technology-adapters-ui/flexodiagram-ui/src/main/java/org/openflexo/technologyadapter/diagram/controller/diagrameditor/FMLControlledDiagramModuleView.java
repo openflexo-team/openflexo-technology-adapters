@@ -83,10 +83,22 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 
 	@Override
 	public void willHide() {
+
+		System.out.println("FMLControlledDiagramModuleView WILL HIDE !!!!!!");
+
+		getEditor().getFlexoController().getEditingContext()
+				.unregisterPasteHandler(VirtualModelInstance.class, getEditor().getPasteHandler());
+
 	}
 
 	@Override
 	public void willShow() {
+
+		System.out.println("FMLControlledDiagramModuleView WILL SHOW !!!!!!");
+
+		getEditor().getFlexoController().getEditingContext()
+				.registerPasteHandler(VirtualModelInstance.class, getEditor().getPasteHandler());
+
 		getPerspective().focusOnObject(getRepresentedObject());
 	}
 

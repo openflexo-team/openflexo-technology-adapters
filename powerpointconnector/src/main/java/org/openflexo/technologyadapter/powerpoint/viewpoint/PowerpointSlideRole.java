@@ -47,6 +47,16 @@ public interface PowerpointSlideRole extends FlexoRole<PowerpointSlide> {
 			return PowerpointSlide.class.getSimpleName();
 		}
 
+		/**
+		 * Encodes the default cloning strategy
+		 * 
+		 * @return
+		 */
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Reference;
+		}
+
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
 			// TODO Auto-generated method stub

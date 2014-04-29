@@ -122,6 +122,16 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 			diagramSpecificationResource = diagramSpecification.getResource();
 		}
 
+		/**
+		 * Encodes the default cloning strategy
+		 * 
+		 * @return
+		 */
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Reference;
+		}
+
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
 			return false;

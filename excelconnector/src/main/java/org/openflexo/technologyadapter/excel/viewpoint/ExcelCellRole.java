@@ -64,6 +64,16 @@ public interface ExcelCellRole extends FlexoRole<ExcelCell> {
 
 		}*/
 
+		/**
+		 * Encodes the default cloning strategy
+		 * 
+		 * @return
+		 */
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Reference;
+		}
+
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
 			// TODO Auto-generated method stub

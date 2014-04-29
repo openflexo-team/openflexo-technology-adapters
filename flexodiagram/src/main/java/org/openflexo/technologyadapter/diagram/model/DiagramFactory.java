@@ -129,4 +129,5 @@ public class DiagramFactory extends FGEModelFactoryImpl implements FlexoModelFac
 			}
 		}
 	}
+
 }

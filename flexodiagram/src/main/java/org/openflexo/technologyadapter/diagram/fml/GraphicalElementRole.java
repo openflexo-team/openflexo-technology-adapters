@@ -220,6 +220,16 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			return null;
 		}
 
+		/**
+		 * Encodes the default cloning strategy
+		 * 
+		 * @return
+		 */
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Clone;
+		}
+
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
 			return true;
@@ -534,8 +544,5 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			return returned;
 		}
 
-		/*public void setModelSlot(DiagramModelSlot modelSlot) {
-			super.setModelSlot(modelSlot);
-		}*/
 	}
 }

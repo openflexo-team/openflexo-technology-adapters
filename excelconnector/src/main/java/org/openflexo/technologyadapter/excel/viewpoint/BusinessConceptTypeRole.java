@@ -34,8 +34,7 @@ import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptType
 @XMLElement
 public interface BusinessConceptTypeRole extends FlexoRole<BusinessConceptType> {
 
-	public static abstract class BusinessConceptTypeRoleImpl extends FlexoRoleImpl<BusinessConceptType> implements
-			BusinessConceptTypeRole {
+	public static abstract class BusinessConceptTypeRoleImpl extends FlexoRoleImpl<BusinessConceptType> implements BusinessConceptTypeRole {
 
 		@Override
 		public Type getType() {
@@ -47,6 +46,16 @@ public interface BusinessConceptTypeRole extends FlexoRole<BusinessConceptType> 
 		public String getPreciseType() {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		/**
+		 * Encodes the default cloning strategy
+		 * 
+		 * @return
+		 */
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Clone;
 		}
 
 		@Override

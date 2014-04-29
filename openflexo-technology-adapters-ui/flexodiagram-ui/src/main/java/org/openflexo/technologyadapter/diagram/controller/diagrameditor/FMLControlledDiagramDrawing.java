@@ -232,6 +232,9 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 
 			@Override
 			public void visit(Diagram diagram) {
+
+				System.out.println(">>>>>>>>>>>>>>>>>>  Bon, je me retape la visite du diagram");
+
 				for (DiagramShape shape : diagram.getShapes()) {
 					FMLControlledDiagramShape fmlShape = getFederatedShape(shape);
 					if (fmlShape != null) {
@@ -240,6 +243,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 					} else {
 						// Otherwise, this is a normal shape, we just display the shape
 						drawShape(shapeBinding, shape, diagram);
+						System.out.println("celle-la est est pas federee on dirait: " + shape);
 					}
 				}
 				for (DiagramConnector connector : diagram.getConnectors()) {

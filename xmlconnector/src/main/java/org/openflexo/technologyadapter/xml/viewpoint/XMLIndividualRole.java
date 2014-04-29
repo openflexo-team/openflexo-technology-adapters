@@ -68,10 +68,19 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 			return null;
 		}
 
+		/**
+		 * Encodes the default cloning strategy
+		 * 
+		 * @return
+		 */
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Clone;
+		}
+
 		@Override
 		public boolean defaultBehaviourIsToBeDeleted() {
-			// TODO Auto-generated method stub
-			return false;
+			return true;
 		}
 
 		@Override

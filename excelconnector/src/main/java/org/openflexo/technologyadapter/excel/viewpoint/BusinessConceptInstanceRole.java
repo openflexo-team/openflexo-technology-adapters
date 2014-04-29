@@ -55,6 +55,16 @@ public interface BusinessConceptInstanceRole extends FlexoRole<BusinessConceptIn
 			return false;
 		}
 
+		/**
+		 * Encodes the default cloning strategy
+		 * 
+		 * @return
+		 */
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Clone;
+		}
+
 		@Override
 		public ActorReference<BusinessConceptInstance> makeActorReference(BusinessConceptInstance object, FlexoConceptInstance epi) {
 			// TODO Auto-generated method stub

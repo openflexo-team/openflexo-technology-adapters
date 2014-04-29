@@ -77,7 +77,6 @@ import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLContr
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramEditor;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteEditor;
-import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteModuleView;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -366,7 +365,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 		if (object instanceof DiagramPalette) {
 			DiagramPaletteEditor editor = new DiagramPaletteEditor((DiagramPalette) object, false, controller, swingToolFactory);
-			//return new DiagramPaletteModuleView(editor, perspective);
+			// return new DiagramPaletteModuleView(editor, perspective);
 			return editor.getModuleView();
 		}
 

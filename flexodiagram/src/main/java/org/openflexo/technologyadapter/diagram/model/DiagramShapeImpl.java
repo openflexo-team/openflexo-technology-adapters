@@ -39,6 +39,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	private boolean screenshotModified = false;
 	private ScreenshotImage<DiagramShape> screenshotImage;
 	private File expectedScreenshotImageFile = null;
+
 	// private String multilineText;
 	// private Vector<DiagramConnector> incomingConnectors;
 	// private Vector<DiagramConnector> outgoingConnectors;
@@ -228,15 +229,15 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 
 	private File getExpectedScreenshotImageFile() {
 		if (expectedScreenshotImageFile == null && getDiagram().getResource() instanceof FlexoFileResource) {
-			expectedScreenshotImageFile = new File(((FlexoFileResource<Diagram>) getDiagram().getResource()).getFile().getParentFile(), getName()
-					+ ".diagram_container_element.png");
+			expectedScreenshotImageFile = new File(((FlexoFileResource<Diagram>) getDiagram().getResource()).getFile().getParentFile(),
+					getName() + ".diagram_container_element.png");
 		}
 		return expectedScreenshotImageFile;
 	}
 
 	private ScreenshotImage<DiagramShape> buildAndSaveScreenshotImage() {
 		if (getTechnologyAdapter().getScreenshotBuilder() != null) {
-			ScreenshotBuilder<DiagramShape> builder = (ScreenshotBuilder<DiagramShape>) getTechnologyAdapter().getDiagramShapeScreenshotBuilder();
+			ScreenshotBuilder<DiagramShape> builder = getTechnologyAdapter().getDiagramShapeScreenshotBuilder();
 
 			screenshotImage = builder.getImage(this);
 			try {
@@ -277,5 +278,5 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 		}
 		return screenshotImage;
 	}
-	
+
 }
