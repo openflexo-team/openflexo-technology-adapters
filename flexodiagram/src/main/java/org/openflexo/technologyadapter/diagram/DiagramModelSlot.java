@@ -2,8 +2,6 @@ package org.openflexo.technologyadapter.diagram;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviour;
-import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviours;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Implementation;

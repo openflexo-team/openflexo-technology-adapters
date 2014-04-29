@@ -55,6 +55,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPa
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSpecificationInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptInitializer;
@@ -78,10 +79,12 @@ import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiag
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteEditor;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.DiagramNavigationScheme;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramFlexoConceptNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
+import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
@@ -202,6 +205,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new PushToPaletteInitializer(actionInitializer);
 		new ExportDiagramToImageInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingInitializer(actionInitializer);
+		new CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer(actionInitializer);
 
 		// Set the screenshot builders
 		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());
@@ -278,6 +282,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 			return DiagramIconLibrary.CONNECTOR_ICON;
 		} else if (DiagramSpecification.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.DIAGRAM_SPECIFICATION_ICON;
+		} else if (FMLDiagramPaletteElementBinding.class.isAssignableFrom(objectClass)) {
+			return DiagramIconLibrary.FML_PALETTE_ELEMENT_BINDING_ICON_16X16;
 		}
 		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, IconLibrary.QUESTION);
 	}
@@ -324,6 +330,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 			return DiagramIconLibrary.DROP_SCHEME_ICON;
 		} else if (LinkScheme.class.isAssignableFrom(flexoBehaviourClass)) {
 			return DiagramIconLibrary.LINK_SCHEME_ICON;
+		} else if (DiagramNavigationScheme.class.isAssignableFrom(flexoBehaviourClass)) {
+			return DiagramIconLibrary.NAVIGATION_SCHEME_ICON;
 		}
 		return super.getIconForFlexoBehaviour(flexoBehaviourClass);
 	}
