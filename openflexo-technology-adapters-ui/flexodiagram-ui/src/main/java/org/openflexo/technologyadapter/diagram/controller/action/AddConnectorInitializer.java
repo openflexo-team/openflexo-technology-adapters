@@ -28,11 +28,11 @@ import org.openflexo.fge.Drawing.ConnectorNode;
 import org.openflexo.fge.swing.view.JConnectorView;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.action.AddConnector;
-import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
@@ -87,17 +87,26 @@ public class AddConnectorInitializer extends ActionInitializer {
 			public boolean run(EventObject e, AddConnector action) {
 				if (action.getConnector() != null) {
 					getController().getSelectionManager().setSelectedObject(action.getConnector());
-					ModuleView<?> moduleView = getController().moduleViewForObject(action.getConnector().getDiagram(), false);
-					ConnectorNode<DiagramConnector> connectorNode = ((FreeDiagramModuleView) moduleView).getEditor().getDrawing()
-							.getConnectorNode(action.getConnector());
-					JConnectorView<DiagramConnector> connectorView = ((FreeDiagramModuleView) moduleView).getEditor().getDrawingView()
-							.connectorViewForNode(connectorNode);
-					if (action.getConnector() != null) {
+					ConnectorNode<DiagramConnector> connectorNode = null;
+					JConnectorView<DiagramConnector> connectorView = null;
+					if (getController().getCurrentModuleView() instanceof FreeDiagramModuleView) {
+						connectorNode = ((FreeDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawing()
+								.getConnectorNode(action.getConnector());
+						connectorView = ((FreeDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawingView()
+								.connectorViewForNode(connectorNode);
+					} else if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
+						connectorNode = ((FMLControlledDiagramModuleView) getController().getCurrentModuleView()).getEditor().getDrawing()
+								.getConnectorNode(action.getConnector());
+						connectorView = ((FMLControlledDiagramModuleView) getController().getCurrentModuleView()).getEditor()
+								.getDrawingView().connectorViewForNode(connectorNode);
+					}
+					if (connectorView != null && action.getConnector() != null) {
 						if (connectorView.getLabelView() != null) {
 							connectorNode.setContinuousTextEditing(true);
 							connectorView.getLabelView().startEdition();
 						}
 					}
+
 				}
 				return true;
 			}

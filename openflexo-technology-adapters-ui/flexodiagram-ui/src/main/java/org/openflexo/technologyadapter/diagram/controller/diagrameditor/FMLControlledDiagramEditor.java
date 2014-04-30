@@ -22,12 +22,16 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.Drawing.ConnectorNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
+import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.controller.action.FMLControlledDiagramPasteHandler;
+import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.view.controller.FlexoController;
 
 /**
@@ -109,5 +113,21 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 			}
 		}
 		return super.getRepresentedFlexoObject(object);
+	}
+
+	@Override
+	protected DiagramShape getShapeForShapeNode(ShapeNode<?> shapeNode) {
+		if (shapeNode.getDrawable() instanceof FMLControlledDiagramShape) {
+			return ((FMLControlledDiagramShape) shapeNode.getDrawable()).getDiagramElement();
+		}
+		return super.getShapeForShapeNode(shapeNode);
+	}
+
+	@Override
+	protected DiagramConnector getConnectorForConnectorNode(ConnectorNode<?> connectorNode) {
+		if (connectorNode.getDrawable() instanceof FMLControlledDiagramConnector) {
+			return ((FMLControlledDiagramConnector) connectorNode.getDrawable()).getDiagramElement();
+		}
+		return super.getConnectorForConnectorNode(connectorNode);
 	}
 }

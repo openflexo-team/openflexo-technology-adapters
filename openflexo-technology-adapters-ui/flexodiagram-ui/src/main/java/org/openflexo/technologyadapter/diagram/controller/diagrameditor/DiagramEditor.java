@@ -35,7 +35,9 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import org.openflexo.fge.Drawing;
+import org.openflexo.fge.Drawing.ConnectorNode;
 import org.openflexo.fge.Drawing.ContainerNode;
+import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.control.actions.DrawShapeAction;
 import org.openflexo.fge.swing.control.SwingToolFactory;
@@ -50,7 +52,9 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.AddShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.view.controller.FlexoController;
@@ -303,6 +307,20 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 
 	public Diagram getDiagram() {
 		return getDrawing().getModel();
+	}
+
+	protected DiagramShape getShapeForShapeNode(ShapeNode<?> shapeNode) {
+		if (shapeNode.getDrawable() instanceof DiagramShape) {
+			return (DiagramShape) shapeNode.getDrawable();
+		}
+		return null;
+	}
+
+	protected DiagramConnector getConnectorForConnectorNode(ConnectorNode<?> connectorNode) {
+		if (connectorNode.getDrawable() instanceof DiagramConnector) {
+			return (DiagramConnector) connectorNode.getDrawable();
+		}
+		return null;
 	}
 
 }
