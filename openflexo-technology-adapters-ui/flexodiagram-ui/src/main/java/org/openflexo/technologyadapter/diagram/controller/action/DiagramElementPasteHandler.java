@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.action.FlexoClipboard;
 import org.openflexo.foundation.action.PasteAction.DefaultPastingContext;
 import org.openflexo.foundation.action.PasteAction.PasteHandler;
 import org.openflexo.foundation.action.PasteAction.PastingContext;
@@ -64,7 +65,7 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 
 	@Override
 	public PastingContext<DiagramContainerElement> retrievePastingContext(FlexoObject focusedObject, List<FlexoObject> globalSelection,
-			Clipboard clipboard, Event event) {
+			FlexoClipboard clipboard, Event event) {
 
 		if (!(focusedObject instanceof DiagramContainerElement)) {
 			return null;
@@ -73,9 +74,11 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 		PastingContext<DiagramContainerElement> returned = new DefaultPastingContext<DiagramContainerElement>(
 				(DiagramContainerElement) focusedObject, event);
 
+		Clipboard leaderClipboard = clipboard.getLeaderClipboard();
+
 		boolean reflexivePaste = false;
 
-		for (Object originalContent : clipboard.getOriginalContents()) {
+		for (Object originalContent : leaderClipboard.getOriginalContents()) {
 			if (originalContent == focusedObject) {
 				reflexivePaste = true;
 			}
@@ -91,17 +94,19 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 	}
 
 	@Override
-	public void prepareClipboardForPasting(Clipboard clipboard, PastingContext<DiagramContainerElement> pastingContext) {
+	public void prepareClipboardForPasting(FlexoClipboard clipboard, PastingContext<DiagramContainerElement> pastingContext) {
+
+		Clipboard leaderClipboard = clipboard.getLeaderClipboard();
 
 		// Translating names
-		if (clipboard.isSingleObject()) {
-			if (clipboard.getSingleContents() instanceof DiagramShape) {
-				translateName((DiagramShape) clipboard.getSingleContents());
-			} else if (clipboard.getSingleContents() instanceof DiagramConnector) {
-				translateName((DiagramConnector) clipboard.getSingleContents());
+		if (leaderClipboard.isSingleObject()) {
+			if (leaderClipboard.getSingleContents() instanceof DiagramShape) {
+				translateName((DiagramShape) leaderClipboard.getSingleContents());
+			} else if (leaderClipboard.getSingleContents() instanceof DiagramConnector) {
+				translateName((DiagramConnector) leaderClipboard.getSingleContents());
 			}
 		} else {
-			for (Object o : clipboard.getMultipleContents()) {
+			for (Object o : leaderClipboard.getMultipleContents()) {
 				if (o instanceof DiagramShape) {
 					translateName((DiagramShape) o);
 				} else if (o instanceof DiagramConnector) {
@@ -112,14 +117,14 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 
 		// Setting positions
 		if (pastingContext.getPasteProperty(REFLEXIVE_PASTE).equals("true")) {
-			if (clipboard.isSingleObject()) {
-				if (clipboard.getSingleContents() instanceof DiagramShape) {
-					DiagramShape shapeBeingPasted = (DiagramShape) clipboard.getSingleContents();
+			if (leaderClipboard.isSingleObject()) {
+				if (leaderClipboard.getSingleContents() instanceof DiagramShape) {
+					DiagramShape shapeBeingPasted = (DiagramShape) leaderClipboard.getSingleContents();
 					shapeBeingPasted.getGraphicalRepresentation().setX(shapeBeingPasted.getGraphicalRepresentation().getX() + PASTE_DELTA);
 					shapeBeingPasted.getGraphicalRepresentation().setY(shapeBeingPasted.getGraphicalRepresentation().getY() + PASTE_DELTA);
 				}
 			} else {
-				for (Object o : clipboard.getMultipleContents()) {
+				for (Object o : leaderClipboard.getMultipleContents()) {
 					if (o instanceof DiagramShape) {
 						((DiagramShape) o).getGraphicalRepresentation().setX(
 								((DiagramShape) o).getGraphicalRepresentation().getX() + PASTE_DELTA);
@@ -131,9 +136,9 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 		}
 
 		else {
-			if (clipboard.isSingleObject()) {
-				if (clipboard.getSingleContents() instanceof DiagramShape) {
-					DiagramShape shapeBeingPasted = (DiagramShape) clipboard.getSingleContents();
+			if (leaderClipboard.isSingleObject()) {
+				if (leaderClipboard.getSingleContents() instanceof DiagramShape) {
+					DiagramShape shapeBeingPasted = (DiagramShape) leaderClipboard.getSingleContents();
 					shapeBeingPasted.getGraphicalRepresentation().setX(selectionManager.getLastClickedPoint().getX());
 					shapeBeingPasted.getGraphicalRepresentation().setY(selectionManager.getLastClickedPoint().getY());
 				}
@@ -142,7 +147,7 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 				double deltaX = Double.NaN;
 				double deltaY = Double.NaN;
 
-				for (Object o : clipboard.getMultipleContents()) {
+				for (Object o : leaderClipboard.getMultipleContents()) {
 					if (o instanceof DiagramShape) {
 						DiagramShape shape = (DiagramShape) o;
 						if (!deltaSet) {
@@ -160,7 +165,7 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramContainer
 	}
 
 	@Override
-	public void finalizePasting(Clipboard clipboard, PastingContext<DiagramContainerElement> pastingContext) {
+	public void finalizePasting(FlexoClipboard clipboard, PastingContext<DiagramContainerElement> pastingContext) {
 		// Nothing to do
 	}
 
