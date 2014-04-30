@@ -30,6 +30,7 @@ import org.openflexo.foundation.action.PasteAction.PastingContext;
 import org.openflexo.model.factory.Clipboard;
 import org.openflexo.selection.MouseSelectionManager;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
+import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.StringUtils;
@@ -42,7 +43,7 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-public class DiagramElementPasteHandler implements PasteHandler<DiagramElement<?>> {
+public class DiagramElementPasteHandler implements PasteHandler<DiagramContainerElement> {
 
 	private static final Logger logger = Logger.getLogger(DiagramElementPasteHandler.class.getPackage().getName());
 
@@ -57,19 +58,20 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramElement<?
 	}
 
 	@Override
-	public boolean declarePolymorphicPastingContexts() {
-		return false;
+	public Class<DiagramContainerElement> getPastingPointHolderType() {
+		return DiagramContainerElement.class;
 	}
 
 	@Override
-	public PastingContext<DiagramElement<?>> retrievePastingContext(FlexoObject focusedObject, List<FlexoObject> globalSelection,
+	public PastingContext<DiagramContainerElement> retrievePastingContext(FlexoObject focusedObject, List<FlexoObject> globalSelection,
 			Clipboard clipboard, Event event) {
 
-		if (!(focusedObject instanceof DiagramElement)) {
+		if (!(focusedObject instanceof DiagramContainerElement)) {
 			return null;
 		}
 
-		PastingContext<DiagramElement<?>> returned = new DefaultPastingContext<DiagramElement<?>>((DiagramElement<?>) focusedObject, event);
+		PastingContext<DiagramContainerElement> returned = new DefaultPastingContext<DiagramContainerElement>(
+				(DiagramContainerElement) focusedObject, event);
 
 		boolean reflexivePaste = false;
 
@@ -89,7 +91,7 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramElement<?
 	}
 
 	@Override
-	public void prepareClipboardForPasting(Clipboard clipboard, PastingContext<DiagramElement<?>> pastingContext) {
+	public void prepareClipboardForPasting(Clipboard clipboard, PastingContext<DiagramContainerElement> pastingContext) {
 
 		// Translating names
 		if (clipboard.isSingleObject()) {
@@ -158,7 +160,7 @@ public class DiagramElementPasteHandler implements PasteHandler<DiagramElement<?
 	}
 
 	@Override
-	public void finalizePasting(Clipboard clipboard, PastingContext<DiagramElement<?>> pastingContext) {
+	public void finalizePasting(Clipboard clipboard, PastingContext<DiagramContainerElement> pastingContext) {
 		// Nothing to do
 	}
 

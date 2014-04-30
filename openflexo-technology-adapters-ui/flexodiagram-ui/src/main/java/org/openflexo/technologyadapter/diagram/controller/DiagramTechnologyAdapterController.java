@@ -98,7 +98,6 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
-import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -213,7 +212,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 		// Add paste handlers
 		diagramElementPasteHandler = new DiagramElementPasteHandler(actionInitializer.getController().getSelectionManager());
-		actionInitializer.getEditingContext().registerPasteHandler(DiagramElement.class, diagramElementPasteHandler);
+		actionInitializer.getEditingContext().registerPasteHandler(diagramElementPasteHandler);
 
 	}
 

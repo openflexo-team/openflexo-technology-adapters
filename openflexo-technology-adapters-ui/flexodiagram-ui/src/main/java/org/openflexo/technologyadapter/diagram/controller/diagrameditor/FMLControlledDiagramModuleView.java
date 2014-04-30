@@ -86,8 +86,7 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 
 		System.out.println("FMLControlledDiagramModuleView WILL HIDE !!!!!!");
 
-		getEditor().getFlexoController().getEditingContext()
-				.unregisterPasteHandler(VirtualModelInstance.class, getEditor().getPasteHandler());
+		getEditor().getFlexoController().getEditingContext().unregisterPasteHandler(getEditor().getPasteHandler());
 
 	}
 
@@ -96,8 +95,7 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 
 		System.out.println("FMLControlledDiagramModuleView WILL SHOW !!!!!!");
 
-		getEditor().getFlexoController().getEditingContext()
-				.registerPasteHandler(VirtualModelInstance.class, getEditor().getPasteHandler());
+		getEditor().getFlexoController().getEditingContext().registerPasteHandler(getEditor().getPasteHandler());
 
 		getPerspective().focusOnObject(getRepresentedObject());
 	}

@@ -61,7 +61,7 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 
 	@Override
 	public void delete() {
-		getFlexoController().getEditingContext().unregisterPasteHandler(VirtualModelInstance.class, getPasteHandler());
+		getFlexoController().getEditingContext().unregisterPasteHandler(getPasteHandler());
 		super.delete();
 	}
 
