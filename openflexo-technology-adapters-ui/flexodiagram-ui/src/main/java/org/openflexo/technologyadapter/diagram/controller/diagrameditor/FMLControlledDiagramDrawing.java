@@ -126,7 +126,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 	}
 
 	// TODO: implements cache to not always try to retrieve FMLControlledDiagramElement when DiagramElement is not federated
-	FMLControlledDiagramShape getFederatedShape(DiagramShape shape) {
+	public FMLControlledDiagramShape getFederatedShape(DiagramShape shape) {
 		FMLControlledDiagramShape returned = federatedShapes.get(shape);
 		if (returned == null) {
 			ObjectLookupResult r = getObjectLookupResult(shape);
@@ -145,7 +145,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 	}
 
 	// TODO: implements cache to not always try to retrieve FMLControlledDiagramElement when DiagramElement is not federated
-	FMLControlledDiagramConnector getFederatedConnector(DiagramConnector connector) {
+	public FMLControlledDiagramConnector getFederatedConnector(DiagramConnector connector) {
 		FMLControlledDiagramConnector returned = federatedConnectors.get(connector);
 		if (returned == null) {
 			ObjectLookupResult r = getObjectLookupResult(connector);
@@ -181,7 +181,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 	 * @param flexoConceptInstance
 	 * @return
 	 */
-	List<FMLControlledDiagramElement<?, ?>> getFMLControlledDiagramElements(FlexoConceptInstance flexoConceptInstance) {
+	public List<FMLControlledDiagramElement<?, ?>> getFMLControlledDiagramElements(FlexoConceptInstance flexoConceptInstance) {
 		return diagramElementsForFlexoConceptInstances.get(flexoConceptInstance);
 	}
 

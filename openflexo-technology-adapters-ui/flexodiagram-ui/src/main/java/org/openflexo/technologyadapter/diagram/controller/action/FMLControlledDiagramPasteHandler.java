@@ -24,18 +24,17 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoObject;
-import org.openflexo.foundation.action.PasteAction.DefaultPastingContext;
 import org.openflexo.foundation.action.PasteAction.PastingContext;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.foundation.viewpoint.FlexoConceptObject;
 import org.openflexo.model.factory.Clipboard;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.toolbox.StringUtils;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.vpm.controller.VirtualModelInstancePasteHandler;
 
 /**
@@ -48,15 +47,18 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramPasteHandler.class.getPackage().getName());
 
-	public static final String COPY_SUFFIX = "-copy";
-
 	private final VirtualModelInstance virtualModelInstance;
+	private final FMLControlledDiagramEditor editor;
 
-	public FMLControlledDiagramPasteHandler(VirtualModelInstance virtualModelInstance) {
+	public static final int PASTE_DELTA = 10;
+	public static final String REFLEXIVE_PASTE = "ReflexivePaste";
+
+	public FMLControlledDiagramPasteHandler(VirtualModelInstance virtualModelInstance, FMLControlledDiagramEditor editor) {
 		this.virtualModelInstance = virtualModelInstance;
+		this.editor = editor;
 	}
 
-	public class FMLControlledDiagramPastingContext extends DefaultPastingContext<VirtualModelInstance> {
+	public class FMLControlledDiagramPastingContext extends HeterogeneousPastingContext {
 		public FMLControlledDiagramPastingContext(VirtualModelInstance holder, Event event) {
 			super(holder, event);
 		}
@@ -70,66 +72,128 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 	public PastingContext<VirtualModelInstance> retrievePastingContext(FlexoObject focusedObject, List<FlexoObject> globalSelection,
 			Clipboard clipboard, Event event) {
 
+		PastingContext<VirtualModelInstance> returned = null;
+
+		// System.out.println("retrievePastingContext() in FMLControlledDiagramPasteHander, focusedObject=" + focusedObject);
+
 		if (virtualModelInstance.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE)) {
 			if (focusedObject == FMLControlledDiagramVirtualModelInstanceNature.getDiagram(virtualModelInstance)) {
 				System.out.println("Lookep up " + virtualModelInstance + " from " + focusedObject);
-				return new FMLControlledDiagramPastingContext(virtualModelInstance, event);
+				returned = new FMLControlledDiagramPastingContext(virtualModelInstance, event);
 			}
 		}
 
-		return super.retrievePastingContext(focusedObject, globalSelection, clipboard, event);
+		if (returned == null) {
+			returned = super.retrievePastingContext(focusedObject, globalSelection, clipboard, event);
+		}
+
+		if (returned != null) {
+			boolean reflexivePaste = false;
+
+			for (Object originalContent : clipboard.getOriginalContents()) {
+				if (originalContent == focusedObject) {
+					reflexivePaste = true;
+				}
+			}
+
+			if (reflexivePaste) {
+				returned.setPasteProperty(REFLEXIVE_PASTE, "true");
+			} else {
+				returned.setPasteProperty(REFLEXIVE_PASTE, "false");
+			}
+		}
+
+		return returned;
+
 	}
 
 	@Override
 	public void prepareClipboardForPasting(Clipboard clipboard, PastingContext<VirtualModelInstance> pastingContext) {
 
+		System.out.println("Preparing clipboard for pasting in FMLControlledDiagramPasteHander");
+
 		super.prepareClipboardForPasting(clipboard, pastingContext);
-
-		// Translating names
-		/*if (clipboard.isSingleObject()) {
-			if (clipboard.getSingleContents() instanceof FlexoConceptObject) {
-				translateName((FlexoConceptObject) clipboard.getSingleContents());
-			}
-		} else {
-			for (Object o : clipboard.getMultipleContents()) {
-				if (o instanceof FlexoConceptObject) {
-					translateName((FlexoConceptObject) o);
-				}
-			}
-		}*/
-	}
-
-	private String translateName(FlexoConceptObject object) {
-		String oldName = object.getName();
-		if (StringUtils.isEmpty(oldName)) {
-			return null;
-		}
-		String newName;
-		if (oldName.endsWith(COPY_SUFFIX)) {
-			newName = oldName + "2";
-		} else if (oldName.contains(COPY_SUFFIX)) {
-			try {
-				int currentIndex = Integer.parseInt(oldName.substring(oldName.lastIndexOf(COPY_SUFFIX) + COPY_SUFFIX.length()));
-				newName = oldName.substring(0, oldName.lastIndexOf(COPY_SUFFIX)) + COPY_SUFFIX + (currentIndex + 1);
-			} catch (NumberFormatException e) {
-				logger.warning("Could not parse as int " + oldName.substring(oldName.lastIndexOf(COPY_SUFFIX)));
-				newName = oldName + COPY_SUFFIX;
-			}
-		} else {
-			newName = oldName + COPY_SUFFIX;
-		}
-		System.out.println("translating name from " + oldName + " to " + newName);
-		object.setName(newName);
-		return newName;
 	}
 
 	@Override
-	public Object getModelSlotSpecificPastingPointHolder(ModelSlotInstance<?, ?> modelSlotInstance, PastingContext<?> pastingContext) {
+	public Object getModelSlotSpecificPastingPointHolder(ModelSlotInstance<?, ?> modelSlotInstance,
+			HeterogeneousPastingContext pastingContext) {
 		if (modelSlotInstance.getModelSlot() instanceof TypedDiagramModelSlot) {
 			return ((TypeAwareModelSlotInstance<Diagram, DiagramSpecification, TypedDiagramModelSlot>) modelSlotInstance)
 					.getAccessedResourceData();
 		}
 		return super.getModelSlotSpecificPastingPointHolder(modelSlotInstance, pastingContext);
+	}
+
+	@Override
+	public void prepareModelSlotSpecificClipboard(Clipboard modelSlotSpecificClipboard, ModelSlotInstance<?, ?> modelSlotInstance,
+			HeterogeneousPastingContext pastingContext) {
+
+		if (modelSlotInstance.getModelSlot() instanceof TypedDiagramModelSlot) {
+
+			System.out.println("Preparing clipboard for pasting in FMLControlledDiagramPasteHander");
+
+			// Setting positions
+
+			System.out.println("reflexive paste=" + (pastingContext.getPasteProperty(REFLEXIVE_PASTE).equals("true")));
+
+			if (virtualModelInstance.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE)
+					&& pastingContext.getPasteProperty(REFLEXIVE_PASTE).equals("true")) {
+
+				Clipboard diagramClipboard = modelSlotSpecificClipboard;
+
+				System.out.println("C'est bien un reflexive paste, et voici le clipboard du diagram");
+				System.out.println(diagramClipboard.debug());
+
+				if (diagramClipboard.isSingleObject()) {
+					if (diagramClipboard.getSingleContents() instanceof DiagramShape) {
+						DiagramShape shapeBeingPasted = (DiagramShape) diagramClipboard.getSingleContents();
+						System.out.println("La shape que je decale: " + shapeBeingPasted);
+						shapeBeingPasted.getGraphicalRepresentation().setX(
+								shapeBeingPasted.getGraphicalRepresentation().getX() + PASTE_DELTA);
+						shapeBeingPasted.getGraphicalRepresentation().setY(
+								shapeBeingPasted.getGraphicalRepresentation().getY() + PASTE_DELTA);
+					}
+				} else {
+					for (Object o : diagramClipboard.getMultipleContents()) {
+						if (o instanceof DiagramShape) {
+							((DiagramShape) o).getGraphicalRepresentation().setX(
+									((DiagramShape) o).getGraphicalRepresentation().getX() + PASTE_DELTA);
+							((DiagramShape) o).getGraphicalRepresentation().setY(
+									((DiagramShape) o).getGraphicalRepresentation().getY() + PASTE_DELTA);
+						}
+					}
+				}
+			}
+
+			/*else {
+				if (clipboard.isSingleObject()) {
+					if (clipboard.getSingleContents() instanceof DiagramShape) {
+						DiagramShape shapeBeingPasted = (DiagramShape) clipboard.getSingleContents();
+						shapeBeingPasted.getGraphicalRepresentation().setX(selectionManager.getLastClickedPoint().getX());
+						shapeBeingPasted.getGraphicalRepresentation().setY(selectionManager.getLastClickedPoint().getY());
+					}
+				} else {
+					boolean deltaSet = false;
+					double deltaX = Double.NaN;
+					double deltaY = Double.NaN;
+
+					for (Object o : clipboard.getMultipleContents()) {
+						if (o instanceof DiagramShape) {
+							DiagramShape shape = (DiagramShape) o;
+							if (!deltaSet) {
+								deltaX = selectionManager.getLastClickedPoint().getX() - shape.getGraphicalRepresentation().getX();
+								deltaY = selectionManager.getLastClickedPoint().getY() - shape.getGraphicalRepresentation().getY();
+							}
+							shape.getGraphicalRepresentation().setX(shape.getGraphicalRepresentation().getX() + deltaX);
+							shape.getGraphicalRepresentation().setY(shape.getGraphicalRepresentation().getY() + deltaY);
+							deltaSet = true;
+						}
+					}
+				}
+
+			}*/
+		}
 	}
 
 }

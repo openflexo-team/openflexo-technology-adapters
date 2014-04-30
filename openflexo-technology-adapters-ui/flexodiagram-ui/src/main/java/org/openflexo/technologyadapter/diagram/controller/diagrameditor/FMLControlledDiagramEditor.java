@@ -56,7 +56,7 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 
 		// We have to switch properly between those paste handlers
 		// AND do not forget to destroy them
-		pasteHandler = new FMLControlledDiagramPasteHandler(vmInstance);
+		pasteHandler = new FMLControlledDiagramPasteHandler(vmInstance, this);
 	}
 
 	public FMLControlledDiagramPasteHandler getPasteHandler() {
@@ -65,7 +65,7 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 
 	@Override
 	public void delete() {
-		getFlexoController().getEditingContext().unregisterPasteHandler(getPasteHandler());
+		getFlexoController().getEditingContext().unregisterPasteHandler(pasteHandler);
 		super.delete();
 	}
 
