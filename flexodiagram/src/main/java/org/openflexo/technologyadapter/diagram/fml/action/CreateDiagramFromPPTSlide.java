@@ -76,28 +76,25 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 			InvalidFileNameException {
 		logger.info("Add diagram from ppt slide");
 
-		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
-				DiagramTechnologyAdapter.class);
+		if(getDiagram()==null){
+			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
+					DiagramTechnologyAdapter.class);
 
-		setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), null));
-
-		getFocusedObject().addToResources(getDiagramResource());
-
-		getDiagramResource().save(null);
-		if (getSlide() != null){
-		convertSlideToDiagram(getSlide());
+			setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), null));
+			getFocusedObject().addToResources(getDiagramResource());
+			getDiagramResource().save(null);
 		}
-		else {
+		
+		if (getSlide() != null){
+			convertSlideToDiagram(getSlide());
+		} else {
 			System.out.println("Error: no Slide");
 		}
 	}
 
 	@Override
 	public String getDiagramURI() {
-		if (super.getDiagramURI() == null) {
-			return getDefaultDiagramURI();
-		}
-		return super.getDiagramURI();
+		return getDefaultDiagramURI();
 	}
 
 	public String getDefaultDiagramURI() {
@@ -105,10 +102,7 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 	}
 
 	public File getDiagramFile() {
-		if (super.getDiagramFile() == null) {
-			return getDefaultDiagramFile();
-		}
-		return super.getDiagramFile();
+		return getDefaultDiagramFile();
 	}
 
 	public File getDefaultDiagramFile() {

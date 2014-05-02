@@ -85,7 +85,7 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 		newDiagramSpecification.setDescription(newDiagramSpecificationDescription);
 		// getFocusedObject().addToVirtualModels(newDiagramSpecification);
 		getFocusedObject().getResourceRepository().registerResource(newDiagramSpecification.getResource());
-
+		getFocusedObject().addToResources(newDiagramSpecification.getResource());
 	}
 
 	public boolean isNewDiagramSpecificationNameValid() {

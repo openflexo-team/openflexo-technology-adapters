@@ -60,7 +60,7 @@ public class CreateExampleDiagramFromPPTSlideInitializer extends ActionInitializ
 		return new FlexoActionFinalizer<CreateExampleDiagramFromPPTSlide>() {
 			@Override
 			public boolean run(EventObject e, CreateExampleDiagramFromPPTSlide action) {
-				getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
+				getController().setCurrentEditedObjectAsModuleView(action.getDiagram());
 				return true;
 			}
 		};

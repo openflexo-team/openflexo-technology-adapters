@@ -58,7 +58,7 @@ public class CreateDiagramFromPPTSlideInitializer extends ActionInitializer<Crea
 		return new FlexoActionFinalizer<CreateDiagramFromPPTSlide>() {
 			@Override
 			public boolean run(EventObject e, CreateDiagramFromPPTSlide action) {
-				getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
+				getController().setCurrentEditedObjectAsModuleView(action.getDiagram());
 				return true;
 			}
 		};

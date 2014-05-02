@@ -100,7 +100,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 				createExampleDiagramFromPPTSlide.setSlide(slide);
 				createExampleDiagramFromPPTSlide.doAction();
 
-				DiagramContainerElement diag = createExampleDiagramFromPPTSlide.getNewDiagram();
+				DiagramContainerElement diag = createExampleDiagramFromPPTSlide.getDiagram();
 				assertNotNull(diag);
 
 				realNumberOfShapesAndConnectors = 0;
