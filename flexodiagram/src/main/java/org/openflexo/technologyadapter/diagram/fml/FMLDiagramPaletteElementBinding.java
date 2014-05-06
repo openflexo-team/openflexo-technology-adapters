@@ -199,7 +199,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, T
 			}
 			return diagramModelSlot;
 		}
-		
+
 		@Override
 		public void setDiagramModelSlot(TypedDiagramModelSlot diagramModelSlot) {
 			this.diagramModelSlot = diagramModelSlot;
@@ -298,6 +298,9 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, T
 			if (_flexoConceptId != null && getVirtualModel() != null) {
 				flexoConcept = getVirtualModel().getFlexoConcept(_flexoConceptId);
 				updateParameters();
+			}
+			if (flexoConcept == null && dropScheme != null) {
+				flexoConcept = dropScheme.getFlexoConcept();
 			}
 			return flexoConcept;
 		}
@@ -432,7 +435,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, T
 		public DiagramTechnologyAdapter getTechnologyAdapter() {
 			return (DiagramTechnologyAdapter) getDiagramModelSlot().getTechnologyAdapter();
 		}
-		
+
 		/*@Override
 		public void setChanged() {
 			super.setChanged();
