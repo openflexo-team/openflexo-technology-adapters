@@ -27,7 +27,7 @@ import org.openflexo.foundation.viewpoint.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.foundation.viewpoint.action.CreateEditionAction;
 import org.openflexo.foundation.viewpoint.action.CreateEditionAction.CreateEditionActionChoice;
-import org.openflexo.foundation.viewpoint.action.CreateEditionScheme;
+import org.openflexo.foundation.viewpoint.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.viewpoint.action.CreateFlexoRole;
 import org.openflexo.foundation.viewpoint.rm.ViewPointResource;
 import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
@@ -226,7 +226,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		shapeGR.setShapeSpecification(rectangleShape);
 		role.setGraphicalRepresentation(shapeGR);
 
-		CreateEditionScheme createDropScheme = CreateEditionScheme.actionType.makeNewAction(flexoConcept, null, editor);
+		CreateFlexoBehaviour createDropScheme = CreateFlexoBehaviour.actionType.makeNewAction(flexoConcept, null, editor);
 		createDropScheme.setFlexoBehaviourName("drop");
 		createDropScheme.setFlexoBehaviourClass(DropScheme.class);
 		createDropScheme.doAction();

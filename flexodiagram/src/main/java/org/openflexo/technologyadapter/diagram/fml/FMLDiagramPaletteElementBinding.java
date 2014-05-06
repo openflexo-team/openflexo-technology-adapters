@@ -377,7 +377,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, T
 					if (parameterInstance != null) {
 						unusedParameterInstances.remove(parameterInstance);
 						parameterInstance.setParameter(parameter);
-					} else {
+					} else if (getVirtualModel() != null) {
 						VirtualModelModelFactory factory = getVirtualModel().getVirtualModelFactory();
 						parameterInstance = factory.newInstance(FMLDiagramPaletteElementBindingParameter.class);
 						parameterInstance.setParameter(parameter);

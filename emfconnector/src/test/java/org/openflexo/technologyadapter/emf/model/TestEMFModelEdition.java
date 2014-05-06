@@ -65,7 +65,7 @@ import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.viewpoint.action.AddFlexoConcept;
 import org.openflexo.foundation.viewpoint.action.CreateEditionAction;
-import org.openflexo.foundation.viewpoint.action.CreateEditionScheme;
+import org.openflexo.foundation.viewpoint.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.viewpoint.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.viewpoint.editionaction.DeclareFlexoRole;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
@@ -111,7 +111,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	private static View newView;
 	private static VirtualModelInstance newVirtualModelInstance;
 	private static FlexoConcept flexoConcept;
-	private static CreateEditionScheme creationEditionScheme;
+	private static CreateFlexoBehaviour creationEditionScheme;
 	private static CreationScheme creationScheme;
 	private static CreationSchemeAction creationSchemeCreationAction;
 
@@ -242,7 +242,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(flexoConcept);
 
 
-		creationEditionScheme = CreateEditionScheme.actionType.makeNewAction(flexoConcept, null, editor);
+		creationEditionScheme = CreateFlexoBehaviour.actionType.makeNewAction(flexoConcept, null, editor);
 		creationEditionScheme.setFlexoBehaviourClass(CreationScheme.class);
 		creationEditionScheme.setFlexoBehaviourName("DynamicCreation");
 		assertNotNull(creationEditionScheme);

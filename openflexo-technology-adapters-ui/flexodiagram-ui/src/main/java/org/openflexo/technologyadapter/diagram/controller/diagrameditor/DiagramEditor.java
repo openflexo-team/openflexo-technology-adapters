@@ -90,6 +90,10 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		return new CommonPalette(this);
 	}
 
+	public ContextualPalette makeContextualPalette(DiagramPalette palette) {
+		return new ContextualPalette(palette, this);
+	}
+
 	public DiagramEditor(Drawing<Diagram> diagramDrawing, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
 		super(diagramDrawing, controller != null ? controller.getSelectionManager() : null, ((DiagramResource) diagramDrawing.getModel()
 				.getResource()).getFactory(), swingToolFactory);
@@ -133,7 +137,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 					for (DiagramPaletteElement e : palette.getElements()) {
 						System.out.println("e: " + e + " gr=" + e.getGraphicalRepresentation());
 					}
-					ContextualPalette contextualPaletteModel = new ContextualPalette(palette, this);
+					ContextualPalette contextualPaletteModel = makeContextualPalette(palette);
 					contextualPaletteModels.put(palette, contextualPaletteModel);
 					JDianaPalette dianaPalette = swingToolFactory.makeDianaPalette(contextualPaletteModel);
 					dianaPalette.attachToEditor(this);
@@ -210,6 +214,10 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		return commonPalette;
 	}
 
+	public String getCommonPaletteTitle() {
+		return "Common";
+	}
+
 	public JTabbedPane getPaletteView() {
 		if (paletteView == null) {
 
@@ -224,7 +232,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			for (DiagramPalette palette : orderedPalettes) {
 				paletteView.add(palette.getName(), contextualPalettes.get(palette).getPaletteViewInScrollPane());
 			}
-			paletteView.add(FlexoLocalization.localizedForKey("Common", getCommonPalette().getPaletteViewInScrollPane()),
+			paletteView.add(FlexoLocalization.localizedForKey(getCommonPaletteTitle(), getCommonPalette().getPaletteViewInScrollPane()),
 					getCommonPalette().getPaletteViewInScrollPane());
 			paletteView.addChangeListener(new ChangeListener() {
 				@Override
