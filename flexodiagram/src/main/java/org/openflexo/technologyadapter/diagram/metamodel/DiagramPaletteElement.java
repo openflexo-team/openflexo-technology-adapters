@@ -22,7 +22,6 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.NameChanged;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -63,14 +62,14 @@ public interface DiagramPaletteElement extends DiagramPaletteObject {
 
 		private final DiagramPaletteElement parent = null;
 
-		private String name;
+		// private String name;
 		private DiagramPalette _palette;
 
 		/*public FlexoServiceManager getServiceManager() {
 			return getPalette().getServiceManager();
 		}*/
 
-		@Override
+		/*@Override
 		public String getName() {
 			return name;
 		}
@@ -83,7 +82,7 @@ public interface DiagramPaletteElement extends DiagramPaletteObject {
 				setChanged();
 				notifyObservers(new NameChanged(oldName, name));
 			}
-		}
+		}*/
 
 		public String getURI() {
 			return getPalette().getURI() + "/" + getName();

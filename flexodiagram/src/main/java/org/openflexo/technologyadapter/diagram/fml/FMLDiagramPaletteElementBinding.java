@@ -299,6 +299,9 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, T
 				flexoConcept = getVirtualModel().getFlexoConcept(_flexoConceptId);
 				updateParameters();
 			}
+			if (flexoConcept == null && dropScheme != null) {
+				flexoConcept = dropScheme.getFlexoConcept();
+			}
 			return flexoConcept;
 		}
 
