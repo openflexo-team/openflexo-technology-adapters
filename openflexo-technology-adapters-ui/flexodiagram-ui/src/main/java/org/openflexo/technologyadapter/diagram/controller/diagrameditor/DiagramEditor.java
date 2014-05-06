@@ -220,36 +220,40 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 
 	public JTabbedPane getPaletteView() {
 		if (paletteView == null) {
+			paletteView = makePaletteView();
+		}
+		return paletteView;
+	}
 
-			logger.info("Building PaletteView with " + contextualPalettes);
+	protected JTabbedPane makePaletteView() {
+		logger.info("Building PaletteView with " + contextualPalettes);
 
-			paletteView = new JTabbedPane();
-			orderedPalettes = new Vector<DiagramPalette>(contextualPalettes.keySet());
-			Collections.sort(orderedPalettes);
+		paletteView = new JTabbedPane();
+		orderedPalettes = new Vector<DiagramPalette>(contextualPalettes.keySet());
+		Collections.sort(orderedPalettes);
 
-			System.out.println("orderedPalettes=" + orderedPalettes);
+		System.out.println("orderedPalettes=" + orderedPalettes);
 
-			for (DiagramPalette palette : orderedPalettes) {
-				paletteView.add(palette.getName(), contextualPalettes.get(palette).getPaletteViewInScrollPane());
-			}
-			paletteView.add(FlexoLocalization.localizedForKey(getCommonPaletteTitle(), getCommonPalette().getPaletteViewInScrollPane()),
-					getCommonPalette().getPaletteViewInScrollPane());
-			paletteView.addChangeListener(new ChangeListener() {
-				@Override
-				public void stateChanged(ChangeEvent e) {
-					if (paletteView.getSelectedIndex() < orderedPalettes.size()) {
-						activatePalette(contextualPalettes.get(orderedPalettes.elementAt(paletteView.getSelectedIndex())));
-					} else if (paletteView.getSelectedIndex() == orderedPalettes.size()) {
-						activatePalette(getCommonPalette());
-					}
+		for (DiagramPalette palette : orderedPalettes) {
+			paletteView.add(palette.getName(), contextualPalettes.get(palette).getPaletteViewInScrollPane());
+		}
+		paletteView.add(FlexoLocalization.localizedForKey(getCommonPaletteTitle(), getCommonPalette().getPaletteViewInScrollPane()),
+				getCommonPalette().getPaletteViewInScrollPane());
+		paletteView.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				if (paletteView.getSelectedIndex() < orderedPalettes.size()) {
+					activatePalette(contextualPalettes.get(orderedPalettes.elementAt(paletteView.getSelectedIndex())));
+				} else if (paletteView.getSelectedIndex() == orderedPalettes.size()) {
+					activatePalette(getCommonPalette());
 				}
-			});
-			paletteView.setSelectedIndex(0);
-			if (orderedPalettes.size() > 0) {
-				activatePalette(contextualPalettes.get(orderedPalettes.firstElement()));
-			} else {
-				activatePalette(getCommonPalette());
 			}
+		});
+		paletteView.setSelectedIndex(0);
+		if (orderedPalettes.size() > 0) {
+			activatePalette(contextualPalettes.get(orderedPalettes.firstElement()));
+		} else {
+			activatePalette(getCommonPalette());
 		}
 		return paletteView;
 	}
