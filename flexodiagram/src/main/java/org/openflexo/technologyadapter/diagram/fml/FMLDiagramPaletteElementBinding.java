@@ -199,7 +199,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, T
 			}
 			return diagramModelSlot;
 		}
-		
+
 		@Override
 		public void setDiagramModelSlot(TypedDiagramModelSlot diagramModelSlot) {
 			this.diagramModelSlot = diagramModelSlot;
@@ -374,7 +374,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, T
 					if (parameterInstance != null) {
 						unusedParameterInstances.remove(parameterInstance);
 						parameterInstance.setParameter(parameter);
-					} else {
+					} else if (getVirtualModel() != null) {
 						VirtualModelModelFactory factory = getVirtualModel().getVirtualModelFactory();
 						parameterInstance = factory.newInstance(FMLDiagramPaletteElementBindingParameter.class);
 						parameterInstance.setParameter(parameter);
@@ -432,7 +432,7 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, T
 		public DiagramTechnologyAdapter getTechnologyAdapter() {
 			return (DiagramTechnologyAdapter) getDiagramModelSlot().getTechnologyAdapter();
 		}
-		
+
 		/*@Override
 		public void setChanged() {
 			super.setChanged();
