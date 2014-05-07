@@ -19,10 +19,12 @@
  */
 package org.openflexo.technologyadapter.diagram;
 
+import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
 /**
@@ -56,6 +58,20 @@ public class TypedDiagramModelSlotInstanceConfiguration extends
 	@Override
 	public boolean isURIEditable() {
 		return false;
+	}
+
+	@Override
+	public String getModelUri() {
+		ResourceRepository<?> repository = getResourceCenter()
+				.getRepository(DiagramRepository.class, getModelSlot().getTechnologyAdapter());
+		String generatedUri = repository.generateURI(getFilename());
+		if (repository != null) {
+			while (repository.getResource(generatedUri) != null) {
+				generatedUri = repository.generateURI(getFilename());
+			}
+		}
+
+		return generatedUri;
 	}
 
 }
