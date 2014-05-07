@@ -66,9 +66,9 @@ import org.openflexo.technologyadapter.emf.viewpoint.editionaction.SelectEMFObje
 		@DeclarePatternRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassRole.class),
 		@DeclarePatternRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
-	@DeclareEditionAction(FML = "AddEMFObjectIndividual", editionActionClass = AddEMFObjectIndividual.class),
-	@DeclareEditionAction(FML = "AddDataPropertyValue", editionActionClass = AddEMFObjectIndividualAttributeDataPropertyValue.class),
-	@DeclareEditionAction(FML = "AddObjectPropertyValue", editionActionClass = AddEMFObjectIndividualAttributeObjectPropertyValue.class),
+		@DeclareEditionAction(FML = "AddEMFObjectIndividual", editionActionClass = AddEMFObjectIndividual.class),
+		@DeclareEditionAction(FML = "AddDataPropertyValue", editionActionClass = AddEMFObjectIndividualAttributeDataPropertyValue.class),
+		@DeclareEditionAction(FML = "AddObjectPropertyValue", editionActionClass = AddEMFObjectIndividualAttributeObjectPropertyValue.class),
 // @DeclareEditionAction(
 // FML = "AddReferencePropertyValue",
 // editionActionClass = AddEMFObjectIndividualReferenceObjectPropertyValue.class),
@@ -131,7 +131,7 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 		public Object retrieveObjectWithURI(
 				TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, ? extends TypeAwareModelSlot<EMFModel, EMFMetaModel>> msInstance,
 				String objectURI) {
-			return msInstance.getResourceData().getObject(objectURI);
+			return msInstance.getAccessedResourceData().getObject(objectURI);
 		}
 
 		@Override
@@ -143,7 +143,7 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 		public String getPreciseType() {
 			return "EMF Model";
 		};
-		
+
 		@Override
 		public EMFTechnologyAdapter getTechnologyAdapter() {
 			return (EMFTechnologyAdapter) super.getTechnologyAdapter();
