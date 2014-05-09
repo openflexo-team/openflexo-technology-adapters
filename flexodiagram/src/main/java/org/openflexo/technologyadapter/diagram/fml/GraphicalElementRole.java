@@ -196,7 +196,6 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
 				for (GraphicalElementSpecification<?, GR> grSpec : pendingGRSpecs) {
-					System.out.println("Register pending GRSpec: " + grSpec);
 					registerGRSpecification(grSpec);
 				}
 
