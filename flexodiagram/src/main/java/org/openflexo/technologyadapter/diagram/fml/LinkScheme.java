@@ -118,6 +118,8 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 	public void setToTargetFlexoConcept(FlexoConcept targetFlexoConcept);
 
+	public boolean isValidTarget(FlexoConcept actualFromTarget, FlexoConcept actualToTarget);
+
 	public static abstract class LinkSchemeImpl extends AbstractCreationSchemeImpl implements LinkScheme {
 
 		private String fromTarget;
@@ -191,6 +193,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 			updateBindingModels();
 		}
 
+		@Override
 		public boolean isValidTarget(FlexoConcept actualFromTarget, FlexoConcept actualToTarget) {
 			// TODO: improved this so that we can take into account adressed models restrictions. See also
 			// LinkScheme.isValidTarget on branch 1.5.1
