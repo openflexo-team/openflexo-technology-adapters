@@ -86,7 +86,7 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			if (StringUtils.isNotEmpty(info.diagramSpecificationURI)) {
 				DiagramTechnologyAdapter ta = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 						DiagramTechnologyAdapter.class);
-				System.out.println("diagramSpecificationURI=" + info.diagramSpecificationURI);
+				// System.out.println("diagramSpecificationURI=" + info.diagramSpecificationURI);
 				DiagramSpecificationResource dsResource = (DiagramSpecificationResource) ta.getTechnologyContextManager()
 						.getResourceWithURI(info.diagramSpecificationURI);
 				returned.setMetaModelResource(dsResource);
