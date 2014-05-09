@@ -7,7 +7,7 @@
       			<IconColumn data="controller.iconForObject(iterator)" format="" title="icon" columnWidth="25" resizable="false" displayTitle="false" color="" bgColor="" tooltip="" valueChangedAction="" name="icon"/>
       			<DropDownColumn data="iterator.paletteElement" format="object.name" list="data.diagramSpecification.getAllPaletteElements()" displayTitle="true" title="palette_element" name="paletteElement" columnWidth="40" resizable="true" />
       			<DropDownColumn data="iterator.flexoConcept" format="object.name" list="data.virtualModel.flexoConcepts" displayTitle="true" title="flexo_concept" name="flexoConcept" columnWidth="40" resizable="true" />
-    			<DropDownColumn data="iterator.dropScheme" format="object.name" list="flexoConcept.dropSchemes" displayTitle="true" title="drop_scheme" name="dropScheme" columnWidth="40" resizable="true" />
+    			<DropDownColumn data="iterator.dropScheme" format="object.name" list="iterator.allAvailableDropSchemes" displayTitle="true" title="drop_scheme" name="dropScheme" columnWidth="40" resizable="true" />
     			<AddAction method="data.addFMLDiagramPaletteElementBinding()" name="addFMLPaletteElementBinding" />
     			<RemoveAction method="data.removeFMLDiagramPaletteElementBinding()" name="removeFMLPaletteElementBinding" />
     		</Table>

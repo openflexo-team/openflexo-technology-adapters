@@ -20,8 +20,8 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.foundation.viewpoint.FlexoBehaviourParameter;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
+import org.openflexo.foundation.viewpoint.FlexoBehaviourParameter;
 import org.openflexo.foundation.viewpoint.NamedViewPointObject;
 import org.openflexo.foundation.viewpoint.URIParameter;
 import org.openflexo.foundation.viewpoint.ViewPoint;
@@ -76,7 +76,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 			FMLDiagramPaletteElementBindingParameter {
 
 		private FlexoBehaviourParameter _parameter;
-		//private FMLDiagramPaletteElementBinding elementBinding;
+		// private FMLDiagramPaletteElementBinding elementBinding;
 		private String value;
 
 		public FMLDiagramPaletteElementBindingParameterImpl() {
@@ -129,7 +129,10 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 
 		@Override
 		public ViewPoint getViewPoint() {
-			return getVirtualModel().getViewPoint();
+			if (getVirtualModel() != null) {
+				return getVirtualModel().getViewPoint();
+			}
+			return null;
 		}
 
 		public VirtualModel getVirtualModel() {

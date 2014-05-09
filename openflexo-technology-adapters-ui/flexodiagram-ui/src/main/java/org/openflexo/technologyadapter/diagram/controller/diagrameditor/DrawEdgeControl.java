@@ -41,6 +41,7 @@ import org.openflexo.fge.control.MouseControlContext;
 import org.openflexo.fge.control.actions.MouseDragControlActionImpl;
 import org.openflexo.fge.control.actions.MouseDragControlImpl;
 import org.openflexo.fge.swing.control.JMouseControlContext;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.localization.FlexoLocalization;
@@ -194,12 +195,22 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 			DiagramShape startShape = controller.getShapeForShapeNode(fromShape);
 			DiagramShape endShape = controller.getShapeForShapeNode(toShape);
 
+			FlexoConceptInstance startFlexoConceptInstance = (FlexoConceptInstance) ((FMLControlledDiagramEditor) controller)
+					.getDrawableForDrawingTreeNode(fromShape);
+			FlexoConceptInstance endFlexoConceptInstance = (FlexoConceptInstance) ((FMLControlledDiagramEditor) controller)
+					.getDrawableForDrawingTreeNode(toShape);
+
 			if (virtualModel != null) {
 				List<FlexoConcept> availableFlexoConcepts = virtualModel.getFlexoConcepts();
 				List<LinkScheme> availableConnectors = new ArrayList<LinkScheme>();
 				for (FlexoConcept flexoConcept : availableFlexoConcepts) {
 					if (flexoConcept.getFlexoBehaviours(LinkScheme.class) != null) {
-						availableConnectors.addAll(flexoConcept.getFlexoBehaviours(LinkScheme.class));
+						for (LinkScheme linkScheme : flexoConcept.getFlexoBehaviours(LinkScheme.class)) {
+							if (linkScheme.isValidTarget(startFlexoConceptInstance.getFlexoConcept(),
+									endFlexoConceptInstance.getFlexoConcept())) {
+								availableConnectors.add(linkScheme);
+							}
+						}
 					}
 				}
 				if (availableConnectors.size() > 0) {
