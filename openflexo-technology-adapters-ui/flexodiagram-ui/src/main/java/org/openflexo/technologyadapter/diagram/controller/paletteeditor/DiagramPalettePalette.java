@@ -44,21 +44,21 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 public class DiagramPalettePalette extends DrawingPalette {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = FlexoLogger.getLogger(CommonPalette.class.getPackage().getName());
+	private static final Logger			logger				= FlexoLogger.getLogger(CommonPalette.class.getPackage().getName());
 
-	private static final int GRID_WIDTH = 50;
-	private static final int GRID_HEIGHT = 40;
-	public static final Font DEFAULT_TEXT_FONT = new Font("SansSerif", Font.PLAIN, 7);
-	public static final Font LABEL_FONT = new Font("SansSerif", Font.PLAIN, 11);
+	private static final int			GRID_WIDTH			= 50;
+	private static final int			GRID_HEIGHT			= 40;
+	public static final Font			DEFAULT_TEXT_FONT	= new Font("SansSerif", Font.PLAIN, 7);
+	public static final Font			LABEL_FONT			= new Font("SansSerif", Font.PLAIN, 11);
 
-	private final DiagramPaletteEditor editor;
+	private final DiagramPaletteEditor	editor;
 
 	public DiagramPalettePalette(DiagramPaletteEditor editor) {
 		super(200, 200, "default");
 
 		this.editor = editor;
 
-		ShapeSpecification[] ssp = new ShapeSpecification[11];
+		ShapeSpecification[] ssp = new ShapeSpecification[13];
 
 		ssp[0] = FACTORY.makeShape(ShapeType.RECTANGLE);
 		ssp[1] = FACTORY.makeShape(ShapeType.RECTANGLE);
@@ -73,13 +73,15 @@ public class DiagramPalettePalette extends DrawingPalette {
 		ssp[8] = FACTORY.makeShape(ShapeType.TRIANGLE);
 		ssp[9] = FACTORY.makeShape(ShapeType.STAR);
 		ssp[10] = FACTORY.makeShape(ShapeType.ARC);
+		ssp[11] = FACTORY.makeShape(ShapeType.PLUS);
+		ssp[12] = FACTORY.makeShape(ShapeType.CHEVRON);
 
 		int px = 0;
 		int py = 0;
 		for (ShapeSpecification sspi : ssp) {
 			addElement(makePaletteElement(sspi, px, py));
 			px = px + 1;
-			if (px == 3) {
+			if (px == 4) {
 				px = 0;
 				py++;
 			}
