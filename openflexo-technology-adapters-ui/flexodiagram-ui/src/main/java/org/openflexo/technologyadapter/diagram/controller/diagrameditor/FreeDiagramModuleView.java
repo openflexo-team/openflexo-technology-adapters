@@ -68,6 +68,7 @@ public class FreeDiagramModuleView extends JPanel implements ModuleView<Diagram>
 	@Override
 	public void deleteModuleView() {
 		getRepresentedObject().getPropertyChangeSupport().removePropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
+		getEditor().getFlexoController().removeModuleView(this);
 		getEditor().delete();
 	}
 
