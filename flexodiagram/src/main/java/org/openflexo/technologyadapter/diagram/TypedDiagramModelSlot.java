@@ -1,6 +1,7 @@
 package org.openflexo.technologyadapter.diagram;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -60,10 +61,9 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 		@DeclarePatternRole(FML = "Diagram", flexoRoleClass = DiagramRole.class) // Diagrams
 })
 @DeclareFlexoBehaviours({ // All edition actions available through this model slot
-		@DeclareFlexoBehaviour(FML = "DropScheme", flexoBehaviourClass = DropScheme.class),
+@DeclareFlexoBehaviour(FML = "DropScheme", flexoBehaviourClass = DropScheme.class),
 		@DeclareFlexoBehaviour(FML = "LinkScheme", flexoBehaviourClass = LinkScheme.class),
-		@DeclareFlexoBehaviour(FML = "NavigationScheme", flexoBehaviourClass = DiagramNavigationScheme.class)
-})
+		@DeclareFlexoBehaviour(FML = "NavigationScheme", flexoBehaviourClass = DiagramNavigationScheme.class) })
 @DeclareEditionActions({ // All edition actions available through this model
 		// slot
 		@DeclareEditionAction(FML = "AddDiagram", editionActionClass = AddDiagram.class),
@@ -98,10 +98,12 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 	public FMLDiagramPaletteElementBinding getPaletteElementBinding(DiagramPaletteElement paletteElement);
 
+	public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings(DiagramPaletteElement paletteElement);
+
 	public FMLDiagramPaletteElementBinding addFMLDiagramPaletteElementBinding();
-	
+
 	public DiagramSpecification getDiagramSpecification();
-	
+
 	public static abstract class TypedDiagramModelSlotImpl extends TypeAwareModelSlotImpl<Diagram, DiagramSpecification> implements
 			TypedDiagramModelSlot {
 
@@ -148,6 +150,17 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 				}
 			}
 			return null;
+		}
+
+		@Override
+		public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings(DiagramPaletteElement paletteElement) {
+			ArrayList<FMLDiagramPaletteElementBinding> bindings = new ArrayList<FMLDiagramPaletteElementBinding>();
+			for (FMLDiagramPaletteElementBinding binding : getPaletteElementBindings()) {
+				if (binding.getPaletteElement() == paletteElement) {
+					bindings.add(binding);
+				}
+			}
+			return bindings;
 		}
 
 		@Override
@@ -212,25 +225,24 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			// TODO Auto-generated method stub
 			return DiagramType.class;
 		}
-		
+
 		@Override
 		public String getPreciseType() {
 			return "Diagram Specification";
 		}
 
 		@Override
-		public FMLDiagramPaletteElementBinding addFMLDiagramPaletteElementBinding(){
-			FMLDiagramPaletteElementBinding newBinding = getVirtualModelFactory().newInstance(
-					FMLDiagramPaletteElementBinding.class);
+		public FMLDiagramPaletteElementBinding addFMLDiagramPaletteElementBinding() {
+			FMLDiagramPaletteElementBinding newBinding = getVirtualModelFactory().newInstance(FMLDiagramPaletteElementBinding.class);
 			addToPaletteElementBindings(newBinding);
 			return newBinding;
 		}
-		
+
 		@Override
-		public DiagramSpecification getDiagramSpecification(){
+		public DiagramSpecification getDiagramSpecification() {
 			return getMetaModelResource().getMetaModelData();
 		}
-		
+
 		// TODO
 		/*	@Override
 			public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings() {
