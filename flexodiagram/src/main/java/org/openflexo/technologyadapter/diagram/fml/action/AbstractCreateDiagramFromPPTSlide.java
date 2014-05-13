@@ -503,15 +503,9 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 		DiagramShape newTable = getDiagramFactory().makeNewShape(table.getShapeName(), getDiagram());
 		ShapeGraphicalRepresentation gr = newTable.getGraphicalRepresentation();
-		gr.setX(table.getLogicalAnchor2D().getX());
-		gr.setY(table.getLogicalAnchor2D().getY());
-		gr.setWidth(table.getCoordinates().getWidth());
-		gr.setHeight(table.getCoordinates().getHeight());
-		gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
-		gr.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
+		setDefaultGraphicalProperties(gr, table);
 		gr.getForeground().setNoStroke(true);
 		gr.setTransparency(1);
-
 		for (int col = 0; col < table.getNumberOfColumns(); col++) {
 			for (int row = 0; row < table.getNumberOfRows(); row++) {
 				TableCell cell = table.getCell(row, col);
@@ -566,13 +560,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		}
 
 		gr.setShapeSpecification(ss);
-		gr.setX(freeformShape.getLogicalAnchor2D().getX());
-		gr.setY(freeformShape.getLogicalAnchor2D().getY());
-		gr.setWidth(freeformShape.getLogicalAnchor2D().getWidth());
-		gr.setHeight(freeformShape.getLogicalAnchor2D().getHeight());
-		gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
-
-		gr.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
+		setDefaultGraphicalProperties(gr, freeformShape);
 
 		if (freeformShape.getLineColor() != null) {
 			gr.setForeground(getDiagramFactory().makeForegroundStyle(freeformShape.getLineColor(), (float) freeformShape.getLineWidth(),
@@ -599,14 +587,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 
 		setDiagramShapeShapeType(gr, autoShape);
-
-		gr.setX(autoShape.getLogicalAnchor2D().getX());
-		gr.setY(autoShape.getLogicalAnchor2D().getY());
-		gr.setWidth(autoShape.getLogicalAnchor2D().getWidth());
-		gr.setHeight(autoShape.getLogicalAnchor2D().getHeight());
-		gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
-
-		gr.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
+		setDefaultGraphicalProperties(gr, autoShape);
 
 		if (autoShape.getLineColor() != null) {
 			gr.setForeground(getDiagramFactory().makeForegroundStyle(autoShape.getLineColor(), (float) autoShape.getLineWidth(),
@@ -744,17 +725,10 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 		setDiagramShapeShapeType(gr, textBox);
-		gr.setX(textBox.getLogicalAnchor2D().getX());
-		gr.setY(textBox.getLogicalAnchor2D().getY());
-		gr.setWidth(textBox.getLogicalAnchor2D().getWidth());
-		gr.setHeight(textBox.getLogicalAnchor2D().getHeight());
-		gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
-
+		setDefaultGraphicalProperties(gr, textBox);
 		gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
-
 		gr.setBackground(getDiagramFactory().makeEmptyBackground());
 		gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
-
 		setTextProperties(gr, textBox);
 
 		newShape.setGraphicalRepresentation(gr);
@@ -856,6 +830,15 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			return true;
 		}
 		return false;
+	}
+
+	private void setDefaultGraphicalProperties(ShapeGraphicalRepresentation returned, Shape shape) {
+		returned.setX(shape.getLogicalAnchor2D().getX());
+		returned.setY(shape.getLogicalAnchor2D().getY());
+		returned.setWidth(shape.getLogicalAnchor2D().getWidth());
+		returned.setHeight(shape.getLogicalAnchor2D().getHeight());
+		returned.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+		returned.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
 	}
 
 	private void setTextProperties(ShapeGraphicalRepresentation returned, TextShape textShape) {
