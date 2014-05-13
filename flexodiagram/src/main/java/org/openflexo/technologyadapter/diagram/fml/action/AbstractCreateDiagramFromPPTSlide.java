@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -39,6 +40,7 @@ import javax.swing.ImageIcon;
 
 import org.apache.poi.ddf.EscherProperties;
 import org.apache.poi.hslf.model.AutoShape;
+import org.apache.poi.hslf.model.Freeform;
 import org.apache.poi.hslf.model.Line;
 import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Picture;
@@ -66,6 +68,8 @@ import org.openflexo.fge.TextStyle;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.connectors.ConnectorSymbol.EndSymbolType;
 import org.openflexo.fge.connectors.ConnectorSymbol.StartSymbolType;
+import org.openflexo.fge.geom.FGEPoint;
+import org.openflexo.fge.shapes.Polygon;
 import org.openflexo.fge.shapes.Rectangle;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
@@ -357,27 +361,23 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	public ImageIcon getMiniature(Slide s) {
-		double WIDTH = 75;
-		Dimension d = s.getSlideShow().getPageSize();
-		BufferedImage i = new BufferedImage((int) WIDTH, (int) (WIDTH * d.height / d.width), BufferedImage.TYPE_INT_RGB);
-		Graphics2D graphics = i.createGraphics();
-		graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
-		s.draw(graphics);
-		return new ImageIcon(i);
+		return getScreenShot(s, 75);
 	}
 
 	public ImageIcon getOverview(Slide s) {
-		double WIDTH = 400;
+		return getScreenShot(s, 400);
+	}
+
+	public ImageIcon getScreenShot(Slide s, double size) {
 		if (s != null && s.getSlideShow() != null) {
 			Dimension d = s.getSlideShow().getPageSize();
-			BufferedImage i = new BufferedImage((int) WIDTH, (int) (WIDTH * d.height / d.width), BufferedImage.TYPE_INT_RGB);
+			BufferedImage i = new BufferedImage((int) size, (int) (size * d.height / d.width), BufferedImage.TYPE_INT_RGB);
 			Graphics2D graphics = i.createGraphics();
-			graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
+			graphics.transform(AffineTransform.getScaleInstance(size / d.width, size / d.width));
 			s.draw(graphics);
 			return new ImageIcon(i);
 		}
 		return null;
-
 	}
 
 	private HashMap<DiagramShape, Shape> shapesMap;
@@ -444,7 +444,9 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	private DiagramShape transformPowerpointShape(Shape shape) {
 		DiagramShape diagramShape = null;
-		if (shape instanceof Picture) {
+		if (shape instanceof Freeform) {
+			diagramShape = makeFreeformShape((Freeform) shape);
+		} else if (shape instanceof Picture) {
 			diagramShape = makePictureShape((Picture) shape);
 		} else if ((shape instanceof AutoShape) && (!isConnector(shape.getShapeType()))) {
 			diagramShape = makeAutoShape((AutoShape) shape);
@@ -467,20 +469,33 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	// This should cover a large set of cases
 	private DiagramShape makeGroupShape(ShapeGroup shapeGroup) {
 		// If we find a shape and a text, then it could be optimized as a shape containing this text
+		boolean isShapeAndText = false;
 		if (shapeGroup.getShapes().length == 2) {
-			String label = null;
+			TextShape textShape = null;
+			TextShape containerShape = null;
 			for (Shape shape : shapeGroup.getShapes()) {
-				DiagramShape containerShape = transformPowerpointShape(shape);
-				// shapesMap.put(containerShape, shape);
-				// getDiagram().addToShapes(containerShape);
+				if ((shape instanceof TextShape) && (((TextShape) shape).getTextRun() != null)) {
+					textShape = (TextShape) shape;
+				}
+				if ((shape instanceof TextShape) && (((TextShape) shape).getTextRun() == null)) {
+					containerShape = (TextShape) shape;
+				}
 			}
-		} else {
+			if (containerShape != null && textShape != null) {
+				isShapeAndText = true;
+				DiagramShape shape = transformPowerpointShape(containerShape);
+				setTextProperties(shape.getGraphicalRepresentation(), textShape);
+				shape.setName(textShape.getText());
+			}
+		}
+		if (!isShapeAndText) {
 			for (Shape shape : shapeGroup.getShapes()) {
 				DiagramShape newShape = transformPowerpointShape(shape);
 				shapesMap.put(newShape, shape);
 				getDiagram().addToShapes(newShape);
 			}
 		}
+
 		return null;
 	}
 
@@ -511,6 +526,71 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 		newTable.setGraphicalRepresentation(gr);
 		return newTable;
+	}
+
+	private DiagramShape makeFreeformShape(Freeform freeformShape) {
+		DiagramShape newShape = getDiagramFactory().makeNewShape(freeformShape.getText(), getDiagram());
+		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
+		gr.setShapeType(ShapeType.CUSTOM_POLYGON);
+		Polygon ss = ((Polygon) gr.getShapeSpecification());
+
+		PathIterator pi = freeformShape.getPath().getPathIterator(null);
+		double[] coordinates = new double[6];
+		while (pi.isDone() == false) {
+			int type = pi.currentSegment(coordinates);
+			switch (type) {
+			case PathIterator.SEG_MOVETO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_LINETO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_QUADTO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_CUBICTO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_CLOSE:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			default:
+				break;
+			}
+			pi.next();
+		}
+
+		gr.setShapeSpecification(ss);
+		gr.setX(freeformShape.getLogicalAnchor2D().getX());
+		gr.setY(freeformShape.getLogicalAnchor2D().getY());
+		gr.setWidth(freeformShape.getLogicalAnchor2D().getWidth());
+		gr.setHeight(freeformShape.getLogicalAnchor2D().getHeight());
+		gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+
+		gr.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
+
+		if (freeformShape.getLineColor() != null) {
+			gr.setForeground(getDiagramFactory().makeForegroundStyle(freeformShape.getLineColor(), (float) freeformShape.getLineWidth(),
+					convertDashLineStyles(freeformShape.getLineDashing())));
+		} else {
+			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+		}
+
+		if (freeformShape.getFillColor() != null) {
+			gr.setBackground(getDiagramFactory().makeColoredBackground(freeformShape.getFillColor()));
+		} else {
+			gr.setBackground(getDiagramFactory().makeEmptyBackground());
+			gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
+		}
+
+		setTextProperties(gr, freeformShape);
+		newShape.setGraphicalRepresentation(gr);
+		return newShape;
 	}
 
 	private DiagramShape makeAutoShape(AutoShape autoShape) {
