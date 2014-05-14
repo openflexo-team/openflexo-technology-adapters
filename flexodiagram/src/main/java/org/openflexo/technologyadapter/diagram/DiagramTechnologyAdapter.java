@@ -293,14 +293,20 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	public DiagramResource createNewDiagram(FlexoProject project, String filename, String diagramUri,
 			DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
 		File diagramFile = new File(getProjectSpecificDiagramsDirectory(project), filename);
-		return createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource);
+		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource);
+		DiagramRepository diagramRepository = project.getRepository(DiagramRepository.class, this);
+		diagramRepository.registerResource(returned);
+		return returned;
 	}
 
 	public DiagramResource createNewDiagram(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
 			String diagramUri, DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
 		File diagramDirectory = new File(resourceCenter.getRootDirectory(), relativePath);
 		File diagramFile = new File(diagramDirectory, filename);
-		return createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource);
+		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource);
+		DiagramRepository diagramRepository = resourceCenter.getRepository(DiagramRepository.class, this);
+		diagramRepository.registerResource(returned);
+		return returned;
 	}
 
 	public DiagramResource createNewDiagram(String diagramName, String diagramlUri, File diagramFile,
