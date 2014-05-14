@@ -36,6 +36,7 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
@@ -62,7 +63,10 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 
 		@Override
 		public boolean isVisibleForSelection(RepositoryFolder object, Vector<FlexoObject> globalSelection) {
-			return true;
+			if (object != null && object.getResourceRepository() instanceof DiagramRepository) {
+				return true;
+			}
+			return false;
 		}
 
 		@Override

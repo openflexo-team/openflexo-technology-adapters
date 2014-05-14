@@ -33,6 +33,7 @@ import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification.DiagramSpecificationImpl;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
 import org.openflexo.toolbox.StringUtils;
 
 public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecification, RepositoryFolder, ViewPointObject> {
@@ -53,7 +54,10 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 		@Override
 		public boolean isVisibleForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
-			return true;
+			if (object != null && object.getResourceRepository() instanceof DiagramSpecificationRepository) {
+				return true;
+			}
+			return false;
 		}
 
 		@Override

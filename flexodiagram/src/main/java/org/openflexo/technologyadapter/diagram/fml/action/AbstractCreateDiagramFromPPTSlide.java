@@ -25,6 +25,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.PathIterator;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,15 +35,18 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
 import org.apache.poi.ddf.EscherProperties;
 import org.apache.poi.hslf.model.AutoShape;
+import org.apache.poi.hslf.model.Freeform;
 import org.apache.poi.hslf.model.Line;
 import org.apache.poi.hslf.model.MasterSheet;
 import org.apache.poi.hslf.model.Picture;
 import org.apache.poi.hslf.model.Shape;
+import org.apache.poi.hslf.model.ShapeGroup;
 import org.apache.poi.hslf.model.ShapeTypes;
 import org.apache.poi.hslf.model.SimpleShape;
 import org.apache.poi.hslf.model.Slide;
@@ -65,6 +69,8 @@ import org.openflexo.fge.TextStyle;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.connectors.ConnectorSymbol.EndSymbolType;
 import org.openflexo.fge.connectors.ConnectorSymbol.StartSymbolType;
+import org.openflexo.fge.geom.FGEPoint;
+import org.openflexo.fge.shapes.Polygon;
 import org.openflexo.fge.shapes.Rectangle;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
@@ -80,12 +86,15 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
+import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreateDiagramFromPPTSlide<A, T>, T extends FlexoObject> extends
 		FlexoAction<A, T, ViewPointObject> {
+
+	private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
 	public DrawingGraphicalRepresentation graphicalRepresentation;
 	private String diagramName;
@@ -146,14 +155,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	public void setPoiShapes(List<Shape> poiShapes) {
 		this.poiShapes = poiShapes;
-	}
-
-	public List<AutoShape> getConnectors() {
-		return connectors;
-	}
-
-	public void setConnectors(List<AutoShape> connectors) {
-		this.connectors = connectors;
 	}
 
 	public void setErrorMessage(String errorMessage) {
@@ -364,44 +365,43 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	public ImageIcon getMiniature(Slide s) {
-		double WIDTH = 75;
-		Dimension d = s.getSlideShow().getPageSize();
-		BufferedImage i = new BufferedImage((int) WIDTH, (int) (WIDTH * d.height / d.width), BufferedImage.TYPE_INT_RGB);
-		Graphics2D graphics = i.createGraphics();
-		graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
-		s.draw(graphics);
-		return new ImageIcon(i);
+		return getScreenShot(s, 75);
 	}
 
 	public ImageIcon getOverview(Slide s) {
-		double WIDTH = 400;
+		return getScreenShot(s, 400);
+	}
+
+	public ImageIcon getScreenShot(Slide s, double size) {
 		if (s != null && s.getSlideShow() != null) {
-			Dimension d = s.getSlideShow().getPageSize();
-			BufferedImage i = new BufferedImage((int) WIDTH, (int) (WIDTH * d.height / d.width), BufferedImage.TYPE_INT_RGB);
-			Graphics2D graphics = i.createGraphics();
-			graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
-			s.draw(graphics);
-			return new ImageIcon(i);
+			try {
+				Dimension d = s.getSlideShow().getPageSize();
+				BufferedImage i = new BufferedImage((int) size, (int) (size * d.height / d.width), BufferedImage.TYPE_INT_RGB);
+				Graphics2D graphics = i.createGraphics();
+				graphics.transform(AffineTransform.getScaleInstance(size / d.width, size / d.width));
+				s.draw(graphics);
+				return new ImageIcon(i);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				logger.warning("Some fonts are cannot be previewed (Calibri, Gothic MS)");
+			} catch (Exception e) {
+				logger.warning("Unable to create a preview for the slide " + s.getSlideNumber());
+			}
 		}
 		return null;
-
 	}
 
 	private HashMap<DiagramShape, Shape> shapesMap;
 	private List<Shape> poiShapes;
-	private List<AutoShape> connectors;
 
 	/*
 	 * Transfo PPT to Diagram
 	 */
 	public void convertSlideToDiagram(Slide slide) {
 		MasterSheet master = slide.getMasterSheet();
-
-		connectors = new ArrayList<AutoShape>();
 		shapesMap = new HashMap<DiagramShape, Shape>();
 		poiShapes = new ArrayList<Shape>();
 
-		// Handle Shapes
+		// Retrieve all transformable elements
 		if (slide.getFollowMasterObjects()) {
 			if (master.getShapes() != null) {
 				Shape[] sh = master.getShapes();
@@ -417,63 +417,104 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			poiShapes.add(shape);
 		}
 
+		// Transform shapes
 		for (Shape shape : poiShapes) {
 			transformPowerpointShape(shape);
 		}
-
-		// Handle connectors
-		for (AutoShape connector : connectors) {
-			DiagramConnector con = makeConnector(connector, shapesMap);
-			if (con == null) {
-				makeLine(connector);
-			}
+		// Transform connectors
+		for (Shape shape : poiShapes) {
+			transformPowerpointConnector(shape);
 		}
-
 	}
 
-	private void transformPowerpointShape(Shape shape) {
-		if (shape instanceof Picture) {
-			DiagramShape newShape = makePictureShape((Picture) shape);
-			shapesMap.put(newShape, shape);
-			getDiagram().addToShapes(newShape);
-		} else if (shape instanceof AutoShape) {
-			if (!isConnector(shape.getShapeType())) {
-				DiagramShape newShape = makeAutoShape((AutoShape) shape);
+	private DiagramConnector transformPowerpointConnector(Shape shape) {
+		DiagramConnector diagramConnector = null;
+		if (shape instanceof AutoShape) {
+			// In the case the connector is a shape, the shape type give the kind of connector, no source/target
+			// are available, we can only make an intersection with the already know shapes
+			if (isConnector(shape.getShapeType())) {
+				diagramConnector = makeConnector((AutoShape) shape, shapesMap);
+				// If we are not able to find source/target shapes, create a line
+				if (diagramConnector == null) {
+					makeLine((AutoShape) shape);
+				}
+			}
+		} else if (shape instanceof Line) {
+			diagramConnector = makeLine((Line) shape);
+		}
+		if (diagramConnector != null) {
+			getDiagram().addToConnectors(diagramConnector);
+			getDiagram().addToShapes(diagramConnector.getStartShape());
+			getDiagram().addToShapes(diagramConnector.getEndShape());
+			return diagramConnector;
+		}
+		return null;
+	}
+
+	private DiagramShape transformPowerpointShape(Shape shape) {
+		DiagramShape diagramShape = null;
+		if (shape instanceof Freeform) {
+			diagramShape = makeFreeformShape((Freeform) shape);
+		} else if (shape instanceof Picture) {
+			diagramShape = makePictureShape((Picture) shape);
+		} else if ((shape instanceof AutoShape) && (!isConnector(shape.getShapeType()))) {
+			diagramShape = makeAutoShape((AutoShape) shape);
+		} else if (shape instanceof ShapeGroup) {
+			diagramShape = makeGroupShape((ShapeGroup) shape);
+		} else if (shape instanceof TextBox) {
+			diagramShape = makeTextBox((TextBox) shape);
+		} else if (shape instanceof Table) {
+			diagramShape = makeTable((Table) shape);
+		}
+		if (diagramShape != null) {
+			shapesMap.put(diagramShape, shape);
+			getDiagram().addToShapes(diagramShape);
+			return diagramShape;
+		}
+		return null;
+	}
+
+	// To optimize the group shape convertion, if there is a textbox and a shape, then the shape is the container of the text
+	// This should cover a large set of cases
+	private DiagramShape makeGroupShape(ShapeGroup shapeGroup) {
+		// If we find a shape and a text, then it could be optimized as a shape containing this text
+		boolean isShapeAndText = false;
+		if (shapeGroup.getShapes().length == 2) {
+			TextShape textShape = null;
+			TextShape containerShape = null;
+			for (Shape shape : shapeGroup.getShapes()) {
+				if ((shape instanceof TextShape) && (((TextShape) shape).getTextRun() != null)) {
+					textShape = (TextShape) shape;
+				}
+				if ((shape instanceof TextShape) && (((TextShape) shape).getTextRun() == null)) {
+					containerShape = (TextShape) shape;
+				}
+			}
+			if (containerShape != null && textShape != null) {
+				isShapeAndText = true;
+				DiagramShape shape = transformPowerpointShape(containerShape);
+				setTextProperties(shape.getGraphicalRepresentation(), textShape);
+				shape.setName(textShape.getText());
+			}
+		}
+		if (!isShapeAndText) {
+			for (Shape shape : shapeGroup.getShapes()) {
+				DiagramShape newShape = transformPowerpointShape(shape);
 				shapesMap.put(newShape, shape);
 				getDiagram().addToShapes(newShape);
-			} else {
-				connectors.add((AutoShape) shape);
 			}
-		} else if (shape instanceof TextBox) {
-			DiagramShape newShape = makeTextBox((TextBox) shape);
-			shapesMap.put(newShape, shape);
-			getDiagram().addToShapes(newShape);
-		} else if (shape instanceof Table) {
-			DiagramShape newShape = makeTable((Table) shape);
-			shapesMap.put(newShape, shape);
-			getDiagram().addToShapes(newShape);
-		} else if (shape instanceof Line) {
-			DiagramConnector con = makeLine((Line) shape);
-			getDiagram().addToConnectors(con);
-			getDiagram().addToShapes(con.getStartShape());
-			getDiagram().addToShapes(con.getEndShape());
 		}
 
+		return null;
 	}
 
 	private DiagramShape makeTable(Table table) {
 
 		DiagramShape newTable = getDiagramFactory().makeNewShape(table.getShapeName(), getDiagram());
 		ShapeGraphicalRepresentation gr = newTable.getGraphicalRepresentation();
-		gr.setX(table.getAnchor2D().getX());
-		gr.setY(table.getAnchor2D().getY());
-		gr.setWidth(table.getCoordinates().getWidth());
-		gr.setHeight(table.getCoordinates().getHeight());
-		gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
-		gr.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
+		setDefaultGraphicalProperties(gr, table);
 		gr.getForeground().setNoStroke(true);
 		gr.setTransparency(1);
-
 		for (int col = 0; col < table.getNumberOfColumns(); col++) {
 			for (int row = 0; row < table.getNumberOfRows(); row++) {
 				TableCell cell = table.getCell(row, col);
@@ -490,20 +531,72 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		return newTable;
 	}
 
+	private DiagramShape makeFreeformShape(Freeform freeformShape) {
+		DiagramShape newShape = getDiagramFactory().makeNewShape(freeformShape.getText(), getDiagram());
+		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
+		gr.setShapeType(ShapeType.CUSTOM_POLYGON);
+		Polygon ss = ((Polygon) gr.getShapeSpecification());
+
+		PathIterator pi = freeformShape.getPath().getPathIterator(null);
+		double[] coordinates = new double[6];
+		while (pi.isDone() == false) {
+			int type = pi.currentSegment(coordinates);
+			switch (type) {
+			case PathIterator.SEG_MOVETO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_LINETO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_QUADTO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_CUBICTO:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			case PathIterator.SEG_CLOSE:
+				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+				break;
+			default:
+				break;
+			}
+			pi.next();
+		}
+
+		gr.setShapeSpecification(ss);
+		setDefaultGraphicalProperties(gr, freeformShape);
+
+		if (freeformShape.getLineColor() != null) {
+			gr.setForeground(getDiagramFactory().makeForegroundStyle(freeformShape.getLineColor(), (float) freeformShape.getLineWidth(),
+					convertDashLineStyles(freeformShape.getLineDashing())));
+		} else {
+			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+		}
+
+		if (freeformShape.getFillColor() != null) {
+			gr.setBackground(getDiagramFactory().makeColoredBackground(freeformShape.getFillColor()));
+		} else {
+			gr.setBackground(getDiagramFactory().makeEmptyBackground());
+			gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
+		}
+
+		setTextProperties(gr, freeformShape);
+		newShape.setGraphicalRepresentation(gr);
+		return newShape;
+	}
+
 	private DiagramShape makeAutoShape(AutoShape autoShape) {
 		DiagramShape newShape = getDiagramFactory().makeNewShape(autoShape.getText(), getDiagram());
 
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 
 		setDiagramShapeShapeType(gr, autoShape);
-
-		gr.setX(autoShape.getAnchor2D().getX());
-		gr.setY(autoShape.getAnchor2D().getY());
-		gr.setWidth(autoShape.getAnchor2D().getWidth());
-		gr.setHeight(autoShape.getAnchor2D().getHeight());
-		gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
-
-		gr.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
+		setDefaultGraphicalProperties(gr, autoShape);
 
 		if (autoShape.getLineColor() != null) {
 			gr.setForeground(getDiagramFactory().makeForegroundStyle(autoShape.getLineColor(), (float) autoShape.getLineWidth(),
@@ -524,39 +617,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		return newShape;
 	}
 
-	private void setDiagramShapeShapeType(ShapeGraphicalRepresentation gr, AutoShape autoShape) {
-
-		try {
-			switch (autoShape.getShapeType()) {
-			case ShapeTypes.Chevron:
-				gr.setShapeType(ShapeType.CHEVRON);
-				break;
-			case ShapeTypes.Plus:
-				gr.setShapeType(ShapeType.PLUS);
-				break;
-			case ShapeTypes.Rectangle:
-				gr.setShapeType(ShapeType.RECTANGLE);
-				break;
-			case ShapeTypes.RoundRectangle:
-				gr.setShapeType(ShapeType.RECTANGLE);
-				((Rectangle) gr.getShapeSpecification()).setIsRounded(true);
-				((Rectangle) gr.getShapeSpecification()).setArcSize(20);
-				break;
-			case ShapeTypes.Star:
-				gr.setShapeType(ShapeType.STAR);
-				break;
-			case ShapeTypes.Ellipse:
-				gr.setShapeType(ShapeType.OVAL);
-				break;
-			case ShapeTypes.IsocelesTriangle:
-				gr.setShapeType(ShapeType.TRIANGLE);
-				break;
-			}
-		} catch (NullPointerException e) {
-
-		}
-	}
-
 	/**
 	 * A line is without start/end shapes
 	 * 
@@ -568,14 +628,14 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		DiagramShape sourceShape = getDiagramFactory().makeNewShape("", getDiagram());
 		DiagramShape targetShape = getDiagramFactory().makeNewShape("", getDiagram());
 		ShapeGraphicalRepresentation sourceShapeGR = sourceShape.getGraphicalRepresentation();
-		sourceShapeGR.setX(line.getAnchor2D().getMinX());
-		sourceShapeGR.setY(line.getAnchor2D().getMaxY());
+		sourceShapeGR.setX(line.getLogicalAnchor2D().getMinX());
+		sourceShapeGR.setY(line.getLogicalAnchor2D().getMaxY());
 		sourceShapeGR.setWidth(2);
 		sourceShapeGR.setHeight(2);
 		sourceShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
 		ShapeGraphicalRepresentation targetShapeGR = targetShape.getGraphicalRepresentation();
-		targetShapeGR.setX(line.getAnchor2D().getMaxX());
-		targetShapeGR.setY(line.getAnchor2D().getMinY());
+		targetShapeGR.setX(line.getLogicalAnchor2D().getMaxX());
+		targetShapeGR.setY(line.getLogicalAnchor2D().getMinY());
 		targetShapeGR.setWidth(2);
 		targetShapeGR.setHeight(2);
 		targetShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
@@ -605,14 +665,14 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		DiagramShape sourceShape = getDiagramFactory().makeNewShape("", getDiagram());
 		DiagramShape targetShape = getDiagramFactory().makeNewShape("", getDiagram());
 		ShapeGraphicalRepresentation sourceShapeGR = sourceShape.getGraphicalRepresentation();
-		sourceShapeGR.setX(poiConnector.getAnchor2D().getMinX());
-		sourceShapeGR.setY(poiConnector.getAnchor2D().getMaxY());
+		sourceShapeGR.setX(poiConnector.getLogicalAnchor2D().getMinX());
+		sourceShapeGR.setY(poiConnector.getLogicalAnchor2D().getMaxY());
 		sourceShapeGR.setWidth(2);
 		sourceShapeGR.setHeight(2);
 		sourceShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
 		ShapeGraphicalRepresentation targetShapeGR = targetShape.getGraphicalRepresentation();
-		targetShapeGR.setX(poiConnector.getAnchor2D().getMaxX());
-		targetShapeGR.setY(poiConnector.getAnchor2D().getMinY());
+		targetShapeGR.setX(poiConnector.getLogicalAnchor2D().getMaxX());
+		targetShapeGR.setY(poiConnector.getLogicalAnchor2D().getMinY());
 		targetShapeGR.setWidth(2);
 		targetShapeGR.setHeight(2);
 		targetShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
@@ -637,7 +697,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		for (DiagramShape diagramShape : possibleShapes.keySet()) {
 			Shape poiShape = possibleShapes.get(diagramShape);
 
-			if (poiConnector.getAnchor().intersects(poiShape.getAnchor())) {
+			if (poiConnector.getLogicalAnchor2D().intersects(poiShape.getAnchor())) {
 				if (sourceShape == null && targetShape == null) {
 					sourceShape = diagramShape;
 				} else if (sourceShape != null && targetShape == null) {
@@ -673,19 +733,13 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		DiagramShape newShape = getDiagramFactory().makeNewShape(textBox.getText(), getDiagram());
 
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
-		gr.setX(textBox.getAnchor2D().getX());
-		gr.setY(textBox.getAnchor2D().getY());
-		gr.setWidth(textBox.getAnchor2D().getWidth());
-		gr.setHeight(textBox.getAnchor2D().getHeight());
-		gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
-
+		setDiagramShapeShapeType(gr, textBox);
+		setDefaultGraphicalProperties(gr, textBox);
 		gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
-
 		gr.setBackground(getDiagramFactory().makeEmptyBackground());
 		gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
-
 		setTextProperties(gr, textBox);
-
+		gr.setLayer(2);
 		newShape.setGraphicalRepresentation(gr);
 
 		return newShape;
@@ -693,37 +747,40 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	private DiagramShape makePictureShape(Picture pictureShape) {
 
-		DiagramShape newShape = getDiagramFactory().makeNewShape(pictureShape.getPictureName(), getDiagram());
+		int width = (int) pictureShape.getLogicalAnchor2D().getWidth() < 0 ? 0 : (int) pictureShape.getLogicalAnchor2D().getWidth();
+		int height = (int) pictureShape.getLogicalAnchor2D().getHeight() < 0 ? 0 : (int) pictureShape.getLogicalAnchor2D().getHeight();
+		int x = (int) pictureShape.getLogicalAnchor2D().getX() < 0 ? 0 : (int) pictureShape.getLogicalAnchor2D().getX();
+		int y = (int) pictureShape.getLogicalAnchor2D().getY() < 0 ? 0 : (int) pictureShape.getLogicalAnchor2D().getY();
+		if (width * height < Integer.MAX_VALUE) {
+			DiagramShape newShape = getDiagramFactory().makeNewShape(pictureShape.getPictureName(), getDiagram());
 
-		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
+			ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 
-		gr.setX(pictureShape.getAnchor2D().getX());
-		gr.setY(pictureShape.getAnchor2D().getY());
-		gr.setWidth(pictureShape.getAnchor2D().getWidth());
-		gr.setHeight(pictureShape.getAnchor2D().getHeight());
-		// gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+			gr.setX(x);
+			gr.setY(y);
+			gr.setWidth(width);
+			gr.setHeight(height);
+			// gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+			Graphics2D graphics = image.createGraphics();
+			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+			graphics.translate(-x, -y);
+			graphics.clipRect(x, y, width, height);
+			// graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
 
-		BufferedImage image = new BufferedImage((int) pictureShape.getAnchor2D().getWidth(), (int) pictureShape.getAnchor2D().getHeight(),
-				BufferedImage.TYPE_INT_RGB);
-		Graphics2D graphics = image.createGraphics();
-		graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-		graphics.translate(-pictureShape.getAnchor2D().getX(), -pictureShape.getAnchor2D().getY());
-		graphics.clipRect((int) pictureShape.getAnchor2D().getX(), (int) pictureShape.getAnchor2D().getY(), (int) pictureShape
-				.getAnchor2D().getWidth(), (int) pictureShape.getAnchor2D().getHeight());
-		// graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
+			graphics.setPaint(Color.WHITE);
+			graphics.fillRect(x, y, width, height);
+			pictureShape.getPictureData().draw(graphics, pictureShape);
+			File imageFile = saveImageFile(image, getDiagramName() + getSlide().getTitle() + pictureShape.getShapeId());
+			gr.setBackground(getDiagramFactory().makeImageBackground(ResourceLocator.locateResource(imageFile.getAbsolutePath())));
+			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+			gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 
-		graphics.setPaint(Color.WHITE);
-		graphics.fillRect((int) pictureShape.getAnchor2D().getX(), (int) pictureShape.getAnchor2D().getY(), (int) pictureShape
-				.getAnchor2D().getWidth(), (int) pictureShape.getAnchor2D().getHeight());
-		pictureShape.getPictureData().draw(graphics, pictureShape);
-		File imageFile = saveImageFile(image, getDiagramName() + getSlide().getTitle() + pictureShape.getShapeId());
-		gr.setBackground(getDiagramFactory().makeImageBackground(ResourceLocator.locateResource(imageFile.getAbsolutePath())));
-		gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
-		gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
+			newShape.setGraphicalRepresentation(gr);
 
-		newShape.setGraphicalRepresentation(gr);
-
-		return newShape;
+			return newShape;
+		}
+		return null;
 	}
 
 	public File saveImageFile(BufferedImage image, String name) {
@@ -782,6 +839,15 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			return true;
 		}
 		return false;
+	}
+
+	private void setDefaultGraphicalProperties(ShapeGraphicalRepresentation returned, Shape shape) {
+		returned.setX(shape.getLogicalAnchor2D().getX());
+		returned.setY(shape.getLogicalAnchor2D().getY());
+		returned.setWidth(shape.getLogicalAnchor2D().getWidth());
+		returned.setHeight(shape.getLogicalAnchor2D().getHeight());
+		returned.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+		returned.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
 	}
 
 	private void setTextProperties(ShapeGraphicalRepresentation returned, TextShape textShape) {
@@ -867,6 +933,39 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 		returned.setLineWrap(true);
 
+	}
+
+	private void setDiagramShapeShapeType(ShapeGraphicalRepresentation gr, Shape shape) {
+
+		try {
+			switch (shape.getShapeType()) {
+			case ShapeTypes.Chevron:
+				gr.setShapeType(ShapeType.CHEVRON);
+				break;
+			case ShapeTypes.Plus:
+				gr.setShapeType(ShapeType.PLUS);
+				break;
+			case ShapeTypes.Rectangle:
+				gr.setShapeType(ShapeType.RECTANGLE);
+				break;
+			case ShapeTypes.RoundRectangle:
+				gr.setShapeType(ShapeType.RECTANGLE);
+				((Rectangle) gr.getShapeSpecification()).setIsRounded(true);
+				((Rectangle) gr.getShapeSpecification()).setArcSize(20);
+				break;
+			case ShapeTypes.Star:
+				gr.setShapeType(ShapeType.STAR);
+				break;
+			case ShapeTypes.Ellipse:
+				gr.setShapeType(ShapeType.OVAL);
+				break;
+			case ShapeTypes.IsocelesTriangle:
+				gr.setShapeType(ShapeType.TRIANGLE);
+				break;
+			}
+		} catch (NullPointerException e) {
+
+		}
 	}
 
 	// there is still an issue for connectors ends, even if we can find at least that there is specific ends(such as arrows) it seems that

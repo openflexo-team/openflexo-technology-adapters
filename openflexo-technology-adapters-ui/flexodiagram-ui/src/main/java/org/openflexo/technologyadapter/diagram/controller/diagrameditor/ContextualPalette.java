@@ -21,10 +21,16 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import static org.junit.Assert.assertTrue;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Logger;
+
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
@@ -36,6 +42,7 @@ import org.openflexo.foundation.utils.FlexoObjectReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
@@ -144,13 +151,21 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 
 		@Override
 		public boolean acceptDragging(DrawingTreeNode<?, ?> target) {
-			return getEditor() != null && target instanceof ContainerNode
-					&& (target.getDrawable() instanceof Diagram || target.getDrawable() instanceof DiagramShape);
+			return getEditor() != null
+					&& target instanceof ContainerNode
+					&& (target.getDrawable() instanceof Diagram || target.getDrawable() instanceof DiagramShape || target.getDrawable() instanceof FMLControlledDiagramElement);
 		}
 
 		@Override
 		public boolean elementDragged(DrawingTreeNode<?, ?> target, FGEPoint dropLocation) {
+			/*DiagramContainerElement<?> container = null;
 			if (target.getDrawable() instanceof DiagramContainerElement) {
+				container = (DiagramContainerElement<?>) target.getDrawable();
+			}
+			if (target.getDrawable() instanceof FMLControlledDiagramElement) {
+				container = (DiagramContainerElement<?>) ((FMLControlledDiagramElement<?, ?>) target.getDrawable()).getDiagramElement();
+			}*/
+			if (target != null) {
 
 				if (getEditor() instanceof FMLControlledDiagramEditor) {
 					return handleFMLControlledDrop(target, diagramPaletteElement, dropLocation, (FMLControlledDiagramEditor) getEditor());
@@ -244,26 +259,79 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 	public boolean handleFMLControlledDrop(DrawingTreeNode<?, ?> target, DiagramPaletteElement paletteElement, FGEPoint dropLocation,
 			FMLControlledDiagramEditor editor) {
 
-		DiagramContainerElement<?> rootContainer = (DiagramContainerElement<?>) target.getDrawable();
+		DiagramContainerElement<?> container = null;
+		if (target.getDrawable() instanceof DiagramContainerElement) {
+			container = (DiagramContainerElement<?>) target.getDrawable();
+		}
+		if (target.getDrawable() instanceof FMLControlledDiagramElement) {
+			container = (DiagramContainerElement<?>) ((FMLControlledDiagramElement<?, ?>) target.getDrawable()).getDiagramElement();
+		}
+
 		VirtualModelInstance vmi = editor.getVirtualModelInstance();
 		TypedDiagramModelSlot ms = FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(vmi.getVirtualModel());
-		System.out.println("ms=" + ms);
-		System.out.println("bindings=" + ms.getPaletteElementBindings());
-		FMLDiagramPaletteElementBinding binding = ms.getPaletteElementBinding(paletteElement);
-		System.out.println("binding=" + binding);
-		DropScheme dropScheme = binding.getDropScheme();
-		System.out.println("dropScheme=" + dropScheme);
 
-		DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(vmi, null, editor.getFlexoController().getEditor());
-		action.setDropScheme(dropScheme);
-		action.setParent(rootContainer);
-		action.setPaletteElement(paletteElement);
-		action.setDropLocation(dropLocation);
+		ArrayList<DropScheme> availableDropSchemes = new ArrayList<DropScheme>();
+		// TODO filter according to the target
+		for (FMLDiagramPaletteElementBinding fmlDiagramPaletteElementBindings : ms.getPaletteElementBindings(paletteElement)) {
+			// if (fmlDiagramPaletteElementBindings.getDropScheme().getTargetFlexoConcept()
+			// .equalsObject(targetFlexoConceptInstance.getFlexoConcept())) {
+			availableDropSchemes.add(fmlDiagramPaletteElementBindings.getDropScheme());
+			// }
+		}
+		if (availableDropSchemes.size() > 1) {
+			JPopupMenu popup = new JPopupMenu();
+			for (final DropScheme dropScheme : availableDropSchemes) {
+				JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey(dropScheme.getLabel() != null ? dropScheme.getLabel()
+						: dropScheme.getName()));
+				menuItem.addActionListener(new DrawingShapeActionListener(editor, dropScheme, container, paletteElement, dropLocation));
+				popup.add(menuItem);
+			}
+			popup.show(editor.getDrawingView(), (int) dropLocation.x, (int) dropLocation.y);
+		} else {
+			DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(editor.getVirtualModelInstance(), null, editor
+					.getFlexoController().getEditor());
+			action.setDropScheme(availableDropSchemes.get(0));
+			action.setParent(container);
+			action.setPaletteElement(paletteElement);
+			action.setDropLocation(dropLocation);
 
-		action.doAction();
-		assertTrue(action.hasActionExecutionSucceeded());
+			action.doAction();
+			assertTrue(action.hasActionExecutionSucceeded());
+		}
 
 		return false;
+
+	}
+
+	public class DrawingShapeActionListener implements ActionListener {
+
+		private final FMLControlledDiagramEditor controller;
+		private final DropScheme dropScheme;
+		private final DiagramContainerElement<?> rootContainer;
+		private final DiagramPaletteElement paletteElement;
+		private final FGEPoint dropLocation;
+
+		DrawingShapeActionListener(FMLControlledDiagramEditor controller, DropScheme dropScheme, DiagramContainerElement<?> rootContainer,
+				DiagramPaletteElement paletteElement, FGEPoint dropLocation) {
+			this.controller = controller;
+			this.dropScheme = dropScheme;
+			this.rootContainer = rootContainer;
+			this.paletteElement = paletteElement;
+			this.dropLocation = dropLocation;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(controller.getVirtualModelInstance(), null, controller
+					.getFlexoController().getEditor());
+			action.setDropScheme(dropScheme);
+			action.setParent(rootContainer);
+			action.setPaletteElement(paletteElement);
+			action.setDropLocation(dropLocation);
+
+			action.doAction();
+			assertTrue(action.hasActionExecutionSucceeded());
+		}
 
 	}
 }

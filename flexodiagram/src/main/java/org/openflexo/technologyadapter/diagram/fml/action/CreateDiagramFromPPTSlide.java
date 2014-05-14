@@ -33,6 +33,7 @@ import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
 public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide<CreateDiagramFromPPTSlide, RepositoryFolder> {
@@ -53,7 +54,10 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 
 		@Override
 		public boolean isVisibleForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
-			return object != null;
+			if (object != null && object.getResourceRepository() instanceof DiagramRepository) {
+				return true;
+			}
+			return false;
 		}
 
 		@Override
@@ -76,7 +80,7 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 			InvalidFileNameException {
 		logger.info("Add diagram from ppt slide");
 
-		if(getDiagram()==null){
+		if (getDiagram() == null) {
 			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
 					DiagramTechnologyAdapter.class);
 
@@ -84,8 +88,8 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 			getFocusedObject().addToResources(getDiagramResource());
 			getDiagramResource().save(null);
 		}
-		
-		if (getSlide() != null){
+
+		if (getSlide() != null) {
 			convertSlideToDiagram(getSlide());
 		} else {
 			System.out.println("Error: no Slide");
@@ -101,6 +105,7 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		return getFocusedObject().getResourceRepository().generateURI(getDiagramName());
 	}
 
+	@Override
 	public File getDiagramFile() {
 		return getDefaultDiagramFile();
 	}

@@ -158,16 +158,19 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	private void computeRealNumberOfShapesAndConnectors(DiagramContainerElement parentShape) {
-		List<DiagramShape> shapes = parentShape.getShapes();
-		for (DiagramShape shape : shapes) {
-			computeRealNumberOfShapesAndConnectors(shape);
-		}
-		List<DiagramConnector> connectors = parentShape.getConnectors();
-		for (DiagramConnector connector : connectors) {
+		if (parentShape != null) {
+
+			List<DiagramShape> shapes = parentShape.getShapes();
+			for (DiagramShape shape : shapes) {
+				computeRealNumberOfShapesAndConnectors(shape);
+			}
+			List<DiagramConnector> connectors = parentShape.getConnectors();
+			for (DiagramConnector connector : connectors) {
+				realNumberOfShapesAndConnectors++;
+			}
 			realNumberOfShapesAndConnectors++;
+			;
 		}
-		realNumberOfShapesAndConnectors++;
-		;
 	}
 
 	private boolean isConnector(int shapeType) {
