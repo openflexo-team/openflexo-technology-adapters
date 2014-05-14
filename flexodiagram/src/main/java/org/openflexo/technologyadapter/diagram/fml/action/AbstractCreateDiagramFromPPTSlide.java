@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
@@ -85,12 +86,15 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
+import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreateDiagramFromPPTSlide<A, T>, T extends FlexoObject> extends
 		FlexoAction<A, T, ViewPointObject> {
+
+	private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
 	public DrawingGraphicalRepresentation graphicalRepresentation;
 	private String diagramName;
@@ -370,12 +374,18 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	public ImageIcon getScreenShot(Slide s, double size) {
 		if (s != null && s.getSlideShow() != null) {
-			Dimension d = s.getSlideShow().getPageSize();
-			BufferedImage i = new BufferedImage((int) size, (int) (size * d.height / d.width), BufferedImage.TYPE_INT_RGB);
-			Graphics2D graphics = i.createGraphics();
-			graphics.transform(AffineTransform.getScaleInstance(size / d.width, size / d.width));
-			s.draw(graphics);
-			return new ImageIcon(i);
+			try {
+				Dimension d = s.getSlideShow().getPageSize();
+				BufferedImage i = new BufferedImage((int) size, (int) (size * d.height / d.width), BufferedImage.TYPE_INT_RGB);
+				Graphics2D graphics = i.createGraphics();
+				graphics.transform(AffineTransform.getScaleInstance(size / d.width, size / d.width));
+				s.draw(graphics);
+				return new ImageIcon(i);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				logger.warning("Some fonts are cannot be previewed (Calibri, Gothic MS)");
+			} catch (Exception e) {
+				logger.warning("Unable to create a preview for the slide " + s.getSlideNumber());
+			}
 		}
 		return null;
 	}
@@ -415,7 +425,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		for (Shape shape : poiShapes) {
 			transformPowerpointConnector(shape);
 		}
-
 	}
 
 	private DiagramConnector transformPowerpointConnector(Shape shape) {
@@ -730,7 +739,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		gr.setBackground(getDiagramFactory().makeEmptyBackground());
 		gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 		setTextProperties(gr, textBox);
-
+		gr.setLayer(2);
 		newShape.setGraphicalRepresentation(gr);
 
 		return newShape;
