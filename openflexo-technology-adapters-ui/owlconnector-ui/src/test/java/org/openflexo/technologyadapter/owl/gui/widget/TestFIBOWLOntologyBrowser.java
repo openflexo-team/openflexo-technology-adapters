@@ -11,6 +11,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
@@ -21,6 +22,8 @@ import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.gui.FIBOWLOntologyBrowser;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test the structural and behavioural features of FIBOntologyBrowser
@@ -28,11 +31,12 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
  * @author sylvain
  * 
  */
+@RunWith(OrderedRunner.class)
 public class TestFIBOWLOntologyBrowser extends OpenflexoTestCaseWithGUI {
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static GraphicalContextDelegate	gcDelegate;
 
-	private static OWLOntologyResource ontologyResource;
+	private static OWLOntologyResource		ontologyResource;
 
 	@BeforeClass
 	public static void setupClass() {
@@ -42,6 +46,7 @@ public class TestFIBOWLOntologyBrowser extends OpenflexoTestCaseWithGUI {
 	}
 
 	@Test
+	@TestOrder(1)
 	public void test1RetrieveOntology() {
 
 		OWLTechnologyAdapter owlTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
@@ -79,6 +84,7 @@ public class TestFIBOWLOntologyBrowser extends OpenflexoTestCaseWithGUI {
 	}
 
 	@Test
+	@TestOrder(2)
 	public void test2InstanciateWidget() {
 
 		FIBOWLOntologyBrowser browser = new FIBOWLOntologyBrowser(ontologyResource.getLoadedResourceData());
