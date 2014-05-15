@@ -227,13 +227,11 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	}
 
 	protected JTabbedPane makePaletteView() {
-		logger.info("Building PaletteView with " + contextualPalettes);
+		// logger.info("Building PaletteView with " + contextualPalettes);
 
 		paletteView = new JTabbedPane();
 		orderedPalettes = new Vector<DiagramPalette>(contextualPalettes.keySet());
 		Collections.sort(orderedPalettes);
-
-		System.out.println("orderedPalettes=" + orderedPalettes);
 
 		for (DiagramPalette palette : orderedPalettes) {
 			paletteView.add(palette.getName(), contextualPalettes.get(palette).getPaletteViewInScrollPane());

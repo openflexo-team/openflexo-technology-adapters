@@ -1,5 +1,6 @@
 /*
  * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2012-2013 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -20,13 +21,21 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.foundation.viewpoint.NavigationScheme;
-import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
+import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 
-@FIBPanel("Fib/NavigationSchemePanel.fib")
 @ModelEntity
 @XMLElement
+@ImplementationClass(DiagramNavigationScheme.DiagramNavigationSchemeImpl.class)
 public interface DiagramNavigationScheme extends NavigationScheme, DiagramEditionScheme {
+
+	public static abstract class DiagramNavigationSchemeImpl extends NavigationSchemeImpl implements DiagramNavigationScheme {
+
+		public DiagramNavigationSchemeImpl() {
+			super();
+		}
+
+	}
 
 }

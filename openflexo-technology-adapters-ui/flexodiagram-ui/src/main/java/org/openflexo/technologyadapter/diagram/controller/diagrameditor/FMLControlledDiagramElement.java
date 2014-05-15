@@ -107,7 +107,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 		// TODO: to it generically for all GRSpecs
 		@Override
 		public String getLabel() {
-			if (getRole().getLabel() != null) {
+			if (getRole() != null && getRole().getLabel() != null) {
 				try {
 					return (String) getRole().getLabel().getBindingValue(getFlexoConceptInstance());
 				} catch (TypeMismatchException e) {

@@ -139,37 +139,42 @@ public abstract class AbstractDiagramDrawing extends DrawingImpl<Diagram> implem
 
 	protected ShapeGraphicalRepresentation retrieveGraphicalRepresentation(DiagramShape shape, DiagramFactory factory) {
 
-		ShapeGraphicalRepresentation returned = null;
-		if (shape.getGraphicalRepresentation() != null) {
-			shape.getGraphicalRepresentation().setFactory(factory);
-			returned = shape.getGraphicalRepresentation();
-		} else {
-			returned = factory.makeShapeGraphicalRepresentation();
-			shape.setGraphicalRepresentation(returned);
+		if (shape != null) {
+			ShapeGraphicalRepresentation returned = null;
+			if (shape.getGraphicalRepresentation() != null) {
+				shape.getGraphicalRepresentation().setFactory(factory);
+				returned = shape.getGraphicalRepresentation();
+			} else {
+				returned = factory.makeShapeGraphicalRepresentation();
+				shape.setGraphicalRepresentation(returned);
+			}
+			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext()));
+			if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+				returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
+			}
+			returned.addToMouseDragControls(new DrawEdgeControl(factory));
+			return returned;
 		}
-		returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext()));
-		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
-			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
-		}
-		returned.addToMouseDragControls(new DrawEdgeControl(factory));
-
-		return returned;
+		return null;
 	}
 
 	protected ConnectorGraphicalRepresentation retrieveGraphicalRepresentation(DiagramConnector connector, DiagramFactory factory) {
-		ConnectorGraphicalRepresentation returned = null;
-		if (connector.getGraphicalRepresentation() != null) {
-			connector.getGraphicalRepresentation().setFactory(factory);
-			returned = connector.getGraphicalRepresentation();
-		} else {
-			returned = factory.makeConnectorGraphicalRepresentation();
-			connector.setGraphicalRepresentation(returned);
+		if (connector != null) {
+			ConnectorGraphicalRepresentation returned = null;
+			if (connector.getGraphicalRepresentation() != null) {
+				connector.getGraphicalRepresentation().setFactory(factory);
+				returned = connector.getGraphicalRepresentation();
+			} else {
+				returned = factory.makeConnectorGraphicalRepresentation();
+				connector.setGraphicalRepresentation(returned);
+			}
+			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext()));
+			if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+				returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
+			}
+			return returned;
 		}
-		returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext()));
-		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
-			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
-		}
-		return returned;
+		return null;
 	}
 
 }
