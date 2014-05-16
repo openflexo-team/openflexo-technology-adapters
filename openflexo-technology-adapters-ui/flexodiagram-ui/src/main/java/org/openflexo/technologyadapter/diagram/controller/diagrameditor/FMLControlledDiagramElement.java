@@ -20,7 +20,10 @@
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.openflexo.antar.binding.BindingValueChangeListener;
 import org.openflexo.antar.expr.NotSettableContextException;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
@@ -32,6 +35,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementSpecification;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 
@@ -102,14 +106,50 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 
 	public void setLabel(String aName);
 
-	public static abstract class FMLControlledDiagramElementImpl implements FMLControlledDiagramElement {
+	public static abstract class FMLControlledDiagramElementImpl<E extends DiagramElement<GR>, GR extends GraphicalRepresentation>
+			implements FMLControlledDiagramElement<E, GR> {
 
-		// TODO: to it generically for all GRSpecs
+		private final Map<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>> listeners = new HashMap<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>>();
+
+		@Override
+		public void setRole(GraphicalElementRole<E, GR> aRole) {
+			if (aRole != getRole()) {
+				performSuperSetter(ROLE_KEY, aRole);
+				for (GraphicalElementSpecification<?, GR> grSpec : aRole.getGrSpecifications()) {
+					listenToGRSpecification(grSpec);
+				}
+
+			}
+		}
+
+		private <T> void listenToGRSpecification(final GraphicalElementSpecification<T, GR> grSpec) {
+			BindingValueChangeListener<T> l = new BindingValueChangeListener<T>(grSpec.getValue(), getFlexoConceptInstance()) {
+				@Override
+				public void bindingValueChanged(Object source, T newValue) {
+					System.out.println("value changed for " + grSpec + " newValue=" + newValue);
+					getPropertyChangeSupport().firePropertyChange(grSpec.getFeatureName(), null, newValue);
+				}
+			};
+			listeners.put(grSpec, l);
+
+		}
+
+		@Override
+		public boolean delete(Object... context) {
+			for (BindingValueChangeListener<?> l : listeners.values()) {
+				l.stopObserving();
+				l.delete();
+			}
+			listeners.clear();
+			return false;
+		}
+
+		// TODO: do it generically for all GRSpecs
 		@Override
 		public String getLabel() {
 			if (getRole() != null && getRole().getLabel() != null) {
 				try {
-					return (String) getRole().getLabel().getBindingValue(getFlexoConceptInstance());
+					return getRole().getLabel().getBindingValue(getFlexoConceptInstance());
 				} catch (TypeMismatchException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
