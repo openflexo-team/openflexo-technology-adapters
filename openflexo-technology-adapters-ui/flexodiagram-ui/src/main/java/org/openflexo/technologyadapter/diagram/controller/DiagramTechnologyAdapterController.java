@@ -265,6 +265,10 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		return inspectors;
 	}
 
+	public JDianaScaleSelector getScaleSelector() {
+		return scaleSelector;
+	}
+
 	/**
 	 * Return icon representing supplied ontology object
 	 * 

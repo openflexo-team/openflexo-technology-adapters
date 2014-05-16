@@ -114,11 +114,17 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 		@Override
 		public void setRole(GraphicalElementRole<E, GR> aRole) {
 			if (aRole != getRole()) {
-				performSuperSetter(ROLE_KEY, aRole);
-				for (GraphicalElementSpecification<?, GR> grSpec : aRole.getGrSpecifications()) {
-					listenToGRSpecification(grSpec);
+				for (BindingValueChangeListener<?> l : listeners.values()) {
+					l.stopObserving();
+					l.delete();
 				}
-
+				listeners.clear();
+				performSuperSetter(ROLE_KEY, aRole);
+				if (aRole != null) {
+					for (GraphicalElementSpecification<?, GR> grSpec : aRole.getGrSpecifications()) {
+						listenToGRSpecification(grSpec);
+					}
+				}
 			}
 		}
 
