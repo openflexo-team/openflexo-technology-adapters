@@ -58,10 +58,10 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 
 	@Getter(value = VALUE_KEY)
 	@XMLAttribute
-	public DataBinding<String> getValue();
+	public DataBinding<T> getValue();
 
 	@Setter(VALUE_KEY)
-	public void setValue(DataBinding<String> value);
+	public void setValue(DataBinding<T> value);
 
 	@Getter(value = READ_ONLY_KEY, defaultValue = "false")
 	@XMLAttribute
@@ -87,7 +87,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		private GraphicalElementRole<?, GR> patternRole;
 		private GraphicalFeature<T, GR> feature;
 		private String featureName;
-		private DataBinding<String> value;
+		private DataBinding<T> value;
 		private boolean readOnly;
 		private boolean mandatory;
 
@@ -123,6 +123,9 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		@Override
 		public void setFeature(GraphicalFeature<T, GR> feature) {
 			this.feature = feature;
+			if (feature != null && value != null) {
+				value.setDeclaredType(feature.getType());
+			}
 		}
 
 		@Override
@@ -139,9 +142,10 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		}
 
 		@Override
-		public DataBinding<String> getValue() {
+		public DataBinding<T> getValue() {
 			if (value == null) {
-				value = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET_SET);
+				value = new DataBinding<T>(this, (getFeature() != null ? getFeature().getType() : Object.class),
+						DataBinding.BindingDefinitionType.GET_SET);
 				value.setBindingName(featureName);
 				value.setMandatory(mandatory);
 				value.setBindingDefinitionType(getReadOnly() ? BindingDefinitionType.GET : BindingDefinitionType.GET_SET);
@@ -150,7 +154,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		}
 
 		@Override
-		public void setValue(DataBinding<String> value) {
+		public void setValue(DataBinding<T> value) {
 			if (value != null) {
 				value.setOwner(this);
 				value.setDeclaredType(String.class);
@@ -235,8 +239,7 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 
 			try {
 				DiagramElement<GR> diagramElement = epi.getFlexoActor(patternRole);
-				getFeature().applyToGraphicalRepresentation(diagramElement.getGraphicalRepresentation(),
-						(T) getValue().getBindingValue(epi));
+				getFeature().applyToGraphicalRepresentation(diagramElement.getGraphicalRepresentation(), getValue().getBindingValue(epi));
 				// getFeature().applyToGraphicalRepresentation(gr, (T) getValue().getBindingValue(element.getFlexoConceptInstance()));
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
