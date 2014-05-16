@@ -294,7 +294,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			action.setDropLocation(dropLocation);
 
 			action.doAction();
-			assertTrue(action.hasActionExecutionSucceeded());
+			return action.hasActionExecutionSucceeded();
 		}
 
 		return false;
