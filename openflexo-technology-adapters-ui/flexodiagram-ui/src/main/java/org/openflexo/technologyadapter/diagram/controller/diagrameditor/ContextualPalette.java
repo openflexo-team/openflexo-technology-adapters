@@ -38,8 +38,6 @@ import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.fge.geom.FGEPoint;
-import org.openflexo.foundation.utils.FlexoObjectReference;
-import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.localization.FlexoLocalization;
@@ -124,20 +122,20 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			if (dropScheme.isTopTarget() && target instanceof DrawingGraphicalRepresentation) {
 				returned.add(dropScheme);
 			}
-			if (target.getDrawable() instanceof DiagramShape) {
+			/*if (target.getDrawable() instanceof DiagramShape) {
 				DiagramShape targetShape = (DiagramShape) target.getDrawable();
 				for (FlexoObjectReference<FlexoConceptInstance> ref : targetShape.getFlexoConceptReferences()) {
 					if (dropScheme.isValidTarget(ref.getObject().getFlexoConcept(), ref.getObject().getRoleForActor(targetShape))) {
 						returned.add(dropScheme);
 					}
 				}
-			}
+			}*/
 		}
 		return returned;
 	}
 
 	private ContextualPaletteElement makePaletteElement(final DiagramPaletteElement element) {
-		System.out.println("******* makePaletteElement with " + element);
+		// System.out.println("******* makePaletteElement with " + element);
 		return new ContextualPaletteElement(element);
 	}
 
