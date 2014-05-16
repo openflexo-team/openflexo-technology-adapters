@@ -284,7 +284,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			parent.addToConnectors(newConnector);
 
 			// Register reference
-			newConnector.registerFlexoConceptReference(action.getFlexoConceptInstance());
+			// newConnector.registerFlexoConceptReference(action.getFlexoConceptInstance());
 
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("Added connector " + newConnector + " under " + parent);
