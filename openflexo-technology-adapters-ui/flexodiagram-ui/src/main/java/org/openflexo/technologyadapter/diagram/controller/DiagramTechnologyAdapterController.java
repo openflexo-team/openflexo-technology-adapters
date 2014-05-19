@@ -463,6 +463,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	public ModuleView<VirtualModelInstance> createVirtualModelInstanceModuleViewForSpecificNature(VirtualModelInstance vmInstance,
 			VirtualModelInstanceNature nature, FlexoController controller, FlexoPerspective perspective) {
 		if (vmInstance.hasNature(nature) && nature == FMLControlledDiagramVirtualModelInstanceNature.INSTANCE) {
+			System.out.println("----------> Hop, je recree un editor");
 			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor(vmInstance, false, controller, swingToolFactory);
 			return new FMLControlledDiagramModuleView(editor, perspective);
 		}

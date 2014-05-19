@@ -78,6 +78,7 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 	@Override
 	public void deleteModuleView() {
 		getRepresentedObject().getPropertyChangeSupport().removePropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
+		getEditor().getFlexoController().removeModuleView(this);
 		getEditor().delete();
 	}
 
@@ -150,4 +151,5 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 			deleteModuleView();
 		}
 	}
+
 }

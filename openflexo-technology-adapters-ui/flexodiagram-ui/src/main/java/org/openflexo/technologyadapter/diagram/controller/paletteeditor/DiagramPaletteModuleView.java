@@ -62,6 +62,9 @@ public class DiagramPaletteModuleView extends JPanel implements ModuleView<Diagr
 	@Override
 	public void deleteModuleView() {
 		getRepresentedObject().getPropertyChangeSupport().removePropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
+		if (getController().getFlexoController() != null) {
+			getController().getFlexoController().removeModuleView(this);
+		}
 		getController().delete();
 	}
 
