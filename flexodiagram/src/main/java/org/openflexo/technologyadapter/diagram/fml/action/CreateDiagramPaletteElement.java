@@ -33,20 +33,20 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
 
-public class AddDiagramPaletteElement extends FlexoAction<AddDiagramPaletteElement, DiagramPalette, ViewPointObject> {
+public class CreateDiagramPaletteElement extends FlexoAction<CreateDiagramPaletteElement, DiagramPalette, ViewPointObject> {
 
-	private static final Logger logger = Logger.getLogger(AddDiagramPaletteElement.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(CreateDiagramPaletteElement.class.getPackage().getName());
 
-	public static FlexoActionType<AddDiagramPaletteElement, DiagramPalette, ViewPointObject> actionType = new FlexoActionType<AddDiagramPaletteElement, DiagramPalette, ViewPointObject>(
+	public static FlexoActionType<CreateDiagramPaletteElement, DiagramPalette, ViewPointObject> actionType = new FlexoActionType<CreateDiagramPaletteElement, DiagramPalette, ViewPointObject>(
 			"add_new_palette_element", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public AddDiagramPaletteElement makeNewAction(DiagramPalette focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateDiagramPaletteElement makeNewAction(DiagramPalette focusedObject, Vector<ViewPointObject> globalSelection,
 				FlexoEditor editor) {
-			return new AddDiagramPaletteElement(focusedObject, globalSelection, editor);
+			return new CreateDiagramPaletteElement(focusedObject, globalSelection, editor);
 		}
 
 		@Override
@@ -62,14 +62,14 @@ public class AddDiagramPaletteElement extends FlexoAction<AddDiagramPaletteEleme
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(AddDiagramPaletteElement.actionType, DiagramPalette.class);
+		FlexoObjectImpl.addActionForClass(CreateDiagramPaletteElement.actionType, DiagramPalette.class);
 	}
 
 	private String _newElementName;
 	private DiagramPaletteElement _newElement;
 	private Object _graphicalRepresentation;
 
-	AddDiagramPaletteElement(DiagramPalette focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateDiagramPaletteElement(DiagramPalette focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

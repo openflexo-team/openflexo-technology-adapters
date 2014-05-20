@@ -45,15 +45,11 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramEditor.class.getPackage().getName());
 
-	private final VirtualModelInstance virtualModelInstance;
-
 	private final FMLControlledDiagramPasteHandler pasteHandler;
 
 	public FMLControlledDiagramEditor(VirtualModelInstance vmInstance, boolean readOnly, FlexoController controller,
 			SwingToolFactory swingToolFactory) {
 		super(new FMLControlledDiagramDrawing(vmInstance, readOnly), readOnly, controller, swingToolFactory);
-		this.virtualModelInstance = vmInstance;
-
 		// We have to switch properly between those paste handlers
 		// AND do not forget to destroy them
 		pasteHandler = new FMLControlledDiagramPasteHandler(vmInstance, this);
@@ -70,7 +66,7 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 	}
 
 	public VirtualModelInstance getVirtualModelInstance() {
-		return virtualModelInstance;
+		return getDrawing().getVirtualModelInstance();
 	}
 
 	@Override

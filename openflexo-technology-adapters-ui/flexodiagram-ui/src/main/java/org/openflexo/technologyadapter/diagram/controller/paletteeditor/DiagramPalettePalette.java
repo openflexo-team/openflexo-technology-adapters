@@ -37,7 +37,7 @@ import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.CommonPalette;
-import org.openflexo.technologyadapter.diagram.fml.action.AddDiagramPaletteElement;
+import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 
@@ -170,7 +170,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 				shapeGR.setX(dropLocation.x);
 				shapeGR.setY(dropLocation.y);
 
-				AddDiagramPaletteElement action = AddDiagramPaletteElement.actionType.makeNewAction(container, null, editor
+				CreateDiagramPaletteElement action = CreateDiagramPaletteElement.actionType.makeNewAction(container, null, editor
 						.getFlexoController().getEditor());
 				action.setGraphicalRepresentation(shapeGR);
 
@@ -229,7 +229,7 @@ public class DiagramPalettePalette extends DrawingPalette {
 					shapeGR.setLayer(containerGR.getLayer() + 1);
 					shapeGR.setAllowToLeaveBounds(true);
 
-					AddDiagramPaletteElement action = AddDiagramPaletteElement.actionType.makeNewAction(container, null, _editor);
+					CreateDiagramPaletteElement action = CreateDiagramPaletteElement.actionType.makeNewAction(container, null, _editor);
 					action.setGraphicalRepresentation(shapeGR);
 
 					action.doAction();

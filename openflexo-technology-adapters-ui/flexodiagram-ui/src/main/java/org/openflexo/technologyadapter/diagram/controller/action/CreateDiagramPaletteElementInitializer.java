@@ -31,7 +31,7 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.technologyadapter.diagram.fml.action.AddDiagramPaletteElement;
+import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
@@ -40,20 +40,20 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class AddDiagramPaletteElementInitializer extends ActionInitializer<AddDiagramPaletteElement, DiagramPalette, ViewPointObject> {
+public class CreateDiagramPaletteElementInitializer extends ActionInitializer<CreateDiagramPaletteElement, DiagramPalette, ViewPointObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
-	public AddDiagramPaletteElementInitializer(ControllerActionInitializer actionInitializer) {
-		super(AddDiagramPaletteElement.actionType, actionInitializer);
+	public CreateDiagramPaletteElementInitializer(ControllerActionInitializer actionInitializer) {
+		super(CreateDiagramPaletteElement.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<AddDiagramPaletteElement> getDefaultInitializer() {
-		return new FlexoActionInitializer<AddDiagramPaletteElement>() {
+	protected FlexoActionInitializer<CreateDiagramPaletteElement> getDefaultInitializer() {
+		return new FlexoActionInitializer<CreateDiagramPaletteElement>() {
 			@Override
-			public boolean run(EventObject e, AddDiagramPaletteElement action) {
+			public boolean run(EventObject e, CreateDiagramPaletteElement action) {
 				/*if (action.getNewElementName() != null && (action.getFocusedObject() != null))
 					return true;*/
 
@@ -66,7 +66,7 @@ public class AddDiagramPaletteElementInitializer extends ActionInitializer<AddDi
 		};
 	}
 
-	protected ShapeGraphicalRepresentation makePaletteElementGraphicalRepresentation(ShapeType st, AddDiagramPaletteElement action) {
+	protected ShapeGraphicalRepresentation makePaletteElementGraphicalRepresentation(ShapeType st, CreateDiagramPaletteElement action) {
 		DiagramPaletteFactory factory = ((DiagramPaletteResource) action.getFocusedObject().getResource()).getFactory();
 
 		ShapeGraphicalRepresentation gr = factory.makeShapeGraphicalRepresentation(st);
@@ -85,10 +85,10 @@ public class AddDiagramPaletteElementInitializer extends ActionInitializer<AddDi
 	}
 
 	@Override
-	protected FlexoActionFinalizer<AddDiagramPaletteElement> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<AddDiagramPaletteElement>() {
+	protected FlexoActionFinalizer<CreateDiagramPaletteElement> getDefaultFinalizer() {
+		return new FlexoActionFinalizer<CreateDiagramPaletteElement>() {
 			@Override
-			public boolean run(EventObject e, AddDiagramPaletteElement action) {
+			public boolean run(EventObject e, CreateDiagramPaletteElement action) {
 				getController().getSelectionManager().setSelectedObject(action.getNewElement());
 				return true;
 			}

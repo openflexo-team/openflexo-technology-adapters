@@ -66,7 +66,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		this.diagramPalette = diagramPalette;
 
 		for (DiagramPaletteElement element : diagramPalette.getElements()) {
-			addElement(makePaletteElement(element));
+			addElement(makePaletteElement(element, editor));
 		}
 
 		diagramPalette.getPropertyChangeSupport().addPropertyChangeListener(this);
@@ -87,7 +87,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			if (evt.getPropertyName().equals(DiagramPalette.PALETTE_ELEMENTS_KEY)) {
 				if (evt.getNewValue() instanceof DiagramPaletteElement) {
 					// Adding of a new DiagramPaletteElement
-					ContextualPaletteElement e = makePaletteElement((DiagramPaletteElement) evt.getNewValue());
+					ContextualPaletteElement e = makePaletteElement((DiagramPaletteElement) evt.getNewValue(), getEditor());
 					addElement(e);
 					// e.getGraphicalRepresentation().notifyObjectHierarchyHasBeenUpdated();
 					// DrawingView<PaletteDrawing> oldPaletteView = getPaletteView();
@@ -134,7 +134,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		return returned;
 	}
 
-	private ContextualPaletteElement makePaletteElement(final DiagramPaletteElement element) {
+	protected ContextualPaletteElement makePaletteElement(final DiagramPaletteElement element, DiagramEditor editor) {
 		// System.out.println("******* makePaletteElement with " + element);
 		return new ContextualPaletteElement(element);
 	}
