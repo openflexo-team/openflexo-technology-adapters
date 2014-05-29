@@ -40,8 +40,13 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
+import org.openflexo.xml.IXMLIndividual;
+import org.openflexo.xml.IXMLMetaModel;
+import org.openflexo.xml.IXMLModel;
+import org.openflexo.xml.IXMLType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 
 /**
  * @author xtof

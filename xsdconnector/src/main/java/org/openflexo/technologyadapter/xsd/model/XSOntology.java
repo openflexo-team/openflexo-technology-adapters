@@ -45,14 +45,15 @@ import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.OntologyUtils;
 import org.openflexo.foundation.ontology.W3URIDefinitions;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.technologyadapter.xml.model.IXMLType;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDDataType;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntDataProperty;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntObjectProperty;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
+import org.openflexo.xml.IXMLType;
 import org.w3c.dom.Document;
+
 
 import com.sun.xml.xsom.XSSimpleType;
 

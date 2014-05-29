@@ -26,11 +26,12 @@ import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
-import org.openflexo.technologyadapter.xml.model.IXMLIndividual;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.model.XSOntIndividual;
 import org.openflexo.technologyadapter.xsd.model.XSOntology;
 import org.openflexo.toolbox.StringUtils;
+import org.openflexo.xml.IXMLIndividual;
+
 
 import com.sun.xml.xsom.XSAttributeUse;
 

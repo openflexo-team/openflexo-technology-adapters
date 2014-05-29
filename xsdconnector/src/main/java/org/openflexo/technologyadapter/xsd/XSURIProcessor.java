@@ -41,7 +41,6 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLURIProcessor;
-import org.openflexo.technologyadapter.xml.model.IXMLType;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
@@ -51,6 +50,8 @@ import org.openflexo.technologyadapter.xsd.model.XSOntIndividual;
 import org.openflexo.technologyadapter.xsd.model.XSOntology;
 import org.openflexo.technologyadapter.xsd.model.XSPropertyValue;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
+import org.openflexo.xml.IXMLType;
+
 
 /* Correct processing of XML Objects URIs needs to add an internal class to store
  * for each XSOntClass wich are the XML Elements (attributes or CDATA, or...) that will be 

@@ -36,15 +36,16 @@ import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.OntologyUtils;
-import org.openflexo.technologyadapter.xml.model.IXMLAttribute;
-import org.openflexo.technologyadapter.xml.model.IXMLIndividual;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntDataProperty;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntObjectProperty;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
+import org.openflexo.xml.IXMLAttribute;
+import org.openflexo.xml.IXMLIndividual;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 
 public class XSOntIndividual extends AbstractXSOntConcept implements IFlexoOntologyIndividual<XSDTechnologyAdapter>,
 		XSOntologyURIDefinitions, IXMLIndividual<XSOntIndividual, XSOntProperty> {

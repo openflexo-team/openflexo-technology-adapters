@@ -22,7 +22,6 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.xml.rm.XMLReaderSAXHandler;
 import org.openflexo.technologyadapter.xml.rm.XMLWriter;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
@@ -31,6 +30,8 @@ import org.openflexo.technologyadapter.xsd.model.XMLXSDModel;
 import org.openflexo.technologyadapter.xsd.model.XSDTechnologyContextManager;
 import org.openflexo.technologyadapter.xsd.model.XSOntIndividual;
 import org.openflexo.toolbox.IProgress;
+import org.openflexo.xml.XMLReaderSAXHandler;
+
 
 /**
  * @author xtof

@@ -30,8 +30,11 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.xml.IXMLAttribute;
+import org.openflexo.xml.IXMLIndividual;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 
 /**
  * 

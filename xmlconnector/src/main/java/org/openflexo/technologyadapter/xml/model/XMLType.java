@@ -23,6 +23,8 @@ package org.openflexo.technologyadapter.xml.model;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.xml.IXMLType;
+
 
 public class XMLType extends XMLObject implements Type, IXMLType {
 

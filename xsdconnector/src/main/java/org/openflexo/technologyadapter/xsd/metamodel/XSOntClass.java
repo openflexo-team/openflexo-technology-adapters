@@ -32,12 +32,13 @@ import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.technologyadapter.xml.model.IXMLType;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.model.AbstractXSOntConcept;
 import org.openflexo.technologyadapter.xsd.model.XSOntology;
 import org.openflexo.technologyadapter.xsd.model.XSOntologyURIDefinitions;
 import org.openflexo.toolbox.StringUtils;
+import org.openflexo.xml.IXMLType;
+
 
 public class XSOntClass extends AbstractXSOntConcept implements IFlexoOntologyClass<XSDTechnologyAdapter>, XSOntologyURIDefinitions,
 		IXMLType {

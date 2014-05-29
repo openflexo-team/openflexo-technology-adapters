@@ -25,11 +25,12 @@ import java.util.List;
 
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-import org.openflexo.technologyadapter.xml.model.IXMLAttribute;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.model.AbstractXSOntConcept;
 import org.openflexo.technologyadapter.xsd.model.XSOntology;
 import org.openflexo.technologyadapter.xsd.model.XSOntologyURIDefinitions;
+import org.openflexo.xml.IXMLAttribute;
+
 
 public abstract class XSOntProperty extends AbstractXSOntConcept implements IFlexoOntologyFeatureAssociation<XSDTechnologyAdapter>,
 		IFlexoOntologyStructuralProperty<XSDTechnologyAdapter>, XSOntologyURIDefinitions, IXMLAttribute {

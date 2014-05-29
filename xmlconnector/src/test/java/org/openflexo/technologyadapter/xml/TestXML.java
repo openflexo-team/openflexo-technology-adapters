@@ -45,7 +45,6 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.technologyadapter.xml.model.IXMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLAttribute;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
@@ -56,6 +55,8 @@ import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.xml.IXMLIndividual;
+
 
 @RunWith(OrderedRunner.class)
 public class TestXML extends OpenflexoTestCase {

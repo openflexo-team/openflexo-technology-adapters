@@ -24,6 +24,9 @@ package org.openflexo.technologyadapter.xml.model;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.DefaultFlexoObject;
+import org.openflexo.xml.IXMLAttribute;
+import org.openflexo.xml.IXMLIndividual;
+
 
 /**
  * 

@@ -33,11 +33,12 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.technologyadapter.xml.model.IXMLMetaModel;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.model.XSOntology;
 import org.openflexo.technologyadapter.xsd.rm.XMLXSDNameSpaceFinder;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
+import org.openflexo.xml.IXMLMetaModel;
+
 
 import com.sun.xml.xsom.XSSimpleType;
 import com.sun.xml.xsom.XSType;

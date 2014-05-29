@@ -34,9 +34,10 @@ import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.technologyadapter.xml.model.IXMLAttribute;
-import org.openflexo.technologyadapter.xml.model.IXMLIndividual;
-import org.openflexo.technologyadapter.xml.model.IXMLModel;
+import org.openflexo.xml.IXMLAttribute;
+import org.openflexo.xml.IXMLIndividual;
+import org.openflexo.xml.IXMLModel;
+
 
 /**
  * This SaxHandler is used to serialize any XML file, either conformant or not to an XSD file The behavior of the Handler depends on the

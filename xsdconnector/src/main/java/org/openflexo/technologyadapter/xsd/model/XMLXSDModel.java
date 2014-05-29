@@ -37,15 +37,16 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.technologyadapter.xml.model.IXMLIndividual;
-import org.openflexo.technologyadapter.xml.model.IXMLModel;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
 import org.openflexo.technologyadapter.xsd.rm.XMLXSDFileResource;
+import org.openflexo.xml.IXMLIndividual;
+import org.openflexo.xml.IXMLModel;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
 
 public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, XSDMetaModel>, IXMLModel,
 		TechnologyObject<XSDTechnologyAdapter> {

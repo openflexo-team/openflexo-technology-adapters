@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" userID="FLX" useSpecificDescriptions="false" flexoID="4" name="TestPPTVirtualModel">
+  <Inspector id="1" flexoID="2" userID="FLX" useSpecificDescriptions="false" inspectorTitle="TestPPTVirtualModel" />
+  <ModelSlot_VirtualModelModelSlot id="2" flexoID="3" isRequired="false" userID="FLX" useSpecificDescriptions="false" name="this" isReadOnly="false" virtualModelURI="http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint/TestPPTVirtualModel" />
+</VirtualModel>

@@ -22,7 +22,6 @@ import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.technologyadapter.xml.model.IXMLIndividual;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
 import org.openflexo.technologyadapter.xsd.model.XMLXSDModel;
@@ -32,6 +31,8 @@ import org.openflexo.technologyadapter.xsd.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xsd.rm.XMLXSDFileResource;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
+import org.openflexo.xml.IXMLIndividual;
+
 
 public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 

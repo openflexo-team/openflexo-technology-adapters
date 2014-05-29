@@ -44,16 +44,14 @@ import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLTechnologyContextManager;
 import org.openflexo.toolbox.IProgress;
+import org.openflexo.xml.XMLReaderSAXHandler;
+
 
 /**
  * @author xtof
  * 
  */
 public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel> implements XMLFileResource {
-
-	// Constants
-
-	static final String CDATA_TYPE_NAME = "CDATA";
 
 	protected static final Logger logger = Logger.getLogger(XMLFileResourceImpl.class.getPackage().getName());
 
