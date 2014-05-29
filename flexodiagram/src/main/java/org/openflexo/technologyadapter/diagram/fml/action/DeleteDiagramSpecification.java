@@ -49,7 +49,7 @@ public class DeleteDiagramSpecification extends FlexoAction<DeleteDiagramSpecifi
 
 		@Override
 		public boolean isVisibleForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
-			return object != null ;
+			return object != null;
 		}
 
 		@Override

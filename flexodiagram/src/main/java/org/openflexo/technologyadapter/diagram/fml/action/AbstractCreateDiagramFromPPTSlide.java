@@ -26,6 +26,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.PathIterator;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
+import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
@@ -85,12 +87,15 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
+import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreateDiagramFromPPTSlide<A, T>, T extends FlexoObject> extends
 		FlexoAction<A, T, ViewPointObject> {
+
+	private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
 	public DrawingGraphicalRepresentation graphicalRepresentation;
 	private String diagramName;
@@ -370,12 +375,18 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	public ImageIcon getScreenShot(Slide s, double size) {
 		if (s != null && s.getSlideShow() != null) {
-			Dimension d = s.getSlideShow().getPageSize();
-			BufferedImage i = new BufferedImage((int) size, (int) (size * d.height / d.width), BufferedImage.TYPE_INT_RGB);
-			Graphics2D graphics = i.createGraphics();
-			graphics.transform(AffineTransform.getScaleInstance(size / d.width, size / d.width));
-			s.draw(graphics);
-			return new ImageIcon(i);
+			try {
+				Dimension d = s.getSlideShow().getPageSize();
+				BufferedImage i = new BufferedImage((int) size, (int) (size * d.height / d.width), BufferedImage.TYPE_INT_RGB);
+				Graphics2D graphics = i.createGraphics();
+				graphics.transform(AffineTransform.getScaleInstance(size / d.width, size / d.width));
+				s.draw(graphics);
+				return new ImageIcon(i);
+			} catch (ArrayIndexOutOfBoundsException e) {
+				logger.warning("Some fonts are cannot be previewed (Calibri, Gothic MS)");
+			} catch (Exception e) {
+				logger.warning("Unable to create a preview for the slide " + s.getSlideNumber());
+			}
 		}
 		return null;
 	}
@@ -415,7 +426,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		for (Shape shape : poiShapes) {
 			transformPowerpointConnector(shape);
 		}
-
 	}
 
 	private DiagramConnector transformPowerpointConnector(Shape shape) {
@@ -668,8 +678,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		targetShapeGR.setHeight(2);
 		targetShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
 
-		DiagramConnector newConnector = getDiagramFactory().makeNewConnector(poiConnector.getShapeName(), sourceShape, targetShape,
-				getDiagram());
+		DiagramConnector newConnector = getDiagramFactory()
+				.makeNewConnector(poiConnector.getText(), sourceShape, targetShape, getDiagram());
 		ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
 
 		if (poiConnector.getLineColor() != null) {
@@ -678,6 +688,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		} else {
 			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
 		}
+		setConnectorType(gr, poiConnector);
 		newConnector.setGraphicalRepresentation(gr);
 		return newConnector;
 	}
@@ -688,7 +699,11 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		for (DiagramShape diagramShape : possibleShapes.keySet()) {
 			Shape poiShape = possibleShapes.get(diagramShape);
 
-			if (poiConnector.getLogicalAnchor2D().intersects(poiShape.getAnchor())) {
+			// Connectors which are closed to the shape are considered as linked to this shape.
+			Rectangle2D r1 = new Rectangle2D.Double(poiConnector.getAnchor2D().getX(), poiConnector.getAnchor2D().getY(), poiConnector
+					.getAnchor2D().getWidth() + 5, poiConnector.getAnchor2D().getHeight() + 5);
+
+			if (poiShape.getAnchor().intersects(r1)) {
 				if (sourceShape == null && targetShape == null) {
 					sourceShape = diagramShape;
 				} else if (sourceShape != null && targetShape == null) {
@@ -702,7 +717,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			sourceShape = targetShape;
 		}
 		if (sourceShape != null && targetShape != null) {
-			DiagramConnector newConnector = getDiagramFactory().makeNewConnector(poiConnector.getShapeName(), sourceShape, targetShape,
+			DiagramConnector newConnector = getDiagramFactory().makeNewConnector(poiConnector.getText(), sourceShape, targetShape,
 					getDiagram());
 			ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
 			if (poiConnector.getLineColor() != null) {
@@ -730,7 +745,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		gr.setBackground(getDiagramFactory().makeEmptyBackground());
 		gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 		setTextProperties(gr, textBox);
-
+		gr.setLayer(2);
 		newShape.setGraphicalRepresentation(gr);
 
 		return newShape;
@@ -827,6 +842,14 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		case ShapeTypes.Line:
 			return true;
 		case ShapeTypes.StraightConnector1:
+			return true;
+		case ShapeTypes.BentConnector2:
+			return true;
+		case ShapeTypes.BentConnector3:
+			return true;
+		case ShapeTypes.BentConnector4:
+			return true;
+		case ShapeTypes.BentConnector5:
 			return true;
 		}
 		return false;
@@ -980,23 +1003,41 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			returned.setConnectorType(ConnectorType.LINE);
 			break;
 		case ShapeTypes.StraightConnector1:
+			returned.setConnectorType(ConnectorType.LINE);
+			break;
+		case ShapeTypes.BentConnector2:
+			returned.setConnectorType(ConnectorType.RECT_POLYLIN);
+			break;
+		case ShapeTypes.BentConnector3:
+			returned.setConnectorType(ConnectorType.RECT_POLYLIN);
+			break;
+		case ShapeTypes.BentConnector4:
+			returned.setConnectorType(ConnectorType.RECT_POLYLIN);
+			break;
+		case ShapeTypes.BentConnector5:
 			returned.setConnectorType(ConnectorType.RECT_POLYLIN);
 			break;
 		}
 
-		if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWHEAD) != 0) {
-			returned.getConnectorSpecification().setStartSymbol(StartSymbolType.ARROW);
-		}
-		if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) != 0) {
-			returned.getConnectorSpecification().setStartSymbolSize(
-					connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) * 10);
-		}
-		if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWHEAD) != 0) {
-			returned.getConnectorSpecification().setEndSymbol(EndSymbolType.ARROW);
-		}
-		if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) != 0) {
-			returned.getConnectorSpecification().setEndSymbolSize(
-					connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) * 10);
+		// For now it we don't know how to determinate to whom end of the connector is affected the symbol
+		// Because in the case of connectors, we don't knwo the end/start shape, which is computed by intersection.
+		// So we can only handle correctly two cases, when there is no arrows ends at all and when there is two arrows ends
+		if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWHEAD) != 0
+				&& connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWHEAD) != 0) {
+			if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWHEAD) != 0) {
+				returned.getConnectorSpecification().setStartSymbol(StartSymbolType.ARROW);
+			}
+			if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) != 0) {
+				returned.getConnectorSpecification().setStartSymbolSize(
+						connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) * 10);
+			}
+			if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWHEAD) != 0) {
+				returned.getConnectorSpecification().setEndSymbol(EndSymbolType.ARROW);
+			}
+			if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) != 0) {
+				returned.getConnectorSpecification().setEndSymbolSize(
+						connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) * 10);
+			}
 		}
 	}
 }

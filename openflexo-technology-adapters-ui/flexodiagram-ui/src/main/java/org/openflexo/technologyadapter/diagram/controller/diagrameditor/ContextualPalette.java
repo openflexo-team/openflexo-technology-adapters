@@ -38,8 +38,6 @@ import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.fge.geom.FGEPoint;
-import org.openflexo.foundation.utils.FlexoObjectReference;
-import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.localization.FlexoLocalization;
@@ -68,7 +66,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		this.diagramPalette = diagramPalette;
 
 		for (DiagramPaletteElement element : diagramPalette.getElements()) {
-			addElement(makePaletteElement(element));
+			addElement(makePaletteElement(element, editor));
 		}
 
 		diagramPalette.getPropertyChangeSupport().addPropertyChangeListener(this);
@@ -89,7 +87,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			if (evt.getPropertyName().equals(DiagramPalette.PALETTE_ELEMENTS_KEY)) {
 				if (evt.getNewValue() instanceof DiagramPaletteElement) {
 					// Adding of a new DiagramPaletteElement
-					ContextualPaletteElement e = makePaletteElement((DiagramPaletteElement) evt.getNewValue());
+					ContextualPaletteElement e = makePaletteElement((DiagramPaletteElement) evt.getNewValue(), getEditor());
 					addElement(e);
 					// e.getGraphicalRepresentation().notifyObjectHierarchyHasBeenUpdated();
 					// DrawingView<PaletteDrawing> oldPaletteView = getPaletteView();
@@ -124,20 +122,20 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			if (dropScheme.isTopTarget() && target instanceof DrawingGraphicalRepresentation) {
 				returned.add(dropScheme);
 			}
-			if (target.getDrawable() instanceof DiagramShape) {
+			/*if (target.getDrawable() instanceof DiagramShape) {
 				DiagramShape targetShape = (DiagramShape) target.getDrawable();
 				for (FlexoObjectReference<FlexoConceptInstance> ref : targetShape.getFlexoConceptReferences()) {
 					if (dropScheme.isValidTarget(ref.getObject().getFlexoConcept(), ref.getObject().getRoleForActor(targetShape))) {
 						returned.add(dropScheme);
 					}
 				}
-			}
+			}*/
 		}
 		return returned;
 	}
 
-	private ContextualPaletteElement makePaletteElement(final DiagramPaletteElement element) {
-		System.out.println("******* makePaletteElement with " + element);
+	protected ContextualPaletteElement makePaletteElement(final DiagramPaletteElement element, DiagramEditor editor) {
+		// System.out.println("******* makePaletteElement with " + element);
 		return new ContextualPaletteElement(element);
 	}
 
@@ -296,7 +294,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			action.setDropLocation(dropLocation);
 
 			action.doAction();
-			assertTrue(action.hasActionExecutionSucceeded());
+			return action.hasActionExecutionSucceeded();
 		}
 
 		return false;

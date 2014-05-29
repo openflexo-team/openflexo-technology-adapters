@@ -43,8 +43,8 @@ import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntology.OntologyNotFoundException;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyAsMetaModelRepository;
-import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyAsModelRepository;
+import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceImpl;
 import org.openflexo.technologyadapter.owl.viewpoint.binding.OWLBindingFactory;
@@ -100,7 +100,8 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		OWLOntologyLibrary ontologyLibrary = getOntologyLibrary();
 
 		OWLOntologyAsModelRepository ontModelRepository = resourceCenter.getRepository(OWLOntologyAsModelRepository.class, this);
-		OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter.getRepository(OWLOntologyAsMetaModelRepository.class, this);
+		OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter
+				.getRepository(OWLOntologyAsMetaModelRepository.class, this);
 		if (ontModelRepository == null) {
 			ontModelRepository = createOntologyAsModelRepository(resourceCenter);
 		}
@@ -125,7 +126,8 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		if (isValidOntologyFile(candidateFile)) {
 			OWLOntologyResource ontRes = retrieveOntologyResource(candidateFile);
 			OWLOntologyAsModelRepository ontModelRepository = resourceCenter.getRepository(OWLOntologyAsModelRepository.class, this);
-			OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter.getRepository(OWLOntologyAsMetaModelRepository.class, this);
+			OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter.getRepository(OWLOntologyAsMetaModelRepository.class,
+					this);
 			if (ontRes != null) {
 				RepositoryFolder<OWLOntologyResource> folder;
 				try {
@@ -238,7 +240,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		resourceCenter.registerRepository(returned, OWLOntologyAsModelRepository.class, this);
 		return returned;
 	}
-	
+
 	public OWLOntologyAsMetaModelRepository createOntologyAsMetaModelRepository(FlexoResourceCenter resourceCenter) {
 		OWLOntologyAsMetaModelRepository returned = new OWLOntologyAsMetaModelRepository(this, resourceCenter);
 		resourceCenter.registerRepository(returned, OWLOntologyAsMetaModelRepository.class, this);
@@ -262,20 +264,20 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	 * <li>after all {@link FlexoResourceCenter} have been initialized</li>
 	 * </ul>
 	 */
-	@Override
+	/*@Override
 	public void initialize() {
 		getTechnologyContextManager().init();
-	}
+	}*/
 
 	/**
 	 * Provides a hook to detect when a new resource center was added or discovered
 	 * 
 	 * @param newResourceCenter
 	 */
-	@Override
+	/*@Override
 	public void resourceCenterAdded(FlexoResourceCenter newResourceCenter) {
 		getTechnologyContextManager().init();
-	}
+	}*/
 
 	@Override
 	public OWLBindingFactory getTechnologyAdapterBindingFactory() {

@@ -46,15 +46,16 @@ import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.action.AddConnectorInitializer;
-import org.openflexo.technologyadapter.diagram.controller.action.AddDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.AddShapeInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPaletteInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSpecificationInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
@@ -186,7 +187,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		// DiagramPalette edition
 		new CreateDiagramPaletteInitializer(actionInitializer);
 		new DeleteDiagramPaletteInitializer(actionInitializer);
-		new AddDiagramPaletteElementInitializer(actionInitializer);
+		new CreateDiagramPaletteElementInitializer(actionInitializer);
 		new DeleteDiagramPaletteElementInitializer(actionInitializer);
 
 		new CreateControlledDiagramVirtualModelInstanceInitializer(actionInitializer);
@@ -205,6 +206,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new ExportDiagramToImageInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer(actionInitializer);
+		new CreateFMLControlledDiagramPaletteElementInitializer(actionInitializer);
 
 		// Set the screenshot builders
 		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());
@@ -263,6 +265,10 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 	public JDianaInspectors getInspectors() {
 		return inspectors;
+	}
+
+	public JDianaScaleSelector getScaleSelector() {
+		return scaleSelector;
 	}
 
 	/**
@@ -459,6 +465,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	public ModuleView<VirtualModelInstance> createVirtualModelInstanceModuleViewForSpecificNature(VirtualModelInstance vmInstance,
 			VirtualModelInstanceNature nature, FlexoController controller, FlexoPerspective perspective) {
 		if (vmInstance.hasNature(nature) && nature == FMLControlledDiagramVirtualModelInstanceNature.INSTANCE) {
+			System.out.println("----------> Hop, je recree un editor");
 			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor(vmInstance, false, controller, swingToolFactory);
 			return new FMLControlledDiagramModuleView(editor, perspective);
 		}

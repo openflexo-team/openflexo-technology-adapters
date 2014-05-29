@@ -44,12 +44,19 @@ public class PowerpointSlideshowView extends JTabbedPane implements SelectionSyn
 	private PowerpointSlideshow slideshow;
 	private final FlexoPerspective declaredPerspective;
 
+	private final FlexoController controller;
+
 	public PowerpointSlideshowView(PowerpointSlideshow slideshow, FlexoController controller, FlexoPerspective perspective) {
 		super();
+		this.controller = controller;
 		declaredPerspective = perspective;
 		for (PowerpointSlide slide : slideshow.getPowerpointSlides()) {
 			addTab(slide.getName(), new PowerpointSlideView(slide, controller));
 		}
+	}
+
+	public FlexoController getFlexoController() {
+		return controller;
 	}
 
 	@Override
@@ -59,6 +66,9 @@ public class PowerpointSlideshowView extends JTabbedPane implements SelectionSyn
 
 	@Override
 	public void deleteModuleView() {
+		if (getFlexoController() != null) {
+			controller.removeModuleView(this);
+		}
 	}
 
 	@Override

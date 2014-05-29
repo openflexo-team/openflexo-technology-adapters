@@ -44,14 +44,21 @@ public class ExcelWorkbookView extends JTabbedPane implements SelectionSynchroni
 	private final ExcelWorkbook workbook;
 	private final FlexoPerspective declaredPerspective;
 
+	private final FlexoController controller;
+
 	public ExcelWorkbookView(ExcelWorkbook workbook, FlexoController controller, FlexoPerspective perspective) {
 		super();
+		this.controller = controller;
 		declaredPerspective = perspective;
 		this.workbook = workbook;
 		for (ExcelSheet sheet : workbook.getExcelSheets()) {
 			// addTab(sheet.getName(), new FIBExcelSheetView(sheet, controller));
 			addTab(sheet.getName(), new ExcelSheetView(sheet, controller));
 		}
+	}
+
+	public FlexoController getFlexoController() {
+		return controller;
 	}
 
 	@Override
@@ -61,6 +68,9 @@ public class ExcelWorkbookView extends JTabbedPane implements SelectionSynchroni
 
 	@Override
 	public void deleteModuleView() {
+		if (getFlexoController() != null) {
+			controller.removeModuleView(this);
+		}
 	}
 
 	@Override

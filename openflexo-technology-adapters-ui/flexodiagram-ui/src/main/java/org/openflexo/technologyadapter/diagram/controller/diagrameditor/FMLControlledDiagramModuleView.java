@@ -44,6 +44,8 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 	private final FMLControlledDiagramEditor editor;
 	private final FlexoPerspective perspective;
 
+	private final JPanel bottomPanel;
+
 	public FMLControlledDiagramModuleView(FMLControlledDiagramEditor editor, FlexoPerspective perspective) {
 		super();
 		setLayout(new BorderLayout());
@@ -51,6 +53,14 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 		this.perspective = perspective;
 		add(editor.getToolsPanel(), BorderLayout.NORTH);
 		add(new JScrollPane(editor.getDrawingView()), BorderLayout.CENTER);
+
+		bottomPanel = new JPanel(new BorderLayout());
+
+		bottomPanel.add(editor.getFlexoController().makeInfoLabel(), BorderLayout.CENTER);
+		add(bottomPanel, BorderLayout.SOUTH);
+
+		editor.getFlexoController().setInfoMessage("Controlled diagramming - CTRL-drag to draw edges", false);
+
 		validate();
 
 		getRepresentedObject().getPropertyChangeSupport().addPropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
@@ -68,6 +78,7 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 	@Override
 	public void deleteModuleView() {
 		getRepresentedObject().getPropertyChangeSupport().removePropertyChangeListener(getRepresentedObject().getDeletedProperty(), this);
+		getEditor().getFlexoController().removeModuleView(this);
 		getEditor().delete();
 	}
 
@@ -88,6 +99,8 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 
 		getEditor().getFlexoController().getEditingContext().unregisterPasteHandler(getEditor().getPasteHandler());
 
+		bottomPanel.remove(getDiagramTechnologyAdapterController(getEditor().getFlexoController()).getScaleSelector().getComponent());
+
 	}
 
 	@Override
@@ -96,6 +109,9 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 		System.out.println("FMLControlledDiagramModuleView WILL SHOW !!!!!!");
 
 		getEditor().getFlexoController().getEditingContext().registerPasteHandler(getEditor().getPasteHandler());
+
+		bottomPanel.add(getDiagramTechnologyAdapterController(getEditor().getFlexoController()).getScaleSelector().getComponent(),
+				BorderLayout.EAST);
 
 		getPerspective().focusOnObject(getRepresentedObject());
 	}
@@ -114,6 +130,7 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 
 		getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getEditor());
 		getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());
+		getDiagramTechnologyAdapterController(controller).getScaleSelector().attachToEditor(getEditor());
 
 		perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
 
@@ -134,4 +151,5 @@ public class FMLControlledDiagramModuleView extends JPanel implements ModuleView
 			deleteModuleView();
 		}
 	}
+
 }

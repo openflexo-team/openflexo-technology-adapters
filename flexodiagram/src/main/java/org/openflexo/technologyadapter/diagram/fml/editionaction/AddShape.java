@@ -251,7 +251,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			}
 
 			// Register reference
-			newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());
+			// newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());
 
 			if (container == null) {
 				logger.warning("When adding shape, cannot find container for action " + getFlexoRole() + " container="

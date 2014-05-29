@@ -20,12 +20,10 @@
  */
 package org.openflexo.technologyadapter.diagram.metamodel;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -33,7 +31,6 @@ import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.annotations.Adder;
@@ -140,7 +137,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 
 	@Override
 	public DiagramSpecificationResource getResource();
-	
+
 	public List<DiagramPaletteElement> getAllPaletteElements();
 
 	public static abstract class DiagramSpecificationImpl extends FlexoObjectImpl implements DiagramSpecification {
@@ -374,21 +371,21 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			}
 			return null;
 		}
-		
+
 		private List<DiagramPaletteElement> paletteElements;
-		
+
 		@Override
-		public List<DiagramPaletteElement> getAllPaletteElements(){
-			if(paletteElements==null){
+		public List<DiagramPaletteElement> getAllPaletteElements() {
+			if (paletteElements == null) {
 				paletteElements = new ArrayList<DiagramPaletteElement>();
 			}
 			paletteElements.clear();
-			for(DiagramPalette palette: getPalettes()){
+			for (DiagramPalette palette : getPalettes()) {
 				paletteElements.addAll(palette.getElements());
 			}
 			return paletteElements;
 		}
-		
+
 		/*@Override
 		protected void notifyEditionSchemeModified() {
 		_allFlexoConceptWithDropScheme = null;
@@ -499,12 +496,25 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			}
 		}
 
-		
 		@Override
 		public Object getObject(String objectURI) {
 			return null;
 		}
-		
+
+		@Override
+		public boolean delete() {
+			logger.info("Deleting diagram specification " + this);
+
+			// Dereference the resource
+			getServiceManager().getResourceManager().unregisterResource(resource);
+
+			// Delete view
+			super.delete();
+			// Delete observers
+			deleteObservers();
+			// isDeleted = true;
+			return true;
+		}
 	}
 
 }

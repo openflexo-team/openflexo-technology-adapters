@@ -136,11 +136,11 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 	// Convenient method to access read-only property for spec for label feature
 	public void setReadOnlyLabel(boolean readOnlyLabel);
 
-	public List<GraphicalElementSpecification<?, ?>> getGrSpecifications();
+	public List<GraphicalElementSpecification<?, GR>> getGrSpecifications();
 
-	public GraphicalElementSpecification<?, ?> getGraphicalElementSpecification(String featureName);
+	public GraphicalElementSpecification<?, GR> getGraphicalElementSpecification(String featureName);
 
-	public GraphicalElementSpecification<?, ?> getGraphicalElementSpecification(GraphicalFeature<?, ?> feature);
+	public <T2> GraphicalElementSpecification<T2, GR> getGraphicalElementSpecification(GraphicalFeature<T2, ?> feature);
 
 	public boolean containsShapes();
 
@@ -162,7 +162,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		private String exampleLabel = "label";
 
-		protected List<GraphicalElementSpecification<?, ?>> grSpecifications;
+		protected List<GraphicalElementSpecification<?, GR>> grSpecifications;
 
 		// private Vector<GraphicalElementAction> actions;
 
@@ -185,7 +185,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		protected void initDefaultSpecifications() {
 			if (getVirtualModelFactory() != null) {
-				grSpecifications = new ArrayList<GraphicalElementSpecification<?, ?>>();
+				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
 					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
 							GraphicalElementSpecification.class);
@@ -438,18 +438,18 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		@Override
-		public List<GraphicalElementSpecification<?, ?>> getGrSpecifications() {
+		public List<GraphicalElementSpecification<?, GR>> getGrSpecifications() {
 			if (grSpecifications == null && getVirtualModelFactory() != null) {
 				initDefaultSpecifications();
 			} else if (grSpecifications == null) {
-				grSpecifications = new ArrayList<GraphicalElementSpecification<?, ?>>();
+				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 			}
 			return grSpecifications;
 		}
 
 		@Override
-		public GraphicalElementSpecification<?, ?> getGraphicalElementSpecification(String featureName) {
-			for (GraphicalElementSpecification<?, ?> spec : getGrSpecifications()) {
+		public GraphicalElementSpecification<?, GR> getGraphicalElementSpecification(String featureName) {
+			for (GraphicalElementSpecification<?, GR> spec : getGrSpecifications()) {
 				if (spec.getFeatureName().equals(featureName)) {
 					return spec;
 				}
@@ -458,9 +458,9 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		@Override
-		public GraphicalElementSpecification<?, ?> getGraphicalElementSpecification(GraphicalFeature<?, ?> feature) {
+		public <T2> GraphicalElementSpecification<T2, GR> getGraphicalElementSpecification(GraphicalFeature<T2, ?> feature) {
 			if (feature != null) {
-				return getGraphicalElementSpecification(feature.getName());
+				return (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(feature.getName());
 			}
 			return null;
 		}
@@ -485,8 +485,9 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			}
 		}
 
-		private void registerGRSpecification(GraphicalElementSpecification<?, GR> aSpec) {
-			GraphicalElementSpecification<?, ?> existingSpec = getGraphicalElementSpecification(aSpec.getFeatureName());
+		private <T2> void registerGRSpecification(GraphicalElementSpecification<T2, GR> aSpec) {
+			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(aSpec
+					.getFeatureName());
 			if (existingSpec == null) {
 				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
 			} else {

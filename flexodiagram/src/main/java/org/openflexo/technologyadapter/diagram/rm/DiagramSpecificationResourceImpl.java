@@ -254,4 +254,21 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 		return getDiagramSpecification();
 	}
 
+	@Override
+	public boolean delete() {
+		if (super.delete()) {
+			getServiceManager().getResourceManager().addToFilesToDelete(getDirectory());
+			isDeleted = true;
+			// also remove the parent folder if empty, created by openflexo
+			/*if (!(getDirectory().length() > 0)) {
+				getDirectory().delete();
+			} else {
+				logger.warning("Diagram specification folder cannot be deleted because it is not empty");
+			}*/
+			return true;
+		}
+
+		return false;
+	}
+
 }
