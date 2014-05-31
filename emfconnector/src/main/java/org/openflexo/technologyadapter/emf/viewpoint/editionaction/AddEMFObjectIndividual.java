@@ -37,8 +37,12 @@ import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
 import org.openflexo.foundation.viewpoint.editionaction.DataPropertyAssertion;
 import org.openflexo.foundation.viewpoint.editionaction.ObjectPropertyAssertion;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.metamodel.AEMFMetaModelObjectImpl;
@@ -64,6 +68,18 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObj
 @XMLElement
 public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFObjectIndividual> {
 
+
+	@PropertyIdentifier(type = String.class)
+	public static final String CONTAINER_KEY = "container";
+
+	@Getter(value = CONTAINER_KEY)
+	@XMLAttribute
+	public DataBinding<List> getContainer();
+
+	@Setter(CONTAINER_KEY)
+	public void setContainer(DataBinding<List> containerReference);
+	
+	
 	public static abstract class AddEMFObjectIndividualImpl extends AddIndividualImpl<EMFModelSlot, EMFObjectIndividual> implements
 			AddEMFObjectIndividual {
 
@@ -74,6 +90,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 
 		public AddEMFObjectIndividualImpl() {
 			super();
+			container = new DataBinding<List>(this, List.class, DataBinding.BindingDefinitionType.GET_SET);
 		}
 
 		@Override
@@ -203,7 +220,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 
 		public DataBinding<List> getContainer() {
 			if (container == null) {
-				container = new DataBinding<List>(this, List.class, DataBinding.BindingDefinitionType.GET);
+				container = new DataBinding<List>(this, List.class, DataBinding.BindingDefinitionType.GET_SET);
 			}
 			return container;
 		}
@@ -213,7 +230,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 				containerReference.setOwner(this);
 				containerReference.setBindingName("container");
 				containerReference.setDeclaredType(List.class);
-				containerReference.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				containerReference.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
 			}
 			this.container = containerReference;
 		}
