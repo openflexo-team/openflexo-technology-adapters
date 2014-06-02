@@ -45,7 +45,7 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 	public void setSheetName(DataBinding<String> sheetName);
 
 	@Getter(value = SHEET_ROWS_KEY)
-	@XMLElement(context="SheetRows_")
+	@XMLAttribute
 	public DataBinding<List<ExcelRow>> getSheetRows();
 
 	@Setter(SHEET_ROWS_KEY)
