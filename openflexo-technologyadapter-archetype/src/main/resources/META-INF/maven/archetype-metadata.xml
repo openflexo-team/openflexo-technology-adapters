@@ -12,7 +12,7 @@
 		</requiredProperty>
 		
 		<requiredProperty key="technologyadapterApiVersion">
-			<defaultValue>${flexoCoreVersion}</defaultValue>
+			<defaultValue>${flexoCoreVersion}-SNAPSHOT</defaultValue>
 		</requiredProperty>
 		<requiredProperty key="technologyPrefix">
 			<defaultValue>${artifactId.toUpperCase()}</defaultValue>

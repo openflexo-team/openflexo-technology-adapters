@@ -21,7 +21,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
  * 
  */
 public final class PowerpointBindingFactory extends TechnologyAdapterBindingFactory {
-	static final Logger logger = Logger.getLogger(PowerpointBindingFactory.class.getPackage().getName());
+	static final Logger	logger	= Logger.getLogger(PowerpointBindingFactory.class.getPackage().getName());
 
 	public PowerpointBindingFactory() {
 		super();
@@ -41,7 +41,7 @@ public final class PowerpointBindingFactory extends TechnologyAdapterBindingFact
 		if (technologySpecificType instanceof PowerpointSlide) {
 			return true;
 		}
-		return true;
+		return false;
 	}
 
 	@Override

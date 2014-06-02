@@ -6,15 +6,14 @@
     <artifactId>csv</artifactId>
     <version>1.7-SNAPSHOT</version>
   </parent>
-  <groupId>org.openflexo.technologyadapter</groupId>
   <artifactId>csvconnector-ui</artifactId>
-  <version>1.7-SNAPSHOT</version>
   <description>technology Adapter graphical interface for CSV data</description>
   <url>http://www.openflexo.com/technologyadapter/csvconnector-ui</url>
   <dependencies>
     <dependency>
       <groupId>org.openflexo</groupId>
       <artifactId>csvconnector</artifactId>
+      <version>1.7-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>org.openflexo</groupId>
