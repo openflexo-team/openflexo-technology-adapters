@@ -11,8 +11,8 @@
   <url>http://www.openflexo.com/technologyadapter/${artifactId}</url>
   <dependencies>
     <dependency>
-      <groupId>org.openflexo</groupId>
-      <artifactId>${technologyExtension}connector</artifactId>
+      <groupId>org.openflexo.technologyadapter</groupId>
+      <artifactId>${rootArtifactId}connector</artifactId>
       <version>${technologyadapterApiVersion}</version>
     </dependency>
     <dependency>

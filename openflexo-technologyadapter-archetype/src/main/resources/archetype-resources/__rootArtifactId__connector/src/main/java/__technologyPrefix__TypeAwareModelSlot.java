@@ -44,8 +44,7 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
-
+import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.metamodel.${technologyPrefix}MetaModel;
 import ${package}.model.${technologyPrefix}Model;
 import ${package}.rm.${technologyPrefix}MetaModelResource;

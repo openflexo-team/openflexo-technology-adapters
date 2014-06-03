@@ -42,7 +42,6 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
-
 import org.openflexo.technologyadapter.csv.metamodel.CSVMetaModel;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.technologyadapter.csv.rm.CSVMetaModelResource;
