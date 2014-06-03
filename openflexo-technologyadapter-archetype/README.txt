@@ -24,9 +24,9 @@ maven 3   installé
 On veut developper un technologyadapter permettant de manipuler un format de type "monFormat"
 
 	C<mvn archetype:generate 
-                -DarchetypeGroupId=org.openflexo \
-                -DarchetypeArtifactId=technologyadapters-archetype \
-                -DarchetypeVersion=1.6-SNAPSHOT \
+                -DarchetypeGroupId=org.openflexo.archetypes \
+                -DarchetypeArtifactId=technologyadapter-archetype \
+                -DarchetypeVersion=1.2 \
 
                 -DgroupId=org.openflexo.demo \
                 -DartifactId=monFormat \

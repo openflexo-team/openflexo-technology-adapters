@@ -3,18 +3,17 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.openflexo.technologyadapter</groupId>
-    <artifactId>${technologyExtension}</artifactId>
+    <artifactId>${rootArtifactId}</artifactId>
     <version>${technologyadapterApiVersion}</version>
   </parent>
-  <groupId>org.openflexo.technologyadapter</groupId>
-  <artifactId>${technologyExtension}connector-ui</artifactId>
-  <version>${version}</version>
+  <artifactId>${artifactId}</artifactId>
   <description>technology Adapter graphical interface for ${technologyPrefix} data</description>
   <url>http://www.openflexo.com/technologyadapter/${artifactId}</url>
   <dependencies>
     <dependency>
       <groupId>org.openflexo</groupId>
       <artifactId>${technologyExtension}connector</artifactId>
+      <version>${technologyadapterApiVersion}</version>
     </dependency>
     <dependency>
       <groupId>org.openflexo</groupId>

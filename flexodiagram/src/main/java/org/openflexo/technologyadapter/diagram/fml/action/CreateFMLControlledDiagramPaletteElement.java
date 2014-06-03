@@ -109,7 +109,18 @@ public class CreateFMLControlledDiagramPaletteElement extends
 		return newElement;
 	}
 
+	private String computeNewName() {
+		String newName = getConcept().getName();
+		while (getPalette().getPaletteElement(newName) != null) {
+			newName = newName + "_new";
+		}
+		return newName;
+	}
+
 	public String getNewElementName() {
+		if (newElementName == null && getConcept().getName() != null) {
+			newElementName = computeNewName();
+		}
 		return newElementName;
 	}
 

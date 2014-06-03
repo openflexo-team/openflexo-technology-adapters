@@ -6,9 +6,7 @@
     <artifactId>csv</artifactId>
     <version>1.7-SNAPSHOT</version>
   </parent>
-  <groupId>org.openflexo.technologyadapter</groupId>
   <artifactId>csvconnector</artifactId>
-  <version>1.7-SNAPSHOT</version>
   <description>technology Adapter for CSV data</description>
   <url>http://www.openflexo.com/technologyadapter/csvconnector</url>
   <properties>
