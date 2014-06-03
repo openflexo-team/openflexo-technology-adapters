@@ -8,11 +8,11 @@
 		<requiredProperty key="artifactId">
 		</requiredProperty>
 		<requiredProperty key="flexoCoreVersion">
-			<defaultValue>1.7</defaultValue>
+			<defaultValue>1.7-SNAPSHOT</defaultValue>
 		</requiredProperty>
 		
 		<requiredProperty key="technologyadapterApiVersion">
-			<defaultValue>${flexoCoreVersion}-SNAPSHOT</defaultValue>
+			<defaultValue>${flexoCoreVersion}</defaultValue>
 		</requiredProperty>
 		<requiredProperty key="technologyPrefix">
 			<defaultValue>${artifactId.toUpperCase()}</defaultValue>

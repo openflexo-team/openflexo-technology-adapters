@@ -38,9 +38,8 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.foundation.viewpoint.VirtualModel;
-import org.openflexo.technologyadapter.csv.rm.${technologyPrefix}MetaModelResource;
-import org.openflexo.technologyadapter.csv.rm.${technologyPrefix}ModelResource;
-
+import ${package}.rm.${technologyPrefix}MetaModelResource;
+import ${package}.rm.${technologyPrefix}ModelResource;
 import ${package}.${technologyPrefix}TypeAwareModelSlot;
 import ${package}.rm.${technologyPrefix}MetaModelRepository;
 import ${package}.rm.${technologyPrefix}ModelRepository;

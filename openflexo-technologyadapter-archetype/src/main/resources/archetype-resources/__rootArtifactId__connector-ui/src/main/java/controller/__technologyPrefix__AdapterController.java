@@ -32,8 +32,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
-
 import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.gui.${technologyPrefix}IconLibrary;
 import org.openflexo.view.ModuleView;
