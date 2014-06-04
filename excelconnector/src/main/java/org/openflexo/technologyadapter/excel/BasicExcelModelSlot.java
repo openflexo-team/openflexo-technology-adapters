@@ -19,10 +19,16 @@
  */
 package org.openflexo.technologyadapter.excel;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.technologyadapter.DeclareActorReference;
+import org.openflexo.foundation.technologyadapter.DeclareActorReferences;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
@@ -42,6 +48,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.model.ExcelObject;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
+import org.openflexo.technologyadapter.excel.viewpoint.ExcelActorReference;
 import org.openflexo.technologyadapter.excel.viewpoint.ExcelCellRole;
 import org.openflexo.technologyadapter.excel.viewpoint.ExcelColumnRole;
 import org.openflexo.technologyadapter.excel.viewpoint.ExcelRowRole;
@@ -61,6 +68,8 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcel
  * @author Vincent LeildÃ©, Sylvain GuÃ©rin
  * 
  */
+@DeclareActorReferences({ // All actor references available through this model slot
+@DeclareActorReference(FML = "ExcelActorReference", actorReferenceClass = ExcelActorReference.class) })
 @DeclarePatternRoles({ // All pattern roles available through this model slot
 @DeclarePatternRole(FML = "ExcelSheet", flexoRoleClass = ExcelSheetRole.class), // Sheet
 		@DeclarePatternRole(FML = "ExcelColumn", flexoRoleClass = ExcelColumnRole.class), // Sheet
@@ -98,14 +107,16 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
 		private static final Logger logger = Logger.getLogger(BasicExcelModelSlot.class.getPackage().getName());
 
-		private BasicExcelModelSlotURIProcessor uriProcessor;
+		// private BasicExcelModelSlotURIProcessor uriProcessor;
 
-		public BasicExcelModelSlotURIProcessor getUriProcessor() {
+		private final Map<String, ExcelObject> uriCache = new HashMap<String, ExcelObject>();
+
+		/*public BasicExcelModelSlotURIProcessor getUriProcessor() {
 			if (uriProcessor == null && getVirtualModelFactory() != null) {
 				uriProcessor = getVirtualModelFactory().newInstance(BasicExcelModelSlotURIProcessor.class);
 			}
 			return uriProcessor;
-		}
+		}*/
 
 		@Override
 		public Class<ExcelTechnologyAdapter> getTechnologyAdapterClass() {
@@ -137,7 +148,23 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		@Override
 		public String getURIForObject(FreeModelSlotInstance<ExcelWorkbook, ? extends FreeModelSlot<ExcelWorkbook>> msInstance, Object o) {
 			ExcelObject excelObject = (ExcelObject) o;
-			return getUriProcessor().getURIForObject(msInstance, excelObject);
+
+			String builtURI = null;
+
+			try {
+				builtURI = URLEncoder.encode(excelObject.getUri(), "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				logger.warning("Cannot process URI - Unexpected encoding error");
+				e.printStackTrace();
+			}
+
+			if (builtURI != null) {
+				if (uriCache.get(builtURI) == null) {
+					// TODO Manage the fact that URI May Change
+					uriCache.put(builtURI, excelObject);
+				}
+			}
+			return builtURI.toString();
 		}
 
 		@Override
@@ -145,8 +172,8 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 				String objectURI) {
 
 			try {
-				return getUriProcessor().retrieveObjectWithURI(msInstance, objectURI);
-
+				ExcelObject o = uriCache.get(objectURI);
+				return o;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
