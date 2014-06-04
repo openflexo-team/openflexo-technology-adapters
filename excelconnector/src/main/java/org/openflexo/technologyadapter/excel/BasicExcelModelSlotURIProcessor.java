@@ -32,8 +32,12 @@ import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.viewpoint.NamedViewPointObject;
 import org.openflexo.foundation.viewpoint.ViewPoint;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.excel.model.ExcelObject;
 
+@ModelEntity
+@ImplementationClass(BasicExcelModelSlotURIProcessor.BasicExcelModelSlotURIProcessorImpl.class)
 public interface BasicExcelModelSlotURIProcessor extends NamedViewPointObject {
 
 	// URI Calculation
@@ -42,7 +46,8 @@ public interface BasicExcelModelSlotURIProcessor extends NamedViewPointObject {
 	// get the Object given the URI
 	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception;
 
-	public static abstract class BasicExcelModelSlotURIProcessorImpl extends NamedViewPointObjectImpl {
+	public static abstract class BasicExcelModelSlotURIProcessorImpl extends NamedViewPointObjectImpl implements
+			BasicExcelModelSlotURIProcessor {
 
 		private static final Logger logger = Logger.getLogger(BasicExcelModelSlotURIProcessor.class.getPackage().getName());
 
@@ -94,6 +99,7 @@ public interface BasicExcelModelSlotURIProcessor extends NamedViewPointObject {
 
 		// URI Calculation
 
+		@Override
 		public String getURIForObject(ModelSlotInstance msInstance, ExcelObject excelObject) {
 			String builtURI = null;
 
@@ -114,6 +120,7 @@ public interface BasicExcelModelSlotURIProcessor extends NamedViewPointObject {
 		}
 
 		// get the Object given the URI
+		@Override
 		public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception {
 			ExcelObject o = uriCache.get(objectURI);
 			return o;
