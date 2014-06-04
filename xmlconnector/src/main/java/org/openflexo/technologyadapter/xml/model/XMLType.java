@@ -22,81 +22,81 @@ package org.openflexo.technologyadapter.xml.model;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.xml.IXMLType;
-
 
 public class XMLType extends XMLObject implements Type, IXMLType {
 
-	private final XMLModel containerModel;
+    private final XMLModel                        containerModel;
 
-	/* Properties */
+    /* Properties */
 
-	private String Name;
-	private String NameSpaceURI;
-	private final String NSPrefix;
+    private String                                Name;
+    private String                                NameSpaceURI;
+    private final String                          NSPrefix;
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-			.getLogger(XMLType.class.getPackage().getName());
+    private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+                                                                 .getLogger(XMLType.class.getPackage().getName());
 
-	/**
-	 * Default Constructor
-	 * 
-	 * @param qName
-	 * 
-	 * @param adapter
-	 */
+    /**
+     * Default Constructor
+     * 
+     * @param qName
+     * 
+     * @param adapter
+     */
 
-	public XMLType(String aName, XMLModel model) {
-		super();
-		this.containerModel = model;
-		this.Name = aName;
-		this.NameSpaceURI = null;
-		this.NSPrefix = null;
-	}
+    public XMLType(String aName, XMLModel model) {
+        super();
+        this.containerModel = model;
+        this.Name = aName;
+        this.NameSpaceURI = null;
+        this.NSPrefix = null;
+    }
 
-	public XMLType(String nsURI, String lName, String qName, XMLModel model) {
-		super();
-		this.containerModel = model;
-		Name = lName;
-		NameSpaceURI = nsURI;
-		NSPrefix = qName.replaceAll(":" + lName, "");
-	}
+    public XMLType(String nsURI, String lName, String qName, XMLModel model) {
+        super();
+        this.containerModel = model;
+        Name = lName;
+        NameSpaceURI = nsURI;
+        NSPrefix = qName.replaceAll(":" + lName, "");
+    }
 
-	public void setName(String name) throws Exception {
-		this.Name = name;
-	}
+    public void setName(String name) throws Exception {
+        this.Name = name;
+    }
 
-	public String getFullyQualifiedName() {
-		if (NameSpaceURI != null && !NameSpaceURI.isEmpty())
-			return NSPrefix + ":" + Name;
-		else
-			return Name;
-	}
+    public String getFullyQualifiedName() {
+        if (NameSpaceURI != null && !NameSpaceURI.isEmpty())
+            return NSPrefix + ":" + Name;
+        else
+            return Name;
+    }
 
-	public String getName() {
-		return Name;
-	}
+    public String getName() {
+        return Name;
+    }
 
-	public String getNameSpaceURI() {
-		return NameSpaceURI;
-	}
+    public String getNameSpaceURI() {
+        return NameSpaceURI;
+    }
 
-	public void setNameSpaceURI(String nameSpaceURI) {
-		NameSpaceURI = nameSpaceURI;
-	}
+    public void setNameSpaceURI(String nameSpaceURI) {
+        NameSpaceURI = nameSpaceURI;
+    }
 
-	@Override
-	public String getURI() {
-		if (NameSpaceURI != null) {
-			return NameSpaceURI + "#" + Name;
-		} else {
-			return Name;
-		}
-	}
+    @Override
+    public String getURI() {
+        if (NameSpaceURI != null) {
+            return NameSpaceURI + "#" + Name;
+        }
+        else {
+            return Name;
+        }
+    }
 
-	public TechnologyAdapter getTechnologyAdapter() {
-		return containerModel.getTechnologyAdapter();
-	}
+    public XMLTechnologyAdapter getTechnologyAdapter() {
+        return containerModel.getTechnologyAdapter();
+    }
 
 }

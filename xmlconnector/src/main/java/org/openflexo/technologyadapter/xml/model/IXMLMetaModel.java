@@ -1,6 +1,5 @@
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2013-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -21,12 +20,22 @@
 
 package org.openflexo.technologyadapter.xml.model;
 
-/**
- * @author xtof
- * 
- */
-public abstract class XMLObject {
+import java.lang.reflect.Type;
 
-    // Only for genericity purpose for now...
+/**
+ *
+ * This interface defines additional methods to be defined by all MetaModel that 
+ * will be used when populating a XMLModel using the XMLSaxHandler
+ *
+ * @author xtof
+ *
+ */
+public interface IXMLMetaModel {
+
+	public Type getTypeFromURI(String string);
+
+	public Type createNewType(String uri, String localName, String qName);
+	
+
 
 }

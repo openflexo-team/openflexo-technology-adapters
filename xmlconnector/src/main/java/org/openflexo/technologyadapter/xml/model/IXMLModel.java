@@ -1,6 +1,5 @@
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2013-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -21,12 +20,35 @@
 
 package org.openflexo.technologyadapter.xml.model;
 
-/**
- * @author xtof
- * 
- */
-public abstract class XMLObject {
+import java.lang.reflect.Type;
 
-    // Only for genericity purpose for now...
+import org.openflexo.xml.IXMLIndividual;
+
+
+
+/**
+ *
+ * This interface defines additional methods to be defined by all XMLModel that 
+ * will be populated using the XMLSaxHandler
+ *
+ * @author xtof
+ *
+ */
+
+public interface IXMLModel {
+
+	public Object addNewIndividual(Type aType);
+
+	public void setRoot(IXMLIndividual<?,?> anIndividual);
+
+	public IXMLIndividual<?, ?> getRoot();
+
+	public void setNamespace(String uri, String prefix);
+
+	public String getNamespacePrefix();
+
+	public String getNamespaceURI();
+
+
 
 }
