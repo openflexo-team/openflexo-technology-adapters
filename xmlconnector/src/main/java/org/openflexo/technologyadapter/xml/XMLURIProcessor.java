@@ -109,7 +109,11 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 				return mappedClass.getURI();
 			} else {
 				this.bindtypeURIToMappedClass();
-				return typeURI.toString();
+				if (typeURI != null) {
+					return typeURI.toString();
+				} else {
+					return null;
+				}
 			}
 		}
 
