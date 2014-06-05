@@ -90,7 +90,9 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 
 		public XMLURIProcessorImpl(String typeURI) {
 			super();
-			this.typeURI = URI.create(typeURI);
+			if (typeURI != null) {
+				this.typeURI = URI.create(typeURI);
+			}
 		}
 
 		public void setModelSlot(ModelSlot aModelSlot) {
@@ -108,7 +110,11 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 				return mappedClass.getURI();
 			} else {
 				this.bindtypeURIToMappedClass();
-				return typeURI.toString();
+				if (typeURI != null) {
+					return typeURI.toString();
+				} else {
+					return null;
+				}
 			}
 		}
 
@@ -298,7 +304,10 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 
 		@Override
 		public ViewPoint getViewPoint() {
-			return this.modelSlot.getViewPoint();
+			if (getModelSlot() != null) {
+				return getModelSlot().getViewPoint();
+			}
+			return null;
 		}
 
 		@Override

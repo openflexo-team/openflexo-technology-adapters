@@ -133,7 +133,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 		// TODO if a declaration (base) type is derived, get the correct
 		// superclass
 
-		XSDMetaModel aModel = getMetaModelData();
+		XSDMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
 
 		try {
 
@@ -193,7 +193,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 
 	private void loadDataProperties() {
 
-		XSDMetaModel aModel = getMetaModelData();
+		XSDMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
 
 		/*
 		 * for (XSSimpleType simpleType : fetcher.getSimpleTypes()) {
@@ -227,7 +227,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 
 	private void loadObjectProperties() {
 
-		XSDMetaModel aModel = getMetaModelData();
+		XSDMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
 
 		for (XSElementDecl element : fetcher.getElementDecls()) {
 			if (mapsToClass(element)) {
@@ -257,7 +257,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 		if (schemaSet != null) {
 			fetcher = new XSDeclarationsFetcher();
 			fetcher.fetch(schemaSet);
-			getMetaModelData().clearAllRangeAndDomain();
+			resourceData.clearAllRangeAndDomain();
+			// Was: getMetaModelData().clearAllRangeAndDomain(); is there a reason ???
 			loadClasses();
 			loadDataProperties();
 			loadObjectProperties();
@@ -280,6 +281,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 		return isLoaded;
 	}
 
+	@Override
 	public boolean isLoading() {
 		return isLoading;
 	}

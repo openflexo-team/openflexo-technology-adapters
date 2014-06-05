@@ -112,7 +112,6 @@ public class XMLIndividual extends XMLObject implements IXMLIndividual<XMLIndivi
     @Override
     public void setName(String name) {
         this.Name = name;
-        this.notifyObservers();
     }
 
     /* (non-Javadoc)
@@ -161,7 +160,6 @@ public class XMLIndividual extends XMLObject implements IXMLIndividual<XMLIndivi
         }
         typedSet.add((XMLIndividual) anIndividual);
         ((XMLIndividual) anIndividual).setParent(this);
-        this.notifyObservers();
     }
 
     private void setParent(IXMLIndividual<XMLIndividual, XMLAttribute> xmlIndividual) {
@@ -232,8 +230,6 @@ public class XMLIndividual extends XMLObject implements IXMLIndividual<XMLIndivi
         }
 
         attributes.put(attrLName, attr);
-
-        this.notifyObservers();
 
         return attr;
     }
