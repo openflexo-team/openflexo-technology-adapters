@@ -23,19 +23,17 @@ package org.openflexo.technologyadapter.xml.model;
 
 import java.lang.reflect.Type;
 
-
 /**
- *
- * This interface defines additional methods to be defined by all XMLType/XSOntClass that 
- * will be manipulated by the XMLSaxHandler/URIProcessors
- *
+ * 
+ * This interface defines additional methods to be defined by all XMLType/XSOntClass that will be manipulated by the
+ * XMLSaxHandler/URIProcessors
+ * 
  * @author xtof
- *
+ * 
  */
 
 public interface IXMLType extends Type {
 
 	public String getURI();
 
-	
 }

@@ -104,6 +104,8 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 	@Override
 	public XSDTechnologyAdapter getTechnologyAdapter();
 
+	public XSURIProcessor createURIProcessor();
+
 	public static abstract class XSDModelSlotImpl extends TypeAwareModelSlotImpl<XMLXSDModel, XSDMetaModel> implements XSDModelSlot {
 		static final Logger logger = Logger.getLogger(XSDModelSlot.class.getPackage().getName());
 
@@ -229,6 +231,7 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 			return uriProcessors;
 		}
 
+		@Override
 		public XSURIProcessor createURIProcessor() {
 			XSURIProcessor xsuriProc = getVirtualModelFactory().newInstance(XSURIProcessor.class);
 			xsuriProc.setModelSlot(this);

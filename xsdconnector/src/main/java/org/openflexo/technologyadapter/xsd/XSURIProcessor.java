@@ -41,6 +41,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLURIProcessor;
+import org.openflexo.technologyadapter.xml.model.IXMLAttribute;
 import org.openflexo.technologyadapter.xml.model.IXMLType;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
@@ -98,6 +99,14 @@ public interface XSURIProcessor extends XMLURIProcessor {
 
 	public void reset();
 
+	public IXMLType getMappedClass();
+
+	public void setMappedClass(IXMLType mappedClass);
+
+	public IXMLAttribute getBaseAttributeForURI();
+
+	public void setBaseAttributeForURI(IXMLAttribute baseAttributeForURI);
+
 	public static abstract class XSURIProcessorImpl extends XMLURIProcessorImpl implements XSURIProcessor {
 
 		static final Logger logger = Logger.getLogger(XSURIProcessor.class.getPackage().getName());
@@ -110,6 +119,10 @@ public interface XSURIProcessor extends XMLURIProcessor {
 
 		public XSURIProcessorImpl(String typeURI) {
 			super(typeURI);
+		}
+
+		public XSURIProcessorImpl() {
+			super(null);
 		}
 
 		// Lifecycle management methods
