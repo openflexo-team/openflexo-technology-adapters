@@ -45,185 +45,189 @@ import org.openflexo.xml.IXMLType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 /**
  * @author xtof
  * 
  */
 public class XMLModel extends DefaultFlexoObject implements FlexoModel<XMLModel, XMLModel>, FlexoMetaModel<XMLModel>, IXMLMetaModel,
-		IXMLModel, TechnologyObject<XMLTechnologyAdapter> {
+        IXMLModel, TechnologyObject<XMLTechnologyAdapter> {
 
-	// Constants
+    // Constants
 
-	private static final String Version = "0";
+    private static final String              Version         = "0";
 
-	// Attributes
+    // Attributes
 
-	protected static final Logger logger = Logger.getLogger(XMLModel.class.getPackage().getName());
-	private FlexoResource<?> xmlResource;
-	private boolean isReadOnly = true;
-	private final XMLTechnologyAdapter technologyAdapter;
+    protected static final Logger            logger          = Logger.getLogger(XMLModel.class.getPackage().getName());
+    private FlexoResource<?>                 xmlResource;
+    private boolean                          isReadOnly      = true;
+    private final XMLTechnologyAdapter       technologyAdapter;
 
-	private final Map<String, XMLIndividual> individuals;
-	private final Map<String, XMLType> types;
-	private IXMLIndividual<?, ?> root = null;
+    private final Map<String, XMLIndividual> individuals;
+    private final Map<String, XMLType>       types;
+    private IXMLIndividual<?, ?>             root            = null;
 
-	private String namespaceURI = null;
-	private String namespacePrefix = null;
+    private String                           namespaceURI    = null;
+    private String                           namespacePrefix = null;
 
-	public XMLModel(TechnologyAdapter technologyAdapter) {
-		super();
-		individuals = new HashMap<String, XMLIndividual>();
-		types = new HashMap<String, XMLType>();
-		this.technologyAdapter = (XMLTechnologyAdapter) technologyAdapter;
-	}
+    public XMLModel(TechnologyAdapter technologyAdapter) {
+        super();
+        individuals = new HashMap<String, XMLIndividual>();
+        types = new HashMap<String, XMLType>();
+        this.technologyAdapter = (XMLTechnologyAdapter) technologyAdapter;
+    }
 
-	public String getName() {
-		if (xmlResource != null) {
-			return xmlResource.getName();
-		} else
-			return "";
-	}
+    public String getName() {
+        if (xmlResource != null) {
+            return xmlResource.getName();
+        }
+        else
+            return "";
+    }
 
-	@Override
-	public void setNamespace(String uri, String prefix) {
-		this.namespacePrefix = prefix;
-		this.namespaceURI = uri;
-	}
+    @Override
+    public void setNamespace(String uri, String prefix) {
+        this.namespacePrefix = prefix;
+        this.namespaceURI = uri;
+    }
 
-	@Override
-	public String getNamespacePrefix() {
-		return namespacePrefix;
-	}
+    @Override
+    public String getNamespacePrefix() {
+        return namespacePrefix;
+    }
 
-	@Override
-	public String getNamespaceURI() {
-		return namespaceURI;
-	}
+    @Override
+    public String getNamespaceURI() {
+        return namespaceURI;
+    }
 
-	/**
-	 * @return the rootNode
-	 */
-	@Override
-	public IXMLIndividual<XMLIndividual, XMLAttribute> getRoot() {
-		return (IXMLIndividual<XMLIndividual, XMLAttribute>) root;
-	}
+    /**
+     * @return the rootNode
+     */
+    @Override
+    public IXMLIndividual<XMLIndividual, XMLAttribute> getRoot() {
+        return (IXMLIndividual<XMLIndividual, XMLAttribute>) root;
+    }
 
-	/**
-	 * @return the rootNode
-	 */
-	@Override
-	public void setRoot(IXMLIndividual<?, ?> indiv) {
-		root = indiv;
-		setChanged();
-	}
+    /**
+     * @return the rootNode
+     */
+    @Override
+    public void setRoot(IXMLIndividual<?, ?> indiv) {
+        root = indiv;
+        setChanged();
+    }
 
-	@Override
-	public XMLFileResource getResource() {
-		return (XMLFileResource) xmlResource;
-	}
+    @Override
+    public XMLFileResource getResource() {
+        return (XMLFileResource) xmlResource;
+    }
 
-	@Override
-	public void setResource(FlexoResource<XMLModel> resource) {
-		this.xmlResource = resource;
-	}
+    @Override
+    public void setResource(FlexoResource<XMLModel> resource) {
+        this.xmlResource = resource;
+    }
 
-	@Override
-	public boolean isReadOnly() {
-		return isReadOnly;
-	}
+    @Override
+    public boolean isReadOnly() {
+        return isReadOnly;
+    }
 
-	@Override
-	public void setIsReadOnly(boolean b) {
-		isReadOnly = b;
+    @Override
+    public void setIsReadOnly(boolean b) {
+        isReadOnly = b;
 
-	}
+    }
 
-	@Override
-	public XMLModel getMetaModel() {
-		logger.info("Basic XML Files have no such thing as a MetaModel, resource plays the role of Model and MetaModel");
-		return this;
-	}
+    @Override
+    public XMLModel getMetaModel() {
+        return this;
+    }
 
-	@Override
-	public String getURI() {
-		return xmlResource.getURI();
-	}
+    @Override
+    public String getURI() {
+        return xmlResource.getURI();
+    }
 
-	@Override
-	public Object getObject(String objectURI) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public Object getObject(String objectURI) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 
-	@Override
-	public XMLTechnologyAdapter getTechnologyAdapter() {
-		return technologyAdapter;
-	}
+    @Override
+    public XMLTechnologyAdapter getTechnologyAdapter() {
+        return technologyAdapter;
+    }
 
-	public List<? extends XMLIndividual> getIndividuals() {
-		return new ArrayList<XMLIndividual>(individuals.values());
-	}
+    public List<? extends XMLIndividual> getIndividuals() {
+        return new ArrayList<XMLIndividual>(individuals.values());
+    }
 
-	// TODO, TO BE OPTIMIZED
-	public List<XMLIndividual> getIndividualsOfType(IXMLType aType) {
-		ArrayList<XMLIndividual> returned = new ArrayList<XMLIndividual>();
-		for (XMLIndividual o : individuals.values()) {
-			if (o.getType() == aType) {
-				returned.add(o);
-			}
-		}
-		return returned;
-	}
+    // TODO, TO BE OPTIMIZED
+    public List<XMLIndividual> getIndividualsOfType(IXMLType aType) {
+        ArrayList<XMLIndividual> returned = new ArrayList<XMLIndividual>();
+        for (XMLIndividual o : individuals.values()) {
+            if (o.getType() == aType) {
+                returned.add(o);
+            }
+        }
+        return returned;
+    }
 
-	@Override
-	public Object addNewIndividual(Type aType) {
-		XMLIndividual anIndividual = new XMLIndividual(this, (XMLType) aType);
-		this.addIndividual(anIndividual);
-		return anIndividual;
-	}
+    @Override
+    public Object addNewIndividual(Type aType) {
+        XMLIndividual anIndividual = new XMLIndividual(this, (XMLType) aType);
+        this.addIndividual(anIndividual);
+        return anIndividual;
+    }
 
-	public void addIndividual(XMLIndividual anIndividual) {
-		individuals.put(anIndividual.getUUID(), anIndividual);
-		this.setChanged();
+    public void addIndividual(XMLIndividual anIndividual) {
+        individuals.put(anIndividual.getUUID(), anIndividual);
+        this.setChanged();
 
-	}
+    }
 
-	@Override
-	public XMLType createNewType(String uri, String localName, String qName) {
-		XMLType nType = new XMLType(uri, localName, qName, this);
-		this.addType(nType);
-		setChanged();
-		return nType;
-	}
+    @Override
+    public XMLType createNewType(String uri, String localName, String qName) {
+        XMLType nType = new XMLType(uri, localName, qName, this);
+        this.addType(nType);
+        setChanged();
+        return nType;
+    }
 
-	@Override
-	public XMLType getTypeFromURI(String uri) {
-		return types.get(uri);
-	}
+    @Override
+    public XMLType getTypeFromURI(String uri) {
+        XMLType aType = types.get(uri);
+        if (aType == null) {
+            aType = new XMLType(uri, this);
+            types.put(uri, aType);
+        }
+        return aType;
+    }
 
-	public void addType(XMLType aType) {
-		types.put(aType.getURI(), aType);
-		this.setChanged();
-	}
+    public void addType(XMLType aType) {
+        types.put(aType.getURI(), aType);
+        this.setChanged();
+    }
 
-	public List<? extends XMLType> getTypes() {
-		return new ArrayList<XMLType>(types.values());
-	}
+    public List<? extends XMLType> getTypes() {
+        return new ArrayList<XMLType>(types.values());
+    }
 
-	public Document toXML() throws ParserConfigurationException {
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-		Document doc = docBuilder.newDocument();
+    public Document toXML() throws ParserConfigurationException {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
 
-		XMLIndividual rootIndiv = (XMLIndividual) getRoot();
+        XMLIndividual rootIndiv = (XMLIndividual) getRoot();
 
-		if (rootIndiv != null) {
-			Element rootNode = rootIndiv.toXML(doc);
-			doc.appendChild(rootNode);
-		}
+        if (rootIndiv != null) {
+            Element rootNode = rootIndiv.toXML(doc);
+            doc.appendChild(rootNode);
+        }
 
-		return doc;
-	}
+        return doc;
+    }
 
 }
