@@ -26,6 +26,8 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
+import org.openflexo.technologyadapter.xsd.metamodel.XSOntDataProperty;
+import org.openflexo.technologyadapter.xsd.metamodel.XSOntObjectProperty;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
 import org.openflexo.xml.IXMLAttribute;
 import org.openflexo.xml.IXMLIndividual;
@@ -40,8 +42,6 @@ public class XMLXSDModelFactory extends saxBasedObjectGraphFactory {
     @Override
     public Object getInstanceOf(Type aType, String name) {
         if (aType instanceof XSOntClass) {
-
-            System.out.println("Creating an individual of type: " + ((XSOntClass) aType).getName());
             XSOntIndividual _inst = (XSOntIndividual) model.addNewIndividual(aType);
             _inst.setName(name);
             return (Object) _inst;
@@ -51,8 +51,6 @@ public class XMLXSDModelFactory extends saxBasedObjectGraphFactory {
 
     @Override
     public Type getTypeFromURI(String uri) {
-        System.out.println("Looking for a  type: " + uri);
-
         return model.getMetaModel().getTypeFromURI(uri);
     }
 
@@ -158,11 +156,13 @@ public class XMLXSDModelFactory extends saxBasedObjectGraphFactory {
     @Override
     public Type getAttributeType(Object currentContainer, String localName) {
         IXMLAttribute attr = ((IXMLIndividual) currentContainer).getAttributeByName(localName);
-        if (attr != null) {
+        if (attr instanceof XSOntObjectProperty) {
+            return attr.getAttributeType();
+        }
+        else if (attr instanceof XSOntDataProperty) {
             return attr.getAttributeType();
         }
         else
             return null;
     }
-
 }

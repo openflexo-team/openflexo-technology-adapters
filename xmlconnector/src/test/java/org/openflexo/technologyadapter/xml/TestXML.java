@@ -120,7 +120,7 @@ public class TestXML extends OpenflexoTestCase {
 
         assertNotNull(modelRes.getModel().getTypeFromURI("#Library"));
 
-        // dumpIndividual(modelRes.getModelData().getRoot(), "");
+        dumpIndividual(modelRes.getModelData().getRoot(), "");
 
     }
 

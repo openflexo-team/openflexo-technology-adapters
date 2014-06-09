@@ -245,8 +245,6 @@ public class XSOntIndividual extends AbstractXSOntConcept implements IFlexoOntol
 
         XSPropertyValue returned = values.get(property);
 
-        System.out.println("Adding value: " + newValue + "   to property: " + property.getName() + "    For Indiv: " + this.getUUID());
-
         if (returned == null) {
             if (property instanceof XSOntObjectProperty) {
                 if (newValue == null) {
