@@ -134,12 +134,19 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
         assertNotNull(mmRepository);
         assertNotNull(modelRepository);
 
+        baseDirName = baseDirName.replace('\\', '/');
+
+        System.out.println("BaseDir: " + baseDirName);
+
         String resourceURI = "file:/" + baseDirName + "/TestResourceCenter/XML/example_library_1.xml";
-        resourceURI = resourceURI.replace('\\', '/');
+
+        XSDMetaModelResource mmLibraryRes = mmRepository.getResource("http://www.example.org/Library");
+
+        assertNotNull(mmLibraryRes);
 
         XMLXSDFileResource libraryRes = modelRepository.getResource(resourceURI);
 
-        XSDMetaModelResource mmLibraryRes = mmRepository.getResource("http://www.example.org/Library");
+        assertNotNull(libraryRes);
 
         XMLXSDModel mLib = libraryRes.getModel();
 
