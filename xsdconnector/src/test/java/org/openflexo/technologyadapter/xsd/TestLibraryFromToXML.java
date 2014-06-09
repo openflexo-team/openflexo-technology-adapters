@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -20,7 +21,6 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
@@ -42,7 +42,6 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
     private static final java.util.logging.Logger logger         = org.openflexo.logging.FlexoLogger.getLogger(TestLibraryFromToXML.class
                                                                          .getPackage().getName());
 
-    private static final String                   FILE_NAME      = "library";
     private static final String                   LIBRARY_URI    = "http://www.example.org/Library#Library";
     private static final String                   BOOK_URI       = "http://www.example.org/Library#Book";
     private static final String                   BOOK_TITLE_URI = "http://www.example.org/Library/Book#title";
@@ -51,10 +50,9 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
     private static ApplicationContext             testApplicationContext;
     private static XSDTechnologyAdapter           xsdAdapter;
-    private static FlexoResourceCenter            resourceCenter;
     private static XSDMetaModelRepository         mmRepository;
     private static XMLXSDModelRepository          modelRepository;
-    private static String                         baseDirName;
+    private static String                         baseUrl;
 
     private static final void dumpIndividual(IXMLIndividual<XSOntIndividual, XSOntProperty> indiv, String prefix) {
 
@@ -113,11 +111,18 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
     public void test0LoadTestResourceCenter() throws IOException {
         log("test0LoadTestResourceCenter()");
         testApplicationContext = new TestApplicationContext();
-        resourceCenter = testApplicationContext.getResourceCenterService().getResourceCenters().get(0);
+        resourceCenter = (DirectoryResourceCenter) testApplicationContext.getResourceCenterService().getResourceCenters().get(0);
         xsdAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(XSDTechnologyAdapter.class);
         mmRepository = (XSDMetaModelRepository) resourceCenter.getRepository(XSDMetaModelRepository.class, xsdAdapter);
         modelRepository = (XMLXSDModelRepository) resourceCenter.getRepository(XMLXSDModelRepository.class, xsdAdapter);
-        baseDirName = ((DirectoryResourceCenter) resourceCenter).getDirectory().getCanonicalPath();
+        baseUrl = ((DirectoryResourceCenter) resourceCenter).getDirectory().getCanonicalPath();
+        try {
+            baseUrl = ((DirectoryResourceCenter) resourceCenter).getDirectory().toURI().toURL().toExternalForm();
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         assertNotNull(modelRepository);
         assertNotNull(mmRepository);
         assertEquals(3, mmRepository.getAllResources().size());
@@ -134,11 +139,12 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
         assertNotNull(mmRepository);
         assertNotNull(modelRepository);
 
-        baseDirName = baseDirName.replace('\\', '/');
+        // baseUrl = baseUrl.replace('\\', '/');
 
-        System.out.println("BaseDir: " + baseDirName);
+        System.out.println("BaseDir: " + baseUrl);
 
-        String resourceURI = "file:/" + baseDirName + "/TestResourceCenter/XML/example_library_1.xml";
+        String resourceURI = baseUrl + "TestResourceCenter/XML/example_library_1.xml";
+        System.out.println("ResourceURI: " + resourceURI);
 
         XSDMetaModelResource mmLibraryRes = mmRepository.getResource("http://www.example.org/Library");
 

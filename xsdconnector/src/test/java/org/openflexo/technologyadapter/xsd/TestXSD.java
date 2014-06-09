@@ -23,16 +23,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
+import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.ApplicationContext;
+import org.openflexo.TestApplicationContext;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.TestFlexoServiceManager;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xsd.rm.XMLXSDModelRepository;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
@@ -42,13 +42,14 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 
-    protected static final Logger          logger = Logger.getLogger(TestXSD.class.getPackage().getName());
+    protected static final Logger         logger  = Logger.getLogger(TestXSD.class.getPackage().getName());
 
-    private static TestFlexoServiceManager testServiceManager;
-    private static XSDTechnologyAdapter    xsdAdapter;
-    private static FlexoResourceCenter<?>  resourceCenter;
-    private static XSDMetaModelRepository  mmRepository;
-    private static XMLXSDModelRepository   modelRepository;
+    private static ApplicationContext     testApplicationContext;
+    private static XSDTechnologyAdapter   xsdAdapter;
+    private static FlexoResourceCenter<?> resourceCenter;
+    private static XSDMetaModelRepository mmRepository;
+    private static XMLXSDModelRepository  modelRepository;
+    private static String                 baseUrl = null;
 
     /**
      * Instanciate test ResourceCenter
@@ -58,11 +59,16 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
     public void test0LoadTestResourceCenter() {
 
         log("test0LoadTestResourceCenter()");
-        testServiceManager = new TestFlexoServiceManager(ResourceLocator.retrieveResourceAsFile(ResourceLocator
-                .locateResource("src/test/resources/XSD")));
-        xsdAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(XSDTechnologyAdapter.class);
-        resourceCenter = new DirectoryResourceCenter(new File("src/test/resources/"));
-        testServiceManager.getResourceCenterService().addToResourceCenters(resourceCenter);
+        testApplicationContext = new TestApplicationContext();
+        xsdAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(XSDTechnologyAdapter.class);
+        resourceCenter = testApplicationContext.getResourceCenterService().getResourceCenters().get(0);
+        try {
+            baseUrl = ((DirectoryResourceCenter) resourceCenter).getDirectory().toURI().toURL().toExternalForm();
+        } catch (MalformedURLException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
         mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xsdAdapter);
         modelRepository = resourceCenter.getRepository(XMLXSDModelRepository.class, xsdAdapter);
         assertNotNull(mmRepository);
