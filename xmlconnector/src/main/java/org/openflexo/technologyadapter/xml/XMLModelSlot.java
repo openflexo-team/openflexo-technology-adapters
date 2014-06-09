@@ -37,6 +37,8 @@ import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualRole;
@@ -47,67 +49,70 @@ import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualRole;
  */
 @DeclarePatternRoles({ @DeclarePatternRole(flexoRoleClass = XMLIndividualRole.class, FML = "XMLIndividual"), // Instances
 })
-@DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add instance
+@DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add
+// instance
 })
+@ModelEntity
+@XMLElement
 public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLModel> {
 
-	public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLModel> implements XMLModelSlot {
+    public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLModel> implements XMLModelSlot {
 
-		private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
+        private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
 
-		@Override
-		public Type getType() {
-			// TODO Auto-generated method stub
-			return null;
-		}
+        @Override
+        public Type getType() {
+            // TODO Auto-generated method stub
+            return null;
+        }
 
-		@Override
-		public Class<? extends TechnologyAdapter> getTechnologyAdapterClass() {
-			return XMLTechnologyAdapter.class;
-		}
+        @Override
+        public Class<? extends TechnologyAdapter> getTechnologyAdapterClass() {
+            return XMLTechnologyAdapter.class;
+        }
 
-		@Override
-		public FlexoModelResource<XMLModel, XMLModel, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
-				String modelUri, FlexoMetaModelResource<XMLModel, XMLModel, ?> metaModelResource) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+        @Override
+        public FlexoModelResource<XMLModel, XMLModel, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
+                String modelUri, FlexoMetaModelResource<XMLModel, XMLModel, ?> metaModelResource) {
+            // TODO Auto-generated method stub
+            return null;
+        }
 
-		@Override
-		public FlexoModelResource<XMLModel, XMLModel, ?> createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath,
-				String filename, String modelUri, FlexoMetaModelResource<XMLModel, XMLModel, ?> metaModelResource) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+        @Override
+        public FlexoModelResource<XMLModel, XMLModel, ?> createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath,
+                String filename, String modelUri, FlexoMetaModelResource<XMLModel, XMLModel, ?> metaModelResource) {
+            // TODO Auto-generated method stub
+            return null;
+        }
 
-		@Override
-		public String getURIForObject(
-				TypeAwareModelSlotInstance<XMLModel, XMLModel, ? extends TypeAwareModelSlot<XMLModel, XMLModel>> msInstance, Object o) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+        @Override
+        public String getURIForObject(
+                TypeAwareModelSlotInstance<XMLModel, XMLModel, ? extends TypeAwareModelSlot<XMLModel, XMLModel>> msInstance, Object o) {
+            // TODO Auto-generated method stub
+            return null;
+        }
 
-		@Override
-		public Object retrieveObjectWithURI(
-				TypeAwareModelSlotInstance<XMLModel, XMLModel, ? extends TypeAwareModelSlot<XMLModel, XMLModel>> msInstance,
-				String objectURI) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+        @Override
+        public Object retrieveObjectWithURI(
+                TypeAwareModelSlotInstance<XMLModel, XMLModel, ? extends TypeAwareModelSlot<XMLModel, XMLModel>> msInstance,
+                String objectURI) {
+            // TODO Auto-generated method stub
+            return null;
+        }
 
-		@Override
-		public ModelSlotInstanceConfiguration<? extends TypeAwareModelSlot<XMLModel, XMLModel>, XMLModel> createConfiguration(
-				CreateVirtualModelInstance action) {
-			// TODO Auto-generated method stub
-			return null;
-		}
+        @Override
+        public ModelSlotInstanceConfiguration<? extends TypeAwareModelSlot<XMLModel, XMLModel>, XMLModel> createConfiguration(
+                CreateVirtualModelInstance action) {
+            // TODO Auto-generated method stub
+            return null;
+        }
 
-		@Override
-		public boolean isStrictMetaModelling() {
-			// TODO Auto-generated method stub
-			return false;
-		}
+        @Override
+        public boolean isStrictMetaModelling() {
+            // TODO Auto-generated method stub
+            return false;
+        }
 
-	}
+    }
 
 }
