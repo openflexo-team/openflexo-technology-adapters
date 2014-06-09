@@ -76,7 +76,6 @@ public class TestXML extends OpenflexoTestCase {
     private static final void dumpTypes(XMLModel model) {
         for (XMLType t : model.getTypes()) {
             System.out.println("Inferred Type: " + t.getName() + " -> " + t.getFullyQualifiedName() + "[" + t.getURI() + "]");
-            System.out.println("");
             System.out.flush();
         }
     }
@@ -167,7 +166,7 @@ public class TestXML extends OpenflexoTestCase {
 
         assertNotNull(modelRes.getModel().getTypeFromURI("http://www.example.org/Library#Library"));
 
-        // dumpIndividual(modelRes.getModelData().getRoot(),"");
+        // dumpIndividual(modelRes.getModelData().getRoot(), "");
     }
 
     @Test
@@ -187,8 +186,8 @@ public class TestXML extends OpenflexoTestCase {
 
         assertNotNull(modelRes.getModel().getTypeFromURI("http://www.example.org/Library#Library"));
 
-        dumpTypes(modelRes.getModel());
-        dumpIndividual(modelRes.getModelData().getRoot(), "");
+        // dumpTypes(modelRes.getModel());
+        // dumpIndividual(modelRes.getModelData().getRoot(), "");
     }
 
     @Test

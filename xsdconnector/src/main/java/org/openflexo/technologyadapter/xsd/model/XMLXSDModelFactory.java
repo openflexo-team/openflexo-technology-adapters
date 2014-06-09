@@ -18,27 +18,31 @@
  *
  */
 
-package org.openflexo.technologyadapter.xml.model;
+package org.openflexo.technologyadapter.xsd.model;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
+import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
 import org.openflexo.xml.IXMLAttribute;
 import org.openflexo.xml.IXMLIndividual;
 import org.openflexo.xml.XMLReaderSAXHandler;
 import org.openflexo.xml.saxBasedObjectGraphFactory;
 import org.xml.sax.SAXException;
 
-public class XMLModelFactory extends saxBasedObjectGraphFactory {
+public class XMLXSDModelFactory extends saxBasedObjectGraphFactory {
 
-    private XMLModel model = null;
+    private XMLXSDModel model = null;
 
     @Override
     public Object getInstanceOf(Type aType, String name) {
-        if (aType instanceof XMLType) {
-            XMLIndividual _inst = (XMLIndividual) model.addNewIndividual(aType);
+        if (aType instanceof XSOntClass) {
+
+            System.out.println("Creating an individual of type: " + ((XSOntClass) aType).getName());
+            XSOntIndividual _inst = (XSOntIndividual) model.addNewIndividual(aType);
             _inst.setName(name);
             return (Object) _inst;
         }
@@ -47,6 +51,8 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
     @Override
     public Type getTypeFromURI(String uri) {
+        System.out.println("Looking for a  type: " + uri);
+
         return model.getMetaModel().getTypeFromURI(uri);
     }
 
@@ -90,7 +96,7 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
     @Override
     public void addToRootNodes(Object anObject) {
-        model.setRoot((XMLIndividual) anObject);
+        model.setRoot((XSOntIndividual) anObject);
     }
 
     @SuppressWarnings("unchecked")
@@ -104,7 +110,7 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
     @Override
     public void setContext(Object objectGraph) {
-        model = (XMLModel) objectGraph;
+        model = (XMLXSDModel) objectGraph;
 
     }
 
@@ -115,9 +121,9 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
     @Override
     public boolean objectHasAttributeNamed(Object object, String attrName) {
-        if (object instanceof XMLIndividual) {
+        if (object instanceof XSOntIndividual) {
 
-            XMLAttribute attr = ((XMLIndividual) object).getAttributeByName(attrName);
+            XSOntProperty attr = ((XSOntIndividual) object).getAttributeByName(attrName);
 
             return (attr != null);
         }
@@ -127,15 +133,15 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
     @Override
     public void addAttributeValueForObject(Object object, String attrName, Object value) {
 
-        if (object instanceof XMLIndividual) {
-            XMLAttribute attr = ((XMLIndividual) object).getAttributeByName(attrName);
+        if (object instanceof XSOntIndividual) {
+            XSOntProperty attr = ((XSOntIndividual) object).getAttributeByName(attrName);
 
             if (attr == null) {
-                attr = (XMLAttribute) ((XMLIndividual) object).createAttribute(attrName, String.class, (String) value);
+                attr = (XSOntProperty) ((XSOntIndividual) object).createAttribute(attrName, String.class, (String) value);
             }
             else {
 
-                attr.addValue(((XMLIndividual) object), value);
+                attr.addValue(((XSOntIndividual) object), value);
 
             }
         }
@@ -143,8 +149,8 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
     @Override
     public void addChildToObject(Object currentObject, Object currentContainer) {
-        if (currentContainer instanceof XMLIndividual) {
-            ((XMLIndividual) currentContainer).addChild((IXMLIndividual<XMLIndividual, XMLAttribute>) currentObject);
+        if (currentContainer instanceof XSOntIndividual) {
+            ((XSOntIndividual) currentContainer).addChild((IXMLIndividual<XSOntIndividual, XSOntProperty>) currentObject);
         }
 
     }
@@ -158,4 +164,5 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
         else
             return null;
     }
+
 }

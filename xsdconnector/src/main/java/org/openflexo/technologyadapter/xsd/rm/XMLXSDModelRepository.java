@@ -26,9 +26,9 @@ import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xsd.model.XMLXSDModel;
 
-public class XMLModelRepository extends ModelRepository<XMLXSDFileResource, XMLXSDModel, XSDMetaModel, XSDTechnologyAdapter> {
+public class XMLXSDModelRepository extends ModelRepository<XMLXSDFileResource, XMLXSDModel, XSDMetaModel, XSDTechnologyAdapter> {
 
-	public XMLModelRepository(XSDTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
+	public XMLXSDModelRepository(XSDTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 

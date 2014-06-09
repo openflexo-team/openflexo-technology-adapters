@@ -225,7 +225,7 @@ public class XSOntIndividual extends AbstractXSOntConcept implements IFlexoOntol
             propValue = this.addToPropertyValue(property, value);
         }
         else {
-            logger.info("So Many Things to do...Should Add something to create Attribute: " + attrLName);
+            logger.info("So Many Things to do...Should Add something to create Attribute: " + attrLName + " IN " + this.getName());
         }
 
         return propValue;
@@ -244,6 +244,8 @@ public class XSOntIndividual extends AbstractXSOntConcept implements IFlexoOntol
     public XSPropertyValue addToPropertyValue(IFlexoOntologyStructuralProperty property, Object newValue) {
 
         XSPropertyValue returned = values.get(property);
+
+        System.out.println("Adding value: " + newValue + "   to property: " + property.getName() + "    For Indiv: " + this.getUUID());
 
         if (returned == null) {
             if (property instanceof XSOntObjectProperty) {
