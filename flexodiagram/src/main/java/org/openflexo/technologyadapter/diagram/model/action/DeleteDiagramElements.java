@@ -202,7 +202,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 		
 	}*/
 
-	/*public DeletionScheme getSelectedDeletionScheme() {
+	public DeletionScheme getSelectedDeletionScheme() {
 		return selectedDeletionScheme;
 	}
 
@@ -223,7 +223,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 
 	public void setSelectedFlexoConceptInstance(FlexoConceptInstance selectedFlexoConceptInstance) {
 		this.selectedFlexoConceptInstance = selectedFlexoConceptInstance;
-	}*/
+	}
 
 	// TODO
 	public List<FlexoConceptInstance> getConceptInstancesToBeDeleted() {
