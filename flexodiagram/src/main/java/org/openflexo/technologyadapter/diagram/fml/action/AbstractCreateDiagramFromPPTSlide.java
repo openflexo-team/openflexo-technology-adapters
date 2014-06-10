@@ -85,6 +85,7 @@ import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
+import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
@@ -391,6 +392,17 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		return null;
 	}
 
+	public File saveImageFile(BufferedImage image, String name) {
+		File imageFile = new File(getDiagramFile().getParent(), JavaUtils.getClassName(name) + ".diagram-element" + ".png");
+		try {
+			ImageUtils.saveImageToFile(image, imageFile, ImageType.PNG);
+			return imageFile;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 	private HashMap<DiagramShape, Shape> shapesMap;
 	private List<Shape> poiShapes;
 
@@ -420,15 +432,15 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 		// Transform shapes
 		for (Shape shape : poiShapes) {
-			transformPowerpointShape(shape);
+			transformPowerpointShape(getDiagram(), shape);
 		}
 		// Transform connectors
 		for (Shape shape : poiShapes) {
-			transformPowerpointConnector(shape);
+			transformPowerpointConnector(getDiagram(), shape);
 		}
 	}
 
-	private DiagramConnector transformPowerpointConnector(Shape shape) {
+	private DiagramConnector transformPowerpointConnector(DiagramContainerElement<?> container, Shape shape) {
 		DiagramConnector diagramConnector = null;
 		if (shape instanceof AutoShape) {
 			// In the case the connector is a shape, the shape type give the kind of connector, no source/target
@@ -444,15 +456,15 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			diagramConnector = makeLine((Line) shape);
 		}
 		if (diagramConnector != null) {
-			getDiagram().addToConnectors(diagramConnector);
-			getDiagram().addToShapes(diagramConnector.getStartShape());
-			getDiagram().addToShapes(diagramConnector.getEndShape());
+			container.addToConnectors(diagramConnector);
+			container.addToShapes(diagramConnector.getStartShape());
+			container.addToShapes(diagramConnector.getEndShape());
 			return diagramConnector;
 		}
 		return null;
 	}
 
-	private DiagramShape transformPowerpointShape(Shape shape) {
+	private DiagramShape transformPowerpointShape(DiagramContainerElement<?> container, Shape shape) {
 		DiagramShape diagramShape = null;
 		if (shape instanceof Freeform) {
 			diagramShape = makeFreeformShape((Freeform) shape);
@@ -469,7 +481,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		}
 		if (diagramShape != null) {
 			shapesMap.put(diagramShape, shape);
-			getDiagram().addToShapes(diagramShape);
+			container.addToShapes(diagramShape);
 			return diagramShape;
 		}
 		return null;
@@ -493,17 +505,26 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			}
 			if (containerShape != null && textShape != null) {
 				isShapeAndText = true;
-				DiagramShape shape = transformPowerpointShape(containerShape);
+				DiagramShape shape = transformPowerpointShape(getDiagram(), containerShape);
 				setTextProperties(shape.getGraphicalRepresentation(), textShape);
 				shape.setName(textShape.getText());
 			}
 		}
 		if (!isShapeAndText) {
+			// Transform shapes
 			for (Shape shape : shapeGroup.getShapes()) {
+				transformPowerpointShape(getDiagram(), shape);
+			}
+			// Transform connectors
+			for (Shape shape : shapeGroup.getShapes()) {
+				transformPowerpointConnector(getDiagram(), shape);
+			}
+
+			/*for (Shape shape : shapeGroup.getShapes()) {
 				DiagramShape newShape = transformPowerpointShape(shape);
 				shapesMap.put(newShape, shape);
 				getDiagram().addToShapes(newShape);
-			}
+			}*/
 		}
 
 		return null;
@@ -511,7 +532,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	private DiagramShape makeTable(Table table) {
 
-		DiagramShape newTable = getDiagramFactory().makeNewShape(table.getShapeName(), getDiagram());
+		DiagramShape newTable = getDiagramFactory().makeNewShape(getShapeName(table), getDiagram());
 		ShapeGraphicalRepresentation gr = newTable.getGraphicalRepresentation();
 		setDefaultGraphicalProperties(gr, table);
 		gr.getForeground().setNoStroke(true);
@@ -533,7 +554,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	private DiagramShape makeFreeformShape(Freeform freeformShape) {
-		DiagramShape newShape = getDiagramFactory().makeNewShape(freeformShape.getText(), getDiagram());
+		DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(freeformShape), getDiagram());
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 		gr.setShapeType(ShapeType.CUSTOM_POLYGON);
 		Polygon ss = ((Polygon) gr.getShapeSpecification());
@@ -592,7 +613,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	private DiagramShape makeAutoShape(AutoShape autoShape) {
-		DiagramShape newShape = getDiagramFactory().makeNewShape(autoShape.getText(), getDiagram());
+		DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(autoShape), getDiagram());
 
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 
@@ -616,6 +637,18 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		setTextProperties(gr, autoShape);
 		newShape.setGraphicalRepresentation(gr);
 		return newShape;
+	}
+
+	private String getShapeName(Shape shape) {
+		if (shape instanceof TextShape && ((TextShape) shape).getText() != null) {
+			return ((TextShape) shape).getText();
+		} else if (shape instanceof Picture && ((Picture) shape).getPictureName() != null) {
+			return ((Picture) shape).getPictureName();
+		} else if (shape.getShapeName() != null) {
+			return shape.getShapeName();
+		} else {
+			return "shape_" + shape.getShapeId();
+		}
 	}
 
 	/**
@@ -717,7 +750,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			sourceShape = targetShape;
 		}
 		if (sourceShape != null && targetShape != null) {
-			DiagramConnector newConnector = getDiagramFactory().makeNewConnector(poiConnector.getText(), sourceShape, targetShape,
+			DiagramConnector newConnector = getDiagramFactory().makeNewConnector(getShapeName(poiConnector), sourceShape, targetShape,
 					getDiagram());
 			ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
 			if (poiConnector.getLineColor() != null) {
@@ -736,7 +769,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	private DiagramShape makeTextBox(TextBox textBox) {
 
-		DiagramShape newShape = getDiagramFactory().makeNewShape(textBox.getText(), getDiagram());
+		DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(textBox), getDiagram());
 
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 		setDiagramShapeShapeType(gr, textBox);
@@ -758,7 +791,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		int x = (int) pictureShape.getLogicalAnchor2D().getX() < 0 ? 0 : (int) pictureShape.getLogicalAnchor2D().getX();
 		int y = (int) pictureShape.getLogicalAnchor2D().getY() < 0 ? 0 : (int) pictureShape.getLogicalAnchor2D().getY();
 		if (width * height < Integer.MAX_VALUE) {
-			DiagramShape newShape = getDiagramFactory().makeNewShape(pictureShape.getPictureName(), getDiagram());
+			DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(pictureShape), getDiagram());
 
 			ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 
@@ -787,17 +820,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			return newShape;
 		}
 		return null;
-	}
-
-	public File saveImageFile(BufferedImage image, String name) {
-		File imageFile = new File(getDiagramFile().getParent(), JavaUtils.getClassName(name) + ".diagram-element" + ".png");
-		try {
-			ImageUtils.saveImageToFile(image, imageFile, ImageType.PNG);
-			return imageFile;
-		} catch (IOException e) {
-			e.printStackTrace();
-			return null;
-		}
 	}
 
 	private DashStyle convertDashLineStyles(int powerpointDashStyle) {
