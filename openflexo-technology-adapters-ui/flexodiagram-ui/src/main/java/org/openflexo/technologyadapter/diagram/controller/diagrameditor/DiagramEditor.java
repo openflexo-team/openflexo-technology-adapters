@@ -39,25 +39,35 @@ import org.openflexo.fge.Drawing.ConnectorNode;
 import org.openflexo.fge.Drawing.ContainerNode;
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.control.actions.DrawShapeAction;
+import org.openflexo.fge.geom.FGEPoint;
+import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaLayoutWidget;
 import org.openflexo.fge.swing.control.tools.JDianaPalette;
 import org.openflexo.fge.swing.control.tools.JDianaStyles;
 import org.openflexo.fge.swing.control.tools.JDianaToolSelector;
 import org.openflexo.fge.swing.view.JDrawingView;
+import org.openflexo.fib.FIBLibrary;
+import org.openflexo.fib.controller.FIBDialog;
+import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.selection.SelectionManagingDianaEditor;
+import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
+import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.AddShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.view.FlexoFrame;
 import org.openflexo.view.controller.FlexoController;
+import org.openflexo.view.controller.FlexoFIBController;
 
 /**
  * Abstraction of editor of a {@link Diagram}
@@ -127,17 +137,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			contextualPaletteModels = new Hashtable<DiagramPalette, AbstractDiagramPalette>();
 			contextualPalettes = new Hashtable<DiagramPalette, JDianaPalette>();
 
-			System.out.println("Hop, je regarde les palettes pour le DiagramSpecification="
-					+ diagramDrawing.getModel().getDiagramSpecification());
-
 			if (diagramDrawing.getModel().getDiagramSpecification() != null) {
-				System.out.println("Les palettes=" + diagramDrawing.getModel().getDiagramSpecification().getPalettes());
 				for (DiagramPalette palette : diagramDrawing.getModel().getDiagramSpecification().getPalettes()) {
-					System.out.println("Palette " + palette);
-					System.out.println("elements " + palette.getElements());
-					for (DiagramPaletteElement e : palette.getElements()) {
-						System.out.println("e: " + e + " gr=" + e.getGraphicalRepresentation());
-					}
 					ContextualPalette contextualPaletteModel = makeContextualPalette(palette);
 					contextualPaletteModels.put(palette, contextualPaletteModel);
 					JDianaPalette dianaPalette = swingToolFactory.makeDianaPalette(contextualPaletteModel);
@@ -147,23 +148,104 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			}
 		}
 
-		setDrawShapeAction(new DrawShapeAction() {
+		DrawShapeAction drawShapeAction = new DrawShapeAction() {
 			@Override
 			public void performedDrawNewShape(ShapeGraphicalRepresentation graphicalRepresentation, ContainerNode<?, ?> parentNode) {
-				/*System.out.println("OK, perform draw new shape with " + graphicalRepresentation + " et parent: "
+				/*System.out.println("OK, perform draw new shape with " + graphicalRepresentation + " and parent: "
 						+ parentGraphicalRepresentation);*/
 
-				AddShape action = AddShape.actionType.makeNewAction(getDiagram(), null, getFlexoController().getEditor());
+				/*AddShape action = AddShape.actionType.makeNewAction(getDiagram(), null, getFlexoController().getEditor());
 				action.setGraphicalRepresentation(graphicalRepresentation);
 				action.setNewShapeName(graphicalRepresentation.getText());
 				if (action.getNewShapeName() == null) {
 					action.setNewShapeName(FlexoLocalization.localizedForKey("shape"));
 				}
 
-				action.doAction();
+				action.doAction();*/
+
+				handleNewShapeCreation(graphicalRepresentation, parentNode, graphicalRepresentation.getLocation(), true, true, true, true,
+						false, false);
 
 			}
-		});
+		};
+
+		setDrawShapeAction(drawShapeAction);
+
+		setDrawCustomShapeAction(drawShapeAction);
+
+		toolSelector.handleToolChanged();
+	}
+
+	public boolean handleNewShapeCreation(ShapeGraphicalRepresentation shapeGR, ContainerNode<?, ?> parentNode, FGEPoint dropLocation,
+			boolean applyCurrentForeground, boolean applyCurrentBackground, boolean applyCurrentTextStyle, boolean applyCurrentShadowStyle,
+			boolean isImage, boolean resize) {
+
+		DiagramContainerElement<?> container = (DiagramContainerElement<?>) parentNode.getDrawable();
+
+		FlexoActionCompoundEdit edit = (FlexoActionCompoundEdit) getUndoManager().startRecording("Making new shape");
+
+		shapeGR.setIsReadOnly(false);
+		shapeGR.setIsFocusable(true);
+		shapeGR.setIsSelectable(true);
+		shapeGR.setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
+
+		if (resize) {
+			if (shapeGR.getShapeSpecification().getShapeType() == ShapeType.SQUARE
+					|| shapeGR.getShapeSpecification().getShapeType() == ShapeType.CIRCLE) {
+				shapeGR.setWidth(40);
+				shapeGR.setHeight(40);
+			} else {
+				shapeGR.setWidth(50);
+				shapeGR.setHeight(40);
+			}
+		}
+		if (applyCurrentForeground) {
+			shapeGR.setForeground(getInspectedForegroundStyle().cloneStyle());
+		}
+		if (applyCurrentBackground) {
+			shapeGR.setBackground(getInspectedBackgroundStyle().cloneStyle());
+		}
+		if (applyCurrentTextStyle) {
+			shapeGR.setTextStyle(getInspectedTextStyle().cloneStyle());
+		}
+		if (applyCurrentShadowStyle) {
+			shapeGR.setShadowStyle(getInspectedShadowStyle().cloneStyle());
+		}
+
+		shapeGR.setX(dropLocation.x);
+		shapeGR.setY(dropLocation.y);
+		// shapeGR.setAllowToLeaveBounds(true);
+
+		if (isImage) {
+			FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
+			FIBDialog dialog = FIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
+					new FlexoFIBController(fibComponent, getFlexoController()));
+		}
+
+		AddShape action = AddShape.actionType.makeNewAction(container, null, getFlexoController().getEditor());
+		action.setGraphicalRepresentation(shapeGR);
+		action.setNewShapeName(shapeGR.getText());
+		if (action.getNewShapeName() == null) {
+			action.setNewShapeName(FlexoLocalization.localizedForKey("shape"));
+		}
+
+		// action.nameSetToNull = true;
+		// action.setNewShapeName(FlexoLocalization.localizedForKey("unnamed"));
+
+		action.setCompoundEdit(edit);
+		action.doAction();
+
+		DiagramShape newShape = action.getNewShape();
+
+		logger.info("Hopala: newShape=" + newShape);
+		logger.info("Hopala: getDrawing().getDrawingTreeNode(newShape)=" + getDrawing().getDrawingTreeNode(newShape));
+
+		// getEditor().getUndoManager().stopRecording(edit);
+
+		setCurrentTool(EditorTool.SelectionTool);
+		setSelectedObject(getDrawing().getDrawingTreeNode(newShape));
+
+		return action.hasActionExecutionSucceeded();
 
 	}
 
