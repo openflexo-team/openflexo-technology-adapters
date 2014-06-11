@@ -46,9 +46,9 @@ public abstract class DiagramContainerElementImpl<G extends GraphicalRepresentat
 
 	@Override
 	public void addToShapes(DiagramShape aShape) {
-		if (getShapes().contains(aShape)) {
+		if (!getShapes().contains(aShape)) {
+			performSuperAdder(SHAPES, aShape);
 		}
-		performSuperAdder(SHAPES, aShape);
 	}
 
 }
