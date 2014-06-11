@@ -80,20 +80,24 @@ public class AddShapeInitializer extends ActionInitializer<AddShape, DiagramCont
 
 				getController().getSelectionManager().setSelectedObject(action.getNewShape());
 
-				System.out.println("Searching module view for " + action.getNewShape().getDiagram());
+				// System.out.println("Searching module view for " + action.getNewShape().getDiagram());
 
 				ModuleView<?> moduleView = getController().moduleViewForObject(action.getNewShape().getDiagram(), false);
-				System.out.println("moduleView=" + moduleView);
-				System.out.println("editor=" + ((FreeDiagramModuleView) moduleView).getEditor());
-				System.out.println("drawing=" + ((FreeDiagramModuleView) moduleView).getEditor().getDrawing());
-				ShapeNode<DiagramShape> shapeNode = ((FreeDiagramModuleView) moduleView).getEditor().getDrawing()
-						.getShapeNode(action.getNewShape());
-				JShapeView<DiagramShape> shapeView = ((FreeDiagramModuleView) moduleView).getEditor().getDrawingView()
-						.shapeViewForNode(shapeNode);
-				if (action.getNewShape() != null) {
-					if (shapeView.getLabelView() != null) {
-						shapeNode.setContinuousTextEditing(true);
-						shapeView.getLabelView().startEdition();
+
+				if (moduleView != null) {
+
+					// System.out.println("moduleView=" + moduleView);
+					// System.out.println("editor=" + ((FreeDiagramModuleView) moduleView).getEditor());
+					// System.out.println("drawing=" + ((FreeDiagramModuleView) moduleView).getEditor().getDrawing());
+					ShapeNode<DiagramShape> shapeNode = ((FreeDiagramModuleView) moduleView).getEditor().getDrawing()
+							.getShapeNode(action.getNewShape());
+					JShapeView<DiagramShape> shapeView = ((FreeDiagramModuleView) moduleView).getEditor().getDrawingView()
+							.shapeViewForNode(shapeNode);
+					if (action.getNewShape() != null) {
+						if (shapeView.getLabelView() != null) {
+							shapeNode.setContinuousTextEditing(true);
+							shapeView.getLabelView().startEdition();
+						}
 					}
 				}
 				return true;
