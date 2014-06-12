@@ -74,7 +74,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 	}
 
 	/**
-	 * Given a selection, compute a list of ViewElements ensuring deletion of right selection<br>
+	 * Given a selection, compute a list of elements ensuring deletion of right selection<br>
 	 * (extra selected embedded objects are removed from selection)
 	 * 
 	 * @param focusedObject
@@ -129,22 +129,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 		}
 		if (logger.isLoggable(Level.FINE)) {
 			logger.fine("selection is: " + getGlobalSelection());
-			// logger.fine("selection to delete is: " + getDiagramElementsToDelete());
-			// logger.fine("all objects to delete are: " + getAllObjectsThatWillBeDeleted());
 		}
-
-		/*if (deleteOntologicObjects) {
-			for (OntologicObjectEntry e : getOntologicObjectsToBeDeleted()) {
-				if (e.deleteIt && e.ontologicObject instanceof OntologyStatement) {
-					e.ontologicObject.delete();
-				}
-			}
-			for (OntologicObjectEntry e : getOntologicObjectsToBeDeleted()) {
-				if (e.deleteIt && !(e.ontologicObject instanceof OntologyStatement)) {
-					e.ontologicObject.delete();
-				}
-			}
-		}*/
 
 		/*for (FlexoConceptInstance epi : getEPIThatWillBeDeleted()) {
 			if (selectedFlexoConceptInstanceDeletionSchemes != null && selectedFlexoConceptInstanceDeletionSchemes.get(epi) != null) {
@@ -181,10 +166,11 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 			for (Iterator<DiagramConnector> connectors = impliedConnectors.iterator(); connectors.hasNext();) {
 				DiagramConnector connector = connectors.next();
 				if (!connector.isDeleted()) {
-					logger.info("Delete undeleted DiagramConnector " + connector);
+					logger.info("Try to delete undeleted DiagramConnector " + connector);
 					connector.delete();
-				} else {
 					logger.info("DiagramConnector " + connector + " has been successfully deleted");
+				} else {
+					logger.info("DiagramConnector " + connector + " has already been successfully deleted");
 				}
 			}
 		}
@@ -198,17 +184,6 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 				logger.info("DiagramElement " + o + " has been successfully deleted");
 			}
 		}
-
-		// delete(getGlobalSelection());
-
-		/*for (FlexoObject o : getDiagramElementsToDelete()) {
-			if (!o.isDeleted()) {
-				logger.info("Delete undeleted DiagramElement " + o);
-				o.delete();
-			} else {
-				logger.info("DiagramElement " + o + " has been successfully deleted");
-			}
-		}*/
 	}
 
 	/*public List<DeletableProxyObject> getDiagramElementsToDelete() {

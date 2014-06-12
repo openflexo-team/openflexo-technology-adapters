@@ -21,6 +21,9 @@ package org.openflexo.technologyadapter.diagram.model;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
@@ -279,4 +282,23 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 		return screenshotImage;
 	}
 
+	// @Override
+	@Override
+	public boolean delete(Object... context) {
+		// A list of connectors that may be deleted if a shape is connected to it
+		List<DiagramConnector> dependingConnectors = new ArrayList<DiagramConnector>();
+		dependingConnectors.addAll(getStartConnectors());
+		dependingConnectors.addAll(getEndConnectors());
+		for (Iterator<DiagramConnector> connectors = dependingConnectors.iterator(); connectors.hasNext();) {
+			DiagramConnector connector = connectors.next();
+			if (!connector.isDeleted()) {
+				logger.info("Try to delete undeleted DiagramConnector " + connector);
+				connector.delete();
+				logger.info("DiagramConnector " + connector + " has been successfully deleted");
+			} else {
+				logger.info("DiagramConnector " + connector + " has already been successfully deleted");
+			}
+		}
+		return super.delete(context);
+	}
 }

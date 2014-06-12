@@ -114,10 +114,6 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 		shapeGR.setY(dropLocation.y);
 		// shapeGR.setAllowToLeaveBounds(true);
 
-		System.out.println("OK, create AddShape");
-		System.out.println("location=" + shapeGR.getLocation());
-		System.out.println("size=" + shapeGR.getSize());
-
 		if (isImage) {
 			FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
 			FIBDialog dialog = FIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
@@ -138,10 +134,6 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 		action.doAction();
 
 		DiagramShape newShape = action.getNewShape();
-
-		System.out.println("Apres la creation:");
-		System.out.println("location=" + newShape.getGraphicalRepresentation().getLocation());
-		System.out.println("size=" + newShape.getGraphicalRepresentation().getSize());
 
 		// getEditor().getUndoManager().stopRecording(edit);
 
