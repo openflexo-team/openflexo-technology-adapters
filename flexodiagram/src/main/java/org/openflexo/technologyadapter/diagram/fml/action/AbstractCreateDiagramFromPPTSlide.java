@@ -472,12 +472,12 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			diagramShape = makePictureShape((Picture) shape);
 		} else if ((shape instanceof AutoShape) && (!isConnector(shape.getShapeType()))) {
 			diagramShape = makeAutoShape((AutoShape) shape);
+		} else if (shape instanceof Table) {
+			diagramShape = makeTable((Table) shape);
 		} else if (shape instanceof ShapeGroup) {
 			diagramShape = makeGroupShape((ShapeGroup) shape);
 		} else if (shape instanceof TextBox) {
 			diagramShape = makeTextBox((TextBox) shape);
-		} else if (shape instanceof Table) {
-			diagramShape = makeTable((Table) shape);
 		}
 		if (diagramShape != null) {
 			shapesMap.put(diagramShape, shape);
@@ -505,9 +505,9 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			}
 			if (containerShape != null && textShape != null) {
 				isShapeAndText = true;
-				DiagramShape shape = transformPowerpointShape(getDiagram(), containerShape);
-				setTextProperties(shape.getGraphicalRepresentation(), textShape);
-				shape.setName(textShape.getText());
+				DiagramShape newShape = transformPowerpointShape(getDiagram(), containerShape);
+				setTextProperties(newShape, newShape.getGraphicalRepresentation(), textShape, true);
+				newShape.setName(textShape.getText());
 			}
 		}
 		if (!isShapeAndText) {
@@ -519,12 +519,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			for (Shape shape : shapeGroup.getShapes()) {
 				transformPowerpointConnector(getDiagram(), shape);
 			}
-
-			/*for (Shape shape : shapeGroup.getShapes()) {
-				DiagramShape newShape = transformPowerpointShape(shape);
-				shapesMap.put(newShape, shape);
-				getDiagram().addToShapes(newShape);
-			}*/
 		}
 
 		return null;
@@ -544,7 +538,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 					DiagramShape newCell = makeTextBox(cell);
 					newCell.getGraphicalRepresentation().getForeground().setNoStroke(false);
 					newCell.getGraphicalRepresentation().setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
-					newTable.addToShapes(newCell);
+					getDiagram().addToShapes(newCell);
 				}
 			}
 		}
@@ -592,49 +586,17 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 		gr.setShapeSpecification(ss);
 		setDefaultGraphicalProperties(gr, freeformShape);
-
-		if (freeformShape.getLineColor() != null) {
-			gr.setForeground(getDiagramFactory().makeForegroundStyle(freeformShape.getLineColor(), (float) freeformShape.getLineWidth(),
-					convertDashLineStyles(freeformShape.getLineDashing())));
-		} else {
-			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
-		}
-
-		if (freeformShape.getFillColor() != null) {
-			gr.setBackground(getDiagramFactory().makeColoredBackground(freeformShape.getFillColor()));
-		} else {
-			gr.setBackground(getDiagramFactory().makeEmptyBackground());
-			gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
-		}
-
-		setTextProperties(gr, freeformShape);
+		setTextProperties(newShape, gr, freeformShape, true);
 		newShape.setGraphicalRepresentation(gr);
 		return newShape;
 	}
 
 	private DiagramShape makeAutoShape(AutoShape autoShape) {
 		DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(autoShape), getDiagram());
-
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
-
 		setDiagramShapeShapeType(gr, autoShape);
 		setDefaultGraphicalProperties(gr, autoShape);
-
-		if (autoShape.getLineColor() != null) {
-			gr.setForeground(getDiagramFactory().makeForegroundStyle(autoShape.getLineColor(), (float) autoShape.getLineWidth(),
-					convertDashLineStyles(autoShape.getLineDashing())));
-		} else {
-			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
-		}
-
-		if (autoShape.getFillColor() != null) {
-			gr.setBackground(getDiagramFactory().makeColoredBackground(autoShape.getFillColor()));
-		} else {
-			gr.setBackground(getDiagramFactory().makeEmptyBackground());
-			gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
-		}
-
-		setTextProperties(gr, autoShape);
+		setTextProperties(newShape, gr, autoShape, true);
 		newShape.setGraphicalRepresentation(gr);
 		return newShape;
 	}
@@ -642,12 +604,14 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	private String getShapeName(Shape shape) {
 		if (shape instanceof TextShape && ((TextShape) shape).getText() != null) {
 			return ((TextShape) shape).getText();
-		} else if (shape instanceof Picture && ((Picture) shape).getPictureName() != null) {
+		} /*else if (shape instanceof Picture && ((Picture) shape).getPictureName() != null) {
 			return ((Picture) shape).getPictureName();
-		} else if (shape.getShapeName() != null) {
-			return shape.getShapeName();
-		} else {
-			return "shape_" + shape.getShapeId();
+			}*/else {
+			return "";/* if (shape.getShapeName() != null) {
+						return shape.getShapeName();
+						} else {
+						return "shape_" + shape.getShapeId();
+						}*/
 		}
 	}
 
@@ -674,15 +638,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		targetShapeGR.setHeight(2);
 		targetShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
 
-		DiagramConnector newConnector = getDiagramFactory().makeNewConnector(line.getShapeName(), sourceShape, targetShape, getDiagram());
+		DiagramConnector newConnector = getDiagramFactory().makeNewConnector(getShapeName(line), sourceShape, targetShape, getDiagram());
 		ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
-
-		if (line.getLineColor() != null) {
-			gr.setForeground(getDiagramFactory().makeForegroundStyle(line.getLineColor(), (float) line.getLineWidth(),
-					convertDashLineStyles(line.getLineDashing())));
-		} else {
-			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
-		}
 		setConnectorType(gr, line);
 		newConnector.setGraphicalRepresentation(gr);
 		return newConnector;
@@ -711,16 +668,9 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		targetShapeGR.setHeight(2);
 		targetShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
 
-		DiagramConnector newConnector = getDiagramFactory()
-				.makeNewConnector(poiConnector.getText(), sourceShape, targetShape, getDiagram());
+		DiagramConnector newConnector = getDiagramFactory().makeNewConnector(getShapeName(poiConnector), sourceShape, targetShape,
+				getDiagram());
 		ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
-
-		if (poiConnector.getLineColor() != null) {
-			gr.setForeground(getDiagramFactory().makeForegroundStyle(poiConnector.getLineColor(), (float) poiConnector.getLineWidth(),
-					convertDashLineStyles(poiConnector.getLineDashing())));
-		} else {
-			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
-		}
 		setConnectorType(gr, poiConnector);
 		newConnector.setGraphicalRepresentation(gr);
 		return newConnector;
@@ -753,12 +703,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			DiagramConnector newConnector = getDiagramFactory().makeNewConnector(getShapeName(poiConnector), sourceShape, targetShape,
 					getDiagram());
 			ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
-			if (poiConnector.getLineColor() != null) {
-				gr.setForeground(getDiagramFactory().makeForegroundStyle(poiConnector.getLineColor(), (float) poiConnector.getLineWidth(),
-						convertDashLineStyles(poiConnector.getLineDashing())));
-			} else {
-				gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
-			}
 			setConnectorType(gr, poiConnector);
 			newConnector.setGraphicalRepresentation(gr);
 			return newConnector;
@@ -768,19 +712,13 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	private DiagramShape makeTextBox(TextBox textBox) {
-
 		DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(textBox), getDiagram());
-
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 		setDiagramShapeShapeType(gr, textBox);
 		setDefaultGraphicalProperties(gr, textBox);
-		gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
-		gr.setBackground(getDiagramFactory().makeEmptyBackground());
-		gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
-		setTextProperties(gr, textBox);
+		setTextProperties(newShape, gr, textBox, true);
 		gr.setLayer(2);
 		newShape.setGraphicalRepresentation(gr);
-
 		return newShape;
 	}
 
@@ -884,17 +822,91 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		returned.setHeight(shape.getLogicalAnchor2D().getHeight());
 		returned.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
 		returned.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
+		if (shape instanceof SimpleShape) {
+			if (((SimpleShape) shape).getLineColor() != null) {
+				returned.setForeground(getDiagramFactory().makeForegroundStyle(((SimpleShape) shape).getLineColor(),
+						(float) ((SimpleShape) shape).getLineWidth(), convertDashLineStyles(((SimpleShape) shape).getLineDashing())));
+			} else {
+				returned.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+			}
+			if (((SimpleShape) shape).getFillColor() != null) {
+				returned.setBackground(getDiagramFactory().makeColoredBackground(((SimpleShape) shape).getFillColor()));
+			} else {
+				returned.setBackground(getDiagramFactory().makeEmptyBackground());
+				returned.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
+			}
+		} else {
+			returned.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+			returned.setBackground(getDiagramFactory().makeEmptyBackground());
+			returned.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
+		}
 	}
 
-	private void setTextProperties(ShapeGraphicalRepresentation returned, TextShape textShape) {
+	private DiagramShape makeShapeFromBullet(TextRun textRun, RichTextRun rtr, DiagramShape shape, TextShape textShape) {
+		// Create Bullet
+		FGEPoint bulletPosition = new FGEPoint(textRun.getTextRuler().getBulletOffsets()[0] + rtr.getIndentLevel(), textRun.getTextRuler()
+				.getBulletOffsets()[1] + rtr.getLineSpacing() * 0.1 * rtr.getStartIndex());
+		DiagramShape newBulletShape = getDiagramFactory().makeNewShape("", ShapeType.CIRCLE, bulletPosition, getDiagram());
+		newBulletShape.getGraphicalRepresentation().setForeground(getDiagramFactory().makeNoneForegroundStyle());
+		newBulletShape.getGraphicalRepresentation().setBackground(getDiagramFactory().makeColoredBackground(Color.BLACK));
+		newBulletShape.getGraphicalRepresentation().setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
+		newBulletShape.getGraphicalRepresentation().setHeight(rtr.getBulletSize() * 0.1);
+		newBulletShape.getGraphicalRepresentation().setWidth(rtr.getBulletSize() * 0.1);
 
-		// TODO Handle several text styles in a text shape
+		// Create Text
+		DiagramShape newTextShape = getDiagramFactory().makeNewShape(rtr.getRawText(), getDiagram());
+		newTextShape.getGraphicalRepresentation().setX(
+				textRun.getTextRuler().getBulletOffsets()[0] + rtr.getIndentLevel() * rtr.getBulletSize());
+		newTextShape.getGraphicalRepresentation().setY(
+				textRun.getTextRuler().getBulletOffsets()[1] + rtr.getLineSpacing() * 0.1 * rtr.getStartIndex());
+		newTextShape.getGraphicalRepresentation().setLayer(shape.getGraphicalRepresentation().getLayer() + 1);
+		newTextShape.getGraphicalRepresentation().setForeground(getDiagramFactory().makeNoneForegroundStyle());
+		newTextShape.getGraphicalRepresentation().setBackground(getDiagramFactory().makeEmptyBackground());
+		newTextShape.getGraphicalRepresentation().setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
+		newTextShape.getGraphicalRepresentation().setHeight(rtr.getFontSize());
+		newTextShape.getGraphicalRepresentation().setWidth(rtr.getLength());
+
+		String fontName = rtr.getFontName();
+		int fontSize = rtr.getFontSize();
+		Color color = rtr.getFontColor();
+		int fontStyle = Font.PLAIN | (rtr.isBold() ? Font.BOLD : Font.PLAIN) | (rtr.isItalic() ? Font.ITALIC : Font.PLAIN);
+		Font f = new Font(fontName, fontStyle, fontSize);
+		TextStyle textStyle = getDiagramFactory().makeTextStyle(color, f);
+		newTextShape.getGraphicalRepresentation().setTextStyle(textStyle);
+
+		getDiagram().addToShapes(newTextShape);
+		getDiagram().addToShapes(newBulletShape);
+		return null;
+	}
+
+	private boolean hasBullets(TextRun textRun) {
+		boolean hasBullets = false;
+		RichTextRun[] rts = textRun.getRichTextRuns();
+		if (rts.length > 0) {
+			for (int i = 0; i < rts.length; i++) {
+				RichTextRun rtr = rts[i];
+				if (rtr.isBullet() || rtr.isBulletHard()) {
+					hasBullets = true;
+				}
+			}
+		}
+		return hasBullets;
+	}
+
+	private void setTextProperties(DiagramShape shape, ShapeGraphicalRepresentation returned, TextShape textShape,
+			boolean convertBulletsToShapes) {
+
 		if (textShape.getTextRun() != null) {
 			TextRun textRun = textShape.getTextRun();
-			RichTextRun[] rt = textRun.getRichTextRuns();
-
-			if (rt.length > 0) {
-				RichTextRun rtr = rt[0];
+			RichTextRun[] rts = textRun.getRichTextRuns();
+			if (rts.length > 0) {
+				/*if (convertBulletsToShapes && hasBullets(textRun)) {
+					for (int i = 0; i < rts.length; i++) {
+						RichTextRun rtr = rts[i];
+						makeShapeFromBullet(textRun, rtr, shape, textShape);
+					}
+				} else {*/
+				RichTextRun rtr = rts[0];
 				String fontName = rtr.getFontName();
 				int fontSize = rtr.getFontSize();
 				Color color = rtr.getFontColor();
@@ -902,6 +914,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 				Font f = new Font(fontName, fontStyle, fontSize);
 				TextStyle textStyle = getDiagramFactory().makeTextStyle(color, f);
 				returned.setTextStyle(textStyle);
+				// }
 			}
 		}
 
@@ -911,41 +924,37 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		returned.setRelativeTextX(0.5);
 		returned.setRelativeTextY(0.5);
 
-		try {
-			switch (textShape.getVerticalAlignment()) {
-			case TextShape.AnchorTop:
-				returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-				break;
-			case TextShape.AnchorMiddle:
-				returned.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
-				break;
-			case TextShape.AnchorBottom:
-				returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-				break;
-			case TextShape.AnchorTopCentered:
-				returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-				break;
-			case TextShape.AnchorMiddleCentered:
-				returned.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
-				break;
-			case TextShape.AnchorBottomCentered:
-				returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-				break;
-			case TextShape.AnchorTopBaseline:
-				returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-				break;
-			case TextShape.AnchorBottomBaseline:
-				returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-				break;
-			case TextShape.AnchorTopCenteredBaseline:
-				returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-				break;
-			case TextShape.AnchorBottomCenteredBaseline:
-				returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-				break;
-			}
-		} catch (NullPointerException e) {
-
+		switch (textShape.getVerticalAlignment()) {
+		case TextShape.AnchorTop:
+			returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+			break;
+		case TextShape.AnchorMiddle:
+			returned.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+			break;
+		case TextShape.AnchorBottom:
+			returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+			break;
+		case TextShape.AnchorTopCentered:
+			returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+			break;
+		case TextShape.AnchorMiddleCentered:
+			returned.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+			break;
+		case TextShape.AnchorBottomCentered:
+			returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+			break;
+		case TextShape.AnchorTopBaseline:
+			returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+			break;
+		case TextShape.AnchorBottomBaseline:
+			returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+			break;
+		case TextShape.AnchorTopCenteredBaseline:
+			returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+			break;
+		case TextShape.AnchorBottomCenteredBaseline:
+			returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+			break;
 		}
 
 		switch (textShape.getHorizontalAlignment()) {
@@ -968,7 +977,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		}
 
 		returned.setLineWrap(true);
-
 	}
 
 	private void setDiagramShapeShapeType(ShapeGraphicalRepresentation gr, Shape shape) {
