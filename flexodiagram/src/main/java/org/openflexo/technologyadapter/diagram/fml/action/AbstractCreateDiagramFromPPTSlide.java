@@ -924,37 +924,41 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		returned.setRelativeTextX(0.5);
 		returned.setRelativeTextY(0.5);
 
-		switch (textShape.getVerticalAlignment()) {
-		case TextShape.AnchorTop:
-			returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-			break;
-		case TextShape.AnchorMiddle:
-			returned.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
-			break;
-		case TextShape.AnchorBottom:
-			returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-			break;
-		case TextShape.AnchorTopCentered:
-			returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-			break;
-		case TextShape.AnchorMiddleCentered:
-			returned.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
-			break;
-		case TextShape.AnchorBottomCentered:
-			returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-			break;
-		case TextShape.AnchorTopBaseline:
-			returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-			break;
-		case TextShape.AnchorBottomBaseline:
-			returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-			break;
-		case TextShape.AnchorTopCenteredBaseline:
-			returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-			break;
-		case TextShape.AnchorBottomCenteredBaseline:
-			returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-			break;
+		try {
+			switch (textShape.getVerticalAlignment()) {
+			case TextShape.AnchorTop:
+				returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+				break;
+			case TextShape.AnchorMiddle:
+				returned.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+				break;
+			case TextShape.AnchorBottom:
+				returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+				break;
+			case TextShape.AnchorTopCentered:
+				returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+				break;
+			case TextShape.AnchorMiddleCentered:
+				returned.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+				break;
+			case TextShape.AnchorBottomCentered:
+				returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+				break;
+			case TextShape.AnchorTopBaseline:
+				returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+				break;
+			case TextShape.AnchorBottomBaseline:
+				returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+				break;
+			case TextShape.AnchorTopCenteredBaseline:
+				returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+				break;
+			case TextShape.AnchorBottomCenteredBaseline:
+				returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+				break;
+			}
+		} catch (NullPointerException e) {
+
 		}
 
 		switch (textShape.getHorizontalAlignment()) {
