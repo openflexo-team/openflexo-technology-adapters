@@ -79,7 +79,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoFileResourceImpl<Ex
 			returned.setFile(excelFile);
 			returned.setURI(modelURI);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			technologyContextManager.registerResource(returned);
+			// technologyContextManager.registerResource(returned);
 
 			try {
 				ExcelWorkbook resourceData = returned.loadResourceData(null);
@@ -108,16 +108,21 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoFileResourceImpl<Ex
 	 */
 	public static ExcelWorkbookResource retrieveExcelWorkbookResource(File modelFile, ExcelTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ExcelWorkbookResource.class);
-			ExcelWorkbookResourceImpl returned = (ExcelWorkbookResourceImpl) factory.newInstance(ExcelWorkbookResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			returned.setName(modelFile.getName());
-			returned.setFile(modelFile);
-			returned.setURI(modelFile.toURI().toString());
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			technologyContextManager.registerResource(returned);
-			return returned;
+			if (technologyContextManager.getResourceWithURI(modelFile.toURI().toString()) != null) {
+				return (ExcelWorkbookResource) technologyContextManager.getResourceWithURI(modelFile.toURI().toString());
+			} else {
+				ModelFactory factory = new ModelFactory(ExcelWorkbookResource.class);
+				ExcelWorkbookResourceImpl returned = (ExcelWorkbookResourceImpl) factory.newInstance(ExcelWorkbookResource.class);
+				returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+				returned.setTechnologyContextManager(technologyContextManager);
+				returned.setName(modelFile.getName());
+				returned.setFile(modelFile);
+				returned.setURI(modelFile.toURI().toString());
+				returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService()
+						.getServiceManager());
+				technologyContextManager.registerResource(returned);
+				return returned;
+			}
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}
