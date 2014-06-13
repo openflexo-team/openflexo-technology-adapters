@@ -103,6 +103,8 @@ public interface AddExcelRow extends AssignableAction<BasicExcelModelSlot, Excel
 								excelRow.getExcelCells().addAll(getExcelCells().getBindingValue(action));
 							}
 							modelSlotInstance.getResourceData().setIsModified();
+							excelSheet.getWorkbook().getResource().setModified(true);
+
 						} else {
 							logger.warning("Create a row requires a rowindex");
 						}
