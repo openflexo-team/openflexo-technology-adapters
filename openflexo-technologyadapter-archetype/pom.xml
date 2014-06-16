@@ -16,8 +16,4 @@
     <!--project.reporting.outputEncoding>latin1</project.reporting.outputEncoding-->
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
-
-  <scm>
-    <tag>1.7.0</tag>
-  </scm>
 </project>
