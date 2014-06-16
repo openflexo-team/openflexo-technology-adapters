@@ -4,11 +4,11 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-		<version>1.7-SNAPSHOT</version>
+		<version>1.7.1-beta-SNAPSHOT</version>
 	</parent>
 	<artifactId>owlconnector</artifactId>
 	<name>OWL technology connector</name>
-	<version>1.7-SNAPSHOT</version>
+	<version>1.7.1-beta-SNAPSHOT</version>
 	<build>
 		<plugins>
 			<plugin>
