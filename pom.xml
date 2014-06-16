@@ -24,7 +24,7 @@
 		<poi.version>3.10-FINAL</poi.version>
 	</properties>
 	<scm>
-		<connection>scm:git:ssh://git@github.com:/openflexo-team/openflexo-core.git</connection>
+		<connection>scm:git:ssh://git@github.com/openflexo-team/openflexo-core.git</connection>
 		<url>https://github.com/openflexo-team/openflexo-core</url>
 	</scm>
 	<modules>
@@ -45,12 +45,12 @@
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-foundation</artifactId>
-				<version>${project.version}</version>
+				<version>${flexocore.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-foundation</artifactId>
-				<version>${project.version}</version>
+				<version>${flexocore.version}</version>
 				<classifier>tests</classifier>
 			</dependency>
 
@@ -143,7 +143,7 @@
 			<artifactId>flexo-ui</artifactId>
 			<scope>test</scope>
 				<classifier>tests</classifier>
-				<version>${project.version}</version>
+				<version>${flexocore.version}</version>
 		</dependency>
 
 

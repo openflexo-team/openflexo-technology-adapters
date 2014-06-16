@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>owlconnector</artifactId>
 	<name>OWL technology connector</name>
-	<version>${flexocore.version}</version>
+	<version>1.7-SNAPSHOT</version>
 	<build>
 		<plugins>
 			<plugin>
