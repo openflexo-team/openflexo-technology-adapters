@@ -21,7 +21,7 @@
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
-			<version>${project.version}</version>
+			<version>${flexocore.version}</version>
 		</dependency>
 		<!-- TODO: please remove this dependancy -->
 		<dependency>
