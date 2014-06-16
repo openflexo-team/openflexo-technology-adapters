@@ -8,7 +8,7 @@
   </parent>
   <groupId>org.openflexo.archetypes</groupId>
   <artifactId>technologyadapter-archetype</artifactId>
-  <version>1.7.0-beta</version>
+  <version>1.2</version>
   <packaging>maven-archetype</packaging>
   <name>technologyadapter-archetype</name>
   <description>Provides technologyadapter development generator for Openflexo</description>
@@ -16,10 +16,4 @@
     <!--project.reporting.outputEncoding>latin1</project.reporting.outputEncoding-->
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
-  
-   
-
-  <scm>
-    <tag>Openflexo-Technology-Adapters-1.7.0-beta</tag>
-  </scm>
 </project>
