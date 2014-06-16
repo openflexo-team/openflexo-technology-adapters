@@ -18,8 +18,8 @@
 		<diana.version>1.0</diana.version>
 		<jiraclient.version>1.0</jiraclient.version>
 		<flexohelp.version>1.0</flexohelp.version>
-		<flexodocresourcecenter.version>1.0</flexodocresourcecenter.version>
-		<flexodocresourcemanager.version>1.0</flexodocresourcemanager.version>
+		<flexodocresourcecenter.version>1.7.0-beta</flexodocresourcecenter.version>
+		<flexodocresourcemanager.version>1.7.0-beta</flexodocresourcemanager.version>
 		<poi.version>3.10-FINAL</poi.version>
 	</properties>
 	<scm>
