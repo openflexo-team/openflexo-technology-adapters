@@ -11,17 +11,6 @@
 	<artifactId>openflexo-technology-adapters-ui</artifactId>
 	<name>Openflexo-Technology-Adapters UI</name>
 	<packaging>pom</packaging>
-	<properties>
-		<gina.version>1.0-SNAPSHOT</gina.version>
-		<connie.version>1.0-SNAPSHOT</connie.version>
-		<pamela.version>1.0-SNAPSHOT</pamela.version>
-		<diana.version>1.0-SNAPSHOT</diana.version>
-		<jiraclient.version>1.0-SNAPSHOT</jiraclient.version>
-		<flexohelp.version>1.0-SNAPSHOT</flexohelp.version>
-		<flexowysiwyg.version>1.0-SNAPSHOT</flexowysiwyg.version>
-		<flexodocresourcecenter.version>1.0-SNAPSHOT</flexodocresourcecenter.version>
-		<flexodocresourcemanager.version>1.0-SNAPSHOT</flexodocresourcemanager.version>
-	</properties>
 	<scm>
 		<connection>scm:git:ssh://git@github.com:openflexo-team/openflexo-technology-adapters.git</connection>
 		<url>https://github.com/openflexo-team/openflexo-technology-adapters</url>
@@ -41,18 +30,18 @@
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
-				<version>${project.version}</version>
+				<version>${flexocore.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
 				<version>${project.version}</version>
-				<classifier>tests</classifier>
+				<classifier>flexocore</classifier>
 			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
-				<version>${project.version}</version>
+				<version>${flexocore.version}</version>
 				<classifier>resources</classifier>
 				<type>zip</type>
 			</dependency>
