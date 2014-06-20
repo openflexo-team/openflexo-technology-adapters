@@ -36,10 +36,22 @@ public interface IFreeplaneMap extends TechnologyObject<FreeplaneTechnologyAdapt
 
     public static final String MAP_MODEL_KEY = "mapModel";
 
+    public static final String ROOT_NODE_KEY = "rootNode";
+
+    /**
+     * 
+     * @return the instance of the freeplane MapMadel object
+     */
     @Getter(value = MAP_MODEL_KEY, ignoreType = true)
     public MapModel getMapModel();
 
     @Setter(value = MAP_MODEL_KEY)
     public void setMapModel(MapModel map);
+
+    @Getter(value = ROOT_NODE_KEY)
+    public IFreeplaneNode getRoot();
+
+    @Setter(value = ROOT_NODE_KEY)
+    public void setRootNode(IFreeplaneNode node);
 
 }

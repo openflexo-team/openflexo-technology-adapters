@@ -53,7 +53,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 
     public static final String    FREEPLANE_FILE_EXTENSION = ".mm";
 
-    protected static final Logger logger                   = Logger.getLogger(FreeplaneTechnologyAdapter.class.getPackage().getName());
+    protected static final Logger LOGGER                   = Logger.getLogger(FreeplaneTechnologyAdapter.class.getPackage().getName());
 
     public FreeplaneTechnologyAdapter() throws TechnologyAdapterInitializationException {
     }
@@ -123,7 +123,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
                 this.referenceResource(freeplaneResourceFile, resourceCenter);
             } catch (final IOException e) {
                 final String msg = "Error during getting Freeplane resource folder";
-                logger.log(Level.SEVERE, msg, e);
+                LOGGER.log(Level.SEVERE, msg, e);
             }
         }
     }
@@ -150,6 +150,9 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
         return false;
     }
 
+    /* (non-Javadoc)
+     * @see org.openflexo.foundation.technologyadapter.TechnologyAdapter#contentsAdded(org.openflexo.foundation.resource.FlexoResourceCenter, java.lang.Object)
+     */
     @Override
     public <I> void contentsAdded(final FlexoResourceCenter<I> resourceCenter, final I contents) {
         if (contents instanceof File) {

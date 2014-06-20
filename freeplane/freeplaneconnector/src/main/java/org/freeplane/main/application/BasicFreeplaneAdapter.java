@@ -64,7 +64,7 @@ import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 
 public class BasicFreeplaneAdapter {
 
-    private static final Logger                logger   = Logger.getLogger(BasicFreeplaneAdapter.class.getName());
+    private static final Logger                LOGGER   = Logger.getLogger(BasicFreeplaneAdapter.class.getName());
 
     private final static BasicFreeplaneAdapter INSTANCE = new BasicFreeplaneAdapter();
 
@@ -77,7 +77,7 @@ public class BasicFreeplaneAdapter {
             this.init();
         } catch (final Exception e) {
             final String msg = "";
-            logger.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.SEVERE, msg, e);
         }
     }
 
@@ -100,8 +100,9 @@ public class BasicFreeplaneAdapter {
     private void init() throws Exception {
         final String oldHandler = System.getProperty("java.protocol.handler.pkgs");
         String newHandler = "org.freeplane.main.application.protocols";
-        if (oldHandler != null)
+        if (oldHandler != null) {
             newHandler = oldHandler + '|' + newHandler;
+        }
         System.setProperty("java.protocol.handler.pkgs", newHandler);
 
         this.applicationResourceController = new ApplicationResourceController();
@@ -172,20 +173,14 @@ public class BasicFreeplaneAdapter {
     private void loadMaps(final Controller controller, final String... args) {
         controller.selectMode(MModeController.MODENAME);
         for (final String arg : args) {
-            String fileArgument = arg;
+            final String fileArgument = arg;
             try {
                 final URL url;
-                if (fileArgument.startsWith("http://")) {
-                    LinkController.getController().loadURI(new URI(fileArgument));
-                }
-                else if (fileArgument.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
+                if (fileArgument.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
                     final String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(fileArgument);
                     LinkController.getController().loadURI(new URI(fixedUri));
                 }
                 else {
-                    if (!FileUtils.isAbsolutePath(fileArgument)) {
-                        fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
-                    }
                     url = Compat.fileToUrl(new File(fileArgument));
                     if (url.getPath().toLowerCase().endsWith(org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
                         final MModeController modeController = (MModeController) controller.getModeController();
@@ -194,7 +189,7 @@ public class BasicFreeplaneAdapter {
                     }
                 }
             } catch (final Exception ex) {
-                logger.log(Level.SEVERE, "error while loading map", ex);
+                LOGGER.log(Level.SEVERE, "error while loading map", ex);
             }
         }
     }
@@ -298,25 +293,28 @@ public class BasicFreeplaneAdapter {
             if (this.window == null) {
                 this.initFrame();
             }
-            final JPanel a = this.window.panel(new MapViewMatcher(JPanel.class)).component();
-            return a;
+            return this.window.panel(new MapViewMatcher(JPanel.class)).component();
         } catch (final Exception e) {
             final String msg = "Error while getting Freeplane component";
-            logger.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.SEVERE, msg, e);
         }
         return new JPanel();
     }
 
+    /**
+     * Get icon toolbar for freeplane nodes
+     * 
+     * @return JToolBar, or null if Exception is raised.
+     */
     public JToolBar getIconToolar() {
         try {
             if (this.window == null) {
                 this.initFrame();
             }
-            final JToolBar returned = this.window.toolBar(new IconToolBarMatcher(JToolBar.class)).component();
-            return returned;
+            return this.window.toolBar(new IconToolBarMatcher(JToolBar.class)).component();
         } catch (final Exception e) {
             final String msg = "Error while getting Freeplane component";
-            logger.log(Level.SEVERE, msg, e);
+            LOGGER.log(Level.SEVERE, msg, e);
         }
         return null;
     }
@@ -341,6 +339,13 @@ public class BasicFreeplaneAdapter {
 
     }
 
+    /**
+     * 
+     * Extension of FEST Matcher to find the icon toolbar
+     * 
+     * @author eloubout
+     * 
+     */
     private class IconToolBarMatcher extends GenericTypeMatcher<JToolBar> {
 
         public IconToolBarMatcher(final Class<JToolBar> supportedType) {
@@ -349,7 +354,7 @@ public class BasicFreeplaneAdapter {
 
         @Override
         protected boolean isMatching(final JToolBar component) {
-            return component instanceof FreeplaneToolBar && component.getName().equals("icon_toolbar");
+            return component instanceof FreeplaneToolBar && "icon_toolbar".equals(component.getName());
         }
     }
 }

@@ -20,8 +20,6 @@
 
 package org.openflexo.technologyadapter.freeplane.gui;
 
-import java.util.logging.Logger;
-
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -29,13 +27,18 @@ import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ImageIconResource;
 
 public class FreeplaneIconLibrary {
-	private static final Logger		logger							= Logger.getLogger(FreeplaneIconLibrary.class.getPackage().getName());
 
-	public static final ImageIcon	FREEPLANE_TECHNOLOGY_BIG_ICON	= new ImageIconResource(ResourceLocator.locateResource("Icons/Freeplane_frame_icon_32x32.png"));
-	public static final ImageIcon	FREEPLANE_TECHNOLOGY_ICON		= new ImageIconResource(ResourceLocator.locateResource("Icons/Freeplane_frame_icon.png"));
-	public static final ImageIcon	FREEPLANE_FILE_ICON				= FREEPLANE_TECHNOLOGY_ICON;
+    public static final ImageIcon FREEPLANE_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Freeplane_frame_icon_32x32.png"));
+    public static final ImageIcon FREEPLANE_TECHNOLOGY_ICON     = new ImageIconResource(ResourceLocator.locateResource("Icons/Freeplane_frame_icon.png"));
+    public static final ImageIcon FREEPLANE_FILE_ICON           = FREEPLANE_TECHNOLOGY_ICON;
 
-	public static ImageIcon iconForObject(final Class<? extends TechnologyObject> objectClass) {
-		return FREEPLANE_TECHNOLOGY_ICON;
-	}
+    public static ImageIcon iconForObject(final Class<? extends TechnologyObject> objectClass) {
+        return FREEPLANE_TECHNOLOGY_ICON;
+    }
+
+    /*
+     * Utility class ==> no public constructor
+     */
+    private FreeplaneIconLibrary() {
+    }
 }

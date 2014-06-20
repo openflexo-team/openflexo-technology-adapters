@@ -18,8 +18,12 @@ public abstract class FreeplaneMapImpl implements IFreeplaneMap {
         this.technologyAdapter = technologyAdapter;
     }
 
+    /* (non-Javadoc)
+     * @see org.openflexo.foundation.technologyadapter.TechnologyObject#getTechnologyAdapter()
+     */
     @Override
     public FreeplaneTechnologyAdapter getTechnologyAdapter() {
         return this.technologyAdapter;
     }
+
 }

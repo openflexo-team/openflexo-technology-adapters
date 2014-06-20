@@ -21,20 +21,10 @@
 package org.openflexo.technologyadapter.freeplane.metamodel;
 
 import org.openflexo.foundation.viewpoint.FlexoRole;
-import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.technologyadapter.freeplane.metamodel.IFreeplaneNodeRole.FreeplaneNodeImpl;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
 @ModelEntity
-@ImplementationClass(FreeplaneNodeImpl.class)
 public interface IFreeplaneNodeRole extends FlexoRole<IFreeplaneNode> {
 
-	public static abstract class FreeplaneNodeImpl extends FlexoRoleImpl<IFreeplaneNode> implements IFreeplaneNodeRole {
-
-		public FreeplaneNodeImpl() {
-			super();
-		}
-
-	}
 }

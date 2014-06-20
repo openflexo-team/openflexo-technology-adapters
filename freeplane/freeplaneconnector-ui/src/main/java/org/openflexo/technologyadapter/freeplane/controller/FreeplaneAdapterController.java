@@ -20,8 +20,6 @@
 
 package org.openflexo.technologyadapter.freeplane.controller;
 
-import java.util.logging.Logger;
-
 import javax.swing.ImageIcon;
 
 import org.freeplane.main.application.BasicFreeplaneAdapter;
@@ -41,7 +39,6 @@ import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 public class FreeplaneAdapterController extends TechnologyAdapterController<FreeplaneTechnologyAdapter> {
-    static final Logger logger = Logger.getLogger(FreeplaneAdapterController.class.getPackage().getName());
 
     @Override
     public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {
@@ -51,6 +48,9 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
     @Override
     public void initializeActions(final ControllerActionInitializer actionInitializer) {
         actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/Freeplane"));
+
+        new AddChildNodeInitializer(actionInitializer);
+        new CreateMapInitializer(actionInitializer);
     }
 
     @Override

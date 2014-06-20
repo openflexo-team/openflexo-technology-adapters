@@ -60,7 +60,7 @@ public interface IFreeplaneModelSlot extends ModelSlot<IFreeplaneMap> {
 
     public static abstract class FreeplaneModelSlotImpl extends ModelSlotImpl<IFreeplaneMap> implements IFreeplaneModelSlot {
 
-        private static final Logger logger = Logger.getLogger(IFreeplaneModelSlot.class.getPackage().getName());
+        private static final Logger LOGGER = Logger.getLogger(IFreeplaneModelSlot.class.getPackage().getName());
 
         @Override
         public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {
