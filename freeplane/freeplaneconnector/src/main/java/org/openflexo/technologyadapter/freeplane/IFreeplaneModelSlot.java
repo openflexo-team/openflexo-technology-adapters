@@ -21,7 +21,6 @@
 package org.openflexo.technologyadapter.freeplane;
 
 import java.lang.reflect.Type;
-import java.util.logging.Logger;
 
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
@@ -59,8 +58,6 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 public interface IFreeplaneModelSlot extends ModelSlot<IFreeplaneMap> {
 
     public static abstract class FreeplaneModelSlotImpl extends ModelSlotImpl<IFreeplaneMap> implements IFreeplaneModelSlot {
-
-        private static final Logger LOGGER = Logger.getLogger(IFreeplaneModelSlot.class.getPackage().getName());
 
         @Override
         public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {

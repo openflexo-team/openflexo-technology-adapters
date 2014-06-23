@@ -2,7 +2,9 @@ package org.openflexo.technologyadapter.freeplane.model.actions;
 
 import java.util.Vector;
 
-import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapController;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.action.ActionGroup;
@@ -36,8 +38,8 @@ public class AddChildNode extends FlexoAction<AddChildNode, IFreeplaneNode, IFre
         }
     }
 
-    public static FlexoActionType<AddChildNode, IFreeplaneNode, IFreeplaneMap> actionType = new AddChildNodeActionType("create_data_property", FlexoActionType.newMenu, FlexoActionType.defaultGroup,
-                                                                                                  FlexoActionType.ADD_ACTION_TYPE);
+    public static final FlexoActionType<AddChildNode, IFreeplaneNode, IFreeplaneMap> actionType = new AddChildNodeActionType("add_child_node", FlexoActionType.newMenu, FlexoActionType.editGroup,
+                                                                                                        FlexoActionType.ADD_ACTION_TYPE);
 
     public AddChildNode(final IFreeplaneNode focusedObject, final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
         super(actionType, focusedObject, globalSelection, editor);
@@ -46,8 +48,10 @@ public class AddChildNode extends FlexoAction<AddChildNode, IFreeplaneNode, IFre
     @Override
     protected void doAction(final Object objet) throws FlexoException {
         if (objet instanceof IFreeplaneNode) {
-            final IFreeplaneNode node = (IFreeplaneNode) objet;
-            node.getNodeModel().insert(new NodeModel(node.getNodeModel().getMap()));
+            // Freeplane code from NewChildAction.
+            final ModeController modeController = Controller.getCurrentModeController();
+            final MMapController mapController = (MMapController) modeController.getMapController();
+            mapController.addNewNode(MMapController.NEW_CHILD);
         }
     }
 

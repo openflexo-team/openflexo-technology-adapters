@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 
@@ -62,16 +63,35 @@ import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
 
+/**
+ * Most controllers initialization come from FreeplaneGUIStarter. Each concerned
+ * method is commented for that.<br>
+ * <br>
+ * The purpose of this class is to provide a singleton to allow display of
+ * freeplane mind map in Openflexo.<br>
+ * Public access by getInstance()
+ * 
+ * @author eloubout
+ * 
+ */
 public class BasicFreeplaneAdapter {
 
     private static final Logger                LOGGER   = Logger.getLogger(BasicFreeplaneAdapter.class.getName());
 
-    private final static BasicFreeplaneAdapter INSTANCE = new BasicFreeplaneAdapter();
+    private static final BasicFreeplaneAdapter INSTANCE = new BasicFreeplaneAdapter();
 
+    /**
+     * Public accessor to instance of this class.
+     * 
+     * @return current instance. Will never return null.
+     */
     public static BasicFreeplaneAdapter getInstance() {
         return INSTANCE;
     }
 
+    /**
+     * Private constructor, that init what is needed for further use.
+     */
     private BasicFreeplaneAdapter() {
         try {
             this.init();
@@ -82,6 +102,7 @@ public class BasicFreeplaneAdapter {
     }
 
     private ApplicationResourceController applicationResourceController;
+
     private MMapViewController            mapViewController;
 
     private ApplicationViewController     viewController;
@@ -89,6 +110,8 @@ public class BasicFreeplaneAdapter {
     private FrameFixture                  window;
 
     /**
+     * Generic Exception is thrown for readability of try catch of callers.
+     * 
      * @param args
      * @throws SecurityException
      * @throws NoSuchFieldException
@@ -118,6 +141,8 @@ public class BasicFreeplaneAdapter {
     }
 
     /**
+     * Use FEST to get Map panel by name. Not a good thing to have. Need to
+     * change that.
      * 
      * @throws Exception
      */
@@ -129,9 +154,11 @@ public class BasicFreeplaneAdapter {
         this.viewController.init(Controller.getCurrentController());
         final JFrame frame = (JFrame) this.viewController.getFrame();
         this.window = new FrameFixture(frame);
+        this.test();
     }
 
     /**
+     * Code got from freeplane sources.
      * 
      * @param controller
      * @param name
@@ -170,6 +197,12 @@ public class BasicFreeplaneAdapter {
 
     }
 
+    /**
+     * Part from Freeplane code
+     * 
+     * @param controller
+     * @param args
+     */
     private void loadMaps(final Controller controller, final String... args) {
         controller.selectMode(MModeController.MODENAME);
         for (final String arg : args) {
@@ -207,6 +240,28 @@ public class BasicFreeplaneAdapter {
         return (JPanel) this.mapViewController.getMapViewComponent();
     }
 
+    private void test() {
+        final Controller controller = Controller.getCurrentController();
+        final ModeController modeController = controller.getModeController(MModeController.MODENAME);
+        controller.selectModeForBuild(modeController);
+        final JMenuItem it = new JMenuItem(modeController.getAction("NewChildAction"));
+        final JMenuItem it2 = new JMenuItem(modeController.getAction("NewSiblingAction"));
+        final JMenuItem it3 = new JMenuItem(modeController.getAction("NewPreviousSiblingAction"));
+        final JMenuItem it4 = new JMenuItem(modeController.getAction("DeleteAction"));
+
+        if (modeController.getUserInputListenerFactory().getMapPopup() != null) {
+            modeController.getUserInputListenerFactory().getMapPopup().add(it);
+            modeController.getUserInputListenerFactory().getMapPopup().add(it2);
+            modeController.getUserInputListenerFactory().getMapPopup().add(it3);
+            modeController.getUserInputListenerFactory().getMapPopup().add(it4);
+        }
+    }
+
+    /**
+     * Comme from freeplane code
+     * 
+     * @return
+     */
     private Controller createController() {
         try {
             final Controller controller = new Controller(this.applicationResourceController);
@@ -226,7 +281,7 @@ public class BasicFreeplaneAdapter {
             }
             frame.setName(UITools.MAIN_FREEPLANE_FRAME);
             this.mapViewController = new MMapViewController(controller);
-            this.viewController = new ApplicationViewController(controller, this.mapViewController, frame);
+            this.viewController = new NonNPEApplicationViewController(controller, this.mapViewController, frame);
             System.setSecurityManager(new FreeplaneSecurityManager());
             this.mapViewController.addMapViewChangeListener(this.applicationResourceController.getLastOpenedList());
             FilterController.install();
@@ -260,6 +315,11 @@ public class BasicFreeplaneAdapter {
         }
     }
 
+    /**
+     * From Freeplane code.
+     * 
+     * @param controller
+     */
     private void createModeControllers(final Controller controller) {
         MModeControllerFactory.createModeController();
         final ModeController mindMapModeController = controller.getModeController(MModeController.MODENAME);
@@ -323,8 +383,6 @@ public class BasicFreeplaneAdapter {
      * Extension of FEST Matcher to find the map panel of selected map in
      * freeplane gui.
      * 
-     * @author eloubout
-     * 
      */
     private class MapViewMatcher extends GenericTypeMatcher<JPanel> {
 
@@ -339,13 +397,7 @@ public class BasicFreeplaneAdapter {
 
     }
 
-    /**
-     * 
-     * Extension of FEST Matcher to find the icon toolbar
-     * 
-     * @author eloubout
-     * 
-     */
+    /** Extension of FEST Matcher to find the icon toolbar */
     private class IconToolBarMatcher extends GenericTypeMatcher<JToolBar> {
 
         public IconToolBarMatcher(final Class<JToolBar> supportedType) {

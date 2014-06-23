@@ -44,20 +44,21 @@ public class FreeplaneModuleView extends JScrollPane implements ModuleView<IFree
 
     @Override
     public void willShow() {
+        // Nothing to implement
     }
 
     @Override
     public void willHide() {
+        // Nothing to implement
     }
 
     @Override
     public void show(final FlexoController controller, final FlexoPerspective perspective) {
-        final JScrollPane jeSuisNelEnSwing = new JScrollPane(BasicFreeplaneAdapter.getInstance().getIconToolar());
         SwingUtilities.invokeLater(new Runnable() {
 
             @Override
             public void run() {
-                perspective.setTopRightView(jeSuisNelEnSwing);
+                perspective.setTopRightView(new JScrollPane(BasicFreeplaneAdapter.getInstance().getIconToolar()));
                 controller.getControllerModel().setRightViewVisible(true);
             }
         });

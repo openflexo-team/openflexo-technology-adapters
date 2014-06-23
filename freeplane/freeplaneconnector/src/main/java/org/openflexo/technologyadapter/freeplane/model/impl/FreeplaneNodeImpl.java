@@ -60,4 +60,5 @@ public abstract class FreeplaneNodeImpl implements IFreeplaneNode {
             LOGGER.log(Level.SEVERE, msg, e);
         }
     }
+
 }
