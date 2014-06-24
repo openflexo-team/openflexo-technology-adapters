@@ -28,7 +28,8 @@ public class FreeplaneNodeSelectionListener implements INodeSelectionListener {
 
     @Override
     public void onSelect(final NodeModel node) {
-        this.controller.selectAndFocusObject(this.nodesMap.get(node));
+        this.controller.getSelectionManager().setSelectedObject(this.nodesMap.get(node));
+        // selectAndFocusObject(this.nodesMap.get(node));
     }
 
     public HashMap<NodeModel, IFreeplaneNode> getNodesMap() {

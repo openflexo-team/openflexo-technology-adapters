@@ -100,7 +100,7 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 
     @Override
     public String getWindowTitleforObject(final TechnologyObject<FreeplaneTechnologyAdapter> object, final FlexoController arg1) {
-        if (object instanceof IFreeplaneMap || object instanceof IFreeplaneNode) {
+        if (object instanceof IFreeplaneMap) {
             return BasicFreeplaneAdapter.getInstance().getMapName();
         }
         return object.toString();
