@@ -29,19 +29,16 @@ public class CreateMap extends FlexoAction<CreateMap, IFreeplaneMap, IFreeplaneM
 
         @Override
         public CreateMap makeNewAction(final IFreeplaneMap map, final Vector<IFreeplaneMap> maps, final FlexoEditor flexoEditor) {
-            System.out.println("#YOLOOOOOOOOOOOOOOOOOOOOOO");
             return new CreateMap(map, maps, flexoEditor);
         }
 
         @Override
         public boolean isVisibleForSelection(final IFreeplaneMap map, final Vector<IFreeplaneMap> maps) {
-            System.out.println("tititaaaaaaaaaaaaaaaaaieetetetetett");
             return map != null;
         }
 
         @Override
         public boolean isEnabledForSelection(final IFreeplaneMap map, final Vector<IFreeplaneMap> maps) {
-            System.out.println("tititeeeeuuuuuuuuuett");
             return map != null && !map.getMapModel().isReadOnly();
         }
     }
@@ -52,7 +49,6 @@ public class CreateMap extends FlexoAction<CreateMap, IFreeplaneMap, IFreeplaneM
 
     public CreateMap(final IFreeplaneMap focusedObject, final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
         super(actionType, focusedObject, globalSelection, editor);
-        System.out.println("tititititititititit");
     }
 
     static {
@@ -62,7 +58,6 @@ public class CreateMap extends FlexoAction<CreateMap, IFreeplaneMap, IFreeplaneM
     @Override
     protected void doAction(final Object objet) throws FlexoException {
         if (objet instanceof IFreeplaneMap) {
-            System.out.println("tititieetetetetett");
         }
     }
 

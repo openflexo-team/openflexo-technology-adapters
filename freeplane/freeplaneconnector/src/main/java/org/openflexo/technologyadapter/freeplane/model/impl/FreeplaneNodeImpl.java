@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.freeplane.features.map.NodeModel;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -17,6 +18,8 @@ public abstract class FreeplaneNodeImpl implements IFreeplaneNode {
     private static final Logger        LOGGER = Logger.getLogger(FreeplaneNodeImpl.class.getName());
 
     private FreeplaneTechnologyAdapter technologyAdapter;
+
+    private NodeModel                  nodeModel;
 
     public FreeplaneNodeImpl(final FreeplaneTechnologyAdapter technologyAdapter) {
         this.technologyAdapter = technologyAdapter;
@@ -43,7 +46,7 @@ public abstract class FreeplaneNodeImpl implements IFreeplaneNode {
      * without this dangerous call.
      */
     @Override
-    @Setter("nodeModel")
+    @Setter(value = NODE_MODEL_KEY)
     public void setNodeModel(final NodeModel model) {
         try {
             final ModelFactory factory = new ModelFactory(IFreeplaneNode.class);
@@ -52,13 +55,21 @@ public abstract class FreeplaneNodeImpl implements IFreeplaneNode {
                 final FreeplaneNodeImpl child = (FreeplaneNodeImpl) factory.newInstance(IFreeplaneNode.class);
                 child.setParent(this);
                 child.setNodeModel(fpChild);
+                child.setTechnologyAdapter(this.getTechnologyAdapter());
                 modelizedChildren.add(child);
             }
             this.setChildren(modelizedChildren);
+            this.nodeModel = model;
         } catch (final ModelDefinitionException e) {
             final String msg = "";
             LOGGER.log(Level.SEVERE, msg, e);
         }
+    }
+
+    @Override
+    @Getter(value = NODE_MODEL_KEY, ignoreType = true)
+    public NodeModel getNodeModel() {
+        return this.nodeModel;
     }
 
 }

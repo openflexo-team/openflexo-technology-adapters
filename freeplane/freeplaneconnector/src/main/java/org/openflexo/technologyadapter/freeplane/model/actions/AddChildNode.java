@@ -18,7 +18,8 @@ public class AddChildNode extends FlexoAction<AddChildNode, IFreeplaneNode, IFre
 
     private static final class AddChildNodeActionType extends FlexoActionType<AddChildNode, IFreeplaneNode, IFreeplaneMap> {
 
-        protected AddChildNodeActionType(final String actionName, final ActionMenu actionMenu, final ActionGroup actionGroup, final int actionCategory) {
+        protected AddChildNodeActionType(final String actionName, final ActionMenu actionMenu, final ActionGroup actionGroup,
+                final int actionCategory) {
             super(actionName, actionMenu, actionGroup, actionCategory);
         }
 
@@ -38,7 +39,10 @@ public class AddChildNode extends FlexoAction<AddChildNode, IFreeplaneNode, IFre
         }
     }
 
-    public static final FlexoActionType<AddChildNode, IFreeplaneNode, IFreeplaneMap> actionType = new AddChildNodeActionType("add_child_node", FlexoActionType.newMenu, FlexoActionType.editGroup,
+    public static final FlexoActionType<AddChildNode, IFreeplaneNode, IFreeplaneMap> actionType = new AddChildNodeActionType(
+                                                                                                        "add_child_node",
+                                                                                                        FlexoActionType.newMenu,
+                                                                                                        FlexoActionType.editGroup,
                                                                                                         FlexoActionType.ADD_ACTION_TYPE);
 
     public AddChildNode(final IFreeplaneNode focusedObject, final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
