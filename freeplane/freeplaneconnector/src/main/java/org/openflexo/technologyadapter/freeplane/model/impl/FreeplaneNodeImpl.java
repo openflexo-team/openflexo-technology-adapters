@@ -6,6 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.freeplane.features.map.NodeModel;
+import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -13,7 +14,7 @@ import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
-public abstract class FreeplaneNodeImpl implements IFreeplaneNode {
+public abstract class FreeplaneNodeImpl extends FlexoObjectImpl implements IFreeplaneNode {
 
     private static final Logger        LOGGER = Logger.getLogger(FreeplaneNodeImpl.class.getName());
 
@@ -53,9 +54,9 @@ public abstract class FreeplaneNodeImpl implements IFreeplaneNode {
             final List<IFreeplaneNode> modelizedChildren = new ArrayList<IFreeplaneNode>();
             for (final NodeModel fpChild : model.getChildren()) {
                 final FreeplaneNodeImpl child = (FreeplaneNodeImpl) factory.newInstance(IFreeplaneNode.class);
+                child.setTechnologyAdapter(this.getTechnologyAdapter());
                 child.setParent(this);
                 child.setNodeModel(fpChild);
-                child.setTechnologyAdapter(this.getTechnologyAdapter());
                 modelizedChildren.add(child);
             }
             this.setChildren(modelizedChildren);
@@ -63,6 +64,23 @@ public abstract class FreeplaneNodeImpl implements IFreeplaneNode {
         } catch (final ModelDefinitionException e) {
             final String msg = "";
             LOGGER.log(Level.SEVERE, msg, e);
+        }
+    }
+
+    @Override
+    public boolean addChild(final NodeModel fpNodeModel) {
+        try {
+            final ModelFactory factory = new ModelFactory(IFreeplaneNode.class);
+            final FreeplaneNodeImpl child = (FreeplaneNodeImpl) factory.newInstance(IFreeplaneNode.class);
+            child.setTechnologyAdapter(this.getTechnologyAdapter());
+            child.setNodeModel(fpNodeModel);
+            child.setParent(this);
+            this.addChild(child);
+            return true;
+        } catch (final ModelDefinitionException e) {
+            final String msg = "Error while adding a child to a node in model.";
+            LOGGER.log(Level.SEVERE, msg, e);
+            return false;
         }
     }
 

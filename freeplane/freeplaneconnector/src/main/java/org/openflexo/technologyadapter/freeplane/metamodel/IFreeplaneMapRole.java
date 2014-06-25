@@ -55,7 +55,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
          */
         @Override
         public String getPreciseType() {
-            return null;
+            return IFreeplaneMap.class.getSimpleName();
         }
 
         /* (non-Javadoc)

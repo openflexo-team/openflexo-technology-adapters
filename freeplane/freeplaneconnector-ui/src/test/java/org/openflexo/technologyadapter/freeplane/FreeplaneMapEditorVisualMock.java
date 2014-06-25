@@ -23,7 +23,8 @@ public class FreeplaneMapEditorVisualMock {
 
     private static final Logger LOGGER = Logger.getLogger("Test FreeplaneMapEditorVisualMock:w");
 
-    public static void main(final String[] args) throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException, InvocationTargetException, InterruptedException {
+    public static void main(final String[] args) throws NoSuchFieldException, SecurityException, IllegalArgumentException,
+            IllegalAccessException, InvocationTargetException, InterruptedException {
         SwingUtilities.invokeAndWait(new Runnable() {
 
             @Override
@@ -33,7 +34,7 @@ public class FreeplaneMapEditorVisualMock {
                     final File f = new File(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm").getURI().split(":")[1]);
                     BasicFreeplaneAdapter.getInstance().loadMapFromFile(f);
 
-                    frame.add(new JScrollPane(BasicFreeplaneAdapter.getInstance().getSelectedMapView()));
+                    frame.add(new JScrollPane(BasicFreeplaneAdapter.getInstance().getMapView()));
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame.setVisible(true);
                 } catch (final Exception e) {

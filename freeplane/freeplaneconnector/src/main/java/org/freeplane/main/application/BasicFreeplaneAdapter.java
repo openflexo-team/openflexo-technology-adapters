@@ -109,6 +109,10 @@ public class BasicFreeplaneAdapter {
 
     private FrameFixture                  window;
 
+    private JPanel                        mapView;
+
+    private JToolBar                      toolBar;
+
     /**
      * Generic Exception is thrown for readability of try catch of callers.
      * 
@@ -169,7 +173,8 @@ public class BasicFreeplaneAdapter {
      * @throws URISyntaxException
      * @throws XMLException
      */
-    public void loadMap(final Controller controller, final String... names) throws FileNotFoundException, XMLParseException, MalformedURLException, IOException, URISyntaxException, XMLException {
+    public void loadMap(final Controller controller, final String... names) throws FileNotFoundException, XMLParseException,
+            MalformedURLException, IOException, URISyntaxException, XMLException {
         controller.selectMode(MModeController.MODENAME);
 
         for (final String name : names) {
@@ -210,7 +215,8 @@ public class BasicFreeplaneAdapter {
             try {
                 final URL url;
                 if (fileArgument.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
-                    final String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(fileArgument);
+                    final String fixedUri = new FreeplaneUriConverter()
+                            .fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(fileArgument);
                     LinkController.getController().loadURI(new URI(fixedUri));
                 }
                 else {
@@ -227,7 +233,8 @@ public class BasicFreeplaneAdapter {
         }
     }
 
-    public void loadMap(final String... names) throws FileNotFoundException, XMLParseException, MalformedURLException, IOException, URISyntaxException, XMLException {
+    public void loadMap(final String... names) throws FileNotFoundException, XMLParseException, MalformedURLException, IOException,
+            URISyntaxException, XMLException {
         this.loadMap(Controller.getCurrentController(), names);
     }
 
@@ -249,11 +256,11 @@ public class BasicFreeplaneAdapter {
         final JMenuItem it3 = new JMenuItem(modeController.getAction("NewPreviousSiblingAction"));
         final JMenuItem it4 = new JMenuItem(modeController.getAction("DeleteAction"));
 
-        if (modeController.getUserInputListenerFactory().getMapPopup() != null) {
-            modeController.getUserInputListenerFactory().getMapPopup().add(it);
-            modeController.getUserInputListenerFactory().getMapPopup().add(it2);
-            modeController.getUserInputListenerFactory().getMapPopup().add(it3);
-            modeController.getUserInputListenerFactory().getMapPopup().add(it4);
+        if (modeController.getUserInputListenerFactory().getNodePopupMenu() != null) {
+            modeController.getUserInputListenerFactory().getNodePopupMenu().add(it, 0);
+            modeController.getUserInputListenerFactory().getNodePopupMenu().add(it2, 1);
+            modeController.getUserInputListenerFactory().getNodePopupMenu().add(it3, 2);
+            modeController.getUserInputListenerFactory().getNodePopupMenu().add(it4, 3);
         }
     }
 
@@ -304,7 +311,8 @@ public class BasicFreeplaneAdapter {
             controller.addAction(new NextPresentationItemAction());
             controller.addAction(new ShowSelectionAsRectangleAction());
             controller.addAction(new ViewLayoutTypeAction(MapViewLayout.OUTLINE));
-            FilterController.getCurrentFilterController().getConditionFactory().addConditionController(70, new LogicalStyleFilterController());
+            FilterController.getCurrentFilterController().getConditionFactory()
+                    .addConditionController(70, new LogicalStyleFilterController());
             MapController.install();
 
             NodeHistory.install(controller);
@@ -324,7 +332,8 @@ public class BasicFreeplaneAdapter {
         MModeControllerFactory.createModeController();
         final ModeController mindMapModeController = controller.getModeController(MModeController.MODENAME);
         mindMapModeController.getMapController().addMapChangeListener(this.applicationResourceController.getLastOpenedList());
-        final LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory = this.applicationResourceController.getLastOpenedList().getLastOpenedMapsRibbonContributorFactory();
+        final LastOpenedMapsRibbonContributorFactory lastOpenedMapsRibbonContributorFactory = this.applicationResourceController
+                .getLastOpenedList().getLastOpenedMapsRibbonContributorFactory();
         final RibbonBuilder menuBuilder = mindMapModeController.getUserInputListenerFactory().getMenuBuilder(RibbonBuilder.class);
         menuBuilder.registerContributorFactory("lastOpenedMaps", lastOpenedMapsRibbonContributorFactory);
         mindMapModeController.addMenuContributor(FilterController.getController(controller).getMenuContributor());
@@ -353,7 +362,10 @@ public class BasicFreeplaneAdapter {
             if (this.window == null) {
                 this.initFrame();
             }
-            return this.window.panel(new MapViewMatcher(JPanel.class)).component();
+            if (this.mapView == null) {
+                this.mapView = this.window.panel(new MapViewMatcher(JPanel.class)).component();
+            }
+            return this.mapView;
         } catch (final Exception e) {
             final String msg = "Error while getting Freeplane component";
             LOGGER.log(Level.SEVERE, msg, e);
@@ -371,7 +383,10 @@ public class BasicFreeplaneAdapter {
             if (this.window == null) {
                 this.initFrame();
             }
-            return this.window.toolBar(new IconToolBarMatcher(JToolBar.class)).component();
+            if (this.toolBar == null) {
+                this.toolBar = this.window.toolBar(new IconToolBarMatcher(JToolBar.class)).component();
+            }
+            return this.toolBar;
         } catch (final Exception e) {
             final String msg = "Error while getting Freeplane component";
             LOGGER.log(Level.SEVERE, msg, e);

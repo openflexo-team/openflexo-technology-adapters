@@ -53,7 +53,6 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
                 .loadDirectory(ResourceLocator.locateResource("Inspectors/Freeplane"));
 
         new AddChildNodeInitializer(actionInitializer);
-        new CreateMapInitializer(actionInitializer);
     }
 
     @Override

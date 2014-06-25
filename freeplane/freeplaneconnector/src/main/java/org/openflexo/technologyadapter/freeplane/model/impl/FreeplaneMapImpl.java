@@ -1,9 +1,10 @@
 package org.openflexo.technologyadapter.freeplane.model.impl;
 
+import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
-public abstract class FreeplaneMapImpl implements IFreeplaneMap {
+public abstract class FreeplaneMapImpl extends FlexoObjectImpl implements IFreeplaneMap {
 
     private FreeplaneTechnologyAdapter technologyAdapter;
 

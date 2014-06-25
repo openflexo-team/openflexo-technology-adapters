@@ -40,16 +40,24 @@ public interface IFreeplaneNode extends TechnologyObject<FreeplaneTechnologyAdap
     public List<IFreeplaneNode> getChildren();
 
     @Adder(value = CHILDREN_KEY)
-    public boolean addChild(IFreeplaneNode node);
+    public void addChild(IFreeplaneNode node);
+
+    /**
+     * Implementation needed to bind Freeplane add action to Openflexo add
+     * action.
+     * 
+     * @param fpNodeModel
+     * @return true if correctly added
+     */
+    public boolean addChild(NodeModel fpNodeModel);
 
     /**
      * Removed done by entity to remove. Nothing done to do it by index.
      * 
      * @param nodeToRemove
-     * @return true if removed
      */
     @Remover(value = CHILDREN_KEY)
-    public boolean removeChild(IFreeplaneNode nodeToRemove);
+    public void removeChild(IFreeplaneNode nodeToRemove);
 
     @Setter(value = CHILDREN_KEY)
     public void setChildren(List<IFreeplaneNode> list);

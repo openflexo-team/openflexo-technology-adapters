@@ -46,7 +46,8 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"), @DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
+@DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
+        @DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
 @DeclareEditionActions({ // All edition actions available through this model
 // slot
 })
@@ -69,7 +70,8 @@ public interface IFreeplaneModelSlot extends ModelSlot<IFreeplaneMap> {
          * slot
          */
         @Override
-        public ModelSlotInstanceConfiguration<? extends ModelSlot<IFreeplaneMap>, IFreeplaneMap> createConfiguration(final CreateVirtualModelInstance action) {
+        public ModelSlotInstanceConfiguration<? extends ModelSlot<IFreeplaneMap>, IFreeplaneMap> createConfiguration(
+                final CreateVirtualModelInstance action) {
             return new FreeplaneModelSlotInstanceConfiguration(this, action);
         }
 
