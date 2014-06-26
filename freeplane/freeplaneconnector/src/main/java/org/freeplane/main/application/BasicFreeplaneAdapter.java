@@ -17,6 +17,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JToolBar;
 
 import org.fest.swing.core.GenericTypeMatcher;
@@ -40,6 +41,7 @@ import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapController.Direction;
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.mindmapmode.DeleteNodeAction;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.ModeController;
 import org.freeplane.features.mode.QuitAction;
@@ -158,7 +160,7 @@ public class BasicFreeplaneAdapter {
         this.viewController.init(Controller.getCurrentController());
         final JFrame frame = (JFrame) this.viewController.getFrame();
         this.window = new FrameFixture(frame);
-        this.test();
+        this.updateRghtClicks();
     }
 
     /**
@@ -247,10 +249,14 @@ public class BasicFreeplaneAdapter {
         return (JPanel) this.mapViewController.getMapViewComponent();
     }
 
-    private void test() {
+    private void updateRghtClicks() {
         final Controller controller = Controller.getCurrentController();
         final ModeController modeController = controller.getModeController(MModeController.MODENAME);
         controller.selectModeForBuild(modeController);
+        // Suppression of confirm on delete, was bugged
+        modeController.removeAction("DeleteAction");
+        modeController.addAction(new DeleteNodeAction());
+
         final JMenuItem it = new JMenuItem(modeController.getAction("NewChildAction"));
         final JMenuItem it2 = new JMenuItem(modeController.getAction("NewSiblingAction"));
         final JMenuItem it3 = new JMenuItem(modeController.getAction("NewPreviousSiblingAction"));
@@ -261,6 +267,28 @@ public class BasicFreeplaneAdapter {
             modeController.getUserInputListenerFactory().getNodePopupMenu().add(it2, 1);
             modeController.getUserInputListenerFactory().getNodePopupMenu().add(it3, 2);
             modeController.getUserInputListenerFactory().getNodePopupMenu().add(it4, 3);
+        }
+
+        // Some magic numbers in the following code. Was done by looking effect
+        // on right clicks.
+        // NodePopupCleanUp
+        final JPopupMenu nodePopupMenu = modeController.getUserInputListenerFactory().getNodePopupMenu();
+        if (nodePopupMenu != null) {
+            nodePopupMenu.remove(10);
+            nodePopupMenu.remove(10);
+            for (int i = 11; i++ < 26;) {
+                nodePopupMenu.remove(11);
+            }
+            nodePopupMenu.remove(13);
+            nodePopupMenu.remove(14);
+            nodePopupMenu.remove(14);
+        }
+        // MapPopup cleanUp
+        final JPopupMenu mapPopupMenu = modeController.getUserInputListenerFactory().getMapPopup();
+        if (mapPopupMenu != null) {
+            for (int i = 0; i++ < 16;) {
+                mapPopupMenu.remove(0);
+            }
         }
     }
 
