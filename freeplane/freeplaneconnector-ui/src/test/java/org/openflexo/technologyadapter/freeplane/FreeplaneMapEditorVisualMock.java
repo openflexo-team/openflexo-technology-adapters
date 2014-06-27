@@ -1,5 +1,6 @@
 package org.openflexo.technologyadapter.freeplane;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Level;
@@ -35,6 +36,7 @@ public class FreeplaneMapEditorVisualMock {
                     BasicFreeplaneAdapter.getInstance().loadMapFromFile(f);
 
                     frame.add(new JScrollPane(BasicFreeplaneAdapter.getInstance().getMapView()));
+                    frame.setSize(new Dimension(550, 500));
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame.setVisible(true);
                 } catch (final Exception e) {

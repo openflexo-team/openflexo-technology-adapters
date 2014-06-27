@@ -51,9 +51,9 @@ import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 @DeclareRepositoryType({ FreeplaneResourceRepository.class })
 public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 
-    public static final String    FREEPLANE_FILE_EXTENSION = ".mm";
+    public static final String  FREEPLANE_FILE_EXTENSION = ".mm";
 
-    protected static final Logger LOGGER                   = Logger.getLogger(FreeplaneTechnologyAdapter.class.getPackage().getName());
+    private static final Logger LOGGER                   = Logger.getLogger(FreeplaneTechnologyAdapter.class.getPackage().getName());
 
     public FreeplaneTechnologyAdapter() throws TechnologyAdapterInitializationException {
     }
@@ -114,7 +114,8 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
         if (!this.isValidFreeplaneFile(candidateFile)) {
             return;
         }
-        final FreeplaneResourceImpl freeplaneResourceFile = (FreeplaneResourceImpl) FreeplaneResourceImpl.makeFreeplaneResource(candidateFile, this.getTechnologyContextManager());
+        final FreeplaneResourceImpl freeplaneResourceFile = (FreeplaneResourceImpl) FreeplaneResourceImpl.makeFreeplaneResource(
+                candidateFile, this.getTechnologyContextManager());
         final FreeplaneResourceRepository resourceRepository = resourceCenter.getRepository(FreeplaneResourceRepository.class, this);
         if (freeplaneResourceFile != null) {
             try {
@@ -168,6 +169,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
      */
     @Override
     public <I> void contentsDeleted(final FlexoResourceCenter<I> resourceCenter, final I contents) {
+        // Noting particular to implement
     }
 
     /**
@@ -180,7 +182,8 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
      */
     public IFreeplaneResource createNewFreeplaneModel(final FlexoProject project, final String filename, final String modelUri) {
         final File file = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-        final FreeplaneResourceImpl freeplaneResourceFile = (FreeplaneResourceImpl) FreeplaneResourceImpl.makeFreeplaneResource(modelUri, file, this.getTechnologyContextManager());
+        final FreeplaneResourceImpl freeplaneResourceFile = (FreeplaneResourceImpl) FreeplaneResourceImpl.makeFreeplaneResource(modelUri,
+                file, this.getTechnologyContextManager());
         this.getTechnologyContextManager().registerResource(freeplaneResourceFile);
         return freeplaneResourceFile;
     }

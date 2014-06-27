@@ -2,6 +2,7 @@ package org.openflexo.technologyadapter.freeplane.listeners;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.NodeModel;
@@ -11,8 +12,8 @@ import org.openflexo.view.controller.FlexoController;
 
 public class FreeplaneNodeSelectionListener implements INodeSelectionListener {
 
-    private final HashMap<NodeModel, IFreeplaneNode> nodesMap;
-    private final FlexoController                    controller;
+    private final Map<NodeModel, IFreeplaneNode> nodesMap;
+    private final FlexoController                controller;
 
     public FreeplaneNodeSelectionListener(final IFreeplaneMap map, final FlexoController controller) {
         super();
@@ -24,6 +25,7 @@ public class FreeplaneNodeSelectionListener implements INodeSelectionListener {
 
     @Override
     public void onDeselect(final NodeModel node) {
+        // Notihg to implement here
     }
 
     @Override
@@ -31,7 +33,7 @@ public class FreeplaneNodeSelectionListener implements INodeSelectionListener {
         this.controller.getSelectionManager().setSelectedObject(this.nodesMap.get(node));
     }
 
-    public HashMap<NodeModel, IFreeplaneNode> getNodesMap() {
+    public Map<NodeModel, IFreeplaneNode> getNodesMap() {
         return this.nodesMap;
     }
 

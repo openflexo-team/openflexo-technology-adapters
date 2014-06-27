@@ -33,9 +33,9 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.freeplane.metamodel.IFreeplaneMapRole;
-import org.openflexo.technologyadapter.freeplane.metamodel.IFreeplaneNodeRole;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
+import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneMapRole;
+import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneNodeRole;
 
 /**
  * Implementation of the ModelSlot class for the Freeplane technology adapter<br>
