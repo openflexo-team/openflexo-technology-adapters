@@ -27,11 +27,14 @@ import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.ModelObjectActorReference;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
+import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneMapRole.FreeplaneMapRoleImpl;
 
 @ModelEntity
+@ImplementationClass(value = FreeplaneMapRoleImpl.class)
 public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
 
     public FreeplaneTechnologyAdapter getTechnologyAdapter();
