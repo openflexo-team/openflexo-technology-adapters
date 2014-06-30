@@ -237,9 +237,6 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 
 		DiagramShape newShape = action.getNewShape();
 
-		logger.info("Hopala: newShape=" + newShape);
-		logger.info("Hopala: getDrawing().getDrawingTreeNode(newShape)=" + getDrawing().getDrawingTreeNode(newShape));
-
 		// getEditor().getUndoManager().stopRecording(edit);
 
 		setCurrentTool(EditorTool.SelectionTool);
