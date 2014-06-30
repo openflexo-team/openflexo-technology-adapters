@@ -47,6 +47,7 @@ import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassRole;
 import org.openflexo.technologyadapter.emf.viewpoint.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.viewpoint.editionaction.SelectEMFObjectIndividual;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -162,6 +163,8 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction<?, ?>> editionActionClass) {
 		if (AddEMFObjectIndividual.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFObjectIndividual.class), IconLibrary.DUPLICATE);
+		} if (SelectEMFObjectIndividual.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFObjectIndividual.class), IconLibrary.IMPORT);
 		} /*else if (AddEMFClassClass.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForOntologyObject(EMFClassClass.class), IconLibrary.DUPLICATE);
 			}*/

@@ -20,6 +20,7 @@
 
 package org.openflexo.technologyadapter.freeplane;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.openflexo.foundation.view.ModelSlotInstance;
@@ -36,22 +37,20 @@ public class FreeplaneModelSlotInstanceConfiguration extends ModelSlotInstanceCo
     }
 
     @Override
-    public void setOption(
-            final org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
+    public void setOption(final ModelSlotInstanceConfigurationOption option) {
         super.setOption(option);
-        // TODO : add specific options here
+    }
+
+    /**
+     * @return empty list
+     */
+    @Override
+    public List<ModelSlotInstanceConfigurationOption> getAvailableOptions() {
+        return Collections.emptyList();
     }
 
     @Override
-    public List<org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption> getAvailableOptions() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public ModelSlotInstance<IFreeplaneModelSlot, IFreeplaneMap> createModelSlotInstance(final VirtualModelInstance vmInstance,
-            final View view) {
-        // TODO Auto-generated method stub
+    public ModelSlotInstance<IFreeplaneModelSlot, IFreeplaneMap> createModelSlotInstance(final VirtualModelInstance vmInstance, final View view) {
         return null;
     }
 

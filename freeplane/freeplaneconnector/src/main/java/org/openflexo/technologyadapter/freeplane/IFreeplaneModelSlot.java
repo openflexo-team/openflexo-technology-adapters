@@ -21,7 +21,6 @@
 package org.openflexo.technologyadapter.freeplane;
 
 import java.lang.reflect.Type;
-import java.util.logging.Logger;
 
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
@@ -34,9 +33,9 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.freeplane.metamodel.IFreeplaneMapRole;
-import org.openflexo.technologyadapter.freeplane.metamodel.IFreeplaneNodeRole;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
+import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneMapRole;
+import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneNodeRole;
 
 /**
  * Implementation of the ModelSlot class for the Freeplane technology adapter<br>
@@ -47,7 +46,8 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"), @DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
+@DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
+        @DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
 @DeclareEditionActions({ // All edition actions available through this model
 // slot
 })
@@ -60,8 +60,6 @@ public interface IFreeplaneModelSlot extends ModelSlot<IFreeplaneMap> {
 
     public static abstract class FreeplaneModelSlotImpl extends ModelSlotImpl<IFreeplaneMap> implements IFreeplaneModelSlot {
 
-        private static final Logger logger = Logger.getLogger(IFreeplaneModelSlot.class.getPackage().getName());
-
         @Override
         public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {
             return FreeplaneTechnologyAdapter.class;
@@ -72,7 +70,8 @@ public interface IFreeplaneModelSlot extends ModelSlot<IFreeplaneMap> {
          * slot
          */
         @Override
-        public ModelSlotInstanceConfiguration<? extends ModelSlot<IFreeplaneMap>, IFreeplaneMap> createConfiguration(final CreateVirtualModelInstance action) {
+        public ModelSlotInstanceConfiguration<? extends ModelSlot<IFreeplaneMap>, IFreeplaneMap> createConfiguration(
+                final CreateVirtualModelInstance action) {
             return new FreeplaneModelSlotInstanceConfiguration(this, action);
         }
 

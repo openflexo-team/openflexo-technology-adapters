@@ -20,16 +20,16 @@
 
 package org.openflexo.technologyadapter.freeplane.controller;
 
-import java.util.logging.Logger;
-
 import javax.swing.ImageIcon;
 
-import org.freeplane.main.application.BasicFreeplaneAdapter;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.gui.FreeplaneIconLibrary;
+import org.openflexo.technologyadapter.freeplane.listeners.FreeplaneNodeSelectionListener;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 import org.openflexo.technologyadapter.freeplane.view.FreeplaneModuleView;
@@ -41,7 +41,6 @@ import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
 public class FreeplaneAdapterController extends TechnologyAdapterController<FreeplaneTechnologyAdapter> {
-    static final Logger logger = Logger.getLogger(FreeplaneAdapterController.class.getPackage().getName());
 
     @Override
     public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {
@@ -50,7 +49,10 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 
     @Override
     public void initializeActions(final ControllerActionInitializer actionInitializer) {
-        actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/Freeplane"));
+        actionInitializer.getController().getModuleInspectorController()
+                .loadDirectory(ResourceLocator.locateResource("Inspectors/Freeplane"));
+
+        new AddChildNodeInitializer(actionInitializer);
     }
 
     @Override
@@ -79,10 +81,14 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
     }
 
     @Override
-    public ModuleView<?> createModuleViewForObject(final TechnologyObject<FreeplaneTechnologyAdapter> object, final FlexoController controller, final FlexoPerspective perspective) {
+    public ModuleView<?> createModuleViewForObject(final TechnologyObject<FreeplaneTechnologyAdapter> object,
+            final FlexoController controller, final FlexoPerspective perspective) {
         if (object instanceof IFreeplaneMap) {
+            Controller.getCurrentModeController().getMapController()
+                    .addNodeSelectionListener(new FreeplaneNodeSelectionListener((IFreeplaneMap) object, controller));
             return new FreeplaneModuleView((IFreeplaneMap) object, controller, perspective);
         }
+
         return new EmptyPanel<TechnologyObject<FreeplaneTechnologyAdapter>>(controller, perspective, object);
     }
 
@@ -94,7 +100,7 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
     @Override
     public String getWindowTitleforObject(final TechnologyObject<FreeplaneTechnologyAdapter> object, final FlexoController arg1) {
         if (object instanceof IFreeplaneMap) {
-            return BasicFreeplaneAdapter.getInstance().getMapName();
+            return FreeplaneBasicAdapter.getInstance().getMapName();
         }
         return object.toString();
     }
@@ -105,6 +111,6 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
      */
     @Override
     public boolean hasModuleViewForObject(final TechnologyObject<FreeplaneTechnologyAdapter> object, final FlexoController controller) {
-        return object instanceof IFreeplaneMap || object instanceof IFreeplaneNode;
+        return object instanceof IFreeplaneMap;
     }
 }

@@ -12,19 +12,22 @@ import org.freeplane.features.mode.mindmapmode.MModeController;
 
 public class MenuInitializer {
 
-	public static void buildMenus(final Controller controller, final Set<String> plugins) {
-		buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
-		LoadAcceleratorPresetsAction.install();
-		if (!UITools.useRibbonsMenu()) {
-			buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
-			buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
-		}
-	}
+    private MenuInitializer() {
+    }
 
-	private static void buildMenus(final Controller controller, final Set<String> plugins, final String mode, final String xml) {
-		final ModeController modeController = controller.getModeController(mode);
-		controller.selectModeForBuild(modeController);
-		modeController.updateMenus(xml, plugins);
-		controller.selectModeForBuild(null);
-	}
+    public static void buildMenus(final Controller controller, final Set<String> plugins) {
+        buildMenus(controller, plugins, MModeController.MODENAME, "/xml/mindmapmodemenu.xml");
+        LoadAcceleratorPresetsAction.install();
+        if (!UITools.useRibbonsMenu()) {
+            buildMenus(controller, plugins, BModeController.MODENAME, "/xml/browsemodemenu.xml");
+            buildMenus(controller, plugins, FModeController.MODENAME, "/xml/filemodemenu.xml");
+        }
+    }
+
+    private static void buildMenus(final Controller controller, final Set<String> plugins, final String mode, final String xml) {
+        final ModeController modeController = controller.getModeController(mode);
+        controller.selectModeForBuild(modeController);
+        modeController.updateMenus(xml, plugins);
+        controller.selectModeForBuild(null);
+    }
 }

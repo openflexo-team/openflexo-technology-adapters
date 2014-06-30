@@ -1,9 +1,10 @@
 package org.openflexo.technologyadapter.freeplane.model.impl;
 
+import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
-public abstract class FreeplaneMapImpl implements IFreeplaneMap {
+public abstract class FreeplaneMapImpl extends FlexoObjectImpl implements IFreeplaneMap {
 
     private FreeplaneTechnologyAdapter technologyAdapter;
 
@@ -18,8 +19,12 @@ public abstract class FreeplaneMapImpl implements IFreeplaneMap {
         this.technologyAdapter = technologyAdapter;
     }
 
+    /* (non-Javadoc)
+     * @see org.openflexo.foundation.technologyadapter.TechnologyObject#getTechnologyAdapter()
+     */
     @Override
     public FreeplaneTechnologyAdapter getTechnologyAdapter() {
         return this.technologyAdapter;
     }
+
 }
