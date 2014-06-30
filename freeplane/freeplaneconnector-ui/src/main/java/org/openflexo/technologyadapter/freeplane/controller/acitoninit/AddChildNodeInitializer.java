@@ -1,4 +1,4 @@
-package org.openflexo.technologyadapter.freeplane.controller;
+package org.openflexo.technologyadapter.freeplane.controller.acitoninit;
 
 import java.util.EventObject;
 

@@ -1,13 +1,8 @@
 package org.freeplane.main.application;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
 import java.util.Set;
@@ -16,7 +11,6 @@ import java.util.logging.Logger;
 
 import javax.swing.JComponent;
 import javax.swing.JFrame;
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
@@ -25,7 +19,6 @@ import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.Compat;
-import org.freeplane.core.util.FileUtils;
 import org.freeplane.core.util.LogUtils;
 import org.freeplane.features.attribute.ModelessAttributeController;
 import org.freeplane.features.filter.FilterController;
@@ -56,8 +49,6 @@ import org.freeplane.features.url.UrlManager;
 import org.freeplane.main.browsemode.BModeControllerFactory;
 import org.freeplane.main.filemode.FModeControllerFactory;
 import org.freeplane.main.mindmapmode.MModeControllerFactory;
-import org.freeplane.n3.nanoxml.XMLException;
-import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
@@ -76,7 +67,7 @@ import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
  */
 public class FreeplaneBasicAdapter {
 
-    private static final Logger                LOGGER   = Logger.getLogger(FreeplaneBasicAdapter.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FreeplaneBasicAdapter.class.getName());
 
     private static final FreeplaneBasicAdapter INSTANCE = new FreeplaneBasicAdapter();
 
@@ -93,32 +84,6 @@ public class FreeplaneBasicAdapter {
      * Private constructor, that init what is needed for further use.
      */
     private FreeplaneBasicAdapter() {
-        try {
-            this.init();
-        } catch (final Exception e) {
-            final String msg = "";
-            LOGGER.log(Level.SEVERE, msg, e);
-        }
-    }
-
-    private ApplicationResourceController applicationResourceController;
-
-    private MMapViewController            mapViewController;
-
-    private ApplicationViewController     viewController;
-
-    /**
-     * Generic Exception is thrown for readability of try catch of callers.
-     * 
-     * @param args
-     * @throws SecurityException
-     * @throws NoSuchFieldException
-     * @throws IllegalAccessException
-     * @throws IllegalArgumentException
-     * @throws InterruptedException
-     * @throws InvocationTargetException
-     */
-    private void init() throws Exception {
         final String oldHandler = System.getProperty("java.protocol.handler.pkgs");
         String newHandler = "org.freeplane.main.application.protocols";
         if (oldHandler != null) {
@@ -136,38 +101,12 @@ public class FreeplaneBasicAdapter {
         final Set<String> emptySet = Collections.emptySet();
         MenuInitializer.buildMenus(controller, emptySet);
 
-        this.updateRghtClicks();
+        this.updateActions();
     }
 
-    /**
-     * Code got from freeplane sources.
-     * 
-     * @param controller
-     * @param name
-     * @throws FileNotFoundException
-     * @throws XMLParseException
-     * @throws MalformedURLException
-     * @throws IOException
-     * @throws URISyntaxException
-     * @throws XMLException
-     */
-    public void loadMap(final Controller controller, final String... names) throws FileNotFoundException, XMLParseException,
-            MalformedURLException, IOException, URISyntaxException, XMLException {
-        controller.selectMode(MModeController.MODENAME);
+    private final ApplicationResourceController applicationResourceController;
 
-        for (final String name : names) {
-            String fileArgument = name;
-            if (!FileUtils.isAbsolutePath(fileArgument)) {
-                fileArgument = System.getProperty("user.dir") + System.getProperty("file.separator") + fileArgument;
-            }
-            final URL url = Compat.fileToUrl(new File(fileArgument));
-            if (url.getPath().toLowerCase().endsWith(org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-                final MModeController modeController = (MModeController) controller.getModeController();
-                final MapController mapController = modeController.getMapController();
-                mapController.openMapSelectReferencedNode(url);
-            }
-        }
-    }
+    private MMapViewController mapViewController;
 
     public MapModel loadMapFromFile(final File file) {
 
@@ -186,37 +125,28 @@ public class FreeplaneBasicAdapter {
      * @param controller
      * @param args
      */
-    private void loadMaps(final Controller controller, final String... args) {
+    private void loadMaps(final Controller controller, final String fileArgument) {
         controller.selectMode(MModeController.MODENAME);
-        for (final String arg : args) {
-            final String fileArgument = arg;
-            try {
-                final URL url;
-                if (fileArgument.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
-                    final String fixedUri = new FreeplaneUriConverter()
-                            .fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(fileArgument);
-                    LinkController.getController().loadURI(new URI(fixedUri));
-                }
-                else {
-                    url = Compat.fileToUrl(new File(fileArgument));
-                    if (url.getPath().toLowerCase().endsWith(org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
-                        final MModeController modeController = (MModeController) controller.getModeController();
-                        final MapController mapController = modeController.getMapController();
-                        mapController.openMapSelectReferencedNode(url);
-                    }
-                }
-            } catch (final Exception ex) {
-                LOGGER.log(Level.SEVERE, "error while loading map", ex);
+        try {
+            final URL url;
+            if (fileArgument.startsWith(UrlManager.FREEPLANE_SCHEME + ':')) {
+                final String fixedUri = new FreeplaneUriConverter().fixPartiallyDecodedFreeplaneUriComingFromInternetExplorer(fileArgument);
+                LinkController.getController().loadURI(new URI(fixedUri));
             }
+            else {
+                url = Compat.fileToUrl(new File(fileArgument));
+                if (url.getPath().toLowerCase().endsWith(org.freeplane.features.url.UrlManager.FREEPLANE_FILE_EXTENSION)) {
+                    final MModeController modeController = (MModeController) controller.getModeController();
+                    final MapController mapController = modeController.getMapController();
+                    mapController.openMapSelectReferencedNode(url);
+                }
+            }
+        } catch (final Exception ex) {
+            LOGGER.log(Level.SEVERE, "error while loading map", ex);
         }
     }
 
-    public void loadMap(final String... names) throws FileNotFoundException, XMLParseException, MalformedURLException, IOException,
-            URISyntaxException, XMLException {
-        this.loadMap(Controller.getCurrentController(), names);
-    }
-
-    private void updateRghtClicks() {
+    private void updateActions() {
         final Controller controller = Controller.getCurrentController();
         final ModeController modeController = controller.getModeController(MModeController.MODENAME);
         controller.selectModeForBuild(modeController);
@@ -224,32 +154,6 @@ public class FreeplaneBasicAdapter {
         modeController.removeAction("DeleteAction");
         modeController.addAction(new DeleteNodeAction());
 
-        final JMenuItem it = new JMenuItem(modeController.getAction("NewChildAction"));
-        final JMenuItem it2 = new JMenuItem(modeController.getAction("NewSiblingAction"));
-        final JMenuItem it3 = new JMenuItem(modeController.getAction("NewPreviousSiblingAction"));
-        final JMenuItem it4 = new JMenuItem(modeController.getAction("DeleteAction"));
-
-        if (modeController.getUserInputListenerFactory().getNodePopupMenu() != null) {
-            modeController.getUserInputListenerFactory().getNodePopupMenu().add(it, 0);
-            modeController.getUserInputListenerFactory().getNodePopupMenu().add(it2, 1);
-            modeController.getUserInputListenerFactory().getNodePopupMenu().add(it3, 2);
-            modeController.getUserInputListenerFactory().getNodePopupMenu().add(it4, 3);
-        }
-
-        // Some magic numbers in the following code. Was done by looking effect
-        // on right clicks.
-        // NodePopupCleanUp
-        final JPopupMenu nodePopupMenu = modeController.getUserInputListenerFactory().getNodePopupMenu();
-        if (nodePopupMenu != null) {
-            nodePopupMenu.remove(10);
-            nodePopupMenu.remove(10);
-            for (int i = 11; i++ < 26;) {
-                nodePopupMenu.remove(11);
-            }
-            nodePopupMenu.remove(13);
-            nodePopupMenu.remove(14);
-            nodePopupMenu.remove(14);
-        }
         // MapPopup cleanUp
         final JPopupMenu mapPopupMenu = modeController.getUserInputListenerFactory().getMapPopup();
         if (mapPopupMenu != null) {
@@ -260,7 +164,7 @@ public class FreeplaneBasicAdapter {
     }
 
     /**
-     * Comme from freeplane code
+     * Comme from freeplane code. Initialization of Freeplane resources.
      * 
      * @return
      */
@@ -283,7 +187,7 @@ public class FreeplaneBasicAdapter {
             }
             frame.setName(UITools.MAIN_FREEPLANE_FRAME);
             this.mapViewController = new MMapViewController(controller);
-            this.viewController = new NonNPEApplicationViewController(controller, this.mapViewController, frame);
+            new NonNPEApplicationViewController(controller, this.mapViewController, frame);
             System.setSecurityManager(new FreeplaneSecurityManager());
             this.mapViewController.addMapViewChangeListener(this.applicationResourceController.getLastOpenedList());
             FilterController.install();
@@ -319,7 +223,7 @@ public class FreeplaneBasicAdapter {
     }
 
     /**
-     * From Freeplane code.
+     * From Freeplane code. Initialization for MindMap editing.
      * 
      * @param controller
      */
@@ -350,7 +254,7 @@ public class FreeplaneBasicAdapter {
     /**
      * Get map view of freeplane editor
      * 
-     * @return Component, if exception is raised return a new JPanel instead
+     * @return JComponent, Parent need to be a JViewport
      */
     public JComponent getMapView() {
         return (JComponent) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
@@ -359,14 +263,14 @@ public class FreeplaneBasicAdapter {
     /**
      * Get icon toolbar for freeplane nodes
      * 
-     * @return JToolBar, or null if Exception is raised.
+     * @return JScrollPane, empty one if exception is raised.
      */
     public JScrollPane getIconToolbar() {
         final String errorMsg = "Error while retrieving Freeplane IconToolbar";
         try {
             final Field f = MIconController.class.getDeclaredField("iconToolBar");
             f.setAccessible(true);
-            final JToolBar bar = (JToolBar) f.get((Controller.getCurrentModeController().getExtension(IconController.class)));
+            final JToolBar bar = (JToolBar) f.get(Controller.getCurrentModeController().getExtension(IconController.class));
             return new JScrollPane(bar);
         } catch (final IllegalAccessException e) {
             LOGGER.log(Level.SEVERE, errorMsg, e);

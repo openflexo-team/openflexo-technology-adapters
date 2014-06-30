@@ -13,7 +13,7 @@ import org.openflexo.view.controller.FlexoController;
 public class FreeplaneNodeSelectionListener implements INodeSelectionListener {
 
     private final Map<NodeModel, IFreeplaneNode> nodesMap;
-    private final FlexoController                controller;
+    private final FlexoController controller;
 
     public FreeplaneNodeSelectionListener(final IFreeplaneMap map, final FlexoController controller) {
         super();
