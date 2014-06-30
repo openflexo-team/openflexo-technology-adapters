@@ -17,7 +17,6 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.technologyadapter.diagram.model.DiagramSpecificationFactory;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -44,7 +43,7 @@ public class TestDiagramSpecificationModel extends OpenflexoTestCase {
 		log("testDiagramSpecificationFactory()");
 
 		try {
-			factory = new DiagramSpecificationFactory(null);
+			factory = new DiagramSpecificationFactory(null, null);
 
 			ModelEntity<DiagramSpecification> diagramSpecificationEntity = factory.getModelContext().getModelEntity(
 					DiagramSpecification.class);
@@ -79,7 +78,7 @@ public class TestDiagramSpecificationModel extends OpenflexoTestCase {
 
 		log("testInstanciatePalette()");
 
-		DiagramPaletteFactory factory = new DiagramPaletteFactory(null);
+		DiagramPaletteFactory factory = new DiagramPaletteFactory(null, null);
 		diagramPalette = factory.makeNewDiagramPalette();
 		DiagramPaletteElement diagramPaletteElement = factory.makeDiagramPaletteElement();
 		diagramPalette.addToElements(diagramPaletteElement);
@@ -100,7 +99,7 @@ public class TestDiagramSpecificationModel extends OpenflexoTestCase {
 		log("testFillDiagramSpecification()");
 
 		// Create an example diagram
-		DiagramFactory factory = new DiagramFactory(null);
+		DiagramFactory factory = new DiagramFactory(null, null);
 		Diagram diagram = factory.newInstance(Diagram.class);
 		assertTrue(diagram instanceof Diagram);
 		DiagramShape shape1 = factory.makeNewShape("Shape1", ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);

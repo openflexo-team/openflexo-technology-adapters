@@ -48,7 +48,7 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		try {
 			ModelFactory factory = new ModelFactory(DiagramResource.class);
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
-			DiagramFactory diagramFactory = new DiagramFactory(serviceManager.getEditingContext());
+			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
 			returned.setFactory(diagramFactory);
 			returned.setName(name);
 			returned.setFile(diagramFile);
@@ -71,7 +71,7 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		try {
 			ModelFactory factory = new ModelFactory(DiagramResource.class);
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
-			DiagramFactory diagramFactory = new DiagramFactory(serviceManager.getEditingContext());
+			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
 			returned.setFactory(diagramFactory);
 			String baseName = diagramFile.getName().substring(0, diagramFile.getName().length() - DiagramResource.DIAGRAM_SUFFIX.length());
 			returned.setName(baseName);

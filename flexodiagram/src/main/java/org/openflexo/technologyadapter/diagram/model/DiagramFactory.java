@@ -27,29 +27,39 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.FlexoModelFactory;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
-import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
 /**
  * Diagram factory<br>
- * Only one instance of this class should be used
+ * One instance of this class should be used for each DiagramResource
  * 
  * @author sylvain
  * 
  */
-public class DiagramFactory extends FGEModelFactoryImpl implements FlexoModelFactory {
+public class DiagramFactory extends FGEModelFactoryImpl implements PamelaResourceModelFactory<DiagramResource> {
 
 	private static final Logger logger = Logger.getLogger(DiagramFactory.class.getPackage().getName());
 
-	public DiagramFactory(EditingContext editingContext) throws ModelDefinitionException {
+	private final DiagramResource resource;
+	private IgnoreLoadingEdits ignoreHandler = null;
+	private FlexoUndoManager undoManager = null;
+
+	public DiagramFactory(DiagramResource resource, EditingContext editingContext) throws ModelDefinitionException {
 		super(Diagram.class, DiagramShape.class, DiagramConnector.class);
+		this.resource = resource;
 		setEditingContext(editingContext);
+	}
+
+	@Override
+	public DiagramResource getResource() {
+		return resource;
 	}
 
 	public Diagram makeNewDiagram() {
@@ -102,19 +112,9 @@ public class DiagramFactory extends FGEModelFactoryImpl implements FlexoModelFac
 		return returned;
 	}
 
-	private PamelaResource<?, ?> resourceBeeingDeserialized = null;
-	private IgnoreLoadingEdits ignoreHandler = null;
-	private FlexoUndoManager undoManager = null;
-
 	@Override
-	public synchronized void startDeserializing(PamelaResource<?, ?> resource) throws ConcurrentDeserializationException {
-		if (resourceBeeingDeserialized == null) {
-			resourceBeeingDeserialized = resource;
-		} else {
-			throw new ConcurrentDeserializationException(resource);
-		}
-
-		EditingContext editingContext = resource.getServiceManager().getEditingContext();
+	public synchronized void startDeserializing() {
+		EditingContext editingContext = getResource().getServiceManager().getEditingContext();
 
 		if (editingContext != null && editingContext.getUndoManager() instanceof FlexoUndoManager) {
 			undoManager = (FlexoUndoManager) editingContext.getUndoManager();
@@ -125,11 +125,7 @@ public class DiagramFactory extends FGEModelFactoryImpl implements FlexoModelFac
 	}
 
 	@Override
-	public synchronized void stopDeserializing(PamelaResource<?, ?> resource) {
-		if (resourceBeeingDeserialized == resource) {
-			resourceBeeingDeserialized = null;
-		}
-
+	public synchronized void stopDeserializing() {
 		if (ignoreHandler != null) {
 			undoManager.removeFromIgnoreHandlers(ignoreHandler);
 			// System.out.println("@@@@@@@@@@@@@@@@ END LOADING RESOURCE " + resource.getURI());
@@ -141,8 +137,8 @@ public class DiagramFactory extends FGEModelFactoryImpl implements FlexoModelFac
 	public <I> void objectHasBeenDeserialized(I newlyCreatedObject, Class<I> implementedInterface) {
 		super.objectHasBeenDeserialized(newlyCreatedObject, implementedInterface);
 		if (newlyCreatedObject instanceof FlexoObject) {
-			if (resourceBeeingDeserialized != null) {
-				resourceBeeingDeserialized.setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
+			if (getResource() != null) {
+				getResource().setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
 			} else {
 				logger.warning("Could not access resource beeing deserialized");
 			}

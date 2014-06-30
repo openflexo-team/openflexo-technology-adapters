@@ -19,13 +19,14 @@
  */
 package org.openflexo.technologyadapter.diagram.metamodel;
 
+import java.util.logging.Logger;
+
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
-import org.openflexo.foundation.FlexoModelFactory;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
-import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -39,17 +40,26 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
  * @author sylvain
  * 
  */
-public class DiagramPaletteFactory extends FGEModelFactoryImpl implements FlexoModelFactory {
+public class DiagramPaletteFactory extends FGEModelFactoryImpl implements PamelaResourceModelFactory<DiagramPaletteResource> {
+
+	private static final Logger logger = Logger.getLogger(DiagramPaletteFactory.class.getPackage().getName());
+
+	private final DiagramPaletteResource resource;
+	private IgnoreLoadingEdits ignoreHandler = null;
+	private FlexoUndoManager undoManager = null;
 
 	public DiagramPaletteFactory(EditingContext editingContext, DiagramPaletteResource paletteResource) throws ModelDefinitionException {
 		super(DiagramPalette.class, DiagramPaletteElement.class);
-		addConverter(new RelativePathFileConverter(paletteResource.getFile().getParentFile()));
+		if (paletteResource != null) {
+			addConverter(new RelativePathFileConverter(paletteResource.getFile().getParentFile()));
+		}
 		setEditingContext(editingContext);
+		this.resource = paletteResource;
 	}
 
-	public DiagramPaletteFactory(EditingContext editingContext) throws ModelDefinitionException {
-		super(DiagramPalette.class, DiagramPaletteElement.class);
-		setEditingContext(editingContext);
+	@Override
+	public DiagramPaletteResource getResource() {
+		return resource;
 	}
 
 	public DiagramPalette makeNewDiagramPalette() {
@@ -73,34 +83,21 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl implements FlexoM
 		return returned;
 	}
 
-	private PamelaResource<?, ?> resourceBeeingDeserialized = null;
-	private IgnoreLoadingEdits ignoreHandler = null;
-	private FlexoUndoManager undoManager = null;
-
 	@Override
-	public synchronized void startDeserializing(PamelaResource<?, ?> resource) throws ConcurrentDeserializationException {
-		if (resourceBeeingDeserialized == null) {
-			resourceBeeingDeserialized = resource;
-		} else {
-			throw new ConcurrentDeserializationException(resource);
-		}
+	public synchronized void startDeserializing() {
 
-		EditingContext editingContext = resource.getServiceManager().getEditingContext();
+		EditingContext editingContext = getResource().getServiceManager().getEditingContext();
 
 		if (editingContext != null && editingContext.getUndoManager() instanceof FlexoUndoManager) {
 			undoManager = (FlexoUndoManager) editingContext.getUndoManager();
-			undoManager.addToIgnoreHandlers(ignoreHandler = new IgnoreLoadingEdits(resource));
+			undoManager.addToIgnoreHandlers(ignoreHandler = new IgnoreLoadingEdits(getResource()));
 			// System.out.println("@@@@@@@@@@@@@@@@ START LOADING RESOURCE " + resource.getURI());
 		}
 
 	}
 
 	@Override
-	public synchronized void stopDeserializing(PamelaResource<?, ?> resource) {
-		if (resourceBeeingDeserialized == resource) {
-			resourceBeeingDeserialized = null;
-		}
-
+	public synchronized void stopDeserializing() {
 		if (ignoreHandler != null) {
 			undoManager.removeFromIgnoreHandlers(ignoreHandler);
 			// System.out.println("@@@@@@@@@@@@@@@@ END LOADING RESOURCE " + resource.getURI());
@@ -111,8 +108,12 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl implements FlexoM
 	@Override
 	public <I> void objectHasBeenDeserialized(I newlyCreatedObject, Class<I> implementedInterface) {
 		super.objectHasBeenDeserialized(newlyCreatedObject, implementedInterface);
-		if (newlyCreatedObject instanceof FlexoObject) {
-			resourceBeeingDeserialized.setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
+		if (getResource() != null) {
+			if (newlyCreatedObject instanceof FlexoObject) {
+				getResource().setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
+			}
+		} else {
+			logger.warning("Could not access resource beeing deserialized");
 		}
 	}
 

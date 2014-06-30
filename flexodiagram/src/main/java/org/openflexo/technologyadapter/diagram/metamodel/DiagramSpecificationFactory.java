@@ -17,13 +17,13 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.diagram.model;
+package org.openflexo.technologyadapter.diagram.metamodel;
 
-import org.openflexo.foundation.DefaultFlexoModelFactory;
+import org.openflexo.foundation.DefaultPamelaResourceModelFactory;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 
 /**
  * Diagram specification factory<br>
@@ -31,10 +31,11 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
  * @author sylvain
  * 
  */
-public class DiagramSpecificationFactory extends DefaultFlexoModelFactory {
+public class DiagramSpecificationFactory extends DefaultPamelaResourceModelFactory<DiagramSpecificationResource> {
 
-	public DiagramSpecificationFactory(EditingContext editingContext) throws ModelDefinitionException {
-		super(ModelContextLibrary.getModelContext(DiagramSpecification.class));
+	public DiagramSpecificationFactory(DiagramSpecificationResource resource, EditingContext editingContext)
+			throws ModelDefinitionException {
+		super(resource, ModelContextLibrary.getModelContext(DiagramSpecification.class));
 		setEditingContext(editingContext);
 	}
 

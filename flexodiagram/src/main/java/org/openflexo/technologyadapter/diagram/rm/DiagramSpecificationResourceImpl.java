@@ -21,7 +21,7 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
-import org.openflexo.technologyadapter.diagram.model.DiagramSpecificationFactory;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecificationFactory;
 import org.openflexo.toolbox.FlexoVersion;
 import org.openflexo.toolbox.StringUtils;
 
@@ -37,7 +37,8 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			ModelFactory factory = new ModelFactory(DiagramSpecificationResource.class);
 			DiagramSpecificationResourceImpl returned = (DiagramSpecificationResourceImpl) factory
 					.newInstance(DiagramSpecificationResource.class);
-			DiagramSpecificationFactory diagramSpecificationFactory = new DiagramSpecificationFactory(serviceManager.getEditingContext());
+			DiagramSpecificationFactory diagramSpecificationFactory = new DiagramSpecificationFactory(returned,
+					serviceManager.getEditingContext());
 			returned.setFactory(diagramSpecificationFactory);
 			String baseName = name;
 			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
@@ -66,7 +67,8 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			ModelFactory factory = new ModelFactory(DiagramSpecificationResource.class);
 			DiagramSpecificationResourceImpl returned = (DiagramSpecificationResourceImpl) factory
 					.newInstance(DiagramSpecificationResource.class);
-			DiagramSpecificationFactory diagramSpecificationFactory = new DiagramSpecificationFactory(serviceManager.getEditingContext());
+			DiagramSpecificationFactory diagramSpecificationFactory = new DiagramSpecificationFactory(returned,
+					serviceManager.getEditingContext());
 			returned.setFactory(diagramSpecificationFactory);
 			String baseName = diagramSpecificationDirectory.getName().substring(0,
 					diagramSpecificationDirectory.getName().length() - DIAGRAM_SPECIFICATION_SUFFIX.length());
