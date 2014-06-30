@@ -6,7 +6,7 @@ import java.util.logging.Logger;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
-import org.freeplane.main.application.BasicFreeplaneAdapter;
+import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.resource.FlexoFileResourceImpl;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -38,7 +38,8 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
         }
     }
 
-    public static IFreeplaneResource makeFreeplaneResource(final String modelURI, final File modelFile, final FreeplaneTechnologyContextManager technologyContextManager) {
+    public static IFreeplaneResource makeFreeplaneResource(final String modelURI, final File modelFile,
+            final FreeplaneTechnologyContextManager technologyContextManager) {
         try {
             final ModelFactory factory = new ModelFactory(IFreeplaneResource.class);
             final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
@@ -58,7 +59,8 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
         return null;
     }
 
-    public static IFreeplaneResource makeFreeplaneResource(final File modelFile, final FreeplaneTechnologyContextManager technologyContextManager) {
+    public static IFreeplaneResource makeFreeplaneResource(final File modelFile,
+            final FreeplaneTechnologyContextManager technologyContextManager) {
         try {
             final ModelFactory factory = new ModelFactory(IFreeplaneResource.class);
             final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
@@ -87,8 +89,10 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
 
     @Override
     public IFreeplaneMap loadResourceData(final IProgress progress) {
-        final BasicFreeplaneAdapter freeplaneAdapter = BasicFreeplaneAdapter.getInstance();
+        final FreeplaneBasicAdapter freeplaneAdapter = FreeplaneBasicAdapter.getInstance();
         final FreeplaneMapImpl map = (FreeplaneMapImpl) MODEL_FACTORY.newInstance(IFreeplaneMap.class);
+        // final TempoClass freeplaneAdapter =
+        // FreeplaneBasicAdaptersFactory.getInstance().newAdapter(map);
         map.setTechnologyAdapter(this.getTechnologyAdapter());
         map.setMapModel(freeplaneAdapter.loadMapFromFile(this.getFile()));
         final FreeplaneNodeImpl node = (FreeplaneNodeImpl) MODEL_FACTORY.newInstance(IFreeplaneNode.class);

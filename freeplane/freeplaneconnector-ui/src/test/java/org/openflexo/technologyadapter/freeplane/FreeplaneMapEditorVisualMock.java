@@ -7,10 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JFrame;
-import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.main.application.BasicFreeplaneAdapter;
 import org.openflexo.rm.ResourceLocator;
 
 /**
@@ -32,10 +30,8 @@ public class FreeplaneMapEditorVisualMock {
             public void run() {
                 try {
                     final JFrame frame = new JFrame();
-                    final File f = new File(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm").getURI().split(":")[1]);
-                    BasicFreeplaneAdapter.getInstance().loadMapFromFile(f);
+                    new File(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm").getURI().split(":")[1]);
 
-                    frame.add(new JScrollPane(BasicFreeplaneAdapter.getInstance().getMapView()));
                     frame.setSize(new Dimension(550, 500));
                     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     frame.setVisible(true);

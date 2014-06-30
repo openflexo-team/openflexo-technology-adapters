@@ -3,6 +3,7 @@ package org.freeplane.main.application;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -16,14 +17,11 @@ import java.util.logging.Logger;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
-import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 
-import org.fest.swing.core.GenericTypeMatcher;
-import org.fest.swing.fixture.FrameFixture;
 import org.freeplane.core.ui.ShowSelectionAsRectangleAction;
-import org.freeplane.core.ui.components.FreeplaneToolBar;
 import org.freeplane.core.ui.components.UITools;
 import org.freeplane.core.ui.ribbon.RibbonBuilder;
 import org.freeplane.core.util.Compat;
@@ -37,6 +35,7 @@ import org.freeplane.features.format.FormatController;
 import org.freeplane.features.format.ScannerController;
 import org.freeplane.features.help.HelpController;
 import org.freeplane.features.icon.IconController;
+import org.freeplane.features.icon.mindmapmode.MIconController;
 import org.freeplane.features.link.LinkController;
 import org.freeplane.features.map.MapController;
 import org.freeplane.features.map.MapController.Direction;
@@ -60,7 +59,6 @@ import org.freeplane.main.mindmapmode.MModeControllerFactory;
 import org.freeplane.n3.nanoxml.XMLException;
 import org.freeplane.n3.nanoxml.XMLParseException;
 import org.freeplane.view.swing.features.nodehistory.NodeHistory;
-import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.map.ViewLayoutTypeAction;
 import org.freeplane.view.swing.map.mindmapmode.MMapViewController;
 import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
@@ -76,25 +74,25 @@ import org.pushingpixels.flamingo.api.ribbon.JRibbonFrame;
  * @author eloubout
  * 
  */
-public class BasicFreeplaneAdapter {
+public class FreeplaneBasicAdapter {
 
-    private static final Logger                LOGGER   = Logger.getLogger(BasicFreeplaneAdapter.class.getName());
+    private static final Logger                LOGGER   = Logger.getLogger(FreeplaneBasicAdapter.class.getName());
 
-    private static final BasicFreeplaneAdapter INSTANCE = new BasicFreeplaneAdapter();
+    private static final FreeplaneBasicAdapter INSTANCE = new FreeplaneBasicAdapter();
 
     /**
      * Public accessor to instance of this class.
      * 
      * @return current instance. Will never return null.
      */
-    public static BasicFreeplaneAdapter getInstance() {
+    public static FreeplaneBasicAdapter getInstance() {
         return INSTANCE;
     }
 
     /**
      * Private constructor, that init what is needed for further use.
      */
-    private BasicFreeplaneAdapter() {
+    private FreeplaneBasicAdapter() {
         try {
             this.init();
         } catch (final Exception e) {
@@ -108,12 +106,6 @@ public class BasicFreeplaneAdapter {
     private MMapViewController            mapViewController;
 
     private ApplicationViewController     viewController;
-
-    private FrameFixture                  window;
-
-    private JPanel                        mapView;
-
-    private JToolBar                      toolBar;
 
     /**
      * Generic Exception is thrown for readability of try catch of callers.
@@ -144,22 +136,6 @@ public class BasicFreeplaneAdapter {
         final Set<String> emptySet = Collections.emptySet();
         MenuInitializer.buildMenus(controller, emptySet);
 
-    }
-
-    /**
-     * Use FEST to get Map panel by name. Not a good thing to have. Need to
-     * change that.
-     * 
-     * @throws Exception
-     */
-    private void initFrame() throws Exception {
-        final Controller controller = Controller.getCurrentController();
-        final ModeController modeController = controller.getModeController(MModeController.MODENAME);
-        controller.selectModeForBuild(modeController);
-
-        this.viewController.init(Controller.getCurrentController());
-        final JFrame frame = (JFrame) this.viewController.getFrame();
-        this.window = new FrameFixture(frame);
         this.updateRghtClicks();
     }
 
@@ -238,15 +214,6 @@ public class BasicFreeplaneAdapter {
     public void loadMap(final String... names) throws FileNotFoundException, XMLParseException, MalformedURLException, IOException,
             URISyntaxException, XMLException {
         this.loadMap(Controller.getCurrentController(), names);
-    }
-
-    public JPanel getSelectedMapView() {
-        final Controller controller = Controller.getCurrentController();
-        final ModeController modeController = controller.getModeController(MModeController.MODENAME);
-        controller.selectModeForBuild(modeController);
-
-        this.viewController.init(Controller.getCurrentController());
-        return (JPanel) this.mapViewController.getMapViewComponent();
     }
 
     private void updateRghtClicks() {
@@ -386,19 +353,7 @@ public class BasicFreeplaneAdapter {
      * @return Component, if exception is raised return a new JPanel instead
      */
     public JComponent getMapView() {
-        try {
-            if (this.window == null) {
-                this.initFrame();
-            }
-            if (this.mapView == null) {
-                this.mapView = this.window.panel(new MapViewMatcher(JPanel.class)).component();
-            }
-            return this.mapView;
-        } catch (final Exception e) {
-            final String msg = "Error while getting Freeplane component";
-            LOGGER.log(Level.SEVERE, msg, e);
-        }
-        return new JPanel();
+        return (JComponent) Controller.getCurrentController().getMapViewManager().getMapViewComponent();
     }
 
     /**
@@ -406,50 +361,20 @@ public class BasicFreeplaneAdapter {
      * 
      * @return JToolBar, or null if Exception is raised.
      */
-    public JToolBar getIconToolar() {
+    public JScrollPane getIconToolbar() {
+        final String errorMsg = "Error while retrieving Freeplane IconToolbar";
         try {
-            if (this.window == null) {
-                this.initFrame();
-            }
-            if (this.toolBar == null) {
-                this.toolBar = this.window.toolBar(new IconToolBarMatcher(JToolBar.class)).component();
-            }
-            return this.toolBar;
-        } catch (final Exception e) {
-            final String msg = "Error while getting Freeplane component";
-            LOGGER.log(Level.SEVERE, msg, e);
+            final Field f = MIconController.class.getDeclaredField("iconToolBar");
+            f.setAccessible(true);
+            final JToolBar bar = (JToolBar) f.get((Controller.getCurrentModeController().getExtension(IconController.class)));
+            return new JScrollPane(bar);
+        } catch (final IllegalAccessException e) {
+            LOGGER.log(Level.SEVERE, errorMsg, e);
+        } catch (final NoSuchFieldException e) {
+            LOGGER.log(Level.SEVERE, errorMsg, e);
+        } catch (final SecurityException e) {
+            LOGGER.log(Level.SEVERE, errorMsg, e);
         }
-        return null;
-    }
-
-    /**
-     * Extension of FEST Matcher to find the map panel of selected map in
-     * freeplane gui.
-     * 
-     */
-    private class MapViewMatcher extends GenericTypeMatcher<JPanel> {
-
-        public MapViewMatcher(final Class<JPanel> supportedType) {
-            super(supportedType);
-        }
-
-        @Override
-        protected boolean isMatching(final JPanel component) {
-            return component instanceof MapView && component.getName().equalsIgnoreCase(BasicFreeplaneAdapter.this.getMapName());
-        }
-
-    }
-
-    /** Extension of FEST Matcher to find the icon toolbar */
-    private class IconToolBarMatcher extends GenericTypeMatcher<JToolBar> {
-
-        public IconToolBarMatcher(final Class<JToolBar> supportedType) {
-            super(supportedType);
-        }
-
-        @Override
-        protected boolean isMatching(final JToolBar component) {
-            return component instanceof FreeplaneToolBar && "icon_toolbar".equals(component.getName());
-        }
+        return new JScrollPane();
     }
 }

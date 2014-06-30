@@ -3,7 +3,7 @@ package org.openflexo.technologyadapter.freeplane.view;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import org.freeplane.main.application.BasicFreeplaneAdapter;
+import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
@@ -15,12 +15,13 @@ public class FreeplaneModuleView extends JScrollPane implements ModuleView<IFree
      * Generated serial
      */
     private static final long      serialVersionUID = 8443361431050803298L;
+
     private final FlexoPerspective perspective;
     private final IFreeplaneMap    map;
     private final FlexoController  controller;
 
     public FreeplaneModuleView(final IFreeplaneMap map, final FlexoController controller, final FlexoPerspective peerspective) {
-        super(BasicFreeplaneAdapter.getInstance().getMapView());
+        super(FreeplaneBasicAdapter.getInstance().getMapView());
         this.controller = controller;
         this.perspective = peerspective;
         this.map = map;
@@ -58,7 +59,7 @@ public class FreeplaneModuleView extends JScrollPane implements ModuleView<IFree
 
             @Override
             public void run() {
-                perspective.setTopRightView(new JScrollPane(BasicFreeplaneAdapter.getInstance().getIconToolar()));
+                perspective.setTopRightView(FreeplaneBasicAdapter.getInstance().getIconToolbar());
                 controller.getControllerModel().setRightViewVisible(true);
             }
         });

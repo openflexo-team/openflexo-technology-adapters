@@ -23,7 +23,7 @@ package org.openflexo.technologyadapter.freeplane.controller;
 import javax.swing.ImageIcon;
 
 import org.freeplane.features.mode.Controller;
-import org.freeplane.main.application.BasicFreeplaneAdapter;
+import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
@@ -84,7 +84,7 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
     public ModuleView<?> createModuleViewForObject(final TechnologyObject<FreeplaneTechnologyAdapter> object,
             final FlexoController controller, final FlexoPerspective perspective) {
         if (object instanceof IFreeplaneMap) {
-            Controller.getCurrentController().getModeController().getMapController()
+            Controller.getCurrentModeController().getMapController()
                     .addNodeSelectionListener(new FreeplaneNodeSelectionListener((IFreeplaneMap) object, controller));
             return new FreeplaneModuleView((IFreeplaneMap) object, controller, perspective);
         }
@@ -100,7 +100,7 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
     @Override
     public String getWindowTitleforObject(final TechnologyObject<FreeplaneTechnologyAdapter> object, final FlexoController arg1) {
         if (object instanceof IFreeplaneMap) {
-            return BasicFreeplaneAdapter.getInstance().getMapName();
+            return FreeplaneBasicAdapter.getInstance().getMapName();
         }
         return object.toString();
     }

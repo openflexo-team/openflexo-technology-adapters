@@ -39,7 +39,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
 
     public FreeplaneTechnologyAdapter getTechnologyAdapter();
 
-    public static abstract class FreeplaneMapRoleImpl extends FlexoRoleImpl<IFreeplaneMap> implements IFreeplaneMapRole {
+    public abstract static class FreeplaneMapRoleImpl extends FlexoRoleImpl<IFreeplaneMap> implements IFreeplaneMapRole {
 
         public FreeplaneMapRoleImpl() {
             super();
