@@ -1,9 +1,12 @@
 package org.openflexo.technologyadapter.freeplane.model.actions;
 
-import java.awt.event.ActionEvent;
+import java.util.Iterator;
 import java.util.Vector;
 
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
@@ -55,7 +58,21 @@ public class DeleteNode extends FlexoAction<DeleteNode, IFreeplaneNode, IFreepla
 
     @Override
     protected void doAction(final Object context) throws FlexoException {
-        Controller.getCurrentModeController().getAction("DeleteAction").actionPerformed((ActionEvent) context);
+        // Some Copy-paste from freeplane To allow us to update our model.
+        final ModeController modeController = Controller.getCurrentModeController();
+        for (final NodeModel node : modeController.getMapController().getSelectedNodes()) {
+            if (node.isRoot()) {
+                return;
+            }
+        }
+        final Controller controller = Controller.getCurrentController();
+
+        final MMapController mapController = (MMapController) modeController.getMapController();
+        final Iterator<NodeModel> iterator = controller.getSelection().getSortedSelection(true).iterator();
+        while (iterator.hasNext()) {
+            mapController.deleteNode(iterator.next());
+        }
+        // Model not up-up-to-date, implement a deleter(NodeModel);
     }
 
 }

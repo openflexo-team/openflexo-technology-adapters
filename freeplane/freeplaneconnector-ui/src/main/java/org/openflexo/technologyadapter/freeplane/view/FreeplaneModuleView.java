@@ -14,11 +14,11 @@ public class FreeplaneModuleView extends JScrollPane implements ModuleView<IFree
     /**
      * Generated serial
      */
-    private static final long      serialVersionUID = 8443361431050803298L;
+    private static final long serialVersionUID = 8443361431050803298L;
 
     private final FlexoPerspective perspective;
-    private final IFreeplaneMap    map;
-    private final FlexoController  controller;
+    private final IFreeplaneMap map;
+    private final FlexoController controller;
 
     public FreeplaneModuleView(final IFreeplaneMap map, final FlexoController controller, final FlexoPerspective peerspective) {
         super(FreeplaneBasicAdapter.getInstance().getMapView());

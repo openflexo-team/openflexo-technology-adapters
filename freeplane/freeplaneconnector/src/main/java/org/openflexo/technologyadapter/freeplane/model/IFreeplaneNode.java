@@ -20,9 +20,9 @@ public interface IFreeplaneNode extends TechnologyObject<FreeplaneTechnologyAdap
 
     public static final String NODE_MODEL_KEY = "nodeModel";
 
-    public static final String PARENT_KEY     = "parent";
+    public static final String PARENT_KEY = "parent";
 
-    public static final String CHILDREN_KEY   = "children";
+    public static final String CHILDREN_KEY = "children";
 
     @Getter(value = NODE_MODEL_KEY, ignoreType = true)
     public NodeModel getNodeModel();
@@ -61,4 +61,5 @@ public interface IFreeplaneNode extends TechnologyObject<FreeplaneTechnologyAdap
 
     @Setter(value = CHILDREN_KEY)
     public void setChildren(List<IFreeplaneNode> list);
+
 }

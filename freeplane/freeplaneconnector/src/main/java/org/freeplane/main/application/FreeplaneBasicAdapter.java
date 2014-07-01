@@ -92,7 +92,8 @@ public class FreeplaneBasicAdapter {
         System.setProperty("java.protocol.handler.pkgs", newHandler);
 
         this.applicationResourceController = new ApplicationResourceController();
-        this.applicationResourceController.setProperty("menu.ribbons", "false");
+        // this.applicationResourceController.setProperty("menu.ribbons",
+        // "false");
         final Controller controller = this.createController();
 
         this.createModeControllers(controller);
@@ -164,7 +165,7 @@ public class FreeplaneBasicAdapter {
     }
 
     /**
-     * Comme from freeplane code. Initialization of Freeplane resources.
+     * Come from freeplane code. Initialization of Freeplane resources.
      * 
      * @return
      */

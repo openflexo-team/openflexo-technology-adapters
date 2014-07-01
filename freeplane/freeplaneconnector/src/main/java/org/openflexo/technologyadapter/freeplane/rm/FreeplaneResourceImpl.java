@@ -95,6 +95,7 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
         map.setMapModel(freeplaneAdapter.loadMapFromFile(this.getFile()));
         final FreeplaneNodeImpl node = (FreeplaneNodeImpl) MODEL_FACTORY.newInstance(IFreeplaneNode.class);
         node.setTechnologyAdapter(this.getTechnologyAdapter());
+        map.getMapModel();
         node.setNodeModel(map.getMapModel().getRootNode());
         map.setRootNode(node);
 

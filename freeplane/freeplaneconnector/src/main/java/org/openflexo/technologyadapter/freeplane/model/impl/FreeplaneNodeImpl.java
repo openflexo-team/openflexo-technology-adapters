@@ -16,11 +16,11 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
 public abstract class FreeplaneNodeImpl extends FlexoObjectImpl implements IFreeplaneNode {
 
-    private static final Logger        LOGGER = Logger.getLogger(FreeplaneNodeImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(FreeplaneNodeImpl.class.getName());
 
     private FreeplaneTechnologyAdapter technologyAdapter;
 
-    private NodeModel                  nodeModel;
+    private NodeModel nodeModel;
 
     public FreeplaneNodeImpl(final FreeplaneTechnologyAdapter technologyAdapter) {
         this.technologyAdapter = technologyAdapter;
@@ -50,6 +50,7 @@ public abstract class FreeplaneNodeImpl extends FlexoObjectImpl implements IFree
     @Setter(value = NODE_MODEL_KEY)
     public void setNodeModel(final NodeModel model) {
         try {
+            this.nodeModel = model;
             final ModelFactory factory = new ModelFactory(IFreeplaneNode.class);
             final List<IFreeplaneNode> modelizedChildren = new ArrayList<IFreeplaneNode>();
             for (final NodeModel fpChild : model.getChildren()) {
@@ -60,7 +61,6 @@ public abstract class FreeplaneNodeImpl extends FlexoObjectImpl implements IFree
                 modelizedChildren.add(child);
             }
             this.setChildren(modelizedChildren);
-            this.nodeModel = model;
         } catch (final ModelDefinitionException e) {
             final String msg = "";
             LOGGER.log(Level.SEVERE, msg, e);

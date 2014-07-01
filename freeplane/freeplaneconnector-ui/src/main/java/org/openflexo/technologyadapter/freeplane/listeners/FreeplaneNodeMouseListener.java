@@ -16,8 +16,9 @@ public class FreeplaneNodeMouseListener extends MNodeMotionListener {
 
     @Override
     public void showPopupMenu(final MouseEvent e) {
-        if (!e.isPopupTrigger())
+        if (!e.isPopupTrigger()) {
             return;
+        }
         if (this.controller.getSelectionManager().getSelection().size() == 1) {
             this.controller.objectWasRightClicked(this.controller.getSelectionManager().getSelection().get(0), e);
         }

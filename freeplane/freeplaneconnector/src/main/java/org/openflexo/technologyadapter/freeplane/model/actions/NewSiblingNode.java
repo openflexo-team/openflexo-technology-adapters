@@ -1,8 +1,9 @@
 package org.openflexo.technologyadapter.freeplane.model.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.Vector;
 
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
@@ -55,7 +56,11 @@ public class NewSiblingNode extends FlexoAction<NewSiblingNode, IFreeplaneNode, 
 
     @Override
     protected void doAction(final Object context) throws FlexoException {
-        Controller.getCurrentModeController().getAction("NewSiblingAction").actionPerformed((ActionEvent) context);
+        // Some Copy-paste from freeplane To allow us to update our model.
+        final NodeModel brother = ((MMapController) Controller.getCurrentModeController().getMapController())
+                .addNewNode(MMapController.NEW_SIBLING_BEHIND);
+        this.getFocusedObject().getParent().addChild(brother);
+        this.getFocusedObject().setModified(true);
     }
 
 }

@@ -1,9 +1,11 @@
 package org.openflexo.technologyadapter.freeplane.model.actions;
 
-import java.awt.event.ActionEvent;
 import java.util.Vector;
 
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
+import org.freeplane.features.mode.ModeController;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
@@ -52,8 +54,12 @@ public class AddChildNode extends FlexoAction<AddChildNode, IFreeplaneNode, IFre
 
     @Override
     protected void doAction(final Object objet) throws FlexoException {
-        Controller.getCurrentModeController().getAction("NewChildAction").actionPerformed((ActionEvent) objet);
-        this.setChanged();
+        // Some Copy-paste from freeplane To allow us to update our model.
+        final ModeController modeController = Controller.getCurrentModeController();
+        final MMapController mapController = (MMapController) modeController.getMapController();
+        final NodeModel child = mapController.addNewNode(MMapController.NEW_CHILD);
+        this.getFocusedObject().addChild(child);
+        this.getFocusedObject().setModified(true);
     }
 
 }

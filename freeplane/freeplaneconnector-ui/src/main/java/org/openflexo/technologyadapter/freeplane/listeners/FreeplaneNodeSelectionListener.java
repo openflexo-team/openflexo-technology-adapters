@@ -30,7 +30,48 @@ public class FreeplaneNodeSelectionListener implements INodeSelectionListener {
 
     @Override
     public void onSelect(final NodeModel node) {
+        if (this.nodesMap.get(node) == null) {
+            this.referenceNode(node);
+        }
         this.controller.getSelectionManager().setSelectedObject(this.nodesMap.get(node));
+    }
+
+    private boolean referenceNode(final NodeModel node) {
+        if (node.getParentNode() == null) {
+            // FreeNode, nothing to do. We don't support it in model, because
+            // not initialized from start, dunno how to include them in the
+            // model correctly.
+            // Root node shouldn't be here (Has parent null too).
+            return false;
+        }
+        if (this.nodesMap.get(node.getParentNode()) == null && !this.referenceNode(node.getParentNode())) {
+            // In this case : Parent is not yet referenced so second condition
+            // is called. When ( 0 && ...), the second part is not evaluated. If
+            // parent referencing has failed too, we won't try to do something
+            // here (no FreeNode support in model)
+            return false;
+        }
+        // Case of null return can happen if there is something wrong in the
+        // model. HashMap support it, won,t make other operations here.
+        this.nodesMap.put(node, this.findModelForChild(this.nodesMap.get(node.getParentNode()).getChildren(), node));
+        return true;
+    }
+
+    /**
+     * Can return null if node is not represented in model
+     * 
+     * @param children
+     * @param node
+     * @return IFreeplaneNode which NodeModel is <code>node</code>
+     */
+    private IFreeplaneNode findModelForChild(final List<IFreeplaneNode> children, final NodeModel node) {
+        IFreeplaneNode returned = null;
+        for (final IFreeplaneNode child : children) {
+            if (child.getNodeModel() == node) {
+                returned = child;
+            }
+        }
+        return returned;
     }
 
     public Map<NodeModel, IFreeplaneNode> getNodesMap() {
