@@ -39,12 +39,10 @@ public abstract class FreeplaneNodeImpl extends FlexoObjectImpl implements IFree
     }
 
     /**
-     * I fear the infinite loop. Parent set child that set parent that set
-     * child, ...<br>
-     * Skip the set call to setParent() and parent.setNodeModel(), cause the
-     * only call seems to be done from load resourceData, so everything is
-     * developed from root so all the tree would be correctly initialized
-     * without this dangerous call.
+     * Recursive call to initialize all child too, so don't do it in caller.
+     * 
+     * @param model
+     *            that will be set
      */
     @Override
     @Setter(value = NODE_MODEL_KEY)

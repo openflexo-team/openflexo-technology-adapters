@@ -22,8 +22,8 @@ package org.openflexo.technologyadapter.freeplane;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
+import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviour;
+import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviours;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
@@ -33,6 +33,9 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot.FreeplaneModelSlotImpl;
+import org.openflexo.technologyadapter.freeplane.fml.FreeplaneNavigationScheme;
+import org.openflexo.technologyadapter.freeplane.fml.FreeplaneNavigationScheme.FreeplaneNavigationSchemeImpl;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneMapRole;
 import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneNodeRole;
@@ -46,15 +49,11 @@ import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneNodeRole;
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
+        @DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
         @DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
-@DeclareEditionActions({ // All edition actions available through this model
-// slot
-})
-@DeclareFetchRequests({ // All requests available through this model slot
-})
+@DeclareFlexoBehaviours({ @DeclareFlexoBehaviour(flexoBehaviourClass = FreeplaneNavigationScheme.class, FML = "NavigationScheme") })
 @ModelEntity
-@ImplementationClass(IFreeplaneModelSlot.FreeplaneModelSlotImpl.class)
+@ImplementationClass(FreeplaneModelSlotImpl.class)
 @XMLElement
 public interface IFreeplaneModelSlot extends ModelSlot<IFreeplaneMap> {
 

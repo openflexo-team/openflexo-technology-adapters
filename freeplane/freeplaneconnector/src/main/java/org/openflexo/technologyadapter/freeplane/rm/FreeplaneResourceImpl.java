@@ -89,13 +89,13 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
 
     @Override
     public IFreeplaneMap loadResourceData(final IProgress progress) {
-        final FreeplaneBasicAdapter freeplaneAdapter = FreeplaneBasicAdapter.getInstance();
         final FreeplaneMapImpl map = (FreeplaneMapImpl) MODEL_FACTORY.newInstance(IFreeplaneMap.class);
         map.setTechnologyAdapter(this.getTechnologyAdapter());
-        map.setMapModel(freeplaneAdapter.loadMapFromFile(this.getFile()));
+        map.setMapModel(FreeplaneBasicAdapter.getInstance().loadMapFromFile(this.getFile()));
         final FreeplaneNodeImpl node = (FreeplaneNodeImpl) MODEL_FACTORY.newInstance(IFreeplaneNode.class);
         node.setTechnologyAdapter(this.getTechnologyAdapter());
-        map.getMapModel();
+        // recursive call inside, don't be preoccupied by children
+        // initialization.
         node.setNodeModel(map.getMapModel().getRootNode());
         map.setRootNode(node);
 
@@ -109,7 +109,8 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
 
     /**
      * Save modification. A unique call to Freeplane save is done. A boolean
-     * could be return, but we stay correct to TA API.
+     * could be return, but we stay correct to TA API.<br>
+     * Freeplane save only on last opened map it seems. TODO investigate
      */
     @Override
     public void save(final IProgress progress) {
