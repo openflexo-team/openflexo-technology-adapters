@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.openflexo.technologyadapter</groupId>
+    <artifactId>${rootArtifactId}</artifactId>
+    <version>${technologyadapterApiVersion}</version>
+  </parent>
+  <artifactId>${artifactId}</artifactId>
+  <description>technology Adapter for ${technologyPrefix} data</description>
+  <url>http://www.openflexo.com/technologyadapter/${artifactId}</url>
+  <properties>
+    <technology.prefix>${technologyPrefix}</technology.prefix>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>org.openflexo</groupId>
+      <artifactId>flexo-foundation</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openflexo</groupId>
+      <artifactId>flexo-foundation</artifactId>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
