@@ -38,6 +38,7 @@
 		<module>xmlconnector</module>
 		<module>xsdconnector</module>
 		<module>openflexo-technologyadapter-archetype</module>
+		<module>openflexo-technologyadapter-archetype-simplemodel</module>
         <module>freeplane</module>
 	</modules>
 	<dependencyManagement>
