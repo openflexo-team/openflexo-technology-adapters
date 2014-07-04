@@ -19,6 +19,7 @@ public class FreeplaneNodeMouseListener extends MNodeMotionListener {
 
     @Override
     public void showPopupMenu(final MouseEvent e) {
+        this.triggerSelection(e);
         if (!e.isPopupTrigger()) {
             return;
         }
@@ -27,23 +28,12 @@ public class FreeplaneNodeMouseListener extends MNodeMotionListener {
         }
     }
 
-    @Override
-    public void mouseClicked(final MouseEvent e) {
-        this.triggerSelection(e);
-        super.mouseClicked(e);
-    }
-
-    @Override
-    public void mouseDragged(final MouseEvent e) {
-        this.triggerSelection(e);
-        super.mouseDragged(e);
-    }
-
     /**
      * See inheritance of freeplane, but just a copy paste with a control
      * statement removed, to force selection.
      * 
      * @param e
+     *            MouseEvent
      */
     private void triggerSelection(final MouseEvent e) {
         if (!isInside(e))
@@ -56,6 +46,12 @@ public class FreeplaneNodeMouseListener extends MNodeMotionListener {
         Controller.getCurrentModeController().getMapController().onSelect(nodeV.getModel());
     }
 
+    /**
+     * Wasn't public on node soloctor ==> CopyPaste
+     * 
+     * @param e
+     * @return
+     */
     private static boolean isInside(final MouseEvent e) {
         return new Rectangle(0, 0, e.getComponent().getWidth(), e.getComponent().getHeight()).contains(e.getPoint());
     }
