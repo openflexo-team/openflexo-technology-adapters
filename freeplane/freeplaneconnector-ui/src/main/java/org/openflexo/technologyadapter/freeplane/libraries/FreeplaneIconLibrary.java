@@ -18,7 +18,7 @@
  *
  */
 
-package org.openflexo.technologyadapter.freeplane.gui;
+package org.openflexo.technologyadapter.freeplane.libraries;
 
 import javax.swing.ImageIcon;
 

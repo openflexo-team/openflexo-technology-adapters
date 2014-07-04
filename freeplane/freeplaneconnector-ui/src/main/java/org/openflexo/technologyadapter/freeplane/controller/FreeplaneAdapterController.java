@@ -28,10 +28,11 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.AddChildNodeInitializer;
+import org.openflexo.technologyadapter.freeplane.controller.acitoninit.CreateFreeplaneMapInitializer;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.DeleteNodeInitializer;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.NewSiblingAboveNodeInitializer;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.NewSiblingNodeInitializer;
-import org.openflexo.technologyadapter.freeplane.gui.FreeplaneIconLibrary;
+import org.openflexo.technologyadapter.freeplane.libraries.FreeplaneIconLibrary;
 import org.openflexo.technologyadapter.freeplane.listeners.FreeplaneListenersInitilizer;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
@@ -59,6 +60,7 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
         new NewSiblingAboveNodeInitializer(actionInitializer);
         new NewSiblingNodeInitializer(actionInitializer);
         new DeleteNodeInitializer(actionInitializer);
+        new CreateFreeplaneMapInitializer(actionInitializer);
     }
 
     @Override

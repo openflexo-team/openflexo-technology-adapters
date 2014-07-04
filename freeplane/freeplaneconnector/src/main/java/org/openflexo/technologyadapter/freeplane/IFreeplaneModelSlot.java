@@ -28,14 +28,12 @@ import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot.FreeplaneModelSlotImpl;
 import org.openflexo.technologyadapter.freeplane.fml.FreeplaneNavigationScheme;
-import org.openflexo.technologyadapter.freeplane.fml.FreeplaneNavigationScheme.FreeplaneNavigationSchemeImpl;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneMapRole;
 import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneNodeRole;
@@ -49,7 +47,7 @@ import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneNodeRole;
  * 
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-        @DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
+@DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
         @DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
 @DeclareFlexoBehaviours({ @DeclareFlexoBehaviour(flexoBehaviourClass = FreeplaneNavigationScheme.class, FML = "NavigationScheme") })
 @ModelEntity
@@ -69,8 +67,7 @@ public interface IFreeplaneModelSlot extends ModelSlot<IFreeplaneMap> {
          * slot
          */
         @Override
-        public ModelSlotInstanceConfiguration<? extends ModelSlot<IFreeplaneMap>, IFreeplaneMap> createConfiguration(
-                final CreateVirtualModelInstance action) {
+        public FreeplaneModelSlotInstanceConfiguration createConfiguration(final CreateVirtualModelInstance action) {
             return new FreeplaneModelSlotInstanceConfiguration(this, action);
         }
 
