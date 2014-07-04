@@ -114,6 +114,10 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
      */
     @Override
     public void save(final IProgress progress) {
-        ((MModeController) Controller.getCurrentModeController()).save();
+        if (progress != null) {
+            ((MModeController) Controller.getCurrentModeController()).save();
+            this.resourceData.clearIsModified(false);
+            this.notifyResourceSaved();
+        }
     }
 }

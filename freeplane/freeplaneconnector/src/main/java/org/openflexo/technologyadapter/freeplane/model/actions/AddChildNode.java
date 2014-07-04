@@ -61,7 +61,6 @@ public class AddChildNode extends FlexoAction<AddChildNode, IFreeplaneNode, IFre
         final MMapController mapController = (MMapController) modeController.getMapController();
         final NodeModel child = mapController.addNewNode(MMapController.NEW_CHILD);
         this.getFocusedObject().addChild(child);
-        this.getFocusedObject().setModified(true);
     }
 
 }

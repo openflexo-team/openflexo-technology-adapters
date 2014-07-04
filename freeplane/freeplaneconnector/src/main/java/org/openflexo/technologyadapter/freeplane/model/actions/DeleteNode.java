@@ -34,7 +34,7 @@ public class DeleteNode extends FlexoAction<DeleteNode, IFreeplaneNode, IFreepla
 
         @Override
         public boolean isVisibleForSelection(final IFreeplaneNode node, final Vector<IFreeplaneMap> globalSelection) {
-            return node != null && node.getNodeModel().isVisible();
+            return node != null && node.getNodeModel().isVisible() && node.getParent() != null;
         }
 
         @Override

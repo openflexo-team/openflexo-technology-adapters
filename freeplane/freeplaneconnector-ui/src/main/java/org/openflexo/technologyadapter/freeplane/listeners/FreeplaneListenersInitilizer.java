@@ -26,6 +26,7 @@ public class FreeplaneListenersInitilizer {
     public static void init(final IFreeplaneMap map, final FlexoController controller) {
         Controller.getCurrentModeController().getMapController()
                 .addNodeSelectionListener(new FreeplaneNodeSelectionListener(map, controller));
+        Controller.getCurrentModeController().getMapController().addMapChangeListener(new FreeplaneMapViewChangeListener(map));
         popMenuChangeOnNode(map, controller);
     }
 

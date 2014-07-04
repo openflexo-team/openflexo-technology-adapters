@@ -18,7 +18,7 @@
  *
  */
 
-package org.openflexo.technologyadapter.freeplane.model.roles;
+package org.openflexo.technologyadapter.freeplane.fml;
 
 import java.lang.reflect.Type;
 
@@ -31,8 +31,8 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
+import org.openflexo.technologyadapter.freeplane.fml.IFreeplaneNodeRole.FreeplaneNodeRoleImpl;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
-import org.openflexo.technologyadapter.freeplane.model.roles.IFreeplaneNodeRole.FreeplaneNodeRoleImpl;
 
 @ModelEntity
 @ImplementationClass(value = FreeplaneNodeRoleImpl.class)

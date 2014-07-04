@@ -32,7 +32,7 @@ public class NewSiblingNode extends FlexoAction<NewSiblingNode, IFreeplaneNode, 
 
         @Override
         public boolean isVisibleForSelection(final IFreeplaneNode node, final Vector<IFreeplaneMap> globalSelection) {
-            return node != null && node.getNodeModel().isVisible();
+            return node != null && node.getNodeModel().isVisible() && node.getParent() != null;
         }
 
         @Override
@@ -60,7 +60,6 @@ public class NewSiblingNode extends FlexoAction<NewSiblingNode, IFreeplaneNode, 
         final NodeModel brother = ((MMapController) Controller.getCurrentModeController().getMapController())
                 .addNewNode(MMapController.NEW_SIBLING_BEHIND);
         this.getFocusedObject().getParent().addChild(brother);
-        this.getFocusedObject().setModified(true);
     }
 
 }
