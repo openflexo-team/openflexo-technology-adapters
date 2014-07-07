@@ -13,9 +13,7 @@ import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyContextManager;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
-import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneMapImpl;
-import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneNodeImpl;
 import org.openflexo.toolbox.IProgress;
 
 /**
@@ -92,12 +90,6 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
         final FreeplaneMapImpl map = (FreeplaneMapImpl) MODEL_FACTORY.newInstance(IFreeplaneMap.class);
         map.setTechnologyAdapter(this.getTechnologyAdapter());
         map.setMapModel(FreeplaneBasicAdapter.getInstance().loadMapFromFile(this.getFile()));
-        final FreeplaneNodeImpl node = (FreeplaneNodeImpl) MODEL_FACTORY.newInstance(IFreeplaneNode.class);
-        node.setTechnologyAdapter(this.getTechnologyAdapter());
-        // recursive call inside, don't be preoccupied by children
-        // initialization.
-        node.setNodeModel(map.getMapModel().getRootNode());
-        map.setRootNode(node);
 
         return map;
     }
