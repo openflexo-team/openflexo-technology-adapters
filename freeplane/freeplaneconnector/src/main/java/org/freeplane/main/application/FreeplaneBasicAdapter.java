@@ -92,8 +92,6 @@ public class FreeplaneBasicAdapter {
         System.setProperty("java.protocol.handler.pkgs", newHandler);
 
         this.applicationResourceController = new ApplicationResourceController();
-        // this.applicationResourceController.setProperty("menu.ribbons",
-        // "false");
         final Controller controller = this.createController();
 
         this.createModeControllers(controller);

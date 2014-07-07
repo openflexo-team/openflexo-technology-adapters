@@ -23,14 +23,11 @@ package org.openflexo.technologyadapter.freeplane;
 import java.util.Collections;
 import java.util.List;
 
-import org.openflexo.foundation.view.ModelSlotInstance;
-import org.openflexo.foundation.view.View;
-import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
-public class FreeplaneModelSlotInstanceConfiguration extends ModelSlotInstanceConfiguration<IFreeplaneModelSlot, IFreeplaneMap> {
+public class FreeplaneModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<IFreeplaneMap, IFreeplaneModelSlot> {
 
     protected FreeplaneModelSlotInstanceConfiguration(final IFreeplaneModelSlot ms, final CreateVirtualModelInstance action) {
         super(ms, action);
@@ -47,11 +44,6 @@ public class FreeplaneModelSlotInstanceConfiguration extends ModelSlotInstanceCo
     @Override
     public List<ModelSlotInstanceConfigurationOption> getAvailableOptions() {
         return Collections.emptyList();
-    }
-
-    @Override
-    public ModelSlotInstance<IFreeplaneModelSlot, IFreeplaneMap> createModelSlotInstance(final VirtualModelInstance vmInstance, final View view) {
-        return null;
     }
 
 }
