@@ -29,7 +29,7 @@ import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -56,12 +56,12 @@ import ${package}.fml.${technologyPrefix}Role;
 @ModelEntity
 @ImplementationClass(${technologyPrefix}ModelSlot.${technologyPrefix}ModelSlotImpl.class)
 @XMLElement
-public interface ${technologyPrefix}ModelSlot extends ModelSlot<${technologyPrefix}Model> {
+public interface ${technologyPrefix}ModelSlot extends FreeModelSlot<${technologyPrefix}Model> {
 
     @Override
     public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter();
 
-    public static abstract class ${technologyPrefix}ModelSlotImpl extends ModelSlotImpl<${technologyPrefix}Model> implements ${technologyPrefix}ModelSlot {
+    public static abstract class ${technologyPrefix}ModelSlotImpl extends FreeModelSlotImpl<${technologyPrefix}Model> implements ${technologyPrefix}ModelSlot {
 
         @Override
         public Class<${technologyPrefix}TechnologyAdapter> getTechnologyAdapterClass() {

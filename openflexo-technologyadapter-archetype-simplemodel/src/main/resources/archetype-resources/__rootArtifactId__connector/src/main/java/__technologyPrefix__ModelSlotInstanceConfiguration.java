@@ -27,14 +27,11 @@ package ${package};
 import java.util.Collections;
 import java.util.List;
 
-import org.openflexo.foundation.view.ModelSlotInstance;
-import org.openflexo.foundation.view.View;
-import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import ${package}.model.${technologyPrefix}Model;
 
-public class ${technologyPrefix}ModelSlotInstanceConfiguration extends ModelSlotInstanceConfiguration<${technologyPrefix}ModelSlot, ${technologyPrefix}Model> {
+public class ${technologyPrefix}ModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration< ${technologyPrefix}Model, ${technologyPrefix}ModelSlot> {
 
     protected ${technologyPrefix}ModelSlotInstanceConfiguration(${technologyPrefix}ModelSlot ms, CreateVirtualModelInstance action) {
         super(ms, action);
@@ -54,8 +51,4 @@ public class ${technologyPrefix}ModelSlotInstanceConfiguration extends ModelSlot
         return Collections.emptyList();
     }
     
-    @Override
-    public ModelSlotInstance<${technologyPrefix}ModelSlot, ${technologyPrefix}Model> createModelSlotInstance(final VirtualModelInstance vmInstance, final View view) {
-        return null;
-    }
 }

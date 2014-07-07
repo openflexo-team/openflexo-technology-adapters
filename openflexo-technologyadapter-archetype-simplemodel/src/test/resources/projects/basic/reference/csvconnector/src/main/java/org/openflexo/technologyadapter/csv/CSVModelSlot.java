@@ -26,7 +26,7 @@ import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -53,12 +53,12 @@ import org.openflexo.technologyadapter.csv.fml.CSVRole;
 @ModelEntity
 @ImplementationClass(CSVModelSlot.CSVModelSlotImpl.class)
 @XMLElement
-public interface CSVModelSlot extends ModelSlot<CSVModel> {
+public interface CSVModelSlot extends FreeModelSlot<CSVModel> {
 
     @Override
     public CSVTechnologyAdapter getTechnologyAdapter();
 
-    public static abstract class CSVModelSlotImpl extends ModelSlotImpl<CSVModel> implements CSVModelSlot {
+    public static abstract class CSVModelSlotImpl extends FreeModelSlotImpl<CSVModel> implements CSVModelSlot {
 
         @Override
         public Class<CSVTechnologyAdapter> getTechnologyAdapterClass() {
