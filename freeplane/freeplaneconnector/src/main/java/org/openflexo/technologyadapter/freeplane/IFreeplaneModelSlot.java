@@ -20,11 +20,17 @@
 
 package org.openflexo.technologyadapter.freeplane;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLEncoder;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
+import org.openflexo.foundation.view.FreeModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -45,48 +51,78 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
  */
 @DeclarePatternRoles({ // All pattern roles available through this model slot
 @DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
-        @DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
+		@DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
 @ModelEntity
 @ImplementationClass(FreeplaneModelSlotImpl.class)
 @XMLElement
 public interface IFreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 
-    public static abstract class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap> implements IFreeplaneModelSlot {
+	public static abstract class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap> implements IFreeplaneModelSlot {
 
-        @Override
-        public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {
-            return FreeplaneTechnologyAdapter.class;
-        }
+		private static final Logger LOGGER = Logger.getLogger(IFreeplaneModelSlot.class.getPackage().getName());
+		private Map<String, IFreeplaneMap> uriCache;
 
-        /**
-         * Instanciate a new model slot instance configuration for this model
-         * slot
-         */
-        @Override
-        public FreeplaneModelSlotInstanceConfiguration createConfiguration(final CreateVirtualModelInstance action) {
-            return new FreeplaneModelSlotInstanceConfiguration(this, action);
-        }
+		@Override
+		public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {
+			return FreeplaneTechnologyAdapter.class;
+		}
 
-        @Override
-        public <PR extends FlexoRole<?>> String defaultFlexoRoleName(final Class<PR> patternRoleClass) {
-            if (IFreeplaneNodeRole.class.isAssignableFrom(patternRoleClass)) {
-                return "Node";
-            }
-            if (IFreeplaneMapRole.class.isAssignableFrom(patternRoleClass)) {
-                return "Map";
-            }
-            return null;
-        }
+		/**
+		 * Instanciate a new model slot instance configuration for this model
+		 * slot
+		 */
+		@Override
+		public FreeplaneModelSlotInstanceConfiguration createConfiguration(final CreateVirtualModelInstance action) {
+			return new FreeplaneModelSlotInstanceConfiguration(this, action);
+		}
 
-        @Override
-        public Type getType() {
-            return IFreeplaneMap.class;
-        }
+		@Override
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(final Class<PR> patternRoleClass) {
+			if (IFreeplaneNodeRole.class.isAssignableFrom(patternRoleClass)) {
+				return "Node";
+			}
+			if (IFreeplaneMapRole.class.isAssignableFrom(patternRoleClass)) {
+				return "Map";
+			}
+			return null;
+		}
 
-        @Override
-        public FreeplaneTechnologyAdapter getTechnologyAdapter() {
-            return (FreeplaneTechnologyAdapter) super.getTechnologyAdapter();
-        }
+		@Override
+		public Type getType() {
+			return IFreeplaneMap.class;
+		}
 
-    }
+		@Override
+		public FreeplaneTechnologyAdapter getTechnologyAdapter() {
+			return (FreeplaneTechnologyAdapter) super.getTechnologyAdapter();
+		}
+
+		@Override
+		public String getURIForObject(final FreeModelSlotInstance<IFreeplaneMap, ? extends FreeModelSlot<IFreeplaneMap>> msInstance,
+				final Object o) {
+			final IFreeplaneMap fpObject = (IFreeplaneMap) o;
+
+			String builtURI = null;
+
+			try {
+				builtURI = URLEncoder.encode(fpObject.getUri(), "UTF-8");
+			} catch (final UnsupportedEncodingException e) {
+				LOGGER.log(Level.WARNING, "Cannot process URI - Unexpected encoding error", e);
+			}
+
+			if (builtURI != null) {
+				if (uriCache.get(builtURI) == null) {
+					uriCache.put(builtURI, fpObject);
+				}
+			}
+			return builtURI.toString();
+		}
+
+		@Override
+		public IFreeplaneMap retrieveObjectWithURI(
+				final FreeModelSlotInstance<IFreeplaneMap, ? extends FreeModelSlot<IFreeplaneMap>> msInstance, final String objectURI) {
+			return uriCache.get(objectURI);
+		}
+
+	}
 }

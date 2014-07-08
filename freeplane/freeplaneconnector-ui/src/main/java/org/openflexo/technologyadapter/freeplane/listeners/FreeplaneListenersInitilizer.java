@@ -60,8 +60,8 @@ public class FreeplaneListenersInitilizer {
         changeNodeListener(listener);
     }
 
+    @SuppressWarnings("unchecked")
     private static void changeNodeListener(final IMouseListener listener) {
-
         final String msg = "Error While changing freeplane listener";
         try {
             final Field fieldNodes = MapModel.class.getDeclaredField("nodes");

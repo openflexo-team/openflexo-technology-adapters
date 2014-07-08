@@ -34,24 +34,26 @@ import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneMapImpl;
 @ImplementationClass(value = FreeplaneMapImpl.class)
 public interface IFreeplaneMap extends TechnologyObject<FreeplaneTechnologyAdapter>, ResourceData<IFreeplaneMap> {
 
-    public static final String MAP_MODEL_KEY = "mapModel";
+	public static final String MAP_MODEL_KEY = "mapModel";
 
-    public static final String ROOT_NODE_KEY = "rootNode";
+	public static final String ROOT_NODE_KEY = "rootNode";
 
-    /**
-     * 
-     * @return the instance of the freeplane MapMadel object
-     */
-    @Getter(value = MAP_MODEL_KEY, ignoreType = true)
-    public MapModel getMapModel();
+	/**
+	 * 
+	 * @return the instance of the freeplane MapMadel object
+	 */
+	@Getter(value = MAP_MODEL_KEY, ignoreType = true)
+	public MapModel getMapModel();
 
-    @Setter(value = MAP_MODEL_KEY)
-    public void setMapModel(MapModel map);
+	@Setter(value = MAP_MODEL_KEY)
+	public void setMapModel(MapModel map);
 
-    @Getter(value = ROOT_NODE_KEY)
-    public IFreeplaneNode getRoot();
+	@Getter(value = ROOT_NODE_KEY)
+	public IFreeplaneNode getRoot();
 
-    @Setter(value = ROOT_NODE_KEY)
-    public void setRootNode(IFreeplaneNode node);
+	@Setter(value = ROOT_NODE_KEY)
+	public void setRootNode(IFreeplaneNode node);
+
+	public String getUri();
 
 }

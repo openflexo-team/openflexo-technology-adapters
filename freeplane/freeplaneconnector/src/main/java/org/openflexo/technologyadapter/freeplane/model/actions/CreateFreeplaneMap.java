@@ -1,8 +1,15 @@
 package org.openflexo.technologyadapter.freeplane.model.actions;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Vector;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mode.Controller;
+import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
@@ -64,5 +71,30 @@ public class CreateFreeplaneMap
     @Override
     protected void doAction(final Object objet) throws FlexoException {
         LOGGER.info("One day this action will create a new freeplane map with name " + this.mapName);
+		final String errorMsg = "Exception raised while creating new MindMap";
+        // If no data have been load, initilalization has not been done, so do it.
+        FreeplaneBasicAdapter.getInstance();
+		final MapModel newMap = new MapModel();
+		// Equivalent to createNewRoot, but the Method attach of nodeModel is
+		// not public just without modifier ...
+		final NodeModel root = new NodeModel(this.mapName, newMap);
+		newMap.setRoot(root);
+		try {
+			final Method attach = NodeModel.class.getDeclaredMethod("attach");
+			attach.setAccessible(true);
+			attach.invoke(root);
+		} catch (final IllegalAccessException e) {
+			LOGGER.log(Level.SEVERE, errorMsg, e);
+		} catch (final NoSuchMethodException e) {
+			LOGGER.log(Level.SEVERE, errorMsg, e);
+		} catch (final SecurityException e) {
+			LOGGER.log(Level.SEVERE, errorMsg, e);
+		} catch (final IllegalArgumentException e) {
+			LOGGER.log(Level.SEVERE, errorMsg, e);
+		} catch (final InvocationTargetException e) {
+			LOGGER.log(Level.SEVERE, errorMsg, e);
+		}
+		Controller.getCurrentController().getModeController().getMapController().fireMapCreated(newMap);
+		Controller.getCurrentController().getModeController().getMapController().newMapView(newMap);
     }
 }

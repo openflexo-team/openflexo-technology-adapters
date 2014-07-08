@@ -16,76 +16,80 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
 public abstract class FreeplaneNodeImpl extends FlexoObjectImpl implements IFreeplaneNode {
 
-    private static final Logger LOGGER = Logger.getLogger(FreeplaneNodeImpl.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(FreeplaneNodeImpl.class.getName());
 
-    private FreeplaneTechnologyAdapter technologyAdapter;
+	private FreeplaneTechnologyAdapter technologyAdapter;
 
-    private NodeModel nodeModel;
+	private NodeModel nodeModel;
 
-    public FreeplaneNodeImpl(final FreeplaneTechnologyAdapter technologyAdapter) {
-        this.technologyAdapter = technologyAdapter;
-    }
+	public FreeplaneNodeImpl(final FreeplaneTechnologyAdapter technologyAdapter) {
+		this.technologyAdapter = technologyAdapter;
+	}
 
-    public FreeplaneNodeImpl() {
-    }
+	public FreeplaneNodeImpl() {
+	}
 
-    public void setTechnologyAdapter(final FreeplaneTechnologyAdapter technologyAdapter) {
-        this.technologyAdapter = technologyAdapter;
-    }
+	public void setTechnologyAdapter(final FreeplaneTechnologyAdapter technologyAdapter) {
+		this.technologyAdapter = technologyAdapter;
+	}
 
-    @Override
-    public FreeplaneTechnologyAdapter getTechnologyAdapter() {
-        return this.technologyAdapter;
-    }
+	@Override
+	public FreeplaneTechnologyAdapter getTechnologyAdapter() {
+		return this.technologyAdapter;
+	}
 
-    /**
-     * Recursive call to initialize all child too, so don't do it in caller.
-     * 
-     * @param model
-     *            that will be set
-     */
-    @Override
-    @Setter(value = NODE_MODEL_KEY)
-    public void setNodeModel(final NodeModel model) {
-        try {
-            this.nodeModel = model;
-            final ModelFactory factory = new ModelFactory(IFreeplaneNode.class);
-            final List<IFreeplaneNode> modelizedChildren = new ArrayList<IFreeplaneNode>();
-            for (final NodeModel fpChild : model.getChildren()) {
-                final FreeplaneNodeImpl child = (FreeplaneNodeImpl) factory.newInstance(IFreeplaneNode.class);
-                child.setTechnologyAdapter(this.getTechnologyAdapter());
-                child.setParent(this);
-                child.setNodeModel(fpChild);
-                modelizedChildren.add(child);
-            }
-            this.setChildren(modelizedChildren);
-        } catch (final ModelDefinitionException e) {
-            final String msg = "";
-            LOGGER.log(Level.SEVERE, msg, e);
-        }
-    }
+	/**
+	 * Recursive call to initialize all child too, so don't do it in caller.
+	 * 
+	 * @param model
+	 *            that will be set
+	 */
+	@Override
+	@Setter(value = NODE_MODEL_KEY)
+	public void setNodeModel(final NodeModel model) {
+		try {
+			this.nodeModel = model;
+			final ModelFactory factory = new ModelFactory(IFreeplaneNode.class);
+			final List<IFreeplaneNode> modelizedChildren = new ArrayList<IFreeplaneNode>();
+			for (final NodeModel fpChild : model.getChildren()) {
+				final FreeplaneNodeImpl child = (FreeplaneNodeImpl) factory.newInstance(IFreeplaneNode.class);
+				child.setTechnologyAdapter(this.getTechnologyAdapter());
+				child.setParent(this);
+				child.setNodeModel(fpChild);
+				modelizedChildren.add(child);
+			}
+			this.setChildren(modelizedChildren);
+		} catch (final ModelDefinitionException e) {
+			final String msg = "";
+			LOGGER.log(Level.SEVERE, msg, e);
+		}
+	}
 
-    @Override
-    public boolean addChild(final NodeModel fpNodeModel) {
-        try {
-            final ModelFactory factory = new ModelFactory(IFreeplaneNode.class);
-            final FreeplaneNodeImpl child = (FreeplaneNodeImpl) factory.newInstance(IFreeplaneNode.class);
-            child.setTechnologyAdapter(this.getTechnologyAdapter());
-            child.setNodeModel(fpNodeModel);
-            child.setParent(this);
-            this.addChild(child);
-            return true;
-        } catch (final ModelDefinitionException e) {
-            final String msg = "Error while adding a child to a node in model.";
-            LOGGER.log(Level.SEVERE, msg, e);
-            return false;
-        }
-    }
+	@Override
+	public boolean addChild(final NodeModel fpNodeModel) {
+		try {
+			final ModelFactory factory = new ModelFactory(IFreeplaneNode.class);
+			final FreeplaneNodeImpl child = (FreeplaneNodeImpl) factory.newInstance(IFreeplaneNode.class);
+			child.setTechnologyAdapter(this.getTechnologyAdapter());
+			child.setNodeModel(fpNodeModel);
+			child.setParent(this);
+			this.addChild(child);
+			return true;
+		} catch (final ModelDefinitionException e) {
+			final String msg = "Error while adding a child to a node in model.";
+			LOGGER.log(Level.SEVERE, msg, e);
+			return false;
+		}
+	}
 
-    @Override
-    @Getter(value = NODE_MODEL_KEY, ignoreType = true)
-    public NodeModel getNodeModel() {
-        return this.nodeModel;
-    }
+	@Override
+	@Getter(value = NODE_MODEL_KEY, ignoreType = true)
+	public NodeModel getNodeModel() {
+		return this.nodeModel;
+	}
 
+	@Override
+	public String getUri() {
+		return "Node=" + this.getNodeModel().getID();
+	}
 }
