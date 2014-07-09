@@ -45,7 +45,7 @@ public class DeleteNode extends FlexoAction<DeleteNode, IFreeplaneNode, IFreepla
     }
 
     public static final FlexoActionType<DeleteNode, IFreeplaneNode, IFreeplaneMap> actionType = new DeleteNodeActionType("delete_node",
-            AddChildNode.FREEPLANE_MENU, FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE);
+            NewChildNode.FREEPLANE_MENU, FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE);
 
     static {
         FlexoObjectImpl.addActionForClass(actionType, IFreeplaneNode.class);

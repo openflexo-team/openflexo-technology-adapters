@@ -16,9 +16,9 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
-public class AddChildNode extends FlexoAction<AddChildNode, IFreeplaneNode, IFreeplaneMap> {
+public class NewChildNode extends FlexoAction<NewChildNode, IFreeplaneNode, IFreeplaneMap> {
 
-    private static final class AddChildNodeActionType extends FlexoActionType<AddChildNode, IFreeplaneNode, IFreeplaneMap> {
+    private static final class AddChildNodeActionType extends FlexoActionType<NewChildNode, IFreeplaneNode, IFreeplaneMap> {
 
         protected AddChildNodeActionType(final String actionName, final ActionMenu actionMenu, final ActionGroup actionGroup,
                 final int actionCategory) {
@@ -26,8 +26,8 @@ public class AddChildNode extends FlexoAction<AddChildNode, IFreeplaneNode, IFre
         }
 
         @Override
-        public AddChildNode makeNewAction(final IFreeplaneNode node, final Vector<IFreeplaneMap> maps, final FlexoEditor flexoEditor) {
-            return new AddChildNode(node, maps, flexoEditor);
+        public NewChildNode makeNewAction(final IFreeplaneNode node, final Vector<IFreeplaneMap> maps, final FlexoEditor flexoEditor) {
+            return new NewChildNode(node, maps, flexoEditor);
         }
 
         @Override
@@ -43,10 +43,10 @@ public class AddChildNode extends FlexoAction<AddChildNode, IFreeplaneNode, IFre
 
     public static final ActionMenu FREEPLANE_MENU = new ActionMenu("freeplane_actions", FlexoActionType.defaultGroup);
 
-    public static final FlexoActionType<AddChildNode, IFreeplaneNode, IFreeplaneMap> actionType = new AddChildNodeActionType(
+    public static final FlexoActionType<NewChildNode, IFreeplaneNode, IFreeplaneMap> actionType = new AddChildNodeActionType(
             "add_child_node", FREEPLANE_MENU, FlexoActionType.editGroup, FlexoActionType.ADD_ACTION_TYPE);
 
-    public AddChildNode(final IFreeplaneNode focusedObject, final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
+    public NewChildNode(final IFreeplaneNode focusedObject, final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
         super(actionType, focusedObject, globalSelection, editor);
     }
 
