@@ -1,6 +1,6 @@
 /*
  * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2012-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -38,35 +38,50 @@ import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
 import org.openflexo.technologyadapter.xml.model.XMLTechnologyContextManager;
+import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
+import org.openflexo.technologyadapter.xml.model.XMLXSDModelFactory;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
 import org.openflexo.technologyadapter.xml.rm.XMLMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XMLXSDFileResource;
+import org.openflexo.technologyadapter.xml.rm.XMLXSDFileResourceImpl;
+import org.openflexo.technologyadapter.xml.rm.XMLXSDModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 
 /**
- * @author xtof
+ * This class defines and implements the XSD/XML technology adapter
+ * 
+ * @author sylvain, luka, Christophe
  * 
  */
 
 @DeclareModelSlots({ // ModelSlot(s) declaration
 // Pure XML, without XSD
-@DeclareModelSlot(FML = "XMLModelSlot", modelSlotClass = XMLModelSlot.class) })
-@DeclareRepositoryType({ XMLModelRepository.class, XMLMetaModelRepository.class })
+@DeclareModelSlot(FML = "XMLModelSlot", modelSlotClass = XMLModelSlot.class) ,
+//Classical type-safe interpretation
+@DeclareModelSlot(FML = "XSDModelSlot", modelSlotClass = XSDModelSlot.class) })
+@DeclareRepositoryType({ XMLModelRepository.class, XMLMetaModelRepository.class, XMLXSDModelRepository.class})
+
 public class XMLTechnologyAdapter extends TechnologyAdapter {
 
     private static final String   TAName          = "XML technology adapter";
     private static final String   XML_EXTENSION   = ".xml";
+    private static final String   XSD_EXTENSION   = ".xsd";
 
     private XMLModelFactory       xmlModelFactory = null;
+	private XMLXSDModelFactory xmlXsdModelFactory = null;
 
     protected static final Logger logger          = Logger.getLogger(XMLTechnologyAdapter.class.getPackage().getName());
 
     public XMLTechnologyAdapter() {
         super();
         xmlModelFactory = new XMLModelFactory();
+        xmlXsdModelFactory = new XMLXSDModelFactory();
     }
 
     @Override
@@ -152,6 +167,68 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
         return createEmptyModel(modelFile, technologyContextManager);
     }
 
+
+    /**
+     * Create empty model.
+     * 
+     * @param modelFile
+     * @param modelUri
+     * @param metaModelResource
+     * @param technologyContextManager
+     * @return
+     */
+    public XMLXSDFileResource createNewXMLFile(File modelFile, String modelUri, FlexoResource<XSDMetaModel> metaModelResource) {
+
+        modelUri = modelFile.toURI().toString();
+
+        XMLXSDFileResource modelResource = XMLXSDFileResourceImpl.makeXMLXSDFileResource(modelUri, modelFile,
+                (XSDMetaModelResource) metaModelResource, (XMLTechnologyContextManager) getTechnologyContextManager());
+
+        getTechnologyContextManager().registerResource(modelResource);
+
+        return modelResource;
+
+    }
+
+    /**
+     * Creates new model conform to the supplied meta model
+     * 
+     * @param project
+     * @param metaModel
+     * @return
+     */
+    public XMLXSDFileResource createNewXMLFile(FlexoProject project, String filename, String modelUri, FlexoResource<XSDMetaModel> metaModel) {
+
+        File modelFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
+
+        // TODO: modelURI is not used here!!!! => check the API, as it is
+        // processed by TA
+        logger.warning("modelURI are not useful in this context");
+
+        return createNewXMLFile(modelFile, modelUri, metaModel);
+
+    }
+
+    public FlexoResource<XMLXSDModel> createNewXMLFile(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
+            FlexoResource<XSDMetaModel> metaModelResource) {
+
+        File modelDirectory = new File(resourceCenter.getRootDirectory(), relativePath);
+        File modelFile = new File(modelDirectory, filename);
+
+        String modelUri = modelFile.toURI().toString();
+
+        return createNewXMLFile(modelFile, modelUri, metaModelResource);
+    }
+
+    public FlexoResource<XMLXSDModel> createNewXMLFile(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
+            String modelUri, FlexoResource<XSDMetaModel> metaModelResource) {
+
+        File modelDirectory = new File(resourceCenter.getRootDirectory(), relativePath);
+        File modelFile = new File(modelDirectory, filename);
+
+        return createNewXMLFile(modelFile, modelUri, metaModelResource);
+    }
+    
     @Override
     public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 
@@ -164,9 +241,15 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
         return null;
     }
 
-    public String getExpectedModelExtension(FlexoResource<XMLModel> metaModel) {
+    public String getExpectedModelExtension(FlexoResource<?> metaModel) {
         return XML_EXTENSION;
     }
+
+
+    public String getExpectedMetaModelExtension() {
+        return XSD_EXTENSION;
+    }
+
 
     @Override
     public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
@@ -238,6 +321,9 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
         return returned;
     }
 
+    
+    // TODO One single MetaModelRepo should be available?
+    
     /**
      * 
      * Create a XMLModel repository for current {@link TechnologyAdapter} and
@@ -253,5 +339,23 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
     public XMLModelFactory getXMLModelFactory() {
         return xmlModelFactory;
     }
+    
+
+    /**
+     * 
+     * Create a XMLModel repository for current {@link TechnologyAdapter} and
+     * supplied {@link FlexoResourceCenter}
+     * 
+     */
+    public XMLXSDModelRepository createXMLXSDModelRepository(FlexoResourceCenter<?> resourceCenter) {
+        XMLXSDModelRepository returned = new XMLXSDModelRepository(this, resourceCenter);
+        resourceCenter.registerRepository(returned, XMLXSDModelRepository.class, this);
+        return returned;
+    }
+
+    public XMLXSDModelFactory getXMLXSDModelFactory() {
+        return this.xmlXsdModelFactory;
+    }
+
 
 }

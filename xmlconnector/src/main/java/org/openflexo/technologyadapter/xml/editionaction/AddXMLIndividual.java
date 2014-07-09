@@ -29,7 +29,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.xml.XMLModelSlot;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
-import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualRole;
+import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 
 /**
  * @author xtof

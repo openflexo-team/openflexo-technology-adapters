@@ -41,7 +41,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualRole;
+import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 
 /**
  * @author xtof

@@ -19,7 +19,7 @@
  */
 package org.openflexo.technologyadapter.xml.gui;
 
-import org.openflexo.technologyadapter.xsd.model.XMLXSDModel;
+import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 

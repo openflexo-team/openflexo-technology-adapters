@@ -1,5 +1,6 @@
 /*
  * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2013-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -17,33 +18,25 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.xml.gui;
+package org.openflexo.technologyadapter.xml.rm;
 
+import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.technologyadapter.MetaModelRepository;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
-import org.openflexo.view.controller.FlexoController;
-import org.openflexo.view.controller.model.FlexoPerspective;
+import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 
-/**
- * This class represent the module view for an XSD meta model<br>
- * Underlying representation is supported by OntologyView implementation.
- * 
- * @author sylvain
- * 
- */
-@SuppressWarnings("serial")
-public class XSDMetaModelView extends AbstractXMLOntologyView<XSDMetaModel> {
+public class XSDMetaModelRepository extends MetaModelRepository<XSDMetaModelResource, XMLXSDModel, XSDMetaModel, XMLTechnologyAdapter> {
 
-	public XSDMetaModelView(XSDMetaModel object, FlexoController controller, FlexoPerspective perspective) {
-		super(object, controller, perspective);
+	public XSDMetaModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
+		super(adapter, resourceCenter);
 	}
+
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/XMLTechnologyAdapter/MetaModels";
 
 	@Override
-	protected XSDMetaModelBrowserModel makeBrowserModel() {
-		return new XSDMetaModelBrowserModel(getXSDMetaModel());
-	}
-
-	public XSDMetaModel getXSDMetaModel() {
-		return getOntology();
+	public String getDefaultBaseURI() {
+		return DEFAULT_BASE_URI;
 	}
 
 }

@@ -40,18 +40,19 @@ import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
-import org.openflexo.technologyadapter.xsd.model.XMLXSDModel;
-import org.openflexo.technologyadapter.xsd.model.XMLXSDModelFactory;
-import org.openflexo.technologyadapter.xsd.model.XSDTechnologyContextManager;
-import org.openflexo.technologyadapter.xsd.rm.XMLXSDFileResource;
-import org.openflexo.technologyadapter.xsd.rm.XMLXSDFileResourceImpl;
-import org.openflexo.technologyadapter.xsd.rm.XMLXSDModelRepository;
-import org.openflexo.technologyadapter.xsd.rm.XMLXSDNameSpaceFinder;
-import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelRepository;
-import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResource;
-import org.openflexo.technologyadapter.xsd.rm.XSDMetaModelResourceImpl;
-import org.openflexo.technologyadapter.xsd.viewpoint.binding.XSDBindingFactory;
+import org.openflexo.technologyadapter.xml.XSDModelSlot;
+import org.openflexo.technologyadapter.xml.binding.XSDBindingFactory;
+import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
+import org.openflexo.technologyadapter.xml.model.XMLXSDModelFactory;
+import org.openflexo.technologyadapter.xml.model.XSDTechnologyContextManager;
+import org.openflexo.technologyadapter.xml.rm.XMLXSDFileResource;
+import org.openflexo.technologyadapter.xml.rm.XMLXSDFileResourceImpl;
+import org.openflexo.technologyadapter.xml.rm.XMLXSDModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XMLXSDNameSpaceFinder;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResourceImpl;
 
 /**
  * This class defines and implements the XSD/XML technology adapter

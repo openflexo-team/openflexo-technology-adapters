@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.xml.gui;
 import java.util.logging.Logger;
 
 import org.openflexo.components.widget.OntologyBrowserModel;
-import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
 
 /**
  * Model supporting browsing through models or metamodels conform to {@link FlexoOntology} API<br>

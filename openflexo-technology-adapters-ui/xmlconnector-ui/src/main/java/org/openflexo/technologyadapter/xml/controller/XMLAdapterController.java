@@ -38,7 +38,7 @@ import org.openflexo.technologyadapter.xml.gui.XMLIconLibrary;
 import org.openflexo.technologyadapter.xml.gui.XMLModelBrowserModel;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.viewpoint.XMLIndividualRole;
+import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;

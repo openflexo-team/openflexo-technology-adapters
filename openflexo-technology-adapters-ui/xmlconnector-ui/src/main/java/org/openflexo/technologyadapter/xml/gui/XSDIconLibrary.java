@@ -24,14 +24,14 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
-import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
-import org.openflexo.technologyadapter.xsd.metamodel.XSOntDataProperty;
-import org.openflexo.technologyadapter.xsd.metamodel.XSOntObjectProperty;
-import org.openflexo.technologyadapter.xsd.metamodel.XSOntProperty;
-import org.openflexo.technologyadapter.xsd.model.AbstractXSOntObject;
-import org.openflexo.technologyadapter.xsd.model.XMLXSDModel;
-import org.openflexo.technologyadapter.xsd.model.XSOntIndividual;
+import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
+import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
+import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
+import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
+import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
 import org.openflexo.toolbox.ImageIconResource;
 
 public class XSDIconLibrary {

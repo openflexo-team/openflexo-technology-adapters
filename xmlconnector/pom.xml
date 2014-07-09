@@ -1,12 +1,14 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
 		<version>1.7.0-SNAPSHOT</version>
 	</parent>
-  <artifactId>xmlconnector</artifactId>
-  <dependencies>
+	<artifactId>xmlconnector</artifactId>
+	<name>Full Featured XML connector</name>
+	<dependencies>
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
@@ -17,29 +19,32 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
-		<!-- TODO: please remove this dependancy -->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
-			<version>${flexocore.version}</version>
-		</dependency>
-		<!-- TODO: please remove this dependancy -->
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>flexo-ui</artifactId>
-			<classifier>tests</classifier>
 			<scope>test</scope>
+			<classifier>tests</classifier>
 		</dependency>
-		<dependency>
-			<groupId>org.jdom</groupId>
-			<artifactId>jdom2</artifactId>
-		</dependency>
+		
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexoutils</artifactId>
 			<scope>test</scope>
 			<classifier>tests</classifier>
 		</dependency>
-  </dependencies>
-  <name>Basic XML connector</name>
+		<dependency>
+			<groupId>xml-resolver</groupId>
+			<artifactId>xml-resolver</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>com.sun.xsom</groupId>
+			<artifactId>xsom</artifactId>
+			<version>20110809</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jdom</groupId>
+			<artifactId>jdom2</artifactId>
+		</dependency>
+	</dependencies>
 </project>
