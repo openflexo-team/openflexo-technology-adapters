@@ -91,7 +91,7 @@ public class BasicExcelModelConverter {
 				while (cell.getColumnIndex() > lastCell + 1) {
 					// Missing cell
 					// System.out.println("Adding a missing cell");
-					ExcelCell excelCell = new ExcelCell(null, excelRow, technologyAdapter);
+					ExcelCell excelCell = new ExcelCell(cell, excelRow, technologyAdapter);
 					excelRow.addToExcelCells(excelCell);
 					lastCell++;
 				}

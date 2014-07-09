@@ -22,6 +22,9 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelCel
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelRow;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelSheet;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.CellStyleAction;
+import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelCell;
+import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelRow;
+import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelSheet;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -97,7 +100,13 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelRow.class), IconLibrary.DUPLICATE);
 		} else if (CellStyleAction.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(ExcelIconLibrary.EXCEL_GRAPHICAL_ACTION_ICON, IconLibrary.DUPLICATE);
-		}
+		} else if (SelectExcelSheet.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelSheet.class), IconLibrary.IMPORT);
+		} else if (SelectExcelRow.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelRow.class), IconLibrary.IMPORT);
+		} else if (SelectExcelCell.class.isAssignableFrom(editionActionClass)) {
+			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelCell.class), IconLibrary.IMPORT);
+		} 
 		return super.getIconForEditionAction(editionActionClass);
 	}
 
