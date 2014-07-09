@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Panel layout="gridbag" border="empty" protectContent="false"
-	dataClassName="org.openflexo.technologyadapter.freeplane.model.actions.CreateFreeplaneMap"
+	dataClassName="org.openflexo.technologyadapter.freeplane.model.actions.NewFreeplaneMap"
 	controllerClassName="org.openflexo.view.controller.FlexoFIBController">
-	<Label label="create_map_name" align="center" localize="true"
+	<Label label="create_map_name" align="center"
 		constraints="gridbag(insetsLeft=0;insetsRight=0;gridHeight=1;padY=0;padX=0;anchor=center;gridY=-1;gridX=-1;index=0;gridWidth=0;insetsTop=20;insetsBottom=20;weightY=0.0;fill=horizontal;weightX=1.0)"
 		font="Lucida Grande,1,15" readOnly="false" manageDynamicModel="false" />
 	<Label label="map_name" align="right"

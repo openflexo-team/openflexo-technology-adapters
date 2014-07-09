@@ -1,13 +1,16 @@
 package org.openflexo.technologyadapter.freeplane.model.actions;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
+import org.freeplane.features.mapio.MapIO;
+import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.FlexoEditor;
@@ -20,12 +23,12 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 
-public class CreateFreeplaneMap
+public class NewFreeplaneMap
         extends
-            FlexoAction<CreateFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> {
+            FlexoAction<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> {
     private static final class CreateFreeplaneMapActionType
             extends
-                FlexoActionType<CreateFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> {
+                FlexoActionType<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> {
 
         protected CreateFreeplaneMapActionType(final String actionName, final ActionMenu actionMenu, final ActionGroup actionGroup,
                 final int actionCategory) {
@@ -33,33 +36,33 @@ public class CreateFreeplaneMap
         }
 
         @Override
-        public CreateFreeplaneMap makeNewAction(final RepositoryFolder<IFreeplaneResource> node,
+		public NewFreeplaneMap makeNewAction(final RepositoryFolder<IFreeplaneResource> folder,
                 final Vector<RepositoryFolder<IFreeplaneResource>> maps, final FlexoEditor flexoEditor) {
-            return new CreateFreeplaneMap(node, maps, flexoEditor);
+			return new NewFreeplaneMap(folder, maps, flexoEditor);
         }
 
         @Override
-        public boolean isVisibleForSelection(final RepositoryFolder<IFreeplaneResource> node,
+		public boolean isVisibleForSelection(final RepositoryFolder<IFreeplaneResource> folder,
                 final Vector<RepositoryFolder<IFreeplaneResource>> map) {
-            return node.getResourceRepository().getResourceClass().equals(IFreeplaneResource.class);
+			return folder.getResourceRepository().getResourceClass().equals(IFreeplaneResource.class);
         }
 
         @Override
-        public boolean isEnabledForSelection(final RepositoryFolder<IFreeplaneResource> node,
+		public boolean isEnabledForSelection(final RepositoryFolder<IFreeplaneResource> folder,
                 final Vector<RepositoryFolder<IFreeplaneResource>> map) {
             return true;
         }
     }
 
-    public static final FlexoActionType<CreateFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> actionType = new CreateFreeplaneMapActionType(
+    public static final FlexoActionType<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> actionType = new CreateFreeplaneMapActionType(
             "create_mind_map", FlexoActionType.newMenu, FlexoActionType.editGroup, FlexoActionType.ADD_ACTION_TYPE);
 
-    private static final Logger LOGGER = Logger.getLogger(CreateFreeplaneMap.class.getSimpleName());
+    private static final Logger LOGGER = Logger.getLogger(NewFreeplaneMap.class.getSimpleName());
 
     /** Property for fibs */
     public String mapName;
 
-    public CreateFreeplaneMap(final RepositoryFolder<IFreeplaneResource> focusedObject,
+    public NewFreeplaneMap(final RepositoryFolder<IFreeplaneResource> focusedObject,
             final Vector<RepositoryFolder<IFreeplaneResource>> globalSelection, final FlexoEditor editor) {
         super(actionType, focusedObject, globalSelection, editor);
     }
@@ -68,33 +71,28 @@ public class CreateFreeplaneMap
         FlexoObjectImpl.addActionForClass(actionType, RepositoryFolder.class);
     }
 
-    @Override
+	@Override
     protected void doAction(final Object objet) throws FlexoException {
         LOGGER.info("One day this action will create a new freeplane map with name " + this.mapName);
-		final String errorMsg = "Exception raised while creating new MindMap";
-        // If no data have been load, initilalization has not been done, so do it.
+		// If no data have been load, initilalization has not been done, so do it.
         FreeplaneBasicAdapter.getInstance();
 		final MapModel newMap = new MapModel();
-		// Equivalent to createNewRoot, but the Method attach of nodeModel is
-		// not public just without modifier ...
 		final NodeModel root = new NodeModel(this.mapName, newMap);
 		newMap.setRoot(root);
+
+		Controller.getCurrentModeController().getMapController().fireMapCreated(newMap);
+		Controller.getCurrentModeController().getMapController().newMapView(newMap);
+
+		final String fileCreatedPath = this.getFocusedObject().getFile().getAbsolutePath() + System.getProperty("file.separator")
+				+ this.mapName + ".mm";
 		try {
-			final Method attach = NodeModel.class.getDeclaredMethod("attach");
-			attach.setAccessible(true);
-			attach.invoke(root);
-		} catch (final IllegalAccessException e) {
-			LOGGER.log(Level.SEVERE, errorMsg, e);
-		} catch (final NoSuchMethodException e) {
-			LOGGER.log(Level.SEVERE, errorMsg, e);
-		} catch (final SecurityException e) {
-			LOGGER.log(Level.SEVERE, errorMsg, e);
-		} catch (final IllegalArgumentException e) {
-			LOGGER.log(Level.SEVERE, errorMsg, e);
-		} catch (final InvocationTargetException e) {
-			LOGGER.log(Level.SEVERE, errorMsg, e);
+			((MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class)).writeToFile(newMap, new File(fileCreatedPath));
+		} catch (final FileNotFoundException e) {
+			final String msg = "";
+			LOGGER.log(Level.SEVERE, msg, e);
+		} catch (final IOException e) {
+			final String msg = "";
+			LOGGER.log(Level.SEVERE, msg, e);
 		}
-		Controller.getCurrentController().getModeController().getMapController().fireMapCreated(newMap);
-		Controller.getCurrentController().getModeController().getMapController().newMapView(newMap);
     }
 }

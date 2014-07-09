@@ -5,25 +5,25 @@ import java.util.EventObject;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
-import org.openflexo.technologyadapter.freeplane.model.actions.AddChildNode;
+import org.openflexo.technologyadapter.freeplane.model.actions.NewChildNode;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class AddChildNodeInitializer extends ActionInitializer<AddChildNode, IFreeplaneNode, IFreeplaneMap> {
+public class AddChildNodeInitializer extends ActionInitializer<NewChildNode, IFreeplaneNode, IFreeplaneMap> {
 
     public AddChildNodeInitializer(final ControllerActionInitializer controllerActionInitializer) {
-        super(AddChildNode.actionType, controllerActionInitializer);
+        super(NewChildNode.actionType, controllerActionInitializer);
     }
 
     @Override
-    protected FlexoActionInitializer<AddChildNode> getDefaultInitializer() {
+    protected FlexoActionInitializer<NewChildNode> getDefaultInitializer() {
         return new AddChildNodeDefaultInit();
     }
 
-    private class AddChildNodeDefaultInit extends FlexoActionInitializer<AddChildNode> {
+    private class AddChildNodeDefaultInit extends FlexoActionInitializer<NewChildNode> {
 
         @Override
-        public boolean run(final EventObject event, final AddChildNode action) {
+        public boolean run(final EventObject event, final NewChildNode action) {
             // Maybe something to do here
             return true;
         }

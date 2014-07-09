@@ -43,7 +43,7 @@ public class NewSiblingAboveNode extends FlexoAction<NewSiblingAboveNode, IFreep
     }
 
     public static final FlexoActionType<NewSiblingAboveNode, IFreeplaneNode, IFreeplaneMap> actionType = new NewSiblingAboveNodeActionType(
-            "add_sibling_above_node", AddChildNode.FREEPLANE_MENU, FlexoActionType.editGroup, FlexoActionType.ADD_ACTION_TYPE);
+            "add_sibling_above_node", NewChildNode.FREEPLANE_MENU, FlexoActionType.editGroup, FlexoActionType.ADD_ACTION_TYPE);
 
     static {
         FlexoObjectImpl.addActionForClass(actionType, IFreeplaneNode.class);

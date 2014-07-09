@@ -5,7 +5,7 @@ import org.openflexo.rm.ResourceLocator;
 
 public class FreeplaneFIBLibrary {
 
-    public static final Resource CREATE_MAP_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialogs/CreateFreeplaneMapDialog.fib");
+	public static final Resource NEW_MAP_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialogs/NewFreeplaneMapDialog.fib");
 
     private FreeplaneFIBLibrary() {
         // Avoid Instantiation of utility static class.
