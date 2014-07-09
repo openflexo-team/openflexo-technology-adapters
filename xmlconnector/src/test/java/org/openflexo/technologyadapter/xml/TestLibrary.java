@@ -12,17 +12,12 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.ApplicationContext;
-import org.openflexo.TestApplicationContext;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.resource.DirectoryResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
-import org.openflexo.technologyadapter.xml.model.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.model.XSOntology;
 import org.openflexo.technologyadapter.xml.rm.XMLXSDModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
@@ -34,16 +29,12 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
-    private static final String                FILE_NAME = "library";
-
     protected static final Logger              logger    = Logger.getLogger(TestLibrary.class.getPackage().getName());
 
     private static XMLTechnologyAdapter        xmlAdapter;
-    private static XMLTechnologyContextManager xmlContextManager;
-    private static FlexoResourceCenter<?>      resourceCenter;
     private static XSDMetaModelRepository      mmRepository;
     private static XMLXSDModelRepository       modelRepository;
-    private static ApplicationContext          testApplicationContext;
+//    private static ApplicationContext          testApplicationContext;
 
     public static void xsoObject(AbstractXSOntObject obj, StringBuffer buffer) {
         buffer.append(obj.getClass().getSimpleName());
@@ -97,14 +88,14 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
     @Test
     @TestOrder(1)
     public void test0LoadTestResourceCenter() throws IOException {
+
+		instanciateTestServiceManager();
+		
         log("test0LoadTestResourceCenter()");
-        testApplicationContext = new TestApplicationContext();
-        resourceCenter = testApplicationContext.getResourceCenterService().getResourceCenters().get(0);
-        xmlAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-        xmlContextManager = (XMLTechnologyContextManager) xmlAdapter.getTechnologyContextManager();
+        xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
         mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
         modelRepository = resourceCenter.getRepository(XMLXSDModelRepository.class, xmlAdapter);
-        ((DirectoryResourceCenter) resourceCenter).getDirectory().getCanonicalPath();
+        resourceCenter.getDirectory().getCanonicalPath();
         assertNotNull(modelRepository);
         assertNotNull(mmRepository);
         assertEquals(3, mmRepository.getAllResources().size());
@@ -117,7 +108,6 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
         StringBuffer buffer = new StringBuffer();
         XSDMetaModel lib = null;
         XSDMetaModelResource libRes = null;
-        testApplicationContext = new TestApplicationContext();
 
         try {
             libRes = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter).getResource("http://www.example.org/Library");

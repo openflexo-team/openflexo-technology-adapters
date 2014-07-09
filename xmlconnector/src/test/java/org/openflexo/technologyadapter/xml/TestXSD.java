@@ -28,11 +28,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.ApplicationContext;
-import org.openflexo.TestApplicationContext;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.resource.DirectoryResourceCenter;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.xml.rm.XMLXSDModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
@@ -42,74 +38,72 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 
-    protected static final Logger         logger  = Logger.getLogger(TestXSD.class.getPackage().getName());
+	protected static final Logger         logger  = Logger.getLogger(TestXSD.class.getPackage().getName());
 
-    private static ApplicationContext     testApplicationContext;
-    private static XMLTechnologyAdapter   xsdAdapter;
-    private static FlexoResourceCenter<?> resourceCenter;
-    private static XSDMetaModelRepository mmRepository;
-    private static XMLXSDModelRepository  modelRepository;
-    private static String                 baseUrl = null;
+	private static XMLTechnologyAdapter   xmlAdapter;
+	private static XSDMetaModelRepository mmRepository;
+	private static XMLXSDModelRepository  modelRepository;
+	private static String                 baseUrl = null;
 
-    /**
-     * Instanciate test ResourceCenter
-     */
-    @Test
-    @TestOrder(1)
-    public void test0LoadTestResourceCenter() {
+	/**
+	 * Instanciate test ResourceCenter
+	 */
+	@Test
+	@TestOrder(1)
+	public void test0LoadTestResourceCenter() {
 
-        log("test0LoadTestResourceCenter()");
-        testApplicationContext = new TestApplicationContext();
-        xsdAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-        resourceCenter = testApplicationContext.getResourceCenterService().getResourceCenters().get(0);
-        try {
-            baseUrl = ((DirectoryResourceCenter) resourceCenter).getDirectory().toURI().toURL().toExternalForm();
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+		instanciateTestServiceManager();
 
-        mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xsdAdapter);
-        modelRepository = resourceCenter.getRepository(XMLXSDModelRepository.class, xsdAdapter);
-        assertNotNull(mmRepository);
-        assertNotNull(modelRepository);
-        assertEquals(3, mmRepository.getAllResources().size());
-    }
+		log("test0LoadTestResourceCenter()");
+		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
+		try {
+			baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-    @Test
-    @TestOrder(2)
-    public void test1LibraryMetaModelPresentAndLoaded() {
-        log("test1LibraryMetaModelPresentAndLoaded()");
-        XSDMetaModelResource libraryRes = mmRepository.getResource("http://www.example.org/Library");
-        assertNotNull(libraryRes);
-        // TODO
-        // assertFalse(libraryRes.isLoaded());
-        assertNotNull(libraryRes.getMetaModelData());
-        // assertTrue(libraryRes.isLoaded());
+		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
+		modelRepository = resourceCenter.getRepository(XMLXSDModelRepository.class, xmlAdapter);
+		assertNotNull(mmRepository);
+		assertNotNull(modelRepository);
+		assertEquals(3, mmRepository.getAllResources().size());
+	}
 
-        logger.info("Classes: " + libraryRes.getMetaModelData().getClasses());
+	@Test
+	@TestOrder(2)
+	public void test1LibraryMetaModelPresentAndLoaded() {
+		log("test1LibraryMetaModelPresentAndLoaded()");
+		XSDMetaModelResource libraryRes = mmRepository.getResource("http://www.example.org/Library");
+		assertNotNull(libraryRes);
+		// TODO
+		// assertFalse(libraryRes.isLoaded());
+		assertNotNull(libraryRes.getMetaModelData());
+		// assertTrue(libraryRes.isLoaded());
 
-        // TODO: implement tests
-        logger.warning("Please perform some checks here");
+		logger.info("Classes: " + libraryRes.getMetaModelData().getClasses());
 
-    }
+		// TODO: implement tests
+		logger.warning("Please perform some checks here");
 
-    @Test
-    @TestOrder(3)
-    public void test2MavenMetaModelPresentAndLoaded() {
-        log("test2MavenMetaModelPresentAndLoaded()");
-        XSDMetaModelResource mavenRes = mmRepository.getResource("http://maven.apache.org/POM/4.0.0");
-        assertNotNull(mavenRes);
-        // TODO
-        // assertFalse(mavenRes.isLoaded());
-        assertNotNull(mavenRes.getMetaModelData());
-        assertTrue(mavenRes.isLoaded());
+	}
 
-        logger.info("Classes: " + mavenRes.getMetaModelData().getClasses());
+	@Test
+	@TestOrder(3)
+	public void test2MavenMetaModelPresentAndLoaded() {
+		log("test2MavenMetaModelPresentAndLoaded()");
+		XSDMetaModelResource mavenRes = mmRepository.getResource("http://maven.apache.org/POM/4.0.0");
+		assertNotNull(mavenRes);
+		// TODO
+		// assertFalse(mavenRes.isLoaded());
+		assertNotNull(mavenRes.getMetaModelData());
+		assertTrue(mavenRes.isLoaded());
 
-        // TODO: implement tests
-        logger.warning("Please perform some checks here");
+		logger.info("Classes: " + mavenRes.getMetaModelData().getClasses());
 
-    }
+		// TODO: implement tests
+		logger.warning("Please perform some checks here");
+
+	}
 
 }

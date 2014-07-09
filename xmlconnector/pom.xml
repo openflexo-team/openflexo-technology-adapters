@@ -25,7 +25,6 @@
 			<scope>test</scope>
 			<classifier>tests</classifier>
 		</dependency>
-		
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexoutils</artifactId>

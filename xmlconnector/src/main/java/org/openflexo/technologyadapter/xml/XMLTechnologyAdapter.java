@@ -264,6 +264,12 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
             mmRepository = createXMLMetaModelRepository(resourceCenter);
         }
 
+
+        XMLXSDModelRepository xmlxsdRepository = resourceCenter.getRepository(XMLXSDModelRepository.class, this);
+        if (xmlxsdRepository == null) {
+        	xmlxsdRepository = createXMLXSDModelRepository(resourceCenter);
+        }
+
         Iterator<I> it = resourceCenter.iterator();
 
         while (it.hasNext()) {
