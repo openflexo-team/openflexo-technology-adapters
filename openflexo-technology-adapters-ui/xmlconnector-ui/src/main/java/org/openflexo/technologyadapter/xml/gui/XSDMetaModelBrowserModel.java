@@ -17,33 +17,30 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.xsd.gui;
+package org.openflexo.technologyadapter.xml.gui;
 
+import java.util.logging.Logger;
+
+import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
-import org.openflexo.view.controller.FlexoController;
-import org.openflexo.view.controller.model.FlexoPerspective;
 
 /**
- * This class represent the module view for an XSD meta model<br>
- * Underlying representation is supported by OntologyView implementation.
+ * Model supporting browsing through models or metamodels conform to {@link FlexoOntology} API<br>
  * 
- * @author sylvain
+ * Developers note: this model is shared by many widgets. Please modify it with caution.
  * 
+ * @see FIBOWLClassSelector
+ * @see FIBOWLIndividualSelector
+ * @see FIBOWLPropertySelector
+ * 
+ * @author sguerin
  */
-@SuppressWarnings("serial")
-public class XSDMetaModelView extends AbstractXMLOntologyView<XSDMetaModel> {
+public class XSDMetaModelBrowserModel extends OntologyBrowserModel {
 
-	public XSDMetaModelView(XSDMetaModel object, FlexoController controller, FlexoPerspective perspective) {
-		super(object, controller, perspective);
-	}
+	static final Logger logger = Logger.getLogger(XSDMetaModelBrowserModel.class.getPackage().getName());
 
-	@Override
-	protected XSDMetaModelBrowserModel makeBrowserModel() {
-		return new XSDMetaModelBrowserModel(getXSDMetaModel());
-	}
-
-	public XSDMetaModel getXSDMetaModel() {
-		return getOntology();
+	public XSDMetaModelBrowserModel(XSDMetaModel metaModel) {
+		super(metaModel);
 	}
 
 }

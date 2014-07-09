@@ -6,8 +6,8 @@
 		<artifactId>openflexo-technology-adapters-ui</artifactId>
 		<version>1.7.0-SNAPSHOT</version>
 	</parent>
-	<artifactId>xsdconnector-ui</artifactId>
-	<name>XSD technology connector UI</name>
+	<artifactId>xmlconnector-ui</artifactId>
+	<name>XML technology connector UI</name>
 	<build>
 		<plugins>
 			<plugin>

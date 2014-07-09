@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2013- Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -17,12 +17,13 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.xsd.gui;
+package org.openflexo.technologyadapter.xml.gui;
 
 import java.util.logging.Logger;
 
 import org.openflexo.components.widget.OntologyBrowserModel;
-import org.openflexo.technologyadapter.xsd.model.XMLXSDModel;
+import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.technologyadapter.xml.model.IXMLModel;
 
 /**
  * Model supporting browsing through models or metamodels conform to {@link FlexoOntology} API<br>
@@ -39,8 +40,8 @@ public class XMLModelBrowserModel extends OntologyBrowserModel {
 
 	static final Logger logger = Logger.getLogger(XMLModelBrowserModel.class.getPackage().getName());
 
-	public XMLModelBrowserModel(XMLXSDModel model) {
-		super(model);
+	public XMLModelBrowserModel(IXMLModel model) {
+		super((IFlexoOntology<?>) model);
 	}
 
 }

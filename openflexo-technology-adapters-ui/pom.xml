@@ -22,7 +22,7 @@
 		<module>csvconnector-ui</module>
 		<module>excelconnector-ui</module>
 		<module>powerpointconnector-ui</module>
-		<module>xsdconnector-ui</module>
+		<module>xmlconnector-ui</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>

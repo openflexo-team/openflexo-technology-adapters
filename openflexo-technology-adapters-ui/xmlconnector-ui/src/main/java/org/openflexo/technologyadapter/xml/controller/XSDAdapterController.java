@@ -1,4 +1,4 @@
-package org.openflexo.technologyadapter.xsd.controller;
+package org.openflexo.technologyadapter.xml.controller;
 
 import java.util.logging.Logger;
 
@@ -12,12 +12,12 @@ import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.xml.gui.XMLModelBrowserModel;
+import org.openflexo.technologyadapter.xml.gui.XMLXSDModelView;
+import org.openflexo.technologyadapter.xml.gui.XSDIconLibrary;
+import org.openflexo.technologyadapter.xml.gui.XSDMetaModelBrowserModel;
+import org.openflexo.technologyadapter.xml.gui.XSDMetaModelView;
 import org.openflexo.technologyadapter.xsd.XSDTechnologyAdapter;
-import org.openflexo.technologyadapter.xsd.gui.XMLModelBrowserModel;
-import org.openflexo.technologyadapter.xsd.gui.XMLXSDModelView;
-import org.openflexo.technologyadapter.xsd.gui.XSDIconLibrary;
-import org.openflexo.technologyadapter.xsd.gui.XSDMetaModelBrowserModel;
-import org.openflexo.technologyadapter.xsd.gui.XSDMetaModelView;
 import org.openflexo.technologyadapter.xsd.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xsd.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xsd.model.AbstractXSOntObject;

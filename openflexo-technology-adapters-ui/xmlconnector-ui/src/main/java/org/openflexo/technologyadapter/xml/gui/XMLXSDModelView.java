@@ -17,7 +17,7 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.xsd.gui;
+package org.openflexo.technologyadapter.xml.gui;
 
 import org.openflexo.technologyadapter.xsd.model.XMLXSDModel;
 import org.openflexo.view.controller.FlexoController;
