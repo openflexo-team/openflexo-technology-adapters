@@ -27,6 +27,8 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
+import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
@@ -39,6 +41,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot.FreeplaneModelSlotImpl;
 import org.openflexo.technologyadapter.freeplane.fml.IFreeplaneMapRole;
 import org.openflexo.technologyadapter.freeplane.fml.IFreeplaneNodeRole;
+import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNodeAction;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
 /**
@@ -52,6 +55,7 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 @DeclarePatternRoles({ // All pattern roles available through this model slot
 @DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
 		@DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
+@DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddChildNodeAction.class, FML = "AddChildNode") })
 @ModelEntity
 @ImplementationClass(FreeplaneModelSlotImpl.class)
 @XMLElement
