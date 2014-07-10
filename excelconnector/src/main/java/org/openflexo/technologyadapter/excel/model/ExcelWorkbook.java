@@ -11,12 +11,13 @@ import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
-public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWorkbook>, IFlexoTechnology {
+public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWorkbook> {
 
 	private Workbook workbook;
 	private ExcelWorkbookResource resource;
 	private List<ExcelSheet> excelSheets;
 	private BasicExcelModelConverter converter;
+	private ArrayList<ExcelObject> accessibleExcelObjects;
 
 	public Workbook getWorkbook() {
 		return workbook;
@@ -63,47 +64,34 @@ public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWork
 		return excelSheets;
 	}
 
-	public void setExcelSheets(List<ExcelSheet> excelSheets) {
-		this.excelSheets = excelSheets;
-	}
-
 	public void addToExcelSheets(ExcelSheet newExcelSheet) {
 		this.excelSheets.add(newExcelSheet);
+		addToAccessibleExcelObjects(newExcelSheet);
 	}
 
 	public void removeFromExcelSheets(ExcelSheet deletedExcelSheet) {
 		this.excelSheets.remove(deletedExcelSheet);
+		removeFromAccessibleExcelObjects(deletedExcelSheet);
 	}
 
-	@Override
-	public List<? extends TechnologyObject<ExcelTechnologyAdapter>> getAccessibleTechnologyObject() {
-		return getExcelSheets();
+	public List<ExcelObject> getAccessibleExcelObjects() {
+		if(accessibleExcelObjects==null){
+			accessibleExcelObjects = new ArrayList<ExcelObject>();
+		}
+		return accessibleExcelObjects;
 	}
-
-	@Override
-	public TechnologyObject getRootConcept() {
-		return this;
+	
+	public void addToAccessibleExcelObjects(ExcelObject excelObject){
+		getAccessibleExcelObjects().add(excelObject);
 	}
-
-	@Override
-	public List<? extends IFlexoTechnologyObjectContainer> getSubContainers() {
-		return null;
-	}
-
-	@Override
-	public List<? extends TechnologyObject> getConcepts() {
-		return getExcelSheets();
-	}
-
-	@Override
-	public List<? extends TechnologyObject> getTechnologyObjects() {
-		return getExcelSheets();
+	
+	public void removeFromAccessibleExcelObjects(ExcelObject excelObject){
+		getAccessibleExcelObjects().remove(excelObject);
 	}
 
 	@Override
 	public String getUri() {
-		String uri = "Workbook=" + getResource().getName();
-		return uri;
+		return getName();
 	}
 
 }

@@ -43,21 +43,19 @@ public class ExcelRow extends ExcelObject {
 		return excelCells;
 	}
 
-	public void setExcelCells(List<ExcelCell> excelCells) {
-		this.excelCells = excelCells;
-	}
-
 	public void addToExcelCells(ExcelCell newExcelCell) {
 		this.excelCells.add(newExcelCell);
+		getExcelSheet().getWorkbook().addToAccessibleExcelObjects(newExcelCell);
 	}
 
 	public void removeFromExcelCells(ExcelCell deletedExcelCell) {
 		this.excelCells.remove(deletedExcelCell);
+		getExcelSheet().getWorkbook().removeFromAccessibleExcelObjects(deletedExcelCell);
 	}
 
 	@Override
 	public String getName() {
-		return "Row"+getRowNum();
+		return "row."+getRowNum();
 	}
 
 	public int getRowIndex() {
@@ -99,7 +97,7 @@ public class ExcelRow extends ExcelObject {
 	
 	@Override
 	public String getUri() {
-		return getExcelSheet().getUri()+getName();
+		return getExcelSheet().getUri()+"/"+getName();
 	}
 
 }
