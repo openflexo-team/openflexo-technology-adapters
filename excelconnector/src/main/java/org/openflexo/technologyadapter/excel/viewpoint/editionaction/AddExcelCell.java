@@ -98,6 +98,8 @@ public interface AddExcelCell extends AssignableAction<BasicExcelModelSlot, Exce
 	@Setter(IS_ROW_INDEX_KEY)
 	public void setRowIndex(boolean isRowIndex);
 
+	public List<CellType> getAvailableCellTypes();
+	
 	public static abstract class AddExcelCellImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelCell> implements AddExcelCell {
 
 		private static final Logger logger = Logger.getLogger(AddExcelCell.class.getPackage().getName());
