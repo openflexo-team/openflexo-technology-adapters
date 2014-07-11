@@ -20,6 +20,7 @@
 package org.openflexo.technologyadapter.excel.viewpoint.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -93,7 +94,7 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 	
 	public boolean isBorderStyle();
 
-	public static abstract class CellStyleActionImpl extends EditionActionImpl<BasicExcelModelSlot, ExcelCell> implements CellStyleAction {
+	public static abstract class CellStyleActionImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelCell> implements CellStyleAction {
 
 		private static final Logger logger = Logger.getLogger(CellStyleAction.class.getPackage().getName());
 
@@ -108,6 +109,11 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 		private CellAlignmentStyleFeature cellAlignmentStyle = null;
 
 		private DataBinding<?> value;
+		
+		@Override
+		public Type getAssignableType() {
+			return ExcelCell.class;
+		}
 
 		public Object getValue(FlexoBehaviourAction action) {
 			try {
