@@ -43,7 +43,7 @@ public class NewChildNode extends FlexoAction<NewChildNode, IFreeplaneNode, IFre
 
 	public static final FlexoActionType<NewChildNode, IFreeplaneNode, IFreeplaneMap> ACTION_TYPE = new AddChildNodeActionType();
 
-	public NewChildNode(final IFreeplaneNode focusedObject, final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
+	private NewChildNode(final IFreeplaneNode focusedObject, final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
 		super(ACTION_TYPE, focusedObject, globalSelection, editor);
 	}
 

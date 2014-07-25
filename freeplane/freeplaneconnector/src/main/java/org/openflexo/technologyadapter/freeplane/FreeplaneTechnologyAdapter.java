@@ -135,7 +135,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
      * @return true if extension of file match
      *         <code>FREEPLANE_FILE_EXTENSION</code>
      */
-    public boolean isValidFreeplaneFile(final File candidateFile) {
+    private boolean isValidFreeplaneFile(final File candidateFile) {
         return candidateFile.getName().endsWith(FREEPLANE_FILE_EXTENSION);
     }
 
@@ -195,7 +195,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
      * @param resourceCenter
      * @return the repository
      */
-    public FreeplaneResourceRepository createNewFreeplaneRepository(final FlexoResourceCenter<?> resourceCenter) {
+    private FreeplaneResourceRepository createNewFreeplaneRepository(final FlexoResourceCenter<?> resourceCenter) {
         final FreeplaneResourceRepository repo = new FreeplaneResourceRepository(this, resourceCenter);
         resourceCenter.registerRepository(repo, FreeplaneResourceRepository.class, this);
         return repo;

@@ -60,7 +60,7 @@ public class NewFreeplaneMap
 	 */
 	public String mapName;
 
-	public NewFreeplaneMap(final RepositoryFolder<IFreeplaneResource> focusedObject,
+	private NewFreeplaneMap(final RepositoryFolder<IFreeplaneResource> focusedObject,
 			final Vector<RepositoryFolder<IFreeplaneResource>> globalSelection, final FlexoEditor editor) {
 		super(ACTION_TYPE, focusedObject, globalSelection, editor);
 	}

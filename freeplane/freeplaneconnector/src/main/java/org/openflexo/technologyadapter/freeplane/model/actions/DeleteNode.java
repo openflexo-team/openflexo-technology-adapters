@@ -46,7 +46,7 @@ public class DeleteNode extends FlexoAction<DeleteNode, IFreeplaneNode, IFreepla
 		FlexoObjectImpl.addActionForClass(ACTION_TYPE, IFreeplaneNode.class);
 	}
 
-	public DeleteNode(final IFreeplaneNode focusedObject,
+	private DeleteNode(final IFreeplaneNode focusedObject,
 			final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
 		super(DeleteNode.ACTION_TYPE, focusedObject, globalSelection, editor);
 	}

@@ -45,7 +45,7 @@ public class NewSiblingNode extends FlexoAction<NewSiblingNode, IFreeplaneNode, 
 		FlexoObjectImpl.addActionForClass(ACTION_TYPE, IFreeplaneNode.class);
 	}
 
-	public NewSiblingNode(final IFreeplaneNode focusedObject, final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
+	private NewSiblingNode(final IFreeplaneNode focusedObject, final Vector<IFreeplaneMap> globalSelection, final FlexoEditor editor) {
 		super(NewSiblingNode.ACTION_TYPE, focusedObject, globalSelection, editor);
 	}
 
