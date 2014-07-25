@@ -21,10 +21,6 @@ public abstract class FreeplaneMapImpl extends FlexoObjectImpl implements IFreep
 
 	private MapModel mapModel;
 
-	public FreeplaneMapImpl(final FreeplaneTechnologyAdapter technologyAdapter) {
-		this.technologyAdapter = technologyAdapter;
-	}
-
 	public FreeplaneMapImpl() {
 	}
 
@@ -47,11 +43,11 @@ public abstract class FreeplaneMapImpl extends FlexoObjectImpl implements IFreep
 		try {
 			final ModelFactory factory = new ModelFactory(IFreeplaneNode.class);
 			final FreeplaneNodeImpl node = (FreeplaneNodeImpl) factory.newInstance(IFreeplaneNode.class);
-			node.setTechnologyAdapter(this.getTechnologyAdapter());
+			node.setTechnologyAdapter(getTechnologyAdapter());
 			// recursive call inside, don't be preoccupied by children
 			// initialization.
 			node.setNodeModel(map.getRootNode());
-			this.setRootNode(node);
+			setRootNode(node);
 		} catch (final ModelDefinitionException e) {
 			final String msg = "Error while setting MapModel of map " + this;
 			LOGGER.log(Level.SEVERE, msg, e);
@@ -66,6 +62,6 @@ public abstract class FreeplaneMapImpl extends FlexoObjectImpl implements IFreep
 
 	@Override
 	public String getUri() {
-		return "MAP=" + this.getMapModel().getTitle();
+		return "MAP=" + getMapModel().getTitle() + ",Root" + getRoot().getUri();
 	}
 }

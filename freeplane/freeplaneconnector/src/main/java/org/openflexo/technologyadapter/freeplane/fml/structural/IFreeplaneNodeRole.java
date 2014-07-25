@@ -18,7 +18,7 @@
  *
  */
 
-package org.openflexo.technologyadapter.freeplane.fml;
+package org.openflexo.technologyadapter.freeplane.fml.structural;
 
 import java.lang.reflect.Type;
 
@@ -31,19 +31,19 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
-import org.openflexo.technologyadapter.freeplane.fml.IFreeplaneMapRole.FreeplaneMapRoleImpl;
-import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
+import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneNodeRole.FreeplaneNodeRoleImpl;
+import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
 @ModelEntity
-@ImplementationClass(value = FreeplaneMapRoleImpl.class)
+@ImplementationClass(value = FreeplaneNodeRoleImpl.class)
 @XMLElement
-public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
+public interface IFreeplaneNodeRole extends FlexoRole<IFreeplaneNode> {
 
     public FreeplaneTechnologyAdapter getTechnologyAdapter();
 
-    public abstract static class FreeplaneMapRoleImpl extends FlexoRoleImpl<IFreeplaneMap> implements IFreeplaneMapRole {
+    public abstract static class FreeplaneNodeRoleImpl extends FlexoRoleImpl<IFreeplaneNode> implements IFreeplaneNodeRole {
 
-        public FreeplaneMapRoleImpl() {
+        public FreeplaneNodeRoleImpl() {
             super();
         }
 
@@ -52,7 +52,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
          */
         @Override
         public Type getType() {
-            return IFreeplaneMap.class;
+            return IFreeplaneNode.class;
         }
 
         /* (non-Javadoc)
@@ -60,7 +60,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
          */
         @Override
         public String getPreciseType() {
-            return IFreeplaneMap.class.getSimpleName();
+            return IFreeplaneNode.class.getSimpleName();
         }
 
         /* (non-Javadoc)
@@ -83,9 +83,9 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
          * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#makeActorReference(java.lang.Object, org.openflexo.foundation.view.FlexoConceptInstance)
          */
         @Override
-        public ActorReference<IFreeplaneMap> makeActorReference(final IFreeplaneMap object, final FlexoConceptInstance epi) {
+        public ActorReference<IFreeplaneNode> makeActorReference(final IFreeplaneNode object, final FlexoConceptInstance epi) {
             final VirtualModelInstanceModelFactory factory = epi.getFactory();
-            final ModelObjectActorReference<IFreeplaneMap> returned = factory.newInstance(ModelObjectActorReference.class);
+            final ModelObjectActorReference<IFreeplaneNode> returned = factory.newInstance(ModelObjectActorReference.class);
             returned.setFlexoRole(this);
             returned.setFlexoConceptInstance(epi);
             returned.setModellingElement(object);

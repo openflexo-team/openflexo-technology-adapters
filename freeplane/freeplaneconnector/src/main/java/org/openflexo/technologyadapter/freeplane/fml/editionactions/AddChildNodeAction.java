@@ -12,6 +12,7 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.view.FreeModelSlotInstance;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
+import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -20,13 +21,14 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot;
-import org.openflexo.technologyadapter.freeplane.fml.IFreeplaneNodeRole;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNodeAction.AddChildNodeActionImpl;
+import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneNodeRole;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
 @ModelEntity
 @XMLElement
+@FIBPanel("Fib/AddChildNodePanel.fib")
 @ImplementationClass(value = AddChildNodeActionImpl.class)
 public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot, IFreeplaneNode> {
 
@@ -60,10 +62,10 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 			// TODO : test this.
 			final FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
-				final IFreeplaneNode parent = getParent(action);
-				parent.addChild(new NodeModel(parent.getNodeModel().getMap()));
+				final IFreeplaneNode bindedParent = getParent(action);
+				bindedParent.addChild(new NodeModel(bindedParent.getNodeModel().getMap()));
 				modelSlotInstance.getResourceData().setIsModified();
-				parent.setModified(true);
+				bindedParent.setModified(true);
 			}
 			return null;
 		}

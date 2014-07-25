@@ -15,7 +15,7 @@ public class NewFreeplaneMapInitializer
             ActionInitializer<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> {
 
     public NewFreeplaneMapInitializer(final ControllerActionInitializer controllerActionInitializer) {
-        super(NewFreeplaneMap.actionType, controllerActionInitializer);
+        super(NewFreeplaneMap.ACTION_TYPE, controllerActionInitializer);
     }
 
     @Override

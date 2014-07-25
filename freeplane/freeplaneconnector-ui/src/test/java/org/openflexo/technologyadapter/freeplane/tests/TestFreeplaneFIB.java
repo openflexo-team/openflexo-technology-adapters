@@ -19,6 +19,6 @@ public class TestFreeplaneFIB extends GenericFIBTestCase {
 
 	@Test
 	public void testAddChildNodeFIB() {
-		this.validateFIB("Fib/AddCildNodePanel.fib");
+		this.validateFIB("Fib/AddChildNodePanel.fib");
 	}
 }

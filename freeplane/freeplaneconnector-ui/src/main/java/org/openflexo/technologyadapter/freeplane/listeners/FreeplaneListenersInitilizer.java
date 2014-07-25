@@ -16,6 +16,8 @@ import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
+import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.technologyadapter.freeplane.fml.FMLControlledFreeplaneVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.view.controller.FlexoController;
 
@@ -30,6 +32,13 @@ public class FreeplaneListenersInitilizer {
         popMenuChangeOnNode(map, controller);
     }
 
+	public static void init(final VirtualModelInstance vmInstance, final FlexoController controller) {
+		Controller.getCurrentModeController().getMapController()
+				.addNodeSelectionListener(new FreeplaneNodeSelectionListener(vmInstance, controller));
+		final IFreeplaneMap map = FMLControlledFreeplaneVirtualModelInstanceNature.getMap(vmInstance);
+		Controller.getCurrentModeController().getMapController().addMapChangeListener(new FreeplaneMapViewChangeListener(map));
+		popMenuChangeOnNode(map, controller);
+	}
     private static void popMenuChangeOnNode(final IFreeplaneMap map, final FlexoController controller) {
         final String msg = "Error while setting mouse listener on freeplane node";
         final IUserInputListenerFactory factoryToModify = Controller.getCurrentModeController().getUserInputListenerFactory();
@@ -97,5 +106,6 @@ public class FreeplaneListenersInitilizer {
         mainView.addMouseMotionListener(listener);
 
     }
+
 
 }

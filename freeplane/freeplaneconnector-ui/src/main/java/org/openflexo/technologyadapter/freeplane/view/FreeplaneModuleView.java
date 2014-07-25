@@ -25,7 +25,6 @@ public class FreeplaneModuleView extends JScrollPane implements ModuleView<IFree
         this.controller = controller;
         this.perspective = peerspective;
         this.map = map;
-
     }
 
     @Override
@@ -45,7 +44,7 @@ public class FreeplaneModuleView extends JScrollPane implements ModuleView<IFree
 
     @Override
     public void willShow() {
-        // Nothing to implement
+		displayIconToolBar(this.controller, this.perspective);
     }
 
     @Override
@@ -55,16 +54,19 @@ public class FreeplaneModuleView extends JScrollPane implements ModuleView<IFree
 
     @Override
     public void show(final FlexoController controller, final FlexoPerspective perspective) {
-        SwingUtilities.invokeLater(new Runnable() {
+		displayIconToolBar(controller, perspective);
+	}
 
-            @Override
-            public void run() {
-                perspective.setTopRightView(FreeplaneBasicAdapter.getInstance().getIconToolbar());
-                controller.getControllerModel().setRightViewVisible(true);
-            }
-        });
-        controller.getControllerModel().setRightViewVisible(true);
-    }
+	private void displayIconToolBar(final FlexoController controller, final FlexoPerspective perspective) {
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				perspective.setTopRightView(FreeplaneBasicAdapter.getInstance().getIconToolbar());
+				controller.getControllerModel().setRightViewVisible(true);
+			}
+		});
+	}
 
     @Override
     public boolean isAutoscrolled() {

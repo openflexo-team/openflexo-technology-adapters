@@ -7,8 +7,8 @@ import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot;
-import org.openflexo.technologyadapter.freeplane.fml.IFreeplaneMapRole;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.CreateMindMap.CreateMindMapImpl;
+import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneMapRole;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
 @ImplementationClass(value = CreateMindMapImpl.class)

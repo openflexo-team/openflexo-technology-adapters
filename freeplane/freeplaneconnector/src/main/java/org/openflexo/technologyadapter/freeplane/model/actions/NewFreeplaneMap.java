@@ -1,12 +1,5 @@
 package org.openflexo.technologyadapter.freeplane.model.actions;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mapio.MapIO;
@@ -16,66 +9,71 @@ import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.action.ActionGroup;
-import org.openflexo.foundation.action.ActionMenu;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class NewFreeplaneMap
-        extends
-            FlexoAction<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> {
-    private static final class CreateFreeplaneMapActionType
-            extends
-                FlexoActionType<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> {
+		extends
+		FlexoAction<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> {
+	private static final class CreateFreeplaneMapActionType
+			extends
+			FlexoActionType<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> {
 
-        protected CreateFreeplaneMapActionType(final String actionName, final ActionMenu actionMenu, final ActionGroup actionGroup,
-                final int actionCategory) {
-            super(actionName, actionMenu, actionGroup, actionCategory);
-        }
+		protected CreateFreeplaneMapActionType() {
+			super("create_mind_map", FlexoActionType.newMenu, FlexoActionType.editGroup, FlexoActionType.ADD_ACTION_TYPE);
+		}
 
-        @Override
+		@Override
 		public NewFreeplaneMap makeNewAction(final RepositoryFolder<IFreeplaneResource> folder,
-                final Vector<RepositoryFolder<IFreeplaneResource>> maps, final FlexoEditor flexoEditor) {
+				final Vector<RepositoryFolder<IFreeplaneResource>> maps, final FlexoEditor flexoEditor) {
 			return new NewFreeplaneMap(folder, maps, flexoEditor);
-        }
+		}
 
-        @Override
+		@Override
 		public boolean isVisibleForSelection(final RepositoryFolder<IFreeplaneResource> folder,
-                final Vector<RepositoryFolder<IFreeplaneResource>> map) {
+				final Vector<RepositoryFolder<IFreeplaneResource>> map) {
 			return folder.getResourceRepository().getResourceClass().equals(IFreeplaneResource.class);
-        }
+		}
 
-        @Override
+		@Override
 		public boolean isEnabledForSelection(final RepositoryFolder<IFreeplaneResource> folder,
-                final Vector<RepositoryFolder<IFreeplaneResource>> map) {
-            return true;
-        }
-    }
+				final Vector<RepositoryFolder<IFreeplaneResource>> map) {
+			return true;
+		}
+	}
 
-    public static final FlexoActionType<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> actionType = new CreateFreeplaneMapActionType(
-            "create_mind_map", FlexoActionType.newMenu, FlexoActionType.editGroup, FlexoActionType.ADD_ACTION_TYPE);
+	public static final FlexoActionType<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> ACTION_TYPE = new CreateFreeplaneMapActionType();
 
-    private static final Logger LOGGER = Logger.getLogger(NewFreeplaneMap.class.getSimpleName());
+	private static final Logger LOGGER = Logger.getLogger(NewFreeplaneMap.class.getSimpleName());
 
-    /** Property for fibs */
-    public String mapName;
+	/**
+	 * Property for fibs
+	 */
+	public String mapName;
 
-    public NewFreeplaneMap(final RepositoryFolder<IFreeplaneResource> focusedObject,
-            final Vector<RepositoryFolder<IFreeplaneResource>> globalSelection, final FlexoEditor editor) {
-        super(actionType, focusedObject, globalSelection, editor);
-    }
+	public NewFreeplaneMap(final RepositoryFolder<IFreeplaneResource> focusedObject,
+			final Vector<RepositoryFolder<IFreeplaneResource>> globalSelection, final FlexoEditor editor) {
+		super(ACTION_TYPE, focusedObject, globalSelection, editor);
+	}
 
-    static {
-        FlexoObjectImpl.addActionForClass(actionType, RepositoryFolder.class);
-    }
+	static {
+		FlexoObjectImpl.addActionForClass(ACTION_TYPE, RepositoryFolder.class);
+	}
 
 	@Override
-    protected void doAction(final Object objet) throws FlexoException {
-        LOGGER.info("One day this action will create a new freeplane map with name " + this.mapName);
-		// If no data have been load, initilalization has not been done, so do it.
-        FreeplaneBasicAdapter.getInstance();
+	protected void doAction(final Object objet) throws FlexoException {
+		LOGGER.info("One day this action will create a new freeplane map with name " + this.mapName);
+		// If no data have been load, initialization has not been done, so do it.
+		FreeplaneBasicAdapter.getInstance();
 		final MapModel newMap = new MapModel();
 		final NodeModel root = new NodeModel(this.mapName, newMap);
 		newMap.setRoot(root);
@@ -94,5 +92,5 @@ public class NewFreeplaneMap
 			final String msg = "";
 			LOGGER.log(Level.SEVERE, msg, e);
 		}
-    }
+	}
 }

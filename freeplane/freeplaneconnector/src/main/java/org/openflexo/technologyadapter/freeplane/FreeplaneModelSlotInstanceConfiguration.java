@@ -30,9 +30,4 @@ public class FreeplaneModelSlotInstanceConfiguration extends FreeModelSlotInstan
         super(ms, action);
     }
 
-    @Override
-    public void setOption(final ModelSlotInstanceConfigurationOption option) {
-        super.setOption(option);
-    }
-
 }

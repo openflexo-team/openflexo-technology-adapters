@@ -79,8 +79,8 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
 
     @Override
     public FreeplaneTechnologyAdapter getTechnologyAdapter() {
-        if (this.getServiceManager() != null) {
-            return this.getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
+        if (getServiceManager() != null) {
+            return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
         }
         return null;
     }
@@ -88,8 +88,9 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
     @Override
     public IFreeplaneMap loadResourceData(final IProgress progress) {
         final FreeplaneMapImpl map = (FreeplaneMapImpl) MODEL_FACTORY.newInstance(IFreeplaneMap.class);
-        map.setTechnologyAdapter(this.getTechnologyAdapter());
-        map.setMapModel(FreeplaneBasicAdapter.getInstance().loadMapFromFile(this.getFile()));
+        map.setTechnologyAdapter(getTechnologyAdapter());
+        map.setMapModel(FreeplaneBasicAdapter.getInstance().loadMapFromFile(getFile()));
+		map.setResource(this);
 
         return map;
     }
@@ -109,7 +110,7 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
         if (progress != null) {
             ((MModeController) Controller.getCurrentModeController()).save();
             this.resourceData.clearIsModified(false);
-            this.notifyResourceSaved();
+            notifyResourceSaved();
         }
     }
 }
