@@ -14,12 +14,7 @@ import org.openflexo.foundation.view.FreeModelSlotInstance;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.annotations.*;
 import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNodeAction.AddChildNodeActionImpl;
 import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneNodeRole;
@@ -36,6 +31,7 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 	public static final String PARENT_KEY = "parent";
 
 	@Getter(value = PARENT_KEY)
+	@XMLAttribute
 	public DataBinding<IFreeplaneNode> getParent();
 
 	@Setter(value = PARENT_KEY)
@@ -59,7 +55,6 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 
 		@Override
 		public IFreeplaneNode performAction(final FlexoBehaviourAction action) {
-			// TODO : test this.
 			final FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 				final IFreeplaneNode bindedParent = getParent(action);
