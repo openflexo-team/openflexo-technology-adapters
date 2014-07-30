@@ -1,6 +1,5 @@
 package org.openflexo.technologyadapter.freeplane.fml.editionactions;
 
-
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
@@ -14,7 +13,8 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 @ImplementationClass(value = CreateMindMapImpl.class)
 public interface CreateMindMap extends AssignableAction<IFreeplaneModelSlot, IFreeplaneMap> {
 
-	public static abstract class CreateMindMapImpl extends AssignableActionImpl<IFreeplaneModelSlot, IFreeplaneMap> implements CreateMindMap {
+	public abstract static class CreateMindMapImpl extends AssignableActionImpl<IFreeplaneModelSlot, IFreeplaneMap>
+			implements CreateMindMap {
 
 		@Override
 		public Type getAssignableType() {

@@ -1,15 +1,19 @@
 package org.openflexo.technologyadapter.freeplane.view;
 
+import javax.swing.JComponent;
+import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
+
 import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
-import javax.swing.*;
-
 /**
- * Created by eloubout on 30/07/14.
+ * Abstract ModuleView to represent a Freeplane map, which can be in a federation context or in a free editing context. Inherit from
+ * JScrollPane, to contain Freeplane MapView component. Can be source of NPE because they have unchecked runtime dependencies to a docking
+ * framework unused in here.
  */
 public abstract class AbstractFreeplaneModuleView<T extends FlexoObject> extends JScrollPane implements ModuleView<T> {
 
@@ -19,6 +23,13 @@ public abstract class AbstractFreeplaneModuleView<T extends FlexoObject> extends
 
 	protected final FlexoPerspective perspective;
 
+	/**
+	 * Initialize needed attribute. All are final, no implicit call of super should be done.
+	 *
+	 * @param controller
+	 * @param representedObject
+	 * @param perspective
+	 */
 	protected AbstractFreeplaneModuleView(FlexoController controller, T representedObject, FlexoPerspective perspective) {
 		super();
 		this.controller = controller;
@@ -26,6 +37,14 @@ public abstract class AbstractFreeplaneModuleView<T extends FlexoObject> extends
 		this.perspective = perspective;
 	}
 
+	/**
+	 * Initialize needed attribute. All are final, no implicit call of super should be done. Add a viewportView to ScrollPane.
+	 *
+	 * @param controller
+	 * @param representedObject
+	 * @param perspective
+	 * @param viewportView
+	 */
 	public AbstractFreeplaneModuleView(FlexoController controller, T representedObject, FlexoPerspective perspective,
 			JComponent viewportView) {
 		this(controller, representedObject, perspective);
@@ -37,21 +56,33 @@ public abstract class AbstractFreeplaneModuleView<T extends FlexoObject> extends
 		return representedObject;
 	}
 
+	/**
+	 * Remove ModuleView from controller. A Freeplane action may be needed but nothing is done at the moment.
+	 */
 	@Override
 	public void deleteModuleView() {
 		this.controller.removeModuleView(this);
 	}
 
+	/**
+	 * @return perspective given during construction of ModuleView.
+	 */
 	@Override
 	public FlexoPerspective getPerspective() {
 		return this.perspective;
 	}
 
+	/**
+	 * Update right view to have Freeplane icon scrollbar.
+	 */
 	@Override
 	public void willShow() {
 		this.displayIconToolBar(this.controller, this.perspective);
 	}
 
+	/**
+	 * Nothing done on this ModuleView
+	 */
 	@Override
 	public void willHide() {
 		// Nothing to implement
@@ -62,6 +93,9 @@ public abstract class AbstractFreeplaneModuleView<T extends FlexoObject> extends
 		this.displayIconToolBar(flexoController, flexoPerspective);
 	}
 
+	/*
+	* Needed Update on swap from FMLControlled to Free ModuleView, so refactor to call it in show and will show.
+	*/
 	private void displayIconToolBar(final FlexoController controller, final FlexoPerspective perspective) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

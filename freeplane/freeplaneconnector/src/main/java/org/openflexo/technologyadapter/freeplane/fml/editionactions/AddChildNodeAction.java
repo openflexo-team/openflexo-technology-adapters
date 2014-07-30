@@ -37,8 +37,9 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 	@Setter(value = PARENT_KEY)
 	public void setParent(DataBinding<IFreeplaneNode> parent);
 
-	public static abstract class AddChildNodeActionImpl extends AssignableActionImpl<IFreeplaneModelSlot, IFreeplaneNode> implements AddChildNodeAction {
-		
+	public abstract static class AddChildNodeActionImpl extends AssignableActionImpl<IFreeplaneModelSlot, IFreeplaneNode>
+			implements AddChildNodeAction {
+
 		private static final Logger LOGGER = Logger.getLogger(AddChildNodeActionImpl.class.getPackage().getName());
 
 		private DataBinding<IFreeplaneNode> parent;
