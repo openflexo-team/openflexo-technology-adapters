@@ -93,13 +93,29 @@
 		visible="">
 		<Assignment variable="component.bindable" value="data" />
 	</Custom>
+	<Label label="is_above" align="right" index="6" data=""
+	       constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+	       visible="" format="" icon="" tooltip="" localize="true" enable=""
+	       clickAction="" doubleClickAction="" rightClickAction=""
+	       enterPressedAction="" valueChangedAction="" valueTransform=""
+	       valueValidator="" />
+	<Custom componentClassName="org.openflexo.fib.utils.BindingSelector"
+	        format="" icon="" tooltip="" localize="true" enable=""
+	        manageDynamicModel="true" opaque="false" clickAction=""
+	        doubleClickAction="" rightClickAction="" enterPressedAction=""
+	        valueChangedAction="" valueTransform="" valueValidator="" index="5"
+	        data="data.isAbove"
+	        constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+	        visible="">
+		<Assignment variable="component.bindable" value="data" />
+	</Custom>
 	<Label label="description" align="right" index="14" data=""
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=14;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 		visible="" format="" icon="" tooltip="" localize="true" enable=""
 		clickAction="" doubleClickAction="" rightClickAction=""
 		enterPressedAction="" valueChangedAction="" valueTransform=""
 		valueValidator="" />
-	<TextArea columns="6" rows="2" text="TextArea" index="15"
+	<TextArea columns="6" rows="2" text="Description" index="15"
 		data="data.description"
 		constraints="twocols(expandHorizontally=true;expandVertically=true;index=15;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 		visible="" format="" icon="" tooltip="" localize="true" enable=""
@@ -131,5 +147,8 @@
 		<Localized key="target_node" lang="English">Target Node</Localized>
 		<Localized key="target_node" lang="French">Nœud ciple</Localized>
 		<Localized key="target_node" lang="Dutch">Target Node</Localized>
+		<Localized key="is_above" lang="English">Above</Localized>
+		<Localized key="is_above" lang="French">Au-dessus</Localized>
+		<Localized key="is_above" lang="Dutch">Above</Localized>
 	</LocalizedDictionary>
 </Panel>

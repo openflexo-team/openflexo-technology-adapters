@@ -67,6 +67,7 @@ public class DeleteNode extends FlexoAction<DeleteNode, IFreeplaneNode, IFreepla
 			mapController.deleteNode(nodeModel);
 		}
 		// Model not up-up-to-date, implement a deleter(NodeModel).
+		this.getFocusedObject().getParent().removeChild(this.getFocusedObject());
 	}
 
 }
