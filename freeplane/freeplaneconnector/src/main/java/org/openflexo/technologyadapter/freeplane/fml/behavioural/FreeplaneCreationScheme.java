@@ -2,12 +2,7 @@ package org.openflexo.technologyadapter.freeplane.fml.behavioural;
 
 import org.openflexo.foundation.viewpoint.AbstractCreationScheme;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.annotations.*;
 import org.openflexo.technologyadapter.freeplane.fml.behavioural.FreeplaneCreationScheme.FreeplaneCreationSchemeImpl;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
@@ -22,6 +17,7 @@ public interface FreeplaneCreationScheme extends FreeplaneEditionScheme, Abstrac
 	public static final String PARENT_NODE_KEY = FreeplaneEditionScheme.PARENT_NODE;
 
 	@Getter(value = PARENT_NODE_KEY)
+	@XMLAttribute
 	public IFreeplaneNode getParentNode();
 
 	@Setter(value = PARENT_NODE_KEY)

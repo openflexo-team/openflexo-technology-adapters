@@ -54,7 +54,7 @@ public class NewSiblingNode extends FlexoAction<NewSiblingNode, IFreeplaneNode, 
 		// Some Copy-paste from freeplane To allow us to update our model.
 		final NodeModel brother = ((MMapController) Controller.getCurrentModeController().getMapController())
 				.addNewNode(MMapController.NEW_SIBLING_BEHIND);
-		this.getFocusedObject().getParent().addChild(brother);
+		this.getFocusedObject().getParent().addFreeplaneChild(brother);
 	}
 
 }

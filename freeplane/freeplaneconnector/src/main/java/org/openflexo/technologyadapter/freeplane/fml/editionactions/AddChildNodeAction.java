@@ -61,7 +61,7 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 				final IFreeplaneNode bindedParent = getParent(action);
 				NodeModel nodeModel = new NodeModel(bindedParent.getNodeModel().getMap());
 				bindedParent.getNodeModel().insert(nodeModel);
-				bindedParent.addChild(nodeModel);
+				bindedParent.addFreeplaneChild(nodeModel);
 				modelSlotInstance.getResourceData().setIsModified();
 				bindedParent.setModified(true);
 				return bindedParent;

@@ -119,7 +119,7 @@ public interface AddSiblingNodeAction extends AssignableAction<IFreeplaneModelSl
 				}
 				final NodeModel newNode = new NodeModel(bindedTarget.getNodeModel().getMap());
 				freeplaneParent.insert(newNode, nodeIndex);
-				bindedTarget.getParent().addChild(newNode);
+				bindedTarget.getParent().addFreeplaneChild(newNode);
 				modelSlotInstance.getResourceData().setIsModified();
 				bindedTarget.setModified(true);
 				return bindedTarget;
