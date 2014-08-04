@@ -98,6 +98,8 @@ public interface AddExcelCell extends AssignableAction<BasicExcelModelSlot, Exce
 	@Setter(IS_ROW_INDEX_KEY)
 	public void setRowIndex(boolean isRowIndex);
 
+	public List<CellType> getAvailableCellTypes();
+	
 	public static abstract class AddExcelCellImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelCell> implements AddExcelCell {
 
 		private static final Logger logger = Logger.getLogger(AddExcelCell.class.getPackage().getName());
@@ -138,7 +140,14 @@ public interface AddExcelCell extends AssignableAction<BasicExcelModelSlot, Exce
 					if (isRowIndex) {
 						Integer rowIndex = getRowIndex().getBindingValue(action);
 						ExcelSheet excelSheet = getSheet().getBindingValue(action);
-						excelRow = excelSheet.getRowAt(rowIndex);
+						if(excelSheet!=null && rowIndex!=null){
+							excelRow = excelSheet.getRowAt(rowIndex);
+						} else if(excelSheet==null){
+							logger.severe("Excel sheet is not defined.");
+						} else if(rowIndex==null){
+							logger.severe("Row index is not defined.");
+						}
+						
 					} else {
 						excelRow = getRow().getBindingValue(action);
 					}

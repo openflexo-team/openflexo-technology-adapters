@@ -21,7 +21,9 @@ package org.openflexo.technologyadapter.excel;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -35,6 +37,7 @@ import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
+import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.foundation.view.FreeModelSlotInstance;
@@ -60,6 +63,7 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.CellStyleAc
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelCell;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelRow;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelSheet;
+import org.openflexo.xml.IXMLIndividual;
 
 /**
  * Implementation of a basic ModelSlot class for the Excel technology adapter<br>
@@ -172,7 +176,23 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 				String objectURI) {
 
 			try {
-				ExcelObject o = uriCache.get(objectURI);
+				String builtURI = URLEncoder.encode(objectURI, "UTF-8");
+				ExcelObject o = uriCache.get(builtURI);
+				if(o!=null){
+					return o;
+				}else{
+					TechnologyAdapterResource<ExcelWorkbook, ?> resource = (TechnologyAdapterResource<ExcelWorkbook, ?>) msInstance.getResource();
+					if (!resource.isLoaded()) {
+						resource.loadResourceData(null);
+					}
+					ArrayList<ExcelObject> excelObject = (ArrayList<ExcelObject>)msInstance.getAccessedResourceData().getAccessibleExcelObjects();
+					for (ExcelObject obj : excelObject) {
+						if (obj.getUri().equals(URLDecoder.decode(objectURI, "UTF-8"))) {
+							return obj;
+						}
+					}
+				}
+				
 				return o;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

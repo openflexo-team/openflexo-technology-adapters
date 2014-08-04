@@ -16,27 +16,28 @@ public class FreeplaneMapViewChangeListener implements IMapChangeListener {
 
     private void propagateChanges() {
         this.bindedMap.setModified(true);
+		// TODO : handlefor
     }
 
     @Override
     public void mapChanged(final MapChangeEvent event) {
-        this.propagateChanges();
+        propagateChanges();
     }
 
     @Override
     public void onNodeDeleted(final NodeModel parent, final NodeModel child, final int index) {
-        this.propagateChanges();
+        propagateChanges();
     }
 
     @Override
     public void onNodeInserted(final NodeModel parent, final NodeModel child, final int newIndex) {
-        this.propagateChanges();
+        propagateChanges();
     }
 
     @Override
     public void onNodeMoved(final NodeModel oldParent, final int oldIndex, final NodeModel newParent, final NodeModel child,
             final int newIndex) {
-        this.propagateChanges();
+        propagateChanges();
     }
 
     @Override

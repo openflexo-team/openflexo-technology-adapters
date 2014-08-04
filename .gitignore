@@ -3,6 +3,10 @@
 *.jar
 *.war
 *.ear
+*.ipr
+*.idea
+*.iws
+*.iml
 .classpath
 .project
 .settings

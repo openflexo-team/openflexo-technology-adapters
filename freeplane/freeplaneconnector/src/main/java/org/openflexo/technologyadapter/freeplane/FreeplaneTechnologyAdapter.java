@@ -47,7 +47,7 @@ import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
  */
 
 @DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "FreeplaneModelSlot", modelSlotClass = IFreeplaneModelSlot.class), })
+@DeclareModelSlot(FML = "FreeplaneModelSlot", modelSlotClass = IFreeplaneModelSlot.class) })
 @DeclareRepositoryType({ FreeplaneResourceRepository.class })
 public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 
@@ -60,7 +60,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 
     @Override
     public String getName() {
-        return new String("Freeplane Technology Adapter");
+        return "Freeplane Technology Adapter";
     }
 
     /**
@@ -92,7 +92,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
         // TODO Auto-generated method stub
         FreeplaneResourceRepository currentRepository = resourceCenter.getRepository(FreeplaneResourceRepository.class, this);
         if (currentRepository == null) {
-            currentRepository = this.createNewFreeplaneRepository(resourceCenter);
+            this.createNewFreeplaneRepository(resourceCenter);
         }
 
         for (final I item : resourceCenter) {
@@ -135,7 +135,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
      * @return true if extension of file match
      *         <code>FREEPLANE_FILE_EXTENSION</code>
      */
-    public boolean isValidFreeplaneFile(final File candidateFile) {
+    private boolean isValidFreeplaneFile(final File candidateFile) {
         return candidateFile.getName().endsWith(FREEPLANE_FILE_EXTENSION);
     }
 
@@ -173,7 +173,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
     }
 
     /**
-     * Create a FreeplaneRessource from a .mm file, given a FlexoProject.
+     * Create a FreeplaneResource from a .mm file, given a FlexoProject.
      * 
      * @param project
      * @param filename
@@ -195,7 +195,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
      * @param resourceCenter
      * @return the repository
      */
-    public FreeplaneResourceRepository createNewFreeplaneRepository(final FlexoResourceCenter<?> resourceCenter) {
+    private FreeplaneResourceRepository createNewFreeplaneRepository(final FlexoResourceCenter<?> resourceCenter) {
         final FreeplaneResourceRepository repo = new FreeplaneResourceRepository(this, resourceCenter);
         resourceCenter.registerRepository(repo, FreeplaneResourceRepository.class, this);
         return repo;

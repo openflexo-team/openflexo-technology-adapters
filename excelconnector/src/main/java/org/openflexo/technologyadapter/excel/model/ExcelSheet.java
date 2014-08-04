@@ -49,16 +49,14 @@ public class ExcelSheet extends ExcelObject {
 		return excelRows;
 	}
 
-	public void setExcelRows(List<ExcelRow> excelRows) {
-		this.excelRows = excelRows;
-	}
-
 	public void addToExcelRows(ExcelRow newExcelRow) {
 		this.excelRows.add(newExcelRow);
+		getWorkbook().addToAccessibleExcelObjects(newExcelRow);
 	}
 
 	public void removeFromExcelRows(ExcelRow deletedExcelRow) {
 		this.excelRows.remove(deletedExcelRow);
+		getWorkbook().removeFromAccessibleExcelObjects(deletedExcelRow);
 	}
 
 	public int getMaxColNumber() {
@@ -94,8 +92,7 @@ public class ExcelSheet extends ExcelObject {
 	
 	@Override
 	public String getUri() {
-		String uri = getWorkbook().getUri()+"Sheet="+getName();
-		return uri;
+		return getWorkbook().getUri()+"/"+getName();
 	}
 
 }

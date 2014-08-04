@@ -1,7 +1,6 @@
 package org.freeplane.features.map.mindmapmode;
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
 
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mode.Controller;
@@ -32,9 +31,8 @@ public class DeleteNodeAction extends DeleteAction {
         final Controller controller = Controller.getCurrentController();
 
         final MMapController mapController = (MMapController) modeController.getMapController();
-        final Iterator<NodeModel> iterator = controller.getSelection().getSortedSelection(true).iterator();
-        while (iterator.hasNext()) {
-            mapController.deleteNode(iterator.next());
-        }
+	    for (NodeModel nodeModel : controller.getSelection().getSortedSelection(true)) {
+		    mapController.deleteNode(nodeModel);
+	    }
     }
 }

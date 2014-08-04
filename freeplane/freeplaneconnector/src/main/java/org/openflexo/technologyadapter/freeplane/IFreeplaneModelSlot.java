@@ -23,13 +23,12 @@ package org.openflexo.technologyadapter.freeplane;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
-import org.openflexo.foundation.technologyadapter.FreeModelSlot;
+import org.openflexo.foundation.technologyadapter.*;
 import org.openflexo.foundation.view.FreeModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoRole;
@@ -37,30 +36,42 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot.FreeplaneModelSlotImpl;
-import org.openflexo.technologyadapter.freeplane.fml.IFreeplaneMapRole;
-import org.openflexo.technologyadapter.freeplane.fml.IFreeplaneNodeRole;
+import org.openflexo.technologyadapter.freeplane.fml.behavioural.FreeplaneCreationScheme;
+import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNodeAction;
+import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddSiblingNodeAction;
+import org.openflexo.technologyadapter.freeplane.fml.editionactions.SelectAllNodes;
+import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneMapRole;
+import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneNodeRole;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
 /**
  * Implementation of the ModelSlot class for the Freeplane technology adapter<br>
- * 
+ * <p/>
  * We expect here to connect an Freeplane model conform to an FreeplaneMetaModel
- * 
+ *
  * @author eloubout
- * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
-		@DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
+// All pattern roles available through this model slot
+@DeclarePatternRoles({
+		@DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
+		@DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map")
+})
+// All editions actions available through this model slot
+@DeclareEditionActions({
+		@DeclareEditionAction(editionActionClass = AddChildNodeAction.class, FML = "AddChildNode"),
+		@DeclareEditionAction(editionActionClass = AddSiblingNodeAction.class, FML = "AddSiblingNode")
+})
+@DeclareFlexoBehaviours({ @DeclareFlexoBehaviour(flexoBehaviourClass = FreeplaneCreationScheme.class, FML = "FreeplaneCreationScheme") })
+@DeclareFetchRequests({ @DeclareFetchRequest(fetchRequestClass = SelectAllNodes.class, FML = "SelectAllNodes") })
 @ModelEntity
 @ImplementationClass(FreeplaneModelSlotImpl.class)
 @XMLElement
 public interface IFreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 
-	public static abstract class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap> implements IFreeplaneModelSlot {
+	public abstract static class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap> implements IFreeplaneModelSlot {
 
 		private static final Logger LOGGER = Logger.getLogger(IFreeplaneModelSlot.class.getPackage().getName());
-		private Map<String, IFreeplaneMap> uriCache;
+		private final Map<String, IFreeplaneMap> uriCache = new HashMap<String, IFreeplaneMap>();
 
 		@Override
 		public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {
@@ -68,8 +79,7 @@ public interface IFreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		}
 
 		/**
-		 * Instanciate a new model slot instance configuration for this model
-		 * slot
+		 * Instantiate a new model slot instance configuration for this model slot
 		 */
 		@Override
 		public FreeplaneModelSlotInstanceConfiguration createConfiguration(final CreateVirtualModelInstance action) {
@@ -79,10 +89,10 @@ public interface IFreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(final Class<PR> patternRoleClass) {
 			if (IFreeplaneNodeRole.class.isAssignableFrom(patternRoleClass)) {
-				return "Node";
+				return "node";
 			}
 			if (IFreeplaneMapRole.class.isAssignableFrom(patternRoleClass)) {
-				return "Map";
+				return "map";
 			}
 			return null;
 		}
@@ -102,7 +112,7 @@ public interface IFreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 				final Object o) {
 			final IFreeplaneMap fpObject = (IFreeplaneMap) o;
 
-			String builtURI = null;
+			String builtURI = "";
 
 			try {
 				builtURI = URLEncoder.encode(fpObject.getUri(), "UTF-8");
@@ -110,12 +120,10 @@ public interface IFreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 				LOGGER.log(Level.WARNING, "Cannot process URI - Unexpected encoding error", e);
 			}
 
-			if (builtURI != null) {
-				if (uriCache.get(builtURI) == null) {
-					uriCache.put(builtURI, fpObject);
-				}
+			if (builtURI != null && uriCache.get(builtURI) == null) {
+				uriCache.put(builtURI, fpObject);
 			}
-			return builtURI.toString();
+			return builtURI;
 		}
 
 		@Override

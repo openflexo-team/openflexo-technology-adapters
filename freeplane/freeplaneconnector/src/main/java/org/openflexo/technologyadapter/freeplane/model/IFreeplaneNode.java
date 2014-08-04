@@ -4,13 +4,8 @@ import java.util.List;
 
 import org.freeplane.features.map.NodeModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.model.annotations.Adder;
-import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.*;
 import org.openflexo.model.annotations.Getter.Cardinality;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.Remover;
-import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneNodeImpl;
 
@@ -43,17 +38,16 @@ public interface IFreeplaneNode extends TechnologyObject<FreeplaneTechnologyAdap
 	public void addChild(IFreeplaneNode node);
 
 	/**
-	 * Implementation needed to bind Freeplane add action to Openflexo add
-	 * action.
-	 * 
+	 * Add a node with a freeplane object instead of an Openflexo one.<br>
+	 *     Back to a void return to have an API more consistent.
+	 *
 	 * @param fpNodeModel
-	 * @return true if correctly added
 	 */
-	public boolean addChild(NodeModel fpNodeModel);
+	public void addChild(NodeModel fpNodeModel);
 
 	/**
 	 * Removed done by entity to remove. Nothing done to do it by index.
-	 * 
+	 *
 	 * @param nodeToRemove
 	 */
 	@Remover(value = CHILDREN_KEY)

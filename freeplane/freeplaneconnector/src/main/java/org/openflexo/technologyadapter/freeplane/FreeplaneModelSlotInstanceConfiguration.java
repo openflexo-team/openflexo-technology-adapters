@@ -26,13 +26,8 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
 public class FreeplaneModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<IFreeplaneMap, IFreeplaneModelSlot> {
 
-    protected FreeplaneModelSlotInstanceConfiguration(final IFreeplaneModelSlot ms, final CreateVirtualModelInstance action) {
+    public FreeplaneModelSlotInstanceConfiguration(final IFreeplaneModelSlot ms, final CreateVirtualModelInstance action) {
         super(ms, action);
-    }
-
-    @Override
-    public void setOption(final ModelSlotInstanceConfigurationOption option) {
-        super.setOption(option);
     }
 
 }

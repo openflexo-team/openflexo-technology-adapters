@@ -12,7 +12,7 @@ import org.openflexo.view.controller.ControllerActionInitializer;
 public class DeleteNodeInitializer extends ActionInitializer<DeleteNode, IFreeplaneNode, IFreeplaneMap> {
 
     public DeleteNodeInitializer(final ControllerActionInitializer controllerActionInitializer) {
-        super(DeleteNode.actionType, controllerActionInitializer);
+        super(DeleteNode.ACTION_TYPE, controllerActionInitializer);
     }
 
     @Override

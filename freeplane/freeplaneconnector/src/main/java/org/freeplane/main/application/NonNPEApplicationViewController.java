@@ -6,7 +6,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.ui.IMapViewManager;
 
 /**
- * Avoid NPE on setTitle : we don't have any dockingMindows, remove the call by
+ * Avoid NPE on setTitle : we don't have any docking windows, remove the call by
  * overriding setTitle.
  * 
  * @author eloubout

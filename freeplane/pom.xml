@@ -13,16 +13,6 @@
 	<packaging>pom</packaging>
 	<dependencyManagement>
 		<dependencies>
-			<dependency>
-				<groupId>org.openflexo</groupId>
-				<artifactId>flexo-foundation</artifactId>
-				<version>1.7.0-beta</version>
-			</dependency>
-			<dependency>
-				<groupId>org.openflexo</groupId>
-				<artifactId>flexo-ui</artifactId>
-				<version>1.7.0-beta</version>
-			</dependency>
 			<!-- Freeplane dependencies. -->
 			<dependency>
 				<groupId>org.freeplane</groupId>
@@ -35,6 +25,10 @@
 	
 	<!-- Common Freeplane dependencies dependencies -->
 	<dependencies>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-foundation</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>org.freeplane</groupId>
 			<artifactId>grouped-dependencies</artifactId>

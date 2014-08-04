@@ -12,7 +12,7 @@ import org.openflexo.view.controller.ControllerActionInitializer;
 public class NewSiblingAboveNodeInitializer extends ActionInitializer<NewSiblingAboveNode, IFreeplaneNode, IFreeplaneMap> {
 
     public NewSiblingAboveNodeInitializer(final ControllerActionInitializer controllerActionInitializer) {
-        super(NewSiblingAboveNode.actionType, controllerActionInitializer);
+        super(NewSiblingAboveNode.ACTION_TYPE, controllerActionInitializer);
     }
 
     @Override

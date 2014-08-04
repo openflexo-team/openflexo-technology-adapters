@@ -105,8 +105,6 @@ public class FreeplaneBasicAdapter {
 
     private final ApplicationResourceController applicationResourceController;
 
-    private MMapViewController mapViewController;
-
     public MapModel loadMapFromFile(final File file) {
 
         final Controller controller = Controller.getCurrentController();
@@ -122,7 +120,7 @@ public class FreeplaneBasicAdapter {
      * Part from Freeplane code
      * 
      * @param controller
-     * @param args
+     * @param fileArgument
      */
     private void loadMaps(final Controller controller, final String fileArgument) {
         controller.selectMode(MModeController.MODENAME);
@@ -185,10 +183,10 @@ public class FreeplaneBasicAdapter {
                 frame = new JFrame("Freeplane");
             }
             frame.setName(UITools.MAIN_FREEPLANE_FRAME);
-            this.mapViewController = new MMapViewController(controller);
-            new NonNPEApplicationViewController(controller, this.mapViewController, frame);
+	        MMapViewController mapViewController = new MMapViewController(controller);
+            new NonNPEApplicationViewController(controller, mapViewController, frame);
             System.setSecurityManager(new FreeplaneSecurityManager());
-            this.mapViewController.addMapViewChangeListener(this.applicationResourceController.getLastOpenedList());
+            mapViewController.addMapViewChangeListener(this.applicationResourceController.getLastOpenedList());
             FilterController.install();
             PrintController.install();
             FormatController.install(new FormatController());

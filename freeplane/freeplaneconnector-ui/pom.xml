@@ -20,12 +20,6 @@
       <artifactId>flexo-ui</artifactId>
     </dependency>
     <dependency>
-      <groupId>org.openflexo</groupId>
-      <artifactId>flexo-ui</artifactId>
-      <classifier>tests</classifier>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
     	<groupId>org.easytesting</groupId>
     	<artifactId>fest-swing</artifactId>
     	<version>1.2.1</version>

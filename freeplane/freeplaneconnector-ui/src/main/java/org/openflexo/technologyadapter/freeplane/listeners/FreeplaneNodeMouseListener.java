@@ -36,22 +36,22 @@ public class FreeplaneNodeMouseListener extends MNodeMotionListener {
      *            MouseEvent
      */
     private void triggerSelection(final MouseEvent e) {
-        if (!isInside(e))
-            return;
+		if (!isInside(e)) {
+			return;
+		}
         this.nodeSelector.stopTimerForDelayedSelection();
 
         final NodeView nodeV = this.nodeSelector.getRelatedNodeView(e);
-        final Controller controller = Controller.getCurrentController();
-        controller.getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
+		Controller.getCurrentController().getSelection().selectAsTheOnlyOneSelected(nodeV.getModel());
         Controller.getCurrentModeController().getMapController().onSelect(nodeV.getModel());
     }
 
     /**
-     * Wasn't public on node soloctor ==> CopyPaste
-     * 
-     * @param e
-     * @return
-     */
+	 * Wasn't public on node selector ==> CopyPaste
+	 * 
+	 * @param e
+	 * @return
+	 */
     private static boolean isInside(final MouseEvent e) {
         return new Rectangle(0, 0, e.getComponent().getWidth(), e.getComponent().getHeight()).contains(e.getPoint());
     }

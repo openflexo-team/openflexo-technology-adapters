@@ -20,6 +20,7 @@
 package org.openflexo.technologyadapter.excel.viewpoint.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -31,7 +32,7 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
-import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
+import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -49,7 +50,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelCell.CellStyleFeature;
 @ModelEntity
 @ImplementationClass(CellStyleAction.CellStyleActionImpl.class)
 @XMLElement
-public interface CellStyleAction extends EditionAction<BasicExcelModelSlot, ExcelCell> {
+public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, ExcelCell> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";
@@ -78,8 +79,22 @@ public interface CellStyleAction extends EditionAction<BasicExcelModelSlot, Exce
 
 	@Setter(CELL_STYLE_KEY)
 	public void setCellStyle(CellStyleFeature cellStyle);
+	
+	public List<CellStyleFeature> getAvailableCellStyles();
+	
+	public CellBorderStyleFeature getCellBorderStyle();
+	
+	public CellAlignmentStyleFeature getCellAlignmentStyle();
+	
+	public List<CellAlignmentStyleFeature> getAvailableCellAlignmentStyles();
+	
+	public List<CellBorderStyleFeature> getAvailableCellBorderStyles();
+	
+	public boolean isAlignmentStyle();
+	
+	public boolean isBorderStyle();
 
-	public static abstract class CellStyleActionImpl extends EditionActionImpl<BasicExcelModelSlot, ExcelCell> implements CellStyleAction {
+	public static abstract class CellStyleActionImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelCell> implements CellStyleAction {
 
 		private static final Logger logger = Logger.getLogger(CellStyleAction.class.getPackage().getName());
 
@@ -94,6 +109,11 @@ public interface CellStyleAction extends EditionAction<BasicExcelModelSlot, Exce
 		private CellAlignmentStyleFeature cellAlignmentStyle = null;
 
 		private DataBinding<?> value;
+		
+		@Override
+		public Type getAssignableType() {
+			return ExcelCell.class;
+		}
 
 		public Object getValue(FlexoBehaviourAction action) {
 			try {

@@ -88,8 +88,7 @@ public class ExcelCell extends ExcelObject {
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return "ROW:" + cell.getRowIndex() + "/" + "COL:" + cell.getColumnIndex();
+		return "cell."+"row" + cell.getRowIndex() + "." + "col_" + cell.getColumnIndex();
 	}
 
 	public void merge(CellRangeAddress cellRange) {
@@ -625,7 +624,7 @@ public class ExcelCell extends ExcelObject {
 	
 	@Override
 	public String getUri() {
-		return getExcelRow().getUri()+getName();
+		return getExcelRow().getUri()+"/"+getName();
 	}
 
 }
