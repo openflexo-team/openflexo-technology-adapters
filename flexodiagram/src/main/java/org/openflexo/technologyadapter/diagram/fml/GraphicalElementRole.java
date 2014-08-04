@@ -18,16 +18,8 @@ import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.ModelObjectActorReference;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.FlexoRole;
-import org.openflexo.model.annotations.Adder;
-import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.*;
 import org.openflexo.model.annotations.Getter.Cardinality;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Remover;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.FreeDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction.ActionMask;
@@ -41,8 +33,14 @@ import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationM
 public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends FlexoRole<T>,
 		Bindable {
 
-	public static GraphicalFeature<String, GraphicalRepresentation> LABEL_FEATURE = new GraphicalFeature<String, GraphicalRepresentation>(
-			"label", GraphicalRepresentation.TEXT) {
+	public static GraphicalFeature<String, GraphicalRepresentation> LABEL_FEATURE = new HackClassInit();
+
+	public static class HackClassInit extends GraphicalFeature<String, GraphicalRepresentation> {
+
+		public HackClassInit() {
+			super("label", GraphicalRepresentation.TEXT);
+		}
+
 		@Override
 		public String retrieveFromGraphicalRepresentation(GraphicalRepresentation gr) {
 			return gr.getText();
@@ -52,7 +50,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public void applyToGraphicalRepresentation(GraphicalRepresentation gr, String value) {
 			gr.setText(value);
 		}
-	};
+	}
+
 
 	public static GraphicalFeature<Boolean, GraphicalRepresentation> VISIBLE_FEATURE = new GraphicalFeature<Boolean, GraphicalRepresentation>(
 			"visible", GraphicalRepresentation.IS_VISIBLE) {
@@ -221,7 +220,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		/**
 		 * Encodes the default cloning strategy
-		 * 
+		 *
 		 * @return
 		 */
 		@Override
@@ -253,7 +252,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				getGraphicalRepresentation().setsWith(graphicalRepresentation);
 				setChanged();
 				notifyObservers(new GraphicalRepresentationModified(this, graphicalRepresentation));
-			} else {
+			}
+			else {
 				setGraphicalRepresentation(graphicalRepresentation);
 			}
 		}
@@ -271,7 +271,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					public DataBinding.BindingDefinitionType getBindingDefinitionType() {
 						if (getReadOnlyLabel()) {
 							return DataBinding.BindingDefinitionType.GET;
-						} else {
+						}
+						else {
 							return DataBinding.BindingDefinitionType.GET_SET;
 						}
 					}
@@ -283,31 +284,35 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		// Convenient method to access spec for label feature
 		@Override
 		public DataBinding<String> getLabel() {
-			if (getGraphicalElementSpecification(LABEL_FEATURE) != null)
+			if (getGraphicalElementSpecification(LABEL_FEATURE) != null) {
 				return getGraphicalElementSpecification(LABEL_FEATURE).getValue();
+			}
 			return null;
 		}
 
 		// Convenient method to access spec for label feature
 		@Override
 		public void setLabel(DataBinding<String> label) {
-			if (getGraphicalElementSpecification(LABEL_FEATURE) != null)
+			if (getGraphicalElementSpecification(LABEL_FEATURE) != null) {
 				getGraphicalElementSpecification(LABEL_FEATURE).setValue(label);
+			}
 		}
 
 		// Convenient method to access read-only property for spec for label feature
 		@Override
 		public boolean getReadOnlyLabel() {
-			if (getGraphicalElementSpecification(LABEL_FEATURE) != null)
+			if (getGraphicalElementSpecification(LABEL_FEATURE) != null) {
 				return getGraphicalElementSpecification(LABEL_FEATURE).getReadOnly();
+			}
 			return true;
 		}
 
 		// Convenient method to access read-only property for spec for label feature
 		@Override
 		public void setReadOnlyLabel(boolean readOnlyLabel) {
-			if (getGraphicalElementSpecification(LABEL_FEATURE) != null)
+			if (getGraphicalElementSpecification(LABEL_FEATURE) != null) {
 				getGraphicalElementSpecification(LABEL_FEATURE).setReadOnly(readOnlyLabel);
+			}
 		}
 
 		@Override
@@ -441,7 +446,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public List<GraphicalElementSpecification<?, GR>> getGrSpecifications() {
 			if (grSpecifications == null && getVirtualModelFactory() != null) {
 				initDefaultSpecifications();
-			} else if (grSpecifications == null) {
+			}
+			else if (grSpecifications == null) {
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 			}
 			return grSpecifications;
@@ -486,11 +492,13 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		private <T2> void registerGRSpecification(GraphicalElementSpecification<T2, GR> aSpec) {
-			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(aSpec
-					.getFeatureName());
+			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(
+					aSpec
+							.getFeatureName());
 			if (existingSpec == null) {
 				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
-			} else {
+			}
+			else {
 				existingSpec.setValue(aSpec.getValue());
 				existingSpec.setReadOnly(aSpec.getReadOnly());
 			}
@@ -504,7 +512,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					// Factory is not accessible yet, and thus, GRSpecs not available yet
 					// We store it in pendingGRSpecs for future use
 					pendingGRSpecs.add(aSpec);
-				} else {
+				}
+				else {
 					registerGRSpecification(aSpec);
 				}
 			}
@@ -515,7 +524,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			GraphicalElementSpecification<?, ?> existingSpec = getGraphicalElementSpecification(aSpec.getFeatureName());
 			if (existingSpec == null) {
 				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
-			} else {
+			}
+			else {
 				existingSpec.setValue(null);
 			}
 		}
