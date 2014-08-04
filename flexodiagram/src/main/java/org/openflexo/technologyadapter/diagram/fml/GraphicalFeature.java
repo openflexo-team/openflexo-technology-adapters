@@ -2,7 +2,7 @@ package org.openflexo.technologyadapter.diagram.fml;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fge.GRParameter;
+import org.openflexo.fge.GRProperty;
 import org.openflexo.fge.GraphicalRepresentation;
 
 /**
@@ -17,9 +17,9 @@ public abstract class GraphicalFeature<T, GR extends GraphicalRepresentation> {
 	private static final Logger logger = Logger.getLogger(GraphicalFeature.class.getPackage().getName());
 
 	private String name;
-	private GRParameter<T> parameter;
+	private GRProperty<T> parameter;
 
-	public GraphicalFeature(String name, GRParameter<T> parameter) {
+	public GraphicalFeature(String name, GRProperty<T> parameter) {
 		this.name = name;
 		this.parameter = parameter;
 	}
@@ -28,7 +28,7 @@ public abstract class GraphicalFeature<T, GR extends GraphicalRepresentation> {
 		return name;
 	}
 
-	public GRParameter<T> getParameter() {
+	public GRProperty<T> getParameter() {
 		return parameter;
 	}
 
