@@ -21,22 +21,23 @@
 package org.openflexo.technologyadapter.xml.model;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
 
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.xml.IXMLAttribute;
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Embedded;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.Getter.Cardinality;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Initializer;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Parameter;
+import org.openflexo.model.annotations.PastingPoint;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
 import org.openflexo.xml.IXMLIndividual;
-import org.openflexo.xml.XMLCst;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-
 /**
  * 
  * an XMLIndividual represents a single instance of XML Element in a XMLModel
@@ -45,226 +46,68 @@ import org.w3c.dom.Element;
  * @author xtof
  * 
  */
+@ModelEntity
+@ImplementationClass(XMLIndividualImpl.class)
+public interface XMLIndividual extends XMLObject, IXMLIndividual<XMLIndividual, XMLAttribute> {
 
-public class XMLIndividual extends XMLObject implements IXMLIndividual<XMLIndividual, XMLAttribute> {
+	public static final String TYPE = "myType";
+	public static final String MODEL = "containerModel";
+	public static final String _UUID = "uuid";
+	public static final String CHILD = "children";
+	public static final String PARENT = "parent";
+	public static final String ATTR = "attributes";
 
-    /* Properties */
+	@Initializer
+	public XMLIndividual init(@Parameter(MODEL) XMLModel m, @Parameter(TYPE) XMLType t);
 
-    private Map<XMLType, Set<XMLIndividual>>            children       = null;
-    private Map<String, XMLAttribute>                   attributes     = null;
-    private IXMLIndividual<XMLIndividual, XMLAttribute> parent         = null;
-    private XMLModel                                    containerModel = null;
-    private XMLType                                     myType         = null;
+	@Getter(MODEL)
+    public XMLModel getContainerModel();
 
-    private String                                      Name;
-    private String                                      uuid;
+	@Override
+	@Getter(TYPE)
+	public XMLType getType();
+	
+	@Override
+	@Setter(TYPE)
+	public void setType(Type aType);
+	
+	@Override
+	@Getter(_UUID)
+	public String getUUID();
+	
 
-    private static final java.util.logging.Logger       logger         = org.openflexo.logging.FlexoLogger.getLogger(XMLIndividual.class
-                                                                               .getPackage().getName());
+	@Override
+	@Getter(PARENT)
+	public XMLIndividual getParent();
+	
+	@Setter(PARENT)
+	public void setParent(XMLIndividual xmlind);
+	
 
-    /**
-     * Default Constructor
-     * 
-     * @param adapter
-     */
+	@Override
+	@Getter(value = CHILD, cardinality = Cardinality.LIST, inverse = PARENT)
+	@CloningStrategy(StrategyType.IGNORE)
+	@Embedded
+	public List<XMLIndividual> getChildren();
 
-    protected XMLIndividual(XMLModel containerModel) {
-        super();
-        this.containerModel = containerModel;
-        uuid = UUID.randomUUID().toString();
-        attributes = new HashMap<String, XMLAttribute>();
-        children = new HashMap<XMLType, Set<XMLIndividual>>();
-    }
+	@Remover(CHILD)
+	public void removeChild(XMLIndividual ind);
 
-    public XMLIndividual(XMLModel xmlModel, XMLType aType) {
-        this.setName(aType.getName());
-        this.containerModel = xmlModel;
-        this.setType(aType);
-        uuid = UUID.randomUUID().toString();
-        attributes = new HashMap<String, XMLAttribute>();
-        children = new HashMap<XMLType, Set<XMLIndividual>>();
-    }
+	@Adder(CHILD)
+	@PastingPoint
+	public void addChild(XMLIndividual ind);
+	
+	@Override
+	@Getter(value = ATTR, cardinality = Cardinality.LIST)
+	public Collection<? extends XMLAttribute> getAttributes();
+	
+	@Override
+    public Object createAttribute(String attrLName, Type aType, String value);
 
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getContentDATA()
-     */
-    @Override
-    public String getContentDATA() {
-        XMLAttribute attr = attributes.get(XMLCst.CDATA_ATTR_NAME);
-        if (attr != null) {
-            return (String) attr.getValue();
-        }
-        return "";
-    }
-
-    // ************ Accessors
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getTechnologyAdapter()
-     */
-    public XMLTechnologyAdapter getTechnologyAdapter() {
-        return containerModel.getTechnologyAdapter();
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#setName(java.lang.String)
-     */
-    @Override
-    public void setName(String name) {
-        this.Name = name;
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getFullyQualifiedName()
-     */
-    @Override
-    public String getFullyQualifiedName() {
-        // TODO Auto-generated method stub
-        return Name;
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getName()
-     */
-    @Override
-    public String getName() {
-        return Name;
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getAttributeValue(java.lang.String)
-     */
-    @Override
-    public Object getAttributeValue(String attributeName) {
-
-        XMLAttribute attr = attributes.get(attributeName);
-
-        if (attr != null) {
-            return attr.getValue();
-        }
-        else
-            return null;
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#addChild(org.openflexo.technologyadapter.xml.model.XMLIndividual)
-     */
-    @Override
-    public void addChild(IXMLIndividual<XMLIndividual, XMLAttribute> anIndividual) {
-        XMLType aType = (XMLType) anIndividual.getType();
-        Set<XMLIndividual> typedSet = children.get(aType);
-
-        if (typedSet == null) {
-            typedSet = new HashSet<XMLIndividual>();
-            children.put(aType, typedSet);
-        }
-        typedSet.add((XMLIndividual) anIndividual);
-        ((XMLIndividual) anIndividual).setParent(this);
-    }
-
-    private void setParent(IXMLIndividual<XMLIndividual, XMLAttribute> xmlIndividual) {
-        parent = xmlIndividual;
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getChildren()
-     */
-    @Override
-    public List<XMLIndividual> getChildren() {
-
-        List<XMLIndividual> returned = new ArrayList<XMLIndividual>();
-
-        for (Set<XMLIndividual> s : children.values()) {
-            returned.addAll(s);
-        }
-        return returned;
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getParent()
-     */
-    @Override
-    public XMLIndividual getParent() {
-        return (XMLIndividual) parent;
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getType()
-     */
-    @Override
-    public XMLType getType() {
-        return myType;
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#setType(org.openflexo.technologyadapter.xml.model.XMLType)
-     */
-    @Override
-    public void setType(Type myClass) {
-        this.myType = (XMLType) myClass;
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getUUID()
-     */
-    @Override
-    public String getUUID() {
-        return uuid;
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getAttributes()
-     */
-    @Override
-    public Collection<? extends XMLAttribute> getAttributes() {
-        return (Collection<? extends XMLAttribute>) attributes.values();
-    }
-
-    @Override
-    public Object createAttribute(String attrLName, Type aType, String value) {
-        XMLAttribute attr = new XMLAttribute(attrLName, aType, value);
-
-        if (attributes == null) {
-            logger.warning("Attribute collection is null");
-            attributes = new HashMap<String, XMLAttribute>();
-        }
-
-        attributes.put(attrLName, attr);
-
-        return attr;
-    }
-
-    @Override
-    public XMLAttribute getAttributeByName(String aName) {
-        return attributes.get(aName);
-    }
-
-    /* (non-Javadoc)
-     * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#toXML(org.w3c.dom.Document)
-     */
-    @Override
-    public Element toXML(Document doc) {
-        String nsURI = getType().getNameSpaceURI();
-        Element element = null;
-        if (nsURI != null) {
-            element = (Element) doc.createElementNS(nsURI, getType().getFullyQualifiedName());
-        }
-        else {
-            element = (Element) doc.createElement(getType().getName());
-        }
-
-        for (IXMLIndividual<XMLIndividual, XMLAttribute> i : getChildren()) {
-            element.appendChild(i.toXML(doc));
-        }
-
-        // TODO dump attributes !!!
-
-        return element;
-    }
-
-    @Override
-    public String getAttributeStringValue(IXMLAttribute a) {
-        return ((XMLAttribute) a).getValue().toString();
-    }
-
+	@Adder(value = ATTR)
+	public Object addAttribute(XMLAttribute attr);
+	
+	@Remover(value = ATTR)
+	public Object deleteAttribute(XMLAttribute attr);
+	
 }

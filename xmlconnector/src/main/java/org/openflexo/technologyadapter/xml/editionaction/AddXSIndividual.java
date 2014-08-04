@@ -33,7 +33,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XSDModelSlot;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
@@ -77,7 +77,7 @@ public interface AddXSIndividual extends AddIndividual<XSDModelSlot, XSOntIndivi
 			XSOntIndividual newIndividual = null;
 			try {
 
-				TypeAwareModelSlotInstance<XMLXSDModel, XSDMetaModel, XSDModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<XMLXSDModel, XSDMetaModel, XSDModelSlot>) getModelSlotInstance(action);
+				TypeAwareModelSlotInstance<XMLXSDModel, XMLMetaModel, XSDModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<XMLXSDModel, XMLMetaModel, XSDModelSlot>) getModelSlotInstance(action);
 				XMLXSDModel model = modelSlotInstance.getAccessedResourceData();
 				XSDModelSlot modelSlot = modelSlotInstance.getModelSlot();
 

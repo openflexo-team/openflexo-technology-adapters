@@ -1,6 +1,6 @@
 /*
  * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2012-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -21,12 +21,33 @@
 
 package org.openflexo.technologyadapter.xml.model;
 
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Setter;
+
 /**
  * @author xtof
  * 
  */
-public abstract class XMLObject {
+@ModelEntity
+public interface XMLObject {
 
-    // Only for genericity purpose for now...
+
+	public static final String NAME = "name";
+
+	public final String URI = "uri";
+
+	
+	@Getter(NAME)
+	public String getName();
+	
+	@Setter(NAME)
+	public void setName(String aName);
+	
+	@Getter(URI)
+	public String getURI();
+	
+	@Setter(URI)
+	public void setURI(String uri);
 
 }

@@ -19,7 +19,7 @@ import org.openflexo.technologyadapter.xml.gui.XMLXSDModelView;
 import org.openflexo.technologyadapter.xml.gui.XSDIconLibrary;
 import org.openflexo.technologyadapter.xml.gui.XSDMetaModelBrowserModel;
 import org.openflexo.technologyadapter.xml.gui.XSDMetaModelView;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
@@ -139,8 +139,8 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 
 	@Override
 	public OntologyBrowserModel makeOntologyBrowserModel(IFlexoOntology context) {
-		if (context instanceof XSDMetaModel) {
-			return new XSDMetaModelBrowserModel((XSDMetaModel) context);
+		if (context instanceof XMLMetaModel) {
+			return new XSDMetaModelBrowserModel((XMLMetaModel) context);
 		} else if (context instanceof XMLXSDModel) {
 			return new XMLModelBrowserModel((XMLXSDModel) context);
 		} else {
@@ -151,7 +151,7 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 
 	@Override
 	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
-		return object instanceof XSDMetaModel || object instanceof XMLXSDModel;
+		return object instanceof XMLMetaModel || object instanceof XMLXSDModel;
 	}
 
 	@Override
@@ -159,8 +159,8 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 		if (object instanceof XMLXSDModel) {
 			return ((XMLXSDModel) object).getName();
 		}
-		if (object instanceof XSDMetaModel) {
-			return ((XSDMetaModel) object).getName();
+		if (object instanceof XMLMetaModel) {
+			return ((XMLMetaModel) object).getName();
 		}
 		return object.toString();
 	}
@@ -175,8 +175,8 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 			returned.setShowObjectProperties(false);
 			returned.setShowAnnotationProperties(false);
 			return returned;
-		} else if (object instanceof XSDMetaModel) {
-			XSDMetaModelView returned = new XSDMetaModelView((XSDMetaModel) object, controller, perspective);
+		} else if (object instanceof XMLMetaModel) {
+			XSDMetaModelView returned = new XSDMetaModelView((XMLMetaModel) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);
 			returned.setShowObjectProperties(true);

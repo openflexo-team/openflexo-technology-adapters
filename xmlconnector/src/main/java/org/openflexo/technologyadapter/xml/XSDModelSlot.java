@@ -54,7 +54,7 @@ import org.openflexo.technologyadapter.xml.editionaction.AddXSClass;
 import org.openflexo.technologyadapter.xml.editionaction.AddXSIndividual;
 import org.openflexo.technologyadapter.xml.editionaction.GetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.editionaction.SetXMLDocumentRoot;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
@@ -83,7 +83,7 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XSIndividualRole;
 @ModelEntity
 @ImplementationClass(XSDModelSlot.XSDModelSlotImpl.class)
 @XMLElement
-public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaModel> {
+public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XMLMetaModel> {
 
 	@PropertyIdentifier(type = List.class)
 	public static final String URI_PROCESSORS_LIST_KEY = "uriProcessorsList";
@@ -106,7 +106,7 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 
 	public XSURIProcessor createURIProcessor();
 
-	public static abstract class XSDModelSlotImpl extends TypeAwareModelSlotImpl<XMLXSDModel, XSDMetaModel> implements XSDModelSlot {
+	public static abstract class XSDModelSlotImpl extends TypeAwareModelSlotImpl<XMLXSDModel, XMLMetaModel> implements XSDModelSlot {
 		static final Logger logger = Logger.getLogger(XSDModelSlot.class.getPackage().getName());
 
 		/* Used to process URIs for XML Objects */
@@ -153,7 +153,7 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 
 		@Override
 		public String getURIForObject(
-				TypeAwareModelSlotInstance<XMLXSDModel, XSDMetaModel, ? extends TypeAwareModelSlot<XMLXSDModel, XSDMetaModel>> msInstance,
+				TypeAwareModelSlotInstance<XMLXSDModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLXSDModel, XMLMetaModel>> msInstance,
 				Object o) {
 			XSOntIndividual xsO = (XSOntIndividual) o;
 
@@ -196,7 +196,7 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 
 		@Override
 		public Object retrieveObjectWithURI(
-				TypeAwareModelSlotInstance<XMLXSDModel, XSDMetaModel, ? extends TypeAwareModelSlot<XMLXSDModel, XSDMetaModel>> msInstance,
+				TypeAwareModelSlotInstance<XMLXSDModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLXSDModel, XMLMetaModel>> msInstance,
 				String objectURI) {
 			String typeUri = XSURIProcessorImpl.retrieveTypeURI(msInstance, objectURI);
 			XMLXSDModel model = msInstance.getModel();
@@ -307,13 +307,13 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XSDMetaMod
 
 		@Override
 		public XMLXSDFileResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
-				FlexoMetaModelResource<XMLXSDModel, XSDMetaModel, ?> metaModelResource) {
+				FlexoMetaModelResource<XMLXSDModel, XMLMetaModel, ?> metaModelResource) {
 			return getTechnologyAdapter().createNewXMLFile(project, filename, modelUri, metaModelResource);
 		}
 
 		@Override
 		public XMLXSDFileResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
-				String modelUri, FlexoMetaModelResource<XMLXSDModel, XSDMetaModel, ?> metaModelResource) {
+				String modelUri, FlexoMetaModelResource<XMLXSDModel, XMLMetaModel, ?> metaModelResource) {
 			return (XMLXSDFileResource) getTechnologyAdapter().createNewXMLFile((FileSystemBasedResourceCenter) resourceCenter,
 					relativePath, filename, modelUri, (XSDMetaModelResource) metaModelResource);
 		}

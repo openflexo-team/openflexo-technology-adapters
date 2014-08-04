@@ -29,8 +29,8 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.technologyadapter.xml.rm.XMLMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLXSDModelRepository;
-import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -41,7 +41,7 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger         logger  = Logger.getLogger(TestXSD.class.getPackage().getName());
 
 	private static XMLTechnologyAdapter   xmlAdapter;
-	private static XSDMetaModelRepository mmRepository;
+	private static XMLMetaModelRepository mmRepository;
 	private static XMLXSDModelRepository  modelRepository;
 	private static String                 baseUrl = null;
 
@@ -63,7 +63,7 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 			e.printStackTrace();
 		}
 
-		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
+		mmRepository = resourceCenter.getRepository(XMLMetaModelRepository.class, xmlAdapter);
 		modelRepository = resourceCenter.getRepository(XMLXSDModelRepository.class, xmlAdapter);
 		assertNotNull(mmRepository);
 		assertNotNull(modelRepository);

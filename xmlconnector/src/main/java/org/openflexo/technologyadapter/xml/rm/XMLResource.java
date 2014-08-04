@@ -21,10 +21,9 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
-import org.openflexo.foundation.resource.FlexoFileResource;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
@@ -33,16 +32,14 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLTechnologyContextManager;
 
 @ModelEntity
-@ImplementationClass(XMLFileResourceImpl.class)
-public interface XMLFileResource extends FlexoFileResource<XMLModel>,FlexoModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter>, XMLResource {
+// @ImplementationClass(XMLResourceImpl.class)
+public interface XMLResource extends  TechnologyAdapterResource<XMLModel, XMLTechnologyAdapter>, FlexoModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> {
 
-	public static final String TECHNOLOGY_CONTEXT_MANAGER = "XMLTechnolog, yContextManager";
+	public static final String TECHNOLOGY_CONTEXT_MANAGER = "XMLTechnologyContextManager";
 
-	@Override
 	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
 	public XMLTechnologyContextManager getTechnologyContextManager();
 
-	@Override
 	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
 	public void setTechnologyContextManager(XMLTechnologyContextManager technologyContextManager);
 }

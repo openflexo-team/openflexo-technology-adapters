@@ -1,6 +1,6 @@
 /*
  * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2012-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -23,9 +23,13 @@ package org.openflexo.technologyadapter.xml.model;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.DefaultFlexoObject;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Initializer;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Parameter;
+import org.openflexo.model.annotations.Setter;
 import org.openflexo.xml.IXMLAttribute;
-import org.openflexo.xml.IXMLIndividual;
 
 
 /**
@@ -35,103 +39,27 @@ import org.openflexo.xml.IXMLIndividual;
  * @author xtof
  * 
  */
-public class XMLAttribute extends DefaultFlexoObject implements IXMLAttribute {
+@ModelEntity
+@ImplementationClass(XMLAttributeImpl.class)
+public interface XMLAttribute  extends IXMLAttribute, XMLObject {
 
-	// Properties
-	private String name;
-	private Object value;
-	private Type myType;
-	private IXMLIndividual<?, ?> container;
+	public static String VALUE = "value";
+	public static final String TYPE = "myType";
 
-	public XMLAttribute(String aName, Type aType, String aValue) {
-		super();
-		name = aName;
-		setType(aType);
-		value = aValue;
-	}
+	@Initializer
+	public XMLAttribute init(@Parameter(NAME) String s, @Parameter(TYPE) Type t);
+	
+	@Getter(VALUE)
+	public String getValue();
 
-	public XMLAttribute(String aName) {
-		super();
-		name = aName;
-	}
+	@Setter(VALUE)
+	public void setValue(String o);
 
-	@Override
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String aName) {
-		name = aName;
-	}
-
-	/**
-	 * @return the value
-	 */
-	public Object getValue() {
-		return value;
-	}
-
-	/**
-	 * @param value
-	 *            the value to set
-	 */
-	public void setValue(Object aValue) {
-		this.value = aValue;
-	}
-
-	/**
-	 * @return the myType
-	 */
-	public Type getType() {
-		return myType;
-	}
-
-	/**
-	 * @param myType
-	 *            the myType to set
-	 */
-	public void setType(Type myType) {
-		this.myType = myType;
-	}
-
-	/**
-	 * @return the containedIn
-	 */
-	public IXMLIndividual<?, ?> getContainer() {
-		return container;
-	}
-
-	/**
-	 * @param containedIn
-	 *            the containedIn to set
-	 */
-	public void setContainer(IXMLIndividual<?, ?> containedIn) {
-		this.container = containedIn;
-	}
-
-	@Override
-	public boolean isSimpleAttribute() {
-		return true;
-	}
-
-	@Override
-	public boolean isElement() {
-		return false;
-	}
-
-	@Override
-	public void addValue(IXMLIndividual<?, ?> indiv, Object value) {
-		setValue(value);
-
-	}
-
-	@Override
-	public Type getAttributeType() {
-		return myType;
-	}
-
-	public String getDisplayableDescription() {
-		return this.getName();
-	}
-
+	@Getter(TYPE)
+	public XMLType getType();
+	
+	@Setter(TYPE)
+	public void setType(Type aType);
+	
+	
 }

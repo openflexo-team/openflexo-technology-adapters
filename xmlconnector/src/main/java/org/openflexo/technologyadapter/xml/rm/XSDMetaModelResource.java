@@ -27,16 +27,16 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 
 @ModelEntity
 @ImplementationClass(XSDMetaModelResourceImpl.class)
 @XMLElement
-public interface XSDMetaModelResource extends FlexoFileResource<XSDMetaModel>,
-		TechnologyAdapterResource<XSDMetaModel, XMLTechnologyAdapter>,
-		FlexoMetaModelResource<XMLXSDModel, XSDMetaModel, XMLTechnologyAdapter> {
+public interface XSDMetaModelResource extends FlexoFileResource<XMLMetaModel>,
+		TechnologyAdapterResource<XMLMetaModel, XMLTechnologyAdapter>,
+		FlexoMetaModelResource<XMLXSDModel, XMLMetaModel, XMLTechnologyAdapter> {
 
 	@Override
-	public XSDMetaModel getMetaModelData();
+	public XMLMetaModel getMetaModelData();
 }

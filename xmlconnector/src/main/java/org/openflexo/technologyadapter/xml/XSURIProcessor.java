@@ -40,7 +40,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
@@ -258,7 +258,7 @@ public interface XSURIProcessor extends XMLURIProcessor {
 
             // modelResource must also be loaded!
 
-            FlexoModelResource<XMLXSDModel, XSDMetaModel, XMLTechnologyAdapter> resource = (FlexoModelResource<XMLXSDModel, XSDMetaModel, XMLTechnologyAdapter>) msInstance
+            FlexoModelResource<XMLXSDModel, XMLMetaModel, XMLTechnologyAdapter> resource = (FlexoModelResource<XMLXSDModel, XMLMetaModel, XMLTechnologyAdapter>) msInstance
                     .getResource();
 
             // should not be a preoccupation of XSURI

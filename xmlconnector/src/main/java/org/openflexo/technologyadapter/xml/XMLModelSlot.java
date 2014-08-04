@@ -40,6 +40,7 @@ import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 
@@ -54,9 +55,9 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 })
 @ModelEntity
 @XMLElement
-public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLModel> {
+public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel> {
 
-    public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLModel> implements XMLModelSlot {
+    public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel> implements XMLModelSlot {
 
         private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
 
@@ -72,36 +73,36 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLModel> {
         }
 
         @Override
-        public FlexoModelResource<XMLModel, XMLModel, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
-                String modelUri, FlexoMetaModelResource<XMLModel, XMLModel, ?> metaModelResource) {
+        public FlexoModelResource<XMLModel, XMLMetaModel, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
+                String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
-        public FlexoModelResource<XMLModel, XMLModel, ?> createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath,
-                String filename, String modelUri, FlexoMetaModelResource<XMLModel, XMLModel, ?> metaModelResource) {
+        public FlexoModelResource<XMLModel, XMLMetaModel, ?> createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath,
+                String filename, String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
         public String getURIForObject(
-                TypeAwareModelSlotInstance<XMLModel, XMLModel, ? extends TypeAwareModelSlot<XMLModel, XMLModel>> msInstance, Object o) {
+                TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance, Object o) {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
         public Object retrieveObjectWithURI(
-                TypeAwareModelSlotInstance<XMLModel, XMLModel, ? extends TypeAwareModelSlot<XMLModel, XMLModel>> msInstance,
+                TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,
                 String objectURI) {
             // TODO Auto-generated method stub
             return null;
         }
 
         @Override
-        public ModelSlotInstanceConfiguration<? extends TypeAwareModelSlot<XMLModel, XMLModel>, XMLModel> createConfiguration(
+        public ModelSlotInstanceConfiguration<? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>, XMLModel> createConfiguration(
                 CreateVirtualModelInstance action) {
             // TODO Auto-generated method stub
             return null;

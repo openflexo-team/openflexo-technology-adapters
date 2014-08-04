@@ -39,6 +39,7 @@ import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
+import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
 import org.openflexo.technologyadapter.xml.model.XMLTechnologyContextManager;
 import org.openflexo.toolbox.IProgress;
 
@@ -80,7 +81,8 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
             if (!xmlFile.exists()) {
 
                 if (returned.resourceData == null) {
-                    returned.resourceData = new XMLModel(technologyContextManager.getTechnologyAdapter());
+                    returned.resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class, technologyContextManager.getTechnologyAdapter());
+                    		//new XMLModel(technologyContextManager.getTechnologyAdapter());
                     returned.resourceData.setResource(returned);
                 }
 
@@ -197,7 +199,8 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
     FlexoException {
 
         if (resourceData == null) {
-            resourceData = new XMLModel(this.getTechnologyAdapter());
+            resourceData =  XMLModelImpl.getModelFactory().newInstance(XMLModel.class, getTechnologyAdapter()); 
+            		//new XMLModel(this.getTechnologyAdapter());
             resourceData.setResource(this);
         }
 
@@ -205,7 +208,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 
             try {
 
-                XMLModelFactory factory = this.getTechnologyAdapter().getXMLModelFactory();
+                XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
 
                 factory.setContext(resourceData);
 

@@ -13,14 +13,14 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
 import org.openflexo.technologyadapter.xml.model.XSOntology;
+import org.openflexo.technologyadapter.xml.rm.XMLMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLXSDModelRepository;
-import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResourceImpl;
 import org.openflexo.test.OrderedRunner;
@@ -32,7 +32,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
     protected static final Logger              logger    = Logger.getLogger(TestLibrary.class.getPackage().getName());
 
     private static XMLTechnologyAdapter        xmlAdapter;
-    private static XSDMetaModelRepository      mmRepository;
+    private static XMLMetaModelRepository      mmRepository;
     private static XMLXSDModelRepository       modelRepository;
 //    private static ApplicationContext          testApplicationContext;
 
@@ -63,7 +63,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
         assertNotNull(lib.getDataProperties());
         assertFalse(lib.getDataProperties().isEmpty());
         buffer.append("Data properties\n");
-        for (XSOntDataProperty xsoDP : ((XSDMetaModel) lib).getDataProperties()) {
+        for (XSOntDataProperty xsoDP : ((XMLMetaModel) lib).getDataProperties()) {
             xsoObject(xsoDP, buffer);
         }
         buffer.append("\n");
@@ -93,7 +93,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		
         log("test0LoadTestResourceCenter()");
         xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-        mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
+        mmRepository = resourceCenter.getRepository(XMLMetaModelRepository.class, xmlAdapter);
         modelRepository = resourceCenter.getRepository(XMLXSDModelRepository.class, xmlAdapter);
         resourceCenter.getDirectory().getCanonicalPath();
         assertNotNull(modelRepository);
@@ -106,11 +106,11 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
     @TestOrder(2)
     public void test1Library() {
         StringBuffer buffer = new StringBuffer();
-        XSDMetaModel lib = null;
+        XMLMetaModel lib = null;
         XSDMetaModelResource libRes = null;
 
         try {
-            libRes = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter).getResource("http://www.example.org/Library");
+            libRes = resourceCenter.getRepository(XMLMetaModelRepository.class, xmlAdapter).getResource("http://www.example.org/Library");
             lib = libRes.getResourceData(null);
         } catch (Exception e) {
             fail(e.getMessage());

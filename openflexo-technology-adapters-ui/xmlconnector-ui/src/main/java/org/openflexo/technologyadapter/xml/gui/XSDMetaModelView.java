@@ -19,7 +19,7 @@
  */
 package org.openflexo.technologyadapter.xml.gui;
 
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -31,9 +31,9 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * 
  */
 @SuppressWarnings("serial")
-public class XSDMetaModelView extends AbstractXMLOntologyView<XSDMetaModel> {
+public class XSDMetaModelView extends AbstractXMLOntologyView<XMLMetaModel> {
 
-	public XSDMetaModelView(XSDMetaModel object, FlexoController controller, FlexoPerspective perspective) {
+	public XSDMetaModelView(XMLMetaModel object, FlexoController controller, FlexoPerspective perspective) {
 		super(object, controller, perspective);
 	}
 
@@ -42,7 +42,7 @@ public class XSDMetaModelView extends AbstractXMLOntologyView<XSDMetaModel> {
 		return new XSDMetaModelBrowserModel(getXSDMetaModel());
 	}
 
-	public XSDMetaModel getXSDMetaModel() {
+	public XMLMetaModel getXSDMetaModel() {
 		return getOntology();
 	}
 

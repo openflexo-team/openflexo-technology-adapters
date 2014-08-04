@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
@@ -51,7 +51,7 @@ public class XSDIconLibrary {
 	public static final ImageIconResource XSD_OBJECTPROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDObjectProperty.png"));
 
 	public static ImageIcon iconForObject(Class<? extends AbstractXSOntObject> objectClass) {
-		if (XSDMetaModel.class.isAssignableFrom(objectClass)) {
+		if (XMLMetaModel.class.isAssignableFrom(objectClass)) {
 			return XSD_FILE_ICON;
 		} else if (XMLXSDModel.class.isAssignableFrom(objectClass)) {
 			return XML_FILE_ICON;

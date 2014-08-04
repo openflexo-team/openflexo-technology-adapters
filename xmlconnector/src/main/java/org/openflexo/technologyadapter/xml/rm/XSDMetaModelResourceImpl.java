@@ -31,7 +31,7 @@ import org.openflexo.foundation.resource.FlexoFileResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
@@ -54,7 +54,7 @@ import com.sun.xml.xsom.XSType;
  * 
  */
 
-public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSDMetaModel> implements XSOntologyURIDefinitions,
+public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XMLMetaModel> implements XSOntologyURIDefinitions,
 		XSDMetaModelResource {
 
 	private static final Logger logger = Logger.getLogger(XSDMetaModelResourceImpl.class.getPackage().getName());
@@ -89,7 +89,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 	}
 
 	@Override
-	public XSDMetaModel getMetaModelData() {
+	public XMLMetaModel getMetaModelData() {
 		try {
 			return getResourceData(null);
 		} catch (FileNotFoundException e) {
@@ -111,7 +111,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 	 * @throws ResourceLoadingCancelledException
 	 */
 	@Override
-	public XSDMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException {
+	public XMLMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException {
 
 		if (loadWhenUnloaded())
 			return resourceData;
@@ -133,7 +133,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 		// TODO if a declaration (base) type is derived, get the correct
 		// superclass
 
-		XSDMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
+		XMLMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
 
 		try {
 
@@ -180,7 +180,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 		}
 	}
 
-	private void addDomainIfPossible(XSOntProperty property, String conceptUri, XSDMetaModel aModel) {
+	private void addDomainIfPossible(XSOntProperty property, String conceptUri, XMLMetaModel aModel) {
 		String ownerUri = fetcher.getOwnerURI(conceptUri);
 		if (ownerUri != null) {
 			XSOntClass owner = aModel.getClass(ownerUri);
@@ -193,7 +193,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 
 	private void loadDataProperties() {
 
-		XSDMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
+		XMLMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
 
 		/*
 		 * for (XSSimpleType simpleType : fetcher.getSimpleTypes()) {
@@ -227,7 +227,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 
 	private void loadObjectProperties() {
 
-		XSDMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
+		XMLMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
 
 		for (XSElementDecl element : fetcher.getElementDecls()) {
 			if (mapsToClass(element)) {
@@ -244,7 +244,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 	public boolean load() {
 
 		if (resourceData == null) {
-			this.resourceData = new XSDMetaModel(getURI(), getFile(), getTechnologyAdapter());
+			this.resourceData = new XMLMetaModel(getURI(), getFile(), getTechnologyAdapter());
 			resourceData.setResource(this);
 		}
 
@@ -309,8 +309,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XSD
 	}
 
 	@Override
-	public Class<XSDMetaModel> getResourceDataClass() {
-		return XSDMetaModel.class;
+	public Class<XMLMetaModel> getResourceDataClass() {
+		return XMLMetaModel.class;
 	}
 
 }

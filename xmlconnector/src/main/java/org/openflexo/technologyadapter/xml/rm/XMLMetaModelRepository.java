@@ -23,9 +23,10 @@ package org.openflexo.technologyadapter.xml.rm;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.MetaModelRepository;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
-public class XMLMetaModelRepository extends MetaModelRepository<XMLFileResource, XMLModel, XMLModel, XMLTechnologyAdapter> {
+public class XMLMetaModelRepository extends MetaModelRepository<XMLFileResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter> {
 
 	public XMLMetaModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
 		super(adapter, resourceCenter);

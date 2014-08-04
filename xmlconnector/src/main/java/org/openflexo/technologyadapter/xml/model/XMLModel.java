@@ -22,212 +22,103 @@
 package org.openflexo.technologyadapter.xml.model;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Logger;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.openflexo.foundation.DefaultFlexoObject;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Embedded;
+import org.openflexo.model.annotations.Finder;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.Getter.Cardinality;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Initializer;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Parameter;
+import org.openflexo.model.annotations.PastingPoint;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
-import org.openflexo.xml.IXMLIndividual;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.xml.IXMLType;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * @author xtof
  * 
  */
-public class XMLModel extends DefaultFlexoObject implements FlexoModel<XMLModel, XMLModel>, FlexoMetaModel<XMLModel>, IXMLMetaModel,
-        IXMLModel, TechnologyObject<XMLTechnologyAdapter> {
+@ModelEntity
+@ImplementationClass(XMLModelImpl.class)
+public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>, FlexoMetaModel<XMLModel>,
+			IXMLModel, TechnologyObject<XMLTechnologyAdapter> {
 
-    // Constants
+	public static final String MM = "metaModel";
+	public static final String RSC = "resource";
+	public static final String IND = "individuals";
+	public static final String ROOT = "root";
+	// public static final String TA = "technologyAdapter";
 
-    private static final String              Version         = "0";
 
-    // Attributes
+	@Initializer
+	public XMLModel init();
 
-    protected static final Logger            logger          = Logger.getLogger(XMLModel.class.getPackage().getName());
-    private FlexoResource<?>                 xmlResource;
-    private boolean                          isReadOnly      = true;
-    private final XMLTechnologyAdapter       technologyAdapter;
+	@Initializer
+	public XMLModel init(@Parameter(MM) XMLMetaModel mm);
+/*
+	@Initializer
+	public XMLModel init(@Parameter(TA) TechnologyAdapter ta, @Parameter(MM) XMLMetaModel mm);
+	
+	
+	@Override
+	@Getter(TA)
+	XMLTechnologyAdapter getTechnologyAdapter();
+	*/
+	
+	@Override
+	@Getter(MM)
+	XMLMetaModel getMetaModel();
+	
+	@Setter(MM)
+	void setMetaModel(XMLMetaModel mm);
+	
 
-    private final Map<String, XMLIndividual> individuals;
-    private final Map<String, XMLType>       types;
-    private IXMLIndividual<?, ?>             root            = null;
+	@Override
+	@Getter(RSC)
+	public FlexoResource<XMLModel> getResource();
 
-    private String                           namespaceURI    = null;
-    private String                           namespacePrefix = null;
+	@Override
+	@Setter(RSC)
+	public void setResource(FlexoResource<XMLModel> resource);
+	
+	@Override
+	@Getter(ROOT)
+	public XMLIndividual getRoot();
+	
+	@Setter(ROOT)
+	public void setRoot(XMLIndividual indiv);
+	
+	@Getter(value = IND, cardinality = Cardinality.LIST)
+	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
+	public List<? extends XMLIndividual> getIndividuals();
 
-    public XMLModel(TechnologyAdapter technologyAdapter) {
-        super();
-        individuals = new HashMap<String, XMLIndividual>();
-        types = new HashMap<String, XMLType>();
-        this.technologyAdapter = (XMLTechnologyAdapter) technologyAdapter;
-    }
 
-    public String getName() {
-        if (xmlResource != null) {
-            return xmlResource.getName();
-        }
-        else
-            return "";
-    }
+	//TODO ask Syl pourkoi on ne peut pas avoir +eurs adders...
+	@Override
+	public Object addNewIndividual(Type aType);
+	
+	@Adder(IND)
+	@PastingPoint
+	public void addIndividual(XMLIndividual ind);
 
-    @Override
-    public void setNamespace(String uri, String prefix) {
-        this.namespacePrefix = prefix;
-        this.namespaceURI = uri;
-    }
+	@Remover(IND)
+	public void removeFromNIndividuals(XMLIndividual ind);
+	
+	@Finder(attribute = XMLIndividual.TYPE, collection = IND, isMultiValued = true)
+	public List<? extends XMLIndividual> getIndividualsOfType(IXMLType aType);
 
-    @Override
-    public String getNamespacePrefix() {
-        return namespacePrefix;
-    }
-
-    @Override
-    public String getNamespaceURI() {
-        return namespaceURI;
-    }
-
-    /**
-     * @return the rootNode
-     */
-    @Override
-    public IXMLIndividual<XMLIndividual, XMLAttribute> getRoot() {
-        return (IXMLIndividual<XMLIndividual, XMLAttribute>) root;
-    }
-
-    /**
-     * @return the rootNode
-     */
-    @Override
-    public void setRoot(IXMLIndividual<?, ?> indiv) {
-        root = indiv;
-        setChanged();
-    }
-
-    @Override
-    public XMLFileResource getResource() {
-        return (XMLFileResource) xmlResource;
-    }
-
-    @Override
-    public void setResource(FlexoResource<XMLModel> resource) {
-        this.xmlResource = resource;
-    }
-
-    @Override
-    public boolean isReadOnly() {
-        return isReadOnly;
-    }
-
-    @Override
-    public void setIsReadOnly(boolean b) {
-        isReadOnly = b;
-
-    }
-
-    @Override
-    public XMLModel getMetaModel() {
-        return this;
-    }
-
-    @Override
-    public String getURI() {
-        return xmlResource.getURI();
-    }
-
-    @Override
-    public Object getObject(String objectURI) {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public XMLTechnologyAdapter getTechnologyAdapter() {
-        return technologyAdapter;
-    }
-
-    public List<? extends XMLIndividual> getIndividuals() {
-        return new ArrayList<XMLIndividual>(individuals.values());
-    }
-
-    // TODO, TO BE OPTIMIZED
-    public List<XMLIndividual> getIndividualsOfType(IXMLType aType) {
-        ArrayList<XMLIndividual> returned = new ArrayList<XMLIndividual>();
-        for (XMLIndividual o : individuals.values()) {
-            if (o.getType() == aType) {
-                returned.add(o);
-            }
-        }
-        return returned;
-    }
-
-    @Override
-    public Object addNewIndividual(Type aType) {
-        XMLIndividual anIndividual = new XMLIndividual(this, (XMLType) aType);
-        this.addIndividual(anIndividual);
-        return anIndividual;
-    }
-
-    public void addIndividual(XMLIndividual anIndividual) {
-        individuals.put(anIndividual.getUUID(), anIndividual);
-        this.setChanged();
-
-    }
-
-    @Override
-    public XMLType createNewType(String uri, String localName, String qName) {
-        XMLType nType = new XMLType(uri, localName, qName, this);
-        this.addType(nType);
-        setChanged();
-        return nType;
-    }
-
-    @Override
-    public XMLType getTypeFromURI(String uri) {
-        XMLType aType = types.get(uri);
-        if (aType == null) {
-            aType = new XMLType(uri, this);
-            types.put(uri, aType);
-        }
-        return aType;
-    }
-
-    public void addType(XMLType aType) {
-        types.put(aType.getURI(), aType);
-        this.setChanged();
-    }
-
-    public List<? extends XMLType> getTypes() {
-        return new ArrayList<XMLType>(types.values());
-    }
-
-    public Document toXML() throws ParserConfigurationException {
-        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-        Document doc = docBuilder.newDocument();
-
-        XMLIndividual rootIndiv = (XMLIndividual) getRoot();
-
-        if (rootIndiv != null) {
-            Element rootNode = rootIndiv.toXML(doc);
-            doc.appendChild(rootNode);
-        }
-
-        return doc;
-    }
 
 }

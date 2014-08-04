@@ -32,7 +32,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XSDModelSlot;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 
@@ -88,8 +88,8 @@ public interface AddXSClass extends AddClass<XSDModelSlot, XSOntClass> {
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<XMLXSDModel, XSDMetaModel, XSDModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (TypeAwareModelSlotInstance<XMLXSDModel, XSDMetaModel, XSDModelSlot>) super.getModelSlotInstance(action);
+		public TypeAwareModelSlotInstance<XMLXSDModel, XMLMetaModel, XSDModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
+			return (TypeAwareModelSlotInstance<XMLXSDModel, XMLMetaModel, XSDModelSlot>) super.getModelSlotInstance(action);
 		}
 
 	}

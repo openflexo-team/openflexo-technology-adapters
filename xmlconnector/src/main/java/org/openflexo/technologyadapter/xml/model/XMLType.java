@@ -22,81 +22,30 @@ package org.openflexo.technologyadapter.xml.model;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.xml.IXMLType;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Initializer;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Parameter;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 
-public class XMLType extends XMLObject implements Type, IXMLType {
+@ModelEntity
+@ImplementationClass(XMLTypeImpl.class)
+public interface XMLType  extends XMLObject, Type {
 
-    private final XMLModel                        containerModel;
-
-    /* Properties */
-
-    private String                                Name;
-    private String                                NameSpaceURI;
-    private final String                          NSPrefix;
-
-    private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-                                                                 .getLogger(XMLType.class.getPackage().getName());
-
-    /**
-     * Default Constructor
-     * 
-     * @param qName
-     * 
-     * @param adapter
-     */
-
-    public XMLType(String aName, XMLModel model) {
-        super();
-        this.containerModel = model;
-        this.Name = aName;
-        this.NameSpaceURI = null;
-        this.NSPrefix = null;
-    }
-
-    public XMLType(String nsURI, String lName, String qName, XMLModel model) {
-        super();
-        this.containerModel = model;
-        Name = lName;
-        NameSpaceURI = nsURI;
-        NSPrefix = qName.replaceAll(":" + lName, "");
-    }
-
-    public void setName(String name) throws Exception {
-        this.Name = name;
-    }
-
-    public String getFullyQualifiedName() {
-        if (NameSpaceURI != null && !NameSpaceURI.isEmpty())
-            return NSPrefix + ":" + Name;
-        else
-            return Name;
-    }
-
-    public String getName() {
-        return Name;
-    }
-
-    public String getNameSpaceURI() {
-        return NameSpaceURI;
-    }
-
-    public void setNameSpaceURI(String nameSpaceURI) {
-        NameSpaceURI = nameSpaceURI;
-    }
-
-    @Override
-    public String getURI() {
-        if (NameSpaceURI != null) {
-            return NameSpaceURI + "#" + Name;
-        }
-        else {
-            return Name;
-        }
-    }
-
-    public XMLTechnologyAdapter getTechnologyAdapter() {
-        return containerModel.getTechnologyAdapter();
-    }
-
+	public final String MM = "metaModel";
+	// TODO: check emnboitage avec URI et NSPrexiw => FQN
+	public final String FQN = "fullyQualifiedName";
+	
+	
+	@Getter(FQN)
+	public String getFullyQualifiedName();
+	
+	@Getter(MM)
+	XMLMetaModel getMetaModel();
+	
+	
+	@Initializer
+	public XMLType init(@Parameter(MM) XMLMetaModel mm);
+	
 }

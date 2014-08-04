@@ -21,7 +21,7 @@ import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModelFactory;
@@ -35,7 +35,7 @@ import org.openflexo.toolbox.IProgress;
 // TODO : there is code to refactor to be able to merge XMLFileResourceImpl &
 // XMLXSDFileResourceImpl
 
-public abstract class XMLXSDFileResourceImpl extends FlexoFileResourceImpl<XMLXSDModel> implements XMLXSDFileResource {
+public abstract class XMLXSDFileResourceImpl extends FlexoFileResourceImpl<XMLXSDModel> implements XMLFileResource {
 
     // Constants
 
@@ -204,7 +204,7 @@ public abstract class XMLXSDFileResourceImpl extends FlexoFileResourceImpl<XMLXS
     }
 
     @Override
-    public FlexoMetaModelResource<XMLXSDModel, XSDMetaModel, XMLTechnologyAdapter> getMetaModelResource() {
+    public FlexoMetaModelResource<XMLXSDModel, XMLMetaModel, XMLTechnologyAdapter> getMetaModelResource() {
         return metamodelResource;
     }
 
@@ -212,7 +212,7 @@ public abstract class XMLXSDFileResourceImpl extends FlexoFileResourceImpl<XMLXS
      * @see org.openflexo.foundation.technologyadapter.FlexoModelResource#setMetaModelResource(org.openflexo.foundation.technologyadapter.FlexoMetaModelResource)
      */
     @Override
-    public void setMetaModelResource(FlexoMetaModelResource<XMLXSDModel, XSDMetaModel, XMLTechnologyAdapter> mmRes) {
+    public void setMetaModelResource(FlexoMetaModelResource<XMLXSDModel, XMLMetaModel, XMLTechnologyAdapter> mmRes) {
 
         metamodelResource = (XSDMetaModelResource) mmRes;
 

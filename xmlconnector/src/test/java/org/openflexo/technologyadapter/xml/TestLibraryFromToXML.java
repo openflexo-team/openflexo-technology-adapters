@@ -19,14 +19,14 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
 import org.openflexo.technologyadapter.xml.model.XSPropertyValue;
+import org.openflexo.technologyadapter.xml.rm.XMLMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLXSDFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLXSDModelRepository;
-import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -45,7 +45,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 	private static final String                   LIB_BOOKS_URI  = "http://www.example.org/Library/LibraryType#books";
 
 	private static XMLTechnologyAdapter           xmlAdapter;
-	private static XSDMetaModelRepository         mmRepository;
+	private static XMLMetaModelRepository         mmRepository;
 	private static XMLXSDModelRepository          modelRepository;
 	private static String                         baseUrl;
 
@@ -108,7 +108,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
+		mmRepository = resourceCenter.getRepository(XMLMetaModelRepository.class, xmlAdapter);
 		modelRepository = resourceCenter.getRepository(XMLXSDModelRepository.class, xmlAdapter);
 		baseUrl = resourceCenter.getDirectory().getCanonicalPath();
 		try {
@@ -177,7 +177,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 		if (!mmLibraryRes.isLoaded()) {
 			mmLibraryRes.loadResourceData(null);
 		}
-		XSDMetaModel mmLib = mmLibraryRes.getMetaModelData();
+		XMLMetaModel mmLib = mmLibraryRes.getMetaModelData();
 
 		assertNotNull(mmLib);
 		assertTrue(mmLib.getResource().isLoaded());

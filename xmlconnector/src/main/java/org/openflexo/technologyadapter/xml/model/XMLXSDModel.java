@@ -33,24 +33,22 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyMetaModel;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
-import org.openflexo.technologyadapter.xml.rm.XMLXSDFileResource;
 import org.openflexo.xml.IXMLIndividual;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 
-public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, XSDMetaModel>, IXMLModel,
+public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, XMLMetaModel>, IXMLModel,
 		TechnologyObject<XMLTechnologyAdapter> {
 
-	private XSDMetaModel metaModel = null;
+	private XMLMetaModel metaModel = null;
 	private XSOntIndividual rootElem = null;
 
 	protected static final Logger logger = Logger.getLogger(XMLXSDModel.class.getPackage().getName());
@@ -60,13 +58,13 @@ public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, X
 		uri = xmlFile.toURI().toString();
 	}
 
-	public XMLXSDModel(String ontologyURI, File xmlFile, XMLTechnologyAdapter adapter, XSDMetaModel mm) {
+	public XMLXSDModel(String ontologyURI, File xmlFile, XMLTechnologyAdapter adapter, XMLMetaModel mm) {
 		super(ontologyURI, xmlFile, adapter);
 		metaModel = mm;
 		uri = xmlFile.toURI().toString();
 	}
 
-	public void setMetaModel(XSDMetaModel metaModelData) {
+	public void setMetaModel(XMLMetaModel metaModelData) {
 		this.metaModel = metaModelData;
 		setChanged();
 	}
@@ -90,7 +88,7 @@ public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, X
 	}
 
 	@Override
-	public XSDMetaModel getMetaModel() {
+	public XMLMetaModel getMetaModel() {
 		return metaModel;
 	}
 
@@ -124,16 +122,6 @@ public class XMLXSDModel extends XSOntology implements FlexoModel<XMLXSDModel, X
 	@Override
 	public IXMLIndividual<XSOntIndividual, XSOntProperty> getRoot() {
 		return rootElem;
-	}
-
-	@Override
-	public FlexoResource<XMLXSDModel> getResource() {
-		return (XMLXSDFileResource) modelResource;
-	}
-
-	@Override
-	public void setResource(FlexoResource<XMLXSDModel> resource) {
-		this.modelResource = resource;
 	}
 
 	public void save() throws SaveResourceException {

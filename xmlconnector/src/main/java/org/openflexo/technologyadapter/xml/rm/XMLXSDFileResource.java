@@ -29,7 +29,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 
@@ -41,7 +41,7 @@ import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 @ModelEntity
 @ImplementationClass(XMLXSDFileResourceImpl.class)
 public interface XMLXSDFileResource extends FlexoFileResource<XMLXSDModel>, TechnologyAdapterResource<XMLXSDModel, XMLTechnologyAdapter>,
-		FlexoModelResource<XMLXSDModel, XSDMetaModel, XMLTechnologyAdapter> {
+		FlexoModelResource<XMLXSDModel, XMLMetaModel, XMLTechnologyAdapter> {
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "XMLTechnologyContextManager";
 
