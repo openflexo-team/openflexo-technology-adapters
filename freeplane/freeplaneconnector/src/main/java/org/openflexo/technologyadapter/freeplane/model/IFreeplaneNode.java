@@ -43,7 +43,7 @@ public interface IFreeplaneNode extends TechnologyObject<FreeplaneTechnologyAdap
 	 *
 	 * @param fpNodeModel
 	 */
-	public void addChild(NodeModel fpNodeModel);
+	public void addFreeplaneChild(NodeModel fpNodeModel);
 
 	/**
 	 * Removed done by entity to remove. Nothing done to do it by index.

@@ -61,7 +61,7 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 		@DeclareEditionAction(editionActionClass = AddChildNodeAction.class, FML = "AddChildNode"),
 		@DeclareEditionAction(editionActionClass = AddSiblingNodeAction.class, FML = "AddSiblingNode")
 })
-@DeclareFlexoBehaviours({ @DeclareFlexoBehaviour(flexoBehaviourClass = FreeplaneCreationScheme.class, FML = "FreeplaneCreationScheme") })
+@DeclareFlexoBehaviours({})
 @DeclareFetchRequests({ @DeclareFetchRequest(fetchRequestClass = SelectAllNodes.class, FML = "SelectAllNodes") })
 @ModelEntity
 @ImplementationClass(FreeplaneModelSlotImpl.class)

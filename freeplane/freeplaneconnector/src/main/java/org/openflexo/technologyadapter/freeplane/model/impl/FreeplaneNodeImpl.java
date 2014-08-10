@@ -66,7 +66,7 @@ public abstract class FreeplaneNodeImpl extends FlexoObjectImpl implements IFree
 	}
 
 	@Override
-	public void addChild(final NodeModel fpNodeModel) {
+	public void addFreeplaneChild(final NodeModel fpNodeModel) {
 		try {
 			final ModelFactory factory = new ModelFactory(IFreeplaneNode.class);
 			final FreeplaneNodeImpl child = (FreeplaneNodeImpl) factory.newInstance(IFreeplaneNode.class);

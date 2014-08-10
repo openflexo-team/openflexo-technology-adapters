@@ -12,6 +12,7 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
+import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneNodeImpl;
 
 import java.util.Vector;
 
@@ -57,7 +58,7 @@ public class NewChildNode extends FlexoAction<NewChildNode, IFreeplaneNode, IFre
 		final ModeController modeController = Controller.getCurrentModeController();
 		final MMapController mapController = (MMapController) modeController.getMapController();
 		final NodeModel child = mapController.addNewNode(MMapController.NEW_CHILD);
-		this.getFocusedObject().addChild(child);
+		this.getFocusedObject().addFreeplaneChild(child);
 	}
 
 }
