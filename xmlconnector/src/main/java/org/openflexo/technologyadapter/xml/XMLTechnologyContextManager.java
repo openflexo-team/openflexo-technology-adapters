@@ -1,8 +1,7 @@
-package org.openflexo.technologyadapter.xml.model;
+package org.openflexo.technologyadapter.xml;
 
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 
 public class XMLTechnologyContextManager extends TechnologyContextManager<XMLTechnologyAdapter> {
 

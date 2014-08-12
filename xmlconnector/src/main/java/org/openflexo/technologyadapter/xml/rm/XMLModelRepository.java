@@ -21,11 +21,13 @@
 package org.openflexo.technologyadapter.xml.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.ModelRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
-public class XMLModelRepository extends ModelRepository<XMLFileResource, XMLModel, XMLModel, XMLTechnologyAdapter> {
+// TODO : Ask Sylvain why Model & MetaModelRepository should be parameterized with et FlexoFileResource ?!?
+
+public class XMLModelRepository extends TechnologyAdapterResourceRepository<XMLResource,  XMLTechnologyAdapter, XMLModel> {
 
 	public XMLModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
 		super(adapter, resourceCenter);

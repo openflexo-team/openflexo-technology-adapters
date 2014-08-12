@@ -37,11 +37,13 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
 import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
-import org.openflexo.technologyadapter.xml.model.XMLTechnologyContextManager;
 import org.openflexo.toolbox.IProgress;
+import org.openflexo.xml.XMLRootElementInfo;
+import org.openflexo.xml.XMLRootElementReader;
 
 /**
  * @author xtof
@@ -49,195 +51,198 @@ import org.openflexo.toolbox.IProgress;
  */
 public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel> implements XMLFileResource {
 
-    protected static final Logger logger   = Logger.getLogger(XMLFileResourceImpl.class.getPackage().getName());
+	protected static final Logger logger   = Logger.getLogger(XMLFileResourceImpl.class.getPackage().getName());
+	protected static XMLRootElementReader REreader = new XMLRootElementReader();
 
-    // Properties
+	// Properties
 
-    private boolean               isLoaded = false;
+	private boolean               isLoaded = false;
 
-    /**
-     * 
-     * @param modelURI
-     * @param xmlFile
-     * @param technologyContextManager
-     * @return
-     */
-    public static XMLFileResource makeXMLFileResource(File xmlFile, XMLTechnologyContextManager technologyContextManager) {
-        try {
-            ModelFactory factory = new ModelFactory(XMLFileResource.class);
-            XMLFileResourceImpl returned = (XMLFileResourceImpl) factory.newInstance(XMLFileResource.class);
-            returned.setName(xmlFile.getName());
-            returned.setFile(xmlFile);
-            returned.setURI(xmlFile.toURI().toString());
-            returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-            returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-            returned.setTechnologyContextManager(technologyContextManager);
+	/**
+	 * 
+	 * @param modelURI
+	 * @param xmlFile
+	 * @param technologyContextManager
+	 * @return
+	 */
+	public static XMLFileResource makeXMLFileResource(File xmlFile, XMLTechnologyContextManager technologyContextManager) {
+		try {
+			ModelFactory factory = new ModelFactory(XMLFileResource.class);
+			XMLFileResourceImpl returned = (XMLFileResourceImpl) factory.newInstance(XMLFileResource.class);
+			returned.setName(xmlFile.getName());
+			returned.setFile(xmlFile);
+			returned.setURI(xmlFile.toURI().toString());
+			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
+			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+			returned.setTechnologyContextManager(technologyContextManager);
 
-            technologyContextManager.registerResource(returned);
+			technologyContextManager.registerResource(returned);
 
-            // FIXME : comment ça marche le resource Manager?
-            // test pour créer le fichier si jamais il n'existe pas
+			if (!xmlFile.exists()) {
 
-            if (!xmlFile.exists()) {
+				if (returned.resourceData == null) {
+					returned.resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class, technologyContextManager.getTechnologyAdapter());
+					//new XMLModel(technologyContextManager.getTechnologyAdapter());
+					returned.resourceData.setResource(returned);
+				}
 
-                if (returned.resourceData == null) {
-                    returned.resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class, technologyContextManager.getTechnologyAdapter());
-                    		//new XMLModel(technologyContextManager.getTechnologyAdapter());
-                    returned.resourceData.setResource(returned);
-                }
+				returned.save(null);
+				returned.isLoaded = true;
+			}
+			else {
 
-                returned.save(null);
-                returned.isLoaded = true;
-            }
+			}
 
-            return returned;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+			return returned;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * org.openflexo.foundation.resource.FlexoResource#save(org.openflexo.toolbox
-     * .IProgress)
-     */
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.openflexo.foundation.resource.FlexoResource#save(org.openflexo.toolbox
+	 * .IProgress)
+	 */
 
-    @Override
-    public void save(IProgress progress) throws SaveResourceException {
+	@Override
+	public void save(IProgress progress) throws SaveResourceException {
 
-        File myFile = this.getFile();
+		File myFile = this.getFile();
 
-        if (!myFile.exists()) {
-            // Creates a new file
-            try {
-                myFile.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new SaveResourceException(this);
-            }
-        }
+		if (!myFile.exists()) {
+			// Creates a new file
+			try {
+				myFile.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new SaveResourceException(this);
+			}
+		}
 
-        if (!hasWritePermission()) {
-            if (logger.isLoggable(Level.WARNING)) {
-                logger.warning("Permission denied : " + getFile().getAbsolutePath());
-            }
-            throw new SaveResourcePermissionDeniedException(this);
-        }
+		if (!hasWritePermission()) {
+			if (logger.isLoggable(Level.WARNING)) {
+				logger.warning("Permission denied : " + getFile().getAbsolutePath());
+			}
+			throw new SaveResourcePermissionDeniedException(this);
+		}
 
-        if (resourceData != null) {
-            FileWritingLock lock = willWriteOnDisk();
-            writeToFile();
-            hasWrittenOnDisk(lock);
-            notifyResourceStatusChanged();
-            resourceData.clearIsModified(false);
-            if (logger.isLoggable(Level.INFO)) {
-                logger.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
-            }
-        }
+		if (resourceData != null) {
+			FileWritingLock lock = willWriteOnDisk();
+			writeToFile();
+			hasWrittenOnDisk(lock);
+			notifyResourceStatusChanged();
+			resourceData.clearIsModified(false);
+			if (logger.isLoggable(Level.INFO)) {
+				logger.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
+			}
+		}
 
-    }
+	}
 
-    /**
-     * URI here is the full path to the file
-     */
-    @Override
-    public String getURI() {
-        if (getFile() != null) {
-            return getFile().toURI().toString();
-        }
-        return "uri_not_found";
-    }
+	/**
+	 * URI here is the full path to the file
+	 */
+	@Override
+	public String getURI() {
+		if (getFile() != null) {
+			return getFile().toURI().toString();
+		}
+		return "uri_not_found";
+	}
 
-    private void writeToFile() throws SaveResourceException {
+	/**
+	 * Retrieves the target Namespace from the file when not loaded
+	 * or from MetamModel when it is loaded and exists
+	 * 
+	 */
+	@Override
+	public String getTargetNamespace() {
+		
+		if (!isLoaded()){
+			XMLRootElementInfo rootInfo;
+			try {
+				rootInfo = REreader.readRootElement(this.getFile());
+			} catch (IOException e) {
+				logger.warning("Unable to read Root Node from File" + e.getMessage());
+				return null;
+			}			
+			return  rootInfo.getURI();
+		}
+		else{
+			return this.getModel().getMetaModel().getURI();
+		}
+		
+	}
 
-        OutputStreamWriter out = null;
-        try {
-            out = new OutputStreamWriter(new FileOutputStream(getFile()), "UTF-8");
-            XMLWriter<XMLFileResource, XMLModel> writer = new XMLWriter<XMLFileResource, XMLModel>(this, out);
 
-            writer.writeDocument();
+	private void writeToFile() throws SaveResourceException {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new SaveResourceException(this);
-        } finally {
-            IOUtils.closeQuietly(out);
-        }
-        logger.info("Wrote " + getFile());
-    }
+		OutputStreamWriter out = null;
+		try {
+			out = new OutputStreamWriter(new FileOutputStream(getFile()), "UTF-8");
+			XMLWriter<XMLFileResource, XMLModel> writer = new XMLWriter<XMLFileResource, XMLModel>(this, out);
 
-    @Override
-    public XMLModel getModel() {
-        return resourceData;
-    }
+			writer.writeDocument();
 
-    @Override
-    public XMLModel getModelData() {
-        if (!isLoaded()) {
-            try {
-                resourceData = loadResourceData(null);
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (ResourceLoadingCancelledException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            } catch (FlexoException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        return resourceData;
-    }
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SaveResourceException(this);
+		} finally {
+			IOUtils.closeQuietly(out);
+		}
+		logger.info("Wrote " + getFile());
+	}
 
-    @Override
-    public XMLModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException,
+	@Override
+	public XMLModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException,
 
-    FlexoException {
+	FlexoException {
 
-        if (resourceData == null) {
-            resourceData =  XMLModelImpl.getModelFactory().newInstance(XMLModel.class, getTechnologyAdapter()); 
-            		//new XMLModel(this.getTechnologyAdapter());
-            resourceData.setResource(this);
-        }
+		if (resourceData == null) {
+			resourceData =  XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
+			//, getTechnologyAdapter()); 
+			//new XMLModel(this.getTechnologyAdapter());
+			resourceData.setResource(this);
+		}
 
-        if (!isLoaded()) {
+		if (!isLoaded()) {
 
-            try {
+			try {
 
-                XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
+				XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
 
-                factory.setContext(resourceData);
+				factory.setContext(resourceData);
 
-                factory.deserialize(new FileInputStream(this.getFile()));
+				factory.deserialize(new FileInputStream(this.getFile()));
 
-                factory.resetContext();
+				factory.resetContext();
 
-                isLoaded = true;
+				isLoaded = true;
 
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 
-        }
+		}
 
-        return resourceData;
-    }
+		return resourceData;
+	}
 
-    @Override
-    public Class<XMLModel> getResourceDataClass() {
-        return XMLModel.class;
+	@Override
+	public Class<XMLModel> getResourceDataClass() {
+		return XMLModel.class;
 
-    }
+	}
 
-    // Lifecycle Management
+	// Lifecycle Management
 
-    @Override
-    public boolean isLoaded() {
-        return isLoaded;
-    }
+	@Override
+	public boolean isLoaded() {
+		return isLoaded;
+	}
 
 }

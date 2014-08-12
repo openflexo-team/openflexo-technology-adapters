@@ -38,7 +38,6 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.xml.model.XMLAttribute;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.model.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.model.XMLType;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
@@ -68,7 +67,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	private static final void dumpTypes(XMLModel model) {
-		for (XMLType t : model.getTypes()) {
+		for (XMLType t : model.getMetaModel().getTypes()) {
 			System.out.println("Inferred Type: " + t.getName() + " -> " + t.getFullyQualifiedName() + "[" + t.getURI() + "]");
 			System.out.flush();
 		}
@@ -109,7 +108,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		// dumpTypes(modelRes.getModel());
 
-		assertNotNull(modelRes.getModel().getTypeFromURI("#Library"));
+		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("#Library"));
 
 		dumpIndividual(modelRes.getModelData().getRoot(), "");
 
@@ -132,7 +131,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		// dumpTypes(modelRes.getModel());
 
-		assertNotNull(modelRes.getModel().getTypeFromURI("#Library"));
+		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("#Library"));
 
 		dumpIndividual(modelRes.getModelData().getRoot(), "");
 
@@ -155,7 +154,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		// dumpTypes(modelRes.getModel());
 
-		assertNotNull(modelRes.getModel().getTypeFromURI("http://www.example.org/Library#Library"));
+		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("http://www.example.org/Library#Library"));
 
 		// dumpIndividual(modelRes.getModelData().getRoot(), "");
 	}
@@ -175,7 +174,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
-		assertNotNull(modelRes.getModel().getTypeFromURI("http://www.example.org/Library#Library"));
+		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("http://www.example.org/Library#Library"));
 
 		// dumpTypes(modelRes.getModel());
 		// dumpIndividual(modelRes.getModelData().getRoot(), "");
@@ -200,14 +199,19 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		XMLModel aModel = modelRes.getModel();
 		aModel.setNamespace("http://montest.com", "tst");
 
+		//TODO
+		
+		/*
 		XMLType aType = new XMLType("http://montest.com", "Blob", "tst:Blob", aModel);
 		aModel.addType(aType);
 		aType = new XMLType("http://zutalors.com", "Blib", "pt:Blib", aModel);
 		aModel.addType(aType);
-
-		XMLIndividual rootIndividual = (XMLIndividual) aModel.addNewIndividual(aModel.getTypeFromURI("http://montest.com#Blob"));
+*/
+		XMLIndividual rootIndividual = (XMLIndividual) aModel.addNewIndividual(aModel.getMetaModel().getTypeFromURI("http://montest.com#Blob"));
 		aModel.setRoot(rootIndividual);
-		XMLIndividual anIndividual = (XMLIndividual) aModel.addNewIndividual(aType);
+		/* 
+		 * XMLIndividual anIndividual = (XMLIndividual) aModel.addNewIndividual(aType);
+		 
 		XMLAttribute anAttr = (XMLAttribute) anIndividual.createAttribute("name", String.class, "Mon velo court");
 		rootIndividual.addChild(anIndividual);
 		anIndividual = (XMLIndividual) aModel.addNewIndividual(aType);
@@ -216,7 +220,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		rootIndividual.addChild(anIndividual);
 
 		assertNotNull(anIndividual);
-
+*/
 		// dumpTypes(modelRes.getModel());
 		// dumpIndividual(modelRes.getModel().getRoot(), "");
 

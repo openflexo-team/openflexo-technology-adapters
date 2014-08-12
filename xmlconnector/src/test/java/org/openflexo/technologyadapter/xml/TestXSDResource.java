@@ -42,9 +42,9 @@ import org.openflexo.test.TestOrder;
 import org.openflexo.xml.IXMLIndividual;
 
 @RunWith(OrderedRunner.class)
-public class TestXMLModel extends OpenflexoTestCase {
+public class TestXSDResource extends OpenflexoTestCase {
 
-	protected static final Logger         logger = Logger.getLogger(TestXMLModel.class.getPackage().getName());
+	protected static final Logger         logger = Logger.getLogger(TestXSDResource.class.getPackage().getName());
 
 	private static final void dumpIndividual(IXMLIndividual<XMLIndividual, XMLAttribute> indiv, String prefix) {
 

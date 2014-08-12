@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2012-2014 Openflexo
+ * (c) Copyright 2014-  Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -20,7 +20,7 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
-import org.openflexo.foundation.technologyadapter.FlexoModelResource;
+import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ModelEntity;
@@ -31,20 +31,14 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 @ModelEntity
-// @ImplementationClass(XMLResourceImpl.class)
-public interface XMLResource extends  TechnologyAdapterResource<XMLModel, XMLTechnologyAdapter>, FlexoModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> {
+// @ImplementationClass(XSDResourceImpl.class)
+public interface XSDResource extends  TechnologyAdapterResource<XMLMetaModel, XMLTechnologyAdapter>, FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> {
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "XMLTechnologyContextManager";
-	public static final String TARGET_NAMESPACE = "targetNamespace";
-
 
 	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
 	public XMLTechnologyContextManager getTechnologyContextManager();
 
 	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
 	public void setTechnologyContextManager(XMLTechnologyContextManager technologyContextManager);
-	
-
-	@Getter(value = TARGET_NAMESPACE, ignoreType = true)
-	public String getTargetNamespace();
 }

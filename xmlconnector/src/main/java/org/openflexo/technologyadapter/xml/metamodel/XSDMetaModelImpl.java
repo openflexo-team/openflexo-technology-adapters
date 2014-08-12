@@ -1,6 +1,5 @@
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2014- Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -38,7 +37,8 @@ import com.sun.xml.xsom.XSSimpleType;
 import com.sun.xml.xsom.XSType;
 
 
-public abstract class XSDMetaModelImpl extends XSOntology implements XMLMetaModel {
+public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMetaModel {
+//public abstract class XSDMetaModelImpl extends XSOntology implements XMLMetaModel {
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XSDMetaModelImpl.class.getPackage()
 			.getName());
@@ -64,6 +64,7 @@ public abstract class XSDMetaModelImpl extends XSOntology implements XMLMetaMode
 	public void setIsReadOnly(boolean b) {
 	}
 
+	@Override
 	public void save() throws SaveResourceException {
 		logger.warning("XSDMetaModels are not supposed to be saved !!!");
 	}

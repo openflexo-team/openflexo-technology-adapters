@@ -63,8 +63,6 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 	 * 
 	 * @param adapter
 	 */
-
-
 	public XMLIndividualImpl() {
 		super();
 		uuid = UUID.randomUUID().toString();
@@ -181,6 +179,7 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 		return attributes.get(aName);
 	}
 
+	
 	/* (non-Javadoc)
 	 * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#toXML(org.w3c.dom.Document)
 	 */

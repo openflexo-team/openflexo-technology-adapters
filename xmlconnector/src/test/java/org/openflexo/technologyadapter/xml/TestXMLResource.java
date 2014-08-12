@@ -19,9 +19,12 @@
  */
 package org.openflexo.technologyadapter.xml;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -29,22 +32,24 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
 import org.openflexo.technologyadapter.xml.model.XMLAttribute;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
 import org.openflexo.technologyadapter.xml.model.XMLType;
+import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XMLResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 import org.openflexo.xml.IXMLIndividual;
 
 @RunWith(OrderedRunner.class)
-public class TestXMLModel extends OpenflexoTestCase {
+public class TestXMLResource extends OpenflexoTestCase {
 
-	protected static final Logger         logger = Logger.getLogger(TestXMLModel.class.getPackage().getName());
+	protected static final Logger         logger = Logger.getLogger(TestXMLResource.class.getPackage().getName());
+
+	private static XMLTechnologyAdapter   xmlAdapter;
+	private static XMLModelRepository     modelRepository;
+	private static String                 baseUrl;
 
 	private static final void dumpIndividual(IXMLIndividual<XMLIndividual, XMLAttribute> indiv, String prefix) {
 
@@ -66,52 +71,47 @@ public class TestXMLModel extends OpenflexoTestCase {
 	}
 
 
+	/**
+	 * Instanciate test ResourceCenter
+	 * 
+	 * @throws IOException
+	 */
 	@Test
 	@TestOrder(1)
-	public void test0createXMLModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void test0LoadTestResourceCenter() throws IOException {
+		instanciateTestServiceManager();
 
-		ModelFactory MF = null;
-		ModelFactory MMF = null;
-		MF = XMLModelImpl.getModelFactory();
-		//new ModelFactory(XMLModel.class);
-		MMF = XMLMetaModelImpl.getModelFactory();
-		//new ModelFactory(XMLMetaModel.class);
-		assertNotNull(MF);
-		assertNotNull(MMF);
-		
-		XMLMetaModel metamodel = MMF.newInstance(XMLMetaModel.class);
+		log("test0LoadTestResourceCenter()");
+		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
+		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
+		baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
+		assertNotNull(modelRepository);
+		System.out.println(modelRepository);
+		System.out.println(modelRepository.getAllResources());
+		assertTrue(modelRepository.getAllResources().size() > 3);
+	}
+	
+	@Test
+	@TestOrder(2)
+	public void test0LoadXMLResourcel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
+		log("test1LoadFileAndDump()");
 
-		metamodel.setURI("http://www.openflexo.org/aTestModel");
-		
-		assertNotNull(metamodel);
-		
+		assertNotNull(modelRepository);
 
-		XMLModel model = MF.newInstance(XMLModel.class,metamodel);
+		XMLResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_0.xml");
+		assertNotNull(modelRes);
+		assertFalse(modelRes.isLoaded());
+		assertNotNull(modelRes.getModelData());
+		assertNotNull(modelRes.loadResourceData(null));
+		assertTrue(modelRes.isLoaded());
 
-		assertNotNull(model);
+		// dumpTypes(modelRes.getModel());
 
-		
-		model.setMetaModel(metamodel);
+		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("#Library"));
 
-		metamodel.createNewType("http://www.openflexo.org/aTestModel#Fleumeu", "Fleumeu");
-		metamodel.createNewType("http://www.openflexo.org/aTestModel#Flouk", "Flouk");
+		dumpIndividual(modelRes.getModelData().getRoot(), "");
 
-		XMLIndividual xmind = (XMLIndividual) model.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Fleumeu"));
-		xmind.setName("Ploum");
-		
-		model.setRoot(xmind);
-
-		xmind.createAttribute("TOTO", String.class, "Freumeuleu");
-
-		XMLIndividual xmind2 = (XMLIndividual) model.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Flouk"));
-		xmind2.setName("Pouet");
-
-		xmind.addChild(xmind2);
-		
-		xmind2.createAttribute("TOTO", String.class, "Flagada");
-		
-		dumpIndividual(xmind," -- ");
 	}
 
 
