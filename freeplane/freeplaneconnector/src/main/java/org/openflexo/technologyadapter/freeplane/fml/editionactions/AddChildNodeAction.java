@@ -20,6 +20,7 @@ import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNode
 import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneNodeRole;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
+import sun.net.www.content.image.png;
 
 @ModelEntity
 @XMLElement
@@ -37,12 +38,24 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 	@Setter(value = PARENT_KEY)
 	public void setParent(DataBinding<IFreeplaneNode> parent);
 
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String NODE_TEXT_KEY = "nodeText";
+
+	@Getter(value = NODE_TEXT_KEY)
+	@XMLAttribute
+	public DataBinding<String> getNodeText();
+
+	@Setter(value = NODE_TEXT_KEY)
+	public void setNodeText(DataBinding<String> nodeText);
+
 	public abstract static class AddChildNodeActionImpl extends AssignableActionImpl<IFreeplaneModelSlot, IFreeplaneNode>
 			implements AddChildNodeAction {
 
 		private static final Logger LOGGER = Logger.getLogger(AddChildNodeActionImpl.class.getPackage().getName());
 
 		private DataBinding<IFreeplaneNode> parent;
+
+		private DataBinding<String> nodeText;
 
 		@Override
 		public Type getAssignableType() {
@@ -59,7 +72,9 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 			final FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 				final IFreeplaneNode bindedParent = getParent(action);
+				final String bindedNodeText = getBindedNodeText(action);
 				NodeModel nodeModel = new NodeModel(bindedParent.getNodeModel().getMap());
+				nodeModel.setUserObject(bindedNodeText);
 				bindedParent.getNodeModel().insert(nodeModel);
 				bindedParent.addFreeplaneChild(nodeModel);
 				modelSlotInstance.getResourceData().setIsModified();
@@ -82,11 +97,7 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 			final String errorMsg = "Error while getting binding value for action " + action;
 			try {
 				return getParent().getBindingValue(action);
-			} catch (final TypeMismatchException e) {
-				LOGGER.log(Level.SEVERE, errorMsg, e);
-			} catch (final NullReferenceException e) {
-				LOGGER.log(Level.SEVERE, errorMsg, e);
-			} catch (final InvocationTargetException e) {
+			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, errorMsg, e);
 			}
 			return null;
@@ -101,6 +112,36 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 				parent.setBindingName(PARENT_KEY);
 			}
 			this.parent = parent;
+		}
+
+		@Override
+		public DataBinding<String> getNodeText() {
+			if ( this.nodeText == null){
+				this.nodeText = new DataBinding<String>(this,String.class,BindingDefinitionType.GET);
+				this.nodeText.setBindingName(NODE_TEXT_KEY);
+			}
+			return this.nodeText;
+		}
+
+		@Override
+		public void setNodeText(DataBinding<String> pNodeText) {
+			if (pNodeText !=null){
+				pNodeText.setOwner(this);
+				pNodeText.setDeclaredType(String.class);
+				pNodeText.setBindingDefinitionType(BindingDefinitionType.GET);
+				pNodeText.setBindingName(NODE_TEXT_KEY);
+			}
+			this.nodeText = pNodeText;
+		}
+
+		private String getBindedNodeText(FlexoBehaviourAction<?,?,?> action){
+			final String errorMsg = "Error while getting binding value for action " + action;
+			try {
+				return getNodeText().getBindingValue(action);
+			} catch (final Exception e) {
+				LOGGER.log(Level.SEVERE, errorMsg, e);
+			}
+			return "";
 		}
 
 		@SuppressWarnings("unchecked")
