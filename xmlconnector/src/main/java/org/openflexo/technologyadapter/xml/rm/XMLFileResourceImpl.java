@@ -36,8 +36,11 @@ import org.openflexo.foundation.resource.FlexoFileResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
 import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
@@ -77,20 +80,19 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 			returned.setTechnologyContextManager(technologyContextManager);
 
 			technologyContextManager.registerResource(returned);
-
+			
 			if (!xmlFile.exists()) {
 
 				if (returned.resourceData == null) {
 					returned.resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class, technologyContextManager.getTechnologyAdapter());
-					//new XMLModel(technologyContextManager.getTechnologyAdapter());
 					returned.resourceData.setResource(returned);
 				}
-
+				
 				returned.save(null);
 				returned.isLoaded = true;
 			}
 			else {
-
+				// TODO: File does not exist, what should I Do
 			}
 
 			return returned;
@@ -207,6 +209,9 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 			//, getTechnologyAdapter()); 
 			//new XMLModel(this.getTechnologyAdapter());
 			resourceData.setResource(this);
+			
+			attachMetamodel();
+			
 		}
 
 		if (!isLoaded()) {
@@ -232,6 +237,52 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 		return resourceData;
 	}
 
+	// TODO: Ask Sylvain if this could no be tractable with Pamela => Code duplication ?!?
+
+	@Override
+    public XMLModel getModel() {
+        return getModelData();
+    }
+
+
+	@Override
+	public XMLModel getModelData() {
+
+		if (resourceData == null) {
+			resourceData =  XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
+			//, getTechnologyAdapter()); 
+			//new XMLModel(this.getTechnologyAdapter());
+			resourceData.setResource(this);
+		}
+		// TODO : check lifecycle for Resource.... should it be loaded on getModelData?
+/*
+		if (!isLoaded()) {
+			try {
+				resourceData = loadResourceData(null);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (ResourceLoadingCancelledException e) {
+				e.printStackTrace();
+			} catch (FlexoException e) {
+				e.printStackTrace();
+			}
+		}
+		*/
+		return resourceData;
+	}
+
+	@Override
+	public void attachMetamodel(){
+		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = this.getMetaModelResource();
+		if (mmRes != null) {
+			resourceData.setMetaModel(mmRes.getMetaModelData());
+		}
+		if (resourceData.getMetaModel() == null) {
+			logger.warning("Setting a null Metamodel for Model " + this.getURI());
+		}
+	}
+	
+	
 	@Override
 	public Class<XMLModel> getResourceDataClass() {
 		return XMLModel.class;

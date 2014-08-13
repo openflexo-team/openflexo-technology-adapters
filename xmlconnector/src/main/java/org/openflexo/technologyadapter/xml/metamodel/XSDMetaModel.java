@@ -19,56 +19,18 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.lang.reflect.Type;
-import java.util.List;
-
-import org.openflexo.model.annotations.Adder;
-import org.openflexo.model.annotations.CloningStrategy;
-import org.openflexo.model.annotations.CloningStrategy.StrategyType;
-import org.openflexo.model.annotations.Embedded;
-import org.openflexo.model.annotations.Finder;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PastingPoint;
-import org.openflexo.model.annotations.Remover;
-import org.openflexo.technologyadapter.xml.model.XMLType;
+import org.openflexo.model.annotations.Setter;
 
 
 @ModelEntity
 @ImplementationClass(XSDMetaModelImpl.class)
 public interface XSDMetaModel extends XMLMetaModel {
 
-	public static String TYPES = "types";
-	
 
-	@Override
-	@Getter(value = TYPES, cardinality = Cardinality.LIST)
-	@CloningStrategy(StrategyType.IGNORE)
-	@Embedded
-	public List<? extends XMLType> getTypes();
-
-
-	@Override
-	@Finder(attribute = XMLType.URI, collection = TYPES, isMultiValued = true)
-	public Type getTypeFromURI(String string);
-
-	@Override
-	public Type createNewType(String uri, String localName);
-	
-	@Override
-	@Adder(TYPES)
-	@PastingPoint
-	public void addType(XMLType aType);
-
-	@Override
-	@Remover(TYPES)
-	public void removeType(XMLType aType);
-	
-
-
-/*
 	@Override
 	@Getter(value = "resource")
 	public FlexoResource<XMLMetaModel> getResource();
@@ -77,6 +39,7 @@ public interface XSDMetaModel extends XMLMetaModel {
 	@Setter(value = "resource")
 	public void setResource(FlexoResource<XMLMetaModel> resource);
 
+	/*
 	public IFlexoOntologyDataProperty getDataProperty(String propertyURI);
 	*/
 }

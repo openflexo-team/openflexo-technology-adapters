@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2010-2012 AgileBirds
  * (c) Copyright 2013-2014 Openflexo
  *
  * This file is part of OpenFlexo.
@@ -28,12 +28,15 @@ import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
 import org.openflexo.foundation.ontology.W3URIDefinitions;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
+import org.openflexo.technologyadapter.xml.model.XMLType;
 import org.openflexo.technologyadapter.xml.model.XSOntology;
 
 import com.sun.xml.xsom.XSDeclaration;
 import com.sun.xml.xsom.XSSimpleType;
 
-public class XSDDataType extends AbstractXSOntObject implements IFlexoOntologyDataType<XMLTechnologyAdapter>, W3URIDefinitions, Type {
+// TODO : pamela-iser et en faire un sous-type de XML-Type + supprimer la XSOntology.... toute pourrie
+
+public class XSDDataType extends AbstractXSOntObject implements XMLType, IFlexoOntologyDataType<XMLTechnologyAdapter>, W3URIDefinitions, Type {
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XSDDataType.class.getPackage()
 			.getName());

@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.xml.rm;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
@@ -31,7 +32,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 @ModelEntity
-// @ImplementationClass(XMLResourceImpl.class)
+@ImplementationClass(XMLResourceImpl.class)
 public interface XMLResource extends  TechnologyAdapterResource<XMLModel, XMLTechnologyAdapter>, FlexoModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> {
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "XMLTechnologyContextManager";
@@ -47,4 +48,8 @@ public interface XMLResource extends  TechnologyAdapterResource<XMLModel, XMLTec
 
 	@Getter(value = TARGET_NAMESPACE, ignoreType = true)
 	public String getTargetNamespace();
+	
+	// initializes the Metamodel property of XMLModel, given the reference provided by metamodelResource property
+	public void attachMetamodel();
+	
 }

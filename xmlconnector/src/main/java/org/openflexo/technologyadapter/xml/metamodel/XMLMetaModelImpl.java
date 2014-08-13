@@ -21,6 +21,7 @@
 package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,6 +30,13 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.model.XMLType;
 
+/**
+ * A simple MetaModeling Structure that is not backed up in an XSD file and where you can
+ * create new types freely
+ * 
+ * @author xtof
+ *
+ */
 
 public abstract class XMLMetaModelImpl  implements XMLMetaModel {
 
@@ -54,19 +62,6 @@ public abstract class XMLMetaModelImpl  implements XMLMetaModel {
 		return MF;
 	}
 
-	public XMLMetaModelImpl() {
-		
-	}
-	
-	@Override
-	public boolean isReadOnly() {
-		return false;
-	}
-
-	@Override
-	public void setIsReadOnly(boolean b) {
-	}
-
 	public void save() throws SaveResourceException {
 		logger.warning("XSDMetaModels are not supposed to be saved !!!");
 	}
@@ -85,6 +80,11 @@ public abstract class XMLMetaModelImpl  implements XMLMetaModel {
 	@Override
 	public void removeType(XMLType aType){
 		types.remove(aType);
+	}
+
+	@Override
+	public Collection<? extends XMLType> getTypes(){
+		return types.values();
 	}
 
 	@Override

@@ -19,7 +19,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
 import org.openflexo.technologyadapter.xml.model.XSOntology;
-import org.openflexo.technologyadapter.xml.rm.XMLMetaModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLXSDModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResourceImpl;
@@ -32,7 +32,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
     protected static final Logger              logger    = Logger.getLogger(TestLibrary.class.getPackage().getName());
 
     private static XMLTechnologyAdapter        xmlAdapter;
-    private static XMLMetaModelRepository      mmRepository;
+    private static XSDMetaModelRepository      mmRepository;
     private static XMLXSDModelRepository       modelRepository;
 //    private static ApplicationContext          testApplicationContext;
 
@@ -93,7 +93,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		
         log("test0LoadTestResourceCenter()");
         xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-        mmRepository = resourceCenter.getRepository(XMLMetaModelRepository.class, xmlAdapter);
+        mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
         modelRepository = resourceCenter.getRepository(XMLXSDModelRepository.class, xmlAdapter);
         resourceCenter.getDirectory().getCanonicalPath();
         assertNotNull(modelRepository);
@@ -110,7 +110,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
         XSDMetaModelResource libRes = null;
 
         try {
-            libRes = resourceCenter.getRepository(XMLMetaModelRepository.class, xmlAdapter).getResource("http://www.example.org/Library");
+            libRes = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter).getResource("http://www.example.org/Library");
             lib = libRes.getResourceData(null);
         } catch (Exception e) {
             fail(e.getMessage());

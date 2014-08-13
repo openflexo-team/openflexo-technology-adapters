@@ -25,6 +25,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.xml.IXMLAttribute;
 import org.openflexo.xml.IXMLIndividual;
 import org.openflexo.xml.XMLReaderSAXHandler;
@@ -33,129 +34,143 @@ import org.xml.sax.SAXException;
 
 public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
-    private XMLModel model = null;
+	private XMLModel model = null;
 
-    @Override
-    public Object getInstanceOf(Type aType, String name) {
-        if (aType instanceof XMLType) {
-            XMLIndividual _inst = (XMLIndividual) model.addNewIndividual(aType);
-            _inst.setName(name);
-            return (Object) _inst;
-        }
-        return null;
-    }
+	@Override
+	public Object getInstanceOf(Type aType, String name) {
+		if (aType instanceof XMLType) {
+			XMLIndividual _inst = (XMLIndividual) model.addNewIndividual(aType);
+			_inst.setName(name);
+			return _inst;
+		}
+		return null;
+	}
 
-    @Override
-    public Type getTypeFromURI(String uri) {
-        return model.getMetaModel().getTypeFromURI(uri);
-    }
+	@Override
+	public Type getTypeForObject(String typeURI, Object container, String objectName) {
+		// Create the type if it does not exist and that we can!!
+		
+		XMLMetaModel mm = model.getMetaModel();
+		
+		Type tt = mm.getTypeFromURI(typeURI);
+		if (! mm.isReadOnly() && tt == null) { 
+			if (container instanceof XMLIndividual) {
+				XMLType parentType = ((XMLIndividual) container).getType();
+				tt = mm.createNewType(mm.getURI() + "/" + parentType.getName() + "#"+ objectName, objectName);
+			}
+			else {
+				tt = mm.createNewType(mm.getURI() + "#"+ objectName, objectName);
+			}
+		}
+		return tt;
+	}
 
-    @Override
-    public Object deserialize(String input) throws IOException {
-        if (model != null) {
+	@Override
+	public Object deserialize(String input) throws IOException {
+		if (model != null) {
 
-            try {
-                saxParser.parse(input, handler);
-            } catch (SAXException e) {
-                logger.warning("Cannot parse document: " + e.getMessage());
-                throw new IOException(e.getMessage());
-            }
-            return this.model;
+			try {
+				saxParser.parse(input, handler);
+			} catch (SAXException e) {
+				logger.warning("Cannot parse document: " + e.getMessage());
+				throw new IOException(e.getMessage());
+			}
+			return this.model;
 
-        }
-        else {
-            logger.warning("Context is not set for parsing, aborting");
-        }
-        return null;
-    }
+		}
+		else {
+			logger.warning("Context is not set for parsing, aborting");
+		}
+		return null;
+	}
 
-    @Override
-    public Object deserialize(InputStream input) throws IOException {
-        if (model != null) {
+	@Override
+	public Object deserialize(InputStream input) throws IOException {
+		if (model != null) {
 
-            try {
-                saxParser.parse(input, handler);
-            } catch (SAXException e) {
-                logger.warning("Cannot parse document: " + e.getMessage());
-                throw new IOException(e.getMessage());
-            }
-            return this.model;
+			try {
+				saxParser.parse(input, handler);
+			} catch (SAXException e) {
+				logger.warning("Cannot parse document: " + e.getMessage());
+				throw new IOException(e.getMessage());
+			}
+			return this.model;
 
-        }
-        else {
-            logger.warning("Context is not set for parsing, aborting");
-        }
-        return null;
-    }
+		}
+		else {
+			logger.warning("Context is not set for parsing, aborting");
+		}
+		return null;
+	}
 
-    @Override
-    public void addToRootNodes(Object anObject) {
-        model.setRoot((XMLIndividual) anObject);
-    }
+	@Override
+	public void addToRootNodes(Object anObject) {
+		model.setRoot((XMLIndividual) anObject);
+	}
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public void setContextProperty(String propertyName, Object value) {
-        if (propertyName.equals(XMLReaderSAXHandler.NAMESPACE_Property)) {
-            model.setNamespace(((List<String>) value).get(0), ((List<String>) value).get(1));
-        }
+	@SuppressWarnings("unchecked")
+	@Override
+	public void setContextProperty(String propertyName, Object value) {
+		if (propertyName.equals(XMLReaderSAXHandler.NAMESPACE_Property)) {
+			model.setNamespace(((List<String>) value).get(0), ((List<String>) value).get(1));
+		}
 
-    }
+	}
 
-    @Override
-    public void setContext(Object objectGraph) {
-        model = (XMLModel) objectGraph;
+	@Override
+	public void setContext(Object objectGraph) {
+		model = (XMLModel) objectGraph;
 
-    }
+	}
 
-    @Override
-    public void resetContext() {
-        model = null;
-    }
+	@Override
+	public void resetContext() {
+		model = null;
+	}
 
-    @Override
-    public boolean objectHasAttributeNamed(Object object, String attrName) {
-        if (object instanceof XMLIndividual) {
+	@Override
+	public boolean objectHasAttributeNamed(Object object, String attrName) {
+		if (object instanceof XMLIndividual) {
 
-            XMLAttribute attr = ((XMLIndividual) object).getAttributeByName(attrName);
+			XMLAttribute attr = ((XMLIndividual) object).getAttributeByName(attrName);
 
-            return (attr != null);
-        }
-        return false;
-    }
+			return (attr != null);
+		}
+		return false;
+	}
 
-    @Override
-    public void addAttributeValueForObject(Object object, String attrName, Object value) {
+	@Override
+	public void addAttributeValueForObject(Object object, String attrName, Object value) {
 
-        if (object instanceof XMLIndividual) {
-            XMLAttribute attr = ((XMLIndividual) object).getAttributeByName(attrName);
+		if (object instanceof XMLIndividual) {
+			XMLAttribute attr = ((XMLIndividual) object).getAttributeByName(attrName);
 
-            if (attr == null) {
-                attr = (XMLAttribute) ((XMLIndividual) object).createAttribute(attrName, String.class, (String) value);
-            }
-            else {
+			if (attr == null) {
+				attr = (XMLAttribute) ((XMLIndividual) object).createAttribute(attrName, String.class, (String) value);
+			}
+			else {
 
-                attr.addValue(((XMLIndividual) object), value);
+				attr.addValue(((XMLIndividual) object), value);
 
-            }
-        }
-    }
+			}
+		}
+	}
 
-    @Override
-    public void addChildToObject(Object currentObject, Object currentContainer) {
-        if (currentContainer instanceof XMLIndividual) {
-            ((XMLIndividual) currentContainer).addChild((IXMLIndividual<XMLIndividual, XMLAttribute>) currentObject);
-        }
+	@Override
+	public void addChildToObject(Object currentObject, Object currentContainer) {
+		if (currentContainer instanceof XMLIndividual) {
+			((XMLIndividual) currentContainer).addChild((XMLIndividual) currentObject);
+		}
 
-    }
+	}
 
-    @Override
-    public Type getAttributeType(Object currentContainer, String localName) {
-        IXMLAttribute attr = ((IXMLIndividual) currentContainer).getAttributeByName(localName);
-        if (attr != null) {
-            return attr.getAttributeType();
-        }
-        else
-            return null;
-    }
+	@Override
+	public Type getAttributeType(Object currentContainer, String localName) {
+		IXMLAttribute attr = ((IXMLIndividual) currentContainer).getAttributeByName(localName);
+		if (attr != null) {
+			return attr.getAttributeType();
+		}
+		else
+			return null;
+	}
 }

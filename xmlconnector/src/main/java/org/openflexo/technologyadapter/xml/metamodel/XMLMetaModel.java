@@ -20,7 +20,7 @@
 package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.lang.reflect.Type;
-import java.util.List;
+import java.util.Collection;
 
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -35,6 +35,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.model.XMLObject;
 import org.openflexo.technologyadapter.xml.model.XMLType;
@@ -45,12 +46,13 @@ import org.openflexo.technologyadapter.xml.model.XMLType;
 public interface XMLMetaModel extends XMLObject, FlexoMetaModel<XMLMetaModel>, TechnologyObject<XMLTechnologyAdapter> {
 
 	public static String TYPES = "types";
+	public static String READ_ONLY = "readOnly";
 	
 
 	@Getter(value = TYPES, cardinality = Cardinality.LIST)
 	@CloningStrategy(StrategyType.IGNORE)
 	@Embedded
-	public List<? extends XMLType> getTypes();
+	public Collection<? extends XMLType> getTypes();
 
 
 	@Finder(attribute = XMLType.URI, collection = TYPES, isMultiValued = true)
@@ -65,17 +67,12 @@ public interface XMLMetaModel extends XMLObject, FlexoMetaModel<XMLMetaModel>, T
 	@Remover(TYPES)
 	public void removeType(XMLType aType);
 	
-
-
-/*
 	@Override
-	@Getter(value = "resource")
-	public FlexoResource<XMLMetaModel> getResource();
-
-	@Override
-	@Setter(value = "resource")
-	public void setResource(FlexoResource<XMLMetaModel> resource);
-
-	public IFlexoOntologyDataProperty getDataProperty(String propertyURI);
-	*/
+	@Getter(value = READ_ONLY, defaultValue = "true")
+	public boolean isReadOnly();
+	
+	@Setter(READ_ONLY)
+	public void setReadOnly(boolean value);
+	
+	
 }

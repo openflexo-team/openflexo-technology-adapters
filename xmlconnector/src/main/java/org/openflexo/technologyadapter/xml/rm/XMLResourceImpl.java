@@ -21,17 +21,23 @@
 package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.FileNotFoundException;
+import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
 
 public abstract class XMLResourceImpl extends FlexoResourceImpl<XMLModel> implements XMLResource {
+	
+	protected static final Logger logger   = Logger.getLogger(XMLResourceImpl.class.getPackage().getName());
 
 
-    @Override
+	@Override
     public XMLModel getModel() {
         return getModelData();
     }
@@ -60,5 +66,15 @@ public abstract class XMLResourceImpl extends FlexoResourceImpl<XMLModel> implem
 		return resourceData;
 	}
 
-
+	@Override
+	public void attachMetamodel(){
+		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = this.getMetaModelResource();
+		if (mmRes != null) {
+			resourceData.setMetaModel(mmRes.getMetaModelData());
+		}
+		if (resourceData.getMetaModel() == null) {
+			logger.warning("Setting a null Metamodel for Model " + this.getURI());
+		}
+	}
+	
 }

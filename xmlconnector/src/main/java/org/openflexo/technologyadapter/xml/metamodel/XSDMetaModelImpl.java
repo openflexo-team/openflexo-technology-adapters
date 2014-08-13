@@ -21,17 +21,13 @@ package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.io.File;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.ontology.IFlexoOntologyMetaModel;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.model.XSOntology;
-import org.openflexo.technologyadapter.xml.rm.XMLXSDNameSpaceFinder;
+import org.openflexo.technologyadapter.xml.model.XMLType;
 
 import com.sun.xml.xsom.XSSimpleType;
 import com.sun.xml.xsom.XSType;
@@ -43,9 +39,9 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XSDMetaModelImpl.class.getPackage()
 			.getName());
 
-	private final XSOntClass thingClass;
+	// private final XSOntClass thingClass;
 
-
+/*
 
 	public XSDMetaModelImpl(String ontologyURI, File xsdFile, XMLTechnologyAdapter adapter) {
 		super(ontologyURI, xsdFile, adapter);
@@ -54,7 +50,8 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 
 		addClass(thingClass);
 	}
-
+*/
+	
 	@Override
 	public boolean isReadOnly() {
 		return true;
@@ -80,18 +77,23 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 
 	@Override
 	public Type getTypeFromURI(String uri) {
-		return this.getClass(uri);
+		return types.get(uri);
 	}
 
 	@Override
-	public Type createNewType(String uri, String localName, String qName) {
-		// TODO Auto-generated method stub
-		return null;
+	public Type createNewType(String uri, String localName) {
+
+		// TODO: pamela-iser XSDDatatype
+		XMLType aType = new XSDDataType();
+		aType.setURI(uri);
+		aType.setName(localName);
+		addType(aType);
+		return aType;
 	}
 
 	// *****************************************************************************
 	// IFlexoOntology related Functions
-
+/*
 	@Override
 	public List<XSOntDataProperty> getDataProperties() {
 		return new ArrayList<XSOntDataProperty>(dataProperties.values());
@@ -117,7 +119,7 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 	public XSOntClass getRootConcept() {
 		return thingClass;
 	}
-
+*/
 	// *****************************************************************************
 	// Utility Functions when building the model
 

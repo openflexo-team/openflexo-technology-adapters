@@ -1,6 +1,6 @@
 /*
  * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2012-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
@@ -133,23 +134,24 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 		// TODO if a declaration (base) type is derived, get the correct
 		// superclass
 
-		XMLMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
+		XMLMetaModel aMetaModel = resourceData; // Was: getMetaModelData(); is there a reason ????
 
 		try {
 
 			for (XSComplexType complexType : fetcher.getComplexTypes()) {
 				try {
-					XSOntClass xsClass = aModel.getClass(fetcher.getUri(complexType));
+					Type xsClass = aMetaModel.getTypeFromURI(fetcher.getUri(complexType));
 					if (xsClass == null) {
 						// create XSOntClass if it does not exist
-						xsClass = aModel.createOntologyClass(complexType.getName(), fetcher.getUri(complexType));
+						xsClass = aMetaModel.createNewType(fetcher.getUri(complexType), complexType.getName());
+						// xsClass = aMetaModel.createOntologyClass(complexType.getName(), fetcher.getUri(complexType));
 					}
 					XSType btype = complexType.getBaseType();
 					if (btype != null && !btype.getName().equalsIgnoreCase("anyType")) {
-						XSOntClass superClass = aModel.getClass(fetcher.getUri(btype));
+						XSOntClass superClass = aMetaModel.getClass(fetcher.getUri(btype));
 						if (superClass == null) {
 							// create XSOntClass if it does not exist
-							superClass = aModel.createOntologyClass(btype.getName(), fetcher.getUri(btype));
+							superClass = aMetaModel.createOntologyClass(btype.getName(), fetcher.getUri(btype));
 						}
 						if (superClass != null) {
 							xsClass.addToSuperClasses(superClass);
@@ -165,10 +167,10 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 			for (XSElementDecl element : fetcher.getElementDecls()) {
 				if (mapsToClass(element)) {
 
-					XSOntClass xsClass = aModel.createOntologyClass(element.getName(), fetcher.getUri(element));
+					XSOntClass xsClass = aMetaModel.createOntologyClass(element.getName(), fetcher.getUri(element));
 					XSType type = element.getType();
 					if (type != null) {
-						XSOntClass superClass = aModel.getClass(fetcher.getUri(type));
+						XSOntClass superClass = aMetaModel.getClass(fetcher.getUri(type));
 						if (superClass != null)
 							xsClass.addToSuperClasses(superClass);
 					}
