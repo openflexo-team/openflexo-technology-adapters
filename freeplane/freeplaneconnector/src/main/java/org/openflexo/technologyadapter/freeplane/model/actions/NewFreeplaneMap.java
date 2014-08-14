@@ -71,7 +71,6 @@ public class NewFreeplaneMap
 
 	@Override
 	protected void doAction(final Object objet) throws FlexoException {
-		LOGGER.info("One day this action will create a new freeplane map with name " + this.mapName);
 		// If no data have been load, initialization has not been done, so do it.
 		FreeplaneBasicAdapter.getInstance();
 		final MapModel newMap = new MapModel();

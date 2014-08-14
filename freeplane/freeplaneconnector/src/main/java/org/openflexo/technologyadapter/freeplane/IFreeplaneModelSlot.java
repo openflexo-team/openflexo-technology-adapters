@@ -30,6 +30,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.technologyadapter.*;
 import org.openflexo.foundation.view.FreeModelSlotInstance;
+import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -132,5 +133,9 @@ public interface IFreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 			return uriCache.get(objectURI);
 		}
 
+		@Override
+		public TechnologyAdapterResource<IFreeplaneMap, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
+			return getTechnologyAdapter().createNewFreeplaneMap(view.getProject(),filename);
+		}
 	}
 }
