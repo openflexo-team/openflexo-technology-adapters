@@ -197,7 +197,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 		return repo;
 	}
 
-	public TechnologyAdapterResource<IFreeplaneMap, ?> createNewFreeplaneMap(FlexoProject project, String filename) {
+	public TechnologyAdapterResource<IFreeplaneMap, ?> createNewFreeplaneMap(final FlexoProject project, final String filename) {
 
 		File freeplaneFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
 		String modelUri = freeplaneFile.toURI().toString();

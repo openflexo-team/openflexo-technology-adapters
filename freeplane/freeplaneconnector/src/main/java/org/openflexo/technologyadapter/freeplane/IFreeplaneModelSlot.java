@@ -37,7 +37,6 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot.FreeplaneModelSlotImpl;
-import org.openflexo.technologyadapter.freeplane.fml.behavioural.FreeplaneCreationScheme;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNodeAction;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddSiblingNodeAction;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.SelectAllNodes;
@@ -62,7 +61,7 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 		@DeclareEditionAction(editionActionClass = AddChildNodeAction.class, FML = "AddChildNode"),
 		@DeclareEditionAction(editionActionClass = AddSiblingNodeAction.class, FML = "AddSiblingNode")
 })
-@DeclareFlexoBehaviours({})
+@DeclareFlexoBehaviours({ })
 @DeclareFetchRequests({ @DeclareFetchRequest(fetchRequestClass = SelectAllNodes.class, FML = "SelectAllNodes") })
 @ModelEntity
 @ImplementationClass(FreeplaneModelSlotImpl.class)
@@ -134,8 +133,8 @@ public interface IFreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		}
 
 		@Override
-		public TechnologyAdapterResource<IFreeplaneMap, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getTechnologyAdapter().createNewFreeplaneMap(view.getProject(),filename);
+		public TechnologyAdapterResource<IFreeplaneMap, ?> createProjectSpecificEmptyResource(final View view, final String filename, final String modelUri) {
+			return getTechnologyAdapter().createNewFreeplaneMap(view.getProject(), filename);
 		}
 	}
 }
