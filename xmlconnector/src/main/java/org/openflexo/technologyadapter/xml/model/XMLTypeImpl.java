@@ -20,6 +20,7 @@
  */
 package org.openflexo.technologyadapter.xml.model;
 
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ public abstract class XMLTypeImpl  implements XMLType {
 
 	private final String NSPrefix;
 
-    Map<String, XMLAttribute>    attributeNames;
+	Map<String, XMLAttribute>    attributeNames;
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 			.getLogger(XMLTypeImpl.class.getPackage().getName());
@@ -54,14 +55,14 @@ public abstract class XMLTypeImpl  implements XMLType {
 		this.attributeNames = new HashMap<String, XMLAttribute>();
 	}
 
-/*
+	/*
 	public XMLTypeImpl(String nsURI, String lName, String qName, XMLMetaModel model) {
 		// TODO : je ne suis pas sur que ces attributs aient encore du sens
 		super();
 		this.setName(lName);
 		NSPrefix = qName.replaceAll(":" + lName, "");
 	}
-*/
+	 */
 
 	@Override
 	public String getFullyQualifiedName() {
@@ -71,19 +72,26 @@ public abstract class XMLTypeImpl  implements XMLType {
 			return getName();
 	}
 
-	
-	
+
+
 	@Override
 	public Collection<? extends XMLAttribute> getAttributes() {
-		
+
 		return attributeNames.values();
 	}
 
 	@Override
-	public void createAttribute(String name) {
+	public void createAttribute(String name, Type t) {
+		XMLAttribute attr = null;
 		if (!hasAttribute(name)){
-			XMLAttribute attr = XSDMetaModelImpl.getModelFactory().newInstance( XMLAttribute.class, name, String.class);
-			attributeNames.put(name, attr );
+			if (t != null){
+				attr = XSDMetaModelImpl.getModelFactory().newInstance( XMLAttribute.class, name, t);
+			}
+			else
+			{
+				attr = XSDMetaModelImpl.getModelFactory().newInstance( XMLAttribute.class, name, String.class);
+			}
+			if (attr != null) attributeNames.put(name, attr );
 		}
 	}
 

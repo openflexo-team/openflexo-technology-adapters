@@ -67,7 +67,7 @@ public interface XMLType  extends XMLObject, Type, IXMLType {
 	@Finder(attribute = XMLAttribute.URI, collection = ATTRIBUTES, isMultiValued = true)
     public XMLAttribute getAttributeByName(String name);
 
-    public void createAttribute(String name);
+    public void createAttribute(String name, Type t);
     
 	public Boolean hasAttribute(String name);
 	

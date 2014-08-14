@@ -37,6 +37,7 @@ public abstract class XMLAttributeImpl implements XMLAttribute {
 
 	// Properties
 	private IXMLIndividual<?, ?> container;
+	private Type aType;
 
 	public XMLAttributeImpl() {
 		super();
@@ -77,6 +78,7 @@ public abstract class XMLAttributeImpl implements XMLAttribute {
 	public Type getAttributeType() {
 		return getType();
 	}
+
 
 	public String getDisplayableDescription() {
 		return this.getName();

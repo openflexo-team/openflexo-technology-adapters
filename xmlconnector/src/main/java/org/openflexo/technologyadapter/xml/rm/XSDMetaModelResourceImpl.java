@@ -128,6 +128,8 @@ XSDMetaModelResource {
 		// TODO if a declaration (base) type is derived, get the correct
 		// superclass
 
+		XMLType stringSimple = (XMLType) resourceData.createNewType("STRING_BASIC_TYPE", "STRING_BASIC_TYPE");
+		
 		if (resourceData != null){
 			for (XSComplexType complexType : fetcher.getComplexTypes()) {
 				XMLType xsType = (XMLType) resourceData.getTypeFromURI(fetcher.getUri(complexType));
@@ -193,7 +195,7 @@ XSDMetaModelResource {
 					XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
 					if (owner != null) {
 						// TODO: better manage types
-						owner.createAttribute(element.getName());
+						owner.createAttribute(element.getName(), resourceData.getTypeFromURI("STRING_BASIC_TYPE"));
 					}
 					else {
 						logger.warn("unable to find an owner type for attribute: " + uri);
@@ -215,7 +217,7 @@ XSDMetaModelResource {
 				XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
 				if (owner != null) {
 					// TODO: better manage types
-					owner.createAttribute(attribute.getName());
+					owner.createAttribute(attribute.getName(), resourceData.getTypeFromURI("STRING_BASIC_TYPE"));
 				}
 				else {
 					logger.warn("unable to find an owner type for attribute: " + uri);
@@ -227,93 +229,103 @@ XSDMetaModelResource {
 		}
 	}
 
-		/*
-
 	private void loadObjectProperties() {
-
-		XMLMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
 
 		for (XSElementDecl element : fetcher.getElementDecls()) {
 			if (mapsToClass(element)) {
 				String uri = fetcher.getUri(element);
-				XSOntClass c = aModel.getClass(fetcher.getUri(element));
+				XMLType t = (XMLType) resourceData.getTypeFromURI(fetcher.getUri(element));
 				String name = element.getName();
-				XSOntObjectProperty xsObjectProperty = aModel.createObjectProperty(name, fetcher.getNamespace(element) + "#" + name, c);
-				addDomainIfPossible(xsObjectProperty, uri, aModel);
+
+				String ownerUri = fetcher.getOwnerURI(uri);
+
+				if (ownerUri != null) {
+					XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
+					if (owner != null) {
+						// TODO: better manage types
+						owner.createAttribute(name, t);
+					}
+					else {
+						logger.warn("unable to find an owner type for attribute: " + uri);
+					}
+				}
+				else {
+					logger.warn("unable to find an owner for : " + uri);
+				}
 			}
 		}
 
 	}
-		 */
-		public boolean load() {
 
-			if (resourceData == null) {
-				this.resourceData =  XSDMetaModelImpl.getModelFactory().newInstance(XSDMetaModel.class);
-				resourceData.getResource();
-				resourceData.setResource(this);
-			}
+	public boolean load() {
 
-			if (isLoading() == true) {
-				return false;
-			}
-			isLoading = true;
-			isLoaded = false;
-			schemaSet = XSOMUtils.read(getFile());
-			if (schemaSet != null) {
-				fetcher = new XSDeclarationsFetcher();
-				fetcher.fetch(schemaSet);
-				loadTypes();
-				loadDataProperties();
-				//			loadObjectProperties();
-				isLoaded = true;
-			} else
-				logger.info("I've not been able to parse the file" + getFile());
-			isLoading = false;
-			return isLoaded;
+		if (resourceData == null) {
+			this.resourceData =  XSDMetaModelImpl.getModelFactory().newInstance(XSDMetaModel.class);
+			resourceData.getResource();
+			resourceData.setResource(this);
 		}
 
-		public boolean loadWhenUnloaded() {
-			if (isLoaded() == false) {
-				return load();
-			}
-			return true;
+		if (isLoading() == true) {
+			return false;
 		}
-
-		@Override
-		public boolean isLoaded() {
-			return isLoaded;
-		}
-
-		@Override
-		public boolean isLoading() {
-			return isLoading;
-		}
-
-		public boolean getIsReadOnly() {
-			return isReadOnly;
-		}
-
-		public void setReadOnly(boolean isReadOnly) {
-			this.isReadOnly = isReadOnly;
-		}
-
-		// TODO : pas propre, a traiter rapidement
-
-		public XSDeclarationsFetcher getFetcher() {
-			return fetcher;
-		}
-
-		/**
-		 * Save the &quot;real&quot; resource data of this resource.
-		 */
-		@Override
-		public void save(IProgress progress) {
-			logger.info("Not implemented yet");
-		}
-
-		@Override
-		public Class<XMLMetaModel> getResourceDataClass() {
-			return XMLMetaModel.class;
-		}
-
+		isLoading = true;
+		isLoaded = false;
+		schemaSet = XSOMUtils.read(getFile());
+		if (schemaSet != null) {
+			fetcher = new XSDeclarationsFetcher();
+			fetcher.fetch(schemaSet);
+			loadTypes();
+			loadDataProperties();
+			loadObjectProperties();
+			isLoaded = true;
+		} else
+			logger.info("I've not been able to parse the file" + getFile());
+		isLoading = false;
+		return isLoaded;
 	}
+
+	public boolean loadWhenUnloaded() {
+		if (isLoaded() == false) {
+			return load();
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isLoaded() {
+		return isLoaded;
+	}
+
+	@Override
+	public boolean isLoading() {
+		return isLoading;
+	}
+
+	public boolean getIsReadOnly() {
+		return isReadOnly;
+	}
+
+	public void setReadOnly(boolean isReadOnly) {
+		this.isReadOnly = isReadOnly;
+	}
+
+	// TODO : pas propre, a traiter rapidement
+
+	public XSDeclarationsFetcher getFetcher() {
+		return fetcher;
+	}
+
+	/**
+	 * Save the &quot;real&quot; resource data of this resource.
+	 */
+	@Override
+	public void save(IProgress progress) {
+		logger.info("Not implemented yet");
+	}
+
+	@Override
+	public Class<XMLMetaModel> getResourceDataClass() {
+		return XMLMetaModel.class;
+	}
+
+}

@@ -67,9 +67,18 @@ public class TestXSDResource extends OpenflexoTestCase {
 
 	private static final void dumpTypes(XMLMetaModel metamodel) {
 		for (XMLType t : metamodel.getTypes()) {
-			System.out.println("Parsed Type: " + t.getName() + " -> " + t.getFullyQualifiedName() + "[" + t.getURI() + "]");
+			String prefix = new String();
+			if ( t.isAbstract() ) prefix = "*";
+			else prefix = "-";
+			if (t.getSuperType() != null){
+				System.out.println("Parsed Type: "+prefix + t.getName() + " :: " + t.getSuperType().getName() );
+			}
+			else {
+				System.out.println("Parsed Type: "+prefix + t.getName() );
+
+			}
 			for ( XMLAttribute x : t.getAttributes()) {
-				System.out.println("     --- " + x.getName());
+				System.out.println("     --- " + x.getName() + "  :: " + x.getType().getName());
 			}
 			System.out.flush();
 		}
