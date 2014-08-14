@@ -1,6 +1,7 @@
 /*
  * (c) Copyright 2010-2011 AgileBirds
- *
+ * (c) Copyright 2014 -  Openflexo
+ * 
  * This file is part of OpenFlexo.
  *
  * OpenFlexo is free software: you can redistribute it and/or modify
@@ -36,7 +37,6 @@ public class XSOMUtils {
 			.getName());
 
 	public static XSSchemaSet read(File xsdFile) {
-		// TODO: check if all XML files should be read in the same way
 		if (logger.isLoggable(Level.INFO)) {
 			logger.info("Loading an XSD file " + xsdFile.getName());
 		}

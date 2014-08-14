@@ -44,13 +44,10 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
-import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLResource;
-import org.openflexo.technologyadapter.xml.rm.XMLXSDFileResource;
-import org.openflexo.technologyadapter.xml.rm.XMLXSDFileResourceImpl;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResourceImpl;
@@ -207,6 +204,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	 * @param technologyContextManager
 	 * @return
 	 */
+	/*
 	public XMLXSDFileResource createNewXMLFile(File modelFile, String modelUri, FlexoResource<XMLMetaModel> metaModelResource, FlexoResourceCenter<?> resourceCenter) {
 
 		modelUri = modelFile.toURI().toString();
@@ -219,7 +217,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return modelResource;
 
 	}
-
+*/
 	/**
 	 * Creates new model conform to the supplied meta model
 	 * 
@@ -227,6 +225,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	 * @param metaModel
 	 * @return
 	 */
+	/*
 	public XMLXSDFileResource createNewXMLFile(FlexoProject project, String filename, String modelUri, FlexoResource<XMLMetaModel> metaModel) {
 
 		File modelFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
@@ -238,7 +237,8 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return createNewXMLFile(modelFile, modelUri, metaModel,project);
 
 	}
-
+*/
+	/*
 	public FlexoResource<XMLXSDModel> createNewXMLFile(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
 			FlexoResource<XMLMetaModel> metaModelResource) {
 
@@ -258,7 +258,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 		return createNewXMLFile(modelFile, modelUri, metaModelResource,resourceCenter);
 	}
-
+*/
 	@Override
 	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 
@@ -323,44 +323,88 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	protected XSDMetaModelResource tryToLookupMetaModel(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
 
 		XSDMetaModelRepository mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, this);
+		XMLTechnologyContextManager xmlContextManager = (XMLTechnologyContextManager) getTechnologyContextManager();
 		XSDMetaModelResource mmRes = null;
 
 		if (isValidMetaModelFile(candidateFile)) {
-			mmRes = retrieveMetaModelResource(candidateFile);
 
-			if (mmRes != null) {
-				RepositoryFolder<XSDMetaModelResource> folder;
+			XMLRootElementInfo rootInfo = null;
+			String uri = null;
 
-				try {
+			try {
 
-					folder = mmRepository.getRepositoryFolder(candidateFile, true);
-					mmRepository.registerResource(mmRes, folder);
-				} catch (IOException e1) {
-					e1.printStackTrace();
+				rootInfo = REreader.readRootElement(candidateFile);
+
+				uri = rootInfo.getAttribute("targetNamespace");
+
+			} catch (IOException e) {
+				logger.warning("Unable to parse file: " + candidateFile);
+				e.printStackTrace();
+				return null;
+			}
+			
+			if (uri != null){
+
+				mmRes = (XSDMetaModelResource) xmlContextManager.getResourceWithURI(uri);
+
+				if (mmRes == null) {
+
+					mmRes = XSDMetaModelResourceImpl.makeXSDMetaModelResource(candidateFile, uri, xmlContextManager);
+					mmRes.setName(candidateFile.getName());
+					mmRes.setServiceManager(getTechnologyAdapterService().getServiceManager());
 				}
-				referenceResource(mmRes, resourceCenter);
+				else {
+					logger.warning("Found another file with an already existing URI: " + uri);
+					return null;
+				}
 
-				return mmRes;
+				// Register Resource
+
+
+				if (mmRes != null) {
+					RepositoryFolder<XSDMetaModelResource> folder;
+					xmlContextManager.registerResource(mmRes);
+					try {
+
+						folder = mmRepository.getRepositoryFolder(candidateFile, true);
+						if (folder != null){
+							mmRepository.registerResource(mmRes, folder);
+						}else{
+							mmRepository.registerResource(mmRes);
+						}
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+					referenceResource(mmRes, resourceCenter);
+
+					return mmRes;
+				}
 			}
 		}
 		return null;
 	}
 
 	protected XMLResource tryToLookupModel(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
-		XMLTechnologyContextManager technologyContextManager = (XMLTechnologyContextManager) getTechnologyContextManager();
+		XMLTechnologyContextManager xmlContextManager = (XMLTechnologyContextManager) getTechnologyContextManager();
 		XMLModelRepository modelRepository = resourceCenter.getRepository(XMLModelRepository.class, this);
 		XSDMetaModelRepository mmRepository = null;
 
 		XMLResource mRes = null;
 
 		if (isValidModelFile(candidateFile)) {
-			mRes = XMLFileResourceImpl.makeXMLFileResource(candidateFile, technologyContextManager );
+			mRes = XMLFileResourceImpl.makeXMLFileResource(candidateFile, xmlContextManager );
 
 			if (mRes != null) {
+
+				xmlContextManager.registerResource(mRes);
 				RepositoryFolder<XMLResource> folder;
 				try {
 					folder = modelRepository.getRepositoryFolder(candidateFile, true);
-					modelRepository.registerResource(mRes, folder);
+					if (folder != null){
+						modelRepository.registerResource(mRes, folder);
+					}else{
+						modelRepository.registerResource(mRes);
+					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -369,7 +413,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				// then find the MetaModel
 
 				String mmURI = mRes.getTargetNamespace();
-				System.out.println("Found a XML Resource with URI: " + candidateFile.getName() + "----> "+ mmURI);
 
 				if (mmURI != null && mmURI.length() > 0){
 
@@ -386,7 +429,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 					// But how to promote an AdHoc MM to actual MM ?
 					// And serialize it as an XSD?
 
-					List<FlexoResourceCenter> rscCenters = technologyContextManager.getResourceCenterService().getResourceCenters();
+					List<FlexoResourceCenter> rscCenters = xmlContextManager.getResourceCenterService().getResourceCenters();
 					for (FlexoResourceCenter<?> rscCenter : rscCenters) {
 						mmRepository = rscCenter.getRepository(XSDMetaModelRepository.class, this);
 						if (mmRepository != null) {
@@ -434,54 +477,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 		return null;
 	}
-
-
-	/**
-	 * Instantiate new meta model resource stored in supplied meta model file
-	 * 
-	 * @param aMetaModelFile
-	 * @return
-	 */
-	public XSDMetaModelResource retrieveMetaModelResource(File aMetaModelFile) {
-
-		XMLTechnologyContextManager xmlContextManager = (XMLTechnologyContextManager) getTechnologyContextManager();
-
-		XMLRootElementInfo rootInfo = null;
-		String uri = null;
-		XSDMetaModelResource xsdMetaModelResource = null;
-
-		try {
-
-			rootInfo = REreader.readRootElement(aMetaModelFile);
-
-			uri = rootInfo.getURI();
-
-		} catch (IOException e) {
-			logger.warning("Unable to parse file: " + aMetaModelFile);
-			e.printStackTrace();
-			return null;
-		}
-
-		if (uri != null){
-
-			xsdMetaModelResource = (XSDMetaModelResource) xmlContextManager.getResourceWithURI(uri);
-
-			if (xsdMetaModelResource == null) {
-
-				xsdMetaModelResource = XSDMetaModelResourceImpl.makeXSDMetaModelResource(aMetaModelFile, uri, xmlContextManager);
-
-				xsdMetaModelResource.setName(aMetaModelFile.getName());
-
-				xsdMetaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
-				xmlContextManager.registerResource(xsdMetaModelResource);
-			}
-
-			return xsdMetaModelResource;
-		}
-		else return null;
-	}
-
-
 
 
 	@Override

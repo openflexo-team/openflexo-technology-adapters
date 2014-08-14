@@ -25,7 +25,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Adder;
@@ -52,8 +51,7 @@ import org.openflexo.xml.IXMLType;
  */
 @ModelEntity
 @ImplementationClass(XMLModelImpl.class)
-public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>, FlexoMetaModel<XMLModel>,
-			IXMLModel, TechnologyObject<XMLTechnologyAdapter> {
+public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>, IXMLModel, TechnologyObject<XMLTechnologyAdapter> {
 
 	public static final String MM = "metaModel";
 	public static final String RSC = "resource";

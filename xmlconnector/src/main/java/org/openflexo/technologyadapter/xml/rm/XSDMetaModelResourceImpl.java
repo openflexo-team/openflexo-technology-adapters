@@ -23,21 +23,18 @@ package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Type;
-import java.util.logging.Logger;
 
+import org.apache.log4j.Logger;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.resource.FlexoFileResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModelImpl;
+import org.openflexo.technologyadapter.xml.model.XMLType;
 import org.openflexo.technologyadapter.xml.model.XSOntologyURIDefinitions;
 import org.openflexo.toolbox.IProgress;
 
@@ -56,7 +53,7 @@ import com.sun.xml.xsom.XSType;
  */
 
 public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XMLMetaModel> implements XSOntologyURIDefinitions,
-		XSDMetaModelResource {
+XSDMetaModelResource {
 
 	private static final Logger logger = Logger.getLogger(XSDMetaModelResourceImpl.class.getPackage().getName());
 
@@ -78,9 +75,6 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 			returned.setURI(uri);
 			returned.setName("Unnamed");
 			returned.setFile(xsdMetaModelFile);
-
-			// FIXME : check if its ok
-			technologyContextManager.registerResource(returned);
 
 			return returned;
 		} catch (ModelDefinitionException e) {
@@ -117,7 +111,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 		if (loadWhenUnloaded())
 			return resourceData;
 		else {
-			logger.warning("Not able to load resource");
+			logger.warn("Not able to load resource");
 			return null;
 		}
 	}
@@ -130,72 +124,52 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 		}
 	}
 
-	private void loadClasses() {
+	private void loadTypes() {
 		// TODO if a declaration (base) type is derived, get the correct
 		// superclass
 
-		XMLMetaModel aMetaModel = resourceData; // Was: getMetaModelData(); is there a reason ????
-
-		try {
-
+		if (resourceData != null){
 			for (XSComplexType complexType : fetcher.getComplexTypes()) {
-				try {
-					Type xsClass = aMetaModel.getTypeFromURI(fetcher.getUri(complexType));
-					if (xsClass == null) {
-						// create XSOntClass if it does not exist
-						xsClass = aMetaModel.createNewType(fetcher.getUri(complexType), complexType.getName());
-						// xsClass = aMetaModel.createOntologyClass(complexType.getName(), fetcher.getUri(complexType));
+				XMLType xsType = (XMLType) resourceData.getTypeFromURI(fetcher.getUri(complexType));
+				if (xsType == null) {
+					// create New XMLType if it does not exist
+					xsType = (XMLType) resourceData.createNewType(fetcher.getUri(complexType), complexType.getName());
+					xsType.setIsAbstract(true);
+				}
+				XSType btype = complexType.getBaseType();
+				if (btype != null && !btype.getName().equalsIgnoreCase("anyType")) {
+					XMLType superType = (XMLType) resourceData.getTypeFromURI(fetcher.getUri(btype));
+					if (superType == null) {
+						// create New Type if it does not exist
+						superType = (XMLType) resourceData.createNewType(btype.getName(), fetcher.getUri(btype));
+						xsType.setIsAbstract(true);
 					}
-					XSType btype = complexType.getBaseType();
-					if (btype != null && !btype.getName().equalsIgnoreCase("anyType")) {
-						XSOntClass superClass = aMetaModel.getClass(fetcher.getUri(btype));
-						if (superClass == null) {
-							// create XSOntClass if it does not exist
-							superClass = aMetaModel.createOntologyClass(btype.getName(), fetcher.getUri(btype));
-						}
-						if (superClass != null) {
-							xsClass.addToSuperClasses(superClass);
+					if (superType != null) {
+						xsType.setSuperType(superType);
 
-						}
 					}
-				} catch (DuplicateURIException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 			}
 
 			for (XSElementDecl element : fetcher.getElementDecls()) {
 				if (mapsToClass(element)) {
 
-					XSOntClass xsClass = aMetaModel.createOntologyClass(element.getName(), fetcher.getUri(element));
+					XMLType xsType = (XMLType) resourceData.createNewType(fetcher.getUri(element),element.getName());
 					XSType type = element.getType();
 					if (type != null) {
-						XSOntClass superClass = aMetaModel.getClass(fetcher.getUri(type));
-						if (superClass != null)
-							xsClass.addToSuperClasses(superClass);
+						XMLType superType = (XMLType) resourceData.getTypeFromURI(fetcher.getUri(type));
+						if (superType != null)
+							xsType.setSuperType(superType);
 					}
 				}
 			}
-		} catch (DuplicateURIException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
 		}
-	}
-
-	private void addDomainIfPossible(XSOntProperty property, String conceptUri, XMLMetaModel aModel) {
-		String ownerUri = fetcher.getOwnerURI(conceptUri);
-		if (ownerUri != null) {
-			XSOntClass owner = aModel.getClass(ownerUri);
-			if (owner != null) {
-				property.newDomainFound(owner);
-				owner.addPropertyTakingMyselfAsDomain(property);
-			}
+		else {
+			logger.fatal("Cannot load Types as MetaModel (resourceData) is NULL");
 		}
 	}
 
 	private void loadDataProperties() {
-
-		XMLMetaModel aModel = resourceData; // Was: getMetaModelData(); is there a reason ????
 
 		/*
 		 * for (XSSimpleType simpleType : fetcher.getSimpleTypes()) {
@@ -213,19 +187,47 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 		for (XSElementDecl element : fetcher.getElementDecls()) {
 			if (mapsToClass(element) == false) {
 				String uri = fetcher.getUri(element);
-				XSOntDataProperty xsDataProperty = aModel.createDataProperty(element.getName(), uri, element.getType());
-				addDomainIfPossible(xsDataProperty, uri, aModel);
+				String ownerUri = fetcher.getOwnerURI(uri);
+
+				if (ownerUri != null) {
+					XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
+					if (owner != null) {
+						// TODO: better manage types
+						owner.createAttribute(element.getName());
+					}
+					else {
+						logger.warn("unable to find an owner type for attribute: " + uri);
+					}
+				}
+				else {
+					logger.warn("unable to find an owner for : " + uri);
+				}
+
 			}
 		}
 
 		for (XSAttributeDecl attribute : fetcher.getAttributeDecls()) {
 			String uri = fetcher.getUri(attribute);
-			XSOntDataProperty xsDataProperty = aModel.createDataProperty(attribute.getName(), uri, attribute.getType());
-			xsDataProperty.setIsFromAttribute(true);
-			addDomainIfPossible(xsDataProperty, uri, aModel);
-		}
 
+			String ownerUri = fetcher.getOwnerURI(uri);
+
+			if (ownerUri != null) {
+				XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
+				if (owner != null) {
+					// TODO: better manage types
+					owner.createAttribute(attribute.getName());
+				}
+				else {
+					logger.warn("unable to find an owner type for attribute: " + uri);
+				}
+			}
+			else {
+				logger.warn("unable to find an owner for : " + uri);
+			}
+		}
 	}
+
+		/*
 
 	private void loadObjectProperties() {
 
@@ -242,77 +244,76 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 		}
 
 	}
+		 */
+		public boolean load() {
 
-	public boolean load() {
+			if (resourceData == null) {
+				this.resourceData =  XSDMetaModelImpl.getModelFactory().newInstance(XSDMetaModel.class);
+				resourceData.getResource();
+				resourceData.setResource(this);
+			}
 
-		if (resourceData == null) {
-			this.resourceData = new XMLMetaModel(getURI(), getFile(), getTechnologyAdapter());
-			resourceData.setResource(this);
+			if (isLoading() == true) {
+				return false;
+			}
+			isLoading = true;
+			isLoaded = false;
+			schemaSet = XSOMUtils.read(getFile());
+			if (schemaSet != null) {
+				fetcher = new XSDeclarationsFetcher();
+				fetcher.fetch(schemaSet);
+				loadTypes();
+				loadDataProperties();
+				//			loadObjectProperties();
+				isLoaded = true;
+			} else
+				logger.info("I've not been able to parse the file" + getFile());
+			isLoading = false;
+			return isLoaded;
 		}
 
-		if (isLoading() == true) {
-			return false;
+		public boolean loadWhenUnloaded() {
+			if (isLoaded() == false) {
+				return load();
+			}
+			return true;
 		}
-		isLoading = true;
-		isLoaded = false;
-		schemaSet = XSOMUtils.read(getFile());
-		if (schemaSet != null) {
-			fetcher = new XSDeclarationsFetcher();
-			fetcher.fetch(schemaSet);
-			resourceData.clearAllRangeAndDomain();
-			// Was: getMetaModelData().clearAllRangeAndDomain(); is there a reason ???
-			loadClasses();
-			loadDataProperties();
-			loadObjectProperties();
-			isLoaded = true;
-		} else
-			logger.info("I've not been able to parse the file" + getFile());
-		isLoading = false;
-		return isLoaded;
-	}
 
-	public boolean loadWhenUnloaded() {
-		if (isLoaded() == false) {
-			return load();
+		@Override
+		public boolean isLoaded() {
+			return isLoaded;
 		}
-		return true;
+
+		@Override
+		public boolean isLoading() {
+			return isLoading;
+		}
+
+		public boolean getIsReadOnly() {
+			return isReadOnly;
+		}
+
+		public void setReadOnly(boolean isReadOnly) {
+			this.isReadOnly = isReadOnly;
+		}
+
+		// TODO : pas propre, a traiter rapidement
+
+		public XSDeclarationsFetcher getFetcher() {
+			return fetcher;
+		}
+
+		/**
+		 * Save the &quot;real&quot; resource data of this resource.
+		 */
+		@Override
+		public void save(IProgress progress) {
+			logger.info("Not implemented yet");
+		}
+
+		@Override
+		public Class<XMLMetaModel> getResourceDataClass() {
+			return XMLMetaModel.class;
+		}
+
 	}
-
-	@Override
-	public boolean isLoaded() {
-		return isLoaded;
-	}
-
-	@Override
-	public boolean isLoading() {
-		return isLoading;
-	}
-
-	public boolean getIsReadOnly() {
-		return isReadOnly;
-	}
-
-	public void setReadOnly(boolean isReadOnly) {
-		this.isReadOnly = isReadOnly;
-	}
-
-	// TODO : pas propre, a traiter rapidement
-
-	public XSDeclarationsFetcher getFetcher() {
-		return fetcher;
-	}
-
-	/**
-	 * Save the &quot;real&quot; resource data of this resource.
-	 */
-	@Override
-	public void save(IProgress progress) {
-		logger.info("Not implemented yet");
-	}
-
-	@Override
-	public Class<XMLMetaModel> getResourceDataClass() {
-		return XMLMetaModel.class;
-	}
-
-}

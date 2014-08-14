@@ -19,18 +19,12 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.io.File;
 import java.lang.reflect.Type;
-import java.util.List;
 
-import org.openflexo.foundation.ontology.DuplicateURIException;
-import org.openflexo.foundation.ontology.IFlexoOntologyMetaModel;
-import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
+import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.model.XMLType;
-
-import com.sun.xml.xsom.XSSimpleType;
-import com.sun.xml.xsom.XSType;
 
 
 public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMetaModel {
@@ -38,6 +32,36 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XSDMetaModelImpl.class.getPackage()
 			.getName());
+	
+
+	private FlexoResource<? extends XMLMetaModel> xsdResource;
+	
+    private static ModelFactory MF;
+    
+    static{
+    	try {
+			 MF = new ModelFactory(XSDMetaModel.class);
+		} catch (ModelDefinitionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
+
+	public static ModelFactory getModelFactory() {
+		return MF;
+	}
+
+
+	@Override
+	public FlexoResource<XMLMetaModel> getResource() {
+		return (FlexoResource<XMLMetaModel>) xsdResource;
+	}
+	
+	@Override
+	public void setResource(FlexoResource<XMLMetaModel> resource) {
+		this.xsdResource = resource;
+	}
 
 	// private final XSOntClass thingClass;
 
@@ -61,17 +85,6 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 	public void setIsReadOnly(boolean b) {
 	}
 
-	@Override
-	public void save() throws SaveResourceException {
-		logger.warning("XSDMetaModels are not supposed to be saved !!!");
-	}
-
-	@Override
-	public List<IFlexoOntologyMetaModel<XMLTechnologyAdapter>> getMetaModels() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	// *****************************************************************************
 	// IXMLMetaModel related Functions
 
@@ -83,12 +96,21 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 	@Override
 	public Type createNewType(String uri, String localName) {
 
+		XMLType aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLType.class,this);
+		aType.setIsAbstract(false);
+		aType.setURI(uri);
+		aType.setName(localName);
+		addType(aType);
+		return aType;
+		
 		// TODO: pamela-iser XSDDatatype
+		/*
 		XMLType aType = new XSDDataType();
 		aType.setURI(uri);
 		aType.setName(localName);
 		addType(aType);
 		return aType;
+		*/
 	}
 
 	// *****************************************************************************
@@ -122,16 +144,7 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 */
 	// *****************************************************************************
 	// Utility Functions when building the model
-
-
-	public static String findNamespaceURI(File f) {
-		String schemaURI = XMLXSDNameSpaceFinder.findNameSpace(f, true);
-		if (schemaURI != null && !schemaURI.equals("")) {
-			return schemaURI;
-		} else {
-			return "http://www.openflexo.org/XSD/" + f.getName();
-		}
-	}
+/*
 
 
 	private XSDDataType computeDataType(XSSimpleType simpleType) {
@@ -183,5 +196,6 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 		property.newRangeFound(c);
 		return property;
 	}
-
+*/
+	
 }

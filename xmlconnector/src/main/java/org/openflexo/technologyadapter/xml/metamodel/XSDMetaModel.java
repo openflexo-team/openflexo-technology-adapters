@@ -28,18 +28,21 @@ import org.openflexo.model.annotations.Setter;
 
 @ModelEntity
 @ImplementationClass(XSDMetaModelImpl.class)
-public interface XSDMetaModel extends XMLMetaModel {
+public interface XSDMetaModel extends XMLMetaModel{
+	
+	public static final String RSC = "resource";
 
 
 	@Override
-	@Getter(value = "resource")
+	@Getter(RSC)
 	public FlexoResource<XMLMetaModel> getResource();
 
 	@Override
-	@Setter(value = "resource")
+	@Setter(RSC)
 	public void setResource(FlexoResource<XMLMetaModel> resource);
-
+	
 	/*
+	 * 
 	public IFlexoOntologyDataProperty getDataProperty(String propertyURI);
 	*/
 }

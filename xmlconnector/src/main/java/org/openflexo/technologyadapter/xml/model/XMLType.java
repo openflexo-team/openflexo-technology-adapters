@@ -21,22 +21,37 @@
 package org.openflexo.technologyadapter.xml.model;
 
 import java.lang.reflect.Type;
+import java.util.Collection;
 
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.Embedded;
+import org.openflexo.model.annotations.Finder;
 import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.xml.IXMLType;
 
 @ModelEntity
 @ImplementationClass(XMLTypeImpl.class)
-public interface XMLType  extends XMLObject, Type {
+public interface XMLType  extends XMLObject, Type, IXMLType {
 
 	public final String MM = "metaModel";
 	// TODO: check emnboitage avec URI et NSPrexiw => FQN
 	public final String FQN = "fullyQualifiedName";
+	public final String SUPERTYPE = "superType";
+	public final String ABSTRACT = "abstract";
+	public final String ATTRIBUTES = "attributes";
+
+    static final String NAME_ATTR = "name";
 	
+	@Initializer
+	public XMLType init(@Parameter(MM) XMLMetaModel mm);
 	
 	@Getter(FQN)
 	public String getFullyQualifiedName();
@@ -44,8 +59,36 @@ public interface XMLType  extends XMLObject, Type {
 	@Getter(MM)
 	XMLMetaModel getMetaModel();
 	
+	@Getter(value = ATTRIBUTES, cardinality = Cardinality.LIST)
+	@Embedded
+	public Collection<? extends XMLAttribute> getAttributes();
+
+
+	@Finder(attribute = XMLAttribute.URI, collection = ATTRIBUTES, isMultiValued = true)
+    public XMLAttribute getAttributeByName(String name);
+
+    public void createAttribute(String name);
+    
+	public Boolean hasAttribute(String name);
 	
-	@Initializer
-	public XMLType init(@Parameter(MM) XMLMetaModel mm);
+	@Adder(ATTRIBUTES)
+	public void addAttribute(XMLAttribute anAttribute);
+
+	@Remover(ATTRIBUTES)
+	public void removeAttribute(XMLAttribute anAttribute);
+	
+	
+	@Getter(SUPERTYPE)
+	public XMLType getSuperType();
+	
+	@Setter(SUPERTYPE)
+	public void setSuperType(XMLType t);
+
+	@Getter(value = ABSTRACT, defaultValue = "false")
+	public boolean isAbstract();
+	
+	@Setter(ABSTRACT)
+	public void setIsAbstract(boolean t);
+	
 	
 }

@@ -25,7 +25,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.model.XMLType;
@@ -62,10 +61,6 @@ public abstract class XMLMetaModelImpl  implements XMLMetaModel {
 		return MF;
 	}
 
-	public void save() throws SaveResourceException {
-		logger.warning("XSDMetaModels are not supposed to be saved !!!");
-	}
-
 
 	@Override
 	public Type getTypeFromURI(String uri) {
@@ -91,6 +86,7 @@ public abstract class XMLMetaModelImpl  implements XMLMetaModel {
 	public Type createNewType(String uri, String localName) {
 
 		XMLType aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLType.class,this);
+		aType.setIsAbstract(false);
 		aType.setURI(uri);
 		aType.setName(localName);
 		addType(aType);

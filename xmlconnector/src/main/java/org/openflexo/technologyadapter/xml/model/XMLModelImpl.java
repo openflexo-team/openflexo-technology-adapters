@@ -55,7 +55,7 @@ public abstract class XMLModelImpl  implements XMLModel {
 
 	protected static final Logger            logger          = Logger.getLogger(XMLModelImpl.class.getPackage().getName());
 	private FlexoResource<?>                 xmlResource;
-	private boolean                          isReadOnly      = true;
+	private final boolean                          isReadOnly      = true;
 
 	private final Map<String, XMLIndividual> individuals;
 
@@ -115,16 +115,6 @@ public abstract class XMLModelImpl  implements XMLModel {
 		this.xmlResource = resource;
 	}
 
-	@Override
-	public boolean isReadOnly() {
-		return isReadOnly;
-	}
-
-	@Override
-	public void setIsReadOnly(boolean b) {
-		isReadOnly = b;
-
-	}
 
 	@Override
 	public String getURI() {
