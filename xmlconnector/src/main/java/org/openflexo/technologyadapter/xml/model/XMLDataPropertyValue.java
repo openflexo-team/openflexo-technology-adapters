@@ -1,6 +1,8 @@
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2014 Openflexo
+ * 
+ * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2014- Openflexo
+ * 
  *
  * This file is part of OpenFlexo.
  *
@@ -18,33 +20,28 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-package org.openflexo.technologyadapter.xml.metamodel;
+package org.openflexo.technologyadapter.xml.model;
 
 import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 
 /**
- * @author xtof
+ * Implementation of an Data Property values in XSD/XML technology.<br>
  * 
+ * @author sylvain, xtof
  */
 @ModelEntity
-public interface XMLObject {
+@ImplementationClass(XMLDataPropertyValueImpl.class)
+public interface XMLDataPropertyValue extends XMLPropertyValue  {
 
+	final String VALUE = "value";
 
-	public static final String NAME = "name";
-
-	public final String URI = "uri";
-
+	@Getter(value = VALUE, ignoreType = true)
+	public Object getValue();
 	
-	@Getter(NAME)
-	public String getName();
+	@Setter(VALUE)
+	public void setValue(Object value);
 	
-	@Getter(URI)
-	public String getURI();
-	
-	@Setter(URI)
-	public void setURI(String uri);
-
 }

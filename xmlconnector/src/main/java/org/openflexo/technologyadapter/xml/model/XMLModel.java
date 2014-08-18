@@ -44,21 +44,45 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 
 /**
  * @author xtof
+ * 
+ * This interface defines a PAMELA model to represent an XML Document that is conformant to an {@link XMLMetaModel}
+ * that might be:
+ * 	- given by an XSD
+ *  - dynamically built (on purpose)
  * 
  */
 @ModelEntity
 @ImplementationClass(XMLModelImpl.class)
 public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>, TechnologyObject<XMLTechnologyAdapter> {
 
+	/**
+	 * Reference to the {@link XMLMetaModel} that this document is conformant to 
+	 */
 	public static final String MM = "metaModel";
+
+	/** 
+	 * Link to the {@XMLResource} that manages the concrete serialization of this model
+	 * 
+	 */
 	public static final String RSC = "resource";
-	public static final String NAMESPACE = "namespace";
+
+	/**
+	 * Collection of {@link XMLIndividuals} 
+	 */
 	public static final String IND = "individuals";
+
+	/**
+	 * Root individual of the XML Objects graph
+	 */
 	public static final String ROOT = "root";
-	// public static final String TA = "technologyAdapter";
+
+	/**
+	 * Properties that host uri and Namespace prefix for this Model
+	 */
 	public static final int NSPREFIX_INDEX = 0;
 	public static final int NSURI_INDEX = 1;
 
@@ -68,21 +92,14 @@ public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>,
 
 	@Initializer
 	public XMLModel init(@Parameter(MM) XMLMetaModel mm);
-	
-	
+
+
 	@Override
 	@Getter(MM)
 	XMLMetaModel getMetaModel();
-	
+
 	@Setter(MM)
 	void setMetaModel(XMLMetaModel mm);
-	
-	@Getter(NAMESPACE)
-	List<String> getNamespace();
-	
-	@Setter(NAMESPACE)
-	void setNamespace(String ns, String prefix);
-	
 
 	@Override
 	@Getter(RSC)
@@ -91,13 +108,13 @@ public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>,
 	@Override
 	@Setter(RSC)
 	public void setResource(FlexoResource<XMLModel> resource);
-	
+
 	@Getter(ROOT)
 	public XMLIndividual getRoot();
-	
+
 	@Setter(ROOT)
 	public void setRoot(XMLIndividual indiv);
-	
+
 	@Getter(value = IND, cardinality = Cardinality.LIST)
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
@@ -106,16 +123,22 @@ public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>,
 
 	//TODO ask Syl pourkoi on ne peut pas avoir +eurs adders...
 	public Object addNewIndividual(Type aType);
-	
+
 	@Adder(IND)
 	@PastingPoint
 	public void addIndividual(XMLIndividual ind);
 
 	@Remover(IND)
 	public void removeFromNIndividuals(XMLIndividual ind);
-	
+
 	@Finder(attribute = XMLIndividual.TYPE, collection = IND, isMultiValued = true)
 	public List<? extends XMLIndividual> getIndividualsOfType(XMLType aType);
+	
+	/*
+	 * Non-PAMELA-managed properties
+	 */
+	public List<String> getNamespace();
+	public void setNamespace(String ns, String prefix);
 
 
 }

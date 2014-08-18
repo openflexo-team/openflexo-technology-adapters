@@ -30,13 +30,13 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
-import org.openflexo.technologyadapter.xml.model.XMLType;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -48,8 +48,8 @@ public class TestXMLModel extends OpenflexoTestCase {
 	private static final void dumpIndividual(XMLIndividual indiv, String prefix) {
 
 		System.out.println(prefix + "Indiv : " +  indiv.getName() + "  [" + indiv.getUUID() + "]");
-		for (XMLAttribute a : indiv.getAttributes()) {
-			System.out.println(prefix + "    * attr: " + a.getName() + " = " + a.getValue().toString());
+		for (XMLProperty a : indiv.getType().getProperties()) {
+			System.out.println(prefix + "    * attr: " + a.getName() + " = " + indiv.getPropertyStringValue(a));
 		}
 		for (XMLIndividual x : indiv.getChildren())
 			dumpIndividual(x, prefix + "    ");
@@ -72,13 +72,13 @@ public class TestXMLModel extends OpenflexoTestCase {
 		ModelFactory MF = null;
 		ModelFactory MMF = null;
 		MF = XMLModelImpl.getModelFactory();
-		//new ModelFactory(XMLModel.class);
 		MMF = XMLMetaModelImpl.getModelFactory();
-		//new ModelFactory(XMLMetaModel.class);
-		assertNotNull(MF);
+
 		assertNotNull(MMF);
+		assertNotNull(MF);
 		
 		XMLMetaModel metamodel = MMF.newInstance(XMLMetaModel.class);
+		metamodel.setReadOnly(false);
 
 
 		metamodel.setURI("http://www.openflexo.org/aTestModel");
@@ -93,22 +93,25 @@ public class TestXMLModel extends OpenflexoTestCase {
 		
 		model.setMetaModel(metamodel);
 
-		metamodel.createNewType("http://www.openflexo.org/aTestModel#Fleumeu", "Fleumeu");
-		metamodel.createNewType("http://www.openflexo.org/aTestModel#Flouk", "Flouk");
+		XMLType t = (XMLType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Fleumeu", "Fleumeu");
+		t.createProperty("TOTO", String.class);
+		
+		t = (XMLType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Flouk", "Flouk");
+		t.createProperty("TOTO", String.class);
+		
 
 		XMLIndividual xmind = (XMLIndividual) model.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Fleumeu"));
-		xmind.setName("Ploum");
 		
 		model.setRoot(xmind);
 
-		xmind.createAttribute("TOTO", String.class, "Freumeuleu");
+		xmind.addPropertyValue("TOTO", "Freumeuleu");
 
 		XMLIndividual xmind2 = (XMLIndividual) model.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Flouk"));
-		xmind2.setName("Pouet");
 
 		xmind.addChild(xmind2);
 		
-		xmind2.createAttribute("TOTO", String.class, "Flagada");
+		xmind2.addPropertyValue("TOTO", "Flagada");
+		xmind2.addPropertyValue("TUTU", "Zogloubi");
 		
 		dumpIndividual(xmind," -- ");
 	}

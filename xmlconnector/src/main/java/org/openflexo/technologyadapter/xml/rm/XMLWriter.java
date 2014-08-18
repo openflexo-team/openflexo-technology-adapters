@@ -34,7 +34,7 @@ import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
@@ -157,19 +157,19 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 		String value = null;
 
 		// Data Properties
-		for (XMLAttribute a : indiv.getAttributes()) {
-			if (a.isSimpleAttribute() && !a.isElement()) {
-				value = indiv.getAttributeStringValue(a);
+		for (XMLProperty a : indiv.getProperties()) {
+			if (a.isSimpleProperty() && !a.isFromXMLElement()) {
+				value = indiv.getPropertyStringValue(a);
 				if (value != null) {
 					myWriter.writeAttribute(a.getName(), value);
 				}
 			}
 		}
 
-		for (XMLAttribute a : indiv.getAttributes()) {
-			if (a.isSimpleAttribute() && a.isElement()) {
+		for (XMLProperty a : indiv.getProperties()) {
+			if (a.isSimpleProperty() && a.isFromXMLElement()) {
 
-				List<?> valueList = (List<?>) indiv.getAttributeValue(a.getName());
+				List<?> valueList = (List<?>) indiv.getPropertyValue(a.getName());
 				if (valueList != null && valueList.size() > 0) {
 					myWriter.writeStartElement(a.getName());
 					for (Object o : valueList) {
@@ -183,10 +183,10 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 			}
 		}
 		// Object Properties
-		for (XMLAttribute a : indiv.getAttributes()) {
+		for (XMLProperty a : indiv.getProperties()) {
 
-			if (!a.isSimpleAttribute()) {
-				List<?> valueList = (List<?>) indiv.getAttributeValue(a.getName());
+			if (!a.isSimpleProperty()) {
+				List<?> valueList = (List<?>) indiv.getPropertyValue(a.getName());
 				if (valueList != null) {
 					for (Object o : valueList) {
 						this.writeElement(o, a.getName());

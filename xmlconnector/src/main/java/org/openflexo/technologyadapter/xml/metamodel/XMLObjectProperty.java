@@ -1,5 +1,6 @@
 /*
  * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2014 - Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -19,163 +20,27 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.util.List;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
 
-import org.openflexo.foundation.ontology.IFlexoOntology;
-import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
+@ModelEntity
+@ImplementationClass(XMLObjectPropertyImpl.class)
+public interface XMLObjectProperty extends XMLProperty{
 
-import com.sun.xml.xsom.XSAttributeUse;
 
-public interface XMLObjectProperty extends XMLAttribute  {
+	public boolean hasDefaultValue();
 
-	private XSOntClass range;
-	private boolean noRangeFoundYet = true;
+	public String getDefaultValue();
 
-	private List<XMLObjectProperty> superProperties;
+	public boolean hasFixedValue();
 
-	protected XMLObjectPropertyImpl(XSOntology ontology, String name, String uri, XMLTechnologyAdapter adapter) {
-		super(ontology, name, uri, adapter);
-		range = ontology.getRootConcept();
-		superProperties = new ArrayList<XMLObjectProperty>();
-	}
+	public String getFixedValue();
 
-	protected XMLObjectPropertyImpl(XSOntology ontology, String name, XMLTechnologyAdapter adapter) {
-		this(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
-	}
+	public boolean isRequired();
 
-	protected XMLObjectPropertyImpl(XSOntology ontology, String name, XSOntClass domainClass, XMLTechnologyAdapter adapter) {
-		super(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
-	}
+	public Integer getLowerBound();
 
-	protected XMLObjectPropertyImpl(XSOntology ontology, String name, XSOntClass domainClass, XSAttributeUse attributeUse,
-			XMLTechnologyAdapter adapter) {
-		super(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
-	}
+	public Integer getUpperBound();
 
-	public void addSuperProperty(XMLObjectProperty parent) {
-		superProperties.add(parent);
-	}
-
-	public void clearSuperProperties() {
-		superProperties.clear();
-	}
-
-	@Override
-	public List<XMLObjectProperty> getSuperProperties() {
-		return superProperties;
-	}
-
-	@Override
-	public List<XMLObjectProperty> getSubProperties(IFlexoOntology<XMLTechnologyAdapter> context) {
-		// TODO
-		return new ArrayList<XMLObjectProperty>();
-	}
-
-	@Override
-	public XSOntClass getRange() {
-		return range;
-	}
-
-	public void newRangeFound(XSOntClass range) {
-		if (noRangeFoundYet) {
-			this.range = range;
-			noRangeFoundYet = false;
-		} else {
-			this.range = getOntology().getRootConcept();
-		}
-	}
-
-	public void resetRange() {
-		this.range = getOntology().getRootConcept();
-		noRangeFoundYet = true;
-	}
-
-	public boolean hasDefaultValue() {
-		return StringUtils.isNotEmpty(getDefaultValue());
-	}
-
-	public String getDefaultValue() {
-		return null;
-	}
-
-	public boolean hasFixedValue() {
-		return StringUtils.isNotEmpty(getFixedValue());
-	}
-
-	public String getFixedValue() {
-		return null;
-	}
-
-	public boolean isRequired() {
-		return false;
-	}
-
-	@Override
-	public String getDisplayableDescription() {
-		StringBuffer buffer = new StringBuffer("InnerElement ");
-		buffer.append(" (").append(getRange().toString()).append(") is ");
-		if (isRequired()) {
-			buffer.append("required");
-		} else {
-			buffer.append("optional");
-		}
-		if (hasDefaultValue()) {
-			buffer.append(", default: '").append(getDefaultValue()).append("'");
-		}
-		if (hasFixedValue()) {
-			buffer.append(", fixed: '").append(getFixedValue()).append("'");
-		}
-		return buffer.toString();
-	}
-
-	@Override
-	public XMLObjectProperty getFeature() {
-		return this;
-	}
-
-	@Override
-	public Integer getLowerBound() {
-		if (isRequired())
-			return 1;
-		else
-			return 0;
-	}
-
-	@Override
-	public Integer getUpperBound() {
-		// Object Properties are unbound
-		return -1;
-	}
-
-	@Override
-	public boolean isSimpleAttribute() {
-		return false;
-	}
-
-	@Override
-	public boolean isElement() {
-		return true;
-	}
-
-	@Override
-	public void addValue(IXMLIndividual<?, ?> indiv, Object value) {
-
-		XSOntIndividual anIndividual = (XSOntIndividual) indiv;
-
-		anIndividual.addToPropertyValue(this, value);
-	}
-
-	@Override
-	public <T> T accept(IFlexoOntologyConceptVisitor<T> visitor) {
-		return visitor.visit(this);
-	}
-
-	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation<XMLTechnologyAdapter>> getReferencingFeatureAssociations() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }

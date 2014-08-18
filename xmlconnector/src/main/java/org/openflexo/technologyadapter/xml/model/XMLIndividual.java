@@ -20,9 +20,8 @@
  */
 package org.openflexo.technologyadapter.xml.model;
 
-import java.lang.reflect.Type;
-import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -37,8 +36,9 @@ import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 /**
@@ -53,12 +53,14 @@ import org.w3c.dom.Element;
 @ImplementationClass(XMLIndividualImpl.class)
 public interface XMLIndividual extends XMLObject {
 
+	// TODO : manage the calculation of FQN
+
+	public static final String _UUID = "uuid";
 	public static final String TYPE = "myType";
 	public static final String MODEL = "containerModel";
-	public static final String _UUID = "uuid";
 	public static final String CHILD = "children";
 	public static final String PARENT = "parent";
-	public static final String ATTR = "attributes";
+	public static final String PROPERTIES_VALUES = "propertiesValues";
 	/**
 	 * Property used to host XML's PCDATA textual content
 	 */
@@ -74,7 +76,7 @@ public interface XMLIndividual extends XMLObject {
 	public XMLType getType();
 	
 	@Setter(TYPE)
-	public void setType(Type aType);
+	public void setType(XMLType aType);
 	
 	@Getter(_UUID)
 	public String getUUID();
@@ -99,20 +101,30 @@ public interface XMLIndividual extends XMLObject {
 	@PastingPoint
 	public void addChild(XMLIndividual ind);
 	
-	@Getter(value = ATTR, cardinality = Cardinality.LIST)
-	public Collection<? extends XMLAttribute> getAttributes();
-	
-    public Object createAttribute(String attrLName, Type aType, String value);
+	@Getter(value = PROPERTIES_VALUES, cardinality = Cardinality.MAP)
+	public Map<? extends XMLProperty, ? extends XMLPropertyValue> getPropertiesValues();
 
-	@Adder(value = ATTR)
-	public Object addAttribute(XMLAttribute attr);
+	public XMLPropertyValue getPropertyValue(String pname);
+
+	public String getPropertyStringValue(XMLProperty prop);
 	
-	@Remover(value = ATTR)
-	public Object deleteAttribute(XMLAttribute attr);
+	@Adder(value = PROPERTIES_VALUES)
+	public void addPropertyValue(XMLProperty prop, XMLPropertyValue value);
+
+	public void addPropertyValue(String name, Object value);
+
+	public void addPropertyValue(XMLProperty prop, Object value);
+	
+	@Remover(value = PROPERTIES_VALUES)
+	public void deletePropertyValues(XMLProperty attr);
 	
 	@Getter(CONTENT)
 	public String getContentDATA();
 	
+	// TODO : refactor to get rid of any JDOM reference
 	public Element toXML(Document doc);
+
+
+
 
 }

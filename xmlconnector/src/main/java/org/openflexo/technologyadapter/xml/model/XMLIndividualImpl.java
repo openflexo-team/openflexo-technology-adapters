@@ -20,9 +20,7 @@
  */
 package org.openflexo.technologyadapter.xml.model;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -30,9 +28,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
-import org.openflexo.technologyadapter.xml.metamodel.XMLAttributeImpl;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.xml.XMLCst;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,9 +53,9 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 	/* Properties */
 
 	private Map<XMLType, Set<XMLIndividualImpl>>  children  = null;
-	private Map<String, XMLAttribute> attributes   = null;
+	private Map<XMLProperty, XMLPropertyValue> attributesValues   = null;
 	private final String uuid;
-	
+
 	/**
 	 * Default Constructor
 	 * 
@@ -66,10 +64,10 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 	public XMLIndividualImpl() {
 		super();
 		uuid = UUID.randomUUID().toString();
-		attributes = new HashMap<String, XMLAttribute>();
+		attributesValues = new HashMap<XMLProperty, XMLPropertyValue>();
 		children = new HashMap<XMLType, Set<XMLIndividualImpl>>();
 	}
-	
+
 	@Override
 	public String getUUID(){
 		return uuid;
@@ -77,20 +75,11 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 
 	@Override
 	public String getContentDATA() {
-		XMLAttribute attr = attributes.get(XMLCst.CDATA_ATTR_NAME);
+		XMLProperty attr = this.getType().getPropertyByName(XMLCst.CDATA_ATTR_NAME);
 		if (attr != null) {
-			return attr.getValue();
+			return this.getPropertyStringValue(attr);
 		}
 		return "";
-	}
-
-	// ************ Accessors
-
-	/* (non-Javadoc)
-	 * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getTechnologyAdapter()
-	 */
-	public XMLTechnologyAdapter getTechnologyAdapter() {
-		return getContainerModel().getTechnologyAdapter();
 	}
 
 	@Override
@@ -98,22 +87,17 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 		return getType().getName();
 	}
 
-	@Override
-	public String getFullyQualifiedName() {
-		// TODO Auto-generated method stub
-		return getName();
-	}
 
 	/* (non-Javadoc)
 	 * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getAttributeValue(java.lang.String)
 	 */
 	@Override
-	public Object getAttributeValue(String attributeName) {
+	public XMLPropertyValue getPropertyValue(String attributeName) {
 
-		XMLAttribute attr =  attributes.get(attributeName);
+		XMLProperty attr =  getType().getPropertyByName(attributeName);
 
 		if (attr != null) {
-			return attr.getValue();
+			return attributesValues.get(attr);
 		}
 		else
 			return null;
@@ -148,35 +132,70 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 		return returned;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getAttributes()
-	 */
+
 	@Override
-	public Collection<? extends XMLAttribute> getAttributes() {
-		return attributes.values();
+	public String getPropertyStringValue(XMLProperty a) {
+		return attributesValues.get(a).getStringValue();
 	}
 
 	@Override
-	public Object createAttribute(String attrLName, Type aType, String value) {
-		XMLAttribute attr = XMLModelImpl.getModelFactory().newInstance(XMLAttribute.class, attrLName, aType);
-		attr.setValue(value);
+	public Map<? extends XMLProperty, XMLPropertyValue> getPropertiesValues() {
+		return attributesValues;
+	}
 
-		if (attributes == null) {
-			logger.warning("Attribute collection is null");
-			attributes = new HashMap<String, XMLAttribute>();
+	@Override
+	public void addPropertyValue(XMLProperty attr, XMLPropertyValue value){
+		// TODO
+	}
+
+	@Override	
+	public void deletePropertyValues(XMLProperty attr){
+		// TODO
+	}	
+
+	@Override
+	public void addPropertyValue(String name, Object value) {
+
+		XMLProperty prop = getType().getPropertyByName(name);
+
+		if (prop == null) {
+			if (!this.getContainerModel().getMetaModel().isReadOnly()) {
+				// TODO Manage complex types and actual types for objects.
+				prop = this.getType().createProperty(name, String.class);
+			}
+			else {
+				logger.warning("CANNOT give a value  for a non existente attribute :" + name );
+			}
+		}
+		if (prop != null) {
+			XMLPropertyValue vals = attributesValues.get(prop);
+
+			if (vals == null){
+
+				if (prop instanceof XMLDataProperty){
+					vals = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class,prop);
+					((XMLDataPropertyValue) vals).setValue(value);
+					attributesValues.put(prop,vals);
+				}
+				else {
+					// TODO..... complex attributes, collections
+				}	}
+
+
+			else {
+				// TODO.....  manage this case also
+			}
 		}
 
-		attributes.put(attrLName, attr);
-
-		return attr;
 	}
 
 	@Override
-	public XMLAttribute getAttributeByName(String aName) {
-		return attributes.get(aName);
+	public void addPropertyValue(XMLProperty prop, Object value) {
+		// TODO....
+		attributesValues.put(prop, (XMLPropertyValue) value);
 	}
 
-	
+
 	/* (non-Javadoc)
 	 * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#toXML(org.w3c.dom.Document)
 	 */
@@ -191,7 +210,7 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 			element = doc.createElement(getType().getName());
 		}
 
-		for (IXMLIndividual<XMLIndividual, XMLAttribute> i : getChildren()) {
+		for (XMLIndividual i : getChildren()) {
 			element.appendChild(i.toXML(doc));
 		}
 
@@ -200,10 +219,5 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 		return element;
 	}
 
-	@Override
-	public String getAttributeStringValue(XMLAttribute a) {
-		return ((XMLAttributeImpl) a).getValue().toString();
-	}
-	
 
 }

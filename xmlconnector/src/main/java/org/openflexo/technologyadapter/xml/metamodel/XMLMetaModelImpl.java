@@ -25,9 +25,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.xml.model.XMLType;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 /**
  * A simple MetaModeling Structure that is not backed up in an XSD file and where you can
@@ -49,7 +50,11 @@ public abstract class XMLMetaModelImpl  implements XMLMetaModel {
     
     static{
     	try {
-			 MF = new ModelFactory(XMLMetaModel.class);
+			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class,
+									  										  XMLType.class,
+									  										  XMLProperty.class,
+									  										  XMLDataProperty.class,
+									  										  XMLObjectProperty.class));
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

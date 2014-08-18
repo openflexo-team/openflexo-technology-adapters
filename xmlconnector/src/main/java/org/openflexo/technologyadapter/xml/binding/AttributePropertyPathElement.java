@@ -10,21 +10,21 @@ import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.antar.binding.SimplePathElement;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
 public class AttributePropertyPathElement extends SimplePathElement {
 
-	private XMLAttribute property;
+	private XMLProperty property;
 
 	private static final Logger logger = Logger.getLogger(AttributePropertyPathElement.class.getPackage().getName());
 
-	public AttributePropertyPathElement(BindingPathElement parent, XMLAttribute property) {
+	public AttributePropertyPathElement(BindingPathElement parent, XMLProperty property) {
 		super(parent, property.getName(), property.getType());
 		this.property = property;
 	}
 
-	public XMLAttribute getDataProperty() {
+	public XMLProperty getDataProperty() {
 		return property;
 	}
 
@@ -47,7 +47,7 @@ public class AttributePropertyPathElement extends SimplePathElement {
 
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
-		Object xsdAnswer = ((XMLIndividual) target).getAttributeValue(getPropertyName());
+		Object xsdAnswer = ((XMLIndividual) target).getPropertyValue(getPropertyName());
 		// System.out.println("AttributeDataPropertyFeatureAssociationPathElement, returning " + emfAnswer + " of " + (emfAnswer != null ?
 		// emfAnswer.getClass() : null));
 		return xsdAnswer;
@@ -56,7 +56,7 @@ public class AttributePropertyPathElement extends SimplePathElement {
 	@Override
 	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
 			NullReferenceException {
-		XMLAttribute prop = ((XMLIndividual) target).getAttributeByName(getPropertyName());
+		XMLProperty prop = ((XMLIndividual) target).getPropertyByName(getPropertyName());
 		prop.setValue(value);
 	}
 }

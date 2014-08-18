@@ -29,7 +29,6 @@ import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.xml.model.XMLType;
 
 
 /**
@@ -40,10 +39,9 @@ import org.openflexo.technologyadapter.xml.model.XMLType;
  * 
  */
 @ModelEntity
-@ImplementationClass(XMLAttributeImpl.class)
-public interface XMLAttribute  extends XMLObject {
+@ImplementationClass(XMLPropertyImpl.class)
+public interface XMLProperty  extends XMLObject {
 
-	public static String VALUE = "value";
 	/**
 	 * The Type of the given attribute. This might be a simple type
 	 */
@@ -52,9 +50,14 @@ public interface XMLAttribute  extends XMLObject {
 	 * XMLType containing the given attribute
 	 */
 	public static final String CONTAINER = "container";
+	/**
+	 * This indicates if property was created from an XML element or attribute
+	 */
 
+	public static final String IS_FROM_ELEMENT = "isFromElement";
+	
 	@Initializer
-	public XMLAttribute init(@Parameter(NAME) String s, @Parameter(TYPE) Type t);
+	public XMLProperty init(@Parameter(NAME) String s, @Parameter(TYPE) Type t);
 	
 	@Getter(CONTAINER)
 	public XMLType getContainer();
@@ -62,20 +65,20 @@ public interface XMLAttribute  extends XMLObject {
 	@Setter(CONTAINER)
 	public void setContainer(XMLType containedIn);
 	
-	// TODO : review this as it can have several values!!
-	
-	@Getter(VALUE)
-	public String getValue();
-
-	// TODO values!!! Those are collections most of the time.... Except for Attribute of simple Types
-	@Setter(VALUE)
-	public void setValue(String o);
-
-	@Getter(TYPE)
-	public XMLType getType();
+	@Getter(value = TYPE, ignoreType=true)
+	public Type getType();
 	
 	@Setter(TYPE)
 	public void setType(Type aType);
 	
+	/**
+	 * Returns true if this property was created from an XML element and false if from an XMLAttribute
+	 * @return
+	 */
+	@Getter(value = IS_FROM_ELEMENT, defaultValue = "false")
+	public boolean isFromXMLElement();
+
+	@Setter(IS_FROM_ELEMENT)
+	public void setIsFromElement(boolean fromElement);
 	
 }

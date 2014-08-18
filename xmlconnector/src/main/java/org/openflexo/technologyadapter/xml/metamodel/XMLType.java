@@ -18,7 +18,7 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.xml.model;
+package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -34,19 +34,19 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
-import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 
 @ModelEntity
 @ImplementationClass(XMLTypeImpl.class)
 public interface XMLType  extends XMLObject, Type {
 
 	public final String MM = "metaModel";
+
+	// TODO : manage the calculation of FQN
 	// TODO: check emnboitage avec URI et NSPrexiw => FQN
 	public final String FQN = "fullyQualifiedName";
 	public final String SUPERTYPE = "superType";
 	public final String ABSTRACT = "abstract";
+	public final String SIMPLE_TYPE = "simpleType";
 	public final String ATTRIBUTES = "attributes";
 
     static final String NAME_ATTR = "name";
@@ -62,21 +62,26 @@ public interface XMLType  extends XMLObject, Type {
 	
 	@Getter(value = ATTRIBUTES, cardinality = Cardinality.LIST)
 	@Embedded
-	public Collection<? extends XMLAttribute> getAttributes();
+	public Collection<? extends XMLProperty> getProperties();
 
+	@Setter(NAME)
+	public void setName(String name);
 
-	@Finder(attribute = XMLAttribute.URI, collection = ATTRIBUTES, isMultiValued = true)
-    public XMLAttribute getAttributeByName(String name);
+	@Finder(attribute = XMLProperty.URI, collection = ATTRIBUTES, isMultiValued = true)
+    public XMLProperty getPropertyByName(String name);
 
-    public void createAttribute(String name, Type t);
+    public XMLProperty createProperty(String name, Type t);
     
-	public Boolean hasAttribute(String name);
+    public XMLDataProperty getDataProperty();
+    public XMLObjectProperty getObjectProperty();
+    
+	public Boolean hasProperty(String name);
 	
 	@Adder(ATTRIBUTES)
-	public void addAttribute(XMLAttribute anAttribute);
+	public void addProperty(XMLProperty anAttribute);
 
 	@Remover(ATTRIBUTES)
-	public void removeAttribute(XMLAttribute anAttribute);
+	public void removeProperty(XMLProperty anAttribute);
 	
 	
 	@Getter(SUPERTYPE)
@@ -90,6 +95,5 @@ public interface XMLType  extends XMLObject, Type {
 	
 	@Setter(ABSTRACT)
 	public void setIsAbstract(boolean t);
-	
 	
 }

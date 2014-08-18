@@ -31,7 +31,7 @@ import org.openflexo.antar.binding.FunctionPathElement;
 import org.openflexo.antar.binding.SimplePathElement;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
-import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
 /**
@@ -50,8 +50,8 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
-		if (object instanceof XMLAttribute ){
-			XMLAttribute attr = (XMLAttribute) object;
+		if (object instanceof XMLProperty ){
+			XMLProperty attr = (XMLProperty) object;
 
 			return new AttributePropertyPathElement(parent, attr);
 		}
@@ -73,7 +73,7 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 		List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
 		
 		if (parent instanceof XMLIndividual) {
-				for (XMLAttribute attr : ((XMLIndividual) parent).getAttributes()) {
+				for (XMLProperty attr : ((XMLIndividual) parent).getProperties()) {
 					returned.add(getSimplePathElement(attr, parent));
 				}
 			}

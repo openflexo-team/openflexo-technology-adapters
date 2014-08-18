@@ -32,9 +32,9 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModelImpl;
-import org.openflexo.technologyadapter.xml.model.XMLType;
 import org.openflexo.technologyadapter.xml.model.XSOntologyURIDefinitions;
 import org.openflexo.toolbox.IProgress;
 
@@ -195,7 +195,7 @@ XSDMetaModelResource {
 					XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
 					if (owner != null) {
 						// TODO: better manage types
-						owner.createAttribute(element.getName(), resourceData.getTypeFromURI("STRING_BASIC_TYPE"));
+						owner.createProperty(element.getName(), resourceData.getTypeFromURI("STRING_BASIC_TYPE"));
 					}
 					else {
 						logger.warn("unable to find an owner type for attribute: " + uri);
@@ -217,7 +217,7 @@ XSDMetaModelResource {
 				XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
 				if (owner != null) {
 					// TODO: better manage types
-					owner.createAttribute(attribute.getName(), resourceData.getTypeFromURI("STRING_BASIC_TYPE"));
+					owner.createProperty(attribute.getName(), resourceData.getTypeFromURI("STRING_BASIC_TYPE"));
 				}
 				else {
 					logger.warn("unable to find an owner type for attribute: " + uri);
@@ -243,7 +243,7 @@ XSDMetaModelResource {
 					XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
 					if (owner != null) {
 						// TODO: better manage types
-						owner.createAttribute(name, t);
+						owner.createProperty(name, t);
 					}
 					else {
 						logger.warn("unable to find an owner type for attribute: " + uri);

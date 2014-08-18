@@ -32,8 +32,10 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -64,7 +66,10 @@ public abstract class XMLModelImpl  implements XMLModel {
 
 	static{
 		try {
-			MF = new ModelFactory(XMLModel.class);
+			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class,
+								  											  XMLIndividual.class,
+								  											  XMLPropertyValue.class,
+								  											  XMLDataPropertyValue.class));
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -24,7 +24,6 @@ import java.lang.reflect.Type;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.xml.model.XMLType;
 
 
 public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMetaModel {

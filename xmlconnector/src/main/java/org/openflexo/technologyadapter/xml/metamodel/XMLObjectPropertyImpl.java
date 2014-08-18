@@ -19,82 +19,10 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.openflexo.foundation.ontology.IFlexoOntology;
-import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.toolbox.StringUtils;
 
-import com.sun.xml.xsom.XSAttributeUse;
+public abstract class XMLObjectPropertyImpl extends XMLPropertyImpl implements XMLObjectProperty {
 
-public class XMLObjectPropertyImpl extends XMLAttributeImpl implements XMLObjectProperty {
-
-	private XSOntClass range;
-	private boolean noRangeFoundYet = true;
-
-	private List<XMLObjectPropertyImpl> superProperties;
-
-	protected XMLObjectPropertyImpl(XSOntology ontology, String name, String uri, XMLTechnologyAdapter adapter) {
-		super(ontology, name, uri, adapter);
-		range = ontology.getRootConcept();
-		superProperties = new ArrayList<XMLObjectPropertyImpl>();
-	}
-
-	protected XMLObjectPropertyImpl(XSOntology ontology, String name, XMLTechnologyAdapter adapter) {
-		this(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
-	}
-
-	protected XMLObjectPropertyImpl(XSOntology ontology, String name, XSOntClass domainClass, XMLTechnologyAdapter adapter) {
-		super(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
-	}
-
-	protected XMLObjectPropertyImpl(XSOntology ontology, String name, XSOntClass domainClass, XSAttributeUse attributeUse,
-			XMLTechnologyAdapter adapter) {
-		super(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
-	}
-
-	public void addSuperProperty(XMLObjectPropertyImpl parent) {
-		superProperties.add(parent);
-	}
-
-	@Override
-	public void clearSuperProperties() {
-		superProperties.clear();
-	}
-
-	@Override
-	public List<XMLObjectPropertyImpl> getSuperProperties() {
-		return superProperties;
-	}
-
-	@Override
-	public List<XMLObjectPropertyImpl> getSubProperties(IFlexoOntology<XMLTechnologyAdapter> context) {
-		// TODO
-		return new ArrayList<XMLObjectPropertyImpl>();
-	}
-
-	@Override
-	public XSOntClass getRange() {
-		return range;
-	}
-
-	public void newRangeFound(XSOntClass range) {
-		if (noRangeFoundYet) {
-			this.range = range;
-			noRangeFoundYet = false;
-		} else {
-			this.range = getOntology().getRootConcept();
-		}
-	}
-
-	@Override
-	public void resetRange() {
-		this.range = getOntology().getRootConcept();
-		noRangeFoundYet = true;
-	}
 
 	@Override
 	public boolean hasDefaultValue() {
@@ -124,7 +52,7 @@ public class XMLObjectPropertyImpl extends XMLAttributeImpl implements XMLObject
 	@Override
 	public String getDisplayableDescription() {
 		StringBuffer buffer = new StringBuffer("InnerElement ");
-		buffer.append(" (").append(getRange().toString()).append(") is ");
+		buffer.append(" (").append(getType().toString()).append(") is ");
 		if (isRequired()) {
 			buffer.append("required");
 		} else {
@@ -137,11 +65,6 @@ public class XMLObjectPropertyImpl extends XMLAttributeImpl implements XMLObject
 			buffer.append(", fixed: '").append(getFixedValue()).append("'");
 		}
 		return buffer.toString();
-	}
-
-	@Override
-	public XMLObjectPropertyImpl getFeature() {
-		return this;
 	}
 
 	@Override
@@ -159,32 +82,8 @@ public class XMLObjectPropertyImpl extends XMLAttributeImpl implements XMLObject
 	}
 
 	@Override
-	public boolean isSimpleAttribute() {
-		return false;
-	}
-
-	@Override
-	public boolean isElement() {
+	public boolean isFromXMLElement() {
 		return true;
-	}
-
-	@Override
-	public void addValue(IXMLIndividual<?, ?> indiv, Object value) {
-
-		XSOntIndividual anIndividual = (XSOntIndividual) indiv;
-
-		anIndividual.addToPropertyValue(this, value);
-	}
-
-	@Override
-	public <T> T accept(IFlexoOntologyConceptVisitor<T> visitor) {
-		return visitor.visit(this);
-	}
-
-	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation<XMLTechnologyAdapter>> getReferencingFeatureAssociations() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

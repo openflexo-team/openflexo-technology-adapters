@@ -12,7 +12,7 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
-import org.openflexo.technologyadapter.xml.model.XSDataPropertyValue;
+import org.openflexo.technologyadapter.xml.model.XMLDataPropertyValue;
 import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
 
 public class AttributeDataPropertyPathElement extends SimplePathElement {
@@ -61,7 +61,7 @@ public class AttributeDataPropertyPathElement extends SimplePathElement {
 
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
-		XSDataPropertyValue xsdAnswer = (XSDataPropertyValue) ((XSOntIndividual) target).getPropertyValue(getDataProperty());
+		XMLDataPropertyValue xsdAnswer = (XMLDataPropertyValue) ((XSOntIndividual) target).getPropertyValue(getDataProperty());
 
 		if (xsdAnswer != null){
 			return xsdAnswer.getValue();
@@ -72,7 +72,7 @@ public class AttributeDataPropertyPathElement extends SimplePathElement {
 	@Override
 	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
 	NullReferenceException {
-		XSOntProperty prop = ((XSOntIndividual) target).getAttributeByName(getPropertyName());
+		XSOntProperty prop = ((XSOntIndividual) target).getPropertyByName(getPropertyName());
 		((XSOntIndividual) target).addToPropertyValue(prop, value);
 	}
 }

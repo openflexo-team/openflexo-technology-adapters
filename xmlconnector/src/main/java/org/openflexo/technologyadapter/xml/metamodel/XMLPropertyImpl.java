@@ -33,33 +33,16 @@ import org.openflexo.technologyadapter.xml.model.XMLIndividual;
  * @author xtof
  * 
  */
-public abstract class XMLAttributeImpl implements XMLAttribute {
+public abstract class XMLPropertyImpl implements XMLProperty {
 
 	// Properties
 	private XMLIndividual container;
 	private Type aType;
 
-	public XMLAttributeImpl() {
+	public XMLPropertyImpl() {
 		super();
 	}
-
-
-	// TODO => these are not quite the same... but... similar, it has to be explaned
 	
-	public boolean isSimpleAttribute() {
-		return true;
-	}
-
-	public boolean isElement() {
-		return false;
-	}
-	
-	// TODO : refactor this
-	public void addValue(XMLIndividual indiv, Object value) {
-		setValue((String) value);
-
-	}
-
 	public String getDisplayableDescription() {
 		return this.getName();
 	}

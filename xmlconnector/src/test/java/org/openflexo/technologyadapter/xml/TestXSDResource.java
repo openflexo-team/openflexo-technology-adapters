@@ -32,10 +32,10 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
-import org.openflexo.technologyadapter.xml.model.XMLType;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
@@ -56,7 +56,7 @@ public class TestXSDResource extends OpenflexoTestCase {
 	private static final void dumpIndividual(XMLIndividual indiv, String prefix) {
 
 		System.out.println(prefix + "Indiv : " +  indiv.getName() + "  [" + indiv.getUUID() + "]");
-		for (XMLAttribute a : indiv.getAttributes()) {
+		for (XMLProperty a : indiv.getProperties()) {
 			System.out.println(prefix + "    * attr: " + a.getName() + " = " + a.getValue().toString());
 		}
 		for (XMLIndividual x : indiv.getChildren())
@@ -76,7 +76,7 @@ public class TestXSDResource extends OpenflexoTestCase {
 				System.out.println("Parsed Type: "+prefix + t.getName() );
 
 			}
-			for ( XMLAttribute x : t.getAttributes()) {
+			for ( XMLProperty x : t.getProperties()) {
 				System.out.println("     --- " + x.getName() + "  :: " + x.getType().getName());
 			}
 			System.out.flush();

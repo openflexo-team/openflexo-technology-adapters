@@ -201,7 +201,7 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 			} else {
 				if (mappingStyle == MappingStyle.ATTRIBUTE_VALUE && attributeName != null) {
 
-					Object value = ((IXMLIndividual) xsO).getAttributeValue(attributeName);
+					Object value = ((IXMLIndividual) xsO).getPropertyValue(attributeName);
 					try {
 						builtURI = URLEncoder.encode(value.toString(), "UTF-8");
 					} catch (UnsupportedEncodingException e) {
@@ -250,7 +250,7 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 
 					for (IXMLIndividual obj : ((XMLModel) msInstance.getAccessedResourceData()).getIndividualsOfType(mappedClass)) {
 
-						Object value = obj.getAttributeValue(attributeName);
+						Object value = obj.getPropertyValue(attributeName);
 						try {
 							if (value.equals(URLDecoder.decode(objectURI, "UTF-8"))) {
 								return obj;

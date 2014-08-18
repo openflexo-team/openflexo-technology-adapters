@@ -47,7 +47,7 @@ import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
 import org.openflexo.technologyadapter.xml.model.XSOntology;
-import org.openflexo.technologyadapter.xml.model.XSPropertyValue;
+import org.openflexo.technologyadapter.xml.model.XMLPropertyValue;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 import org.openflexo.xml.IXMLAttribute;
 import org.openflexo.xml.IXMLType;
@@ -205,7 +205,7 @@ public interface XSURIProcessor extends XMLURIProcessor {
                 if (mappingStyle == MappingStyle.ATTRIBUTE_VALUE && attributeName != null && getMappedClass() != null) {
 
                     XSOntProperty aProperty = ((XSOntClass) getMappedClass()).getPropertyByName(attributeName);
-                    XSPropertyValue value = ((XSOntIndividual) xsO).getPropertyValue(aProperty);
+                    XMLPropertyValue value = ((XSOntIndividual) xsO).getPropertyValue(aProperty);
                     try {
                         // NPE protection
                         if (value != null) {
@@ -276,7 +276,7 @@ public interface XSURIProcessor extends XMLURIProcessor {
 
                     for (XSOntIndividual obj : ((XSOntology) resource.getModel()).getIndividualsOfClass(getMappedClass())) {
 
-                        XSPropertyValue value = obj.getPropertyValue(aProperty);
+                        XMLPropertyValue value = obj.getPropertyValue(aProperty);
                         try {
                             if (value.equals(URLDecoder.decode(attrValue, "UTF-8"))) {
                                 return obj;

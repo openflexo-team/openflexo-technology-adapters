@@ -1,6 +1,6 @@
 /*
  * (c) Copyright 2010-2011 AgileBirds
- * (c) Copyright 2013-2014 Openflexo
+ * (c) Copyright 2014 - Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -20,24 +20,35 @@
  */
 package org.openflexo.technologyadapter.xml.model;
 
-import org.openflexo.foundation.DefaultFlexoObject;
-import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Implementation of a Property value in XSD/XML technology
+ * Implementation of an Object Property values in XSD/XML technology.<br>
+ * Value is an instance of {@link XSOntIndividual}
  * 
  * @author sylvain
  */
-// TODO replace with full PAMELA implementation
-public abstract class XSPropertyValue extends DefaultFlexoObject implements IFlexoOntologyPropertyValue<XMLTechnologyAdapter> {
+public abstract class XMLObjectPropertyValueImpl  implements XMLObjectPropertyValue {
+
+	private List<XMLIndividual> values = null;
+
+	XMLObjectPropertyValueImpl(){
+		values = new ArrayList<XMLIndividual>();
+	}
+	
+	@Override
+	public List<XMLIndividual> getValues() {
+		return values;
+	}
 
 	@Override
-	public abstract XSOntProperty getProperty();
+	public void addToValues(XMLIndividual value) {
+		values.add(value);
+	}
 
 	@Override
-	public XMLTechnologyAdapter getTechnologyAdapter() {
-		return getProperty().getTechnologyAdapter();
+	public void removeFromValues(XMLIndividual value) {
+		values.remove(value);
 	}
 }

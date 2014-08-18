@@ -20,17 +20,6 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.openflexo.foundation.ontology.IFlexoOntology;
-import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
-import org.openflexo.technologyadapter.xml.model.XSOntology;
 import org.openflexo.toolbox.StringUtils;
 
 import com.sun.xml.xsom.XSAttributeUse;
@@ -40,66 +29,16 @@ import com.sun.xml.xsom.XSAttributeUse;
  * @author xtof
  *
  */
-public abstract class XMLDataPropertyImpl extends XMLAttributeImpl implements XMLAttribute  {
+public abstract class XMLDataPropertyImpl extends XMLPropertyImpl implements XMLDataProperty  {
+	private final XSAttributeUse attributeUse = null;
 
-	private XSDDataType dataType;
-	private boolean isFromAttribute = false;
-	// FIXME : attributeUse is null most of the time => when an element is used to define a property
-	private XSAttributeUse attributeUse = null;
-
-	protected XMLDataPropertyImpl(XSOntology ontology, String name, String uri, XMLTechnologyAdapter adapter) {
-		super(ontology, name, uri, adapter);
-	}
-
-	protected XMLDataPropertyImpl(XSOntology ontology, String name, String uri, XSOntClass domainClass, XMLTechnologyAdapter adapter) {
-		super(ontology, name, uri, adapter);
-		this.domain = domainClass;
-	}
-
-	protected XMLDataPropertyImpl(XSOntology ontology, String name, String uri, XSOntClass domainClass, XSAttributeUse attributeUse,
-			XMLTechnologyAdapter adapter) {
-		super(ontology, name, uri, adapter);
-		this.domain = domainClass;
-		this.attributeUse = attributeUse;
-	}
 
 	@Override
-	public List<XMLDataPropertyImpl> getSuperProperties() {
-		// TODO Make sure it's always empty
-		return new ArrayList<XMLDataPropertyImpl>();
-	}
-
-	@Override
-	public List<XMLDataPropertyImpl> getSubProperties(IFlexoOntology<XMLTechnologyAdapter> context) {
-		// TODO Make sure it's always empty
-		return new ArrayList<XMLDataPropertyImpl>();
-	}
-
-	@Override
-	public XSDDataType getRange() {
-		return getDataType();
-	}
-
-	public XSDDataType getDataType() {
-		return dataType;
-	}
-
-	public void setDataType(XSDDataType dataType) {
-		this.dataType = dataType;
-	}
-
-	public void setIsFromAttribute(boolean isFromAttribute) {
-		this.isFromAttribute = isFromAttribute;
-	}
-
-	public boolean getIsFromAttribute() {
-		return isFromAttribute;
-	}
-
 	public boolean hasDefaultValue() {
 		return StringUtils.isNotEmpty(getDefaultValue());
 	}
 
+	@Override
 	public String getDefaultValue() {
 		if (attributeUse != null) {
 			if (attributeUse.getDefaultValue() != null) {
@@ -109,10 +48,12 @@ public abstract class XMLDataPropertyImpl extends XMLAttributeImpl implements XM
 		return null;
 	}
 
+	@Override
 	public boolean hasFixedValue() {
 		return StringUtils.isNotEmpty(getFixedValue());
 	}
 
+	@Override
 	public String getFixedValue() {
 		if (attributeUse != null) {
 			if (attributeUse.getFixedValue() != null) {
@@ -122,6 +63,7 @@ public abstract class XMLDataPropertyImpl extends XMLAttributeImpl implements XM
 		return null;
 	}
 
+	@Override
 	public boolean isRequired() {
 		if (attributeUse != null) {
 			return attributeUse.isRequired();
@@ -133,7 +75,6 @@ public abstract class XMLDataPropertyImpl extends XMLAttributeImpl implements XM
 	public String getDisplayableDescription() {
 		StringBuffer buffer = new StringBuffer("Attribute ");
 		buffer.append(getName());
-		buffer.append(" (").append(getRange().toString()).append(") is ");
 		if (isRequired()) {
 			buffer.append("required");
 		} else {
@@ -161,37 +102,5 @@ public abstract class XMLDataPropertyImpl extends XMLAttributeImpl implements XM
 		return 1;
 	}
 
-	@Override
-	public boolean isSimpleAttribute() {
-		return true;
-	}
-
-	@Override
-	public boolean isElement() {
-		return !isFromAttribute;
-	}
-
-	@Override
-	public void addValue(IXMLIndividual<?, ?> indiv, Object value) {
-
-		XSOntIndividual anIndividual = (XSOntIndividual) indiv;
-		anIndividual.addToPropertyValue(this, value);
-
-	}
-
-	@Override
-	public <T> T accept(IFlexoOntologyConceptVisitor<T> visitor) {
-		return visitor.visit(this);
-	}
-
-	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation<XMLTechnologyAdapter>> getReferencingFeatureAssociations() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public IFlexoOntologyFeature<XMLTechnologyAdapter> getFeature() {
-		return this;
-	}
-
+	
 }

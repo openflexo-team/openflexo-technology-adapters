@@ -1,6 +1,6 @@
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2014 Openflexo
+ * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2014 - Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -18,33 +18,24 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+package org.openflexo.technologyadapter.xml.model;
 
-package org.openflexo.technologyadapter.xml.metamodel;
-
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.Setter;
+import java.util.List;
 
 /**
- * @author xtof
+ * Implementation of an Object Property values in XSD/XML technology.<br>
+ * Value is an instance of {@link XSOntIndividual}
  * 
+ * @author sylvain
  */
-@ModelEntity
-public interface XMLObject {
-
-
-	public static final String NAME = "name";
-
-	public final String URI = "uri";
-
+public interface XMLObjectPropertyValue extends XMLPropertyValue {
 	
-	@Getter(NAME)
-	public String getName();
 	
-	@Getter(URI)
-	public String getURI();
 	
-	@Setter(URI)
-	public void setURI(String uri);
+	public List<XMLIndividual> getValues();
 
+	public void addToValues(XMLIndividual value);
+
+	public void removeFromValues(XMLIndividual value);
+	
 }

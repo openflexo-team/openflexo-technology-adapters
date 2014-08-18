@@ -34,8 +34,8 @@ import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObjectPropertyImpl;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
-import org.openflexo.technologyadapter.xml.model.XSDataPropertyValue;
-import org.openflexo.technologyadapter.xml.model.XSObjectPropertyValue;
+import org.openflexo.technologyadapter.xml.model.XMLDataPropertyValue;
+import org.openflexo.technologyadapter.xml.model.XMLObjectPropertyValue;
 import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
 
 /**
@@ -87,11 +87,11 @@ public class AttributeObjectPropertyPathElement extends SimplePathElement {
 			BindingEvaluationContext context) throws TypeMismatchException,
 			NullReferenceException, InvocationTargetTransformException {
 		if (property != null){
-			XSObjectPropertyValue xsdAnswer = (XSObjectPropertyValue) ((XSOntIndividual) target).getPropertyValue(property);
+			XMLObjectPropertyValue xsdAnswer = (XMLObjectPropertyValue) ((XSOntIndividual) target).getPropertyValue(property);
 			// FIXME simple for now but...
 			if (xsdAnswer == null) {
 				// initialize the value to null to create the List
-				xsdAnswer = (XSObjectPropertyValue) ((XSOntIndividual) target).addToPropertyValue(property, null);
+				xsdAnswer = (XMLObjectPropertyValue) ((XSOntIndividual) target).addToPropertyValue(property, null);
 			}
 			return xsdAnswer.getValues();
 		}
@@ -103,7 +103,7 @@ public class AttributeObjectPropertyPathElement extends SimplePathElement {
 			BindingEvaluationContext context) throws TypeMismatchException,
 			NullReferenceException {
 
-		XSOntProperty prop = ((XSOntIndividual) target).getAttributeByName(getPropertyName());
+		XSOntProperty prop = ((XSOntIndividual) target).getPropertyByName(getPropertyName());
 		((XSOntIndividual) target).addToPropertyValue(prop, value);
 	}
 
