@@ -19,7 +19,7 @@
  *
  */
 
-package org.openflexo.technologyadapter.xml.model;
+package org.openflexo.technologyadapter.xml.metamodel;
 
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ModelEntity;

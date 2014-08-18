@@ -204,5 +204,6 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 	public String getAttributeStringValue(XMLAttribute a) {
 		return ((XMLAttributeImpl) a).getValue().toString();
 	}
+	
 
 }

@@ -25,58 +25,55 @@ import java.util.List;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
-import org.openflexo.technologyadapter.xml.model.XSOntology;
 import org.openflexo.toolbox.StringUtils;
-import org.openflexo.xml.IXMLIndividual;
 
 import com.sun.xml.xsom.XSAttributeUse;
 
-public class XSOntObjectProperty extends XSOntProperty implements IFlexoOntologyObjectProperty<XMLTechnologyAdapter> {
+public class XMLObjectPropertyImpl extends XMLAttributeImpl implements XMLObjectProperty {
 
 	private XSOntClass range;
 	private boolean noRangeFoundYet = true;
 
-	private List<XSOntObjectProperty> superProperties;
+	private List<XMLObjectPropertyImpl> superProperties;
 
-	protected XSOntObjectProperty(XSOntology ontology, String name, String uri, XMLTechnologyAdapter adapter) {
+	protected XMLObjectPropertyImpl(XSOntology ontology, String name, String uri, XMLTechnologyAdapter adapter) {
 		super(ontology, name, uri, adapter);
 		range = ontology.getRootConcept();
-		superProperties = new ArrayList<XSOntObjectProperty>();
+		superProperties = new ArrayList<XMLObjectPropertyImpl>();
 	}
 
-	protected XSOntObjectProperty(XSOntology ontology, String name, XMLTechnologyAdapter adapter) {
+	protected XMLObjectPropertyImpl(XSOntology ontology, String name, XMLTechnologyAdapter adapter) {
 		this(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
 	}
 
-	protected XSOntObjectProperty(XSOntology ontology, String name, XSOntClass domainClass, XMLTechnologyAdapter adapter) {
+	protected XMLObjectPropertyImpl(XSOntology ontology, String name, XSOntClass domainClass, XMLTechnologyAdapter adapter) {
 		super(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
 	}
 
-	protected XSOntObjectProperty(XSOntology ontology, String name, XSOntClass domainClass, XSAttributeUse attributeUse,
+	protected XMLObjectPropertyImpl(XSOntology ontology, String name, XSOntClass domainClass, XSAttributeUse attributeUse,
 			XMLTechnologyAdapter adapter) {
 		super(ontology, name, XS_ONTOLOGY_URI + "#" + name, adapter);
 	}
 
-	public void addSuperProperty(XSOntObjectProperty parent) {
+	public void addSuperProperty(XMLObjectPropertyImpl parent) {
 		superProperties.add(parent);
 	}
 
+	@Override
 	public void clearSuperProperties() {
 		superProperties.clear();
 	}
 
 	@Override
-	public List<XSOntObjectProperty> getSuperProperties() {
+	public List<XMLObjectPropertyImpl> getSuperProperties() {
 		return superProperties;
 	}
 
 	@Override
-	public List<XSOntObjectProperty> getSubProperties(IFlexoOntology<XMLTechnologyAdapter> context) {
+	public List<XMLObjectPropertyImpl> getSubProperties(IFlexoOntology<XMLTechnologyAdapter> context) {
 		// TODO
-		return new ArrayList<XSOntObjectProperty>();
+		return new ArrayList<XMLObjectPropertyImpl>();
 	}
 
 	@Override
@@ -93,27 +90,33 @@ public class XSOntObjectProperty extends XSOntProperty implements IFlexoOntology
 		}
 	}
 
+	@Override
 	public void resetRange() {
 		this.range = getOntology().getRootConcept();
 		noRangeFoundYet = true;
 	}
 
+	@Override
 	public boolean hasDefaultValue() {
 		return StringUtils.isNotEmpty(getDefaultValue());
 	}
 
+	@Override
 	public String getDefaultValue() {
 		return null;
 	}
 
+	@Override
 	public boolean hasFixedValue() {
 		return StringUtils.isNotEmpty(getFixedValue());
 	}
 
+	@Override
 	public String getFixedValue() {
 		return null;
 	}
 
+	@Override
 	public boolean isRequired() {
 		return false;
 	}
@@ -137,7 +140,7 @@ public class XSOntObjectProperty extends XSOntProperty implements IFlexoOntology
 	}
 
 	@Override
-	public XSOntObjectProperty getFeature() {
+	public XMLObjectPropertyImpl getFeature() {
 		return this;
 	}
 

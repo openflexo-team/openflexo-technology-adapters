@@ -36,6 +36,7 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 
 @ModelEntity
 @ImplementationClass(XMLTypeImpl.class)

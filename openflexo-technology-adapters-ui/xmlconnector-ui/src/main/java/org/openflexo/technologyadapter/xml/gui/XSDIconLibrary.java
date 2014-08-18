@@ -27,7 +27,7 @@ import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObjectPropertyImpl;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
@@ -61,7 +61,7 @@ public class XSDIconLibrary {
 			return XSD_INDIVIDUAL_ICON;
 		} else if (XMLDataProperty.class.isAssignableFrom(objectClass)) {
 			return XSD_DATAPROPERTY_ICON;
-		}else if (XSOntObjectProperty.class.isAssignableFrom(objectClass)) {
+		}else if (XMLObjectPropertyImpl.class.isAssignableFrom(objectClass)) {
 			return XSD_OBJECTPROPERTY_ICON;
 		}
 		logger.warning("No icon for " + objectClass);

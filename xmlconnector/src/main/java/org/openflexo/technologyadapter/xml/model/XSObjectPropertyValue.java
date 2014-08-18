@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectPropertyValue;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObjectPropertyImpl;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
 
 /**
@@ -35,16 +35,16 @@ import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
  */
 public class XSObjectPropertyValue extends XSPropertyValue implements IFlexoOntologyObjectPropertyValue<XMLTechnologyAdapter> {
 
-	private final XSOntObjectProperty property;
+	private final XMLObjectPropertyImpl property;
 	private final List<XSOntIndividual> values;
 
-	public XSObjectPropertyValue(XSOntObjectProperty property) {
+	public XSObjectPropertyValue(XMLObjectPropertyImpl property) {
 		super();
 		this.property = property;
 		this.values = new ArrayList<XSOntIndividual>();
 	}
 
-	public XSObjectPropertyValue(XSOntObjectProperty property, XSOntIndividual value) {
+	public XSObjectPropertyValue(XMLObjectPropertyImpl property, XSOntIndividual value) {
 		super();
 		this.property = property;
 		this.values = new ArrayList<XSOntIndividual>();
@@ -52,7 +52,7 @@ public class XSObjectPropertyValue extends XSPropertyValue implements IFlexoOnto
 	}
 
 	@Override
-	public XSOntObjectProperty getObjectProperty() {
+	public XMLObjectPropertyImpl getObjectProperty() {
 		return property;
 	}
 

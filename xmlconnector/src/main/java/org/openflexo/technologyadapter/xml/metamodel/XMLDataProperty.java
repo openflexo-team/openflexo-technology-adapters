@@ -20,69 +20,18 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
-import org.openflexo.foundation.ontology.IFlexoOntology;
-import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
-import org.openflexo.technologyadapter.xml.model.XSOntology;
-import org.openflexo.toolbox.StringUtils;
+import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
 import com.sun.xml.xsom.XSAttributeUse;
 
-public class XMLDataProperty extends XMLAttribute  {
+public interface XMLDataProperty extends XMLAttribute  {
 
 	private XSDDataType dataType;
 	private boolean isFromAttribute = false;
 	// FIXME : attributeUse is null most of the time => when an element is used to define a property
 	private XSAttributeUse attributeUse = null;
 
-	protected XMLDataProperty(XSOntology ontology, String name, String uri, XMLTechnologyAdapter adapter) {
-		super(ontology, name, uri, adapter);
-	}
-
-	protected XMLDataProperty(XSOntology ontology, String name, String uri, XSOntClass domainClass, XMLTechnologyAdapter adapter) {
-		super(ontology, name, uri, adapter);
-		this.domain = domainClass;
-	}
-
-	protected XMLDataProperty(XSOntology ontology, String name, String uri, XSOntClass domainClass, XSAttributeUse attributeUse,
-			XMLTechnologyAdapter adapter) {
-		super(ontology, name, uri, adapter);
-		this.domain = domainClass;
-		this.attributeUse = attributeUse;
-	}
-
-	@Override
-	public List<XMLDataProperty> getSuperProperties() {
-		// TODO Make sure it's always empty
-		return new ArrayList<XMLDataProperty>();
-	}
-
-	@Override
-	public List<XMLDataProperty> getSubProperties(IFlexoOntology<XMLTechnologyAdapter> context) {
-		// TODO Make sure it's always empty
-		return new ArrayList<XMLDataProperty>();
-	}
-
-	@Override
-	public XSDDataType getRange() {
-		return getDataType();
-	}
-
-	public XSDDataType getDataType() {
-		return dataType;
-	}
-
-	public void setDataType(XSDDataType dataType) {
-		this.dataType = dataType;
-	}
-
+	
 	public void setIsFromAttribute(boolean isFromAttribute) {
 		this.isFromAttribute = isFromAttribute;
 	}
@@ -167,26 +116,9 @@ public class XMLDataProperty extends XMLAttribute  {
 	}
 
 	@Override
-	public void addValue(IXMLIndividual<?, ?> indiv, Object value) {
+	public void addValue(XMLIndividual indiv, Object value) {
 
-		XSOntIndividual anIndividual = (XSOntIndividual) indiv;
-		anIndividual.addToPropertyValue(this, value);
+		indiv.addToPropertyValue(this, value);
 
 	}
-
-	@Override
-	public <T> T accept(IFlexoOntologyConceptVisitor<T> visitor) {
-		return visitor.visit(this);
-	}
-
-	@Override
-	public List<? extends IFlexoOntologyFeatureAssociation<XMLTechnologyAdapter>> getReferencingFeatureAssociations() {
-		return Collections.emptyList();
-	}
-
-	@Override
-	public IFlexoOntologyFeature<XMLTechnologyAdapter> getFeature() {
-		return this;
-	}
-
 }

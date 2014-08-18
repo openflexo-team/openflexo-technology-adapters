@@ -43,6 +43,7 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 
 /**
  * @author xtof
@@ -54,9 +55,12 @@ public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>,
 
 	public static final String MM = "metaModel";
 	public static final String RSC = "resource";
+	public static final String NAMESPACE = "namespace";
 	public static final String IND = "individuals";
 	public static final String ROOT = "root";
 	// public static final String TA = "technologyAdapter";
+	public static final int NSPREFIX_INDEX = 0;
+	public static final int NSURI_INDEX = 1;
 
 
 	@Initializer
@@ -64,15 +68,7 @@ public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>,
 
 	@Initializer
 	public XMLModel init(@Parameter(MM) XMLMetaModel mm);
-/*
-	@Initializer
-	public XMLModel init(@Parameter(TA) TechnologyAdapter ta, @Parameter(MM) XMLMetaModel mm);
 	
-	
-	@Override
-	@Getter(TA)
-	XMLTechnologyAdapter getTechnologyAdapter();
-	*/
 	
 	@Override
 	@Getter(MM)
@@ -80,6 +76,12 @@ public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>,
 	
 	@Setter(MM)
 	void setMetaModel(XMLMetaModel mm);
+	
+	@Getter(NAMESPACE)
+	List<String> getNamespace();
+	
+	@Setter(NAMESPACE)
+	void setNamespace(String ns, String prefix);
 	
 
 	@Override

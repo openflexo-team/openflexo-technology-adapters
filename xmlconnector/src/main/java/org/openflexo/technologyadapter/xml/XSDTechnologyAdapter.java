@@ -18,7 +18,7 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.openflexo.technologyadapter.xsd;
+package org.openflexo.technologyadapter.xml;
 
 import static org.openflexo.foundation.technologyadapter.TechnologyAdapter.logger;
 
@@ -36,7 +36,6 @@ import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
 import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.technologyadapter.xml.XSDModelSlot;
 import org.openflexo.technologyadapter.xml.binding.XSDBindingFactory;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;

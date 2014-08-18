@@ -37,7 +37,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObjectPropertyImpl;
 
 /**
  * This class represent the {@link BindingFactory} dedicated to handle XSD technology-specific binding elements
@@ -60,8 +60,8 @@ public final class XSDBindingFactory extends TechnologyAdapterBindingFactory {
 
 			return new AttributeDataPropertyPathElement(parent, attr);
 		}
-		else if (object instanceof XSOntObjectProperty ){
-			XSOntObjectProperty attr = (XSOntObjectProperty) object;
+		else if (object instanceof XMLObjectPropertyImpl ){
+			XMLObjectPropertyImpl attr = (XMLObjectPropertyImpl) object;
 			return new AttributeObjectPropertyPathElement(parent, attr);
 			
 		}

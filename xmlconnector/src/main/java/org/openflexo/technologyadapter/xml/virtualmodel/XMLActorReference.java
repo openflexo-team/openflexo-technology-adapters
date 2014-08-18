@@ -32,7 +32,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.xml.model.XMLObject;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 
 @ModelEntity
 @ImplementationClass(XMLActorReference.XMLActorReferenceImpl.class)

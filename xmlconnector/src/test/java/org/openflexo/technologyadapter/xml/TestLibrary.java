@@ -16,7 +16,7 @@ import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObjectPropertyImpl;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
 import org.openflexo.technologyadapter.xml.model.XSOntology;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
@@ -73,7 +73,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
         assertNotNull(lib.getObjectProperties());
         assertFalse(lib.getObjectProperties().isEmpty());
         buffer.append("Object properties\n");
-        for (XSOntObjectProperty xsoOP : lib.getObjectProperties()) {
+        for (XMLObjectPropertyImpl xsoOP : lib.getObjectProperties()) {
             xsoObject(xsoOP, buffer);
         }
         buffer.append("\n");

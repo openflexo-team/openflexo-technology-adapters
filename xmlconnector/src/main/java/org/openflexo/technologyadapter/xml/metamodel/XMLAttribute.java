@@ -29,7 +29,6 @@ import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.xml.model.XMLObject;
 import org.openflexo.technologyadapter.xml.model.XMLType;
 
 

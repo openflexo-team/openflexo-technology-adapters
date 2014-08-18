@@ -74,8 +74,8 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 			myWriter = xmlOutputFactory.createXMLStreamWriter(outputStr);
 
 			XMLModel model = ((XMLModel) taRes.getResourceData(null));
-			NSPrefix = model.getNamespacePrefix();
-			NSURI = model.getNamespaceURI();
+			NSPrefix = model.getNamespace().get(XMLModel.NSPREFIX_INDEX);
+			NSURI = model.getNamespace().get(XMLModel.NSURI_INDEX);
 
 			if (NSURI != null && !NSURI.isEmpty()) {
 				if (NSPrefix == null || NSPrefix.isEmpty()) {

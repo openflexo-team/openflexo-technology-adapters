@@ -19,11 +19,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>xsdconnector</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
 		</dependency>
 		<dependency>
@@ -31,6 +26,11 @@
 			<artifactId>flexo-ui</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openflexo.openflexo-technology-adapters</groupId>
+			<artifactId>xmlconnector</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 </project>

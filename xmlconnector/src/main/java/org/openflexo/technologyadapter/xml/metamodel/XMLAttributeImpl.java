@@ -44,27 +44,21 @@ public abstract class XMLAttributeImpl implements XMLAttribute {
 	}
 
 
-	@Override
+	// TODO => these are not quite the same... but... similar, it has to be explaned
+	
 	public boolean isSimpleAttribute() {
 		return true;
 	}
 
-	@Override
 	public boolean isElement() {
 		return false;
 	}
-
-	@Override
-	public void addValue(IXMLIndividual<?, ?> indiv, Object value) {
+	
+	// TODO : refactor this
+	public void addValue(XMLIndividual indiv, Object value) {
 		setValue((String) value);
 
 	}
-
-	@Override
-	public Type getAttributeType() {
-		return getType();
-	}
-
 
 	public String getDisplayableDescription() {
 		return this.getName();

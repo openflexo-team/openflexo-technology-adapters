@@ -32,7 +32,7 @@ import org.openflexo.antar.expr.InvocationTargetTransformException;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObjectPropertyImpl;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
 import org.openflexo.technologyadapter.xml.model.XSDataPropertyValue;
 import org.openflexo.technologyadapter.xml.model.XSObjectPropertyValue;
@@ -44,9 +44,9 @@ import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
  */
 public class AttributeObjectPropertyPathElement extends SimplePathElement {
 
-	private XSOntObjectProperty property;
+	private XMLObjectPropertyImpl property;
 
-	public AttributeObjectPropertyPathElement(BindingPathElement parent, XSOntObjectProperty property) {
+	public AttributeObjectPropertyPathElement(BindingPathElement parent, XMLObjectPropertyImpl property) {
 		super(parent, property.getName(), property.getRange());
 		this.property = property;
 	}

@@ -58,7 +58,7 @@ public abstract class XMLModelImpl  implements XMLModel {
 
 	private final Map<String, XMLIndividual> individuals;
 
-	private String                           namespacePrefix = null;
+	private final List<String>                           namespace = new ArrayList<String>();
 
 	private static ModelFactory MF;
 
@@ -93,16 +93,14 @@ public abstract class XMLModelImpl  implements XMLModel {
 
 	@Override
 	public void setNamespace(String uri, String prefix) {
-		this.namespacePrefix = prefix;
-		this.setURI(uri);
+		namespace.set(XMLModel.NSPREFIX_INDEX, prefix);
+		namespace.set(XMLModel.NSURI_INDEX, uri);
 	}
 
 	@Override
-	public String getNamespacePrefix() {
-		return namespacePrefix;
+	public List<String> getNamespace() {
+		return namespace;
 	}
-
-
 
 	@Override
 	public XMLFileResource getResource() {
@@ -185,6 +183,7 @@ public abstract class XMLModelImpl  implements XMLModel {
         return new ArrayList<XMLType>(types.values());
     }
 	 */
+	
 	public Document toXML() throws ParserConfigurationException {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();

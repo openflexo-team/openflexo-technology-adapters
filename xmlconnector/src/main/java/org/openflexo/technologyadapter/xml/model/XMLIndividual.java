@@ -38,6 +38,9 @@ import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 /**
  * 
  * an XMLIndividual represents a single instance of XML Element in a XMLModel
@@ -109,5 +112,7 @@ public interface XMLIndividual extends XMLObject {
 	
 	@Getter(CONTENT)
 	public String getContentDATA();
+	
+	public Element toXML(Document doc);
 
 }
