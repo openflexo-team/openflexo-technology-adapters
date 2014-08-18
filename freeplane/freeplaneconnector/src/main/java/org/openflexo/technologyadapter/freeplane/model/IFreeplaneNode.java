@@ -1,7 +1,9 @@
 package org.openflexo.technologyadapter.freeplane.model;
 
 import java.util.List;
+import java.util.Vector;
 
+import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.map.NodeModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.*;
@@ -38,23 +40,24 @@ public interface IFreeplaneNode extends TechnologyObject<FreeplaneTechnologyAdap
 	public void addChild(IFreeplaneNode node);
 
 	/**
-	 * Add a node with a freeplane object instead of an Openflexo one.<br>
-	 *     Back to a void return to have an API more consistent.
+	 * Add a node with a freeplane object instead of an Openflexo one.<br> Back to a void return to have an API more consistent.
 	 *
-	 * @param fpNodeModel
+	 * @param fpNodeModel the freeplane object to add with pamela entity initialization.
 	 */
 	public void addFreeplaneChild(NodeModel fpNodeModel);
 
 	/**
 	 * Removed done by entity to remove. Nothing done to do it by index.
 	 *
-	 * @param nodeToRemove
+	 * @param node to remove
 	 */
 	@Remover(value = CHILDREN_KEY)
-	public void removeChild(IFreeplaneNode nodeToRemove);
+	public void removeChild(IFreeplaneNode node);
 
 	@Setter(value = CHILDREN_KEY)
 	public void setChildren(List<IFreeplaneNode> list);
 
 	public String getUri();
+
+	public Vector<Attribute> getNodeAttributes();
 }

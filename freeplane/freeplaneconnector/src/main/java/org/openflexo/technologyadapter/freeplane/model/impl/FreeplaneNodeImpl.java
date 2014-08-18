@@ -2,9 +2,12 @@ package org.openflexo.technologyadapter.freeplane.model.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.freeplane.features.attribute.Attribute;
+import org.freeplane.features.attribute.NodeAttributeTableModel;
 import org.freeplane.features.map.NodeModel;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.model.annotations.Getter;
@@ -22,10 +25,6 @@ public abstract class FreeplaneNodeImpl extends FlexoObjectImpl implements IFree
 
 	private NodeModel nodeModel;
 
-	public FreeplaneNodeImpl(final FreeplaneTechnologyAdapter technologyAdapter) {
-		this.technologyAdapter = technologyAdapter;
-	}
-
 	public FreeplaneNodeImpl() {
 	}
 
@@ -40,9 +39,8 @@ public abstract class FreeplaneNodeImpl extends FlexoObjectImpl implements IFree
 
 	/**
 	 * Recursive call to initialize all child too, so don't do it in caller.
-	 * 
-	 * @param model
-	 *            that will be set
+	 *
+	 * @param model that will be set
 	 */
 	@Override
 	@Setter(value = NODE_MODEL_KEY)
@@ -89,5 +87,11 @@ public abstract class FreeplaneNodeImpl extends FlexoObjectImpl implements IFree
 	@Override
 	public String getUri() {
 		return "Node=" + this.getNodeModel().getID();
+	}
+
+	@Override
+	public Vector<Attribute> getNodeAttributes() {
+		NodeAttributeTableModel attributeTable = NodeAttributeTableModel.getModel(getNodeModel());
+		return attributeTable.getAttributes();
 	}
 }
