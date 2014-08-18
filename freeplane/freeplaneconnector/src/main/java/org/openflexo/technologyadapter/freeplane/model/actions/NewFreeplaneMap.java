@@ -1,5 +1,11 @@
 package org.openflexo.technologyadapter.freeplane.model.actions;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.freeplane.features.map.MapModel;
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.mapio.MapIO;
@@ -13,13 +19,6 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Vector;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class NewFreeplaneMap
 		extends FlexoAction<NewFreeplaneMap, RepositoryFolder<IFreeplaneResource>, RepositoryFolder<IFreeplaneResource>> {
@@ -71,7 +70,6 @@ public class NewFreeplaneMap
 
 	@Override
 	protected void doAction(final Object objet) throws FlexoException {
-		LOGGER.info("One day this action will create a new freeplane map with name " + this.mapName);
 		// If no data have been load, initialization has not been done, so do it.
 		FreeplaneBasicAdapter.getInstance();
 		final MapModel newMap = new MapModel();
@@ -85,9 +83,6 @@ public class NewFreeplaneMap
 				+ this.mapName + ".mm";
 		try {
 			((MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class)).writeToFile(newMap, new File(fileCreatedPath));
-		} catch (final FileNotFoundException e) {
-			final String msg = "";
-			LOGGER.log(Level.SEVERE, msg, e);
 		} catch (final IOException e) {
 			final String msg = "";
 			LOGGER.log(Level.SEVERE, msg, e);

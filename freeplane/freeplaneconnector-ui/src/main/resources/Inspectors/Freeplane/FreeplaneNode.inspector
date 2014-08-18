@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel className="org.openflexo.inspector.FIBInspector" layout="border"
+       titleFont="SansSerif,0,12" darkLevel="0"
+       dataClassName="org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode"
+       controllerClassName="org.openflexo.inspector.FIBInspectorController"
+       font="SansSerif,0,12" name="Inspector">
+	<TabPanel name="Tab" constraints="border(location=center)">
+		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
+		     darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
+		     horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+		     verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
+			<Panel layout="gridbag" border="empty" protectContent="false">
+				<Label label="node_content" align="right"
+				       constraints="gridbag(insetsLeft=20;insetsRight=10;gridHeight=1;padY=0;padX=0;anchor=east;gridY=-1;gridX=-1;index=1;gridWidth=1;insetsTop=0;insetsBottom=0;weightY=0.0;fill=none;weightX=0.0)"
+				       readOnly="false" manageDynamicModel="false"/>
+				<TextField validateOnReturn="true" columns="40" passwd="false"
+				           text="TextField" data="data.nodeModel.getText()"
+				           constraints="gridbag(insetsLeft=0;insetsRight=20;gridHeight=1;padY=0;padX=0;anchor=center;gridY=-1;gridX=-1;index=2;gridWidth=0;insetsTop=0;insetsBottom=0;weightY=0.0;fill=horizontal;weightX=1.0)"
+				           name="mapNameTextField" readOnly="true" manageDynamicModel="false"/>
+			</Panel>
+			<Table iteratorClassName="org.freeplane.features.attribute.Attribute" autoSelectFirstRow="false"
+			       createNewRowOnClick="false" boundToSelectionManager="true" showFooter="true"
+			       selectionMode="MultipleIntervalSelection" selected="" format="" icon="" tooltip="" localize="true" enable=""
+			       manageDynamicModel="true" opaque="false" clickAction="" doubleClickAction="" rightClickAction=""
+			       enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" name="AttributesTable"
+			       index="5" data="data.getNodeAttributes()"
+			       constraints="twocols(expandHorizontally=true;expandVertically=true;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+			       visible="">
+				<IconColumn data="controller.iconForObject(iterator)" format="" title="icon" columnWidth="25" resizable="false"
+				            displayTitle="false" color="" bgColor="" tooltip="" valueChangedAction="" name="icon"/>
+				<LabelColumn data="iterator.name" format="" title="attributeKey" columnWidth="50" resizable="true" displayTitle="true"
+				             color="" bgColor="" tooltip="" valueChangedAction="" name="key"/>
+				<LabelColumn data="iterator.value" format="" title="attributeValue" columnWidth="50" resizable="true"
+				             displayTitle="true"
+				             color="" bgColor="" tooltip="" valueChangedAction="" name="value"/>
+			</Table>
+		</Tab>
+		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
+		     darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true"
+		     horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+		     verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab"/>
+	</TabPanel>
+	<LocalizedDictionary>
+		<Localized key="Advanced" lang="French">Avancé</Localized>
+		<Localized key="Basic" lang="French">Basique</Localized>
+		<Localized key="name" lang="English">Name</Localized>
+		<Localized key="name" lang="French">Nom</Localized>
+		<Localized key="name" lang="Dutch">Name</Localized>
+		<Localized key="uri" lang="English">URI</Localized>
+		<Localized key="uri" lang="French">URI</Localized>
+		<Localized key="uri" lang="Dutch">URI</Localized>
+	</LocalizedDictionary>
+	<Parameter name="title" value="Diagram Specification (unloaded)"/>
+</Panel>
