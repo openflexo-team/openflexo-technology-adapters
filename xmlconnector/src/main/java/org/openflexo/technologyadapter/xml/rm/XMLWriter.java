@@ -34,9 +34,9 @@ import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.technologyadapter.xml.model.IXMLModel;
-import org.openflexo.xml.IXMLAttribute;
-import org.openflexo.xml.IXMLIndividual;
+import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
+import org.openflexo.technologyadapter.xml.model.XMLIndividual;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 
 /**
@@ -73,7 +73,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 			xmlOutputFactory.setProperty(XMLOutputFactory.IS_REPAIRING_NAMESPACES, false);
 			myWriter = xmlOutputFactory.createXMLStreamWriter(outputStr);
 
-			IXMLModel model = ((IXMLModel) taRes.getResourceData(null));
+			XMLModel model = ((XMLModel) taRes.getResourceData(null));
 			NSPrefix = model.getNamespacePrefix();
 			NSURI = model.getNamespaceURI();
 
@@ -89,7 +89,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 				myWriter.writeStartDocument("UTF-8", "1.0");
 				myWriter.writeCharacters(LINE_SEP);
 
-				IXMLIndividual<?, ?> rootIndiv = ((IXMLModel) taRes.getResourceData(null)).getRoot();
+				XMLIndividual rootIndiv = ((XMLModel) taRes.getResourceData(null)).getRoot();
 
 				if (rootIndiv != null) {
 					writeRootElement(rootIndiv, NSURI, NSPrefix);
@@ -105,7 +105,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 		}
 	}
 
-	private void writeRootElement(IXMLIndividual<?, ?> rootIndiv, String nSURI, String nSPrefix) throws XMLStreamException, IOException,
+	private void writeRootElement(XMLIndividual rootIndiv, String nSURI, String nSPrefix) throws XMLStreamException, IOException,
 			ResourceLoadingCancelledException, FlexoException {
 
 		myWriter.writeStartElement(nSURI, rootIndiv.getName());
@@ -116,7 +116,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 
 		// children node
 		for (Object i : rootIndiv.getChildren()) {
-			writeElement(i, ((IXMLIndividual) i).getName());
+			writeElement(i, ((XMLIndividual) i).getName());
 		}
 		// CDATA
 		String content = rootIndiv.getContentDATA();
@@ -131,7 +131,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 	}
 
 	private void writeElement(Object o, String name) throws XMLStreamException {
-		IXMLIndividual indiv = (IXMLIndividual) o;
+		XMLIndividual indiv = (XMLIndividual) o;
 
 		myWriter.writeStartElement(NSURI, name);
 
@@ -139,7 +139,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 		writeAttributes(indiv);
 		// children node
 		for (Object i : indiv.getChildren()) {
-			writeElement(i, ((IXMLIndividual) i).getName());
+			writeElement(i, ((XMLIndividual) i).getName());
 		}
 		// CDATA
 		String content = indiv.getContentDATA();
@@ -152,12 +152,12 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 		myWriter.writeCharacters(LINE_SEP);
 	}
 
-	private void writeAttributes(IXMLIndividual<?, ?> indiv) throws XMLStreamException {
+	private void writeAttributes(XMLIndividual indiv) throws XMLStreamException {
 		// Simple Attributes First
 		String value = null;
 
 		// Data Properties
-		for (IXMLAttribute a : indiv.getAttributes()) {
+		for (XMLAttribute a : indiv.getAttributes()) {
 			if (a.isSimpleAttribute() && !a.isElement()) {
 				value = indiv.getAttributeStringValue(a);
 				if (value != null) {
@@ -166,7 +166,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 			}
 		}
 
-		for (IXMLAttribute a : indiv.getAttributes()) {
+		for (XMLAttribute a : indiv.getAttributes()) {
 			if (a.isSimpleAttribute() && a.isElement()) {
 
 				List<?> valueList = (List<?>) indiv.getAttributeValue(a.getName());
@@ -183,7 +183,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 			}
 		}
 		// Object Properties
-		for (IXMLAttribute a : indiv.getAttributes()) {
+		for (XMLAttribute a : indiv.getAttributes()) {
 
 			if (!a.isSimpleAttribute()) {
 				List<?> valueList = (List<?>) indiv.getAttributeValue(a.getName());

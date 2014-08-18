@@ -35,7 +35,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XSDModelSlot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
 
@@ -86,7 +86,7 @@ public interface AddXSIndividual extends AddIndividual<XSDModelSlot, XSOntIndivi
 				for (DataPropertyAssertion dataPropertyAssertion : getDataAssertions()) {
 					if (dataPropertyAssertion.evaluateCondition(action)) {
 						logger.info("DataPropertyAssertion=" + dataPropertyAssertion);
-						XSOntDataProperty property = (XSOntDataProperty) dataPropertyAssertion.getOntologyProperty();
+						XMLDataProperty property = (XMLDataProperty) dataPropertyAssertion.getOntologyProperty();
 						logger.info("Property=" + property);
 						Object value = dataPropertyAssertion.getValue(action);
 						logger.info("Value=" + value);

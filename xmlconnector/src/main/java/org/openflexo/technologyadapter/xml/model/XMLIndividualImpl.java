@@ -31,8 +31,8 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.xml.IXMLAttribute;
-import org.openflexo.xml.IXMLIndividual;
+import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
+import org.openflexo.technologyadapter.xml.metamodel.XMLAttributeImpl;
 import org.openflexo.xml.XMLCst;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -75,9 +75,6 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 		return uuid;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getContentDATA()
-	 */
 	@Override
 	public String getContentDATA() {
 		XMLAttribute attr = attributes.get(XMLCst.CDATA_ATTR_NAME);
@@ -204,7 +201,7 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 	}
 
 	@Override
-	public String getAttributeStringValue(IXMLAttribute a) {
+	public String getAttributeStringValue(XMLAttribute a) {
 		return ((XMLAttributeImpl) a).getValue().toString();
 	}
 

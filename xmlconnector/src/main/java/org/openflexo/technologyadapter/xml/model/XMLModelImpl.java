@@ -35,7 +35,6 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
-import org.openflexo.xml.IXMLType;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -134,7 +133,7 @@ public abstract class XMLModelImpl  implements XMLModel {
 
 	// TODO, TO BE OPTIMIZED
 	@Override
-	public List<XMLIndividual> getIndividualsOfType(IXMLType aType) {
+	public List<XMLIndividual> getIndividualsOfType(XMLType aType) {
 		ArrayList<XMLIndividual> returned = new ArrayList<XMLIndividual>();
 		for (XMLIndividual o : individuals.values()) {
 			if (o.getType() == aType) {

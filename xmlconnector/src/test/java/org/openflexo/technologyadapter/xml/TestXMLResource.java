@@ -32,15 +32,14 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.technologyadapter.xml.model.XMLAttribute;
+import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
-import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLType;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.xml.IXMLIndividual;
 
 @RunWith(OrderedRunner.class)
 public class TestXMLResource extends OpenflexoTestCase {
@@ -51,24 +50,37 @@ public class TestXMLResource extends OpenflexoTestCase {
 	private static XMLModelRepository     modelRepository;
 	private static String                 baseUrl;
 
-	private static final void dumpIndividual(IXMLIndividual<XMLIndividual, XMLAttribute> indiv, String prefix) {
+	private static final void dumpIndividual(XMLIndividual indiv, String prefix) {
 
 		System.out.println(prefix + "Indiv : " +  indiv.getName() + "  [" + indiv.getUUID() + "]");
 		for (XMLAttribute a : indiv.getAttributes()) {
 			System.out.println(prefix + "    * attr: " + a.getName() + " = " + a.getValue().toString());
 		}
-		for (IXMLIndividual<XMLIndividual, XMLAttribute> x : indiv.getChildren())
+		for (XMLIndividual x : indiv.getChildren())
 			dumpIndividual(x, prefix + "    ");
 		System.out.flush();
 	}
 
-	private static final void dumpTypes(XMLModel model) {
-		for (XMLType t : model.getMetaModel().getTypes()) {
-			System.out.println("Inferred Type: " + t.getName() + " -> " + t.getURI() );
+	private static final void dumpTypes(XMLMetaModel metamodel) {
+		for (XMLType t : metamodel.getTypes()) {
+			String prefix = new String();
+			if ( t.isAbstract() ) prefix = "*";
+			else prefix = "-";
+			if (t.getSuperType() != null){
+				System.out.println("Metamodel Type: "+prefix + t.getName() + " :: " + t.getSuperType().getName() );
+			}
+			else {
+				System.out.println("Metamodel Type: "+prefix + t.getName() );
+
+			}
+			for ( XMLAttribute x : t.getAttributes()) {
+				System.out.println("     --- " + x.getName() + "  :: " + x.getType().getName());
+			}
 			System.out.flush();
 		}
 
 	}
+
 
 
 	/**
@@ -105,11 +117,13 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
-//		dumpTypes(modelRes.getModel());
+		dumpTypes(modelRes.getModel().getMetaModel());
 
 		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI(modelRes.getModel().getURI() + "/Metamodel#Library"));
 
-//		dumpIndividual(modelRes.getModelData().getRoot(), "");
+		System.out.println("\n\n");
+		
+		dumpIndividual(modelRes.getModelData().getRoot(), "");
 
 	}
 
@@ -130,11 +144,11 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
-		dumpTypes(modelRes.getModel());
+	//	dumpTypes(modelRes.getModel().getMetaModel());
 
 		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("http://www.example.org/Library#Library"));
 
-		dumpIndividual(modelRes.getModelData().getRoot(), "");
+//		dumpIndividual(modelRes.getModelData().getRoot(), "");
 
 	}
 
@@ -154,10 +168,13 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
-//		dumpTypes(modelRes.getModel());
+		dumpTypes(modelRes.getModel().getMetaModel());
 
+		
 		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("http://www.example.org/Library#Library"));
 
+		System.out.println("\n\n");
+		
 		dumpIndividual(modelRes.getModelData().getRoot(), "");
 
 	}

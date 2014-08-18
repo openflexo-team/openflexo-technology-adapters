@@ -34,12 +34,12 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.xml.IXMLType;
 
 @ModelEntity
 @ImplementationClass(XMLTypeImpl.class)
-public interface XMLType  extends XMLObject, Type, IXMLType {
+public interface XMLType  extends XMLObject, Type {
 
 	public final String MM = "metaModel";
 	// TODO: check emnboitage avec URI et NSPrexiw => FQN

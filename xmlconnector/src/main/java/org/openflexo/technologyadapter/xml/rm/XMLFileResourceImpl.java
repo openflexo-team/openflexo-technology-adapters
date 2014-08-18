@@ -218,6 +218,13 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 
 			try {
 
+				FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = ((XMLFileResource) resourceData.getResource()).getMetaModelResource();
+				if (resourceData.getMetaModel() == null && mmRes != null){
+					resourceData.setMetaModel(mmRes.getMetaModelData());
+				}
+				
+				
+				
 				XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
 
 				factory.setContext(resourceData);

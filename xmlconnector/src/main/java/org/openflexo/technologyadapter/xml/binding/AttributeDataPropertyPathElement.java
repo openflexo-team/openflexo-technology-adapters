@@ -10,23 +10,23 @@ import org.openflexo.antar.binding.ParameterizedTypeImpl;
 import org.openflexo.antar.binding.SimplePathElement;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
 import org.openflexo.technologyadapter.xml.model.XSDataPropertyValue;
 import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
 
 public class AttributeDataPropertyPathElement extends SimplePathElement {
 
-	private XSOntDataProperty property;
+	private XMLDataProperty property;
 
 	private static final Logger logger = Logger.getLogger(AttributeDataPropertyPathElement.class.getPackage().getName());
 
-	public AttributeDataPropertyPathElement(BindingPathElement parent, XSOntDataProperty property) {
+	public AttributeDataPropertyPathElement(BindingPathElement parent, XMLDataProperty property) {
 		super(parent, property.getName(), property.getRange().getAccessedType());
 		this.property = property;
 	}
 
-	public XSOntDataProperty getDataProperty() {
+	public XMLDataProperty getDataProperty() {
 		return property;
 	}
 

@@ -26,34 +26,37 @@ import java.util.List;
 
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
 import org.openflexo.technologyadapter.xml.model.XSOntology;
 import org.openflexo.toolbox.StringUtils;
-import org.openflexo.xml.IXMLIndividual;
 
 import com.sun.xml.xsom.XSAttributeUse;
 
-public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDataProperty<XMLTechnologyAdapter> {
+/**
+ * An attribute with only simple values
+ * @author xtof
+ *
+ */
+public abstract class XMLDataPropertyImpl extends XMLAttributeImpl implements XMLAttribute  {
 
 	private XSDDataType dataType;
 	private boolean isFromAttribute = false;
 	// FIXME : attributeUse is null most of the time => when an element is used to define a property
 	private XSAttributeUse attributeUse = null;
 
-	protected XSOntDataProperty(XSOntology ontology, String name, String uri, XMLTechnologyAdapter adapter) {
+	protected XMLDataPropertyImpl(XSOntology ontology, String name, String uri, XMLTechnologyAdapter adapter) {
 		super(ontology, name, uri, adapter);
 	}
 
-	protected XSOntDataProperty(XSOntology ontology, String name, String uri, XSOntClass domainClass, XMLTechnologyAdapter adapter) {
+	protected XMLDataPropertyImpl(XSOntology ontology, String name, String uri, XSOntClass domainClass, XMLTechnologyAdapter adapter) {
 		super(ontology, name, uri, adapter);
 		this.domain = domainClass;
 	}
 
-	protected XSOntDataProperty(XSOntology ontology, String name, String uri, XSOntClass domainClass, XSAttributeUse attributeUse,
+	protected XMLDataPropertyImpl(XSOntology ontology, String name, String uri, XSOntClass domainClass, XSAttributeUse attributeUse,
 			XMLTechnologyAdapter adapter) {
 		super(ontology, name, uri, adapter);
 		this.domain = domainClass;
@@ -61,15 +64,15 @@ public class XSOntDataProperty extends XSOntProperty implements IFlexoOntologyDa
 	}
 
 	@Override
-	public List<XSOntDataProperty> getSuperProperties() {
+	public List<XMLDataPropertyImpl> getSuperProperties() {
 		// TODO Make sure it's always empty
-		return new ArrayList<XSOntDataProperty>();
+		return new ArrayList<XMLDataPropertyImpl>();
 	}
 
 	@Override
-	public List<XSOntDataProperty> getSubProperties(IFlexoOntology<XMLTechnologyAdapter> context) {
+	public List<XMLDataPropertyImpl> getSubProperties(IFlexoOntology<XMLTechnologyAdapter> context) {
 		// TODO Make sure it's always empty
-		return new ArrayList<XSOntDataProperty>();
+		return new ArrayList<XMLDataPropertyImpl>();
 	}
 
 	@Override

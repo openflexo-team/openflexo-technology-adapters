@@ -19,7 +19,7 @@
  *
  */
 
-package org.openflexo.technologyadapter.xml.model;
+package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.lang.reflect.Type;
 
@@ -29,7 +29,8 @@ import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.xml.IXMLAttribute;
+import org.openflexo.technologyadapter.xml.model.XMLObject;
+import org.openflexo.technologyadapter.xml.model.XMLType;
 
 
 /**
@@ -41,17 +42,33 @@ import org.openflexo.xml.IXMLAttribute;
  */
 @ModelEntity
 @ImplementationClass(XMLAttributeImpl.class)
-public interface XMLAttribute  extends IXMLAttribute, XMLObject {
+public interface XMLAttribute  extends XMLObject {
 
 	public static String VALUE = "value";
+	/**
+	 * The Type of the given attribute. This might be a simple type
+	 */
 	public static final String TYPE = "myType";
+	/**
+	 * XMLType containing the given attribute
+	 */
+	public static final String CONTAINER = "container";
 
 	@Initializer
 	public XMLAttribute init(@Parameter(NAME) String s, @Parameter(TYPE) Type t);
 	
+	@Getter(CONTAINER)
+	public XMLType getContainer();
+
+	@Setter(CONTAINER)
+	public void setContainer(XMLType containedIn);
+	
+	// TODO : review this as it can have several values!!
+	
 	@Getter(VALUE)
 	public String getValue();
 
+	// TODO values!!! Those are collections most of the time.... Except for Attribute of simple Types
 	@Setter(VALUE)
 	public void setValue(String o);
 

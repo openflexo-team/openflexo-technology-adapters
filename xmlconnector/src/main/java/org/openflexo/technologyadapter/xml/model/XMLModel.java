@@ -43,7 +43,6 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.xml.IXMLType;
 
 /**
  * @author xtof
@@ -51,7 +50,7 @@ import org.openflexo.xml.IXMLType;
  */
 @ModelEntity
 @ImplementationClass(XMLModelImpl.class)
-public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>, IXMLModel, TechnologyObject<XMLTechnologyAdapter> {
+public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>, TechnologyObject<XMLTechnologyAdapter> {
 
 	public static final String MM = "metaModel";
 	public static final String RSC = "resource";
@@ -91,7 +90,6 @@ public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>,
 	@Setter(RSC)
 	public void setResource(FlexoResource<XMLModel> resource);
 	
-	@Override
 	@Getter(ROOT)
 	public XMLIndividual getRoot();
 	
@@ -105,7 +103,6 @@ public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>,
 
 
 	//TODO ask Syl pourkoi on ne peut pas avoir +eurs adders...
-	@Override
 	public Object addNewIndividual(Type aType);
 	
 	@Adder(IND)
@@ -116,7 +113,7 @@ public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>,
 	public void removeFromNIndividuals(XMLIndividual ind);
 	
 	@Finder(attribute = XMLIndividual.TYPE, collection = IND, isMultiValued = true)
-	public List<? extends XMLIndividual> getIndividualsOfType(IXMLType aType);
+	public List<? extends XMLIndividual> getIndividualsOfType(XMLType aType);
 
 
 }

@@ -26,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
+import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModelImpl;
 
 public abstract class XMLTypeImpl  implements XMLType {

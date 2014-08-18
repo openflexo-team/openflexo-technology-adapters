@@ -32,8 +32,8 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.model.XMLAttribute;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLType;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
@@ -41,7 +41,6 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.xml.IXMLIndividual;
 
 @RunWith(OrderedRunner.class)
 public class TestXSDResource extends OpenflexoTestCase {
@@ -54,13 +53,13 @@ public class TestXSDResource extends OpenflexoTestCase {
 	private static String                 baseUrl;
 	
 
-	private static final void dumpIndividual(IXMLIndividual<XMLIndividual, XMLAttribute> indiv, String prefix) {
+	private static final void dumpIndividual(XMLIndividual indiv, String prefix) {
 
 		System.out.println(prefix + "Indiv : " +  indiv.getName() + "  [" + indiv.getUUID() + "]");
 		for (XMLAttribute a : indiv.getAttributes()) {
 			System.out.println(prefix + "    * attr: " + a.getName() + " = " + a.getValue().toString());
 		}
-		for (IXMLIndividual<XMLIndividual, XMLAttribute> x : indiv.getChildren())
+		for (XMLIndividual x : indiv.getChildren())
 			dumpIndividual(x, prefix + "    ");
 		System.out.flush();
 	}

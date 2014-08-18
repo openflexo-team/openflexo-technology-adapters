@@ -36,7 +36,7 @@ import org.openflexo.foundation.ontology.SubPropertyOfProperty;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
 
 /**
@@ -55,8 +55,8 @@ public final class XSDBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
-		if (object instanceof XSOntDataProperty ){
-			XSOntDataProperty attr = (XSOntDataProperty) object;
+		if (object instanceof XMLDataProperty ){
+			XMLDataProperty attr = (XMLDataProperty) object;
 
 			return new AttributeDataPropertyPathElement(parent, attr);
 		}

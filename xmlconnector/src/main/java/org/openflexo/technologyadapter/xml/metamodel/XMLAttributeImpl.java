@@ -19,11 +19,11 @@
  *
  */
 
-package org.openflexo.technologyadapter.xml.model;
+package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.xml.IXMLIndividual;
+import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
 
 /**
@@ -36,27 +36,13 @@ import org.openflexo.xml.IXMLIndividual;
 public abstract class XMLAttributeImpl implements XMLAttribute {
 
 	// Properties
-	private IXMLIndividual<?, ?> container;
+	private XMLIndividual container;
 	private Type aType;
 
 	public XMLAttributeImpl() {
 		super();
 	}
 
-	/**
-	 * @return the containedIn
-	 */
-	public IXMLIndividual<?, ?> getContainer() {
-		return container;
-	}
-
-	/**
-	 * @param containedIn
-	 *            the containedIn to set
-	 */
-	public void setContainer(IXMLIndividual<?, ?> containedIn) {
-		this.container = containedIn;
-	}
 
 	@Override
 	public boolean isSimpleAttribute() {

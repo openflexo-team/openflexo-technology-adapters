@@ -37,7 +37,6 @@ import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
-import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.foundation.view.FreeModelSlotInstance;
@@ -63,7 +62,6 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.CellStyleAc
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelCell;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelRow;
 import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelSheet;
-import org.openflexo.xml.IXMLIndividual;
 
 /**
  * Implementation of a basic ModelSlot class for the Excel technology adapter<br>
@@ -181,7 +179,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 				if(o!=null){
 					return o;
 				}else{
-					TechnologyAdapterResource<ExcelWorkbook, ?> resource = (TechnologyAdapterResource<ExcelWorkbook, ?>) msInstance.getResource();
+					TechnologyAdapterResource<ExcelWorkbook, ?> resource = msInstance.getResource();
 					if (!resource.isLoaded()) {
 						resource.loadResourceData(null);
 					}

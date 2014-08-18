@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.openflexo.foundation.ontology.IFlexoOntologyDataPropertyValue;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
 
 /**
@@ -34,11 +34,11 @@ import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
  */
 public class XSDataPropertyValue extends XSPropertyValue implements IFlexoOntologyDataPropertyValue<XMLTechnologyAdapter> {
 
-	private final XSOntDataProperty property;
+	private final XMLDataProperty property;
 	// FIXME in XML Data Property can have a single Value
 	private final List<Object> values;
 
-	public XSDataPropertyValue(XSOntDataProperty property, Object value) {
+	public XSDataPropertyValue(XMLDataProperty property, Object value) {
 		super();
 		this.property = property;
 		this.values = new ArrayList<Object>();
@@ -46,7 +46,7 @@ public class XSDataPropertyValue extends XSPropertyValue implements IFlexoOntolo
 	}
 
 	@Override
-	public XSOntDataProperty getDataProperty() {
+	public XMLDataProperty getDataProperty() {
 		return property;
 	}
 

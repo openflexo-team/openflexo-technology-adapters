@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
 import org.openflexo.technologyadapter.xml.model.XSOntology;
@@ -63,7 +63,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
         assertNotNull(lib.getDataProperties());
         assertFalse(lib.getDataProperties().isEmpty());
         buffer.append("Data properties\n");
-        for (XSOntDataProperty xsoDP : ((XMLMetaModel) lib).getDataProperties()) {
+        for (XMLDataProperty xsoDP : ((XMLMetaModel) lib).getDataProperties()) {
             xsoObject(xsoDP, buffer);
         }
         buffer.append("\n");

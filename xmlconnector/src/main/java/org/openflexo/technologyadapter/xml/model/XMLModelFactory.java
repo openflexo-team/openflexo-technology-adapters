@@ -25,9 +25,8 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.xml.IXMLAttribute;
-import org.openflexo.xml.IXMLIndividual;
 import org.openflexo.xml.XMLReaderSAXHandler;
 import org.openflexo.xml.saxBasedObjectGraphFactory;
 import org.xml.sax.SAXException;
@@ -166,7 +165,7 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
 	@Override
 	public Type getAttributeType(Object currentContainer, String localName) {
-		IXMLAttribute attr = ((IXMLIndividual) currentContainer).getAttributeByName(localName);
+		XMLAttribute attr = ((XMLIndividual) currentContainer).getAttributeByName(localName);
 		if (attr != null) {
 			return attr.getAttributeType();
 		}

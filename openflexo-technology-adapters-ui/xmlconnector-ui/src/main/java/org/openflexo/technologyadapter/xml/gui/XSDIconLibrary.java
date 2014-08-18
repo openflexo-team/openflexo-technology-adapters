@@ -26,7 +26,7 @@ import javax.swing.ImageIcon;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntObjectProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
@@ -59,7 +59,7 @@ public class XSDIconLibrary {
 			return XSD_CLASS_ICON;
 		} else if (XSOntIndividual.class.isAssignableFrom(objectClass)) {
 			return XSD_INDIVIDUAL_ICON;
-		} else if (XSOntDataProperty.class.isAssignableFrom(objectClass)) {
+		} else if (XMLDataProperty.class.isAssignableFrom(objectClass)) {
 			return XSD_DATAPROPERTY_ICON;
 		}else if (XSOntObjectProperty.class.isAssignableFrom(objectClass)) {
 			return XSD_OBJECTPROPERTY_ICON;

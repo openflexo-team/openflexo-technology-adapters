@@ -37,7 +37,7 @@ import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.xml.IXMLIndividual;
+import org.openflexo.technologyadapter.xml.metamodel.XMLAttribute;
 /**
  * 
  * an XMLIndividual represents a single instance of XML Element in a XMLModel
@@ -48,7 +48,7 @@ import org.openflexo.xml.IXMLIndividual;
  */
 @ModelEntity
 @ImplementationClass(XMLIndividualImpl.class)
-public interface XMLIndividual extends XMLObject, IXMLIndividual<XMLIndividual, XMLAttribute> {
+public interface XMLIndividual extends XMLObject {
 
 	public static final String TYPE = "myType";
 	public static final String MODEL = "containerModel";
@@ -56,6 +56,10 @@ public interface XMLIndividual extends XMLObject, IXMLIndividual<XMLIndividual, 
 	public static final String CHILD = "children";
 	public static final String PARENT = "parent";
 	public static final String ATTR = "attributes";
+	/**
+	 * Property used to host XML's PCDATA textual content
+	 */
+	public static final String CONTENT = "contentDATA";
 
 	@Initializer
 	public XMLIndividual init(@Parameter(MODEL) XMLModel m, @Parameter(TYPE) XMLType t);
@@ -63,20 +67,16 @@ public interface XMLIndividual extends XMLObject, IXMLIndividual<XMLIndividual, 
 	@Getter(MODEL)
     public XMLModel getContainerModel();
 
-	@Override
 	@Getter(TYPE)
 	public XMLType getType();
 	
-	@Override
 	@Setter(TYPE)
 	public void setType(Type aType);
 	
-	@Override
 	@Getter(_UUID)
 	public String getUUID();
 	
 
-	@Override
 	@Getter(PARENT)
 	public XMLIndividual getParent();
 	
@@ -84,7 +84,6 @@ public interface XMLIndividual extends XMLObject, IXMLIndividual<XMLIndividual, 
 	public void setParent(XMLIndividual xmlind);
 	
 
-	@Override
 	@Getter(value = CHILD, cardinality = Cardinality.LIST, inverse = PARENT)
 	@CloningStrategy(StrategyType.IGNORE)
 	@Embedded
@@ -97,11 +96,9 @@ public interface XMLIndividual extends XMLObject, IXMLIndividual<XMLIndividual, 
 	@PastingPoint
 	public void addChild(XMLIndividual ind);
 	
-	@Override
 	@Getter(value = ATTR, cardinality = Cardinality.LIST)
 	public Collection<? extends XMLAttribute> getAttributes();
 	
-	@Override
     public Object createAttribute(String attrLName, Type aType, String value);
 
 	@Adder(value = ATTR)
@@ -110,4 +107,7 @@ public interface XMLIndividual extends XMLObject, IXMLIndividual<XMLIndividual, 
 	@Remover(value = ATTR)
 	public Object deleteAttribute(XMLAttribute attr);
 	
+	@Getter(CONTENT)
+	public String getContentDATA();
+
 }
