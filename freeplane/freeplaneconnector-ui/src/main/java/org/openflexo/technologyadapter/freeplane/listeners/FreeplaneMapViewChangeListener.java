@@ -16,7 +16,6 @@ public class FreeplaneMapViewChangeListener implements IMapChangeListener {
 
     private void propagateChanges() {
         this.bindedMap.setModified(true);
-		// TODO : handlefor
     }
 
     @Override

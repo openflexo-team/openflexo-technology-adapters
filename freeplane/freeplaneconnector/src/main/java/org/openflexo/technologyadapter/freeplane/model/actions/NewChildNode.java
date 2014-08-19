@@ -1,5 +1,7 @@
 package org.openflexo.technologyadapter.freeplane.model.actions;
 
+import java.util.Vector;
+
 import org.freeplane.features.map.NodeModel;
 import org.freeplane.features.map.mindmapmode.MMapController;
 import org.freeplane.features.mode.Controller;
@@ -12,9 +14,6 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
-import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneNodeImpl;
-
-import java.util.Vector;
 
 public class NewChildNode extends FlexoAction<NewChildNode, IFreeplaneNode, IFreeplaneMap> {
 

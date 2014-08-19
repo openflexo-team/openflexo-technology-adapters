@@ -43,12 +43,4 @@ public class ${technologyPrefix}ModelSlotInstanceConfiguration extends FreeModel
         // TODO : add specific options here
     }
 
-    /**
-     * @return empty list
-     */
-    @Override
-    public List<ModelSlotInstanceConfigurationOption> getAvailableOptions() {
-        return Collections.emptyList();
-    }
-    
 }

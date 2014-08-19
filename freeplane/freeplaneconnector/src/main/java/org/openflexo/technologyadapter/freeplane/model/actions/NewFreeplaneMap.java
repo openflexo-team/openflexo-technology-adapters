@@ -57,7 +57,15 @@ public class NewFreeplaneMap
 	/**
 	 * Property for fibs
 	 */
-	public String mapName;
+	private String mapName;
+
+	public void setMapName(final String mapName) {
+		this.mapName = mapName;
+	}
+
+	public String getMapName() {
+		return mapName;
+	}
 
 	private NewFreeplaneMap(final RepositoryFolder<IFreeplaneResource> focusedObject,
 			final Vector<RepositoryFolder<IFreeplaneResource>> globalSelection, final FlexoEditor editor) {
