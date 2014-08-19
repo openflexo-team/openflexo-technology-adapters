@@ -1,6 +1,5 @@
 package org.openflexo.technologyadapter.freeplane.fml.editionactions;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -8,8 +7,6 @@ import java.util.logging.Logger;
 import org.freeplane.features.map.NodeModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
-import org.openflexo.antar.expr.NullReferenceException;
-import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.view.FreeModelSlotInstance;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
@@ -20,7 +17,6 @@ import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNode
 import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneNodeRole;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
-import sun.net.www.content.image.png;
 
 @ModelEntity
 @XMLElement
@@ -116,8 +112,8 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 
 		@Override
 		public DataBinding<String> getNodeText() {
-			if ( this.nodeText == null){
-				this.nodeText = new DataBinding<String>(this,String.class,BindingDefinitionType.GET);
+			if (this.nodeText == null) {
+				this.nodeText = new DataBinding<String>(this, String.class, BindingDefinitionType.GET);
 				this.nodeText.setBindingName(NODE_TEXT_KEY);
 			}
 			return this.nodeText;
@@ -125,7 +121,7 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 
 		@Override
 		public void setNodeText(DataBinding<String> pNodeText) {
-			if (pNodeText !=null){
+			if (pNodeText != null) {
 				pNodeText.setOwner(this);
 				pNodeText.setDeclaredType(String.class);
 				pNodeText.setBindingDefinitionType(BindingDefinitionType.GET);
@@ -134,7 +130,7 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 			this.nodeText = pNodeText;
 		}
 
-		private String getBindedNodeText(FlexoBehaviourAction<?,?,?> action){
+		private String getBindedNodeText(FlexoBehaviourAction<?, ?, ?> action) {
 			final String errorMsg = "Error while getting binding value for action " + action;
 			try {
 				return getNodeText().getBindingValue(action);

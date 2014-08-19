@@ -133,7 +133,7 @@ public interface IFreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		}
 
 		@Override
-		public TechnologyAdapterResource<IFreeplaneMap, ?> createProjectSpecificEmptyResource(final View view, final String filename, final String modelUri) {
+		public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createProjectSpecificEmptyResource(final View view, final String filename, final String modelUri) {
 			return getTechnologyAdapter().createNewFreeplaneMap(view.getProject(), filename);
 		}
 	}
