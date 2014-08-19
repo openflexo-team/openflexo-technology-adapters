@@ -76,8 +76,10 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 			myWriter = xmlOutputFactory.createXMLStreamWriter(outputStr);
 
 			XMLModel model = ((XMLModel) taRes.getResourceData(null));
-			NSPrefix = model.getNamespace().get(XMLModel.NSPREFIX_INDEX);
-			NSURI = model.getNamespace().get(XMLModel.NSURI_INDEX);
+			if ( model.getNamespace().size() == 2){
+				NSPrefix = model.getNamespace().get(XMLModel.NSPREFIX_INDEX);
+				NSURI = model.getNamespace().get(XMLModel.NSURI_INDEX);
+			}
 
 			if (NSURI != null && !NSURI.isEmpty()) {
 				if (NSPrefix == null || NSPrefix.isEmpty()) {
@@ -108,7 +110,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 	}
 
 	private void writeRootElement(XMLIndividual rootIndiv, String nSURI, String nSPrefix) throws XMLStreamException, IOException,
-			ResourceLoadingCancelledException, FlexoException {
+	ResourceLoadingCancelledException, FlexoException {
 
 		myWriter.writeStartElement(nSURI, rootIndiv.getName());
 		myWriter.writeNamespace(nSPrefix, nSURI);

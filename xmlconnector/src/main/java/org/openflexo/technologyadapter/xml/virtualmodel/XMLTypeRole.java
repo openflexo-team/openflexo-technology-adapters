@@ -1,0 +1,21 @@
+package org.openflexo.technologyadapter.xml.virtualmodel;
+
+import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
+
+@ModelEntity
+@ImplementationClass(XMLTypeRole.XMLTypeRoleImpl.class)
+@XMLElement
+public interface XMLTypeRole extends FlexoRole<XMLType> {
+
+	public static abstract class XMLTypeRoleImpl extends FlexoRoleImpl<XMLType> implements XMLTypeRole {
+
+		public XMLTypeRoleImpl() {
+			super();
+		}
+
+	}
+}

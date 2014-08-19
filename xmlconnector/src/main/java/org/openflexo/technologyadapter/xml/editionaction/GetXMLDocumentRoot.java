@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2012-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -29,17 +29,17 @@ import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.xml.XSDModelSlot;
-import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
-import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
+import org.openflexo.technologyadapter.xml.XMLModelSlot;
+import org.openflexo.technologyadapter.xml.model.XMLIndividual;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 @FIBPanel("Fib/GetXMLDocumentRoot.fib")
 @ModelEntity
 @ImplementationClass(GetXMLDocumentRoot.GetXMLDocumentRootImpl.class)
 @XMLElement
-public interface GetXMLDocumentRoot extends AssignableAction<XSDModelSlot, XSOntIndividual> {
+public interface GetXMLDocumentRoot extends AssignableAction<XMLModelSlot, XMLIndividual> {
 
-	public static abstract class GetXMLDocumentRootImpl extends AssignableActionImpl<XSDModelSlot, XSOntIndividual> implements
+	public static abstract class GetXMLDocumentRootImpl extends AssignableActionImpl<XMLModelSlot, XMLIndividual> implements
 			GetXMLDocumentRoot {
 
 		private static final Logger logger = Logger.getLogger(GetXMLDocumentRoot.class.getPackage().getName());
@@ -49,12 +49,12 @@ public interface GetXMLDocumentRoot extends AssignableAction<XSDModelSlot, XSOnt
 		}
 
 		@Override
-		public XSOntIndividual performAction(FlexoBehaviourAction action) {
+		public XMLIndividual performAction(FlexoBehaviourAction action) {
 
-			ModelSlotInstance<XSDModelSlot, XMLXSDModel> modelSlotInstance = (ModelSlotInstance<XSDModelSlot, XMLXSDModel>) getModelSlotInstance(action);
-			XMLXSDModel model = modelSlotInstance.getAccessedResourceData();
+			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = (ModelSlotInstance<XMLModelSlot, XMLModel>) getModelSlotInstance(action);
+			XMLModel model = modelSlotInstance.getAccessedResourceData();
 
-			XSOntIndividual rootIndiv = (XSOntIndividual) model.getRoot();
+			XMLIndividual rootIndiv = model.getRoot();
 
 			return rootIndiv;
 		}

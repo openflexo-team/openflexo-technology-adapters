@@ -1,5 +1,6 @@
 /*
  * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2014 - Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -33,37 +34,36 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XSDModelSlot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
-import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 
 @ModelEntity
-@ImplementationClass(AddXSClass.AddXSClassImpl.class)
+@ImplementationClass(AddXMLType.AddXMLTypeImpl.class)
 @XMLElement
-public interface AddXSClass extends AddClass<XSDModelSlot, XSOntClass> {
+public interface AddXMLType extends AddClass<XSDModelSlot, XMLType> {
 
-	public static abstract class AddXSClassImpl extends AddClassImpl<XSDModelSlot, XSOntClass> implements AddXSClass {
+	public static abstract class AddXMLTypeImpl extends AddClassImpl<XSDModelSlot, XMLType> implements AddXMLType {
 
-		private static final Logger logger = Logger.getLogger(AddXSClass.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(AddXMLType.class.getPackage().getName());
 
 		private final String dataPropertyURI = null;
 
-		public AddXSClassImpl() {
+		public AddXMLTypeImpl() {
 			super();
 		}
 
 		@Override
-		public XSOntClass getOntologyClass() {
-			return (XSOntClass) super.getOntologyClass();
+		public XMLType getOntologyClass() {
+			return (XMLType) super.getOntologyClass();
 		}
 
 		@Override
-		public Class<XSOntClass> getOntologyClassClass() {
-			return XSOntClass.class;
+		public Class<XMLType> getOntologyClassClass() {
+			return XMLType.class;
 		}
 
 		@Override
-		public XSOntClass performAction(FlexoBehaviourAction action) {
-			XSOntClass father = getOntologyClass();
+		public XMLType performAction(FlexoBehaviourAction action) {
+			XMLType father = getOntologyClass();
 			String newClassName = null;
 			try {
 				newClassName = getClassName().getBindingValue(action);
@@ -74,7 +74,7 @@ public interface AddXSClass extends AddClass<XSDModelSlot, XSOntClass> {
 			} catch (InvocationTargetException e1) {
 				e1.printStackTrace();
 			}
-			XSOntClass newClass = null;
+			XMLType newClass = null;
 			try {
 				logger.info("Adding class " + newClassName + " as " + father);
 				// FIXME : Something wrong here!

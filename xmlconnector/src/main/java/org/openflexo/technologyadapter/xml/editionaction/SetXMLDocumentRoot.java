@@ -30,16 +30,16 @@ import org.openflexo.foundation.viewpoint.editionaction.ProcedureAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.xml.XSDModelSlot;
-import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
-import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
+import org.openflexo.technologyadapter.xml.XMLModelSlot;
+import org.openflexo.technologyadapter.xml.model.XMLIndividual;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 @ModelEntity
 @ImplementationClass(SetXMLDocumentRoot.SetXMLDocumentRootImpl.class)
 @XMLElement
-public interface SetXMLDocumentRoot extends ProcedureAction<XSDModelSlot, XSOntIndividual> {
+public interface SetXMLDocumentRoot extends ProcedureAction<XMLModelSlot, XMLIndividual> {
 
-	public static abstract class SetXMLDocumentRootImpl extends ProcedureActionImpl<XSDModelSlot, XSOntIndividual> implements
+	public static abstract class SetXMLDocumentRootImpl extends ProcedureActionImpl<XMLModelSlot, XMLIndividual> implements
 			SetXMLDocumentRoot {
 
 		private static final Logger logger = Logger.getLogger(SetXMLDocumentRoot.class.getPackage().getName());
@@ -49,18 +49,18 @@ public interface SetXMLDocumentRoot extends ProcedureAction<XSDModelSlot, XSOntI
 		}
 
 		@Override
-		public XSOntIndividual performAction(FlexoBehaviourAction action) {
+		public XMLIndividual performAction(FlexoBehaviourAction action) {
 
-			ModelSlotInstance<XSDModelSlot, XMLXSDModel> modelSlotInstance = (ModelSlotInstance<XSDModelSlot, XMLXSDModel>) getModelSlotInstance(action);
-			XMLXSDModel model = modelSlotInstance.getAccessedResourceData();
-			XSDModelSlot modelSlot = modelSlotInstance.getModelSlot();
+			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = (ModelSlotInstance<XMLModelSlot, XMLModel>) getModelSlotInstance(action);
+			XMLModel model = modelSlotInstance.getAccessedResourceData();
+			XMLModelSlot modelSlot = modelSlotInstance.getModelSlot();
 
-			XSOntIndividual rootIndiv = null;
+			XMLIndividual rootIndiv = null;
 
 			try {
 				Object o = getParameter().getBindingValue(action);
-				if (o instanceof XSOntIndividual) {
-					rootIndiv = (XSOntIndividual) o;
+				if (o instanceof XMLIndividual) {
+					rootIndiv = (XMLIndividual) o;
 				} else {
 					logger.warning("Invalid value in Binding :" + getParameter().getUnparsedBinding());
 				}

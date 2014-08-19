@@ -64,7 +64,7 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRepository);
 		assertTrue(modelRepository.getAllResources().size() > 6);
 	}
-/*
+
 	@Test
 	@TestOrder(2)
 	public void test0LoadXMLResourcel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -91,7 +91,6 @@ public class TestXMLResource extends OpenflexoTestCase {
 
 	}
 
-*/
 	@Test
 	@TestOrder(3)
 	public void test1LoadXMLResourcel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {

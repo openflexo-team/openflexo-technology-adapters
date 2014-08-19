@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -17,17 +16,12 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
-import org.openflexo.technologyadapter.xml.model.XSProperty
-Value;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
-import org.openflexo.technologyadapter.xml.rm.XMLMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.xml.IXMLIndividual;
 
 @RunWith(OrderedRunner.class)
 public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
@@ -42,57 +36,11 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 	private static final String                   LIB_BOOKS_URI  = "http://www.example.org/Library/LibraryType#books";
 
 	private static XMLTechnologyAdapter           xmlAdapter;
-	private static XMLMetaModelRepository         mmRepository;
+	private static XSDMetaModelRepository         mmRepository;
 	private static XMLModelRepository          modelRepository;
 	private static String                         baseUrl;
 
-	private static final void dumpIndividual(IXMLIndividual<XSOntIndividual, XSOntProperty> indiv, String prefix) {
-
-		System.out.println(prefix + "Indiv : " + indiv.getName() + "  ==> " + indiv.getUUID());
-
-		for (XSOntProperty x : indiv.getAttributes()) {
-			XSPropertyValue pv = ((XSOntIndividual) indiv).getPropertyValue(x);
-			List<? extends Object> values = null;
-
-			if (pv != null) {
-				values = pv.getValues();
-			}
-
-			if (x.isSimpleAttribute()) {
-				System.out.print(prefix + "   Data attr : " + x.getName());
-				if (values != null) {
-					System.out.println("  =  " + values.toString());
-				}
-				else {
-					System.out.println("");
-				}
-			}
-			else {
-				System.out.println(prefix + "   Object attr : " + x.getName());
-				if (values != null) {
-					for (Object o : values) {
-						XSOntIndividual child = (XSOntIndividual) o;
-						dumpIndividual(child, prefix + "      ");
-					}
-				}
-
-			}
-		}
-
-		System.out.println(prefix + "--- Dumping Children");
-		for (IXMLIndividual<XSOntIndividual, XSOntProperty> x : indiv.getChildren()) {
-			if (x != indiv) {
-				dumpIndividual(x, prefix + "     ");
-			}
-			else {
-				logger.info("NON MAIS NON!!!! CELA NE DOIT PAS ARRIVER");
-			}
-		}
-
-		System.out.println("");
-		System.out.flush();
-	}
-
+	
 	/**
 	 * Instanciate test ResourceCenter
 	 * 
@@ -105,7 +53,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-		mmRepository = resourceCenter.getRepository(XMLMetaModelRepository.class, xmlAdapter);
+		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
 		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
 		baseUrl = resourceCenter.getDirectory().getCanonicalPath();
 		try {
@@ -138,24 +86,19 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 		String resourceURI = baseUrl + "TestResourceCenter/XML/example_library_1.xml";
 		System.out.println("ResourceURI: " + resourceURI);
 
-	//	XSDMetaModelResource mmLibraryRes = mmRepository.getResource("http://www.example.org/Library");
 
-	//	assertNotNull(mmLibraryRes);
-
-   	    XMLFileResource libraryRes = modelRepository.getResource(resourceURI);
+   	    XMLFileResource libraryRes = (XMLFileResource) modelRepository.getResource(resourceURI);
 
 		assertNotNull(libraryRes);
 
 		XMLModel mLib = libraryRes.getModel();
 
-//		libraryRes.setMetaModelResource(mmLibraryRes);
-//		mmLibraryRes.loadResourceData(null);
-//		libraryRes.loadResourceData(null);
+		libraryRes.loadResourceData(null);
 
 		assertNotNull(mLib);
 		assertTrue(mLib.getResource().isLoaded());
 
-		dumpIndividual(mLib.getRoot(), "---");
+		Helpers.dumpIndividual(mLib.getRoot(), "---");
 
 	}
 /*

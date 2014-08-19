@@ -84,7 +84,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 			if (!xmlFile.exists()) {
 
 				if (returned.resourceData == null) {
-					returned.resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class, technologyContextManager.getTechnologyAdapter());
+					returned.resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
 					returned.resourceData.setResource(returned);
 				}
 				
@@ -137,7 +137,6 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 			writeToFile();
 			hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
-			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
 				logger.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
 			}

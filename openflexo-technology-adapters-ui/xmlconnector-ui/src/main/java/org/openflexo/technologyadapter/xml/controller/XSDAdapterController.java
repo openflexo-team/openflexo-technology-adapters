@@ -25,7 +25,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XSOntClass;
 import org.openflexo.technologyadapter.xml.model.AbstractXSOntObject;
 import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
-import org.openflexo.technologyadapter.xml.virtualmodel.XSClassRole;
+import org.openflexo.technologyadapter.xml.virtualmodel.XMLTypeRole;
 import org.openflexo.technologyadapter.xml.virtualmodel.XSIndividualRole;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -113,7 +113,7 @@ public class XSDAdapterController extends TechnologyAdapterController<XSDTechnol
 	 */
 	@Override
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
-		if (XSClassRole.class.isAssignableFrom(patternRoleClass)) {
+		if (XMLTypeRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(XSOntClass.class);
 		} else if (XSIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(XSOntIndividual.class);

@@ -55,10 +55,8 @@ import org.openflexo.technologyadapter.xml.editionaction.AddXSIndividual;
 import org.openflexo.technologyadapter.xml.editionaction.GetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.editionaction.SetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
-import org.openflexo.technologyadapter.xml.virtualmodel.XSClassRole;
-import org.openflexo.technologyadapter.xml.virtualmodel.XSIndividualRole;
+import org.openflexo.technologyadapter.xml.virtualmodel.XMLTypeRole;
 
 /**
  * Implementation of the ModelSlot class for the XSD/XML technology adapter
@@ -69,7 +67,7 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XSIndividualRole;
 
 @DeclarePatternRoles({ // All pattern roles available through this model slot
 @DeclarePatternRole(FML = "XSIndividual", flexoRoleClass = XSIndividualRole.class),
-		@DeclarePatternRole(FML = "XSClass", flexoRoleClass = XSClassRole.class), })
+		@DeclarePatternRole(FML = "XSClass", flexoRoleClass = XMLTypeRole.class), })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXSIndividual.class),
 		@DeclareEditionAction(FML = "SetXMLDocumentRoot", editionActionClass = SetXMLDocumentRoot.class),
@@ -135,7 +133,7 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XMLMetaMod
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (XSClassRole.class.isAssignableFrom(patternRoleClass)) {
+			if (XMLTypeRole.class.isAssignableFrom(patternRoleClass)) {
 				return "class";
 			} else if (XSIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
