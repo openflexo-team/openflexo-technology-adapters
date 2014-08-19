@@ -19,7 +19,6 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.lang.reflect.Type;
 import java.util.Collection;
 
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
@@ -46,6 +45,9 @@ public interface XMLMetaModel extends XMLObject, FlexoMetaModel<XMLMetaModel>, T
 	public static String TYPES = "types";
 	public static String READ_ONLY = "readOnly";
 	
+	// static simple Types URI
+	
+	public static String STR_SIMPLETYPE_URI = "xs:string";
 
 	@Getter(value = TYPES, cardinality = Cardinality.LIST)
 	@CloningStrategy(StrategyType.IGNORE)
@@ -54,9 +56,16 @@ public interface XMLMetaModel extends XMLObject, FlexoMetaModel<XMLMetaModel>, T
 
 
 	@Finder(attribute = XMLType.URI, collection = TYPES, isMultiValued = true)
-	public Type getTypeFromURI(String string);
+	public XMLType getTypeFromURI(String string);
 
-	public Type createNewType(String uri, String localName);
+	/**
+	 * Creates a new type in this MetaModel, simple or complex, depending on the parameters
+	 * @param uri
+	 * @param localName
+	 * @param simpleType
+	 * @return
+	 */
+	public XMLType createNewType(String uri, String localName, boolean simpleType);
 	
 	@Adder(TYPES)
 	@PastingPoint

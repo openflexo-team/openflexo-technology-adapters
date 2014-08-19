@@ -34,6 +34,8 @@ import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObjectProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
@@ -157,21 +159,21 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 		String value = null;
 
 		// Data Properties
-		for (XMLProperty a : indiv.getProperties()) {
-			if (a.isSimpleProperty() && !a.isFromXMLElement()) {
-				value = indiv.getPropertyStringValue(a);
+		for (XMLProperty prop : indiv.getType().getProperties()) {
+			if (prop instanceof XMLDataProperty && !prop.isFromXMLElement()) {
+				value = indiv.getPropertyStringValue(prop);
 				if (value != null) {
-					myWriter.writeAttribute(a.getName(), value);
+					myWriter.writeAttribute(prop.getName(), value);
 				}
 			}
 		}
 
-		for (XMLProperty a : indiv.getProperties()) {
-			if (a.isSimpleProperty() && a.isFromXMLElement()) {
+		for (XMLProperty prop : indiv.getType().getProperties()) {
+			if (prop instanceof XMLDataProperty && prop.isFromXMLElement()) {
 
-				List<?> valueList = (List<?>) indiv.getPropertyValue(a.getName());
+				List<?> valueList = (List<?>) indiv.getPropertyValue(prop.getName());
 				if (valueList != null && valueList.size() > 0) {
-					myWriter.writeStartElement(a.getName());
+					myWriter.writeStartElement(prop.getName());
 					for (Object o : valueList) {
 						if (o != null) {
 							myWriter.writeCData(o.toString());
@@ -183,13 +185,13 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 			}
 		}
 		// Object Properties
-		for (XMLProperty a : indiv.getProperties()) {
+		for (XMLProperty prop : indiv.getType().getProperties()) {
 
-			if (!a.isSimpleProperty()) {
-				List<?> valueList = (List<?>) indiv.getPropertyValue(a.getName());
+			if (prop instanceof XMLObjectProperty) {
+				List<?> valueList = (List<?>) indiv.getPropertyValue(prop.getName());
 				if (valueList != null) {
 					for (Object o : valueList) {
-						this.writeElement(o, a.getName());
+						this.writeElement(o, prop.getName());
 					}
 				}
 			}

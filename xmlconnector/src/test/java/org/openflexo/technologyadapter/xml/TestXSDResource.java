@@ -1,5 +1,6 @@
 /*
- * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2010-2011 AgileBirds 
+ * (c) Copyright 2014- Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -32,10 +33,6 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
-import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.metamodel.XMLType;
-import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
@@ -52,38 +49,6 @@ public class TestXSDResource extends OpenflexoTestCase {
 	private static XSDMetaModelRepository     mmRepository;
 	private static String                 baseUrl;
 	
-
-	private static final void dumpIndividual(XMLIndividual indiv, String prefix) {
-
-		System.out.println(prefix + "Indiv : " +  indiv.getName() + "  [" + indiv.getUUID() + "]");
-		for (XMLProperty a : indiv.getProperties()) {
-			System.out.println(prefix + "    * attr: " + a.getName() + " = " + a.getValue().toString());
-		}
-		for (XMLIndividual x : indiv.getChildren())
-			dumpIndividual(x, prefix + "    ");
-		System.out.flush();
-	}
-
-	private static final void dumpTypes(XMLMetaModel metamodel) {
-		for (XMLType t : metamodel.getTypes()) {
-			String prefix = new String();
-			if ( t.isAbstract() ) prefix = "*";
-			else prefix = "-";
-			if (t.getSuperType() != null){
-				System.out.println("Parsed Type: "+prefix + t.getName() + " :: " + t.getSuperType().getName() );
-			}
-			else {
-				System.out.println("Parsed Type: "+prefix + t.getName() );
-
-			}
-			for ( XMLProperty x : t.getProperties()) {
-				System.out.println("     --- " + x.getName() + "  :: " + x.getType().getName());
-			}
-			System.out.flush();
-		}
-
-	}
-
 
 	/**
 	 * Instanciate test ResourceCenter
@@ -133,7 +98,7 @@ public class TestXSDResource extends OpenflexoTestCase {
 		}
 		assertTrue(mmRes.isLoaded());
 		
-		dumpTypes(mmRes.getMetaModelData());
+		Helpers.dumpTypes(mmRes.getMetaModelData());
 		
 	}
 	

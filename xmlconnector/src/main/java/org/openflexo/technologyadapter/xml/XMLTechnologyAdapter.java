@@ -436,8 +436,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 							mmRsc =  mmRepository.getResource(mmURI);
 							if (mmRsc != null) {
 								mRes.setMetaModelResource(mmRsc);
-								logger.info("Found a MetaModel for Resource in a ResourceCenter: " + mmURI);
-
 							}
 						}
 					}
@@ -527,7 +525,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	public XMLModelFactory getXMLModelFactory() {
 		return xmlModelFactory;
 	}
-
 
 
 

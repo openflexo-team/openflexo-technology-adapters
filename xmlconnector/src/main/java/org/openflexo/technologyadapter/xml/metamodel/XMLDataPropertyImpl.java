@@ -22,15 +22,14 @@ package org.openflexo.technologyadapter.xml.metamodel;
 
 import org.openflexo.toolbox.StringUtils;
 
-import com.sun.xml.xsom.XSAttributeUse;
-
 /**
  * An attribute with only simple values
  * @author xtof
  *
  */
 public abstract class XMLDataPropertyImpl extends XMLPropertyImpl implements XMLDataProperty  {
-	private final XSAttributeUse attributeUse = null;
+	// TODO .... get anything from there
+	//private final XSAttributeUse attributeUse = null;
 
 
 	@Override
@@ -40,11 +39,12 @@ public abstract class XMLDataPropertyImpl extends XMLPropertyImpl implements XML
 
 	@Override
 	public String getDefaultValue() {
-		if (attributeUse != null) {
+	/*	if (attributeUse != null) {
 			if (attributeUse.getDefaultValue() != null) {
 				return attributeUse.getDefaultValue().toString();
 			}
 		}
+		*/
 		return null;
 	}
 
@@ -55,19 +55,20 @@ public abstract class XMLDataPropertyImpl extends XMLPropertyImpl implements XML
 
 	@Override
 	public String getFixedValue() {
+		/*
 		if (attributeUse != null) {
 			if (attributeUse.getFixedValue() != null) {
 				return attributeUse.getFixedValue().toString();
 			}
-		}
+		}*/
 		return null;
 	}
 
 	@Override
 	public boolean isRequired() {
-		if (attributeUse != null) {
+		/* if (attributeUse != null) {
 			return attributeUse.isRequired();
-		}
+		} */
 		return false;
 	}
 
@@ -102,5 +103,4 @@ public abstract class XMLDataPropertyImpl extends XMLPropertyImpl implements XML
 		return 1;
 	}
 
-	
 }

@@ -30,9 +30,11 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLSimpleType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
@@ -93,11 +95,13 @@ public class TestXMLModel extends OpenflexoTestCase {
 		
 		model.setMetaModel(metamodel);
 
-		XMLType t = (XMLType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Fleumeu", "Fleumeu");
-		t.createProperty("TOTO", String.class);
+		XMLSimpleType ts =  (XMLSimpleType) metamodel.createNewType(XMLMetaModel.STR_SIMPLETYPE_URI, "BASIC_STRING",true);
 		
-		t = (XMLType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Flouk", "Flouk");
-		t.createProperty("TOTO", String.class);
+		XMLComplexType t = (XMLComplexType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Fleumeu", "Fleumeu",false);
+		t.createProperty("TOTO", ts);
+		
+		t = (XMLComplexType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Flouk", "Flouk",false);
+		t.createProperty("TOTO", ts);
 		
 
 		XMLIndividual xmind = (XMLIndividual) model.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Fleumeu"));

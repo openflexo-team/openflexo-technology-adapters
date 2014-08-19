@@ -19,8 +19,6 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.lang.reflect.Type;
-
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -62,19 +60,6 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 		this.xsdResource = resource;
 	}
 
-	// private final XSOntClass thingClass;
-
-/*
-
-	public XSDMetaModelImpl(String ontologyURI, File xsdFile, XMLTechnologyAdapter adapter) {
-		super(ontologyURI, xsdFile, adapter);
-
-		this.thingClass = new XSOntClass(this, "Thing", XS_THING_URI, getTechnologyAdapter());
-
-		addClass(thingClass);
-	}
-*/
-	
 	@Override
 	public boolean isReadOnly() {
 		return true;
@@ -84,117 +69,5 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 	public void setIsReadOnly(boolean b) {
 	}
 
-	// *****************************************************************************
-	// IXMLMetaModel related Functions
-
-	@Override
-	public Type getTypeFromURI(String uri) {
-		return types.get(uri);
-	}
-
-	@Override
-	public Type createNewType(String uri, String localName) {
-
-		XMLType aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLType.class,this);
-		aType.setIsAbstract(false);
-		aType.setURI(uri);
-		aType.setName(localName);
-		addType(aType);
-		return aType;
-		
-		// TODO: pamela-iser XSDDatatype
-		/*
-		XMLType aType = new XSDDataType();
-		aType.setURI(uri);
-		aType.setName(localName);
-		addType(aType);
-		return aType;
-		*/
-	}
-
-	// *****************************************************************************
-	// IFlexoOntology related Functions
-/*
-	@Override
-	public List<XSOntDataProperty> getDataProperties() {
-		return new ArrayList<XSOntDataProperty>(dataProperties.values());
-	}
-
-	@Override
-	public List<XSOntDataProperty> getAccessibleDataProperties() {
-		Map<String, XSOntDataProperty> result = new HashMap<String, XSOntDataProperty>();
-		for (XSOntology o : getImportedOntologies()) {
-			for (XSOntDataProperty c : ((XSDMetaModelImpl) o).getDataProperties()) {
-				result.put(c.getURI(), c);
-			}
-		}
-		return new ArrayList<XSOntDataProperty>(result.values());
-	}
-
-	@Override
-	public XSOntDataProperty getDataProperty(String propertyURI) {
-		return dataProperties.get(propertyURI);
-	}
-
-	@Override
-	public XSOntClass getRootConcept() {
-		return thingClass;
-	}
-*/
-	// *****************************************************************************
-	// Utility Functions when building the model
-/*
-
-
-	private XSDDataType computeDataType(XSSimpleType simpleType) {
-		XSDDataType returned = dataTypes.get(simpleType);
-		if (returned == null) {
-			returned = new XSDDataType(simpleType, this, getTechnologyAdapter());
-			dataTypes.put(simpleType, returned);
-		}
-		return returned;
-	}
-
-	private boolean addClass(XSOntClass c) {
-		if (classes.containsKey(c.getURI()) == false) {
-			classes.put(c.getURI(), c);
-			return true;
-		}
-		return false;
-	}
-
-	public XSOntClass createOntologyClass(String name, String uri) throws DuplicateURIException {
-		XSOntClass xsClass = new XSOntClass(this, name, uri, getTechnologyAdapter());
-		xsClass.addToSuperClasses(getRootConcept());
-		addClass(xsClass);
-		return xsClass;
-	}
-
-	public XSOntClass createOntologyClass(String name, String uri, XSOntClass superClass) throws DuplicateURIException {
-		XSOntClass xsClass = createOntologyClass(name, uri);
-		xsClass.addToSuperClasses(superClass);
-		return xsClass;
-	}
-
-	public XSOntClass createOntologyClass(String name, XSOntClass superClass) throws DuplicateURIException {
-		String uri = this.getURI() + "#" + "name";
-		XSOntClass xsClass = createOntologyClass(name, uri, superClass);
-		return xsClass;
-	}
-
-	public XSOntDataProperty createDataProperty(String name, String uri, XSType aType) {
-		XSOntDataProperty xsDataProperty = new XSOntDataProperty(this, name, uri, getTechnologyAdapter());
-		xsDataProperty.setDataType(computeDataType(aType.asSimpleType()));
-		dataProperties.put(uri, xsDataProperty);
-		return xsDataProperty;
-	}
-
-	public XSOntObjectProperty createObjectProperty(String name, String uri, XSOntClass c) {
-		XSOntObjectProperty property = new XSOntObjectProperty(this, name, uri, getTechnologyAdapter());
-		objectProperties.put(property.getURI(), property);
-		property.newRangeFound(c);
-		return property;
-	}
-*/
 	
 }

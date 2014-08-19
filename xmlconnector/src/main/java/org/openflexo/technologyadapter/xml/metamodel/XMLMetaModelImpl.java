@@ -20,7 +20,6 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -43,15 +42,22 @@ public abstract class XMLMetaModelImpl  implements XMLMetaModel {
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XMLMetaModelImpl.class.getPackage()
 			.getName());
 
-	protected final Map<String, XMLType> types = new HashMap<String, XMLType>();
+	protected Map<String, XMLType> types = null;
 
 	 
     private static ModelFactory MF;
+    
+    public XMLMetaModelImpl (){
+    	super();
+    	types = new HashMap<String, XMLType>();
+    }
     
     static{
     	try {
 			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class,
 									  										  XMLType.class,
+									  										  XMLComplexType.class,
+									  										  XMLSimpleType.class,
 									  										  XMLProperty.class,
 									  										  XMLDataProperty.class,
 									  										  XMLObjectProperty.class));
@@ -68,8 +74,17 @@ public abstract class XMLMetaModelImpl  implements XMLMetaModel {
 
 
 	@Override
-	public Type getTypeFromURI(String uri) {
-		return types.get(uri);
+	public XMLType getTypeFromURI(String uri) {
+		
+		XMLType t = types.get(uri);
+		
+		if (t == null && uri.equals(XMLMetaModel.STR_SIMPLETYPE_URI)){
+			XMLSimpleType stringSimple = (XMLSimpleType) createNewType(XMLMetaModel.STR_SIMPLETYPE_URI, "STRING_BASIC_TYPE",true);
+			stringSimple.setBasicType(String.class);
+			return stringSimple;
+		}
+		return t;
+		
 	}
 
 	@Override
@@ -88,13 +103,20 @@ public abstract class XMLMetaModelImpl  implements XMLMetaModel {
 	}
 
 	@Override
-	public Type createNewType(String uri, String localName) {
-
-		XMLType aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLType.class,this);
+	public XMLType createNewType(String uri, String localName, boolean simpleType) {
+		XMLType aType = null;
+		if (simpleType){
+			aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLSimpleType.class,this);
+		}
+		else {
+			aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLComplexType.class,this);
+		}
 		aType.setIsAbstract(false);
 		aType.setURI(uri);
 		aType.setName(localName);
+		
 		addType(aType);
+
 		return aType;
 	}
 

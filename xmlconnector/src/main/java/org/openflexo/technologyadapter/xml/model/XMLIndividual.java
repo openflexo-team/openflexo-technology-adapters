@@ -36,6 +36,7 @@ import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -73,10 +74,10 @@ public interface XMLIndividual extends XMLObject {
     public XMLModel getContainerModel();
 
 	@Getter(TYPE)
-	public XMLType getType();
+	public XMLComplexType getType();
 	
 	@Setter(TYPE)
-	public void setType(XMLType aType);
+	public void setType(XMLComplexType aType);
 	
 	@Getter(_UUID)
 	public String getUUID();
@@ -106,6 +107,8 @@ public interface XMLIndividual extends XMLObject {
 
 	public XMLPropertyValue getPropertyValue(String pname);
 
+	public XMLPropertyValue getPropertyValue(XMLProperty prop);
+
 	public String getPropertyStringValue(XMLProperty prop);
 	
 	@Adder(value = PROPERTIES_VALUES)
@@ -123,8 +126,6 @@ public interface XMLIndividual extends XMLObject {
 	
 	// TODO : refactor to get rid of any JDOM reference
 	public Element toXML(Document doc);
-
-
 
 
 }

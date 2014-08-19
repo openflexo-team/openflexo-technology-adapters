@@ -28,9 +28,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObjectProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
-import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.xml.XMLCst;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -52,8 +54,8 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 
 	/* Properties */
 
-	private Map<XMLType, Set<XMLIndividualImpl>>  children  = null;
-	private Map<XMLProperty, XMLPropertyValue> attributesValues   = null;
+	private Map<XMLComplexType, Set<XMLIndividualImpl>>  children  = null;
+	private Map<XMLProperty, XMLPropertyValue> propertiesValues   = null;
 	private final String uuid;
 
 	/**
@@ -64,8 +66,8 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 	public XMLIndividualImpl() {
 		super();
 		uuid = UUID.randomUUID().toString();
-		attributesValues = new HashMap<XMLProperty, XMLPropertyValue>();
-		children = new HashMap<XMLType, Set<XMLIndividualImpl>>();
+		propertiesValues = new HashMap<XMLProperty, XMLPropertyValue>();
+		children = new HashMap<XMLComplexType, Set<XMLIndividualImpl>>();
 	}
 
 	@Override
@@ -88,20 +90,6 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#getAttributeValue(java.lang.String)
-	 */
-	@Override
-	public XMLPropertyValue getPropertyValue(String attributeName) {
-
-		XMLProperty attr =  getType().getPropertyByName(attributeName);
-
-		if (attr != null) {
-			return attributesValues.get(attr);
-		}
-		else
-			return null;
-	}
 
 	@Override
 	public void removeChild(XMLIndividual indiv){
@@ -110,7 +98,7 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 
 	@Override
 	public void addChild(XMLIndividual anIndividual) {
-		XMLType aType = anIndividual.getType();
+		XMLComplexType aType = anIndividual.getType();
 		Set<XMLIndividualImpl> typedSet = children.get(aType);
 
 		if (typedSet == null) {
@@ -134,13 +122,37 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 
 
 	@Override
-	public String getPropertyStringValue(XMLProperty a) {
-		return attributesValues.get(a).getStringValue();
+	public String getPropertyStringValue(XMLProperty prop) {
+		return propertiesValues.get(prop).getStringValue();
 	}
 
 	@Override
 	public Map<? extends XMLProperty, XMLPropertyValue> getPropertiesValues() {
-		return attributesValues;
+		return propertiesValues;
+	}
+
+
+	@Override
+	public XMLPropertyValue getPropertyValue(String attributeName) {
+
+		XMLProperty attr =  getType().getPropertyByName(attributeName);
+
+		if (attr != null) {
+			return propertiesValues.get(attr);
+		}
+		else
+			return null;
+	}
+
+	@Override
+	public XMLPropertyValue getPropertyValue(XMLProperty prop){
+
+		if (prop != null) {
+			return propertiesValues.get(prop);
+		}
+		else
+			return null;
+
 	}
 
 	@Override
@@ -155,27 +167,28 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 
 	@Override
 	public void addPropertyValue(String name, Object value) {
-
+		
 		XMLProperty prop = getType().getPropertyByName(name);
 
 		if (prop == null) {
-			if (!this.getContainerModel().getMetaModel().isReadOnly()) {
+			XMLMetaModel mm = getContainerModel().getMetaModel();
+			if (!mm.isReadOnly()) {
 				// TODO Manage complex types and actual types for objects.
-				prop = this.getType().createProperty(name, String.class);
+				prop = this.getType().createProperty(name, mm.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
 			}
 			else {
-				logger.warning("CANNOT give a value  for a non existente attribute :" + name );
+				logger.warning("CANNOT give a value  for a non existant attribute :" + name );
 			}
 		}
 		if (prop != null) {
-			XMLPropertyValue vals = attributesValues.get(prop);
+			XMLPropertyValue vals = propertiesValues.get(prop);
 
 			if (vals == null){
 
 				if (prop instanceof XMLDataProperty){
 					vals = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class,prop);
 					((XMLDataPropertyValue) vals).setValue(value);
-					attributesValues.put(prop,vals);
+					propertiesValues.put(prop,vals);
 				}
 				else {
 					// TODO..... complex attributes, collections
@@ -191,11 +204,35 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 
 	@Override
 	public void addPropertyValue(XMLProperty prop, Object value) {
-		// TODO....
-		attributesValues.put(prop, (XMLPropertyValue) value);
+		XMLPropertyValue val = propertiesValues.get(prop);
+		
+		if (val == null){
+
+			if (prop instanceof XMLDataProperty){
+				val = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class, prop);
+				((XMLDataPropertyValue) val).setValue(value);
+				propertiesValues.put(prop, val);
+			}
+			else if (prop instanceof XMLObjectProperty){
+
+				val = XMLModelImpl.getModelFactory().newInstance(XMLObjectPropertyValue.class, prop);
+				((XMLObjectPropertyValue) val).addToValues((XMLIndividual) value);
+				propertiesValues.put(prop, val);
+			}
+		}
+
+		if (val != null) {
+			if (prop instanceof XMLDataProperty){
+				((XMLDataPropertyValue) val).setValue(value);
+			}
+			else if (prop instanceof XMLObjectProperty){
+				((XMLObjectPropertyValue) val).addToValues((XMLIndividual) value);
+			}
+		}
+
 	}
-
-
+	
+	
 	/* (non-Javadoc)
 	 * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#toXML(org.w3c.dom.Document)
 	 */

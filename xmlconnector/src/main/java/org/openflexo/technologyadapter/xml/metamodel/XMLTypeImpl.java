@@ -20,22 +20,10 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.lang.reflect.Type;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public abstract class XMLTypeImpl  implements XMLType {
 
-
-	/* Properties */
-	Map<String, XMLProperty>    properties;
-
-	public XMLTypeImpl() {
-		super();
-		this.properties = new HashMap<String, XMLProperty>();
-	}
 
 	@Override
 	public String getFullyQualifiedName() {
@@ -43,54 +31,6 @@ public abstract class XMLTypeImpl  implements XMLType {
 			return getURI();
 		else
 			return getName();
-	}
-
-
-	@Override
-	public Collection<? extends XMLProperty> getProperties() {
-
-		return properties.values();
-	}
-
-	@Override
-	public XMLProperty createProperty(String name, Type t) {
-		XMLProperty prop = null;
-		if (!hasProperty(name)){
-			if (t != null){
-				if (t instanceof XMLType){
-					prop = XMLMetaModelImpl.getModelFactory().newInstance( XMLObjectProperty.class, name, t);
-				}
-				else {
-					prop = XMLMetaModelImpl.getModelFactory().newInstance( XMLDataProperty.class, name, t);
-				}
-
-			}
-			else
-			{
-				prop = XMLMetaModelImpl.getModelFactory().newInstance( XMLProperty.class, name, String.class);
-			}
-			if (prop != null) addProperty(prop);
-		}
-		return prop;
-	}
-
-	@Override
-	public void addProperty(XMLProperty prop){
-		if (prop != null) properties.put(prop.getName(), prop );
-	}
-
-	@Override
-	public Boolean hasProperty(String name) {
-		return properties.containsKey(name);
-	}
-
-	@Override
-	public XMLProperty getPropertyByName(String name) {
-		XMLProperty attr = properties.get(name);
-		if (attr == null && name.equals(NAME_ATTR)) {
-			attr = createProperty( name, String.class);
-		}
-		return attr;
 	}
 
 }

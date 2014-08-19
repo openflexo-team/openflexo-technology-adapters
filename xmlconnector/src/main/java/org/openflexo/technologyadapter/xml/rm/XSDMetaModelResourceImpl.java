@@ -23,19 +23,20 @@ package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Type;
+import java.util.logging.Logger;
 
-import org.apache.log4j.Logger;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoFileResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
+import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XSDMetaModelImpl;
-import org.openflexo.technologyadapter.xml.model.XSOntologyURIDefinitions;
 import org.openflexo.toolbox.IProgress;
 
 import com.sun.xml.xsom.XSAttributeDecl;
@@ -52,8 +53,7 @@ import com.sun.xml.xsom.XSType;
  * 
  */
 
-public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XMLMetaModel> implements XSOntologyURIDefinitions,
-XSDMetaModelResource {
+public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XMLMetaModel>  implements XSDMetaModelResource {
 
 	private static final Logger logger = Logger.getLogger(XSDMetaModelResourceImpl.class.getPackage().getName());
 
@@ -111,16 +111,8 @@ XSDMetaModelResource {
 		if (loadWhenUnloaded())
 			return resourceData;
 		else {
-			logger.warn("Not able to load resource");
+			logger.warning("Not able to load resource");
 			return null;
-		}
-	}
-
-	private static boolean mapsToClass(XSElementDecl element) {
-		if (element.getType().isComplexType()) {
-			return true;
-		} else {
-			return false;
 		}
 	}
 
@@ -128,22 +120,25 @@ XSDMetaModelResource {
 		// TODO if a declaration (base) type is derived, get the correct
 		// superclass
 
-		XMLType stringSimple = (XMLType) resourceData.createNewType("STRING_BASIC_TYPE", "STRING_BASIC_TYPE");
 		
 		if (resourceData != null){
 			for (XSComplexType complexType : fetcher.getComplexTypes()) {
-				XMLType xsType = (XMLType) resourceData.getTypeFromURI(fetcher.getUri(complexType));
+				
+				XMLType xsType = resourceData.getTypeFromURI(fetcher.getUri(complexType));
+				
 				if (xsType == null) {
-					// create New XMLType if it does not exist
-					xsType = (XMLType) resourceData.createNewType(fetcher.getUri(complexType), complexType.getName());
+					// create New XMLComplexeType as it does not exist
+					xsType = resourceData.createNewType(fetcher.getUri(complexType), complexType.getName(),false);
 					xsType.setIsAbstract(true);
 				}
+				
 				XSType btype = complexType.getBaseType();
+				
 				if (btype != null && !btype.getName().equalsIgnoreCase("anyType")) {
-					XMLType superType = (XMLType) resourceData.getTypeFromURI(fetcher.getUri(btype));
+					XMLType superType = resourceData.getTypeFromURI(fetcher.getUri(btype));
 					if (superType == null) {
 						// create New Type if it does not exist
-						superType = (XMLType) resourceData.createNewType(btype.getName(), fetcher.getUri(btype));
+						superType = resourceData.createNewType(btype.getName(), fetcher.getUri(btype),false);
 						xsType.setIsAbstract(true);
 					}
 					if (superType != null) {
@@ -153,13 +148,14 @@ XSDMetaModelResource {
 				}
 			}
 
+			// Creates complex types that come with complex Element declarations
+			
 			for (XSElementDecl element : fetcher.getElementDecls()) {
-				if (mapsToClass(element)) {
-
-					XMLType xsType = (XMLType) resourceData.createNewType(fetcher.getUri(element),element.getName());
+				if (element.getType().isComplexType()) {
+					XMLType xsType = resourceData.createNewType(fetcher.getUri(element),element.getName(),false);
 					XSType type = element.getType();
 					if (type != null) {
-						XMLType superType = (XMLType) resourceData.getTypeFromURI(fetcher.getUri(type));
+						XMLType superType = resourceData.getTypeFromURI(fetcher.getUri(type));
 						if (superType != null)
 							xsType.setSuperType(superType);
 					}
@@ -167,64 +163,54 @@ XSDMetaModelResource {
 			}
 		}
 		else {
-			logger.fatal("Cannot load Types as MetaModel (resourceData) is NULL");
+			logger.warning("Cannot load Types as MetaModel (resourceData) is NULL");
 		}
 	}
 
 	private void loadDataProperties() {
 
-		/*
-		 * for (XSSimpleType simpleType : fetcher.getSimpleTypes()) {
-		 * XSOntDataProperty xsDataProperty = loadDataProperty(simpleType);
-		 * xsDataProperty.setDataType(computeDataType(simpleType)); }
-		 */
-		/*
-		 * S for (XSComplexType complexType : fetcher.getComplexTypes()) { if
-		 * (complexType.isLocal()){ // TODO Manage Local Types XSElementDecl
-		 * ownerElem = complexType.getScope(); XSOntClass xsClass =
-		 * loadClass(ownerElem); xsClass.addToSuperClasses(getRootConcept()); }
-		 * }
-		 */
-
+		// Simple Elements that maps to a simpleType
 		for (XSElementDecl element : fetcher.getElementDecls()) {
-			if (mapsToClass(element) == false) {
+			XSType elementType = element.getType(); 
+			if (!elementType.isComplexType()) {
 				String uri = fetcher.getUri(element);
 				String ownerUri = fetcher.getOwnerURI(uri);
-
 				if (ownerUri != null) {
-					XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
-					if (owner != null) {
+					XMLType owner = resourceData.getTypeFromURI(ownerUri);
+					if (owner != null && owner instanceof XMLComplexType) {
 						// TODO: better manage types
-						owner.createProperty(element.getName(), resourceData.getTypeFromURI("STRING_BASIC_TYPE"));
+						System.out.println("SHOULD Create a new simple type for : " + elementType.getName());
+						((XMLComplexType) owner).createProperty(element.getName(), (Type) resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
 					}
 					else {
-						logger.warn("unable to find an owner type for attribute: " + uri);
+						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
 				}
 				else {
-					logger.warn("unable to find an owner for : " + uri);
+					logger.warning("unable to find an owner for : " + uri);
 				}
 
 			}
 		}
 
+		// Attributes defined on a complexType
 		for (XSAttributeDecl attribute : fetcher.getAttributeDecls()) {
 			String uri = fetcher.getUri(attribute);
 
 			String ownerUri = fetcher.getOwnerURI(uri);
 
 			if (ownerUri != null) {
-				XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
-				if (owner != null) {
+				XMLType owner = resourceData.getTypeFromURI(ownerUri);
+				if (owner != null && owner instanceof XMLComplexType ) {
 					// TODO: better manage types
-					owner.createProperty(attribute.getName(), resourceData.getTypeFromURI("STRING_BASIC_TYPE"));
+					((XMLComplexType) owner).createProperty(attribute.getName(), (Type) resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
 				}
 				else {
-					logger.warn("unable to find an owner type for attribute: " + uri);
+					logger.warning("unable to find an owner type for attribute: " + uri);
 				}
 			}
 			else {
-				logger.warn("unable to find an owner for : " + uri);
+				logger.warning("unable to find an owner for : " + uri);
 			}
 		}
 	}
@@ -232,25 +218,26 @@ XSDMetaModelResource {
 	private void loadObjectProperties() {
 
 		for (XSElementDecl element : fetcher.getElementDecls()) {
-			if (mapsToClass(element)) {
+
+			XSType elementType = element.getType();
+			
+			if (elementType.isComplexType()) {
 				String uri = fetcher.getUri(element);
-				XMLType t = (XMLType) resourceData.getTypeFromURI(fetcher.getUri(element));
+				XMLType t = resourceData.getTypeFromURI(fetcher.getUri(element));
 				String name = element.getName();
 
 				String ownerUri = fetcher.getOwnerURI(uri);
 
 				if (ownerUri != null) {
-					XMLType owner = (XMLType) resourceData.getTypeFromURI(ownerUri);
-					if (owner != null) {
+					XMLType owner = resourceData.getTypeFromURI(ownerUri);
+					if (owner != null && owner instanceof XMLComplexType ) {
+
 						// TODO: better manage types
-						owner.createProperty(name, t);
+						((XMLComplexType) owner).createProperty(name, (Type) t);
 					}
 					else {
-						logger.warn("unable to find an owner type for attribute: " + uri);
+						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
-				}
-				else {
-					logger.warn("unable to find an owner for : " + uri);
 				}
 			}
 		}

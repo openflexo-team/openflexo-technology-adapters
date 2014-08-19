@@ -28,7 +28,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.openflexo.openflexo-technology-adapters</groupId>
+			<groupId>org.openflexo</groupId>
 			<artifactId>xmlconnector</artifactId>
 			<version>${project.version}</version>
 		</dependency>

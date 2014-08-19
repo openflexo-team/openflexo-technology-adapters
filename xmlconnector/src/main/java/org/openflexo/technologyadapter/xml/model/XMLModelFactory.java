@@ -25,9 +25,11 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 
+import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
+import org.openflexo.xml.XMLCst;
 import org.openflexo.xml.XMLReaderSAXHandler;
 import org.openflexo.xml.saxBasedObjectGraphFactory;
 import org.xml.sax.SAXException;
@@ -38,29 +40,35 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
 	@Override
 	public Object getInstanceOf(Type aType, String name) {
-		if (aType instanceof XMLType) {
+		
+		if (aType instanceof XMLComplexType) {
 			XMLIndividual _inst = (XMLIndividual) model.addNewIndividual(aType);
 			return _inst;
 		}
+
 		return null;
 	}
 
 	@Override
 	public Type getTypeForObject(String typeURI, Object container, String objectName) {
+		
+		XMLMetaModel mm = model.getMetaModel();
+		XMLType tt = null;
+		if (mm != null) {
+			tt =  mm.getTypeFromURI(typeURI);
+		}
 		// Create the type if it does not exist and that we can!!
 
-		XMLMetaModel mm = model.getMetaModel();
-
-		Type tt = mm.getTypeFromURI(typeURI);
 		if (! mm.isReadOnly() && tt == null) { 
 			if (container instanceof XMLIndividual) {
 				XMLType parentType = ((XMLIndividual) container).getType();
-				tt = mm.createNewType(mm.getURI() + "/" + parentType.getName() + "#"+ objectName, objectName);
+				tt = mm.createNewType(mm.getURI() + "/" + parentType.getName() + "#"+ objectName, objectName,false);
 			}
 			else {
-				tt = mm.createNewType(mm.getURI() + "#"+ objectName, objectName);
+				tt = mm.createNewType(mm.getURI() + "#"+ objectName, objectName, false);
 			}
 		}
+		
 		return tt;
 	}
 
@@ -130,10 +138,10 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 	@Override
 	public boolean objectHasAttributeNamed(Object object, String propertyName) {
 		if (object instanceof XMLIndividual) {
+			
+			XMLProperty prop = ((XMLIndividual) object).getType().getPropertyByName(propertyName);
 
-			XMLProperty attr = ((XMLIndividual) object).getType().getPropertyByName(propertyName);
-
-			return (attr != null);
+			return (prop != null);
 		}
 		return false;
 	}
@@ -142,19 +150,16 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 	public void addAttributeValueForObject(Object object, String name, Object value) {
 
 		if (object instanceof XMLIndividual) {
-			XMLType t = ((XMLIndividual) object).getType();
+			XMLComplexType t = ((XMLIndividual) object).getType();
 
 			XMLProperty prop = t.getPropertyByName(name);
 
 			XMLMetaModel mm = model.getMetaModel();
 
 			if (prop == null) {
-				if (!mm.isReadOnly()) {
+				if (!mm.isReadOnly() || name.equals(XMLCst.CDATA_ATTR_NAME)) {
 
-					System.out.println("SHOULD ADD a property for type ("+ name +  "): " + value.getClass().getCanonicalName());
-					
-					// TODO Type should more complex!!!
-					prop = t.createProperty(name, String.class);
+					prop = t.createProperty(name, value.getClass());
 
 					if (prop != null) {
 						((XMLIndividual) object).addPropertyValue(prop, value);
@@ -164,7 +169,7 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 					}
 				}
 				else {
-					logger.warning("TRYING to give a value to a non existant property: " + name);
+					logger.warning("TRYING to give a value to a non existant property: " + name + " -- " + name.equals(XMLCst.CDATA_ATTR_NAME));
 				}
 			}
 			else {
@@ -177,6 +182,7 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
 	@Override
 	public void addChildToObject(Object currentObject, Object currentContainer) {
+		
 		if (currentContainer instanceof XMLIndividual) {
 			((XMLIndividual) currentContainer).addChild((XMLIndividual) currentObject);
 		}

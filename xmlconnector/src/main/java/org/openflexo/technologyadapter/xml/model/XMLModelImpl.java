@@ -67,9 +67,10 @@ public abstract class XMLModelImpl  implements XMLModel {
 	static{
 		try {
 			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class,
-								  											  XMLIndividual.class,
-								  											  XMLPropertyValue.class,
-								  											  XMLDataPropertyValue.class));
+					XMLIndividual.class,
+					XMLPropertyValue.class,
+					XMLDataPropertyValue.class,
+					XMLObjectPropertyValue.class));
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -83,9 +84,9 @@ public abstract class XMLModelImpl  implements XMLModel {
 	}
 
 	public XMLModelImpl() {
-        super();
-        individuals = new HashMap<String, XMLIndividual>();
-    }
+		super();
+		individuals = new HashMap<String, XMLIndividual>();
+	}
 
 	@Override
 	public String getName() {
@@ -98,8 +99,8 @@ public abstract class XMLModelImpl  implements XMLModel {
 
 	@Override
 	public void setNamespace(String uri, String prefix) {
-		namespace.set(XMLModel.NSPREFIX_INDEX, prefix);
-		namespace.set(XMLModel.NSURI_INDEX, uri);
+		namespace.add(XMLModel.NSPREFIX_INDEX, prefix);
+		namespace.add(XMLModel.NSURI_INDEX, uri);
 	}
 
 	@Override
@@ -159,36 +160,6 @@ public abstract class XMLModelImpl  implements XMLModel {
 		individuals.put(anIndividual.getUUID(), anIndividual);
 	}
 
-	/*
-    @Override
-    public XMLType createNewType(String uri, String localName, String qName) {
-    	XMLType nType = getModelFactory().newInstance(XMLType.class,uri, localName, qName, this);
-        // XMLType nType = new XMLType(uri, localName, qName, this);
-        this.addType(nType);
-        return nType;
-    }
-
-    @Override
-    public XMLType getTypeFromURI(String uri) {
-        XMLType aType = types.get(uri);
-        if (aType == null) {
-
-        	aType = getModelFactory().newInstance(XMLType.class,uri, this);
-            // aType = new XMLType(uri, this);
-            types.put(uri, aType);
-        }
-        return aType;
-    }
-
-	public void addType(XMLType aType) {
-        types.put(aType.getURI(), aType);
-    }
-
-	public List<? extends XMLType> getTypes() {
-        return new ArrayList<XMLType>(types.values());
-    }
-	 */
-	
 	public Document toXML() throws ParserConfigurationException {
 		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();

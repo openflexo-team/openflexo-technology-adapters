@@ -32,10 +32,6 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
-import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.metamodel.XMLType;
-import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLResource;
 import org.openflexo.test.OrderedRunner;
@@ -49,38 +45,6 @@ public class TestXMLResource extends OpenflexoTestCase {
 	private static XMLTechnologyAdapter   xmlAdapter;
 	private static XMLModelRepository     modelRepository;
 	private static String                 baseUrl;
-
-	private static final void dumpIndividual(XMLIndividual indiv, String prefix) {
-
-		System.out.println(prefix + "Indiv : " +  indiv.getName() + "  [" + indiv.getUUID() + "]");
-		for (XMLProperty a : indiv.getProperties()) {
-			System.out.println(prefix + "    * attr: " + a.getName() + " = " + a.getValue().toString());
-		}
-		for (XMLIndividual x : indiv.getChildren())
-			dumpIndividual(x, prefix + "    ");
-		System.out.flush();
-	}
-
-	private static final void dumpTypes(XMLMetaModel metamodel) {
-		for (XMLType t : metamodel.getTypes()) {
-			String prefix = new String();
-			if ( t.isAbstract() ) prefix = "*";
-			else prefix = "-";
-			if (t.getSuperType() != null){
-				System.out.println("Metamodel Type: "+prefix + t.getName() + " :: " + t.getSuperType().getName() );
-			}
-			else {
-				System.out.println("Metamodel Type: "+prefix + t.getName() );
-
-			}
-			for ( XMLProperty x : t.getProperties()) {
-				System.out.println("     --- " + x.getName() + "  :: " + x.getType().getName());
-			}
-			System.out.flush();
-		}
-
-	}
-
 
 
 	/**
@@ -100,7 +64,7 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRepository);
 		assertTrue(modelRepository.getAllResources().size() > 6);
 	}
-	
+/*
 	@Test
 	@TestOrder(2)
 	public void test0LoadXMLResourcel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -110,6 +74,7 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRepository);
 
 		XMLResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_0.xml");
+		
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -117,17 +82,16 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
-		dumpTypes(modelRes.getModel().getMetaModel());
+		// Helpers.dumpTypes(modelRes.getModel().getMetaModel());
 
 		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI(modelRes.getModel().getURI() + "/Metamodel#Library"));
 
-		System.out.println("\n\n");
-		
-		dumpIndividual(modelRes.getModelData().getRoot(), "");
+
+		Helpers.dumpIndividual(modelRes.getModelData().getRoot(), "");
 
 	}
 
-
+*/
 	@Test
 	@TestOrder(3)
 	public void test1LoadXMLResourcel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -138,20 +102,21 @@ public class TestXMLResource extends OpenflexoTestCase {
 
 		XMLResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_1.xml");
 		assertNotNull(modelRes);
+
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
-	//	dumpTypes(modelRes.getModel().getMetaModel());
+		// Helpers.dumpTypes(modelRes.getModel().getMetaModel());
 
 		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("http://www.example.org/Library#Library"));
 
-//		dumpIndividual(modelRes.getModelData().getRoot(), "");
+		Helpers.dumpIndividual(modelRes.getModelData().getRoot(), "");
 
 	}
-
+/*
 	@Test
 	@TestOrder(4)
 	public void test2LoadXMLResourcel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -168,16 +133,13 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
-		dumpTypes(modelRes.getModel().getMetaModel());
+		Helpers.dumpTypes(modelRes.getModel().getMetaModel());
 
-		
 		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("http://www.example.org/Library#Library"));
 
-		System.out.println("\n\n");
-		
-		dumpIndividual(modelRes.getModelData().getRoot(), "");
+		Helpers.dumpIndividual(modelRes.getModelData().getRoot(), "");
 
 	}
 
-
+*/
 }
