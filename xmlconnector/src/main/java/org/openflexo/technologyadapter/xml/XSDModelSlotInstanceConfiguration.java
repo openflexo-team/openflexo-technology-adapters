@@ -3,9 +3,9 @@ package org.openflexo.technologyadapter.xml;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 
-public class XSDModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLXSDModel, XMLMetaModel, XSDModelSlot> {
+public class XSDModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLModel, XMLMetaModel, XSDModelSlot> {
 
 	protected XSDModelSlotInstanceConfiguration(XSDModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);

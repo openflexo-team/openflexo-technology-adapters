@@ -49,13 +49,17 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.xml.XSURIProcessor.XSURIProcessorImpl;
-import org.openflexo.technologyadapter.xml.editionaction.AddXSClass;
+import org.openflexo.technologyadapter.xml.XMLURIProcessor.XSURIProcessorImpl;
 import org.openflexo.technologyadapter.xml.editionaction.AddXSIndividual;
 import org.openflexo.technologyadapter.xml.editionaction.GetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.editionaction.SetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
+import org.openflexo.technologyadapter.xml.model.XMLIndividual;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
+import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
+import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 import org.openflexo.technologyadapter.xml.virtualmodel.XMLTypeRole;
 
 /**
@@ -66,55 +70,54 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XMLTypeRole;
  */
 
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "XSIndividual", flexoRoleClass = XSIndividualRole.class),
-		@DeclarePatternRole(FML = "XSClass", flexoRoleClass = XMLTypeRole.class), })
+	@DeclarePatternRole(FML = "XSIndividual", flexoRoleClass = XMLIndividualRole.class),
+	@DeclarePatternRole(FML = "XSClass", flexoRoleClass = XMLTypeRole.class), })
 @DeclareEditionActions({ // All edition actions available through this model slot
-@DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXSIndividual.class),
-		@DeclareEditionAction(FML = "SetXMLDocumentRoot", editionActionClass = SetXMLDocumentRoot.class),
-		@DeclareEditionAction(FML = "GetXMLDocumentRoot", editionActionClass = GetXMLDocumentRoot.class),
-		@DeclareEditionAction(FML = "AddXSClass", editionActionClass = AddXSClass.class) })
+	@DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXSIndividual.class),
+	@DeclareEditionAction(FML = "SetXMLDocumentRoot", editionActionClass = SetXMLDocumentRoot.class),
+	@DeclareEditionAction(FML = "GetXMLDocumentRoot", editionActionClass = GetXMLDocumentRoot.class)})
 @DeclareFetchRequests({ // All requests available through this model slot
 })
 @ModelEntity
 @ImplementationClass(XSDModelSlot.XSDModelSlotImpl.class)
 @XMLElement
-public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XMLMetaModel> {
+public interface XSDModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel> {
 
 	@PropertyIdentifier(type = List.class)
 	public static final String URI_PROCESSORS_LIST_KEY = "uriProcessorsList";
 
 	@Getter(value = URI_PROCESSORS_LIST_KEY, cardinality = Cardinality.LIST)
 	@XMLElement
-	public List<XSURIProcessor> getUriProcessorsList();
+	public List<XMLURIProcessor> getUriProcessorsList();
 
 	@Setter(URI_PROCESSORS_LIST_KEY)
-	public void setUriProcessorsList(List<XSURIProcessor> uriProcessorsList);
+	public void setUriProcessorsList(List<XMLURIProcessor> uriProcessorsList);
 
 	@Adder(URI_PROCESSORS_LIST_KEY)
-	public void addToUriProcessorsList(XSURIProcessor aUriProcessorsList);
+	public void addToUriProcessorsList(XMLURIProcessor aUriProcessorsList);
 
 	@Remover(URI_PROCESSORS_LIST_KEY)
-	public void removeFromUriProcessorsList(XSURIProcessor aUriProcessorsList);
+	public void removeFromUriProcessorsList(XMLURIProcessor aUriProcessorsList);
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter();
 
-	public XSURIProcessor createURIProcessor();
+	public XMLURIProcessor createURIProcessor();
 
-	public static abstract class XSDModelSlotImpl extends TypeAwareModelSlotImpl<XMLXSDModel, XMLMetaModel> implements XSDModelSlot {
+	public static abstract class XSDModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel> implements XSDModelSlot {
 		static final Logger logger = Logger.getLogger(XSDModelSlot.class.getPackage().getName());
 
 		/* Used to process URIs for XML Objects */
-		private List<XSURIProcessor> uriProcessors;
-		private Hashtable<String, XSURIProcessor> uriProcessorsMap;
+		private List<XMLURIProcessor> uriProcessors;
+		private Hashtable<String, XMLURIProcessor> uriProcessorsMap;
 
 		public XSDModelSlotImpl() {
 			super();
 			if (uriProcessorsMap == null) {
-				uriProcessorsMap = new Hashtable<String, XSURIProcessor>();
+				uriProcessorsMap = new Hashtable<String, XMLURIProcessor>();
 			}
 			if (uriProcessors == null) {
-				uriProcessors = new ArrayList<XSURIProcessor>();
+				uriProcessors = new ArrayList<XMLURIProcessor>();
 			}
 		}
 
@@ -135,7 +138,7 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XMLMetaMod
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (XMLTypeRole.class.isAssignableFrom(patternRoleClass)) {
 				return "class";
-			} else if (XSIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (XMLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
 			}
 			return null;
@@ -148,42 +151,40 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XMLMetaMod
 
 		@Override
 		public String getURIForObject(
-				TypeAwareModelSlotInstance<XMLXSDModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLXSDModel, XMLMetaModel>> msInstance,
-				Object o) {
-			XSOntIndividual xsO = (XSOntIndividual) o;
+				TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,
+						Object o) {
+			XMLIndividual xsO = (XMLIndividual) o;
 
-			XSOntClass lClass = ((XSOntClass) xsO.getType());
-			XSURIProcessor mapParams = retrieveURIProcessorForType(lClass);
+			XMLType lClass = (xsO.getType());
+			XMLURIProcessor mapParams = retrieveURIProcessorForType(lClass);
 
 			if (mapParams != null) {
 				return mapParams.getURIForObject(msInstance, xsO);
 			} else {
 				logger.warning("XSDModelSlot: unable to get the URIProcessor for element of type: "
-						+ ((XSOntClass) xsO.getType()).getName());
+						+ ((XMLType) xsO.getType()).getName());
 				return null;
 			}
 
 		}
 
-		public XSURIProcessor retrieveURIProcessorForType(XSOntClass aClass) {
+		public XMLURIProcessor retrieveURIProcessorForType(XMLType aXmlType) {
 
-			logger.info("SEARCHING for an uriProcessor for " + aClass.getURI());
+			logger.info("SEARCHING for an uriProcessor for " + aXmlType.getURI());
 
-			XSURIProcessor mapParams = uriProcessorsMap.get(aClass.getURI());
+			XMLURIProcessor mapParams = uriProcessorsMap.get(aXmlType.getURI());
 
 			if (mapParams == null) {
-				for (XSOntClass s : aClass.getSuperClasses()) {
-					if (mapParams == null) {
-						// on ne cherche que le premier...
-						logger.info("SEARCHING for an uriProcessor for " + s.getURI());
-						if (mapParams == null) {
-							mapParams = retrieveURIProcessorForType(s);
-						}
-					}
+				XMLType s = aXmlType.getSuperType();
+				if (mapParams == null) {
+					// on ne cherche que le premier...
+					logger.info("SEARCHING for an uriProcessor for " + s.getURI());
+					mapParams = retrieveURIProcessorForType(s);
 				}
+
 				if (mapParams != null) {
-					logger.info("UPDATING the MapUriProcessors for an uriProcessor for " + aClass.getURI());
-					uriProcessorsMap.put(aClass.getURI(), mapParams);
+					logger.info("UPDATING the MapUriProcessors for an uriProcessor for " + aXmlType.getURI());
+					uriProcessorsMap.put(aXmlType.getURI(), mapParams);
 				}
 			}
 			return mapParams;
@@ -191,14 +192,14 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XMLMetaMod
 
 		@Override
 		public Object retrieveObjectWithURI(
-				TypeAwareModelSlotInstance<XMLXSDModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLXSDModel, XMLMetaModel>> msInstance,
-				String objectURI) {
+				TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,
+						String objectURI) {
 			String typeUri = XSURIProcessorImpl.retrieveTypeURI(msInstance, objectURI);
-			XMLXSDModel model = msInstance.getModel();
-			XSURIProcessor mapParams = uriProcessorsMap.get(XSURIProcessorImpl.retrieveTypeURI(msInstance, objectURI));
+			XMLModel model = msInstance.getModel();
+			XMLURIProcessor mapParams = uriProcessorsMap.get(XSURIProcessorImpl.retrieveTypeURI(msInstance, objectURI));
 			if (mapParams == null) {
 				// Look for a processor in superClasses
-				XSOntClass aClass = (XSOntClass) model.getMetaModel().getTypeFromURI(typeUri);
+				XMLType aClass = model.getMetaModel().getTypeFromURI(typeUri);
 				mapParams = retrieveURIProcessorForType(aClass);
 			}
 
@@ -218,27 +219,27 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XMLMetaMod
 		// ============================== uriProcessors Map ===================
 		// ==========================================================================
 
-		public void setUriProcessors(List<XSURIProcessor> uriProcessingParameters) {
+		public void setUriProcessors(List<XMLURIProcessor> uriProcessingParameters) {
 			this.uriProcessors = uriProcessingParameters;
 		}
 
-		public List<XSURIProcessor> getUriProcessors() {
+		public List<XMLURIProcessor> getUriProcessors() {
 			return uriProcessors;
 		}
 
 		@Override
-		public XSURIProcessor createURIProcessor() {
-			XSURIProcessor xsuriProc = getVirtualModelFactory().newInstance(XSURIProcessor.class);
+		public XMLURIProcessor createURIProcessor() {
+			XMLURIProcessor xsuriProc = getVirtualModelFactory().newInstance(XMLURIProcessor.class);
 			xsuriProc.setModelSlot(this);
 			uriProcessors.add(xsuriProc);
 			return xsuriProc;
 		}
 
-		public void updateURIMapForProcessor(XSURIProcessor xsuriProc) {
+		public void updateURIMapForProcessor(XMLURIProcessor xsuriProc) {
 			String uri = xsuriProc._getTypeURI();
 			if (uri != null) {
 				for (String k : uriProcessorsMap.keySet()) {
-					XSURIProcessor p = uriProcessorsMap.get(k);
+					XMLURIProcessor p = uriProcessorsMap.get(k);
 					if (p.equals(xsuriProc)) {
 						uriProcessorsMap.remove(k);
 					}
@@ -247,17 +248,17 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XMLMetaMod
 			}
 		}
 
-		public void addToUriProcessors(XSURIProcessor xsuriProc) {
+		public void addToUriProcessors(XMLURIProcessor xsuriProc) {
 			xsuriProc.setModelSlot(this);
 			uriProcessors.add(xsuriProc);
 			uriProcessorsMap.put(xsuriProc._getTypeURI().toString(), xsuriProc);
 		}
 
-		public void removeFromUriProcessors(XSURIProcessor xsuriProc) {
+		public void removeFromUriProcessors(XMLURIProcessor xsuriProc) {
 			String uri = xsuriProc._getTypeURI();
 			if (uri != null) {
 				for (String k : uriProcessorsMap.keySet()) {
-					XSURIProcessor p = uriProcessorsMap.get(k);
+					XMLURIProcessor p = uriProcessorsMap.get(k);
 					if (p.equals(xsuriProc)) {
 						uriProcessorsMap.remove(k);
 					}
@@ -269,30 +270,30 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XMLMetaMod
 
 		// Do not use this since not efficient, used in deserialization only
 		@Override
-		public List<XSURIProcessor> getUriProcessorsList() {
+		public List<XMLURIProcessor> getUriProcessorsList() {
 			return uriProcessors;
 		}
 
 		@Override
-		public void setUriProcessorsList(List<XSURIProcessor> uriProcList) {
-			for (XSURIProcessor xsuriProc : uriProcList) {
+		public void setUriProcessorsList(List<XMLURIProcessor> uriProcList) {
+			for (XMLURIProcessor xsuriProc : uriProcList) {
 				addToUriProcessorsList(xsuriProc);
 			}
 		}
 
 		@Override
-		public void addToUriProcessorsList(XSURIProcessor xsuriProc) {
+		public void addToUriProcessorsList(XMLURIProcessor xsuriProc) {
 			addToUriProcessors(xsuriProc);
 		}
 
 		@Override
-		public void removeFromUriProcessorsList(XSURIProcessor xsuriProc) {
+		public void removeFromUriProcessorsList(XMLURIProcessor xsuriProc) {
 			removeFromUriProcessors(xsuriProc);
 		}
 
 		@Override
 		public Type getType() {
-			return XMLXSDModel.class;
+			return XMLModel.class;
 		}
 
 		@Override
@@ -301,15 +302,15 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLXSDModel, XMLMetaMod
 		}
 
 		@Override
-		public XMLXSDFileResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
-				FlexoMetaModelResource<XMLXSDModel, XMLMetaModel, ?> metaModelResource) {
+		public XMLFileResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
+				FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
 			return getTechnologyAdapter().createNewXMLFile(project, filename, modelUri, metaModelResource);
 		}
 
 		@Override
-		public XMLXSDFileResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
-				String modelUri, FlexoMetaModelResource<XMLXSDModel, XMLMetaModel, ?> metaModelResource) {
-			return (XMLXSDFileResource) getTechnologyAdapter().createNewXMLFile((FileSystemBasedResourceCenter) resourceCenter,
+		public XMLFileResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
+				String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
+			return (XMLFileResource) getTechnologyAdapter().createNewXMLFile((FileSystemBasedResourceCenter) resourceCenter,
 					relativePath, filename, modelUri, (XSDMetaModelResource) metaModelResource);
 		}
 

@@ -33,17 +33,10 @@ import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
-import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.xml.binding.XSDBindingFactory;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
-import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
-import org.openflexo.technologyadapter.xml.model.XMLXSDModelFactory;
-import org.openflexo.technologyadapter.xml.rm.XMLXSDFileResource;
-import org.openflexo.technologyadapter.xml.rm.XMLXSDFileResourceImpl;
-import org.openflexo.technologyadapter.xml.rm.XMLXSDModelRepository;
-import org.openflexo.technologyadapter.xml.rm.XMLXSDNameSpaceFinder;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 
 /**
@@ -58,106 +51,9 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 // type-safe
 // interpretation
 })
-@DeclareRepositoryType({ XSDMetaModelRepository.class, XMLXSDModelRepository.class })
 public class XSDTechnologyAdapter extends TechnologyAdapter {
 
 
-
-    @Override
-    public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-        return false;
-    }
-
-    @Override
-    public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-        if (contents instanceof File) {
-            File candidateFile = (File) contents;
-            if (tryToLookupMetaModel(resourceCenter, candidateFile) != null) {
-                // This is a meta-model, this one has just been registered
-            }
-            else {
-                tryToLookupModel(resourceCenter, candidateFile);
-            }
-        }
-    }
-
-    @Override
-    public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-        if (contents instanceof File) {
-            System.out
-                    .println("File DELETED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
-        }
-    }
-
-
-
-    /**
-     * Retrieve and return URI for supplied meta model file, if supplied file
-     * represents a valid XSD meta model
-     * 
-     * @param aMetaModelFile
-     * @return
-     */
-    public String retrieveMetaModelURI(File aMetaModelFile) {
-
-        String s = XMLMetaModel.findNamespaceURI(aMetaModelFile);
-
-        return s;
-    }
-
-    /**
-     * Follow the link.
-     * 
-     * @see org.openflexo.foundation.technologyadapter.TechnologyAdapter#retrieveModelURI(java.io.File,
-     *      org.openflexo.foundation.resource.FlexoResource,
-     *      org.openflexo.foundation.technologyadapter.TechnologyContextManager)
-     */
-    public String retrieveModelURI(File aModelFile, FlexoResource<XMLMetaModel> metaModelResource,
-            TechnologyContextManager technologyContextManager) {
-
-        return aModelFile.toURI().toString();
-    }
-
-    /**
-     * Return flag indicating if supplied file represents a valid XML model
-     * conform to supplied meta-model
-     * 
-     * @param aModelFile
-     * @param metaModel
-     * @return
-     */
-    public boolean isValidModelFile(File aModelFile, FlexoResource<XMLMetaModel> metaModelResource,
-            TechnologyContextManager technologyContextManager) {
-
-        if (aModelFile.getName().endsWith(".xml")) {
-            String schemaURI = XMLXSDNameSpaceFinder.findNameSpace(aModelFile, false);
-
-            String mmURI = metaModelResource.getURI();
-            if (schemaURI != null && mmURI != null) {
-                if (schemaURI.equals(mmURI)) {
-                    logger.info("Found a conformant XML Model File [" + schemaURI + "]" + aModelFile.getAbsolutePath());
-                    return !schemaURI.isEmpty();
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public boolean isValidModelFile(File aModelFile, TechnologyContextManager technologyContextManager) {
-        if (aModelFile.getName().endsWith(".xml")) {
-
-            String schemaURI = XMLXSDNameSpaceFinder.findNameSpace(aModelFile, false);
-
-            // FIXME: Check if this is ok!
-            XSDMetaModelResource mm = (XSDMetaModelResource) technologyContextManager.getResourceWithURI(schemaURI);
-
-            if (mm != null) {
-                return true;
-            }
-        }
-        return false;
-    }
 
    
     /**
@@ -289,28 +185,6 @@ public class XSDTechnologyAdapter extends TechnologyAdapter {
         return BINDING_FACTORY;
     }
 
-    public String getExpectedMetaModelExtension() {
-        return ".xsd";
-    }
 
-    public String getExpectedModelExtension(FlexoResource<XMLMetaModel> metaModel) {
-        return ".xml";
-    }
-
-    /**
-     * 
-     * Create a XMLModel repository for current {@link TechnologyAdapter} and
-     * supplied {@link FlexoResourceCenter}
-     * 
-     */
-    public XMLXSDModelRepository createXMLXSDModelRepository(FlexoResourceCenter<?> resourceCenter) {
-        XMLXSDModelRepository returned = new XMLXSDModelRepository(this, resourceCenter);
-        resourceCenter.registerRepository(returned, XMLXSDModelRepository.class, this);
-        return returned;
-    }
-
-    public XMLXSDModelFactory getXMLXSDModelFactory() {
-        return this.xmlModelFactory;
-    }
 
 }

@@ -100,18 +100,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return aMetaModelFile.isFile() && aMetaModelFile.getName().endsWith(".xsd");
 	}
 
-	public String retrieveMetaModelURI(File aMetaModelFile, TechnologyContextManager technologyContextManager) {
-		// No MetaModel in this connector
-		// logger.warning("NO MetaModel exists for XMLTechnologyAdapter");
-		return null;
-	}
-
-	public FlexoResource<XMLModel> retrieveMetaModelResource(File aMetaModelFile, TechnologyContextManager technologyContextManager) {
-		// No MetaModel in this connector
-		// logger.warning("NO MetaModel exists for XMLTechnologyAdapter");
-		return null;
-	}
-
 	public boolean isValidModelFile(File aModelFile, FlexoResource<XMLMetaModel> metaModelResource,
 			TechnologyContextManager technologyContextManager) {
 
@@ -406,6 +394,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				// TODO : vérifier avec Sylvain mais ça ça devrait être inutile
 				referenceResource(mRes, resourceCenter);
 
 				// then find the MetaModel
@@ -483,8 +472,15 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 	@Override
 	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-
+        if (contents instanceof File) {
+            File candidateFile = (File) contents;
+            if (tryToLookupMetaModel(resourceCenter, candidateFile) != null) {
+                // This is a meta-model, this one has just been registered
+            }
+            else {
+                tryToLookupModel(resourceCenter, candidateFile);
+            }
+        }
 	}
 
 	@Override
