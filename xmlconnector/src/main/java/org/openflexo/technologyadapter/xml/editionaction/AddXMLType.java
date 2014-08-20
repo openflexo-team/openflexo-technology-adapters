@@ -32,6 +32,7 @@ import org.openflexo.foundation.viewpoint.editionaction.AddClass;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.xml.XMLModelSlot;
 import org.openflexo.technologyadapter.xml.XSDModelSlot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -88,8 +89,8 @@ public interface AddXMLType extends AddClass<XSDModelSlot, XMLType> {
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<XMLXSDModel, XMLMetaModel, XSDModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (TypeAwareModelSlotInstance<XMLXSDModel, XMLMetaModel, XSDModelSlot>) super.getModelSlotInstance(action);
+		public TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, XMLodelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
+			return (TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, XMLModelSlot>) super.getModelSlotInstance(action);
 		}
 
 	}

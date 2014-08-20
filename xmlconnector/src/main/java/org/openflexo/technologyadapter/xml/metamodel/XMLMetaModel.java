@@ -81,5 +81,4 @@ public interface XMLMetaModel extends XMLObject, FlexoMetaModel<XMLMetaModel>, T
 	@Setter(READ_ONLY)
 	public void setReadOnly(boolean value);
 	
-	
 }

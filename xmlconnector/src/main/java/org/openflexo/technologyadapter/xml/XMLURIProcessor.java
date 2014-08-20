@@ -40,12 +40,11 @@ import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.NamedViewPointObject;
 import org.openflexo.foundation.viewpoint.ViewPoint;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
-import org.openflexo.xml.IXMLAttribute;
-import org.openflexo.xml.IXMLIndividual;
-import org.openflexo.xml.IXMLType;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 
 
 /* Correct processing of XML Objects URIs needs to add an internal class to store
@@ -73,10 +72,9 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 
 		// Properties actually used to calculate URis
 
-		// TODO Change to a common Type for XML & XMLXSD
-		private IXMLType mappedClass;
+		private XMLType mappedClass;
 		private TypeAwareModelSlot<?, ?> modelSlot;
-		private IXMLAttribute baseAttributeForURI;
+		private XMLProperty baseAttributeForURI;
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
@@ -140,22 +138,22 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 			this.attributeName = attributeName;
 		}
 
-		public IXMLAttribute getBaseAttributeForURI() {
+		public XMLProperty getBaseAttributeForURI() {
 			return baseAttributeForURI;
 		}
 
-		public void setBaseAttributeForURI(IXMLAttribute baseAttributeForURI) {
+		public void setBaseAttributeForURI(XMLProperty baseAttributeForURI) {
 			this.baseAttributeForURI = baseAttributeForURI;
 			if (this.baseAttributeForURI != null) {
 				this.attributeName = this.baseAttributeForURI.getName();
 			}
 		}
 
-		public IXMLType getMappedClass() {
+		public XMLType getMappedClass() {
 			return mappedClass;
 		}
 
-		public void setMappedClass(IXMLType mappedClass) {
+		public void setMappedClass(XMLType mappedClass) {
 			this.mappedClass = mappedClass;
 		}
 
@@ -171,9 +169,9 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 				String mmURI = modelSlot.getMetaModelURI();
 				if (mmURI != null) {
 					// FIXME : to be re-factored
-					XMLFileResource mmResource = (XMLFileResource) modelSlot.getMetaModelResource();
+					XSDMetaModelResource mmResource = (XSDMetaModelResource) modelSlot.getMetaModelResource();
 					if (mmResource != null) {
-						mappedClass = mmResource.getModelData().getTypeFromURI(typeURI.toString());
+						mappedClass = mmResource.getMetaModelData().getTypeFromURI(typeURI.toString());
 					} else {
 						logger.warning("unable to map typeURI to an XMLType, as metaModelResource is Null ");
 					}
@@ -201,7 +199,7 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 			} else {
 				if (mappingStyle == MappingStyle.ATTRIBUTE_VALUE && attributeName != null) {
 
-					Object value = ((IXMLIndividual) xsO).getPropertyValue(attributeName);
+					Object value = xsO.getPropertyValue(attributeName);
 					try {
 						builtURI = URLEncoder.encode(value.toString(), "UTF-8");
 					} catch (UnsupportedEncodingException e) {
@@ -229,7 +227,7 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 		// get the Object given the URI
 		public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception {
 
-			IXMLIndividual o = uriCache.get(objectURI);
+			XMLIndividual o = uriCache.get(objectURI);
 
 			// if processor not initialized
 			if (mappedClass == null) {
@@ -248,7 +246,7 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 
 				if (mappingStyle == MappingStyle.ATTRIBUTE_VALUE && attributeName != null) {
 
-					for (IXMLIndividual obj : ((XMLModel) msInstance.getAccessedResourceData()).getIndividualsOfType(mappedClass)) {
+					for (XMLIndividual obj : ((XMLModel) msInstance.getAccessedResourceData()).getIndividualsOfType(mappedClass)) {
 
 						Object value = obj.getPropertyValue(attributeName);
 						try {

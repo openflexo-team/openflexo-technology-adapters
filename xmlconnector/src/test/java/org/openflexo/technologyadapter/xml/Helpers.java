@@ -29,6 +29,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLSimpleType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLObjectPropertyValue;
+import org.openflexo.technologyadapter.xml.model.XMLPropertyValue;
 
 public class Helpers {
 
@@ -80,13 +81,24 @@ public class Helpers {
 		else {
 			for (XMLProperty prop : aType.getProperties()) {
 				if (prop instanceof XMLDataProperty) {
-					System.out.println(prefix + "    * attr: " + prop.getName() + " = " + indiv.getPropertyValue(prop).toString());
+					XMLPropertyValue val = indiv.getPropertyValue(prop);
+					if (val != null){
+						System.out.println(prefix + "    * attr: " + prop.getName() + " = " + indiv.getPropertyValue(prop).toString());
+					}
+					else {
+						System.out.println(prefix + "    ! attr: " + prop.getName() + " n'est pas valuée" );
+					}
 				}
 				else if (prop instanceof XMLObjectProperty) {
 					System.out.println(prefix + "    * obj: " + prop.getName() );
 					XMLObjectPropertyValue vals = (XMLObjectPropertyValue) indiv.getPropertyValue(prop);
-					for (XMLIndividual v : vals.getValues()){
-						dumpIndividual (v, prefix + "          + ");
+					if (vals != null){
+						for (XMLIndividual v : vals.getValues()){
+							dumpIndividual (v, prefix + "          + ");
+						}
+					}
+					else {
+						System.out.println(" !! Etrange, la propriete " + prop.getName() + " ne contient rien ?!?" );
 					}
 				}
 

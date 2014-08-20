@@ -115,7 +115,7 @@ public class TestXMLResource extends OpenflexoTestCase {
 		Helpers.dumpIndividual(modelRes.getModelData().getRoot(), "");
 
 	}
-/*
+
 	@Test
 	@TestOrder(4)
 	public void test2LoadXMLResourcel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -132,7 +132,7 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
-		Helpers.dumpTypes(modelRes.getModel().getMetaModel());
+		// Helpers.dumpTypes(modelRes.getModel().getMetaModel());
 
 		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI("http://www.example.org/Library#Library"));
 
@@ -140,5 +140,5 @@ public class TestXMLResource extends OpenflexoTestCase {
 
 	}
 
-*/
+
 }

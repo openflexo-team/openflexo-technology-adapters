@@ -92,7 +92,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 				returned.isLoaded = true;
 			}
 			else {
-				// TODO: File does not exist, what should I Do
+				// TODO: File exists, what should I Do
 			}
 
 			return returned;
@@ -205,8 +205,6 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 
 		if (resourceData == null) {
 			resourceData =  XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
-			//, getTechnologyAdapter()); 
-			//new XMLModel(this.getTechnologyAdapter());
 			resourceData.setResource(this);
 			
 			attachMetamodel();
@@ -221,8 +219,6 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 				if (resourceData.getMetaModel() == null && mmRes != null){
 					resourceData.setMetaModel(mmRes.getMetaModelData());
 				}
-				
-				
 				
 				XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
 
@@ -256,8 +252,6 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 
 		if (resourceData == null) {
 			resourceData =  XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
-			//, getTechnologyAdapter()); 
-			//new XMLModel(this.getTechnologyAdapter());
 			resourceData.setResource(this);
 		}
 		// TODO : check lifecycle for Resource.... should it be loaded on getModelData?

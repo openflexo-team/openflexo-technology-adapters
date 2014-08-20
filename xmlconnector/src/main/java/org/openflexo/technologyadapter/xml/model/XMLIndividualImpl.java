@@ -123,7 +123,13 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 
 	@Override
 	public String getPropertyStringValue(XMLProperty prop) {
-		return propertiesValues.get(prop).getStringValue();
+		XMLPropertyValue pv = propertiesValues.get(prop);
+		if (pv != null){
+			return propertiesValues.get(prop).getStringValue();
+		}
+		else {
+			return "";
+		}
 	}
 
 	@Override

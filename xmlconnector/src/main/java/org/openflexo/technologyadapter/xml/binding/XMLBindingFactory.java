@@ -73,7 +73,7 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 		List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
 		
 		if (parent instanceof XMLIndividual) {
-				for (XMLProperty attr : ((XMLIndividual) parent).getProperties()) {
+				for (XMLProperty attr : ((XMLIndividual) parent).getType().getProperties()) {
 					returned.add(getSimplePathElement(attr, parent));
 				}
 			}

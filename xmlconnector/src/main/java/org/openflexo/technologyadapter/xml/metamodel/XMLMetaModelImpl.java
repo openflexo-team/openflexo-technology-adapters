@@ -121,4 +121,22 @@ public abstract class XMLMetaModelImpl  implements XMLMetaModel {
 	}
 
 
+	/**
+	 * 
+	 * creates a new empty MetaModel
+	 * 
+	 * @return
+	 */
+	public static XMLMetaModel createEmptyMetaModel(String uri){
+
+		
+		XMLMetaModel metamodel = MF.newInstance(XMLMetaModel.class);
+		metamodel.setReadOnly(false);
+
+		metamodel.setURI(uri);
+
+		return metamodel;
+
+	}
+	
 }

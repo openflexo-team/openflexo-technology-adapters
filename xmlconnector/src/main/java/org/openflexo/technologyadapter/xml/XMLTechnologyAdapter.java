@@ -28,8 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -44,7 +42,6 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLResource;
@@ -168,6 +165,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	 * @param technologyContextManager
 	 * @return
 	 */
+	/*
 	public XMLFileResource createEmptyModel(File modelFile, TechnologyContextManager technologyContextManager) {
 
 		XMLFileResource ModelResource = XMLFileResourceImpl.makeXMLFileResource(modelFile,
@@ -193,7 +191,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return createEmptyModel(modelFile, technologyContextManager);
 	}
 
-
+*/
 	/**
 	 * Create empty model.
 	 * 
@@ -217,7 +215,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return modelResource;
 
 	}
-*/
+	 */
 	/**
 	 * Creates new model conform to the supplied meta model
 	 * 
@@ -237,7 +235,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return createNewXMLFile(modelFile, modelUri, metaModel,project);
 
 	}
-*/
+	 */
 	/*
 	public FlexoResource<XMLXSDModel> createNewXMLFile(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
 			FlexoResource<XMLMetaModel> metaModelResource) {
@@ -258,7 +256,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 		return createNewXMLFile(modelFile, modelUri, metaModelResource,resourceCenter);
 	}
-*/
+	 */
 	@Override
 	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 
@@ -342,7 +340,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				e.printStackTrace();
 				return null;
 			}
-			
+
 			if (uri != null){
 
 				mmRes = (XSDMetaModelResource) xmlContextManager.getResourceWithURI(uri);
