@@ -289,6 +289,25 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 
 	}
 
+	@Override
+	public synchronized XMLModel getResourceData(IProgress progress) throws ResourceLoadingCancelledException, ResourceLoadingCancelledException,
+			FileNotFoundException, FlexoException {
+
+		if (isLoading()) {
+			logger.warning("trying to load a resource data from itself, please investigate");
+			return null;
+		}
+		if (resourceData != null && isLoadable()) {
+			// The resourceData is null, we try to load it
+			setLoading(true);
+			resourceData = loadResourceData(progress);
+			setLoading(false);
+			// That's fine, resource is loaded, now let's notify the loading of the resources
+			notifyResourceLoaded();
+		}
+		return resourceData;
+	}
+	
 	// Lifecycle Management
 
 	@Override

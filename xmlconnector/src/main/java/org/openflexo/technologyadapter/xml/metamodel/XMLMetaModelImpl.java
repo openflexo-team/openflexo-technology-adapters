@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -37,7 +38,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
  *
  */
 
-public abstract class XMLMetaModelImpl  implements XMLMetaModel {
+public abstract class XMLMetaModelImpl  extends FlexoObjectImpl implements XMLMetaModel {
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XMLMetaModelImpl.class.getPackage()
 			.getName());
@@ -138,5 +139,6 @@ public abstract class XMLMetaModelImpl  implements XMLMetaModel {
 		return metamodel;
 
 	}
+
 	
 }

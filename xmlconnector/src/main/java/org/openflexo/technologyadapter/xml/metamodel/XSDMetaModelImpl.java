@@ -22,6 +22,8 @@ package org.openflexo.technologyadapter.xml.metamodel;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 
 
 public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMetaModel {
@@ -31,7 +33,7 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 			.getName());
 	
 
-	private FlexoResource<? extends XMLMetaModel> xsdResource;
+	private XSDMetaModelResource xsdResource;
 	
     private static ModelFactory MF;
     
@@ -52,12 +54,12 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 
 	@Override
 	public FlexoResource<XMLMetaModel> getResource() {
-		return (FlexoResource<XMLMetaModel>) xsdResource;
+		return xsdResource;
 	}
 	
 	@Override
 	public void setResource(FlexoResource<XMLMetaModel> resource) {
-		this.xsdResource = resource;
+		this.xsdResource = (XSDMetaModelResource) resource;
 	}
 
 	@Override
@@ -69,5 +71,11 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 	public void setIsReadOnly(boolean b) {
 	}
 
-	
+	@Override
+	public XMLTechnologyAdapter getTechnologyAdapter() {
+		if (this.xsdResource != null)
+			return xsdResource.getTechnologyAdapter();
+		return null;
+	}
+
 }

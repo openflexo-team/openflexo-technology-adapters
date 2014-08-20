@@ -21,16 +21,19 @@
 
 package org.openflexo.technologyadapter.xml.metamodel;
 
+import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 
 /**
  * @author xtof
  * 
  */
-@ModelEntity
-public interface XMLObject {
+@ModelEntity 
+public interface XMLObject extends FlexoObject,TechnologyObject<XMLTechnologyAdapter> {
 
 
 	public static final String NAME = "name";

@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2014 - Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -19,7 +19,7 @@
  */
 package org.openflexo.technologyadapter.xml.gui;
 
-import org.openflexo.technologyadapter.xml.model.XMLXSDModel;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -27,24 +27,16 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * This class represent the module view for an XML model conform to an XSD.<br>
  * Underlying representation is supported by OntologyView implementation.
  * 
- * @author sylvain
+ * @author xtof
  * 
  */
+
 @SuppressWarnings("serial")
-public class XMLXSDModelView extends AbstractXMLOntologyView<XMLXSDModel> {
+public class XMLModelView extends AbstractXMLModuleView<XMLModel> {
 
-	public XMLXSDModelView(XMLXSDModel object, FlexoController controller, FlexoPerspective perspective) {
-		super(object, controller, perspective);
+	public XMLModelView(XMLModel object, FlexoController controller, FlexoPerspective perspective) {
+		super(controller, object, perspective);
 	}
 
-	@Override
-	protected XMLModelBrowserModel makeBrowserModel() {
-
-		return new XMLModelBrowserModel(getXMLModel());
-	}
-
-	public XMLXSDModel getXMLModel() {
-		return getOntology();
-	}
 
 }

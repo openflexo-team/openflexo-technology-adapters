@@ -25,7 +25,6 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -35,10 +34,15 @@ import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.gui.XMLIconLibrary;
+import org.openflexo.technologyadapter.xml.gui.XMLMetaModelView;
 import org.openflexo.technologyadapter.xml.gui.XMLModelBrowserModel;
+import org.openflexo.technologyadapter.xml.gui.XMLModelView;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
+import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -97,27 +101,20 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	 */
 	@Override
 	public ImageIcon getMetaModelIcon() {
-		return XMLIconLibrary.XML_FILE_ICON;
+		return XMLIconLibrary.XSD_FILE_ICON;
 	}
 
 	/**
-	 * Return icon representing supplied ontology object
+	 * Return icon representing supplied technology object
 	 * 
 	 * @param object
 	 * @return
 	 */
-	public ImageIcon getIconForOntologyObject(Class objectClass) {
-		// TODO RENAME ????
-		return XMLIconLibrary.iconForObject(objectClass);
-	}
-
-	/**
-	 * Return icon representing supplied property value
-	 * 
-	 * @param object
-	 * @return
-	 */
-	public ImageIcon getIconForPropertyValue(Class<? extends IFlexoOntologyPropertyValue> objectClass) {
+	@Override
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<XMLTechnologyAdapter>> objectClass) {
+		if (XMLObject.class.isAssignableFrom(objectClass)) {
+			return XMLIconLibrary.iconForObject((Class<? extends XMLObject>) objectClass);
+		}
 		return null;
 	}
 
@@ -131,7 +128,7 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 
 		if (XMLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
-			return getIconForOntologyObject(XMLIndividualRole.class);
+			return getIconForTechnologyObject(XMLIndividualRole.class);
 		}
 		return null;
 	}
@@ -145,7 +142,7 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	@Override
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction<?, ?>> editionActionClass) {
 		if (AddXMLIndividual.class.isAssignableFrom(editionActionClass)) {
-			return IconFactory.getImageIcon(getIconForOntologyObject(XMLIndividual.class), IconLibrary.DUPLICATE);
+			return IconFactory.getImageIcon(getIconForTechnologyObject(XMLIndividual.class), IconLibrary.DUPLICATE);
 		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
@@ -159,28 +156,35 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 		}
 	}
 
-	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<XMLTechnologyAdapter>> objectClass) {
-		// TODO Auto-generated method stub
-		return XMLIconLibrary.XML_FILE_ICON;
-	}
+
 
 	@Override
 	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
-		// TODO Auto-generated method stub
+		if (object instanceof XMLObject) {
+			return true;
+		}
 		return false;
 	}
 
+
 	@Override
 	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
+		if (object instanceof XMLObject) {
+			return "XML Object: " + ((XMLObject) object).getName();
+		}
 		return object.toString();
 	}
 
 	@Override
 	public ModuleView<?> createModuleViewForObject(TechnologyObject<XMLTechnologyAdapter> object, FlexoController controller,
 			FlexoPerspective perspective) {
-		// TODO Auto-generated method stub
-		return null;
+		if (object instanceof XMLModel) {
+			return new XMLModelView((XMLModel) object, controller, perspective);
+		}
+		else if (object instanceof XMLMetaModel) {
+			return new XMLMetaModelView((XMLMetaModel) object, controller, perspective);
+		}
+		return new EmptyPanel<TechnologyObject<XMLTechnologyAdapter>>(controller, perspective, object);
 	}
 
 }

@@ -31,19 +31,11 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * 
  */
 @SuppressWarnings("serial")
-public class XSDMetaModelView extends AbstractXMLOntologyView<XMLMetaModel> {
+public class XMLMetaModelView extends AbstractXMLModuleView<XMLMetaModel> {
 
-	public XSDMetaModelView(XMLMetaModel object, FlexoController controller, FlexoPerspective perspective) {
-		super(object, controller, perspective);
+	public XMLMetaModelView(XMLMetaModel object, FlexoController controller, FlexoPerspective perspective) {
+		super(controller, object, perspective);
 	}
 
-	@Override
-	protected XSDMetaModelBrowserModel makeBrowserModel() {
-		return new XSDMetaModelBrowserModel(getXSDMetaModel());
-	}
-
-	public XMLMetaModel getXSDMetaModel() {
-		return getOntology();
-	}
 
 }

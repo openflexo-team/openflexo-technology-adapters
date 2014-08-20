@@ -43,27 +43,27 @@ public abstract class AbstractXMLOntologyView<T extends FlexoObject & IFlexoOnto
 
 	@Override
 	public ImageIcon getOntologyClassIcon() {
-		return XSDIconLibrary.XSD_CLASS_ICON;
+		return XMLIconLibrary.XML_TYPE_ICON;
 	}
 
 	@Override
 	public ImageIcon getOntologyIndividualIcon() {
-		return XSDIconLibrary.XSD_INDIVIDUAL_ICON;
+		return XMLIconLibrary.XML_INDIVIDUAL_ICON;
 	}
 
 	@Override
 	public ImageIcon getOntologyDataPropertyIcon() {
-		return XSDIconLibrary.XSD_DATAPROPERTY_ICON;
+		return XMLIconLibrary.XSD_DATAPROPERTY_ICON;
 	}
 
 	@Override
 	public ImageIcon getOntologyObjectPropertyIcon() {
-		return XSDIconLibrary.XSD_OBJECTPROPERTY_ICON;
+		return XMLIconLibrary.XSD_OBJECTPROPERTY_ICON;
 	}
 
 	@Override
 	public ImageIcon getOntologyAnnotationIcon() {
-		return XSDIconLibrary.XSD_DATAPROPERTY_ICON;
+		return XMLIconLibrary.XSD_DATAPROPERTY_ICON;
 	}
 
 	@Override

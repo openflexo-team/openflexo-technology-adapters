@@ -21,6 +21,7 @@ package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.util.Collection;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Adder;
@@ -40,7 +41,7 @@ import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 
 @ModelEntity
 @ImplementationClass(XMLMetaModelImpl.class)
-public interface XMLMetaModel extends XMLObject, FlexoMetaModel<XMLMetaModel>, TechnologyObject<XMLTechnologyAdapter> {
+public interface XMLMetaModel extends FlexoObject, XMLObject, FlexoMetaModel<XMLMetaModel>, TechnologyObject<XMLTechnologyAdapter> {
 
 	public static String TYPES = "types";
 	public static String READ_ONLY = "readOnly";

@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.xml.virtualmodel;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.logging.FlexoLogger;
@@ -32,12 +33,13 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 
 @ModelEntity
 @ImplementationClass(XMLActorReference.XMLActorReferenceImpl.class)
 @XMLElement
-public interface XMLActorReference<T extends XMLObject> extends ActorReference<T> {
+public interface XMLActorReference<T extends XMLObject> extends ActorReference<T>,TechnologyObject<XMLTechnologyAdapter> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String OBJECT_URI_KEY = "objectURI";

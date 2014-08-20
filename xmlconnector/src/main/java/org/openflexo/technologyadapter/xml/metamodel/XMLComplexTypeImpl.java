@@ -60,7 +60,7 @@ public abstract class XMLComplexTypeImpl  implements XMLComplexType {
 					prop = XMLMetaModelImpl.getModelFactory().newInstance( XMLDataProperty.class, name, aType);
 				}
 				else{
-					logger.warning("UNABLE to create a new property named ["+ name+"] as it does not map to any known type: " + aType.getClass().getName());
+					logger.warning("UNABLE to create a new property named ["+ name+"] as it does not map to any known type: " + aType.toString());
 				}
 			}
 			else

@@ -25,6 +25,7 @@ import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 
 /**
@@ -33,7 +34,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
  * @author sylvain, xtof
  */
 @ModelEntity
-public abstract interface XMLPropertyValue  {
+public abstract interface XMLPropertyValue  extends XMLObject {
 
 	final String PROPERTY = "property";
 

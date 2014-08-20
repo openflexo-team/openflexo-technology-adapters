@@ -31,10 +31,12 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.w3c.dom.Document;
@@ -45,7 +47,7 @@ import org.w3c.dom.Element;
  * 
  */
 
-public abstract class XMLModelImpl  implements XMLModel {
+public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel {
 
 	// Constants
 
@@ -63,6 +65,7 @@ public abstract class XMLModelImpl  implements XMLModel {
 	private final List<String>                           namespace = new ArrayList<String>();
 
 	private static ModelFactory MF;
+
 
 	static{
 		try {
@@ -173,6 +176,14 @@ public abstract class XMLModelImpl  implements XMLModel {
 		}
 
 		return doc;
+	}
+
+	@Override
+	public XMLTechnologyAdapter getTechnologyAdapter() {
+		XMLFileResource rsc = this.getResource();
+		if (rsc != null)
+			return rsc.getTechnologyAdapter();
+		return null;
 	}
 
 }

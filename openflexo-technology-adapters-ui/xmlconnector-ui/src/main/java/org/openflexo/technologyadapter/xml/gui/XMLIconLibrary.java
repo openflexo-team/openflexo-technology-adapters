@@ -1,6 +1,5 @@
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2010-2011 AgileBirds
  *
  * This file is part of OpenFlexo.
  *
@@ -18,8 +17,6 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
-
-
 package org.openflexo.technologyadapter.xml.gui;
 
 import java.util.logging.Logger;
@@ -27,6 +24,11 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObjectPropertyImpl;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.toolbox.ImageIconResource;
@@ -34,18 +36,32 @@ import org.openflexo.toolbox.ImageIconResource;
 public class XMLIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(XMLIconLibrary.class.getPackage().getName());
+
 	
 
-	public static final ImageIconResource XSD_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLTechnology32.png"));
-	public static final ImageIconResource XSD_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLTechnology.png"));
+	public static final ImageIconResource XSD_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDTechnology32.png"));
+	public static final ImageIconResource XSD_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDTechnology.png"));
+	public static final ImageIconResource XSD_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDFile.png"));
 	public static final ImageIconResource XML_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLFile.png"));
+	public static final ImageIconResource XML_TYPE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLType.png"));
 	public static final ImageIconResource XML_INDIVIDUAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLIndividual.png"));
+	public static final ImageIconResource XSD_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDProperty.png"));
+	public static final ImageIconResource XSD_DATAPROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDDataProperty.png"));
+	public static final ImageIconResource XSD_OBJECTPROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDObjectProperty.png"));
 
-	public static ImageIcon iconForObject(Class objectClass) {
-		if (XMLModel.class.isAssignableFrom(objectClass)) {
+	public static ImageIcon iconForObject(Class<? extends XMLObject> objectClass) {
+		if (XMLMetaModel.class.isAssignableFrom(objectClass)) {
+			return XSD_FILE_ICON;
+		} else if (XMLModel.class.isAssignableFrom(objectClass)) {
 			return XML_FILE_ICON;
+		} else if (XMLType.class.isAssignableFrom(objectClass)) {
+			return XML_TYPE_ICON;
 		} else if (XMLIndividual.class.isAssignableFrom(objectClass)) {
 			return XML_INDIVIDUAL_ICON;
+		} else if (XMLDataProperty.class.isAssignableFrom(objectClass)) {
+			return XSD_DATAPROPERTY_ICON;
+		}else if (XMLObjectPropertyImpl.class.isAssignableFrom(objectClass)) {
+			return XSD_OBJECTPROPERTY_ICON;
 		}
 		logger.warning("No icon for " + objectClass);
 		return null;

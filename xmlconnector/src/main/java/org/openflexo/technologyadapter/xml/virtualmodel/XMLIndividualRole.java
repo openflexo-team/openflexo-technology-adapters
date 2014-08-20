@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.xml.virtualmodel;
 
 import java.lang.reflect.Type;
 
+import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
@@ -32,6 +33,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
 /**
@@ -40,7 +42,7 @@ import org.openflexo.technologyadapter.xml.model.XMLIndividual;
  */
 @ModelEntity
 @ImplementationClass(XMLIndividualRole.XMLIndividualRoleImpl.class)
-public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
+public interface XMLIndividualRole extends FlexoRole<XMLIndividual>,TechnologyObject<XMLTechnologyAdapter> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String INDIVIDUAL_URI_KEY = "individualURI";
