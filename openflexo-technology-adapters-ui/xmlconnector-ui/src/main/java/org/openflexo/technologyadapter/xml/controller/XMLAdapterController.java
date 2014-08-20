@@ -35,7 +35,6 @@ import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.gui.XMLIconLibrary;
 import org.openflexo.technologyadapter.xml.gui.XMLMetaModelView;
-import org.openflexo.technologyadapter.xml.gui.XMLModelBrowserModel;
 import org.openflexo.technologyadapter.xml.gui.XMLModelView;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
@@ -145,15 +144,6 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 			return IconFactory.getImageIcon(getIconForTechnologyObject(XMLIndividual.class), IconLibrary.DUPLICATE);
 		}
 		return super.getIconForEditionAction(editionActionClass);
-	}
-
-	public XMLModelBrowserModel makeOntologyBrowserModel(XMLModel context) {
-		if (context instanceof XMLModel) {
-			return new XMLModelBrowserModel(context);
-		} else {
-			logger.warning("Unexpected " + context);
-			return null;
-		}
 	}
 
 

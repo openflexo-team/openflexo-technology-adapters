@@ -19,6 +19,8 @@
  */
 package org.openflexo.technologyadapter.xml.gui;
 
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -33,9 +35,11 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 
 @SuppressWarnings("serial")
 public class XMLModelView extends AbstractXMLModuleView<XMLModel> {
+	
+	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/FIBXMLModelView.fib");
 
 	public XMLModelView(XMLModel object, FlexoController controller, FlexoPerspective perspective) {
-		super(controller, object, perspective);
+		super(controller, object, perspective, FIB_FILE);
 	}
 
 

@@ -1,10 +1,9 @@
 package org.openflexo.technologyadapter.xml.gui;
 
-import javax.swing.JComponent;
-import javax.swing.JScrollPane;
-
-import org.openflexo.foundation.FlexoObject;
+import org.openflexo.rm.Resource;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.view.ModuleView;
+import org.openflexo.view.SelectionSynchronizedFIBView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -13,7 +12,7 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * JScrollPane, to contain XML View. 
  * 
  */
-public abstract class AbstractXMLModuleView<T extends FlexoObject> extends JScrollPane implements ModuleView<T> {
+public abstract class AbstractXMLModuleView<T extends XMLObject> extends SelectionSynchronizedFIBView implements ModuleView<T> {
 
 	protected final FlexoController controller;
 
@@ -28,26 +27,15 @@ public abstract class AbstractXMLModuleView<T extends FlexoObject> extends JScro
 	 * @param representedObject
 	 * @param perspective
 	 */
-	protected AbstractXMLModuleView(FlexoController controller, T representedObject, FlexoPerspective perspective) {
-		super();
+	protected AbstractXMLModuleView(FlexoController controller, T representedObject, FlexoPerspective perspective, Resource fib_file) {
+		super(null, controller, fib_file);
 		this.controller = controller;
 		this.representedObject = representedObject;
 		this.perspective = perspective;
+		setDataObject(representedObject);
 	}
 
-	/**
-	 * Initialize needed attribute. All are final, no implicit call of super should be done. Add a viewportView to ScrollPane.
-	 *
-	 * @param controller
-	 * @param representedObject
-	 * @param perspective
-	 * @param viewportView
-	 */
-	public AbstractXMLModuleView(FlexoController controller, T representedObject, FlexoPerspective perspective,
-			JComponent viewportView) {
-		this(controller, representedObject, perspective);
-		this.setViewportView(viewportView);
-	}
+
 
 	@Override
 	public T getRepresentedObject() {
