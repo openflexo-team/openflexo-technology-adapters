@@ -30,6 +30,8 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.gui.CSVIconLibrary;
+import org.openflexo.technologyadapter.csv.model.CSVModel;
+import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -74,35 +76,37 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 	@Override
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<CSVTechnologyAdapter>> objectClass) {
 		// TODO Auto-generated method stub
-		return null;
+		return CSVIconLibrary.CSV_TECHNOLOGY_ICON;
 	}
 
 	@Override
 	public ModuleView<?> createModuleViewForObject(
-			TechnologyObject<CSVTechnologyAdapter> arg0, FlexoController arg1,
-			FlexoPerspective arg2) {
+			TechnologyObject<CSVTechnologyAdapter> object, FlexoController controller,
+			FlexoPerspective perspective) {
 		// TODO Auto-generated method stub
-		return null;
+		// You will need to create your own moduleview to represent your nodel has needed. This ModuleView is
+		// a class that implements ModuleView and needs to extends a Swing component (JPanel, JScrollPane,…)
+		return new EmptyPanel<TechnologyObject<CSVTechnologyAdapter>>(controller, perspective, object);
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> arg0) {
+	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> role) {
 		// TODO Auto-generated method stub
-		return null;
+		return CSVIconLibrary.CSV_TECHNOLOGY_ICON;
 	}
 
 	@Override
 	public String getWindowTitleforObject(
-			TechnologyObject<CSVTechnologyAdapter> arg0, FlexoController arg1) {
+			TechnologyObject<CSVTechnologyAdapter> obj, FlexoController controller) {
 		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
 	public boolean hasModuleViewForObject(
-			TechnologyObject<CSVTechnologyAdapter> arg0, FlexoController arg1) {
+			TechnologyObject<CSVTechnologyAdapter> obj, FlexoController controller) {
 		// TODO Auto-generated method stub
-		return false;
+		return obj instanceof CSVModel;
 	}
 }
 

@@ -34,7 +34,7 @@ import org.openflexo.technologyadapter.csv.model.CSVModelImpl;
 @ImplementationClass(value = CSVModelImpl.class)
 public interface CSVModel extends TechnologyObject<CSVTechnologyAdapter>, ResourceData<CSVModel>{
 
-    public static final String MODEL_ITEM_KEY = "{rootArtifactId}Object";
+    public static final String MODEL_ITEM_KEY = "csvObject";
 
     @Getter(value = MODEL_ITEM_KEY, ignoreType = true)
     public Object getModelItem();

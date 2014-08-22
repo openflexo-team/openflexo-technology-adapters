@@ -21,16 +21,13 @@
 
 package org.openflexo.technologyadapter.csv;
 
-import java.util.Collections;
-import java.util.List;
-
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 
 public class CSVModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration< CSVModel, CSVModelSlot> {
 
-    protected CSVModelSlotInstanceConfiguration(CSVModelSlot ms, CreateVirtualModelInstance action) {
+    protected CSVModelSlotInstanceConfiguration(CSVModelSlot ms, CreateVirtualModelInstance<?> action) {
         super(ms, action);
     }
 

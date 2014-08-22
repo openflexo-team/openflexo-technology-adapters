@@ -32,8 +32,4 @@ public class ${technologyPrefix}TechnologyContextManager extends TechnologyConte
         super(adapter, resourceCenterService);
     }
 
-    @Override
-    public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter() {
-        return (${technologyPrefix}TechnologyAdapter) super.getTechnologyAdapter();
-    }
 }

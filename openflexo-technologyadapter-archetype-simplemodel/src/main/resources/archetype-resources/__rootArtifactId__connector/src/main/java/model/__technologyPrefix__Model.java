@@ -37,7 +37,7 @@ import ${package}.model.${technologyPrefix}ModelImpl;
 @ImplementationClass(value = ${technologyPrefix}ModelImpl.class)
 public interface ${technologyPrefix}Model extends TechnologyObject<${technologyPrefix}TechnologyAdapter>, ResourceData<${technologyPrefix}Model>{
 
-    public static final String MODEL_ITEM_KEY = "{rootArtifactId}Object";
+    public static final String MODEL_ITEM_KEY = "${rootArtifactId}Object";
 
     @Getter(value = MODEL_ITEM_KEY, ignoreType = true)
     public Object getModelItem();

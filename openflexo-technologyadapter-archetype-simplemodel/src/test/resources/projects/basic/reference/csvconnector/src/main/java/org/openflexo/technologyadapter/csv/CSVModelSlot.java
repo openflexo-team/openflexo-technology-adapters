@@ -78,7 +78,7 @@ public interface CSVModelSlot extends FreeModelSlot<CSVModel> {
             if (CSVRole.class.isAssignableFrom(patternRoleClass)) {
                 return "Object";
         	}
-            return null;
+            return "";
         }
 
         @Override

@@ -35,12 +35,25 @@ import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.csv.CSVTechnologyContextManager;
+import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
+import org.openflexo.technologyadapter.csv.model.CSVModelImpl;
 import org.openflexo.toolbox.IProgress;
 
 public abstract class CSVResourceImpl extends FlexoFileResourceImpl<CSVModel> implements CSVResource {
     
     private static final Logger LOGGER = Logger.getLogger(CSVResourceImpl.class.getPackage().getName());
+
+	private static ModelFactory MODEL_FACTORY;
+
+	static {
+		try {
+			MODEL_FACTORY = new ModelFactory(CSVModel.class);
+		} catch (final ModelDefinitionException e) {
+			final String msg = "Error while initializing CSV model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+		}
+	}
 
     public static CSVResource makeCSVResource(String modelURI, File modelFile,
             CSVTechnologyContextManager technologyContextManager) {
@@ -51,7 +64,7 @@ public abstract class CSVResourceImpl extends FlexoFileResourceImpl<CSVModel> im
             returned.setFile(modelFile);
             returned.setURI(modelURI);
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-            returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+            returned.setTechnologyAdapter((CSVTechnologyAdapter) technologyContextManager.getTechnologyAdapter());
             returned.setTechnologyContextManager(technologyContextManager);
             technologyContextManager.registerResource(returned);
 
@@ -71,7 +84,7 @@ public abstract class CSVResourceImpl extends FlexoFileResourceImpl<CSVModel> im
             returned.setFile(modelFile);
             returned.setURI(modelFile.toURI().toString());
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-            returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+            returned.setTechnologyAdapter((CSVTechnologyAdapter) technologyContextManager.getTechnologyAdapter());
             returned.setTechnologyContextManager(technologyContextManager);
             technologyContextManager.registerResource(returned);
             return returned;
@@ -82,10 +95,22 @@ public abstract class CSVResourceImpl extends FlexoFileResourceImpl<CSVModel> im
         return null;
     }
 
+	@Override
+	public CSVTechnologyAdapter getTechnologyAdapter() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(CSVTechnologyAdapter.class);
+		}
+		return null;
+	}
+
     @Override
     public CSVModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
         // TODO: Auto-generated Method
-        return null;
+		final CSVModelImpl csvObject = (CSVModelImpl) MODEL_FACTORY.newInstance(CSVModel.class);
+		csvObject.setTechnologyAdapter(getTechnologyAdapter());
+		csvObject.setResource(this);
+		// Now you have to add here your parsing and call the correct set.
+		return csvObject;
     }
 
     @Override
@@ -126,7 +151,7 @@ public abstract class CSVResourceImpl extends FlexoFileResourceImpl<CSVModel> im
     }
 
     private void writeToFile() throws SaveResourceException {
-        //TODO : Auto-generated method skeletton.
+        //TODO : Auto-generated method skeleton.
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(getFile());
