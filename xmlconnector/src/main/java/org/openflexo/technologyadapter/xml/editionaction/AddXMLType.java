@@ -77,7 +77,7 @@ public interface AddXMLType extends AssignableAction<XMLModelSlot, XMLType> {
 	@Setter(METAMODEL)
 	public void setMetamodel(DataBinding<XMLMetaModel> metamodel);
 
-	@Getter(value = SIMPLE_TYPE)
+	@Getter(value = SIMPLE_TYPE, defaultValue = "false")
 	@XMLAttribute
 	public boolean isSimpleType();
 
