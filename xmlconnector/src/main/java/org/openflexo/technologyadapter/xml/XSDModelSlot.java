@@ -50,9 +50,7 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLURIProcessor.XSURIProcessorImpl;
-import org.openflexo.technologyadapter.xml.editionaction.AddXSIndividual;
-import org.openflexo.technologyadapter.xml.editionaction.GetXMLDocumentRoot;
-import org.openflexo.technologyadapter.xml.editionaction.SetXMLDocumentRoot;
+import org.openflexo.technologyadapter.xml.editionaction.AddXMLType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
@@ -70,12 +68,9 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XMLTypeRole;
  */
 
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-	@DeclarePatternRole(FML = "XSIndividual", flexoRoleClass = XMLIndividualRole.class),
-	@DeclarePatternRole(FML = "XSClass", flexoRoleClass = XMLTypeRole.class), })
+	@DeclarePatternRole(FML = "XMLType", flexoRoleClass = XMLTypeRole.class), })
 @DeclareEditionActions({ // All edition actions available through this model slot
-	@DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXSIndividual.class),
-	@DeclareEditionAction(FML = "SetXMLDocumentRoot", editionActionClass = SetXMLDocumentRoot.class),
-	@DeclareEditionAction(FML = "GetXMLDocumentRoot", editionActionClass = GetXMLDocumentRoot.class)})
+	@DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXMLType.class)})
 @DeclareFetchRequests({ // All requests available through this model slot
 })
 @ModelEntity
@@ -301,6 +296,9 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			return (XMLTechnologyAdapter) super.getTechnologyAdapter();
 		}
 
+		// FIXME
+		
+		/*
 		@Override
 		public XMLFileResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
 				FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
@@ -313,7 +311,7 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			return (XMLFileResource) getTechnologyAdapter().createNewXMLFile((FileSystemBasedResourceCenter) resourceCenter,
 					relativePath, filename, modelUri, (XSDMetaModelResource) metaModelResource);
 		}
-
+*/
 		@Override
 		public boolean isStrictMetaModelling() {
 			return true;

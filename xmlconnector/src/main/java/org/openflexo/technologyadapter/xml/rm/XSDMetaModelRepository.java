@@ -21,12 +21,14 @@
 package org.openflexo.technologyadapter.xml.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
+import org.openflexo.foundation.technologyadapter.MetaModelRepository;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 
-public class XSDMetaModelRepository extends TechnologyAdapterResourceRepository<XSDMetaModelResource, XMLTechnologyAdapter,  XMLMetaModel > {
-
+// FIXME when we have discussed about File repo issues
+// public class XSDMetaModelRepository extends TechnologyAdapterResourceRepository<XSDMetaModelResource, XMLTechnologyAdapter,  XMLMetaModel > {
+public class XSDMetaModelRepository extends MetaModelRepository<XSDMetaModelResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter > {
 	public XSDMetaModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
 		super(adapter, resourceCenter);
 	}

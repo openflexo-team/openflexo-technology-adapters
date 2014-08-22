@@ -23,16 +23,21 @@ package org.openflexo.technologyadapter.xml.editionaction;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
+import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLModelSlot;
+import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
@@ -42,48 +47,102 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @XMLElement
 public interface AddXMLType extends AssignableAction<XMLModelSlot, XMLType> {
 
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String TYPE_NAME = "typeName";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String SUPER_TYPE = "superType";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String METAMODEL = "metamodel";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String SIMPLE_TYPE = "simpleType";
+
+	@Getter(value = TYPE_NAME)
+	@XMLAttribute
+	public DataBinding<String> getTypeName();
+
+	@Setter(TYPE_NAME)
+	public void setTypeName(DataBinding<String> name);
+
+	@Getter(value = SUPER_TYPE)
+	@XMLAttribute
+	public DataBinding<XMLComplexType> getSuperType();
+
+	@Setter(SUPER_TYPE)
+	public void setgetSuperType(DataBinding<XMLComplexType> aType);
+
+	@Getter(value = METAMODEL)
+	@XMLAttribute
+	public DataBinding<XMLMetaModel> getMetamodel();
+
+	@Setter(SUPER_TYPE)
+	public void setMetamodel(DataBinding<XMLMetaModel> metamodel);
+
+	@Getter(value = SIMPLE_TYPE)
+	@XMLAttribute
+	public boolean isSimpleType();
+
+	@Setter(SIMPLE_TYPE)
+	public void setIsSimpleType(boolean isSimple);
+
+	/**
+	 * Implementation
+	 * 
+	 * @author xtof
+	 *
+	 */
 	public static abstract class AddXMLTypeImpl extends AssignableActionImpl<XMLModelSlot, XMLType> implements AddXMLType {
 
 		private static final Logger logger = Logger.getLogger(AddXMLType.class.getPackage().getName());
 
 		private final String dataPropertyURI = null;
 
+
+		// TODO create all the bindings needed 
+
 		public AddXMLTypeImpl() {
 			super();
 		}
 
-		@Override
-		public XMLType getOntologyClass() {
-			return (XMLType) super.getOntologyClass();
-		}
 
-		@Override
-		public Class<XMLType> getOntologyClassClass() {
-			return XMLType.class;
-		}
+
 
 		@Override
 		public XMLType performAction(FlexoBehaviourAction action) {
-			XMLType father = getOntologyClass();
-			String newClassName = null;
-			try {
-				newClassName = getClassName().getBindingValue(action);
-			} catch (TypeMismatchException e1) {
-				e1.printStackTrace();
-			} catch (NullReferenceException e1) {
-				e1.printStackTrace();
-			} catch (InvocationTargetException e1) {
-				e1.printStackTrace();
-			}
+
 			XMLType newClass = null;
 			try {
-				logger.info("Adding class " + newClassName + " as " + father);
+				XMLType father = getSuperType().getBindingValue(action);
+				String newTypeName = null;
+				newTypeName = getTypeName().getBindingValue(action);
+
+				logger.info("Adding class " + newTypeName + " as " + father);
 				// FIXME : Something wrong here!
-				// newClass = getModelSlotInstance(action).getModel().getMetaModel().createOntologyClass(newClassName, father);
-				newClass = getModelSlotInstance(action).getAccessedResourceData().getMetaModel().createNewType(uri, localName, simpleType);
-				newClass.setSuperType(father);
-				logger.info("Added class " + newClass.getName() + " as " + father);
-			} catch (DuplicateURIException e) {
+				XMLMetaModel mm = getMetamodel().getBindingValue(action);
+				if (mm != null){
+
+					if (father != null) {					
+						newClass = getModelSlotInstance(action).getAccessedResourceData().getMetaModel().createNewType(father.getURI().replace('#', '/') + "#" + newTypeName, newTypeName, isSimpleType());
+
+						newClass.setSuperType(father);
+					}
+					else {
+
+						newClass = getModelSlotInstance(action).getAccessedResourceData().getMetaModel().createNewType(mm.getURI() + "/" + newTypeName, newTypeName, isSimpleType());
+					}
+					logger.info("Added class " + newClass.getName() + " as " + father);
+
+				}
+				else {
+					logger.warning("CANNOT create a new type in a null MetaModel!");
+				}
+			} catch (TypeMismatchException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return newClass;

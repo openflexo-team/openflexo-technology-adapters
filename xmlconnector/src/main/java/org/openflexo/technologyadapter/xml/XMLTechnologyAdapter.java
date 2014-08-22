@@ -42,6 +42,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
+import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLResource;
@@ -382,16 +383,13 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 			if (mRes != null) {
 
 				xmlContextManager.registerResource(mRes);
-				RepositoryFolder<XMLResource> folder;
+				RepositoryFolder<XMLFileResource> folder;
 				try {
 					folder = modelRepository.getRepositoryFolder(candidateFile, true);
-					if (folder==null){
-						
-					}
 					if (folder != null){
-						modelRepository.registerResource(mRes, folder);
+						modelRepository.registerResource((XMLFileResource) mRes, folder);
 					}else{
-						modelRepository.registerResource(mRes);
+						modelRepository.registerResource((XMLFileResource) mRes);
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
