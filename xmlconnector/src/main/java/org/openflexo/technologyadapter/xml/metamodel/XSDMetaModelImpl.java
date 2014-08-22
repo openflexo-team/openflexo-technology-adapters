@@ -77,5 +77,10 @@ public abstract class XSDMetaModelImpl extends XMLMetaModelImpl implements XSDMe
 			return xsdResource.getTechnologyAdapter();
 		return null;
 	}
+	
+	@Override
+	public String getName(){
+		return this.getURI();
+	}
 
 }

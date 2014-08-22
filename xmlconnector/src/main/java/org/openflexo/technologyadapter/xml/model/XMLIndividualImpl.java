@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -263,4 +264,9 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 	}
 
 
+	@Override
+	public XMLTechnologyAdapter getTechnologyAdapter(){
+		return this.getContainerModel().getTechnologyAdapter();
+	}
+	
 }

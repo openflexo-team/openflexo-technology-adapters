@@ -23,7 +23,6 @@ package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
@@ -180,7 +179,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 					if (owner != null && owner instanceof XMLComplexType) {
 						// TODO: better manage types
 						System.out.println("SHOULD Create a new simple type for : " + elementType.getName());
-						((XMLComplexType) owner).createProperty(element.getName(), (Type) resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
+						((XMLComplexType) owner).createProperty(element.getName(), resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
 					}
 					else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
@@ -203,7 +202,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 				XMLType owner = resourceData.getTypeFromURI(ownerUri);
 				if (owner != null && owner instanceof XMLComplexType ) {
 					// TODO: better manage types
-					((XMLComplexType) owner).createProperty(attribute.getName(), (Type) resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
+					((XMLComplexType) owner).createProperty(attribute.getName(), resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
 				}
 				else {
 					logger.warning("unable to find an owner type for attribute: " + uri);
@@ -233,7 +232,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 					if (owner != null && owner instanceof XMLComplexType ) {
 
 						// TODO: better manage types
-						((XMLComplexType) owner).createProperty(name, (Type) t);
+						((XMLComplexType) owner).createProperty(name, t);
 					}
 					else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
@@ -250,6 +249,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 			this.resourceData =  XSDMetaModelImpl.getModelFactory().newInstance(XSDMetaModel.class);
 			resourceData.getResource();
 			resourceData.setResource(this);
+			resourceData.setURI(this.getURI());
 		}
 
 		if (isLoading() == true) {

@@ -21,6 +21,8 @@ package org.openflexo.technologyadapter.xml.gui;
 
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -37,10 +39,32 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 public class XMLModelView extends AbstractXMLModuleView<XMLModel> {
 	
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/FIBXMLModelView.fib");
+	public static final Resource XMLIndividual_FIB_FILE = ResourceLocator.locateResource("Fib/FIBPanelXMLIndividual.fib");
 
 	public XMLModelView(XMLModel object, FlexoController controller, FlexoPerspective perspective) {
 		super(controller, object, perspective, FIB_FILE);
 	}
+	
 
+	public XMLModel getModel() {
+		return representedObject;
+	}
+
+
+
+
+	/**
+	 * Selects the FIB Panel to display depending of selected Object type
+	 * @param object
+	 * @return
+	 */
+	public Resource getFibForXMLObject(XMLObject object){
+		if (object instanceof XMLType) {
+			return XMLIndividual_FIB_FILE;
+		}
+		else return null;
+	}
+	
+	
 
 }

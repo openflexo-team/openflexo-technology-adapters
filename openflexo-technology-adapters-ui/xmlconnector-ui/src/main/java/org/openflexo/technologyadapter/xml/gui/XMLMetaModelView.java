@@ -69,9 +69,6 @@ public class XMLMetaModelView extends AbstractXMLModuleView<XMLMetaModel> {
 		}
 		else return null;
 	}
-	
-
-	
 
 	
 }
