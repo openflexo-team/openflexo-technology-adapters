@@ -31,23 +31,20 @@ import org.openflexo.antar.binding.SimplePathElement;
 import org.openflexo.antar.expr.InvocationTargetTransformException;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObjectPropertyImpl;
-import org.openflexo.technologyadapter.xml.metamodel.XSOntProperty;
-import org.openflexo.technologyadapter.xml.model.XMLDataPropertyValue;
-import org.openflexo.technologyadapter.xml.model.XMLObjectPropertyValue;
-import org.openflexo.technologyadapter.xml.model.XSOntIndividual;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
+import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
 /**
  * @author xtof
  *
  */
-public class AttributeObjectPropertyPathElement extends SimplePathElement {
+public class XMLObjectPropertyPathElement extends SimplePathElement {
 
-	private XMLObjectPropertyImpl property;
+	private final XMLObjectPropertyImpl property;
 
-	public AttributeObjectPropertyPathElement(BindingPathElement parent, XMLObjectPropertyImpl property) {
-		super(parent, property.getName(), property.getRange());
+	public XMLObjectPropertyPathElement(BindingPathElement parent, XMLObjectPropertyImpl property) {
+		super(parent, property.getName(), property.getType());
 		this.property = property;
 	}
 
@@ -56,13 +53,13 @@ public class AttributeObjectPropertyPathElement extends SimplePathElement {
 		if (property  != null) {
 			if (property.getUpperBound() == null || (property.getUpperBound() >= 0 && property.getUpperBound() <= 1)) {
 				// Single cardinality
-				if (property.getRange() != null) {
-					return property.getRange();
+				if (property.getType() != null) {
+					return property.getType();
 				}
 				return Object.class;
 			} else {
-				if (property.getRange() != null) {
-					return new ParameterizedTypeImpl(List.class, IFlexoOntologyIndividual.class);
+				if (property.getType() != null) {
+					return new ParameterizedTypeImpl(List.class, XMLIndividual.class);
 				}
 				return new ParameterizedTypeImpl(List.class, Object.class);
 			}
@@ -87,13 +84,8 @@ public class AttributeObjectPropertyPathElement extends SimplePathElement {
 			BindingEvaluationContext context) throws TypeMismatchException,
 			NullReferenceException, InvocationTargetTransformException {
 		if (property != null){
-			XMLObjectPropertyValue xsdAnswer = (XMLObjectPropertyValue) ((XSOntIndividual) target).getPropertyValue(property);
-			// FIXME simple for now but...
-			if (xsdAnswer == null) {
-				// initialize the value to null to create the List
-				xsdAnswer = (XMLObjectPropertyValue) ((XSOntIndividual) target).addToPropertyValue(property, null);
-			}
-			return xsdAnswer.getValues();
+			// FIXME => check that this actually works with ObjectProperties
+			return ((XMLIndividual) target).getPropertyValue(property);
 		}
 		return null;
 	}
@@ -103,8 +95,8 @@ public class AttributeObjectPropertyPathElement extends SimplePathElement {
 			BindingEvaluationContext context) throws TypeMismatchException,
 			NullReferenceException {
 
-		XSOntProperty prop = ((XSOntIndividual) target).getPropertyByName(getPropertyName());
-		((XSOntIndividual) target).addToPropertyValue(prop, value);
+		XMLProperty prop = ((XMLIndividual) target).getType().getPropertyByName(getPropertyName());
+		((XMLIndividual) target).addPropertyValue(prop, value);
 	}
 
 }

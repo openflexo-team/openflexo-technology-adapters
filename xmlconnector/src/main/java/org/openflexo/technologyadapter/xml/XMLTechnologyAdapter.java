@@ -36,8 +36,8 @@ import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
 import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.technologyadapter.xml.binding.XMLBindingFactory;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
@@ -73,6 +73,9 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	private XMLModelFactory       xmlModelFactory = null;
 	protected static XMLRootElementReader REreader = new XMLRootElementReader();
 	protected static final Logger logger          = Logger.getLogger(XMLTechnologyAdapter.class.getPackage().getName());
+
+	private static final XMLBindingFactory BINDING_FACTORY = new XMLBindingFactory();
+	
 
 	protected HashMap<String, XMLMetaModel> privateMetamodels = null;
 
@@ -199,6 +202,8 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				(XSDMetaModelResource) metaModelResource, (XMLTechnologyContextManager) getTechnologyContextManager());
 
 		referenceResource(modelResource,resourceCenter);
+		getTechnologyContextManager().registerResource(modelResource);
+
 
 		return modelResource;
 
@@ -251,11 +256,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return new XMLTechnologyContextManager(this, service);
 	}
 
-	@Override
-	public TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	public String getExpectedModelExtension(FlexoResource<?> metaModel) {
 		return XML_EXTENSION;
@@ -385,6 +385,9 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				RepositoryFolder<XMLResource> folder;
 				try {
 					folder = modelRepository.getRepositoryFolder(candidateFile, true);
+					if (folder==null){
+						
+					}
 					if (folder != null){
 						modelRepository.registerResource(mRes, folder);
 					}else{
@@ -516,6 +519,15 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	public XMLModelFactory getXMLModelFactory() {
 		return xmlModelFactory;
 	}
+
+
+    @Override
+    public XMLBindingFactory getTechnologyAdapterBindingFactory() {
+        return BINDING_FACTORY;
+    }
+
+
+
 
 
 

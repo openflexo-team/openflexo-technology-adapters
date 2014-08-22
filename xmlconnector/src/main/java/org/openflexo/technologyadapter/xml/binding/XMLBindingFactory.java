@@ -1,6 +1,6 @@
 /*
  * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2012-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -31,6 +31,9 @@ import org.openflexo.antar.binding.FunctionPathElement;
 import org.openflexo.antar.binding.SimplePathElement;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObjectPropertyImpl;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
@@ -50,10 +53,15 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
-		if (object instanceof XMLProperty ){
-			XMLProperty attr = (XMLProperty) object;
+		if (object instanceof XMLDataProperty ){
+			XMLDataProperty attr = (XMLDataProperty) object;
 
-			return new AttributePropertyPathElement(parent, attr);
+			return new XMLDataPropertyPathElement(parent, attr);
+		}
+		else if (object instanceof XMLObjectPropertyImpl ){
+			XMLObjectPropertyImpl attr = (XMLObjectPropertyImpl) object;
+			return new XMLObjectPropertyPathElement(parent, attr);
+
 		}
 		logger.warning("Unexpected " + object);
 		return null;
@@ -61,7 +69,7 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	public boolean handleType(TechnologySpecificCustomType technologySpecificType) {
-		if (technologySpecificType instanceof XMLIndividual){
+		if (technologySpecificType instanceof XMLObject){
 			return true;
 		}
 		return false;
@@ -71,13 +79,13 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
 
 		List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
-		
+
 		if (parent instanceof XMLIndividual) {
-				for (XMLProperty attr : ((XMLIndividual) parent).getType().getProperties()) {
-					returned.add(getSimplePathElement(attr, parent));
-				}
+			for (XMLProperty attr : ((XMLIndividual) parent).getType().getProperties()) {
+				returned.add(getSimplePathElement(attr, parent));
 			}
-			return returned;
+		}
+		return returned;
 	}
 
 	@Override
