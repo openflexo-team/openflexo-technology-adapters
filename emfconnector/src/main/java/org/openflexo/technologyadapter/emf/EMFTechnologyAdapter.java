@@ -161,7 +161,11 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 				RepositoryFolder<EMFMetaModelResource> folder;
 				try {
 					folder = mmRepo.getRepositoryFolder(candidateFile, true);
+					if (folder != null){
 					mmRepo.registerResource(mmRes, folder);
+					}
+					else
+						mmRepo.registerResource(mmRes);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
