@@ -5,9 +5,9 @@ import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
-public class XSDModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLModel, XMLMetaModel, XSDModelSlot> {
+public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLModel, XMLMetaModel, AbstractXMLModelSlot> {
 
-	protected XSDModelSlotInstanceConfiguration(XSDModelSlot ms, CreateVirtualModelInstance action) {
+	protected XMLModelSlotInstanceConfiguration(AbstractXMLModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 
@@ -17,7 +17,7 @@ public class XSDModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
 			modelUri = getAction().getFocusedObject().getProject().getURI() + "/Models/myXMLFile";
 			relativePath = "/";
-			filename = "myXMLFile" + getModelSlot().getTechnologyAdapter().getExpectedModelExtension(getModelSlot().getMetaModelResource());
+			filename = "myXMLFile" + ((XMLTechnologyAdapter) getModelSlot().getTechnologyAdapter()).getExpectedModelExtension(getModelSlot().getMetaModelResource());
 		} /*else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
 			modelUri = "ResourceCenter/Models/";
 			relativePath = "/";

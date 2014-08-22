@@ -44,8 +44,8 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 
 /**
  * 
- *   An XML ModelSlot used to edit an XML document conformant to a (XSD) MetaModel
-*
+ * An XML ModelSlot used to edit freely an XML document and simultaneously produce the corresponding MetaModel
+ * 
  * @author xtof
  * 
  */
@@ -56,26 +56,19 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 })
 @ModelEntity
 @XMLElement
-@ImplementationClass(XMLModelSlot.XMLModelSlotImpl.class)
-public interface XMLModelSlot extends AbstractXMLModelSlot {
-
+@ImplementationClass(FreeXMLModelSlot.FreeXMLModelSlotImpl.class)
+public interface FreeXMLModelSlot extends AbstractXMLModelSlot {
 	
+	
+    public static abstract class FreeXMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl implements FreeXMLModelSlot {
 
-    public static abstract class XMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl implements XMLModelSlot {
-
-        private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
-
-        
-        public XMLModelSlotImpl(){
-        	super();
-        }
+        private static final Logger logger = Logger.getLogger(FreeXMLModelSlot.class.getPackage().getName());
 
         @Override
         public Type getType() {
             // TODO Auto-generated method stub
             return null;
         }
-
         @Override
         public FlexoModelResource<XMLModel, XMLMetaModel, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
                 String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
@@ -104,6 +97,7 @@ public interface XMLModelSlot extends AbstractXMLModelSlot {
             // TODO Auto-generated method stub
             return null;
         }
+
 
         @Override
         public boolean isStrictMetaModelling() {

@@ -1,6 +1,6 @@
 /*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2013-- Openflexo
+ *
+ * (c) Copyright 2014- Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -18,6 +18,7 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.openflexo.technologyadapter.xml;
 
 import java.lang.reflect.Type;
@@ -28,18 +29,17 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.ontology.DuplicateURIException;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
+import org.openflexo.foundation.technologyadapter.FlexoModelResource;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -50,33 +50,29 @@ import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLURIProcessor.XSURIProcessorImpl;
-import org.openflexo.technologyadapter.xml.editionaction.AddXMLType;
+import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
-import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
-import org.openflexo.technologyadapter.xml.virtualmodel.XMLTypeRole;
 
 /**
- * Implementation of the ModelSlot class for the XSD/XML technology adapter
  * 
- * @author Luka Le Roux, Sylvain Guerin, Christophe Guychard
+ *   An XML ModelSlot used to edit an XML document conformant to a (XSD) MetaModel
+ *
+ * @author xtof
  * 
  */
-
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-	@DeclarePatternRole(FML = "XMLType", flexoRoleClass = XMLTypeRole.class), })
-@DeclareEditionActions({ // All edition actions available through this model slot
-	@DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXMLType.class)})
-@DeclareFetchRequests({ // All requests available through this model slot
+@DeclarePatternRoles({ @DeclarePatternRole(flexoRoleClass = XMLIndividualRole.class, FML = "XMLIndividual"), // Instances
+})
+@DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add
+	// instance
 })
 @ModelEntity
-@ImplementationClass(XSDModelSlot.XSDModelSlotImpl.class)
 @XMLElement
-public interface XSDModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel> {
+@ImplementationClass(AbstractXMLModelSlot.AbstractXMLModelSlotImpl.class)
+public interface AbstractXMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel> {
 
 	@PropertyIdentifier(type = List.class)
 	public static final String URI_PROCESSORS_LIST_KEY = "uriProcessorsList";
@@ -94,19 +90,20 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 	@Remover(URI_PROCESSORS_LIST_KEY)
 	public void removeFromUriProcessorsList(XMLURIProcessor aUriProcessorsList);
 
-	@Override
-	public XMLTechnologyAdapter getTechnologyAdapter();
 
 	public XMLURIProcessor createURIProcessor();
 
-	public static abstract class XSDModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel> implements XSDModelSlot {
-		static final Logger logger = Logger.getLogger(XSDModelSlot.class.getPackage().getName());
+
+	public static abstract class AbstractXMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel> implements AbstractXMLModelSlot {
+
+		private static final Logger logger = Logger.getLogger(AbstractXMLModelSlot.class.getPackage().getName());
 
 		/* Used to process URIs for XML Objects */
 		private List<XMLURIProcessor> uriProcessors;
 		private Hashtable<String, XMLURIProcessor> uriProcessorsMap;
 
-		public XSDModelSlotImpl() {
+
+		public AbstractXMLModelSlotImpl(){
 			super();
 			if (uriProcessorsMap == null) {
 				uriProcessorsMap = new Hashtable<String, XMLURIProcessor>();
@@ -117,25 +114,27 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		}
 
 		@Override
-		public Class<XMLTechnologyAdapter> getTechnologyAdapterClass() {
+		public Type getType() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getTechnologyAdapterClass() {
 			return XMLTechnologyAdapter.class;
 		}
 
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
 		@Override
-		public XSDModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new XSDModelSlotInstanceConfiguration(this, action);
+		public FlexoModelResource<XMLModel, XMLMetaModel, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
+				String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 		@Override
-		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
-			if (XMLTypeRole.class.isAssignableFrom(patternRoleClass)) {
-				return "class";
-			} else if (XMLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
-				return "individual";
-			}
+		public FlexoModelResource<XMLModel, XMLMetaModel, ?> createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath,
+				String filename, String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
+			// TODO Auto-generated method stub
 			return null;
 		}
 
@@ -286,36 +285,22 @@ public interface XSDModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			removeFromUriProcessors(xsuriProc);
 		}
 
+
+		/**
+		 * Instanciate a new model slot instance configuration for this model slot
+		 */
 		@Override
-		public Type getType() {
-			return XMLModel.class;
+		public XMLModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+			return new XMLModelSlotInstanceConfiguration(this, action);
 		}
 
-		@Override
-		public XMLTechnologyAdapter getTechnologyAdapter() {
-			return (XMLTechnologyAdapter) super.getTechnologyAdapter();
-		}
 
-		// FIXME
-		
-		/*
-		@Override
-		public XMLFileResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
-				FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
-			return getTechnologyAdapter().createNewXMLFile(project, filename, modelUri, metaModelResource);
-		}
-
-		@Override
-		public XMLFileResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
-				String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
-			return (XMLFileResource) getTechnologyAdapter().createNewXMLFile((FileSystemBasedResourceCenter) resourceCenter,
-					relativePath, filename, modelUri, (XSDMetaModelResource) metaModelResource);
-		}
-*/
 		@Override
 		public boolean isStrictMetaModelling() {
-			return true;
+			// TODO Auto-generated method stub
+			return false;
 		}
 
 	}
+
 }

@@ -59,10 +59,12 @@ import org.openflexo.xml.XMLRootElementReader;
  */
 
 @DeclareModelSlots({ // ModelSlot(s) declaration
-	// Pure XML, without XSD
-	@DeclareModelSlot(FML = "XMLModelSlot", modelSlotClass = XMLModelSlot.class) ,
+	// Pure XML, without strict MetaModel
+	@DeclareModelSlot(FML = "XMLModelSlot", modelSlotClass = FreeXMLModelSlot.class) ,
 	//Classical type-safe interpretation
-	@DeclareModelSlot(FML = "XSDModelSlot", modelSlotClass = XSDModelSlot.class) })
+	@DeclareModelSlot(FML = "XMLModelSlot", modelSlotClass = XMLModelSlot.class) ,
+	// A ModelSlot to edit MetaModels
+	@DeclareModelSlot(FML = "XSDModelSlot", modelSlotClass = XMLMetaModelSlot.class) })
 @DeclareRepositoryType({ XMLModelRepository.class, XSDMetaModelRepository.class})
 
 public class XMLTechnologyAdapter extends TechnologyAdapter {

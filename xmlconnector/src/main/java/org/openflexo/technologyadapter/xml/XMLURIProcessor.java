@@ -209,7 +209,7 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 		}
 
 		public void bindtypeURIToMappedType() {
-			XSDModelSlot modelSlot = (XSDModelSlot) getModelSlot();
+			AbstractXMLModelSlot modelSlot = (AbstractXMLModelSlot) getModelSlot();
 			if (modelSlot != null) {
 				String mmURI = modelSlot.getMetaModelURI();
 				if (mmURI != null) {
