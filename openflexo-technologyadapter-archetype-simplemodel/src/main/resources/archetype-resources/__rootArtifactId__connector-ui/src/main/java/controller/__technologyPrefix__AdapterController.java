@@ -33,6 +33,8 @@ import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
 import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.gui.${technologyPrefix}IconLibrary;
+import ${package}.model.${technologyPrefix}Model;
+import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -77,35 +79,37 @@ public class ${technologyPrefix}AdapterController extends TechnologyAdapterContr
 	@Override
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<${technologyPrefix}TechnologyAdapter>> objectClass) {
 		// TODO Auto-generated method stub
-		return null;
+		return ${technologyPrefix}IconLibrary.${technologyPrefix}_TECHNOLOGY_ICON;
 	}
 
 	@Override
 	public ModuleView<?> createModuleViewForObject(
-			TechnologyObject<${technologyPrefix}TechnologyAdapter> arg0, FlexoController arg1,
-			FlexoPerspective arg2) {
+			TechnologyObject<${technologyPrefix}TechnologyAdapter> object, FlexoController controller,
+			FlexoPerspective perspective) {
 		// TODO Auto-generated method stub
-		return null;
+		// You will need to create your own moduleview to represent your nodel has needed. This ModuleView is
+		// a class that implements ModuleView and needs to extends a Swing component (JPanel, JScrollPane,…)
+		return new EmptyPanel<TechnologyObject<${technologyPrefix}TechnologyAdapter>>(controller, perspective, object);
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> arg0) {
+	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> role) {
 		// TODO Auto-generated method stub
-		return null;
+		return ${technologyPrefix}IconLibrary.${technologyPrefix}_TECHNOLOGY_ICON;
 	}
 
 	@Override
 	public String getWindowTitleforObject(
-			TechnologyObject<${technologyPrefix}TechnologyAdapter> arg0, FlexoController arg1) {
+			TechnologyObject<${technologyPrefix}TechnologyAdapter> obj, FlexoController controller) {
 		// TODO Auto-generated method stub
-		return null;
+		return "";
 	}
 
 	@Override
 	public boolean hasModuleViewForObject(
-			TechnologyObject<${technologyPrefix}TechnologyAdapter> arg0, FlexoController arg1) {
+			TechnologyObject<${technologyPrefix}TechnologyAdapter> obj, FlexoController controller) {
 		// TODO Auto-generated method stub
-		return false;
+		return obj instanceof ${technologyPrefix}Model;
 	}
 }
 

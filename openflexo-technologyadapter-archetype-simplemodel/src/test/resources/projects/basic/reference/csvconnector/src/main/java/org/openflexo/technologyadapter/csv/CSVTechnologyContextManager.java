@@ -29,8 +29,4 @@ public class CSVTechnologyContextManager extends TechnologyContextManager<CSVTec
         super(adapter, resourceCenterService);
     }
 
-    @Override
-    public CSVTechnologyAdapter getTechnologyAdapter() {
-        return (CSVTechnologyAdapter) super.getTechnologyAdapter();
-    }
 }

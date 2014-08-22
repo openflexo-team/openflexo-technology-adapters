@@ -38,12 +38,25 @@ import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import ${package}.${technologyPrefix}TechnologyContextManager;
+import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.model.${technologyPrefix}Model;
+import ${package}.model.${technologyPrefix}ModelImpl;
 import org.openflexo.toolbox.IProgress;
 
 public abstract class ${technologyPrefix}ResourceImpl extends FlexoFileResourceImpl<${technologyPrefix}Model> implements ${technologyPrefix}Resource {
     
     private static final Logger LOGGER = Logger.getLogger(${technologyPrefix}ResourceImpl.class.getPackage().getName());
+
+	private static ModelFactory MODEL_FACTORY;
+
+	static {
+		try {
+			MODEL_FACTORY = new ModelFactory(${technologyPrefix}Model.class);
+		} catch (final ModelDefinitionException e) {
+			final String msg = "Error while initializing ${technologyPrefix} model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+		}
+	}
 
     public static ${technologyPrefix}Resource make${technologyPrefix}Resource(String modelURI, File modelFile,
             ${technologyPrefix}TechnologyContextManager technologyContextManager) {
@@ -54,7 +67,7 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoFileResourceI
             returned.setFile(modelFile);
             returned.setURI(modelURI);
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-            returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+            returned.setTechnologyAdapter((${technologyPrefix}TechnologyAdapter) technologyContextManager.getTechnologyAdapter());
             returned.setTechnologyContextManager(technologyContextManager);
             technologyContextManager.registerResource(returned);
 
@@ -74,7 +87,7 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoFileResourceI
             returned.setFile(modelFile);
             returned.setURI(modelFile.toURI().toString());
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-            returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+            returned.setTechnologyAdapter((${technologyPrefix}TechnologyAdapter) technologyContextManager.getTechnologyAdapter());
             returned.setTechnologyContextManager(technologyContextManager);
             technologyContextManager.registerResource(returned);
             return returned;
@@ -85,10 +98,22 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoFileResourceI
         return null;
     }
 
+	@Override
+	public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(${technologyPrefix}TechnologyAdapter.class);
+		}
+		return null;
+	}
+
     @Override
     public ${technologyPrefix}Model loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
         // TODO: Auto-generated Method
-        return null;
+		final ${technologyPrefix}ModelImpl ${rootArtifactId}Object = (${technologyPrefix}ModelImpl) MODEL_FACTORY.newInstance(${technologyPrefix}Model.class);
+		${rootArtifactId}Object.setTechnologyAdapter(getTechnologyAdapter());
+		${rootArtifactId}Object.setResource(this);
+		// Now you have to add here your parsing and call the correct set.
+		return ${rootArtifactId}Object;
     }
 
     @Override
@@ -129,7 +154,7 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoFileResourceI
     }
 
     private void writeToFile() throws SaveResourceException {
-        //TODO : Auto-generated method skeletton.
+        //TODO : Auto-generated method skeleton.
         FileOutputStream out = null;
         try {
             out = new FileOutputStream(getFile());

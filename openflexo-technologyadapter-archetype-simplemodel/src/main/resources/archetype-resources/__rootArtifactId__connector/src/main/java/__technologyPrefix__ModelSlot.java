@@ -81,7 +81,7 @@ public interface ${technologyPrefix}ModelSlot extends FreeModelSlot<${technology
             if (${technologyPrefix}Role.class.isAssignableFrom(patternRoleClass)) {
                 return "Object";
         	}
-            return null;
+            return "";
         }
 
         @Override

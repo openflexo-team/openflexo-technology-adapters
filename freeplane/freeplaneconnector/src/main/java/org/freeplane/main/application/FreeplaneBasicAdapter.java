@@ -109,8 +109,8 @@ public class FreeplaneBasicAdapter {
 	/**
 	 * Part from Freeplane code
 	 *
-	 * @param controller
-	 * @param fileArgument
+	 * @param controller   freeplane controller
+	 * @param fileArgument file name.
 	 */
 	private void loadMaps(final Controller controller, final String fileArgument) {
 		controller.selectMode(MModeController.MODENAME);
@@ -153,7 +153,7 @@ public class FreeplaneBasicAdapter {
 	/**
 	 * Come from freeplane code. Initialization of Freeplane resources.
 	 *
-	 * @return
+	 * @return Controller created.
 	 */
 	private Controller createController() {
 		try {
@@ -212,7 +212,7 @@ public class FreeplaneBasicAdapter {
 	/**
 	 * From Freeplane code. Initialization for MindMap editing.
 	 *
-	 * @param controller
+	 * @param controller freeplane controller
 	 */
 	private void createModeControllers(final Controller controller) {
 		MModeControllerFactory.createModeController();
