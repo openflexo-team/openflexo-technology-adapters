@@ -21,10 +21,7 @@
 
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.lang.reflect.Type;
-
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
 
 /**
@@ -35,10 +32,6 @@ import org.openflexo.technologyadapter.xml.model.XMLIndividual;
  * 
  */
 public abstract class XMLPropertyImpl implements XMLProperty {
-
-	// Properties
-	private XMLIndividual container;
-	private Type aType;
 
 	public XMLPropertyImpl() {
 		super();

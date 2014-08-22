@@ -43,7 +43,7 @@ public class XMLIconLibrary {
 	public static final ImageIconResource XSD_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDTechnology.png"));
 	public static final ImageIconResource XSD_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDFile.png"));
 	public static final ImageIconResource XML_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLFile.png"));
-	public static final ImageIconResource XML_TYPE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLDefault.png"));
+	public static final ImageIconResource XML_DEFAULT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLDefault.png"));
 	public static final ImageIconResource XML_TYPE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLType.png"));
 	public static final ImageIconResource XML_INDIVIDUAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLIndividual.png"));
 	public static final ImageIconResource XSD_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDProperty.png"));

@@ -57,7 +57,7 @@ public interface XMLProperty  extends XMLObject, Comparable {
 	public static final String IS_FROM_ELEMENT = "isFromElement";
 	
 	@Initializer
-	public XMLProperty init(@Parameter(NAME) String s, @Parameter(TYPE) Type t);
+	public XMLProperty init(@Parameter(NAME) String s, @Parameter(TYPE) Type t, @Parameter(CONTAINER) XMLType container);
 	
 	@Getter(CONTAINER)
 	public XMLType getContainer();

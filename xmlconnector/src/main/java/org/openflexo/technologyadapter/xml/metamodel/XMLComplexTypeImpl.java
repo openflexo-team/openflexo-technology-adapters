@@ -60,10 +60,10 @@ public abstract class XMLComplexTypeImpl extends XMLTypeImpl implements XMLCompl
 		if (!hasProperty(name)){
 			if (aType != null){
 				if (aType instanceof XMLComplexType){
-					prop = XMLMetaModelImpl.getModelFactory().newInstance( XMLObjectProperty.class, name, aType);
+					prop = XMLMetaModelImpl.getModelFactory().newInstance( XMLObjectProperty.class, name, aType,this);
 				}
 				else if (aType instanceof XMLSimpleType) {
-					prop = XMLMetaModelImpl.getModelFactory().newInstance( XMLDataProperty.class, name, aType);
+					prop = XMLMetaModelImpl.getModelFactory().newInstance( XMLDataProperty.class, name, aType,this);
 				}
 				else{
 					logger.warning("UNABLE to create a new property named ["+ name+"] as it does not map to any known type: " + aType.toString());
