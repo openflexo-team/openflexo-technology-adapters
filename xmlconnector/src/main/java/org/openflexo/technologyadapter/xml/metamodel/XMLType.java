@@ -70,4 +70,5 @@ public interface XMLType  extends XMLObject , Type{
 	@Setter(ABSTRACT)
 	public void setIsAbstract(boolean t);
 	
+	
 }

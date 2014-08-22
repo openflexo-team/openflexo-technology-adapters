@@ -297,8 +297,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 			logger.warning("trying to load a resource data from itself, please investigate");
 			return null;
 		}
-		if (resourceData != null && isLoadable()) {
-			// The resourceData is null, we try to load it
+		if (isLoadable() && ! isLoaded()) {
 			setLoading(true);
 			resourceData = loadResourceData(progress);
 			setLoading(false);

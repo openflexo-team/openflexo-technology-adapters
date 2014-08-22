@@ -27,7 +27,7 @@ import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
-import org.openflexo.technologyadapter.xml.metamodel.XMLObjectPropertyImpl;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObjectProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
@@ -43,6 +43,7 @@ public class XMLIconLibrary {
 	public static final ImageIconResource XSD_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDTechnology.png"));
 	public static final ImageIconResource XSD_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDFile.png"));
 	public static final ImageIconResource XML_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLFile.png"));
+	public static final ImageIconResource XML_TYPE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLDefault.png"));
 	public static final ImageIconResource XML_TYPE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLType.png"));
 	public static final ImageIconResource XML_INDIVIDUAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XMLIndividual.png"));
 	public static final ImageIconResource XSD_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/XSDProperty.png"));
@@ -60,8 +61,11 @@ public class XMLIconLibrary {
 			return XML_INDIVIDUAL_ICON;
 		} else if (XMLDataProperty.class.isAssignableFrom(objectClass)) {
 			return XSD_DATAPROPERTY_ICON;
-		}else if (XMLObjectPropertyImpl.class.isAssignableFrom(objectClass)) {
+		}else if (XMLObjectProperty.class.isAssignableFrom(objectClass)) {
 			return XSD_OBJECTPROPERTY_ICON;
+		}
+		else if (XMLObject.class.isAssignableFrom(objectClass)){
+			return XML_DEFAULT_ICON;
 		}
 		logger.warning("No icon for " + objectClass);
 		return null;

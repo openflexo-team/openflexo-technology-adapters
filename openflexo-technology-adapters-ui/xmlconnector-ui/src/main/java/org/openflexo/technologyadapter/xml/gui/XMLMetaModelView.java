@@ -19,9 +19,14 @@
  */
 package org.openflexo.technologyadapter.xml.gui;
 
+
+
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
+import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
+import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -35,12 +40,38 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 @SuppressWarnings("serial")
 public class XMLMetaModelView extends AbstractXMLModuleView<XMLMetaModel> {
 
+	
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/FIBXMLMetaModelView.fib");
+	public static final Resource XMLType_FIB_FILE = ResourceLocator.locateResource("Fib/FIBPanelXMLType.fib");
+	public static final Resource XMLProperty_FIB_FILE = ResourceLocator.locateResource("Fib/FIBPanelXMLProperty.fib");
 
+	
 	
 	public XMLMetaModelView(XMLMetaModel object, FlexoController controller, FlexoPerspective perspective) {
 		super(controller, object, perspective, FIB_FILE);
 	}
 
+	public XMLMetaModel getMetamodel() {
+		return representedObject;
+	}
 
+	/**
+	 * Selects the FIB Panel to display depending of selected Object type
+	 * @param object
+	 * @return
+	 */
+	public Resource getFibForXMLObject(XMLObject object){
+		if (object instanceof XMLType) {
+			return XMLType_FIB_FILE;
+		}
+		else if (object instanceof XMLProperty) {
+			return XMLProperty_FIB_FILE;
+		}
+		else return null;
+	}
+	
+
+	
+
+	
 }

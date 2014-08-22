@@ -49,5 +49,8 @@ public interface XMLObject extends FlexoObject,TechnologyObject<XMLTechnologyAda
 	
 	@Setter(URI)
 	public void setURI(String uri);
+	
+
+	public String getDisplayableDescription();
 
 }

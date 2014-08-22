@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.lang.reflect.Type;
 
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
 
@@ -43,8 +44,32 @@ public abstract class XMLPropertyImpl implements XMLProperty {
 		super();
 	}
 	
-	public String getDisplayableDescription() {
-		return this.getName();
+
+	@Override
+	public int compareTo(Object arg0) {
+		if (arg0 instanceof XMLProperty){
+			return this.getName().compareTo(((XMLProperty) arg0).getName());
+		}
+		else 
+		return -1;
 	}
 
+	@Override
+	public XMLTechnologyAdapter getTechnologyAdapter() {
+		return this.getContainer().getTechnologyAdapter();
+	}
+
+
+	@Override
+	public String getDisplayableDescription(){
+		if (this instanceof XMLDataProperty){
+			return "XML Simple property named : " + this.getName();
+		}
+		else if (this instanceof XMLObjectProperty) {
+			return "XML Object Property named : " + this.getName();
+		}
+		else return "(Unknown)";
+	}
+
+	
 }

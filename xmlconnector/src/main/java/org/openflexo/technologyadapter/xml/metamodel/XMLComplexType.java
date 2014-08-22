@@ -20,7 +20,7 @@
 package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
+import java.util.List;
 
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Embedded;
@@ -40,7 +40,7 @@ public interface XMLComplexType  extends XMLType {
 	@Override
 	@Getter(value = PROPERTIES, cardinality = Cardinality.LIST)
 	@Embedded
-	public Collection<? extends XMLProperty> getProperties();
+	public List<? extends XMLProperty> getProperties();
 
 	@Finder(attribute = XMLProperty.URI, collection = PROPERTIES, isMultiValued = true)
     public XMLProperty getPropertyByName(String name);

@@ -40,7 +40,7 @@ import org.openflexo.model.annotations.Setter;
  */
 @ModelEntity
 @ImplementationClass(XMLPropertyImpl.class)
-public interface XMLProperty  extends XMLObject {
+public interface XMLProperty  extends XMLObject, Comparable {
 
 	/**
 	 * The Type of the given attribute. This might be a simple type

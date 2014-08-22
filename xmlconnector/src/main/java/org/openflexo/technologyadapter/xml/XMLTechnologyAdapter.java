@@ -361,7 +361,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-					referenceResource(mmRes, resourceCenter);
 
 					return mmRes;
 				}
@@ -394,8 +393,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				// TODO : vérifier avec Sylvain mais ça ça devrait être inutile
-				referenceResource(mRes, resourceCenter);
 
 				// then find the MetaModel
 

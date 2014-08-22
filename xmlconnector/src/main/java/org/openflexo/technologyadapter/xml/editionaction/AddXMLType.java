@@ -28,21 +28,21 @@ import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
-import org.openflexo.foundation.viewpoint.editionaction.AddClass;
+import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLModelSlot;
-import org.openflexo.technologyadapter.xml.XSDModelSlot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 @ModelEntity
 @ImplementationClass(AddXMLType.AddXMLTypeImpl.class)
 @XMLElement
-public interface AddXMLType extends AddClass<XSDModelSlot, XMLType> {
+public interface AddXMLType extends AssignableAction<XMLModelSlot, XMLType> {
 
-	public static abstract class AddXMLTypeImpl extends AddClassImpl<XSDModelSlot, XMLType> implements AddXMLType {
+	public static abstract class AddXMLTypeImpl extends AssignableActionImpl<XMLModelSlot, XMLType> implements AddXMLType {
 
 		private static final Logger logger = Logger.getLogger(AddXMLType.class.getPackage().getName());
 
@@ -80,7 +80,8 @@ public interface AddXMLType extends AddClass<XSDModelSlot, XMLType> {
 				logger.info("Adding class " + newClassName + " as " + father);
 				// FIXME : Something wrong here!
 				// newClass = getModelSlotInstance(action).getModel().getMetaModel().createOntologyClass(newClassName, father);
-				newClass = getModelSlotInstance(action).getAccessedResourceData().getMetaModel().createOntologyClass(newClassName, father);
+				newClass = getModelSlotInstance(action).getAccessedResourceData().getMetaModel().createNewType(uri, localName, simpleType);
+				newClass.setSuperType(father);
 				logger.info("Added class " + newClass.getName() + " as " + father);
 			} catch (DuplicateURIException e) {
 				e.printStackTrace();
@@ -89,7 +90,7 @@ public interface AddXMLType extends AddClass<XSDModelSlot, XMLType> {
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, XMLodelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
+		public TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, XMLModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
 			return (TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, XMLModelSlot>) super.getModelSlotInstance(action);
 		}
 

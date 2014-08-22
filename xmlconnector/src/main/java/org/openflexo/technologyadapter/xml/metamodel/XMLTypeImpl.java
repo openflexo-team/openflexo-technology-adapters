@@ -20,10 +20,17 @@
  */
 package org.openflexo.technologyadapter.xml.metamodel;
 
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
+
 
 
 public abstract class XMLTypeImpl  implements XMLType {
 
+
+	@Override
+	public XMLTechnologyAdapter getTechnologyAdapter() {
+		return this.getMetaModel().getTechnologyAdapter();
+	}
 
 	@Override
 	public String getFullyQualifiedName() {
@@ -32,5 +39,17 @@ public abstract class XMLTypeImpl  implements XMLType {
 		else
 			return getName();
 	}
+	
+	@Override
+	public String getDisplayableDescription(){
+		if (this instanceof XMLComplexType){
+			return "Complex XML Type named : " + this.getName();
+		}
+		else if (this instanceof XMLSimpleType) {
+			return "Simple XML Type named : " + this.getName();
+		}
+		else return "(Unknown)";
+	}
+
 
 }

@@ -20,15 +20,17 @@
 package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.xml.XMLCst;
 
 
-public abstract class XMLComplexTypeImpl  implements XMLComplexType {
+public abstract class XMLComplexTypeImpl extends XMLTypeImpl implements XMLComplexType {
 
 	private static final Logger logger = Logger.getLogger(XMLComplexTypeImpl.class.getPackage().getName());
 
@@ -41,10 +43,14 @@ public abstract class XMLComplexTypeImpl  implements XMLComplexType {
 		this.properties = new HashMap<String, XMLProperty>();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<? extends XMLProperty> getProperties() {
+	public List<? extends XMLProperty> getProperties() {
 	
-		return properties.values();
+		@SuppressWarnings({ "unchecked", "rawtypes" })
+		ArrayList lst = new ArrayList(properties.values());
+		Collections.sort(lst);
+		return lst;
 	}
 
 	@Override
