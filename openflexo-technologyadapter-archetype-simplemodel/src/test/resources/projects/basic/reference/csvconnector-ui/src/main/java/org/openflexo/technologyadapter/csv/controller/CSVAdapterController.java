@@ -29,7 +29,8 @@ import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
-import org.openflexo.technologyadapter.csv.gui.CSVIconLibrary;
+import org.openflexo.technologyadapter.csv.library.CSVIconLibrary;
+import org.openflexo.technologyadapter.csv.view.CSVModuleView;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -74,18 +75,17 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<CSVTechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(final Class<? extends TechnologyObject<CSVTechnologyAdapter>> objectClass) {
 		// TODO Auto-generated method stub
 		return CSVIconLibrary.CSV_TECHNOLOGY_ICON;
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(
-			TechnologyObject<CSVTechnologyAdapter> object, FlexoController controller,
-			FlexoPerspective perspective) {
-		// TODO Auto-generated method stub
-		// You will need to create your own moduleview to represent your nodel has needed. This ModuleView is
-		// a class that implements ModuleView and needs to extends a Swing component (JPanel, JScrollPane,…)
+	public ModuleView<?> createModuleViewForObject(final TechnologyObject<CSVTechnologyAdapter> object, final FlexoController controller, final FlexoPerspective perspective) {
+		// TODO Auto-generated method stub : update your moduleView code to have somethig represented
+		if (object instanceof CSVModel){
+			return new CSVModuleView((CSVModel) object, controller, perspective);
+		}
 		return new EmptyPanel<TechnologyObject<CSVTechnologyAdapter>>(controller, perspective, object);
 	}
 
