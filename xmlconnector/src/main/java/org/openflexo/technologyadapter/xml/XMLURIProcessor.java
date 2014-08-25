@@ -33,19 +33,21 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.NamedViewPointObject;
 import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
+import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
@@ -63,7 +65,7 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 // TODO Manage the fact that URI May Change
 
 @ModelEntity
-@ImplementationClass(XMLURIProcessor.XSURIProcessorImpl.class)
+@ImplementationClass(XMLURIProcessor.XMLURIProcessorImpl.class)
 @XMLElement(xmlTag = "URIProcessor")
 public interface XMLURIProcessor extends NamedViewPointObject {
 
@@ -77,11 +79,21 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 	public static final String MAPPING_STYLE_KEY  = "mappingStyle";
 	@PropertyIdentifier(type = String.class)
 	public static final String ATTRIBUTE_NAME_KEY = "attributeName";
-	@PropertyIdentifier(type = String.class)
+	@PropertyIdentifier(type = XMLType.class)
 	public static final String MAPPED_XMLTYPE = "mappedType";
-	@PropertyIdentifier(type = String.class)
+	@PropertyIdentifier(type = ModelSlot.class)
 	public static final String MODELSLOT = "modelSlot";
+	@PropertyIdentifier(type = XMLDataProperty.class)
+	public static final String BASE_PROPERTY = "basePropertyForURI";
 
+
+	@Initializer
+	public XMLURIProcessor init();
+
+	@Initializer
+	public XMLURIProcessor init(@Parameter(TYPE_URI_KEY) String typeURI);
+
+	
 	@Getter(value = TYPE_URI_KEY)
 	@XMLAttribute
 	public String _getTypeURI();
@@ -113,8 +125,15 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 	public void setModelSlot(ModelSlot aModelSlot);
 
 	@Getter(MODELSLOT)
-	public TypeAwareModelSlot<?, ?> getModelSlot();
+	public ModelSlot getModelSlot();
 
+
+	@Getter(BASE_PROPERTY)
+	public XMLProperty getBasePropertyForURI();
+
+	@Setter(BASE_PROPERTY)
+	public void setBasePropertyForURI(XMLDataProperty basePropertyForURI);
+		
 	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws DuplicateURIException;
 
 	public String getURIForObject(ModelSlotInstance msInstance, XMLObject xsO);
@@ -126,13 +145,13 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 	 * @author xtof
 	 *
 	 */
-	public static abstract class XSURIProcessorImpl extends NamedViewPointObjectImpl implements XMLURIProcessor {
+	public static abstract class XMLURIProcessorImpl extends NamedViewPointObjectImpl implements XMLURIProcessor {
 
 		static final Logger  logger   = Logger.getLogger(XMLURIProcessor.class.getPackage().getName());
 
 		// Properties used to calculate URIs
 		private XMLType mappedXMLType;        
-		private XMLProperty baseAttributeForURI;
+		private XMLDataProperty baseDataPropertyForURI;
 
 		// Serialized properties
 
@@ -148,7 +167,16 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 		 * initialises an URIProcessor with the given URI
 		 * @param typeURI
 		 */
-		public XSURIProcessorImpl(String typeURI) {
+		public XMLURIProcessorImpl() {
+			super();
+		}
+		
+		
+		/**
+		 * initialises an URIProcessor with the given URI
+		 * @param typeURI
+		 */
+		public XMLURIProcessorImpl(String typeURI) {
 			super();
 			if (typeURI != null) {
 				this.typeURI = URI.create(typeURI);
@@ -218,7 +246,7 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 				if (mmResource != null) {
 					setMappedXMLType(mmResource.getMetaModelData().getTypeFromURI(typeURI.toString()));
 					if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null) {
-						setBasePropertyForURI(((XMLComplexType) getMappedXMLType()).getPropertyByName(attributeName));
+						setBasePropertyForURI((XMLDataProperty) ((XMLComplexType) getMappedXMLType()).getPropertyByName(attributeName));
 					}
 				}
 				else {
@@ -235,14 +263,16 @@ public interface XMLURIProcessor extends NamedViewPointObject {
 
 
 
-		public XMLProperty getBaseAttributeForURI() {
-			return baseAttributeForURI;
+		@Override
+		public XMLProperty getBasePropertyForURI() {
+			return baseDataPropertyForURI;
 		}
 
-		public void setBasePropertyForURI(XMLProperty baseAttributeForURI) {
-			this.baseAttributeForURI = baseAttributeForURI;
-			if (this.baseAttributeForURI != null) {
-				this._setAttributeName(baseAttributeForURI.getName());
+		@Override
+		public void setBasePropertyForURI(XMLDataProperty basePropertyForURI) {
+			this.baseDataPropertyForURI = basePropertyForURI;
+			if (this.baseDataPropertyForURI != null) {
+				this._setAttributeName(basePropertyForURI.getName());
 			}
 		}
 

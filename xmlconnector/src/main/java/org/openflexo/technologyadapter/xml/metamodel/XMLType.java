@@ -34,7 +34,7 @@ import org.openflexo.model.annotations.Setter;
 @ImplementationClass(XMLTypeImpl.class)
 public interface XMLType  extends XMLObject , Type{
 
-	public final String MM = "metaModel";
+	public final String MM = "metamodel";
 
 	// TODO : manage the calculation of FQN
 	// TODO: check emnboitage avec URI et NSPrexiw => FQN
@@ -51,7 +51,7 @@ public interface XMLType  extends XMLObject , Type{
 	public String getFullyQualifiedName();
 	
 	@Getter(MM)
-	XMLMetaModel getMetaModel();
+	XMLMetaModel getMetamodel();
 	
 	public Collection<? extends XMLProperty> getProperties();
 

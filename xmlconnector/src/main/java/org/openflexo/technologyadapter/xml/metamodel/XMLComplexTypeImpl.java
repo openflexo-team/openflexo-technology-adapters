@@ -98,7 +98,7 @@ public abstract class XMLComplexTypeImpl extends XMLTypeImpl implements XMLCompl
 		}
 		// Creates the property for PCDATA
 		if (prop == null && name.equals(XMLCst.CDATA_ATTR_NAME)) {
-			prop = createProperty( name, this.getMetaModel().getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
+			prop = createProperty( name, this.getMetamodel().getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
 		}
 				
 		return prop;

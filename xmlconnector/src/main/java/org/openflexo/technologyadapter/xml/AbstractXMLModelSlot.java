@@ -49,7 +49,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.xml.XMLURIProcessor.XSURIProcessorImpl;
+import org.openflexo.technologyadapter.xml.XMLURIProcessor.XMLURIProcessorImpl;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -77,6 +77,9 @@ public interface AbstractXMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMe
 	@PropertyIdentifier(type = List.class)
 	public static final String URI_PROCESSORS_LIST_KEY = "uriProcessorsList";
 
+	@PropertyIdentifier(type = XMLMetaModel.class)
+	public static final String METAMODEL = "metamodel";
+
 	@Getter(value = URI_PROCESSORS_LIST_KEY, cardinality = Cardinality.LIST)
 	@XMLElement
 	public List<XMLURIProcessor> getUriProcessorsList();
@@ -90,6 +93,12 @@ public interface AbstractXMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMe
 	@Remover(URI_PROCESSORS_LIST_KEY)
 	public void removeFromUriProcessorsList(XMLURIProcessor aUriProcessorsList);
 
+
+	@Getter(value = METAMODEL)
+	public XMLMetaModel getMetamodel();
+
+	@Setter(METAMODEL)
+	public void setMetamodel(XMLMetaModel metamodel);
 
 	public XMLURIProcessor createURIProcessor();
 
@@ -188,9 +197,9 @@ public interface AbstractXMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMe
 		public Object retrieveObjectWithURI(
 				TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,
 						String objectURI) {
-			String typeUri = XSURIProcessorImpl.retrieveTypeURI(msInstance, objectURI);
+			String typeUri = XMLURIProcessorImpl.retrieveTypeURI(msInstance, objectURI);
 			XMLModel model = msInstance.getModel();
-			XMLURIProcessor mapParams = uriProcessorsMap.get(XSURIProcessorImpl.retrieveTypeURI(msInstance, objectURI));
+			XMLURIProcessor mapParams = uriProcessorsMap.get(XMLURIProcessorImpl.retrieveTypeURI(msInstance, objectURI));
 			if (mapParams == null) {
 				// Look for a processor in superClasses
 				XMLType aClass = model.getMetaModel().getTypeFromURI(typeUri);
