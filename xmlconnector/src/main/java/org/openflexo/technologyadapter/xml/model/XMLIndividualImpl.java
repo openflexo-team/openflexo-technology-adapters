@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
@@ -47,7 +48,7 @@ import org.w3c.dom.Element;
  * 
  */
 
-public abstract class XMLIndividualImpl implements XMLIndividual {
+public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIndividual {
 
 
 	private static final java.util.logging.Logger  logger = org.openflexo.logging.FlexoLogger.getLogger(XMLIndividualImpl.class
@@ -267,6 +268,12 @@ public abstract class XMLIndividualImpl implements XMLIndividual {
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter(){
 		return this.getContainerModel().getTechnologyAdapter();
+	}
+	
+	@Override
+	public String getDisplayableDescription(){
+		return "XML Individual of type: " + getName();
+		
 	}
 	
 }
