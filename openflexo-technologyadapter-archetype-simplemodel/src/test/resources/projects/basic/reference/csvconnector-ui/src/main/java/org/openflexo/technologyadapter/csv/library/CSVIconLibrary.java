@@ -32,7 +32,7 @@ import org.openflexo.toolbox.ImageIconResource;
 public class CSVIconLibrary {
 	private static final Logger logger = Logger.getLogger(CSVIconLibrary.class.getPackage().getName());
 
-	public static final ImageIcon CSV_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/${techolnogyExtension}--text_big.gif"));
+	public static final ImageIcon CSV_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/csv-text_big.gif"));
 	public static final ImageIcon CSV_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/csv-text.gif"));
 	public static final ImageIcon CSV_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/csv-text.gif"));
 

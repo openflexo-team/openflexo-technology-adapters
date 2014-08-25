@@ -35,7 +35,7 @@ import org.openflexo.toolbox.ImageIconResource;
 public class ${technologyPrefix}IconLibrary {
 	private static final Logger logger = Logger.getLogger(${technologyPrefix}IconLibrary.class.getPackage().getName());
 
-	public static final ImageIcon ${technologyPrefix}_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/${techolnogyExtension}--text_big.gif"));
+	public static final ImageIcon ${technologyPrefix}_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/${technologyExtension}-text_big.gif"));
 	public static final ImageIcon ${technologyPrefix}_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/${technologyExtension}-text.gif"));
 	public static final ImageIcon ${technologyPrefix}_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/${technologyExtension}-text.gif"));
 
