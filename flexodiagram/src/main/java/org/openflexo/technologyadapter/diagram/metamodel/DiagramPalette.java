@@ -197,6 +197,11 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		}
 
 		@Override
+		public boolean isDeleted() {
+			return super.isDeleted();
+		};
+		
+		@Override
 		public Collection<? extends Validable> getEmbeddedValidableObjects() {
 			return getElements();
 		}
