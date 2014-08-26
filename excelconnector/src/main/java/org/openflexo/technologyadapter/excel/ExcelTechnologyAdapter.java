@@ -107,6 +107,9 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 				ExcelWorkbookResource wbRes = tryToLookupWorkbook(resourceCenter, candidateFile);
 			}
 		}
+		
+		// Call it to update the current repositories
+		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 
 	}
 

@@ -137,6 +137,9 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 				DiagramResource diagramRes = tryToLookupDiagram(resourceCenter, candidateFile);
 			}
 		}
+		
+		// Call it to update the current repositories
+		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 	}
 
 	/**
