@@ -28,7 +28,10 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewNature;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 
 public class CreateFMLControlledDiagramVirtualModelInstance extends
 		CreateVirtualModelInstance<CreateFMLControlledDiagramVirtualModelInstance> {
@@ -71,6 +74,15 @@ public class CreateFMLControlledDiagramVirtualModelInstance extends
 	public CreateFMLControlledDiagramVirtualModelInstance doAction() {
 		System.out.println("Creating FMLControlledDiagramVirtualModelInstance");
 		return super.doAction();
+	}
+	
+	@Override
+	public boolean isVisible(VirtualModel virtualModel){
+		if(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)){
+			return true;
+		}else{
+			return false;
+		}
 	}
 
 }
