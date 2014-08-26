@@ -121,6 +121,8 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		/*
 		 * public DiagramModelSlot(ViewPointBuilder builder) { super(builder); }
 		 */
+		
+		private DiagramType diagramType;
 
 		@Override
 		public String getStringRepresentation() {
@@ -222,8 +224,11 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 		@Override
 		public Type getType() {
-			// TODO Auto-generated method stub
-			return DiagramType.class;
+			// Vincent: update this when we will clarify what is a diagram specification and diagram
+			if(diagramType==null){
+				return new DiagramType(getDiagramSpecification());
+			}
+			return diagramType;
 		}
 
 		@Override
