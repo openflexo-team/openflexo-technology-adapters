@@ -21,19 +21,27 @@
 
 package org.openflexo.technologyadapter.xml;
 
-import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
+import org.openflexo.foundation.technologyadapter.FreeModelSlot;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
+import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
+import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 
 /**
@@ -46,23 +54,56 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 @DeclarePatternRoles({ @DeclarePatternRole(flexoRoleClass = XMLIndividualRole.class, FML = "XMLIndividual"), // Instances
 })
 @DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add
-// instance
+	// instance
 })
 @ModelEntity
 @XMLElement
 @ImplementationClass(FreeXMLModelSlot.FreeXMLModelSlotImpl.class)
-public interface FreeXMLModelSlot extends AbstractXMLModelSlot<FreeXMLURIProcessor> {
-	
-	
-    public static abstract class FreeXMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<FreeXMLURIProcessor> implements FreeXMLModelSlot {
+public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>,AbstractXMLModelSlot<FreeXMLURIProcessor> {
 
-        private static final Logger logger = Logger.getLogger(FreeXMLModelSlot.class.getPackage().getName());
 
-        @Override
-        public Type getType() {
-            // TODO Auto-generated method stub
-            return null;
-        }
+	// public static abstract class FreeXMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<FreeXMLURIProcessor> implements FreeXMLModelSlot {
+	public static abstract class FreeXMLModelSlotImpl extends FreeModelSlotImpl<XMLModel> implements FreeXMLModelSlot {
+
+
+		 private static ModelFactory MF;
+		 
+		    static{
+		    	try {
+					MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FreeXMLModelSlot.class,
+											  										  FreeXMLURIProcessor.class));
+				} catch (ModelDefinitionException e) {
+					e.printStackTrace();
+				}
+		    }
+
+		    
+		public FreeXMLModelSlotImpl(){
+			super();
+		}
+		
+		@Override
+		public Class<? extends TechnologyAdapter> getTechnologyAdapterClass() {
+			return XMLTechnologyAdapter.class;
+		}
+		
+		
+		@Override
+		public TechnologyAdapterResource<XMLModel, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		@Override
+		public TechnologyAdapterResource<XMLModel, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter, String relativePath,
+				String filename, String modelUri) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+
+		private static final Logger logger = Logger.getLogger(FreeXMLModelSlot.class.getPackage().getName());
 
 
 		@Override
@@ -73,14 +114,12 @@ public interface FreeXMLModelSlot extends AbstractXMLModelSlot<FreeXMLURIProcess
 			return xsuriProc;
 		}
 
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
+
 		@Override
 		public ModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
 			return new FreeXMLModelSlotInstanceConfiguration(this, action);
 		}
 
-    }
+	}
 
 }

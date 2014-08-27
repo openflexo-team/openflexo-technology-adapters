@@ -31,8 +31,7 @@ import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
-import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -62,7 +61,7 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 @ModelEntity
 @XMLElement
 @ImplementationClass(AbstractXMLModelSlot.AbstractXMLModelSlotImpl.class)
-public interface AbstractXMLModelSlot< T extends AbstractXMLURIProcessor> extends FreeModelSlot<XMLModel> {
+public interface AbstractXMLModelSlot< T extends AbstractXMLURIProcessor> extends ModelSlot<XMLModel> {
 
 	@PropertyIdentifier(type = List.class)
 	public static final String URI_PROCESSORS_LIST_KEY = "uriProcessorsList";
@@ -81,10 +80,10 @@ public interface AbstractXMLModelSlot< T extends AbstractXMLURIProcessor> extend
 	public void removeFromUriProcessorsList(T aUriProcessorsList);
 
 	public T createURIProcessor();
-	
+
 	public T retrieveURIProcessorForType(XMLType aXmlType);
 
-	public static abstract class AbstractXMLModelSlotImpl< T extends AbstractXMLURIProcessor> extends FreeModelSlotImpl<XMLModel> implements AbstractXMLModelSlot<T> {
+	public static abstract class AbstractXMLModelSlotImpl< T extends AbstractXMLURIProcessor> implements AbstractXMLModelSlot<T> {
 
 		private static final Logger logger = Logger.getLogger(AbstractXMLModelSlot.class.getPackage().getName());
 
@@ -109,10 +108,6 @@ public interface AbstractXMLModelSlot< T extends AbstractXMLURIProcessor> extend
 			return null;
 		}
 
-		@Override
-		public Class<? extends TechnologyAdapter> getTechnologyAdapterClass() {
-			return XMLTechnologyAdapter.class;
-		}
 
 
 		/*=====================================================================================
@@ -120,7 +115,7 @@ public interface AbstractXMLModelSlot< T extends AbstractXMLURIProcessor> extend
 		 */
 		// TODO Manage the fact that URI May Change
 
-	
+
 		@Override
 		public T retrieveURIProcessorForType(XMLType aXmlType) {
 
