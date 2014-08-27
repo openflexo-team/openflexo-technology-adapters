@@ -34,6 +34,8 @@ import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -104,6 +106,15 @@ public interface FreeXMLModelSlot extends AbstractXMLModelSlot {
             // TODO Auto-generated method stub
             return false;
         }
+
+
+		/**
+		 * Instanciate a new model slot instance configuration for this model slot
+		 */
+		@Override
+		public ModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+			return new FreeXMLModelSlotInstanceConfiguration(this, action);
+		}
 
     }
 

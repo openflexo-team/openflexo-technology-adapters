@@ -36,10 +36,11 @@ import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
+import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
+import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot.TypeAwareModelSlotImpl;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -72,13 +73,10 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 @ModelEntity
 @XMLElement
 @ImplementationClass(AbstractXMLModelSlot.AbstractXMLModelSlotImpl.class)
-public interface AbstractXMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel> {
+public interface AbstractXMLModelSlot extends FreeModelSlot<XMLModel> {
 
 	@PropertyIdentifier(type = List.class)
 	public static final String URI_PROCESSORS_LIST_KEY = "uriProcessorsList";
-
-	@PropertyIdentifier(type = XMLMetaModel.class)
-	public static final String METAMODEL = "metamodel";
 
 	@Getter(value = URI_PROCESSORS_LIST_KEY, cardinality = Cardinality.LIST)
 	@XMLElement
@@ -93,12 +91,6 @@ public interface AbstractXMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMe
 	@Remover(URI_PROCESSORS_LIST_KEY)
 	public void removeFromUriProcessorsList(XMLURIProcessor aUriProcessorsList);
 
-
-	@Getter(value = METAMODEL)
-	public XMLMetaModel getMetamodel();
-
-	@Setter(METAMODEL)
-	public void setMetamodel(XMLMetaModel metamodel);
 
 	public XMLURIProcessor createURIProcessor();
 
@@ -292,15 +284,6 @@ public interface AbstractXMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMe
 		@Override
 		public void removeFromUriProcessorsList(XMLURIProcessor xsuriProc) {
 			removeFromUriProcessors(xsuriProc);
-		}
-
-
-		/**
-		 * Instanciate a new model slot instance configuration for this model slot
-		 */
-		@Override
-		public XMLModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new XMLModelSlotInstanceConfiguration(this, action);
 		}
 
 

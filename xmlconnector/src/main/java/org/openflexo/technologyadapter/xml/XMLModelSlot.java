@@ -34,8 +34,12 @@ import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -57,10 +61,19 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 @ModelEntity
 @XMLElement
 @ImplementationClass(XMLModelSlot.XMLModelSlotImpl.class)
-public interface XMLModelSlot extends AbstractXMLModelSlot {
+public interface XMLModelSlot extends AbstractXMLModelSlot, TypeAwareModelSlot<XMLModel, XMLMetaModel>  {
 
+	@PropertyIdentifier(type = XMLMetaModel.class)
+	public static final String METAMODEL = "metamodel";
 	
 
+	@Getter(value = METAMODEL)
+	public XMLMetaModel getMetamodel();
+
+	@Setter(METAMODEL)
+	public void setMetamodel(XMLMetaModel metamodel);
+	
+	
     public static abstract class XMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl implements XMLModelSlot {
 
         private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
@@ -108,9 +121,20 @@ public interface XMLModelSlot extends AbstractXMLModelSlot {
         @Override
         public boolean isStrictMetaModelling() {
             // TODO Auto-generated method stub
-            return false;
+            return true;
         }
 
+    	/**
+    	 * Instanciate a new model slot instance configuration for this model slot
+    	 */
+    	@Override
+    	public XMLModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+    		return new XMLModelSlotInstanceConfiguration(this, action);
+    	}
+
     }
+    
+
+
 
 }

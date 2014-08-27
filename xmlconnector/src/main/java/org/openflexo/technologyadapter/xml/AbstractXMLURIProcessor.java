@@ -32,11 +32,19 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
+import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
+import org.openflexo.foundation.viewpoint.NamedViewPointObject;
 import org.openflexo.foundation.viewpoint.ViewPoint;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Initializer;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Parameter;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
@@ -47,7 +55,6 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLPropertyValue;
-import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 
 /* Correct processing of XML Objects URIs needs to add an internal class to store
  * for each XMLComplexType wich are the XML Elements (attributes or CDATA, or...) that will be 
@@ -57,18 +64,89 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 // TODO Manage the fact that URI May Change
 
 @ModelEntity
-@ImplementationClass(XMLURIProcessor.XMLURIProcessorImpl.class)
-@XMLElement(xmlTag = "XMLURIProcessor")
-public interface XMLURIProcessor extends AbstractXMLURIProcessor {
+@ImplementationClass(AbstractXMLURIProcessor.XMLURIProcessorImpl.class)
+@XMLElement(xmlTag = "URIProcessor")
+public interface AbstractXMLURIProcessor extends NamedViewPointObject {
+
+	public enum MappingStyle {
+		ATTRIBUTE_VALUE, SINGLETON;
+	}
+
+	@PropertyIdentifier(type = String.class)
+	public static final String TYPE_URI_KEY       = "typeURI";
+	@PropertyIdentifier(type = MappingStyle.class)
+	public static final String MAPPING_STYLE_KEY  = "mappingStyle";
+	@PropertyIdentifier(type = String.class)
+	public static final String ATTRIBUTE_NAME_KEY = "attributeName";
+	@PropertyIdentifier(type = XMLType.class)
+	public static final String MAPPED_XMLTYPE = "mappedType";
+	@PropertyIdentifier(type = ModelSlot.class)
+	public static final String MODELSLOT = "modelSlot";
+	@PropertyIdentifier(type = XMLDataProperty.class)
+	public static final String BASE_PROPERTY = "basePropertyForURI";
+
+
+	@Initializer
+	public AbstractXMLURIProcessor init();
+
+	@Initializer
+	public AbstractXMLURIProcessor init(@Parameter(TYPE_URI_KEY) String typeURI);
+
+	
+	@Getter(value = TYPE_URI_KEY)
+	@XMLAttribute
+	public String _getTypeURI();
+
+	@Setter(TYPE_URI_KEY)
+	public void _setTypeURI(String typeURI);
+
+	@Getter(value = MAPPING_STYLE_KEY)
+	@XMLAttribute
+	public MappingStyle getMappingStyle();
+
+	@Setter(MAPPING_STYLE_KEY)
+	public void setMappingStyle(MappingStyle mappingStyle);
+
+	@Getter(value = ATTRIBUTE_NAME_KEY)
+	@XMLAttribute
+	public String _getAttributeName();
+
+	@Setter(ATTRIBUTE_NAME_KEY)
+	public void _setAttributeName(String attributeName);
+
+	@Getter(MAPPED_XMLTYPE)
+	public XMLType getMappedXMLType();
+
+	@Setter(MAPPED_XMLTYPE)
+	public void setMappedXMLType(XMLType mappedType);
+
+	@Setter(MODELSLOT)
+	public void setModelSlot(AbstractXMLModelSlot modelslot);
+
+	@Getter(MODELSLOT)
+	public AbstractXMLModelSlot getModelSlot();
+
+
+	@Getter(BASE_PROPERTY)
+	public XMLProperty getBasePropertyForURI();
+
+	@Setter(BASE_PROPERTY)
+	public void setBasePropertyForURI(XMLDataProperty basePropertyForURI);
+		
+	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws DuplicateURIException;
+
+	public String getURIForObject(ModelSlotInstance msInstance, XMLObject xsO);
+
+	public void reset();
 
 	/** 
-	 * XMLURIProcessor interface implementation
+	 * XSURIProcessor interface implementation
 	 * @author xtof
 	 *
 	 */
-	public static abstract class XMLURIProcessorImpl extends NamedViewPointObjectImpl implements XMLURIProcessor {
+	public static abstract class XMLURIProcessorImpl extends NamedViewPointObjectImpl implements AbstractXMLURIProcessor {
 
-		static final Logger  logger   = Logger.getLogger(XMLURIProcessor.class.getPackage().getName());
+		static final Logger  logger   = Logger.getLogger(AbstractXMLURIProcessor.class.getPackage().getName());
 
 		// Properties used to calculate URIs
 		private XMLType mappedXMLType;        
@@ -115,75 +193,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			setBasePropertyForURI(null);
 		}
 
-		// TODO WARNING!!! Pb avec les typeURI....
-		@Override
-		public void _setTypeURI(String name) {
-			typeURI = URI.create(name);
-			bindtypeURIToMappedType();
-		}
-
-		@Override
-		public String _getTypeURI() {
-			if (mappedXMLType != null) {
-				// FIXME : update _typeURI si on supprime le champs...
-				// Parce que mappedClass doit rester prioritaire partout.
-				return mappedXMLType.getURI();
-			} else {
-				this.bindtypeURIToMappedType();
-				if (typeURI != null) {
-					return typeURI.toString();
-				} else {
-					return null;
-				}
-			}
-		}
-
-
-		@Override
-		public XMLType getMappedXMLType() {
-			if (mappedXMLType == null && typeURI != null) {
-				bindtypeURIToMappedType();
-			}
-			return mappedXMLType;
-		}
-
-		@Override
-		public void setMappedXMLType(XMLType mappedClass) {
-			this.mappedXMLType = mappedClass;
-			if (mappedClass != null && !mappedClass.getURI().equals(_getTypeURI())) {
-				_setTypeURI(mappedClass.getURI());
-			}
-			setChanged();
-			notifyObservers();
-		}
-
-		public void bindtypeURIToMappedType() {
-			XMLModelSlot modelSlot = (XMLModelSlot) getModelSlot();
-			if (modelSlot != null) {
-				String mmURI = modelSlot.getMetaModelURI();
-				if (mmURI != null) {
-					// FIXME : to be re-factored
-					XSDMetaModelResource mmResource = (XSDMetaModelResource) modelSlot.getMetaModelResource();
-				if (mmResource != null) {
-					setMappedXMLType(mmResource.getMetaModelData().getTypeFromURI(typeURI.toString()));
-					if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null) {
-						setBasePropertyForURI((XMLDataProperty) ((XMLComplexType) getMappedXMLType()).getPropertyByName(attributeName));
-					}
-				}
-				else {
-					logger.warning("unable to map typeURI to an OntClass, as metaModelResource is Null ");
-				}
-				}
-				else
-					setMappedXMLType(null);
-			}
-			else {
-				logger.warning("unable to map typeURI to an OntClass, as modelSlot is Null ");
-			}
-		}
-
-
-
+		
 		@Override
 		public XMLProperty getBasePropertyForURI() {
 			return baseDataPropertyForURI;
@@ -205,10 +215,6 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			String builtURI = null;
 			StringBuffer completeURIStr = new StringBuffer();
 
-			// if processor not initialized
-			if (getMappedXMLType() == null) {
-				bindtypeURIToMappedType();
-			}
 			// processor should be initialized
 			if (getMappedXMLType() == null) {
 				logger.warning("Cannot process URI as URIProcessor is not initialized for that class: " + typeURI);
@@ -263,11 +269,6 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 		public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws DuplicateURIException {
 
 			XMLObject o = uriCache.get(objectURI);
-
-			// if processor not initialized
-			if (getMappedXMLType() == null) {
-				bindtypeURIToMappedType();
-			}
 
 			// modelResource must also be loaded!
 

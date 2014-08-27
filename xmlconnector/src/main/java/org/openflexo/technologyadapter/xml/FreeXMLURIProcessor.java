@@ -57,18 +57,14 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 // TODO Manage the fact that URI May Change
 
 @ModelEntity
-@ImplementationClass(XMLURIProcessor.XMLURIProcessorImpl.class)
-@XMLElement(xmlTag = "XMLURIProcessor")
-public interface XMLURIProcessor extends AbstractXMLURIProcessor {
+@ImplementationClass(FreeXMLURIProcessor.XMLURIProcessorImpl.class)
+@XMLElement(xmlTag = "FreeXMLURIProcessor")
+public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 
-	/** 
-	 * XMLURIProcessor interface implementation
-	 * @author xtof
-	 *
-	 */
-	public static abstract class XMLURIProcessorImpl extends NamedViewPointObjectImpl implements XMLURIProcessor {
 
-		static final Logger  logger   = Logger.getLogger(XMLURIProcessor.class.getPackage().getName());
+	public static abstract class XMLURIProcessorImpl extends NamedViewPointObjectImpl implements FreeXMLURIProcessor {
+
+		static final Logger  logger   = Logger.getLogger(FreeXMLURIProcessor.class.getPackage().getName());
 
 		// Properties used to calculate URIs
 		private XMLType mappedXMLType;        
@@ -158,12 +154,16 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 		}
 
 		public void bindtypeURIToMappedType() {
-			XMLModelSlot modelSlot = (XMLModelSlot) getModelSlot();
+			AbstractXMLModelSlot modelSlot = getModelSlot();
 			if (modelSlot != null) {
-				String mmURI = modelSlot.getMetaModelURI();
+				// TODO adapt this to the FreeXML case
+				// FIXME 
+				//String mmURI = modelSlot.getMetaModelURI();
+				String mmURI = null;
 				if (mmURI != null) {
 					// FIXME : to be re-factored
-					XSDMetaModelResource mmResource = (XSDMetaModelResource) modelSlot.getMetaModelResource();
+					// XSDMetaModelResource mmResource = (XSDMetaModelResource) modelSlot.getMetaModelResource();
+					XSDMetaModelResource mmResource = null;
 				if (mmResource != null) {
 					setMappedXMLType(mmResource.getMetaModelData().getTypeFromURI(typeURI.toString()));
 					if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null) {

@@ -5,9 +5,9 @@ import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
-public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLModel, XMLMetaModel, AbstractXMLModelSlot> {
+public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLModel, XMLMetaModel, XMLModelSlot> {
 
-	protected XMLModelSlotInstanceConfiguration(AbstractXMLModelSlot ms, CreateVirtualModelInstance action) {
+	protected XMLModelSlotInstanceConfiguration(XMLModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 
