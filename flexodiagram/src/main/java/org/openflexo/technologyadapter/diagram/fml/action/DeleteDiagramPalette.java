@@ -23,34 +23,36 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 
-public class DeleteDiagramPalette extends FlexoAction<DeleteDiagramPalette, DiagramPalette, ViewPointObject> {
+public class DeleteDiagramPalette extends FlexoAction<DeleteDiagramPalette, DiagramPalette, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramPalette.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteDiagramPalette, DiagramPalette, ViewPointObject> actionType = new FlexoActionType<DeleteDiagramPalette, DiagramPalette, ViewPointObject>(
+	public static FlexoActionType<DeleteDiagramPalette, DiagramPalette, FlexoObject> actionType = new FlexoActionType<DeleteDiagramPalette, DiagramPalette, FlexoObject>(
 			"delete_diagram_palette", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public DeleteDiagramPalette makeNewAction(DiagramPalette focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+		public DeleteDiagramPalette makeNewAction(DiagramPalette focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 			return new DeleteDiagramPalette(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(DiagramPalette object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(DiagramPalette object, Vector<FlexoObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(DiagramPalette object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(DiagramPalette object, Vector<FlexoObject> globalSelection) {
 			return object != null;
 		}
 
@@ -60,13 +62,15 @@ public class DeleteDiagramPalette extends FlexoAction<DeleteDiagramPalette, Diag
 		FlexoObjectImpl.addActionForClass(DeleteDiagramPalette.actionType, DiagramPalette.class);
 	}
 
-	DeleteDiagramPalette(DiagramPalette focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	DeleteDiagramPalette(DiagramPalette focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
 	@Override
 	protected void doAction(Object context) {
 		logger.info("Delete diagram palette");
+		DiagramSpecification diagramSpecification = getFocusedObject().getDiagramSpecification();
+		diagramSpecification.removeFromPalettes(getFocusedObject());
 		if (getFocusedObject().getResource() != null) {
 			getFocusedObject().getResource().delete();
 		}

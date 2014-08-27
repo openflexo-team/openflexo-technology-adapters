@@ -50,6 +50,7 @@ import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResourceImpl;
 
@@ -197,6 +198,11 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		}
 
 		@Override
+		public boolean isDeleted() {
+			return super.isDeleted();
+		};
+		
+		@Override
 		public Collection<? extends Validable> getEmbeddedValidableObjects() {
 			return getElements();
 		}
@@ -305,56 +311,22 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		}
 
 		private ScreenshotImage<DiagramPalette> buildAndSaveScreenshotImage() {
-			ScreenshotBuilder<DiagramPalette> builder = new ScreenshotBuilder<DiagramPalette>() {
-				@Override
-				public String getScreenshotName(DiagramPalette o) {
-					return o.getName();
+			if (getTechnologyAdapter().getDiagramPaletteScreenshotBuilder() != null) {
+				ScreenshotBuilder<DiagramPalette> builder = getTechnologyAdapter().getDiagramPaletteScreenshotBuilder();
+
+				screenshotImage = builder.getImage(this);
+				try {
+					logger.info("Saving " + getExpectedScreenshotImageFile().getAbsolutePath());
+					ImageUtils.saveImageToFile(screenshotImage.image, getExpectedScreenshotImageFile(), ImageType.PNG);
+				} catch (IOException e) {
+					e.printStackTrace();
+					logger.warning("Could not save " + getExpectedScreenshotImageFile().getAbsolutePath());
 				}
-
-				@Override
-				public JComponent getScreenshotComponent(DiagramPalette object) {
-					/*ExternalVPMModule vpmModule = null;
-					try {
-						IModuleLoader moduleLoader = getViewPointLibrary().getServiceManager().getService(IModuleLoader.class);
-						if (moduleLoader != null) {
-							vpmModule = moduleLoader.getVPMModuleInstance();
-						}
-					} catch (ModuleLoadingException e) {
-						logger.warning("cannot load VPM module (and so can't create screenshoot." + e.getMessage());
-						e.printStackTrace();
-					}
-
-					if (vpmModule == null) {
-						return null;
-					}
-
-					logger.info("Building " + getExpectedScreenshotImageFile().getAbsolutePath());
-
-					JComponent c = vpmModule.createScreenshotForExampleDiagram(this);
-					c.setOpaque(true);
-					c.setBackground(Color.WHITE);
-					JFrame frame = new JFrame();
-					frame.setBackground(Color.WHITE);
-					frame.setUndecorated(true);
-					frame.getContentPane().add(c);
-					frame.pack();
-					c.validate();*/
-					return null;
-				}
-			};
-
-			screenshotImage = builder.getImage(this);
-			try {
-				logger.info("Saving " + getExpectedScreenshotImageFile().getAbsolutePath());
-				ImageUtils.saveImageToFile(screenshotImage.image, getExpectedScreenshotImageFile(), ImageType.PNG);
-			} catch (IOException e) {
-				e.printStackTrace();
-				logger.warning("Could not save " + getExpectedScreenshotImageFile().getAbsolutePath());
+				screenshotModified = false;
+				getPropertyChangeSupport().firePropertyChange("screenshotImage", null, screenshotImage);
+				return screenshotImage;
 			}
-			screenshotModified = false;
-			getPropertyChangeSupport().firePropertyChange("screenshotImage", null, screenshotImage);
-			return screenshotImage;
-
+			return null;
 		}
 
 		private ScreenshotImage<DiagramPalette> tryToLoadScreenshotImage() {

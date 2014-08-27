@@ -104,6 +104,7 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 			}
 		}
 
+		// Call it to update the current repositories
 	}
 
 	protected PowerpointSlideshowResource tryToLookupSlideshow(FlexoResourceCenter<?> resourceCenter, File candidateFile) {

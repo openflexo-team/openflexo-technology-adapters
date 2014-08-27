@@ -40,6 +40,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
@@ -65,6 +66,8 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	private static final Logger logger = Logger.getLogger(DiagramTechnologyAdapter.class.getPackage().getName());
 
 	private ScreenshotBuilder<Diagram> screenshotBuilder;
+	
+	private ScreenshotBuilder<DiagramPalette> diagramPaletteScreenshotBuilder;
 
 	private ScreenshotBuilder<DiagramShape> diagramShapeScreenshotBuilder;
 
@@ -137,6 +140,9 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 				DiagramResource diagramRes = tryToLookupDiagram(resourceCenter, candidateFile);
 			}
 		}
+		
+		// Call it to update the current repositories
+		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 	}
 
 	/**
@@ -332,6 +338,14 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	public void setScreenshotBuilder(ScreenshotBuilder<Diagram> screenshotBuilder) {
 		this.screenshotBuilder = screenshotBuilder;
+	}
+	
+	public ScreenshotBuilder<DiagramPalette> getDiagramPaletteScreenshotBuilder() {
+		return diagramPaletteScreenshotBuilder;
+	}
+	
+	public void setDiagramPaletteScreenshotBuilder(ScreenshotBuilder<DiagramPalette> screenshotBuilder) {
+		this.diagramPaletteScreenshotBuilder = screenshotBuilder;
 	}
 
 	public ScreenshotBuilder<DiagramShape> getDiagramShapeScreenshotBuilder() {

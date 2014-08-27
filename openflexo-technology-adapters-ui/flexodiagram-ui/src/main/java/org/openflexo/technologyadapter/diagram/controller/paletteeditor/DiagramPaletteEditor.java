@@ -54,6 +54,19 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 		}
 		moduleView = new DiagramPaletteModuleView(this, flexoController.getCurrentPerspective());
 	}
+	
+	// Only used for screenshot
+	public DiagramPaletteEditor(DiagramPalette palette, boolean readOnly) {
+		super(new DiagramPaletteDrawing(palette, readOnly), null, ((DiagramPaletteResource) palette
+				.getResource()).getFactory(), null);
+		flexoController = null;
+		this.swingToolFactory = null;
+		if (!readOnly) {
+			palettePaletteModel = new DiagramPalettePalette(this);
+			palettePalette = swingToolFactory.makeDianaPalette(palettePaletteModel);
+			palettePalette.attachToEditor(this);
+		}
+	}
 
 	@Override
 	public void delete() {
@@ -85,7 +98,7 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 	}
 
 	public DiagramPaletteModuleView getModuleView() {
-		if (moduleView == null) {
+		if (moduleView == null && flexoController!=null) {
 			moduleView = new DiagramPaletteModuleView(this, flexoController.getCurrentPerspective());
 		}
 		return moduleView;

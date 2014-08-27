@@ -150,6 +150,9 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 				EMFModelResource mRes = tryToLookupModel(resourceCenter, candidateFile);
 			}
 		}
+		
+		// Call it to update the current repositories
+		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 	}
 
 	protected EMFMetaModelResource tryToLookupMetaModel(FlexoResourceCenter<?> resourceCenter, File candidateFile) {

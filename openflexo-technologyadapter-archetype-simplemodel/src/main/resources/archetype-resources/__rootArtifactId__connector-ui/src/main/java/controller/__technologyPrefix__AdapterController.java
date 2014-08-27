@@ -32,7 +32,8 @@ import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
 import ${package}.${technologyPrefix}TechnologyAdapter;
-import ${package}.gui.${technologyPrefix}IconLibrary;
+import ${package}.library.${technologyPrefix}IconLibrary;
+import ${package}.view.${technologyPrefix}ModuleView;
 import ${package}.model.${technologyPrefix}Model;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -77,18 +78,17 @@ public class ${technologyPrefix}AdapterController extends TechnologyAdapterContr
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<${technologyPrefix}TechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(final Class<? extends TechnologyObject<${technologyPrefix}TechnologyAdapter>> objectClass) {
 		// TODO Auto-generated method stub
 		return ${technologyPrefix}IconLibrary.${technologyPrefix}_TECHNOLOGY_ICON;
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(
-			TechnologyObject<${technologyPrefix}TechnologyAdapter> object, FlexoController controller,
-			FlexoPerspective perspective) {
-		// TODO Auto-generated method stub
-		// You will need to create your own moduleview to represent your nodel has needed. This ModuleView is
-		// a class that implements ModuleView and needs to extends a Swing component (JPanel, JScrollPane,…)
+	public ModuleView<?> createModuleViewForObject(final TechnologyObject<${technologyPrefix}TechnologyAdapter> object, final FlexoController controller, final FlexoPerspective perspective) {
+		// TODO Auto-generated method stub : update your moduleView code to have somethig represented
+		if (object instanceof ${technologyPrefix}Model){
+			return new ${technologyPrefix}ModuleView((${technologyPrefix}Model) object, controller, perspective);
+		}
 		return new EmptyPanel<TechnologyObject<${technologyPrefix}TechnologyAdapter>>(controller, perspective, object);
 	}
 
