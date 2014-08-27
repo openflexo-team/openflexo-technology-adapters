@@ -47,4 +47,10 @@
     	<Button id="58" manageDynamicModel="false" useScrollBar="false" buttonType="Trigger" action="controller.cancelAndDispose()" index="1" localize="true" constraints="flow(index=1)" label="cancel" readOnly="false" />
     </Panel>
   </Panel>
+  
+   <LocalizedDictionary>
+    <Localized key="create_fml_palette_element_binding" lang="English" value="Create palette element binding" />
+    <Localized key="create_fml_palette_element_binding" lang="French" value="Créer une association d'élément de palette" />
+    <Localized key="create_fml_palette_element_binding" lang="Dutch" value="create_fml_palette_element_binding" />
+  </LocalizedDictionary>
 </Panel>
