@@ -7,22 +7,6 @@
     <TextField index="3" data="data.URI" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=0;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)" visible="" readOnly="true" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" columns="6" text="TextField" editable="" />
     <TextArea columns="6" rows="5" text="TextArea" index="4" data="data.description" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=4;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=5;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)" visible="" font="SansSerif,0,12" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" editable="" />
   </Panel>
-  <!--<SplitPanel index="0" data="" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)" visible="" opaque="false">
-    <RowSplit name="RowSplit" weight="0.0">
-      <Leaf name="exampleDiagramsBrowser" weight="0" />
-      <Divider />
-      <Leaf name="exampleDiagramsDetails" weight="1.0" />
-    </RowSplit>
-    <Table iteratorClassName="org.openflexo.technologyadapter.diagram.model.Diagram" visibleRowCount="3" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" selected="" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" clickAction="" doubleClickAction="controller.doubleClick(ExampleDiagramTable.selected)" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" name="ExampleDiagramTable" data="data.exampleDiagrams" constraints="split(splitIdentifier=exampleDiagramsBrowser)" visible="">
-      <IconColumn data="controller.iconForObject(iterator)" format="" title="icon" columnWidth="20" resizable="false" displayTitle="false" color="" bgColor="" tooltip="" valueChangedAction="" name="icon" />
-      <LabelColumn data="iterator.name" format="" title="example_diagram" columnWidth="100" resizable="true" displayTitle="true" color="" bgColor="" tooltip="" valueChangedAction="" name="label" />
-    </Table>
-    <Panel layout="gridbag" border="rounded3d" borderTop="2" borderBottom="2" borderLeft="2" borderRight="2" darkLevel="0" constraints="split(splitIdentifier=exampleDiagramsDetails)" opaque="false">
-      <Panel layout="border" borderTitle="Panel" darkLevel="0" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)"  name="DiagramScreenshotPanel" opaque="false" useScrollBar="true">
-        <Image sizeAdjustment="FitToAvailableSizeRespectRatio" align="left" imageWidth="32" imageHeight="32" data="ExampleDiagramTable.selected.screenshotImage.image" constraints="border(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)" visible="" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" />
-      </Panel>
-    </Panel>
-  </SplitPanel>-->
   <Panel id="8" data="data" cols="2" darkLevel="0" vGap="5" useScrollBar="false" protectContent="false" hGap="5" layout="box" border="empty" flowAlignment="LEFT" trackViewPortWidth="true" constraints="border(alignmentX=0.5;alignmentY=0.5;anchor=center;expandHorizontally=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0;x=0;y=0)" titleFont="SansSerif,0,12" boxLayoutAxis="Y_AXIS" rows="2" trackViewPortHeight="true">
     <SplitPanel id="9" useScrollBar="false" constraints="box(alignmentX=0.5;alignmentY=0.5;anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0;x=0;y=0)">
       <Table id="10" showFooter="true" manageDynamicModel="true" doubleClickAction="controller.doubleClick(ExampleDiagramTable.selected)" selectionMode="MultipleIntervalSelection" boundToSelectionManager="false" localize="true" constraints="split(splitIdentifier=exampleDiagramsBrowser)" visibleRowCount="3" createNewRowOnClick="false" rowHeight="18" iteratorClassName="org.openflexo.technologyadapter.diagram.model.Diagram" useScrollBar="false" data="data.exampleDiagrams" autoSelectFirstRow="false" name="ExampleDiagramTable" readOnly="false">
@@ -37,9 +21,9 @@
         </Panel>
       </Panel>
       <RowSplit id="16" weight="0.0" name="RowSplit">
-        <Leaf id="17" weight="0.0" name="exampleDiagramsBrowser" />
+        <Leaf id="17" weight="0.4" name="exampleDiagramsBrowser" />
         <Divider id="18" />
-        <Leaf id="19" weight="1.0" name="exampleDiagramsDetails" />
+        <Leaf id="19" weight="0.6" name="exampleDiagramsDetails" />
       </RowSplit>
     </SplitPanel>
     <SplitPanel id="20" useScrollBar="false" constraints="box(alignmentX=0.5;alignmentY=0.5;anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0;x=0;y=0)">
@@ -55,12 +39,21 @@
         </Panel>
       </Panel>
       <RowSplit id="27" weight="0.0" name="RowSplit">
-        <Leaf id="28" weight="0.0" name="diagramPalettesBrowser" />
+        <Leaf id="28" weight="0.4" name="diagramPalettesBrowser" />
         <Divider id="29" />
-        <Leaf id="30" weight="1.0" name="diagramPalettesDetails" />
+        <Leaf id="30" weight="0.6" name="diagramPalettesDetails" />
       </RowSplit>
     </SplitPanel>
   </Panel>
   <LocalizedDictionary>
+  	<Localized key="diagram_specification" lang="English" value="Diagram Specification" />
+    <Localized key="diagram_specification" lang="French" value="Spécification de Diagramme" />
+    <Localized key="diagram_specification" lang="Dutch" value="diagram_specification" />
+    <Localized key="example_diagram" lang="English" value="Example Diagram" />
+    <Localized key="example_diagram" lang="French" value="Diagramme d'Exemple" />
+    <Localized key="example_diagram" lang="Dutch" value="example_diagram" />
+    <Localized key="diagram_palette" lang="English" value="Palette" />
+    <Localized key="diagram_palette" lang="French" value="Palette" />
+    <Localized key="diagram_palette" lang="Dutch" value="diagram_palette" />
   </LocalizedDictionary>
 </Panel>

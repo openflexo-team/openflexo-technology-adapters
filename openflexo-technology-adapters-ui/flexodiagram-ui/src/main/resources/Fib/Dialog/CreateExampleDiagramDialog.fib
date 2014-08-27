@@ -3,9 +3,9 @@
   <Panel layout="flow" hGap="5" vGap="5" flowAlignment="CENTER" borderTitle="Panel" titleFont="Lucida Grande,0,11" darkLevel="0" index="1" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=20;insetsLeft=0;insetsRight=0;insetsTop=20;padX=0;padY=0;weightX=1.0;weightY=0.0)">
     <Label label="create_example_diagram" align="center" index="0" constraints="flow(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=20;insetsLeft=0;insetsRight=0;insetsTop=20;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)" font="Lucida Grande,1,15" localize="true"/>
   </Panel>
-  <Label label="diagram_name" index="1" constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
+  <Label label="name" index="1" constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
   <TextField index="3" data="data.newDiagramName" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)" name="DiagramNameTextField" localize="true" columns="6" text="TextField" />
-  <Label label="diagram_title" index="3" constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=10;insetsLeft=10;insetsRight=10;insetsTop=5;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
+  <Label label="title" index="3" constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=10;insetsLeft=10;insetsRight=10;insetsTop=5;padX=0;padY=0;weightX=0.0;weightY=0.0)" localize="true" />
   <TextField index="3" data="data.newDiagramTitle" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=4;insetsBottom=10;insetsLeft=0;insetsRight=20;insetsTop=5;padX=0;padY=0;weightX=1.0;weightY=0.0)" name="DiagramTitleTextField" localize="true" columns="7" text="TextField" />
   <Label label="description" align="right" localize="true" constraints="gridbag(insetsLeft=20;insetsRight=10;gridHeight=1;padY=0;padX=0;anchor=north_east;gridY=-1;gridX=-1;index=5;gridWidth=1;insetsTop=0;insetsBottom=0;weightY=0.0;weightX=0.0;fill=none)" />
   <TextArea columns="6" rows="5" text="TextArea" data="data.description" constraints="gridbag(insetsLeft=0;insetsRight=20;gridHeight=1;padY=0;padX=0;anchor=center;gridY=-1;gridX=-1;index=6;gridWidth=0;insetsTop=0;insetsBottom=20;weightY=1.0;weightX=1.0;fill=both)" localize="true" />
@@ -23,30 +23,9 @@
     <Dependancy componentName="DiagramNameTextField" />
     <Dependancy componentName="DiagramTitleTextField" />
   </Panel>
-  <LocalizedDictionary>
-    <Localized key="uri" lang="English">URI</Localized>
-    <Localized key="description" lang="English">Description</Localized>
-    <Localized key="uri" lang="French">URI</Localized>
-    <Localized key="description" lang="French">Description</Localized>
-    <Localized key="uri" lang="Dutch">URI</Localized>
-    <Localized key="description" lang="Dutch">Description</Localized>
-    <Localized key="flexo_concept" lang="French">Edition pattern</Localized>
-    <Localized key="flexo_concept" lang="English">Edition pattern</Localized>
-    <Localized key="validate" lang="English">Validate</Localized>
-    <Localized key="label" lang="English">Label</Localized>
-    <Localized key="validate" lang="French">Valider</Localized>
-    <Localized key="label" lang="French">Label</Localized>
-    <Localized key="Cancel" lang="French">Annuler</Localized>
-    <Localized key="validate" lang="Dutch">Validate</Localized>
-    <Localized key="label" lang="Dutch">Label</Localized>
-    <Localized key="finish" lang="English">Finish</Localized>
-    <Localized key="finish" lang="French">Terminer</Localized>
-    <Localized key="finish" lang="Dutch">Finish</Localized>
-    <Localized key="back" lang="English">&lt;&lt; Back</Localized>
-    <Localized key="back" lang="French">&lt;&lt; Précédent</Localized>
-    <Localized key="back" lang="Dutch">back</Localized>
-    <Localized key="next" lang="English">&gt;&gt; Next</Localized>
-    <Localized key="next" lang="French">&gt;&gt; Suivant</Localized>
-    <Localized key="next" lang="Dutch">next</Localized>
+   <LocalizedDictionary>
+    <Localized key="create_example_diagram" lang="English" value="Create Example Diagram" />
+    <Localized key="create_example_diagram" lang="French" value="Créer un Diagramme d'Exemple" />
+    <Localized key="create_example_diagram" lang="Dutch" value="create_example_diagram" />
   </LocalizedDictionary>
 </Panel>

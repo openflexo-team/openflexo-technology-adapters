@@ -3,9 +3,9 @@
   <LocalizedDictionary id="1" />
   <Panel id="2" darkLevel="0" useScrollBar="false" protectContent="false" description="" layout="twocols" borderRight="2" border="empty" trackViewPortWidth="true" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" borderBottom="2" borderTop="2" trackViewPortHeight="true">
     <Label id="3" manageDynamicModel="false" useScrollBar="false" localize="true" font="Lucida Grande,1,15" align="center" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" label="creates_example_drawing_from_ppt_slide" readOnly="false" />
-    <Label id="4" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="diagram_name" readOnly="false" />
+    <Label id="4" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="name" readOnly="false" />
     <TextField id="5" passwd="false" manageDynamicModel="false" useScrollBar="false" data="data.diagramName" columns="7" name="DiagramName" text="TextField" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" enable="data.diagram==null" readOnly="false" validateOnReturn="false" />
-    <Label id="6" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="diagram_title" readOnly="false" />
+    <Label id="6" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="title" readOnly="false" />
     <TextField id="7" passwd="false" manageDynamicModel="false" useScrollBar="false" data="data.diagramTitle" columns="7" name="DiagramTitle" text="TextField" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" enable="data.diagram==null" readOnly="false" validateOnReturn="false" />
     <Label id="8" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="select_a_ppt_file" readOnly="false" />
     <File id="9" manageDynamicModel="true" useScrollBar="false" data="data.file" mode="OpenMode" name="PPTFile" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" readOnly="false" isDirectory="false" filter=".ppt" />
@@ -21,4 +21,15 @@
       <Button id="18" manageDynamicModel="false" useScrollBar="false" enable="data.isValid" buttonType="Trigger" action="controller.validateAndDispose()" localize="true" constraints="flow(location=east)" label="Validate" readOnly="false" />
     </Panel>
   </Panel>
+   <LocalizedDictionary>
+    <Localized key="creates_example_drawing_from_ppt_slide" lang="English" value="Create example drawing from Powerpoint slide" />
+    <Localized key="creates_example_drawing_from_ppt_slide" lang="French" value="Créer un dessin à partir d'une diapositive Powerpoint" />
+    <Localized key="creates_example_drawing_from_ppt_slide" lang="Dutch" value="creates_example_drawing_from_ppt_slide" />
+    <Localized key="select_a_ppt_file" lang="English" value="Select a Powerpoint file" />
+    <Localized key="select_a_ppt_file" lang="French" value="Sélectionner un fichier Powerpoint" />
+    <Localized key="select_a_ppt_file" lang="Dutch" value="select_a_ppt_file" />
+    <Localized key="slide_snapshot" lang="English" value="Slide snapshot" />
+    <Localized key="slide_snapshot" lang="French" value="Aperçut de la diapositive" />
+    <Localized key="slide_snapshot" lang="Dutch" value="slide_snapshot" />
+  </LocalizedDictionary>
 </Panel>

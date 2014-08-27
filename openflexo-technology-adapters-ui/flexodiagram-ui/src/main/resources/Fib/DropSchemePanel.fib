@@ -29,26 +29,20 @@
   <Label label="description" align="right" index="8" data="" constraints="twocols(expandHorizontally=true;expandVertically=false;index=8;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" visible="" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" />
   <TextArea columns="6" rows="2" text="TextArea" index="9" data="data.description" constraints="twocols(expandHorizontally=true;expandVertically=true;index=9;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=center)" visible="" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" editable="" />
   <LocalizedDictionary>
-    <Localized key="drop_scheme" lang="English">Drop Scheme</Localized>
-    <Localized key="drop_scheme" lang="French">Drop Scheme</Localized>
-    <Localized key="drop_scheme" lang="Dutch">Drop the Scheme</Localized>
-    <Localized key="label" lang="English">Label</Localized>
-    <Localized key="label" lang="French">Label</Localized>
-    <Localized key="label" lang="Dutch">Label</Localized>
-    <Localized key="description" lang="English">Description</Localized>
-    <Localized key="description" lang="French">Description</Localized>
-    <Localized key="description" lang="Dutch">Description</Localized>
-    <Localized key="target" lang="English">Target</Localized>
-    <Localized key="target" lang="French">Cible</Localized>
-    <Localized key="target" lang="Dutch">Target</Localized>
-    <Localized key="top_level" lang="English">Top level</Localized>
-    <Localized key="top_level" lang="French">A la racine</Localized>
-    <Localized key="top_level" lang="Dutch">top level</Localized>
-    <Localized key="shape" lang="English">Shape</Localized>
-    <Localized key="shape" lang="French">Forme</Localized>
-    <Localized key="shape" lang="Dutch">Shape</Localized>
-    <Localized key="target_role" lang="English">Target role</Localized>
-    <Localized key="target_role" lang="French">Rôle cible</Localized>
-    <Localized key="target_role" lang="Dutch">target_role</Localized>
+    <Localized key="drop_scheme" lang="English" value="Drop Scheme"/>
+    <Localized key="drop_scheme" lang="French" value="Drop Scheme" />
+    <Localized key="drop_scheme" lang="Dutch" value="Drop the Scheme" />
+    <Localized key="target" lang="English" value="Target" />
+    <Localized key="target" lang="French" value="Cible" />
+    <Localized key="target" lang="Dutch" value="Target" />
+    <Localized key="top_level" lang="English" value="Top level" />
+    <Localized key="top_level" lang="French" value="A la racine" />
+    <Localized key="top_level" lang="Dutch" value="top level" />
+    <Localized key="shape" lang="English" value="Shape" />
+    <Localized key="shape" lang="French" value="Forme "/>
+    <Localized key="shape" lang="Dutch" value="Shape" />
+    <Localized key="target_role" lang="English" value="Target role" />
+    <Localized key="target_role" lang="French" value="Rôle cible" />
+    <Localized key="target_role" lang="Dutch" value="target_role" />
   </LocalizedDictionary>
 </Panel>
