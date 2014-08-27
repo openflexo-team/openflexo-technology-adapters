@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.inspector.FIBInspector" layout="border" titleFont="SansSerif,0,12" darkLevel="0" dataClassName="org.openflexo.technologyadapter.xml.AbstractXMLModelSlot" controllerClassName="org.openflexo.inspector.FIBInspectorController" font="SansSerif,0,12" name="Inspector">
+<Panel className="org.openflexo.inspector.FIBInspector" layout="border" titleFont="SansSerif,0,12" darkLevel="0" dataClassName="org.openflexo.technologyadapter.xml.XMLModelSlot" controllerClassName="org.openflexo.inspector.FIBInspectorController" font="SansSerif,0,12" name="Inspector">
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
       <Label label="uri_processors" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" name="URIProcessors" localize="true" />
-      <Table iteratorClassName="org.openflexo.technologyadapter.xml.XMLURIProcessor" visibleRowCount="3" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" data="data.uriProcessorsList" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
+      <Table iteratorClassName="org.openflexo.technologyadapter.xml.AbstractXMLURIProcessor" visibleRowCount="3" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" data="data.uriProcessorsList" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
         <IconColumn title="icon" columnWidth="20" resizable="false" displayTitle="false" name="icon" />
-        <CustomColumn componentClassName="org.openflexo.components.widget.FIBClassSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.mappedXMLType" format="object.name" title="type" columnWidth="80" resizable="true" displayTitle="true">
+        <CustomColumn componentClassName="org.openflexo.technologyadapter.xml.gui.widget.FIBXMLTypeSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.mappedXMLType" format="object.name" title="type" columnWidth="80" resizable="true" displayTitle="true">
           <ColumnAssignment variable="component.context" value="data.metamodel" />
         </CustomColumn>
         <DropDownColumn data="iterator.mappingStyle" title="mappingStyle" columnWidth="100" resizable="true" displayTitle="true" name="dropdown" />
-        <CustomColumn componentClassName="org.openflexo.components.widget.FIBPropertySelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.basePropertyForURI" format="object.name" title="property" columnWidth="80" resizable="true" displayTitle="true">
-          <ColumnAssignment variable="component.context" value="data.metamodel" />
+        <CustomColumn componentClassName="org.openflexo.technologyadapter.xml.gui.widget.FIBXMLPropertySelector" customRendering="false" disableTerminateEditOnFocusLost="false" selectObjectProperties="false" selectDataProperties="true" data="iterator.basePropertyForURI" format="object.name" title="property" columnWidth="80" resizable="true" displayTitle="true">
+          <ColumnAssignment variable="component.context" value="iterator.mappedXMLType" />
           <ColumnAssignment variable="component.selectObjectProperties" value="false" />
           <ColumnAssignment variable="component.selectDataProperties" value="true" />
-          <ColumnAssignment variable="component.domain" value="iterator.mappedXMLType" />
         </CustomColumn>
         <AddAction method="data.createURIProcessor" name="add_action" />
       </Table>

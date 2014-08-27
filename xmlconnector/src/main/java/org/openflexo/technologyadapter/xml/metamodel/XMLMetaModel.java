@@ -23,7 +23,6 @@ import java.util.Collection;
 
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -36,12 +35,11 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 
 
 @ModelEntity
 @ImplementationClass(XMLMetaModelImpl.class)
-public interface XMLMetaModel extends FlexoObject, XMLObject, FlexoMetaModel<XMLMetaModel>, TechnologyObject<XMLTechnologyAdapter> {
+public interface XMLMetaModel extends FlexoObject, XMLObject, FlexoMetaModel<XMLMetaModel> {
 
 	public static String TYPES = "types";
 	public static String READ_ONLY = "readOnly";

@@ -49,7 +49,7 @@ public abstract class XMLPropertyImpl implements XMLProperty {
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter() {
-		return this.getContainer().getTechnologyAdapter();
+		return (XMLTechnologyAdapter) this.getContainer().getTechnologyAdapter();
 	}
 
 

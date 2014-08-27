@@ -66,10 +66,10 @@ public interface XMLProperty  extends XMLObject, Comparable {
 	public void setContainer(XMLType containedIn);
 	
 	@Getter(value = TYPE, ignoreType=true)
-	public Type getType();
+	public XMLType getType();
 	
 	@Setter(TYPE)
-	public void setType(Type aType);
+	public void setType(XMLType aType);
 	
 	/**
 	 * Returns true if this property was created from an XML element and false if from an XMLAttribute

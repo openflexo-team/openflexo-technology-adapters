@@ -267,7 +267,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter(){
-		return this.getContainerModel().getTechnologyAdapter();
+		return (XMLTechnologyAdapter) this.getContainerModel().getTechnologyAdapter();
 	}
 	
 	@Override

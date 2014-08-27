@@ -29,7 +29,7 @@ public abstract class XMLTypeImpl  implements XMLType {
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter() {
-		return this.getMetamodel().getTechnologyAdapter();
+		return (XMLTechnologyAdapter) this.getMetamodel().getTechnologyAdapter();
 	}
 
 	@Override

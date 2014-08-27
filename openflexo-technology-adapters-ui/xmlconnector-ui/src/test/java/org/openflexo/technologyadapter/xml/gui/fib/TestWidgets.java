@@ -21,38 +21,18 @@
 package org.openflexo.technologyadapter.xml.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
+import org.openflexo.fib.utils.GenericFIBTestCase;
 
-public class TestXMLInspectors extends GenericFIBInspectorTestCase {
+public class TestWidgets extends GenericFIBTestCase {
 
 	@Test
-	public void testXMLFileResourceInspector() {
-		validateFIB("Inspectors/XML/XMLFileResource.inspector");
+	public void testPropertySelector() {
+		validateFIB("Fib/widgets/FIBXMLPropertySelector.fib");
 	}
 
 	@Test
-	public void testXMLMetaModelInspector() {
-		validateFIB("Inspectors/XML/XMLMetaModel.inspector");
+	public void testTypeSelector() {
+		validateFIB("Fib/widgets/FIBXMLTypeSelector.fib");
 	}
-
-	@Test
-	public void testXMLModelInspector() {
-		validateFIB("Inspectors/XML/XMLModel.inspector");
-	}
-
-	@Test
-	public void testXSDMetaModelResourceInspector() {
-		validateFIB("Inspectors/XML/XSDMetaModelResource.inspector");
-	}
-
-	@Test
-	public void testXMLModelSlotInspector() {
-		validateFIB("Inspectors/XML/XMLModelSlot.inspector");
-	}
-
-	@Test
-	public void testFreeXMLModelSlotInspector() {
-		validateFIB("Inspectors/XML/FreeXMLModelSlot.inspector");
-	}
-
+	
 }

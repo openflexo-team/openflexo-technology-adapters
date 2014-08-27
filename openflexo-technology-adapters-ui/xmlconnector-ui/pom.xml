@@ -32,6 +32,12 @@
 			<artifactId>xmlconnector</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexoviewpointmodeler</artifactId>
+			<version>${project.version}</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 </project>
 

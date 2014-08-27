@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoModel;
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -41,7 +40,6 @@ import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -57,7 +55,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
  */
 @ModelEntity
 @ImplementationClass(XMLModelImpl.class)
-public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>, TechnologyObject<XMLTechnologyAdapter> {
+public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel>  {
 
 	/**
 	 * Reference to the {@link XMLMetaModel} that this document is conformant to 
