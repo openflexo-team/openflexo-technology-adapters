@@ -210,6 +210,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 
 		// Set the screenshot builders
 		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());
+		getTechnologyAdapter().setDiagramPaletteScreenshotBuilder(new DiagramPaletteScreenshotBuilder());
 		getTechnologyAdapter().setDiagramShapeScreenshotBuilder(new DiagramShapeScreenshotBuilder());
 
 		// Add paste handlers

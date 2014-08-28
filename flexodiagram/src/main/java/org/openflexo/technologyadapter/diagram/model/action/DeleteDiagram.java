@@ -27,6 +27,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 public class DeleteDiagram extends FlexoAction<DeleteDiagram, Diagram, FlexoObject> {
@@ -67,7 +68,10 @@ public class DeleteDiagram extends FlexoAction<DeleteDiagram, Diagram, FlexoObje
 	@Override
 	protected void doAction(Object context) {
 		logger.info("Delete diagram");
-
+		DiagramSpecification diagramSpecification = getFocusedObject().getDiagramSpecification();
+		if(diagramSpecification!=null){
+			diagramSpecification.removeFromExampleDiagrams(getFocusedObject());
+		}
 		if (getFocusedObject().getResource() != null) {
 			getFocusedObject().getResource().delete();
 		}

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Panel layout="gridbag" titleFont="Lucida Grande,0,13" darkLevel="0" dataClassName="org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette" controllerClassName="org.openflexo.view.controller.FlexoFIBController" opaque="false">
-  <Label label="creates_new_view_point_palette" align="center" localize="true" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=20;insetsLeft=0;insetsRight=0;insetsTop=20;padX=0;padY=0;weightX=1.0;weightY=0.0)" font="Lucida Grande,1,15" />
-  <Label label="palette_name" align="right" localize="true" constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" />
+  <Label label="creates_new_palette" align="center" localize="true" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=20;insetsLeft=0;insetsRight=0;insetsTop=20;padX=0;padY=0;weightX=1.0;weightY=0.0)" font="Lucida Grande,1,15" />
+  <Label label="name" align="right" localize="true" constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" />
   <TextField columns="40" text="TextField" data="data.newPaletteName" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)" name="PaletteName" localize="true">
     <Dependancy componentName="OntologyFileSelector" />
   </TextField>
@@ -19,22 +19,12 @@
     </Button>
     <Button action="controller.cancelAndDispose()" buttonType="Trigger" label="cancel" constraints="flow(index=1)" localize="true" />
   </Panel>
+
   <LocalizedDictionary>
-    <Localized key="description" lang="English">Description</Localized>
-    <Localized key="validate" lang="English">Validate</Localized>
-    <Localized key="cancel" lang="English">Cancel</Localized>
-    <Localized key="description" lang="French">Description</Localized>
-    <Localized key="validate" lang="French">Valider</Localized>
-    <Localized key="cancel" lang="French">Annuler</Localized>
-    <Localized key="description" lang="Dutch">Description</Localized>
-    <Localized key="validate" lang="Dutch">Validate</Localized>
-    <Localized key="cancel" lang="Dutch">Cancel</Localized>
-    <Localized key="palette_name" lang="French">Nom de la palette</Localized>
-    <Localized key="palette_name" lang="English">Palette name</Localized>
-    <Localized key="creates_new_view_point_palette" lang="English">Creates a new ViewPoint palette</Localized>
-    <Localized key="creates_new_view_point_palette" lang="French">Créer une nouvelle palette</Localized>
-    <Localized key="creates_new_view_point_palette" lang="Dutch">Creates a new ViewPoint palette</Localized>
-    <Localized key="palette_name" lang="Dutch">Palette name</Localized>
+    <Localized key="creates_new_palette" lang="English" value="Create new Palette" />
+    <Localized key="creates_new_palette" lang="French" value="Créer une nouvelle Palette" />
+    <Localized key="creates_new_palette" lang="Dutch" value="creates_new_palette" />
   </LocalizedDictionary>
+
 </Panel>
 

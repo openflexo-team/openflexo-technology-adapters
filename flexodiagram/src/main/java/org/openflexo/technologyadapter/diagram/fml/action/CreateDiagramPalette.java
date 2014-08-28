@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
@@ -38,29 +39,29 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.toolbox.StringUtils;
 
-public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, DiagramSpecification, ViewPointObject> {
+public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, DiagramSpecification, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramPalette.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramPalette, DiagramSpecification, ViewPointObject> actionType = new FlexoActionType<CreateDiagramPalette, DiagramSpecification, ViewPointObject>(
+	public static FlexoActionType<CreateDiagramPalette, DiagramSpecification, FlexoObject> actionType = new FlexoActionType<CreateDiagramPalette, DiagramSpecification, FlexoObject>(
 			"create_new_palette", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateDiagramPalette makeNewAction(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateDiagramPalette makeNewAction(DiagramSpecification focusedObject, Vector<FlexoObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateDiagramPalette(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(DiagramSpecification object, Vector<FlexoObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(DiagramSpecification object, Vector<FlexoObject> globalSelection) {
 			return object != null;
 		}
 
@@ -76,7 +77,7 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 
 	private DiagramPalette _newPalette;
 
-	CreateDiagramPalette(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateDiagramPalette(DiagramSpecification focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

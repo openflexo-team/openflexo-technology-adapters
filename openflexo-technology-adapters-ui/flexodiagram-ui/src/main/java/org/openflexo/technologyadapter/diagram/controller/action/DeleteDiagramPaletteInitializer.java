@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
 import org.openflexo.icon.IconLibrary;
@@ -32,7 +33,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class DeleteDiagramPaletteInitializer extends ActionInitializer<DeleteDiagramPalette, DiagramPalette, ViewPointObject> {
+public class DeleteDiagramPaletteInitializer extends ActionInitializer<DeleteDiagramPalette, DiagramPalette, FlexoObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
