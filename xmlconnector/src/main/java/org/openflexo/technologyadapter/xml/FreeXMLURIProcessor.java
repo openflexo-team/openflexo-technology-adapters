@@ -34,7 +34,6 @@ import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
-import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -57,23 +56,18 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 // TODO Manage the fact that URI May Change
 
 @ModelEntity
-@ImplementationClass(FreeXMLURIProcessor.XMLURIProcessorImpl.class)
-@XMLElement(xmlTag = "FreeXMLURIProcessor")
+@XMLElement
+@ImplementationClass(FreeXMLURIProcessor.FreeXMLURIProcessorImpl.class)
 public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 
 
-	public static abstract class XMLURIProcessorImpl extends NamedViewPointObjectImpl implements FreeXMLURIProcessor {
+	public static abstract class FreeXMLURIProcessorImpl extends AbstractXMLURIProcessorImpl implements FreeXMLURIProcessor {
 
 		static final Logger  logger   = Logger.getLogger(FreeXMLURIProcessor.class.getPackage().getName());
 
 		// Properties used to calculate URIs
 		private XMLType mappedXMLType;        
-		private XMLDataProperty baseDataPropertyForURI;
 
-		// Serialized properties
-
-		protected URI typeURI;
-		protected String attributeName;
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
@@ -84,7 +78,7 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 		 * initialises an URIProcessor with the given URI
 		 * @param typeURI
 		 */
-		public XMLURIProcessorImpl() {
+		public FreeXMLURIProcessorImpl() {
 			super();
 		}
 		
@@ -93,7 +87,7 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 		 * initialises an URIProcessor with the given URI
 		 * @param typeURI
 		 */
-		public XMLURIProcessorImpl(String typeURI) {
+		public FreeXMLURIProcessorImpl(String typeURI) {
 			super();
 			if (typeURI != null) {
 				this.typeURI = URI.create(typeURI);
@@ -113,13 +107,13 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 
 		// TODO WARNING!!! Pb avec les typeURI....
 		@Override
-		public void _setTypeURI(String name) {
+		public void setTypeURI(String name) {
 			typeURI = URI.create(name);
 			bindtypeURIToMappedType();
 		}
 
 		@Override
-		public String _getTypeURI() {
+		public String getTypeURI() {
 			if (mappedXMLType != null) {
 				// FIXME : update _typeURI si on supprime le champs...
 				// Parce que mappedClass doit rester prioritaire partout.
@@ -146,8 +140,8 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 		@Override
 		public void setMappedXMLType(XMLType mappedClass) {
 			this.mappedXMLType = mappedClass;
-			if (mappedClass != null && !mappedClass.getURI().equals(_getTypeURI())) {
-				_setTypeURI(mappedClass.getURI());
+			if (mappedClass != null && !mappedClass.getURI().equals(getTypeURI())) {
+				setTypeURI(mappedClass.getURI());
 			}
 			setChanged();
 			notifyObservers();
@@ -164,6 +158,7 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 					// FIXME : to be re-factored
 					// XSDMetaModelResource mmResource = (XSDMetaModelResource) modelSlot.getMetaModelResource();
 					XSDMetaModelResource mmResource = null;
+					String attributeName = getAttributeName();
 				if (mmResource != null) {
 					setMappedXMLType(mmResource.getMetaModelData().getTypeFromURI(typeURI.toString()));
 					if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null) {
@@ -182,22 +177,6 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 			}
 		}
 
-
-
-		@Override
-		public XMLProperty getBasePropertyForURI() {
-			return baseDataPropertyForURI;
-		}
-
-		@Override
-		public void setBasePropertyForURI(XMLDataProperty basePropertyForURI) {
-			this.baseDataPropertyForURI = basePropertyForURI;
-			if (this.baseDataPropertyForURI != null) {
-				this._setAttributeName(basePropertyForURI.getName());
-			}
-		}
-
-
 		// URI Calculation
 
 		@Override
@@ -215,6 +194,8 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 				return null;
 			}
 			else {
+
+				String attributeName = getAttributeName();
 				if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null && getMappedXMLType() != null) {
 
 					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attributeName);
@@ -282,6 +263,7 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 			// retrieve object
 			if (o == null) {
 
+				String attributeName = getAttributeName();
 				if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null) {
 
 					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attributeName);
@@ -305,10 +287,10 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 					List<?> indivList = ((XMLModel) msInstance.getAccessedResourceData()).getIndividualsOfType(getMappedXMLType());
 					if (indivList.size() > 1) {
 						throw new DuplicateURIException("Cannot process URI - Several individuals found for singleton of type "
-								+ this._getTypeURI().toString());
+								+ this.getTypeURI().toString());
 					}
 					else if (indivList.size() == 0) {
-						logger.warning("Cannot find Singleton for type : " + this._getTypeURI().toString());
+						logger.warning("Cannot find Singleton for type : " + this.getTypeURI().toString());
 					}
 					else {
 						o = (XMLObject) indivList.get(0);
@@ -337,23 +319,9 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 		}
 
 		@Override
-		public String getURI() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public ViewPoint getViewPoint() {
-			if (getModelSlot() != null) {
-				return getModelSlot().getViewPoint();
-			}
-			return null;
-		}
-
-		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			if (mappedXMLType != null){
-				return "XSURIProcessor for " + this.mappedXMLType.getName();
+				return "FreeXMLURIProcessor for " + this.mappedXMLType.getName();
 			}
 			else {
 				return "";

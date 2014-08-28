@@ -34,7 +34,6 @@ import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
-import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -57,8 +56,8 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 // TODO Manage the fact that URI May Change
 
 @ModelEntity
+@XMLElement
 @ImplementationClass(XMLURIProcessor.XMLURIProcessorImpl.class)
-@XMLElement(xmlTag = "XMLURIProcessor")
 public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 
 	/** 
@@ -66,18 +65,10 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 	 * @author xtof
 	 *
 	 */
-	public static abstract class XMLURIProcessorImpl extends NamedViewPointObjectImpl implements XMLURIProcessor {
+	public static abstract class XMLURIProcessorImpl extends AbstractXMLURIProcessorImpl implements XMLURIProcessor {
 
 		static final Logger  logger   = Logger.getLogger(XMLURIProcessor.class.getPackage().getName());
 
-		// Properties used to calculate URIs
-		private XMLType mappedXMLType;        
-		private XMLDataProperty baseDataPropertyForURI;
-
-		// Serialized properties
-
-		protected URI typeURI;
-		protected String attributeName;
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
@@ -91,8 +82,8 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 		public XMLURIProcessorImpl() {
 			super();
 		}
-		
-		
+
+
 		/**
 		 * initialises an URIProcessor with the given URI
 		 * @param typeURI
@@ -115,27 +106,26 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			setBasePropertyForURI(null);
 		}
 
-		// TODO WARNING!!! Pb avec les typeURI....
 		@Override
-		public void _setTypeURI(String name) {
-			typeURI = URI.create(name);
-			bindtypeURIToMappedType();
+		public void setTypeURI(String name) {
+			if (name != null){
+				typeURI = URI.create(name);
+				bindtypeURIToMappedType();}
+			else typeURI=null;
 		}
 
 		@Override
-		public String _getTypeURI() {
+		public String getTypeURI() {
 			if (mappedXMLType != null) {
-				// FIXME : update _typeURI si on supprime le champs...
-				// Parce que mappedClass doit rester prioritaire partout.
-				return mappedXMLType.getURI();
-			} else {
-				this.bindtypeURIToMappedType();
-				if (typeURI != null) {
-					return typeURI.toString();
-				} else {
-					return null;
-				}
-			}
+				String _uri = mappedXMLType.getURI();
+				return _uri;
+			} 
+			else if (typeURI != null) {
+				return typeURI.toString();
+			} 
+
+			return null;
+
 		}
 
 
@@ -148,13 +138,8 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 		}
 
 		@Override
-		public void setMappedXMLType(XMLType mappedClass) {
-			this.mappedXMLType = mappedClass;
-			if (mappedClass != null && !mappedClass.getURI().equals(_getTypeURI())) {
-				_setTypeURI(mappedClass.getURI());
-			}
-			setChanged();
-			notifyObservers();
+		public void setMappedXMLType(XMLType aType) {
+			mappedXMLType = aType;
 		}
 
 		public void bindtypeURIToMappedType() {
@@ -164,36 +149,22 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 				if (mmURI != null) {
 					// FIXME : to be re-factored
 					XSDMetaModelResource mmResource = (XSDMetaModelResource) modelSlot.getMetaModelResource();
-				if (mmResource != null) {
-					setMappedXMLType(mmResource.getMetaModelData().getTypeFromURI(typeURI.toString()));
-					if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null) {
-						setBasePropertyForURI((XMLDataProperty) ((XMLComplexType) getMappedXMLType()).getPropertyByName(attributeName));
+					if (mmResource != null && typeURI != null) {
+						mappedXMLType = mmResource.getMetaModelData().getTypeFromURI(typeURI.toString());
+						String attrName = getAttributeName();
+						if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attrName != null) {
+							setBasePropertyForURI((XMLDataProperty) ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName));
+						}
 					}
-				}
-				else {
-					logger.warning("unable to map typeURI to an OntClass, as metaModelResource is Null ");
-				}
+					else {
+						logger.warning("unable to map typeURI to an OntClass, as metaModelResource or Type URI  is Null ");
+					}
 				}
 				else
 					setMappedXMLType(null);
 			}
 			else {
 				logger.warning("unable to map typeURI to an OntClass, as modelSlot is Null ");
-			}
-		}
-
-
-
-		@Override
-		public XMLProperty getBasePropertyForURI() {
-			return baseDataPropertyForURI;
-		}
-
-		@Override
-		public void setBasePropertyForURI(XMLDataProperty basePropertyForURI) {
-			this.baseDataPropertyForURI = basePropertyForURI;
-			if (this.baseDataPropertyForURI != null) {
-				this._setAttributeName(basePropertyForURI.getName());
 			}
 		}
 
@@ -215,9 +186,10 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 				return null;
 			}
 			else {
-				if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null && getMappedXMLType() != null) {
+				String attrName = getAttributeName();
+				if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attrName != null && getMappedXMLType() != null) {
 
-					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attributeName);
+					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName);
 					XMLPropertyValue value = ((XMLIndividual) xsO).getPropertyValue(aProperty);
 					try {
 						// NPE protection
@@ -281,10 +253,10 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 
 			// retrieve object
 			if (o == null) {
+				String attrName = getAttributeName();
+				if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attrName != null) {
 
-				if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attributeName != null) {
-
-					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attributeName);
+					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName);
 					String attrValue = URI.create(objectURI).getQuery();
 
 					for (XMLIndividual obj : resource.getModel().getIndividualsOfType(getMappedXMLType())) {
@@ -305,10 +277,10 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 					List<?> indivList = ((XMLModel) msInstance.getAccessedResourceData()).getIndividualsOfType(getMappedXMLType());
 					if (indivList.size() > 1) {
 						throw new DuplicateURIException("Cannot process URI - Several individuals found for singleton of type "
-								+ this._getTypeURI().toString());
+								+ this.getTypeURI().toString());
 					}
 					else if (indivList.size() == 0) {
-						logger.warning("Cannot find Singleton for type : " + this._getTypeURI().toString());
+						logger.warning("Cannot find Singleton for type : " + this.getTypeURI().toString());
 					}
 					else {
 						o = (XMLObject) indivList.get(0);
@@ -336,24 +308,12 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			return typeURIStr.toString();
 		}
 
-		@Override
-		public String getURI() {
-			// TODO Auto-generated method stub
-			return null;
-		}
 
-		@Override
-		public ViewPoint getViewPoint() {
-			if (getModelSlot() != null) {
-				return getModelSlot().getViewPoint();
-			}
-			return null;
-		}
 
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			if (mappedXMLType != null){
-				return "XSURIProcessor for " + this.mappedXMLType.getName();
+				return "XMLURIProcessor for " + this.mappedXMLType.getName();
 			}
 			else {
 				return "";

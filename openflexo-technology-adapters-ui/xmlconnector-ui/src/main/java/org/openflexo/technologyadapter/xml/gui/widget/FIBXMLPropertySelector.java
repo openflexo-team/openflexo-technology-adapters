@@ -21,12 +21,11 @@ package org.openflexo.technologyadapter.xml.gui.widget;
 
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
+
 import org.openflexo.components.widget.FIBFlexoObjectSelector;
-import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
-import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.technologyadapter.xml.XMLModelSlot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 
@@ -36,11 +35,11 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
  * This widget provides many configuration options:
  * <ul>
  * <li>context: required, defines XMLType to browse</li>
-  * <li>selectObjectProperties, indicated if object properties should be retrieved</li>
+ * <li>selectObjectProperties, indicated if object properties should be retrieved</li>
  * <li>selectDataProperties, indicated if data properties should be retrieved</li>
  * </ul>
  * 
- * @author xtpf, based on sguerin's code
+ * @author xtof, based on sguerin's code
  * 
  */
 @SuppressWarnings("serial")
@@ -69,7 +68,7 @@ public class FIBXMLPropertySelector extends FIBFlexoObjectSelector<XMLProperty> 
 	public Resource getFIBResource() {
 		return FIB_FILE_NAME;
 	}
-	
+
 	@Override
 	public Class<XMLProperty> getRepresentedType() {
 		return XMLProperty.class;
@@ -90,16 +89,28 @@ public class FIBXMLPropertySelector extends FIBFlexoObjectSelector<XMLProperty> 
 	@CustomComponentParameter(name = "context", type = CustomComponentParameter.Type.MANDATORY)
 	public void setContext(XMLType context) {
 		this.context = context;
+		performFireModelUpdated();
 	}
 
-	public String getContextOntologyURI() {
-		if (getContext() != null) {
-			return getContext().getURI();
+	private boolean modelWillBeUpdated = false;
+	
+	private void performFireModelUpdated() {
+		if (modelWillBeUpdated) {
+			return;
+		} else {
+			modelWillBeUpdated = true;
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					getPropertyChangeSupport().firePropertyChange("context", null, context);
+					modelWillBeUpdated = false;
+				}
+			});
 		}
-		return null;
 	}
-	
-	
+
+
+
 	public boolean getSelectObjectProperties() {
 		return selectObjectProperties;
 	}
@@ -119,27 +130,5 @@ public class FIBXMLPropertySelector extends FIBFlexoObjectSelector<XMLProperty> 
 	}
 
 	
-	private XMLModelSlot modelSlot;
-
-	public XMLModelSlot getModelSlot() {
-		return modelSlot;
-	}
-
-	public void setModelSlot(XMLModelSlot modelSlot) {
-		this.modelSlot = modelSlot;
-	}
-
-	/**
-	 * Return a metamodel adressed by a model slot
-	 * 
-	 * @return
-	 */
-	public FlexoMetaModel getAdressedFlexoMetaModel() {
-		if (modelSlot instanceof TypeAwareModelSlot) {
-			TypeAwareModelSlot typeAwareModelSlot = modelSlot;
-			return typeAwareModelSlot.getMetaModelResource().getMetaModelData();
-		}
-		return null;
-	}
 
 }
