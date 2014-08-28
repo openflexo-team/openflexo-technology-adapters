@@ -21,11 +21,16 @@
 
 package org.openflexo.technologyadapter.xml;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.ontology.DuplicateURIException;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
@@ -33,6 +38,7 @@ import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
+import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -41,10 +47,15 @@ import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.xml.XMLURIProcessor.XMLURIProcessorImpl;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
+import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
+import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
+import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
 import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 
 /**
@@ -74,8 +85,9 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 
 	// public static abstract class XMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<XMLURIProcessor> implements XMLModelSlot {
-	// TODO : check for multiple inheritance issues
+	// TODO : check for multiple inheritance issues in PAMELA
 	public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel> implements XMLModelSlot {
+
 
 
 		private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
@@ -95,12 +107,12 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			}
 		}
 
-		
+
 		@Override
 		public Class<? extends TechnologyAdapter> getTechnologyAdapterClass() {
 			return XMLTechnologyAdapter.class;
 		}
-		
+
 		@Override
 		public XMLURIProcessor createURIProcessor() {
 			XMLURIProcessor xsuriProc = getVirtualModelFactory().newInstance(XMLURIProcessor.class);
@@ -115,6 +127,53 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		 */
 		// TODO Manage the fact that URI May Change
 
+
+
+
+		@Override
+		public String getURIForObject(
+				TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,
+						Object o) {
+
+			if (o instanceof XMLIndividual){
+				XMLURIProcessor p = retrieveURIProcessorForType(((XMLIndividual) o).getType());
+				p.getURIForObject(msInstance, (XMLObject) o);
+			}
+			else if (o instanceof XMLType){
+				return ((XMLType) o).getURI();
+			}
+
+			return null;
+		}
+
+
+		@Override
+		public Object retrieveObjectWithURI(
+				TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,
+						String objectURI) {
+
+			String typeUri = XMLURIProcessorImpl.retrieveTypeURI(msInstance, objectURI);
+			XMLModel model = msInstance.getModel();
+			XMLURIProcessor mapParams = uriProcessorsMap.get(XMLURIProcessorImpl.retrieveTypeURI(msInstance, objectURI));
+			if (mapParams == null) {
+				// Look for a processor in superClasses
+				XMLType aType = model.getMetaModel().getTypeFromURI(typeUri);
+				mapParams = retrieveURIProcessorForType(aType);
+			}
+
+			if (mapParams != null) {
+				try {
+					return mapParams.retrieveObjectWithURI(msInstance, objectURI);
+				} catch (DuplicateURIException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+			return null;
+		}
+
+
 		@Override
 		public XMLURIProcessor retrieveURIProcessorForType(XMLType aXmlType) {
 
@@ -125,7 +184,6 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			if (mapParams == null) {
 				XMLType s = aXmlType.getSuperType();
 				if (mapParams == null) {
-					// on ne cherche que le premier...
 					logger.info("SEARCHING for an uriProcessor for " + s.getURI());
 					mapParams = retrieveURIProcessorForType(s);
 				}
@@ -222,6 +280,50 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			}
 			else return null;
 		}
+
+
+		@Override
+		public XMLFileResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
+				FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
+
+			File xmlFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
+
+			modelUri = xmlFile.toURI().toString();
+
+			XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile, (XMLTechnologyContextManager) this.getTechnologyAdapter().getTechnologyContextManager());
+
+			if (metaModelResource != null && returned != null){
+				returned.setMetaModelResource((FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter>) metaModelResource);
+			}
+
+			return returned;
+		}
+
+		@Override
+		public XMLFileResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
+				String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
+
+			XMLFileResource returned = null;
+
+			if (resourceCenter instanceof FileSystemBasedResourceCenter){
+				File xmlFile = new File(((FileSystemBasedResourceCenter)resourceCenter).getRootDirectory(), relativePath + System.getProperty("file.separator") +filename);
+				
+				modelUri = xmlFile.toURI().toString();
+
+				returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile, (XMLTechnologyContextManager) this.getTechnologyAdapter().getTechnologyContextManager());
+
+				if (metaModelResource != null && returned != null){
+					returned.setMetaModelResource((FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter>) metaModelResource);
+				}
+
+			}
+			else {
+				logger.warning("Creating XML file in non file-based RC is not yet supported");
+			}
+
+			return returned;
+		}
+
 
 	}
 

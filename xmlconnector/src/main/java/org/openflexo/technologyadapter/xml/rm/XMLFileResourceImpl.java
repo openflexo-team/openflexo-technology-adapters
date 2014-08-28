@@ -93,6 +93,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 			}
 			else {
 				// TODO: File exists, what should I Do
+				logger.warning("Unable to create new Resource => have to decide what to do with file to be overwriten");
 			}
 
 			return returned;

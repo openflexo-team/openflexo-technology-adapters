@@ -178,7 +178,6 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 					XMLType owner = resourceData.getTypeFromURI(ownerUri);
 					if (owner != null && owner instanceof XMLComplexType) {
 						// TODO: better manage types
-						System.out.println("SHOULD Create a new simple type for : " + elementType.getName());
 						((XMLComplexType) owner).createProperty(element.getName(), resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
 					}
 					else {

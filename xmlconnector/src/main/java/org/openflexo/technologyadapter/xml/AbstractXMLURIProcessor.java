@@ -159,7 +159,6 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 		 */
 		public AbstractXMLURIProcessorImpl() {
 			super();
-			System.out.println("Creating an XMLURIProcessor ");
 		}
 
 
@@ -170,7 +169,6 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 		public AbstractXMLURIProcessorImpl(String typeURI) {
 			super();
 
-			System.out.println("Creating an XMLURIProcessor ");
 			if (typeURI != null) {
 				this.typeURI = URI.create(typeURI);
 			}

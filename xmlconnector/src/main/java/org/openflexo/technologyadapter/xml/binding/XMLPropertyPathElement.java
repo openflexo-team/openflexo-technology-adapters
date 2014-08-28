@@ -67,8 +67,6 @@ public class XMLPropertyPathElement extends SimplePathElement {
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
 		Object xsdAnswer = ((XMLIndividual) target).getPropertyValue(getPropertyName());
-		// System.out.println("AttributeDataPropertyFeatureAssociationPathElement, returning " + emfAnswer + " of " + (emfAnswer != null ?
-		// emfAnswer.getClass() : null));
 		return xsdAnswer;
 	}
 
