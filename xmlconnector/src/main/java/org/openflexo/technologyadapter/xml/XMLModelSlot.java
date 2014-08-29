@@ -141,8 +141,6 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		// TODO Manage the fact that URI May Change
 
 
-
-
 		@Override
 		public String getURIForObject(
 				TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,

@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.ontology.DuplicateURIException;
-import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -39,7 +38,6 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
-import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -237,12 +235,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			if (getMappedXMLType() == null) {
 				bindtypeURIToMappedType();
 			}
-
-			// modelResource must also be loaded!
-
-			FlexoModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> resource = (FlexoModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter>) msInstance
-					.getResource();
-
+			
 			// should not be a preoccupation of XSURI
 			// if (!resource.isLoaded()) {
 			// resource.getModelData();
@@ -256,7 +249,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 					XMLProperty aProperty = ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName);
 					String attrValue = URI.create(objectURI).getQuery();
 
-					for (XMLIndividual obj : resource.getModel().getIndividualsOfType(getMappedXMLType())) {
+					for (XMLIndividual obj : ((XMLModel) msInstance.getAccessedResourceData()).getIndividualsOfType(getMappedXMLType())) {
 
 						XMLPropertyValue value = obj.getPropertyValue(aProperty);
 						try {
