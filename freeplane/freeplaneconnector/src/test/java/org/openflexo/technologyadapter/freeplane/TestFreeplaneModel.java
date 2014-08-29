@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import junit.framework.Assert;
 
 import org.freeplane.features.map.MapModel;
+import org.freeplane.features.map.NodeModel;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.junit.Assume;
 import org.junit.Before;
@@ -17,6 +18,7 @@ import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneMapImpl;
 
@@ -67,5 +69,17 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
         Assert.assertNotNull(map.getRoot());
         Assert.assertEquals(Collections.emptyList(), map.getRoot().getChildren());
     }
+
+	@Test
+	public void validateConnectorToFreeplaneAPI() {
+		final MapModel loadedMap = FreeplaneBasicAdapter.getInstance().loadMapFromFile(ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm")));
+		Assert.assertEquals(FreeplaneBasicAdapter.getInstance().getMapName(), "FPTest");
+		Assert.assertNotNull(FreeplaneBasicAdapter.getInstance().getIconToolbar());
+		Assert.assertNotNull(FreeplaneBasicAdapter.getInstance().getMapView());
+		final NodeModel nœudRacine = loadedMap.getRootNode();
+		Assert.assertEquals(nœudRacine.getText(),"FreeplaneModel First node");
+		Assert.assertEquals(nœudRacine.getChildCount(), 4);
+		Assert.assertEquals(nœudRacine.getChildAt(2).getText(), "すごい");
+	}
 
 }
