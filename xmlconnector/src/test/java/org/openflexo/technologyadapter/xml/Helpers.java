@@ -53,8 +53,8 @@ public class Helpers {
 
 			}
 			if (t instanceof XMLComplexType) {
-				for ( XMLProperty x : t.getProperties()) {
-					XMLType pt = (XMLType) x.getType();
+				for ( XMLProperty x : ((XMLComplexType) t).getProperties()) {
+					XMLType pt = x.getType();
 					if (pt instanceof XMLSimpleType){
 						System.out.println("     -data: " + x.getName() + "  :: " + pt.getName() + " [ " + pt.getURI() +" ]");
 					}
@@ -79,26 +79,28 @@ public class Helpers {
 			dumpProperties(indiv, indiv.getType(), prefix);
 		}
 		else {
-			for (XMLProperty prop : aType.getProperties()) {
-				if (prop instanceof XMLDataProperty) {
-					XMLPropertyValue val = indiv.getPropertyValue(prop);
-					if (val != null){
-						System.out.println(prefix + "    * attr: " + prop.getName() + " = " + indiv.getPropertyValue(prop).toString());
-					}
-					else {
-						System.out.println(prefix + "    ! attr: " + prop.getName() + " n'est pas valuée" );
-					}
-				}
-				else if (prop instanceof XMLObjectProperty) {
-					System.out.println(prefix + "    * obj: " + prop.getName() );
-					XMLObjectPropertyValue vals = (XMLObjectPropertyValue) indiv.getPropertyValue(prop);
-					if (vals != null){
-						for (XMLIndividual v : vals.getValues()){
-							dumpIndividual (v, prefix + "          + ");
+			if (aType instanceof XMLComplexType){
+				for (XMLProperty prop : ((XMLComplexType) aType).getProperties()) {
+					if (prop instanceof XMLDataProperty) {
+						XMLPropertyValue val = indiv.getPropertyValue(prop);
+						if (val != null){
+							System.out.println(prefix + "    * attr: " + prop.getName() + " = " + indiv.getPropertyValue(prop).toString());
+						}
+						else {
+							System.out.println(prefix + "    ! attr: " + prop.getName() + " n'est pas valuée" );
 						}
 					}
-					else {
-						System.out.println(" !! Etrange, la propriete " + prop.getName() + " ne contient rien ?!?" );
+					else if (prop instanceof XMLObjectProperty) {
+						System.out.println(prefix + "    * obj: " + prop.getName() );
+						XMLObjectPropertyValue vals = (XMLObjectPropertyValue) indiv.getPropertyValue(prop);
+						if (vals != null){
+							for (XMLIndividual v : vals.getValues()){
+								dumpIndividual (v, prefix + "          + ");
+							}
+						}
+						else {
+							System.out.println(" !! Etrange, la propriete " + prop.getName() + " ne contient rien ?!?" );
+						}
 					}
 				}
 

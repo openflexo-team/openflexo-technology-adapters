@@ -167,7 +167,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 
 
 		// URI Calculation
-
+		// TODO : manage the fact that URI might change:
 		@Override
 		public String getURIForObject(ModelSlotInstance msInstance, XMLObject xsO) {
 			String builtURI = null;

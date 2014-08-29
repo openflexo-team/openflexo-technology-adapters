@@ -21,7 +21,6 @@
 package org.openflexo.technologyadapter.xml.metamodel;
 
 import java.lang.reflect.Type;
-import java.util.Collection;
 
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -52,9 +51,6 @@ public interface XMLType  extends XMLObject , Type{
 	
 	@Getter(MM)
 	XMLMetaModel getMetamodel();
-	
-	public Collection<? extends XMLProperty> getProperties();
-
 	@Setter(NAME)
 	public void setName(String name);
 	

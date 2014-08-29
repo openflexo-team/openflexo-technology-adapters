@@ -46,11 +46,22 @@ public abstract class XMLComplexTypeImpl extends XMLTypeImpl implements XMLCompl
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<? extends XMLProperty> getProperties() {
-	
+
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		ArrayList lst = new ArrayList(properties.values());
+		addSuperPropertiesToPropertyList(lst);
 		Collections.sort(lst);
 		return lst;
+	}
+	
+	private void addSuperPropertiesToPropertyList(List<XMLProperty> list) {
+		XMLType t = getSuperType();
+		if (t != null && t instanceof XMLComplexType){
+			for (XMLProperty p : ((XMLComplexType) t).getProperties()) {
+				list.add(p);
+			}
+			((XMLComplexTypeImpl) t).addSuperPropertiesToPropertyList(list);
+		}
 	}
 
 	@Override
@@ -90,19 +101,20 @@ public abstract class XMLComplexTypeImpl extends XMLTypeImpl implements XMLCompl
 
 	@Override
 	public XMLProperty getPropertyByName(String name) {
-		
-		XMLProperty prop = properties.get(name);
-		// Looks for the property in super-Type
-		if (this.getSuperType() != null){
-			prop = ((XMLComplexType) this.getSuperType()).getPropertyByName(name);
+		if (name != null){
+			XMLProperty prop = properties.get(name);
+			// Looks for the property in super-Type
+			if (this.getSuperType() != null){
+				prop = ((XMLComplexType) this.getSuperType()).getPropertyByName(name);
+			}
+			// Creates the property for PCDATA
+			if (prop == null && name.equals(XMLCst.CDATA_ATTR_NAME)) {
+				prop = createProperty( name, this.getMetamodel().getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
+			}
+			return prop;
 		}
-		// Creates the property for PCDATA
-		if (prop == null && name.equals(XMLCst.CDATA_ATTR_NAME)) {
-			prop = createProperty( name, this.getMetamodel().getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-		}
-				
-		return prop;
+		return null;
 	}
-	
+
 
 }

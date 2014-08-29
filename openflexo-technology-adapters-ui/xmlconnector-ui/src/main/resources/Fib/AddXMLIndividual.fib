@@ -22,6 +22,23 @@
   <Custom componentClassName="org.openflexo.technologyadapter.xml.gui.widget.FIBXMLTypeSelector" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" opaque="false" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" index="7" data="data.xMLType" constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" visible="">
     <Assignment variable="component.context" value="data.metamodel"/>
   </Custom>
+  <Label label="properties" index="12" data="" constraints="twocols(expandHorizontally=false;expandVertically=false;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=left)" visible="" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator=""/>
+  <Table iteratorClassName="org.openflexo.technologyadapter.xml.editionaction.XMLDataPropertyAssertion" visibleRowCount="4" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" selected="" textSelectionColor="255,255,255" textNonSelectionColor="0,0,0" backgroundSelectionColor="26,96,206" backgroundSecondarySelectionColor="173,215,255" backgroundNonSelectionColor="255,255,255" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" opaque="false" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" name="DataPropertyAssertionTable" index="13" data="data.dataAssertions" constraints="twocols(expandHorizontally=true;expandVertically=true;index=13;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" visible="">
+    <IconColumn data="controller.iconForObject(iterator)" format="" title="icon" columnWidth="30" resizable="false" displayTitle="false" color="" bgColor="" tooltip="" valueChangedAction="" name="icon"/>
+    <CustomColumn componentClassName="org.openflexo.technologyadapter.xml.gui.widget.FIBXMLPropertySelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.dataProperty" format="object.name" title="property" columnWidth="80" resizable="true" displayTitle="true" color="" bgColor="" tooltip="" valueChangedAction="">
+      <ColumnAssignment variable="component.context" value="data.xMLType"/>
+      <ColumnAssignment variable="component.selectObjectProperties" value="false"/>
+      <ColumnAssignment variable="component.selectDataProperties" value="true"/>
+    </CustomColumn>
+    <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.value" format="" title="value" columnWidth="80" resizable="true" displayTitle="true" color="" bgColor="" tooltip="" valueChangedAction="" name="value">
+      <ColumnAssignment variable="component.bindable" value="data"/>
+    </CustomColumn>
+    <CustomColumn componentClassName="org.openflexo.fib.utils.BindingSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.conditional" format="" title="conditional" columnWidth="100" resizable="true" displayTitle="true" color="" bgColor="" tooltip="" valueChangedAction="" name="conditional">
+      <ColumnAssignment variable="component.bindable" value="data"/>
+    </CustomColumn>
+    <AddAction method="data.createDataPropertyAssertion" isAvailable="" name="add_data_assertion"/>
+    <RemoveAction method="data.deleteDataPropertyAssertion(selected)" isAvailable="" name="delete_data_assertion"/>
+  </Table>
   <Label label="description" align="right" index="8" data="" constraints="twocols(expandHorizontally=true;expandVertically=false;index=8;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" visible="" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator=""/>
   <TextArea columns="6" rows="2" text="TextArea" index="9" data="data.description" constraints="twocols(expandHorizontally=true;expandVertically=true;index=9;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" visible="" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" editable=""/>
   <LocalizedDictionary>

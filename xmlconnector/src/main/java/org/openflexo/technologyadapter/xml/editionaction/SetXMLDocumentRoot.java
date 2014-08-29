@@ -28,15 +28,19 @@ import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.ProcedureAction;
 import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Import;
+import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLModelSlot;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
+import org.openflexo.technologyadapter.xml.virtualmodel.XMLActorReference;
 
 @ModelEntity
 @ImplementationClass(SetXMLDocumentRoot.SetXMLDocumentRootImpl.class)
 @XMLElement
+@Imports({@Import(XMLActorReference.class),})
 public interface SetXMLDocumentRoot extends ProcedureAction<XMLModelSlot, XMLIndividual> {
 
 	public static abstract class SetXMLDocumentRootImpl extends ProcedureActionImpl<XMLModelSlot, XMLIndividual> implements

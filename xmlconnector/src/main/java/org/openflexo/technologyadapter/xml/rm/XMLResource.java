@@ -20,6 +20,8 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
+import java.io.IOException;
+
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
@@ -47,7 +49,8 @@ public interface XMLResource extends  TechnologyAdapterResource<XMLModel, XMLTec
 	
 
 	@Getter(value = TARGET_NAMESPACE, ignoreType = true)
-	public String getTargetNamespace();
+	public String getTargetNamespace() throws IOException;
+	
 	
 	// initializes the Metamodel property of XMLModel, given the reference provided by metamodelResource property
 	public void attachMetamodel();

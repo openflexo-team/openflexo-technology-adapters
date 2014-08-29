@@ -130,8 +130,8 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				}
 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.warning("Unable to parse Root Node for XML File, discarding it : " + e.getLocalizedMessage());
+				return false;
 			}
 			return true;
 		}
@@ -151,108 +151,8 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return aModelFile.toURI().toString();
 	}
 
-	/**
-	 * Create empty model.
-	 * 
-	 * @param modelFile
-	 * @param modelUri
-	 * @param technologyContextManager
-	 * @return
-	 */
-	/*
-	public XMLFileResource createEmptyModel(File modelFile, TechnologyContextManager technologyContextManager) {
-
-		XMLFileResource ModelResource = XMLFileResourceImpl.makeXMLFileResource(modelFile,
-				(XMLTechnologyContextManager) technologyContextManager);
-		technologyContextManager.registerResource(ModelResource);
-		return ModelResource;
-
-	}
-
-	public XMLFileResource createEmptyModel(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
-			String modelUri, FlexoResource<XMLModel> metaModelResource, TechnologyContextManager technologyContextManager) {
-
-		File modelDirectory = new File(resourceCenter.getRootDirectory(), relativePath);
-		File modelFile = new File(modelDirectory, filename);
-		return createEmptyModel(modelFile, technologyContextManager);
-	}
-
-	public XMLFileResource createEmptyModel(FlexoProject project, String filename, String modelUri,
-			FlexoResource<XMLModel> metaModelResource, TechnologyContextManager technologyContextManager) {
-
-		File modelFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-
-		return createEmptyModel(modelFile, technologyContextManager);
-	}
-
-*/
-	/**
-	 * Create empty model.
-	 * 
-	 * @param modelFile
-	 * @param modelUri
-	 * @param metaModelResource
-	 * @param resourceCenter 
-	 * @param technologyContextManager
-	 * @return
-	 */
-	/*
-	public XMLXSDFileResource createNewXMLFile(File modelFile, String modelUri, FlexoResource<XMLMetaModel> metaModelResource, FlexoResourceCenter<?> resourceCenter) {
-
-		modelUri = modelFile.toURI().toString();
-
-		XMLXSDFileResource modelResource = XMLXSDFileResourceImpl.makeXMLXSDFileResource(modelUri, modelFile,
-				(XSDMetaModelResource) metaModelResource, (XMLTechnologyContextManager) getTechnologyContextManager());
-
-		referenceResource(modelResource,resourceCenter);
-		getTechnologyContextManager().registerResource(modelResource);
-
-
-		return modelResource;
-
-	}
-	 */
-	/**
-	 * Creates new model conform to the supplied meta model
-	 * 
-	 * @param project
-	 * @param metaModel
-	 * @return
-	 */
-	/*
-	public XMLXSDFileResource createNewXMLFile(FlexoProject project, String filename, String modelUri, FlexoResource<XMLMetaModel> metaModel) {
-
-		File modelFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-
-		// TODO: modelURI is not used here!!!! => check the API, as it is
-		// processed by TA
-		logger.warning("modelURI are not useful in this context");
-
-		return createNewXMLFile(modelFile, modelUri, metaModel,project);
-
-	}
-	 */
-	/*
-	public FlexoResource<XMLXSDModel> createNewXMLFile(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
-			FlexoResource<XMLMetaModel> metaModelResource) {
-
-		File modelDirectory = new File(resourceCenter.getRootDirectory(), relativePath);
-		File modelFile = new File(modelDirectory, filename);
-
-		String modelUri = modelFile.toURI().toString();
-
-		return createNewXMLFile(modelFile, modelUri, metaModelResource,resourceCenter);
-	}
-
-	public FlexoResource<XMLXSDModel> createNewXMLFile(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
-			String modelUri, FlexoResource<XMLMetaModel> metaModelResource) {
-
-		File modelDirectory = new File(resourceCenter.getRootDirectory(), relativePath);
-		File modelFile = new File(modelDirectory, filename);
-
-		return createNewXMLFile(modelFile, modelUri, metaModelResource,resourceCenter);
-	}
-	 */
+	
+	
 	@Override
 	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 
@@ -380,6 +280,16 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		XMLResource mRes = null;
 
 		if (isValidModelFile(candidateFile)) {
+
+			String mmURI = null;
+			try {
+			mmURI = XMLFileResourceImpl.getTargetNamespace(candidateFile);
+			}
+			catch ( IOException e){ 
+				logger.warning("Unable to parse Root Node for XML File, discarding it ("+ candidateFile.getAbsolutePath()+") : " + e.getLocalizedMessage());
+				return null;
+			}
+
 			mRes = XMLFileResourceImpl.makeXMLFileResource(candidateFile, xmlContextManager );
 
 			if (mRes != null) {
@@ -399,7 +309,6 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 				// then find the MetaModel
 
-				String mmURI = mRes.getTargetNamespace();
 
 				if (mmURI != null && mmURI.length() > 0){
 
@@ -478,7 +387,14 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
                 // This is a meta-model, this one has just been registered
             }
             else {
-                tryToLookupModel(resourceCenter, candidateFile);
+
+        		XMLModelRepository modelRepository = resourceCenter.getRepository(XMLModelRepository.class, this);
+        		// Check if it's not yet registered
+        		boolean found = false;
+        		for ( XMLFileResource r : modelRepository.getAllResources()){
+        			found = found || r.getFile().equals(candidateFile);
+        		}
+                if (!found) tryToLookupModel(resourceCenter, candidateFile);
             }
         }
 	}

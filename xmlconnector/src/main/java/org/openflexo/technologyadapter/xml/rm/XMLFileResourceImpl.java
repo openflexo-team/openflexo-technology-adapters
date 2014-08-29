@@ -88,8 +88,8 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 					returned.resourceData.setResource(returned);
 				}
 
-				returned.save(null);
 				returned.isLoaded = true;
+				returned.save(null);
 			}
 
 			return returned;
@@ -155,19 +155,15 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 	/**
 	 * Retrieves the target Namespace from the file when not loaded
 	 * or from MetamModel when it is loaded and exists
+	 * @throws IOException 
 	 * 
 	 */
 	@Override
-	public String getTargetNamespace() {
+	public String getTargetNamespace() throws IOException {
 
 		if (!isLoaded()){
 			XMLRootElementInfo rootInfo;
-			try {
-				rootInfo = REreader.readRootElement(this.getFile());
-			} catch (IOException e) {
-				logger.warning("Unable to read Root Node from File" + e.getMessage());
-				return null;
-			}			
+			rootInfo = REreader.readRootElement(this.getFile());		
 			return  rootInfo.getURI();
 		}
 		else{
@@ -176,6 +172,16 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 
 	}
 
+	public static final String getTargetNamespace(File f) throws IOException{
+		if (f != null && f.exists()){
+		XMLRootElementInfo rootInfo;
+		rootInfo = REreader.readRootElement(f);		
+		return  rootInfo.getURI();
+		}
+		else {
+			throw new IOException("File Not Found ");
+		}
+	}
 
 	private void writeToFile() throws SaveResourceException {
 

@@ -39,6 +39,7 @@ import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
+import org.openflexo.xml.XMLCst;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -108,7 +109,14 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 
 	@Override
 	public List<String> getNamespace() {
+		
+		if (namespace.size() < 2 && this.getMetaModel() != null){
+			namespace.add(XMLModel.NSPREFIX_INDEX, XMLCst.DEFAULT_NS);
+			namespace.add(XMLModel.NSURI_INDEX, this.getMetaModel().getURI());
+			}
+		
 		return namespace;
+		
 	}
 
 	@Override

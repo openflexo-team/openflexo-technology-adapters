@@ -113,7 +113,9 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 	ResourceLoadingCancelledException, FlexoException {
 
 		myWriter.writeStartElement(nSURI, rootIndiv.getName());
-		myWriter.writeNamespace(nSPrefix, nSURI);
+		if (nSURI != null && !nSURI.isEmpty()){
+			myWriter.writeNamespace(nSPrefix, nSURI);
+		}
 		// Attributes
 		writeAttributes(rootIndiv);
 		myWriter.writeCharacters(LINE_SEP);

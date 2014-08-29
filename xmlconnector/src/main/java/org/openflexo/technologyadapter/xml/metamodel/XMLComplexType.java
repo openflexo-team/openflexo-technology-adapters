@@ -37,7 +37,6 @@ public interface XMLComplexType  extends XMLType {
 	
 	final String PROPERTIES = "properties";
 
-	@Override
 	@Getter(value = PROPERTIES, cardinality = Cardinality.LIST)
 	@Embedded
 	public List<? extends XMLProperty> getProperties();
