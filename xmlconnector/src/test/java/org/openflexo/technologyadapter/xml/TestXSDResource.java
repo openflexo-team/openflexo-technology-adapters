@@ -66,7 +66,7 @@ public class TestXSDResource extends OpenflexoTestCase {
 		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
 		baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
 		assertNotNull(modelRepository);
-		assertTrue(modelRepository.getAllResources().size() > 6);
+		assertTrue(modelRepository.getAllResources().size() > 4);
 		assertNotNull(mmRepository);
 		assertTrue(mmRepository.getAllResources().size()  > 2);
 		/*

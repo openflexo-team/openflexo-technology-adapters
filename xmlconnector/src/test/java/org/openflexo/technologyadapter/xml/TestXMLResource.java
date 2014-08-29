@@ -62,7 +62,7 @@ public class TestXMLResource extends OpenflexoTestCase {
 		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
 		baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
 		assertNotNull(modelRepository);
-		assertTrue(modelRepository.getAllResources().size() > 6);
+		assertTrue(modelRepository.getAllResources().size() > 4);
 	}
 
 	@Test
