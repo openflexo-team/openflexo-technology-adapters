@@ -80,20 +80,16 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 			returned.setTechnologyContextManager(technologyContextManager);
 
 			technologyContextManager.registerResource(returned);
-			
+
 			if (!xmlFile.exists()) {
 
 				if (returned.resourceData == null) {
 					returned.resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
 					returned.resourceData.setResource(returned);
 				}
-				
+
 				returned.save(null);
 				returned.isLoaded = true;
-			}
-			else {
-				// TODO: File exists, what should I Do
-				logger.warning("Unable to create new Resource => have to decide what to do with file to be overwriten");
 			}
 
 			return returned;
@@ -163,7 +159,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 	 */
 	@Override
 	public String getTargetNamespace() {
-		
+
 		if (!isLoaded()){
 			XMLRootElementInfo rootInfo;
 			try {
@@ -177,7 +173,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 		else{
 			return this.getModel().getMetaModel().getURI();
 		}
-		
+
 	}
 
 
@@ -207,9 +203,9 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 		if (resourceData == null) {
 			resourceData =  XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
 			resourceData.setResource(this);
-			
+
 			attachMetamodel();
-			
+
 		}
 
 		if (!isLoaded()) {
@@ -220,7 +216,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 				if (resourceData.getMetaModel() == null && mmRes != null){
 					resourceData.setMetaModel(mmRes.getMetaModelData());
 				}
-				
+
 				XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
 
 				factory.setContext(resourceData);
@@ -243,9 +239,9 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 	// TODO: Ask Sylvain if this could no be tractable with Pamela => Code duplication ?!?
 
 	@Override
-    public XMLModel getModel() {
-        return getModelData();
-    }
+	public XMLModel getModel() {
+		return getModelData();
+	}
 
 
 	@Override
@@ -256,7 +252,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 			resourceData.setResource(this);
 		}
 		// TODO : check lifecycle for Resource.... should it be loaded on getModelData?
-/*
+		/*
 		if (!isLoaded()) {
 			try {
 				resourceData = loadResourceData(null);
@@ -268,7 +264,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 				e.printStackTrace();
 			}
 		}
-		*/
+		 */
 		return resourceData;
 	}
 
@@ -282,8 +278,8 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 			logger.warning("Setting a null Metamodel for Model " + this.getURI());
 		}
 	}
-	
-	
+
+
 	@Override
 	public Class<XMLModel> getResourceDataClass() {
 		return XMLModel.class;
@@ -292,7 +288,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 
 	@Override
 	public synchronized XMLModel getResourceData(IProgress progress) throws ResourceLoadingCancelledException, ResourceLoadingCancelledException,
-			FileNotFoundException, FlexoException {
+	FileNotFoundException, FlexoException {
 
 		if (isLoading()) {
 			logger.warning("trying to load a resource data from itself, please investigate");
@@ -307,7 +303,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 		}
 		return resourceData;
 	}
-	
+
 	// Lifecycle Management
 
 	@Override

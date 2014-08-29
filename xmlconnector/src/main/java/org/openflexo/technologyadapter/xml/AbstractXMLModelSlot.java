@@ -51,7 +51,7 @@ public interface AbstractXMLModelSlot< T extends AbstractXMLURIProcessor> extend
 	@PropertyIdentifier(type = List.class)
 	public static final String URI_PROCESSORS_LIST_KEY = "uriProcessorsList";
 
-	@Getter(value = URI_PROCESSORS_LIST_KEY,  cardinality = Cardinality.LIST)
+	@Getter(value = URI_PROCESSORS_LIST_KEY,  cardinality = Cardinality.LIST, inverse = AbstractXMLURIProcessor.MODELSLOT)
 	@XMLElement
 	@Embedded
 	public List<T> getUriProcessorsList();

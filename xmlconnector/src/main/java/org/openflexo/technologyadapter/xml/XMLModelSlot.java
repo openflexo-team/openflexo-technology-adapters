@@ -22,6 +22,7 @@
 package org.openflexo.technologyadapter.xml;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.List;
@@ -49,6 +50,8 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLURIProcessor.XMLURIProcessorImpl;
 import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
+import org.openflexo.technologyadapter.xml.editionaction.GetXMLDocumentRoot;
+import org.openflexo.technologyadapter.xml.editionaction.SetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -67,8 +70,9 @@ import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
  */
 @DeclarePatternRoles({ @DeclarePatternRole(flexoRoleClass = XMLIndividualRole.class, FML = "XMLIndividual"), // Instances
 })
-@DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add
-	// instance
+@DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add instance
+	@DeclareEditionAction(editionActionClass = GetXMLDocumentRoot.class, FML = "GetXMLDocumentRoot"),
+	@DeclareEditionAction(editionActionClass = SetXMLDocumentRoot.class, FML = "SetXMLDocumentRoot"),
 })
 @ModelEntity
 @XMLElement
@@ -323,6 +327,14 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 			return returned;
 		}
+		
+
+		@Override
+		public Type getType() {
+			return XMLModelSlot.class;
+		}
+		
+
 
 
 	}

@@ -1,6 +1,6 @@
 /*
  * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+ * (c) Copyright 2012-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -26,6 +26,8 @@ import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
+import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -33,6 +35,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 
@@ -41,6 +44,7 @@ import org.openflexo.technologyadapter.xml.model.XMLIndividual;
  * 
  */
 @ModelEntity
+@XMLElement
 @ImplementationClass(XMLIndividualRole.XMLIndividualRoleImpl.class)
 public interface XMLIndividualRole extends FlexoRole<XMLIndividual>,TechnologyObject<XMLTechnologyAdapter> {
 
@@ -56,18 +60,23 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual>,TechnologyOb
 
 	public static abstract class XMLIndividualRoleImpl extends FlexoRoleImpl<XMLIndividual> implements XMLIndividualRole {
 
+		
 		private String individualURI;
 
 		@Override
+		public XMLTechnologyAdapter getTechnologyAdapter() {
+			return (XMLTechnologyAdapter) getModelSlot().getTechnologyAdapter();
+		}
+
+
+		@Override
 		public Type getType() {
-			// TODO Auto-generated method stub
-			return null;
+			return XMLIndividual.class;
 		}
 
 		@Override
 		public String getPreciseType() {
-			// TODO Auto-generated method stub
-			return null;
+			return XMLIndividual.class.getSimpleName();
 		}
 
 		/**
@@ -88,7 +97,7 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual>,TechnologyOb
 		@Override
 		public ActorReference<XMLIndividual> makeActorReference(XMLIndividual object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
-			XMLActorReference returned = factory.newInstance(XMLActorReference.class);
+			XMLActorReference<XMLIndividual> returned = factory.newInstance(XMLActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);
@@ -103,6 +112,15 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual>,TechnologyOb
 		@Override
 		public void setIndividualURI(String conceptURI) {
 			this.individualURI = conceptURI;
+		}
+
+		
+		@Override
+		public String getFMLRepresentation(FMLRepresentationContext context) {
+			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
+			out.append("XMLIndividualRole " + getName() + " as Individual conformTo " + getPreciseType() + " from " + getModelSlot().getName()
+					+ " ;", context);
+			return out.toString();
 		}
 
 	}

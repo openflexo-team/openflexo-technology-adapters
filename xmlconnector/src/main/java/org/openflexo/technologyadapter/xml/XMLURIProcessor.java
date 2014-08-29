@@ -163,9 +163,6 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 				else
 					setMappedXMLType(null);
 			}
-			else {
-				logger.warning("unable to map typeURI to an OntClass, as modelSlot is Null ");
-			}
 		}
 
 

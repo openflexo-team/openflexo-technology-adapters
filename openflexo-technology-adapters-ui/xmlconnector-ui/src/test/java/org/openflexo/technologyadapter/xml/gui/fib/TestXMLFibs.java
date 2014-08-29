@@ -39,6 +39,10 @@ public class TestXMLFibs extends GenericFIBTestCase {
 		validateFIB("Fib/GetXMLDocumentRoot.fib");
 	}
 	@Test
+	public void testAddXMLIndividual() {
+		validateFIB("Fib/AddXMLIndividual.fib");
+	}
+	@Test
 	public void testPanelXMLIndividual() {
 		validateFIB("Fib/FIBPanelXMLIndividual.fib");
 	}

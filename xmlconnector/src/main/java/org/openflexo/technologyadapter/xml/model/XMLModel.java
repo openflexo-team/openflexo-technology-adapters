@@ -127,7 +127,7 @@ public interface XMLModel extends XMLObject, FlexoModel<XMLModel, XMLMetaModel> 
 	public void addIndividual(XMLIndividual ind);
 
 	@Remover(IND)
-	public void removeFromNIndividuals(XMLIndividual ind);
+	public void removeFromIndividuals(XMLIndividual ind);
 
 	@Finder(attribute = XMLIndividual.TYPE, collection = IND, isMultiValued = true)
 	public List<? extends XMLIndividual> getIndividualsOfType(XMLType aType);
