@@ -12,7 +12,10 @@ public class FMLControlledFreeplaneVirtualModelInstanceNature implements Virtual
 
 	@Override
 	public boolean hasNature(final VirtualModelInstance concept) {
-		return concept.getVirtualModel().hasNature(FMLControlledFreeplaneVirtualModelNature.INSTANCE);
+		if (concept != null && concept.getVirtualModel() != null) {
+			return concept.getVirtualModel().hasNature(FMLControlledFreeplaneVirtualModelNature.INSTANCE);
+		}
+		return false;
 	}
 
 	public static IFreeplaneMap getMap(final VirtualModelInstance vmi) {
