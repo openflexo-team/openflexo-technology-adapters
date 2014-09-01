@@ -100,7 +100,8 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 				this.initializeFreeplaneFile(resourceCenter, (File) item);
 			}
 		}
-
+		// Call it to update the current repositories
+		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 	}
 
 	/**
