@@ -20,6 +20,7 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
+import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneMapImpl;
 
 public class TestFreeplaneModel extends OpenflexoTestCase {
@@ -80,6 +81,22 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
 		Assert.assertEquals(nœudRacine.getText(),"FreeplaneModel First node");
 		Assert.assertEquals(nœudRacine.getChildCount(), 4);
 		Assert.assertEquals(nœudRacine.getChildAt(2).getText(), "すごい");
+
+		final FreeplaneMapImpl map = (FreeplaneMapImpl) this.factory.newInstance(IFreeplaneMap.class);
+		map.setTechnologyAdapter(fpTA);
+		map.setMapModel(loadedMap);
+		for (IFreeplaneNode node : map.getRoot().getChildren()){
+			if ("Tututus".equals(node.getNodeModel().getText())){
+				Assert.assertEquals(node.getNodeAttributes().size(),1);
+				Assert.assertEquals(node.getNodeAttributes().get(0).getName(),"key1");
+				Assert.assertEquals(node.getNodeAttributes().get(0).getValue(),"nœud 1");
+			}
+			else if ("ue".equals(node.getNodeModel().getText())) {
+				Assert.assertEquals(node.getNodeAttributes().size(), 1);
+				Assert.assertEquals(node.getNodeAttributes().get(0).getName(), "key1");
+				Assert.assertEquals(node.getNodeAttributes().get(0).getValue(), "nœud 2");
+			}
+		}
 	}
 
 }
