@@ -19,8 +19,11 @@
  */
 package org.openflexo.technologyadapter.diagram.controller.paletteeditor;
 
+import java.util.logging.Logger;
+
 import javax.swing.JTabbedPane;
 
+import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaPalette;
@@ -29,10 +32,11 @@ import org.openflexo.selection.SelectionManagingDianaEditor;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
-import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.view.controller.FlexoController;
 
 public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPalette> {
+
+	private static final Logger logger = Logger.getLogger(DiagramPaletteEditor.class.getPackage().getName());
 
 	private final FlexoController flexoController;
 	private DiagramPalettePalette palettePaletteModel;
@@ -42,8 +46,8 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 	private final SwingToolFactory swingToolFactory;
 
 	public DiagramPaletteEditor(DiagramPalette palette, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
-		super(new DiagramPaletteDrawing(palette, readOnly), controller.getSelectionManager(), ((DiagramPaletteResource) palette
-				.getResource()).getFactory(), swingToolFactory);
+		super(new DiagramPaletteDrawing(palette, readOnly), controller.getSelectionManager(), palette.getResource().getFactory(),
+				swingToolFactory);
 		flexoController = controller;
 		this.swingToolFactory = swingToolFactory;
 
@@ -54,11 +58,10 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 		}
 		moduleView = new DiagramPaletteModuleView(this, flexoController.getCurrentPerspective());
 	}
-	
+
 	// Only used for screenshot
 	public DiagramPaletteEditor(DiagramPalette palette, boolean readOnly) {
-		super(new DiagramPaletteDrawing(palette, readOnly), null, ((DiagramPaletteResource) palette
-				.getResource()).getFactory(), null);
+		super(new DiagramPaletteDrawing(palette, readOnly), null, palette.getResource().getFactory(), null);
 		flexoController = null;
 		this.swingToolFactory = null;
 		if (!readOnly) {
@@ -85,7 +88,7 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 		}
 		super.delete();
 		getDrawing().delete();
-		//flexoController.removeModuleView(moduleView);
+		// flexoController.removeModuleView(moduleView);
 	}
 
 	public FlexoController getFlexoController() {
@@ -98,7 +101,7 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 	}
 
 	public DiagramPaletteModuleView getModuleView() {
-		if (moduleView == null && flexoController!=null) {
+		if (moduleView == null && flexoController != null) {
 			moduleView = new DiagramPaletteModuleView(this, flexoController.getCurrentPerspective());
 		}
 		return moduleView;
@@ -122,16 +125,21 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 	public DiagramPalette getDiagramPalette() {
 		// Temporary code to Ensure GRs can be edited
 		DiagramPalette diagramPalette = getDrawing().getRoot().getDrawable();
-		if(diagramPalette!=null && diagramPalette.getElements()!=null){
-			for(DiagramPaletteElement pal : diagramPalette.getElements()){
-				pal.getGraphicalRepresentation().setIsFocusable(true);
-				pal.getGraphicalRepresentation().setIsSelectable(true);
-				pal.getGraphicalRepresentation().setIsReadOnly(false);
-				pal.getGraphicalRepresentation().setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
+		if (diagramPalette != null && diagramPalette.getElements() != null) {
+			for (DiagramPaletteElement pal : diagramPalette.getElements()) {
+				ShapeGraphicalRepresentation gr = pal.getGraphicalRepresentation();
+				if (gr != null) {
+					gr.setIsFocusable(true);
+					gr.setIsSelectable(true);
+					gr.setIsReadOnly(false);
+					gr.setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
+				}
+				else {
+					logger.warning(" INVESTIGATE : trying to update an null GraphicalRepresentation for PaletteElement: " + pal.getName());
+				}
 			}
 		}
-		
+
 		return getDrawing().getModel();
 	}
-
 }
