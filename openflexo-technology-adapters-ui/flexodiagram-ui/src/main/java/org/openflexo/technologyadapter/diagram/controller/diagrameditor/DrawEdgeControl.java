@@ -41,6 +41,7 @@ import org.openflexo.fge.control.MouseControlContext;
 import org.openflexo.fge.control.actions.MouseDragControlActionImpl;
 import org.openflexo.fge.control.actions.MouseDragControlImpl;
 import org.openflexo.fge.swing.control.JMouseControlContext;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.VirtualModel;
@@ -101,11 +102,10 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 					// shapes
 					// of the connector pattern roles available for this virtual model
 
-					logger.warning("Please implement DrawEdge when diagram is FML-managed");
-
 					if (controller instanceof FMLControlledDiagramEditor) {
 						handleFMLControlledEdge(controller, context);
-					} else {
+					}
+					else {
 						performAddDefaultConnector(controller);
 					}
 
@@ -195,12 +195,16 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 			DiagramShape startShape = controller.getShapeForShapeNode(fromShape);
 			DiagramShape endShape = controller.getShapeForShapeNode(toShape);
 
-			FlexoConceptInstance startFlexoConceptInstance = (FlexoConceptInstance) ((FMLControlledDiagramEditor) controller)
-					.getDrawableForDrawingTreeNode(fromShape);
-			FlexoConceptInstance endFlexoConceptInstance = (FlexoConceptInstance) ((FMLControlledDiagramEditor) controller)
-					.getDrawableForDrawingTreeNode(toShape);
+			/* we have to find if both starts and end are FlexoConcept, else, draw a standard connector */
 
-			if (virtualModel != null) {
+			FlexoObject startObject = ((FMLControlledDiagramEditor) controller).getDrawableForDrawingTreeNode(fromShape);
+			FlexoObject endObject = ((FMLControlledDiagramEditor) controller).getDrawableForDrawingTreeNode(toShape);
+
+			if (startObject instanceof FlexoConceptInstance && endObject instanceof FlexoConceptInstance && virtualModel != null) {
+
+				FlexoConceptInstance startFlexoConceptInstance = (FlexoConceptInstance) startObject;
+				FlexoConceptInstance endFlexoConceptInstance = (FlexoConceptInstance) endObject;
+
 				List<FlexoConcept> availableFlexoConcepts = virtualModel.getFlexoConcepts();
 				List<LinkScheme> availableConnectors = new ArrayList<LinkScheme>();
 				for (FlexoConcept flexoConcept : availableFlexoConcepts) {
@@ -231,9 +235,13 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 					});
 					popup.add(menuItem);
 					popup.show(controller.getDrawingView(), context.getPoint().x, context.getPoint().y);
-				} else {
+				}
+				else {
 					performAddDefaultConnector(controller);
 				}
+			}
+			else {
+				performAddDefaultConnector(controller);
 			}
 
 			/*if (virtualModel != null) {
@@ -284,7 +292,8 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 				DrawingTreeNode<?, ?> dtn = controller.getDrawingView().getFocusRetriever().getFocusedObject(event);
 				if (dtn instanceof ShapeNode && dtn != fromShape && !fromShape.getAncestors().contains(dtn)) {
 					toShape = (ShapeNode<DiagramShape>) dtn;
-				} else {
+				}
+				else {
 					toShape = null;
 				}
 				currentDraggingLocationInDrawingView = getPointInDrawingView(controller, context);
@@ -309,7 +318,8 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 							.convertRemoteNormalizedPointToLocalViewCoordinates(toShape.getShape().getShape().getCenter(), toShape,
 									controller.getScale());
 					g.setColor(Color.BLUE);
-				} else {
+				}
+				else {
 					g.setColor(Color.RED);
 				}
 				g.drawLine(from.x, from.y, to.x, to.y);
