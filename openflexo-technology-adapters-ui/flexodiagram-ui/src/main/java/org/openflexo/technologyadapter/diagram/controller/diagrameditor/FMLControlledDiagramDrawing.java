@@ -137,6 +137,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				returned.setRole((ShapeRole) r.role);
 				federatedShapes.put(shape, returned);
 				registerNewFMLControlledDiagramElement(returned);
+				//shape.setName(returned.getLabel());
 			} else {
 				// TODO: perfs issue: when not found it will be costly !!!
 			}

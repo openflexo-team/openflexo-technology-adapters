@@ -70,6 +70,8 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	private ScreenshotBuilder<DiagramPalette> diagramPaletteScreenshotBuilder;
 
 	private ScreenshotBuilder<DiagramShape> diagramShapeScreenshotBuilder;
+	
+	private ScreenshotBuilder<Diagram> fmlDiagramScreenshotBuilder;
 
 	public DiagramTechnologyAdapter() throws TechnologyAdapterInitializationException {
 	}
@@ -356,6 +358,15 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		this.diagramShapeScreenshotBuilder = screenshotBuilder;
 	}
 
+	
+	public ScreenshotBuilder<Diagram> getFMLControlledDiagramScreenshotBuilder(){
+		return fmlDiagramScreenshotBuilder;
+	}
+	
+	public void setFMLControlledDiagramScreenshotBuilder(ScreenshotBuilder<Diagram> diagram){
+		this.fmlDiagramScreenshotBuilder = diagram;
+	}
+	
 	// Override when required
 	@Override
 	public void initVirtualModelFactory(VirtualModelModelFactory virtualModelModelFactory) {
