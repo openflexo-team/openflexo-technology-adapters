@@ -44,14 +44,14 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 public class DiagramPalettePalette extends DrawingPalette {
 
 	@SuppressWarnings("unused")
-	private static final Logger			logger				= FlexoLogger.getLogger(CommonPalette.class.getPackage().getName());
+	private static final Logger logger = FlexoLogger.getLogger(CommonPalette.class.getPackage().getName());
 
-	private static final int			GRID_WIDTH			= 50;
-	private static final int			GRID_HEIGHT			= 40;
-	public static final Font			DEFAULT_TEXT_FONT	= new Font("SansSerif", Font.PLAIN, 7);
-	public static final Font			LABEL_FONT			= new Font("SansSerif", Font.PLAIN, 11);
+	private static final int GRID_WIDTH = 50;
+	private static final int GRID_HEIGHT = 40;
+	public static final Font DEFAULT_TEXT_FONT = new Font("SansSerif", Font.PLAIN, 7);
+	public static final Font LABEL_FONT = new Font("SansSerif", Font.PLAIN, 11);
 
-	private final DiagramPaletteEditor	editor;
+	private final DiagramPaletteEditor editor;
 
 	public DiagramPalettePalette(DiagramPaletteEditor editor) {
 		super(200, 200, "default");
@@ -184,6 +184,11 @@ public class DiagramPalettePalette extends DrawingPalette {
 				getEditor().setSelectedObject(getEditor().getDrawing().getDrawingTreeNode(newElement));
 
 				return action.hasActionExecutionSucceeded();
+			}
+
+			@Override
+			public String getName() {
+				return null;
 			}
 
 			@Override
