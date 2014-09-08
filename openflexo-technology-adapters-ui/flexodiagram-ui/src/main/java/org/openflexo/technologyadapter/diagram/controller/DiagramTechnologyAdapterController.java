@@ -70,6 +70,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.DeleteExampleDi
 import org.openflexo.technologyadapter.diagram.controller.action.DiagramElementPasteHandler;
 import org.openflexo.technologyadapter.diagram.controller.action.DropSchemeActionInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.ExportDiagramToImageInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.ExportFMLControlledDiagramToImageInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.LinkSchemeActionInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.OpenControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.PushToPaletteInitializer;
@@ -207,12 +208,14 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new CreateFMLDiagramPaletteElementBindingInitializer(actionInitializer);
 		new CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer(actionInitializer);
 		new CreateFMLControlledDiagramPaletteElementInitializer(actionInitializer);
+		new ExportFMLControlledDiagramToImageInitializer(actionInitializer);
 
 		// Set the screenshot builders
 		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());
 		getTechnologyAdapter().setDiagramPaletteScreenshotBuilder(new DiagramPaletteScreenshotBuilder());
 		getTechnologyAdapter().setDiagramShapeScreenshotBuilder(new DiagramShapeScreenshotBuilder());
-
+		getTechnologyAdapter().setFMLControlledDiagramScreenshotBuilder(new FMLControlledDiagramScreenshotBuilder());
+		
 		// Add paste handlers
 		diagramElementPasteHandler = new DiagramElementPasteHandler(actionInitializer.getController().getSelectionManager());
 		actionInitializer.getEditingContext().registerPasteHandler(diagramElementPasteHandler);

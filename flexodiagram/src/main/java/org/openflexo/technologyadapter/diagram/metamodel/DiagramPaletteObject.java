@@ -19,6 +19,8 @@
  */
 package org.openflexo.technologyadapter.diagram.metamodel;
 
+import java.util.logging.Logger;
+
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -26,7 +28,6 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DiagramPaletteObject.DiagramPaletteObjectImpl.class)
@@ -59,6 +60,8 @@ public interface DiagramPaletteObject extends TechnologyObject<DiagramTechnology
 
 	public static abstract class DiagramPaletteObjectImpl extends FlexoObjectImpl implements DiagramPaletteObject {
 
+		private static final Logger logger = Logger.getLogger(DiagramPaletteObjectImpl.class.getPackage().getName());
+
 		@Override
 		public abstract DiagramPalette getPalette();
 
@@ -67,17 +70,21 @@ public interface DiagramPaletteObject extends TechnologyObject<DiagramTechnology
 
 		@Override
 		public final DiagramPaletteFactory getFactory() {
-			return ((DiagramPaletteResource) getPalette().getResource()).getFactory();
+			return getPalette().getResource().getFactory();
 		}
-		
+
 		@Override
 		public DiagramTechnologyAdapter getTechnologyAdapter() {
-			if (getPalette().getResource() != null) {
-				return getPalette().getResource().getTechnologyAdapter();
+			if (getPalette() != null) {
+				if (getPalette().getResource() != null) {
+					return getPalette().getResource().getTechnologyAdapter();
+				}
+			}
+			else {
+				logger.warning("INVESTIGATE : cannot get TA for a PaletteObject with null Palette! : " + this.getName());
 			}
 			return null;
 		}
-
 	}
 
 }

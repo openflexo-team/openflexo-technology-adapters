@@ -148,6 +148,11 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		}
 
 		@Override
+		public String getName() {
+			return diagramPaletteElement.getName();
+		}
+
+		@Override
 		public boolean acceptDragging(DrawingTreeNode<?, ?> target) {
 			return getEditor() != null
 					&& target instanceof ContainerNode
