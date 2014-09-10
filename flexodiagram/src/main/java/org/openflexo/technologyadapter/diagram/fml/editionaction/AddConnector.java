@@ -133,7 +133,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			FlexoRole superFlexoRole = super.getFlexoRole();
 			if (superFlexoRole instanceof ConnectorRole) {
 				return (ConnectorRole) superFlexoRole;
-			} else if (superFlexoRole != null) {
+			}
+			else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -144,7 +145,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			if (getFlexoRole() != null && !getFlexoRole().getStartShapeAsDefinedInAction()) {
 				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getStartShapeRole());
 				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getStartShapeRole());
-			} else {
+			}
+			else {
 				try {
 					return getFromShape().getBindingValue(action);
 				} catch (TypeMismatchException e) {
@@ -161,7 +163,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		public DiagramShape getToShape(FlexoBehaviourAction action) {
 			if (getFlexoRole() != null && !getFlexoRole().getEndShapeAsDefinedInAction()) {
 				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getEndShapeRole());
-			} else {
+			}
+			else {
 				try {
 					return getToShape().getBindingValue(action);
 				} catch (TypeMismatchException e) {
@@ -260,7 +263,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			DiagramShape toShape = getToShape(action);
 
 			// NPE Protection
-			if (fromShape != null && toShape != null){
+			if (fromShape != null && toShape != null) {
 				Diagram diagram = fromShape.getDiagram();
 				DiagramFactory factory = diagram.getDiagramFactory();
 				DiagramConnector newConnector = factory.newInstance(DiagramConnector.class);
@@ -278,8 +281,14 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				// grToUse = action.getOverridingGraphicalRepresentation(getPatternRole());
 				// } else*/
 
-				if (getFlexoRole().getGraphicalRepresentation() != null) {
-					grToUse = getFlexoRole().getGraphicalRepresentation();
+				ConnectorRole fr = getFlexoRole();
+				if (fr != null) {
+					if (fr.getGraphicalRepresentation() != null) {
+						grToUse = getFlexoRole().getGraphicalRepresentation();
+					}
+				}
+				else {
+					logger.warning("INVESTIGATE your ViewPoint, No FlexoRole defined for action " + this.getName());
 				}
 
 				ConnectorGraphicalRepresentation newGR = factory.makeConnectorGraphicalRepresentation();
@@ -319,7 +328,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	}
 
 	public static class AddConnectorActionMustAdressAValidConnectorRole extends
-	ValidationRule<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> {
+			ValidationRule<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> {
 		public AddConnectorActionMustAdressAValidConnectorRole() {
 			super(AddConnector.class, "add_connector_action_must_address_a_valid_connector_pattern_role");
 		}
@@ -360,7 +369,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	}
 
 	public static class AddConnectorActionMustHaveAValidStartingShape extends
-	ValidationRule<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
+			ValidationRule<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
 		public AddConnectorActionMustHaveAValidStartingShape() {
 			super(AddConnector.class, "add_connector_action_must_have_a_valid_starting_shape");
 		}
@@ -409,7 +418,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}
 
 		protected static class SetsStartingShapeToStartTargetShape extends
-		FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
+				FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
 
 			private final FlexoConcept target;
 			private final ShapeRole patternRole;
@@ -438,7 +447,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	}
 
 	public static class AddConnectorActionMustHaveAValidEndingShape extends
-	ValidationRule<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
+			ValidationRule<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
 		public AddConnectorActionMustHaveAValidEndingShape() {
 			super(AddConnector.class, "add_connector_action_must_have_a_valid_ending_shape");
 		}
@@ -487,7 +496,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}
 
 		protected static class SetsEndingShapeToToTargetShape extends
-		FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
+				FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
 
 			private final FlexoConcept target;
 			private final ShapeRole patternRole;

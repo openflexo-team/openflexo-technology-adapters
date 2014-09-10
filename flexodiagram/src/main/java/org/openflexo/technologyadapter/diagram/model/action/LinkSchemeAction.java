@@ -178,19 +178,20 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals(DiagramEditionScheme.FROM_TARGET) && getLinkScheme().getFromTargetFlexoConcept() != null) {
 			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
-			for(FlexoConceptInstance fci : fcis){
-				for(ActorReference actor : fci.getActors()){
-					if(actor.getModellingElement().equals(getFromShape()))
+			for (FlexoConceptInstance fci : fcis) {
+				for (ActorReference actor : fci.getActors()) {
+					if (actor.getModellingElement().equals(getFromShape()))
 						return fci;
 				}
 			}
-			
+
 		}
 		if (variable.getVariableName().equals(DiagramEditionScheme.TO_TARGET) && getLinkScheme().getToTargetFlexoConcept() != null) {
 			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
-			for(FlexoConceptInstance fci : fcis){
-				for(ActorReference actor : fci.getActors()){
-					if(actor.getModellingElement().equals(getToShape()))
+			for (FlexoConceptInstance fci : fcis) {
+				for (ActorReference actor : fci.getActors()) {
+					Object me = actor.getModellingElement();
+					if (me != null && me.equals(getToShape()))
 						return fci;
 				}
 			}
