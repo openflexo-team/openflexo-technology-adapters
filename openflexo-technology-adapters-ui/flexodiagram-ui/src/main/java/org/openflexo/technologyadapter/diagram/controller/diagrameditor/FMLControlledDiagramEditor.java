@@ -24,12 +24,14 @@ import java.util.logging.Logger;
 
 import org.openflexo.fge.Drawing.ConnectorNode;
 import org.openflexo.fge.Drawing.DrawingTreeNode;
+import org.openflexo.fge.Drawing.RootNode;
 import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.controller.action.FMLControlledDiagramPasteHandler;
+import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.view.controller.FlexoController;
@@ -86,6 +88,8 @@ public class FMLControlledDiagramEditor extends DiagramEditor {
 	protected FlexoObject getDrawableForDrawingTreeNode(DrawingTreeNode<?, ?> node) {
 		if (node.getDrawable() instanceof FMLControlledDiagramElement) {
 			return ((FMLControlledDiagramElement<?, ?>) node.getDrawable()).getFlexoConceptInstance();
+		}else if(node.getDrawable() instanceof Diagram && node instanceof RootNode){
+			return getVirtualModelInstance();
 		}
 		return super.getDrawableForDrawingTreeNode(node);
 	}
