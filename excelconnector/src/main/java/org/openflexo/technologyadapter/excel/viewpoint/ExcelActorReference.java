@@ -76,10 +76,11 @@ public interface ExcelActorReference<T extends ExcelObject> extends ActorReferen
 		public T getModellingElement() {
 			if (object == null) {
 				ModelSlotInstance msInstance = getModelSlotInstance();
-				if (msInstance.getAccessedResourceData() != null) {
+				if (msInstance != null && msInstance.getAccessedResourceData() != null) {
 					/** Model Slot is responsible for URI mapping */
 					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
-				} else {
+				}
+				else {
 					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
 				}
 			}
