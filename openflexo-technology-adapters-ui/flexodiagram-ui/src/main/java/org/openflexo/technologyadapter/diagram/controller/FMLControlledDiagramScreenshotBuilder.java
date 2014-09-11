@@ -36,7 +36,6 @@ public class FMLControlledDiagramScreenshotBuilder extends ScreenshotBuilder<Dia
 	
 	public FMLControlledDiagramScreenshotBuilder() {
 		super();
-		setHasParent(true);
 	}
 	
 	public void setDrawing(FMLControlledDiagramEditor editor) {
@@ -51,8 +50,10 @@ public class FMLControlledDiagramScreenshotBuilder extends ScreenshotBuilder<Dia
 	@Override
 	public JComponent getScreenshotComponent(DiagramElement<?> diagramElement) {
 		if(diagramElement instanceof Diagram){
+			setHasParent(false);
 			return editor.getDrawingView();
 		}else if(diagramElement instanceof DiagramShape){
+			setHasParent(true);
 			FMLControlledDiagramShape shape = editor.getDrawing().getFederatedShape((DiagramShape) diagramElement);
 			ShapeNode shapeNode = editor.getDrawing().getShapeNode(shape);
 			JShapeView<DiagramShape> shapeView = editor.getDrawingView().shapeViewForNode(shapeNode);
