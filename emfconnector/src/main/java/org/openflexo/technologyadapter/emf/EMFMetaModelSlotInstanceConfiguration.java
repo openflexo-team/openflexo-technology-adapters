@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.VirtualModelInstance;
@@ -30,6 +31,12 @@ public class EMFMetaModelSlotInstanceConfiguration extends ModelSlotInstanceConf
 
 	@Override
 	public ModelSlotInstance<EMFMetaModelSlot, EMFMetaModel> createModelSlotInstance(VirtualModelInstance msInstance, View view) {
+		logger.warning("Please implement me !!!!");
+		return null;
+	}
+
+	@Override
+	public TechnologyAdapterResource<EMFMetaModel, ?> getResource() {
 		logger.warning("Please implement me !!!!");
 		return null;
 	}
