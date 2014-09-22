@@ -14,7 +14,7 @@
     </Tab>
   </TabPanel>
   <LocalizedDictionary>
-    <Localized key="Advanced" lang="French">Avancé</Localized>
+    <Localized key="Advanced" lang="French" value="Avancé" />
   </LocalizedDictionary>
   <Parameter name="title" value="XML Meta Model (XSD like)" />
 </Panel>

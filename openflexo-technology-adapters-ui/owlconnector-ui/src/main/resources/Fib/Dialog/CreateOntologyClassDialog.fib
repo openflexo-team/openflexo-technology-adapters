@@ -27,21 +27,21 @@
     <Button action="controller.cancelAndDispose()" buttonType="Trigger" label="cancel" constraints="flow(index=1)" readOnly="false" manageDynamicModel="false" />
   </Panel>
   <LocalizedDictionary>
-    <Localized key="class_name" lang="English">Class name</Localized>
-    <Localized key="validate" lang="English">Validate</Localized>
-    <Localized key="cancel" lang="English">Cancel</Localized>
-    <Localized key="class_name" lang="French">Classe</Localized>
-    <Localized key="validate" lang="French">Valider</Localized>
-    <Localized key="cancel" lang="French">Annuler</Localized>
-    <Localized key="class_name" lang="Dutch">Class name</Localized>
-    <Localized key="validate" lang="Dutch">Validate</Localized>
-    <Localized key="cancel" lang="Dutch">Cancel</Localized>
-    <Localized key="class_uri" lang="French">URI de la classe</Localized>
-    <Localized key="creates_new_ontologic_class" lang="French">Créer une nouvelle classe ontologique</Localized>
-    <Localized key="parent_class" lang="French">Classe parente</Localized>
-    <Localized key="class_uri" lang="English">Class URI</Localized>
-    <Localized key="creates_new_ontologic_class" lang="English">Creates new ontologic class</Localized>
-    <Localized key="parent_class" lang="English">Parent class</Localized>
+    <Localized key="class_name" lang="English" value="Class name" />
+    <Localized key="validate" lang="English" value="Validate" />
+    <Localized key="cancel" lang="English" value="Cancel" />
+    <Localized key="class_name" lang="French" value="Classe" />
+    <Localized key="validate" lang="French" value="Valider" />
+    <Localized key="cancel" lang="French" value="Annuler" />
+    <Localized key="class_name" lang="Dutch" value="Class name" />
+    <Localized key="validate" lang="Dutch" value="Validate" />
+    <Localized key="cancel" lang="Dutch" value="Cancel" />
+    <Localized key="class_uri" lang="French" value="URI de la classe" />
+    <Localized key="creates_new_ontologic_class" lang="French" value="Créer une nouvelle classe ontologique" />
+    <Localized key="parent_class" lang="French" value="Classe parente" />
+    <Localized key="class_uri" lang="English" value="Class URI" />
+    <Localized key="creates_new_ontologic_class" lang="English" value="Creates new ontologic class" />
+    <Localized key="parent_class" lang="English" value="Parent class" />
   </LocalizedDictionary>
 </Panel>
 

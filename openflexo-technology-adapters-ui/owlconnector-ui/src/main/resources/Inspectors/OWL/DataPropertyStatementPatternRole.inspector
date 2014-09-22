@@ -12,8 +12,8 @@
     </Tab>
   </TabPanel>
   <LocalizedDictionary>
-    <Localized key="Advanced" lang="French">Avancé</Localized>
-    <Localized key="Basic" lang="French">Basique</Localized>
+    <Localized key="Advanced" lang="French" value="Avancé" />
+    <Localized key="Basic" lang="French" value="Basique" />
   </LocalizedDictionary>
   <Parameter name="title" value="Data Property Statement Pattern Role" />
 </Panel>
