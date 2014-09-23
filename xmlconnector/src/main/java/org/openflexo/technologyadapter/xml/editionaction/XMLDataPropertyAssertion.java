@@ -21,7 +21,6 @@ package org.openflexo.technologyadapter.xml.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
@@ -32,6 +31,7 @@ import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.AbstractAssertion;
+import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -57,8 +57,9 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUE_KEY = "value";
 
+	@Override
 	@Getter(value = ACTION_KEY, inverse = AddXMLIndividual.DATA_ASSERTIONS_KEY)
-	public AssignableAction getAction();
+	public AddIndividual<?, ?> getAction();
 
 	@Setter(ACTION_KEY)
 	public void setAction(AssignableAction action);
@@ -111,9 +112,9 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 			if (act != null && pname != null) {
 				String typeURI = act.getTypeURI();
 				XMLMetaModel mm = act.getMetamodel();
-				if (mm != null){
+				if (mm != null) {
 					XMLComplexType t = ((XMLComplexType) mm.getTypeFromURI(typeURI));
-					if ( t != null) 	
+					if (t != null)
 						return (XMLDataProperty) t.getPropertyByName(pname);
 				}
 			}
@@ -137,11 +138,6 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 				e.printStackTrace();
 			}
 			return null;
-		}
-
-		@Override
-		public BindingModel getBindingModel() {
-			return getFlexoBehaviour().getBindingModel();
 		}
 
 		@Override
@@ -177,7 +173,7 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 	}
 
 	public static class DataPropertyAssertionMustDefineAnOntologyProperty extends
-	ValidationRule<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion> {
+			ValidationRule<DataPropertyAssertionMustDefineAnOntologyProperty, XMLDataPropertyAssertion> {
 		public DataPropertyAssertionMustDefineAnOntologyProperty() {
 			super(XMLDataPropertyAssertion.class, "data_property_assertion_must_define_an_ontology_property");
 		}

@@ -20,6 +20,8 @@
 package org.openflexo.technologyadapter.diagram.model;
 
 import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
@@ -29,14 +31,14 @@ public class DiagramType implements TechnologySpecificCustomType<TechnologyAdapt
 
 	protected DiagramSpecification diagramSpecification;
 
-	public DiagramType(DiagramSpecification diagramSpecification) {
+	private DiagramType(DiagramSpecification diagramSpecification) {
 		this.diagramSpecification = diagramSpecification;
 	}
 
 	public DiagramSpecification getDiagramSpecification() {
 		return diagramSpecification;
 	}
-	
+
 	@Override
 	public Class<Diagram> getBaseClass() {
 		return Diagram.class;
@@ -66,9 +68,21 @@ public class DiagramType implements TechnologySpecificCustomType<TechnologyAdapt
 		return simpleRepresentation();
 	}
 
-
 	@Override
 	public TechnologyAdapter getTechnologyAdapter() {
 		return getDiagramSpecification().getTechnologyAdapter();
 	}
+
+	private static Map<DiagramSpecification, DiagramType> dsMap = new HashMap<DiagramSpecification, DiagramType>();
+
+	public static DiagramType getDiagramType(DiagramSpecification diagramSpecification) {
+
+		DiagramType returned = dsMap.get(diagramSpecification);
+		if (returned == null) {
+			returned = new DiagramType(diagramSpecification);
+			dsMap.put(diagramSpecification, returned);
+		}
+		return returned;
+	}
+
 }

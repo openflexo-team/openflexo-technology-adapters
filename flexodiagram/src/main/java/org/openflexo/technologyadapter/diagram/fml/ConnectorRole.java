@@ -113,8 +113,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("FlexoRole " + getName() + " as ConnectorSpecification from " + getVirtualModel().getReflexiveModelSlot().getName()
-					+ ";", context);
+			out.append("FlexoRole " + getName() + " as ConnectorSpecification from " + getVirtualModel().getName() + ";", context);
 			return out.toString();
 		}
 

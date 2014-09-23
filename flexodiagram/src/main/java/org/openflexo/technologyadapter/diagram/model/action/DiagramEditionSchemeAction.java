@@ -28,9 +28,10 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
-import org.openflexo.foundation.viewpoint.binding.PatternRoleBindingVariable;
-import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
+import org.openflexo.foundation.viewpoint.binding.FlexoRoleBindingVariable;
 import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
+import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 /**
@@ -64,11 +65,7 @@ public abstract class DiagramEditionSchemeAction<A extends FlexoBehaviourAction<
 
 	@Override
 	public Object getValue(BindingVariable variable) {
-		if (variable instanceof PatternRoleBindingVariable) {
-			return getFlexoConceptInstance().getFlexoActor(((PatternRoleBindingVariable) variable).getFlexoRole());
-		} else if (variable.getVariableName().equals(FlexoBehaviour.FLEXO_BEHAVIOUR_INSTANCE)) {
-			return getFlexoConceptInstance();
-		} else if (variable.getVariableName().equals(DiagramEditionScheme.TOP_LEVEL)) {
+		if (variable.getVariableName().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
 			return FMLControlledDiagramVirtualModelInstanceNature.getDiagram(getVirtualModelInstance());
 		}
 		return super.getValue(variable);
@@ -76,8 +73,8 @@ public abstract class DiagramEditionSchemeAction<A extends FlexoBehaviourAction<
 
 	@Override
 	public void setValue(Object value, BindingVariable variable) {
-		if (variable instanceof PatternRoleBindingVariable) {
-			getFlexoConceptInstance().setFlexoActor(value, ((PatternRoleBindingVariable) variable).getFlexoRole());
+		if (variable instanceof FlexoRoleBindingVariable) {
+			getFlexoConceptInstance().setFlexoActor(value, ((FlexoRoleBindingVariable) variable).getFlexoRole());
 			return;
 		}
 		super.setValue(value, variable);

@@ -49,10 +49,10 @@ import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
 import org.openflexo.foundation.viewpoint.inspector.FlexoConceptInspector;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
-import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
+import org.openflexo.technologyadapter.diagram.fml.binding.LinkSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -365,10 +365,10 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 					toPatternRole = toFlexoConcept.getFlexoRoles(ShapeRole.class).get(0);
 				}
 				 
-				newAddConnector.setFromShape(new DataBinding<DiagramShape>(DiagramEditionScheme.FROM_TARGET + "."
+				newAddConnector.setFromShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.FROM_TARGET + "."
 						+ fromPatternRole.getRoleName()));
 				newAddConnector
-						.setToShape(new DataBinding<DiagramShape>(DiagramEditionScheme.TO_TARGET + "." + toPatternRole.getRoleName()));
+						.setToShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.TO_TARGET + "." + toPatternRole.getRoleName()));
 
 				newLinkScheme.addToActions(newAddConnector);
 

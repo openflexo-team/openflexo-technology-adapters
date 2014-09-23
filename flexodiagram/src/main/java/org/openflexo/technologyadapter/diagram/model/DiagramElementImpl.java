@@ -36,8 +36,8 @@ import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.model.factory.ProxyMethodHandler;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
+import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
 public abstract class DiagramElementImpl<G extends GraphicalRepresentation> extends FlexoObjectImpl implements DiagramElement<G>,
@@ -143,7 +143,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 
 	@Override
 	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals(DiagramEditionScheme.TOP_LEVEL)) {
+		if (variable.getVariableName().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
 			return this;
 		}
 		return null;

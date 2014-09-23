@@ -21,13 +21,10 @@ package org.openflexo.technologyadapter.diagram.fml;
 
 import java.util.List;
 
-import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.viewpoint.AbstractCreationScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.FlexoConceptInstanceType;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -38,8 +35,9 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
+import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
-import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.toolbox.StringUtils;
 
@@ -53,6 +51,8 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 	public static final String TARGET_KEY = "target";
 	@PropertyIdentifier(type = ShapeRole.class)
 	public static final String TARGET_SHAPE_ROLE_KEY = "targetShapeRole";
+	@PropertyIdentifier(type = FlexoConcept.class)
+	public static final String TARGET_FLEXO_CONCEPT_KEY = "targetFlexoConcept";
 
 	@Getter(value = TARGET_KEY)
 	@XMLAttribute
@@ -86,8 +86,11 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 	public static abstract class DropSchemeImpl extends AbstractCreationSchemeImpl implements DropScheme {
 
-		private String target;
+		private static final String TOP = "top";
+
+		private String target = TOP;
 		private ShapeRole targetPatternRole;
+		private FlexoConcept lastKnownTargetFlexoConcept;
 
 		public DropSchemeImpl() {
 			super();
@@ -100,7 +103,11 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 		@Override
 		public void _setTarget(String target) {
-			this.target = target;
+			if (requireChange(this.target, target)) {
+				FlexoConcept oldValue = getTargetFlexoConcept();
+				this.target = target;
+				getPropertyChangeSupport().firePropertyChange(TARGET_FLEXO_CONCEPT_KEY, oldValue, getTargetFlexoConcept());
+			}
 		}
 
 		@Override
@@ -112,15 +119,24 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 				return null;
 			}
 			if (getVirtualModel() != null) {
-				return getVirtualModel().getFlexoConcept(_getTarget());
+				FlexoConcept returned = getVirtualModel().getFlexoConcept(_getTarget());
+				if (lastKnownTargetFlexoConcept != returned) {
+					FlexoConcept oldValue = lastKnownTargetFlexoConcept;
+					lastKnownTargetFlexoConcept = returned;
+					getPropertyChangeSupport().firePropertyChange(TARGET_FLEXO_CONCEPT_KEY, oldValue, returned);
+				}
+				return returned;
 			}
 			return null;
 		}
 
 		@Override
 		public void setTargetFlexoConcept(FlexoConcept targetFlexoConcept) {
+			/*if (targetFlexoConcept != null) {
+				setTopTarget(false);
+			}*/
 			_setTarget(targetFlexoConcept != null ? targetFlexoConcept.getURI() : null);
-			updateBindingModels();
+			// updateBindingModels();
 		}
 
 		@Override
@@ -133,13 +149,13 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 			if (StringUtils.isEmpty(_getTarget())) {
 				return false;
 			}
-			return _getTarget().equalsIgnoreCase("top");
+			return _getTarget().equalsIgnoreCase(TOP);
 		}
 
 		@Override
 		public void setTopTarget(boolean flag) {
 			if (flag) {
-				_setTarget("top");
+				_setTarget(TOP);
 			} else {
 				_setTarget("");
 			}
@@ -182,23 +198,28 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 		}
 
 		@Override
+		protected DropSchemeBindingModel makeBindingModel() {
+			return new DropSchemeBindingModel(this);
+		}
+
+		/*@Override
 		protected void appendContextualBindingVariables(BindingModel bindingModel) {
 			super.appendContextualBindingVariables(bindingModel);
-			bindingModelNeedToBeRecomputed = false;
+			// bindingModelNeedToBeRecomputed = false;
 			bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TOP_LEVEL, Diagram.class));
 			if (getTargetFlexoConcept() != null) {
 				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getTargetFlexoConcept())));
 			} else if (_getTarget() != null && !_getTarget().equals("top")) {
 				// logger.warning("Cannot find flexo concept " + _getTarget() + " !!!!!!!!!!!!!!");
-				bindingModelNeedToBeRecomputed = true;
-			}
-		}
+				// bindingModelNeedToBeRecomputed = true;
+				}
+		}*/
 
-		private boolean bindingModelNeedToBeRecomputed = false;
-		private boolean isUpdatingBindingModel = false;
+		// private boolean bindingModelNeedToBeRecomputed = false;
+		// private boolean isUpdatingBindingModel = false;
 
-		@Override
+		/*@Override
 		public BindingModel getBindingModel() {
 			if (bindingModelNeedToBeRecomputed && !isUpdatingBindingModel) {
 				isUpdatingBindingModel = true;
@@ -207,14 +228,14 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 				isUpdatingBindingModel = false;
 			}
 			return super.getBindingModel();
-		}
+		}*/
 
-		@Override
+		/*@Override
 		protected void rebuildActionsBindingModel() {
 			if (!bindingModelNeedToBeRecomputed) {
 				super.rebuildActionsBindingModel();
 			}
-		}
+		}*/
 
 		/**
 		 * Overrides {@link #createAction(Class, ModelSlot)} by providing default value for top level container
@@ -226,7 +247,8 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 			A newAction = super.createAction(actionClass, modelSlot);
 			if (newAction instanceof AddShape) {
 				if (isTopTarget()) {
-					((AddShape) newAction).setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramEditionScheme.TOP_LEVEL));
+					((AddShape) newAction)
+							.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramBehaviourBindingModel.TOP_LEVEL));
 				}
 			}
 			return newAction;

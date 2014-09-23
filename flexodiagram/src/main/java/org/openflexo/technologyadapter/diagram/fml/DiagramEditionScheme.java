@@ -33,11 +33,6 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 @ModelEntity(isAbstract = true)
 public interface DiagramEditionScheme extends TechnologySpecificEditionScheme {
 
-	public static final String TOP_LEVEL = "topLevel";
-	public static final String TARGET = "target";
-	public static final String FROM_TARGET = "fromTarget";
-	public static final String TO_TARGET = "toTarget";
-
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter();
 
@@ -46,7 +41,10 @@ public interface DiagramEditionScheme extends TechnologySpecificEditionScheme {
 
 		@Override
 		public DiagramTechnologyAdapter getTechnologyAdapter() {
-			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			if (getServiceManager() != null) {
+				return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			}
+			return null;
 		}
 	}
 

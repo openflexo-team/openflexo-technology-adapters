@@ -36,8 +36,8 @@ import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
-import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
+import org.openflexo.technologyadapter.diagram.fml.binding.LinkSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
@@ -176,7 +176,7 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 
 	@Override
 	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals(DiagramEditionScheme.FROM_TARGET) && getLinkScheme().getFromTargetFlexoConcept() != null) {
+		if (variable.getVariableName().equals(LinkSchemeBindingModel.FROM_TARGET) && getLinkScheme().getFromTargetFlexoConcept() != null) {
 			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
 			for (FlexoConceptInstance fci : fcis) {
 				for (ActorReference actor : fci.getActors()) {
@@ -186,7 +186,7 @@ public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeActio
 			}
 
 		}
-		if (variable.getVariableName().equals(DiagramEditionScheme.TO_TARGET) && getLinkScheme().getToTargetFlexoConcept() != null) {
+		if (variable.getVariableName().equals(LinkSchemeBindingModel.TO_TARGET) && getLinkScheme().getToTargetFlexoConcept() != null) {
 			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
 			for (FlexoConceptInstance fci : fcis) {
 				for (ActorReference actor : fci.getActors()) {

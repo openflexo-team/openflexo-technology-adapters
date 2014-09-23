@@ -42,7 +42,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	public void setGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation);
 
 	@Getter(value = PARENT_SHAPE_PATTERN_ROLE_KEY)
-	@XMLElement
+	@XMLElement(context = "Parent")
 	public ShapeRole getParentShapeRole();
 
 	@Setter(PARENT_SHAPE_PATTERN_ROLE_KEY)
@@ -94,8 +94,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getVirtualModel().getReflexiveModelSlot().getName()
-					+ ";", context);
+			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getVirtualModel().getName() + ";", context);
 			return out.toString();
 		}
 

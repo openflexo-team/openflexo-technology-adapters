@@ -121,8 +121,8 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		/*
 		 * public DiagramModelSlot(ViewPointBuilder builder) { super(builder); }
 		 */
-		
-		private DiagramType diagramType;
+
+		// private DiagramType diagramType;
 
 		@Override
 		public String getStringRepresentation() {
@@ -224,11 +224,14 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 		@Override
 		public Type getType() {
+			return DiagramType.getDiagramType(getDiagramSpecification());
+
 			// Vincent: update this when we will clarify what is a diagram specification and diagram
-			if(diagramType==null){
-				return new DiagramType(getDiagramSpecification());
+			// Answer from Sylvain: is that ok for you ?
+			/*if (diagramType == null) {
+				diagramType = DiagramType.getDiagramType(getDiagramSpecification());
 			}
-			return diagramType;
+			return diagramType;*/
 		}
 
 		@Override
@@ -245,7 +248,10 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 		@Override
 		public DiagramSpecification getDiagramSpecification() {
-			return getMetaModelResource().getMetaModelData();
+			if (getMetaModelResource() != null) {
+				return getMetaModelResource().getMetaModelData();
+			}
+			return null;
 		}
 
 		// TODO
