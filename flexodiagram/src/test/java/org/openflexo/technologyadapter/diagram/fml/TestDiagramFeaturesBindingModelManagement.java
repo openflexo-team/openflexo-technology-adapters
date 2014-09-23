@@ -370,7 +370,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 	 * Test the DropScheme creation, check BindingModel management
 	 */
 	@Test
-	@TestOrder(8)
+	@TestOrder(7)
 	public void testCreateLinkScheme() throws SaveResourceException {
 
 		log("testCreateLinkScheme()");
