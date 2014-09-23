@@ -58,7 +58,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author sylvain
  * 
  */
-public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeAction, DropScheme, VirtualModelInstance> {
+public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeAction, DropScheme, VirtualModelInstance> {
 
 	private static final Logger logger = Logger.getLogger(DropSchemeAction.class.getPackage().getName());
 

@@ -780,8 +780,8 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		newAddConnector.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));
 		ShapeRole fromShapeRole = getVirtualModel().getFlexoConcept(FlexoBehaviour._getFromTarget()).getFlexoRoles(ShapeRole.class).get(0);
 		ShapeRole toShapeRole = getVirtualModel().getFlexoConcept(FlexoBehaviour._getToTarget()).getFlexoRoles(ShapeRole.class).get(0);
-		newAddConnector.setFromShape(new DataBinding<DiagramShape>(DiagramEditionScheme.FROM_TARGET + "." + fromShapeRole.getRoleName()));
-		newAddConnector.setToShape(new DataBinding<DiagramShape>(DiagramEditionScheme.TO_TARGET + "." + toShapeRole.getRoleName()));
+		newAddConnector.setFromShape(new DataBinding<DiagramShape>(DiagramFlexoBehaviour.FROM_TARGET + "." + fromShapeRole.getRoleName()));
+		newAddConnector.setToShape(new DataBinding<DiagramShape>(DiagramFlexoBehaviour.TO_TARGET + "." + toShapeRole.getRoleName()));
 
 		FlexoBehaviour.addToActions(newAddConnector);
 		return FlexoBehaviour;

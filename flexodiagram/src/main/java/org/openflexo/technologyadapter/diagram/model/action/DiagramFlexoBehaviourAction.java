@@ -29,7 +29,7 @@ import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.binding.FlexoRoleBindingVariable;
-import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
+import org.openflexo.technologyadapter.diagram.fml.DiagramFlexoBehaviour;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -42,12 +42,12 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  * @param <ES>
  * @param <O>
  */
-public abstract class DiagramEditionSchemeAction<A extends FlexoBehaviourAction<A, ES, O>, ES extends FlexoBehaviour & DiagramEditionScheme, O extends VirtualModelInstanceObject>
+public abstract class DiagramFlexoBehaviourAction<A extends FlexoBehaviourAction<A, ES, O>, ES extends FlexoBehaviour & DiagramFlexoBehaviour, O extends VirtualModelInstanceObject>
 		extends FlexoBehaviourAction<A, ES, O> {
 
-	private static final Logger logger = Logger.getLogger(DiagramEditionSchemeAction.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(DiagramFlexoBehaviourAction.class.getPackage().getName());
 
-	DiagramEditionSchemeAction(FlexoActionType<A, O, VirtualModelInstanceObject> actionType, O focusedObject,
+	DiagramFlexoBehaviourAction(FlexoActionType<A, O, VirtualModelInstanceObject> actionType, O focusedObject,
 			Vector<VirtualModelInstanceObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}

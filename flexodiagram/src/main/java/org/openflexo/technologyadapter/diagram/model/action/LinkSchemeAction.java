@@ -49,7 +49,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author sylvain
  * 
  */
-public class LinkSchemeAction extends DiagramEditionSchemeAction<LinkSchemeAction, LinkScheme, VirtualModelInstanceObject> {
+public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeAction, LinkScheme, VirtualModelInstanceObject> {
 
 	private static final Logger logger = Logger.getLogger(LinkSchemeAction.class.getPackage().getName());
 

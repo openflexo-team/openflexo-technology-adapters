@@ -19,7 +19,7 @@
  */
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.foundation.viewpoint.TechnologySpecificEditionScheme;
+import org.openflexo.foundation.viewpoint.TechnologySpecificFlexoBehaviour;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -31,13 +31,13 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
  * 
  */
 @ModelEntity(isAbstract = true)
-public interface DiagramEditionScheme extends TechnologySpecificEditionScheme {
+public interface DiagramFlexoBehaviour extends TechnologySpecificFlexoBehaviour {
 
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter();
 
 	@Implementation
-	public static abstract class DiagramEditionSchemeImpl implements DiagramEditionScheme {
+	public static abstract class DiagramEditionSchemeImpl implements DiagramFlexoBehaviour {
 
 		@Override
 		public DiagramTechnologyAdapter getTechnologyAdapter() {

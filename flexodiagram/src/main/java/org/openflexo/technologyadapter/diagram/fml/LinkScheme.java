@@ -41,7 +41,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(LinkScheme.LinkSchemeImpl.class)
 @XMLElement
-public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme {
+public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviour {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String FROM_TARGET_KEY = "fromTarget";
@@ -248,15 +248,15 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 		protected void appendContextualBindingVariables(BindingModel bindingModel) {
 			super.appendContextualBindingVariables(bindingModel);
 			// bindingModelNeedToBeRecomputed = false;
-			bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TOP_LEVEL, Diagram.class));
+			bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.TOP_LEVEL, Diagram.class));
 			if (getFromTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.FROM_TARGET, FlexoConceptInstanceType
+				bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.FROM_TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getFromTargetFlexoConcept())));
 			} else if (_getFromTarget() != null && !StringUtils.isEmpty(_getFromTarget())) {
 				// bindingModelNeedToBeRecomputed = true;
 			}
 			if (getToTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TO_TARGET, FlexoConceptInstanceType
+				bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.TO_TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getToTargetFlexoConcept())));
 			} else if (_getToTarget() != null && !StringUtils.isEmpty(_getToTarget())) {
 				//bindingModelNeedToBeRecomputed = true;

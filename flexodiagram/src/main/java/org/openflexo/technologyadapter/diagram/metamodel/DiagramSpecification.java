@@ -457,7 +457,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 
 		@Override
 		public boolean handleVariable(BindingVariable variable) {
-		if (variable.getVariableName().equals(DiagramEditionScheme.TOP_LEVEL)) {
+		if (variable.getVariableName().equals(DiagramFlexoBehaviour.TOP_LEVEL)) {
 		return true;
 		}
 		return super.handleVariable(variable);

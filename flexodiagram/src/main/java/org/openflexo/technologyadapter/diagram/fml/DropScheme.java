@@ -45,7 +45,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(DropScheme.DropSchemeImpl.class)
 @XMLElement
-public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme {
+public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviour {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String TARGET_KEY = "target";
@@ -206,9 +206,9 @@ public interface DropScheme extends AbstractCreationScheme, DiagramEditionScheme
 		protected void appendContextualBindingVariables(BindingModel bindingModel) {
 			super.appendContextualBindingVariables(bindingModel);
 			// bindingModelNeedToBeRecomputed = false;
-			bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TOP_LEVEL, Diagram.class));
+			bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.TOP_LEVEL, Diagram.class));
 			if (getTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TARGET, FlexoConceptInstanceType
+				bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getTargetFlexoConcept())));
 			} else if (_getTarget() != null && !_getTarget().equals("top")) {
 				// logger.warning("Cannot find flexo concept " + _getTarget() + " !!!!!!!!!!!!!!");

@@ -24,7 +24,7 @@ import java.beans.PropertyChangeEvent;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.foundation.viewpoint.binding.FlexoBehaviourBindingModel;
-import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
+import org.openflexo.technologyadapter.diagram.fml.DiagramFlexoBehaviour;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 /**
@@ -39,7 +39,7 @@ public abstract class DiagramBehaviourBindingModel extends FlexoBehaviourBinding
 
 	private final BindingVariable diagramBindingVariable;
 
-	public DiagramBehaviourBindingModel(DiagramEditionScheme flexoBehaviour) {
+	public DiagramBehaviourBindingModel(DiagramFlexoBehaviour flexoBehaviour) {
 		super(flexoBehaviour);
 
 		diagramBindingVariable = new BindingVariable(TOP_LEVEL, Diagram.class);
