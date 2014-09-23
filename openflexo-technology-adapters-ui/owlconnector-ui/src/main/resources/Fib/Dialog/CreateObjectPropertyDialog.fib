@@ -35,26 +35,26 @@
     <Button action="controller.cancelAndDispose()" buttonType="Trigger" label="cancel" constraints="flow(index=1)" readOnly="false" manageDynamicModel="false" />
   </Panel>
   <LocalizedDictionary>
-    <Localized key="validate" lang="English">Validate</Localized>
-    <Localized key="cancel" lang="English">Cancel</Localized>
-    <Localized key="validate" lang="French">Valider</Localized>
-    <Localized key="cancel" lang="French">Annuler</Localized>
-    <Localized key="validate" lang="Dutch">Validate</Localized>
-    <Localized key="cancel" lang="Dutch">Cancel</Localized>
-    <Localized key="property_name" lang="English">Property name</Localized>
-    <Localized key="domain" lang="English">Domain</Localized>
-    <Localized key="property_name" lang="French">Nom de la propriété</Localized>
-    <Localized key="domain" lang="French">Domaine</Localized>
-    <Localized key="property_name" lang="Dutch">Property name</Localized>
-    <Localized key="domain" lang="Dutch">Domain</Localized>
-    <Localized key="range" lang="French">Plage de valeurs</Localized>
-    <Localized key="range" lang="English">Range</Localized>
-    <Localized key="property_uri" lang="French">URI de la propriété</Localized>
-    <Localized key="property_uri" lang="English">Property URI</Localized>
-    <Localized key="parent_property" lang="French">Propriété parente</Localized>
-    <Localized key="parent_property" lang="English">Parent property</Localized>
-    <Localized key="creates_new_object_property" lang="French">Créer une nouvelle propriété objet</Localized>
-    <Localized key="creates_new_object_property" lang="English">Creates a new object property</Localized>
+    <Localized key="validate" lang="English" value="Validate" />
+    <Localized key="cancel" lang="English" value="Cancel" />
+    <Localized key="validate" lang="French" value="Valider" />
+    <Localized key="cancel" lang="French" value="Annuler" />
+    <Localized key="validate" lang="Dutch" value="Validate" />
+    <Localized key="cancel" lang="Dutch" value="Cancel" />
+    <Localized key="property_name" lang="English" value="Property name" />
+    <Localized key="domain" lang="English" value="Domain" />
+    <Localized key="property_name" lang="French" value="Nom de la propriété" />
+    <Localized key="domain" lang="French" value="Domaine" />
+    <Localized key="property_name" lang="Dutch" value="Property name" />
+    <Localized key="domain" lang="Dutch" value="Domain" />
+    <Localized key="range" lang="French" value="Plage de valeurs" />
+    <Localized key="range" lang="English" value="Range" />
+    <Localized key="property_uri" lang="French" value="URI de la propriété" />
+    <Localized key="property_uri" lang="English" value="Property URI" />
+    <Localized key="parent_property" lang="French" value="Propriété parente" />
+    <Localized key="parent_property" lang="English" value="Parent property" />
+    <Localized key="creates_new_object_property" lang="French" value="Créer une nouvelle propriété objet" />
+    <Localized key="creates_new_object_property" lang="English" value="Creates a new object property" />
   </LocalizedDictionary>
 </Panel>
 

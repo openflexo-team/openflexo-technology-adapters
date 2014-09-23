@@ -1,29 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Panel layout="gridbag" titleFont="Lucida Grande,0,11" darkLevel="0" dataClassName="org.openflexo.technologyadapter.diagram.fml.action.CreateFMLDiagramPaletteElementBinding" controllerClassName="org.openflexo.view.controller.FlexoFIBController" font="Lucida Grande,0,11" width="800" height="500" name="main">
   <LocalizedDictionary>
-    <Localized key="uri" lang="English">URI</Localized>
-    <Localized key="description" lang="English">Description</Localized>
-    <Localized key="uri" lang="French">URI</Localized>
-    <Localized key="description" lang="French">Description</Localized>
-    <Localized key="uri" lang="Dutch">URI</Localized>
-    <Localized key="description" lang="Dutch">Description</Localized>
-    <Localized key="flexo_concept" lang="French">Edition pattern</Localized>
-    <Localized key="flexo_concept" lang="English">Edition pattern</Localized>
-    <Localized key="validate" lang="English">Validate</Localized>
-    <Localized key="label" lang="English">Label</Localized>
-    <Localized key="validate" lang="French">Valider</Localized>
-    <Localized key="label" lang="French">Label</Localized>
-    <Localized key="Cancel" lang="French">Annuler</Localized>
-    <Localized key="validate" lang="Dutch">Validate</Localized>
-    <Localized key="label" lang="Dutch">Label</Localized>
-    <Localized key="finish" lang="English">Finish</Localized>
-    <Localized key="finish" lang="French">Terminer</Localized>
-    <Localized key="finish" lang="Dutch">Finish</Localized>
-    <Localized key="back" lang="English">&lt;&lt; Back</Localized>
-    <Localized key="back" lang="French">&lt;&lt; Précédent</Localized>
-    <Localized key="back" lang="Dutch">back</Localized>
-    <Localized key="next" lang="English">&gt;&gt; Next</Localized>
-    <Localized key="next" lang="French">&gt;&gt; Suivant</Localized>
-    <Localized key="next" lang="Dutch">next</Localized>
+    <Localized key="uri" lang="English" value="URI" />
+    <Localized key="description" lang="English" value="Description" />
+    <Localized key="uri" lang="French" value="URI" />
+    <Localized key="description" lang="French" value="Description" />
+    <Localized key="uri" lang="Dutch" value="URI" />
+    <Localized key="description" lang="Dutch" value="Description" />
+    <Localized key="flexo_concept" lang="French" value="Edition pattern" />
+    <Localized key="flexo_concept" lang="English" value="Edition pattern" />
+    <Localized key="validate" lang="English" value="Validate" />
+    <Localized key="label" lang="English" value="Label" />
+    <Localized key="validate" lang="French" value="Valider" />
+    <Localized key="label" lang="French" value="Label" />
+    <Localized key="Cancel" lang="French" value="Annuler" />
+    <Localized key="validate" lang="Dutch" value="Validate" />
+    <Localized key="label" lang="Dutch" value="Label" />
+    <Localized key="finish" lang="English" value="Finish" />
+    <Localized key="finish" lang="French" value="Terminer" />
+    <Localized key="finish" lang="Dutch" value="Finish" />
+    <Localized key="back" lang="English" value="&lt;&lt; Back" />
+    <Localized key="back" lang="French" value="&lt;&lt; Précédent" />
+    <Localized key="back" lang="Dutch" value="back" />
+    <Localized key="next" lang="English" value="&gt;&gt; Next" />
+    <Localized key="next" lang="French" value="&gt;&gt; Suivant" />
+    <Localized key="next" lang="Dutch" value="next" />
   </LocalizedDictionary>
 </Panel>
