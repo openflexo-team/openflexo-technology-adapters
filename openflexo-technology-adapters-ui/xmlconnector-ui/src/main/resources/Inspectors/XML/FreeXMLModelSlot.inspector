@@ -6,7 +6,7 @@
       <Table iteratorClassName="org.openflexo.technologyadapter.xml.AbstractXMLURIProcessor" visibleRowCount="3" rowHeight="18" autoSelectFirstRow="false" createNewRowOnClick="false" boundToSelectionManager="false" showFooter="true" selectionMode="MultipleIntervalSelection" localize="true" manageDynamicModel="true" data="data.uriProcessorsList" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
         <IconColumn title="icon" columnWidth="20" resizable="false" displayTitle="false" name="icon" />
         <CustomColumn componentClassName="org.openflexo.components.widget.FIBClassSelector" customRendering="false" disableTerminateEditOnFocusLost="false" data="iterator.mappedXMLType" format="object.name" title="type" columnWidth="80" resizable="true" displayTitle="true">
-          <ColumnAssignment variable="component.context" value="data.TODOTODO" />
+          <ColumnAssignment variable="component.context"  /> <!--  value="TODO" -->
         </CustomColumn>
         <DropDownColumn data="iterator.mappingStyle" title="mappingStyle" columnWidth="100" resizable="true" displayTitle="true" name="dropdown" />
         <CustomColumn componentClassName="org.openflexo.technologyadapter.xml.gui.widget.FIBXMLPropertySelector" customRendering="false" disableTerminateEditOnFocusLost="false" selectObjectProperties="false" selectDataProperties="true" data="iterator.basePropertyForURI" format="object.name" title="property" columnWidth="80" resizable="true" displayTitle="true">
