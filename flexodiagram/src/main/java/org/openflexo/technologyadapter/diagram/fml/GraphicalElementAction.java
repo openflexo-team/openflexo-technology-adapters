@@ -26,7 +26,6 @@ import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.validation.Validable;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.AbstractActionScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
@@ -39,6 +38,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.validation.Validable;
 
 @ModelEntity
 @ImplementationClass(GraphicalElementAction.GraphicalElementActionImpl.class)

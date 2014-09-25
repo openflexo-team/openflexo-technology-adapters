@@ -31,7 +31,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.foundation.validation.Validable;
 import org.openflexo.foundation.view.ModelSlotInstance;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.NamedViewPointObject;
@@ -39,6 +38,7 @@ import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.validation.Validable;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 
 @ModelEntity
