@@ -36,7 +36,7 @@
 		<Localized key="map_name" lang="French" value="Nom de la carte" />
 		<Localized key="map_name" lang="Dutch" value="Map name" />
 		<Localized key="create_map_name" lang="English" value="Create new Freeplane mindmap" />
-		<Localized key="create_map_name" lang="French" value="Create une nouvelle carte Freeplane" />
+		<Localized key="create_map_name" lang="French" value="Créer une nouvelle carte Freeplane" />
 		<Localized key="create_map_name" lang="Dutch" value="Create new Freeplane mindmap" />
 	</LocalizedDictionary>
 </Panel>
