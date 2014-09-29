@@ -18,7 +18,6 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.foundation.view.VirtualModelModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.view.action.CreateView;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
@@ -88,9 +87,6 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 		assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getDirectory().exists());
 		assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getFile().exists());
 
-		// VirtualModel should have only one model slot (the reflexive model slot)
-		assertEquals(1, newVirtualModel.getModelSlots().size());
-
 		// Now we create the diagram model slot
 		CreateModelSlot createMS = CreateModelSlot.actionType.makeNewAction(newVirtualModel, null, editor);
 		createMS.setTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class));
@@ -100,7 +96,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 
 		assertTrue(createMS.hasActionExecutionSucceeded());
 
-		// VirtualModel should have only one model slot (the reflexive model slot)
+		// VirtualModel should have only one TypedDiagramModelSlot
 		assertEquals(1, newVirtualModel.getModelSlots(TypedDiagramModelSlot.class).size());
 
 		TypedDiagramModelSlot diagramModelSlot = newVirtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0);
@@ -176,12 +172,12 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 		assertTrue(((ViewResource) newView.getResource()).getDirectory().exists());
 		assertTrue(((ViewResource) newView.getResource()).getFile().exists());
 
-		assertEquals(2, newVirtualModelInstance.getModelSlotInstances().size());
+		assertEquals(1, newVirtualModelInstance.getModelSlotInstances().size());
 
-		VirtualModelModelSlotInstance reflexiveMSInstance = (VirtualModelModelSlotInstance) newVirtualModelInstance
+		/*VirtualModelModelSlotInstance reflexiveMSInstance = (VirtualModelModelSlotInstance) newVirtualModelInstance
 				.getModelSlotInstance(newVirtualModel.getReflexiveModelSlot());
 		assertNotNull(reflexiveMSInstance);
-		assertEquals(newVirtualModelInstance, reflexiveMSInstance.getAccessedResourceData());
+		assertEquals(newVirtualModelInstance, reflexiveMSInstance.getAccessedResourceData());*/
 
 		TypeAwareModelSlotInstance diagramMSInstance = (TypeAwareModelSlotInstance) newVirtualModelInstance
 				.getModelSlotInstance(newVirtualModel.getModelSlots(TypedDiagramModelSlot.class).get(0));

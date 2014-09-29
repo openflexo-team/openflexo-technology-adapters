@@ -34,6 +34,7 @@ import org.openflexo.foundation.validation.FixProposal;
 import org.openflexo.foundation.validation.ValidationError;
 import org.openflexo.foundation.validation.ValidationIssue;
 import org.openflexo.foundation.validation.ValidationRule;
+import org.openflexo.foundation.validation.annotations.DefineValidationRule;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
@@ -302,6 +303,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 
 	}
 
+	@DefineValidationRule
 	public static class GraphicalActionMustHaveASubject extends ValidationRule<GraphicalActionMustHaveASubject, GraphicalAction> {
 		public GraphicalActionMustHaveASubject() {
 			super(GraphicalAction.class, "graphical_action_must_have_a_subject");
@@ -346,6 +348,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 		}
 	}
 
+	@DefineValidationRule
 	public static class GraphicalActionMustDefineAValue extends BindingIsRequiredAndMustBeValid<GraphicalAction> {
 		public GraphicalActionMustDefineAValue() {
 			super("'value'_binding_is_not_valid", GraphicalAction.class);

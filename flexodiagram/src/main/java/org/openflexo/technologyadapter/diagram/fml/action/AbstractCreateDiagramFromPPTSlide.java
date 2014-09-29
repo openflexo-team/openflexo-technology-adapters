@@ -747,6 +747,9 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 			graphics.setPaint(Color.WHITE);
 			graphics.fillRect(x, y, width, height);
+
+			Thread.dumpStack();
+
 			pictureShape.getPictureData().draw(graphics, pictureShape);
 			File imageFile = saveImageFile(image, getDiagramName() + getSlide().getTitle() + pictureShape.getShapeId());
 			gr.setBackground(getDiagramFactory().makeImageBackground(ResourceLocator.locateResource(imageFile.getAbsolutePath())));

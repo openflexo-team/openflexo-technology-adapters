@@ -19,7 +19,7 @@
  */
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.foundation.viewpoint.TechnologySpecificEditionScheme;
+import org.openflexo.foundation.viewpoint.TechnologySpecificFlexoBehaviour;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -31,22 +31,20 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
  * 
  */
 @ModelEntity(isAbstract = true)
-public interface DiagramEditionScheme extends TechnologySpecificEditionScheme {
-
-	public static final String TOP_LEVEL = "topLevel";
-	public static final String TARGET = "target";
-	public static final String FROM_TARGET = "fromTarget";
-	public static final String TO_TARGET = "toTarget";
+public interface DiagramFlexoBehaviour extends TechnologySpecificFlexoBehaviour {
 
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter();
 
 	@Implementation
-	public static abstract class DiagramEditionSchemeImpl implements DiagramEditionScheme {
+	public static abstract class DiagramEditionSchemeImpl implements DiagramFlexoBehaviour {
 
 		@Override
 		public DiagramTechnologyAdapter getTechnologyAdapter() {
-			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			if (getServiceManager() != null) {
+				return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			}
+			return null;
 		}
 	}
 

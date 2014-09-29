@@ -328,4 +328,5 @@ public class OWLIndividual extends OWLConcept<Individual> implements IFlexoOntol
 	public String toString() {
 		return getClass().getSimpleName() + ":" + getURI();
 	}
+
 }

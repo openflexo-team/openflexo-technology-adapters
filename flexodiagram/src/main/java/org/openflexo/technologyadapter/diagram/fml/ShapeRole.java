@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.validation.annotations.DefineValidationRule;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.localization.FlexoLocalization;
@@ -42,7 +44,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	public void setGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation);
 
 	@Getter(value = PARENT_SHAPE_PATTERN_ROLE_KEY)
-	@XMLElement
+	@XMLElement(context = "Parent")
 	public ShapeRole getParentShapeRole();
 
 	@Setter(PARENT_SHAPE_PATTERN_ROLE_KEY)
@@ -94,8 +96,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getVirtualModel().getReflexiveModelSlot().getName()
-					+ ";", context);
+			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getVirtualModel().getName() + ";", context);
 			return out.toString();
 		}
 
@@ -167,7 +168,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				if (possibleParentPatternRole.size() > 0) {
 					setParentShapeRole(possibleParentPatternRole.get(0));
 				}
-			} else {
+			}
+			else {
 				// System.out.println("setParentShapePatternRole with null");
 				setParentShapeRole(null);
 				// flag = true;
@@ -323,4 +325,18 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				RELATIVE_TEXT_X_FEATURE, RELATIVE_TEXT_Y_FEATURE, ABSOLUTE_TEXT_X_FEATURE, ABSOLUTE_TEXT_Y_FEATURE };
 
 	}
+
+	@DefineValidationRule
+	public static class LabelBindingdMustBeValid extends BindingMustBeValid<ShapeRole> {
+		public LabelBindingdMustBeValid() {
+			super("'label'_binding_must_be_valid", ShapeRole.class);
+		}
+
+		@Override
+		public DataBinding<String> getBinding(ShapeRole object) {
+			return object.getLabel();
+		}
+
+	}
+
 }

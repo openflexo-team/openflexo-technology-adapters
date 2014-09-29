@@ -25,6 +25,8 @@ import javax.swing.ImageIcon;
 import javax.swing.SwingUtilities;
 
 import org.openflexo.components.widget.FIBOntologyBrowser;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 
 /**
@@ -39,8 +41,10 @@ public class FIBOWLOntologyBrowser extends FIBOntologyBrowser {
 	@SuppressWarnings("hiding")
 	static final Logger logger = Logger.getLogger(FIBOWLOntologyBrowser.class.getPackage().getName());
 
+	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/FIBOWLOntologyBrowser.fib");
+
 	public FIBOWLOntologyBrowser(OWLOntology ontology) {
-		super(ontology);
+		super(FIB_FILE, ontology);
 	}
 
 	@Override

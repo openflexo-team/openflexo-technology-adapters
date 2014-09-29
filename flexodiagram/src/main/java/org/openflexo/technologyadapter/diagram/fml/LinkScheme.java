@@ -19,13 +19,10 @@
  */
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.viewpoint.AbstractCreationScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.FlexoConceptInstanceType;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.model.annotations.Getter;
@@ -35,8 +32,8 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.diagram.fml.binding.LinkSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
-import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.StringUtils;
 
@@ -44,7 +41,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(LinkScheme.LinkSchemeImpl.class)
 @XMLElement
-public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme {
+public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviour {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String FROM_TARGET_KEY = "fromTarget";
@@ -60,6 +57,11 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 	public static final String SOUTH_DIRECTION_SUPPORTED_KEY = "southDirectionSupported";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String WEST_DIRECTION_SUPPORTED_KEY = "westDirectionSupported";
+
+	@PropertyIdentifier(type = FlexoConcept.class)
+	public static final String FROM_TARGET_FLEXO_CONCEPT_KEY = "fromTargetFlexoConcept";
+	@PropertyIdentifier(type = FlexoConcept.class)
+	public static final String TO_TARGET_FLEXO_CONCEPT_KEY = "toTargetFlexoConcept";
 
 	@Getter(value = FROM_TARGET_KEY)
 	@XMLAttribute
@@ -132,6 +134,9 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 		private boolean isAvailableWithFloatingPalette = true;
 
+		private FlexoConcept lastKnownFromTargetFlexoConcept;
+		private FlexoConcept lastKnownToTargetFlexoConcept;
+
 		public LinkSchemeImpl() {
 			super();
 		}
@@ -143,7 +148,11 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 		@Override
 		public void _setFromTarget(String fromTarget) {
-			this.fromTarget = fromTarget;
+			if (requireChange(this.fromTarget, fromTarget)) {
+				FlexoConcept oldValue = getFromTargetFlexoConcept();
+				this.fromTarget = fromTarget;
+				getPropertyChangeSupport().firePropertyChange(FROM_TARGET_FLEXO_CONCEPT_KEY, oldValue, getFromTargetFlexoConcept());
+			}
 		}
 
 		@Override
@@ -153,7 +162,11 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 
 		@Override
 		public void _setToTarget(String toTarget) {
-			this.toTarget = toTarget;
+			if (requireChange(this.toTarget, toTarget)) {
+				FlexoConcept oldValue = getToTargetFlexoConcept();
+				this.toTarget = toTarget;
+				getPropertyChangeSupport().firePropertyChange(TO_TARGET_FLEXO_CONCEPT_KEY, oldValue, getToTargetFlexoConcept());
+			}
 		}
 
 		@Override
@@ -162,7 +175,13 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 				return null;
 			}
 			if (getVirtualModel() != null) {
-				return getVirtualModel().getFlexoConcept(_getFromTarget());
+				FlexoConcept returned = getVirtualModel().getFlexoConcept(_getFromTarget());
+				if (lastKnownFromTargetFlexoConcept != returned) {
+					FlexoConcept oldValue = lastKnownFromTargetFlexoConcept;
+					lastKnownFromTargetFlexoConcept = returned;
+					getPropertyChangeSupport().firePropertyChange(FROM_TARGET_FLEXO_CONCEPT_KEY, oldValue, returned);
+				}
+				return returned;
 			}
 			return null;
 		}
@@ -170,7 +189,6 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 		@Override
 		public void setFromTargetFlexoConcept(FlexoConcept targetFlexoConcept) {
 			_setFromTarget(targetFlexoConcept != null ? targetFlexoConcept.getURI() : null);
-			updateBindingModels();
 		}
 
 		@Override
@@ -182,7 +200,13 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 				return getVirtualModel().getFlexoConcept(_getToTarget());
 			}
 			if (getViewPointLibrary() != null) {
-				return getViewPointLibrary().getFlexoConcept(_getToTarget());
+				FlexoConcept returned = getViewPointLibrary().getFlexoConcept(_getToTarget());
+				if (lastKnownToTargetFlexoConcept != returned) {
+					FlexoConcept oldValue = lastKnownToTargetFlexoConcept;
+					lastKnownToTargetFlexoConcept = returned;
+					getPropertyChangeSupport().firePropertyChange(TO_TARGET_FLEXO_CONCEPT_KEY, oldValue, returned);
+				}
+				return returned;
 			}
 			return null;
 		}
@@ -190,7 +214,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 		@Override
 		public void setToTargetFlexoConcept(FlexoConcept targetFlexoConcept) {
 			_setToTarget(targetFlexoConcept != null ? targetFlexoConcept.getURI() : null);
-			updateBindingModels();
+			// updateBindingModels();
 		}
 
 		@Override
@@ -201,29 +225,48 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 					&& getToTargetFlexoConcept().isAssignableFrom(actualToTarget);
 		}
 
-		@Override
-		protected void appendContextualBindingVariables(BindingModel bindingModel) {
-			super.appendContextualBindingVariables(bindingModel);
-			bindingModelNeedToBeRecomputed = false;
-			bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TOP_LEVEL, Diagram.class));
+		/*private void appendFromTargetBindingVariable(BindingModel bindingModel) {
 			if (getFromTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.FROM_TARGET, FlexoConceptInstanceType
+				bindingModel.addToBindingVariables(new BindingVariable(LinkSchemeBindingModel.FROM_TARGET, FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getFromTargetFlexoConcept())));
-			} else if (_getFromTarget() != null && !StringUtils.isEmpty(_getFromTarget())) {
-				bindingModelNeedToBeRecomputed = true;
-			}
-			if (getToTargetFlexoConcept() != null) {
-				bindingModel.addToBindingVariables(new BindingVariable(DiagramEditionScheme.TO_TARGET, FlexoConceptInstanceType
-						.getFlexoConceptInstanceType(getToTargetFlexoConcept())));
-			} else if (_getToTarget() != null && !StringUtils.isEmpty(_getToTarget())) {
-				bindingModelNeedToBeRecomputed = true;
 			}
 		}
 
-		private boolean bindingModelNeedToBeRecomputed = false;
-		private boolean isUpdatingBindingModel = false;
+		private void appendToTargetBindingVariable(BindingModel bindingModel) {
+			if (getToTargetFlexoConcept() != null) {
+				bindingModel.addToBindingVariables(new BindingVariable(LinkSchemeBindingModel.TO_TARGET, FlexoConceptInstanceType
+						.getFlexoConceptInstanceType(getToTargetFlexoConcept())));
+			}
+		}*/
 
 		@Override
+		protected LinkSchemeBindingModel makeBindingModel() {
+			return new LinkSchemeBindingModel(this);
+		}
+
+		/*@Override
+		protected void appendContextualBindingVariables(BindingModel bindingModel) {
+			super.appendContextualBindingVariables(bindingModel);
+			// bindingModelNeedToBeRecomputed = false;
+			bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.TOP_LEVEL, Diagram.class));
+			if (getFromTargetFlexoConcept() != null) {
+				bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.FROM_TARGET, FlexoConceptInstanceType
+						.getFlexoConceptInstanceType(getFromTargetFlexoConcept())));
+			} else if (_getFromTarget() != null && !StringUtils.isEmpty(_getFromTarget())) {
+				// bindingModelNeedToBeRecomputed = true;
+			}
+			if (getToTargetFlexoConcept() != null) {
+				bindingModel.addToBindingVariables(new BindingVariable(DiagramFlexoBehaviour.TO_TARGET, FlexoConceptInstanceType
+						.getFlexoConceptInstanceType(getToTargetFlexoConcept())));
+			} else if (_getToTarget() != null && !StringUtils.isEmpty(_getToTarget())) {
+				//bindingModelNeedToBeRecomputed = true;
+				}
+		}*/
+
+		// private boolean bindingModelNeedToBeRecomputed = false;
+		// private boolean isUpdatingBindingModel = false;
+
+		/*@Override
 		public BindingModel getBindingModel() {
 			if (bindingModelNeedToBeRecomputed && !isUpdatingBindingModel) {
 				isUpdatingBindingModel = true;
@@ -239,7 +282,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramEditionScheme
 			if (!bindingModelNeedToBeRecomputed) {
 				super.rebuildActionsBindingModel();
 			}
-		}
+		}*/
 
 		/**
 		 * Overrides {@link #createAction(Class, ModelSlot)} by providing default value for from and to targets

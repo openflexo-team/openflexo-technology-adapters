@@ -78,7 +78,10 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 
 		@Override
 		public IFlexoOntologyStructuralProperty getObjectProperty() {
-			return getVirtualModel().getOntologyObjectProperty(_getObjectPropertyURI());
+			if (getVirtualModel() != null) {
+				return getVirtualModel().getOntologyObjectProperty(_getObjectPropertyURI());
+			}
+			return null;
 		}
 
 		@Override
@@ -108,8 +111,8 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 		public ValidationIssue<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole> applyValidation(
 				ObjectPropertyStatementRole patternRole) {
 			if (patternRole.getObjectProperty() == null) {
-				return new ValidationError<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole>(
-						this, patternRole, "pattern_role_does_not_define_any_valid_object_property");
+				return new ValidationError<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole>(this,
+						patternRole, "pattern_role_does_not_define_any_valid_object_property");
 			}
 			return null;
 		}
