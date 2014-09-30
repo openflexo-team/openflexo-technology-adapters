@@ -14,9 +14,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
+import org.openflexo.fib.swing.FIBJPanel;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.fib.utils.OpenflexoFIBTestCaseWithProjectAtRunTime;
-import org.openflexo.fib.view.widget.DefaultFIBCustomComponent;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.rm.Resource;
@@ -105,7 +105,7 @@ public class TestDeclareShapeInFlexoConceptDialog extends OpenflexoFIBTestCaseWi
 
         FlexoProject project = editor.getProject();
         DeclareShapeInFlexoConcept declareShapeAction = DeclareShapeInFlexoConcept.actionType.makeNewAction(shape1, null, editor);
-        DefaultFIBCustomComponent<DeclareShapeInFlexoConcept> widget = instanciateFIB(fibResource, declareShapeAction,
+        FIBJPanel<DeclareShapeInFlexoConcept> widget = instanciateFIB(fibResource, declareShapeAction,
                 DeclareShapeInFlexoConcept.class);
 
         gcDelegate.addTab("DeclareShapeInFlexoConcept", widget.getController());
