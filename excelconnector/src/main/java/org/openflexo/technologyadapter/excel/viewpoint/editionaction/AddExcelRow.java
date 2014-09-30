@@ -9,11 +9,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.validation.annotations.DefineValidationRule;
 import org.openflexo.foundation.view.FreeModelSlotInstance;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -95,8 +95,7 @@ public interface AddExcelRow extends AssignableAction<BasicExcelModelSlot, Excel
 						if (rowIndex != null) {
 							if (excelSheet.getRowAt(rowIndex) != null) {
 								excelRow = excelSheet.getRowAt(rowIndex);
-							}
-							else {
+							} else {
 								Row row = excelSheet.getSheet().createRow(rowIndex);
 								excelRow = modelSlotInstance.getAccessedResourceData().getConverter()
 										.convertExcelRowToRow(row, excelSheet, null);
@@ -107,12 +106,10 @@ public interface AddExcelRow extends AssignableAction<BasicExcelModelSlot, Excel
 							modelSlotInstance.getResourceData().setIsModified();
 							excelSheet.getWorkbook().getResource().setModified(true);
 
-						}
-						else {
+						} else {
 							logger.warning("Create a row requires a rowindex");
 						}
-					}
-					else {
+					} else {
 						logger.warning("Create a row requires a sheet");
 					}
 
@@ -127,8 +124,7 @@ public interface AddExcelRow extends AssignableAction<BasicExcelModelSlot, Excel
 					e.printStackTrace();
 				}
 
-			}
-			else {
+			} else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}

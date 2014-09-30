@@ -8,12 +8,12 @@ import java.util.logging.Logger;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.validation.annotations.DefineValidationRule;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -168,8 +168,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				if (possibleParentPatternRole.size() > 0) {
 					setParentShapeRole(possibleParentPatternRole.get(0));
 				}
-			}
-			else {
+			} else {
 				// System.out.println("setParentShapePatternRole with null");
 				setParentShapeRole(null);
 				// flag = true;
