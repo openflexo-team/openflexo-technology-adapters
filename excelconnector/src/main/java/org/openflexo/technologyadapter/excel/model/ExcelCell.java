@@ -396,6 +396,10 @@ public class ExcelCell extends ExcelObject {
 		}
 	};
 
+	public String getCellValueAsString() {
+		return cell.getStringCellValue();
+	}
+
 	private void setCellFormula(String formula) {
 		if (formula.startsWith("=")) {
 			formula = formula.substring(formula.indexOf("=") + 1);
