@@ -319,7 +319,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 			@Override
 			protected void fixAction() {
-				AddShape action = getObject();
+				AddShape action = getValidable();
 				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
 			}
 
@@ -365,12 +365,12 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		protected static class SetsContainerToTopLevel extends FixProposal<AddShapeActionMustHaveAValidContainer, AddShape> {
 
 			public SetsContainerToTopLevel() {
-				super("sets_container_to_top_level");
+				super("sets_container_to_'top_level'");
 			}
 
 			@Override
 			protected void fixAction() {
-				AddShape action = getObject();
+				AddShape action = getValidable();
 				action.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramBehaviourBindingModel.TOP_LEVEL));
 			}
 
@@ -378,21 +378,21 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 		protected static class SetsContainerToShape extends FixProposal<AddShapeActionMustHaveAValidContainer, AddShape> {
 
-			private final ShapeRole patternRole;
+			private final ShapeRole shapeRole;
 
-			public SetsContainerToShape(ShapeRole patternRole) {
-				super("sets_container_to_($patternRole.patternRoleName)");
-				this.patternRole = patternRole;
+			public SetsContainerToShape(ShapeRole shapeRole) {
+				super("sets_container_to_'($shapeRole.roleName)'");
+				this.shapeRole = shapeRole;
 			}
 
-			public ShapeRole getPatternRole() {
-				return patternRole;
+			public ShapeRole getShapeRole() {
+				return shapeRole;
 			}
 
 			@Override
 			protected void fixAction() {
-				AddShape action = getObject();
-				action.setContainer(new DataBinding<DiagramContainerElement<?>>(patternRole.getRoleName()));
+				AddShape action = getValidable();
+				action.setContainer(new DataBinding<DiagramContainerElement<?>>(shapeRole.getRoleName()));
 			}
 		}
 
@@ -417,7 +417,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 			@Override
 			protected void fixAction() {
-				AddShape action = getObject();
+				AddShape action = getValidable();
 				action.setContainer(new DataBinding<DiagramContainerElement<?>>(DropSchemeBindingModel.TARGET + "."
 						+ patternRole.getRoleName()));
 			}

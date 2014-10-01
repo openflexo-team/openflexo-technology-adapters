@@ -358,7 +358,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 			@Override
 			protected void fixAction() {
-				AddConnector action = getObject();
+				AddConnector action = getValidable();
 				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
 			}
 
@@ -410,7 +410,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 			@Override
 			protected void fixAction() {
-				AddConnector action = getObject();
+				AddConnector action = getValidable();
 				action.setFromShape(new DataBinding<DiagramShape>(patternRole.getRoleName()));
 			}
 		}
@@ -437,7 +437,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 			@Override
 			protected void fixAction() {
-				AddConnector action = getObject();
+				AddConnector action = getValidable();
 				action.setFromShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.FROM_TARGET + "." + patternRole.getRoleName()));
 			}
 		}
@@ -489,7 +489,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 			@Override
 			protected void fixAction() {
-				AddConnector action = getObject();
+				AddConnector action = getValidable();
 				action.setToShape(new DataBinding<DiagramShape>(patternRole.getRoleName()));
 			}
 		}
@@ -516,7 +516,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 			@Override
 			protected void fixAction() {
-				AddConnector action = getObject();
+				AddConnector action = getValidable();
 				action.setToShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.TO_TARGET + "." + patternRole.getRoleName()));
 			}
 		}

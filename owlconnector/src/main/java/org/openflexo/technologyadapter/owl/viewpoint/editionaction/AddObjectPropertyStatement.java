@@ -305,7 +305,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 			@Override
 			protected void fixAction() {
-				AddObjectPropertyStatement action = getObject();
+				AddObjectPropertyStatement action = getValidable();
 				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
 			}
 

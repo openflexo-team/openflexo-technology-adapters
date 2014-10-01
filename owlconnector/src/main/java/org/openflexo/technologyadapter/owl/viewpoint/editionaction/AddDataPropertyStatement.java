@@ -302,7 +302,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 
 			@Override
 			protected void fixAction() {
-				AddDataPropertyStatement action = getObject();
+				AddDataPropertyStatement action = getValidable();
 				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
 			}
 
