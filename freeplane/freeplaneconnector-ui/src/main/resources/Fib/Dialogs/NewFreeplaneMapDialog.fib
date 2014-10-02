@@ -26,18 +26,18 @@
 			manageDynamicModel="false" />
 	</Panel>
 	<LocalizedDictionary>
-		<Localized key="validate" lang="English">Validate</Localized>
-		<Localized key="validate" lang="French">Valider</Localized>
-		<Localized key="validate" lang="Dutch">Validate</Localized>
-		<Localized key="cancel" lang="English">Cancel</Localized>
-		<Localized key="cancel" lang="French">Annuler</Localized>
-		<Localized key="cancel" lang="Dutch">Cancel</Localized>
-		<Localized key="map_name" lang="English">Map name</Localized>
-		<Localized key="map_name" lang="French">Nom de la carte</Localized>
-		<Localized key="map_name" lang="Dutch">Map name</Localized>
-		<Localized key="create_map_name" lang="English">Create new Freeplane mindmap</Localized>
-		<Localized key="create_map_name" lang="French">Create une nouvelle carte Freeplane</Localized>
-		<Localized key="create_map_name" lang="Dutch">Create new Freeplane mindmap</Localized>
+		<Localized key="validate" lang="English" value="Validate" />
+		<Localized key="validate" lang="French" value="Valider" />
+		<Localized key="validate" lang="Dutch" value="Validate" />
+		<Localized key="cancel" lang="English" value="Cancel" />
+		<Localized key="cancel" lang="French" value="Annuler" />
+		<Localized key="cancel" lang="Dutch" value="Cancel" />
+		<Localized key="map_name" lang="English" value="Map name" />
+		<Localized key="map_name" lang="French" value="Nom de la carte" />
+		<Localized key="map_name" lang="Dutch" value="Map name" />
+		<Localized key="create_map_name" lang="English" value="Create new Freeplane mindmap" />
+		<Localized key="create_map_name" lang="French" value="Créer une nouvelle carte Freeplane" />
+		<Localized key="create_map_name" lang="Dutch" value="Create new Freeplane mindmap" />
 	</LocalizedDictionary>
 </Panel>
 

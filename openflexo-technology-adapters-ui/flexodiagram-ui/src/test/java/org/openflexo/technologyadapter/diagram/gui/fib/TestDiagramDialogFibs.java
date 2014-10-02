@@ -55,7 +55,12 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 	public void testDeleteDiagramElementsDialog() {
 		validateFIB("Fib/Dialog/DeleteDiagramElementsDialog.fib");
 	}
-
+	
+	@Test
+	public void testDeleteDiagramElementsAndFlexoConceptInstancesDialog() {
+		validateFIB("Fib/Dialog/DeleteDiagramElementsAndFlexoConceptInstancesDialog.fib");
+	}
+	
 	@Test
 	public void testImportImageFileDialog() {
 		validateFIB("Fib/Dialog/ImportImageFileDialog.fib");

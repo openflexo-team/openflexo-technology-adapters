@@ -13,6 +13,7 @@ import org.openflexo.foundation.view.FreeModelSlotInstance;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.AssignableAction;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -197,4 +198,31 @@ public interface AddExcelRow extends AssignableAction<BasicExcelModelSlot, Excel
 		}
 
 	}
+
+	@DefineValidationRule
+	public static class SheetBindingIsRequiredAndMustBeValid extends BindingIsRequiredAndMustBeValid<AddExcelRow> {
+		public SheetBindingIsRequiredAndMustBeValid() {
+			super("'sheet'_binding_is_required_and_must_be_valid", AddExcelRow.class);
+		}
+
+		@Override
+		public DataBinding<ExcelSheet> getBinding(AddExcelRow object) {
+			return object.getExcelSheet();
+		}
+
+	}
+
+	@DefineValidationRule
+	public static class RowIndexBindingIsRequiredAndMustBeValid extends BindingIsRequiredAndMustBeValid<AddExcelRow> {
+		public RowIndexBindingIsRequiredAndMustBeValid() {
+			super("'rowindex'_binding_is_required_and_must_be_valid", AddExcelRow.class);
+		}
+
+		@Override
+		public DataBinding<Integer> getBinding(AddExcelRow object) {
+			return object.getRowIndex();
+		}
+
+	}
+
 }

@@ -28,7 +28,7 @@ import org.openflexo.model.annotations.XMLElement;
 @ModelEntity
 @XMLElement
 @ImplementationClass(DiagramNavigationScheme.DiagramNavigationSchemeImpl.class)
-public interface DiagramNavigationScheme extends NavigationScheme, DiagramEditionScheme {
+public interface DiagramNavigationScheme extends NavigationScheme, DiagramFlexoBehaviour {
 
 	public static abstract class DiagramNavigationSchemeImpl extends NavigationSchemeImpl implements DiagramNavigationScheme {
 

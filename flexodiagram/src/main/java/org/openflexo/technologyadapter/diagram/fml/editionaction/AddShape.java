@@ -34,16 +34,13 @@ import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoObject;
-import org.openflexo.foundation.validation.FixProposal;
-import org.openflexo.foundation.validation.ValidationError;
-import org.openflexo.foundation.validation.ValidationIssue;
-import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
 import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -51,9 +48,14 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
+import org.openflexo.model.validation.FixProposal;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
+import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
+import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
@@ -283,6 +285,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 	}
 
+	@DefineValidationRule
 	public static class AddShapeActionMustAdressAValidShapeRole extends ValidationRule<AddShapeActionMustAdressAValidShapeRole, AddShape> {
 		public AddShapeActionMustAdressAValidShapeRole() {
 			super(AddShape.class, "add_shape_action_must_address_a_valid_shape_pattern_role");
@@ -316,13 +319,14 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 			@Override
 			protected void fixAction() {
-				AddShape action = getObject();
+				AddShape action = getValidable();
 				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
 			}
 
 		}
 	}
 
+	@DefineValidationRule
 	public static class AddShapeActionMustHaveAValidContainer extends ValidationRule<AddShapeActionMustHaveAValidContainer, AddShape> {
 		public AddShapeActionMustHaveAValidContainer() {
 			super(AddShape.class, "add_shape_action_must_have_a_valid_container");
@@ -345,8 +349,15 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				for (ShapeRole pr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
 					v.add(new SetsContainerToShape(pr));
 				}
+				String details;
+				if (action.getContainer().isSet()) {
+					details = "Invalid container: " + action.getContainer() + " reason: " + action.getContainer().invalidBindingReason();
+				} else {
+					details = "Container not set";
+				}
+
 				return new ValidationError<AddShapeActionMustHaveAValidContainer, AddShape>(this, action,
-						"add_shape_action_does_not_have_a_valid_container", v);
+						"add_shape_action_does_not_have_a_valid_container", details, v);
 			}
 			return null;
 		}
@@ -354,34 +365,34 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		protected static class SetsContainerToTopLevel extends FixProposal<AddShapeActionMustHaveAValidContainer, AddShape> {
 
 			public SetsContainerToTopLevel() {
-				super("sets_container_to_top_level");
+				super("sets_container_to_'top_level'");
 			}
 
 			@Override
 			protected void fixAction() {
-				AddShape action = getObject();
-				action.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramEditionScheme.TOP_LEVEL));
+				AddShape action = getValidable();
+				action.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramBehaviourBindingModel.TOP_LEVEL));
 			}
 
 		}
 
 		protected static class SetsContainerToShape extends FixProposal<AddShapeActionMustHaveAValidContainer, AddShape> {
 
-			private final ShapeRole patternRole;
+			private final ShapeRole shapeRole;
 
-			public SetsContainerToShape(ShapeRole patternRole) {
-				super("sets_container_to_($patternRole.patternRoleName)");
-				this.patternRole = patternRole;
+			public SetsContainerToShape(ShapeRole shapeRole) {
+				super("sets_container_to_'($shapeRole.roleName)'");
+				this.shapeRole = shapeRole;
 			}
 
-			public ShapeRole getPatternRole() {
-				return patternRole;
+			public ShapeRole getShapeRole() {
+				return shapeRole;
 			}
 
 			@Override
 			protected void fixAction() {
-				AddShape action = getObject();
-				action.setContainer(new DataBinding<DiagramContainerElement<?>>(patternRole.getRoleName()));
+				AddShape action = getValidable();
+				action.setContainer(new DataBinding<DiagramContainerElement<?>>(shapeRole.getRoleName()));
 			}
 		}
 
@@ -406,8 +417,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 			@Override
 			protected void fixAction() {
-				AddShape action = getObject();
-				action.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramEditionScheme.TARGET + "."
+				AddShape action = getValidable();
+				action.setContainer(new DataBinding<DiagramContainerElement<?>>(DropSchemeBindingModel.TARGET + "."
 						+ patternRole.getRoleName()));
 			}
 		}

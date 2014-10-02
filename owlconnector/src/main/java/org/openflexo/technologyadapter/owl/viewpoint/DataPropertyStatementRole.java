@@ -5,9 +5,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-import org.openflexo.foundation.validation.ValidationError;
-import org.openflexo.foundation.validation.ValidationIssue;
-import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.logging.FlexoLogger;
@@ -18,6 +15,9 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.technologyadapter.owl.model.DataPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 
@@ -79,7 +79,10 @@ public interface DataPropertyStatementRole extends StatementRole<DataPropertySta
 
 		@Override
 		public IFlexoOntologyDataProperty getDataProperty() {
-			return getVirtualModel().getOntologyDataProperty(_getDataPropertyURI());
+			if (getVirtualModel() != null) {
+				return getVirtualModel().getOntologyDataProperty(_getDataPropertyURI());
+			}
+			return null;
 		}
 
 		@Override
@@ -109,8 +112,8 @@ public interface DataPropertyStatementRole extends StatementRole<DataPropertySta
 		public ValidationIssue<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementRole> applyValidation(
 				DataPropertyStatementRole patternRole) {
 			if (patternRole.getDataProperty() == null) {
-				return new ValidationError<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementRole>(
-						this, patternRole, "pattern_role_does_not_define_any_valid_data_property");
+				return new ValidationError<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementRole>(this,
+						patternRole, "pattern_role_does_not_define_any_valid_data_property");
 			}
 			return null;
 		}

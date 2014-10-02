@@ -60,6 +60,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagra
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramElementsAndFlexoConceptInstancesInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramElementsInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeleteDiagramPaletteElementInitializer;
@@ -209,6 +210,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer(actionInitializer);
 		new CreateFMLControlledDiagramPaletteElementInitializer(actionInitializer);
 		new ExportFMLControlledDiagramToImageInitializer(actionInitializer);
+		new DeleteDiagramElementsAndFlexoConceptInstancesInitializer(actionInitializer);
 
 		// Set the screenshot builders
 		getTechnologyAdapter().setScreenshotBuilder(new DiagramScreenshotBuilder());

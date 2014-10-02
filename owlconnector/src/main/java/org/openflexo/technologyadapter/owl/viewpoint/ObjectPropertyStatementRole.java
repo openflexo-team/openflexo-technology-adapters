@@ -4,9 +4,6 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-import org.openflexo.foundation.validation.ValidationError;
-import org.openflexo.foundation.validation.ValidationIssue;
-import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.logging.FlexoLogger;
@@ -17,6 +14,9 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 
@@ -78,7 +78,10 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 
 		@Override
 		public IFlexoOntologyStructuralProperty getObjectProperty() {
-			return getVirtualModel().getOntologyObjectProperty(_getObjectPropertyURI());
+			if (getVirtualModel() != null) {
+				return getVirtualModel().getOntologyObjectProperty(_getObjectPropertyURI());
+			}
+			return null;
 		}
 
 		@Override
@@ -108,8 +111,8 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 		public ValidationIssue<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole> applyValidation(
 				ObjectPropertyStatementRole patternRole) {
 			if (patternRole.getObjectProperty() == null) {
-				return new ValidationError<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole>(
-						this, patternRole, "pattern_role_does_not_define_any_valid_object_property");
+				return new ValidationError<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole>(this,
+						patternRole, "pattern_role_does_not_define_any_valid_object_property");
 			}
 			return null;
 		}

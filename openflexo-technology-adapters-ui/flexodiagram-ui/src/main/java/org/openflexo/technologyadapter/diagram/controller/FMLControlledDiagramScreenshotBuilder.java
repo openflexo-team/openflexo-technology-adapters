@@ -21,26 +21,45 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import javax.swing.JComponent;
 
+import org.openflexo.fge.Drawing.ShapeNode;
+import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramShape;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
-public class FMLControlledDiagramScreenshotBuilder extends ScreenshotBuilder<Diagram> {
+public class FMLControlledDiagramScreenshotBuilder extends ScreenshotBuilder<DiagramElement<?>> {
 
 	private FMLControlledDiagramEditor editor;
+	
+	public FMLControlledDiagramScreenshotBuilder() {
+		super();
+	}
 	
 	public void setDrawing(FMLControlledDiagramEditor editor) {
 		this.editor = editor;
 	}
 
 	@Override
-	public String getScreenshotName(Diagram o) {
+	public String getScreenshotName(DiagramElement<?> o) {
 		return o.getName();
 	}
 	
 	@Override
-	public JComponent getScreenshotComponent(Diagram diagram) {
-		return editor.getDrawingView();
+	public JComponent getScreenshotComponent(DiagramElement<?> diagramElement) {
+		if(diagramElement instanceof Diagram){
+			setHasParent(false);
+			return editor.getDrawingView();
+		}else if(diagramElement instanceof DiagramShape){
+			setHasParent(true);
+			FMLControlledDiagramShape shape = editor.getDrawing().getFederatedShape((DiagramShape) diagramElement);
+			ShapeNode shapeNode = editor.getDrawing().getShapeNode(shape);
+			JShapeView<DiagramShape> shapeView = editor.getDrawingView().shapeViewForNode(shapeNode);
+			return shapeView;
+		}
+		return null;
 	}
 
 }

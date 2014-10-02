@@ -39,10 +39,11 @@ import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstanceObject;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
-import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
+import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
+import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -57,7 +58,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author sylvain
  * 
  */
-public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeAction, DropScheme, VirtualModelInstance> {
+public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeAction, DropScheme, VirtualModelInstance> {
 
 	private static final Logger logger = Logger.getLogger(DropSchemeAction.class.getPackage().getName());
 
@@ -198,7 +199,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 				gr.setY(dropLocation.getY());
 
 				// Temporary comment this portion of code if child shapes are declared inside this shape
-				if (!action.getFlexoRole().containsShapes() && action.getContainer().toString().equals(DiagramEditionScheme.TOP_LEVEL)) {
+				if (!action.getFlexoRole().containsShapes() && action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
 					ShapeBorder border = gr.getBorder();
 					ShapeBorder newBorder = gr.getFactory().makeShapeBorder(border);
 					boolean requireNewBorder = false;
@@ -254,7 +255,7 @@ public class DropSchemeAction extends DiagramEditionSchemeAction<DropSchemeActio
 
 	@Override
 	public Object getValue(BindingVariable variable) {
-		if (variable.getVariableName().equals(DiagramEditionScheme.TARGET) && _dropScheme.getTargetFlexoConcept() != null) {
+		if (variable.getVariableName().equals(DropSchemeBindingModel.TARGET) && _dropScheme.getTargetFlexoConcept() != null) {
 			/*if (getParent() instanceof DiagramShape) {
 				return ((DiagramShape) getParent()).getFlexoConceptInstance();
 			}*/

@@ -30,13 +30,10 @@ import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.binding.TypeUtils;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.validation.FixProposal;
-import org.openflexo.foundation.validation.ValidationError;
-import org.openflexo.foundation.validation.ValidationIssue;
-import org.openflexo.foundation.validation.ValidationRule;
 import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -44,6 +41,10 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.validation.FixProposal;
+import org.openflexo.model.validation.ValidationError;
+import org.openflexo.model.validation.ValidationIssue;
+import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
@@ -302,6 +303,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 
 	}
 
+	@DefineValidationRule
 	public static class GraphicalActionMustHaveASubject extends ValidationRule<GraphicalActionMustHaveASubject, GraphicalAction> {
 		public GraphicalActionMustHaveASubject() {
 			super(GraphicalAction.class, "graphical_action_must_have_a_subject");
@@ -339,13 +341,14 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 
 			@Override
 			protected void fixAction() {
-				GraphicalAction graphicalAction = getObject();
+				GraphicalAction graphicalAction = getValidable();
 				graphicalAction.setSubject(new DataBinding<DiagramElement<?>>(patternRole.getRoleName()));
 			}
 
 		}
 	}
 
+	@DefineValidationRule
 	public static class GraphicalActionMustDefineAValue extends BindingIsRequiredAndMustBeValid<GraphicalAction> {
 		public GraphicalActionMustDefineAValue() {
 			super("'value'_binding_is_not_valid", GraphicalAction.class);

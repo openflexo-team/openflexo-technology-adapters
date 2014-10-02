@@ -71,10 +71,8 @@
       <Dependancy idref="45" />
       <Dependancy id="46" componentName="virtualModelSelector" />
       <Dependancy idref="46" />
-      <Assignment id="47" mandatory="true" variable="component.context" />
       <Assignment id="48" mandatory="true" variable="component.viewPointLibrary" />
       <Assignment id="49" mandatory="true" variable="component.viewPoint" />
-      <Assignment id="50" mandatory="true" variable="component.project" />
       <Assignment id="51" mandatory="true" variable="component.selectableCondition" />
       <Assignment id="52" mandatory="true" value="data.adressedVirtualModel" variable="component.virtualModel" />
     </Custom>

@@ -13,7 +13,6 @@ import org.openflexo.antar.expr.NotSettableContextException;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
-import org.openflexo.foundation.validation.Validable;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.FlexoConceptObject;
@@ -25,6 +24,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.validation.Validable;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 
 /**
@@ -209,7 +209,10 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 
 		@Override
 		public BindingModel getBindingModel() {
-			return getFlexoConcept().getInspector().getBindingModel();
+			if (getFlexoConcept() != null && getFlexoConcept().getInspector() != null) {
+				return getFlexoConcept().getInspector().getBindingModel();
+			}
+			return null;
 		}
 
 		@Override

@@ -52,10 +52,11 @@ import org.openflexo.foundation.viewpoint.editionaction.DeleteAction;
 import org.openflexo.foundation.viewpoint.inspector.FlexoConceptInspector;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
-import org.openflexo.technologyadapter.diagram.fml.DiagramEditionScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
+import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
+import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
@@ -686,7 +687,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							newAddShape.setAssignation(new DataBinding<Object>(graphicalElementRole.getRoleName()));
 							if (mainFlexoRole) {
 								if (isTopLevel) {
-									newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramEditionScheme.TOP_LEVEL));
+									newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramBehaviourBindingModel.TOP_LEVEL));
 								} /*else {
 									newAddShape.setContainer(new DataBinding<DiagramElement<?>>(DiagramFlexoBehaviour.TARGET + "."
 											+ containerFlexoConcept.getPrimaryRepresentationRole().getRoleName()));
@@ -906,11 +907,11 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 				newAddShape.setAssignation(new DataBinding<Object>(graphicalElementFlexoRole.getRoleName()));
 				if (mainFlexoRole) {
 					if (editionScheme.isTopTarget()) {
-						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramEditionScheme.TOP_LEVEL));
+						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramBehaviourBindingModel.TOP_LEVEL));
 					} else {
 						ShapeRole containerRole = getVirtualModel().getFlexoConcept(editionScheme._getTarget())
 								.getFlexoRoles(ShapeRole.class).get(0);
-						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramEditionScheme.TARGET + "."
+						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DropSchemeBindingModel.TARGET + "."
 								+ containerRole.getRoleName()));
 					}
 				} else {

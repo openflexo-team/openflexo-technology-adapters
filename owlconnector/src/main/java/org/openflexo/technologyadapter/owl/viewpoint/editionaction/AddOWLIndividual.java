@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.owl.viewpoint.editionaction;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
+import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.ontology.DuplicateURIException;
@@ -31,6 +32,7 @@ import org.openflexo.foundation.view.action.FlexoBehaviourAction;
 import org.openflexo.foundation.viewpoint.editionaction.AddIndividual;
 import org.openflexo.foundation.viewpoint.editionaction.DataPropertyAssertion;
 import org.openflexo.foundation.viewpoint.editionaction.ObjectPropertyAssertion;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -155,4 +157,18 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndivid
 		}
 
 	}
+
+	@DefineValidationRule
+	public static class IndividualNameBindingIsRequiredAndMustBeValid extends BindingIsRequiredAndMustBeValid<AddOWLIndividual> {
+		public IndividualNameBindingIsRequiredAndMustBeValid() {
+			super("'individual_name'_binding_is_required_and_must_be_valid", AddOWLIndividual.class);
+		}
+
+		@Override
+		public DataBinding<String> getBinding(AddOWLIndividual object) {
+			return object.getIndividualName();
+		}
+
+	}
+
 }

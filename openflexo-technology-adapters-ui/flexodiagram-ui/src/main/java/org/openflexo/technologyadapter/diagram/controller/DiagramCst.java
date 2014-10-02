@@ -48,6 +48,8 @@ public class DiagramCst {
 			.locateResource("Fib/Dialog/DeleteDiagramElementsDialog.fib");
 	public static Resource REINDEX_DIAGRAM_ELEMENTS_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/ReindexDiagramElementsDialog.fib");
+	public static Resource DELETE_DIAGRAM_ELEMENTS_AND_FLEXO_CONCEPT_INSTANCES_DIALOG_FIB = ResourceLocator
+			.locateResource("Fib/Dialog/DeleteDiagramElementsAndFlexoConceptInstancesDialog.fib");
 
 	public static Resource DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/DeclareShapeInFlexoConceptDialog.fib");

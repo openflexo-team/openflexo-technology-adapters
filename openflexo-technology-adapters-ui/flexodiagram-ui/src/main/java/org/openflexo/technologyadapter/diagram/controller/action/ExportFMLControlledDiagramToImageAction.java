@@ -32,54 +32,61 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.FlexoGUIAction;
-import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.foundation.view.VirtualModelInstanceNature;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.FMLControlledDiagramScreenshotBuilder;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramDrawing;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramEditor;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramElement;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
-import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
-import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 /**
  * @author vincent leilde
  * 
  */
-public class ExportFMLControlledDiagramToImageAction extends FlexoGUIAction<ExportFMLControlledDiagramToImageAction, VirtualModelInstance, VirtualModelInstance> {
+public class ExportFMLControlledDiagramToImageAction extends
+		FlexoGUIAction<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance> {
 
 	private static final Logger logger = Logger.getLogger(ExportFMLControlledDiagramToImageAction.class.getPackage().getName());
 
-	public static final FlexoActionType<ExportFMLControlledDiagramToImageAction, VirtualModelInstance, VirtualModelInstance> actionType = new FlexoActionType<ExportFMLControlledDiagramToImageAction, VirtualModelInstance, VirtualModelInstance>(
+	public static final FlexoActionType<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance> actionType = new FlexoActionType<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance>(
 			"export_diagram_to_image", FlexoActionType.docGroup) {
 
 		@Override
-		public boolean isEnabledForSelection(VirtualModelInstance object, Vector<VirtualModelInstance> globalSelection) {
+		public boolean isEnabledForSelection(FlexoConceptInstance object, Vector<FlexoConceptInstance> globalSelection) {
 			return true;
 		}
 
 		@Override
-		public boolean isVisibleForSelection(VirtualModelInstance object, Vector<VirtualModelInstance> globalSelection) {
-			return object.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
+		public boolean isVisibleForSelection(FlexoConceptInstance object, Vector<FlexoConceptInstance> globalSelection) {
+			if (object instanceof VirtualModelInstance) {
+				return ((VirtualModelInstance) object).hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
+			}
+			else {
+				if (object != null) {
+					VirtualModelInstance vmi = object.getVirtualModelInstance();
+					if (vmi != null)
+						return vmi.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
+				}
+				return false;
+			}
 		}
 
 		@Override
-		public ExportFMLControlledDiagramToImageAction makeNewAction(VirtualModelInstance focusedObject, Vector<VirtualModelInstance> globalSelection,
-				FlexoEditor editor) {
+		public ExportFMLControlledDiagramToImageAction makeNewAction(FlexoConceptInstance focusedObject,
+				Vector<FlexoConceptInstance> globalSelection, FlexoEditor editor) {
 			return new ExportFMLControlledDiagramToImageAction(focusedObject, globalSelection, editor);
 		}
 
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(ExportFMLControlledDiagramToImageAction.actionType, VirtualModelInstance.class);
+		FlexoObjectImpl.addActionForClass(ExportFMLControlledDiagramToImageAction.actionType, FlexoConceptInstance.class);
 	}
 
 	/**
@@ -88,7 +95,8 @@ public class ExportFMLControlledDiagramToImageAction extends FlexoGUIAction<Expo
 	 * @param globalSelection
 	 * @param editor
 	 */
-	protected ExportFMLControlledDiagramToImageAction(VirtualModelInstance focusedObject, Vector<VirtualModelInstance> globalSelection, FlexoEditor editor) {
+	protected ExportFMLControlledDiagramToImageAction(FlexoConceptInstance focusedObject, Vector<FlexoConceptInstance> globalSelection,
+			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
@@ -108,16 +116,16 @@ public class ExportFMLControlledDiagramToImageAction extends FlexoGUIAction<Expo
 					int result = JOptionPane.showConfirmDialog(this, "The file exists, overwrite?", "Existing file",
 							JOptionPane.YES_NO_CANCEL_OPTION);
 					switch (result) {
-					case JOptionPane.YES_OPTION:
-						super.approveSelection();
-						return;
-					case JOptionPane.NO_OPTION:
-						return;
-					case JOptionPane.CLOSED_OPTION:
-						return;
-					case JOptionPane.CANCEL_OPTION:
-						cancelSelection();
-						return;
+						case JOptionPane.YES_OPTION:
+							super.approveSelection();
+							return;
+						case JOptionPane.NO_OPTION:
+							return;
+						case JOptionPane.CLOSED_OPTION:
+							return;
+						case JOptionPane.CANCEL_OPTION:
+							cancelSelection();
+							return;
 					}
 				}
 				if (!f.exists() && getDialogType() == SAVE_DIALOG) {
@@ -144,39 +152,48 @@ public class ExportFMLControlledDiagramToImageAction extends FlexoGUIAction<Expo
 					dest = new File(chooser.getSelectedFile().getAbsolutePath() + "." + type.getExtension());
 					imageType = type;
 				}
-				/*if (!chooser.getSelectedFile().getName().toLowerCase().endsWith("."+type.getExtension())) {
-					dest = new File(chooser.getSelectedFile().getAbsolutePath() + "."+type.getExtension());
-					imageType = type;
-				}*/
 			}
-
-			/*if(imageType!=null){
-				chooser.getFileFilter()
-			}
-			if(imageType==null){
-				dest = chooser.getSelectedFile();
-			}	*/
 		}
 		if (dest == null) {
 			return false;
 		}
 		if (saveScreenshot() != null) {
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
 
+	private DiagramTechnologyAdapter getDiagramTechnologyAdapter() {
+		return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
+	}
+
 	public ScreenshotImage<DiagramElement> getScreenshot() {
-	
-		FMLControlledDiagramScreenshotBuilder builder = (FMLControlledDiagramScreenshotBuilder) getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getFMLControlledDiagramScreenshotBuilder();
-		builder.setDrawing(new FMLControlledDiagramEditor(getFocusedObject(),true, null, null));
-		ScreenshotImage screenshotImage = builder.getImage(FMLControlledDiagramVirtualModelInstanceNature.getDiagram(getFocusedObject()));
-		
-		if(this.screenshot==null ||this.screenshot != screenshotImage){
+		ScreenshotImage screenshotImage = null;
+		FMLControlledDiagramEditor editor = null;
+		FMLControlledDiagramScreenshotBuilder builder = (FMLControlledDiagramScreenshotBuilder) getDiagramTechnologyAdapter()
+				.getFMLControlledDiagramElementScreenshotBuilder();
+		if (getFocusedObject() instanceof VirtualModelInstance) {
+			builder.setDrawing(new FMLControlledDiagramEditor((VirtualModelInstance) getFocusedObject(), true, null, null));
+			screenshotImage = builder.getImage(FMLControlledDiagramVirtualModelInstanceNature
+					.getDiagram((VirtualModelInstance) getFocusedObject()));
+		}
+		else if (getFocusedObject() instanceof FlexoConceptInstance) {
+			editor = new FMLControlledDiagramEditor(getFocusedObject().getVirtualModelInstance(), true, null, null);
+			FMLControlledDiagramElement element = editor.getDrawing().getFMLControlledDiagramElements(getFocusedObject()).get(0);
+			builder.setDrawing(editor);
+			screenshotImage = builder.getImage(element.getDiagramElement());
+		}
+		else {
+			logger.warning("Could not create a screenshot for " + getFocusedObject().getStringRepresentation());
+			return null;
+		}
+
+		if (this.screenshot == null || this.screenshot != screenshotImage) {
 			setScreenshot(screenshotImage);
 		}
-		
+
 		return this.screenshot;
 	}
 

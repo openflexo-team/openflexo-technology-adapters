@@ -66,218 +66,179 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObj
 @ModelEntity
 @ImplementationClass(AddEMFObjectIndividual.AddEMFObjectIndividualImpl.class)
 @XMLElement
-public interface AddEMFObjectIndividual extends
-        AddIndividual<EMFModelSlot, EMFObjectIndividual> {
+public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFObjectIndividual> {
 
-    @PropertyIdentifier(type = DataBinding.class)
-    public static final String CONTAINER_KEY = "container";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String CONTAINER_KEY = "container";
 
-    @Getter(value = CONTAINER_KEY)
-    @XMLAttribute
-    public DataBinding<List> getContainer();
+	@Getter(value = CONTAINER_KEY)
+	@XMLAttribute
+	public DataBinding<List> getContainer();
 
-    @Setter(CONTAINER_KEY)
-    public void setContainer(DataBinding<List> containerReference);
+	@Setter(CONTAINER_KEY)
+	public void setContainer(DataBinding<List> containerReference);
 
-    public static abstract class AddEMFObjectIndividualImpl extends
-            AddIndividualImpl<EMFModelSlot, EMFObjectIndividual> implements
-            AddEMFObjectIndividual {
+	public static abstract class AddEMFObjectIndividualImpl extends AddIndividualImpl<EMFModelSlot, EMFObjectIndividual> implements
+			AddEMFObjectIndividual {
 
-        private static final Logger logger = Logger
-                .getLogger(AddEMFObjectIndividual.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(AddEMFObjectIndividual.class.getPackage().getName());
 
-        // Binding to host the container specification for the individual to be
-        // created
-        private DataBinding<List> container;
+		// Binding to host the container specification for the individual to be
+		// created
+		private DataBinding<List> container;
 
-        public AddEMFObjectIndividualImpl() {
-            super();
-            container = new DataBinding<List>(this, List.class,
-                    DataBinding.BindingDefinitionType.GET_SET);
-        }
+		public AddEMFObjectIndividualImpl() {
+			super();
+		}
 
-        @Override
-        public EMFClassClass getOntologyClass() {
-            return (EMFClassClass) super.getOntologyClass();
-        }
+		@Override
+		public EMFClassClass getOntologyClass() {
+			return (EMFClassClass) super.getOntologyClass();
+		}
 
-        public void setOntologyClass(EMFClassClass ontologyClass) {
-            super.setOntologyClass(ontologyClass);
-        }
+		public void setOntologyClass(EMFClassClass ontologyClass) {
+			super.setOntologyClass(ontologyClass);
+		}
 
-        @Override
-        public Class<EMFObjectIndividual> getOntologyIndividualClass() {
-            return EMFObjectIndividual.class;
-        }
+		@Override
+		public Class<EMFObjectIndividual> getOntologyIndividualClass() {
+			return EMFObjectIndividual.class;
+		}
 
-        @Override
-        public EMFObjectIndividual performAction(FlexoBehaviourAction action) {
-            EMFObjectIndividual result = null;
-            List container = null;
-            TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(action);
-            if (modelSlotInstance.getResourceData() != null) {
-                IFlexoOntologyClass aClass = getOntologyClass();
-                if (aClass instanceof EMFClassClass) {
-                    EMFClassClass emfClassClass = (EMFClassClass) aClass;
-                    // Create EMF Object
-                    EObject eObject = EcoreUtil.create(emfClassClass
-                            .getObject());
-                    // put it in its container
-                    try {
-                        container = getContainer().getBindingValue(action);
-                    } catch (TypeMismatchException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (NullReferenceException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
+		@Override
+		public EMFObjectIndividual performAction(FlexoBehaviourAction action) {
+			EMFObjectIndividual result = null;
+			List container = null;
+			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(action);
+			if (modelSlotInstance.getResourceData() != null) {
+				IFlexoOntologyClass aClass = getOntologyClass();
+				if (aClass instanceof EMFClassClass) {
+					EMFClassClass emfClassClass = (EMFClassClass) aClass;
+					// Create EMF Object
+					EObject eObject = EcoreUtil.create(emfClassClass.getObject());
+					// put it in its container
+					try {
+						container = getContainer().getBindingValue(action);
+					} catch (TypeMismatchException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
-                    // Instanciate Wrapper.
-                    result = modelSlotInstance
-                            .getAccessedResourceData()
-                            .getConverter()
-                            .convertObjectIndividual(
-                                    modelSlotInstance.getAccessedResourceData(),
-                                    eObject);
+					// Instanciate Wrapper.
+					result = modelSlotInstance.getAccessedResourceData().getConverter()
+							.convertObjectIndividual(modelSlotInstance.getAccessedResourceData(), eObject);
 
-                    // Put it in its container
-                    if (container == null) {
-                        modelSlotInstance.getAccessedResourceData()
-                                .getEMFResource().getContents().add(eObject);
-                    } else {
-                        // TODO This needs strong testing
-                        container.add(result);
-                        result.setContainPropertyValue((EMFObjectIndividualReferenceObjectPropertyValueAsList) container);
-                    }
+					// Put it in its container
+					if (container == null) {
+						modelSlotInstance.getAccessedResourceData().getEMFResource().getContents().add(eObject);
+					} else {
+						// TODO This needs strong testing
+						container.add(result);
+						result.setContainPropertyValue((EMFObjectIndividualReferenceObjectPropertyValueAsList) container);
+					}
 
-                    for (DataPropertyAssertion dataPropertyAssertion : getDataAssertions()) {
-                        if (dataPropertyAssertion.evaluateCondition(action)) {
-                            logger.info("DataPropertyAssertion="
-                                    + dataPropertyAssertion);
-                            EMFAttributeDataProperty property = (EMFAttributeDataProperty) dataPropertyAssertion
-                                    .getOntologyProperty();
-                            logger.info("Property=" + property);
-                            // Vincent: force to recompute the declared
-                            // type(since it is automatically compute from the
-                            // uri).
-                            // Not sure of this, when loading a view/viewpoint,
-                            // the declared type is seek from the ontology
-                            // but while the virtual model is null, the declared
-                            // type is always Object.(see
-                            // DataPropertyAssertion).
-                            // In the case we manipulate IntegerParameters in
-                            // openflexo connected with int in EMF, then value
-                            // of Integer is
-                            // a
-                            // Long, producing a cast exception.
-                            dataPropertyAssertion.getValue().setDeclaredType(
-                                    dataPropertyAssertion.getType());
-                            Object value = dataPropertyAssertion
-                                    .getValue(action);
-                            logger.info("Value=" + value);
-                            // Set Data Attribute in EMF
-                            result.getObject()
-                                    .eSet(property.getObject(), value);
-                        }
-                    }
-                    for (ObjectPropertyAssertion objectPropertyAssertion : getObjectAssertions()) {
-                        if (objectPropertyAssertion.evaluateCondition(action)) {
-                            logger.info("ObjectPropertyAssertion="
-                                    + objectPropertyAssertion);
-                            if (objectPropertyAssertion.getOntologyProperty() instanceof EMFAttributeObjectProperty) {
-                                EMFAttributeObjectProperty property = (EMFAttributeObjectProperty) objectPropertyAssertion
-                                        .getOntologyProperty();
-                                logger.info("Property=" + property);
-                                Object value = objectPropertyAssertion
-                                        .getValue(action);
-                                logger.info("Value=" + value);
-                                // Set Data Attribute in EMF
-                                if (value instanceof AEMFMetaModelObjectImpl) {
-                                    result.getObject()
-                                            .eSet(property.getObject(),
-                                                    ((AEMFMetaModelObjectImpl<?>) value)
-                                                            .getObject());
-                                } else {
-                                    result.getObject().eSet(
-                                            property.getObject(), value);
-                                }
-                            } else if (objectPropertyAssertion
-                                    .getOntologyProperty() instanceof EMFReferenceObjectProperty) {
-                                EMFReferenceObjectProperty property = (EMFReferenceObjectProperty) objectPropertyAssertion
-                                        .getOntologyProperty();
-                                logger.info("Property=" + property);
-                                Object value = objectPropertyAssertion
-                                        .getValue(action);
-                                logger.info("Value=" + value);
-                                // Set Data Attribute in EMF
-                                if (value instanceof AEMFMetaModelObjectImpl) {
-                                    result.getObject()
-                                            .eSet(property.getObject(),
-                                                    ((AEMFMetaModelObjectImpl<?>) value)
-                                                            .getObject());
-                                } else {
-                                    if (value instanceof EMFObjectIndividual) {
-                                        ((EMFObjectIndividual) result)
-                                                .getObject()
-                                                .eSet(property.getObject(),
-                                                        ((EMFObjectIndividual) value)
-                                                                .getObject());
-                                    } else {
-                                        ((EMFObjectIndividual) result)
-                                                .getObject().eSet(
-                                                        property.getObject(),
-                                                        value);
-                                    }
-                                }
-                            } else {
-                                logger.warning("Unexpected "
-                                        + objectPropertyAssertion
-                                                .getOntologyProperty()
-                                        + " of "
-                                        + (objectPropertyAssertion
-                                                .getOntologyProperty() != null ? objectPropertyAssertion
-                                                .getOntologyProperty()
-                                                .getClass() : null));
-                            }
-                        }
-                    }
-                    modelSlotInstance.getResourceData().setIsModified();
-                    logger.info("********* Added individual "
-                            + result.getName() + " as " + aClass.getName());
-                } else {
-                    logger.warning("Not allowed to create new Enum values. getOntologyClass()="
-                            + getOntologyClass());
-                    return null;
-                }
-            } else {
-                logger.warning("Model slot not correctly initialised : model is null");
-                return null;
-            }
+					for (DataPropertyAssertion dataPropertyAssertion : getDataAssertions()) {
+						if (dataPropertyAssertion.evaluateCondition(action)) {
+							logger.info("DataPropertyAssertion=" + dataPropertyAssertion);
+							EMFAttributeDataProperty property = (EMFAttributeDataProperty) dataPropertyAssertion.getOntologyProperty();
+							logger.info("Property=" + property);
+							// Vincent: force to recompute the declared
+							// type(since it is automatically compute from the
+							// uri).
+							// Not sure of this, when loading a view/viewpoint,
+							// the declared type is seek from the ontology
+							// but while the virtual model is null, the declared
+							// type is always Object.(see
+							// DataPropertyAssertion).
+							// In the case we manipulate IntegerParameters in
+							// openflexo connected with int in EMF, then value
+							// of Integer is
+							// a
+							// Long, producing a cast exception.
+							dataPropertyAssertion.getValue().setDeclaredType(dataPropertyAssertion.getType());
+							Object value = dataPropertyAssertion.getValue(action);
+							logger.info("Value=" + value);
+							// Set Data Attribute in EMF
+							result.getObject().eSet(property.getObject(), value);
+						}
+					}
+					for (ObjectPropertyAssertion objectPropertyAssertion : getObjectAssertions()) {
+						if (objectPropertyAssertion.evaluateCondition(action)) {
+							logger.info("ObjectPropertyAssertion=" + objectPropertyAssertion);
+							if (objectPropertyAssertion.getOntologyProperty() instanceof EMFAttributeObjectProperty) {
+								EMFAttributeObjectProperty property = (EMFAttributeObjectProperty) objectPropertyAssertion
+										.getOntologyProperty();
+								logger.info("Property=" + property);
+								Object value = objectPropertyAssertion.getValue(action);
+								logger.info("Value=" + value);
+								// Set Data Attribute in EMF
+								if (value instanceof AEMFMetaModelObjectImpl) {
+									result.getObject().eSet(property.getObject(), ((AEMFMetaModelObjectImpl<?>) value).getObject());
+								} else {
+									result.getObject().eSet(property.getObject(), value);
+								}
+							} else if (objectPropertyAssertion.getOntologyProperty() instanceof EMFReferenceObjectProperty) {
+								EMFReferenceObjectProperty property = (EMFReferenceObjectProperty) objectPropertyAssertion
+										.getOntologyProperty();
+								logger.info("Property=" + property);
+								Object value = objectPropertyAssertion.getValue(action);
+								logger.info("Value=" + value);
+								// Set Data Attribute in EMF
+								if (value instanceof AEMFMetaModelObjectImpl) {
+									result.getObject().eSet(property.getObject(), ((AEMFMetaModelObjectImpl<?>) value).getObject());
+								} else {
+									if (value instanceof EMFObjectIndividual) {
+										result.getObject().eSet(property.getObject(), ((EMFObjectIndividual) value).getObject());
+									} else {
+										result.getObject().eSet(property.getObject(), value);
+									}
+								}
+							} else {
+								logger.warning("Unexpected "
+										+ objectPropertyAssertion.getOntologyProperty()
+										+ " of "
+										+ (objectPropertyAssertion.getOntologyProperty() != null ? objectPropertyAssertion
+												.getOntologyProperty().getClass() : null));
+							}
+						}
+					}
+					modelSlotInstance.getResourceData().setIsModified();
+					logger.info("********* Added individual " + result.getName() + " as " + aClass.getName());
+				} else {
+					logger.warning("Not allowed to create new Enum values. getOntologyClass()=" + getOntologyClass());
+					return null;
+				}
+			} else {
+				logger.warning("Model slot not correctly initialised : model is null");
+				return null;
+			}
 
-            return result;
-        }
+			return result;
+		}
 
-        public DataBinding<List> getContainer() {
-            if (container == null) {
-                container = new DataBinding<List>(this, List.class,
-                        DataBinding.BindingDefinitionType.GET_SET);
-            }
-            return container;
-        }
+		@Override
+		public DataBinding<List> getContainer() {
+			if (container == null) {
+				container = new DataBinding<List>(this, List.class, DataBinding.BindingDefinitionType.GET_SET);
+			}
+			return container;
+		}
 
-        public void setContainer(DataBinding<List> containerReference) {
-            if (containerReference != null) {
-                containerReference.setOwner(this);
-                containerReference.setBindingName("container");
-                containerReference.setDeclaredType(List.class);
-                containerReference
-                        .setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
-            }
-            this.container = containerReference;
-        }
-    }
+		@Override
+		public void setContainer(DataBinding<List> containerReference) {
+			if (containerReference != null) {
+				containerReference.setOwner(this);
+				containerReference.setBindingName("container");
+				containerReference.setDeclaredType(List.class);
+				containerReference.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET_SET);
+			}
+			this.container = containerReference;
+		}
+	}
 }

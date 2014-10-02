@@ -42,6 +42,7 @@ import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
@@ -71,7 +72,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	private ScreenshotBuilder<DiagramShape> diagramShapeScreenshotBuilder;
 	
-	private ScreenshotBuilder<Diagram> fmlDiagramScreenshotBuilder;
+	private ScreenshotBuilder<DiagramElement<?>> fmlDiagramElementScreenshotBuilder;
 
 	public DiagramTechnologyAdapter() throws TechnologyAdapterInitializationException {
 	}
@@ -359,12 +360,12 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	
-	public ScreenshotBuilder<Diagram> getFMLControlledDiagramScreenshotBuilder(){
-		return fmlDiagramScreenshotBuilder;
+	public ScreenshotBuilder<DiagramElement<?>> getFMLControlledDiagramElementScreenshotBuilder(){
+		return fmlDiagramElementScreenshotBuilder;
 	}
 	
-	public void setFMLControlledDiagramScreenshotBuilder(ScreenshotBuilder<Diagram> diagram){
-		this.fmlDiagramScreenshotBuilder = diagram;
+	public void setFMLControlledDiagramScreenshotBuilder(ScreenshotBuilder<DiagramElement<?>> diagramElement){
+		this.fmlDiagramElementScreenshotBuilder = diagramElement;
 	}
 	
 	// Override when required

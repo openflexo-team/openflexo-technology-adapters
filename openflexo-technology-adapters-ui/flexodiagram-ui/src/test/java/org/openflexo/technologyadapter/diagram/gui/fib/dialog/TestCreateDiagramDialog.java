@@ -10,9 +10,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.fib.swing.FIBJPanel;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.fib.utils.OpenflexoFIBTestCaseWithProjectAtRunTime;
-import org.openflexo.fib.view.widget.DefaultFIBCustomComponent;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.rm.Resource;
@@ -71,7 +71,7 @@ public class TestCreateDiagramDialog extends OpenflexoFIBTestCaseWithProjectAtRu
 
         FlexoProject project = editor.getProject();
         CreateDiagram createDiagram = CreateDiagram.actionType.makeNewAction(project.getRootFolder(), null, editor);
-        DefaultFIBCustomComponent<CreateDiagram> widget = instanciateFIB(fibResource, createDiagram, CreateDiagram.class);
+        FIBJPanel<CreateDiagram> widget = instanciateFIB(fibResource, createDiagram, CreateDiagram.class);
 
         gcDelegate.addTab("CreateDiagram", widget.getController());
     }

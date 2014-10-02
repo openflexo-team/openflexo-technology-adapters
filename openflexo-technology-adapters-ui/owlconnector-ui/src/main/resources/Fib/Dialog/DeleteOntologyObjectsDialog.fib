@@ -20,25 +20,25 @@
     <Button action="controller.cancelAndDispose()" buttonType="Trigger" label="cancel" constraints="flow(index=1)" readOnly="false" manageDynamicModel="false" />
   </Panel>
   <LocalizedDictionary>
-    <Localized key="validate" lang="English">Validate</Localized>
-    <Localized key="cancel" lang="English">Cancel</Localized>
-    <Localized key="validate" lang="French">Valider</Localized>
-    <Localized key="cancel" lang="French">Annuler</Localized>
-    <Localized key="validate" lang="Dutch">Validate</Localized>
-    <Localized key="cancel" lang="Dutch">Cancel</Localized>
-    <Localized key="name" lang="English">Name</Localized>
-    <Localized key="type" lang="English">Type</Localized>
-    <Localized key="delete" lang="English">Delete</Localized>
-    <Localized key="name" lang="French">Nom</Localized>
-    <Localized key="type" lang="French">Type</Localized>
-    <Localized key="delete" lang="French">Supprimer</Localized>
-    <Localized key="name" lang="Dutch">Name</Localized>
-    <Localized key="type" lang="Dutch">Type</Localized>
-    <Localized key="delete" lang="Dutch">Delete</Localized>
-    <Localized key="confirmation_text" lang="French">Voulez vous vraiment supprimer ces concepts ? (Cette opération est irréversible.)</Localized>
-    <Localized key="delete_ontology_objects" lang="French">Supprimer des concepts ontologiques</Localized>
-    <Localized key="confirmation_text" lang="English">Do you really want to delete those ontologic concepts ? (this operation cannot be undone)</Localized>
-    <Localized key="delete_ontology_objects" lang="English">Delete ontologic concepts</Localized>
+    <Localized key="validate" lang="English" value="Validate" />
+    <Localized key="cancel" lang="English" value="Cancel" />
+    <Localized key="validate" lang="French" value="Valider" />
+    <Localized key="cancel" lang="French" value="Annuler" />
+    <Localized key="validate" lang="Dutch" value="Validate" />
+    <Localized key="cancel" lang="Dutch" value="Cancel" />
+    <Localized key="name" lang="English" value="Name" />
+    <Localized key="type" lang="English" value="Type" />
+    <Localized key="delete" lang="English" value="Delete" />
+    <Localized key="name" lang="French" value="Nom" />
+    <Localized key="type" lang="French" value="Type" />
+    <Localized key="delete" lang="French" value="Supprimer" />
+    <Localized key="name" lang="Dutch" value="Name" />
+    <Localized key="type" lang="Dutch" value="Type" />
+    <Localized key="delete" lang="Dutch" value="Delete" />
+    <Localized key="confirmation_text" lang="French" value="Voulez vous vraiment supprimer ces concepts ? (Cette opération est irréversible.)" />
+    <Localized key="delete_ontology_objects" lang="French" value="Supprimer des concepts ontologiques" />
+    <Localized key="confirmation_text" lang="English" value="Do you really want to delete those ontologic concepts ? (this operation cannot be undone)" />
+    <Localized key="delete_ontology_objects" lang="English" value="Delete ontologic concepts" />
   </LocalizedDictionary>
 </Panel>
 

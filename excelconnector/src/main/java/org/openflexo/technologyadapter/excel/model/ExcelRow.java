@@ -2,6 +2,7 @@ package org.openflexo.technologyadapter.excel.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
@@ -14,9 +15,11 @@ import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
  */
 public class ExcelRow extends ExcelObject {
 
+	private static final Logger logger = Logger.getLogger(ExcelRow.class.getPackage().getName());
+
 	private Row row;
-	private ExcelSheet excelSheet;
-	private List<ExcelCell> excelCells;
+	private final ExcelSheet excelSheet;
+	private final List<ExcelCell> excelCells;
 
 	public Row getRow() {
 		return row;
@@ -55,7 +58,7 @@ public class ExcelRow extends ExcelObject {
 
 	@Override
 	public String getName() {
-		return "row."+getRowNum();
+		return "row." + getRowNum();
 	}
 
 	public int getRowIndex() {
@@ -83,7 +86,7 @@ public class ExcelRow extends ExcelObject {
 		}
 		return getExcelCells().get(columnIndex);
 	}
-	
+
 	public ExcelCell getCellAtExcelColumn(ExcelColumn column) {
 		if (column.getColNumber() < 0) {
 			return null;
@@ -94,10 +97,26 @@ public class ExcelRow extends ExcelObject {
 		}
 		return getExcelCells().get(column.getColNumber());
 	}
-	
+
 	@Override
 	public String getUri() {
-		return getExcelSheet().getUri()+"/"+getName();
+		return getExcelSheet().getUri() + "/" + getName();
+	}
+
+	@Override
+	public boolean delete(Object... context) {
+		try {
+			for (ExcelCell e : excelCells) {
+				e.delete(context);
+			}
+			getExcelSheet().getSheet().removeRow(this.getRow());
+			row = null;
+		} catch (Exception e) {
+			logger.warning("Unable to remove Excel Row");
+			return false;
+		}
+		return true;
+
 	}
 
 }
