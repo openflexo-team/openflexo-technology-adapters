@@ -20,6 +20,7 @@
 package org.openflexo.technologyadapter.diagram.fml.binding;
 
 import java.beans.PropertyChangeEvent;
+import java.lang.reflect.Type;
 
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
@@ -40,15 +41,25 @@ public class LinkSchemeBindingModel extends DiagramBehaviourBindingModel {
 	public static final String FROM_TARGET = "fromTarget";
 	public static final String TO_TARGET = "toTarget";
 
-	public LinkSchemeBindingModel(LinkScheme linkScheme) {
+	public LinkSchemeBindingModel(final LinkScheme linkScheme) {
 		super(linkScheme);
 
 		fromTargetBindingVariable = new BindingVariable(LinkSchemeBindingModel.FROM_TARGET,
 				linkScheme.getFromTargetFlexoConcept() != null ? FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme
-						.getFromTargetFlexoConcept()) : DiagramShape.class);
+						.getFromTargetFlexoConcept()) : DiagramShape.class) {
+			@Override
+			public Type getType() {
+				return FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme.getFromTargetFlexoConcept());
+			}
+		};
 		toTargetBindingVariable = new BindingVariable(LinkSchemeBindingModel.TO_TARGET,
 				linkScheme.getToTargetFlexoConcept() != null ? FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme
-						.getToTargetFlexoConcept()) : DiagramShape.class);
+						.getToTargetFlexoConcept()) : DiagramShape.class) {
+			@Override
+			public Type getType() {
+				return FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme.getToTargetFlexoConcept());
+			}
+		};
 
 		addToBindingVariables(fromTargetBindingVariable);
 		addToBindingVariables(toTargetBindingVariable);
@@ -67,7 +78,8 @@ public class LinkSchemeBindingModel extends DiagramBehaviourBindingModel {
 				// The LinkScheme changes it's FROM target's FlexoConcept
 				fromTargetBindingVariable.setType(getFlexoBehaviour().getFromTargetFlexoConcept() != null ? FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getFlexoBehaviour().getFromTargetFlexoConcept()) : DiagramShape.class);
-			} else if (evt.getPropertyName().equals(LinkScheme.TO_TARGET_FLEXO_CONCEPT_KEY)) {
+			}
+			else if (evt.getPropertyName().equals(LinkScheme.TO_TARGET_FLEXO_CONCEPT_KEY)) {
 				// The LinkScheme changes it's TO target's FlexoConcept
 				toTargetBindingVariable.setType(getFlexoBehaviour().getToTargetFlexoConcept() != null ? FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getFlexoBehaviour().getToTargetFlexoConcept()) : DiagramShape.class);
