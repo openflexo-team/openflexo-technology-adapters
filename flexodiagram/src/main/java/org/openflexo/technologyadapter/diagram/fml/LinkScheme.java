@@ -171,19 +171,18 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 
 		@Override
 		public FlexoConcept getFromTargetFlexoConcept() {
-			if (StringUtils.isEmpty(_getFromTarget())) {
-				return null;
+
+			FlexoConcept returned = null;
+
+			if (!StringUtils.isEmpty(_getFromTarget()) && getVirtualModel() != null) {
+				returned = getVirtualModel().getFlexoConcept(_getFromTarget());
 			}
-			if (getVirtualModel() != null) {
-				FlexoConcept returned = getVirtualModel().getFlexoConcept(_getFromTarget());
-				if (lastKnownFromTargetFlexoConcept != returned) {
-					FlexoConcept oldValue = lastKnownFromTargetFlexoConcept;
-					lastKnownFromTargetFlexoConcept = returned;
-					getPropertyChangeSupport().firePropertyChange(FROM_TARGET_FLEXO_CONCEPT_KEY, oldValue, returned);
-				}
-				return returned;
+			if (lastKnownFromTargetFlexoConcept != returned) {
+				FlexoConcept oldValue = lastKnownFromTargetFlexoConcept;
+				lastKnownFromTargetFlexoConcept = returned;
+				getPropertyChangeSupport().firePropertyChange(FROM_TARGET_FLEXO_CONCEPT_KEY, oldValue, returned);
 			}
-			return null;
+			return returned;
 		}
 
 		@Override
@@ -193,22 +192,17 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 
 		@Override
 		public FlexoConcept getToTargetFlexoConcept() {
-			if (StringUtils.isEmpty(_getToTarget())) {
-				return null;
+
+			FlexoConcept returned = null;
+			if (!StringUtils.isEmpty(_getToTarget()) && getVirtualModel() != null) {
+				returned = getVirtualModel().getFlexoConcept(_getToTarget());
 			}
-			if (getVirtualModel() != null) {
-				return getVirtualModel().getFlexoConcept(_getToTarget());
+			if (lastKnownToTargetFlexoConcept != returned) {
+				FlexoConcept oldValue = lastKnownToTargetFlexoConcept;
+				lastKnownToTargetFlexoConcept = returned;
+				getPropertyChangeSupport().firePropertyChange(TO_TARGET_FLEXO_CONCEPT_KEY, oldValue, returned);
 			}
-			if (getViewPointLibrary() != null) {
-				FlexoConcept returned = getViewPointLibrary().getFlexoConcept(_getToTarget());
-				if (lastKnownToTargetFlexoConcept != returned) {
-					FlexoConcept oldValue = lastKnownToTargetFlexoConcept;
-					lastKnownToTargetFlexoConcept = returned;
-					getPropertyChangeSupport().firePropertyChange(TO_TARGET_FLEXO_CONCEPT_KEY, oldValue, returned);
-				}
-				return returned;
-			}
-			return null;
+			return returned;
 		}
 
 		@Override
