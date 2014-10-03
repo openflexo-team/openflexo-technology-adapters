@@ -20,7 +20,6 @@
 package org.openflexo.technologyadapter.diagram.fml.binding;
 
 import java.beans.PropertyChangeEvent;
-import java.lang.reflect.Type;
 
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
@@ -46,21 +45,10 @@ public class LinkSchemeBindingModel extends DiagramBehaviourBindingModel {
 
 		fromTargetBindingVariable = new BindingVariable(LinkSchemeBindingModel.FROM_TARGET,
 				linkScheme.getFromTargetFlexoConcept() != null ? FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme
-						.getFromTargetFlexoConcept()) : DiagramShape.class) {
-			@Override
-			public Type getType() {
-				return FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme.getFromTargetFlexoConcept());
-			}
-		};
+						.getFromTargetFlexoConcept()) : DiagramShape.class);
 		toTargetBindingVariable = new BindingVariable(LinkSchemeBindingModel.TO_TARGET,
 				linkScheme.getToTargetFlexoConcept() != null ? FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme
-						.getToTargetFlexoConcept()) : DiagramShape.class) {
-			@Override
-			public Type getType() {
-				return FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme.getToTargetFlexoConcept());
-			}
-		};
-
+						.getToTargetFlexoConcept()) : DiagramShape.class);
 		addToBindingVariables(fromTargetBindingVariable);
 		addToBindingVariables(toTargetBindingVariable);
 	}
