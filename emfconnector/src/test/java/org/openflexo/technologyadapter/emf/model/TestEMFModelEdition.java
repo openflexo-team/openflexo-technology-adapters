@@ -28,13 +28,11 @@
  */
 package org.openflexo.technologyadapter.emf.model;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -56,19 +54,17 @@ import org.openflexo.foundation.view.action.CreateView;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.CreationSchemeAction;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
-import org.openflexo.foundation.viewpoint.ActionContainer;
 import org.openflexo.foundation.viewpoint.CreationScheme;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.foundation.viewpoint.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.foundation.viewpoint.VirtualModel.VirtualModelImpl;
-import org.openflexo.foundation.viewpoint.action.AddFlexoConcept;
-import org.openflexo.foundation.viewpoint.action.CreateEditionAction;
-import org.openflexo.foundation.viewpoint.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.viewpoint.action.CreateEditionAction.CreateEditionActionChoice;
-import org.openflexo.foundation.viewpoint.editionaction.DeclareFlexoRole;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
+import org.openflexo.foundation.viewpoint.action.CreateEditionAction;
+import org.openflexo.foundation.viewpoint.action.CreateEditionAction.CreateEditionActionChoice;
+import org.openflexo.foundation.viewpoint.action.CreateFlexoBehaviour;
+import org.openflexo.foundation.viewpoint.action.CreateFlexoConcept;
 import org.openflexo.foundation.viewpoint.rm.ViewPointResource;
 import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
@@ -232,7 +228,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(6)
 	public void testCreateFlexoConceptC() throws SaveResourceException {
 
-		AddFlexoConcept addEP = AddFlexoConcept.actionType.makeNewAction(newVirtualModel, null, editor);
+		CreateFlexoConcept addEP = CreateFlexoConcept.actionType.makeNewAction(newVirtualModel, null, editor);
 		addEP.setNewFlexoConceptName("EMFFlexoConcept");
 		addEP.doAction();
 
@@ -266,7 +262,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			assertNotNull(creationScheme);
 			
 			creationSchemeCreationAction = CreationSchemeAction.actionType.makeNewAction(newVirtualModelInstance, null, editor);
-			creationSchemeCreationAction.setCreationScheme((CreationScheme) creationScheme);
+			creationSchemeCreationAction.setCreationScheme(creationScheme);
 			assertNotNull(creationSchemeCreationAction);
 			
 
