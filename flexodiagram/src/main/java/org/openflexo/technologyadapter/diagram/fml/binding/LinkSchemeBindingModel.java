@@ -40,7 +40,7 @@ public class LinkSchemeBindingModel extends DiagramBehaviourBindingModel {
 	public static final String FROM_TARGET = "fromTarget";
 	public static final String TO_TARGET = "toTarget";
 
-	public LinkSchemeBindingModel(LinkScheme linkScheme) {
+	public LinkSchemeBindingModel(final LinkScheme linkScheme) {
 		super(linkScheme);
 
 		fromTargetBindingVariable = new BindingVariable(LinkSchemeBindingModel.FROM_TARGET,
@@ -49,7 +49,6 @@ public class LinkSchemeBindingModel extends DiagramBehaviourBindingModel {
 		toTargetBindingVariable = new BindingVariable(LinkSchemeBindingModel.TO_TARGET,
 				linkScheme.getToTargetFlexoConcept() != null ? FlexoConceptInstanceType.getFlexoConceptInstanceType(linkScheme
 						.getToTargetFlexoConcept()) : DiagramShape.class);
-
 		addToBindingVariables(fromTargetBindingVariable);
 		addToBindingVariables(toTargetBindingVariable);
 	}
@@ -67,7 +66,8 @@ public class LinkSchemeBindingModel extends DiagramBehaviourBindingModel {
 				// The LinkScheme changes it's FROM target's FlexoConcept
 				fromTargetBindingVariable.setType(getFlexoBehaviour().getFromTargetFlexoConcept() != null ? FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getFlexoBehaviour().getFromTargetFlexoConcept()) : DiagramShape.class);
-			} else if (evt.getPropertyName().equals(LinkScheme.TO_TARGET_FLEXO_CONCEPT_KEY)) {
+			}
+			else if (evt.getPropertyName().equals(LinkScheme.TO_TARGET_FLEXO_CONCEPT_KEY)) {
 				// The LinkScheme changes it's TO target's FlexoConcept
 				toTargetBindingVariable.setType(getFlexoBehaviour().getToTargetFlexoConcept() != null ? FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getFlexoBehaviour().getToTargetFlexoConcept()) : DiagramShape.class);
