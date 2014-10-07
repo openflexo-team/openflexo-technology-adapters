@@ -357,7 +357,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				}
 
 				return new ValidationError<AddShapeActionMustHaveAValidContainer, AddShape>(this, action,
-						"add_shape_action_does_not_have_a_valid_container", details, v);
+						"add_shape_action_does_not_have_a_valid_container", v);
 			}
 			return null;
 		}

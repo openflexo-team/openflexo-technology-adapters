@@ -28,7 +28,7 @@
 		borderTitle="Panel" darkLevel="0" index="3" data=""
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 		visible="">
-		<Custom componentClassName="org.openflexo.fib.utils.BindingSelector"
+		<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
 			format="" icon="" tooltip="" localize="true" enable=""
 			manageDynamicModel="true" opaque="false" clickAction=""
 			doubleClickAction="" rightClickAction="" enterPressedAction=""
@@ -71,7 +71,7 @@
 		borderTitle="Panel" darkLevel="0" index="3" data=""
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 		visible="">
-		<Custom componentClassName="org.openflexo.fib.utils.BindingSelector"
+		<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
 			format="" icon="" tooltip="" localize="true" enable=""
 			manageDynamicModel="true" opaque="false" clickAction=""
 			doubleClickAction="" rightClickAction="" enterPressedAction=""
@@ -94,7 +94,7 @@
 			clickAction="" doubleClickAction="" rightClickAction=""
 			enterPressedAction="" valueChangedAction="" valueTransform=""
 			valueValidator="" />
-		<Custom componentClassName="org.openflexo.fib.utils.BindingSelector"
+		<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
 			format="" icon="" tooltip="" localize="true" enable=""
 			manageDynamicModel="true" opaque="false" clickAction=""
 			doubleClickAction="" rightClickAction="" enterPressedAction=""
@@ -113,7 +113,7 @@
 			valueValidator="">
 			<Dependancy componentName="isRowIndexCB" />
 		</Label>
-		<Custom componentClassName="org.openflexo.fib.utils.BindingSelector"
+		<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
 			format="" icon="" tooltip="" localize="true" enable=""
 			manageDynamicModel="true" opaque="false" clickAction=""
 			doubleClickAction="" rightClickAction="" enterPressedAction=""
@@ -131,7 +131,7 @@
 		clickAction="" doubleClickAction="" rightClickAction=""
 		enterPressedAction="" valueChangedAction="" valueTransform=""
 		valueValidator="" />
-	<Custom componentClassName="org.openflexo.fib.utils.BindingSelector"
+	<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
 		format="" icon="" tooltip="" localize="true" enable=""
 		manageDynamicModel="true" opaque="false" clickAction=""
 		doubleClickAction="" rightClickAction="" enterPressedAction=""
@@ -147,7 +147,7 @@
 		clickAction="" doubleClickAction="" rightClickAction=""
 		enterPressedAction="" valueChangedAction="" valueTransform=""
 		valueValidator="" />
-	<Custom componentClassName="org.openflexo.fib.utils.BindingSelector"
+	<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
 		format="" icon="" tooltip="" localize="true" enable=""
 		manageDynamicModel="true" opaque="false" clickAction=""
 		doubleClickAction="" rightClickAction="" enterPressedAction=""
@@ -178,7 +178,7 @@
 		clickAction="" doubleClickAction="" rightClickAction=""
 		enterPressedAction="" valueChangedAction="" valueTransform=""
 		valueValidator="" />
-	<Custom componentClassName="org.openflexo.fib.utils.BindingSelector"
+	<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
 		format="" icon="" tooltip="" localize="true" enable=""
 		manageDynamicModel="true" opaque="false" clickAction=""
 		doubleClickAction="" rightClickAction="" enterPressedAction=""
