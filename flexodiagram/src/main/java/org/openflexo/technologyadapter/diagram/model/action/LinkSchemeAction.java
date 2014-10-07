@@ -180,7 +180,8 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
 			for (FlexoConceptInstance fci : fcis) {
 				for (ActorReference actor : fci.getActors()) {
-					if (actor.getModellingElement().equals(getFromShape()))
+					Object me = actor.getModellingElement();
+					if (me != null && me.equals(getFromShape()))
 						return fci;
 				}
 			}
