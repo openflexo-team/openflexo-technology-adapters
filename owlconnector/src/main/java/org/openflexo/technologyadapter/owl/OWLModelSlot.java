@@ -94,21 +94,29 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (OWLClassRole.class.isAssignableFrom(patternRoleClass)) {
 				return "class";
-			} else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
-			} else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "property";
-			} else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "dataProperty";
-			} else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "objectProperty";
-			} else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
-			} else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
-			} else if (RestrictionStatementRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (RestrictionStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "restriction";
-			} else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
 			}
 			return null;
@@ -125,14 +133,14 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		public Object retrieveObjectWithURI(
 				TypeAwareModelSlotInstance<OWLOntology, OWLOntology, ? extends TypeAwareModelSlot<OWLOntology, OWLOntology>> msInstance,
 				String objectURI) {
-			return msInstance.getResourceData().getObject(objectURI);
+			return msInstance.getModel().getObject(objectURI);
 		}
 
 		@Override
 		public Type getType() {
 			return OWLOntology.class;
 		}
-		
+
 		@Override
 		public String getPreciseType() {
 			return "OWL Ontology";
@@ -168,7 +176,7 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		public String getModelSlotDescription() {
 			return "Ontology importing " + getMetaModelURI();
 		}
-		
+
 		@Override
 		public List<Class<? extends FlexoBehaviour>> getAvailableFlexoBehaviourTypes() {
 			List<Class<? extends FlexoBehaviour>> types = new ArrayList<Class<? extends FlexoBehaviour>>();
