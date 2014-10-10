@@ -84,7 +84,6 @@ import org.openflexo.technologyadapter.emf.viewpoint.editionaction.RemoveEMFObje
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
-
 /**
  * Test Class for EMF Model Edition.
  * 
@@ -94,7 +93,6 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestEMFModelEdition.class.getPackage().getName());
-
 
 	static FlexoEditor editor;
 	static EMFTechnologyAdapter technologicalAdapter;
@@ -111,7 +109,6 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	private static CreationScheme creationScheme;
 	private static CreationSchemeAction creationSchemeCreationAction;
 
-
 	/**
 	 * Test the VP creation
 	 */
@@ -120,8 +117,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	public void testCreateViewPoint() {
 		instanciateTestServiceManager();
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				EMFTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 
 		System.out.println("ResourceCenter= " + resourceCenter);
 		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint",
@@ -137,8 +133,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(2)
 	public void testCreateVirtualModel() throws SaveResourceException {
 
-		EMFMetaModelRepository emfMetaModelRepository = resourceCenter
-				.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+		EMFMetaModelRepository emfMetaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
 
 		emfMetaModelResource = emfMetaModelRepository.getResource("http://www.thalesgroup.com/parameters/1.0");
 
@@ -164,7 +159,6 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(project.getProjectDataResource().getFile().exists());
 	}
 
-
 	@Test
 	@TestOrder(4)
 	public void testCreateEMFModel() {
@@ -174,7 +168,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 			try {
 				RepositoryFolder<FlexoFileResource<?>> modelFolder = project.createNewFolder("Models");
-				emfModelResource = technologicalAdapter.createNewEMFModel(new File(modelFolder.getFile(),"coucou.emf"), "myURI",
+				emfModelResource = technologicalAdapter.createNewEMFModel(new File(modelFolder.getFile(), "coucou.emf"), "myURI",
 						emfMetaModelResource);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -192,7 +186,6 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			e.printStackTrace();
 		}
 	}
-
 
 	@Test
 	@TestOrder(5)
@@ -237,21 +230,18 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		System.out.println("FlexoConcept = " + flexoConcept);
 		assertNotNull(flexoConcept);
 
-
 		creationEditionScheme = CreateFlexoBehaviour.actionType.makeNewAction(flexoConcept, null, editor);
 		creationEditionScheme.setFlexoBehaviourClass(CreationScheme.class);
 		creationEditionScheme.setFlexoBehaviourName("DynamicCreation");
 		assertNotNull(creationEditionScheme);
 		creationEditionScheme.doAction();
-		
+
 		((VirtualModelResource) newVirtualModel.getResource()).save(null);
 
 		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getFile());
 
 	}
 
-	
-	
 	@Test
 	@TestOrder(7)
 	public void testEdithEMFModelinVMI() {
@@ -260,13 +250,11 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 			creationScheme = (CreationScheme) creationEditionScheme.getNewFlexoBehaviour();
 			assertNotNull(creationScheme);
-			
+
 			creationSchemeCreationAction = CreationSchemeAction.actionType.makeNewAction(newVirtualModelInstance, null, editor);
 			creationSchemeCreationAction.setCreationScheme(creationScheme);
 			assertNotNull(creationSchemeCreationAction);
-			
 
-			
 			EMFObjectIndividual intParameter = createIntParameter(emfModelResource, emfMetaModelResource, "IntParameter Name",
 					Integer.valueOf(12), newVirtualModel.getVirtualModelFactory());
 			assertNotNull(intParameter);
@@ -276,8 +264,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			assertNotNull(doubleParameter);
 
 			// TODO : this does not work yet
-			
-			
+
 			/*
 			EMFObjectIndividual boolParameter = createBoolParameter(emfModelResource, emfMetaModelResource, "BoolParameter Name", true,
 					newVirtualModel.getVirtualModelFactory());
@@ -291,7 +278,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 					Arrays.asList(intParameter, doubleParameter, boolParameter, stringParameter), newVirtualModel.getVirtualModelFactory());
 			assertNotNull(parameterSet);
 			 */
-			
+
 			emfModelResource.save(null);
 
 		} catch (FileNotFoundException e) {
@@ -309,18 +296,17 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected EMFObjectIndividual addEMFObjectIndividual(EMFModelResource emfModelResource, String classURI,
 			VirtualModelModelFactory factory) {
-		
+
 		EMFObjectIndividual result = null;
-		
 
 		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme, null, editor);
 		createEditionAction1.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createEditionAction1.setModelSlotSpecificActionClass(AddEMFObjectIndividual.class);
 		createEditionAction1.setModelSlot(newModelSlot);
 		createEditionAction1.doAction();
-		
+
 		AddEMFObjectIndividual addObject = (AddEMFObjectIndividual) createEditionAction1.getNewEditionAction();
-		
+
 		try {
 			addObject.setOntologyClass(emfMetaModelResource.getResourceData(null).getClass(classURI));
 			// addObject.setEMFClassURI(classURI);
@@ -362,15 +348,15 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		createEditionAction1.setModelSlotSpecificActionClass(AddEMFObjectIndividualAttributeDataPropertyValue.class);
 		createEditionAction1.setModelSlot(newModelSlot);
 		createEditionAction1.doAction();
-		
-		AddEMFObjectIndividualAttributeDataPropertyValue addAttribute = (AddEMFObjectIndividualAttributeDataPropertyValue) createEditionAction1.getNewEditionAction();
-		
+
+		AddEMFObjectIndividualAttributeDataPropertyValue addAttribute = (AddEMFObjectIndividualAttributeDataPropertyValue) createEditionAction1
+				.getNewEditionAction();
 
 		addAttribute.setModelSlot(newModelSlot);
 		// addAttribute.set .setObjectIndividual(objectIndividual);
 		addAttribute.setDataProperty(emfMetaModelResource.getResourceData(null).getDataProperty(propertyURI));
 		addAttribute.setSubject(new DataBinding("this"));
-		addAttribute.setValue(new DataBinding("\""+value +"\""));
+		addAttribute.setValue(new DataBinding("\"" + value + "\""));
 		result = addAttribute.performAction(creationSchemeCreationAction);
 		addAttribute.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
@@ -481,20 +467,23 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		EMFObjectIndividual result = null;
 		// IntParameter object
 		result = addEMFObjectIndividual(emfModelResource, "http://www.thalesgroup.com/parameters/1.0/IntParameterValue", factory);
-		
-		if (result != null){
-			result.addToPropertyValue(emfMetaModelResource.getResourceData(null).getDataProperty("http://www.thalesgroup.com/parameters/1.0/GenericParameter/name"), name);
-			result.addToPropertyValue(emfMetaModelResource.getResourceData(null).getDataProperty("http://www.thalesgroup.com/parameters/1.0/IntParameterValue/value"), value);
+
+		if (result != null) {
+			result.addToPropertyValue(
+					emfMetaModelResource.getResourceData(null).getDataProperty(
+							"http://www.thalesgroup.com/parameters/1.0/GenericParameter/name"), name);
+			result.addToPropertyValue(
+					emfMetaModelResource.getResourceData(null).getDataProperty(
+							"http://www.thalesgroup.com/parameters/1.0/IntParameterValue/value"), value);
 
 			// TODO : this does not work yet
 			// Name parameter
-			//addEMFObjectIndividualAttributeDataPropertyValue(emfMetaModelResource, result,
-			//		"http://www.thalesgroup.com/parameters/1.0/GenericParameter/name", name, factory);
+			// addEMFObjectIndividualAttributeDataPropertyValue(emfMetaModelResource, result,
+			// "http://www.thalesgroup.com/parameters/1.0/GenericParameter/name", name, factory);
 			// Value parameter.
-			//addEMFObjectIndividualAttributeDataPropertyValue(emfMetaModelResource, result,
-			//		"http://www.thalesgroup.com/parameters/1.0/IntParameterValue/value", value, factory);
-		}
-		else {
+			// addEMFObjectIndividualAttributeDataPropertyValue(emfMetaModelResource, result,
+			// "http://www.thalesgroup.com/parameters/1.0/IntParameterValue/value", value, factory);
+		} else {
 			logger.warning("Unable to create a individual of type: http://www.thalesgroup.com/parameters/1.0/IntParameterValue");
 		}
 		return result;
@@ -507,22 +496,25 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// DoubleParameter object
 		result = addEMFObjectIndividual(emfModelResource, "http://www.thalesgroup.com/parameters/1.0/DoubleParameterValue", factory);
 
-		if (result != null){
+		if (result != null) {
 
-			result.addToPropertyValue(emfMetaModelResource.getResourceData(null).getDataProperty("http://www.thalesgroup.com/parameters/1.0/GenericParameter/name"), name);
-			result.addToPropertyValue(emfMetaModelResource.getResourceData(null).getDataProperty("http://www.thalesgroup.com/parameters/1.0/DoubleParameterValue/value"), value);
+			result.addToPropertyValue(
+					emfMetaModelResource.getResourceData(null).getDataProperty(
+							"http://www.thalesgroup.com/parameters/1.0/GenericParameter/name"), name);
+			result.addToPropertyValue(
+					emfMetaModelResource.getResourceData(null).getDataProperty(
+							"http://www.thalesgroup.com/parameters/1.0/DoubleParameterValue/value"), value);
 
 			// TODO : this does not work yet
 			//
 			// Name parameter
-			//addEMFObjectIndividualAttributeDataPropertyValue(emfMetaModelResource, result,
-			//		"http://www.thalesgroup.com/parameters/1.0/GenericParameter/name", name, factory);
+			// addEMFObjectIndividualAttributeDataPropertyValue(emfMetaModelResource, result,
+			// "http://www.thalesgroup.com/parameters/1.0/GenericParameter/name", name, factory);
 			// Value parameter.
-			//addEMFObjectIndividualAttributeDataPropertyValue(emfMetaModelResource, result,
-			//		"http://www.thalesgroup.com/parameters/1.0/DoubleParameterValue/value", value, factory);
+			// addEMFObjectIndividualAttributeDataPropertyValue(emfMetaModelResource, result,
+			// "http://www.thalesgroup.com/parameters/1.0/DoubleParameterValue/value", value, factory);
 
-		}
-		else {
+		} else {
 			logger.warning("Unable to create a individual of type: http://www.thalesgroup.com/parameters/1.0/IntParameterValue");
 		}
 		return result;

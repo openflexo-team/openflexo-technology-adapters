@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.diagram;
 import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
@@ -72,6 +73,18 @@ public class TypedDiagramModelSlotInstanceConfiguration extends
 		}
 
 		return generatedUri;
+	}
+
+	@Override
+	protected boolean checkValidFileName() {
+		if (!super.checkValidFileName()) {
+			return false;
+		}
+		if (!getFilename().endsWith(DiagramResource.DIAGRAM_SUFFIX)) {
+			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.diagram_suffix"));
+			return false;
+		}
+		return true;
 	}
 
 }

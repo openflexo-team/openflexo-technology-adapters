@@ -22,16 +22,9 @@ public class BasicPowerpointModelSlotInstanceConfiguration extends
 
 	protected BasicPowerpointModelSlotInstanceConfiguration(BasicPowerpointModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
-	}
-
-	@Override
-	public void setOption(org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
-		super.setOption(option);
-		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource) {
-			resourceUri = getAction().getFocusedObject().getProject().getURI() + "/Models/myPowerpointModel";
-			relativePath = "/";
-			filename = "myPowerpointResource.ppt";
-		}
+		setResourceUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myPowerpointModel");
+		setRelativePath("/");
+		setFilename("myPowerpointResource.ppt");
 	}
 
 }

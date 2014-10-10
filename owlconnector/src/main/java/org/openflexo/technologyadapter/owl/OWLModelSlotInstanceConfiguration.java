@@ -7,6 +7,7 @@ import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConf
 import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.View;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.toolbox.StringUtils;
@@ -17,7 +18,10 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 
 	protected OWLModelSlotInstanceConfiguration(OWLModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
-		options.add(DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel);
+		// options.add(DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel);
+		setModelUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myOntology");
+		setRelativePath("/");
+		setFilename("myOntology" + getModelSlot().getTechnologyAdapter().getExpectedOntologyExtension());
 	}
 
 	@Override
@@ -43,7 +47,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 				modelSlot.getMetaModelResource());
 	}
 
-	@Override
+	/*@Override
 	public void setOption(org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
@@ -55,7 +59,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 			relativePath = "/";
 			filename = "myOntology" + getModelSlot().getTechnologyAdapter().getExpectedOntologyExtension();
 		}
-	}
+	}*/
 
 	@Override
 	public boolean isValidConfiguration() {
@@ -70,6 +74,18 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 
 	@Override
 	public boolean isURIEditable() {
+		return true;
+	}
+
+	@Override
+	protected boolean checkValidFileName() {
+		if (!super.checkValidFileName()) {
+			return false;
+		}
+		if (!getFilename().endsWith(getModelSlot().getTechnologyAdapter().getExpectedOntologyExtension())) {
+			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.owl_suffix"));
+			return false;
+		}
 		return true;
 	}
 

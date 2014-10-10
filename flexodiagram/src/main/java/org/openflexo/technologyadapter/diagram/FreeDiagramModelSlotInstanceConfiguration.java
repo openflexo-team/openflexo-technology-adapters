@@ -7,6 +7,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
@@ -21,16 +22,21 @@ public class FreeDiagramModelSlotInstanceConfiguration extends FreeModelSlotInst
 
 	protected FreeDiagramModelSlotInstanceConfiguration(FreeDiagramModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
+		setResourceUri(getAction().getFocusedObject().getProject().getURI() + "/Diagrams/myDiagram");
+		setRelativePath("/");
+		setFilename("myDiagram.diagram");
 	}
 
 	@Override
-	public void setOption(ModelSlotInstanceConfigurationOption option) {
-		super.setOption(option);
-		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource) {
-			resourceUri = getAction().getFocusedObject().getProject().getURI() + "/Diagrams/myDiagram";
-			relativePath = "/";
-			filename = "myDiagram.diagram";
+	protected boolean checkValidFileName() {
+		if (!super.checkValidFileName()) {
+			return false;
 		}
+		if (!getFilename().endsWith(DiagramResource.DIAGRAM_SUFFIX)) {
+			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.diagram_suffix"));
+			return false;
+		}
+		return true;
 	}
 
 }

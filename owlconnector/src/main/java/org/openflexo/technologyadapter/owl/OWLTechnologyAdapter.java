@@ -120,7 +120,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		}
 
 		getTechnologyContextManager().init();
-		
+
 		// Call it to update the current repositories
 		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 	}
@@ -161,7 +161,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	 */
 	public boolean isValidOntologyFile(File aMetaModelFile) {
 		// TODO: also check that file is valid
-		return aMetaModelFile.isFile() && aMetaModelFile.getName().endsWith(".owl");
+		return aMetaModelFile.isFile() && aMetaModelFile.getName().endsWith(OWLOntologyResource.OWL_SUFFIX);
 	}
 
 	@Override
@@ -288,7 +288,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	public String getExpectedOntologyExtension() {
-		return ".owl";
+		return OWLOntologyResource.OWL_SUFFIX;
 	}
 
 }

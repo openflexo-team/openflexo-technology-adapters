@@ -8,6 +8,7 @@ import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfigura
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
 public class BasicExcelModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<ExcelWorkbook, BasicExcelModelSlot> {
@@ -21,16 +22,21 @@ public class BasicExcelModelSlotInstanceConfiguration extends FreeModelSlotInsta
 
 	protected BasicExcelModelSlotInstanceConfiguration(BasicExcelModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
+		setResourceUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myExcelModel");
+		setRelativePath("/");
+		setFilename("myExcelResource.xls");
 	}
 
 	@Override
-	public void setOption(org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
-		super.setOption(option);
-		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource) {
-			resourceUri = getAction().getFocusedObject().getProject().getURI() + "/Models/myExcelModel";
-			relativePath = "/";
-			filename = "myExcelResource.xls";
+	protected boolean checkValidFileName() {
+		if (!super.checkValidFileName()) {
+			return false;
 		}
+		if (!getFilename().endsWith(".xls")) {
+			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.xls_suffix"));
+			return false;
+		}
+		return true;
 	}
 
 }
