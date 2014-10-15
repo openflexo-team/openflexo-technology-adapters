@@ -129,7 +129,21 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	public void setDiagramResource(DiagramResource diagramResource) {
-		this.diagramResource = diagramResource;
+		if ((diagramResource == null && this.diagramResource != null)
+				|| (diagramResource != null && !diagramResource.equals(this.diagramResource))) {
+
+			DiagramResource oldValue = this.diagramResource;
+			this.diagramResource = diagramResource;
+			getPropertyChangeSupport().firePropertyChange("diagramResource", oldValue, diagramResource);
+			Diagram diag = getDiagram();
+			getPropertyChangeSupport().firePropertyChange("diagram", null, diag);
+			if (diag != null)
+				getPropertyChangeSupport().firePropertyChange("diagramTitle", null, diag.getTitle());
+			else
+				getPropertyChangeSupport().firePropertyChange("diagramTitle", null, null);
+			getPropertyChangeSupport().firePropertyChange("isValid", null, isValid());
+			getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
+		}
 	}
 
 	public Diagram getDiagram() {
@@ -140,7 +154,21 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	public void setDiagram(Diagram diagram) {
-		this.diagram = diagram;
+
+		if ((diagram == null && this.diagram != null) || (diagram != null && !diagram.equals(this.diagram))) {
+
+			Diagram oldValue = this.diagram;
+			this.diagram = diagram;
+			getPropertyChangeSupport().firePropertyChange("diagram", oldValue, getDiagram());
+			if (diagram != null)
+				getPropertyChangeSupport().firePropertyChange("diagramTitle", null, diagram.getTitle());
+			else
+				getPropertyChangeSupport().firePropertyChange("diagramTitle", null, null);
+
+			getPropertyChangeSupport().firePropertyChange("isValid", null, isValid());
+			getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
+		}
+
 	}
 
 	public HashMap<DiagramShape, Shape> getShapesMap() {
@@ -170,7 +198,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	private String errorMessage;
 
 	public String getErrorMessage() {
-		isValid();
 		return errorMessage;
 	}
 
@@ -186,10 +213,12 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 				errorMessage = invalidNameMessage();
 				return false;
 			}
+			/*
 			if (StringUtils.isEmpty(getDiagramTitle())) {
 				errorMessage = noTitleMessage();
 				return false;
 			}
+			*/
 		}
 
 		if (getFile() == null) {
@@ -205,6 +234,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		else {
 			errorMessage = "";
 		}
+
+		System.out.println("VALID");
 
 		return true;
 	}
@@ -255,8 +286,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		}
 		this.diagramName = diagramName;
 		getPropertyChangeSupport().firePropertyChange("diagramName", null, diagramName);
-		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
 		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
+		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
 	}
 
 	public String getDiagramTitle() {
@@ -267,14 +298,13 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	public void setDiagramTitle(String diagramTitle) {
-		boolean wasValid = isValid();
 		if (getDiagram() != null) {
 			getDiagram().setTitle(diagramTitle);
 		}
 		this.diagramTitle = diagramTitle;
 		getPropertyChangeSupport().firePropertyChange("diagramTitle", null, diagramTitle);
+		getPropertyChangeSupport().firePropertyChange("isValid", null, isValid());
 		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
-		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
 	}
 
 	public String getDiagramURI() {
@@ -332,11 +362,11 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		if (file != null) {
 			loadSlideShow();
 		}
-		boolean wasValid = isValid();
 		getPropertyChangeSupport().firePropertyChange("file", null, file);
 		getPropertyChangeSupport().firePropertyChange("currentSlides", null, getCurrentSlides());
+		getPropertyChangeSupport().firePropertyChange("isValid", null, isValid());
 		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
-		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
+		getPropertyChangeSupport().firePropertyChange("valid", null, isValid());
 	}
 
 	public Slide getSlide() {
@@ -347,8 +377,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		this.slide = slide;
 		boolean wasValid = isValid();
 		getPropertyChangeSupport().firePropertyChange("slide", null, getSlide());
+		getPropertyChangeSupport().firePropertyChange("isValid", null, isValid());
 		getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
-		getPropertyChangeSupport().firePropertyChange("isValid", wasValid, isValid());
 	}
 
 	public SlideShow getSelectedSlideShow() {
@@ -916,10 +946,10 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			RichTextRun[] rts = textRun.getRichTextRuns();
 			if (rts.length > 0) {
 				/*if (convertBulletsToShapes && hasBullets(textRun)) {
-					for (int i = 0; i < rts.length; i++) {
-						RichTextRun rtr = rts[i];
-						makeShapeFromBullet(textRun, rtr, shape, textShape);
-					}
+				for (int i = 0; i < rts.length; i++) {
+					RichTextRun rtr = rts[i];
+					makeShapeFromBullet(textRun, rtr, shape, textShape);
+				}
 				} else {*/
 				RichTextRun rtr = rts[0];
 				String fontName = rtr.getFontName();
