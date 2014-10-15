@@ -173,10 +173,10 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 
 		setDrawCustomShapeAction(drawShapeAction);
 
-		if(!readOnly){
+		if (!readOnly) {
 			toolSelector.handleToolChanged();
 		}
-			
+
 	}
 
 	public boolean handleNewShapeCreation(ShapeGraphicalRepresentation shapeGR, ContainerNode<?, ?> parentNode, FGEPoint dropLocation,

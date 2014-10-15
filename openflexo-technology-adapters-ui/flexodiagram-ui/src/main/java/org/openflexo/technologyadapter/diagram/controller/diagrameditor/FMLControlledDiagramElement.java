@@ -36,12 +36,12 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementSpecification;
-import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 
 /**
  * Represents a {@link DiagramElement} seen in federated context<br>
- * Instead of just referencing the {@link DiagramElement}, we address it from a {@link FlexoConceptInstance} and a {@link ShapeRole}.
+ * Instead of just referencing the {@link DiagramElement}, we address it from a {@link FlexoConceptInstance} and a
+ * {@link GraphicalElementRole} (which references the {@link DiagramElement}).
  * 
  * 
  * @author sylvain

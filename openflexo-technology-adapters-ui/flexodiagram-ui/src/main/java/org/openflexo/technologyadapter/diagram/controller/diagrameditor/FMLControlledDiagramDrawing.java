@@ -39,6 +39,8 @@ import org.openflexo.fge.GRProvider.ShapeGRProvider;
 import org.openflexo.fge.GRStructureVisitor;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.fge.cp.ControlArea;
+import org.openflexo.fge.geom.FGEGeometricObject.SimplifiedCardinalDirection;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.foundation.view.VirtualModelInstance.ObjectLookupResult;
@@ -48,6 +50,7 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
+import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
@@ -137,7 +140,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				returned.setRole((ShapeRole) r.role);
 				federatedShapes.put(shape, returned);
 				registerNewFMLControlledDiagramElement(returned);
-				//shape.setName(returned.getLabel());
+				// shape.setName(returned.getLabel());
 			} else {
 				// TODO: perfs issue: when not found it will be costly !!!
 			}
@@ -210,6 +213,55 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 					@Override
 					public ShapeGraphicalRepresentation provideGR(FMLControlledDiagramShape drawable, FGEModelFactory factory) {
 						return retrieveGraphicalRepresentation(drawable.getDiagramElement(), (DiagramFactory) factory);
+					}
+
+					@Override
+					public List<ControlArea<?>> makeControlAreasFor(
+							DrawingTreeNode<FMLControlledDiagramShape, ShapeGraphicalRepresentation> dtn) {
+
+						ShapeNode<FMLControlledDiagramShape> node = (ShapeNode<FMLControlledDiagramShape>) dtn;
+						List<LinkScheme> availableLinkSchemes = dtn.getDrawable().getAvailableLinkSchemes();
+
+						if (availableLinkSchemes != null && availableLinkSchemes.size() > 0) {
+
+							List<ControlArea<?>> returned = new ArrayList<ControlArea<?>>();
+
+							boolean northDirectionSupported = false;
+							boolean eastDirectionSupported = false;
+							boolean southDirectionSupported = false;
+							boolean westDirectionSupported = false;
+							for (LinkScheme ls : availableLinkSchemes) {
+								if (ls.getNorthDirectionSupported()) {
+									northDirectionSupported = true;
+								}
+								if (ls.getEastDirectionSupported()) {
+									eastDirectionSupported = true;
+								}
+								if (ls.getSouthDirectionSupported()) {
+									southDirectionSupported = true;
+								}
+								if (ls.getWestDirectionSupported()) {
+									westDirectionSupported = true;
+								}
+							}
+
+							if (northDirectionSupported) {
+								returned.add(new FMLControlledDiagramFloatingPalette(node, SimplifiedCardinalDirection.NORTH));
+							}
+							if (eastDirectionSupported) {
+								returned.add(new FMLControlledDiagramFloatingPalette(node, SimplifiedCardinalDirection.EAST));
+							}
+							if (southDirectionSupported) {
+								returned.add(new FMLControlledDiagramFloatingPalette(node, SimplifiedCardinalDirection.SOUTH));
+							}
+							if (westDirectionSupported) {
+								returned.add(new FMLControlledDiagramFloatingPalette(node, SimplifiedCardinalDirection.WEST));
+							}
+
+							return returned;
+						}
+
+						return null;
 					}
 				});
 

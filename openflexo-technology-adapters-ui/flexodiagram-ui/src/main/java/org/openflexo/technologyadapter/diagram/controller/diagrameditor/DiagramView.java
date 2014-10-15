@@ -52,12 +52,26 @@ public class DiagramView extends JDrawingView<Diagram> {
 		repaint();
 	}
 
+	private FMLControlledDiagramFloatingPalette fMLControlledDiagramFloatingPalette;
+
+	public void setFloatingPalette(FMLControlledDiagramFloatingPalette palette) {
+		fMLControlledDiagramFloatingPalette = palette;
+	}
+
+	public void resetFloatingPalette() {
+		fMLControlledDiagramFloatingPalette = null;
+		repaint();
+	}
+
 	@Override
 	public void paint(Graphics g) {
 		boolean isBuffering = isBuffering();
 		super.paint(g);
 		if (_drawEdgeAction != null && !isBuffering) {
 			_drawEdgeAction.paint(g, getController());
+		}
+		if (fMLControlledDiagramFloatingPalette != null && !isBuffering) {
+			fMLControlledDiagramFloatingPalette.paint(g, getController());
 		}
 	}
 
