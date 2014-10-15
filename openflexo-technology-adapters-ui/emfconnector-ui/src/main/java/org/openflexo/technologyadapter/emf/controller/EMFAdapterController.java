@@ -209,19 +209,19 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 			FlexoPerspective perspective) {
 		if (object instanceof EMFModel) {
 			OntologyView<EMFModel> returned = new EMFModelView((EMFModel) object, controller, perspective);
-			returned.setShowClasses(false, false);
-			returned.setShowDataProperties(false, false);
-			returned.setShowObjectProperties(false, false);
-			returned.setShowAnnotationProperties(false, false);
+			returned.setShowClasses(false);
+			returned.setShowDataProperties(false);
+			returned.setShowObjectProperties(false);
+			returned.setShowAnnotationProperties(false);
 			returned.update();
 			return returned;
 		}
 		else if (object instanceof EMFMetaModel) {
 			OntologyView<EMFMetaModel> returned = new EMFMetaModelView((EMFMetaModel) object, controller, perspective);
-			returned.setShowClasses(true, false);
-			returned.setShowDataProperties(true, false);
-			returned.setShowObjectProperties(true, false);
-			returned.setShowAnnotationProperties(true, false);
+			returned.setShowClasses(true);
+			returned.setShowDataProperties(true);
+			returned.setShowObjectProperties(true);
+			returned.setShowAnnotationProperties(true);
 			returned.update();
 			return returned;
 		}
