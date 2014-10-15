@@ -145,9 +145,11 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (EMFObjectIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFObjectIndividual.class);
-		} else if (EMFClassClassRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (EMFClassClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFClassClass.class);
-		} else if (EMFEnumClassRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (EMFEnumClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFEnumClass.class);
 		}
 		return null;
@@ -163,7 +165,8 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction<?, ?>> editionActionClass) {
 		if (AddEMFObjectIndividual.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFObjectIndividual.class), IconLibrary.DUPLICATE);
-		} if (SelectEMFObjectIndividual.class.isAssignableFrom(editionActionClass)) {
+		}
+		if (SelectEMFObjectIndividual.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFObjectIndividual.class), IconLibrary.IMPORT);
 		} /*else if (AddEMFClassClass.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForOntologyObject(EMFClassClass.class), IconLibrary.DUPLICATE);
@@ -175,9 +178,11 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	public OntologyBrowserModel makeOntologyBrowserModel(IFlexoOntology context) {
 		if (context instanceof EMFMetaModel) {
 			return new EMFMetaModelBrowserModel((EMFMetaModel) context);
-		} else if (context instanceof EMFModel) {
+		}
+		else if (context instanceof EMFModel) {
 			return new EMFModelBrowserModel((EMFModel) context);
-		} else {
+		}
+		else {
 			logger.warning("Unexpected " + context);
 			return null;
 		}
@@ -208,13 +213,16 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 			returned.setShowDataProperties(false);
 			returned.setShowObjectProperties(false);
 			returned.setShowAnnotationProperties(false);
+			returned.update();
 			return returned;
-		} else if (object instanceof EMFMetaModel) {
+		}
+		else if (object instanceof EMFMetaModel) {
 			OntologyView<EMFMetaModel> returned = new EMFMetaModelView((EMFMetaModel) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);
 			returned.setShowObjectProperties(true);
 			returned.setShowAnnotationProperties(true);
+			returned.update();
 			return returned;
 		}
 		return new EmptyPanel<TechnologyObject<EMFTechnologyAdapter>>(controller, perspective, object);
