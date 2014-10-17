@@ -31,9 +31,9 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
+import org.openflexo.technologyadapter.diagram.fml.action.DeleteDiagramElementsAndFlexoConceptInstances;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.DeleteDiagramElements;
-import org.openflexo.technologyadapter.diagram.model.action.DeleteDiagramElementsAndFlexoConceptInstances;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
