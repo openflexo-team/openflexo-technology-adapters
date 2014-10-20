@@ -29,12 +29,16 @@
 package org.openflexo.technologyadapter.emf.model;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
@@ -43,6 +47,8 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
 /**
  * Test EMF Meta-Model and model loading.
@@ -50,15 +56,31 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
  * @author gbesancon
  * 
  */
+@RunWith(OrderedRunner.class)
 public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestLoadEMFMetaModel.class.getPackage().getName());
 
-	@Before
-	public void setUp() throws Exception {
+	private static FlexoEditor editor;
+	private static FlexoProject project;
+	
+	@Test
+	@TestOrder(1)
+	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager();
 	}
 	
 	@Test
+	@TestOrder(2)
+	public void testCreateProject() {
+		editor = createProject("TestProject");
+		project = editor.getProject();
+		System.out.println("Created project " + project.getProjectDirectory());
+		assertTrue(project.getProjectDirectory().exists());
+		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+	}
+	
+	@Test
+	@TestOrder(3)
 	public void testLoadEMFMetaModel() {
 		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				EMFTechnologyAdapter.class);
