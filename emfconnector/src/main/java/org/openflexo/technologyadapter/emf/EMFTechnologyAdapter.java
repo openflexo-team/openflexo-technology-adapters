@@ -33,16 +33,19 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
 import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
 import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
@@ -249,12 +252,15 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		EMFMetaModelRepository mmRepository = new EMFMetaModelRepository(this, resourceCenter);
 		if (ecoreMetaModelResource == null) {
 			// register ecore MM in every resource center
-			ModelFactory factory = new ModelFactory(EMFMetaModelResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,EMFMetaModelResource.class));
 			ecoreMetaModelResource = factory.newInstance(EMFMetaModelResource.class);
 			ecoreMetaModelResource.setTechnologyAdapter(this);
 			ecoreMetaModelResource.setURI(ECORE_MM_URI);
 			ecoreMetaModelResource.setName(ECORE_MM_NAME);
-			ecoreMetaModelResource.setFile(null);
+			//ecoreMetaModelResource.setFile(null);
+			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class) ;
+			ecoreMetaModelResource.setFlexoIODelegate(fileIODelegate);
+			fileIODelegate.setFile(null);
 			ecoreMetaModelResource.setModelFileExtension(ECORE_MM_EXT);
 			ecoreMetaModelResource.setPackageClassName(ECORE_MM_PKGCLSNAME);
 			ecoreMetaModelResource.setResourceFactoryClassName(ECORE_MM_FACTORYCLSNAME);
@@ -354,12 +360,15 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 				String ePackageClassName = emfProperties.getProperty("PACKAGE");
 				String resourceFactoryClassName = emfProperties.getProperty("RESOURCE_FACTORY");
 				if (uri != null && extension != null && ePackageClassName != null && resourceFactoryClassName != null) {
-					ModelFactory factory = new ModelFactory(EMFMetaModelResource.class);
+					ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,EMFMetaModelResource.class));
 					metaModelResource = factory.newInstance(EMFMetaModelResource.class);
 					metaModelResource.setTechnologyAdapter(this);
 					metaModelResource.setURI(uri);
 					metaModelResource.setName(aMetaModelFile.getName());
-					metaModelResource.setFile(aMetaModelFile);
+					//metaModelResource.setFile(aMetaModelFile);
+					metaModelResource.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(aMetaModelFile, factory));
+
+					
 					metaModelResource.setModelFileExtension(extension);
 					metaModelResource.setPackageClassName(ePackageClassName);
 					metaModelResource.setResourceFactoryClassName(resourceFactoryClassName);
