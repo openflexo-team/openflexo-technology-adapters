@@ -19,7 +19,6 @@
  */
 package org.openflexo.technologyadapter.emf.rm;
 
-import org.openflexo.foundation.resource.FlexoFileResource;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -37,7 +36,7 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
  */
 @ModelEntity
 @ImplementationClass(EMFModelResourceImpl.class)
-public interface EMFModelResource extends FlexoFileResource<EMFModel>, FlexoModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter> {
+public interface EMFModelResource extends FlexoModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter> {
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 

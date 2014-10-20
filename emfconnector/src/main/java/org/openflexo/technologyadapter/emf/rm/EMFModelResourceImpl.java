@@ -27,13 +27,18 @@ import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
+import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
 import org.openflexo.toolbox.IProgress;
@@ -44,7 +49,7 @@ import org.openflexo.toolbox.IProgress;
  * @author sguerin
  * 
  */
-public abstract class EMFModelResourceImpl extends FlexoFileResourceImpl<EMFModel> implements EMFModelResource {
+public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> implements EMFModelResource {
 
 	private static final Logger logger = Logger.getLogger(EMFModelResourceImpl.class.getPackage().getName());
 
@@ -64,12 +69,15 @@ public abstract class EMFModelResourceImpl extends FlexoFileResourceImpl<EMFMode
 	public static EMFModelResource makeEMFModelResource(String modelURI, File modelFile, EMFMetaModelResource emfMetaModelResource,
 			EMFTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(EMFModelResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,EMFModelResource.class));
 			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
 			returned.setName(modelFile.getName());
-			returned.setFile(modelFile);
+			
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+
+			//returned.setFile(modelFile);
 			// TODO: URI should be defined by the parameter,because its not manageable (FOR NOW)
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
@@ -91,7 +99,7 @@ public abstract class EMFModelResourceImpl extends FlexoFileResourceImpl<EMFMode
 	 */
 	@Override
 	public String getURI() {
-		return this.getFile().toURI().toString();
+		return getFileFlexoIODelegate().getFile().toURI().toString();
 	}
 
 	/**
@@ -106,12 +114,15 @@ public abstract class EMFModelResourceImpl extends FlexoFileResourceImpl<EMFMode
 	public static EMFModelResource retrieveEMFModelResource(File modelFile, EMFMetaModelResource emfMetaModelResource,
 			EMFTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(EMFModelResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,EMFModelResource.class));
 			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
 			returned.setName(modelFile.getName());
-			returned.setFile(modelFile);
+			//returned.setFile(modelFile);
+
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+			
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
@@ -159,29 +170,30 @@ public abstract class EMFModelResourceImpl extends FlexoFileResourceImpl<EMFMode
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		}
 
-		if (!hasWritePermission()) {
+		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFile().getAbsolutePath());
+				//logger.warning("Permission denied : " + getFile().getAbsolutePath());
+				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(this);
+			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = willWriteOnDisk();
+			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
 			writeToFile();
-			hasWrittenOnDisk(lock);
+			getFlexoIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
+				logger.info("Succeeding to save Resource " + getURI() + " : " + getFlexoIODelegate().toString());
 			}
 		}
 	}
@@ -215,7 +227,7 @@ public abstract class EMFModelResourceImpl extends FlexoFileResourceImpl<EMFMode
 	private void writeToFile() throws SaveResourceException {
 		try {
 			getEMFResource().save(null);
-			logger.info("Wrote " + getFile());
+			logger.info("Wrote " + getFlexoIODelegate().toString());
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -234,9 +246,13 @@ public abstract class EMFModelResourceImpl extends FlexoFileResourceImpl<EMFMode
 				return null;
 			}
 			modelResource = getMetaModelResource().getMetaModelData().getResource().getResourceFactory()
-					.createResource(org.eclipse.emf.common.util.URI.createFileURI(getFile().getAbsolutePath()));
+					.createResource(org.eclipse.emf.common.util.URI.createFileURI(getFileFlexoIODelegate().getFile().getAbsolutePath()));
 		}
 		return modelResource;
+	}
+	
+	private FileFlexoIODelegate getFileFlexoIODelegate(){
+		return (FileFlexoIODelegate)getFlexoIODelegate();
 	}
 
 	@Override

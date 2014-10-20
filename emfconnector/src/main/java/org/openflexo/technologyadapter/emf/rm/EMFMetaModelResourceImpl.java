@@ -29,7 +29,8 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
@@ -41,7 +42,7 @@ import org.openflexo.toolbox.JarInDirClassLoader;
  * 
  * @author gbesancon
  */
-public abstract class EMFMetaModelResourceImpl extends FlexoFileResourceImpl<EMFMetaModel> implements EMFMetaModelResource {
+public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMetaModel> implements EMFMetaModelResource {
 
 	protected static final Logger logger = Logger.getLogger(EMFMetaModelResourceImpl.class.getPackage().getName());
 
@@ -75,14 +76,15 @@ public abstract class EMFMetaModelResourceImpl extends FlexoFileResourceImpl<EMF
 		EMFMetaModel result = null;
 		Class<?> ePackageClass = null;
 		ClassLoader classLoader = null;
-		File f = getFile();
+		FileFlexoIODelegate ffd = (FileFlexoIODelegate) getFlexoIODelegate();
+		File f = ffd.getFile();
 
 		// Load class and instanciate.
 
 		try {
 			if (f != null) {
 
-				classLoader = new JarInDirClassLoader(Collections.singletonList(getFile()));
+				classLoader = new JarInDirClassLoader(Collections.singletonList(ffd.getFile()));
 				ePackageClass = classLoader.loadClass(getPackageClassName());
 
 			} else {
@@ -104,7 +106,8 @@ public abstract class EMFMetaModelResourceImpl extends FlexoFileResourceImpl<EMF
 							EMFMetaModelConverter converter = new EMFMetaModelConverter(getTechnologyAdapter());
 							result = converter.convertMetaModel(getPackage());
 							result.setResource(this);
-							this.resourceData = result;
+							//this.resourceData = result;
+							setResourceData(result);
 						}
 					}
 				}
