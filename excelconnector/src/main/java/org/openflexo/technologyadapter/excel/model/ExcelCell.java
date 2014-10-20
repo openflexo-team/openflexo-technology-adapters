@@ -397,7 +397,13 @@ public class ExcelCell extends ExcelObject {
 	};
 
 	public String getCellValueAsString() {
-		return cell.getStringCellValue();
+		if (cell != null) {
+			return cell.getStringCellValue();
+		}
+		else {
+			logger.warning("Trying to get value for a null ExcelCell (" + this.toString() + ")");
+			return "";
+		}
 	}
 
 	private void setCellFormula(String formula) {
