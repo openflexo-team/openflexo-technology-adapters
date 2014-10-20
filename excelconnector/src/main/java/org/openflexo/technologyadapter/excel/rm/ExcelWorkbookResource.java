@@ -19,7 +19,6 @@
  */
 package org.openflexo.technologyadapter.excel.rm;
 
-import org.openflexo.foundation.resource.FlexoFileResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -33,8 +32,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @ModelEntity
 @ImplementationClass(ExcelWorkbookResourceImpl.class)
 @XMLElement
-public interface ExcelWorkbookResource extends FlexoFileResource<ExcelWorkbook>,
-		TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter> {
+public interface ExcelWorkbookResource extends TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter> {
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 

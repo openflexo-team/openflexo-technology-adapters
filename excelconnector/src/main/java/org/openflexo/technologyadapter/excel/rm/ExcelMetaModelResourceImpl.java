@@ -23,7 +23,6 @@ import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.excel.model.semantics.ExcelMetaModel;
 import org.openflexo.toolbox.IProgress;
@@ -33,7 +32,7 @@ import org.openflexo.toolbox.IProgress;
  * 
  * @author gbesancon
  */
-public abstract class ExcelMetaModelResourceImpl extends FlexoFileResourceImpl<ExcelMetaModel> implements ExcelMetaModelResource {
+public abstract class ExcelMetaModelResourceImpl implements ExcelMetaModelResource {
 
 	protected static final Logger logger = Logger.getLogger(ExcelMetaModelResourceImpl.class.getPackage().getName());
 
