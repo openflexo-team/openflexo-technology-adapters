@@ -26,8 +26,13 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
-		
-		
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexoutils</artifactId>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		<!--  3rd party -->
 			<dependency>
 				<groupId>org.apache.poi</groupId>
 				<artifactId>ooxml-schemas</artifactId>
