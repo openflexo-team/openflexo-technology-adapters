@@ -1,6 +1,6 @@
 package org.openflexo.technologyadapter.freeplane.rm;
 
-import org.openflexo.foundation.resource.FlexoFileResource;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -12,7 +12,7 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
 @ModelEntity
 @ImplementationClass(value = FreeplaneResourceImpl.class)
-public interface IFreeplaneResource extends FlexoFileResource<IFreeplaneMap>, TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> {
+public interface IFreeplaneResource extends TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> {
 
     public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
@@ -21,4 +21,6 @@ public interface IFreeplaneResource extends FlexoFileResource<IFreeplaneMap>, Te
 
     @Setter(TECHNOLOGY_CONTEXT_MANAGER)
     public void setTechnologyContextManager(FreeplaneTechnologyContextManager paramFreeplaneTechnologyContextManager);
+
+    public FileFlexoIODelegate getFileFlexoIODelegate();
 }

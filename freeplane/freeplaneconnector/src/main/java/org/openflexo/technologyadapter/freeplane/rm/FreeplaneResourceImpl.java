@@ -7,7 +7,9 @@ import java.util.logging.Logger;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
@@ -22,7 +24,7 @@ import org.openflexo.toolbox.IProgress;
  * @author eloubout
  * 
  */
-public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreeplaneMap> implements IFreeplaneResource {
+public abstract class FreeplaneResourceImpl extends FlexoResourceImpl<IFreeplaneMap> implements IFreeplaneResource {
 
     private static final Logger LOGGER = Logger.getLogger(FreeplaneResourceImpl.class.getPackage().getName());
     private static ModelFactory MODEL_FACTORY;
@@ -39,10 +41,17 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
     public static IFreeplaneResource makeFreeplaneResource(final String modelURI, final File modelFile,
             final FreeplaneTechnologyContextManager technologyContextManager) {
         try {
-            final ModelFactory factory = new ModelFactory(IFreeplaneResource.class);
+            final             ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					FileFlexoIODelegate.class,IFreeplaneResource.class));
             final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
+            
             returned.setName(modelFile.getName());
-            returned.setFile(modelFile);
+            //returned.setFile(modelFile);
+            
+            FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class) ;
+			returned.setFlexoIODelegate(fileIODelegate);
+			fileIODelegate.setFile(modelFile);
+            
             returned.setURI(modelURI);
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
             returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -60,10 +69,16 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
     public static IFreeplaneResource makeFreeplaneResource(final File modelFile,
             final FreeplaneTechnologyContextManager technologyContextManager) {
         try {
-            final ModelFactory factory = new ModelFactory(IFreeplaneResource.class);
+        	final             ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					FileFlexoIODelegate.class,IFreeplaneResource.class));
             final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
             returned.setName(modelFile.getName());
-            returned.setFile(modelFile);
+            //returned.setFile(modelFile);
+            
+            FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class) ;
+			returned.setFlexoIODelegate(fileIODelegate);
+			fileIODelegate.setFile(modelFile);
+            
             returned.setURI(modelFile.toURI().toString());
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
             returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -113,4 +128,13 @@ public abstract class FreeplaneResourceImpl extends FlexoFileResourceImpl<IFreep
             notifyResourceSaved();
         }
     }
+    
+    @Override
+	public FileFlexoIODelegate getFileFlexoIODelegate() {
+		return (FileFlexoIODelegate)getFlexoIODelegate();
+	}
+	
+	private File getFile(){
+		return getFileFlexoIODelegate().getFile();
+	}
 }
