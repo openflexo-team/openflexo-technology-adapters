@@ -43,7 +43,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.resource.FlexoFileResource;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -122,8 +122,10 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		System.out.println("ResourceCenter= " + resourceCenter);
 		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint",
 				resourceCenter.getDirectory(), serviceManager.getViewPointLibrary());
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory().exists());
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getFile().exists());
+		//assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory().exists());
+		//assertTrue(((ViewPointResource) newViewPoint.getResource()).getFile().exists());
+		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory()!=null);
+		assertTrue(((ViewPointResource) newViewPoint.getResource()).getFlexoIODelegate().exists());
 	}
 
 	/**
@@ -140,8 +142,10 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(emfMetaModelResource);
 
 		newVirtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
-		assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getDirectory().exists());
-		assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getFile().exists());
+		//assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getDirectory().exists());
+		//assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getFile().exists());
+		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory()!=null);
+		assertTrue(((ViewPointResource) newViewPoint.getResource()).getFlexoIODelegate().exists());
 		newModelSlot = technologicalAdapter.makeModelSlot(EMFModelSlot.class, newVirtualModel);
 		newModelSlot.setMetaModelResource(emfMetaModelResource);
 		assertNotNull(newModelSlot);
@@ -156,7 +160,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		project = editor.getProject();
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFile().exists());
+		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
 	}
 
 	@Test
@@ -167,7 +171,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			assertNotNull(emfMetaModelResource);
 
 			try {
-				RepositoryFolder<FlexoFileResource<?>> modelFolder = project.createNewFolder("Models");
+				RepositoryFolder<FlexoResource<?>> modelFolder = project.createNewFolder("Models");
 				emfModelResource = technologicalAdapter.createNewEMFModel(new File(modelFolder.getFile(), "coucou.emf"), "myURI",
 						emfMetaModelResource);
 			} catch (Exception e) {
@@ -238,7 +242,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		((VirtualModelResource) newVirtualModel.getResource()).save(null);
 
-		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getFile());
+		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getFlexoIODelegate().toString());
 
 	}
 
