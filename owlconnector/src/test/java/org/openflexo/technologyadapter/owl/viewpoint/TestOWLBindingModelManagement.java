@@ -68,6 +68,7 @@ import org.openflexo.foundation.viewpoint.binding.ViewPointBindingModel;
 import org.openflexo.foundation.viewpoint.binding.VirtualModelBindingModel;
 import org.openflexo.foundation.viewpoint.rm.ViewPointResource;
 import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLModelSlot;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
@@ -129,8 +130,8 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 	public void testCreateViewPoint() {
 		viewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint", resourceCenter.getDirectory(),
 				serviceManager.getViewPointLibrary());
-		assertTrue(((ViewPointResource) viewPoint.getResource()).getDirectory().exists());
-		assertTrue(((ViewPointResource) viewPoint.getResource()).getFile().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewPointResource) viewPoint.getResource()).getDirectory()).exists());
+		assertTrue(((ViewPointResource) viewPoint.getResource()).getFlexoIODelegate().exists());
 
 		assertNotNull(viewPoint.getBindingModel());
 		assertEquals(1, viewPoint.getBindingModel().getBindingVariablesCount());
@@ -146,8 +147,8 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 	public void testCreateVirtualModel() throws SaveResourceException {
 
 		virtualModel1 = VirtualModelImpl.newVirtualModel("VM1", viewPoint);
-		assertTrue(((VirtualModelResource) virtualModel1.getResource()).getDirectory().exists());
-		assertTrue(((VirtualModelResource) virtualModel1.getResource()).getFile().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) virtualModel1.getResource()).getDirectory()).exists());
+		assertTrue(((VirtualModelResource) virtualModel1.getResource()).getFlexoIODelegate().exists());
 
 		assertNotNull(virtualModel1.getBindingModel());
 		assertEquals(4, virtualModel1.getBindingModel().getBindingVariablesCount());
@@ -233,7 +234,7 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 
 		((VirtualModelResource) virtualModel1.getResource()).save(null);
 
-		System.out.println("Saved: " + ((VirtualModelResource) virtualModel1.getResource()).getFile());
+		System.out.println("Saved: " + ((VirtualModelResource) virtualModel1.getResource()).getFlexoIODelegate().toString());
 
 		System.out.println("FlexoConcept BindingModel = " + flexoConceptA.getBindingModel());
 
