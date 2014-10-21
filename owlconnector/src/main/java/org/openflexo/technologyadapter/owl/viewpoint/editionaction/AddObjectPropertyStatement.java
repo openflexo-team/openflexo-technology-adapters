@@ -52,6 +52,7 @@ import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
+import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 import org.openflexo.technologyadapter.owl.viewpoint.ObjectPropertyStatementRole;
@@ -84,6 +85,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 	@Setter(OBJECT_PROPERTY_URI_KEY)
 	public void _setObjectPropertyURI(String objectPropertyURI);
 
+	public OWLOntology getMetaModel();
+
 	public static abstract class AddObjectPropertyStatementImpl extends AddStatementImpl<ObjectPropertyStatement> implements
 			AddObjectPropertyStatement {
 
@@ -101,7 +104,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			FlexoRole superFlexoRole = super.getFlexoRole();
 			if (superFlexoRole instanceof ObjectPropertyStatementRole) {
 				return (ObjectPropertyStatementRole) superFlexoRole;
-			} else if (superFlexoRole != null) {
+			}
+			else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -109,9 +113,34 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		}
 
 		@Override
+		public OWLOntology getMetaModel() {
+			return this.getModelSlot().getMetaModelResource().getMetaModelData();
+		}
+
+		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append(getSubject().toString() + "." + getObjectProperty().getName() + " = " + getObject().toString() + ";", context);
+			String objstr;
+			String subjstr;
+			String propstr;
+
+			if (getSubject() != null)
+				subjstr = getSubject().toString();
+			else
+				subjstr = "<No Subject>";
+
+			if (getObject() != null)
+				objstr = getObject().toString();
+			else
+				objstr = "<No Object>";
+
+			if (getObjectProperty() != null)
+				propstr = getObjectProperty().getName();
+			else
+				propstr = "<No Property>";
+
+			out.append(subjstr + "." + propstr + " = " + objstr + ";", context);
+
 			return out.toString();
 		}
 
@@ -142,7 +171,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		public IFlexoOntologyObjectProperty getObjectProperty() {
 			if (getVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
 				return getVirtualModel().getOntologyObjectProperty(objectPropertyURI);
-			} else {
+			}
+			else {
 				if (getFlexoRole() != null) {
 					return (OWLObjectProperty) getFlexoRole().getObjectProperty();
 				}
@@ -150,19 +180,23 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			return null;
 		}
 
+		@SuppressWarnings("rawtypes")
 		@Override
 		public void setObjectProperty(IFlexoOntologyObjectProperty ontologyProperty) {
 			if (ontologyProperty != null) {
 				if (getFlexoRole() != null) {
 					if (getFlexoRole().getObjectProperty().isSuperConceptOf(ontologyProperty)) {
 						objectPropertyURI = ontologyProperty.getURI();
-					} else {
+					}
+					else {
 						getFlexoRole().setObjectProperty(ontologyProperty);
 					}
-				} else {
+				}
+				else {
 					objectPropertyURI = ontologyProperty.getURI();
 				}
-			} else {
+			}
+			else {
 				objectPropertyURI = null;
 			}
 		}
@@ -279,8 +313,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 				AddObjectPropertyStatement action) {
 			if (action.getObjectProperty() == null) {
 				Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>> v = new Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>>();
-				for (ObjectPropertyStatementRole pr : action.getFlexoConcept().getFlexoRoles(
-						ObjectPropertyStatementRole.class)) {
+				for (ObjectPropertyStatementRole pr : action.getFlexoConcept().getFlexoRoles(ObjectPropertyStatementRole.class)) {
 					v.add(new SetsPatternRole(pr));
 				}
 				return new ValidationError<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>(this,

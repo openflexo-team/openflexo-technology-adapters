@@ -1,7 +1,6 @@
 package org.openflexo.technologyadapter.emf.viewpoint.binding;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -41,11 +40,13 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 			if (((EMFAttributeAssociation) object).getFeature() instanceof EMFAttributeDataProperty) {
 				return new AttributeDataPropertyFeatureAssociationPathElement(parent, (EMFAttributeAssociation) object,
 						(EMFAttributeDataProperty) ((EMFAttributeAssociation) object).getFeature());
-			} else if (((EMFAttributeAssociation) object).getFeature() instanceof EMFAttributeObjectProperty) {
+			}
+			else if (((EMFAttributeAssociation) object).getFeature() instanceof EMFAttributeObjectProperty) {
 				return new AttributeObjectPropertyFeatureAssociationPathElement(parent, (EMFAttributeAssociation) object,
 						(EMFAttributeObjectProperty) ((EMFAttributeAssociation) object).getFeature());
 			}
-		} else if (object instanceof EMFReferenceAssociation
+		}
+		else if (object instanceof EMFReferenceAssociation
 				&& ((EMFReferenceAssociation) object).getFeature() instanceof EMFReferenceObjectProperty) {
 			return new ObjectReferenceFeatureAssociationPathElement(parent, (EMFReferenceAssociation) object,
 					(EMFReferenceObjectProperty) ((EMFReferenceAssociation) object).getFeature());
@@ -82,6 +83,9 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 					returned.add(getSimplePathElement(fa, parent));
 				}
 			}
+
+			returned.addAll(super.getAccessibleSimplePathElements(parent));
+
 			return returned;
 		}
 
@@ -91,7 +95,7 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 	@Override
 	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(BindingPathElement parent) {
 		// TODO: implements same as above, with behavioural features
-		return Collections.emptyList();
+		return super.getAccessibleFunctionPathElements(parent);
 	}
 
 }

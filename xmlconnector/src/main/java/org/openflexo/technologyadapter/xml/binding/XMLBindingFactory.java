@@ -21,7 +21,6 @@
 package org.openflexo.technologyadapter.xml.binding;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -53,12 +52,12 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
-		if (object instanceof XMLDataProperty ){
+		if (object instanceof XMLDataProperty) {
 			XMLDataProperty attr = (XMLDataProperty) object;
 
 			return new XMLDataPropertyPathElement(parent, attr);
 		}
-		else if (object instanceof XMLObjectPropertyImpl ){
+		else if (object instanceof XMLObjectPropertyImpl) {
 			XMLObjectPropertyImpl attr = (XMLObjectPropertyImpl) object;
 			return new XMLObjectPropertyPathElement(parent, attr);
 
@@ -69,7 +68,7 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	public boolean handleType(TechnologySpecificCustomType technologySpecificType) {
-		if (technologySpecificType instanceof XMLObject){
+		if (technologySpecificType instanceof XMLObject) {
 			return true;
 		}
 		return false;
@@ -85,12 +84,15 @@ public final class XMLBindingFactory extends TechnologyAdapterBindingFactory {
 				returned.add(getSimplePathElement(attr, parent));
 			}
 		}
+
+		returned.addAll(super.getAccessibleSimplePathElements(parent));
+
 		return returned;
 	}
 
 	@Override
 	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(BindingPathElement parent) {
-		return Collections.emptyList();
+		return super.getAccessibleFunctionPathElements(parent);
 	}
 
 }

@@ -71,6 +71,7 @@ import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
 import org.openflexo.technologyadapter.owl.OWLModelSlot;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
+import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -105,6 +106,8 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 	public static final String BASIC_ONTOLOGY_URI = "http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl";
 
 	static private OWLClass basicConcept;
+
+	static private OWLObjectProperty hasObjectProperty;
 
 	/**
 	 * Init
@@ -213,6 +216,9 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 
 		assertNotNull(basicConcept);
 
+		hasObjectProperty = newModelSlot.getMetaModelResource().getMetaModelData().getObjectProperty(BASIC_ONTOLOGY_URI + "#" + "has");
+
+		assertNotNull(hasObjectProperty);
 	}
 
 	/**
@@ -305,11 +311,19 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		createPR4.setIndividualType(basicConcept);
 		createPR4.doAction();
 
-		assertEquals(4, flexoConceptA.getFlexoRoles().size());
+		CreateFlexoRole createPR5 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		createPR5.setRoleName("anObjectProperty");
+		createPR5.setFlexoRoleClass(OWLObjectPropertyRole.class);
+		createPR5.doAction();
+		OWLObjectPropertyRole hasRole = (OWLObjectPropertyRole) createPR5.getNewFlexoRole();
+		hasRole.setParentProperty(hasObjectProperty);
+
+		assertEquals(5, flexoConceptA.getFlexoRoles().size());
 		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR1.getNewFlexoRole()));
 		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR2.getNewFlexoRole()));
 		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR3.getNewFlexoRole()));
 		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR4.getNewFlexoRole()));
+		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR5.getNewFlexoRole()));
 
 		System.out.println("FlexoConcept BindingModel = " + flexoConceptA.getBindingModel());
 		System.out.println("OWLIndividualRole BindingModel = " + flexoConceptA.getFlexoRole("anIndividual").getBindingModel());
@@ -317,6 +331,8 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		FlexoRoleBindingVariable bv = (FlexoRoleBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("anIndividual");
 
 		List<? extends SimplePathElement> listSPE = flexoConceptA.getBindingFactory().getAccessibleSimplePathElements(bv);
+
+		System.out.println("** Accessible Elements for Individual");
 
 		boolean found = false;
 		for (SimplePathElement spe : listSPE) {
@@ -326,9 +342,22 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 			}
 		}
 
+		bv = (FlexoRoleBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("anObjectProperty");
+		listSPE = flexoConceptA.getBindingFactory().getAccessibleSimplePathElements(bv);
+
+		System.out.println("\n** Accessible Elements for Individual");
+
+		found = false;
+		for (SimplePathElement spe : listSPE) {
+			System.out.println("   -- " + spe.getPropertyName() + " [ " + spe.getType().toString() + "]");
+			if ("domain".equals(spe.getPropertyName())) {
+				found = true;
+			}
+		}
+
 		assertTrue(found);
 
-		assertEquals(11, flexoConceptA.getBindingModel().getBindingVariablesCount());
+		assertEquals(12, flexoConceptA.getBindingModel().getBindingVariablesCount());
 		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
 		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
 		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIEW_PROPERTY));
