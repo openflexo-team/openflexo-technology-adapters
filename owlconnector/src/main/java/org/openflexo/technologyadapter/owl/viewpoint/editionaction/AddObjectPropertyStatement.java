@@ -52,7 +52,6 @@ import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
-import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 import org.openflexo.technologyadapter.owl.viewpoint.ObjectPropertyStatementRole;
@@ -85,8 +84,6 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 	@Setter(OBJECT_PROPERTY_URI_KEY)
 	public void _setObjectPropertyURI(String objectPropertyURI);
 
-	public OWLOntology getMetaModel();
-
 	public static abstract class AddObjectPropertyStatementImpl extends AddStatementImpl<ObjectPropertyStatement> implements
 			AddObjectPropertyStatement {
 
@@ -110,11 +107,6 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 				return null;
 			}
 			return null;
-		}
-
-		@Override
-		public OWLOntology getMetaModel() {
-			return this.getModelSlot().getMetaModelResource().getMetaModelData();
 		}
 
 		@Override

@@ -69,9 +69,12 @@ public class TestOWLFibs extends GenericFIBTestCase {
 
 	@Test
 	public void testAddRestrictionPanel() {
-		validateFIB("Fib/AddRestrictionPanel.fib");
+		validateFIB("Fib/AddRestrictionStatementPanel.fib");
 	}
 
+	// TODO : Are those still useful?
+
+	/*
 	@Test
 	public void testFIBOntologyLibraryBrowser() {
 		validateFIB("Fib/FIBOntologyLibraryBrowser.fib");
@@ -96,5 +99,16 @@ public class TestOWLFibs extends GenericFIBTestCase {
 	public void testFIBOWLObjectPropertyEditor() {
 		validateFIB("Fib/FIBOWLObjectPropertyEditor.fib");
 	}
+
+	@Test
+	public void testFIBOWLOntologyBrowser() {
+		validateFIB("Fib/FIBOWLOntologyBrowser.fib");
+	}
+
+	@Test
+	public void testFIBOWLOntologySelector() {
+		validateFIB("Fib/FIBOWLOntologySelector.fib");
+	}
+	*/
 
 }

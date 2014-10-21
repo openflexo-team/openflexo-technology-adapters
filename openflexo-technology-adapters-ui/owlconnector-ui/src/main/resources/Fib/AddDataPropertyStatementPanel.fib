@@ -18,7 +18,7 @@
   </Custom>
   <Label label="property" align="right" index="12" data="" constraints="twocols(expandHorizontally=true;expandVertically=false;index=8;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" visible="" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" />
   <Custom componentClassName="org.openflexo.components.widget.FIBPropertySelector" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" index="13" data="data.dataProperty" constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" visible="">
-    <Assignment variable="component.context" value="AddDataPropertyStatementPanel.data.modelSlot.metaModelResource.metaModelData" />
+    <Assignment variable="component.context" value="AddDataPropertyStatementPanel.data.metaModel" />
     <Assignment variable="component.selectObjectProperties" value="false" />
     <Assignment variable="component.selectDataProperties" value="true" />
     <Assignment variable="component.selectAnnotationProperties" value="false" />

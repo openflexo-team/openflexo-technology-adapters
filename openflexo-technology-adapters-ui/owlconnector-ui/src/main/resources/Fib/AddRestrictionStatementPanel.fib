@@ -19,7 +19,7 @@
     <Assignment variable="component.bindable" value="AddRestrictionPanel.data" />
   </Custom>
   <Label label="property" align="right" index="10" data="" constraints="twocols(expandHorizontally=true;expandVertically=false;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" visible="" format="" icon="" tooltip="" localize="true" enable="" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" />
-  <Custom componentClassName="org.openflexo.components.widget.FIBPropertySelector" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" index="11" data="data.objectProperty" constraints="twocols(expandHorizontally=true;expandVertically=false;index=11;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" visible="">
+  <Custom componentClassName="org.openflexo.components.widget.FIBPropertySelector" format="" icon="" tooltip="" localize="true" enable="" manageDynamicModel="true" clickAction="" doubleClickAction="" rightClickAction="" enterPressedAction="" valueChangedAction="" valueTransform="" valueValidator="" index="11" data="data.property" constraints="twocols(expandHorizontally=true;expandVertically=false;index=11;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" visible="">
     <Assignment variable="component.context" value="data.viewPoint.viewpointOntology" />
     <Assignment variable="component.selectObjectProperties" value="true" />
     <Assignment variable="component.selectDataProperties" value="true" />
