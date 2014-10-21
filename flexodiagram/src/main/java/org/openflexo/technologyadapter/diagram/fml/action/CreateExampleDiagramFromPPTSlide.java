@@ -31,6 +31,7 @@ import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.ViewPointObject;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
@@ -105,6 +106,6 @@ public class CreateExampleDiagramFromPPTSlide extends AbstractCreateDiagramFromP
 	}
 
 	public File getDefaultDiagramFile() {
-		return new File(getFocusedObject().getResource().getDirectory(), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
+		return new File(ResourceLocator.retrieveResourceAsFile(getFocusedObject().getResource().getDirectory()), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
 	}
 }

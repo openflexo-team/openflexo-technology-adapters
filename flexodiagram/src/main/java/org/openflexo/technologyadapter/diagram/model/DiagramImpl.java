@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.resource.FlexoFileResource;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -89,13 +89,14 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	}
 
 	private File getExpectedScreenshotImageFile() {
-		if (expectedScreenshotImageFile == null && getResource() instanceof FlexoFileResource) {
-			expectedScreenshotImageFile = new File(((FlexoFileResource<Diagram>) getResource()).getFile().getParentFile(), getName()
+		if (expectedScreenshotImageFile == null && getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+			FileFlexoIODelegate delegate = (FileFlexoIODelegate)getResource().getFlexoIODelegate();
+			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName()
 					+ ".diagram.png");
 		}
 		return expectedScreenshotImageFile;
 	}
-
+	
 	private ScreenshotImage<Diagram> buildAndSaveScreenshotImage() {
 		if (getTechnologyAdapter().getScreenshotBuilder() != null) {
 			ScreenshotBuilder<Diagram> builder = getTechnologyAdapter().getScreenshotBuilder();

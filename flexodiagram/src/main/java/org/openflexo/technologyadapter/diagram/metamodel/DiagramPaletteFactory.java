@@ -27,6 +27,7 @@ import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -51,7 +52,11 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl implements Pamela
 	public DiagramPaletteFactory(EditingContext editingContext, DiagramPaletteResource paletteResource) throws ModelDefinitionException {
 		super(DiagramPalette.class, DiagramPaletteElement.class);
 		if (paletteResource != null) {
-			addConverter(new RelativePathFileConverter(paletteResource.getFile().getParentFile()));
+			if(paletteResource.getFlexoIODelegate() instanceof FileFlexoIODelegate){
+				FileFlexoIODelegate delegate = (FileFlexoIODelegate)paletteResource.getFileFlexoIODelegate();
+				addConverter(new RelativePathFileConverter(delegate.getFile().getParentFile()));
+			}
+			
 		}
 		setEditingContext(editingContext);
 		this.resource = paletteResource;

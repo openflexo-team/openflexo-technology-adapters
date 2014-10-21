@@ -25,12 +25,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
-import javax.swing.JComponent;
-
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.resource.FlexoFileResource;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.ScreenshotBuilder;
@@ -50,7 +48,6 @@ import org.openflexo.model.validation.Validable;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResourceImpl;
 
@@ -303,8 +300,9 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		}
 
 		private File getExpectedScreenshotImageFile() {
-			if (expectedScreenshotImageFile == null && getResource() instanceof FlexoFileResource) {
-				expectedScreenshotImageFile = new File(((FlexoFileResource<DiagramPalette>) getResource()).getFile().getParentFile(),
+			if (expectedScreenshotImageFile == null && getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+				FileFlexoIODelegate delegate = (FileFlexoIODelegate)getResource().getFlexoIODelegate();
+				expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(),
 						getName() + ".diagram.png");
 			}
 			return expectedScreenshotImageFile;

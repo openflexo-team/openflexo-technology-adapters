@@ -73,7 +73,7 @@ public class TestActions extends OpenflexoProjectAtRunTimeTestCase {
 		editor = createProject("TestProject");
 		project = editor.getProject();
 		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFile().exists());
+		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
 	}
 
 	private int realNumberOfShapesAndConnectors = 0;

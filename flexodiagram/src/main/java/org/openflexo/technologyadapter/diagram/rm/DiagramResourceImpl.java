@@ -17,9 +17,12 @@ import org.openflexo.foundation.InconsistentDataException;
 import org.openflexo.foundation.InvalidModelDefinitionException;
 import org.openflexo.foundation.InvalidXMLException;
 import org.openflexo.foundation.ProjectDataResource;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoFileNotFoundException;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -46,12 +49,14 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 	public static DiagramResource makeDiagramResource(String name, String uri, File diagramFile,
 			DiagramSpecificationResource diagramSpecificationResource, FlexoServiceManager serviceManager) {
 		try {
-			ModelFactory factory = new ModelFactory(DiagramResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,DiagramResource.class));
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
 			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
 			returned.setFactory(diagramFactory);
 			returned.setName(name);
-			returned.setFile(diagramFile);
+			//returned.setFile(diagramFile);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramFile, factory));
+			
 			returned.setURI(uri);
 			returned.setServiceManager(serviceManager);
 			if (diagramSpecificationResource != null) {
@@ -69,13 +74,15 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 
 	public static DiagramResource retrieveDiagramResource(File diagramFile, FlexoServiceManager serviceManager) {
 		try {
-			ModelFactory factory = new ModelFactory(DiagramResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,DiagramResource.class));
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
 			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
 			returned.setFactory(diagramFactory);
 			String baseName = diagramFile.getName().substring(0, diagramFile.getName().length() - DiagramResource.DIAGRAM_SUFFIX.length());
 			returned.setName(baseName);
-			returned.setFile(diagramFile);
+			//returned.setFile(diagramFile);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramFile, factory));
+			
 			DiagramInfo info = findDiagramInfo(diagramFile);
 			if (info == null) {
 				// Unable to retrieve infos, just abort

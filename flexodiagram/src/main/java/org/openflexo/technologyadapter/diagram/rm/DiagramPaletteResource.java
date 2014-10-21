@@ -1,5 +1,6 @@
 package org.openflexo.technologyadapter.diagram.rm;
 
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -33,5 +34,7 @@ TechnologyAdapterResource<DiagramPalette, DiagramTechnologyAdapter>{
 	public DiagramSpecificationResource getContainer();
 	
 	public static final String DIAGRAM_PALETTE_SUFFIX = ".palette";
+	
+	public FileFlexoIODelegate getFileFlexoIODelegate();
 
 }

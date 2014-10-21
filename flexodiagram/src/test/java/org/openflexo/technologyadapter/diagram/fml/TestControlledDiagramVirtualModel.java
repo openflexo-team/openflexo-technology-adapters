@@ -31,6 +31,7 @@ import org.openflexo.foundation.viewpoint.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.viewpoint.action.CreateFlexoRole;
 import org.openflexo.foundation.viewpoint.rm.ViewPointResource;
 import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
@@ -122,7 +123,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		diagramSpecificationResource = action.getNewDiagramSpecification().getResource();
 
 		assertNotNull(diagramSpecificationResource);
-		assertTrue(diagramSpecificationResource.getFile().exists());
+		assertTrue(diagramSpecificationResource.getFlexoIODelegate().exists());
 
 	}
 
@@ -148,7 +149,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		paletteResource = action.getNewPalette().getResource();
 
 		assertNotNull(paletteResource);
-		assertTrue(paletteResource.getFile().exists());
+		assertTrue(paletteResource.getFlexoIODelegate().exists());
 		assertTrue(diagramSpecificationResource.getDiagramPaletteResources().contains(paletteResource));
 
 		assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
@@ -185,8 +186,9 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
 				((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), serviceManager.getViewPointLibrary());
 		viewPointResource = (ViewPointResource) viewPoint.getResource();
-		assertTrue(viewPointResource.getDirectory().exists());
-		assertTrue(viewPointResource.getFile().exists());
+		//assertTrue(viewPointResource.getDirectory().exists());
+		assertTrue(viewPointResource.getDirectory()!=null);
+		assertTrue(viewPointResource.getFlexoIODelegate().exists());
 	}
 
 	/**
@@ -199,8 +201,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		log("testCreateVirtualModel()");
 
 		virtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", viewPoint);
-		assertTrue(((VirtualModelResource) virtualModel.getResource()).getDirectory().exists());
-		assertTrue(((VirtualModelResource) virtualModel.getResource()).getFile().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) virtualModel.getResource()).getDirectory()).exists());
+		assertTrue(((VirtualModelResource) virtualModel.getResource()).getFlexoIODelegate().exists());
 
 		typedDiagramModelSlot = technologicalAdapter.makeModelSlot(TypedDiagramModelSlot.class, virtualModel);
 		typedDiagramModelSlot.setMetaModelResource(diagramSpecificationResource);
@@ -275,12 +277,12 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		newDirectory.mkdirs();
 
 		try {
-			File dsDir = new File(newDirectory, diagramSpecificationResource.getDirectory().getName());
+			File dsDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()).getName());
 			dsDir.mkdirs();
-			FileUtils.copyContentDirToDir(diagramSpecificationResource.getDirectory(), dsDir);
-			File vpDir = new File(newDirectory, viewPointResource.getDirectory().getName());
+			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), dsDir);
+			File vpDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()).getName());
 			vpDir.mkdirs();
-			FileUtils.copyContentDirToDir(viewPointResource.getDirectory(), vpDir);
+			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()), vpDir);
 			// We wait here for the thread monitoring ResourceCenters to detect new files
 			Thread.sleep(3000);
 		} catch (IOException e) {

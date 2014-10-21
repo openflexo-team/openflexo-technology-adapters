@@ -20,6 +20,7 @@ import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -103,7 +104,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 					diagramRep, diagramFile, applicationContext);*/
 
 			diagramSpecificationResource.save(null);
-			assertTrue(diagramSpecificationResource.getFile().exists());
+			assertTrue(diagramSpecificationResource.getFlexoIODelegate().exists());
 
 		} catch (SaveResourceException e) {
 			fail(e.getMessage());
@@ -128,7 +129,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		*/
 
 		DiagramSpecificationResource reloadedResource = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(
-				diagramSpecificationResource.getDirectory(), repository.getRootFolder(), applicationContext);
+				ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), repository.getRootFolder(), applicationContext);
 
 		assertNotNull(reloadedResource);
 		assertEquals(diagramSpecificationURI, reloadedResource.getURI());
@@ -159,7 +160,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 			paletteResource.getDiagramPalette().addToElements(diagramPaletteElement);
 
 			paletteResource.save(null);
-			assertTrue(paletteResource.getFile().exists());
+			assertTrue(paletteResource.getFlexoIODelegate().exists());
 			diagramSpecificationResource.save(null);
 			assertTrue(diagramSpecificationResource.getDiagramPaletteResources().contains(paletteResource));
 
@@ -181,7 +182,7 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		log("testExampleDiagrams()");
 
 		try {
-			File exampleDiagramFile = new File(diagramSpecificationResource.getDirectory(), "exampleDiagram1.diagram");
+			File exampleDiagramFile = new File(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), "exampleDiagram1.diagram");
 			exampleDiagramResource = DiagramResourceImpl.makeDiagramResource("exampleDiagram1", "http://myExampleDiagram",
 					exampleDiagramFile, diagramSpecificationResource, applicationContext);
 
@@ -226,12 +227,12 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
 		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
 
-		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), diagramSpecificationResource
-				.getDirectory().getName());
+		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource
+				.getDirectory()).getName());
 		newDirectory.mkdirs();
 
 		try {
-			FileUtils.copyContentDirToDir(diagramSpecificationResource.getDirectory(), newDirectory);
+			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), newDirectory);
 			// We wait here for the thread monitoring ResourceCenters to detect new files
 			Thread.sleep(3000);
 		} catch (IOException e) {

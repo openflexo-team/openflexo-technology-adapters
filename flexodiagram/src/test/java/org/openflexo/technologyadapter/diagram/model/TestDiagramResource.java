@@ -15,6 +15,7 @@ import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoTestCase;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -79,7 +80,7 @@ public class TestDiagramResource extends OpenflexoTestCase {
 
 			diagramResource.save(null);
 
-			assertTrue(diagramResource.getFile().exists());
+			assertTrue(diagramResource.getFlexoIODelegate().exists());
 
 		} catch (SaveResourceException e) {
 			fail(e.getMessage());
@@ -137,7 +138,7 @@ public class TestDiagramResource extends OpenflexoTestCase {
 
 		log("testReloadDiagram()");
 
-		DiagramResource reloadedResource = DiagramResourceImpl.retrieveDiagramResource(diagramResource.getFile(), applicationContext);
+		DiagramResource reloadedResource = DiagramResourceImpl.retrieveDiagramResource(((FileFlexoIODelegate)(diagramResource.getFlexoIODelegate())).getFile(), applicationContext);
 		assertNotNull(reloadedResource);
 		assertNotSame(diagramResource, reloadedResource);
 		assertEquals(diagramResource.getURI(), reloadedResource.getURI());

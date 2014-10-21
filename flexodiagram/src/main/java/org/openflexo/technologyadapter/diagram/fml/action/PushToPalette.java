@@ -47,6 +47,7 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -458,7 +459,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public File saveScreenshot() {
-		File imageFile = new File(getDiagramSpecification().getResource().getDirectory(), JavaUtils.getClassName(newElementName)
+		File imageFile = new File(ResourceLocator.retrieveResourceAsFile(getDiagramSpecification().getResource().getDirectory()), JavaUtils.getClassName(newElementName)
 				+ ".palette-element" + ".png");
 		logger.info("Saving " + imageFile);
 		try {

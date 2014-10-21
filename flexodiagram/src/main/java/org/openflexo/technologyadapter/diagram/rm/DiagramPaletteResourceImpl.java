@@ -10,12 +10,16 @@ import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.InconsistentDataException;
 import org.openflexo.foundation.InvalidModelDefinitionException;
 import org.openflexo.foundation.InvalidXMLException;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FlexoFileNotFoundException;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.AccessibleProxyObject;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
@@ -27,11 +31,14 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 	public static DiagramPaletteResource makeDiagramPaletteResource(DiagramSpecificationResource dsResource, String diagramPaletteName,
 			FlexoServiceManager serviceManager) {
 		try {
-			File diagramPaletteFile = new File(dsResource.getDirectory(), diagramPaletteName + ".palette");
-			ModelFactory factory = new ModelFactory(DiagramPaletteResource.class);
+			File diagramPaletteFile = new File(ResourceLocator.retrieveResourceAsFile(dsResource.getDirectory()), diagramPaletteName + ".palette");
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					FileFlexoIODelegate.class,DiagramPaletteResource.class));
 			DiagramPaletteResourceImpl returned = (DiagramPaletteResourceImpl) factory.newInstance(DiagramPaletteResource.class);
 			returned.setName(diagramPaletteFile.getName());
-			returned.setFile(diagramPaletteFile);
+			//returned.setFile(diagramPaletteFile);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramPaletteFile, factory));
+			
 			returned.setURI(dsResource.getURI() + "/" + diagramPaletteFile.getName());
 			returned.setServiceManager(serviceManager);
 			returned.setFactory(new DiagramPaletteFactory(serviceManager.getEditingContext(), returned));
@@ -51,10 +58,13 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 	public static DiagramPaletteResource retrieveDiagramPaletteResource(DiagramSpecificationResource dsResource, File diagramPaletteFile,
 			FlexoServiceManager serviceManager) {
 		try {
-			ModelFactory factory = new ModelFactory(DiagramPaletteResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					FileFlexoIODelegate.class,DiagramPaletteResource.class));
 			DiagramPaletteResourceImpl returned = (DiagramPaletteResourceImpl) factory.newInstance(DiagramPaletteResource.class);
 			returned.setName(diagramPaletteFile.getName());
-			returned.setFile(diagramPaletteFile);
+			//returned.setFile(diagramPaletteFile);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramPaletteFile, factory));
+			
 			returned.setURI(dsResource.getURI() + "/" + diagramPaletteFile.getName());
 			returned.setServiceManager(serviceManager);
 			returned.setFactory(new DiagramPaletteFactory(serviceManager.getEditingContext(), returned));
@@ -131,6 +141,14 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 		return returned;
 	}
 
+	private File getFile(){
+		return getFileFlexoIODelegate().getFile();
+	}
+	
+	public FileFlexoIODelegate getFileFlexoIODelegate() {
+		return (FileFlexoIODelegate)getFlexoIODelegate();
+	}
+	
 	@Override
 	public DiagramSpecificationResource getContainer() {
 		return (DiagramSpecificationResource) performSuperGetter(CONTAINER);

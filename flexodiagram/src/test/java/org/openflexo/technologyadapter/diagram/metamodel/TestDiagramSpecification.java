@@ -20,6 +20,7 @@ import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
@@ -104,7 +105,7 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 		diagramSpecificationResource = action.getNewDiagramSpecification().getResource();
 
 		assertNotNull(diagramSpecificationResource);
-		assertTrue(diagramSpecificationResource.getFile().exists());
+		assertTrue(diagramSpecificationResource.getFlexoIODelegate().exists());
 
 	}
 
@@ -128,7 +129,7 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 		paletteResource = action.getNewPalette().getResource();
 
 		assertNotNull(paletteResource);
-		assertTrue(paletteResource.getFile().exists());
+		assertTrue(paletteResource.getFlexoIODelegate().exists());
 		assertTrue(diagramSpecificationResource.getDiagramPaletteResources().contains(paletteResource));
 
 		assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
@@ -158,7 +159,7 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 		exampleDiagramResource = (DiagramResource) action.getNewDiagram().getResource();
 
 		assertNotNull(exampleDiagramResource);
-		assertTrue(exampleDiagramResource.getFile().exists());
+		assertTrue(exampleDiagramResource.getFlexoIODelegate().exists());
 		assertTrue(diagramSpecificationResource.getExampleDiagramResources().contains(exampleDiagramResource));
 
 		assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getExampleDiagrams().size());
@@ -197,12 +198,12 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
 		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
 
-		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), diagramSpecificationResource
-				.getDirectory().getName());
+		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource
+				.getDirectory()).getName());
 		newDirectory.mkdirs();
 
 		try {
-			FileUtils.copyContentDirToDir(diagramSpecificationResource.getDirectory(), newDirectory);
+			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), newDirectory);
 			// We wait here for the thread monitoring ResourceCenters to detect new files
 			Thread.sleep(3000);
 		} catch (IOException e) {
