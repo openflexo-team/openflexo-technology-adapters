@@ -20,7 +20,7 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
-import org.openflexo.foundation.resource.FlexoFileResource;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
@@ -36,8 +36,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @ModelEntity
 @ImplementationClass(XSDMetaModelResourceImpl.class)
 @XMLElement
-public interface XSDMetaModelResource extends FlexoFileResource<XMLMetaModel>,
-		TechnologyAdapterResource<XMLMetaModel, XMLTechnologyAdapter>,
+public interface XSDMetaModelResource extends TechnologyAdapterResource<XMLMetaModel, XMLTechnologyAdapter>,
 		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> {
 
 
@@ -51,4 +50,6 @@ public interface XSDMetaModelResource extends FlexoFileResource<XMLMetaModel>,
 	
 	@Override
 	public XMLMetaModel getMetaModelData();
+	
+	public FileFlexoIODelegate getFileFlexoIODelegate();
 }

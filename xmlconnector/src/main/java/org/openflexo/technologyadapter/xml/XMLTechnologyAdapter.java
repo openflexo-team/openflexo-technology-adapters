@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -376,7 +377,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				// Check if it's not yet registered
 				boolean found = false;
 				for (XMLFileResource r : modelRepository.getAllResources()) {
-					found = found || r.getFile().equals(candidateFile);
+					found = found || getFileFlexoIODelegate(r).getFile().equals(candidateFile);
 				}
 				if (!found)
 					tryToLookupModel(resourceCenter, candidateFile);
@@ -390,6 +391,10 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 	}
 
+	private FileFlexoIODelegate getFileFlexoIODelegate(FlexoResource resource){
+		return (FileFlexoIODelegate)resource.getFlexoIODelegate();
+	}
+	
 	/**
 	 * 
 	 * Create a XMLModel repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}

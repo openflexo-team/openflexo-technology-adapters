@@ -32,11 +32,15 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
@@ -52,7 +56,7 @@ import org.openflexo.xml.XMLRootElementReader;
  * @author xtof
  * 
  */
-public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel> implements XMLFileResource {
+public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> implements XMLFileResource {
 
 	protected static final Logger logger   = Logger.getLogger(XMLFileResourceImpl.class.getPackage().getName());
 	protected static XMLRootElementReader REreader = new XMLRootElementReader();
@@ -70,10 +74,12 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 	 */
 	public static XMLFileResource makeXMLFileResource(File xmlFile, XMLTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(XMLFileResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					FileFlexoIODelegate.class,XMLFileResource.class));
 			XMLFileResourceImpl returned = (XMLFileResourceImpl) factory.newInstance(XMLFileResource.class);
 			returned.setName(xmlFile.getName());
-			returned.setFile(xmlFile);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xmlFile, factory));
+
 			returned.setURI(xmlFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -118,21 +124,21 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 				myFile.createNewFile();
 			} catch (IOException e) {
 				e.printStackTrace();
-				throw new SaveResourceException(this);
+				throw new SaveResourceException(getFlexoIODelegate());
 			}
 		}
 
-		if (!hasWritePermission()) {
+		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
 				logger.warning("Permission denied : " + getFile().getAbsolutePath());
 			}
-			throw new SaveResourcePermissionDeniedException(this);
+			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
 		}
 
 		if (resourceData != null) {
-			FileWritingLock lock = willWriteOnDisk();
+			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
 			writeToFile();
-			hasWrittenOnDisk(lock);
+			getFlexoIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			if (logger.isLoggable(Level.INFO)) {
 				logger.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
@@ -194,7 +200,7 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
@@ -317,4 +323,12 @@ public abstract class XMLFileResourceImpl extends FlexoFileResourceImpl<XMLModel
 		return isLoaded;
 	}
 
+	@Override
+	public FileFlexoIODelegate getFileFlexoIODelegate() {
+		return (FileFlexoIODelegate)getFlexoIODelegate();
+	}
+	
+	private File getFile(){
+		return getFileFlexoIODelegate().getFile();
+	}
 }

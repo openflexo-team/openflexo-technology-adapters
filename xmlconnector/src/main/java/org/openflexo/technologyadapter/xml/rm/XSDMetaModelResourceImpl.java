@@ -26,8 +26,11 @@ import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
@@ -52,7 +55,7 @@ import com.sun.xml.xsom.XSType;
  * 
  */
 
-public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XMLMetaModel>  implements XSDMetaModelResource {
+public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMetaModel>  implements XSDMetaModelResource {
 
 	private static final Logger logger = Logger.getLogger(XSDMetaModelResourceImpl.class.getPackage().getName());
 
@@ -68,12 +71,13 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 	public static XSDMetaModelResource makeXSDMetaModelResource(File xsdMetaModelFile, String uri,
 			XMLTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(XSDMetaModelResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					FileFlexoIODelegate.class,XSDMetaModelResource.class));
 			XSDMetaModelResource returned = factory.newInstance(XSDMetaModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setURI(uri);
 			returned.setName("Unnamed");
-			returned.setFile(xsdMetaModelFile);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xsdMetaModelFile, factory));
 
 			return returned;
 		} catch (ModelDefinitionException e) {
@@ -312,6 +316,15 @@ public abstract class XSDMetaModelResourceImpl extends FlexoFileResourceImpl<XML
 	@Override
 	public Class<XMLMetaModel> getResourceDataClass() {
 		return XMLMetaModel.class;
+	}
+	
+	private File getFile(){
+		return getFileFlexoIODelegate().getFile();
+	}
+	
+	@Override
+	public FileFlexoIODelegate getFileFlexoIODelegate() {
+		return (FileFlexoIODelegate)getFlexoIODelegate();
 	}
 
 }
