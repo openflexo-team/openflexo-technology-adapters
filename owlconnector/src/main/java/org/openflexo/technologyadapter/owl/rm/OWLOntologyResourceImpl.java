@@ -27,11 +27,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
@@ -48,7 +52,7 @@ import com.hp.hpl.jena.rdf.model.RDFWriter;
  * @author sguerin
  * 
  */
-public abstract class OWLOntologyResourceImpl extends FlexoFileResourceImpl<OWLOntology> implements OWLOntologyResource {
+public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntology> implements OWLOntologyResource {
 
 	private static final Logger logger = Logger.getLogger(OWLOntologyResourceImpl.class.getPackage().getName());
 
@@ -64,12 +68,16 @@ public abstract class OWLOntologyResourceImpl extends FlexoFileResourceImpl<OWLO
 	 */
 	public static OWLOntologyResource makeOWLOntologyResource(String ontologyURI, File owlFile, OWLOntologyLibrary ontologyLibrary) {
 		try {
-			ModelFactory factory = new ModelFactory(OWLOntologyResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					FileFlexoIODelegate.class,OWLOntologyResource.class));
 			OWLOntologyResourceImpl returned = (OWLOntologyResourceImpl) factory.newInstance(OWLOntologyResource.class);
 			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
 			returned.setOntologyLibrary(ontologyLibrary);
 			returned.setName(owlFile.getName());
-			returned.setFile(owlFile);
+			//returned.setFile(owlFile);
+			
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
+			
 			returned.setURI(ontologyURI);
 			// Register the ontology
 			ontologyLibrary.registerResource(returned);
@@ -97,12 +105,15 @@ public abstract class OWLOntologyResourceImpl extends FlexoFileResourceImpl<OWLO
 	 */
 	public static OWLOntologyResource retrieveOWLOntologyResource(File owlFile, OWLOntologyLibrary ontologyLibrary) {
 		try {
-			ModelFactory factory = new ModelFactory(OWLOntologyResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					FileFlexoIODelegate.class,OWLOntologyResource.class));
 			OWLOntologyResourceImpl returned = (OWLOntologyResourceImpl) factory.newInstance(OWLOntologyResource.class);
 			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
 			returned.setOntologyLibrary(ontologyLibrary);
 			returned.setName(OWLOntology.findOntologyName(owlFile));
-			returned.setFile(owlFile);
+			
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
+			
 			returned.setURI(OWLOntology.findOntologyURI(owlFile));
 			returned.setServiceManager(ontologyLibrary.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			// Register the ontology
@@ -145,25 +156,25 @@ public abstract class OWLOntologyResourceImpl extends FlexoFileResourceImpl<OWLO
 			resourceData = getResourceData(progress);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFileFlexoIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFileFlexoIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFileFlexoIODelegate());
 		}
 
-		if (!hasWritePermission()) {
+		if (!getFileFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
 				logger.warning("Permission denied : " + getFile().getAbsolutePath());
 			}
-			throw new SaveResourcePermissionDeniedException(this);
+			throw new SaveResourcePermissionDeniedException(getFileFlexoIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = willWriteOnDisk();
+			FileWritingLock lock = getFileFlexoIODelegate().willWriteOnDisk();
 			_writeToFile();
-			hasWrittenOnDisk(lock);
+			getFileFlexoIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
@@ -189,14 +200,14 @@ public abstract class OWLOntologyResourceImpl extends FlexoFileResourceImpl<OWLO
 			logger.info("Wrote " + getFile());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFileFlexoIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFileFlexoIODelegate());
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			logger.warning("FileNotFoundException: " + e.getMessage());
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFileFlexoIODelegate());
 		} finally {
 			try {
 				if (out != null) {
@@ -205,7 +216,7 @@ public abstract class OWLOntologyResourceImpl extends FlexoFileResourceImpl<OWLO
 			} catch (IOException e) {
 				e.printStackTrace();
 				logger.warning("IOException: " + e.getMessage());
-				throw new SaveResourceException(this);
+				throw new SaveResourceException(getFileFlexoIODelegate());
 			}
 		}
 
@@ -253,6 +264,14 @@ public abstract class OWLOntologyResourceImpl extends FlexoFileResourceImpl<OWLO
 	@Override
 	public Class<OWLOntology> getResourceDataClass() {
 		return OWLOntology.class;
+	}
+	
+	public FileFlexoIODelegate getFileFlexoIODelegate() {
+		return (FileFlexoIODelegate)getFlexoIODelegate();
+	}
+	
+	private File getFile(){
+		return getFileFlexoIODelegate().getFile();
 	}
 
 }

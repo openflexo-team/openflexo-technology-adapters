@@ -19,7 +19,6 @@
  */
 package org.openflexo.technologyadapter.owl.rm;
 
-import org.openflexo.foundation.resource.FlexoFileResource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.model.annotations.Getter;
@@ -38,8 +37,7 @@ import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
  */
 @ModelEntity
 @ImplementationClass(OWLOntologyResourceImpl.class)
-public interface OWLOntologyResource extends FlexoFileResource<OWLOntology>,
-		FlexoModelResource<OWLOntology, OWLOntology, OWLTechnologyAdapter>,
+public interface OWLOntologyResource extends FlexoModelResource<OWLOntology, OWLOntology, OWLTechnologyAdapter>,
 		FlexoMetaModelResource<OWLOntology, OWLOntology, OWLTechnologyAdapter> {
 
 	public static final String ONTOLOGY_LIBRARY = "ontologyLibrary";
