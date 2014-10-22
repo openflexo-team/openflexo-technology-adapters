@@ -1,8 +1,17 @@
 package org.openflexo.technologyadapter.diagram.rm;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Iterator;
+import java.util.logging.Logger;
 
+import org.jdom2.Attribute;
+import org.jdom2.Document;
+import org.jdom2.Element;
+import org.jdom2.JDOMException;
 import org.openflexo.foundation.DataModification;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
@@ -13,12 +22,15 @@ import org.openflexo.foundation.InvalidXMLException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FlexoFileNotFoundException;
+import org.openflexo.foundation.resource.InJarFlexoIODelegate;
+import org.openflexo.foundation.resource.InJarFlexoIODelegate.InJarFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.AccessibleProxyObject;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -28,6 +40,8 @@ import org.openflexo.toolbox.IProgress;
 public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<DiagramPalette, DiagramPaletteFactory> implements
 		DiagramPaletteResource, AccessibleProxyObject {
 
+	static final Logger logger = Logger.getLogger(DiagramPaletteResourceImpl.class.getPackage().getName());
+	
 	public static DiagramPaletteResource makeDiagramPaletteResource(DiagramSpecificationResource dsResource, String diagramPaletteName,
 			FlexoServiceManager serviceManager) {
 		try {
@@ -65,7 +79,46 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 			//returned.setFile(diagramPaletteFile);
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramPaletteFile, factory));
 			
+			PaletteInfo info=null;
+			try {
+				info = findPaletteInfo(new FileInputStream(diagramPaletteFile));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (info == null) {
+				// Unable to retrieve infos, just abort
+				logger.warning("Cannot retrieve info for palette " + diagramPaletteFile);
+				return null;
+			}
+			returned.setName(info.name);
+			
 			returned.setURI(dsResource.getURI() + "/" + diagramPaletteFile.getName());
+			returned.setServiceManager(serviceManager);
+			returned.setFactory(new DiagramPaletteFactory(serviceManager.getEditingContext(), returned));
+			dsResource.addToContents(returned);
+			return returned;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static DiagramPaletteResource retrieveDiagramPaletteResource(DiagramSpecificationResource dsResource, InJarResourceImpl diagramPaletteInJarResource,
+			FlexoServiceManager serviceManager) {
+		try {
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					InJarFlexoIODelegate.class,DiagramPaletteResource.class));
+			DiagramPaletteResourceImpl returned = (DiagramPaletteResourceImpl) factory.newInstance(DiagramPaletteResource.class);
+			//returned.setFile(diagramPaletteFile);
+			returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(diagramPaletteInJarResource, factory));
+			PaletteInfo info= findPaletteInfo(diagramPaletteInJarResource.openInputStream());
+			if (info == null) {
+				return null;
+			}
+			returned.setName(info.name);
+			
+			returned.setURI(dsResource.getURI() + "/" + returned.getName() + ".palette");
 			returned.setServiceManager(serviceManager);
 			returned.setFactory(new DiagramPaletteFactory(serviceManager.getEditingContext(), returned));
 			dsResource.addToContents(returned);
@@ -98,6 +151,41 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 		}
 		return null;
 	}
+	
+	private static class PaletteInfo {
+		public String name;
+	}
+
+	private static PaletteInfo findPaletteInfo(InputStream paletteInputStream) {
+		Document document;
+		try {
+		//	if (diagramFile.exists()) {
+
+				document = readXMLInputStream(paletteInputStream);
+				Element root = getElement(document, "DiagramPalette");
+				if (root != null) {
+					PaletteInfo returned = new PaletteInfo();
+					Iterator<Attribute> it = root.getAttributes().iterator();
+					while (it.hasNext()) {
+						Attribute at = it.next();
+						if (at.getName().equals("name")) {
+							logger.fine("Returned " + at.getValue());
+							returned.name = at.getValue();
+						} 
+					}
+					return returned;
+				}
+			/*} else {
+				logger.warning("While analysing diagram candidate cannot find file " + diagramFile.getAbsolutePath());
+			}*/
+		} catch (JDOMException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		logger.fine("Returned null");
+		return null;
+	}
 
 	/**
 	 * Return diagram palette stored by this resource<br>
@@ -128,7 +216,7 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 			InconsistentDataException, InvalidModelDefinitionException {
 
 		DiagramPalette returned = super.loadResourceData(progress);
-		returned.setName(getFile().getName().substring(0, getFile().getName().length() - 8));
+		//returned.setName(getFile().getName().substring(0, getFile().getName().length() - 8));
 		// returned.init(getContainer().getDiagramSpecification(), getFile().getName().substring(0, getFile().getName().length() - 8));
 		if (!getContainer().getDiagramSpecification().getPalettes().contains(returned)) {
 			getContainer().getDiagramSpecification().addToPalettes(returned);
@@ -139,14 +227,6 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 		notifyObservers(new DataModification("loadedDiagramPalette", null, returned));
 		returned.clearIsModified();
 		return returned;
-	}
-
-	private File getFile(){
-		return getFileFlexoIODelegate().getFile();
-	}
-	
-	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate)getFlexoIODelegate();
 	}
 	
 	@Override

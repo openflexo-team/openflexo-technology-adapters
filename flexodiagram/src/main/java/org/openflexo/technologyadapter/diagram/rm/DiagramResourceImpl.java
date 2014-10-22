@@ -1,8 +1,10 @@
 package org.openflexo.technologyadapter.diagram.rm;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
@@ -18,13 +20,17 @@ import org.openflexo.foundation.InvalidModelDefinitionException;
 import org.openflexo.foundation.InvalidXMLException;
 import org.openflexo.foundation.ProjectDataResource;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FlexoFileNotFoundException;
+import org.openflexo.foundation.resource.InJarFlexoIODelegate;
+import org.openflexo.foundation.resource.InJarFlexoIODelegate.InJarFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
@@ -83,7 +89,13 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			//returned.setFile(diagramFile);
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramFile, factory));
 			
-			DiagramInfo info = findDiagramInfo(diagramFile);
+			DiagramInfo info=null;
+			try {
+				info = findDiagramInfo(new FileInputStream(diagramFile));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (info == null) {
 				// Unable to retrieve infos, just abort
 				logger.warning("Cannot retrieve info for diagram " + diagramFile);
@@ -106,6 +118,38 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		return null;
 	}
 
+	public static DiagramResource retrieveDiagramResource(InJarResourceImpl inJarResource, FlexoServiceManager serviceManager) {
+		try {
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					InJarFlexoIODelegate.class,DiagramResource.class));
+			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
+			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
+			returned.setFactory(diagramFactory);
+			
+			returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(inJarResource, factory));
+			DiagramInfo info = findDiagramInfo(inJarResource.openInputStream());
+			if (info == null) {
+				// Unable to retrieve infos, just abort
+				//logger.warning("Cannot retrieve info for diagram " + diagramFile);
+				return null;
+			}
+			returned.setURI(info.uri);
+			if (StringUtils.isNotEmpty(info.diagramSpecificationURI)) {
+				DiagramTechnologyAdapter ta = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+						DiagramTechnologyAdapter.class);
+				// System.out.println("diagramSpecificationURI=" + info.diagramSpecificationURI);
+				DiagramSpecificationResource dsResource = (DiagramSpecificationResource) ta.getTechnologyContextManager()
+						.getResourceWithURI(info.diagramSpecificationURI);
+				returned.setMetaModelResource(dsResource);
+			}
+			returned.setServiceManager(serviceManager);
+			return returned;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	@Override
 	public Diagram getDiagram() {
 		try {
@@ -165,12 +209,12 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		public String diagramSpecificationURI;
 	}
 
-	private static DiagramInfo findDiagramInfo(File diagramFile) {
+	private static DiagramInfo findDiagramInfo(InputStream diagramInputStream) {
 		Document document;
 		try {
-			if (diagramFile.exists()) {
+		//	if (diagramFile.exists()) {
 
-				document = readXMLFile(diagramFile);
+				document = readXMLInputStream(diagramInputStream);
 				Element root = getElement(document, "Diagram");
 				if (root != null) {
 					DiagramInfo returned = new DiagramInfo();
@@ -198,13 +242,13 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 						}
 					}
 					if (StringUtils.isEmpty(returned.title)) {
-						returned.title = diagramFile.getName();
+						returned.title = "NoName";//diagramFile.getName();
 					}
 					return returned;
 				}
-			} else {
+			/*} else {
 				logger.warning("While analysing diagram candidate cannot find file " + diagramFile.getAbsolutePath());
-			}
+			}*/
 		} catch (JDOMException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

@@ -34,7 +34,5 @@ TechnologyAdapterResource<DiagramPalette, DiagramTechnologyAdapter>{
 	public DiagramSpecificationResource getContainer();
 	
 	public static final String DIAGRAM_PALETTE_SUFFIX = ".palette";
-	
-	public FileFlexoIODelegate getFileFlexoIODelegate();
 
 }

@@ -1,12 +1,15 @@
 package org.openflexo.technologyadapter.diagram.rm;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FilenameUtils;
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -15,30 +18,35 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.foundation.resource.InJarFlexoIODelegate;
+import org.openflexo.foundation.resource.InJarFlexoIODelegate.InJarFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.rm.BasicResourceImpl;
-import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
+import org.openflexo.rm.ClasspathResourceLocatorImpl;
 import org.openflexo.rm.FileSystemResourceLocatorImpl;
+import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecificationFactory;
 import org.openflexo.toolbox.FlexoVersion;
-import org.openflexo.toolbox.IProgress;
 import org.openflexo.toolbox.StringUtils;
+import org.openflexo.xml.XMLRootElementInfo;
+import org.openflexo.xml.XMLRootElementReader;
 
 public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImpl<DiagramSpecification, DiagramSpecificationFactory>
 		implements DiagramSpecificationResource {
 
 	static final Logger logger = Logger.getLogger(DiagramSpecificationResourceImpl.class.getPackage().getName());
+	
+	private static XMLRootElementReader reader = new XMLRootElementReader();
 
 	public static DiagramSpecificationResource makeDiagramSpecificationResource(String name, RepositoryFolder<?> folder, String uri,
 			FlexoServiceManager serviceManager) {
@@ -76,6 +84,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 		return null;
 	}
 
+	
 	public static DiagramSpecificationResource retrieveDiagramSpecificationResource(File diagramSpecificationDirectory,
 			RepositoryFolder<?> folder, FlexoServiceManager serviceManager) {
 		try {
@@ -90,23 +99,23 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 
 			returned.setName(baseName);
 			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
-			// returned.setFile(diagramSpecificationDirectory);
 
-			// System.out.println("Looking infos in " + diagramSpecificationXMLFile);
-
-			DiagramSpecificationInfo vpi = findDiagramSpecificationInfo(diagramSpecificationXMLFile);
+			DiagramSpecificationInfo vpi = null;
+			try {
+				vpi = findDiagramSpecificationInfo(new FileInputStream(diagramSpecificationXMLFile));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			if (vpi == null) {
 				// Unable to retrieve infos, just abort
 				logger.warning("Cannot retrieve info for diagram specification " + diagramSpecificationDirectory);
 				return null;
 			}
 			returned.setURI(vpi.uri);
-			//returned.setFile(diagramSpecificationXMLFile);
-			//returned.setDirectory(diagramSpecificationDirectory);
+			returned.setName(vpi.name);
 			
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramSpecificationXMLFile, factory));
-			//FileSystemResourceLocatorImpl.appendDirectoryToFileSystemResourceLocator(diagramSpecificationDirectory.getPath());
-			//returned.setDirectory(ResourceLocator.locateResource(diagramSpecificationDirectory.getPath()));
 			
 			returned.setName(vpi.name);
 			if (StringUtils.isNotEmpty(vpi.version)) {
@@ -119,37 +128,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			logger.fine("DiagramSpecificationResource " + diagramSpecificationDirectory.getAbsolutePath() + " version "
 					+ returned.getModelVersion());
 
-			// Now look for example diagrams
-			if (diagramSpecificationDirectory.exists() && diagramSpecificationDirectory.isDirectory()) {
-				for (File f : diagramSpecificationDirectory.listFiles()) {
-					if (f.getName().endsWith(".diagram")) {
-
-						// System.out.println("Found example diagram: " + f);
-
-						DiagramResource exampleDiagramResource = DiagramResourceImpl.retrieveDiagramResource(f, serviceManager);
-						returned.addToContents(exampleDiagramResource);
-						logger.fine("ExampleDiagramResource " + exampleDiagramResource.getFlexoIODelegate().toString() + " version "
-								+ exampleDiagramResource.getModelVersion());
-					}
-				}
-			}
-
-			// Now look for palettes
-			if (diagramSpecificationDirectory.exists() && diagramSpecificationDirectory.isDirectory()) {
-				for (File f : diagramSpecificationDirectory.listFiles()) {
-					if (f.getName().endsWith(".palette")) {
-
-						// System.out.println("Found a palette : " + f);
-
-						DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.retrieveDiagramPaletteResource(returned,
-								f, serviceManager);
-						
-						logger.fine("DiagramPaletteResource " + diagramPaletteResource.getFileFlexoIODelegate().getFile().getAbsolutePath() + " version "
-								+ diagramPaletteResource.getModelVersion());
-					}
-				}
-			}
-
+			returned.exploreInternalResources(returned.getDirectory());
 			returned.setRelativePathFileConverter(new RelativePathFileConverter(diagramSpecificationDirectory));
 
 			return returned;
@@ -158,7 +137,85 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 		}
 		return null;
 	}
+	
+	public static DiagramSpecificationResource retrieveDiagramSpecificationResource(InJarResourceImpl inJarResource, FlexoServiceManager serviceManager) {
+		try {
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(InJarFlexoIODelegate.class,DiagramSpecificationResource.class));
+			DiagramSpecificationResourceImpl returned = (DiagramSpecificationResourceImpl) factory
+					.newInstance(DiagramSpecificationResource.class);
+			DiagramSpecificationFactory diagramSpecificationFactory = new DiagramSpecificationFactory(returned,
+					serviceManager.getEditingContext());
+			returned.setFactory(diagramSpecificationFactory);
+			returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(inJarResource, factory));
+			DiagramSpecificationInfo vpi = findDiagramSpecificationInfo(returned.getFlexoIOStreamDelegate().getInputStream());
+			if (vpi == null) {
+				// Unable to retrieve infos, just abort
+				//logger.warning("Cannot retrieve info for diagram specification " + diagramSpecificationDirectory);
+				return null;
+			}
+			returned.setURI(vpi.uri);
+			
+			returned.setName(vpi.name);
+			if (StringUtils.isNotEmpty(vpi.version)) {
+				returned.setVersion(new FlexoVersion(vpi.version));
+			}
+			returned.setModelVersion(new FlexoVersion(StringUtils.isNotEmpty(vpi.modelVersion) ? vpi.modelVersion : "0.1"));
 
+			returned.setServiceManager(serviceManager);
+
+			returned.exploreInternalResources(returned.getDirectory());
+
+			return returned;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	private void exploreInternalResources(Resource parent) {
+		XMLRootElementInfo result = null;
+
+		for (Resource child : parent.getContents()) {
+			if(child.isContainer()){
+				exploreInternalResources(child);
+			}else{
+				try {
+					if (child.getURI().endsWith(".diagram")){
+						result = reader.readRootElement(child);
+						// Serialization artefact is File
+						if (result.getName().equals("Diagram") && getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+							DiagramResource exampleDiagramResource = DiagramResourceImpl.retrieveDiagramResource(ResourceLocator.retrieveResourceAsFile(child), getServiceManager());
+							addToContents(exampleDiagramResource);
+							logger.fine("ExampleDiagramResource " + exampleDiagramResource.getFlexoIODelegate().toString() + " version "
+									+ exampleDiagramResource.getModelVersion());
+						} 
+						// Serialization artefact is InJarResource
+						else if(result.getName().equals("Diagram") && getFlexoIODelegate() instanceof InJarFlexoIODelegate){
+							DiagramResource exampleDiagramResource = DiagramResourceImpl.retrieveDiagramResource((InJarResourceImpl)child, getServiceManager());
+							addToContents(exampleDiagramResource);
+						}
+					}
+					if (child.getURI().endsWith(".palette")){
+						result = reader.readRootElement(child);
+						// Serialization artefact is File
+						if (result.getName().equals("DiagramPalette") && getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+							DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.retrieveDiagramPaletteResource(this,ResourceLocator.retrieveResourceAsFile(child), getServiceManager());
+							addToContents(diagramPaletteResource);
+						} 
+						// Serialization artefact is InJarResource
+						else if(result.getName().equals("DiagramPalette") && getFlexoIODelegate() instanceof InJarFlexoIODelegate){
+							DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.retrieveDiagramPaletteResource(this,(InJarResourceImpl)child,getServiceManager());
+							addToContents(diagramPaletteResource);
+						}
+					}
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	@Override
 	public Class<DiagramSpecification> getResourceDataClass() {
 		return DiagramSpecification.class;
@@ -212,7 +269,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 		public String modelVersion;
 	}
 
-	private static DiagramSpecificationInfo findDiagramSpecificationInfo(File diagramSpecification) {
+	private static DiagramSpecificationInfo findDiagramSpecificationInfo(InputStream diagramSpecification) {
 		Document document;
 		try {
 			logger.fine("Try to find infos for " + diagramSpecification);
@@ -220,9 +277,9 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			/*String baseName = diagramSpecificationDirectory.getName();
 			File xmlFile = new File(diagramSpecificationDirectory, baseName + ".xml");*/
 
-			if (diagramSpecification.exists()) {
+			//if (diagramSpecification.exists()) {
 
-				document = readXMLFile(diagramSpecification);
+				document = readXMLInputStream(diagramSpecification);
 				Element root = getElement(document, "DiagramSpecification");
 				if (root != null) {
 					DiagramSpecificationInfo returned = new DiagramSpecificationInfo();
@@ -244,14 +301,14 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 						}
 					}
 					if (StringUtils.isEmpty(returned.name)) {
-						returned.name = diagramSpecification.getName();
+						returned.name = "NoName";//diagramSpecification.getName();
 					}
 					return returned;
 				}
-			} else {
+			/*} else {
 				logger.warning("While analysing diagram-spec candidate: " + diagramSpecification.getAbsolutePath() + " cannot find file "
 						+ diagramSpecification.getAbsolutePath());
-			}
+			}*/
 		} catch (JDOMException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -296,10 +353,18 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 	
 	@Override
 	public Resource getDirectory() {
-		String parentPath = ((FileFlexoIODelegate)getFlexoIODelegate()).getFile().getParentFile().getAbsolutePath();
-		if(ResourceLocator.locateResource(parentPath)==null){
-			FileSystemResourceLocatorImpl.appendDirectoryToFileSystemResourceLocator(parentPath);
+		if(getFlexoIODelegate() instanceof FileFlexoIODelegate){
+			String parentPath = ((FileFlexoIODelegate)getFlexoIODelegate()).getFile().getParentFile().getAbsolutePath();
+			if(ResourceLocator.locateResource(parentPath)==null){
+				FileSystemResourceLocatorImpl.appendDirectoryToFileSystemResourceLocator(parentPath);
+			}
+			return ResourceLocator.locateResource(parentPath);
+		}else if(getFlexoIODelegate() instanceof InJarFlexoIODelegate){
+			InJarResourceImpl resource = ((InJarFlexoIODelegate)getFlexoIODelegate()).getInJarResource() ;
+			String parentPath = FilenameUtils.getFullPath(resource.getRelativePath());
+			BasicResourceImpl parent = (BasicResourceImpl) ((ClasspathResourceLocatorImpl)(resource.getLocator())).getJarResourcesList().get(parentPath);
+			return parent;
 		}
-		return ResourceLocator.locateResource(parentPath);
+		return null;
 	}
 }
