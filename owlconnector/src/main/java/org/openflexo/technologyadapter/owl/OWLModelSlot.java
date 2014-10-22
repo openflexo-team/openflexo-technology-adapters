@@ -1,3 +1,24 @@
+/*
+ * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2012-2015 Openflexo
+ *
+ * This file is part of OpenFlexo.
+ *
+ * OpenFlexo is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenFlexo is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.openflexo.technologyadapter.owl;
 
 import java.lang.reflect.Type;
@@ -18,20 +39,25 @@ import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.viewpoint.FlexoBehaviour;
 import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
+import org.openflexo.technologyadapter.owl.viewpoint.DataPropertyStatementActorReference;
 import org.openflexo.technologyadapter.owl.viewpoint.DataPropertyStatementRole;
 import org.openflexo.technologyadapter.owl.viewpoint.OWLClassRole;
 import org.openflexo.technologyadapter.owl.viewpoint.OWLDataPropertyRole;
 import org.openflexo.technologyadapter.owl.viewpoint.OWLIndividualRole;
 import org.openflexo.technologyadapter.owl.viewpoint.OWLObjectPropertyRole;
 import org.openflexo.technologyadapter.owl.viewpoint.OWLPropertyRole;
+import org.openflexo.technologyadapter.owl.viewpoint.ObjectPropertyStatementActorReference;
 import org.openflexo.technologyadapter.owl.viewpoint.ObjectPropertyStatementRole;
-import org.openflexo.technologyadapter.owl.viewpoint.RestrictionStatementRole;
+import org.openflexo.technologyadapter.owl.viewpoint.StatementRole;
+import org.openflexo.technologyadapter.owl.viewpoint.SubClassStatementActorReference;
 import org.openflexo.technologyadapter.owl.viewpoint.SubClassStatementRole;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddDataPropertyStatement;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddOWLClass;
@@ -77,6 +103,25 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 
 		private static final Logger logger = Logger.getLogger(OWLModelSlot.class.getPackage().getName());
 
+		private static org.openflexo.model.factory.ModelFactory MF;
+
+		static {
+			try {
+				MF = new org.openflexo.model.factory.ModelFactory(ModelContextLibrary.getCompoundModelContext(
+						ObjectPropertyStatementRole.class, ObjectPropertyStatementActorReference.class, DataPropertyStatementRole.class,
+						DataPropertyStatementActorReference.class, OWLClassRole.class, OWLDataPropertyRole.class,
+						OWLObjectPropertyRole.class, OWLPropertyRole.class, StatementRole.class, SubClassStatementActorReference.class,
+						SubClassStatementRole.class));
+			} catch (ModelDefinitionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		public static org.openflexo.model.factory.ModelFactory getModelFactory() {
+			return MF;
+		}
+
 		@Override
 		public Class<OWLTechnologyAdapter> getTechnologyAdapterClass() {
 			return OWLTechnologyAdapter.class;
@@ -112,9 +157,6 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 			}
 			else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
-			}
-			else if (RestrictionStatementRole.class.isAssignableFrom(patternRoleClass)) {
-				return "restriction";
 			}
 			else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";

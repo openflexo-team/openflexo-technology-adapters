@@ -1,3 +1,24 @@
+/*
+ * (c) Copyright 2010-2012 AgileBirds
+ * (c) Copyright 2013-2015 Openflexo
+ *
+ * This file is part of OpenFlexo.
+ *
+ * OpenFlexo is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenFlexo is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.openflexo.technologyadapter.owl.viewpoint;
 
 import java.util.logging.Logger;
@@ -5,13 +26,19 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.view.ActorReference;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.SubClassStatement;
 
+@ModelEntity
+@ImplementationClass(SubClassStatementActorReference.SubClassStatementActorReferenceImpl.class)
+@XMLElement
 public interface SubClassStatementActorReference extends ActorReference<SubClassStatement> {
 
 	@PropertyIdentifier(type = String.class)
@@ -76,7 +103,8 @@ public interface SubClassStatementActorReference extends ActorReference<SubClass
 						// TODO: also handle value here
 						statement = ((OWLConcept<?>) subject).getSubClassStatement(parent);
 					}
-				} else {
+				}
+				else {
 					logger.warning("Could not access to ontology referenced by " + getModelSlotInstance());
 				}
 			}

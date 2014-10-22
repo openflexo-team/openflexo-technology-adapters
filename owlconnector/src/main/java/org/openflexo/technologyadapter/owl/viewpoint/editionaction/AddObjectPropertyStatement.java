@@ -1,5 +1,6 @@
 /*
- * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2010-2012 AgileBirds
+ * (c) Copyright 2013-2015 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -17,6 +18,7 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.openflexo.technologyadapter.owl.viewpoint.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
@@ -39,6 +41,7 @@ import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresenta
 import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
 import org.openflexo.foundation.viewpoint.editionaction.SetObjectPropertyValueAction;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -294,6 +297,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 	}
 
+	@DefineValidationRule
 	public static class AddObjectPropertyStatementActionMustDefineAnObjectProperty extends
 			ValidationRule<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
 		public AddObjectPropertyStatementActionMustDefineAnObjectProperty() {
@@ -337,6 +341,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		}
 	}
 
+	@DefineValidationRule
 	public static class ObjectIsRequiredAndMustBeValid extends BindingIsRequiredAndMustBeValid<AddObjectPropertyStatement> {
 		public ObjectIsRequiredAndMustBeValid() {
 			super("'object'_binding_is_required_and_must_be_valid", AddObjectPropertyStatement.class);

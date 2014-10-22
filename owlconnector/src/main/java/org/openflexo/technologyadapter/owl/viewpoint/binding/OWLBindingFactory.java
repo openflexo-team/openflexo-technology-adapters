@@ -79,35 +79,34 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement parent) {
+	public List<? extends SimplePathElement> getAccessibleSimplePathElements(BindingPathElement element) {
 
-		if (parent.getType() instanceof IndividualOfClass) {
-			IndividualOfClass parentType = (IndividualOfClass) parent.getType();
+		if (element.getType() instanceof IndividualOfClass) {
+			IndividualOfClass parentType = (IndividualOfClass) element.getType();
 			List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
-			returned.add(new URIPathElement(parent));
-			returned.add(new URINamePathElement(parent));
+			returned.add(new URIPathElement(element));
+			returned.add(new URINamePathElement(element));
 			if (parentType.getOntologyClass() instanceof OWLClass) {
 				for (OWLProperty p : searchProperties((OWLClass) parentType.getOntologyClass())) {
-					returned.add(getSimplePathElement(p, parent));
+					returned.add(getSimplePathElement(p, element));
 				}
 			}
-			returned.addAll(super.getAccessibleSimplePathElements(parent));
 			return returned;
 		}
-		else if (parent.getType() instanceof StatementWithProperty) {
+		else if (element.getType() instanceof StatementWithProperty) {
 
-			StatementWithProperty parentType = (StatementWithProperty) parent.getType();
+			StatementWithProperty eltType = (StatementWithProperty) element.getType();
 			List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
-			returned.add(new URIPathElement(parent));
-			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property = parentType.getProperty();
+			returned.add(new URIPathElement(element));
+			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property = eltType.getProperty();
 
-			returned.addAll(super.getAccessibleSimplePathElements(parent));
+			returned.add(getSimplePathElement(property, element));
 
 			return returned;
 
 		}
 
-		return super.getAccessibleSimplePathElements(parent);
+		return super.getAccessibleSimplePathElements(element);
 
 	}
 

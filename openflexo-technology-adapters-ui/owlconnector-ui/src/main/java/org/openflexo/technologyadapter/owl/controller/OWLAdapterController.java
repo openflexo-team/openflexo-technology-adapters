@@ -1,3 +1,24 @@
+/*
+ * (c) Copyright 2010-2012 AgileBirds
+ * (c) Copyright 2013-2015 Openflexo
+ *
+ * This file is part of OpenFlexo.
+ *
+ * OpenFlexo is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenFlexo is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
+ *
+ */
+
 package org.openflexo.technologyadapter.owl.controller;
 
 import java.util.logging.Logger;
@@ -27,7 +48,6 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLProperty;
 import org.openflexo.technologyadapter.owl.model.OWLStatement;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
-import org.openflexo.technologyadapter.owl.model.PropertyStatement;
 import org.openflexo.technologyadapter.owl.model.SubClassStatement;
 import org.openflexo.technologyadapter.owl.viewpoint.DataPropertyStatementRole;
 import org.openflexo.technologyadapter.owl.viewpoint.OWLClassRole;
@@ -36,7 +56,6 @@ import org.openflexo.technologyadapter.owl.viewpoint.OWLIndividualRole;
 import org.openflexo.technologyadapter.owl.viewpoint.OWLObjectPropertyRole;
 import org.openflexo.technologyadapter.owl.viewpoint.OWLPropertyRole;
 import org.openflexo.technologyadapter.owl.viewpoint.ObjectPropertyStatementRole;
-import org.openflexo.technologyadapter.owl.viewpoint.RestrictionStatementRole;
 import org.openflexo.technologyadapter.owl.viewpoint.SubClassStatementRole;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddDataPropertyStatement;
 import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddOWLClass;
@@ -134,7 +153,8 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<OWLTechnologyAdapter>> objectClass) {
 		if (OWLObject.class.isAssignableFrom(objectClass)) {
 			return OWLIconLibrary.iconForObject((Class<? extends OWLObject>) objectClass);
-		} else if (OWLStatement.class.isAssignableFrom(objectClass)) {
+		}
+		else if (OWLStatement.class.isAssignableFrom(objectClass)) {
 			return OWLIconLibrary.ONTOLOGY_STATEMENT_ICON;
 		}
 		return null;
@@ -150,21 +170,26 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (OWLClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLClass.class);
-		} else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLIndividual.class);
-		} else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLDataProperty.class);
-		} else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLObjectProperty.class);
-		} else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLProperty.class);
-		} else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(DataPropertyStatement.class);
-		} else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(ObjectPropertyStatement.class);
-		} else if (RestrictionStatementRole.class.isAssignableFrom(patternRoleClass)) {
-			return getIconForTechnologyObject(PropertyStatement.class);
-		} else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(SubClassStatement.class);
 		}
 		return null;
@@ -192,7 +217,8 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 		}
 		if (AddSubClassStatement.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(SubClassStatement.class), IconLibrary.DUPLICATE);
-		} else if (AddOWLClass.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (AddOWLClass.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLClass.class), IconLibrary.DUPLICATE);
 		}
 		return super.getIconForEditionAction(editionActionClass);
@@ -229,7 +255,8 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	public OntologyBrowserModel makeOntologyBrowserModel(IFlexoOntology context) {
 		if (context instanceof OWLOntology) {
 			return new OWLOntologyBrowserModel((OWLOntology) context);
-		} else {
+		}
+		else {
 			logger.warning("Unexpected " + context);
 			return null;
 		}

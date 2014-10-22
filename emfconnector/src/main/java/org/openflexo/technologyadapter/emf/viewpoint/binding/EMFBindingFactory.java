@@ -84,7 +84,7 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 				}
 			}
 
-			returned.addAll(super.getAccessibleSimplePathElements(parent));
+			// returned.addAll(super.getAccessibleSimplePathElements(parent));
 
 			return returned;
 		}
