@@ -40,7 +40,6 @@ import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.binding.SimplePathElement;
-import org.openflexo.antar.expr.InvocationTargetTransformException;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.DefaultFlexoEditor;
@@ -371,28 +370,7 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		found = false;
 		for (SimplePathElement spe : listSPE) {
 			System.out.println("   -- " + spe.getPropertyName() + " [ " + spe.getType().toString() + "]");
-			if ("domain".equals(spe.getPropertyName())) {
-				found = true;
-			}
-			if ("range".equals(spe.getPropertyName())) {
-				found = true;
-				try {
-					spe.getBindingValue(flexoConceptA.getFlexoRole("anObjectPropertyStatement"), null);
-				} catch (TypeMismatchException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NullReferenceException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetTransformException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-
 		}
-
-		assertTrue(found);
 
 		assertEquals(13, flexoConceptA.getBindingModel().getBindingVariablesCount());
 		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
