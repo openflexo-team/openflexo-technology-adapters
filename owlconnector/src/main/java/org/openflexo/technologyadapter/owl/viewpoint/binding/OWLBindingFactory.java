@@ -22,7 +22,6 @@
 package org.openflexo.technologyadapter.owl.viewpoint.binding;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -32,11 +31,13 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.Function;
 import org.openflexo.antar.binding.FunctionPathElement;
 import org.openflexo.antar.binding.SimplePathElement;
+import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.foundation.ontology.SubClassOfClass;
 import org.openflexo.foundation.ontology.SubPropertyOfProperty;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLProperty;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
@@ -90,7 +91,20 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 					returned.add(getSimplePathElement(p, parent));
 				}
 			}
+			returned.addAll(super.getAccessibleSimplePathElements(parent));
 			return returned;
+		}
+		else if (parent.getType() instanceof StatementWithProperty) {
+
+			StatementWithProperty parentType = (StatementWithProperty) parent.getType();
+			List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
+			returned.add(new URIPathElement(parent));
+			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property = parentType.getProperty();
+
+			returned.addAll(super.getAccessibleSimplePathElements(parent));
+
+			return returned;
+
 		}
 
 		return super.getAccessibleSimplePathElements(parent);
@@ -99,7 +113,7 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	public List<? extends FunctionPathElement> getAccessibleFunctionPathElements(BindingPathElement parent) {
-		return Collections.emptyList();
+		return super.getAccessibleFunctionPathElements(parent);
 	}
 
 	@Override

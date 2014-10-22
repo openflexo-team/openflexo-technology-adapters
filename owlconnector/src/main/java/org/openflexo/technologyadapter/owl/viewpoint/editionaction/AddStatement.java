@@ -59,6 +59,8 @@ public abstract interface AddStatement<S extends OWLStatement> extends Assignabl
 	@Setter(SUBJECT_KEY)
 	public void setSubject(DataBinding<?> subject);
 
+	public OWLOntology getMetaModel();
+
 	public static abstract class AddStatementImpl<S extends OWLStatement> extends AssignableActionImpl<OWLModelSlot, S> implements
 			AddStatement<S> {
 
@@ -79,6 +81,11 @@ public abstract interface AddStatement<S extends OWLStatement> extends Assignabl
 				e.printStackTrace();
 			}
 			return null;
+		}
+
+		@Override
+		public OWLOntology getMetaModel() {
+			return this.getModelSlot().getMetaModelResource().getMetaModelData();
 		}
 
 		/*@Override
