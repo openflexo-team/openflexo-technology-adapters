@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FilenameUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -35,12 +36,15 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
+import org.openflexo.foundation.resource.InJarFlexoIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.foundation.resource.InJarFlexoIODelegate.InJarFlexoIODelegateImpl;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyContextManager;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
@@ -111,7 +115,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	}
 
 	/**
-	 * Instanciates a new {@link OWLOntologyResource} asserting we are about to built a resource matching an existing file in the file
+	 * Instanciates a new {@link ExcelWorkbookResource} asserting we are about to built a resource matching an existing file in the file
 	 * system<br>
 	 * 
 	 */
@@ -144,6 +148,36 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 		return null;
 	}
 
+	/**
+	 * Instanciates a new {@link ExcelWorkbookResource}
+	 * system<br>
+	 * 
+	 */
+	public static ExcelWorkbookResource retrieveExcelWorkbookResource(InJarResourceImpl workbookInJar, ExcelTechnologyContextManager technologyContextManager) {
+		try {
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					InJarFlexoIODelegate.class,ExcelWorkbookResource.class));
+			ExcelWorkbookResourceImpl returned = (ExcelWorkbookResourceImpl) factory.newInstance(ExcelWorkbookResource.class);
+			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+			returned.setTechnologyContextManager(technologyContextManager);
+			String name = FilenameUtils.getBaseName(workbookInJar.getURL().getFile());
+			String uri = workbookInJar.getURI();
+			returned.setName(name);
+				
+			returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(workbookInJar, factory));
+				
+			returned.setURI(uri);
+			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService()
+						.getServiceManager());
+			technologyContextManager.registerResource(returned);
+			return returned;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	
 	/**
 	 * Load the &quot;real&quot; load resource data of this resource.
 	 * 

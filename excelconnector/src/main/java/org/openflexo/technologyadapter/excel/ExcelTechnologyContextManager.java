@@ -19,11 +19,18 @@
  */
 package org.openflexo.technologyadapter.excel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
 public class ExcelTechnologyContextManager extends TechnologyContextManager<ExcelTechnologyAdapter> {
 
+	/** Stores all known excel workbook where key is the URI of ExcelWorbook */
+	protected Map<String, ExcelWorkbookResource> excelWorkbooks = new HashMap<String, ExcelWorkbookResource>();
+	
 	public ExcelTechnologyContextManager(ExcelTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
 	}
@@ -31,6 +38,15 @@ public class ExcelTechnologyContextManager extends TechnologyContextManager<Exce
 	@Override
 	public ExcelTechnologyAdapter getTechnologyAdapter() {
 		return (ExcelTechnologyAdapter) super.getTechnologyAdapter();
+	}
+	
+	public ExcelWorkbookResource getExcelWorkbookResource(Object excelWorkbook) {
+		return excelWorkbooks.get(excelWorkbook);
+	}
+	
+	public void registerExcelWorkbook(ExcelWorkbookResource newExcelWorkbookResource) {
+		registerResource(newExcelWorkbookResource);
+		excelWorkbooks.put(newExcelWorkbookResource.getURI(), newExcelWorkbookResource);
 	}
 
 }
