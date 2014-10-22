@@ -25,6 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.FilenameUtils;
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -40,6 +41,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -127,10 +129,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 		while (it.hasNext()) {
 			I item = it.next();
-			if (item instanceof File) {
-				File candidateFile = (File) item;
-				DiagramSpecificationResource mmRes = tryToLookupDiagramSpecification(resourceCenter, candidateFile);
-			}
+			DiagramSpecificationResource mmRes = tryToLookupDiagramSpecification(resourceCenter, item);
 		}
 
 		// Second pass on models
@@ -165,16 +164,22 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		resourceCenter.registerRepository(returned, DiagramSpecificationRepository.class, this);
 		return returned;
 	}
-
-	protected DiagramSpecificationResource tryToLookupDiagramSpecification(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
-		if (isValidDiagramSpecificationFile(candidateFile)) {
+	
+	/**
+	 * Check if it correspond to a diagram specification an thus create a diagram specification resource
+	 * @param resourceCenter
+	 * @param candidateElement
+	 * @return
+	 */
+	protected DiagramSpecificationResource tryToLookupDiagramSpecification(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
+		if (isValidDiagramSpecification(candidateElement)) {
 			DiagramSpecificationRepository dsRepo = resourceCenter.getRepository(DiagramSpecificationRepository.class, this);
 			if (dsRepo != null) {
 				DiagramSpecificationResource dsRes = null;
 				RepositoryFolder<DiagramSpecificationResource> folder;
 				try {
-					folder = dsRepo.getRepositoryFolder(candidateFile, true);
-					dsRes = retrieveDiagramSpecificationResource(candidateFile, folder);
+					folder = dsRepo.getRepositoryFolder(candidateElement, true);
+					dsRes = retrieveDiagramSpecificationResource(candidateElement, folder);
 					dsRepo.registerResource(dsRes, folder);
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -185,11 +190,24 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		}
 		return null;
 	}
-
-	private boolean isValidDiagramSpecificationFile(File candidateFile) {
-		if (candidateFile.exists() && candidateFile.isDirectory()
-				&& candidateFile.getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)) {
-			// System.out.println("Found valid candidate for DiagramSpecification: " + candidateFile);
+	
+	/**
+	 * A valid diagram specification is a directory with the extension .diagramspecification in a file or jar
+	 * @param candidateElement
+	 * @return
+	 */
+	private boolean isValidDiagramSpecification(Object candidateElement) {
+		if (candidateElement instanceof File && ((File)candidateElement).exists() && ((File)candidateElement).isDirectory()
+				&& ((File)candidateElement).getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)) {
+			System.out.println("Found valid candidate for DiagramSpecification: " + ((File)candidateElement));
+			return true;
+		}
+		if (candidateElement instanceof InJarResourceImpl && ((InJarResourceImpl)candidateElement).getRelativePath().endsWith(".xml") 
+				&& ((InJarResourceImpl)candidateElement).getRelativePath()
+				.endsWith(FilenameUtils.getBaseName(((InJarResourceImpl)candidateElement).getRelativePath())
+						+DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX + "/" + 
+						FilenameUtils.getBaseName(((InJarResourceImpl)candidateElement).getRelativePath())+".xml")) {
+			System.out.println("Found valid candidate for DiagramSpecification: " + ((InJarResourceImpl)candidateElement));
 			return true;
 		}
 		return false;
@@ -200,22 +218,21 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	/**
-	 * Instantiate new model resource stored in supplied model file, given the conformant metamodel<br>
-	 * We assert here that model resource is conform to supplied metamodel, ie we will not try to lookup the metamodel but take the one
-	 * which was supplied
-	 * 
+	 * Instantiate new diagram specification resource stored in supplied model file or in jar<br>
 	 */
-	private DiagramSpecificationResource retrieveDiagramSpecificationResource(File diagramSpecificationDirectory, RepositoryFolder<?> folder) {
-		DiagramSpecificationResource returned = getTechnologyContextManager()
-				.getDiagramSpecificationResource(diagramSpecificationDirectory);
-
+	private DiagramSpecificationResource retrieveDiagramSpecificationResource(Object diagramSpecification, RepositoryFolder<?> folder) {
+		DiagramSpecificationResource returned = getTechnologyContextManager().getDiagramSpecificationResource(diagramSpecification);
 		if (returned == null) {
-			returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(diagramSpecificationDirectory, folder,
-					getTechnologyAdapterService().getServiceManager());
+			if(diagramSpecification instanceof File){
+				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((File)diagramSpecification, folder,
+						getTechnologyAdapterService().getServiceManager());
+			}else if (diagramSpecification instanceof InJarResourceImpl){
+				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((InJarResourceImpl)diagramSpecification,getTechnologyAdapterService().getServiceManager());
+			}
 			if (returned != null) {
 				getTechnologyContextManager().registerDiagramSpecification(returned);
 			} else {
-				logger.warning("Cannot retrieve DiagramSpecificationResource for " + diagramSpecificationDirectory);
+				logger.warning("Cannot retrieve DiagramSpecificationResource for " + diagramSpecification);
 			}
 		}
 

@@ -44,8 +44,8 @@ public class DiagramTechnologyContextManager extends TechnologyContextManager<Di
 		return (DiagramTechnologyAdapter) super.getTechnologyAdapter();
 	}
 
-	public DiagramSpecificationResource getDiagramSpecificationResource(File diagramSpecificationFile) {
-		return diagramSpecifications.get(diagramSpecificationFile);
+	public DiagramSpecificationResource getDiagramSpecificationResource(Object diagramSpecification) {
+		return diagramSpecifications.get(diagramSpecification);
 	}
 
 	public DiagramResource getDiagramResource(File diagramFile) {
