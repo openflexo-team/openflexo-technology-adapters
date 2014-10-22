@@ -53,7 +53,7 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl implements Pamela
 		super(DiagramPalette.class, DiagramPaletteElement.class);
 		if (paletteResource != null) {
 			if(paletteResource.getFlexoIODelegate() instanceof FileFlexoIODelegate){
-				FileFlexoIODelegate delegate = (FileFlexoIODelegate)paletteResource.getFileFlexoIODelegate();
+				FileFlexoIODelegate delegate = (FileFlexoIODelegate)(paletteResource.getFlexoIODelegate());
 				addConverter(new RelativePathFileConverter(delegate.getFile().getParentFile()));
 			}
 			
