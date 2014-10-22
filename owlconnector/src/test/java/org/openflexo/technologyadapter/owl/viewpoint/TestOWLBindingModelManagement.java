@@ -40,6 +40,7 @@ import org.openflexo.antar.binding.BindingVariable;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.binding.SimplePathElement;
+import org.openflexo.antar.expr.InvocationTargetTransformException;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.DefaultFlexoEditor;
@@ -315,10 +316,17 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		createPR5.setRoleName("anObjectProperty");
 		createPR5.setFlexoRoleClass(OWLObjectPropertyRole.class);
 		createPR5.doAction();
-		OWLObjectPropertyRole hasRole = (OWLObjectPropertyRole) createPR5.getNewFlexoRole();
-		hasRole.setParentProperty(hasObjectProperty);
+		OWLObjectPropertyRole aRole = (OWLObjectPropertyRole) createPR5.getNewFlexoRole();
+		aRole.setParentProperty(hasObjectProperty);
 
-		assertEquals(5, flexoConceptA.getFlexoRoles().size());
+		CreateFlexoRole createPR6 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		createPR6.setRoleName("anObjectPropertyStatement");
+		createPR6.setFlexoRoleClass(ObjectPropertyStatementRole.class);
+		createPR6.doAction();
+		ObjectPropertyStatementRole bRole = (ObjectPropertyStatementRole) createPR6.getNewFlexoRole();
+		bRole.setObjectProperty(hasObjectProperty);
+
+		assertEquals(6, flexoConceptA.getFlexoRoles().size());
 		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR1.getNewFlexoRole()));
 		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR2.getNewFlexoRole()));
 		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR3.getNewFlexoRole()));
@@ -345,7 +353,7 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		bv = (FlexoRoleBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("anObjectProperty");
 		listSPE = flexoConceptA.getBindingFactory().getAccessibleSimplePathElements(bv);
 
-		System.out.println("\n** Accessible Elements for Individual");
+		System.out.println("\n** Accessible Elements for ObjectProperty");
 
 		found = false;
 		for (SimplePathElement spe : listSPE) {
@@ -355,9 +363,38 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 			}
 		}
 
+		bv = (FlexoRoleBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("anObjectPropertyStatement");
+		listSPE = flexoConceptA.getBindingFactory().getAccessibleSimplePathElements(bv);
+
+		System.out.println("\n** Accessible Elements for ObjectPropertyStatement");
+
+		found = false;
+		for (SimplePathElement spe : listSPE) {
+			System.out.println("   -- " + spe.getPropertyName() + " [ " + spe.getType().toString() + "]");
+			if ("domain".equals(spe.getPropertyName())) {
+				found = true;
+			}
+			if ("range".equals(spe.getPropertyName())) {
+				found = true;
+				try {
+					spe.getBindingValue(flexoConceptA.getFlexoRole("anObjectPropertyStatement"), null);
+				} catch (TypeMismatchException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetTransformException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+
+		}
+
 		assertTrue(found);
 
-		assertEquals(12, flexoConceptA.getBindingModel().getBindingVariablesCount());
+		assertEquals(13, flexoConceptA.getBindingModel().getBindingVariablesCount());
 		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
 		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
 		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIEW_PROPERTY));

@@ -6,8 +6,8 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.view.FlexoConceptInstance;
-import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -18,6 +18,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.validation.ValidationError;
 import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.technologyadapter.owl.OWLModelSlot.OWLModelSlotImpl;
 import org.openflexo.technologyadapter.owl.model.DataPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 
@@ -92,7 +93,7 @@ public interface DataPropertyStatementRole extends StatementRole<DataPropertySta
 
 		@Override
 		public DataPropertyStatementActorReference makeActorReference(DataPropertyStatement object, FlexoConceptInstance epi) {
-			VirtualModelInstanceModelFactory factory = epi.getFactory();
+			org.openflexo.model.factory.ModelFactory factory = OWLModelSlotImpl.getModelFactory();
 			DataPropertyStatementActorReference returned = factory.newInstance(DataPropertyStatementActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
@@ -102,6 +103,7 @@ public interface DataPropertyStatementRole extends StatementRole<DataPropertySta
 
 	}
 
+	@DefineValidationRule
 	public static class DataPropertyStatementPatternRoleMustDefineAValidProperty extends
 			ValidationRule<DataPropertyStatementPatternRoleMustDefineAValidProperty, DataPropertyStatementRole> {
 		public DataPropertyStatementPatternRoleMustDefineAValidProperty() {
