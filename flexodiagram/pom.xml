@@ -50,6 +50,13 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-scratchpad</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>testdiagram_vp</artifactId>
+			<version>1.1</version>
+			<scope>test</scope>
+		</dependency>
+		
 	</dependencies>
 </project>
 
