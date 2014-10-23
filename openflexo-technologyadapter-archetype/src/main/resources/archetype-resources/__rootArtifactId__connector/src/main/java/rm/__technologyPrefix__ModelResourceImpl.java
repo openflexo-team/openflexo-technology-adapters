@@ -33,21 +33,24 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 
 import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.${technologyPrefix}TechnologyContextManager;
 import ${package}.model.${technologyPrefix}Model;
+import ${package}.model.${technologyPrefix}ModelImpl;
 
 import org.openflexo.toolbox.IProgress;
 
@@ -81,7 +84,6 @@ public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResource
 			${technologyPrefix}ModelResourceImpl returned = (${technologyPrefix}ModelResourceImpl) factory.newInstance(${technologyPrefix}ModelResource.class);
 			returned.setName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-
 			returned.setURI(modelFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
