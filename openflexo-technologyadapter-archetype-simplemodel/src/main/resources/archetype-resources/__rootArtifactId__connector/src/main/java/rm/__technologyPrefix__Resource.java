@@ -23,7 +23,7 @@
 
 package ${package}.rm;
 
-import org.openflexo.foundation.resource.FlexoFileResource;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -35,7 +35,7 @@ import ${package}.model.${technologyPrefix}Model;
 
 @ModelEntity
 @ImplementationClass(${technologyPrefix}ResourceImpl.class)
-public abstract interface ${technologyPrefix}Resource extends FlexoFileResource<${technologyPrefix}Model>, TechnologyAdapterResource<${technologyPrefix}Model, ${technologyPrefix}TechnologyAdapter>{
+public abstract interface ${technologyPrefix}Resource extends FlexoResource<${technologyPrefix}Model>, TechnologyAdapterResource<${technologyPrefix}Model, ${technologyPrefix}TechnologyAdapter>{
     
     public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 

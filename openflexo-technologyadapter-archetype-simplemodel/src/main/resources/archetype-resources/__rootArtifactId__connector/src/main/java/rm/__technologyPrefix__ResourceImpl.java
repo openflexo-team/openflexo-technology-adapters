@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
@@ -43,7 +43,7 @@ import ${package}.model.${technologyPrefix}Model;
 import ${package}.model.${technologyPrefix}ModelImpl;
 import org.openflexo.toolbox.IProgress;
 
-public abstract class ${technologyPrefix}ResourceImpl extends FlexoFileResourceImpl<${technologyPrefix}Model> implements ${technologyPrefix}Resource {
+public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<${technologyPrefix}Model> implements ${technologyPrefix}Resource {
     
     private static final Logger LOGGER = Logger.getLogger(${technologyPrefix}ResourceImpl.class.getPackage().getName());
 
@@ -142,7 +142,7 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoFileResourceI
             throw new SaveResourcePermissionDeniedException(this);
         }
         if (resourceData != null) {
-            FlexoFileResourceImpl.FileWritingLock lock = willWriteOnDisk();
+        	FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
             writeToFile();
             hasWrittenOnDisk(lock);
             notifyResourceStatusChanged();

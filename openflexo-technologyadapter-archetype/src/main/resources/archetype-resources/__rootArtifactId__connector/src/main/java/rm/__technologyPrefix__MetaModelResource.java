@@ -23,7 +23,7 @@
 
 package ${package}.rm;
 
-import org.openflexo.foundation.resource.FlexoFileResource;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -37,7 +37,7 @@ import ${package}.model.${technologyPrefix}Model;
 @ModelEntity
 @ImplementationClass(${technologyPrefix}MetaModelResourceImpl.class)
 @XMLElement
-public interface ${technologyPrefix}MetaModelResource extends FlexoFileResource<${technologyPrefix}MetaModel>,
+public interface ${technologyPrefix}MetaModelResource extends FlexoResource<${technologyPrefix}MetaModel>,
 		FlexoMetaModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TechnologyAdapter> {
 
 	public static final String EXTENSION = "${technologyExtension}";

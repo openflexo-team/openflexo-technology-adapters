@@ -33,7 +33,7 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
@@ -44,7 +44,7 @@ import org.openflexo.technologyadapter.csv.CSVTechnologyContextManager;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.toolbox.IProgress;
 
-public abstract class CSVModelResourceImpl extends FlexoFileResourceImpl<CSVModel> implements CSVModelResource {
+public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> implements CSVModelResource {
 	private static final Logger logger = Logger.getLogger(CSVModelResourceImpl.class.getPackage().getName());
 
 	public static CSVModelResource makeCSVModelResource(String modelURI, File modelFile,
@@ -117,7 +117,7 @@ public abstract class CSVModelResourceImpl extends FlexoFileResourceImpl<CSVMode
 			throw new SaveResourcePermissionDeniedException(this);
 		}
 		if (resourceData != null) {
-			FlexoFileResourceImpl.FileWritingLock lock = willWriteOnDisk();
+			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
 			writeToFile();
 			hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();

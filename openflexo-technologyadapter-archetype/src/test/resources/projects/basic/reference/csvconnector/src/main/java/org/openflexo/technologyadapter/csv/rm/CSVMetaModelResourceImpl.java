@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.csv.metamodel.CSVMetaModel;
 import org.openflexo.toolbox.IProgress;
@@ -38,7 +38,7 @@ import org.openflexo.toolbox.IProgress;
  * 
  * @author gbesancon
  */
-public abstract class CSVMetaModelResourceImpl extends FlexoFileResourceImpl<CSVMetaModel> implements CSVMetaModelResource {
+public abstract class CSVMetaModelResourceImpl extends FlexoResourceImpl<CSVMetaModel> implements CSVMetaModelResource {
 
 	protected static final Logger logger = Logger.getLogger(CSVMetaModelResourceImpl.class.getPackage().getName());
 

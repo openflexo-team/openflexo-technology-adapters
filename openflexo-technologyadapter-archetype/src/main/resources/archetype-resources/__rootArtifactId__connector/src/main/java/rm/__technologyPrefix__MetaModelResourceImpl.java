@@ -31,7 +31,7 @@ import java.util.Collections;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import ${package}.metamodel.${technologyPrefix}MetaModel;
 import org.openflexo.toolbox.IProgress;
@@ -41,7 +41,7 @@ import org.openflexo.toolbox.IProgress;
  * 
  * @author gbesancon
  */
-public abstract class ${technologyPrefix}MetaModelResourceImpl extends FlexoFileResourceImpl<${technologyPrefix}MetaModel> implements ${technologyPrefix}MetaModelResource {
+public abstract class ${technologyPrefix}MetaModelResourceImpl extends FlexoResourceImpl<${technologyPrefix}MetaModel> implements ${technologyPrefix}MetaModelResource {
 
 	protected static final Logger logger = Logger.getLogger(${technologyPrefix}MetaModelResourceImpl.class.getPackage().getName());
 

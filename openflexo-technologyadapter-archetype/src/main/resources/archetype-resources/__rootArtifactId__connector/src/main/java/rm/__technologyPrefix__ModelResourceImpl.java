@@ -33,21 +33,25 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
-
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FlexoFileResourceImpl;
+import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+
 import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.${technologyPrefix}TechnologyContextManager;
 import ${package}.model.${technologyPrefix}Model;
+
 import org.openflexo.toolbox.IProgress;
 
-public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoFileResourceImpl<${technologyPrefix}Model> implements ${technologyPrefix}ModelResource {
+public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResourceImpl<${technologyPrefix}Model> implements ${technologyPrefix}ModelResource {
 	private static final Logger logger = Logger.getLogger(${technologyPrefix}ModelResourceImpl.class.getPackage().getName());
 
 	public static ${technologyPrefix}ModelResource make${technologyPrefix}ModelResource(String modelURI, File modelFile,
@@ -120,7 +124,7 @@ public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoFileReso
 			throw new SaveResourcePermissionDeniedException(this);
 		}
 		if (resourceData != null) {
-			FlexoFileResourceImpl.FileWritingLock lock = willWriteOnDisk();
+			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
 			writeToFile();
 			hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();

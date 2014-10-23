@@ -20,7 +20,7 @@
 
 package org.openflexo.technologyadapter.csv.rm;
 
-import org.openflexo.foundation.resource.FlexoFileResource;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -32,7 +32,7 @@ import org.openflexo.technologyadapter.csv.model.CSVModel;
 
 @ModelEntity
 @ImplementationClass(CSVResourceImpl.class)
-public abstract interface CSVResource extends FlexoFileResource<CSVModel>, TechnologyAdapterResource<CSVModel, CSVTechnologyAdapter>{
+public abstract interface CSVResource extends FlexoResource<CSVModel>, TechnologyAdapterResource<CSVModel, CSVTechnologyAdapter>{
     
     public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 

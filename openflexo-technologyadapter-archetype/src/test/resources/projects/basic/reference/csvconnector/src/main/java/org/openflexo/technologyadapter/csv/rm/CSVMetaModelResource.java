@@ -20,7 +20,7 @@
 
 package org.openflexo.technologyadapter.csv.rm;
 
-import org.openflexo.foundation.resource.FlexoFileResource;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -34,7 +34,7 @@ import org.openflexo.technologyadapter.csv.model.CSVModel;
 @ModelEntity
 @ImplementationClass(CSVMetaModelResourceImpl.class)
 @XMLElement
-public interface CSVMetaModelResource extends FlexoFileResource<CSVMetaModel>,
+public interface CSVMetaModelResource extends FlexoResource<CSVMetaModel>,
 		FlexoMetaModelResource<CSVModel, CSVMetaModel, CSVTechnologyAdapter> {
 
 	public static final String EXTENSION = "csv";
