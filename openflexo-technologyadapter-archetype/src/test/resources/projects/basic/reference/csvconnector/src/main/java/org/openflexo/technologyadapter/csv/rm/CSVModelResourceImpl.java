@@ -33,15 +33,20 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.CSVTechnologyContextManager;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
+import org.openflexo.technologyadapter.csv.rm.CSVModelResource;
+import org.openflexo.technologyadapter.csv.rm.CSVModelResourceImpl;
 import org.openflexo.toolbox.IProgress;
 
 public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> implements CSVModelResource {
@@ -50,10 +55,12 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 	public static CSVModelResource makeCSVModelResource(String modelURI, File modelFile,
 			CSVTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(CSVModelResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					FileFlexoIODelegate.class,CSVModelResource.class));
 			CSVModelResourceImpl returned = (CSVModelResourceImpl) factory.newInstance(CSVModelResource.class);
 			returned.setName(modelFile.getName());
-			returned.setFile(modelFile);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+
 			returned.setURI(modelURI);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -69,10 +76,11 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 
 	public static CSVModelResource retrieveCSVModelResource(File modelFile, CSVTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(CSVModelResource.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
+					FileFlexoIODelegate.class,CSVModelResource.class));
 			CSVModelResourceImpl returned = (CSVModelResourceImpl) factory.newInstance(CSVModelResource.class);
 			returned.setName(modelFile.getName());
-			returned.setFile(modelFile);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 			returned.setURI(modelFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -100,26 +108,26 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 		} catch (FileNotFoundException e) {
 			CSVModel resourceData;
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		}
 		CSVModel resourceData = null;
 
-		if (!hasWritePermission()) {
+		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFile().getAbsolutePath());
+				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(this);
+			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
 		}
 		if (resourceData != null) {
 			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
 			writeToFile();
-			hasWrittenOnDisk(lock);
+			getFileFlexoIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
@@ -161,10 +169,10 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
@@ -175,5 +183,13 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 	@Override
 	public Class<CSVModel> getResourceDataClass() {
 		return CSVModel.class;
+	}
+	
+	private File getFile(){
+		return getFileFlexoIODelegate().getFile();
+	}
+	
+	public FileFlexoIODelegate getFileFlexoIODelegate() {
+		return (FileFlexoIODelegate)getFlexoIODelegate();
 	}
 }

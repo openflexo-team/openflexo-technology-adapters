@@ -58,7 +58,6 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 					FileFlexoIODelegate.class,CSVModelResource.class));
 			CSVModelResourceImpl returned = (CSVModelResourceImpl) factory.newInstance(CSVModelResource.class);
 			returned.setName(modelFile.getName());
-			//returned.setFile(modelFile);
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 
 			returned.setURI(modelURI);
@@ -80,11 +79,7 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 					FileFlexoIODelegate.class,CSVModelResource.class));
 			CSVModelResourceImpl returned = (CSVModelResourceImpl) factory.newInstance(CSVModelResource.class);
 			returned.setName(modelFile.getName());
-			//returned.setFile(modelFile);
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-
-			
-			
 			returned.setURI(modelFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -111,24 +106,24 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 		} catch (FileNotFoundException e) {
 			CSVModel resourceData;
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		}
 		CSVModel resourceData = null;
 
-		if (!getFileFlexoIODelegate().hasWritePermission()) {
+		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFile().getAbsolutePath());
+				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(getFileFlexoIODelegate());
+			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
 		}
 		if (resourceData != null) {
-			FileWritingLock lock = getFileFlexoIODelegate().willWriteOnDisk();
+			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
 			writeToFile();
 			getFileFlexoIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
@@ -172,10 +167,10 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(getFileFlexoIODelegate());
+			throw new SaveResourceException(getFlexoIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}

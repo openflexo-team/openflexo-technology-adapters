@@ -57,10 +57,11 @@ public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResource
 	public static ${technologyPrefix}ModelResource make${technologyPrefix}ModelResource(String modelURI, File modelFile,
 			${technologyPrefix}TechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(${technologyPrefix}ModelResource.class);
+			ModelFactory factory = new ModelFactory(${technologyPrefix}ModelResource.class,FileFlexoIODelegate.class);
 			${technologyPrefix}ModelResourceImpl returned = (${technologyPrefix}ModelResourceImpl) factory.newInstance(${technologyPrefix}ModelResource.class);
 			returned.setName(modelFile.getName());
-			returned.setFile(modelFile);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+
 			returned.setURI(modelURI);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -76,10 +77,11 @@ public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResource
 
 	public static ${technologyPrefix}ModelResource retrieve${technologyPrefix}ModelResource(File modelFile, ${technologyPrefix}TechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(${technologyPrefix}ModelResource.class);
+			ModelFactory factory = new ModelFactory(${technologyPrefix}ModelResource.class,FileFlexoIODelegate.class);
 			${technologyPrefix}ModelResourceImpl returned = (${technologyPrefix}ModelResourceImpl) factory.newInstance(${technologyPrefix}ModelResource.class);
 			returned.setName(modelFile.getName());
-			returned.setFile(modelFile);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+
 			returned.setURI(modelFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -107,26 +109,26 @@ public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResource
 		} catch (FileNotFoundException e) {
 			${technologyPrefix}Model resourceData;
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (ResourceLoadingCancelledException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (FlexoException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		}
 		${technologyPrefix}Model resourceData = null;
 
-		if (!hasWritePermission()) {
+		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " + getFile().getAbsolutePath());
+				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
 			}
-			throw new SaveResourcePermissionDeniedException(this);
+			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
 		}
 		if (resourceData != null) {
 			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
 			writeToFile();
-			hasWrittenOnDisk(lock);
+			getFlexoIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
@@ -168,10 +170,10 @@ public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResource
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} catch (TransformerConfigurationException e) {
 			e.printStackTrace();
-			throw new SaveResourceException(this);
+			throw new SaveResourceException(getFlexoIODelegate());
 		} finally {
 			IOUtils.closeQuietly(out);
 		}
@@ -182,5 +184,13 @@ public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResource
 	@Override
 	public Class<${technologyPrefix}Model> getResourceDataClass() {
 		return ${technologyPrefix}Model.class;
+	}
+	
+	private File getFile(){
+		return getFileFlexoIODelegate().getFile();
+	}
+	
+	public FileFlexoIODelegate getFileFlexoIODelegate() {
+		return (FileFlexoIODelegate)getFlexoIODelegate();
 	}
 }
