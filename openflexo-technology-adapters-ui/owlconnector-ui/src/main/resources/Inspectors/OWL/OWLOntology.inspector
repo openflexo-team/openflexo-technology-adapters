@@ -8,8 +8,8 @@
       <TextField index="3" data="data.URI" constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" name="URI" readOnly="true" localize="true" columns="10" />
       <Label label="version" index="4" constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" name="VersionLabel" localize="true" />
       <TextField index="5" data="data.resource.version.toString" constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" name="Version" readOnly="true" localize="true" columns="10" />
-      <Label label="file" index="5" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
-      <File isDirectory="false" readOnly="true" localize="true" index="5" data="data.resource.file" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" />
+     <!--   <Label label="file" index="5" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" localize="true" />
+      <File isDirectory="false" readOnly="true" localize="true" index="5" data="data.resource.file" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" />-->
     </Tab>
     <Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="AdvancedTab" />
   </TabPanel>

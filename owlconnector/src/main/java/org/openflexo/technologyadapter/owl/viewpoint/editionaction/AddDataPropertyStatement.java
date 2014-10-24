@@ -98,7 +98,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append(getSubject().toString() + "." + getDataProperty().getName() + " = " + getValue().toString() + ";", context);
+			out.append((getSubject() != null ? getSubject().toString() : "null") + "."
+					+ (getDataProperty() != null ? getDataProperty().getName() : "null") + " = " + getValue().toString() + ";", context);
 			return out.toString();
 		}
 
