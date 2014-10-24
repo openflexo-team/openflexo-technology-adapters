@@ -1036,6 +1036,10 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		if (alreadyDone.contains(ontology)) {
 			return;
 		}
+		if (ontology == null) {
+			logger.warning("Null ontology !");
+			return;
+		}
 		alreadyDone.add(ontology);
 		for (OWLProperty p : ontology.getObjectProperties()) {
 			for (OWLConcept<?> o : p.getRangeList()) {
