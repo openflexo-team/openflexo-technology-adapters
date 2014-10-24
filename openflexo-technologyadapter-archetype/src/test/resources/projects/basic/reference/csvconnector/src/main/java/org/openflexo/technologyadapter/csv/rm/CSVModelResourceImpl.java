@@ -56,8 +56,7 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 	public static CSVModelResource makeCSVModelResource(String modelURI, File modelFile,
 			CSVTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,CSVModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,CSVModelResource.class));
 			CSVModelResourceImpl returned = (CSVModelResourceImpl) factory.newInstance(CSVModelResource.class);
 			returned.setName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
@@ -77,8 +76,7 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 
 	public static CSVModelResource retrieveCSVModelResource(File modelFile, CSVTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,CSVModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,CSVModelResource.class));
 			CSVModelResourceImpl returned = (CSVModelResourceImpl) factory.newInstance(CSVModelResource.class);
 			returned.setName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
@@ -128,7 +126,7 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 		if (resourceData != null) {
 			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
 			writeToFile();
-			getFileFlexoIODelegate().hasWrittenOnDisk(lock);
+			getFlexoIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
