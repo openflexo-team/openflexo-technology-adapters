@@ -51,7 +51,6 @@ import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.${technologyPrefix}TechnologyContextManager;
 import ${package}.model.${technologyPrefix}Model;
 import ${package}.model.${technologyPrefix}ModelImpl;
-
 import org.openflexo.toolbox.IProgress;
 
 public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResourceImpl<${technologyPrefix}Model> implements ${technologyPrefix}ModelResource {
@@ -60,7 +59,7 @@ public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResource
 	public static ${technologyPrefix}ModelResource make${technologyPrefix}ModelResource(String modelURI, File modelFile,
 			${technologyPrefix}TechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(${technologyPrefix}ModelResource.class,FileFlexoIODelegate.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(${technologyPrefix}ModelResource.class,FileFlexoIODelegate.class));
 			${technologyPrefix}ModelResourceImpl returned = (${technologyPrefix}ModelResourceImpl) factory.newInstance(${technologyPrefix}ModelResource.class);
 			returned.setName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
@@ -80,7 +79,7 @@ public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResource
 
 	public static ${technologyPrefix}ModelResource retrieve${technologyPrefix}ModelResource(File modelFile, ${technologyPrefix}TechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(${technologyPrefix}ModelResource.class,FileFlexoIODelegate.class);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(${technologyPrefix}ModelResource.class,FileFlexoIODelegate.class));
 			${technologyPrefix}ModelResourceImpl returned = (${technologyPrefix}ModelResourceImpl) factory.newInstance(${technologyPrefix}ModelResource.class);
 			returned.setName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
