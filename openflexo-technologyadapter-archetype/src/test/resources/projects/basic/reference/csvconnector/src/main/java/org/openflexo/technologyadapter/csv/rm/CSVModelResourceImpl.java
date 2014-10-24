@@ -48,6 +48,7 @@ import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.CSVTechnologyContextManager;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.technologyadapter.csv.rm.CSVModelResource;
+
 import org.openflexo.toolbox.IProgress;
 
 public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> implements CSVModelResource {
