@@ -62,12 +62,11 @@ public class LinkSchemeBindingModel extends DiagramBehaviourBindingModel {
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
 		if (evt.getSource() == getFlexoBehaviour()) {
-			if (evt.getPropertyName().equals(LinkScheme.FROM_TARGET_FLEXO_CONCEPT_KEY)) {
+			if (evt.getPropertyName().equals(LinkScheme.FROM_TARGET_FLEXO_CONCEPT_KEY) && fromTargetBindingVariable != null) {
 				// The LinkScheme changes it's FROM target's FlexoConcept
 				fromTargetBindingVariable.setType(getFlexoBehaviour().getFromTargetFlexoConcept() != null ? FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getFlexoBehaviour().getFromTargetFlexoConcept()) : DiagramShape.class);
-			}
-			else if (evt.getPropertyName().equals(LinkScheme.TO_TARGET_FLEXO_CONCEPT_KEY)) {
+			} else if (evt.getPropertyName().equals(LinkScheme.TO_TARGET_FLEXO_CONCEPT_KEY) && toTargetBindingVariable != null) {
 				// The LinkScheme changes it's TO target's FlexoConcept
 				toTargetBindingVariable.setType(getFlexoBehaviour().getToTargetFlexoConcept() != null ? FlexoConceptInstanceType
 						.getFlexoConceptInstanceType(getFlexoBehaviour().getToTargetFlexoConcept()) : DiagramShape.class);
