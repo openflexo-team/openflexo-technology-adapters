@@ -50,7 +50,6 @@ import org.openflexo.model.factory.ModelFactory;
 import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.${technologyPrefix}TechnologyContextManager;
 import ${package}.model.${technologyPrefix}Model;
-import ${package}.model.${technologyPrefix}ModelImpl;
 import org.openflexo.toolbox.IProgress;
 
 public abstract class ${technologyPrefix}ModelResourceImpl extends FlexoResourceImpl<${technologyPrefix}Model> implements ${technologyPrefix}ModelResource {
