@@ -58,10 +58,11 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
     public static CSVResource makeCSVResource(String modelURI, File modelFile,
             CSVTechnologyContextManager technologyContextManager) {
         try {
-            ModelFactory factory = new ModelFactory(CSVResource.class);
+            ModelFactory factory = new ModelFactory(CSVResource.class,FileFlexoIODelegate.class);
             CSVResourceImpl returned = (CSVResourceImpl) factory.newInstance(CSVResource.class);
             returned.setName(modelFile.getName());
-            returned.setFile(modelFile);
+            returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+
             returned.setURI(modelURI);
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
             returned.setTechnologyAdapter((CSVTechnologyAdapter) technologyContextManager.getTechnologyAdapter());
@@ -78,10 +79,11 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
 
     public static CSVResource retrieveCSVResource(File modelFile, CSVTechnologyContextManager technologyContextManager) {
         try {
-            ModelFactory factory = new ModelFactory(CSVResource.class);
+        	ModelFactory factory = new ModelFactory(CSVResource.class,FileFlexoIODelegate.class);
             CSVResourceImpl returned = (CSVResourceImpl) factory.newInstance(CSVResource.class);
             returned.setName(modelFile.getName());
-            returned.setFile(modelFile);
+            returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+
             returned.setURI(modelFile.toURI().toString());
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
             returned.setTechnologyAdapter((CSVTechnologyAdapter) technologyContextManager.getTechnologyAdapter());
@@ -121,27 +123,27 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
         } catch (FileNotFoundException e) {
             final String msg = "Error while saving CSV model resource";
             LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(this);
+            throw new SaveResourceException(getFlexoIODelegate());
         } catch (ResourceLoadingCancelledException e) {
             final String msg = "Error while saving CSV model resource";
             LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(this);
+            throw new SaveResourceException(getFlexoIODelegate());
         } catch (FlexoException e) {
             final String msg = "Error while saving CSV model resource";
             LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(this);
+            throw new SaveResourceException(getFlexoIODelegate());
         }
 
         if (!hasWritePermission()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("Permission denied : " + getFile().getAbsolutePath());
+                LOGGER.warning("Permission denied : " + getFlexoIODelegate().toString());
             }
-            throw new SaveResourcePermissionDeniedException(this);
+            throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
         }
         if (resourceData != null) {
         	FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
             writeToFile();
-            hasWrittenOnDisk(lock);
+            getFlexoIODelegate().hasWrittenOnDisk(lock);
             notifyResourceStatusChanged();
             resourceData.clearIsModified(false);
             if (LOGGER.isLoggable(Level.INFO)) {
@@ -158,7 +160,7 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
         } catch (FileNotFoundException e) {
             final String msg = "Error while saving CSV model resource";
             LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(this);
+            throw new SaveResourceException(getFlexoIODelegate());
         } finally {
             IOUtils.closeQuietly(out);
         }

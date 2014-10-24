@@ -64,7 +64,8 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
             ModelFactory factory = new ModelFactory(${technologyPrefix}Resource.class);
             ${technologyPrefix}ResourceImpl returned = (${technologyPrefix}ResourceImpl) factory.newInstance(${technologyPrefix}Resource.class);
             returned.setName(modelFile.getName());
-            returned.setFile(modelFile);
+            returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+
             returned.setURI(modelURI);
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
             returned.setTechnologyAdapter((${technologyPrefix}TechnologyAdapter) technologyContextManager.getTechnologyAdapter());
@@ -81,10 +82,11 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
 
     public static ${technologyPrefix}Resource retrieve${technologyPrefix}Resource(File modelFile, ${technologyPrefix}TechnologyContextManager technologyContextManager) {
         try {
-            ModelFactory factory = new ModelFactory(${technologyPrefix}Resource.class);
+            ModelFactory factory = new ModelFactory(${technologyPrefix}Resource.class,FileFlexoIODelegate.class);
             ${technologyPrefix}ResourceImpl returned = (${technologyPrefix}ResourceImpl) factory.newInstance(${technologyPrefix}Resource.class);
             returned.setName(modelFile.getName());
-            returned.setFile(modelFile);
+            returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+            
             returned.setURI(modelFile.toURI().toString());
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
             returned.setTechnologyAdapter((${technologyPrefix}TechnologyAdapter) technologyContextManager.getTechnologyAdapter());
@@ -124,27 +126,27 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
         } catch (FileNotFoundException e) {
             final String msg = "Error while saving ${technologyPrefix} model resource";
             LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(this);
+            throw new SaveResourceException(getFlexoIODelegate());
         } catch (ResourceLoadingCancelledException e) {
             final String msg = "Error while saving ${technologyPrefix} model resource";
             LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(this);
+            throw new SaveResourceException(getFlexoIODelegate());
         } catch (FlexoException e) {
             final String msg = "Error while saving ${technologyPrefix} model resource";
             LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(this);
+            throw new SaveResourceException(getFlexoIODelegate());
         }
 
         if (!hasWritePermission()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("Permission denied : " + getFile().getAbsolutePath());
+                LOGGER.warning("Permission denied : " + getFlexoIODelegate().toString());
             }
-            throw new SaveResourcePermissionDeniedException(this);
+            throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
         }
         if (resourceData != null) {
         	FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
             writeToFile();
-            hasWrittenOnDisk(lock);
+            getFlexoIODelegate().hasWrittenOnDisk(lock);
             notifyResourceStatusChanged();
             resourceData.clearIsModified(false);
             if (LOGGER.isLoggable(Level.INFO)) {
@@ -161,7 +163,7 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
         } catch (FileNotFoundException e) {
             final String msg = "Error while saving ${technologyPrefix} model resource";
             LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(this);
+            throw new SaveResourceException(getFlexoIODelegate());
         } finally {
             IOUtils.closeQuietly(out);
         }
