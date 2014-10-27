@@ -140,7 +140,7 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
             throw new SaveResourceException(getFlexoIODelegate());
         }
 
-        if (!hasWritePermission()) {
+        if (!getFlexoIODelegate().hasWritePermission()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning("Permission denied : " + getFlexoIODelegate().toString());
             }

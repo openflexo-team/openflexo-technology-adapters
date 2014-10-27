@@ -137,7 +137,7 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
             throw new SaveResourceException(getFlexoIODelegate());
         }
 
-        if (!hasWritePermission()) {
+        if (!getFlexoIODelegate().hasWritePermission()) {
             if (LOGGER.isLoggable(Level.WARNING)) {
                 LOGGER.warning("Permission denied : " + getFlexoIODelegate().toString());
             }
