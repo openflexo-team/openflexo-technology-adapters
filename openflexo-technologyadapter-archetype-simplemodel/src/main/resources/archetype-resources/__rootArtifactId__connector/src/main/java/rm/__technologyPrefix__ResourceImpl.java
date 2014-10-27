@@ -86,7 +86,6 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
             ${technologyPrefix}ResourceImpl returned = (${technologyPrefix}ResourceImpl) factory.newInstance(${technologyPrefix}Resource.class);
             returned.setName(modelFile.getName());
             returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-            
             returned.setURI(modelFile.toURI().toString());
             returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
             returned.setTechnologyAdapter((${technologyPrefix}TechnologyAdapter) technologyContextManager.getTechnologyAdapter());
