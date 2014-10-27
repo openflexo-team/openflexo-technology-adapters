@@ -96,8 +96,8 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
             technologyContextManager.registerResource(returned);
             return returned;
         } catch (ModelDefinitionException e) {
-            final String msg = "Error while initializing ${technologyPrefix} model resource";
-            LOGGER.log(Level.SEVERE, msg, e);
+        	final String msg = "Error while initializing ${technologyPrefix} model resource";
+        	LOGGER.log(Level.SEVERE, msg, e);
         }
         return null;
     }
