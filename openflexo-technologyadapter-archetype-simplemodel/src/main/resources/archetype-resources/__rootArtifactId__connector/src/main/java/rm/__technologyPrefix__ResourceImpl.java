@@ -66,7 +66,7 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
     public static ${technologyPrefix}Resource make${technologyPrefix}Resource(String modelURI, File modelFile,
             ${technologyPrefix}TechnologyContextManager technologyContextManager) {
         try {
-            ModelFactory factory = new ModelFactory(${technologyPrefix}Resource.class,FileFlexoIODelegate.class);
+        	ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(${technologyPrefix}ModelResource.class,FileFlexoIODelegate.class));
             ${technologyPrefix}ResourceImpl returned = (${technologyPrefix}ResourceImpl) factory.newInstance(${technologyPrefix}Resource.class);
             returned.setName(modelFile.getName());
             returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
@@ -87,7 +87,7 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
 
     public static ${technologyPrefix}Resource retrieve${technologyPrefix}Resource(File modelFile, ${technologyPrefix}TechnologyContextManager technologyContextManager) {
         try {
-        	ModelFactory factory = new ModelFactory(${technologyPrefix}Resource.class,FileFlexoIODelegate.class);
+        	ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(${technologyPrefix}ModelResource.class,FileFlexoIODelegate.class));
         	${technologyPrefix}ResourceImpl returned = (${technologyPrefix}ResourceImpl) factory.newInstance(${technologyPrefix}Resource.class);
             returned.setName(modelFile.getName());
             returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
