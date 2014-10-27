@@ -42,6 +42,7 @@ import org.openflexo.technologyadapter.csv.CSVTechnologyContextManager;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.technologyadapter.csv.model.CSVModelImpl;
+import org.openflexo.technologyadapter.csv.rm.CSVResource;
 
 import org.openflexo.toolbox.IProgress;
 

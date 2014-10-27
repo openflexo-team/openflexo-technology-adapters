@@ -45,6 +45,7 @@ import ${package}.${technologyPrefix}TechnologyContextManager;
 import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.model.${technologyPrefix}Model;
 import ${package}.model.${technologyPrefix}ModelImpl;
+import ${package}.rm.${technologyPrefix}Resource;
 
 import org.openflexo.toolbox.IProgress;
 
