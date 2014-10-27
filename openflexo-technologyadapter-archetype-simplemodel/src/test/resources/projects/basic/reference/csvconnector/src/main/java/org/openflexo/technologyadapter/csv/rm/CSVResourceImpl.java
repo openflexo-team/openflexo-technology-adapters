@@ -80,7 +80,7 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
     public static CSVResource retrieveCSVResource(File modelFile, CSVTechnologyContextManager technologyContextManager) {
         try {
         	ModelFactory factory = new ModelFactory(CSVResource.class,FileFlexoIODelegate.class);
-            CSVResourceImpl returned = (CSVResourceImpl) factory.newInstance(CSVResource.class);
+        	CSVResourceImpl returned = (CSVResourceImpl) factory.newInstance(CSVResource.class);
             returned.setName(modelFile.getName());
             returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
             returned.setURI(modelFile.toURI().toString());
