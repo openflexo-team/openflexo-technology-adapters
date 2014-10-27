@@ -146,7 +146,7 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
             notifyResourceStatusChanged();
             resourceData.clearIsModified(false);
             if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
+                LOGGER.info("Succeeding to save Resource " + getURI() + " : " + getFlexoIODelegate().toString());
             }
         }
     }
@@ -155,7 +155,8 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
         //TODO : Auto-generated method skeleton.
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(getFile());
+        	FileFlexoIODelegate delegate = (FileFlexoIODelegate)getFlexoIODelegate();
+			out = new FileOutputStream(delegate.getFile());
         } catch (FileNotFoundException e) {
             final String msg = "Error while saving CSV model resource";
             LOGGER.log(Level.SEVERE, msg, e);
@@ -164,7 +165,7 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
             IOUtils.closeQuietly(out);
         }
 
-        LOGGER.info("Wrote " + getFile());
+        LOGGER.info("Wrote " + getFlexoIODelegate().toString());
     }
 
     @Override

@@ -31,16 +31,19 @@ import java.util.logging.Logger;
 
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+
 import ${package}.${technologyPrefix}TechnologyContextManager;
 import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.model.${technologyPrefix}Model;
 import ${package}.model.${technologyPrefix}ModelImpl;
+
 import org.openflexo.toolbox.IProgress;
 
 public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<${technologyPrefix}Model> implements ${technologyPrefix}Resource {
@@ -149,7 +152,7 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
             notifyResourceStatusChanged();
             resourceData.clearIsModified(false);
             if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
+                LOGGER.info("Succeeding to save Resource " + getURI() + " : " + getFlexoIODelegate().toString());
             }
         }
     }
@@ -158,7 +161,8 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
         //TODO : Auto-generated method skeleton.
         FileOutputStream out = null;
         try {
-            out = new FileOutputStream(getFile());
+        	FileFlexoIODelegate delegate = (FileFlexoIODelegate)getFlexoIODelegate();
+			out = new FileOutputStream(delegate.getFile());
         } catch (FileNotFoundException e) {
             final String msg = "Error while saving ${technologyPrefix} model resource";
             LOGGER.log(Level.SEVERE, msg, e);
@@ -167,7 +171,7 @@ public abstract class ${technologyPrefix}ResourceImpl extends FlexoResourceImpl<
             IOUtils.closeQuietly(out);
         }
 
-        LOGGER.info("Wrote " + getFile());
+        LOGGER.info("Wrote " + getFlexoIODelegate().toString());
     }
 
     @Override
