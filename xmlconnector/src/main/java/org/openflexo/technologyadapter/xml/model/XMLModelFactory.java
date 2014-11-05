@@ -29,18 +29,18 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
+import org.openflexo.xml.SaxBasedObjectGraphFactory;
 import org.openflexo.xml.XMLCst;
 import org.openflexo.xml.XMLReaderSAXHandler;
-import org.openflexo.xml.saxBasedObjectGraphFactory;
 import org.xml.sax.SAXException;
 
-public class XMLModelFactory extends saxBasedObjectGraphFactory {
+public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 
 	private XMLModel model = null;
 
 	@Override
 	public Object getInstanceOf(Type aType, String name) {
-		
+
 		if (aType instanceof XMLComplexType) {
 			XMLIndividual _inst = (XMLIndividual) model.addNewIndividual(aType);
 			return _inst;
@@ -51,24 +51,23 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
 	@Override
 	public Type getTypeForObject(String typeURI, Object container, String objectName) {
-		
+
 		XMLMetaModel mm = model.getMetaModel();
 		XMLType tt = null;
 		if (mm != null) {
-			tt =  mm.getTypeFromURI(typeURI);
+			tt = mm.getTypeFromURI(typeURI);
 		}
 		// Create the type if it does not exist and that we can!!
 
-		if (! mm.isReadOnly() && tt == null) { 
+		if (!mm.isReadOnly() && tt == null) {
 			if (container instanceof XMLIndividual) {
 				XMLType parentType = ((XMLIndividual) container).getType();
-				tt = mm.createNewType(mm.getURI() + "/" + parentType.getName() + "#"+ objectName, objectName,false);
-			}
-			else {
-				tt = mm.createNewType(mm.getURI() + "#"+ objectName, objectName, false);
+				tt = mm.createNewType(mm.getURI() + "/" + parentType.getName() + "#" + objectName, objectName, false);
+			} else {
+				tt = mm.createNewType(mm.getURI() + "#" + objectName, objectName, false);
 			}
 		}
-		
+
 		return tt;
 	}
 
@@ -79,14 +78,13 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 			try {
 				saxParser.parse(input, handler);
 			} catch (SAXException e) {
-				logger.warning("Cannot parse document: " + e.getMessage());
+				LOGGER.warning("Cannot parse document: " + e.getMessage());
 				throw new IOException(e.getMessage());
 			}
 			return this.model;
 
-		}
-		else {
-			logger.warning("Context is not set for parsing, aborting");
+		} else {
+			LOGGER.warning("Context is not set for parsing, aborting");
 		}
 		return null;
 	}
@@ -98,14 +96,13 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 			try {
 				saxParser.parse(input, handler);
 			} catch (SAXException e) {
-				logger.warning("Cannot parse document: " + e.getMessage());
+				LOGGER.warning("Cannot parse document: " + e.getMessage());
 				throw new IOException(e.getMessage());
 			}
 			return this.model;
 
-		}
-		else {
-			logger.warning("Context is not set for parsing, aborting");
+		} else {
+			LOGGER.warning("Context is not set for parsing, aborting");
 		}
 		return null;
 	}
@@ -138,7 +135,7 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 	@Override
 	public boolean objectHasAttributeNamed(Object object, String propertyName) {
 		if (object instanceof XMLIndividual) {
-			
+
 			XMLProperty prop = ((XMLIndividual) object).getType().getPropertyByName(propertyName);
 
 			return (prop != null);
@@ -163,16 +160,14 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
 					if (prop != null) {
 						((XMLIndividual) object).addPropertyValue(prop, value);
+					} else {
+						LOGGER.warning("UNABLE to create a new property named " + name);
 					}
-					else {
-						logger.warning("UNABLE to create a new property named " + name);
-					}
+				} else {
+					LOGGER.warning("TRYING to give a value to a non existant property: " + name + " -- "
+							+ name.equals(XMLCst.CDATA_ATTR_NAME));
 				}
-				else {
-					logger.warning("TRYING to give a value to a non existant property: " + name + " -- " + name.equals(XMLCst.CDATA_ATTR_NAME));
-				}
-			}
-			else {
+			} else {
 
 				((XMLIndividual) object).addPropertyValue(prop, value);
 
@@ -182,7 +177,7 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 
 	@Override
 	public void addChildToObject(Object currentObject, Object currentContainer) {
-		
+
 		if (currentContainer instanceof XMLIndividual) {
 			((XMLIndividual) currentContainer).addChild((XMLIndividual) currentObject);
 		}
@@ -194,8 +189,7 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 		XMLProperty prop = ((XMLIndividual) currentContainer).getType().getPropertyByName(localName);
 		if (prop != null) {
 			return prop.getType();
-		}
-		else
+		} else
 			return null;
 	}
 }
