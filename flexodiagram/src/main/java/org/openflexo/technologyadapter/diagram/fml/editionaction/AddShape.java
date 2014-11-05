@@ -123,20 +123,13 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 
 		public DiagramContainerElement<?> getContainer(FlexoBehaviourAction action) {
-			System.out.println("computing getContainer()");
-			System.out.println("getFlexoRole()=" + getFlexoRole());
-			System.out.println("getContainer()=" + getContainer());
 			if (getFlexoRole() != null && !getFlexoRole().getParentShapeAsDefinedInAction()) {
 				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapeRole());
 				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapeRole());
 			} else {
-				System.out.println("la avec getContainer()=" + getContainer() + " valid=" + getContainer().isValid() + "  reason="
-						+ getContainer().invalidBindingReason());
 				BindingModel bm = getContainer().getOwner().getBindingModel();
-				System.out.println("BindingModel=" + bm);
 				for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
 					BindingVariable bv = bm.getBindingVariableAt(i);
-					System.out.println(" > bv=" + bv);
 				}
 				try {
 					if (getContainer().getBindingValue(action) != null) {
