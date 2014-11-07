@@ -43,6 +43,8 @@ public class DiagramShapeScreenshotBuilder extends ScreenshotBuilder<DiagramShap
 		FreeDiagramEditor editor = new FreeDiagramEditor(diagramShape.getDiagram(), true);
 		ShapeNode<DiagramShape> shapeNode = editor.getDrawing().getShapeNode(diagramShape);
 		JShapeView<DiagramShape> shapeView = editor.getDrawingView().shapeViewForNode(shapeNode);
+		// Adjust the size of the drawing to the shape view size.
+		editor.getDrawingView().setSize(shapeView.getWidth(), shapeView.getHeight());
 		return shapeView;
 	}
 	
