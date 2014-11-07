@@ -163,17 +163,17 @@
     <Localized key="cancel" lang="French" value="Annuler" />
     <Localized key="validate" lang="Dutch" value="Validate" />
     <Localized key="cancel" lang="Dutch" value="Cancel" />
-    <Localized key="flexo_concept" lang="French" value="Edition pattern" />
-    <Localized key="flexo_concept" lang="English" value="Edition pattern" />
+    <Localized key="flexo_concept" lang="French" value="Flexo concept" />
+    <Localized key="flexo_concept" lang="English" value="Flexo concept" />
     <Localized key="pattern_role" lang="French" value="Pattern role" />
     <Localized key="pattern_role" lang="English" value="Pattern role" />
-    <Localized key="please_choose_an_flexo_concept" lang="French" value="Veuillez choisir un Edition Pattern" />
+    <Localized key="please_choose_an_flexo_concept" lang="French" value="Veuillez choisir un Flexo concept" />
     <Localized key="please_choose_an_flexo_concept" lang="English" value="Please choose an flexo concept" />
-    <Localized key="create_new_flexo_concept" lang="English" value="Create new Edition Pattern" />
-    <Localized key="create_new_flexo_concept" lang="French" value="Créer un nouvel Edition Pattern" />
+    <Localized key="create_new_flexo_concept" lang="English" value="Create new Flexo concept" />
+    <Localized key="create_new_flexo_concept" lang="French" value="Créer un nouveau Flexo concept" />
     <Localized key="create_new_flexo_concept" lang="Dutch" value="new_entry" />
-    <Localized key="declare_in_existing_flexo_concept" lang="English" value="Declare in existing Edition Pattern" />
-    <Localized key="declare_in_existing_flexo_concept" lang="French" value="Déclarer dans un Edition Pattern existant" />
+    <Localized key="declare_in_existing_flexo_concept" lang="English" value="Declare in existing Flexo concept" />
+    <Localized key="declare_in_existing_flexo_concept" lang="French" value="Déclarer dans un Flexo concept existant" />
     <Localized key="declare_in_existing_flexo_concept" lang="Dutch" value="new_entry" />
     <Localized key="pattern_role_name" lang="French" value="Nom du pattern role" />
     <Localized key="pattern_role_name" lang="English" value="Pattern Role name" />
@@ -181,14 +181,14 @@
     <Localized key="new_flexo_concept" lang="English" value="New flexo concept" />
     <Localized key="ontologic_concept" lang="French" value="Concept ontologique" />
     <Localized key="ontologic_concept" lang="English" value="Ontologic concept" />
-    <Localized key="CREATES_FLEXO_CONCEPT" lang="English" value="Create new Edition Pattern" />
-    <Localized key="CREATES_FLEXO_CONCEPT" lang="French" value="Créer un nouvel Edition Pattern" />
+    <Localized key="CREATES_FLEXO_CONCEPT" lang="English" value="Create new Flexo concept" />
+    <Localized key="CREATES_FLEXO_CONCEPT" lang="French" value="Créer un nouveau Flexo concept" />
     <Localized key="CREATES_FLEXO_CONCEPT" lang="Dutch" value="new_entry" />
-    <Localized key="CHOOSE_EXISTING_FLEXO_CONCEPT" lang="English" value="Declare in existing Edition Pattern" />
-    <Localized key="CHOOSE_EXISTING_FLEXO_CONCEPT" lang="French" value="Déclarer dans un Edition Pattern existant" />
+    <Localized key="CHOOSE_EXISTING_FLEXO_CONCEPT" lang="English" value="Declare in existing Flexo concept" />
+    <Localized key="CHOOSE_EXISTING_FLEXO_CONCEPT" lang="French" value="Déclarer dans un Flexo concept existant" />
     <Localized key="CHOOSE_EXISTING_FLEXO_CONCEPT" lang="Dutch" value="new_entry" />
     <Localized key="declare_in_flexo_concept" lang="English" value="Declare in flexo concept" />
-    <Localized key="declare_in_flexo_concept" lang="French" value="Déclarer dans un Edition Pattern" />
+    <Localized key="declare_in_flexo_concept" lang="French" value="Déclarer dans un Flexo concept" />
     <Localized key="declare_in_flexo_concept" lang="Dutch" value="Declare in flexo concept" />
     <Localized key="MAP_SINGLE_INDIVIDUAL" lang="French" value="Correspondance simple vers un individuel ontologique" />
     <Localized key="MAP_SINGLE_INDIVIDUAL" lang="English" value="Single mapping to ontologic individual" />
@@ -200,7 +200,7 @@
     <Localized key="MAP_SINGLE_FLEXO_CONCEPT_description" lang="English" value="&lt;html&gt;&lt;center&gt;This will create a simple mapping between a shape and&lt;br&gt;an flexo concept stored in project virtual model.&lt;/center&gt;&lt;/html&gt;" />
     <Localized key="MAP_SINGLE_FLEXO_CONCEPT_description" lang="French" value="&lt;html&gt;&lt;center&gt;This will create a simple mapping between a shape and&lt;br&gt;an flexo concept stored in project virtual model.&lt;/center&gt;&lt;/html&gt;" />
     <Localized key="MAP_SINGLE_FLEXO_CONCEPT_description" lang="Dutch" value="new_entry" />
-    <Localized key="new_flexo_concept_name" lang="French" value="Nom du nouvel Edition Pattern" />
+    <Localized key="new_flexo_concept_name" lang="French" value="Nom du nouveau Flexo concept" />
     <Localized key="new_flexo_concept_name" lang="English" value="New flexo concept name" />
     <Localized key="connector_pattern_role_name" lang="English" value="Connector pattern role name" />
     <Localized key="connector_pattern_role_name" lang="French" value="Nom du role de la forme" />
@@ -236,13 +236,13 @@
     <Localized key="select_all" lang="Dutch" value="Select all" />
     <Localized key="select_none" lang="French" value="Déséselectionner tout" />
     <Localized key="select_none" lang="English" value="Select none" />
-    <Localized key="BLANK_FLEXO_CONCEPT" lang="French" value="Edition Pattern vide" />
-    <Localized key="BLANK_FLEXO_CONCEPT" lang="English" value="Blank Edition Pattern" />
-    <Localized key="BLANK_FLEXO_CONCEPT_description" lang="English" value="&lt;html&gt;&lt;center&gt;This will create a simple Edition Pattern only containing a connector&lt;br&gt;similar to the one which has just been selected.&lt;/center&gt;&lt;/html&gt;" />
-    <Localized key="BLANK_FLEXO_CONCEPT_description" lang="French" value="&lt;html&gt;&lt;center&gt;This will create a simple Edition Pattern only containing a connector&lt;br&gt;similar to the one which has just been selected.&lt;/center&gt;&lt;/html&gt;" />
+    <Localized key="BLANK_FLEXO_CONCEPT" lang="French" value="Flexo concept vide" />
+    <Localized key="BLANK_FLEXO_CONCEPT" lang="English" value="Blank Flexo concept" />
+    <Localized key="BLANK_FLEXO_CONCEPT_description" lang="English" value="&lt;html&gt;&lt;center&gt;This will create a simple Flexo concept only containing a connector&lt;br&gt;similar to the one which has just been selected.&lt;/center&gt;&lt;/html&gt;" />
+    <Localized key="BLANK_FLEXO_CONCEPT_description" lang="French" value="&lt;html&gt;&lt;center&gt;This will create a simple Flexo concept only containing a connector&lt;br&gt;similar to the one which has just been selected.&lt;/center&gt;&lt;/html&gt;" />
     <Localized key="BLANK_FLEXO_CONCEPT_description" lang="Dutch" value="new_entry" />
     <Localized key="declare_connector_in_flexo_concept" lang="English" value="Declare connector in flexo concept" />
-    <Localized key="declare_connector_in_flexo_concept" lang="French" value="Déclarer le connecteur dans un Edition Pattern" />
+    <Localized key="declare_connector_in_flexo_concept" lang="French" value="Déclarer le connecteur dans un Flexo concept" />
     <Localized key="declare_connector_in_flexo_concept" lang="Dutch" value="Declare in flexo concept" />
     <Localized key="to_target" lang="French" value="Cible de destination" />
     <Localized key="to_target" lang="English" value="To target" />
@@ -269,10 +269,10 @@
     <Localized key="pattern_role_is_null" lang="English" value="Pattern role is null" />
     <Localized key="pattern_role_is_null" lang="French" value="Le patron de rôle est nul" />
     <Localized key="pattern_role_is_null" lang="Dutch" value="pattern_role_is_null" />
-    <Localized key="flexo_concept_is_null" lang="English" value="Edition pattern is null" />
+    <Localized key="flexo_concept_is_null" lang="English" value="Flexo concept is null" />
     <Localized key="flexo_concept_is_null" lang="French" value="Le patron d'édition est nul" />
     <Localized key="flexo_concept_is_null" lang="Dutch" value="flexo_concept_is_null" />
-    <Localized key="flexo_concept_name_is_null" lang="English" value="Edition pattern name is null" />
+    <Localized key="flexo_concept_name_is_null" lang="English" value="Flexo concept name is null" />
     <Localized key="flexo_concept_name_is_null" lang="French" value="Le nom du patron d'édition est nul" />
     <Localized key="flexo_concept_name_is_null" lang="Dutch" value="flexo_concept_name_is_null" />
     <Localized key="focused_object_is_null" lang="English" value="Focused object is null" />
