@@ -50,7 +50,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	private static final Logger logger = Logger.getLogger(CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement.class.getPackage().getName());
 
 	public static FlexoActionType<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> actionType = new FlexoActionType<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement>(
-			"create_new_palette_binding", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+			"create_new_palette_binding", FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -92,11 +92,18 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 		getTypedDiagramModelSlot().addToPaletteElementBindings(newBinding);
 		newBinding.setPaletteElement(getFocusedObject());
 		newBinding.setFlexoConcept(flexoConcept);
+		if(createDropScheme){
+			dropScheme = getVirtualModel().getVirtualModelFactory().newInstance(DropScheme.class);
+			dropScheme.setName(getDropSchemeName());
+			dropScheme.setFlexoConcept(getFlexoConcept());
+			flexoConcept.addToFlexoBehaviours(dropScheme);
+		}
 		newBinding.setDropScheme(dropScheme);
 	}
 
 	private String name;
 	private DropScheme dropScheme;
+	private String dropSchemeName = "newDropScheme";
 	private FlexoConcept flexoConcept;
 	private List<FMLDiagramPaletteElementBindingParameter> paletteElementBindingParameter;
 	private DiagramPalette diagramPalette;
@@ -105,6 +112,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	private List<DropScheme> dropSchemes;
 	private List<FlexoConcept> flexoConcepts;
 	private Image image;
+	private boolean createDropScheme;
 	
 	private String errorMessage = EMPTY_NAME;
 
@@ -193,7 +201,9 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 
 	public void setVirtualModelResource(VirtualModelResource virtualModelResource) {
 		this.virtualModelResource = virtualModelResource;
-		setVirtualModel(virtualModelResource.getVirtualModel());
+		if(virtualModelResource!=null){
+			setVirtualModel(virtualModelResource.getVirtualModel());
+		}
 	}
 	
 	public String getName() {
@@ -258,7 +268,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	public boolean isValid() {
 		if (!isNameValid()) {
 			return false;
-		} else if(getDropScheme()==null) {
+		} else if(getDropScheme()==null && !createDropScheme) {
 			setErrorMessage(DROP_SCHEME_IS_EMPTY);
 			return false;
 		} else if(getFlexoConcept()==null) {
@@ -274,6 +284,22 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 
 	public void setImage(Image image) {
 		this.image = image;
+	}
+
+	public boolean isCreateDropScheme() {
+		return createDropScheme;
+	}
+
+	public void setCreateDropScheme(boolean createDropScheme) {
+		this.createDropScheme = createDropScheme;
+	}
+
+	public String getDropSchemeName() {
+		return dropSchemeName;
+	}
+
+	public void setDropSchemeName(String dropSchemeName) {
+		this.dropSchemeName = dropSchemeName;
 	}
 
 	
