@@ -15,13 +15,18 @@
       <Assignment id="9" mandatory="true" value="data.diagramSpecification" variable="component.diagramSpecification" />
     </Custom>
     <Label id="10" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="flexo_concept" readOnly="false" />
-    <DropDown id="11" manageDynamicModel="true" useScrollBar="false" data="data.flexoConcept" showReset="false" autoSelectFirstRow="true" name="flexoConceptDropDown" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" list="data.flexoConcepts" format="object.name" showText="true" readOnly="false" iteratorClassName="org.openflexo.foundation.viewpoint.FlexoConcept" showIcon="false">
+	<DropDown id="11" manageDynamicModel="true" useScrollBar="false" data="data.flexoConcept" showReset="false" autoSelectFirstRow="true" name="flexoConceptDropDown" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" list="data.flexoConcepts" format="object.name" showText="true" readOnly="false" iteratorClassName="org.openflexo.foundation.viewpoint.FlexoConcept" showIcon="false">
       <Dependancy componentName="virtualModelSelector" />
     </DropDown>
     <Label id="13" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="drop_scheme" readOnly="false" />
-    <DropDown id="14" manageDynamicModel="true" useScrollBar="false" data="data.dropScheme" showReset="false" autoSelectFirstRow="true" name="dropSchemeDropDown" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" list="data.dropSchemes" format="object.name" showText="true" readOnly="false" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.DropScheme" showIcon="false">
+    <CheckBox id="25" manageDynamicModel="false" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" useScrollBar="false" data="data.createDropScheme" selected="false" name="CreateDropScheme" index="0" negate="false" localize="true" readOnly="false" />
+    <DropDown id="14" manageDynamicModel="true" useScrollBar="false" data="data.dropScheme" showReset="false" autoSelectFirstRow="true" name="dropSchemeDropDown" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" list="data.dropSchemes" format="object.name" visible="!data.createDropScheme" showText="true" readOnly="false" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.DropScheme" showIcon="false">
       <Dependancy componentName="flexoConceptDropDown" />
+      <Dependancy componentName="CreateDropScheme" />
     </DropDown>
+    <TextField id="15" data="data.dropSchemeName" visible="data.createDropScheme" name="DropSchemeName" passwd="false" manageDynamicModel="true" useScrollBar="false" columns="7" text="TextField" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" readOnly="false" validateOnReturn="false" >
+    	<Dependancy componentName="CreateDropScheme" />
+    </TextField>
     <Label id="16" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)" label="parameters" readOnly="false" />
     <Table id="17" showFooter="false" manageDynamicModel="true" selectionMode="MultipleIntervalSelection" boundToSelectionManager="true" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)" visibleRowCount="3" createNewRowOnClick="false" rowHeight="18" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBindingParameter" useScrollBar="false" data="data.dropScheme.parameters" autoSelectFirstRow="false" readOnly="true">
       <IconColumn id="18" data="controller.iconForObject(iterator)" displayTitle="false" title="icon" name="icon" columnWidth="25" resizable="false" />
@@ -36,6 +41,8 @@
     	<Dependancy componentName="virtualModelSelector" />
     	<Dependancy componentName="flexoConceptDropDown" />
     	<Dependancy componentName="dropSchemeDropDown" />
+    	<Dependancy componentName="DropSchemeName" />
+    	<Dependancy componentName="CreateDropScheme" />
     </Label>
     <Panel id="23" darkLevel="0" vGap="5" useScrollBar="false" protectContent="false" hGap="5" layout="flow" border="empty" trackViewPortWidth="true" constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center)" flowAlignment="CENTER" trackViewPortHeight="true">
     	<Button id="52" manageDynamicModel="false" useScrollBar="false" enable="data.isValid" buttonType="Trigger" action="controller.validateAndDispose()" index="0" localize="true" constraints="flow(index=0)" label="validate" readOnly="false">
