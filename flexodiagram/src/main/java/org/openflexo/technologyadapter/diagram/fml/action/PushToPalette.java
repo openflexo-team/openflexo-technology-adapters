@@ -361,7 +361,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 		public void setSelectThis(boolean aFlag) {
 			selectThis = aFlag;
-			if (patternRole == null && graphicalObject instanceof DiagramShape) {
+			if (patternRole == null && graphicalObject instanceof DiagramShape && flexoConcept!=null) {
 				GraphicalElementRole<?, ?> parentEntryPatternRole = getParentEntry().patternRole;
 				for (ShapeRole r : flexoConcept.getFlexoRoles(ShapeRole.class)) {
 					if (r.getParentShapeRole() == parentEntryPatternRole && patternRole == null) {
