@@ -139,9 +139,9 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		}
 
 		@Override
-		public IFlexoOntologyDataProperty getDataProperty() {
+		public OWLDataProperty getDataProperty() {
 			if (getVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
-				return getVirtualModel().getOntologyDataProperty(dataPropertyURI);
+				return (OWLDataProperty) getVirtualModel().getOntologyDataProperty(dataPropertyURI);
 			} else {
 				if (getFlexoRole() != null) {
 					return getFlexoRole().getDataProperty();
@@ -157,7 +157,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 					if (getFlexoRole().getDataProperty().isSuperConceptOf(ontologyProperty)) {
 						dataPropertyURI = ontologyProperty.getURI();
 					} else {
-						getFlexoRole().setDataProperty(ontologyProperty);
+						getFlexoRole().setDataProperty((OWLDataProperty) ontologyProperty);
 					}
 				} else {
 					dataPropertyURI = ontologyProperty.getURI();
@@ -250,7 +250,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 
 		@Override
 		public DataPropertyStatement performAction(FlexoBehaviourAction action) {
-			OWLDataProperty property = (OWLDataProperty) getDataProperty();
+			OWLDataProperty property = getDataProperty();
 			OWLConcept<?> subject = getPropertySubject(action);
 			Object value = getValue(action);
 			if (property == null) {

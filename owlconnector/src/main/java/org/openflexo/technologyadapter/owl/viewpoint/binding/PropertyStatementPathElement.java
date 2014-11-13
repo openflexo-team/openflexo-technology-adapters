@@ -15,11 +15,17 @@ import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.OWLProperty;
 
+/**
+ * Implements a path element representing an OWL property applied on {@link IndividualOfClass}
+ * 
+ * @author sylvain
+ *
+ */
 public abstract class PropertyStatementPathElement extends SimplePathElement {
 
 	private static final Logger logger = Logger.getLogger(PropertyStatementPathElement.class.getPackage().getName());
 
-	private OWLProperty property;
+	private final OWLProperty property;
 
 	public static PropertyStatementPathElement makePropertyStatementPathElement(BindingPathElement aParent, OWLProperty property) {
 		if (property instanceof OWLDataProperty) {

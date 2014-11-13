@@ -24,7 +24,6 @@ package org.openflexo.technologyadapter.owl.viewpoint;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -41,6 +40,7 @@ import org.openflexo.model.validation.ValidationError;
 import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.technologyadapter.owl.OWLModelSlot.OWLModelSlotImpl;
+import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 
@@ -60,9 +60,9 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 	@Setter(OBJECT_PROPERTY_URI_KEY)
 	public void _setObjectPropertyURI(String objectPropertyURI);
 
-	public IFlexoOntologyStructuralProperty getObjectProperty();
+	public OWLObjectProperty getObjectProperty();
 
-	public void setObjectProperty(IFlexoOntologyStructuralProperty p);
+	public void setObjectProperty(OWLObjectProperty p);
 
 	public static abstract class ObjectPropertyStatementRoleImpl extends StatementRoleImpl<ObjectPropertyStatement> implements
 			ObjectPropertyStatementRole {
@@ -102,15 +102,15 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 		}
 
 		@Override
-		public IFlexoOntologyStructuralProperty getObjectProperty() {
+		public OWLObjectProperty getObjectProperty() {
 			if (getVirtualModel() != null) {
-				return getVirtualModel().getOntologyObjectProperty(_getObjectPropertyURI());
+				return (OWLObjectProperty) getVirtualModel().getOntologyObjectProperty(_getObjectPropertyURI());
 			}
 			return null;
 		}
 
 		@Override
-		public void setObjectProperty(IFlexoOntologyStructuralProperty p) {
+		public void setObjectProperty(OWLObjectProperty p) {
 			_setObjectPropertyURI(p != null ? p.getURI() : null);
 		}
 

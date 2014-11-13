@@ -32,7 +32,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.converter.OntologyObjectConverter;
-import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.OntologyUtils;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -88,9 +87,9 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 
 	private final OntologyObjectConverter ontologyObjectConverter;
 
-	protected Hashtable<IFlexoOntologyStructuralProperty, StatementWithProperty> statementsWithProperty;
+	protected Hashtable<OWLProperty, StatementWithProperty> statementsWithProperty;
 
-	public StatementWithProperty getStatementWithProperty(IFlexoOntologyStructuralProperty aProperty) {
+	public StatementWithProperty getStatementWithProperty(OWLProperty aProperty) {
 		if (statementsWithProperty.get(aProperty) != null) {
 			return statementsWithProperty.get(aProperty);
 		} else {
@@ -109,7 +108,7 @@ public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAd
 		ontologies = new HashMap<String, OWLOntologyResource>();
 		dataTypes = new HashMap<String, OWLDataType>();
 
-		statementsWithProperty = new Hashtable<IFlexoOntologyStructuralProperty, StatementWithProperty>();
+		statementsWithProperty = new Hashtable<OWLProperty, StatementWithProperty>();
 
 	}
 

@@ -3,8 +3,6 @@ package org.openflexo.technologyadapter.owl.viewpoint;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
-import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -20,6 +18,7 @@ import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.model.validation.ValidationRule;
 import org.openflexo.technologyadapter.owl.OWLModelSlot.OWLModelSlotImpl;
 import org.openflexo.technologyadapter.owl.model.DataPropertyStatement;
+import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 
 @ModelEntity
@@ -37,9 +36,9 @@ public interface DataPropertyStatementRole extends StatementRole<DataPropertySta
 	@Setter(DATA_PROPERTY_URI_KEY)
 	public void _setDataPropertyURI(String dataPropertyURI);
 
-	public IFlexoOntologyDataProperty getDataProperty();
+	public OWLDataProperty getDataProperty();
 
-	public void setDataProperty(IFlexoOntologyStructuralProperty p);
+	public void setDataProperty(OWLDataProperty p);
 
 	public static abstract class DataPropertyStatementRoleImpl extends StatementRoleImpl<DataPropertyStatement> implements
 			DataPropertyStatementRole {
@@ -79,15 +78,15 @@ public interface DataPropertyStatementRole extends StatementRole<DataPropertySta
 		}
 
 		@Override
-		public IFlexoOntologyDataProperty getDataProperty() {
+		public OWLDataProperty getDataProperty() {
 			if (getVirtualModel() != null) {
-				return getVirtualModel().getOntologyDataProperty(_getDataPropertyURI());
+				return (OWLDataProperty) getVirtualModel().getOntologyDataProperty(_getDataPropertyURI());
 			}
 			return null;
 		}
 
 		@Override
-		public void setDataProperty(IFlexoOntologyStructuralProperty p) {
+		public void setDataProperty(OWLDataProperty p) {
 			_setDataPropertyURI(p != null ? p.getURI() : null);
 		}
 
