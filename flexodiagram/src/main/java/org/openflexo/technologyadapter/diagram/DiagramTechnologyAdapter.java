@@ -275,7 +275,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		// for (DiagramSpecificationResource dsRes : dsRepository.getAllResources()) {
 		if (isValidDiagramFile(candidateFile)) {
 			DiagramResource diagramResource = retrieveDiagramResource(candidateFile);
-			if (diagramResource != null) {
+			//if (diagramResource != null) {
 				RepositoryFolder<DiagramResource> folder;
 				try {
 					folder = diagramRepository.getRepositoryFolder(candidateFile, true);
@@ -285,7 +285,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 				}
 				referenceResource(diagramResource, resourceCenter);
 				return diagramResource;
-			}
+			//}
 		}
 		// }
 		// }
