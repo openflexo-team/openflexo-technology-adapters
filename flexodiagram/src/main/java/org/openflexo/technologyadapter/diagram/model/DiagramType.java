@@ -55,12 +55,12 @@ public class DiagramType implements TechnologySpecificCustomType<TechnologyAdapt
 
 	@Override
 	public String simpleRepresentation() {
-		return "DiagramType" + ":" + diagramSpecification.toString();
+		return "DiagramType" + ":" + (diagramSpecification != null ? diagramSpecification.toString() : null);
 	}
 
 	@Override
 	public String fullQualifiedRepresentation() {
-		return "DiagramType" + ":" + diagramSpecification.toString();
+		return "DiagramType" + ":" + (diagramSpecification != null ? diagramSpecification.toString() : null);
 	}
 
 	@Override
