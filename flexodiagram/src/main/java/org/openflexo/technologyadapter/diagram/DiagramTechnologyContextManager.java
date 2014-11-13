@@ -51,14 +51,14 @@ public class DiagramTechnologyContextManager extends TechnologyContextManager<Di
 	}
 
 	public DiagramResource getDiagramResource(File diagramFile) {
-		for(Entry<String,DiagramResource> entry :diagrams.entrySet()){
+		/*for(Entry<String,DiagramResource> entry :diagrams.entrySet()){
 			 if(entry.getValue().getFlexoIODelegate() instanceof FileFlexoIODelegate){
 				 FileFlexoIODelegate delegate = (FileFlexoIODelegate)entry.getValue().getFlexoIODelegate();
 				 if(delegate.getFile().equals(diagramFile)){
 					 return entry.getValue();
 				 }
 			 }
-		}
+		}*/
 		return diagrams.get(diagramFile);
 	}
 

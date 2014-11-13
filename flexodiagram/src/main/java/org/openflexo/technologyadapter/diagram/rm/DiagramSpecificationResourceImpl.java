@@ -5,7 +5,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
@@ -21,14 +20,9 @@ import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.InJarFlexoIODelegate;
 import org.openflexo.foundation.resource.InJarFlexoIODelegate.InJarFlexoIODelegateImpl;
-import org.openflexo.foundation.resource.MissingFlexoResource;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.view.FreeModelSlotInstance;
-import org.openflexo.foundation.view.ModelSlotInstance;
-import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.VirtualModelModelSlotInstance;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -192,7 +186,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 						if (result.getName().equals("Diagram") && getFlexoIODelegate() instanceof FileFlexoIODelegate) {
 							DiagramResource exampleDiagramResource = DiagramResourceImpl.retrieveDiagramResource(ResourceLocator.retrieveResourceAsFile(child), getServiceManager());
 							addToContents(exampleDiagramResource);
-							getTechnologyAdapter().getTechnologyContextManager().registerDiagram(exampleDiagramResource);
+							//getTechnologyAdapter().getTechnologyContextManager().registerDiagram(exampleDiagramResource);
 							logger.fine("ExampleDiagramResource " + exampleDiagramResource.getFlexoIODelegate().toString() + " version "
 									+ exampleDiagramResource.getModelVersion());
 						} 
