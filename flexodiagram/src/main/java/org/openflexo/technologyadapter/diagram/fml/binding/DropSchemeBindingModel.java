@@ -56,6 +56,13 @@ public class DropSchemeBindingModel extends DiagramBehaviourBindingModel {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
+		if (evt.getPropertyName().equals(BindingModel.BASE_BINDING_MODEL_PROPERTY)) {
+			// This is called when the BindingModel hierarchy change
+			// We track here the fact that the FlexoBehaviour belongs to a FlexoConcept in a VirtualModel
+			// This containment is necessary to retrieve FlexoConcept from its URI
+			// Calling those methods will fire necessary notifications and will notify binding variable type change (see below)
+			getFlexoBehaviour().getTargetFlexoConcept();
+		}
 		if (evt.getSource() == getFlexoBehaviour()) {
 			if (evt.getPropertyName().equals(DropScheme.TARGET_FLEXO_CONCEPT_KEY)
 					|| evt.getPropertyName().equals(DropScheme.FLEXO_CONCEPT_KEY)) {

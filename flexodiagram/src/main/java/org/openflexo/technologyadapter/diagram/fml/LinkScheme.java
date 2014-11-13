@@ -134,8 +134,8 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 
 		private boolean isAvailableWithFloatingPalette = true;
 
-		private FlexoConcept lastKnownFromTargetFlexoConcept;
-		private FlexoConcept lastKnownToTargetFlexoConcept;
+		private FlexoConcept lastKnownFromTargetFlexoConcept = null;
+		private FlexoConcept lastKnownToTargetFlexoConcept = null;
 
 		public LinkSchemeImpl() {
 			super();
@@ -149,7 +149,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		@Override
 		public void _setFromTarget(String fromTarget) {
 			if (requireChange(this.fromTarget, fromTarget)) {
-				FlexoConcept oldValue = getFromTargetFlexoConcept();
+				FlexoConcept oldValue = lastKnownFromTargetFlexoConcept;
 				this.fromTarget = fromTarget;
 				getPropertyChangeSupport().firePropertyChange(FROM_TARGET_FLEXO_CONCEPT_KEY, oldValue, getFromTargetFlexoConcept());
 			}
@@ -163,7 +163,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		@Override
 		public void _setToTarget(String toTarget) {
 			if (requireChange(this.toTarget, toTarget)) {
-				FlexoConcept oldValue = getToTargetFlexoConcept();
+				FlexoConcept oldValue = lastKnownToTargetFlexoConcept;
 				this.toTarget = toTarget;
 				getPropertyChangeSupport().firePropertyChange(TO_TARGET_FLEXO_CONCEPT_KEY, oldValue, getToTargetFlexoConcept());
 			}
