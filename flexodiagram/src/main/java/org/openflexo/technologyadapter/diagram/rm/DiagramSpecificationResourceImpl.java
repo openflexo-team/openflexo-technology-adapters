@@ -186,6 +186,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 						if (result.getName().equals("Diagram") && getFlexoIODelegate() instanceof FileFlexoIODelegate) {
 							DiagramResource exampleDiagramResource = DiagramResourceImpl.retrieveDiagramResource(ResourceLocator.retrieveResourceAsFile(child), getServiceManager());
 							addToContents(exampleDiagramResource);
+							//getTechnologyAdapter().getTechnologyContextManager().registerDiagram(exampleDiagramResource);
 							logger.fine("ExampleDiagramResource " + exampleDiagramResource.getFlexoIODelegate().toString() + " version "
 									+ exampleDiagramResource.getModelVersion());
 						} 
@@ -367,4 +368,5 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 		}
 		return null;
 	}
+	
 }

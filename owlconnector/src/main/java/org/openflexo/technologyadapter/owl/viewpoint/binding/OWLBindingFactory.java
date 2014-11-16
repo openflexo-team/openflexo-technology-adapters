@@ -31,17 +31,23 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.Function;
 import org.openflexo.antar.binding.FunctionPathElement;
 import org.openflexo.antar.binding.SimplePathElement;
-import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.foundation.ontology.SubClassOfClass;
 import org.openflexo.foundation.ontology.SubPropertyOfProperty;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
-import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
+import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
+import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.OWLProperty;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 
+/**
+ * Defines OWL-specific types binding path element strategy
+ * 
+ * @author sylvain
+ *
+ */
 public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 	static final Logger logger = Logger.getLogger(OWLBindingFactory.class.getPackage().getName());
 
@@ -51,7 +57,7 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 
 	@Override
 	protected SimplePathElement makeSimplePathElement(Object object, BindingPathElement parent) {
-		if (object instanceof OWLProperty) {
+		if ((parent.getType() instanceof IndividualOfClass) && (object instanceof OWLProperty)) {
 			return PropertyStatementPathElement.makePropertyStatementPathElement(parent, (OWLProperty) object);
 		}
 		logger.warning("Unexpected " + object);
@@ -92,16 +98,20 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 				}
 			}
 			return returned;
-		}
-		else if (element.getType() instanceof StatementWithProperty) {
+		} else if (element.getType() instanceof StatementWithProperty) {
 
 			StatementWithProperty eltType = (StatementWithProperty) element.getType();
 			List<SimplePathElement> returned = new ArrayList<SimplePathElement>();
 			returned.add(new URIPathElement(element));
-			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property = eltType.getProperty();
-
-			returned.add(getSimplePathElement(property, element));
-
+			returned.add(new StatementPropertyPathElement(element));
+			returned.add(new StatementSubjectPathElement(element));
+			OWLProperty property = eltType.getProperty();
+			if (property instanceof OWLObjectProperty) {
+				returned.add(new StatementObjectPathElement(element));
+			} else if (property instanceof OWLDataProperty) {
+				returned.add(new StatementValuePathElement(element));
+			}
+			returned.add(new StatementDisplayableRepresentationPathElement(element));
 			return returned;
 
 		}
@@ -151,8 +161,7 @@ public final class OWLBindingFactory extends TechnologyAdapterBindingFactory {
 					// System.out.println("Detected name based shadowing between " + array[i] + " and " + array[j]);
 					if (array[i].getFlexoOntology().getAllImportedOntologies().contains(array[j].getFlexoOntology())) {
 						// array[i] appears to be the most specialized, don't do anything
-					}
-					else if (array[j].getFlexoOntology().getAllImportedOntologies().contains(array[i].getFlexoOntology())) {
+					} else if (array[j].getFlexoOntology().getAllImportedOntologies().contains(array[i].getFlexoOntology())) {
 						// array[j] appears to be the most specialized, we need to swap
 						i1.add(i);
 						i2.add(j);

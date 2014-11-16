@@ -104,8 +104,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			FlexoRole superFlexoRole = super.getFlexoRole();
 			if (superFlexoRole instanceof ObjectPropertyStatementRole) {
 				return (ObjectPropertyStatementRole) superFlexoRole;
-			}
-			else if (superFlexoRole != null) {
+			} else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -163,13 +162,12 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		}
 
 		@Override
-		public IFlexoOntologyObjectProperty getObjectProperty() {
+		public OWLObjectProperty getObjectProperty() {
 			if (getVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
-				return getVirtualModel().getOntologyObjectProperty(objectPropertyURI);
-			}
-			else {
+				return (OWLObjectProperty) getVirtualModel().getOntologyObjectProperty(objectPropertyURI);
+			} else {
 				if (getFlexoRole() != null) {
-					return (OWLObjectProperty) getFlexoRole().getObjectProperty();
+					return getFlexoRole().getObjectProperty();
 				}
 			}
 			return null;
@@ -182,16 +180,13 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 				if (getFlexoRole() != null) {
 					if (getFlexoRole().getObjectProperty().isSuperConceptOf(ontologyProperty)) {
 						objectPropertyURI = ontologyProperty.getURI();
+					} else {
+						getFlexoRole().setObjectProperty((OWLObjectProperty) ontologyProperty);
 					}
-					else {
-						getFlexoRole().setObjectProperty(ontologyProperty);
-					}
-				}
-				else {
+				} else {
 					objectPropertyURI = ontologyProperty.getURI();
 				}
-			}
-			else {
+			} else {
 				objectPropertyURI = null;
 			}
 		}
@@ -280,7 +275,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 		@Override
 		public ObjectPropertyStatement performAction(FlexoBehaviourAction action) {
-			OWLObjectProperty property = (OWLObjectProperty) getObjectProperty();
+			OWLObjectProperty property = getObjectProperty();
 			OWLConcept<?> subject = getPropertySubject(action);
 			OWLConcept<?> object = getPropertyObject(action);
 			if (property == null) {

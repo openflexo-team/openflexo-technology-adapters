@@ -69,11 +69,11 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	private static final Logger logger = Logger.getLogger(DiagramTechnologyAdapter.class.getPackage().getName());
 
 	private ScreenshotBuilder<Diagram> screenshotBuilder;
-	
+
 	private ScreenshotBuilder<DiagramPalette> diagramPaletteScreenshotBuilder;
 
 	private ScreenshotBuilder<DiagramShape> diagramShapeScreenshotBuilder;
-	
+
 	private ScreenshotBuilder<DiagramElement<?>> fmlDiagramElementScreenshotBuilder;
 
 	public DiagramTechnologyAdapter() throws TechnologyAdapterInitializationException {
@@ -142,7 +142,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 				DiagramResource diagramRes = tryToLookupDiagram(resourceCenter, candidateFile);
 			}
 		}
-		
+
 		// Call it to update the current repositories
 		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 	}
@@ -164,9 +164,10 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		resourceCenter.registerRepository(returned, DiagramSpecificationRepository.class, this);
 		return returned;
 	}
-	
+
 	/**
 	 * Check if it correspond to a diagram specification an thus create a diagram specification resource
+	 * 
 	 * @param resourceCenter
 	 * @param candidateElement
 	 * @return
@@ -190,24 +191,26 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * A valid diagram specification is a directory with the extension .diagramspecification in a file or jar
+	 * 
 	 * @param candidateElement
 	 * @return
 	 */
 	private boolean isValidDiagramSpecification(Object candidateElement) {
-		if (candidateElement instanceof File && ((File)candidateElement).exists() && ((File)candidateElement).isDirectory()
-				&& ((File)candidateElement).getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)) {
-			System.out.println("Found valid candidate for DiagramSpecification: " + ((File)candidateElement));
+		if (candidateElement instanceof File && ((File) candidateElement).exists() && ((File) candidateElement).isDirectory()
+				&& ((File) candidateElement).getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)) {
+			// System.out.println("Found valid candidate for DiagramSpecification: " + ((File)candidateElement));
 			return true;
 		}
-		if (candidateElement instanceof InJarResourceImpl && ((InJarResourceImpl)candidateElement).getRelativePath().endsWith(".xml") 
-				&& ((InJarResourceImpl)candidateElement).getRelativePath()
-				.endsWith(FilenameUtils.getBaseName(((InJarResourceImpl)candidateElement).getRelativePath())
-						+DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX + "/" + 
-						FilenameUtils.getBaseName(((InJarResourceImpl)candidateElement).getRelativePath())+".xml")) {
-			System.out.println("Found valid candidate for DiagramSpecification: " + ((InJarResourceImpl)candidateElement));
+		if (candidateElement instanceof InJarResourceImpl
+				&& ((InJarResourceImpl) candidateElement).getRelativePath().endsWith(".xml")
+				&& ((InJarResourceImpl) candidateElement).getRelativePath().endsWith(
+						FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath())
+								+ DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX + "/"
+								+ FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath()) + ".xml")) {
+			// System.out.println("Found valid candidate for DiagramSpecification: " + ((InJarResourceImpl)candidateElement));
 			return true;
 		}
 		return false;
@@ -223,11 +226,12 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	private DiagramSpecificationResource retrieveDiagramSpecificationResource(Object diagramSpecification, RepositoryFolder<?> folder) {
 		DiagramSpecificationResource returned = getTechnologyContextManager().getDiagramSpecificationResource(diagramSpecification);
 		if (returned == null) {
-			if(diagramSpecification instanceof File){
-				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((File)diagramSpecification, folder,
+			if (diagramSpecification instanceof File) {
+				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((File) diagramSpecification, folder,
 						getTechnologyAdapterService().getServiceManager());
-			}else if (diagramSpecification instanceof InJarResourceImpl){
-				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((InJarResourceImpl)diagramSpecification,getTechnologyAdapterService().getServiceManager());
+			} else if (diagramSpecification instanceof InJarResourceImpl) {
+				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((InJarResourceImpl) diagramSpecification,
+						getTechnologyAdapterService().getServiceManager());
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerDiagramSpecification(returned);
@@ -271,7 +275,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		// for (DiagramSpecificationResource dsRes : dsRepository.getAllResources()) {
 		if (isValidDiagramFile(candidateFile)) {
 			DiagramResource diagramResource = retrieveDiagramResource(candidateFile);
-			if (diagramResource != null) {
+			//if (diagramResource != null) {
 				RepositoryFolder<DiagramResource> folder;
 				try {
 					folder = diagramRepository.getRepositoryFolder(candidateFile, true);
@@ -281,7 +285,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 				}
 				referenceResource(diagramResource, resourceCenter);
 				return diagramResource;
-			}
+			//}
 		}
 		// }
 		// }
@@ -359,11 +363,11 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	public void setScreenshotBuilder(ScreenshotBuilder<Diagram> screenshotBuilder) {
 		this.screenshotBuilder = screenshotBuilder;
 	}
-	
+
 	public ScreenshotBuilder<DiagramPalette> getDiagramPaletteScreenshotBuilder() {
 		return diagramPaletteScreenshotBuilder;
 	}
-	
+
 	public void setDiagramPaletteScreenshotBuilder(ScreenshotBuilder<DiagramPalette> screenshotBuilder) {
 		this.diagramPaletteScreenshotBuilder = screenshotBuilder;
 	}
@@ -376,15 +380,14 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		this.diagramShapeScreenshotBuilder = screenshotBuilder;
 	}
 
-	
-	public ScreenshotBuilder<DiagramElement<?>> getFMLControlledDiagramElementScreenshotBuilder(){
+	public ScreenshotBuilder<DiagramElement<?>> getFMLControlledDiagramElementScreenshotBuilder() {
 		return fmlDiagramElementScreenshotBuilder;
 	}
-	
-	public void setFMLControlledDiagramScreenshotBuilder(ScreenshotBuilder<DiagramElement<?>> diagramElement){
+
+	public void setFMLControlledDiagramScreenshotBuilder(ScreenshotBuilder<DiagramElement<?>> diagramElement) {
 		this.fmlDiagramElementScreenshotBuilder = diagramElement;
 	}
-	
+
 	// Override when required
 	@Override
 	public void initVirtualModelFactory(VirtualModelModelFactory virtualModelModelFactory) {

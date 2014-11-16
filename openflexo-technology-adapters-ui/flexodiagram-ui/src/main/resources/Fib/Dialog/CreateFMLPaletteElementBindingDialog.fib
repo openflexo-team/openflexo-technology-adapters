@@ -7,8 +7,8 @@
     <Localized key="description" lang="French" value="Description" />
     <Localized key="uri" lang="Dutch" value="URI" />
     <Localized key="description" lang="Dutch" value="Description" />
-    <Localized key="flexo_concept" lang="French" value="Edition pattern" />
-    <Localized key="flexo_concept" lang="English" value="Edition pattern" />
+    <Localized key="flexo_concept" lang="French" value="Concept flexo" />
+    <Localized key="flexo_concept" lang="English" value="Flexo concept" />
     <Localized key="validate" lang="English" value="Validate" />
     <Localized key="label" lang="English" value="Label" />
     <Localized key="validate" lang="French" value="Valider" />

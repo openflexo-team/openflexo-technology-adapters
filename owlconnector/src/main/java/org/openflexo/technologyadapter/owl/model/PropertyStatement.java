@@ -51,6 +51,10 @@ public abstract class PropertyStatement extends OWLStatement implements IFlexoOn
 
 	public abstract Literal getLiteral();
 
+	public String getDisplayableRepresentation() {
+		return toString();
+	}
+
 	public boolean hasLitteralValue() {
 		return getLiteral() != null;
 	}

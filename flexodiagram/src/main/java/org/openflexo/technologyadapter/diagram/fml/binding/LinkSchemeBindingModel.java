@@ -61,6 +61,14 @@ public class LinkSchemeBindingModel extends DiagramBehaviourBindingModel {
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
+		if (evt.getPropertyName().equals(BindingModel.BASE_BINDING_MODEL_PROPERTY)) {
+			// This is called when the BindingModel hierarchy change
+			// We track here the fact that the FlexoBehaviour belongs to a FlexoConcept in a VirtualModel
+			// This containment is necessary to retrieve FlexoConcept from its URI
+			// Calling those methods will fire necessary notifications and will notify binding variable type change (see below)
+			getFlexoBehaviour().getFromTargetFlexoConcept();
+			getFlexoBehaviour().getToTargetFlexoConcept();
+		}
 		if (evt.getSource() == getFlexoBehaviour()) {
 			if (evt.getPropertyName().equals(LinkScheme.FROM_TARGET_FLEXO_CONCEPT_KEY) && fromTargetBindingVariable != null) {
 				// The LinkScheme changes it's FROM target's FlexoConcept

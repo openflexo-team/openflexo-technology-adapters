@@ -45,7 +45,7 @@ public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFML
 	private static final Logger logger = Logger.getLogger(CreateFMLDiagramPaletteElementBinding.class.getPackage().getName());
 
 	public static FlexoActionType<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, ViewPointObject> actionType = new FlexoActionType<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, ViewPointObject>(
-			"create_new_palette_binding", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+			"create_new_palette_binding", FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

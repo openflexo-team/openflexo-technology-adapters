@@ -273,6 +273,12 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	}
 
 	@Override
+	public void setModified(boolean modified) {
+		super.setModified(modified);
+		screenshotModified = true;
+	}
+	
+	@Override
 	public ScreenshotImage<DiagramShape> getScreenshotImage() {
 		if (screenshotImage == null || screenshotModified) {
 			if (screenshotModified) {

@@ -131,6 +131,12 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	}
 
 	@Override
+	public void setModified(boolean modified) {
+		super.setModified(modified);
+		screenshotModified = true;
+	}
+	
+	@Override
 	public ScreenshotImage<Diagram> getScreenshotImage() {
 		if (screenshotImage == null || screenshotModified) {
 			if (screenshotModified) {

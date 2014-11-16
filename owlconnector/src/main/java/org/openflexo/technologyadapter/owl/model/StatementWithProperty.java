@@ -8,20 +8,20 @@ import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
 public class StatementWithProperty implements TechnologySpecificCustomType<OWLTechnologyAdapter> {
 
-	public static StatementWithProperty getStatementWithProperty(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> aProperty) {
+	public static StatementWithProperty getStatementWithProperty(OWLProperty aProperty) {
 		if (aProperty == null) {
 			return null;
 		}
 		return aProperty.getTechnologyAdapter().getTechnologyContextManager().getStatementWithProperty(aProperty);
 	}
 
-	private final IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> property;
+	private final OWLProperty property;
 
-	public StatementWithProperty(IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> aProperty) {
+	public StatementWithProperty(OWLProperty aProperty) {
 		this.property = aProperty;
 	}
 
-	public IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> getProperty() {
+	public OWLProperty getProperty() {
 		return property;
 	}
 

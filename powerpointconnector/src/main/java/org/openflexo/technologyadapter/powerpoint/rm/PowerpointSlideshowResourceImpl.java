@@ -32,6 +32,7 @@ import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
@@ -49,7 +50,7 @@ import org.openflexo.toolbox.IProgress;
  * @author vincent,sguerin
  * 
  */
-public abstract class PowerpointSlideshowResourceImpl implements PowerpointSlideshowResource {
+public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<PowerpointSlideshow> implements PowerpointSlideshowResource {
 
 	private static final Logger logger = Logger.getLogger(PowerpointSlideshowResourceImpl.class.getPackage().getName());
 
