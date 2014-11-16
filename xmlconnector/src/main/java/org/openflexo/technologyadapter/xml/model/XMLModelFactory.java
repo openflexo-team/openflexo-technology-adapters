@@ -32,10 +32,6 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.xml.SaxBasedObjectGraphFactory;
 import org.openflexo.xml.XMLCst;
 import org.openflexo.xml.XMLReaderSAXHandler;
-<<<<<<< HEAD
-import org.openflexo.xml.SaxBasedObjectGraphFactory;
-=======
->>>>>>> branch '1.7.0' of https://github.com/openflexo-team/openflexo-technology-adapters.git
 import org.xml.sax.SAXException;
 
 public class XMLModelFactory extends SaxBasedObjectGraphFactory {
@@ -86,13 +82,7 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 				throw new IOException(e.getMessage());
 			}
 			return this.model;
-
-<<<<<<< HEAD
-		}
-		else {
-=======
 		} else {
->>>>>>> branch '1.7.0' of https://github.com/openflexo-team/openflexo-technology-adapters.git
 			LOGGER.warning("Context is not set for parsing, aborting");
 		}
 		return null;
@@ -110,12 +100,7 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 			}
 			return this.model;
 
-<<<<<<< HEAD
-		}
-		else {
-=======
 		} else {
->>>>>>> branch '1.7.0' of https://github.com/openflexo-team/openflexo-technology-adapters.git
 			LOGGER.warning("Context is not set for parsing, aborting");
 		}
 		return null;
@@ -177,26 +162,11 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 					} else {
 						LOGGER.warning("UNABLE to create a new property named " + name);
 					}
-<<<<<<< HEAD
-					else {
-						LOGGER.warning("UNABLE to create a new property named " + name);
-					}
-=======
 				} else {
 					LOGGER.warning("TRYING to give a value to a non existant property: " + name + " -- "
 							+ name.equals(XMLCst.CDATA_ATTR_NAME));
->>>>>>> branch '1.7.0' of https://github.com/openflexo-team/openflexo-technology-adapters.git
 				}
-<<<<<<< HEAD
-				else {
-					LOGGER.warning("TRYING to give a value to a non existant property: " + name + " -- " + name.equals(XMLCst.CDATA_ATTR_NAME));
-				}
-			}
-			else {
-=======
 			} else {
->>>>>>> branch '1.7.0' of https://github.com/openflexo-team/openflexo-technology-adapters.git
-
 				((XMLIndividual) object).addPropertyValue(prop, value);
 
 			}
