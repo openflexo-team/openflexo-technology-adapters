@@ -31,10 +31,10 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.xml.XMLCst;
 import org.openflexo.xml.XMLReaderSAXHandler;
-import org.openflexo.xml.saxBasedObjectGraphFactory;
+import org.openflexo.xml.SaxBasedObjectGraphFactory;
 import org.xml.sax.SAXException;
 
-public class XMLModelFactory extends saxBasedObjectGraphFactory {
+public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 
 	private XMLModel model = null;
 
@@ -79,14 +79,14 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 			try {
 				saxParser.parse(input, handler);
 			} catch (SAXException e) {
-				logger.warning("Cannot parse document: " + e.getMessage());
+				LOGGER.warning("Cannot parse document: " + e.getMessage());
 				throw new IOException(e.getMessage());
 			}
 			return this.model;
 
 		}
 		else {
-			logger.warning("Context is not set for parsing, aborting");
+			LOGGER.warning("Context is not set for parsing, aborting");
 		}
 		return null;
 	}
@@ -98,14 +98,14 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 			try {
 				saxParser.parse(input, handler);
 			} catch (SAXException e) {
-				logger.warning("Cannot parse document: " + e.getMessage());
+				LOGGER.warning("Cannot parse document: " + e.getMessage());
 				throw new IOException(e.getMessage());
 			}
 			return this.model;
 
 		}
 		else {
-			logger.warning("Context is not set for parsing, aborting");
+			LOGGER.warning("Context is not set for parsing, aborting");
 		}
 		return null;
 	}
@@ -165,11 +165,11 @@ public class XMLModelFactory extends saxBasedObjectGraphFactory {
 						((XMLIndividual) object).addPropertyValue(prop, value);
 					}
 					else {
-						logger.warning("UNABLE to create a new property named " + name);
+						LOGGER.warning("UNABLE to create a new property named " + name);
 					}
 				}
 				else {
-					logger.warning("TRYING to give a value to a non existant property: " + name + " -- " + name.equals(XMLCst.CDATA_ATTR_NAME));
+					LOGGER.warning("TRYING to give a value to a non existant property: " + name + " -- " + name.equals(XMLCst.CDATA_ATTR_NAME));
 				}
 			}
 			else {
