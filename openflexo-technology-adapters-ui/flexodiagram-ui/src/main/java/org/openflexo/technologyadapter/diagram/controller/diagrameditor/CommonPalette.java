@@ -247,7 +247,7 @@ public class CommonPalette extends AbstractDiagramPalette {
 
 			@Override
 			public void delete() {
-				gr.delete();
+				gr.delete((Object []) null);
 			}
 
 			/*public DrawingPalette getPalette() {
