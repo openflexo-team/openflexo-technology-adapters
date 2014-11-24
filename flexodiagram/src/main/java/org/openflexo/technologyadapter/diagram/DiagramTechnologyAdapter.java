@@ -249,7 +249,6 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	 */
 	private DiagramResource retrieveDiagramResource(File aDiagramFile) {
 		DiagramResource returned = getTechnologyContextManager().getDiagramResource(aDiagramFile);
-
 		if (returned == null) {
 			returned = DiagramResourceImpl.retrieveDiagramResource(aDiagramFile, getTechnologyAdapterService().getServiceManager());
 			if (returned != null) {
@@ -275,7 +274,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		// for (DiagramSpecificationResource dsRes : dsRepository.getAllResources()) {
 		if (isValidDiagramFile(candidateFile)) {
 			DiagramResource diagramResource = retrieveDiagramResource(candidateFile);
-			//if (diagramResource != null) {
+			if (diagramResource != null) {
 				RepositoryFolder<DiagramResource> folder;
 				try {
 					folder = diagramRepository.getRepositoryFolder(candidateFile, true);
@@ -285,7 +284,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 				}
 				referenceResource(diagramResource, resourceCenter);
 				return diagramResource;
-			//}
+			}
 		}
 		// }
 		// }

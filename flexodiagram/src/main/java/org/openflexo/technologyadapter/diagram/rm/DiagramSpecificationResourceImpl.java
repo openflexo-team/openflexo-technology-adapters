@@ -34,6 +34,7 @@ import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyContextManager;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecificationFactory;
 import org.openflexo.toolbox.FlexoVersion;
@@ -184,9 +185,12 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 						result = reader.readRootElement(child);
 						// Serialization artefact is File
 						if (result.getName().equals("Diagram") && getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-							DiagramResource exampleDiagramResource = DiagramResourceImpl.retrieveDiagramResource(ResourceLocator.retrieveResourceAsFile(child), getServiceManager());
+							DiagramResource exampleDiagramResource = getTechnologyAdapter().getTechnologyContextManager().getDiagramResource(((FileFlexoIODelegate)getFlexoIODelegate()).getFile());
+							if(exampleDiagramResource==null){
+								exampleDiagramResource = DiagramResourceImpl.retrieveDiagramResource(ResourceLocator.retrieveResourceAsFile(child), getServiceManager());
+							}
 							addToContents(exampleDiagramResource);
-							//getTechnologyAdapter().getTechnologyContextManager().registerDiagram(exampleDiagramResource);
+							getTechnologyAdapter().getTechnologyContextManager().registerDiagram(exampleDiagramResource);
 							logger.fine("ExampleDiagramResource " + exampleDiagramResource.getFlexoIODelegate().toString() + " version "
 									+ exampleDiagramResource.getModelVersion());
 						} 
