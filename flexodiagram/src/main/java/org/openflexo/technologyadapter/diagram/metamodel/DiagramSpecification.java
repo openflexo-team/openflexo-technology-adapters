@@ -45,10 +45,6 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteInserted;
-import org.openflexo.technologyadapter.diagram.model.dm.DiagramPaletteRemoved;
-import org.openflexo.technologyadapter.diagram.model.dm.ExampleDiagramInserted;
-import org.openflexo.technologyadapter.diagram.model.dm.ExampleDiagramRemoved;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
@@ -297,8 +293,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			if (!palettes.contains(aPalette)) {
 				System.out.println("Adding palette " + aPalette.hashCode());
 				palettes.add(aPalette);
-				setChanged();
-				notifyObservers(new DiagramPaletteInserted(aPalette, this));
+				getPropertyChangeSupport().firePropertyChange("palettes", null, aPalette);
 			}
 		}
 
@@ -309,8 +304,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			}
 			if (palettes.contains(aPalette)) {
 				palettes.remove(aPalette);
-				setChanged();
-				notifyObservers(new DiagramPaletteRemoved(aPalette, this));
+				getPropertyChangeSupport().firePropertyChange("palettes", aPalette, null);
 			}
 		}
 
@@ -347,8 +341,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			if (!exampleDiagrams.contains(aDiagram)) {
 				exampleDiagrams.add(aDiagram);
 				aDiagram.setDiagramSpecification(this);
-				setChanged();
-				notifyObservers(new ExampleDiagramInserted(aDiagram, this));
+				getPropertyChangeSupport().firePropertyChange("exampleDiagrams", null, aDiagram);
 			}
 		}
 
@@ -359,8 +352,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			}
 			if (exampleDiagrams.contains(aDiagram)) {
 				exampleDiagrams.remove(aDiagram);
-				setChanged();
-				notifyObservers(new ExampleDiagramRemoved(aDiagram, this));
+				getPropertyChangeSupport().firePropertyChange("exampleDiagrams", aDiagram, null);
 			}
 		}
 
