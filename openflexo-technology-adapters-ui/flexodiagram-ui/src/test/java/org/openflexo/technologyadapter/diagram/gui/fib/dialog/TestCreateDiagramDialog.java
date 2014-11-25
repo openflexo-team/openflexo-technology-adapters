@@ -30,76 +30,76 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestCreateDiagramDialog extends OpenflexoFIBTestCaseWithProjectAtRunTime {
 
-    private static GraphicalContextDelegate gcDelegate;
+	private static GraphicalContextDelegate gcDelegate;
 
-    private static Resource                 fibResource;
+	private static Resource fibResource;
 
-    static FlexoEditor                      editor;
+	static FlexoEditor editor;
 
-    @BeforeClass
-    public static void setupClass() {
-        instanciateTestServiceManager();
-        initGUI();
-    }
+	@BeforeClass
+	public static void setupClass() {
+		instanciateTestServiceManager();
+		initGUI();
+	}
 
-    @Test
-    @TestOrder(1)
-    public void testLoadWidget() {
+	@Test
+	@TestOrder(1)
+	public void testLoadWidget() {
 
-        fibResource = DiagramCst.CREATE_DIAGRAM_DIALOG_FIB;
-        assertTrue(fibResource != null);
-    }
+		fibResource = DiagramCst.CREATE_DIAGRAM_DIALOG_FIB;
+		assertTrue(fibResource != null);
+	}
 
-    @Test
-    @TestOrder(2)
-    public void testValidateWidget() {
+	@Test
+	@TestOrder(2)
+	public void testValidateWidget() throws InterruptedException {
 
-        validateFIB(fibResource);
-    }
+		validateFIB(fibResource);
+	}
 
-    @Test
-    @TestOrder(3)
-    public void createProject() {
+	@Test
+	@TestOrder(3)
+	public void createProject() {
 
-        editor = createProject("TestCreateDiagramDialog");
+		editor = createProject("TestCreateDiagramDialog");
 
-    }
+	}
 
-    @Test
-    @TestOrder(4)
-    public void testInstanciateDialog() {
+	@Test
+	@TestOrder(4)
+	public void testInstanciateDialog() {
 
-        FlexoProject project = editor.getProject();
-        CreateDiagram createDiagram = CreateDiagram.actionType.makeNewAction(project.getRootFolder(), null, editor);
-        FIBJPanel<CreateDiagram> widget = instanciateFIB(fibResource, createDiagram, CreateDiagram.class);
+		FlexoProject project = editor.getProject();
+		CreateDiagram createDiagram = CreateDiagram.actionType.makeNewAction(project.getRootFolder(), null, editor);
+		FIBJPanel<CreateDiagram> widget = instanciateFIB(fibResource, createDiagram, CreateDiagram.class);
 
-        gcDelegate.addTab("CreateDiagram", widget.getController());
-    }
+		gcDelegate.addTab("CreateDiagram", widget.getController());
+	}
 
-    public static void initGUI() {
-        gcDelegate = new GraphicalContextDelegate(TestCreateDiagramDialog.class.getSimpleName());
-    }
+	public static void initGUI() {
+		gcDelegate = new GraphicalContextDelegate(TestCreateDiagramDialog.class.getSimpleName());
+	}
 
-    @AfterClass
-    public static void waitGUI() {
-        gcDelegate.waitGUI();
-    }
+	@AfterClass
+	public static void waitGUI() {
+		gcDelegate.waitGUI();
+	}
 
-    @Before
-    public void setUp() {
-        gcDelegate.setUp();
-    }
+	@Before
+	public void setUp() {
+		gcDelegate.setUp();
+	}
 
-    @Override
-    @After
-    public void tearDown() throws Exception {
-        gcDelegate.tearDown();
-        super.tearDown();
+	@Override
+	@After
+	public void tearDown() throws Exception {
+		gcDelegate.tearDown();
+		super.tearDown();
 
-        if (editor != null) {
-            File PRJDirectory = editor.getProject().getDirectory();
-            PRJDirectory.deleteOnExit();
-        }
-    }
+		if (editor != null) {
+			File PRJDirectory = editor.getProject().getDirectory();
+			PRJDirectory.deleteOnExit();
+		}
+	}
 
 }

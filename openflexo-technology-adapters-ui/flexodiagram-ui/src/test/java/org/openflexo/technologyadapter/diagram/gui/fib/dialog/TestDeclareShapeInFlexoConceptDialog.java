@@ -40,102 +40,101 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestDeclareShapeInFlexoConceptDialog extends OpenflexoFIBTestCaseWithProjectAtRunTime {
 
-    private static GraphicalContextDelegate gcDelegate;
+	private static GraphicalContextDelegate gcDelegate;
 
-    private static Resource                 fibResource;
+	private static Resource fibResource;
 
-    static FlexoEditor                      editor;
+	static FlexoEditor editor;
 
-    @BeforeClass
-    public static void setupClass() {
-        instanciateTestServiceManager();
-        initGUI();
-    }
+	@BeforeClass
+	public static void setupClass() {
+		instanciateTestServiceManager();
+		initGUI();
+	}
 
-    @Test
-    @TestOrder(1)
-    public void testLoadWidget() {
+	@Test
+	@TestOrder(1)
+	public void testLoadWidget() {
 
-        fibResource = DiagramCst.DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB;
-        assertTrue(fibResource != null);
-    }
+		fibResource = DiagramCst.DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB;
+		assertTrue(fibResource != null);
+	}
 
-    @Test
-    @TestOrder(2)
-    public void testValidateWidget() {
+	@Test
+	@TestOrder(2)
+	public void testValidateWidget() throws InterruptedException {
 
-        validateFIB(fibResource);
-    }
+		validateFIB(fibResource);
+	}
 
-    private static DiagramShape shape1, shape2;
+	private static DiagramShape shape1, shape2;
 
-    @Test
-    @TestOrder(3)
-    public void createProjectAndDiagram() {
+	@Test
+	@TestOrder(3)
+	public void createProjectAndDiagram() {
 
-        editor = createProject("TestDeclareShapeInFlexoConceptDialog");
+		editor = createProject("TestDeclareShapeInFlexoConceptDialog");
 
-        CreateDiagram createDiagram = CreateDiagram.actionType.makeNewAction(editor.getProject().getRootFolder(), null, editor);
-        createDiagram.setDiagramName("TestNewDiagram");
-        createDiagram.setDiagramTitle("A nice title for a new diagram");
-        createDiagram.doAction();
-        assertTrue(createDiagram.hasActionExecutionSucceeded());
+		CreateDiagram createDiagram = CreateDiagram.actionType.makeNewAction(editor.getProject().getRootFolder(), null, editor);
+		createDiagram.setDiagramName("TestNewDiagram");
+		createDiagram.setDiagramTitle("A nice title for a new diagram");
+		createDiagram.doAction();
+		assertTrue(createDiagram.hasActionExecutionSucceeded());
 
-        Diagram diagram = createDiagram.getNewDiagram();
-        assertNotNull(diagram);
+		Diagram diagram = createDiagram.getNewDiagram();
+		assertNotNull(diagram);
 
-        DiagramFactory factory = ((DiagramResource) diagram.getResource()).getFactory();
+		DiagramFactory factory = ((DiagramResource) diagram.getResource()).getFactory();
 
-        shape1 = factory.makeNewShape("Shape1", ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);
-        shape1.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.RED));
-        shape1.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.BLUE));
-        assertNotNull(shape1);
-        shape2 = factory.makeNewShape("Shape2", ShapeType.RECTANGLE, new FGEPoint(200, 100), diagram);
-        shape2.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.BLUE));
-        shape2.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.WHITE));
-        assertNotNull(shape2);
-        DiagramConnector connector = factory.makeNewConnector("Connector", shape1, shape2, diagram);
-        assertNotNull(connector);
+		shape1 = factory.makeNewShape("Shape1", ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);
+		shape1.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.RED));
+		shape1.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.BLUE));
+		assertNotNull(shape1);
+		shape2 = factory.makeNewShape("Shape2", ShapeType.RECTANGLE, new FGEPoint(200, 100), diagram);
+		shape2.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.BLUE));
+		shape2.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.WHITE));
+		assertNotNull(shape2);
+		DiagramConnector connector = factory.makeNewConnector("Connector", shape1, shape2, diagram);
+		assertNotNull(connector);
 
-    }
+	}
 
-    @Test
-    @TestOrder(4)
-    public void testInstanciateDialog() {
+	@Test
+	@TestOrder(4)
+	public void testInstanciateDialog() {
 
-        FlexoProject project = editor.getProject();
-        DeclareShapeInFlexoConcept declareShapeAction = DeclareShapeInFlexoConcept.actionType.makeNewAction(shape1, null, editor);
-        FIBJPanel<DeclareShapeInFlexoConcept> widget = instanciateFIB(fibResource, declareShapeAction,
-                DeclareShapeInFlexoConcept.class);
+		FlexoProject project = editor.getProject();
+		DeclareShapeInFlexoConcept declareShapeAction = DeclareShapeInFlexoConcept.actionType.makeNewAction(shape1, null, editor);
+		FIBJPanel<DeclareShapeInFlexoConcept> widget = instanciateFIB(fibResource, declareShapeAction, DeclareShapeInFlexoConcept.class);
 
-        gcDelegate.addTab("DeclareShapeInFlexoConcept", widget.getController());
-    }
+		gcDelegate.addTab("DeclareShapeInFlexoConcept", widget.getController());
+	}
 
-    public static void initGUI() {
-        gcDelegate = new GraphicalContextDelegate(TestDeclareShapeInFlexoConceptDialog.class.getSimpleName());
-    }
+	public static void initGUI() {
+		gcDelegate = new GraphicalContextDelegate(TestDeclareShapeInFlexoConceptDialog.class.getSimpleName());
+	}
 
-    @AfterClass
-    public static void waitGUI() {
-        gcDelegate.waitGUI();
-    }
+	@AfterClass
+	public static void waitGUI() {
+		gcDelegate.waitGUI();
+	}
 
-    @Before
-    public void setUp() {
-        gcDelegate.setUp();
-    }
+	@Before
+	public void setUp() {
+		gcDelegate.setUp();
+	}
 
-    @Override
-    @After
-    public void tearDown() throws Exception {
-        gcDelegate.tearDown();
+	@Override
+	@After
+	public void tearDown() throws Exception {
+		gcDelegate.tearDown();
 
-        super.tearDown();
+		super.tearDown();
 
-        if (editor != null) {
-            File PRJDirectory = editor.getProject().getDirectory();
-            PRJDirectory.deleteOnExit();
-        }
-    }
+		if (editor != null) {
+			File PRJDirectory = editor.getProject().getDirectory();
+			PRJDirectory.deleteOnExit();
+		}
+	}
 
 }
