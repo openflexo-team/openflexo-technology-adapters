@@ -19,6 +19,7 @@
  */
 package org.openflexo.technologyadapter.emf.gui;
 
+import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -38,9 +39,8 @@ public class EMFModelView extends AbstractEMFOntologyView<EMFModel> {
 	}
 
 	@Override
-	protected EMFModelBrowserModel makeBrowserModel() {
-
-		return new EMFModelBrowserModel(getEMFModel());
+	protected EMFModelBrowserModel performBuildOntologyBrowserModel(IFlexoOntology ontology) {
+		return new EMFModelBrowserModel((EMFModel) ontology);
 	}
 
 	public EMFModel getEMFModel() {
