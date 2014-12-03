@@ -23,33 +23,17 @@ package org.openflexo.technologyadapter.owl.gui.fib;
 
 import org.junit.Test;
 import org.openflexo.fib.utils.GenericFIBTestCase;
-import org.openflexo.technologyadapter.owl.controller.OWLFIBLibrary;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.ResourceLocator;
 
 public class TestOWLFibs extends GenericFIBTestCase {
 
-	@Test
-	public void testCreateOntologyClassDialog() {
-		validateFIB(OWLFIBLibrary.CREATE_ONTOLOGY_CLASS_DIALOG_FIB);
-	}
-
-	@Test
-	public void testCreateOntologyIndividualDialog() {
-		validateFIB(OWLFIBLibrary.CREATE_ONTOLOGY_INDIVIDUAL_FIB);
-	}
-
-	@Test
-	public void testDeleteOntologyObjectsDialog() {
-		validateFIB(OWLFIBLibrary.DELETE_ONTOLOGY_OBJECTS_DIALOG_FIB);
-	}
-
-	@Test
-	public void testCreateDataPropertyDialog() {
-		validateFIB(OWLFIBLibrary.CREATE_DATA_PROPERTY_DIALOG_FIB);
-	}
-
-	@Test
-	public void testCreateObjectPropertyDialog() {
-		validateFIB(OWLFIBLibrary.CREATE_OBJECT_PROPERTY_DIALOG_FIB);
+	/*
+	 * Use this method to print all
+	 * Then copy-paste 
+	 */
+	public static void main(String[] args) {
+		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib")).getFile(), "Fib/"));
 	}
 
 	@Test
@@ -68,11 +52,19 @@ public class TestOWLFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testAddRestrictionPanel() {
+	public void testAddOWLIndividualPanel() {
+		validateFIB("Fib/AddOWLIndividualPanel.fib");
+	}
+
+	@Test
+	public void testAddRestrictionStatementPanel() {
 		validateFIB("Fib/AddRestrictionStatementPanel.fib");
 	}
 
-	// TODO : Are those still useful?
+	@Test
+	public void testFIBOWLOntologyBrowser() {
+		validateFIB("Fib/FIBOWLOntologyBrowser.fib");
+	}
 
 	/*
 	@Test
@@ -98,16 +90,6 @@ public class TestOWLFibs extends GenericFIBTestCase {
 	@Test
 	public void testFIBOWLObjectPropertyEditor() {
 		validateFIB("Fib/FIBOWLObjectPropertyEditor.fib");
-	}
-
-	@Test
-	public void testFIBOWLOntologyBrowser() {
-		validateFIB("Fib/FIBOWLOntologyBrowser.fib");
-	}
-
-	@Test
-	public void testFIBOWLOntologySelector() {
-		validateFIB("Fib/FIBOWLOntologySelector.fib");
 	}
 	*/
 

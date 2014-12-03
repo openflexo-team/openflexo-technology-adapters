@@ -39,7 +39,7 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 
-public class CSVMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaModel<CSVMetaModel>,
+public class CSVMetaModel extends FlexoOntologyObjectImpl<CSVTechnologyAdapter> implements FlexoMetaModel<CSVMetaModel>,
 		IFlexoOntologyMetaModel<CSVTechnologyAdapter> {
 	@Override
 	public FlexoResource<CSVMetaModel> getResource() {
@@ -118,10 +118,6 @@ public class CSVMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	@Override
 	public IFlexoOntologyClass<CSVTechnologyAdapter> getRootConcept() {
 		return null;
-	}
-
-	@Override
-	public void setName(String name) throws Exception {
 	}
 
 	@Override
@@ -216,6 +212,11 @@ public class CSVMetaModel extends FlexoOntologyObjectImpl implements FlexoMetaMo
 	@Override
 	public String getName() {
 		return null;
+	}
+
+	@Override
+	public void setName(String name) throws Exception {
+		// TODO Auto-generated method stub
 	}
 
 	@Override

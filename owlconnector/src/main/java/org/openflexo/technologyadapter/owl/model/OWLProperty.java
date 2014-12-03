@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
@@ -153,17 +154,45 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 		return superProperties;
 	}
 
-	/*private boolean isRequired(IFlexoOntologyStructuralProperty aProperty, IFlexoOntology context) {
-		if (aProperty.getFlexoOntology() == context) {
-			return true;
-		}
-		for (IFlexoOntologyStructuralProperty aSubProperty : aProperty.getSubProperties()) {
-			if (isRequired(aSubProperty, context)) {
-				return true;
+	/**
+	 * Return a vector of Ontology property, as a subset of getSubProperties(), which correspond to all properties necessary to see all
+	 * properties belonging to supplied context, which is an ontology
+	 * 
+	 * @param context
+	 * @return
+	 */
+	@Override
+	public final List<OWLProperty> getSubProperties(IFlexoOntology<OWLTechnologyAdapter> context) {
+		if (context instanceof OWLOntology) {
+			List<OWLProperty> returned = new Vector<OWLProperty>();
+			for (OWLDataProperty p : ((OWLOntology) context).getAccessibleDataProperties()) {
+				if (p.isSubConceptOf(this)) {
+					if (!returned.contains(p)) {
+						returned.add(p);
+					}
+				}
 			}
+			for (OWLObjectProperty p : ((OWLOntology) context).getAccessibleObjectProperties()) {
+				if (p.isSubConceptOf(this)) {
+					if (!returned.contains(p)) {
+						returned.add(p);
+					}
+				}
+			}
+			return returned;
+		}
+
+		return null;
+	}
+
+	@Override
+	public final boolean isSuperConceptOf(IFlexoOntologyConcept<OWLTechnologyAdapter> concept) {
+		if (concept instanceof OWLProperty) {
+			OWLProperty ontologyDataProperty = (OWLProperty) concept;
+			return ontologyDataProperty.getOntProperty().hasSuperProperty(getOntProperty(), false);
 		}
 		return false;
-	}*/
+	}
 
 	@Override
 	public boolean isAnnotationProperty() {
@@ -234,27 +263,6 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	 */
 	@Override
 	public IFlexoOntologyConcept<OWLTechnologyAdapter> getDomain() {
-		/*		if (getURI().equals("http://www.w3.org/2000/01/rdf-schema#label")) {
-		//			System.out.println("Pour "+getURI()+" le domain statement est "+getDomainStatement());
-		//			return getOntologyLibrary().getOntologyObject("http://www.w3.org/2000/01/rdf-schema#Resource");
-					return getOntologyLibrary().THING;
-				}
-				if (getURI().equals("http://www.w3.org/2004/02/skos/core#prefLabel")) {
-					System.out.println("Pour "+getURI()+" le domain statement est "+getDomainStatement());
-					if (getDomainStatement() == null) {
-						for (IFlexoOntologyStructuralProperty p : getSuperProperties()) {
-							System.out.println("Examining "+p);
-							IFlexoOntologyConcept o = p.getDomain();
-							if (o != null) {
-								System.out.println("Je retourne "+o);
-								return o;
-							}
-						}
-						return null;
-					}
-		//			return getOntologyLibrary().getOntologyObject("http://www.w3.org/2000/01/rdf-schema#Resource");
-					return getOntologyLibrary().THING;
-				}*/
 		if (getDomainStatement() == null) {
 			for (OWLProperty p : getSuperProperties()) {
 				IFlexoOntologyConcept<OWLTechnologyAdapter> o = p.getDomain();
@@ -274,9 +282,6 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	 */
 	@Override
 	public OWLObject getRange() {
-		/*		if (getURI().equals("http://www.w3.org/2000/01/rdf-schema#label")) {
-					System.out.println("Pour "+getURI()+" le range statement est "+getRangeStatement());
-				}*/
 		if (getRangeStatement() == null) {
 			return null;
 		}
@@ -355,8 +360,15 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 		return Collections.emptyList();
 	}
 
+	/*@Override
+	public String toString() {
+		return getClass().getSimpleName() + ":" + getURI() + " originalDefinition=" + getOriginalDefinition();
+	}*/
+
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + ":" + getURI();
+		return getClass().getSimpleName() + Integer.toHexString(hashCode()) + ":" + getURI() + " (originalDefinition="
+				+ getOriginalDefinition() + ") in " + getOntology();
 	}
+
 }

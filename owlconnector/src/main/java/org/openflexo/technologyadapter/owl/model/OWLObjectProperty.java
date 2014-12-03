@@ -19,12 +19,8 @@
  */
 package org.openflexo.technologyadapter.owl.model;
 
-import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.ontology.IFlexoOntology;
-import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
@@ -60,41 +56,8 @@ public class OWLObjectProperty extends OWLProperty implements IFlexoOntologyObje
 	}
 
 	@Override
-	public boolean isSuperConceptOf(IFlexoOntologyConcept<OWLTechnologyAdapter> concept) {
-		if (concept instanceof OWLObjectProperty) {
-			OWLObjectProperty ontologyObjectProperty = (OWLObjectProperty) concept;
-			return ontologyObjectProperty.getOntProperty().hasSuperProperty(getOntProperty(), false);
-		}
-		return false;
-	}
-
-	@Override
 	public OWLClass getRange() {
 		return (OWLClass) super.getRange();
-	}
-
-	/**
-	 * Return a vector of Ontology property, as a subset of getSubProperties(), which correspond to all properties necessary to see all
-	 * properties belonging to supplied context, which is an ontology
-	 * 
-	 * @param context
-	 * @return
-	 */
-	@Override
-	public List<OWLObjectProperty> getSubProperties(IFlexoOntology<OWLTechnologyAdapter> context) {
-		if (context instanceof OWLOntology) {
-			List<OWLObjectProperty> returned = new Vector<OWLObjectProperty>();
-			for (OWLObjectProperty p : ((OWLOntology) context).getAccessibleObjectProperties()) {
-				if (p.isSubConceptOf(this)) {
-					if (!returned.contains(p)) {
-						returned.add(p);
-					}
-				}
-			}
-			return returned;
-		}
-
-		return null;
 	}
 
 	@Override

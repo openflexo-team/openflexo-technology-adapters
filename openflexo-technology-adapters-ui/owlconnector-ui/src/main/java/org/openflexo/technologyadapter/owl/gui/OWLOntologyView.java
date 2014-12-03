@@ -21,8 +21,8 @@ package org.openflexo.technologyadapter.owl.gui;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.components.widget.OntologyView;
+import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -42,8 +42,8 @@ public class OWLOntologyView extends OntologyView<OWLOntology> {
 	}
 
 	@Override
-	protected OntologyBrowserModel makeBrowserModel() {
-		return new OWLOntologyBrowserModel(getOntology());
+	protected OWLOntologyBrowserModel performBuildOntologyBrowserModel(IFlexoOntology ontology) {
+		return new OWLOntologyBrowserModel((OWLOntology) ontology);
 	}
 
 	@Override

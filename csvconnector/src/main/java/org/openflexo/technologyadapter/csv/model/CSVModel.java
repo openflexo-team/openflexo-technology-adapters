@@ -42,7 +42,7 @@ import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.rm.CSVModelResource;
 
-public class CSVModel extends FlexoOntologyObjectImpl implements FlexoModel<CSVModel, CSVMetaModel>,
+public class CSVModel extends FlexoOntologyObjectImpl<CSVTechnologyAdapter> implements FlexoModel<CSVModel, CSVMetaModel>,
 		IFlexoOntologyModel<CSVTechnologyAdapter> {
 	private CSVModelResource csvResource;
 
@@ -130,7 +130,7 @@ public class CSVModel extends FlexoOntologyObjectImpl implements FlexoModel<CSVM
 	}
 
 	@Override
-	public void setName(String name) throws Exception {
+	public void setName(String name) {
 	}
 
 	@Override

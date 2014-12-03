@@ -33,7 +33,9 @@ import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWL2URIDefinitions;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
+import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.OWLObject;
+import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLProperty;
 import org.openflexo.technologyadapter.owl.model.OWLRestriction;
@@ -63,6 +65,33 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 	}
 
 	@Override
+	protected List<OWLClass> getFirstDisplayableParents(IFlexoOntologyClass<OWLTechnologyAdapter> c) {
+		return (List<OWLClass>) super.getFirstDisplayableParents(c);
+	}
+
+	/**
+	 * OWLObjectProperty which declare a Literal range should be stored as DataProperty
+	 */
+	@Override
+	protected boolean isDisplayableAsDataProperty(IFlexoOntologyStructuralProperty p) {
+		if (p instanceof OWLObjectProperty && ((OWLObjectProperty) p).isLiteralRange()) {
+			return true;
+		}
+		return p instanceof OWLDataProperty;
+	}
+
+	/**
+	 * OWLObjectProperty which declare a Literal range should not be stored as ObjectProperty
+	 */
+	@Override
+	protected boolean isDisplayableAsObjectProperty(IFlexoOntologyStructuralProperty p) {
+		if (p instanceof OWLObjectProperty && ((OWLObjectProperty) p).isLiteralRange()) {
+			return false;
+		}
+		return super.isDisplayableAsObjectProperty(p);
+	}
+
+	@Override
 	public boolean isDisplayable(IFlexoOntologyObject<OWLTechnologyAdapter> object) {
 
 		if (object instanceof OWLOntology) {
@@ -85,19 +114,25 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 
 		if (object instanceof IFlexoOntologyStructuralProperty && getDomain() != null) {
 			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> p = (IFlexoOntologyStructuralProperty<OWLTechnologyAdapter>) object;
-			if (p instanceof OWLProperty && (((OWLProperty) p).getDomainList().size() > 0)) {
-				OWLProperty owlProperty = (OWLProperty) p;
-				boolean hasASuperClass = false;
-				for (OWLObject d : owlProperty.getDomainList()) {
-					if (((OWLClass) d).isSuperClassOf(getDomain())) {
-						hasASuperClass = true;
+			if (p instanceof OWLProperty) {
+				if ((((OWLProperty) p).getDomainList().size() > 0)) {
+					OWLProperty owlProperty = (OWLProperty) p;
+					boolean hasASuperClass = false;
+					for (OWLObject d : owlProperty.getDomainList()) {
+						if (((OWLClass) d).isSuperClassOf(getDomain())) {
+							hasASuperClass = true;
+						}
+
 					}
-				}
-				if (!hasASuperClass) {
-					return false;
+					if (!hasASuperClass) {
+						return false;
+					}
 				}
 			}
 		}
+
+		// If we haven't returned false yet, object is still candidate for being visible
+		// Now the super class takes the responsability
 
 		return super.isDisplayable(object);
 	}
@@ -121,7 +156,9 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 				OWLClass domainClass = (OWLClass) (searchedOntology != null ? searchedOntology : getContext()).getClass(d.getURI());
 				if (domainClass != null && (searchedOntology == null || domainClass.getFlexoOntology() == searchedOntology)) {
 					if (getDomain() == null || domainClass.isSuperClassOf(getDomain())) {
-						potentialStorageClasses.add(domainClass);
+						if (!potentialStorageClasses.contains(domainClass) && isDisplayable(domainClass)) {
+							potentialStorageClasses.add(domainClass);
+						}
 					} else {
 						// Do not add it, it does not concern this
 					}
@@ -134,23 +171,25 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 				for (IFlexoOntologyClass<OWLTechnologyAdapter> superClass : c.getSuperClasses()) {
 					if (superClass instanceof OWLRestriction && ((OWLRestriction) superClass).getProperty().equalsToConcept(p)) {
 						if (searchedOntology == null || c.getOntology() == searchedOntology) {
-							potentialStorageClasses.add(c);
+							if (!potentialStorageClasses.contains(c) && isDisplayable(c)) {
+								potentialStorageClasses.add(c);
+							}
 						}
 					}
 				}
 			}
 		}
 
+		// Remove Thing references if list is non trivially the Thing singleton
+		for (IFlexoOntologyClass<OWLTechnologyAdapter> c2 : new ArrayList<IFlexoOntologyClass<OWLTechnologyAdapter>>(
+				potentialStorageClasses)) {
+			if (c2 == null || (c2.isRootConcept() && potentialStorageClasses.size() > 1)) {
+				potentialStorageClasses.remove(c2);
+			}
+		}
+
 		return potentialStorageClasses;
 
-		/*if (potentialStorageClasses.size() > 0) {
-			return potentialStorageClasses.get(0);
-		}*/
-
-		/*if (p.getStorageLocations().size() > 0) {
-			return p.getStorageLocations().get(0);
-		}*/
-		// return null;
 	}
 
 	/**
@@ -160,12 +199,13 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 	 * @param list
 	 */
 	@Override
-	protected void removeOriginalFromRedefinedObjects(List<? extends IFlexoOntologyConcept<OWLTechnologyAdapter>> list) {
-		for (IFlexoOntologyConcept<OWLTechnologyAdapter> c : new ArrayList<IFlexoOntologyConcept<OWLTechnologyAdapter>>(list)) {
+	protected void removeOriginalFromRedefinedObjects(List<? extends IFlexoOntologyObject<OWLTechnologyAdapter>> list) {
+
+		for (IFlexoOntologyObject<OWLTechnologyAdapter> c : new ArrayList<IFlexoOntologyObject<OWLTechnologyAdapter>>(list)) {
 			if (c instanceof OWLConcept<?> && ((OWLConcept<?>) c).redefinesOriginalDefinition()) {
 				list.remove(((OWLConcept<?>) c).getOriginalDefinition());
 			}
-			if (c instanceof OWLClass && ((OWLClass) c).isRootConcept() && c.getOntology() != getContext()
+			if (c instanceof OWLClass && ((OWLClass) c).isRootConcept() && ((OWLClass) c).getOntology() != getContext()
 					&& list.contains(getContext().getRootConcept())) {
 				list.remove(c);
 			}
@@ -178,6 +218,9 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 
 	public void setShowOWLAndRDFConcepts(boolean showOWLAndRDFConcepts) {
 		this.showOWLAndRDFConcepts = showOWLAndRDFConcepts;
+		if (autoUpdate) {
+			recomputeStructure();
+		}
 	}
 
 }

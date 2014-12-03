@@ -19,6 +19,7 @@
  */
 package org.openflexo.technologyadapter.emf.gui;
 
+import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -38,8 +39,8 @@ public class EMFMetaModelView extends AbstractEMFOntologyView<EMFMetaModel> {
 	}
 
 	@Override
-	protected EMFMetaModelBrowserModel makeBrowserModel() {
-		return new EMFMetaModelBrowserModel(getEMFMetaModel());
+	protected EMFMetaModelBrowserModel performBuildOntologyBrowserModel(IFlexoOntology ontology) {
+		return new EMFMetaModelBrowserModel((EMFMetaModel) ontology);
 	}
 
 	public EMFMetaModel getEMFMetaModel() {

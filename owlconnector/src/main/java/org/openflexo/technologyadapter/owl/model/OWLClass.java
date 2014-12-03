@@ -36,6 +36,7 @@ import org.openflexo.foundation.ontology.OntologyUtils;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.toolbox.StringUtils;
 
+import com.hp.hpl.jena.ontology.ConversionException;
 import com.hp.hpl.jena.ontology.Individual;
 import com.hp.hpl.jena.ontology.OntClass;
 
@@ -117,6 +118,7 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 		}
 		// NPE Protection
 		if (superClass != null) {
+
 			if (superClass.redefinesOriginalDefinition()) {
 				if (superClasses.contains(superClass.getOriginalDefinition())) {
 					superClasses.remove(superClass.getOriginalDefinition());
@@ -139,9 +141,7 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 					appendToSuperClasses(c);
 				}
 			}
-			// superClasses.addAll(getOriginalDefinition().getSuperClasses());
 		}
-		// logger.info("updateSuperClasses for " + getURI());
 
 		Iterator it = anOntClass.listSuperClasses(true);
 		while (it.hasNext()) {
@@ -219,12 +219,17 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 		}
 		Iterator it = individual.listOntClasses(false);
 		while (it.hasNext()) {
-			OntClass p = (OntClass) it.next();
-			if (p.equals(parentClass)) {
-				return true;
-			}
-			if (isSuperClassOf(parentClass, p)) {
-				return true;
+			try {
+				OntClass p = (OntClass) it.next();
+				if (p.equals(parentClass)) {
+					return true;
+				}
+				if (isSuperClassOf(parentClass, p)) {
+					return true;
+				}
+			} catch (ConversionException e) {
+				logger.warning("Unexpected " + e);
+				e.printStackTrace();
 			}
 		}
 		return false;
@@ -253,6 +258,7 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 
 	@Override
 	public boolean isSuperClassOf(IFlexoOntologyClass<OWLTechnologyAdapter> aClass) {
+
 		if (aClass == this) {
 			return true;
 		}
@@ -262,13 +268,20 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 		if (OWL2URIDefinitions.OWL_THING_URI.equals(getURI())) {
 			return true;
 		}
+		// We assert here that all OWL classes inherits from Resource
+		if (RDFSURIDefinitions.RDFS_RESOURCE_URI.equals(getURI())) {
+			return true;
+		}
 		if (aClass instanceof OWLClass) {
+
 			for (OWLClass c : ((OWLClass) aClass).getSuperClasses()) {
+
 				if (isSuperClassOf(c)) {
 					return true;
 				}
 			}
 		}
+
 		return false;
 	}
 
@@ -279,6 +292,7 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 	 */
 	@Override
 	public Vector<OWLClass> getSuperClasses() {
+
 		return superClasses;
 	}
 
@@ -336,23 +350,6 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 		}
 		return returned;
 	}
-
-	/*private boolean isRequired(IFlexoOntologyClass aClass, IFlexoOntology context) {
-		if (aClass.getFlexoOntology() == context) {
-			return true;
-		}
-		for (IFlexoOntologyClass aSubClass : aClass.getSubClasses()) {
-			if (isRequired(aSubClass, context)) {
-				return true;
-			}
-		}
-		for (IFlexoOntologyIndividual anIndividual : aClass.getIndividuals()) {
-			if (anIndividual.getFlexoOntology() == context) {
-				return true;
-			}
-		}
-		return false;
-	}*/
 
 	@Override
 	public String getDisplayableDescription() {
@@ -499,7 +496,8 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + ":" + getURI();
+		return getClass().getSimpleName() + Integer.toHexString(hashCode()) + ":" + getURI() + " (originalDefinition="
+				+ getOriginalDefinition() + ") in " + getOntology();
 	}
 
 }

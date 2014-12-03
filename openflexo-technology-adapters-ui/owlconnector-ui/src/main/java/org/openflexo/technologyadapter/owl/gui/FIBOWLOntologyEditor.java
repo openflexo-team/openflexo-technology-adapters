@@ -22,10 +22,12 @@ package org.openflexo.technologyadapter.owl.gui;
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
-import javax.swing.SwingUtilities;
 
 import org.openflexo.components.widget.FIBOntologyEditor;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent.CustomComponentParameter;
+import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.rm.Resource;
+import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.view.controller.FlexoController;
 
@@ -38,13 +40,25 @@ import org.openflexo.view.controller.FlexoController;
 public class FIBOWLOntologyEditor extends FIBOntologyEditor {
 	static final Logger logger = Logger.getLogger(FIBOWLOntologyEditor.class.getPackage().getName());
 
+	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/FIBOWLOntologyEditor.fib");
+
 	public FIBOWLOntologyEditor(OWLOntology ontology, FlexoController controller) {
-		super(null, controller);
+		super(ontology, controller, FIB_FILE);
 	}
 
 	@Override
 	public OWLOntology getOntology() {
 		return (OWLOntology) super.getOntology();
+	}
+
+	@Override
+	public OWLOntologyBrowserModel getModel() {
+		return (OWLOntologyBrowserModel) super.getModel();
+	}
+
+	@Override
+	protected OWLOntologyBrowserModel performBuildOntologyBrowserModel(IFlexoOntology ontology) {
+		return new OWLOntologyBrowserModel((OWLOntology) ontology);
 	}
 
 	public boolean getShowOWLAndRDFConcepts() {
@@ -54,10 +68,25 @@ public class FIBOWLOntologyEditor extends FIBOntologyEditor {
 	@CustomComponentParameter(name = "showOWLAndRDFConcepts", type = CustomComponentParameter.Type.OPTIONAL)
 	public void setShowOWLAndRDFConcepts(boolean showOWLAndRDFConcepts) {
 		setShowTechnologySpecificConcepts(showOWLAndRDFConcepts);
-		update();
 	}
 
 	@Override
+	public boolean showTechnologySpecificConcepts() {
+		return getModel().getShowOWLAndRDFConcepts();
+	}
+
+	@Override
+	public void setShowTechnologySpecificConcepts(boolean flag) {
+		boolean oldValue = showTechnologySpecificConcepts();
+		if (oldValue != flag) {
+			getModel().setShowOWLAndRDFConcepts(flag);
+			update();
+			getPropertyChangeSupport().firePropertyChange("showTechnologySpecificConcepts", oldValue, flag);
+			getPropertyChangeSupport().firePropertyChange("showOWLAndRDFConcepts", oldValue, flag);
+		}
+	}
+
+	/*@Override
 	public OWLOntologyBrowserModel getModel() {
 		if (model == null) {
 			model = new OWLOntologyBrowserModel(getOntology()) {
@@ -85,7 +114,7 @@ public class FIBOWLOntologyEditor extends FIBOntologyEditor {
 			model.recomputeStructure();
 		}
 		return (OWLOntologyBrowserModel) model;
-	}
+	}*/
 
 	@Override
 	public ImageIcon getOntologyClassIcon() {

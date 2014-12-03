@@ -85,4 +85,15 @@ public class EMFAnnotationAnnotation extends AEMFMetaModelObjectImpl<EAnnotation
 		return Collections.unmodifiableMap(details);
 	}
 
+	@Override
+	public String getURI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setName(String name) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
 }

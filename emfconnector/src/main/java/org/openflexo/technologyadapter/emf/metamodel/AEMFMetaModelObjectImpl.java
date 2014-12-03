@@ -65,12 +65,26 @@ public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOn
 	}
 
 	/**
+	 * Return the EMF model this object belongs to
+	 * 
+	 * @return
+	 */
+	public EMFMetaModel getEMFMetaModel() {
+		return ontology;
+	}
+
+	/**
 	 * Return the wrapped objects.
 	 * 
 	 * @return
 	 */
 	public T getObject() {
 		return object;
+	}
+
+	@Override
+	public EMFTechnologyAdapter getTechnologyAdapter() {
+		return getEMFMetaModel().getTechnologyAdapter();
 	}
 
 }
