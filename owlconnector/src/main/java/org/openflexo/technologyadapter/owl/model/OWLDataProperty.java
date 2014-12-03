@@ -45,48 +45,10 @@ public class OWLDataProperty extends OWLProperty implements IFlexoOntologyDataPr
 		return true;
 	}
 
-	/*@Override
-	public DatatypeProperty getOntProperty() {
-		return (DatatypeProperty) super.getOntProperty();
-	}*/
-
 	@Override
 	public int compareTo(IFlexoOntologyDataProperty<OWLTechnologyAdapter> o) {
 		return COMPARATOR.compare(this, o);
 	}
-
-	/*@Override
-	public boolean isSuperConceptOf(IFlexoOntologyConcept<OWLTechnologyAdapter> concept) {
-		if (concept instanceof OWLProperty) {
-			OWLProperty ontologyDataProperty = (OWLProperty) concept;
-			return ontologyDataProperty.getOntProperty().hasSuperProperty(getOntProperty(), false);
-		}
-		return false;
-	}*/
-
-	/**
-	 * Return a vector of Ontology property, as a subset of getSubProperties(), which correspond to all properties necessary to see all
-	 * properties belonging to supplied context, which is an ontology
-	 * 
-	 * @param context
-	 * @return
-	 */
-	/*@Override
-	public List<OWLDataProperty> getSubProperties(IFlexoOntology<OWLTechnologyAdapter> context) {
-		if (context instanceof OWLOntology) {
-			List<OWLDataProperty> returned = new Vector<OWLDataProperty>();
-			for (OWLDataProperty p : ((OWLOntology) context).getAccessibleDataProperties()) {
-				if (p.isSubConceptOf(this)) {
-					if (!returned.contains(p)) {
-						returned.add(p);
-					}
-				}
-			}
-			return returned;
-		}
-
-		return null;
-	}*/
 
 	public OWLDataType getDataType() {
 		return getRange();

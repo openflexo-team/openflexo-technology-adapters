@@ -194,18 +194,6 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 		return false;
 	}
 
-	/*private boolean isRequired(IFlexoOntologyStructuralProperty aProperty, IFlexoOntology context) {
-		if (aProperty.getFlexoOntology() == context) {
-			return true;
-		}
-		for (IFlexoOntologyStructuralProperty aSubProperty : aProperty.getSubProperties()) {
-			if (isRequired(aSubProperty, context)) {
-				return true;
-			}
-		}
-		return false;
-	}*/
-
 	@Override
 	public boolean isAnnotationProperty() {
 		return getOntResource().isAnnotationProperty();// isAnnotationProperty;
@@ -275,27 +263,6 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	 */
 	@Override
 	public IFlexoOntologyConcept<OWLTechnologyAdapter> getDomain() {
-		/*		if (getURI().equals("http://www.w3.org/2000/01/rdf-schema#label")) {
-		//			System.out.println("Pour "+getURI()+" le domain statement est "+getDomainStatement());
-		//			return getOntologyLibrary().getOntologyObject("http://www.w3.org/2000/01/rdf-schema#Resource");
-					return getOntologyLibrary().THING;
-				}
-				if (getURI().equals("http://www.w3.org/2004/02/skos/core#prefLabel")) {
-					System.out.println("Pour "+getURI()+" le domain statement est "+getDomainStatement());
-					if (getDomainStatement() == null) {
-						for (IFlexoOntologyStructuralProperty p : getSuperProperties()) {
-							System.out.println("Examining "+p);
-							IFlexoOntologyConcept o = p.getDomain();
-							if (o != null) {
-								System.out.println("Je retourne "+o);
-								return o;
-							}
-						}
-						return null;
-					}
-		//			return getOntologyLibrary().getOntologyObject("http://www.w3.org/2000/01/rdf-schema#Resource");
-					return getOntologyLibrary().THING;
-				}*/
 		if (getDomainStatement() == null) {
 			for (OWLProperty p : getSuperProperties()) {
 				IFlexoOntologyConcept<OWLTechnologyAdapter> o = p.getDomain();
@@ -315,9 +282,6 @@ public abstract class OWLProperty extends OWLConcept<OntProperty> implements IFl
 	 */
 	@Override
 	public OWLObject getRange() {
-		/*		if (getURI().equals("http://www.w3.org/2000/01/rdf-schema#label")) {
-					System.out.println("Pour "+getURI()+" le range statement est "+getRangeStatement());
-				}*/
 		if (getRangeStatement() == null) {
 			return null;
 		}
