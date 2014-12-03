@@ -94,13 +94,6 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 	@Override
 	public boolean isDisplayable(IFlexoOntologyObject<OWLTechnologyAdapter> object) {
 
-		boolean debug = false;
-
-		if (object.getName().equals("altLabel")) {
-			System.out.println("isDisplayable for " + object + " ???");
-			debug = true;
-		}
-
 		if (object instanceof OWLOntology) {
 			if ((object == ((OWLOntology) object).getOntologyLibrary().getRDFOntology()
 					|| object == ((OWLOntology) object).getOntologyLibrary().getRDFSOntology() || object == ((OWLOntology) object)
@@ -108,10 +101,6 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 				return getShowOWLAndRDFConcepts();
 			}
 			return true;
-		}
-
-		if (debug) {
-			System.out.println("hop1");
 		}
 
 		if (!getShowOWLAndRDFConcepts() && StringUtils.isNotEmpty(object.getURI()) && object instanceof IFlexoOntologyConcept
@@ -123,64 +112,27 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 			}
 		}
 
-		if (debug) {
-			System.out.println("hop2, domain = " + getDomain());
-		}
-
 		if (object instanceof IFlexoOntologyStructuralProperty && getDomain() != null) {
 			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> p = (IFlexoOntologyStructuralProperty<OWLTechnologyAdapter>) object;
 			if (p instanceof OWLProperty) {
-				if (debug) {
-					System.out.println("Pour la pte " + p);
-				}
 				if ((((OWLProperty) p).getDomainList().size() > 0)) {
 					OWLProperty owlProperty = (OWLProperty) p;
 					boolean hasASuperClass = false;
 					for (OWLObject d : owlProperty.getDomainList()) {
-						if (debug) {
-							System.out.println("Pour le domaine " + d);
-						}
-						// List<OWLClass> dList = getFirstDisplayableParents((OWLClass) d);
-						// for (OWLClass visibleClass : dList) {
-						/*if (debug) {
-							System.out.println("Plutot que " + d + " on regarde avec " + d);
-						}*/
-
 						if (((OWLClass) d).isSuperClassOf(getDomain())) {
 							hasASuperClass = true;
-						} else {
-							if (debug) {
-								System.out.println("desole, " + d + " n'est pas super class de " + getDomain());
-							}
 						}
 
-						// }
-
-						/*if (((OWLClass) d).isSuperClassOf(getDomain())) {
-							hasASuperClass = true;
-						} else {
-							System.out.println("desole, " + d + " n'est pas super class de " + getDomain());
-						}*/
-						/*if (getDomain().isSuperClassOf((OWLClass) d)) {
-							hasASuperClass = true;
-						} else {
-							System.out.println("desole, " + getDomain() + " n'est pas super class de " + d);
-						}*/
 					}
 					if (!hasASuperClass) {
 						return false;
 					}
-				} else {
-					/*if (!getDomain().isRootConcept()) {
-						return false;
-					}*/
 				}
 			}
 		}
 
-		if (debug) {
-			System.out.println("hop3, c'est le super qui decide pour " + object + ", et qui decide " + super.isDisplayable(object));
-		}
+		// If we haven't returned false yet, object is still candidate for being visible
+		// Now the super class takes the responsability
 
 		return super.isDisplayable(object);
 	}
@@ -197,13 +149,6 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 	protected List<IFlexoOntologyClass<OWLTechnologyAdapter>> getPreferredStorageLocations(
 			IFlexoOntologyStructuralProperty<OWLTechnologyAdapter> p, IFlexoOntology<OWLTechnologyAdapter> searchedOntology) {
 		List<IFlexoOntologyClass<OWLTechnologyAdapter>> potentialStorageClasses = super.getPreferredStorageLocations(p, searchedOntology);
-
-		/*if (p.getName().equals("altLabel")) {
-			System.out.println("Je suis dans OWLOntologyBrowser, j'ai pour le moment: ");
-			for (IFlexoOntologyClass<OWLTechnologyAdapter> preferredLocation : potentialStorageClasses) {
-				System.out.println(" > " + preferredLocation);
-			}
-		}*/
 
 		if (p instanceof OWLProperty && ((OWLProperty) p).getDomainList().size() > 0) {
 			OWLProperty owlProperty = (OWLProperty) p;
@@ -235,13 +180,6 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 			}
 		}
 
-		/*if (p.getName().equals("altLabel")) {
-			System.out.println("2 - Je suis dans OWLOntologyBrowser, j'ai pour le moment: ");
-			for (IFlexoOntologyClass<OWLTechnologyAdapter> preferredLocation : potentialStorageClasses) {
-				System.out.println(" > " + preferredLocation);
-			}
-		}*/
-
 		// Remove Thing references if list is non trivially the Thing singleton
 		for (IFlexoOntologyClass<OWLTechnologyAdapter> c2 : new ArrayList<IFlexoOntologyClass<OWLTechnologyAdapter>>(
 				potentialStorageClasses)) {
@@ -250,23 +188,8 @@ public class OWLOntologyBrowserModel extends OntologyBrowserModel<OWLTechnologyA
 			}
 		}
 
-		/*if (p.getName().equals("altLabel")) {
-			System.out.println("3 - Je suis dans OWLOntologyBrowser, j'ai pour le moment: ");
-			for (IFlexoOntologyClass<OWLTechnologyAdapter> preferredLocation : potentialStorageClasses) {
-				System.out.println(" > " + preferredLocation);
-			}
-		}*/
-
 		return potentialStorageClasses;
 
-		/*if (potentialStorageClasses.size() > 0) {
-			return potentialStorageClasses.get(0);
-		}*/
-
-		/*if (p.getStorageLocations().size() > 0) {
-			return p.getStorageLocations().get(0);
-		}*/
-		// return null;
 	}
 
 	/**
