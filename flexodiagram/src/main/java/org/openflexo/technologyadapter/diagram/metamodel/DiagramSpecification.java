@@ -192,7 +192,9 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		 * After this call return, we can assert that all {@link VirtualModel} are loaded.
 		 */
 		private void loadDiagramPalettesWhenUnloaded() {
-			palettes = new ArrayList<DiagramPalette>();
+			if(palettes==null){
+				palettes = new ArrayList<DiagramPalette>();
+			}
 			if (getResource() != null) {
 				for (org.openflexo.foundation.resource.FlexoResource<?> r : getResource().getContents()) {
 					if (r instanceof DiagramPaletteResource) {
