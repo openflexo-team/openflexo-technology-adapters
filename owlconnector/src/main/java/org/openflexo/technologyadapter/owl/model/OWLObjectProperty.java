@@ -19,12 +19,8 @@
  */
 package org.openflexo.technologyadapter.owl.model;
 
-import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.ontology.IFlexoOntology;
-import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
@@ -59,14 +55,14 @@ public class OWLObjectProperty extends OWLProperty implements IFlexoOntologyObje
 		return COMPARATOR.compare(this, o);
 	}
 
-	@Override
+	/*@Override
 	public boolean isSuperConceptOf(IFlexoOntologyConcept<OWLTechnologyAdapter> concept) {
 		if (concept instanceof OWLObjectProperty) {
 			OWLObjectProperty ontologyObjectProperty = (OWLObjectProperty) concept;
 			return ontologyObjectProperty.getOntProperty().hasSuperProperty(getOntProperty(), false);
 		}
 		return false;
-	}
+	}*/
 
 	@Override
 	public OWLClass getRange() {
@@ -80,7 +76,7 @@ public class OWLObjectProperty extends OWLProperty implements IFlexoOntologyObje
 	 * @param context
 	 * @return
 	 */
-	@Override
+	/*@Override
 	public List<OWLObjectProperty> getSubProperties(IFlexoOntology<OWLTechnologyAdapter> context) {
 		if (context instanceof OWLOntology) {
 			List<OWLObjectProperty> returned = new Vector<OWLObjectProperty>();
@@ -95,7 +91,7 @@ public class OWLObjectProperty extends OWLProperty implements IFlexoOntologyObje
 		}
 
 		return null;
-	}
+	}*/
 
 	@Override
 	public String getDisplayableDescription() {

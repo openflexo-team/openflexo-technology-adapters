@@ -19,12 +19,8 @@
  */
 package org.openflexo.technologyadapter.owl.model;
 
-import java.util.List;
-import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.ontology.IFlexoOntology;
-import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
@@ -59,14 +55,14 @@ public class OWLDataProperty extends OWLProperty implements IFlexoOntologyDataPr
 		return COMPARATOR.compare(this, o);
 	}
 
-	@Override
+	/*@Override
 	public boolean isSuperConceptOf(IFlexoOntologyConcept<OWLTechnologyAdapter> concept) {
-		if (concept instanceof OWLDataProperty) {
-			OWLDataProperty ontologyDataProperty = (OWLDataProperty) concept;
+		if (concept instanceof OWLProperty) {
+			OWLProperty ontologyDataProperty = (OWLProperty) concept;
 			return ontologyDataProperty.getOntProperty().hasSuperProperty(getOntProperty(), false);
 		}
 		return false;
-	}
+	}*/
 
 	/**
 	 * Return a vector of Ontology property, as a subset of getSubProperties(), which correspond to all properties necessary to see all
@@ -75,7 +71,7 @@ public class OWLDataProperty extends OWLProperty implements IFlexoOntologyDataPr
 	 * @param context
 	 * @return
 	 */
-	@Override
+	/*@Override
 	public List<OWLDataProperty> getSubProperties(IFlexoOntology<OWLTechnologyAdapter> context) {
 		if (context instanceof OWLOntology) {
 			List<OWLDataProperty> returned = new Vector<OWLDataProperty>();
@@ -90,7 +86,7 @@ public class OWLDataProperty extends OWLProperty implements IFlexoOntologyDataPr
 		}
 
 		return null;
-	}
+	}*/
 
 	public OWLDataType getDataType() {
 		return getRange();
