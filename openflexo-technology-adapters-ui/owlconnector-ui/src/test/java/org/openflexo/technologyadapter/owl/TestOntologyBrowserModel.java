@@ -42,6 +42,12 @@ import org.openflexo.technologyadapter.owl.model.RDFURIDefinitions;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
+/**
+ * Unit tests for {@link OntologyBrowserModel} in OWL context
+ * 
+ * @author sylvain
+ *
+ */
 @RunWith(OrderedRunner.class)
 public class TestOntologyBrowserModel extends OpenflexoTestCase {
 
@@ -130,7 +136,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setStrictMode(false);
 		obm.setHierarchicalMode(false);
 		obm.setShowOWLAndRDFConcepts(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), rdfOntology);
@@ -143,13 +149,13 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 
 		assertEquals(4, obm.getChildren(rdfsOntology).size());
 		assertSameList(obm.getChildren(rdfsOntology), resourceConcept, domainProperty, rangeProperty, subPropertyOfProperty);
-		assertEquals(8, obm.getChildren(resourceConcept).size());
-		assertSameList(obm.getChildren(resourceConcept), classConcept, containerConcept, literalConcept, labelProperty,
-				isDefinedByProperty, seeAlsoProperty, memberProperty, commentProperty);
+		assertEquals(7, obm.getChildren(resourceConcept).size());
+		assertSameList(obm.getChildren(resourceConcept), classConcept, containerConcept, literalConcept, labelProperty, seeAlsoProperty,
+				memberProperty, commentProperty);
 		assertSameList(obm.getChildren(classConcept), datatypeConcept, subClassOfProperty);
 
 		obm.setDisplayPropertiesInClasses(false);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), rdfOntology);
@@ -226,15 +232,14 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setStrictMode(false);
 		obm.setHierarchicalMode(true);
 		obm.setShowOWLAndRDFConcepts(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), resourceConcept);
 
-		assertEquals(13, obm.getChildren(resourceConcept).size());
+		assertEquals(12, obm.getChildren(resourceConcept).size());
 		assertSameList(obm.getChildren(resourceConcept), listConcept, propertyConcept, statementConcept, classConcept, containerConcept,
-				literalConcept, labelProperty, isDefinedByProperty, seeAlsoProperty, memberProperty, commentProperty, valueProperty,
-				typeProperty);
+				literalConcept, labelProperty, seeAlsoProperty, memberProperty, commentProperty, valueProperty, typeProperty);
 
 		assertSameList(obm.getChildren(classConcept), datatypeConcept, subClassOfProperty);
 	}
@@ -304,7 +309,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		OntologyBrowserModel obm = new OntologyBrowserModel(rdfOntology);
 		obm.setStrictMode(true);
 		obm.setHierarchicalMode(false);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(5, obm.getRoots().size());
 		assertSameList(obm.getRoots(), listConcept, propertyConcept, statementConcept, typeProperty, valueProperty);
@@ -377,7 +382,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setStrictMode(false);
 		obm.setHierarchicalMode(false);
 		obm.setShowOWLAndRDFConcepts(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), rdfsOntology);
@@ -385,9 +390,9 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		assertEquals(5, obm.getChildren(rdfsOntology).size());
 		assertSameList(obm.getChildren(rdfsOntology), resourceConcept, domainProperty, rangeProperty, subPropertyOfProperty, rdfOntology);
 
-		assertEquals(8, obm.getChildren(resourceConcept).size());
+		assertEquals(7, obm.getChildren(resourceConcept).size());
 		assertSameList(obm.getChildren(resourceConcept), classConcept, containerConcept, literalConcept, labelProperty, commentProperty,
-				isDefinedByProperty, seeAlsoProperty, memberProperty);
+				seeAlsoProperty, memberProperty);
 		assertSameList(obm.getChildren(classConcept), datatypeConcept, subClassOfProperty);
 
 		assertEquals(5, obm.getChildren(rdfOntology).size());
@@ -460,15 +465,14 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setStrictMode(false);
 		obm.setHierarchicalMode(true);
 		obm.setShowOWLAndRDFConcepts(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), resourceConcept);
 
-		assertEquals(13, obm.getChildren(resourceConcept).size());
+		assertEquals(12, obm.getChildren(resourceConcept).size());
 		assertSameList(obm.getChildren(resourceConcept), listConcept, propertyConcept, statementConcept, classConcept, containerConcept,
-				literalConcept, labelProperty, isDefinedByProperty, seeAlsoProperty, memberProperty, commentProperty, valueProperty,
-				typeProperty);
+				literalConcept, labelProperty, seeAlsoProperty, memberProperty, commentProperty, valueProperty, typeProperty);
 
 		assertEquals(2, obm.getChildren(classConcept).size());
 		assertSameList(obm.getChildren(classConcept), datatypeConcept, subClassOfProperty);
@@ -539,14 +543,14 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		OntologyBrowserModel obm = new OntologyBrowserModel(rdfsOntology);
 		obm.setStrictMode(true);
 		obm.setHierarchicalMode(false);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(4, obm.getRoots().size());
 		assertSameList(obm.getRoots(), resourceConcept, domainProperty, rangeProperty, subPropertyOfProperty);
 
-		assertEquals(8, obm.getChildren(resourceConcept).size());
-		assertSameList(obm.getChildren(resourceConcept), classConcept, containerConcept, literalConcept, labelProperty,
-				isDefinedByProperty, seeAlsoProperty, memberProperty, commentProperty);
+		assertEquals(7, obm.getChildren(resourceConcept).size());
+		assertSameList(obm.getChildren(resourceConcept), classConcept, containerConcept, literalConcept, labelProperty, seeAlsoProperty,
+				memberProperty, commentProperty);
 
 		assertEquals(2, obm.getChildren(classConcept).size());
 		assertSameList(obm.getChildren(classConcept), datatypeConcept, subClassOfProperty);
@@ -588,15 +592,15 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		OWLObjectProperty objectProperty = rdfOntology.getObjectProperty(RDFURIDefinitions.RDF_ONTOLOGY_URI + "#" + "object");
 		assertNotNull(objectProperty);
 
-		OWLClass resourceConcept = rdfOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Resource");
+		OWLClass resourceConcept = owlOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Resource");
 		assertNotNull(resourceConcept);
-		OWLClass classConcept = rdfOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Class");
+		OWLClass classConcept = owlOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Class");
 		assertNotNull(classConcept);
-		OWLClass datatypeConcept = rdfOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Datatype");
+		OWLClass datatypeConcept = owlOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Datatype");
 		assertNotNull(datatypeConcept);
-		OWLClass containerConcept = rdfOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Container");
+		OWLClass containerConcept = owlOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Container");
 		assertNotNull(containerConcept);
-		OWLClass literalConcept = rdfOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Literal");
+		OWLClass literalConcept = owlOntology.getClass(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "Literal");
 		assertNotNull(literalConcept);
 		OWLDataProperty labelProperty = rdfOntology.getDataProperty(RDFSURIDefinitions.RDFS_ONTOLOGY_URI + "#" + "label");
 		assertNotNull(labelProperty);
@@ -744,7 +748,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setStrictMode(false);
 		obm.setHierarchicalMode(false);
 		obm.setShowOWLAndRDFConcepts(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), owlOntology);
@@ -773,8 +777,8 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		assertEquals(4, obm.getChildren(rdfsOntology).size());
 		assertSameList(obm.getChildren(rdfsOntology), resourceConcept, domainProperty, rangeProperty, subPropertyOfProperty);
 
-		assertSameList(obm.getChildren(resourceConcept), classConcept, containerConcept, literalConcept, labelProperty,
-				isDefinedByProperty, seeAlsoProperty, memberProperty, commentProperty);
+		assertSameList(obm.getChildren(resourceConcept), classConcept, containerConcept, literalConcept, labelProperty, seeAlsoProperty,
+				memberProperty, commentProperty);
 
 		assertSameList(obm.getChildren(classConcept), datatypeConcept, subClassOfProperty);
 
@@ -971,20 +975,21 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setStrictMode(false);
 		obm.setHierarchicalMode(true);
 		obm.setShowOWLAndRDFConcepts(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), thingConcept);
 
-		assertEquals(9, obm.getChildren(thingConcept).size());
-		assertSameList(obm.getChildren(thingConcept), namedIndividualConcept, nothingConcept, resourceConcept, bottomDataProperty,
-				topObjectProperty, topDataProperty, bottomObjectProperty, sameAsProperty, differentFromProperty);
+		assertEquals(7, obm.getChildren(thingConcept).size());
+		assertSameList(obm.getChildren(thingConcept), resourceConcept, bottomDataProperty, topObjectProperty, topDataProperty,
+				bottomObjectProperty, sameAsProperty, differentFromProperty);
 
-		assertEquals(22, obm.getChildren(resourceConcept).size());
-		assertSameList(obm.getChildren(resourceConcept), allDifferentConcept, negativePropertyAssertionConcept, ontologyConcept,
-				classConcept, containerConcept, literalConcept, listConcept, propertyConcept, statementConcept, commentProperty,
-				annotatedTargetProperty, typeProperty, versionInfoProperty, memberProperty, seeAlsoProperty, membersProperty,
-				annotatedPropertyProperty, valueProperty, isDefinedByProperty, annotatedSourceProperty, labelProperty, deprecatedProperty);
+		assertEquals(23, obm.getChildren(resourceConcept).size());
+		assertSameList(obm.getChildren(resourceConcept), nothingConcept, namedIndividualConcept, allDifferentConcept,
+				negativePropertyAssertionConcept, ontologyConcept, classConcept, containerConcept, literalConcept, listConcept,
+				propertyConcept, statementConcept, commentProperty, annotatedTargetProperty, typeProperty, versionInfoProperty,
+				memberProperty, seeAlsoProperty, membersProperty, annotatedPropertyProperty, valueProperty, annotatedSourceProperty,
+				labelProperty, deprecatedProperty);
 
 		assertEquals(7, obm.getChildren(classConcept).size());
 		assertSameList(obm.getChildren(classConcept), owlClassConcept, datatypeConcept, unionOfProperty, oneOfProperty, subClassOfProperty,
@@ -1194,7 +1199,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 
 		OntologyBrowserModel obm = new OntologyBrowserModel(owlOntology);
 		obm.setStrictMode(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), thingConcept);
@@ -1384,7 +1389,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setStrictMode(false);
 		obm.setHierarchicalMode(false);
 		obm.setShowOWLAndRDFConcepts(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), flexoConceptsOntology);
@@ -1650,17 +1655,21 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setStrictMode(false);
 		obm.setHierarchicalMode(true);
 		obm.setShowOWLAndRDFConcepts(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		OWLClass thingConceptSeenFromFlexoConceptOntology = flexoConceptsOntology.getRootConcept();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), thingConceptSeenFromFlexoConceptOntology);
 
-		assertEquals(11, obm.getChildren(thingConceptSeenFromFlexoConceptOntology).size());
-		assertSameList(obm.getChildren(thingConceptSeenFromFlexoConceptOntology), flexoConcept, flexoModelObject, namedIndividualConcept,
-				nothingConcept, resourceConcept, topDataProperty, topObjectProperty, bottomDataProperty, bottomObjectProperty,
-				sameAsProperty, differentFromProperty);
+		assertEquals(7, obm.getChildren(thingConceptSeenFromFlexoConceptOntology).size());
+		assertSameList(obm.getChildren(thingConceptSeenFromFlexoConceptOntology), resourceConcept, topDataProperty, topObjectProperty,
+				bottomDataProperty, bottomObjectProperty, sameAsProperty, differentFromProperty);
+		assertEquals(25, obm.getChildren(resourceConcept).size());
+		assertTrue(obm.getChildren(resourceConcept).contains(flexoConcept));
+		assertTrue(obm.getChildren(resourceConcept).contains(flexoModelObject));
+		assertTrue(obm.getChildren(resourceConcept).contains(namedIndividualConcept));
+		assertTrue(obm.getChildren(resourceConcept).contains(nothingConcept));
 
 		assertEquals(2, obm.getChildren(flexoConcept).size());
 		assertSameList(obm.getChildren(flexoConcept), inRelationWithProperty, linkedToModelProperty);
@@ -1752,7 +1761,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setShowObjectProperties(false);
 		obm.setShowDataProperties(false);
 		obm.setShowAnnotationProperties(false);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), o5.getRootConcept());
@@ -1761,12 +1770,22 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 
 		// Showing OWL, RDF and RDFS concepts should not change hierarchy
 		obm.setShowOWLAndRDFConcepts(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertEquals(1, obm.getRoots().size());
 		assertEquals(obm.getRoots().get(0), o5.getRootConcept());
 
-		assertSameList(obm.getChildren(o5.getRootConcept()), a2fromO5, b2, c2, b1, namedIndividualConcept, nothingConcept, resourceConcept);
+		assertEquals(1, obm.getChildren(o5.getRootConcept()).size());
+		assertTrue(obm.getChildren(o5.getRootConcept()).contains(resourceConcept));
+
+		assertEquals(15, obm.getChildren(resourceConcept).size());
+		assertTrue(obm.getChildren(resourceConcept).contains(a2fromO5));
+		assertTrue(obm.getChildren(resourceConcept).contains(b2));
+		assertTrue(obm.getChildren(resourceConcept).contains(c2));
+		assertTrue(obm.getChildren(resourceConcept).contains(b1));
+
+		// assertSameList(obm.getChildren(o5.getRootConcept()), a2fromO5, b2, c2, b1, namedIndividualConcept, nothingConcept,
+		// resourceConcept);
 
 	}
 
@@ -1826,7 +1845,7 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setShowObjectProperties(true);
 		obm.setShowDataProperties(true);
 		obm.setShowAnnotationProperties(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 	}
 
@@ -1940,21 +1959,9 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		obm.setShowObjectProperties(true);
 		obm.setShowDataProperties(true);
 		obm.setShowAnnotationProperties(true);
-		obm.recomputeStructure();
+		// obm.recomputeStructure();
 
 		assertSameList(obm.getChildren(ontology.getRootConcept()), inputModelObject, outputModelObject, mappingSpecificationObject);
-
-		// We want now to see only properties, lets look at the infered class hierarchy
-		obm.setShowClasses(false);
-		obm.recomputeStructure();
-
-		assertEquals(obm.getRoots().get(0), ontology.getRootConcept());
-		assertSameList(obm.getChildren(ontology.getRootConcept()), rootClassForInputModel1, rootClassForOutputModel1,
-				mappingSpecificationObject);
-
-		// Now we want to see only properties below rootClass
-		obm.setRootClass(rootClassForInputModel1);
-		obm.recomputeStructure();
 
 		OWLClass etat = ontology.getClass(inputModel1Ontology.getURI() + "#Etat");
 		assertNotNull(etat);
@@ -1975,9 +1982,31 @@ public class TestOntologyBrowserModel extends OpenflexoTestCase {
 		OWLClass contenu = ontology.getClass(inputModel1Ontology.getURI() + "#Contenu");
 		assertNotNull(contenu);
 
+		OWLClass component = ontology.getClass(outputModel1Ontology.getURI() + "#Component");
+		assertNotNull(component);
+		OWLClass submodeGroup = ontology.getClass(outputModel1Ontology.getURI() + "#SubmodeGroup");
+		assertNotNull(submodeGroup);
+		OWLClass submode = ontology.getClass(outputModel1Ontology.getURI() + "#SubMode");
+		assertNotNull(submode);
+		OWLClass emMode = ontology.getClass(outputModel1Ontology.getURI() + "#EmMode");
+		assertNotNull(emMode);
+
+		// We want now to see only properties, lets look at the infered class hierarchy
+		obm.setShowClasses(false);
+		// //obm.recomputeStructure();
+
+		assertEquals(obm.getRoots().get(0), ontology.getRootConcept());
+		assertSameList(obm.getChildren(ontology.getRootConcept()), mappingSpecificationObject, rootClassForInputModel1,
+				rootClassForOutputModel1);
+
+		// Now we want to see only properties below rootClass
+
+		obm.setRootClass(rootClassForInputModel1);
+		// //obm.recomputeStructure();
+
 		assertSameList(obm.getRoots(), rootClassForInputModel1);
 		assertSameList(obm.getChildren(rootClassForInputModel1), etat, descriptionSpatiale, emetteur, descriptionSpectrale,
-				descriptionTemporelle,intervalle, frequence, groupefrequence, contenu);
+				descriptionTemporelle, intervalle, frequence, groupefrequence, contenu);
 
 	}
 }
