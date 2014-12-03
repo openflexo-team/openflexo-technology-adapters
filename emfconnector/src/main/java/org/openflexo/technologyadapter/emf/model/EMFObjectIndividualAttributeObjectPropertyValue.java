@@ -40,6 +40,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
  * EMF Object Individual Attribute Object Property Value.
@@ -47,7 +48,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
  * @author gbesancon
  */
 public class EMFObjectIndividualAttributeObjectPropertyValue extends AEMFModelObjectImpl<EObject> implements
-		IFlexoOntologyObjectPropertyValue {
+		IFlexoOntologyObjectPropertyValue<EMFTechnologyAdapter> {
 
 	/** Attribute. */
 	protected final EAttribute attribute;
@@ -71,6 +72,17 @@ public class EMFObjectIndividualAttributeObjectPropertyValue extends AEMFModelOb
 	@Override
 	public String getName() {
 		return attribute.getName();
+	}
+
+	@Override
+	public void setName(String name) throws Exception {
+		attribute.setName(name);
+	}
+
+	@Override
+	public String getURI() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
@@ -110,18 +122,18 @@ public class EMFObjectIndividualAttributeObjectPropertyValue extends AEMFModelOb
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyObjectPropertyValue#getValue()
 	 */
 	@Override
-	public List<IFlexoOntologyConcept> getValues() {
-		List<IFlexoOntologyConcept> result = null;
+	public List<IFlexoOntologyConcept<EMFTechnologyAdapter>> getValues() {
+		List<IFlexoOntologyConcept<EMFTechnologyAdapter>> result = null;
 		if (object.eGet(attribute) != null) {
 			if (attribute.getUpperBound() == 1) {
 				if (ontology.getMetaModel().getConverter().getEnumLiterals().get(object.eGet(attribute)) != null) {
-					result = Collections.singletonList((IFlexoOntologyConcept) (ontology.getMetaModel().getConverter().getEnumLiterals()
-							.get(object.eGet(attribute))));
+					result = Collections.singletonList((IFlexoOntologyConcept<EMFTechnologyAdapter>) (ontology.getMetaModel()
+							.getConverter().getEnumLiterals().get(object.eGet(attribute))));
 				} else {
 					result = Collections.emptyList();
 				}
 			} else {
-				result = new ArrayList<IFlexoOntologyConcept>();
+				result = new ArrayList<IFlexoOntologyConcept<EMFTechnologyAdapter>>();
 				List<?> valueList = (List<?>) object.eGet(attribute);
 				for (Object value : valueList) {
 					if (ontology.getMetaModel().getConverter().getEnumLiterals().get(value) != null) {

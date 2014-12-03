@@ -76,6 +76,16 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 		return object.getName();
 	}
 
+	@Override
+	public void setName(String name) throws Exception {
+		object.setName(name);
+	}
+
+	@Override
+	public String getURI() {
+		return object.getNsURI();
+	}
+
 	/**
 	 * Follow the link.
 	 * 

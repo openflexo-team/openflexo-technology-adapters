@@ -67,6 +67,17 @@ public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObje
 		return attribute.getName();
 	}
 
+	@Override
+	public void setName(String name) throws Exception {
+		attribute.setName(name);
+	}
+
+	@Override
+	public String getURI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Follow the link.
 	 * 
@@ -117,5 +128,5 @@ public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObje
 		}
 		return Collections.unmodifiableList(result);
 	}
-	
+
 }

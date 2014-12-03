@@ -72,6 +72,17 @@ public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelOb
 		return reference.getName();
 	}
 
+	@Override
+	public void setName(String name) throws Exception {
+		reference.setName(name);
+	}
+
+	@Override
+	public String getURI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	/**
 	 * Follow the link.
 	 * 
