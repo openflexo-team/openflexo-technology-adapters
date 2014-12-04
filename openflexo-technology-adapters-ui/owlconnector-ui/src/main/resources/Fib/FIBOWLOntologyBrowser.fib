@@ -170,14 +170,9 @@
 				localize="true" manageDynamicModel="true">
 				<Assignment variable="component.strictMode" value="false" />
 				<Assignment variable="component.hierarchicalMode" value="true" />
-				<Assignment variable="component.rootClass" />
 				<Assignment variable="component.showOWLAndRDFConcepts"
 					value="false" />
 				<Assignment variable="component.context" value="data.ontology" />
-				<Assignment variable="component.contextOntologyURI" />
-				<Assignment variable="component.rootClassURI" />
-				<Assignment variable="component.project" />
-				<Assignment variable="component.selectableCondition" />
 			</Custom>
 			<Label label="domain"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
@@ -188,14 +183,9 @@
 				localize="true" manageDynamicModel="true">
 				<Assignment variable="component.strictMode" value="false" />
 				<Assignment variable="component.hierarchicalMode" value="true" />
-				<Assignment variable="component.rootClass" />
 				<Assignment variable="component.showOWLAndRDFConcepts"
 					value="false" />
 				<Assignment variable="component.context" value="data.ontology" />
-				<Assignment variable="component.contextOntologyURI" />
-				<Assignment variable="component.rootClassURI" />
-				<Assignment variable="component.project" />
-				<Assignment variable="component.selectableCondition" />
 			</Custom>
 			<Label label="range"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
@@ -206,14 +196,9 @@
 				localize="true" manageDynamicModel="true">
 				<Assignment variable="component.strictMode" value="false" />
 				<Assignment variable="component.hierarchicalMode" value="true" />
-				<Assignment variable="component.rootClass" />
 				<Assignment variable="component.showOWLAndRDFConcepts"
 					value="false" />
 				<Assignment variable="component.context" value="data.ontology" />
-				<Assignment variable="component.contextOntologyURI" />
-				<Assignment variable="component.rootClassURI" />
-				<Assignment variable="component.project" />
-				<Assignment variable="component.selectableCondition" />
 			</Custom>
 			<Label label="datatype"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
