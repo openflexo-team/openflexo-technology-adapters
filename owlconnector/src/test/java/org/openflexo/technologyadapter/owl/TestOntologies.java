@@ -61,9 +61,10 @@ public class TestOntologies extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
-		
+
 		log("test0LoadTestResourceCenter()");
-		testServiceManager = new TestFlexoServiceManager(ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/Ontologies")));
+		testServiceManager = new TestFlexoServiceManager(ResourceLocator.retrieveResourceAsFile(ResourceLocator
+				.locateResource("TestResourceCenter/Ontologies")));
 		owlAdapter = testServiceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) testServiceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 	}
@@ -534,7 +535,7 @@ public class TestOntologies extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(13)
 	public void test12TestLoadCPMFInstanceOntology() {
 		log("test12TestLoadCPMFInstanceOntology()");
-		OWLOntology ontology = ontologyLibrary.getOntology("http://www.cpmf.org/ontologies/cpmfInstance");
+		OWLOntology ontology = ontologyLibrary.getOntology("http://www.cpmf.org/ontologies/cpmfInstance/1.0");
 		assertNotNull(ontology);
 
 		ontology.loadWhenUnloaded();
