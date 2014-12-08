@@ -604,10 +604,6 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 						makeNewObjectProperty(ontProperty);
 					} else {
 						OWLObjectProperty p = makeNewObjectProperty(ontProperty);
-						System.out.println("Build OWLObjectProperty " + p);
-						System.out.println("Domain=" + p.getDomain());
-						System.out.println("Range=" + p.getRange());
-						System.out.println("name=" + p.getName());
 					}
 				} else {
 					// default behaviour: create object property
