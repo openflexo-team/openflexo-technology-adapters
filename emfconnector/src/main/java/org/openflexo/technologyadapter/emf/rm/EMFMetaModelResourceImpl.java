@@ -79,7 +79,10 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 		FileFlexoIODelegate ffd = (FileFlexoIODelegate) getFlexoIODelegate();
 		File f = ffd.getFile();
 
-		// Load class and instanciate.
+		// TODO: this should be totally refactored since IODelegate have been introduced
+		// See with Christophe: IODelegate should be a wrapper above eclipse resource
+		// > Eclipse Resource Center
+		// See TA-46
 
 		try {
 			if (f != null) {
@@ -106,7 +109,7 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 							EMFMetaModelConverter converter = new EMFMetaModelConverter(getTechnologyAdapter());
 							result = converter.convertMetaModel(getPackage());
 							result.setResource(this);
-							//this.resourceData = result;
+							// this.resourceData = result;
 							setResourceData(result);
 						}
 					}
