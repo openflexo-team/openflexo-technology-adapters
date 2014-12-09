@@ -228,21 +228,21 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		 * @param element
 		 */
 		// public void applyToGraphicalRepresentation(GR gr, DiagramElement<GR> element) {
-		public void applyToGraphicalRepresentation(FlexoConceptInstance epi, GraphicalElementRole<?, GR> patternRole) {
-			/*if (getValue().toString().equals(
-					"(property.label.asString + ((inputAttributeReference.value != \"\") ? (\"=\" + inputAttributeReference.value) : \"\"))")) {
-				System.out.println("value=" + getValue());
-				System.out.println("hasBinding=" + getValue().hasBinding());
-				System.out.println("valid=" + getValue().isValid());
-				System.out.println("reason=" + getValue().getBinding().invalidBindingReason());
-				System.out.println("EPI=" + element.getFlexoConceptInstance().debug());
-				System.out.println("Result=" + getValue().getBindingValue(element.getFlexoConceptInstance()));
-				System.out.println("Hop");
-			}*/
+		public void applyToGraphicalRepresentation(FlexoConceptInstance fci, GraphicalElementRole<?, GR> patternRole) {
 
 			try {
-				DiagramElement<GR> diagramElement = epi.getFlexoActor(patternRole);
-				getFeature().applyToGraphicalRepresentation(diagramElement.getGraphicalRepresentation(), getValue().getBindingValue(epi));
+
+				/*if (getValue().toString().equals("company.companyName")) {
+					System.out.println("applyToGraphicalRepresentation in GraphicalElementSpecification for feature " + getFeatureName());
+					System.out.println("value=" + getValue());
+					System.out.println("valid=" + getValue().isValid());
+					System.out.println("reason=" + getValue().invalidBindingReason());
+					System.out.println("fci=" + fci);
+					System.out.println("Result=" + getValue().getBindingValue(fci));
+				}*/
+
+				DiagramElement<GR> diagramElement = fci.getFlexoActor(patternRole);
+				getFeature().applyToGraphicalRepresentation(diagramElement.getGraphicalRepresentation(), getValue().getBindingValue(fci));
 				// getFeature().applyToGraphicalRepresentation(gr, (T) getValue().getBindingValue(element.getFlexoConceptInstance()));
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();

@@ -88,11 +88,11 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 			throw new InvalidParameterException("shape name is undefined");
 		}
 
-		System.out.println("getFocusedObject()=" + getFocusedObject());
-		System.out.println("getFocusedObject().getDiagram()=" + getFocusedObject().getDiagram());
-		System.out.println("getFocusedObject().getDiagram().getDiagramFactory()=" + getFocusedObject().getDiagram().getDiagramFactory());
+		// System.out.println("getFocusedObject()=" + getFocusedObject());
+		// System.out.println("getFocusedObject().getDiagram()=" + getFocusedObject().getDiagram());
+		// System.out.println("getFocusedObject().getDiagram().getDiagramFactory()=" + getFocusedObject().getDiagram().getDiagramFactory());
 
-		System.out.println("GR=" + getGraphicalRepresentation());
+		// System.out.println("GR=" + getGraphicalRepresentation());
 
 		newShape = getFocusedObject().getDiagram().getDiagramFactory()
 				.makeNewShape(getNewShapeName(), getGraphicalRepresentation(), getParent());
@@ -105,8 +105,8 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 
 		logger.info("Added shape " + newShape + " under " + getParent());
 
-		System.out.println("newShape=" + newShape);
-		System.out.println("diagram=" + newShape.getDiagram());
+		// System.out.println("newShape=" + newShape);
+		// System.out.println("diagram=" + newShape.getDiagram());
 	}
 
 	public DiagramShape getNewShape() {

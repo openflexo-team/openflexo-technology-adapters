@@ -57,6 +57,8 @@ import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 public interface DiagramElement<G extends GraphicalRepresentation> extends FlexoObject, InnerResourceData<Diagram>,
 		TechnologyObject<DiagramTechnologyAdapter>, BindingEvaluationContext, Cloneable, Observer {
 
+	public static final String INVALIDATE = "invalidate";
+
 	public static final String GRAPHICAL_REPRESENTATION = "graphicalRepresentation";
 	public static final String NAME = "name";
 	public static final String PARENT = "parent";

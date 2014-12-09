@@ -58,6 +58,7 @@ import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindi
 import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.StringUtils;
@@ -274,7 +275,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			// Since the shape has been added BEFORE the FlexoConceptInstance has been set, the drawing only knows about the DiagamShape,
 			// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
 			// sure that the Drawing can discover that the new shape is FML-controlled
-			newShape.getParent().getPropertyChangeSupport().firePropertyChange("invalidate", null, newShape.getParent());
+			newShape.getParent().getPropertyChangeSupport().firePropertyChange(DiagramElement.INVALIDATE, null, newShape.getParent());
 		}
 	}
 
