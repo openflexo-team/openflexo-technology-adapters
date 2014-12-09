@@ -57,14 +57,14 @@ import org.openflexo.fge.geom.FGEShape;
 import org.openflexo.fge.graphics.FGEGraphics;
 import org.openflexo.fge.swing.paint.FGEPaintManager;
 import org.openflexo.fge.swing.view.JShapeView;
-import org.openflexo.foundation.viewpoint.FlexoConcept;
+import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramShape.DropAndLinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.AddConnector;
 import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
@@ -341,10 +341,21 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 
 	private void askAndApplyDropAndLinkScheme(final FGEPoint dropLocation, DrawingTreeNode<?, ?> focused) {
 
-		DiagramContainerElement<?> container = null;
-		FlexoConcept containerConcept = null;
+		FlexoConceptInstance parentFlexoConceptInstance = null;
+		ShapeRole parentShapeRole = null;
 
+		if (focused.getDrawable() instanceof FMLControlledDiagramElement) {
+			parentFlexoConceptInstance = ((FMLControlledDiagramElement<?, ?>) focused.getDrawable()).getFlexoConceptInstance();
+		}
 		if (focused.getDrawable() instanceof FMLControlledDiagramShape) {
+			parentShapeRole = (ShapeRole) ((FMLControlledDiagramShape) focused.getDrawable()).getRole();
+		}
+
+		if (parentFlexoConceptInstance == null || parentShapeRole == null) {
+			return;
+		}
+
+		/*if (focused.getDrawable() instanceof FMLControlledDiagramShape) {
 			container = ((FMLControlledDiagramShape) focused.getDrawable()).getDiagramElement();
 			containerConcept = ((FMLControlledDiagramShape) focused.getDrawable()).getFlexoConceptInstance().getFlexoConcept();
 		} else if (focused.getDrawable() instanceof Diagram) {
@@ -354,16 +365,17 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 
 		if (container == null) {
 			return;
-		}
+		}*/
 
-		List<DropAndLinkScheme> allDropAndLinkSchemes = getNode().getDrawable().getAvailableDropAndLinkSchemes(containerConcept);
+		List<DropAndLinkScheme> allDropAndLinkSchemes = getNode().getDrawable().getAvailableDropAndLinkSchemes(
+				parentFlexoConceptInstance.getFlexoConcept());
 
 		if (allDropAndLinkSchemes.size() == 0) {
 			return;
 		}
 
 		else if (allDropAndLinkSchemes.size() == 1) {
-			applyDropAndLinkScheme(allDropAndLinkSchemes.get(0), dropLocation, container);
+			applyDropAndLinkScheme(allDropAndLinkSchemes.get(0), dropLocation, parentFlexoConceptInstance, parentShapeRole);
 		}
 
 		else {
@@ -385,11 +397,14 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				}
 				String withNew = FlexoLocalization.localizedForKey("with_new");
 				JMenuItem menuItem = new JMenuItem(localizedLinkLabel + " " + withNew + " " + localizedDropLabel);
-				final DiagramContainerElement<?> finalContainer = container;
+				// final DiagramContainerElement<?> finalContainer = container;
+				final FlexoConceptInstance finalParentFlexoConceptInstance = parentFlexoConceptInstance;
+				final ShapeRole finalParentShapeRole = parentShapeRole;
+
 				menuItem.addActionListener(new ActionListener() {
 					@Override
 					public void actionPerformed(ActionEvent e) {
-						applyDropAndLinkScheme(dropAndLinkScheme, dropLocation, finalContainer);
+						applyDropAndLinkScheme(dropAndLinkScheme, dropLocation, finalParentFlexoConceptInstance, finalParentShapeRole);
 					}
 				});
 				menuItem.setToolTipText(dropAndLinkScheme.dropScheme.getDescription());
@@ -459,16 +474,18 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	}
 
 	protected void applyDropAndLinkScheme(final DropAndLinkScheme dropAndLinkScheme, final FGEPoint dropLocation,
-			DiagramContainerElement<?> container) {
-		applyDropAndLinkScheme(dropAndLinkScheme.dropScheme, dropAndLinkScheme.linkScheme, dropLocation, container);
+	/*DiagramContainerElement<?> container*/FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole) {
+		applyDropAndLinkScheme(dropAndLinkScheme.dropScheme, dropAndLinkScheme.linkScheme, dropLocation, parentFlexoConceptInstance,
+				parentShapeRole);
 	}
 
 	protected void applyDropAndLinkScheme(DropScheme dropScheme, LinkScheme linkScheme, FGEPoint dropLocation,
-			DiagramContainerElement<?> container) {
+	/*DiagramContainerElement<?> container*/FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole) {
 
-		logger.info("applyDropAndLinkScheme dropScheme=" + dropScheme + " linkScheme=" + linkScheme + " container=" + container);
+		logger.info("applyDropAndLinkScheme dropScheme=" + dropScheme + " linkScheme=" + linkScheme + " parentFlexoConceptInstance="
+				+ parentFlexoConceptInstance + " parentShapeRole=" + parentShapeRole);
 
-		FMLControlledDiagramShape newShape = createNewShape(dropLocation, container, dropScheme);
+		FMLControlledDiagramShape newShape = createNewShape(dropLocation, parentFlexoConceptInstance, parentShapeRole, dropScheme);
 
 		if (newShape != null) {
 			createNewConnector(getNode().getDrawable(), newShape, linkScheme);
@@ -483,12 +500,14 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		currentDraggingLocationInDrawingView = null;
 	}
 
-	private FMLControlledDiagramShape createNewShape(FGEPoint dropLocation, DiagramContainerElement<?> container, DropScheme dropScheme) {
+	private FMLControlledDiagramShape createNewShape(FGEPoint dropLocation, /*DiagramContainerElement<?> container*/
+			FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole, DropScheme dropScheme) {
 
 		DropSchemeAction dropSchemeAction = DropSchemeAction.actionType.makeNewAction(getNode().getDrawable().getFlexoConceptInstance()
 				.getVirtualModelInstance(), null, controller.getFlexoController().getEditor());
 		dropSchemeAction.setDropScheme(dropScheme);
-		dropSchemeAction.setParent(container);
+		// dropSchemeAction.setParent(container);
+		dropSchemeAction.setParentInformations(parentFlexoConceptInstance, parentShapeRole);
 		dropSchemeAction.setDropLocation(dropLocation);
 		dropSchemeAction.escapeParameterRetrievingWhenValid = true;
 		dropSchemeAction.doAction();

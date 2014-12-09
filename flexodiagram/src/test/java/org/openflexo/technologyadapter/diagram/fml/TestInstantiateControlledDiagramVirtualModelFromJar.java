@@ -74,7 +74,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 	private static View newView;
 	private static VirtualModelInstance newVirtualModelInstance;
 	private static Diagram diagram;
-	
+
 	private static FlexoResourceCenter jarResourceCenter;
 
 	/**
@@ -84,10 +84,11 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 	@TestOrder(1)
 	public void testLoadViewPoint() {
 		instanciateTestServiceManager();
-		JarResourceCenter.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
-		
-		for(FlexoResourceCenter rc : getFlexoServiceManager().getResourceCenterService().getResourceCenters()){
-			if(rc instanceof JarResourceCenter){
+		JarResourceCenter
+				.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
+
+		for (FlexoResourceCenter rc : getFlexoServiceManager().getResourceCenterService().getResourceCenters()) {
+			if (rc instanceof JarResourceCenter) {
 				jarResourceCenter = rc;
 			}
 		}
@@ -108,7 +109,8 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 
 		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				DiagramTechnologyAdapter.class);
-		DiagramSpecificationRepository repository = (DiagramSpecificationRepository) jarResourceCenter.getRepository(DiagramSpecificationRepository.class, diagramTA);
+		DiagramSpecificationRepository repository = (DiagramSpecificationRepository) jarResourceCenter.getRepository(
+				DiagramSpecificationRepository.class, diagramTA);
 		DiagramSpecificationResource diagramSpecificationResource = repository
 				.getResource("http://openflexo.org/test/TestDiagramSpecification2");
 		assertNotNull(diagramSpecificationResource);
@@ -228,7 +230,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 
 		DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(newVirtualModelInstance, null, editor);
 		action.setDropScheme(dropScheme);
-		action.setParent(diagram);
+		// action.setParent(diagram);
 		// action.setPaletteElement(paletteElement);
 		action.setDropLocation(new FGEPoint(100, 100));
 
@@ -274,8 +276,9 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		log("testReloadProject()");
 
 		instanciateTestServiceManager();
-		JarResourceCenter.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
-		
+		JarResourceCenter
+				.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
+
 		editor = reloadProject(project.getDirectory());
 		project = editor.getProject();
 		assertNotNull(editor);

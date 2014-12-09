@@ -42,6 +42,7 @@ import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
@@ -90,10 +91,12 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 		FlexoObjectImpl.addActionForClass(actionType, VirtualModelInstance.class);
 	}
 
-	private DiagramContainerElement<?> _parent;
 	private DiagramPaletteElement _paletteElement;
 	private DropScheme _dropScheme;
 	private DiagramShape _primaryShape;
+
+	private FlexoConceptInstance parentConceptInstance;
+	private ShapeRole parentShapeRole;
 
 	private FGEPoint dropLocation;
 
@@ -127,20 +130,25 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 		System.out.println("3-isModified=" + getVirtualModelInstance().isModified());
 	}
 
-	public DiagramContainerElement<?> getParent() {
-		if (_parent == null) {
-			/*if (getFocusedObject() instanceof DiagramShape) {
-				_parent = (DiagramShape) getFocusedObject();
-			} else if (getFocusedObject() instanceof DiagramRootPane) {
-				_parent = (DiagramRootPane) getFocusedObject();
-			}*/
-			_parent = getDiagram();
-		}
-		return _parent;
+	public void setParentInformations(FlexoConceptInstance parentConceptInstance, ShapeRole parentShapeRole) {
+		this.parentConceptInstance = parentConceptInstance;
+		this.parentShapeRole = parentShapeRole;
 	}
 
-	public void setParent(DiagramContainerElement<?> parent) {
-		_parent = parent;
+	public FlexoConceptInstance getParentConceptInstance() {
+		return parentConceptInstance;
+	}
+
+	public ShapeRole getParentShapeRole() {
+		return parentShapeRole;
+	}
+
+	public DiagramContainerElement<?> getParent() {
+		if (parentConceptInstance == null) {
+			return getDiagram();
+		} else {
+			return parentConceptInstance.getFlexoActor(getParentShapeRole());
+		}
 	}
 
 	@Override
@@ -199,7 +207,8 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 				gr.setY(dropLocation.getY());
 
 				// Temporary comment this portion of code if child shapes are declared inside this shape
-				if (!action.getFlexoRole().containsShapes() && action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
+				if (!action.getFlexoRole().containsShapes()
+						&& action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
 					ShapeBorder border = gr.getBorder();
 					ShapeBorder newBorder = gr.getFactory().makeShapeBorder(border);
 					boolean requireNewBorder = false;
@@ -256,12 +265,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	@Override
 	public Object getValue(BindingVariable variable) {
 		if (variable.getVariableName().equals(DropSchemeBindingModel.TARGET) && _dropScheme.getTargetFlexoConcept() != null) {
-			/*if (getParent() instanceof DiagramShape) {
-				return ((DiagramShape) getParent()).getFlexoConceptInstance();
-			}*/
-			// TODO
-			logger.warning("Please implement getValue() for target");
-			return null;
+			return parentConceptInstance;
 		}
 		return super.getValue(variable);
 	}
