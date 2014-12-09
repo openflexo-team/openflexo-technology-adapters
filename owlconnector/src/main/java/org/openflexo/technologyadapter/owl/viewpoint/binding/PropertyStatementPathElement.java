@@ -61,6 +61,11 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 		return property.getDisplayableDescription();
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + ": " + getLabel() + "[" + property + "]";
+	}
+
 	public static class DataPropertyStatementPathElement extends PropertyStatementPathElement {
 
 		private DataPropertyStatementPathElement(BindingPathElement parent, OWLDataProperty property) {
