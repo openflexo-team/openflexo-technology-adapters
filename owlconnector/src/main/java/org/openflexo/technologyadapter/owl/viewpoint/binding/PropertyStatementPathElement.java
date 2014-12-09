@@ -61,6 +61,11 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 		return property.getDisplayableDescription();
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + ": " + getLabel() + "[" + property + "]";
+	}
+
 	public static class DataPropertyStatementPathElement extends PropertyStatementPathElement {
 
 		private DataPropertyStatementPathElement(BindingPathElement parent, OWLDataProperty property) {
@@ -124,6 +129,9 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 
 		@Override
 		public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
+			if (target instanceof OWLIndividual) {
+				return ((OWLIndividual) target).getPropertyValue(getProperty());
+			}
 			logger.warning("Please implement me, target=" + target + " context=" + context);
 			return null;
 		}
@@ -148,6 +156,9 @@ public abstract class PropertyStatementPathElement extends SimplePathElement {
 
 		@Override
 		public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
+			if (target instanceof OWLIndividual) {
+				return ((OWLIndividual) target).getPropertyValue(getProperty());
+			}
 			logger.warning("Please implement me, target=" + target + " context=" + context);
 			return null;
 		}

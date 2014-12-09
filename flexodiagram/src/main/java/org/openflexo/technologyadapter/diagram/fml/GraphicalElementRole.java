@@ -18,8 +18,16 @@ import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.view.ModelObjectActorReference;
 import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.viewpoint.FlexoRole;
-import org.openflexo.model.annotations.*;
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.diagram.FreeDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementAction.ActionMask;
@@ -51,7 +59,6 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			gr.setText(value);
 		}
 	}
-
 
 	public static GraphicalFeature<Boolean, GraphicalRepresentation> VISIBLE_FEATURE = new GraphicalFeature<Boolean, GraphicalRepresentation>(
 			"visible", GraphicalRepresentation.IS_VISIBLE) {
@@ -252,8 +259,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				getGraphicalRepresentation().setsWith(graphicalRepresentation);
 				setChanged();
 				notifyObservers(new GraphicalRepresentationModified(this, graphicalRepresentation));
-			}
-			else {
+			} else {
 				setGraphicalRepresentation(graphicalRepresentation);
 			}
 		}
@@ -271,8 +277,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					public DataBinding.BindingDefinitionType getBindingDefinitionType() {
 						if (getReadOnlyLabel()) {
 							return DataBinding.BindingDefinitionType.GET;
-						}
-						else {
+						} else {
 							return DataBinding.BindingDefinitionType.GET_SET;
 						}
 					}
@@ -446,8 +451,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public List<GraphicalElementSpecification<?, GR>> getGrSpecifications() {
 			if (grSpecifications == null && getVirtualModelFactory() != null) {
 				initDefaultSpecifications();
-			}
-			else if (grSpecifications == null) {
+			} else if (grSpecifications == null) {
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 			}
 			return grSpecifications;
@@ -492,13 +496,11 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		private <T2> void registerGRSpecification(GraphicalElementSpecification<T2, GR> aSpec) {
-			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(
-					aSpec
-							.getFeatureName());
+			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(aSpec
+					.getFeatureName());
 			if (existingSpec == null) {
 				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
-			}
-			else {
+			} else {
 				existingSpec.setValue(aSpec.getValue());
 				existingSpec.setReadOnly(aSpec.getReadOnly());
 			}
@@ -512,8 +514,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					// Factory is not accessible yet, and thus, GRSpecs not available yet
 					// We store it in pendingGRSpecs for future use
 					pendingGRSpecs.add(aSpec);
-				}
-				else {
+				} else {
 					registerGRSpecification(aSpec);
 				}
 			}
@@ -524,8 +525,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			GraphicalElementSpecification<?, ?> existingSpec = getGraphicalElementSpecification(aSpec.getFeatureName());
 			if (existingSpec == null) {
 				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
-			}
-			else {
+			} else {
 				existingSpec.setValue(null);
 			}
 		}

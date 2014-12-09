@@ -852,7 +852,6 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 		if (redefineSubClasses) {
 			for (OWLClass subClass : returned.getOriginalDefinition().getSubClasses(this)) {
-				System.out.println("Comme subclass j'ai ca: " + subClass);
 				if (!subClass.redefinesOriginalDefinition()) {
 					redefineClass(subClass.getOntResource(), false);
 				}

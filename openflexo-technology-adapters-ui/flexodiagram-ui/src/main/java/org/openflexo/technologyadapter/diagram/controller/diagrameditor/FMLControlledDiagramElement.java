@@ -19,6 +19,8 @@
  */
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,9 +53,26 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 @ImplementationClass(FMLControlledDiagramElement.FMLControlledDiagramElementImpl.class)
 public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends FlexoObject {
 
+	public static final String DRAWING_KEY = "drawing";
 	public static final String FLEXO_CONCEPT_INSTANCE_KEY = "flexoConceptInstance";
 	public static final String DIAGRAM_ELEMENT_KEY = "diagramElement";
 	public static final String ROLE_KEY = "role";
+
+	/**
+	 * Return the {@link FMLControlledDiagramDrawing} where this {@link FMLControlledDiagramElement} is referenced
+	 * 
+	 * @return
+	 */
+	@Getter(value = DRAWING_KEY, ignoreType = true)
+	public FMLControlledDiagramDrawing getDrawing();
+
+	/**
+	 * Sets the {@link FMLControlledDiagramDrawing} where this {@link FMLControlledDiagramElement} is referenced
+	 * 
+	 * @param aFlexoConceptInstance
+	 */
+	@Setter(DRAWING_KEY)
+	public void setDrawing(FMLControlledDiagramDrawing aDrawing);
 
 	/**
 	 * Return the {@link FlexoConceptInstance} where {@link DiagramElement} is referenced
@@ -107,9 +126,33 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 	public void setLabel(String aName);
 
 	public static abstract class FMLControlledDiagramElementImpl<E extends DiagramElement<GR>, GR extends GraphicalRepresentation>
-			implements FMLControlledDiagramElement<E, GR> {
+			implements FMLControlledDiagramElement<E, GR>, PropertyChangeListener {
 
 		private final Map<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>> listeners = new HashMap<GraphicalElementSpecification<?, GR>, BindingValueChangeListener<?>>();
+
+		@Override
+		public void setDiagramElement(E diagramElement) {
+			if (getDiagramElement() != diagramElement) {
+				if (getDiagramElement() != null) {
+					getDiagramElement().getPropertyChangeSupport().removePropertyChangeListener(this);
+				}
+				performSuperSetter(DIAGRAM_ELEMENT_KEY, diagramElement);
+				if (diagramElement != null) {
+					diagramElement.getPropertyChangeSupport().addPropertyChangeListener(this);
+				}
+			}
+		}
+
+		@Override
+		public void propertyChange(PropertyChangeEvent evt) {
+			if (evt.getPropertyName().equals(DiagramElement.INVALIDATE)) {
+				// We detect here that the shape which is the graphical facet of this FMLControlledDiagramElement
+				// changed it's hierarchy. We have here to propagate this event from this FMLControlledDiagramElement.
+				// This notification will be caught by the FMLControlledDiagramDrawing, and relevant GRStructureVisitor
+				// will be called
+				getPropertyChangeSupport().firePropertyChange(DiagramElement.INVALIDATE, null, getDiagramElement());
+			}
+		}
 
 		@Override
 		public void setRole(GraphicalElementRole<E, GR> aRole) {
@@ -154,7 +197,26 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 		@Override
 		public String getLabel() {
 			if (getRole() != null && getRole().getLabel() != null) {
+
 				try {
+
+					/*if (getRole().getLabel().toString().equals("company.companyName")) {
+						System.out.println("OK, faut que je calcule le label pour " + getFlexoConceptInstance().getStringRepresentation());
+						System.out.println("Je tombe sur " + getRole().getLabel().getBindingValue(getFlexoConceptInstance()));
+						System.out.println("value=" + getRole().getLabel());*/
+					// System.out.println("valid=" + getRole().getLabel().isValid());
+					// System.out.println("reason=" + getRole().getLabel().invalidBindingReason());
+					// Thread.dumpStack();
+
+					/*if (!getRole().getLabel().isValid()) {
+						getRole().getLabel().markedAsToBeReanalized();
+						System.out.println("et maintenant pour value=" + getRole().getLabel());
+						System.out.println("valid=" + getRole().getLabel().isValid());
+						System.out.println("reason=" + getRole().getLabel().invalidBindingReason());
+					}*/
+
+					// }
+
 					return getRole().getLabel().getBindingValue(getFlexoConceptInstance());
 				} catch (TypeMismatchException e) {
 					// TODO Auto-generated catch block
