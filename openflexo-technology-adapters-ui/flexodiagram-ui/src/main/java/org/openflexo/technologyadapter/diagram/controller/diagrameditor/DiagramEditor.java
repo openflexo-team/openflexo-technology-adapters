@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2013-2014	Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -197,7 +197,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 					|| shapeGR.getShapeSpecification().getShapeType() == ShapeType.CIRCLE) {
 				shapeGR.setWidth(40);
 				shapeGR.setHeight(40);
-			} else {
+			}
+			else {
 				shapeGR.setWidth(50);
 				shapeGR.setHeight(40);
 			}
@@ -325,7 +326,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			public void stateChanged(ChangeEvent e) {
 				if (paletteView.getSelectedIndex() < orderedPalettes.size()) {
 					activatePalette(contextualPalettes.get(orderedPalettes.elementAt(paletteView.getSelectedIndex())));
-				} else if (paletteView.getSelectedIndex() == orderedPalettes.size()) {
+				}
+				else if (paletteView.getSelectedIndex() == orderedPalettes.size()) {
 					activatePalette(getCommonPalette());
 				}
 			}
@@ -333,7 +335,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		paletteView.setSelectedIndex(0);
 		if (orderedPalettes.size() > 0) {
 			activatePalette(contextualPalettes.get(orderedPalettes.firstElement()));
-		} else {
+		}
+		else {
 			activatePalette(getCommonPalette());
 		}
 		return paletteView;
@@ -342,32 +345,36 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	@Override
 	public void propertyChange(PropertyChangeEvent evt) {
 		super.propertyChange(evt);
-		if (evt.getSource() == getDiagram().getDiagramSpecification() && paletteView != null) {
-			if (evt.getPropertyName().equals(DiagramSpecification.PALETTES_KEY)) {
-				if (evt.getNewValue() instanceof DiagramPalette) {
-					logger.info("Handling palette added");
-					DiagramPalette palette = (DiagramPalette) evt.getNewValue();
-					ContextualPalette newContextualPalette = new ContextualPalette(palette, this);
-					contextualPaletteModels.put(palette, newContextualPalette);
-					JDianaPalette dianaPalette = swingToolFactory.makeDianaPalette(newContextualPalette);
-					dianaPalette.attachToEditor(this);
-					contextualPalettes.put(palette, dianaPalette);
-					paletteView.add(palette.getName(), dianaPalette.getPaletteViewInScrollPane());
-					paletteView.revalidate();
-					paletteView.repaint();
-				} else if (evt.getOldValue() instanceof DiagramPalette) {
-					logger.info("Handling palette removed");
-					DiagramPalette palette = (DiagramPalette) evt.getOldValue();
-					JDianaPalette removedPalette = contextualPalettes.get(palette);
-					removedPalette.delete();
-					AbstractDiagramPalette removedPaletteModel = contextualPaletteModels.get(palette);
-					removedPaletteModel.delete();
-					// unregisterPalette(removedPalette);
-					contextualPalettes.remove(palette);
-					contextualPaletteModels.remove(palette);
-					paletteView.remove(removedPalette.getPaletteViewInScrollPane());
-					paletteView.revalidate();
-					paletteView.repaint();
+		// Prevent DiagramSpecification load (deserialization) during evt management thats causes deadlock
+		if (evt.getSource() != getDrawing()) {
+			if (evt.getSource() == getDiagram().getDiagramSpecification() && paletteView != null) {
+				if (evt.getPropertyName().equals(DiagramSpecification.PALETTES_KEY)) {
+					if (evt.getNewValue() instanceof DiagramPalette) {
+						logger.info("Handling palette added");
+						DiagramPalette palette = (DiagramPalette) evt.getNewValue();
+						ContextualPalette newContextualPalette = new ContextualPalette(palette, this);
+						contextualPaletteModels.put(palette, newContextualPalette);
+						JDianaPalette dianaPalette = swingToolFactory.makeDianaPalette(newContextualPalette);
+						dianaPalette.attachToEditor(this);
+						contextualPalettes.put(palette, dianaPalette);
+						paletteView.add(palette.getName(), dianaPalette.getPaletteViewInScrollPane());
+						paletteView.revalidate();
+						paletteView.repaint();
+					}
+					else if (evt.getOldValue() instanceof DiagramPalette) {
+						logger.info("Handling palette removed");
+						DiagramPalette palette = (DiagramPalette) evt.getOldValue();
+						JDianaPalette removedPalette = contextualPalettes.get(palette);
+						removedPalette.delete();
+						AbstractDiagramPalette removedPaletteModel = contextualPaletteModels.get(palette);
+						removedPaletteModel.delete();
+						// unregisterPalette(removedPalette);
+						contextualPalettes.remove(palette);
+						contextualPaletteModels.remove(palette);
+						paletteView.remove(removedPalette.getPaletteViewInScrollPane());
+						paletteView.revalidate();
+						paletteView.repaint();
+					}
 				}
 			}
 		}
@@ -393,7 +400,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 			}
 			getPaletteView().revalidate();
 			getPaletteView().repaint();
-		} else {
+		}
+		else {
 			logger.warning("updatePalette() called with null value for paletteView");
 		}
 	}
