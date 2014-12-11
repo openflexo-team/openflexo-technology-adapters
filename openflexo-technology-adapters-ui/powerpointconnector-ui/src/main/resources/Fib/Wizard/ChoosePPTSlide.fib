@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false"
+	opaque="false" layout="twocols"
+	controllerClassName="org.openflexo.view.controller.FlexoFIBController"
+	border="empty" trackViewPortWidth="true"
+	dataClassName="org.openflexo.technologyadapter.powerpoint.controller.ChoosePPTSlide"
+	titleFont="Lucida Grande,0,13" trackViewPortHeight="true">
+	<LocalizedDictionary id="1" />
+	<Label id="2" manageDynamicModel="false" useScrollBar="false"
+		controllerClassName="org.openflexo.fib.controller.FIBController"
+		localize="true" align="left"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		label="name" readOnly="false"/>
+	<TextField id="3" passwd="false" manageDynamicModel="false"
+		useScrollBar="false" data="data.diagramName" columns="7" name="DiagramName"
+		controllerClassName="org.openflexo.fib.controller.FIBController" text="TextField"
+		localize="true"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		readOnly="false" validateOnReturn="false" enable="data.selectedSlideShow != null"/>
+	<Label id="4" manageDynamicModel="false" useScrollBar="false"
+		controllerClassName="org.openflexo.fib.controller.FIBController"
+		localize="true" align="left"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		label="title" readOnly="false"/>
+	<TextField id="5" passwd="false" manageDynamicModel="false"
+		useScrollBar="false" data="data.diagramTitle" columns="7" name="DiagramTitle"
+		controllerClassName="org.openflexo.fib.controller.FIBController" text="TextField"
+		localize="true"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		readOnly="false" validateOnReturn="false" enable="data.selectedSlideShow != null"/>
+	<Label id="6" manageDynamicModel="false" useScrollBar="false"
+		controllerClassName="org.openflexo.fib.controller.FIBController"
+		localize="true" align="left"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		label="select_a_powerpoint_file" readOnly="false" />
+	<File id="7" manageDynamicModel="true" useScrollBar="false" data="data.file"
+		mode="OpenMode" name="PPTFile" controllerClassName="org.openflexo.fib.controller.FIBController"
+		localize="true"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		readOnly="false" isDirectory="false" filter=".ppt" />
+	<Table id="8" showFooter="false" visible="(data.selectedSlideShow != null)"
+		manageDynamicModel="true" enable="(data.currentSlides.size &gt; 0)"
+		selectionMode="SingleSelection" boundToSelectionManager="false"
+		controllerClassName="org.openflexo.fib.controller.FIBController"
+		localize="true"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=true;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		visibleRowCount="4" createNewRowOnClick="false" rowHeight="70"
+		iteratorClassName="org.apache.poi.hslf.model.Slide" useScrollBar="false"
+		backgroundNonSelectionColor="255,255,255" data="data.currentSlides"
+		selected="data.slide" autoSelectFirstRow="true" name="SelectedSlideTable"
+		readOnly="false" backgroundSecondarySelectionColor="178,215,255">
+		<NumberColumn id="9" data="iterator.slideNumber"
+			numberType="IntegerType" displayTitle="false" title="slide_number"
+			name="number" columnWidth="20" resizable="false" showIcon="false" />
+		<IconColumn id="10" data="data.getMiniature(iterator)"
+			displayTitle="false" title="slide_snapshot" name="icon" columnWidth="90"
+			resizable="true" showIcon="false" />
+	</Table>
+	<Image id="11" manageDynamicModel="true" useScrollBar="false"
+		data="data.getOverview(SelectedSlideTable.selected).getImage()"
+		sizeAdjustment="FitToAvailableSizeRespectRatio"
+		controllerClassName="org.openflexo.fib.controller.FIBController"
+		imageHeight="32" localize="true" align="center"
+		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=true;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		readOnly="false" imageWidth="32" />
+</Panel>
