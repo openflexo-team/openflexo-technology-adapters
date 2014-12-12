@@ -32,8 +32,8 @@ public class BasicExcelModelSlotInstanceConfiguration extends FreeModelSlotInsta
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		if (!getFilename().endsWith(".xls")) {
-			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.xls_suffix"));
+		if (!getFilename().endsWith(".xls") && !getFilename().endsWith(".xlsx")) {
+			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.xls_or_.xlsx_suffix"));
 			return false;
 		}
 		return true;
