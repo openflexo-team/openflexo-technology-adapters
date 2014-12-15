@@ -21,7 +21,7 @@
 		<flexodocresourcemanager.version>1.7.0-SNAPSHOT</flexodocresourcemanager.version>
 		<flexocore.version>1.7.0-SNAPSHOT</flexocore.version>
 		<flexomodules.testversion>1.7.0-SNAPSHOT</flexomodules.testversion>
-		<poi.version>3.10-FINAL</poi.version>
+		<poi.version>3.11-beta3</poi.version>
 	</properties>
 	<scm>
 		<connection>scm:git:ssh://git@github.com/openflexo-team/openflexo-technology-adapters.git</connection>
