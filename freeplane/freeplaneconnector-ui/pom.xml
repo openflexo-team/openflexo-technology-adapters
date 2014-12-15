@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexoviewpointmodeler</artifactId>
-			<version>${project.version}</version>
+			<version>${flexomodules.testversion}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
