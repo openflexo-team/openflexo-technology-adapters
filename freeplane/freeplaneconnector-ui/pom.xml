@@ -14,7 +14,7 @@
 		<dependency>
 			<groupId>org.openflexo.technologyadapter</groupId>
 			<artifactId>freeplaneconnector</artifactId>
-			<version>1.7.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
@@ -37,7 +37,7 @@
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexoviewpointmodeler</artifactId>
-			<version>1.7.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
