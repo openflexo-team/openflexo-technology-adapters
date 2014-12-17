@@ -38,6 +38,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementSpecification;
+import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 
 /**
@@ -133,6 +134,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 		@Override
 		public void setDiagramElement(E diagramElement) {
 			if (getDiagramElement() != diagramElement) {
+				E oldValue = getDiagramElement();
 				if (getDiagramElement() != null) {
 					getDiagramElement().getPropertyChangeSupport().removePropertyChangeListener(this);
 				}
@@ -140,6 +142,18 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 				if (diagramElement != null) {
 					diagramElement.getPropertyChangeSupport().addPropertyChangeListener(this);
 				}
+
+				if (oldValue == null && diagramElement != null) {
+					// We handle here the fact that a FMLControlledDiagramElement was identified and managed
+					// But a its creation, GR is null because diagramElement was null
+					// Now that we have access to the diagram element, GR could be retrieved
+					// But we also need to notify the parent that this diagram element is now to be managed	
+					if (diagramElement.getParent() != null) {
+						diagramElement.getParent().getPropertyChangeSupport()
+								.firePropertyChange(DiagramContainerElement.SHAPES, null, diagramElement.getParent().getShapes());
+					}
+				}
+
 			}
 		}
 
@@ -190,7 +204,12 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 				l.delete();
 			}
 			listeners.clear();
-			return false;
+			return performSuperDelete(context);
+		}
+
+		@Override
+		public boolean undelete() {
+			return performSuperUndelete();
 		}
 
 		// TODO: do it generically for all GRSpecs
