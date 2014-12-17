@@ -42,12 +42,12 @@ import org.openflexo.fge.control.actions.MouseDragControlActionImpl;
 import org.openflexo.fge.control.actions.MouseDragControlImpl;
 import org.openflexo.fge.swing.control.JMouseControlContext;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
 import org.openflexo.foundation.view.FlexoConceptInstance;
 import org.openflexo.foundation.viewpoint.FlexoConcept;
 import org.openflexo.foundation.viewpoint.VirtualModel;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.factory.EditingContext;
-import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -104,8 +104,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
 					if (controller instanceof FMLControlledDiagramEditor) {
 						handleFMLControlledEdge(controller, context);
-					}
-					else {
+					} else {
 						performAddDefaultConnector(controller);
 					}
 
@@ -130,14 +129,14 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 		}
 
 		private void performAddDefaultConnector(DiagramEditor controller) {
-			CompoundEdit drawEdgeEdit = editingContext.getUndoManager().startRecording("Draw edge");
+			FlexoActionCompoundEdit drawEdgeEdit = (FlexoActionCompoundEdit) editingContext.getUndoManager().startRecording("Draw edge");
 
 			DiagramShape startShape = controller.getShapeForShapeNode(fromShape);
 			DiagramShape endShape = controller.getShapeForShapeNode(toShape);
 
-			System.out.println("startShape = " + startShape);
-			System.out.println("endShape = " + endShape);
-			System.out.println("controller = " + controller);
+			// System.out.println("startShape = " + startShape);
+			// System.out.println("endShape = " + endShape);
+			// System.out.println("controller = " + controller);
 
 			AddConnector action = AddConnector.actionType.makeNewAction(startShape, null, controller.getFlexoController().getEditor());
 			action.setToShape(endShape);
@@ -152,10 +151,11 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
 			action.setGraphicalRepresentation(connectorGR);
 
+			action.setCompoundEdit(drawEdgeEdit);
 			action.doAction();
 
-			System.out.println("Added new connector !");
-			editingContext.getUndoManager().stopRecording(drawEdgeEdit);
+			// System.out.println("Added new connector !");
+			// editingContext.getUndoManager().stopRecording(drawEdgeEdit);
 			controller.setSelectedObject(controller.getDrawing().getDrawingTreeNode(action.getNewConnector()));
 
 			drawEdge = false;
@@ -165,28 +165,28 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 
 		}
 
-		private void performAddConnector(DiagramEditor controller, ConnectorGraphicalRepresentation connectorGR, String text) {
-			CompoundEdit drawEdgeEdit = editingContext.getUndoManager().startRecording("Draw edge");
+		/*	private void performAddConnector(DiagramEditor controller, ConnectorGraphicalRepresentation connectorGR, String text) {
+				CompoundEdit drawEdgeEdit = editingContext.getUndoManager().startRecording("Draw edge");
 
-			DiagramShape startShape = controller.getShapeForShapeNode(fromShape);
-			DiagramShape endShape = controller.getShapeForShapeNode(toShape);
+				DiagramShape startShape = controller.getShapeForShapeNode(fromShape);
+				DiagramShape endShape = controller.getShapeForShapeNode(toShape);
 
-			AddConnector action = AddConnector.actionType.makeNewAction(startShape, null, controller.getFlexoController().getEditor());
-			action.setToShape(endShape);
-			action.setGraphicalRepresentation(connectorGR);
-			action.setNewConnectorName(text);
-			action.doAction();
+				AddConnector action = AddConnector.actionType.makeNewAction(startShape, null, controller.getFlexoController().getEditor());
+				action.setToShape(endShape);
+				action.setGraphicalRepresentation(connectorGR);
+				action.setNewConnectorName(text);
+				action.doAction();
 
-			System.out.println("Added new connector !");
-			editingContext.getUndoManager().stopRecording(drawEdgeEdit);
-			controller.setSelectedObject(controller.getDrawing().getDrawingTreeNode(action.getNewConnector()));
+				System.out.println("Added new connector !");
+				editingContext.getUndoManager().stopRecording(drawEdgeEdit);
+				controller.setSelectedObject(controller.getDrawing().getDrawingTreeNode(action.getNewConnector()));
 
-			drawEdge = false;
-			fromShape = null;
-			toShape = null;
-			controller.getDrawingView().setDrawEdgeAction(null);
+				drawEdge = false;
+				fromShape = null;
+				toShape = null;
+				controller.getDrawingView().setDrawEdgeAction(null);
 
-		}
+			}*/
 
 		private void handleFMLControlledEdge(final DiagramEditor controller, MouseControlContext context) {
 			// TODO: Choose one of 2 versions
@@ -235,12 +235,10 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 					});
 					popup.add(menuItem);
 					popup.show(controller.getDrawingView(), context.getPoint().x, context.getPoint().y);
-				}
-				else {
+				} else {
 					performAddDefaultConnector(controller);
 				}
-			}
-			else {
+			} else {
 				performAddDefaultConnector(controller);
 			}
 
@@ -292,8 +290,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 				DrawingTreeNode<?, ?> dtn = controller.getDrawingView().getFocusRetriever().getFocusedObject(event);
 				if (dtn instanceof ShapeNode && dtn != fromShape && !fromShape.getAncestors().contains(dtn)) {
 					toShape = (ShapeNode<DiagramShape>) dtn;
-				}
-				else {
+				} else {
 					toShape = null;
 				}
 				currentDraggingLocationInDrawingView = getPointInDrawingView(controller, context);
@@ -318,8 +315,7 @@ public class DrawEdgeControl extends MouseDragControlImpl<DiagramEditor> {
 							.convertRemoteNormalizedPointToLocalViewCoordinates(toShape.getShape().getShape().getCenter(), toShape,
 									controller.getScale());
 					g.setColor(Color.BLUE);
-				}
-				else {
+				} else {
 					g.setColor(Color.RED);
 				}
 				g.drawLine(from.x, from.y, to.x, to.y);
