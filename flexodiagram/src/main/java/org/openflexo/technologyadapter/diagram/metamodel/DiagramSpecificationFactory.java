@@ -38,7 +38,9 @@ public class DiagramSpecificationFactory extends DefaultPamelaResourceModelFacto
 			throws ModelDefinitionException {
 		super(resource, ModelContextLibrary.getModelContext(DiagramSpecification.class));
 		setEditingContext(editingContext);
-		addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
+		if(resource!=null){
+			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
+		}
 	}
 
 	public DiagramSpecification makeNewDiagramSpecification() {

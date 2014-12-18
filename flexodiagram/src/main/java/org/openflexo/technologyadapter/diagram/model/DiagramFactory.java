@@ -56,7 +56,9 @@ public class DiagramFactory extends FGEModelFactoryImpl implements PamelaResourc
 		super(Diagram.class, DiagramShape.class, DiagramConnector.class);
 		this.resource = resource;
 		setEditingContext(editingContext);
-		addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
+		if(resource!=null){
+			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
+		}
 	}
 
 	@Override
