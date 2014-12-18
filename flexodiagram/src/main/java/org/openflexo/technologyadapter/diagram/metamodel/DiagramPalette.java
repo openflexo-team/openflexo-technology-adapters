@@ -98,7 +98,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 	 * @return
 	 */
 	public ScreenshotImage<DiagramPalette> getScreenshotImage();
-	
+
 	@Override
 	public DiagramPaletteResource getResource();
 
@@ -167,11 +167,11 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		}
 
 		@Override
-		public boolean delete() {
+		public boolean delete(Object... context) {
 			if (getDiagramSpecification() != null) {
 				getDiagramSpecification().removeFromPalettes(this);
 			}
-			super.delete();
+			performSuperDelete(context);
 			deleteObservers();
 			return true;
 		}
@@ -194,11 +194,6 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			return null;
 		}
 
-		@Override
-		public boolean isDeleted() {
-			return super.isDeleted();
-		};
-		
 		@Override
 		public Collection<? extends Validable> getEmbeddedValidableObjects() {
 			return getElements();
@@ -294,6 +289,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			return index - o.getIndex();
 		}
 
+		@Override
 		public DiagramTechnologyAdapter getTechnologyAdapter() {
 			return getResource().getServiceManager().getService(TechnologyAdapterService.class)
 					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
@@ -301,9 +297,8 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 
 		private File getExpectedScreenshotImageFile() {
 			if (expectedScreenshotImageFile == null && getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-				FileFlexoIODelegate delegate = (FileFlexoIODelegate)getResource().getFlexoIODelegate();
-				expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(),
-						getName() + ".diagram.png");
+				FileFlexoIODelegate delegate = (FileFlexoIODelegate) getResource().getFlexoIODelegate();
+				expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".diagram.png");
 			}
 			return expectedScreenshotImageFile;
 		}
@@ -341,6 +336,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			return null;
 		}
 
+		@Override
 		public ScreenshotImage<DiagramPalette> getScreenshotImage() {
 			if (screenshotImage == null || screenshotModified) {
 				if (screenshotModified) {

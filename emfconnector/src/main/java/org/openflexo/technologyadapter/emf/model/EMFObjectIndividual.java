@@ -291,7 +291,7 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	}
 
 	@Override
-	public boolean delete() {
+	public boolean delete(Object... context) {
 		// TODO XTOF => implement an actual deletion mechanism
 		// TODO URGENT => there might be a memory leak here !
 		logger.warning("YOU NEED TO IMPLEMENT AN ACTUAL DELETION MECHANISM");
@@ -300,7 +300,7 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 		} else {
 			containingPropertyValue.remove(this);
 		}
-		return super.delete();
+		return super.delete(context);
 	}
 
 	/**
@@ -332,13 +332,12 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 
 		EObject obj = this.getObject();
 		if (property instanceof EMFAttributeDataProperty) {
-			EAttribute Eattr = (EAttribute) ((EMFAttributeDataProperty) property).getObject();
+			EAttribute Eattr = ((EMFAttributeDataProperty) property).getObject();
 			obj.eSet(Eattr, newValue);
-		}
-		else {
+		} else {
 			System.out.println("Property Values can't be modified : " + property);
 		}
-		
+
 		return null;
 	}
 

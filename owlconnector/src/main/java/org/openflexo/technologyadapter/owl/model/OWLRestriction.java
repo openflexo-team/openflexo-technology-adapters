@@ -84,11 +84,6 @@ public abstract class OWLRestriction extends OWLClass implements IFlexoOntologyF
 	}
 
 	@Override
-	public boolean delete() {
-		return super.delete();
-	}
-
-	@Override
 	public abstract Restriction getOntResource();
 
 	@Override

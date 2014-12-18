@@ -33,7 +33,7 @@ public abstract class OWLOperatorClass extends OWLClass {
 
 	private static final Logger logger = Logger.getLogger(OWLOperatorClass.class.getPackage().getName());
 
-	private List<OWLClass> operands;
+	private final List<OWLClass> operands;
 
 	private final BooleanClassDescription booleanClassDescription;
 
@@ -66,11 +66,6 @@ public abstract class OWLOperatorClass extends OWLClass {
 				logger.warning("Cannot find class for " + c);
 			}
 		}
-	}
-
-	@Override
-	public boolean delete() {
-		return super.delete();
 	}
 
 	@Override

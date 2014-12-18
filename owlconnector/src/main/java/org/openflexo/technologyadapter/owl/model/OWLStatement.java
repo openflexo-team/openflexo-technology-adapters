@@ -68,12 +68,12 @@ public abstract class OWLStatement extends OWLObject {
 	}
 
 	@Override
-	public boolean delete() {
+	public boolean delete(Object... context) {
 		if (getSubject() != null && getStatement() != null) {
 			getSubject().getFlexoOntology().getOntModel().remove(getStatement());
 			getSubject().update();
 		}
-		super.delete();
+		super.delete(context);
 		return true;
 	}
 

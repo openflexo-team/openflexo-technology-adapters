@@ -66,11 +66,11 @@ public class OWLClass extends OWLConcept<OntClass> implements IFlexoOntologyClas
 	}
 
 	@Override
-	public boolean delete() {
+	public boolean delete(Object... context) {
 		getFlexoOntology().removeClass(this);
 		getOntResource().remove();
 		getFlexoOntology().updateConceptsAndProperties();
-		super.delete();
+		super.delete(context);
 		deleteObservers();
 		return true;
 	}

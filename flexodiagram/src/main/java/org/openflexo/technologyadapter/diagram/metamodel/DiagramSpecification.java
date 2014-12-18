@@ -273,7 +273,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			if (paletteId == null) {
 				return null;
 			}
-			//loadDiagramPalettesWhenUnloaded();
+			// loadDiagramPalettesWhenUnloaded();
 			for (DiagramPalette p : getPalettes()) {
 				if (paletteId.equals(p.getName())) {
 					return p;
@@ -494,14 +494,14 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 
 		@Override
-		public boolean delete() {
+		public boolean delete(Object... context) {
 			logger.info("Deleting diagram specification " + this);
 
 			// Dereference the resource
 			getServiceManager().getResourceManager().unregisterResource(resource);
 
 			// Delete view
-			super.delete();
+			performSuperDelete(context);
 			// Delete observers
 			deleteObservers();
 			// isDeleted = true;

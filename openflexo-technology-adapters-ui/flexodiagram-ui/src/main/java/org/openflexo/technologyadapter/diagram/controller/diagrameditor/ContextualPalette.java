@@ -189,7 +189,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		}
 
 		@Override
-		public void delete() {
+		public void delete(Object... context) {
 			diagramPaletteElement = null;
 		}
 

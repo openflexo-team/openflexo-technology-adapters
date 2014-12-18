@@ -147,7 +147,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 					// We handle here the fact that a FMLControlledDiagramElement was identified and managed
 					// But a its creation, GR is null because diagramElement was null
 					// Now that we have access to the diagram element, GR could be retrieved
-					// But we also need to notify the parent that this diagram element is now to be managed	
+					// But we also need to notify the parent that this diagram element is now to be managed
 					if (diagramElement.getParent() != null) {
 						diagramElement.getParent().getPropertyChangeSupport()
 								.firePropertyChange(DiagramContainerElement.SHAPES, null, diagramElement.getParent().getShapes());
@@ -208,8 +208,8 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 		}
 
 		@Override
-		public boolean undelete() {
-			return performSuperUndelete();
+		public boolean undelete(boolean restoreProperties) {
+			return performSuperUndelete(restoreProperties);
 		}
 
 		// TODO: do it generically for all GRSpecs

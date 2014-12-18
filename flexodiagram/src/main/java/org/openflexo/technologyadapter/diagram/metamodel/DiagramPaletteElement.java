@@ -119,11 +119,11 @@ public interface DiagramPaletteElement extends DiagramPaletteObject {
 		}
 
 		@Override
-		public boolean delete() {
+		public boolean delete(Object... context) {
 			if (getPalette() != null) {
 				getPalette().removeFromElements(this);
 			}
-			super.delete();
+			performSuperDelete(context);
 			deleteObservers();
 			return true;
 		}
