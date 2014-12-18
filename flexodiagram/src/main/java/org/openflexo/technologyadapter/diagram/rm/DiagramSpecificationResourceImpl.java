@@ -24,7 +24,7 @@ import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.converter.RelativePathFileConverter;
+import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.rm.BasicResourceImpl;
@@ -34,7 +34,6 @@ import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
-import org.openflexo.technologyadapter.diagram.DiagramTechnologyContextManager;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecificationFactory;
 import org.openflexo.toolbox.FlexoVersion;
@@ -71,7 +70,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			
 			returned.setURI(uri);
 			returned.setServiceManager(serviceManager);
-			returned.setRelativePathFileConverter(new RelativePathFileConverter(diagramSpecificationDirectory));
+			returned.setRelativePathResourceConverter(new RelativePathResourceConverter(diagramSpecificationDirectory.getAbsolutePath()));
 			// viewPointResource.addToContents(returned);
 			// viewPointResource.notifyContentsAdded(returned);
 			DiagramSpecification newDiagram = returned.getFactory().makeNewDiagramSpecification();
@@ -130,7 +129,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 					+ returned.getModelVersion());
 
 			returned.exploreInternalResources(returned.getDirectory());
-			returned.setRelativePathFileConverter(new RelativePathFileConverter(diagramSpecificationDirectory));
+			returned.setRelativePathResourceConverter(new RelativePathResourceConverter(diagramSpecificationDirectory.getAbsolutePath()));
 
 			return returned;
 		} catch (ModelDefinitionException e) {

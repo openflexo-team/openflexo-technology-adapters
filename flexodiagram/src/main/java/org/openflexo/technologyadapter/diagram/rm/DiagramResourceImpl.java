@@ -26,8 +26,8 @@ import org.openflexo.foundation.resource.InJarFlexoIODelegate;
 import org.openflexo.foundation.resource.InJarFlexoIODelegate.InJarFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
 import org.openflexo.model.ModelContextLibrary;
+import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.rm.InJarResourceImpl;
@@ -69,6 +69,7 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 				returned.setMetaModelResource(diagramSpecificationResource);
 			}
 			Diagram newDiagram = returned.getFactory().makeNewDiagram();
+			diagramFactory.addConverter(new RelativePathResourceConverter(diagramFile.getParent()));
 			newDiagram.setResource(returned);
 			returned.setResourceData(newDiagram);
 			return returned;
@@ -88,7 +89,7 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			returned.setName(baseName);
 			//returned.setFile(diagramFile);
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramFile, factory));
-			
+
 			DiagramInfo info=null;
 			try {
 				info = findDiagramInfo(new FileInputStream(diagramFile));
@@ -110,6 +111,7 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 						.getResourceWithURI(info.diagramSpecificationURI);
 				returned.setMetaModelResource(dsResource);
 			}
+			diagramFactory.addConverter(new RelativePathResourceConverter(diagramFile.getParent()));
 			returned.setServiceManager(serviceManager);
 			return returned;
 		} catch (ModelDefinitionException e) {
@@ -125,7 +127,6 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
 			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
 			returned.setFactory(diagramFactory);
-			
 			returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(inJarResource, factory));
 			DiagramInfo info = findDiagramInfo(inJarResource.openInputStream());
 			if (info == null) {

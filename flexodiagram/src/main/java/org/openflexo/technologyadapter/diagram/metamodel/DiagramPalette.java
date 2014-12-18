@@ -43,7 +43,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.converter.RelativePathFileConverter;
+import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.validation.Validable;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
@@ -273,8 +273,8 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 				this.graphicalRepresentation = graphicalRepresentation;
 			}*/
 
-		public RelativePathFileConverter getRelativePathFileConverter() {
-			return getResource().getContainer().getRelativePathFileConverter();
+		public RelativePathResourceConverter getRelativePathFileConverter() {
+			return getResource().getContainer().getRelativePathResourceConverter();
 		}
 
 		@Override
