@@ -57,11 +57,10 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		try {
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,DiagramResource.class));
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramFile, factory));
 			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
 			returned.setFactory(diagramFactory);
 			returned.setName(name);
-			//returned.setFile(diagramFile);
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramFile, factory));
 			
 			returned.setURI(uri);
 			returned.setServiceManager(serviceManager);
@@ -69,7 +68,6 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 				returned.setMetaModelResource(diagramSpecificationResource);
 			}
 			Diagram newDiagram = returned.getFactory().makeNewDiagram();
-			diagramFactory.addConverter(new RelativePathResourceConverter(diagramFile.getParent()));
 			newDiagram.setResource(returned);
 			returned.setResourceData(newDiagram);
 			return returned;
@@ -83,13 +81,11 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		try {
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,DiagramResource.class));
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramFile, factory));
 			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
 			returned.setFactory(diagramFactory);
 			String baseName = diagramFile.getName().substring(0, diagramFile.getName().length() - DiagramResource.DIAGRAM_SUFFIX.length());
 			returned.setName(baseName);
-			//returned.setFile(diagramFile);
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramFile, factory));
-
 			DiagramInfo info=null;
 			try {
 				info = findDiagramInfo(new FileInputStream(diagramFile));
@@ -111,7 +107,6 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 						.getResourceWithURI(info.diagramSpecificationURI);
 				returned.setMetaModelResource(dsResource);
 			}
-			diagramFactory.addConverter(new RelativePathResourceConverter(diagramFile.getParent()));
 			returned.setServiceManager(serviceManager);
 			return returned;
 		} catch (ModelDefinitionException e) {
@@ -125,9 +120,9 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
 					InJarFlexoIODelegate.class,DiagramResource.class));
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
+			returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(inJarResource, factory));
 			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
 			returned.setFactory(diagramFactory);
-			returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(inJarResource, factory));
 			DiagramInfo info = findDiagramInfo(inJarResource.openInputStream());
 			if (info == null) {
 				// Unable to retrieve infos, just abort
