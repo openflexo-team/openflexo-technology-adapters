@@ -61,6 +61,18 @@
 			<Dependancy componentName="isVariableDeclarationCB" />
 		</TextField>
 	</Panel>
+	<Label label="override" index="4" data=""
+			constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+			visible="" format="" icon="" tooltip="" localize="true" enable=""
+			clickAction="" doubleClickAction="" rightClickAction=""
+			enterPressedAction="" valueChangedAction="" valueTransform=""
+			valueValidator="" />
+	<CheckBox selected="true" index="5" data="data.override"
+			constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
+			visible="" name="isVariableDeclarationCB" format="" icon="" tooltip=""
+			localize="true" enable="" clickAction="" doubleClickAction=""
+			rightClickAction="" enterPressedAction="" valueChangedAction=""
+			valueTransform="" valueValidator="" />
 	<Label label="conditional" align="right" index="6" data=""
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 		visible="" format="" icon="" tooltip="" localize="true" enable=""
