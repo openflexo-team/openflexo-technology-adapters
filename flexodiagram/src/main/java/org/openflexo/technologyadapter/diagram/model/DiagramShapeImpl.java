@@ -229,12 +229,11 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 	public ShapeRole getPatternRole(VirtualModelInstance vmInstance) {
 		return (ShapeRole) super.getPatternRole(vmInstance);
 	}
-	
+
 	private File getExpectedScreenshotImageFile() {
 		if (expectedScreenshotImageFile == null && getDiagram().getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			FileFlexoIODelegate delegate = (FileFlexoIODelegate)(getDiagram().getResource()).getFlexoIODelegate();
-			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(),
-					getName() + ".diagram_container_element.png");
+			FileFlexoIODelegate delegate = (FileFlexoIODelegate) (getDiagram().getResource()).getFlexoIODelegate();
+			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".diagram_container_element.png");
 		}
 		return expectedScreenshotImageFile;
 	}
@@ -277,7 +276,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 		super.setModified(modified);
 		screenshotModified = true;
 	}
-	
+
 	@Override
 	public ScreenshotImage<DiagramShape> getScreenshotImage() {
 		if (screenshotImage == null || screenshotModified) {
