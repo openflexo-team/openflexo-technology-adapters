@@ -36,6 +36,8 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 	public static final String SHEET_NAME_KEY = "sheetName";
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SHEET_ROWS_KEY = "sheetRows";
+	@PropertyIdentifier(type = boolean.class)
+	public static final String OVERRIDE_KEY = "override";
 
 	@Getter(value = SHEET_NAME_KEY)
 	@XMLAttribute
@@ -50,6 +52,13 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 
 	@Setter(SHEET_ROWS_KEY)
 	public void setSheetRows(DataBinding<List<ExcelRow>> sheetRows);
+	
+	@Getter(value = OVERRIDE_KEY, defaultValue = "false")
+	@XMLAttribute
+	public boolean getOverride();
+
+	@Setter(OVERRIDE_KEY)
+	public void setOverride(boolean override);
 
 	public static abstract class AddExcelSheetImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelSheet> implements AddExcelSheet {
 
@@ -58,7 +67,9 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 		private DataBinding<String> sheetName;
 
 		private DataBinding<List<ExcelRow>> sheetRows;
-
+		
+		private boolean override = false;
+		
 		public AddExcelSheetImpl() {
 			super();
 		}
@@ -81,8 +92,8 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 					if (wb != null) {
 						String name = getSheetName().getBindingValue(action);
 						if (name != null) {
-							// Create an Excel Sheet
-							sheet = wb.createSheet(name);
+							// Create or retrieve this sheet
+							sheet = retrieveOrCreateSheet(wb, name);
 							// Instanciate Wrapper.
 							result = modelSlotInstance.getAccessedResourceData().getConverter()
 									.convertExcelSheetToSheet(sheet, modelSlotInstance.getAccessedResourceData(), null);
@@ -111,6 +122,29 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 			}
 
 			return result;
+		}
+		
+		// Create an Excel Sheet or get the existing one.
+		private Sheet retrieveOrCreateSheet(Workbook wb,String name){
+			Sheet sheet = null;
+			// A sheet with this name already exists
+			if(wb.getSheet(name)!=null){
+				if(override){
+					// Override it
+					wb.removeSheetAt(wb.getSheetIndex(name));
+					sheet = wb.createSheet(name);
+					logger.info("Override excel sheet with the name "+name);
+				}else{
+					// Retrieve the existing one
+					sheet = wb.getSheet(name);
+					logger.warning("An excel sheet already exists with this name "+ name +" , retrieve existing sheet");
+				}
+			}else{
+				// Create a new one
+				sheet = wb.createSheet(name);
+				logger.info("Create a new excel sheet with the name "+name);
+			}
+			return sheet;
 		}
 
 		@Override
@@ -158,5 +192,14 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 			this.sheetRows = sheetRows;
 		}
 
+		@Override
+		public boolean getOverride() {
+			return override;
+		}
+
+		@Override
+		public void setOverride(boolean override) {
+			this.override = override;
+		}
 	}
 }
