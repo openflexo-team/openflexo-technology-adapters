@@ -39,7 +39,9 @@ import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+
 import ${package}.${technologyPrefix}TechnologyAdapter;
+
 
 /**
  * ${technologyPrefix} Object Individual.
