@@ -257,9 +257,9 @@ public class CSVObjectIndividual extends CSVModelObjectImpl<Object> implements I
 	}
 
 	@Override
-	public boolean delete() {
+	public boolean delete(Object... context) {
 		// TODO 
-		return super.delete();
+		return super.delete(context);
 	}
 
 	/**
