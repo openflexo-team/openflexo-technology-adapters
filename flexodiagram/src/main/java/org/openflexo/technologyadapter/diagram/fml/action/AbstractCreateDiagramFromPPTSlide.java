@@ -58,6 +58,7 @@ import org.apache.poi.hslf.model.TextRun;
 import org.apache.poi.hslf.model.TextShape;
 import org.apache.poi.hslf.usermodel.RichTextRun;
 import org.apache.poi.hslf.usermodel.SlideShow;
+import org.openflexo.fge.BackgroundImageBackgroundStyle;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ForegroundStyle.DashStyle;
@@ -794,7 +795,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			gr.setBackground(getDiagramFactory().makeImageBackground(ResourceLocator.locateResource(imageFile.getAbsolutePath())));
 			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
 			gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
-
+			((BackgroundImageBackgroundStyle) gr.getBackground()).setFitToShape(true);
 			newShape.setGraphicalRepresentation(gr);
 
 			return newShape;
