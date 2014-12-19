@@ -351,9 +351,9 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 			parentShapeRole = (ShapeRole) ((FMLControlledDiagramShape) focused.getDrawable()).getRole();
 		}
 
-		if (parentFlexoConceptInstance == null || parentShapeRole == null) {
+		/*if (parentFlexoConceptInstance == null || parentShapeRole == null) {
 			return;
-		}
+		}*/
 
 		/*if (focused.getDrawable() instanceof FMLControlledDiagramShape) {
 			container = ((FMLControlledDiagramShape) focused.getDrawable()).getDiagramElement();
@@ -368,7 +368,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		}*/
 
 		List<DropAndLinkScheme> allDropAndLinkSchemes = getNode().getDrawable().getAvailableDropAndLinkSchemes(
-				parentFlexoConceptInstance.getFlexoConcept());
+				parentFlexoConceptInstance != null ? parentFlexoConceptInstance.getFlexoConcept() : null);
 
 		if (allDropAndLinkSchemes.size() == 0) {
 			return;
