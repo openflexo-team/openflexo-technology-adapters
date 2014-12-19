@@ -1,5 +1,6 @@
 /*
  * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2013-2014 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -56,29 +57,30 @@ public class CommonPalette extends AbstractDiagramPalette {
 	public CommonPalette(DiagramEditor editor) {
 		super(editor, 200, 200, "default");
 
-		ShapeSpecification[] ssp = new ShapeSpecification[14];
+		ShapeSpecification[] ssp = new ShapeSpecification[15];
 
 		ssp[0] = FACTORY.makeShape(ShapeType.RECTANGLE);
 		ssp[1] = FACTORY.makeShape(ShapeType.RECTANGLE);
 		((Rectangle) ssp[1]).setIsRounded(true);
 		((Rectangle) ssp[1]).setArcSize(20);
 		ssp[2] = FACTORY.makeShape(ShapeType.SQUARE);
-		ssp[3] = FACTORY.makeShape(ShapeType.RECTANGULAROCTOGON);
-		ssp[4] = FACTORY.makeShape(ShapeType.OVAL);
-		ssp[5] = FACTORY.makeShape(ShapeType.CIRCLE);
-		ssp[6] = FACTORY.makeShape(ShapeType.LOSANGE);
-		ssp[7] = FACTORY.makeShape(ShapeType.POLYGON);
-		ssp[8] = FACTORY.makeShape(ShapeType.TRIANGLE);
-		ssp[9] = FACTORY.makeShape(ShapeType.STAR);
-		ssp[10] = FACTORY.makeShape(ShapeType.ARC);
-		ssp[11] = FACTORY.makeShape(ShapeType.PLUS);
-		ssp[12] = FACTORY.makeShape(ShapeType.CHEVRON);
-		ssp[13] = FACTORY.makeShape(ShapeType.RECTANGLE);
+		ssp[3] = FACTORY.makeShape(ShapeType.PARALLELOGRAM);
+		ssp[4] = FACTORY.makeShape(ShapeType.RECTANGULAROCTOGON);
+		ssp[5] = FACTORY.makeShape(ShapeType.OVAL);
+		ssp[6] = FACTORY.makeShape(ShapeType.CIRCLE);
+		ssp[7] = FACTORY.makeShape(ShapeType.LOSANGE);
+		ssp[8] = FACTORY.makeShape(ShapeType.POLYGON);
+		ssp[9] = FACTORY.makeShape(ShapeType.TRIANGLE);
+		ssp[10] = FACTORY.makeShape(ShapeType.STAR);
+		ssp[11] = FACTORY.makeShape(ShapeType.ARC);
+		ssp[12] = FACTORY.makeShape(ShapeType.PLUS);
+		ssp[13] = FACTORY.makeShape(ShapeType.CHEVRON);
+		ssp[14] = FACTORY.makeShape(ShapeType.RECTANGLE);
 
 		int px = 0;
 		int py = 0;
 		for (ShapeSpecification sspi : ssp) {
-			if (sspi == ssp[13]) {
+			if (sspi == ssp[14]) {
 				addElement(makeImagePaletteElement(sspi, px, py, DEFAULT_IMAGE));
 			}
 			addElement(makePaletteElement(sspi, px, py));
@@ -97,7 +99,8 @@ public class CommonPalette extends AbstractDiagramPalette {
 			gr.setY(py * GRID_HEIGHT + 10);
 			gr.setWidth(30);
 			gr.setHeight(30);
-		} else {
+		}
+		else {
 			gr.setX(px * GRID_WIDTH + 10);
 			gr.setY(py * GRID_HEIGHT + 10);
 			gr.setWidth(40);
