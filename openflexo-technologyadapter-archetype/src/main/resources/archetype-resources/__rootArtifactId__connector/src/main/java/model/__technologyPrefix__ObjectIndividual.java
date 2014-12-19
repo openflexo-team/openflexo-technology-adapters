@@ -39,6 +39,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
+
 import ${package}.${technologyPrefix}TechnologyAdapter;
 
 /**
@@ -260,9 +261,9 @@ public class ${technologyPrefix}ObjectIndividual extends ${technologyPrefix}Mode
 	}
 
 	@Override
-	public boolean delete() {
+	public boolean delete(Object... context) {
 		// TODO 
-		return super.delete();
+		return super.delete(context);
 	}
 
 	/**
