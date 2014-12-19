@@ -1,6 +1,3 @@
-
-
-
 /*
  * (c) Copyright 2013- Openflexo
  *
@@ -39,10 +36,8 @@ import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-
-
-
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
+
 /**
  * CSV Object Individual.
  * 
