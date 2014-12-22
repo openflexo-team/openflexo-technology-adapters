@@ -35,9 +35,9 @@ import org.openflexo.vpm.VPMModule;
 /**
  * Created by eloubout on 01/09/14.
  */
-public class TestModuleView extends OpenflexoTestCaseWithGUI {
+public class TestFreePlaneModuleView extends OpenflexoTestCaseWithGUI {
 
-	private static final Logger LOGGER = Logger.getLogger(TestModuleView.class.getPackage().getName());
+	private static final Logger LOGGER = Logger.getLogger(TestFreePlaneModuleView.class.getPackage().getName());
 
 	private static FreeplaneTechnologyAdapter fpTA;
 
