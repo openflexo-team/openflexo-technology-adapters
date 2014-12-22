@@ -23,6 +23,8 @@ import java.awt.Event;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.fml.controller.VirtualModelInstancePasteHandler;
+import org.openflexo.fml.controller.VirtualModelInstancePasteHandler.HeterogeneousPastingContext;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoClipboard;
 import org.openflexo.foundation.action.PasteAction.PastingContext;
@@ -37,7 +39,6 @@ import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualMo
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.vpm.controller.VirtualModelInstancePasteHandler;
 
 /**
  * Paste Handler suitable for pasting something into a FMLControlledDiagram

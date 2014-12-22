@@ -20,13 +20,13 @@
 package org.openflexo.technologyadapter.diagram.gui.view;
 
 import org.openflexo.components.widget.CommonFIB;
+import org.openflexo.fml.controller.view.FlexoConceptView;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.gui.widget.FlexoConceptPreviewComponent;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.TechnologyAdapterControllerService;
 import org.openflexo.view.controller.model.FlexoPerspective;
-import org.openflexo.vpm.view.FlexoConceptView;
 
 /**
  * This is the module view representing a standard FlexoConcept (an FlexoConcept which is not a VirtualModel, nor part of a
@@ -43,7 +43,6 @@ public class DiagramFlexoConceptView extends FlexoConceptView<FlexoConcept> {
 		super(flexoConcept, CommonFIB.STANDARD_FLEXO_CONCEPT_VIEW_FIB, controller, perspective);
 		previewComponent = new FlexoConceptPreviewComponent(flexoConcept);
 		previewComponent.setSelectionManager(controller.getSelectionManager());
-		System.out.println(">>>>>>> Prefered size=" + previewComponent.getPreferredSize());
 	}
 
 	public DiagramTechnologyAdapterController getDiagramTechnologyAdapterController(FlexoController controller) {

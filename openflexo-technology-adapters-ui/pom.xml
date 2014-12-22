@@ -35,12 +35,31 @@
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
-				<version>${project.version}</version>
-				<classifier>flexocore</classifier>
+				<version>${flexocore.version}</version>
+				<classifier>tests</classifier>
 			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>resources</classifier>
+				<type>zip</type>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fmltechnologyadapter-ui</artifactId>
+				<version>${flexocore.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fmltechnologyadapter-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>tests</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fmltechnologyadapter-ui</artifactId>
 				<version>${flexocore.version}</version>
 				<classifier>resources</classifier>
 				<type>zip</type>
