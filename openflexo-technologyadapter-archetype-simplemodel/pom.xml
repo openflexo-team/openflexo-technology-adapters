@@ -9,7 +9,7 @@
 
   <groupId>org.openflexo.archetypes</groupId>
   <artifactId>technologyadapter-archetype-simplemodel</artifactId>
-  <version>1.7.0-SNAPSHOT</version>
+  <version>1.7.0</version>
   
   <packaging>maven-archetype</packaging>
   <name>technologyadapter-archetype-simplemodel</name>
@@ -19,6 +19,6 @@
   </properties>
 
   <scm>
-    <tag>1.7.0</tag>
+    <tag>Openflexo-Technology-Adapters-1.7.0</tag>
   </scm>
 </project>
