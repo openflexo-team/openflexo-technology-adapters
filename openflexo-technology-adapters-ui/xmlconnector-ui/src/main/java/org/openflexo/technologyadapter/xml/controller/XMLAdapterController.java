@@ -25,14 +25,15 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.FlexoRole;
-import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
+import org.openflexo.technologyadapter.xml.fml.XMLIndividualRole;
+import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLIndividual;
 import org.openflexo.technologyadapter.xml.gui.XMLIconLibrary;
 import org.openflexo.technologyadapter.xml.gui.XMLMetaModelView;
 import org.openflexo.technologyadapter.xml.gui.XMLModelView;
@@ -40,7 +41,6 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;

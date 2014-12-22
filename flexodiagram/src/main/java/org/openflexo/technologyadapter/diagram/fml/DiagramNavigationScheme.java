@@ -20,7 +20,7 @@
  */
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.foundation.viewpoint.NavigationScheme;
+import org.openflexo.foundation.fml.NavigationScheme;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;

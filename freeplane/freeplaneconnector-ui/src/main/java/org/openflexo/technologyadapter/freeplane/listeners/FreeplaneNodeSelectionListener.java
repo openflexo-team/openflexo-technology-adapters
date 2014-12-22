@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.freeplane.features.map.INodeSelectionListener;
 import org.freeplane.features.map.NodeModel;
-import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.foundation.view.VirtualModelInstance.ObjectLookupResult;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance.ObjectLookupResult;
 import org.openflexo.technologyadapter.freeplane.fml.FMLControlledFreeplaneVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;

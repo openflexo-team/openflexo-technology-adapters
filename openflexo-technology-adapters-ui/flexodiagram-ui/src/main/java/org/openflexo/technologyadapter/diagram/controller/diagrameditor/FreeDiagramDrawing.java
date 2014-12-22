@@ -21,7 +21,7 @@ package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 /**

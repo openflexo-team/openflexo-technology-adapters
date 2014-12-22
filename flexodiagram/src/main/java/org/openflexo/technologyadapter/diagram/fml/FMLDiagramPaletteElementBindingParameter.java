@@ -20,12 +20,12 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
-import org.openflexo.foundation.viewpoint.FlexoBehaviourParameter;
-import org.openflexo.foundation.viewpoint.NamedViewPointObject;
-import org.openflexo.foundation.viewpoint.URIParameter;
-import org.openflexo.foundation.viewpoint.ViewPoint;
-import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.foundation.fml.FMLRepresentationContext;
+import org.openflexo.foundation.fml.FlexoBehaviourParameter;
+import org.openflexo.foundation.fml.NamedViewPointObject;
+import org.openflexo.foundation.fml.URIParameter;
+import org.openflexo.foundation.fml.ViewPoint;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;

@@ -2,8 +2,8 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.lang.reflect.Type;
 
+import org.openflexo.foundation.fml.TechnologySpecificCustomType;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
 public class StatementWithProperty implements TechnologySpecificCustomType<OWLTechnologyAdapter> {

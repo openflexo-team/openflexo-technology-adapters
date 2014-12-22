@@ -23,6 +23,11 @@ package org.openflexo.technologyadapter.powerpoint;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fmlrt.FreeModelSlotInstance;
+import org.openflexo.foundation.fmlrt.View;
+import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
@@ -31,23 +36,18 @@ import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.view.FreeModelSlotInstance;
-import org.openflexo.foundation.view.View;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.powerpoint.fml.PowerpointShapeRole;
+import org.openflexo.technologyadapter.powerpoint.fml.PowerpointSlideRole;
+import org.openflexo.technologyadapter.powerpoint.fml.editionaction.AddPowerpointShape;
+import org.openflexo.technologyadapter.powerpoint.fml.editionaction.AddPowerpointSlide;
+import org.openflexo.technologyadapter.powerpoint.fml.editionaction.SelectPowerpointShape;
+import org.openflexo.technologyadapter.powerpoint.fml.editionaction.SelectPowerpointSlide;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointShapeRole;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointSlideRole;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointShape;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointSlide;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.SelectPowerpointShape;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.SelectPowerpointSlide;
 
 /**
  * Implementation of a basic ModelSlot class for the Powerpoint technology adapter<br>

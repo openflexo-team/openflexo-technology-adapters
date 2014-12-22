@@ -22,10 +22,10 @@ package org.openflexo.technologyadapter.diagram.fml;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.foundation.viewpoint.ViewPoint;
-import org.openflexo.foundation.viewpoint.ViewPointNature;
-import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.foundation.fml.ViewPoint;
+import org.openflexo.foundation.fml.ViewPointNature;
+import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance;
 
 /**
  * Define the "controlled-diagram" nature of a {@link ViewPoint}<br>

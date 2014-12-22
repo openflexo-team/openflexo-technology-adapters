@@ -16,7 +16,7 @@ import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.freeplane.view.swing.map.MainView;
 import org.freeplane.view.swing.map.MapView;
 import org.freeplane.view.swing.ui.UserInputListenerFactory;
-import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance;
 import org.openflexo.technologyadapter.freeplane.fml.FMLControlledFreeplaneVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.view.controller.FlexoController;

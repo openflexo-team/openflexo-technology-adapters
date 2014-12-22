@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 
 public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorGraphicalRepresentation> implements DiagramConnector {

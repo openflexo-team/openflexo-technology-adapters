@@ -24,6 +24,10 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fmlrt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
@@ -32,21 +36,17 @@ import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
-import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.excel.fml.BusinessConceptInstanceRole;
+import org.openflexo.technologyadapter.excel.fml.BusinessConceptTypeRole;
+import org.openflexo.technologyadapter.excel.fml.ExcelCellRole;
+import org.openflexo.technologyadapter.excel.fml.ExcelRowRole;
+import org.openflexo.technologyadapter.excel.fml.ExcelSheetRole;
+import org.openflexo.technologyadapter.excel.fml.editionaction.AddBusinessConceptInstance;
 import org.openflexo.technologyadapter.excel.model.semantics.ExcelMetaModel;
 import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
-import org.openflexo.technologyadapter.excel.viewpoint.BusinessConceptInstanceRole;
-import org.openflexo.technologyadapter.excel.viewpoint.BusinessConceptTypeRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelCellRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelRowRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelSheetRole;
-import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddBusinessConceptInstance;
 
 /**
  * Implementation of the ModelSlot class for the Excel technology adapter<br>

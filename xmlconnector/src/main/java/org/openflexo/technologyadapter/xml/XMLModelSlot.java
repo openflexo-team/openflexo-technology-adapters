@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fmlrt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -43,8 +45,6 @@ import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
-import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -53,9 +53,11 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLURIProcessor.XMLURIProcessorImpl;
-import org.openflexo.technologyadapter.xml.editionaction.AddXMLIndividual;
-import org.openflexo.technologyadapter.xml.editionaction.GetXMLDocumentRoot;
-import org.openflexo.technologyadapter.xml.editionaction.SetXMLDocumentRoot;
+import org.openflexo.technologyadapter.xml.fml.XMLActorReference;
+import org.openflexo.technologyadapter.xml.fml.XMLIndividualRole;
+import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLIndividual;
+import org.openflexo.technologyadapter.xml.fml.editionaction.GetXMLDocumentRoot;
+import org.openflexo.technologyadapter.xml.fml.editionaction.SetXMLDocumentRoot;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -65,8 +67,6 @@ import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
-import org.openflexo.technologyadapter.xml.virtualmodel.XMLActorReference;
-import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
 
 /**
  * 

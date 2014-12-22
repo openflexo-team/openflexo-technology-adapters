@@ -19,9 +19,9 @@
  */
 package org.openflexo.technologyadapter.diagram;
 
+import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -43,7 +43,7 @@ public class TypedDiagramModelSlotInstanceConfiguration extends
 	}
 
 	@Override
-	public void setOption(org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
+	public void setOption(org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
 			modelUri = getAction().getFocusedObject().getProject().getURI() + "/Diagrams/myDiagram";

@@ -27,7 +27,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.FlexoGUIAction;
-import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 
 public class OpenFMLControlledDiagramVirtualModelInstance extends

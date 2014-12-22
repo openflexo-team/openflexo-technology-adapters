@@ -2,8 +2,8 @@ package org.openflexo.technologyadapter.diagram;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;

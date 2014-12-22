@@ -23,21 +23,21 @@ package org.openflexo.technologyadapter.xml;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.xml.editionaction.AddXMLType;
+import org.openflexo.technologyadapter.xml.fml.XMLIndividualRole;
+import org.openflexo.technologyadapter.xml.fml.XMLTypeRole;
+import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-import org.openflexo.technologyadapter.xml.virtualmodel.XMLIndividualRole;
-import org.openflexo.technologyadapter.xml.virtualmodel.XMLTypeRole;
 
 /**
  * 

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fmlrt.ModelSlotInstance;
+import org.openflexo.foundation.fmlrt.View;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.foundation.view.ModelSlotInstance;
-import org.openflexo.foundation.view.View;
-import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 
 public class EMFMetaModelSlotInstanceConfiguration extends ModelSlotInstanceConfiguration<EMFMetaModelSlot, EMFMetaModel> {
@@ -25,7 +25,7 @@ public class EMFMetaModelSlotInstanceConfiguration extends ModelSlotInstanceConf
 	}
 
 	@Override
-	public List<org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption> getAvailableOptions() {
+	public List<org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption> getAvailableOptions() {
 		return options;
 	}
 

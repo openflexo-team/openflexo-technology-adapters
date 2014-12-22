@@ -23,7 +23,7 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.viewpoint.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.selection.SelectionManagingDianaEditor;
 

@@ -23,7 +23,7 @@ import java.beans.PropertyChangeEvent;
 
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
-import org.openflexo.foundation.viewpoint.binding.FlexoBehaviourBindingModel;
+import org.openflexo.foundation.fml.binding.FlexoBehaviourBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.DiagramFlexoBehaviour;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 

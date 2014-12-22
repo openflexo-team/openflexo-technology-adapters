@@ -20,7 +20,7 @@
 package org.openflexo.technologyadapter.diagram.gui.view;
 
 import org.openflexo.components.widget.CommonFIB;
-import org.openflexo.foundation.viewpoint.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.gui.widget.FlexoConceptPreviewComponent;
 import org.openflexo.view.controller.FlexoController;

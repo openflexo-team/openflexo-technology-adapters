@@ -1,7 +1,7 @@
 package org.openflexo.technologyadapter.freeplane.fml;
 
-import org.openflexo.foundation.viewpoint.VirtualModel;
-import org.openflexo.foundation.viewpoint.VirtualModelNature;
+import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.VirtualModelNature;
 import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot;
 
 public class FMLControlledFreeplaneVirtualModelNature implements VirtualModelNature {

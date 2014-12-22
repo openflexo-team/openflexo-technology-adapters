@@ -19,9 +19,9 @@
  */
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.foundation.view.VirtualModelInstanceNature;
+import org.openflexo.foundation.fmlrt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fmlrt.VirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;

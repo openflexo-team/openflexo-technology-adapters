@@ -19,9 +19,9 @@
  */
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.FlexoConceptNature;
-import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoConceptNature;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 
 /**

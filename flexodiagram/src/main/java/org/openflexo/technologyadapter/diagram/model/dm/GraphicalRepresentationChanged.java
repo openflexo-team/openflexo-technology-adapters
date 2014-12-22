@@ -19,7 +19,7 @@
  */
 package org.openflexo.technologyadapter.diagram.model.dm;
 
-import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.foundation.fml.FlexoRole;
 
 public class GraphicalRepresentationChanged extends DiagramDataModification {
 	private FlexoRole flexoRole;

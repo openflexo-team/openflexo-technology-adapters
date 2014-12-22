@@ -19,7 +19,7 @@
  */
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.foundation.viewpoint.TechnologySpecificFlexoBehaviour;
+import org.openflexo.foundation.fml.TechnologySpecificFlexoBehaviour;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;

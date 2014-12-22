@@ -24,17 +24,17 @@ package org.openflexo.technologyadapter.emf;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fmlrt.ModelSlotInstance;
+import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.view.ModelSlotInstance;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
+import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassRole;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassRole;
 
 /**
  * Implementation of the ModelSlot class for the EMF technology adapter<br>

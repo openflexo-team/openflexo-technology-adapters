@@ -1,7 +1,7 @@
 package org.openflexo.technologyadapter.xml;
 
+import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 public class FreeXMLModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<XMLModel,FreeXMLModelSlot> {

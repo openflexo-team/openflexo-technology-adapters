@@ -20,11 +20,11 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.foundation.fml.AbstractCreationScheme;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.viewpoint.AbstractCreationScheme;
-import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
-import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;

@@ -3,11 +3,11 @@ package org.openflexo.technologyadapter.excel;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 

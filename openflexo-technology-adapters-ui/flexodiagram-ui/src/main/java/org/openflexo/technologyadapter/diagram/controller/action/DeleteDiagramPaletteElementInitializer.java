@@ -23,7 +23,7 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.foundation.viewpoint.ViewPointObject;
+import org.openflexo.foundation.fml.ViewPointObject;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.fml.action.DeleteDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;

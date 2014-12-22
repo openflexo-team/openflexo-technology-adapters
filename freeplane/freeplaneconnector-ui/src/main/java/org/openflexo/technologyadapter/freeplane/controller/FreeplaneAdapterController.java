@@ -26,10 +26,10 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import org.freeplane.main.application.FreeplaneBasicAdapter;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fmlrt.VirtualModelInstanceNature;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.foundation.view.VirtualModelInstanceNature;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.AddChildNodeInitializer;

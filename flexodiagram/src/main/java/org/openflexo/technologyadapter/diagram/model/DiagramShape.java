@@ -22,8 +22,8 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.List;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
-import org.openflexo.foundation.view.VirtualModelInstance;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;

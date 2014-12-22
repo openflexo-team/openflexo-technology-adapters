@@ -79,7 +79,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.viewpoint.ViewPointObject;
+import org.openflexo.foundation.fml.ViewPointObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ImageUtils;

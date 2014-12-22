@@ -25,6 +25,9 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fmlrt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -36,23 +39,20 @@ import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
-import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
+import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
+import org.openflexo.technologyadapter.emf.fml.EMFObjectIndividualRole;
+import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualAttributeDataPropertyValue;
+import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualAttributeObjectPropertyValue;
+import org.openflexo.technologyadapter.emf.fml.editionaction.SelectEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassRole;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassRole;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFObjectIndividualRole;
-import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividual;
-import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividualAttributeDataPropertyValue;
-import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividualAttributeObjectPropertyValue;
-import org.openflexo.technologyadapter.emf.viewpoint.editionaction.SelectEMFObjectIndividual;
 
 /**
  * Implementation of the ModelSlot class for the EMF technology adapter<br>

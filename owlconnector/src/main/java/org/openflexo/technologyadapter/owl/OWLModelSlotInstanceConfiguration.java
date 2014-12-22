@@ -2,11 +2,11 @@ package org.openflexo.technologyadapter.owl;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fmlrt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fmlrt.View;
+import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
-import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.View;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
@@ -48,7 +48,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 	}
 
 	/*@Override
-	public void setOption(org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
+	public void setOption(org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
 			modelUri = getAction().getFocusedObject().getProject().getURI() + "/Models/myOntology";

@@ -48,13 +48,13 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializatio
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.emf.fml.binding.EMFBindingFactory;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResourceImpl;
-import org.openflexo.technologyadapter.emf.viewpoint.binding.EMFBindingFactory;
 
 /**
  * This class defines and implements the EMF technology adapter
@@ -524,7 +524,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 * 
 	 * Follow the link.
 	 * 
-	 * @see org.openflexo.foundation.technologyadapter.TechnologyAdapter#createNewModelSlot(org.openflexo.foundation.viewpoint.ViewPoint)
+	 * @see org.openflexo.foundation.technologyadapter.TechnologyAdapter#createNewModelSlot(org.openflexo.foundation.fml.ViewPoint)
 	 */
 	@Override
 	public EMFTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {

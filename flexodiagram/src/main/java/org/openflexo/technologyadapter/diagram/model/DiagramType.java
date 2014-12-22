@@ -23,8 +23,8 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.openflexo.foundation.fml.TechnologySpecificCustomType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
-import org.openflexo.foundation.viewpoint.TechnologySpecificCustomType;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 
 public class DiagramType implements TechnologySpecificCustomType<TechnologyAdapter> {

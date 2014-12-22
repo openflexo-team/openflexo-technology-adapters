@@ -35,10 +35,10 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.technologyadapter.powerpoint.fml.binding.PowerpointBindingFactory;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideShowRepository;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResourceImpl;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.binding.PowerpointBindingFactory;
 
 /**
  * This class defines and implements the Powerpoint technology adapter

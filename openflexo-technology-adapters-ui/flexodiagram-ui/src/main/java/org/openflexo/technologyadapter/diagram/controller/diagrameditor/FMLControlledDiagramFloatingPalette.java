@@ -57,7 +57,7 @@ import org.openflexo.fge.geom.FGEShape;
 import org.openflexo.fge.graphics.FGEGraphics;
 import org.openflexo.fge.swing.paint.FGEPaintManager;
 import org.openflexo.fge.swing.view.JShapeView;
-import org.openflexo.foundation.view.FlexoConceptInstance;
+import org.openflexo.foundation.fmlrt.FlexoConceptInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramShape.DropAndLinkScheme;

@@ -23,7 +23,7 @@ import java.beans.PropertyChangeEvent;
 
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.BindingVariable;
-import org.openflexo.foundation.viewpoint.FlexoConceptInstanceType;
+import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 

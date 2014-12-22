@@ -19,9 +19,9 @@
  */
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.foundation.view.View;
-import org.openflexo.foundation.view.ViewNature;
-import org.openflexo.foundation.view.VirtualModelInstance;
+import org.openflexo.foundation.fmlrt.View;
+import org.openflexo.foundation.fmlrt.ViewNature;
+import org.openflexo.foundation.fmlrt.VirtualModelInstance;
 
 /**
  * Define the "controlled-diagram" nature of a {@link View}<br>

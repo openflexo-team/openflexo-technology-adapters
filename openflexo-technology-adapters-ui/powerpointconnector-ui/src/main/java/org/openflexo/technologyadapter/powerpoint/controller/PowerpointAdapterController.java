@@ -2,17 +2,17 @@ package org.openflexo.technologyadapter.powerpoint.controller;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
+import org.openflexo.technologyadapter.powerpoint.fml.PowerpointShapeRole;
+import org.openflexo.technologyadapter.powerpoint.fml.PowerpointSlideRole;
 import org.openflexo.technologyadapter.powerpoint.gui.PowerpointIconLibrary;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.view.PowerpointSlideshowView;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointShapeRole;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointSlideRole;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;

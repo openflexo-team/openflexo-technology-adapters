@@ -36,12 +36,12 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.rm.InJarResourceImpl;
+import org.openflexo.technologyadapter.excel.fml.binding.ExcelBindingFactory;
 import org.openflexo.technologyadapter.excel.rm.ExcelMetaModelRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelModelRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookRepository;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceImpl;
-import org.openflexo.technologyadapter.excel.viewpoint.binding.ExcelBindingFactory;
 
 /**
  * This class defines and implements the Excel technology adapter

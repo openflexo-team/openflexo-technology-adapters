@@ -22,11 +22,11 @@ package org.openflexo.technologyadapter.freeplane.fml.structural;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.view.ActorReference;
-import org.openflexo.foundation.view.FlexoConceptInstance;
-import org.openflexo.foundation.view.ModelObjectActorReference;
-import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
-import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fmlrt.ActorReference;
+import org.openflexo.foundation.fmlrt.FlexoConceptInstance;
+import org.openflexo.foundation.fmlrt.ModelObjectActorReference;
+import org.openflexo.foundation.fmlrt.VirtualModelInstanceModelFactory;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -48,7 +48,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
         }
 
         /* (non-Javadoc)
-         * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#getType()
+         * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#getType()
          */
         @Override
         public Type getType() {
@@ -56,7 +56,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
         }
 
         /* (non-Javadoc)
-         * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#getPreciseType()
+         * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#getPreciseType()
          */
         @Override
         public String getPreciseType() {
@@ -64,7 +64,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
         }
 
         /* (non-Javadoc)
-         * @see org.openflexo.foundation.viewpoint.FlexoRole#defaultCloningStrategy()
+         * @see org.openflexo.foundation.fml.FlexoRole#defaultCloningStrategy()
          */
         @Override
         public RoleCloningStrategy defaultCloningStrategy() {
@@ -72,7 +72,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
         }
 
         /* (non-Javadoc)
-         * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#defaultBehaviourIsToBeDeleted()
+         * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#defaultBehaviourIsToBeDeleted()
          */
         @Override
         public boolean defaultBehaviourIsToBeDeleted() {
@@ -80,7 +80,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
         }
 
         /* (non-Javadoc)
-         * @see org.openflexo.foundation.viewpoint.FlexoRole.FlexoRoleImpl#makeActorReference(java.lang.Object, org.openflexo.foundation.view.FlexoConceptInstance)
+         * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#makeActorReference(java.lang.Object, org.openflexo.foundation.fmlrt.FlexoConceptInstance)
          */
         @Override
         public ActorReference<IFreeplaneMap> makeActorReference(final IFreeplaneMap object, final FlexoConceptInstance epi) {

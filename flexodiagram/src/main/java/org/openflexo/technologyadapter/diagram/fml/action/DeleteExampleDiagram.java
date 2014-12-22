@@ -26,7 +26,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.viewpoint.ViewPointObject;
+import org.openflexo.foundation.fml.ViewPointObject;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
 public class DeleteExampleDiagram extends FlexoAction<DeleteExampleDiagram, Diagram, ViewPointObject> {

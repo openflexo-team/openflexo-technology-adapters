@@ -40,6 +40,7 @@ import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.technologyadapter.owl.fml.binding.OWLBindingFactory;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntology.OntologyNotFoundException;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyAsMetaModelRepository;
@@ -47,7 +48,6 @@ import org.openflexo.technologyadapter.owl.model.OWLOntologyAsModelRepository;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceImpl;
-import org.openflexo.technologyadapter.owl.viewpoint.binding.OWLBindingFactory;
 
 /**
  * This class defines and implements the OWL technology adapter
