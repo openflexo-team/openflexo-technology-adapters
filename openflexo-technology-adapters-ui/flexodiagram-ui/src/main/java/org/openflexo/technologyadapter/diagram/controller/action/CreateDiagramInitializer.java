@@ -19,13 +19,11 @@
  */
 package org.openflexo.technologyadapter.diagram.controller.action;
 
-import java.io.File;
 import java.util.EventObject;
 import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.components.widget.CommonFIB;
 import org.openflexo.fib.controller.FIBController.Status;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
@@ -33,13 +31,9 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.FMLModelSlot;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
@@ -59,9 +53,9 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 		return instanciateShowDialogAndReturnStatus(action, DiagramCst.CREATE_DIAGRAM_DIALOG_FIB);
 	}
 
-	private Status chooseAndConfigureCreationScheme(CreateDiagram action) {
+	/*private Status chooseAndConfigureCreationScheme(CreateDiagram action) {
 		return instanciateShowDialogAndReturnStatus(action, CommonFIB.CHOOSE_AND_CONFIGURE_CREATION_SCHEME_DIALOG_FIB);
-	}
+	}*/
 
 	private Status configureModelSlot(CreateDiagram action, ModelSlot configuredModelSlot) {
 		/*return instanciateShowDialogAndReturnStatus(action.getModelSlotInstanceConfiguration(configuredModelSlot),
@@ -153,7 +147,7 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 	 *         separation of FIBs for Model Slot Configurations.
 	 * @return File that correspond to the FIB
 	 */
-	private Resource getModelSlotInstanceConfigurationFIB(Class modelSlotClass) {
+	/*private Resource getModelSlotInstanceConfigurationFIB(Class modelSlotClass) {
 		if (TypeAwareModelSlot.class.isAssignableFrom(modelSlotClass)) {
 			return CommonFIB.CONFIGURE_TYPE_AWARE_MODEL_SLOT_INSTANCE_DIALOG_FIB;
 		}
@@ -164,6 +158,6 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 			return CommonFIB.CONFIGURE_VIRTUAL_MODEL_SLOT_INSTANCE_DIALOG_FIB;
 		}
 		return null;
-	}
+	}*/
 
 }

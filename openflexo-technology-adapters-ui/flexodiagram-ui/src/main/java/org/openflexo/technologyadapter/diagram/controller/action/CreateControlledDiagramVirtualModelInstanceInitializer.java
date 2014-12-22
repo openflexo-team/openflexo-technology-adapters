@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
-import org.openflexo.components.widget.CommonFIB;
 import org.openflexo.fib.controller.FIBController.Status;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
@@ -32,13 +31,8 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.FMLModelSlot;
 import org.openflexo.foundation.fmlrt.View;
-import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
@@ -55,16 +49,17 @@ public class CreateControlledDiagramVirtualModelInstanceInitializer extends
 		super(CreateFMLControlledDiagramVirtualModelInstance.actionType, actionInitializer);
 	}
 
+	// TODO: reimplement this
 	private Status chooseAndConfigureCreationScheme(CreateFMLControlledDiagramVirtualModelInstance action) {
-		return instanciateShowDialogAndReturnStatus(action, CommonFIB.CHOOSE_AND_CONFIGURE_CREATION_SCHEME_DIALOG_FIB);
+		return instanciateShowDialogAndReturnStatus(action, null /*CommonFIB.CHOOSE_AND_CONFIGURE_CREATION_SCHEME_DIALOG_FIB*/);
 	}
-	
+
 	@Override
 	protected FlexoActionInitializer<CreateFMLControlledDiagramVirtualModelInstance> getDefaultInitializer() {
 		return new FlexoActionInitializer<CreateFMLControlledDiagramVirtualModelInstance>() {
 			@Override
 			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModelInstance action) {
-				if (action.skipChoosePopup) {
+				/*if (action.skipChoosePopup) {
 					return true;
 				} else {
 					int step = 0;
@@ -93,8 +88,10 @@ public class CreateControlledDiagramVirtualModelInstanceInitializer extends
 					}
 
 					return instanciateAndShowDialog(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
-				}
+				}*/
 
+				logger.warning("!!!!!!! Please reimplement me");
+				return false;
 			}
 		};
 	}
@@ -130,7 +127,7 @@ public class CreateControlledDiagramVirtualModelInstanceInitializer extends
 	 *         separation of FIBs for Model Slot Configurations.
 	 * @return File that correspond to the FIB
 	 */
-	private Resource getModelSlotInstanceConfigurationFIB(Class<? extends ModelSlot> modelSlotClass) {
+	/*private Resource getModelSlotInstanceConfigurationFIB(Class<? extends ModelSlot> modelSlotClass) {
 		if (TypeAwareModelSlot.class.isAssignableFrom(modelSlotClass)) {
 			return CommonFIB.CONFIGURE_TYPE_AWARE_MODEL_SLOT_INSTANCE_DIALOG_FIB;
 		}
@@ -141,7 +138,7 @@ public class CreateControlledDiagramVirtualModelInstanceInitializer extends
 			return CommonFIB.CONFIGURE_VIRTUAL_MODEL_SLOT_INSTANCE_DIALOG_FIB;
 		}
 		return null;
-	}
+	}*/
 
 	@Override
 	protected Icon getEnabledIcon() {
