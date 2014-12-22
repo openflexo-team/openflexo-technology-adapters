@@ -38,7 +38,7 @@ import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.IndividualRole;
 import org.openflexo.foundation.fml.URIParameter;
-import org.openflexo.foundation.fml.VirtualModelModelSlot;
+import org.openflexo.foundation.fml.FMLModelSlot;
 import org.openflexo.foundation.fml.editionaction.AddFlexoConceptInstance;
 import org.openflexo.foundation.fml.editionaction.AddIndividual;
 import org.openflexo.foundation.fml.editionaction.DeclareFlexoRole;
@@ -194,7 +194,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				flexoConceptPatternRole = null;
 				if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 					if (isVirtualModelModelSlot()) {
-						VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
+						FMLModelSlot virtualModelModelSlot = (FMLModelSlot) getModelSlot();
 						flexoConceptPatternRole = virtualModelModelSlot.makeFlexoConceptInstanceRole(getVirtualModelConcept());
 						flexoConceptPatternRole.setRoleName(getVirtualModelPatternRoleName());
 						newFlexoConcept.addToFlexoRoles(flexoConceptPatternRole);
@@ -764,7 +764,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 		if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 			if (isVirtualModelModelSlot()) {
-				VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
+				FMLModelSlot virtualModelModelSlot = (FMLModelSlot) getModelSlot();
 
 				// Add individual action
 				AddFlexoConceptInstance newAddEditionPatternInstance = virtualModelModelSlot

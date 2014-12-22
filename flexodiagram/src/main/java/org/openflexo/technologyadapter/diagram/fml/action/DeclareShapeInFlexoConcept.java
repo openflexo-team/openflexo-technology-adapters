@@ -42,7 +42,7 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.IndividualParameter;
 import org.openflexo.foundation.fml.IndividualRole;
 import org.openflexo.foundation.fml.URIParameter;
-import org.openflexo.foundation.fml.VirtualModelModelSlot;
+import org.openflexo.foundation.fml.FMLModelSlot;
 import org.openflexo.foundation.fml.editionaction.AddFlexoConceptInstance;
 import org.openflexo.foundation.fml.editionaction.AddIndividual;
 import org.openflexo.foundation.fml.editionaction.DeclareFlexoRole;
@@ -462,7 +462,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					}
 					if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 						if (isVirtualModelModelSlot()) {
-							VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
+							FMLModelSlot virtualModelModelSlot = (FMLModelSlot) getModelSlot();
 							flexoConceptFlexoRole = virtualModelModelSlot.makeFlexoConceptInstanceRole(getVirtualModelConcept());
 							flexoConceptFlexoRole.setRoleName(getVirtualModelFlexoRoleName());
 							newFlexoConcept.addToFlexoRoles(flexoConceptFlexoRole);
@@ -666,7 +666,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					// Parameters for flexo concepts creation action
 					/*if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 						if (isVirtualModelModelSlot()) {
-							VirtualModelModelSlot<?, ?> virtualModelModelSlot = (VirtualModelModelSlot<?, ?>) getModelSlot();
+							FMLModelSlot<?, ?> virtualModelModelSlot = (FMLModelSlot<?, ?>) getModelSlot();
 
 							// Add individual action
 							EditionAction newAddFlexoConcept = virtualModelModelSlot.makeAddFlexoConceptInstanceEditionAction(
@@ -870,13 +870,13 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 		if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 			if (isVirtualModelModelSlot()) {
-				VirtualModelModelSlot virtualModelModelSlot = (VirtualModelModelSlot) getModelSlot();
+				FMLModelSlot virtualModelModelSlot = (FMLModelSlot) getModelSlot();
 
 				if (editionSchemeConfiguration.getType() == FlexoBehaviourChoice.DROP_AND_SELECT) {
 					FlexoConceptInstanceParameter flexoConceptInstanceParameter = getFactory().newFlexoConceptInstanceParameter();
 					flexoConceptInstanceParameter.setName(flexoConceptInstanceRole.getName());
 					flexoConceptInstanceParameter.setLabel(flexoConceptInstanceRole.getName());
-					flexoConceptInstanceParameter.setModelSlot((VirtualModelModelSlot) flexoConceptInstanceRole.getModelSlot());
+					flexoConceptInstanceParameter.setModelSlot((FMLModelSlot) flexoConceptInstanceRole.getModelSlot());
 					// editionPatternInstanceParameter.setFlexoConceptType(editionPatternFlexoRole.getFlexoConceptType());
 					editionScheme.addToParameters(flexoConceptInstanceParameter);
 					// Add individual action

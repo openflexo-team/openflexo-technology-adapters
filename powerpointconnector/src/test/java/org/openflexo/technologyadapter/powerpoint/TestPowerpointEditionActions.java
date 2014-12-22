@@ -64,8 +64,8 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 				PowerpointTechnologyAdapter.class);
 		
 		
-		VirtualModelTechnologyAdapter testAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(
-				VirtualModelTechnologyAdapter.class);
+		FMLTechnologyAdapter testAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(
+				FMLTechnologyAdapter.class);
 		
 		modelRepository = (PowerpointSlideShowRepository) resourceCenter.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter);
 		File pptFile = new File("src/test/resources/GenPowerpoint/generated_File2.ppt");

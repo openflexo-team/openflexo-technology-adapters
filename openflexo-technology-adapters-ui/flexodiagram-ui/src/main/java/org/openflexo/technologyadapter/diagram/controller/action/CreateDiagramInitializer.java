@@ -33,7 +33,7 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.VirtualModelModelSlot;
+import org.openflexo.foundation.fml.FMLModelSlot;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
@@ -160,7 +160,7 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 		if (FreeModelSlot.class.isAssignableFrom(modelSlotClass)) {
 			return CommonFIB.CONFIGURE_FREE_MODEL_SLOT_INSTANCE_DIALOG_FIB;
 		}
-		if (VirtualModelModelSlot.class.isAssignableFrom(modelSlotClass)) {
+		if (FMLModelSlot.class.isAssignableFrom(modelSlotClass)) {
 			return CommonFIB.CONFIGURE_VIRTUAL_MODEL_SLOT_INSTANCE_DIALOG_FIB;
 		}
 		return null;
