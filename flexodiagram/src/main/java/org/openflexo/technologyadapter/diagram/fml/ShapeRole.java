@@ -150,8 +150,13 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 					logger.warning("Detecting a loop in parent shape pattern role definition. Resetting parent shape pattern role");
 					this.parentShapeRole = null;
 				}
-				setChanged();
-				notifyObservers();
+				// setChanged();
+				// notifyObservers();
+				getPropertyChangeSupport().firePropertyChange(PARENT_SHAPE_PATTERN_ROLE_KEY, oldParentShapeRole, parentShapeRole);
+				if (getFlexoConcept() != null) {
+					getFlexoConcept().getPropertyChangeSupport().firePropertyChange(PARENT_SHAPE_PATTERN_ROLE_KEY, oldParentShapeRole,
+							parentShapeRole);
+				}
 			}
 		}
 

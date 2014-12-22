@@ -142,12 +142,8 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 					if (role instanceof ShapeRole) {
 						if (((ShapeRole) role).getParentShapeAsDefinedInAction()) {
 							drawShape(shapeBinding, (ShapeRole) role, getFlexoConcept());
-							// System.out.println("Add shape " + role.getPatternRoleName() + " under FlexoConcept");
-						} else {
-							drawShape(shapeBinding, (ShapeRole) role, ((ShapeRole) role).getParentShapeRole());
-							// System.out.println("Add shape " + role.getPatternRoleName() + " under "
-							// + ((ShapeRole) role).getParentShapePatternRole().getPatternRoleName());
-						}
+							// System.out.println("Add shape " + role.getRoleName() + " under FlexoConcept");
+						} 
 					} else if (role instanceof ConnectorRole) {
 						ConnectorRole connectorRole = (ConnectorRole) role;
 						ShapeGRBinding fromBinding;
@@ -174,6 +170,23 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 						}
 						// System.out.println("Add connector " + role.getPatternRoleName() + " under FlexoConcept");
 						drawConnector(connectorBinding, connectorRole, fromBinding, fromDrawable, toBinding, toDrawable);
+					}
+				}
+
+			}
+		});
+
+		shapeBinding.addToWalkers(new GRStructureVisitor<ShapeRole>() {
+
+			@Override
+			public void visit(ShapeRole parentRole) {
+
+				for (FlexoRole<?> role : parentRole.getFlexoConcept().getFlexoRoles()) {
+					if (role instanceof ShapeRole) {
+						if (((ShapeRole) role).getParentShapeRole() == parentRole) {
+							drawShape(shapeBinding, (ShapeRole) role, parentRole);
+							//System.out.println("Add shape " + role.getRoleName() + " under " + parentRole.getRoleName());
+						}
 					}
 				}
 
