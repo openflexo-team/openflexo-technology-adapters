@@ -3,8 +3,8 @@ package org.openflexo.technologyadapter.powerpoint;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;

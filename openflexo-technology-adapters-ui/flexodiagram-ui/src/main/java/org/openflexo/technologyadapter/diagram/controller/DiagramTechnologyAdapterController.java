@@ -35,12 +35,12 @@ import org.openflexo.foundation.fml.FlexoConceptNature;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fmlrt.VirtualModelInstance;
-import org.openflexo.foundation.fmlrt.VirtualModelInstanceNature;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.icon.VEIconLibrary;
+import org.openflexo.icon.FMLRTIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.rm.ResourceLocator;
@@ -314,7 +314,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		} else if (ConnectorRole.class.isAssignableFrom(patternRoleClass)) {
 			return DiagramIconLibrary.CONNECTOR_ICON;
 		} else if (FlexoConceptInstanceRole.class.isAssignableFrom(patternRoleClass)) {
-			return VEIconLibrary.FLEXO_CONCEPT_INSTANCE_ICON;
+			return FMLRTIconLibrary.FLEXO_CONCEPT_INSTANCE_ICON;
 		}
 		return null;
 	}
@@ -330,7 +330,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		} else if (GraphicalAction.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DiagramIconLibrary.GRAPHICAL_ACTION_ICON);
 		} else if (DeleteAction.class.isAssignableFrom(editionActionClass)) {
-			return VEIconLibrary.DELETE_ICON;
+			return FMLRTIconLibrary.DELETE_ICON;
 		}
 		return super.getIconForEditionAction(editionActionClass);
 	}

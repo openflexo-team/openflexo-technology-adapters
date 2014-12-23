@@ -31,7 +31,7 @@ import java.util.logging.Logger;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.foundation.fml.NamedViewPointObject;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fmlrt.ModelSlotInstance;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.excel.model.ExcelObject;

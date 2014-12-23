@@ -25,8 +25,8 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fmlrt.ModelSlotInstance;
-import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;

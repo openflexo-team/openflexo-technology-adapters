@@ -43,11 +43,21 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>fmltechnologyadapter-ui</artifactId>
+			<artifactId>fml-technologyadapter-ui</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>fmltechnologyadapter-ui</artifactId>
+			<artifactId>fml-technologyadapter-ui</artifactId>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>fml-rt-technologyadapter-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>fml-rt-technologyadapter-ui</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>

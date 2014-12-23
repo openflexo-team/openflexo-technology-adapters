@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;

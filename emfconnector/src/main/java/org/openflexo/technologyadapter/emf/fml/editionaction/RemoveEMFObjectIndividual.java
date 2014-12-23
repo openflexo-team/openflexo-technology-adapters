@@ -31,7 +31,7 @@ package org.openflexo.technologyadapter.emf.fml.editionaction;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
-import org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -56,7 +56,7 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFModelSlot, EM
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#performAction(org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#performAction(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
 		 */
 		@Override
 		public EMFObjectIndividual performAction(FlexoBehaviourAction action) {
@@ -82,7 +82,7 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFModelSlot, EM
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#finalizePerformAction(org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction,
+		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#finalizePerformAction(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction,
 		 *      org.openflexo.foundation.FlexoModelObject)
 		 */
 		@Override

@@ -33,7 +33,7 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.editionaction.SetDataPropertyValueAction;
-import org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;

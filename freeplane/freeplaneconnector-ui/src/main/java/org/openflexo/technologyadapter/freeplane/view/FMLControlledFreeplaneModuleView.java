@@ -2,7 +2,7 @@ package org.openflexo.technologyadapter.freeplane.view;
 
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
-import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.freeplane.fml.FMLControlledFreeplaneVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.view.controller.FlexoController;

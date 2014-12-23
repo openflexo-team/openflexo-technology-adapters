@@ -11,7 +11,7 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;

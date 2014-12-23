@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fmlrt.ModelSlotInstance;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;

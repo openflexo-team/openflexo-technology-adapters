@@ -29,10 +29,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fmlrt.FreeModelSlotInstance;
-import org.openflexo.foundation.fmlrt.View;
-import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareActorReference;
 import org.openflexo.foundation.technologyadapter.DeclareActorReferences;

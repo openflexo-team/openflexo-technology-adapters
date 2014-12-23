@@ -22,8 +22,8 @@ package org.openflexo.technologyadapter.xml.fml;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fmlrt.ActorReference;
-import org.openflexo.foundation.fmlrt.ModelSlotInstance;
+import org.openflexo.foundation.fml.rt.ActorReference;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.Getter;

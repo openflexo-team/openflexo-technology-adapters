@@ -24,7 +24,8 @@ import org.openflexo.foundation.technologyadapter.ModelRepository;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 
-public class OWLOntologyAsModelRepository extends ModelRepository<OWLOntologyResource, OWLOntology, OWLOntology, OWLTechnologyAdapter> {
+public class OWLOntologyAsModelRepository extends
+		ModelRepository<OWLOntologyResource, OWLOntology, OWLOntology, OWLTechnologyAdapter, OWLTechnologyAdapter> {
 
 	public OWLOntologyAsModelRepository(OWLTechnologyAdapter adapter, FlexoResourceCenter<?> rc) {
 		super(adapter, rc);

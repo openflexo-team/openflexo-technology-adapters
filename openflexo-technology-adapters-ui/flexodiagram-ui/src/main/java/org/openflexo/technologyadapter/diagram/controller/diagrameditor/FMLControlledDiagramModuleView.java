@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
-import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;

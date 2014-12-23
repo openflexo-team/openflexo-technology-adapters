@@ -37,8 +37,8 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.editionaction.SetObjectPropertyValueAction;
-import org.openflexo.foundation.fmlrt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
@@ -221,7 +221,7 @@ public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#performAction(org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#performAction(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
 		 */
 		@Override
 		public EMFObjectIndividualReferenceObjectPropertyValue performAction(FlexoBehaviourAction action) {

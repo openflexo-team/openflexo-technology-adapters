@@ -38,12 +38,12 @@ import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.IndividualRole;
 import org.openflexo.foundation.fml.URIParameter;
-import org.openflexo.foundation.fml.FMLModelSlot;
-import org.openflexo.foundation.fml.editionaction.AddFlexoConceptInstance;
 import org.openflexo.foundation.fml.editionaction.AddIndividual;
 import org.openflexo.foundation.fml.editionaction.DeclareFlexoRole;
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
 import org.openflexo.foundation.fml.inspector.FlexoConceptInspector;
+import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
+import org.openflexo.foundation.fml.rt.editionaction.AddFlexoConceptInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
@@ -194,7 +194,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				flexoConceptPatternRole = null;
 				if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 					if (isVirtualModelModelSlot()) {
-						FMLModelSlot virtualModelModelSlot = (FMLModelSlot) getModelSlot();
+						FMLRTModelSlot virtualModelModelSlot = (FMLRTModelSlot) getModelSlot();
 						flexoConceptPatternRole = virtualModelModelSlot.makeFlexoConceptInstanceRole(getVirtualModelConcept());
 						flexoConceptPatternRole.setRoleName(getVirtualModelPatternRoleName());
 						newFlexoConcept.addToFlexoRoles(flexoConceptPatternRole);
@@ -764,7 +764,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 		if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 			if (isVirtualModelModelSlot()) {
-				FMLModelSlot virtualModelModelSlot = (FMLModelSlot) getModelSlot();
+				FMLRTModelSlot virtualModelModelSlot = (FMLRTModelSlot) getModelSlot();
 
 				// Add individual action
 				AddFlexoConceptInstance newAddEditionPatternInstance = virtualModelModelSlot

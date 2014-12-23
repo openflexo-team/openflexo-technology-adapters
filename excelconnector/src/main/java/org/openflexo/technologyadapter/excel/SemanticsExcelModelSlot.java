@@ -25,9 +25,9 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fmlrt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration;
+import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
@@ -102,14 +102,14 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 		}
 
 		@Override
-		public FlexoModelResource<ExcelModel, ExcelMetaModel, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
+		public FlexoModelResource<ExcelModel, ExcelMetaModel, ?, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
 				String modelUri, FlexoMetaModelResource<ExcelModel, ExcelMetaModel, ?> metaModelResource) {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public FlexoModelResource<ExcelModel, ExcelMetaModel, ?> createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter,
+		public FlexoModelResource<ExcelModel, ExcelMetaModel, ?, ?> createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter,
 				String relativePath, String filename, String modelUri,
 				FlexoMetaModelResource<ExcelModel, ExcelMetaModel, ?> metaModelResource) {
 			// TODO Auto-generated method stub

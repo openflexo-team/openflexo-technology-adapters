@@ -26,7 +26,7 @@ import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.icon.VPMIconLibrary;
+import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.fml.action.DeclareConnectorInFlexoConcept;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
@@ -69,6 +69,6 @@ public class DeclareConnectorInFlexoConceptInitializer extends
 
 	@Override
 	protected Icon getEnabledIcon() {
-		return VPMIconLibrary.FLEXO_CONCEPT_ICON;
+		return FMLIconLibrary.FLEXO_CONCEPT_ICON;
 	}
 }

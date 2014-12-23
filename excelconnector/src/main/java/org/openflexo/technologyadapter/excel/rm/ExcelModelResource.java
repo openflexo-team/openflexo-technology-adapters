@@ -36,7 +36,7 @@ import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
  */
 @ModelEntity
 @ImplementationClass(ExcelModelResourceImpl.class)
-public interface ExcelModelResource extends FlexoModelResource<ExcelModel, ExcelMetaModel, ExcelTechnologyAdapter> {
+public interface ExcelModelResource extends FlexoModelResource<ExcelModel, ExcelMetaModel, ExcelTechnologyAdapter, ExcelTechnologyAdapter> {
 
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 

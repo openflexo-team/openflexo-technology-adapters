@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.diagram.model;
 import java.util.List;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;

@@ -27,8 +27,8 @@ import javax.swing.ImageIcon;
 
 import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fmlrt.VirtualModelInstance;
-import org.openflexo.foundation.fmlrt.VirtualModelInstanceNature;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;

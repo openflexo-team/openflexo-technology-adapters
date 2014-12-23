@@ -37,7 +37,7 @@ import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
  */
 @ModelEntity
 @ImplementationClass(OWLOntologyResourceImpl.class)
-public interface OWLOntologyResource extends FlexoModelResource<OWLOntology, OWLOntology, OWLTechnologyAdapter>,
+public interface OWLOntologyResource extends FlexoModelResource<OWLOntology, OWLOntology, OWLTechnologyAdapter, OWLTechnologyAdapter>,
 		FlexoMetaModelResource<OWLOntology, OWLOntology, OWLTechnologyAdapter> {
 
 	public static final String ONTOLOGY_LIBRARY = "ontologyLibrary";

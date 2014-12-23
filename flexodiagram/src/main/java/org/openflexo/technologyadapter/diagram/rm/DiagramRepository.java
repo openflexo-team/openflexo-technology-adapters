@@ -31,7 +31,8 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  * @author sylvain
  * 
  */
-public class DiagramRepository extends ModelRepository<DiagramResource, Diagram, DiagramSpecification, DiagramTechnologyAdapter> {
+public class DiagramRepository extends
+		ModelRepository<DiagramResource, Diagram, DiagramSpecification, DiagramTechnologyAdapter, DiagramTechnologyAdapter> {
 
 	public DiagramRepository(DiagramTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
 		super(adapter, resourceCenter);

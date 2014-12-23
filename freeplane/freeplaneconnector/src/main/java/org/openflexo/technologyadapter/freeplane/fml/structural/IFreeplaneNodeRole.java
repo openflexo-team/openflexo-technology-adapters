@@ -23,10 +23,10 @@ package org.openflexo.technologyadapter.freeplane.fml.structural;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fmlrt.ActorReference;
-import org.openflexo.foundation.fmlrt.FlexoConceptInstance;
-import org.openflexo.foundation.fmlrt.ModelObjectActorReference;
-import org.openflexo.foundation.fmlrt.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.fml.rt.ActorReference;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -80,7 +80,7 @@ public interface IFreeplaneNodeRole extends FlexoRole<IFreeplaneNode> {
         }
 
         /* (non-Javadoc)
-         * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#makeActorReference(java.lang.Object, org.openflexo.foundation.fmlrt.FlexoConceptInstance)
+         * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#makeActorReference(java.lang.Object, org.openflexo.foundation.fml.rt.FlexoConceptInstance)
          */
         @Override
         public ActorReference<IFreeplaneNode> makeActorReference(final IFreeplaneNode object, final FlexoConceptInstance epi) {

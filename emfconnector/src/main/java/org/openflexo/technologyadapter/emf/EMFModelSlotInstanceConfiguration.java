@@ -1,6 +1,6 @@
 package org.openflexo.technologyadapter.emf;
 
-import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
@@ -19,7 +19,7 @@ public class EMFModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 	}
 
 	/*@Override
-	public void setOption(org.openflexo.foundation.fmlrt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
+	public void setOption(org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
 			modelUri = getAction().getFocusedObject().getProject().getURI() + "/Models/myEMFModel";

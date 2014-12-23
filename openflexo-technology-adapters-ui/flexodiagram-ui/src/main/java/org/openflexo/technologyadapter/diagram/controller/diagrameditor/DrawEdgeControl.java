@@ -45,7 +45,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fmlrt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;

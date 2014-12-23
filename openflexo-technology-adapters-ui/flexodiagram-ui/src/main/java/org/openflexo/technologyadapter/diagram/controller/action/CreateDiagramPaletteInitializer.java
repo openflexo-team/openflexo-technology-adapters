@@ -31,7 +31,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.fml.ViewPointObject;
-import org.openflexo.icon.VPMIconLibrary;
+import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
@@ -79,7 +79,7 @@ public class CreateDiagramPaletteInitializer extends ActionInitializer<CreateDia
 
 	@Override
 	protected Icon getEnabledIcon() {
-		return VPMIconLibrary.VIEWPOINT_ICON;
+		return FMLIconLibrary.VIEWPOINT_ICON;
 	}
 
 	protected DrawingGraphicalRepresentation makePaletteGraphicalRepresentation(FGEModelFactory factory) {

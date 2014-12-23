@@ -1,8 +1,8 @@
 package org.openflexo.technologyadapter.freeplane.fml;
 
-import org.openflexo.foundation.fmlrt.FreeModelSlotInstance;
-import org.openflexo.foundation.fmlrt.VirtualModelInstance;
-import org.openflexo.foundation.fmlrt.VirtualModelInstanceNature;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 

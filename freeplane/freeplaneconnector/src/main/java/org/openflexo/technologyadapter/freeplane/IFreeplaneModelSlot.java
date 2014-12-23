@@ -29,9 +29,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fmlrt.FreeModelSlotInstance;
-import org.openflexo.foundation.fmlrt.View;
-import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.*;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;

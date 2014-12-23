@@ -27,7 +27,7 @@ import javax.swing.Icon;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.fml.action.OpenFMLControlledDiagramVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.ActionInitializer;

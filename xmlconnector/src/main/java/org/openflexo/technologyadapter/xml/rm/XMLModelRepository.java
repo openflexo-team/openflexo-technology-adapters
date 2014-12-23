@@ -30,7 +30,8 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 // FIXME : when we have discussed about FileBase....
 
 //public class XMLModelRepository extends TechnologyAdapterResourceRepository<XMLResource,  XMLTechnologyAdapter, XMLModel> {
-public class XMLModelRepository extends ModelRepository<XMLFileResource,  XMLModel, XMLMetaModel, XMLTechnologyAdapter> {
+public class XMLModelRepository extends
+		ModelRepository<XMLFileResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter, XMLTechnologyAdapter> {
 	public XMLModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
 		super(adapter, resourceCenter);
 	}
@@ -41,7 +42,5 @@ public class XMLModelRepository extends ModelRepository<XMLFileResource,  XMLMod
 	public String getDefaultBaseURI() {
 		return DEFAULT_BASE_URI;
 	}
-	
-	
 
 }

@@ -31,7 +31,7 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fmlrt.View;
+import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
@@ -134,7 +134,7 @@ public class CreateControlledDiagramVirtualModelInstanceInitializer extends
 		if (FreeModelSlot.class.isAssignableFrom(modelSlotClass)) {
 			return CommonFIB.CONFIGURE_FREE_MODEL_SLOT_INSTANCE_DIALOG_FIB;
 		}
-		if (FMLModelSlot.class.isAssignableFrom(modelSlotClass)) {
+		if (FMLRTModelSlot.class.isAssignableFrom(modelSlotClass)) {
 			return CommonFIB.CONFIGURE_VIRTUAL_MODEL_SLOT_INSTANCE_DIALOG_FIB;
 		}
 		return null;

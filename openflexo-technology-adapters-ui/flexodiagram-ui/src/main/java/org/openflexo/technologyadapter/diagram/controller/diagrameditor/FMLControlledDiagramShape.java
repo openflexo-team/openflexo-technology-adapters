@@ -25,7 +25,7 @@ import java.util.List;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fmlrt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;

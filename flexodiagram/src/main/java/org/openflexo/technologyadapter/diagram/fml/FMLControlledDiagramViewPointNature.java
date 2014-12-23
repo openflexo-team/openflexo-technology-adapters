@@ -25,7 +25,7 @@ import java.util.List;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPointNature;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 
 /**
  * Define the "controlled-diagram" nature of a {@link ViewPoint}<br>

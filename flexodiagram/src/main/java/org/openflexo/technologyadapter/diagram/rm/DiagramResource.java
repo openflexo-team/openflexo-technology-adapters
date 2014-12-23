@@ -23,7 +23,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 @XMLElement
 public interface DiagramResource extends PamelaResource<Diagram, DiagramFactory>,
 		TechnologyAdapterResource<Diagram, DiagramTechnologyAdapter>,
-		FlexoModelResource<Diagram, DiagramSpecification, DiagramTechnologyAdapter> {
+		FlexoModelResource<Diagram, DiagramSpecification, DiagramTechnologyAdapter, DiagramTechnologyAdapter> {
 
 	public static final String DIAGRAM_SUFFIX = ".diagram";
 

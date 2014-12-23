@@ -30,7 +30,7 @@ import org.openflexo.foundation.fml.AbstractActionScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptObject;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fmlrt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;

@@ -99,8 +99,7 @@ public class CommonPalette extends AbstractDiagramPalette {
 			gr.setY(py * GRID_HEIGHT + 10);
 			gr.setWidth(30);
 			gr.setHeight(30);
-		}
-		else {
+		} else {
 			gr.setX(px * GRID_WIDTH + 10);
 			gr.setY(py * GRID_HEIGHT + 10);
 			gr.setWidth(40);

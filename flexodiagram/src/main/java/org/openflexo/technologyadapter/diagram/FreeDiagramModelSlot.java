@@ -3,9 +3,9 @@ package org.openflexo.technologyadapter.diagram;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fmlrt.FreeModelSlotInstance;
-import org.openflexo.foundation.fmlrt.View;
-import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;

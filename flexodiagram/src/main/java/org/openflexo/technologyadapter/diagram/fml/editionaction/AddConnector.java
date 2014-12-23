@@ -37,7 +37,7 @@ import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;

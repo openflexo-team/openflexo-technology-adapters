@@ -48,18 +48,37 @@
 		
 			<dependency>
 				<groupId>org.openflexo</groupId>
-				<artifactId>fmltechnologyadapter-ui</artifactId>
+				<artifactId>fml-technologyadapter-ui</artifactId>
 				<version>${flexocore.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
-				<artifactId>fmltechnologyadapter-ui</artifactId>
+				<artifactId>fml-technologyadapter-ui</artifactId>
 				<version>${flexocore.version}</version>
 				<classifier>tests</classifier>
 			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
-				<artifactId>fmltechnologyadapter-ui</artifactId>
+				<artifactId>fml-technologyadapter-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>resources</classifier>
+				<type>zip</type>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fml-rt-technologyadapter-ui</artifactId>
+				<version>${flexocore.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fml-rt-technologyadapter-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>tests</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fml-rt-technologyadapter-ui</artifactId>
 				<version>${flexocore.version}</version>
 				<classifier>resources</classifier>
 				<type>zip</type>

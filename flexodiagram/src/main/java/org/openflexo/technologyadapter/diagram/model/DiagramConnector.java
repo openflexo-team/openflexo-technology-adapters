@@ -20,7 +20,7 @@
 package org.openflexo.technologyadapter.diagram.model;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.foundation.fmlrt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;

@@ -30,8 +30,8 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fmlrt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;

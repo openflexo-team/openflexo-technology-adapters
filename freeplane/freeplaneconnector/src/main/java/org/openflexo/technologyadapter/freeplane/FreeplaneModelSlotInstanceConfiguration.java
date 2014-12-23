@@ -20,7 +20,7 @@
 
 package org.openflexo.technologyadapter.freeplane;
 
-import org.openflexo.foundation.fmlrt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 

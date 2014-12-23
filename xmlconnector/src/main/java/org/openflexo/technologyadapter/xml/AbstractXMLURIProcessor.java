@@ -29,7 +29,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoProperty;
 import org.openflexo.foundation.fml.NamedViewPointObject;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fmlrt.ModelSlotInstance;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Getter;

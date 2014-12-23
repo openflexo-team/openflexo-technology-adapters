@@ -28,7 +28,7 @@ import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.editionaction.AbstractAssertion;
 import org.openflexo.foundation.fml.editionaction.AddIndividual;
 import org.openflexo.foundation.fml.editionaction.AssignableAction;
-import org.openflexo.foundation.fmlrt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
