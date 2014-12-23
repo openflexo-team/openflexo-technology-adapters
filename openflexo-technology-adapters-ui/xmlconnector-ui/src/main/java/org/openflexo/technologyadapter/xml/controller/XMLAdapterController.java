@@ -110,7 +110,7 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<XMLTechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (XMLObject.class.isAssignableFrom(objectClass)) {
 			return XMLIconLibrary.iconForObject((Class<? extends XMLObject>) objectClass);
 		}
@@ -146,8 +146,6 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 		return super.getIconForEditionAction(editionActionClass);
 	}
 
-
-
 	@Override
 	public boolean hasModuleViewForObject(TechnologyObject object, FlexoController controller) {
 		if (object instanceof XMLObject) {
@@ -155,7 +153,6 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 		}
 		return false;
 	}
-
 
 	@Override
 	public String getWindowTitleforObject(TechnologyObject object, FlexoController controller) {
@@ -170,8 +167,7 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 			FlexoPerspective perspective) {
 		if (object instanceof XMLModel) {
 			return new XMLModelView((XMLModel) object, controller, perspective);
-		}
-		else if (object instanceof XMLMetaModel) {
+		} else if (object instanceof XMLMetaModel) {
 			return new XMLMetaModelView((XMLMetaModel) object, controller, perspective);
 		}
 		return new EmptyPanel<TechnologyObject<XMLTechnologyAdapter>>(controller, perspective, object);

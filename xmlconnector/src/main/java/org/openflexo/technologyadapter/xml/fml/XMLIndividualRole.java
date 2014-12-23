@@ -23,12 +23,11 @@ package org.openflexo.technologyadapter.xml.fml;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -46,7 +45,7 @@ import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 @ModelEntity
 @XMLElement
 @ImplementationClass(XMLIndividualRole.XMLIndividualRoleImpl.class)
-public interface XMLIndividualRole extends FlexoRole<XMLIndividual>,TechnologyObject<XMLTechnologyAdapter> {
+public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String INDIVIDUAL_URI_KEY = "individualURI";
@@ -58,16 +57,16 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual>,TechnologyOb
 	@Setter(INDIVIDUAL_URI_KEY)
 	public void setIndividualURI(String conceptURI);
 
+	public XMLTechnologyAdapter getXMLTechnologyAdapter();
+
 	public static abstract class XMLIndividualRoleImpl extends FlexoRoleImpl<XMLIndividual> implements XMLIndividualRole {
 
-		
 		private String individualURI;
 
 		@Override
-		public XMLTechnologyAdapter getTechnologyAdapter() {
-			return (XMLTechnologyAdapter) getModelSlot().getTechnologyAdapter();
+		public XMLTechnologyAdapter getXMLTechnologyAdapter() {
+			return (XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter();
 		}
-
 
 		@Override
 		public Type getType() {
@@ -114,12 +113,11 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual>,TechnologyOb
 			this.individualURI = conceptURI;
 		}
 
-		
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("XMLIndividualRole " + getName() + " as Individual conformTo " + getPreciseType() + " from " + getModelSlot().getName()
-					+ " ;", context);
+			out.append("XMLIndividualRole " + getName() + " as Individual conformTo " + getPreciseType() + " from "
+					+ getModelSlot().getName() + " ;", context);
 			return out.toString();
 		}
 

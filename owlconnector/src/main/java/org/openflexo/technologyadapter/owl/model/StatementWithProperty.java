@@ -58,7 +58,7 @@ public class StatementWithProperty implements TechnologySpecificCustomType<OWLTe
 	}
 
 	@Override
-	public OWLTechnologyAdapter getTechnologyAdapter() {
+	public OWLTechnologyAdapter getSpecificTechnologyAdapter() {
 		if (getProperty() != null) {
 			return getProperty().getTechnologyAdapter();
 		}

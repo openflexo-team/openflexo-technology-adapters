@@ -89,8 +89,8 @@ public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 		}
 
 		@Override
-		public XMLTechnologyAdapter getTechnologyAdapter() {
-			return (XMLTechnologyAdapter) super.getTechnologyAdapter();
+		public XMLTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (XMLTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		// FIXME

@@ -25,7 +25,7 @@ import java.util.logging.Logger;
 import javax.swing.Icon;
 
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.action.DeleteDiagramSpecification;
@@ -35,7 +35,7 @@ import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
 public class DeleteDiagramSpecificationInitializer extends
-		ActionInitializer<DeleteDiagramSpecification, DiagramSpecification, ViewPointObject> {
+		ActionInitializer<DeleteDiagramSpecification, DiagramSpecification, FMLObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());

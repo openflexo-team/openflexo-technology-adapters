@@ -27,7 +27,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProperty;
-import org.openflexo.foundation.fml.NamedViewPointObject;
+import org.openflexo.foundation.fml.NamedFMLObject;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
@@ -55,7 +55,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 @ModelEntity
 @XMLElement
 @ImplementationClass(AbstractXMLURIProcessor.AbstractXMLURIProcessorImpl.class)
-public interface AbstractXMLURIProcessor extends NamedViewPointObject {
+public interface AbstractXMLURIProcessor extends NamedFMLObject {
 
 	public enum MappingStyle {
 		ATTRIBUTE_VALUE, SINGLETON;
@@ -133,7 +133,7 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 	 * @author xtof
 	 *
 	 */
-	public static abstract class AbstractXMLURIProcessorImpl extends NamedViewPointObjectImpl implements AbstractXMLURIProcessor {
+	public static abstract class AbstractXMLURIProcessorImpl extends NamedFMLObjectImpl implements AbstractXMLURIProcessor {
 
 		static final Logger  logger   = Logger.getLogger(AbstractXMLURIProcessor.class.getPackage().getName());
 

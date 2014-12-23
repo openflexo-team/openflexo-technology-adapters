@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.diagram.fml;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
-import org.openflexo.foundation.fml.NamedViewPointObject;
+import org.openflexo.foundation.fml.NamedFMLObject;
 import org.openflexo.foundation.fml.URIParameter;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
@@ -44,7 +44,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 @ModelEntity
 @ImplementationClass(FMLDiagramPaletteElementBindingParameter.FMLDiagramPaletteElementBindingParameterImpl.class)
 @XMLElement
-public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPointObject {
+public interface FMLDiagramPaletteElementBindingParameter extends NamedFMLObject {
 
 	@PropertyIdentifier(type = FMLDiagramPaletteElementBinding.class)
 	public static final String PALETTE_ELEMENT_BINDING_KEY = "paletteElementBinding";
@@ -72,7 +72,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedViewPoint
 	@Setter(VALUE_KEY)
 	public void setValue(String value);
 
-	public abstract class FMLDiagramPaletteElementBindingParameterImpl extends NamedViewPointObjectImpl implements
+	public abstract class FMLDiagramPaletteElementBindingParameterImpl extends NamedFMLObjectImpl implements
 			FMLDiagramPaletteElementBindingParameter {
 
 		private FlexoBehaviourParameter _parameter;

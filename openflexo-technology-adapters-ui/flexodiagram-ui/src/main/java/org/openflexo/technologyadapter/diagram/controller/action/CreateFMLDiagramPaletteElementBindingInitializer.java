@@ -29,7 +29,7 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
@@ -39,7 +39,7 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class CreateFMLDiagramPaletteElementBindingInitializer extends ActionInitializer<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, ViewPointObject> {
+public class CreateFMLDiagramPaletteElementBindingInitializer extends ActionInitializer<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 

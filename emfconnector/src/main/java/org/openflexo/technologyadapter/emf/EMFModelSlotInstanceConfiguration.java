@@ -14,7 +14,7 @@ public class EMFModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		setModelUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myEMFModel");
 		setRelativePath("/");
 		setFilename("myEMFModel"
-				+ getModelSlot().getTechnologyAdapter().getExpectedModelExtension(
+				+ getModelSlot().getModelSlotTechnologyAdapter().getExpectedModelExtension(
 						(EMFMetaModelResource) getModelSlot().getMetaModelResource()));
 	}
 
@@ -46,7 +46,7 @@ public class EMFModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		String expectedSuffix = getModelSlot().getTechnologyAdapter().getExpectedModelExtension(
+		String expectedSuffix = getModelSlot().getModelSlotTechnologyAdapter().getExpectedModelExtension(
 				(EMFMetaModelResource) getModelSlot().getMetaModelResource());
 		if (!getFilename().endsWith(expectedSuffix)) {
 			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_right_suffix" + " : " + expectedSuffix));

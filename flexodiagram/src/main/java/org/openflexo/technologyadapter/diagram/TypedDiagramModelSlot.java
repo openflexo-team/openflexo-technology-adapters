@@ -135,8 +135,8 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public DiagramTechnologyAdapter getTechnologyAdapter() {
-			return (DiagramTechnologyAdapter) super.getTechnologyAdapter();
+		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (DiagramTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
@@ -175,7 +175,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 
 			try {
-				DiagramResource returned = getTechnologyAdapter().createNewDiagram(project, filename, diagramUri,
+				DiagramResource returned = getModelSlotTechnologyAdapter().createNewDiagram(project, filename, diagramUri,
 						(DiagramSpecificationResource) metaModelResource);
 				return returned;
 
@@ -191,7 +191,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String diagramUri, FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 			try {
-				return getTechnologyAdapter().createNewDiagram((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
+				return getModelSlotTechnologyAdapter().createNewDiagram((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
 						diagramUri, (DiagramSpecificationResource) metaModelResource);
 			} catch (SaveResourceException e) {
 				// TODO Auto-generated catch block

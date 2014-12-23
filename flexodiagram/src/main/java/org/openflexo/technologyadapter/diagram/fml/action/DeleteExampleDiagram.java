@@ -26,31 +26,31 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
-public class DeleteExampleDiagram extends FlexoAction<DeleteExampleDiagram, Diagram, ViewPointObject> {
+public class DeleteExampleDiagram extends FlexoAction<DeleteExampleDiagram, Diagram, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(DeleteExampleDiagram.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteExampleDiagram, Diagram, ViewPointObject> actionType = new FlexoActionType<DeleteExampleDiagram, Diagram, ViewPointObject>(
+	public static FlexoActionType<DeleteExampleDiagram, Diagram, FMLObject> actionType = new FlexoActionType<DeleteExampleDiagram, Diagram, FMLObject>(
 			"delete_example_diagram", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public DeleteExampleDiagram makeNewAction(Diagram focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+		public DeleteExampleDiagram makeNewAction(Diagram focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 			return new DeleteExampleDiagram(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(Diagram object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(Diagram object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(Diagram object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(Diagram object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
@@ -60,7 +60,7 @@ public class DeleteExampleDiagram extends FlexoAction<DeleteExampleDiagram, Diag
 		FlexoObjectImpl.addActionForClass(DeleteExampleDiagram.actionType, Diagram.class);
 	}
 
-	DeleteExampleDiagram(Diagram focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	DeleteExampleDiagram(Diagram focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

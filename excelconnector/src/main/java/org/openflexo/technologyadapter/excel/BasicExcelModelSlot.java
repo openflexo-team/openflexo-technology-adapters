@@ -200,13 +200,13 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		}
 
 		@Override
-		public ExcelTechnologyAdapter getTechnologyAdapter() {
-			return (ExcelTechnologyAdapter) super.getTechnologyAdapter();
+		public ExcelTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (ExcelTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
 		public ExcelWorkbookResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getTechnologyAdapter().createNewWorkbook(view.getProject(), filename, modelUri);
+			return getModelSlotTechnologyAdapter().createNewWorkbook(view.getProject(), filename, modelUri);
 		}
 
 		@Override

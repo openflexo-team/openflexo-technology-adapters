@@ -90,7 +90,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel> {
 
 	@Override
-	public EMFTechnologyAdapter getTechnologyAdapter();
+	public EMFTechnologyAdapter getModelSlotTechnologyAdapter();
 
 	public static abstract class EMFModelSlotImpl extends TypeAwareModelSlotImpl<EMFModel, EMFMetaModel> implements EMFModelSlot {
 
@@ -145,20 +145,20 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 		};
 
 		@Override
-		public EMFTechnologyAdapter getTechnologyAdapter() {
-			return (EMFTechnologyAdapter) super.getTechnologyAdapter();
+		public EMFTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (EMFTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
 		public EMFModelResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
 				FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			return getTechnologyAdapter().createNewEMFModel(project, filename, modelUri, (EMFMetaModelResource) metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewEMFModel(project, filename, modelUri, (EMFMetaModelResource) metaModelResource);
 		}
 
 		@Override
 		public EMFModelResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			return getTechnologyAdapter().createNewEMFModel((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
+			return getModelSlotTechnologyAdapter().createNewEMFModel((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
 					modelUri, (EMFMetaModelResource) metaModelResource);
 		}
 

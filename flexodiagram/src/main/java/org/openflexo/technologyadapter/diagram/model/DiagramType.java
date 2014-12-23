@@ -69,7 +69,7 @@ public class DiagramType implements TechnologySpecificCustomType<TechnologyAdapt
 	}
 
 	@Override
-	public TechnologyAdapter getTechnologyAdapter() {
+	public TechnologyAdapter getSpecificTechnologyAdapter() {
 		return getDiagramSpecification().getTechnologyAdapter();
 	}
 

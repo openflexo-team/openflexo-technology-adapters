@@ -29,7 +29,7 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.localization.FlexoLocalization;
@@ -41,29 +41,29 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
-public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, DiagramSpecification, ViewPointObject> {
+public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, DiagramSpecification, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateExampleDiagram.class.getPackage().getName());
 
-	public static FlexoActionType<CreateExampleDiagram, DiagramSpecification, ViewPointObject> actionType = new FlexoActionType<CreateExampleDiagram, DiagramSpecification, ViewPointObject>(
+	public static FlexoActionType<CreateExampleDiagram, DiagramSpecification, FMLObject> actionType = new FlexoActionType<CreateExampleDiagram, DiagramSpecification, FMLObject>(
 			"create_example_diagram", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateExampleDiagram makeNewAction(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateExampleDiagram makeNewAction(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateExampleDiagram(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(DiagramSpecification object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(DiagramSpecification object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
@@ -80,7 +80,7 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 
 	private DiagramResource newDiagramResource;
 
-	CreateExampleDiagram(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateExampleDiagram(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

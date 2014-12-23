@@ -39,66 +39,66 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 @XMLElement
 public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
 
-    public FreeplaneTechnologyAdapter getTechnologyAdapter();
+	public FreeplaneTechnologyAdapter getFreePlaneTechnologyAdapter();
 
-    public abstract static class FreeplaneMapRoleImpl extends FlexoRoleImpl<IFreeplaneMap> implements IFreeplaneMapRole {
+	public abstract static class FreeplaneMapRoleImpl extends FlexoRoleImpl<IFreeplaneMap> implements IFreeplaneMapRole {
 
-        public FreeplaneMapRoleImpl() {
-            super();
-        }
+		public FreeplaneMapRoleImpl() {
+			super();
+		}
 
-        /* (non-Javadoc)
-         * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#getType()
-         */
-        @Override
-        public Type getType() {
-            return IFreeplaneMap.class;
-        }
+		/* (non-Javadoc)
+		 * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#getType()
+		 */
+		@Override
+		public Type getType() {
+			return IFreeplaneMap.class;
+		}
 
-        /* (non-Javadoc)
-         * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#getPreciseType()
-         */
-        @Override
-        public String getPreciseType() {
-            return IFreeplaneMap.class.getSimpleName();
-        }
+		/* (non-Javadoc)
+		 * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#getPreciseType()
+		 */
+		@Override
+		public String getPreciseType() {
+			return IFreeplaneMap.class.getSimpleName();
+		}
 
-        /* (non-Javadoc)
-         * @see org.openflexo.foundation.fml.FlexoRole#defaultCloningStrategy()
-         */
-        @Override
-        public RoleCloningStrategy defaultCloningStrategy() {
-            return RoleCloningStrategy.Reference;
-        }
+		/* (non-Javadoc)
+		 * @see org.openflexo.foundation.fml.FlexoRole#defaultCloningStrategy()
+		 */
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Reference;
+		}
 
-        /* (non-Javadoc)
-         * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#defaultBehaviourIsToBeDeleted()
-         */
-        @Override
-        public boolean defaultBehaviourIsToBeDeleted() {
-            return false;
-        }
+		/* (non-Javadoc)
+		 * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#defaultBehaviourIsToBeDeleted()
+		 */
+		@Override
+		public boolean defaultBehaviourIsToBeDeleted() {
+			return false;
+		}
 
-        /* (non-Javadoc)
-         * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#makeActorReference(java.lang.Object, org.openflexo.foundation.fml.rt.FlexoConceptInstance)
-         */
-        @Override
-        public ActorReference<IFreeplaneMap> makeActorReference(final IFreeplaneMap object, final FlexoConceptInstance epi) {
-            final VirtualModelInstanceModelFactory factory = epi.getFactory();
-            final ModelObjectActorReference<IFreeplaneMap> returned = factory.newInstance(ModelObjectActorReference.class);
-            returned.setFlexoRole(this);
-            returned.setFlexoConceptInstance(epi);
-            returned.setModellingElement(object);
-            return returned;
-        }
+		/* (non-Javadoc)
+		 * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#makeActorReference(java.lang.Object, org.openflexo.foundation.fml.rt.FlexoConceptInstance)
+		 */
+		@Override
+		public ActorReference<IFreeplaneMap> makeActorReference(final IFreeplaneMap object, final FlexoConceptInstance epi) {
+			final VirtualModelInstanceModelFactory factory = epi.getFactory();
+			final ModelObjectActorReference<IFreeplaneMap> returned = factory.newInstance(ModelObjectActorReference.class);
+			returned.setFlexoRole(this);
+			returned.setFlexoConceptInstance(epi);
+			returned.setModellingElement(object);
+			return returned;
+		}
 
-        /**
-         * 
-         * @return Freeplane technology adapter in service manager.
-         */
-        @Override
-        public FreeplaneTechnologyAdapter getTechnologyAdapter() {
-            return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
-        }
-    }
+		/**
+		 * 
+		 * @return Freeplane technology adapter in service manager.
+		 */
+		@Override
+		public FreeplaneTechnologyAdapter getFreePlaneTechnologyAdapter() {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
+		}
+	}
 }

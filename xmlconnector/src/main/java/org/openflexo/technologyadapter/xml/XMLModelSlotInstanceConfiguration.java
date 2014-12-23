@@ -13,7 +13,7 @@ public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		setModelUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myXMLFile");
 		setRelativePath("/");
 		setFilename("myXMLFile"
-				+ ((XMLTechnologyAdapter) getModelSlot().getTechnologyAdapter()).getExpectedModelExtension(getModelSlot()
+				+ ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter()).getExpectedModelExtension(getModelSlot()
 						.getMetaModelResource()));
 	}
 
@@ -45,7 +45,7 @@ public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		String expectedSuffix = ((XMLTechnologyAdapter) getModelSlot().getTechnologyAdapter()).getExpectedModelExtension(getModelSlot()
+		String expectedSuffix = ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter()).getExpectedModelExtension(getModelSlot()
 				.getMetaModelResource());
 		if (!getFilename().endsWith(expectedSuffix)) {
 			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_right_suffix" + " : " + expectedSuffix));

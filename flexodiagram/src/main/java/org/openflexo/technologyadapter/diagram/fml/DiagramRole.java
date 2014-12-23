@@ -4,8 +4,8 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
 import org.openflexo.foundation.fml.rt.View;
@@ -48,7 +48,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 
 	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource);
 
-	public DiagramTechnologyAdapter getTechnologyAdapter();
+	public DiagramTechnologyAdapter getDiagramTechnologyAdapter();
 
 	public static abstract class DiagramRoleImpl extends FlexoRoleImpl<Diagram> implements DiagramRole {
 
@@ -84,7 +84,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 		@Override
 		public DiagramSpecificationResource getDiagramSpecificationResource() {
 			if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI)) {
-				diagramSpecificationResource = (DiagramSpecificationResource) getModelSlot().getTechnologyAdapter()
+				diagramSpecificationResource = (DiagramSpecificationResource) getModelSlot().getModelSlotTechnologyAdapter()
 						.getTechnologyContextManager().getResourceWithURI(diagramSpecificationURI);
 				logger.info("Looked-up " + diagramSpecificationResource);
 			}
@@ -148,7 +148,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 		}
 
 		@Override
-		public DiagramTechnologyAdapter getTechnologyAdapter() {
+		public DiagramTechnologyAdapter getDiagramTechnologyAdapter() {
 			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		}
 	}

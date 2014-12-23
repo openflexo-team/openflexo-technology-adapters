@@ -28,7 +28,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.rm.ResourceLocator;
@@ -40,25 +40,25 @@ public class CreateExampleDiagramFromPPTSlide extends AbstractCreateDiagramFromP
 
 	private static final Logger logger = Logger.getLogger(CreateExampleDiagramFromPPTSlide.class.getPackage().getName());
 
-	public static FlexoActionType<CreateExampleDiagramFromPPTSlide, DiagramSpecification, ViewPointObject> actionType = new FlexoActionType<CreateExampleDiagramFromPPTSlide, DiagramSpecification, ViewPointObject>(
+	public static FlexoActionType<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject> actionType = new FlexoActionType<CreateExampleDiagramFromPPTSlide, DiagramSpecification, FMLObject>(
 			"create_diagram_from_ppt_slide", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateExampleDiagramFromPPTSlide makeNewAction(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateExampleDiagramFromPPTSlide makeNewAction(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateExampleDiagramFromPPTSlide(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(DiagramSpecification object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(DiagramSpecification object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
@@ -68,7 +68,7 @@ public class CreateExampleDiagramFromPPTSlide extends AbstractCreateDiagramFromP
 		FlexoObjectImpl.addActionForClass(CreateExampleDiagramFromPPTSlide.actionType, DiagramSpecification.class);
 	}
 
-	CreateExampleDiagramFromPPTSlide(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateExampleDiagramFromPPTSlide(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

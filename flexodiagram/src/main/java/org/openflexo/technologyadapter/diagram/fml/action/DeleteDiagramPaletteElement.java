@@ -26,32 +26,32 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 
-public class DeleteDiagramPaletteElement extends FlexoAction<DeleteDiagramPaletteElement, DiagramPaletteElement, ViewPointObject> {
+public class DeleteDiagramPaletteElement extends FlexoAction<DeleteDiagramPaletteElement, DiagramPaletteElement, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramPaletteElement.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteDiagramPaletteElement, DiagramPaletteElement, ViewPointObject> actionType = new FlexoActionType<DeleteDiagramPaletteElement, DiagramPaletteElement, ViewPointObject>(
+	public static FlexoActionType<DeleteDiagramPaletteElement, DiagramPaletteElement, FMLObject> actionType = new FlexoActionType<DeleteDiagramPaletteElement, DiagramPaletteElement, FMLObject>(
 			"delete_palette_element", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public DeleteDiagramPaletteElement makeNewAction(DiagramPaletteElement focusedObject, Vector<ViewPointObject> globalSelection,
+		public DeleteDiagramPaletteElement makeNewAction(DiagramPaletteElement focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new DeleteDiagramPaletteElement(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(DiagramPaletteElement object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(DiagramPaletteElement object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(DiagramPaletteElement object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(DiagramPaletteElement object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
@@ -61,7 +61,7 @@ public class DeleteDiagramPaletteElement extends FlexoAction<DeleteDiagramPalett
 		FlexoObjectImpl.addActionForClass(DeleteDiagramPaletteElement.actionType, DiagramPaletteElement.class);
 	}
 
-	DeleteDiagramPaletteElement(DiagramPaletteElement focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	DeleteDiagramPaletteElement(DiagramPaletteElement focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

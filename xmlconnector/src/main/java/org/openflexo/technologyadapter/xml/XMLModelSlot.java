@@ -305,7 +305,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			File xmlFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
 
 
-			XMLModelRepository modelRepository = project.getRepository(XMLModelRepository.class, getTechnologyAdapter());
+			XMLModelRepository modelRepository = project.getRepository(XMLModelRepository.class, getModelSlotTechnologyAdapter());
 
 
 			return createEmptyXMLFileResource(xmlFile,modelRepository, (XSDMetaModelResource) metaModelResource);
@@ -322,7 +322,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 				modelUri = xmlFile.toURI().toString();
 
-				XMLModelRepository modelRepository = resourceCenter.getRepository(XMLModelRepository.class, getTechnologyAdapter());
+				XMLModelRepository modelRepository = resourceCenter.getRepository(XMLModelRepository.class, getModelSlotTechnologyAdapter());
 
 				return createEmptyXMLFileResource(xmlFile,modelRepository, (XSDMetaModelResource) metaModelResource);
 			}
@@ -332,7 +332,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 		private XMLFileResource createEmptyXMLFileResource(File xmlFile, XMLModelRepository modelRepository, XSDMetaModelResource metaModelResource){
 
-			XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile, (XMLTechnologyContextManager) this.getTechnologyAdapter().getTechnologyContextManager());
+			XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile, (XMLTechnologyContextManager) this.getModelSlotTechnologyAdapter().getTechnologyContextManager());
 
 			RepositoryFolder<XMLFileResource> folder;
 			try {

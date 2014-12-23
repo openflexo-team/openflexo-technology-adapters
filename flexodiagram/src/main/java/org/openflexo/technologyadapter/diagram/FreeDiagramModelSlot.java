@@ -77,8 +77,8 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 		}
 
 		@Override
-		public DiagramTechnologyAdapter getTechnologyAdapter() {
-			return (DiagramTechnologyAdapter) super.getTechnologyAdapter();
+		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (DiagramTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override

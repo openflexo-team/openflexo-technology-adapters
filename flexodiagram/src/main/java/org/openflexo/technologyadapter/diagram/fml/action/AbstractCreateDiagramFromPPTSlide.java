@@ -79,7 +79,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ImageUtils;
@@ -95,7 +95,7 @@ import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreateDiagramFromPPTSlide<A, T>, T extends FlexoObject> extends
-		FlexoAction<A, T, ViewPointObject> {
+		FlexoAction<A, T, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
@@ -112,8 +112,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	private File file;
 	private Slide slide;
 
-	public AbstractCreateDiagramFromPPTSlide(FlexoActionType<A, T, ViewPointObject> actionType, T focusedObject,
-			Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	public AbstractCreateDiagramFromPPTSlide(FlexoActionType<A, T, FMLObject> actionType, T focusedObject,
+			Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

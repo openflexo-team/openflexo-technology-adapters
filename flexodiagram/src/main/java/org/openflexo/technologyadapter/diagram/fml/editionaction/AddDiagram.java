@@ -157,7 +157,7 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 				return getFlexoRole().getDiagramSpecificationResource();
 			}
 			if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI)) {
-				diagramSpecificationResource = (DiagramSpecificationResource) getModelSlot().getTechnologyAdapter()
+				diagramSpecificationResource = (DiagramSpecificationResource) getModelSlot().getModelSlotTechnologyAdapter()
 						.getTechnologyContextManager().getResourceWithURI(diagramSpecificationURI);
 				logger.info("Looked-up " + diagramSpecificationResource);
 			}

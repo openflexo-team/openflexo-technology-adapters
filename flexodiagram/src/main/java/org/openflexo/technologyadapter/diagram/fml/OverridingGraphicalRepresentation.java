@@ -5,7 +5,7 @@ import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.NamedViewPointObject;
+import org.openflexo.foundation.fml.NamedFMLObject;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.model.annotations.Getter;
@@ -23,7 +23,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 @ImplementationClass(OverridingGraphicalRepresentation.OverridingGraphicalRepresentationImpl.class)
 @Imports({ @Import(OverridingGraphicalRepresentation.ShapeOverridingGraphicalRepresentation.class),
 		@Import(OverridingGraphicalRepresentation.ConnectorOverridingGraphicalRepresentation.class) })
-public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresentation> extends NamedViewPointObject {
+public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresentation> extends NamedFMLObject {
 
 	@PropertyIdentifier(type = FMLDiagramPaletteElementBinding.class)
 	public static final String PALETTE_ELEMENT_BINDING_KEY = "paletteElementBinding";
@@ -52,7 +52,7 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 	@Setter(GRAPHICAL_REPRESENTATION_KEY)
 	public void setGraphicalRepresentation(GR graphicalRepresentation);
 
-	public abstract class OverridingGraphicalRepresentationImpl<GR extends GraphicalRepresentation> extends NamedViewPointObjectImpl
+	public abstract class OverridingGraphicalRepresentationImpl<GR extends GraphicalRepresentation> extends NamedFMLObjectImpl
 			implements OverridingGraphicalRepresentation<GR> {
 
 		// FMLDiagramPaletteElementBinding paletteElementBinding;

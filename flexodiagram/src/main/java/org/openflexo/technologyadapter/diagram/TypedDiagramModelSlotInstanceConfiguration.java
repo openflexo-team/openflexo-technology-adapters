@@ -64,7 +64,7 @@ public class TypedDiagramModelSlotInstanceConfiguration extends
 	@Override
 	public String getModelUri() {
 		ResourceRepository<?> repository = getResourceCenter()
-				.getRepository(DiagramRepository.class, getModelSlot().getTechnologyAdapter());
+				.getRepository(DiagramRepository.class, getModelSlot().getModelSlotTechnologyAdapter());
 		String generatedUri = repository.generateURI(getFilename());
 		if (repository != null) {
 			while (repository.getResource(generatedUri) != null) {

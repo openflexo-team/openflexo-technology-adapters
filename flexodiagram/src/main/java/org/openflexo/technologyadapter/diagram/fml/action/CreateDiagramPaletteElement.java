@@ -28,34 +28,34 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
 
-public class CreateDiagramPaletteElement extends FlexoAction<CreateDiagramPaletteElement, DiagramPalette, ViewPointObject> {
+public class CreateDiagramPaletteElement extends FlexoAction<CreateDiagramPaletteElement, DiagramPalette, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramPaletteElement.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramPaletteElement, DiagramPalette, ViewPointObject> actionType = new FlexoActionType<CreateDiagramPaletteElement, DiagramPalette, ViewPointObject>(
+	public static FlexoActionType<CreateDiagramPaletteElement, DiagramPalette, FMLObject> actionType = new FlexoActionType<CreateDiagramPaletteElement, DiagramPalette, FMLObject>(
 			"add_new_palette_element", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateDiagramPaletteElement makeNewAction(DiagramPalette focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateDiagramPaletteElement makeNewAction(DiagramPalette focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateDiagramPaletteElement(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(DiagramPalette object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(DiagramPalette object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(DiagramPalette object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(DiagramPalette object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
@@ -69,7 +69,7 @@ public class CreateDiagramPaletteElement extends FlexoAction<CreateDiagramPalett
 	private DiagramPaletteElement _newElement;
 	private Object _graphicalRepresentation;
 
-	CreateDiagramPaletteElement(DiagramPalette focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateDiagramPaletteElement(DiagramPalette focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

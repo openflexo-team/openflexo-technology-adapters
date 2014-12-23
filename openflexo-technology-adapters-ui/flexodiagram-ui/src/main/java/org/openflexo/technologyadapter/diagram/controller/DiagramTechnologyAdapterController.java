@@ -38,9 +38,9 @@ import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.icon.FMLRTIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.icon.FMLRTIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.rm.ResourceLocator;
@@ -217,7 +217,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		getTechnologyAdapter().setDiagramPaletteScreenshotBuilder(new DiagramPaletteScreenshotBuilder());
 		getTechnologyAdapter().setDiagramShapeScreenshotBuilder(new DiagramShapeScreenshotBuilder());
 		getTechnologyAdapter().setFMLControlledDiagramScreenshotBuilder(new FMLControlledDiagramScreenshotBuilder());
-		
+
 		// Add paste handlers
 		diagramElementPasteHandler = new DiagramElementPasteHandler(actionInitializer.getController().getSelectionManager());
 		actionInitializer.getEditingContext().registerPasteHandler(diagramElementPasteHandler);
@@ -284,7 +284,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<DiagramTechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (Diagram.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.DIAGRAM_ICON;
 		} else if (DiagramShape.class.isAssignableFrom(objectClass)) {

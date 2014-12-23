@@ -131,13 +131,13 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 		}
 
 		@Override
-		public PowerpointTechnologyAdapter getTechnologyAdapter() {
-			return (PowerpointTechnologyAdapter) super.getTechnologyAdapter();
+		public PowerpointTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (PowerpointTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
 		public PowerpointSlideshowResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getTechnologyAdapter().createNewSlideshow(view.getProject(), filename, modelUri);
+			return getModelSlotTechnologyAdapter().createNewSlideshow(view.getProject(), filename, modelUri);
 		}
 
 		@Override

@@ -150,7 +150,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<OWLTechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (OWLObject.class.isAssignableFrom(objectClass)) {
 			return OWLIconLibrary.iconForObject((Class<? extends OWLObject>) objectClass);
 		} else if (OWLStatement.class.isAssignableFrom(objectClass)) {

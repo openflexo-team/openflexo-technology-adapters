@@ -32,7 +32,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.NamedViewPointObject;
+import org.openflexo.foundation.fml.NamedFMLObject;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -44,14 +44,14 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 @ModelEntity
 @ImplementationClass(BasicPowerpointModelSlotURIProcessor.BasicPowerpointModelSlotURIProcessorImpl.class)
 @XMLElement
-public interface BasicPowerpointModelSlotURIProcessor extends NamedViewPointObject {
+public interface BasicPowerpointModelSlotURIProcessor extends NamedFMLObject {
 
 	public String getURIForObject(ModelSlotInstance msInstance, PowerpointObject powerpointObject);
 
 	// get the Object given the URI
 	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception;
 
-	public static abstract class BasicPowerpointModelSlotURIProcessorImpl extends NamedViewPointObjectImpl {
+	public static abstract class BasicPowerpointModelSlotURIProcessorImpl extends NamedFMLObjectImpl {
 
 		private static final Logger logger = Logger.getLogger(BasicPowerpointModelSlotURIProcessor.class.getPackage().getName());
 

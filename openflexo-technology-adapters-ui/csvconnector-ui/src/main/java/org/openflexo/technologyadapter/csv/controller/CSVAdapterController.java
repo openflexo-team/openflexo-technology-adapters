@@ -75,7 +75,7 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<CSVTechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		// TODO Auto-generated method stub
 		return null;
 	}

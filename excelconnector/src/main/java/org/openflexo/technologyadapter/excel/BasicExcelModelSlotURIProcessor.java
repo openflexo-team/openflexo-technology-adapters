@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.foundation.fml.NamedViewPointObject;
+import org.openflexo.foundation.fml.NamedFMLObject;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -38,7 +38,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelObject;
 
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlotURIProcessor.BasicExcelModelSlotURIProcessorImpl.class)
-public interface BasicExcelModelSlotURIProcessor extends NamedViewPointObject {
+public interface BasicExcelModelSlotURIProcessor extends NamedFMLObject {
 
 	// URI Calculation
 	public String getURIForObject(ModelSlotInstance msInstance, ExcelObject excelObject);
@@ -46,7 +46,7 @@ public interface BasicExcelModelSlotURIProcessor extends NamedViewPointObject {
 	// get the Object given the URI
 	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception;
 
-	public static abstract class BasicExcelModelSlotURIProcessorImpl extends NamedViewPointObjectImpl implements
+	public static abstract class BasicExcelModelSlotURIProcessorImpl extends NamedFMLObjectImpl implements
 			BasicExcelModelSlotURIProcessor {
 
 		private static final Logger logger = Logger.getLogger(BasicExcelModelSlotURIProcessor.class.getPackage().getName());

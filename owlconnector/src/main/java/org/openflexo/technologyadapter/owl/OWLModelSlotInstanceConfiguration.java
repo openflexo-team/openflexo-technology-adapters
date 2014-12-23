@@ -21,7 +21,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		// options.add(DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel);
 		setModelUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myOntology");
 		setRelativePath("/");
-		setFilename("myOntology" + getModelSlot().getTechnologyAdapter().getExpectedOntologyExtension());
+		setFilename("myOntology" + getModelSlot().getModelSlotTechnologyAdapter().getExpectedOntologyExtension());
 	}
 
 	@Override
@@ -82,7 +82,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		if (!getFilename().endsWith(getModelSlot().getTechnologyAdapter().getExpectedOntologyExtension())) {
+		if (!getFilename().endsWith(getModelSlot().getModelSlotTechnologyAdapter().getExpectedOntologyExtension())) {
 			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.owl_suffix"));
 			return false;
 		}

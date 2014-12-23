@@ -30,7 +30,7 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -40,29 +40,29 @@ import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBindi
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 
-public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, ViewPointObject> {
+public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateFMLDiagramPaletteElementBinding.class.getPackage().getName());
 
-	public static FlexoActionType<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, ViewPointObject> actionType = new FlexoActionType<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, ViewPointObject>(
+	public static FlexoActionType<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> actionType = new FlexoActionType<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject>(
 			"create_new_palette_binding", FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateFMLDiagramPaletteElementBinding makeNewAction(TypedDiagramModelSlot focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateFMLDiagramPaletteElementBinding makeNewAction(TypedDiagramModelSlot focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateFMLDiagramPaletteElementBinding(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(TypedDiagramModelSlot object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(TypedDiagramModelSlot object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(TypedDiagramModelSlot object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(TypedDiagramModelSlot object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
@@ -74,7 +74,7 @@ public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFML
 
 	private String description;
 
-	CreateFMLDiagramPaletteElementBinding(TypedDiagramModelSlot focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateFMLDiagramPaletteElementBinding(TypedDiagramModelSlot focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

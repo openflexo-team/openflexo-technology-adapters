@@ -28,7 +28,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -40,20 +40,20 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramFromPPTSlide.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, ViewPointObject> actionType = new FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, ViewPointObject>(
+	public static FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject> actionType = new FlexoActionType<CreateDiagramFromPPTSlide, RepositoryFolder, FMLObject>(
 			"create_diagram_from_ppt_slide", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateDiagramFromPPTSlide makeNewAction(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateDiagramFromPPTSlide makeNewAction(RepositoryFolder focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateDiagramFromPPTSlide(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(RepositoryFolder object, Vector<FMLObject> globalSelection) {
 			if (object != null && object.getResourceRepository() instanceof DiagramRepository) {
 				return true;
 			}
@@ -61,7 +61,7 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		}
 
 		@Override
-		public boolean isEnabledForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(RepositoryFolder object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
@@ -71,7 +71,7 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		FlexoObjectImpl.addActionForClass(CreateDiagramFromPPTSlide.actionType, RepositoryFolder.class);
 	}
 
-	CreateDiagramFromPPTSlide(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateDiagramFromPPTSlide(RepositoryFolder focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

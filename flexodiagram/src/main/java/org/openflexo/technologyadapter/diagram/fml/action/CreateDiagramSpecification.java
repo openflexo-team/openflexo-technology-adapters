@@ -29,31 +29,31 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification.DiagramSpecificationImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
 import org.openflexo.toolbox.StringUtils;
 
-public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecification, RepositoryFolder, ViewPointObject> {
+public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecification, RepositoryFolder, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateDiagramSpecification.class.getPackage().getName());
 
-	public static FlexoActionType<CreateDiagramSpecification, RepositoryFolder, ViewPointObject> actionType = new FlexoActionType<CreateDiagramSpecification, RepositoryFolder, ViewPointObject>(
+	public static FlexoActionType<CreateDiagramSpecification, RepositoryFolder, FMLObject> actionType = new FlexoActionType<CreateDiagramSpecification, RepositoryFolder, FMLObject>(
 			"create_diagram_specification", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateDiagramSpecification makeNewAction(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateDiagramSpecification makeNewAction(RepositoryFolder focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateDiagramSpecification(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(RepositoryFolder object, Vector<FMLObject> globalSelection) {
 			if (object != null && object.getResourceRepository() instanceof DiagramSpecificationRepository) {
 				return true;
 			}
@@ -61,7 +61,7 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 		}
 
 		@Override
-		public boolean isEnabledForSelection(RepositoryFolder object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(RepositoryFolder object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
@@ -77,7 +77,7 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 	private DiagramSpecification newDiagramSpecification;
 
-	CreateDiagramSpecification(RepositoryFolder focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateDiagramSpecification(RepositoryFolder focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

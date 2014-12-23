@@ -53,80 +53,79 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 
 public class FreeplaneAdapterController extends TechnologyAdapterController<FreeplaneTechnologyAdapter> {
 
-    @Override
-    public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {
-        return FreeplaneTechnologyAdapter.class;
-    }
+	@Override
+	public Class<FreeplaneTechnologyAdapter> getTechnologyAdapterClass() {
+		return FreeplaneTechnologyAdapter.class;
+	}
 
-    @Override
-    public void initializeActions(final ControllerActionInitializer actionInitializer) {
-        actionInitializer.getController().getModuleInspectorController()
-                .loadDirectory(ResourceLocator.locateResource("Inspectors/Freeplane"));
+	@Override
+	public void initializeActions(final ControllerActionInitializer actionInitializer) {
+		actionInitializer.getController().getModuleInspectorController()
+				.loadDirectory(ResourceLocator.locateResource("Inspectors/Freeplane"));
 
-        new AddChildNodeInitializer(actionInitializer);
-        new NewSiblingAboveNodeInitializer(actionInitializer);
-        new NewSiblingNodeInitializer(actionInitializer);
-        new DeleteNodeInitializer(actionInitializer);
-        new NewFreeplaneMapInitializer(actionInitializer);
-    }
+		new AddChildNodeInitializer(actionInitializer);
+		new NewSiblingAboveNodeInitializer(actionInitializer);
+		new NewSiblingNodeInitializer(actionInitializer);
+		new DeleteNodeInitializer(actionInitializer);
+		new NewFreeplaneMapInitializer(actionInitializer);
+	}
 
-    @Override
-    public ImageIcon getTechnologyBigIcon() {
-        return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_BIG_ICON;
-    }
+	@Override
+	public ImageIcon getTechnologyBigIcon() {
+		return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_BIG_ICON;
+	}
 
-    @Override
-    public ImageIcon getTechnologyIcon() {
-        return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_ICON;
-    }
+	@Override
+	public ImageIcon getTechnologyIcon() {
+		return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_ICON;
+	}
 
-    @Override
-    public ImageIcon getModelIcon() {
-        return FreeplaneIconLibrary.FREEPLANE_FILE_ICON;
-    }
+	@Override
+	public ImageIcon getModelIcon() {
+		return FreeplaneIconLibrary.FREEPLANE_FILE_ICON;
+	}
 
-    @Override
-    public ImageIcon getMetaModelIcon() {
-        return FreeplaneIconLibrary.FREEPLANE_FILE_ICON;
-    }
+	@Override
+	public ImageIcon getMetaModelIcon() {
+		return FreeplaneIconLibrary.FREEPLANE_FILE_ICON;
+	}
 
-    @Override
-    public ImageIcon getIconForTechnologyObject(final Class<? extends TechnologyObject<FreeplaneTechnologyAdapter>> objectClass) {
-        return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_ICON;
-    }
+	@Override
+	public ImageIcon getIconForTechnologyObject(final Class<? extends TechnologyObject<?>> objectClass) {
+		return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_ICON;
+	}
 
-    @Override
-    public ModuleView<?> createModuleViewForObject(final TechnologyObject<FreeplaneTechnologyAdapter> object,
-            final FlexoController controller, final FlexoPerspective perspective) {
-        if (object instanceof IFreeplaneMap) {
-            FreeplaneListenersInitilizer.init((IFreeplaneMap) object, controller);
-            return new FreeplaneModuleView((IFreeplaneMap) object, controller, perspective);
-        }
+	@Override
+	public ModuleView<?> createModuleViewForObject(final TechnologyObject<FreeplaneTechnologyAdapter> object,
+			final FlexoController controller, final FlexoPerspective perspective) {
+		if (object instanceof IFreeplaneMap) {
+			FreeplaneListenersInitilizer.init((IFreeplaneMap) object, controller);
+			return new FreeplaneModuleView((IFreeplaneMap) object, controller, perspective);
+		}
 
-        return new EmptyPanel<TechnologyObject<FreeplaneTechnologyAdapter>>(controller, perspective, object);
-    }
+		return new EmptyPanel<TechnologyObject<FreeplaneTechnologyAdapter>>(controller, perspective, object);
+	}
 
-    @Override
-    public ImageIcon getIconForPatternRole(final Class<? extends FlexoRole<?>> arg0) {
-        return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_ICON;
-    }
+	@Override
+	public ImageIcon getIconForPatternRole(final Class<? extends FlexoRole<?>> arg0) {
+		return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_ICON;
+	}
 
-    @Override
-    public String getWindowTitleforObject(final TechnologyObject<FreeplaneTechnologyAdapter> object, final FlexoController arg1) {
-        if (object instanceof IFreeplaneMap) {
-            return FreeplaneBasicAdapter.getInstance().getMapName();
-        }
-        return object.toString();
-    }
+	@Override
+	public String getWindowTitleforObject(final TechnologyObject<FreeplaneTechnologyAdapter> object, final FlexoController arg1) {
+		if (object instanceof IFreeplaneMap) {
+			return FreeplaneBasicAdapter.getInstance().getMapName();
+		}
+		return object.toString();
+	}
 
-    /**
-     * @return true if <code>object</code> is instance of {@link IFreeplaneMap}
-     *         or {@link IFreeplaneNode}
-     */
-    @Override
-    public boolean hasModuleViewForObject(final TechnologyObject<FreeplaneTechnologyAdapter> object, final FlexoController controller) {
-        return object instanceof IFreeplaneMap;
-    }
+	/**
+	 * @return true if <code>object</code> is instance of {@link IFreeplaneMap} or {@link IFreeplaneNode}
+	 */
+	@Override
+	public boolean hasModuleViewForObject(final TechnologyObject<FreeplaneTechnologyAdapter> object, final FlexoController controller) {
+		return object instanceof IFreeplaneMap;
+	}
 
 	@Override
 	public List<? extends VirtualModelInstanceNature> getSpecificVirtualModelInstanceNatures(final VirtualModelInstance vmInstance) {

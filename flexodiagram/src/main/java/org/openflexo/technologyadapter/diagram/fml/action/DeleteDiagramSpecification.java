@@ -28,32 +28,32 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 
-public class DeleteDiagramSpecification extends FlexoAction<DeleteDiagramSpecification, DiagramSpecification, ViewPointObject> {
+public class DeleteDiagramSpecification extends FlexoAction<DeleteDiagramSpecification, DiagramSpecification, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(DeleteDiagramSpecification.class.getPackage().getName());
 
-	public static FlexoActionType<DeleteDiagramSpecification, DiagramSpecification, ViewPointObject> actionType = new FlexoActionType<DeleteDiagramSpecification, DiagramSpecification, ViewPointObject>(
+	public static FlexoActionType<DeleteDiagramSpecification, DiagramSpecification, FMLObject> actionType = new FlexoActionType<DeleteDiagramSpecification, DiagramSpecification, FMLObject>(
 			"delete_diagram_specification", FlexoActionType.editGroup, FlexoActionType.DELETE_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public DeleteDiagramSpecification makeNewAction(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection,
+		public DeleteDiagramSpecification makeNewAction(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new DeleteDiagramSpecification(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(DiagramSpecification object, Vector<FMLObject> globalSelection) {
 			return object != null;
 		}
 
 		@Override
-		public boolean isEnabledForSelection(DiagramSpecification object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(DiagramSpecification object, Vector<FMLObject> globalSelection) {
 			return isVisibleForSelection(object, globalSelection);
 		}
 
@@ -63,7 +63,7 @@ public class DeleteDiagramSpecification extends FlexoAction<DeleteDiagramSpecifi
 		FlexoObjectImpl.addActionForClass(DeleteDiagramSpecification.actionType, DiagramSpecification.class);
 	}
 
-	DeleteDiagramSpecification(DiagramSpecification focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	DeleteDiagramSpecification(DiagramSpecification focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 

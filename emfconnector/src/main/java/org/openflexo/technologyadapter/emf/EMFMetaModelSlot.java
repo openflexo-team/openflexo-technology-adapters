@@ -86,8 +86,8 @@ public interface EMFMetaModelSlot extends ModelSlot<EMFMetaModel> {
 		}
 
 		@Override
-		public EMFTechnologyAdapter getTechnologyAdapter() {
-			return (EMFTechnologyAdapter) super.getTechnologyAdapter();
+		public EMFTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (EMFTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override

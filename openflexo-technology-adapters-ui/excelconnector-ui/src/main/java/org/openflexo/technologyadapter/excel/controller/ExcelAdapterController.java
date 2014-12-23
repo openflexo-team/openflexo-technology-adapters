@@ -66,7 +66,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<ExcelTechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		return ExcelIconLibrary.iconForObject(objectClass);
 	}
 
@@ -106,7 +106,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelRow.class), IconLibrary.IMPORT);
 		} else if (SelectExcelCell.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelCell.class), IconLibrary.IMPORT);
-		} 
+		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
 

@@ -34,13 +34,13 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 public interface DiagramFlexoBehaviour extends TechnologySpecificFlexoBehaviour {
 
 	@Override
-	public DiagramTechnologyAdapter getTechnologyAdapter();
+	public DiagramTechnologyAdapter getSpecificTechnologyAdapter();
 
 	@Implementation
 	public static abstract class DiagramEditionSchemeImpl implements DiagramFlexoBehaviour {
 
 		@Override
-		public DiagramTechnologyAdapter getTechnologyAdapter() {
+		public DiagramTechnologyAdapter getSpecificTechnologyAdapter() {
 			if (getServiceManager() != null) {
 				return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 			}

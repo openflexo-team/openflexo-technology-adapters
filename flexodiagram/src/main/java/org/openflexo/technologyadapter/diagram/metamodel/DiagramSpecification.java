@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -148,7 +148,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		/**
 		 * Stores a chained collections of objects which are involved in validation
 		 */
-		private final ChainedCollection<ViewPointObject> validableObjects = null;
+		private final ChainedCollection<FMLObject> validableObjects = null;
 
 		/**
 		 * Creates a new VirtualModel on user request<br>
@@ -457,9 +457,9 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		 */
 
 		/*@Override
-		public Collection<ViewPointObject> getEmbeddedValidableObjects() {
+		public Collection<FMLObject> getEmbeddedValidableObjects() {
 		if (validableObjects == null) {
-		validableObjects = new ChainedCollection<ViewPointObject>(getFlexoConcepts(), getModelSlots(), getPalettes(),
+		validableObjects = new ChainedCollection<FMLObject>(getFlexoConcepts(), getModelSlots(), getPalettes(),
 				getExampleDiagrams());
 		}
 		return validableObjects;

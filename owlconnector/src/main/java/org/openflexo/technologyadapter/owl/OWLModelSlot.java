@@ -97,7 +97,7 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntology> {
 
 	@Override
-	public OWLTechnologyAdapter getTechnologyAdapter();
+	public OWLTechnologyAdapter getModelSlotTechnologyAdapter();
 
 	public static abstract class OWLModelSlotImpl extends TypeAwareModelSlotImpl<OWLOntology, OWLOntology> implements OWLModelSlot {
 
@@ -189,20 +189,20 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		};
 
 		@Override
-		public OWLTechnologyAdapter getTechnologyAdapter() {
-			return (OWLTechnologyAdapter) super.getTechnologyAdapter();
+		public OWLTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (OWLTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
 		public OWLOntologyResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
 				FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
-			return getTechnologyAdapter().createNewOntology(project, filename, modelUri, metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewOntology(project, filename, modelUri, metaModelResource);
 		}
 
 		@Override
 		public OWLOntologyResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
-			return getTechnologyAdapter().createNewOntology((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
+			return getModelSlotTechnologyAdapter().createNewOntology((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
 					modelUri, (OWLOntologyResource) metaModelResource);
 		}
 

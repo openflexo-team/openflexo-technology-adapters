@@ -26,7 +26,7 @@ import javax.swing.Icon;
 
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.fml.action.DeleteDiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;

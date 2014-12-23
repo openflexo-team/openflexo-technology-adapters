@@ -31,11 +31,10 @@ import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.NamedViewPointObject;
+import org.openflexo.foundation.fml.NamedFMLObject;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelModelFactory;
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Finder;
 import org.openflexo.model.annotations.Getter;
@@ -64,7 +63,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 @ModelEntity
 @ImplementationClass(FMLDiagramPaletteElementBinding.FMLDiagramPaletteElementBindingImpl.class)
 @XMLElement
-public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, TechnologyObject<DiagramTechnologyAdapter> {
+public interface FMLDiagramPaletteElementBinding extends NamedFMLObject {
 
 	@PropertyIdentifier(type = TypedDiagramModelSlot.class)
 	public static final String DIAGRAM_MODEL_SLOT_KEY = "diagramModelSlot";
@@ -156,7 +155,9 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, T
 
 	public List<DropScheme> allAvailableDropSchemes();
 
-	public abstract class FMLDiagramPaletteElementBindingImpl extends NamedViewPointObjectImpl implements FMLDiagramPaletteElementBinding {
+	public DiagramTechnologyAdapter getDiagramTechnologyAdapter();
+
+	public abstract class FMLDiagramPaletteElementBindingImpl extends NamedFMLObjectImpl implements FMLDiagramPaletteElementBinding {
 
 		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(FMLDiagramPaletteElementBinding.class.getPackage().getName());
@@ -432,8 +433,8 @@ public interface FMLDiagramPaletteElementBinding extends NamedViewPointObject, T
 		}
 
 		@Override
-		public DiagramTechnologyAdapter getTechnologyAdapter() {
-			return (DiagramTechnologyAdapter) getDiagramModelSlot().getTechnologyAdapter();
+		public DiagramTechnologyAdapter getDiagramTechnologyAdapter() {
+			return (DiagramTechnologyAdapter) getDiagramModelSlot().getModelSlotTechnologyAdapter();
 		}
 
 		/*@Override

@@ -30,7 +30,7 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.ViewPointObject;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -39,29 +39,29 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 
 public class CreateFMLControlledDiagramPaletteElement extends
-		FlexoAction<CreateFMLControlledDiagramPaletteElement, VirtualModel, ViewPointObject> {
+		FlexoAction<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramPaletteElement.class.getPackage().getName());
 
-	public static FlexoActionType<CreateFMLControlledDiagramPaletteElement, VirtualModel, ViewPointObject> actionType = new FlexoActionType<CreateFMLControlledDiagramPaletteElement, VirtualModel, ViewPointObject>(
+	public static FlexoActionType<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject> actionType = new FlexoActionType<CreateFMLControlledDiagramPaletteElement, VirtualModel, FMLObject>(
 			"add_new_palette_element", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method
 		 */
 		@Override
-		public CreateFMLControlledDiagramPaletteElement makeNewAction(VirtualModel focusedObject, Vector<ViewPointObject> globalSelection,
+		public CreateFMLControlledDiagramPaletteElement makeNewAction(VirtualModel focusedObject, Vector<FMLObject> globalSelection,
 				FlexoEditor editor) {
 			return new CreateFMLControlledDiagramPaletteElement(focusedObject, globalSelection, editor);
 		}
 
 		@Override
-		public boolean isVisibleForSelection(VirtualModel object, Vector<ViewPointObject> globalSelection) {
+		public boolean isVisibleForSelection(VirtualModel object, Vector<FMLObject> globalSelection) {
 			return object.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE);
 		}
 
 		@Override
-		public boolean isEnabledForSelection(VirtualModel object, Vector<ViewPointObject> globalSelection) {
+		public boolean isEnabledForSelection(VirtualModel object, Vector<FMLObject> globalSelection) {
 			return object.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE);
 		}
 
@@ -78,7 +78,7 @@ public class CreateFMLControlledDiagramPaletteElement extends
 	private DropScheme dropScheme;
 	private DiagramPalette palette;
 
-	CreateFMLControlledDiagramPaletteElement(VirtualModel focusedObject, Vector<ViewPointObject> globalSelection, FlexoEditor editor) {
+	CreateFMLControlledDiagramPaletteElement(VirtualModel focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
