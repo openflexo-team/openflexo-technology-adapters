@@ -64,7 +64,7 @@
     <Label id="41" visible="(patternChoice.selectedIndex = 0)" manageDynamicModel="false" useScrollBar="false" index="5" localize="true" align="left" constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)" label="ontologic_concept" readOnly="false">
       <LocalizedDictionary id="42" />
     </Label>
-    <Custom id="43" visible="(patternChoice.selectedIndex = 1)" manageDynamicModel="true" useScrollBar="false" data="data.virtualModelConcept" componentClassName="org.openflexo.components.widget.FIBFlexoConceptSelector" name="patternSelector" index="6" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" readOnly="false">
+    <Custom id="43" visible="(patternChoice.selectedIndex = 1)" manageDynamicModel="true" useScrollBar="false" data="data.virtualModelConcept" componentClassName="org.openflexo.fml.controller.widget.FIBFlexoConceptSelector" name="patternSelector" index="6" localize="true" constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)" readOnly="false">
       <Dependancy id="44" componentName="virtualModelModelSlotDD" />
       <Dependancy idref="44" />
       <Dependancy id="45" componentName="patternChoice" />

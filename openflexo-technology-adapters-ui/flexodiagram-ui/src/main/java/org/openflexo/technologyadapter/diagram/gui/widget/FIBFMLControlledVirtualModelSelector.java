@@ -21,7 +21,7 @@ package org.openflexo.technologyadapter.diagram.gui.widget;
 
 import java.util.logging.Logger;
 
-import org.openflexo.components.widget.FIBVirtualModelSelector;
+import org.openflexo.fml.controller.widget.FIBVirtualModelSelector;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.rm.ResourceLocator;

@@ -45,7 +45,10 @@ public class FMLControlledDiagramFlexoConceptNature implements FlexoConceptNatur
 	@Override
 	public boolean hasNature(FlexoConcept concept) {
 
-		return concept.getVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE);
+		if (concept != null && concept.getVirtualModel() != null) {
+			return concept.getVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE);
+		}
+		return false;
 	}
 
 	public static TypedDiagramModelSlot getTypedDiagramModelSlot(FlexoConcept concept) {
