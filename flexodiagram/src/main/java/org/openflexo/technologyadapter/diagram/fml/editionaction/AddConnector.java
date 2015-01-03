@@ -33,9 +33,9 @@ import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
+import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -378,8 +378,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			DataBinding<DiagramShape> db = action.getFromShape();
 			if (pr != null && pr.getStartShapeAsDefinedInAction() && !(db.isSet() && db.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>>();
-				if (action.getFlexoBehaviour() instanceof LinkScheme) {
-					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getFlexoBehaviour()).getFromTargetFlexoConcept();
+				if (action.getRootOwner() instanceof LinkScheme) {
+					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getRootOwner()).getFromTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
 						for (ShapeRole spr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
 							v.add(new SetsStartingShapeToStartTargetShape(targetFlexoConcept, spr));
@@ -457,8 +457,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			DataBinding<DiagramShape> shape = action.getToShape();
 			if (pr != null && pr.getEndShapeAsDefinedInAction() && !(shape.isSet() && shape.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>>();
-				if (action.getFlexoBehaviour() instanceof LinkScheme) {
-					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getFlexoBehaviour()).getToTargetFlexoConcept();
+				if (action.getRootOwner() instanceof LinkScheme) {
+					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getRootOwner()).getToTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
 						for (ShapeRole spr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
 							v.add(new SetsEndingShapeToToTargetShape(targetFlexoConcept, spr));

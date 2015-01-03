@@ -46,14 +46,14 @@ import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelModelFactory;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
+import org.openflexo.foundation.fml.VirtualModelModelFactory;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
+import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
-import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rt.View;
@@ -122,9 +122,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		System.out.println("ResourceCenter= " + resourceCenter);
 		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint",
 				resourceCenter.getDirectory(), serviceManager.getViewPointLibrary());
-		//assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory().exists());
-		//assertTrue(((ViewPointResource) newViewPoint.getResource()).getFile().exists());
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory()!=null);
+		// assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory().exists());
+		// assertTrue(((ViewPointResource) newViewPoint.getResource()).getFile().exists());
+		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getFlexoIODelegate().exists());
 	}
 
@@ -142,9 +142,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(emfMetaModelResource);
 
 		newVirtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
-		//assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getDirectory().exists());
-		//assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getFile().exists());
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory()!=null);
+		// assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getDirectory().exists());
+		// assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getFile().exists());
+		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getFlexoIODelegate().exists());
 		newModelSlot = technologicalAdapter.makeModelSlot(EMFModelSlot.class, newVirtualModel);
 		newModelSlot.setMetaModelResource(emfMetaModelResource);
@@ -303,7 +303,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		EMFObjectIndividual result = null;
 
-		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme, null, editor);
+		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
+				editor);
 		createEditionAction1.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createEditionAction1.setModelSlotSpecificActionClass(AddEMFObjectIndividual.class);
 		createEditionAction1.setModelSlot(newModelSlot);
@@ -347,7 +348,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividualAttributeDataPropertyValue result = null;
 
-		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme, null, editor);
+		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
+				editor);
 		createEditionAction1.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createEditionAction1.setModelSlotSpecificActionClass(AddEMFObjectIndividualAttributeDataPropertyValue.class);
 		createEditionAction1.setModelSlot(newModelSlot);

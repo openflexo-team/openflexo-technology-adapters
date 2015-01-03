@@ -18,14 +18,14 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelModelFactory;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
+import org.openflexo.foundation.fml.VirtualModelModelFactory;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
+import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoRole;
-import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -186,8 +186,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
 				((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), serviceManager.getViewPointLibrary());
 		viewPointResource = (ViewPointResource) viewPoint.getResource();
-		//assertTrue(viewPointResource.getDirectory().exists());
-		assertTrue(viewPointResource.getDirectory()!=null);
+		// assertTrue(viewPointResource.getDirectory().exists());
+		assertTrue(viewPointResource.getDirectory() != null);
 		assertTrue(viewPointResource.getFlexoIODelegate().exists());
 	}
 
@@ -235,7 +235,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		assertTrue(createDropScheme.hasActionExecutionSucceeded());
 		dropScheme = (DropScheme) createDropScheme.getNewFlexoBehaviour();
 
-		CreateEditionAction createAddShape = CreateEditionAction.actionType.makeNewAction(dropScheme, null, editor);
+		CreateEditionAction createAddShape = CreateEditionAction.actionType.makeNewAction(dropScheme.getControlGraph(), null, editor);
 		createAddShape.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createAddShape.setModelSlot(typedDiagramModelSlot);
 		createAddShape.setModelSlotSpecificActionClass(AddShape.class);
@@ -277,7 +277,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		newDirectory.mkdirs();
 
 		try {
-			File dsDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()).getName());
+			File dsDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory())
+					.getName());
 			dsDir.mkdirs();
 			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), dsDir);
 			File vpDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()).getName());

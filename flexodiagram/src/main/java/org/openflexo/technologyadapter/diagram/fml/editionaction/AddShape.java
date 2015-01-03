@@ -35,9 +35,9 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
+import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -331,8 +331,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			if (action.getFlexoRole() != null && action.getFlexoRole().getParentShapeAsDefinedInAction()
 					&& !(action.getContainer().isSet() && action.getContainer().isValid())) {
 				Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>> v = new Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>>();
-				if (action.getFlexoBehaviour() instanceof DropScheme) {
-					FlexoConcept targetFlexoConcept = ((DropScheme) action.getFlexoBehaviour()).getTargetFlexoConcept();
+				if (action.getRootOwner() instanceof DropScheme) {
+					FlexoConcept targetFlexoConcept = ((DropScheme) action.getRootOwner()).getTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
 						for (ShapeRole pr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
 							v.add(new SetsContainerToTargetShape(targetFlexoConcept, pr));

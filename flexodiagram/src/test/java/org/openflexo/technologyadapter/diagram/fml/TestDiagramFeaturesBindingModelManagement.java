@@ -21,17 +21,17 @@ import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.ViewPoint;
+import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.ViewPointLibrary;
 import org.openflexo.foundation.fml.ViewType;
 import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
 import org.openflexo.foundation.fml.VirtualModelModelFactory;
-import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
-import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
+import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoRole;
-import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.binding.FlexoBehaviourBindingModel;
 import org.openflexo.foundation.fml.binding.FlexoConceptBindingModel;
 import org.openflexo.foundation.fml.binding.ViewPointBindingModel;
@@ -292,7 +292,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertTrue(createDropScheme.hasActionExecutionSucceeded());
 		dropScheme = (DropScheme) createDropScheme.getNewFlexoBehaviour();
 
-		CreateEditionAction createAddShape = CreateEditionAction.actionType.makeNewAction(dropScheme, null, editor);
+		CreateEditionAction createAddShape = CreateEditionAction.actionType.makeNewAction(dropScheme.getControlGraph(), null, editor);
 		createAddShape.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createAddShape.setModelSlot(typedDiagramModelSlot);
 		createAddShape.setModelSlotSpecificActionClass(AddShape.class);
@@ -388,7 +388,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertTrue(createLinkScheme.hasActionExecutionSucceeded());
 		linkScheme = (LinkScheme) createLinkScheme.getNewFlexoBehaviour();
 
-		CreateEditionAction createAddConnector = CreateEditionAction.actionType.makeNewAction(linkScheme, null, editor);
+		CreateEditionAction createAddConnector = CreateEditionAction.actionType.makeNewAction(linkScheme.getControlGraph(), null, editor);
 		createAddConnector.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createAddConnector.setModelSlot(typedDiagramModelSlot);
 		createAddConnector.setModelSlotSpecificActionClass(AddConnector.class);
@@ -460,7 +460,8 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		newDirectory.mkdirs();
 
 		try {
-			File dsDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()).getName());
+			File dsDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory())
+					.getName());
 			dsDir.mkdirs();
 			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), dsDir);
 			File vpDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()).getName());
@@ -587,7 +588,6 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 
 	}
 
-	
 	/**
 	 * Retrieve the ViewPoint
 	 */
@@ -595,7 +595,8 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 	@TestOrder(10)
 	public void testLoadViewPointAndVirtualModelFromJar() {
 		instanciateTestServiceManager();
-		JarResourceCenter.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
+		JarResourceCenter
+				.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
 		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
 		assertNotNull(vpLib);
 		viewPoint = vpLib.getViewPoint("http://openflexo.org/test/TestControlledDiagramViewPoint2");
@@ -625,7 +626,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertNotNull(dropScheme);
 
 	}
-	
+
 	/**
 	 * Reload the DiagramSpecification and VirtualModel
 	 */
@@ -699,7 +700,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 						.bindingVariableNamed(LinkSchemeBindingModel.TO_TARGET).getType());
 		*/
 	}
-	
+
 	/**
 	 * Reload the DiagramSpecification and VirtualModel
 	 */
