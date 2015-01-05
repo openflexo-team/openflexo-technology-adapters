@@ -45,7 +45,7 @@ import org.openflexo.technologyadapter.owl.model.OWLStatement;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(AddStatement.AddStatementImpl.class)
-public abstract interface AddStatement<S extends OWLStatement> extends AssignableAction<OWLModelSlot, S>, SetPropertyValueAction {
+public abstract interface AddStatement<S extends OWLStatement> extends AssignableAction<OWLModelSlot, S>, SetPropertyValueAction<S> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";

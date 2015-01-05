@@ -70,7 +70,8 @@ import org.openflexo.toolbox.StringUtils;
 @ImplementationClass(AddEMFObjectIndividualAttributeObjectPropertyValue.AddEMFObjectIndividualAttributeObjectPropertyValueImpl.class)
 @XMLElement
 public interface AddEMFObjectIndividualAttributeObjectPropertyValue extends
-		SetEMFPropertyValue<EMFObjectIndividualAttributeObjectPropertyValue>, SetObjectPropertyValueAction {
+		SetEMFPropertyValue<EMFObjectIndividualAttributeObjectPropertyValue>,
+		SetObjectPropertyValueAction<EMFObjectIndividualAttributeObjectPropertyValue> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String OBJECT_KEY = "object";

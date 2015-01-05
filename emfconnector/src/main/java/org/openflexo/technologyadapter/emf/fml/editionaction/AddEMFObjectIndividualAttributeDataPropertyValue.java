@@ -68,7 +68,8 @@ import org.openflexo.toolbox.StringUtils;
 @ImplementationClass(AddEMFObjectIndividualAttributeDataPropertyValue.AddEMFObjectIndividualAttributeDataPropertyValueImpl.class)
 @XMLElement
 public interface AddEMFObjectIndividualAttributeDataPropertyValue extends
-		SetEMFPropertyValue<EMFObjectIndividualAttributeDataPropertyValue>, SetDataPropertyValueAction {
+		SetEMFPropertyValue<EMFObjectIndividualAttributeDataPropertyValue>,
+		SetDataPropertyValueAction<EMFObjectIndividualAttributeDataPropertyValue> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUE_KEY = "value";

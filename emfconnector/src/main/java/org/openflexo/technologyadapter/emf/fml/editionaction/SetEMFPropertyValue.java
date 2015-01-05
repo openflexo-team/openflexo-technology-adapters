@@ -47,7 +47,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(SetEMFPropertyValue.SetEMFPropertyValueImpl.class)
-public abstract interface SetEMFPropertyValue<T> extends AssignableAction<EMFModelSlot, T>, SetPropertyValueAction {
+public abstract interface SetEMFPropertyValue<T> extends AssignableAction<EMFModelSlot, T>, SetPropertyValueAction<T> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";

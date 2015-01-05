@@ -29,8 +29,8 @@ import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.editionaction.SetDataPropertyValueAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -60,7 +60,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(AddDataPropertyStatement.AddDataPropertyStatementImpl.class)
 @XMLElement
-public interface AddDataPropertyStatement extends AddStatement<DataPropertyStatement>, SetDataPropertyValueAction {
+public interface AddDataPropertyStatement extends AddStatement<DataPropertyStatement>, SetDataPropertyValueAction<DataPropertyStatement> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUE_KEY = "value";
