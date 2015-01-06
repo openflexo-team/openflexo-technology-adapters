@@ -22,11 +22,11 @@ package org.openflexo.technologyadapter.freeplane.fml.editionactions;
 
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot;
+import org.openflexo.technologyadapter.freeplane.FreeplaneModelSlot;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 
 /**
- * Abstract action for {@link IFreeplaneModelSlot}
+ * Abstract action for {@link FreeplaneModelSlot}
  * 
  * @author sylvain
  * 
@@ -35,6 +35,6 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
  */
 
 @ModelEntity(isAbstract = true)
-public interface FreePlaneAction<T extends IFreeplaneNode> extends TechnologySpecificAction<IFreeplaneModelSlot, T> {
+public interface FreePlaneAction<T extends IFreeplaneNode> extends TechnologySpecificAction<FreeplaneModelSlot, T> {
 
 }

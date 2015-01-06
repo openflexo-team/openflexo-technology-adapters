@@ -17,7 +17,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot;
+import org.openflexo.technologyadapter.freeplane.FreeplaneModelSlot;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNodeAction.AddChildNodeActionImpl;
 import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneNodeRole;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
@@ -49,7 +49,7 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 	@Setter(value = NODE_TEXT_KEY)
 	public void setNodeText(DataBinding<String> nodeText);
 
-	public abstract static class AddChildNodeActionImpl extends TechnologySpecificActionImpl<IFreeplaneModelSlot, IFreeplaneNode> implements
+	public abstract static class AddChildNodeActionImpl extends TechnologySpecificActionImpl<FreeplaneModelSlot, IFreeplaneNode> implements
 			AddChildNodeAction {
 
 		private static final Logger LOGGER = Logger.getLogger(AddChildNodeActionImpl.class.getPackage().getName());
@@ -70,7 +70,7 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 
 		@Override
 		public IFreeplaneNode execute(final FlexoBehaviourAction action) {
-			final FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
+			final FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 				final IFreeplaneNode bindedParent = getParent(action);
 				final String bindedNodeText = getBindedNodeText(action);
@@ -147,8 +147,8 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot> getModelSlotInstance(final FlexoBehaviourAction<?, ?, ?> action) {
-			return (FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> getModelSlotInstance(final FlexoBehaviourAction<?, ?, ?> action) {
+			return (FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot>) super.getModelSlotInstance(action);
 		}
 	}
 }

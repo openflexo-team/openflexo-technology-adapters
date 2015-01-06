@@ -36,7 +36,7 @@ import org.openflexo.foundation.technologyadapter.*;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot.FreeplaneModelSlotImpl;
+import org.openflexo.technologyadapter.freeplane.FreeplaneModelSlot.FreeplaneModelSlotImpl;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNodeAction;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddSiblingNodeAction;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.SelectAllNodes;
@@ -66,11 +66,11 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 @ModelEntity
 @ImplementationClass(FreeplaneModelSlotImpl.class)
 @XMLElement
-public interface IFreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
+public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 
-	public abstract static class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap> implements IFreeplaneModelSlot {
+	public abstract static class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap> implements FreeplaneModelSlot {
 
-		private static final Logger LOGGER = Logger.getLogger(IFreeplaneModelSlot.class.getPackage().getName());
+		private static final Logger LOGGER = Logger.getLogger(FreeplaneModelSlot.class.getPackage().getName());
 		private final Map<String, IFreeplaneMap> uriCache = new HashMap<String, IFreeplaneMap>();
 
 		@Override

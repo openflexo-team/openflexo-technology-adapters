@@ -24,9 +24,9 @@ import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
-public class FreeplaneModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<IFreeplaneMap, IFreeplaneModelSlot> {
+public class FreeplaneModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<IFreeplaneMap, FreeplaneModelSlot> {
 
-    public FreeplaneModelSlotInstanceConfiguration(final IFreeplaneModelSlot ms, final CreateVirtualModelInstance action) {
+    public FreeplaneModelSlotInstanceConfiguration(final FreeplaneModelSlot ms, final CreateVirtualModelInstance action) {
         super(ms, action);
     }
 

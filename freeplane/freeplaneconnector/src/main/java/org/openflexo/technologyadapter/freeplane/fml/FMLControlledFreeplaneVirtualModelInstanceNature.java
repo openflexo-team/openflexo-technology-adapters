@@ -3,7 +3,7 @@ package org.openflexo.technologyadapter.freeplane.fml;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
-import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot;
+import org.openflexo.technologyadapter.freeplane.FreeplaneModelSlot;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
 public class FMLControlledFreeplaneVirtualModelInstanceNature implements VirtualModelInstanceNature {
@@ -22,9 +22,9 @@ public class FMLControlledFreeplaneVirtualModelInstanceNature implements Virtual
 		return INSTANCE.getModelSlotInstance(vmi).getAccessedResourceData();
 	}
 
-	private FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot> getModelSlotInstance(final VirtualModelInstance vmi) {
-		final IFreeplaneModelSlot modelSlot = vmi.getVirtualModel().getModelSlots(IFreeplaneModelSlot.class).get(0);
-		return (FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot>) vmi.getModelSlotInstance(modelSlot);
+	private FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> getModelSlotInstance(final VirtualModelInstance vmi) {
+		final FreeplaneModelSlot modelSlot = vmi.getVirtualModel().getModelSlots(FreeplaneModelSlot.class).get(0);
+		return (FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot>) vmi.getModelSlotInstance(modelSlot);
 	}
 
 }
