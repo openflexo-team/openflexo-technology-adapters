@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -139,7 +139,7 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForEditionAction(Class<? extends EditionAction<?, ?>> editionActionClass) {
+	public ImageIcon getIconForEditionAction(Class<? extends TechnologySpecificAction<?, ?>> editionActionClass) {
 		if (AddXMLIndividual.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(XMLIndividual.class), IconLibrary.DUPLICATE);
 		}

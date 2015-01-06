@@ -10,7 +10,6 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -31,7 +30,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @ModelEntity
 @ImplementationClass(AddExcelRow.AddExcelRowImpl.class)
 @XMLElement
-public interface AddExcelRow extends AssignableAction<BasicExcelModelSlot, ExcelRow> {
+public interface AddExcelRow extends ExcelAction<ExcelRow> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String EXCEL_SHEET_KEY = "excelSheet";
@@ -61,7 +60,7 @@ public interface AddExcelRow extends AssignableAction<BasicExcelModelSlot, Excel
 	@Setter(ROW_INDEX_KEY)
 	public void setRowIndex(DataBinding<Integer> rowIndex);
 
-	public static abstract class AddExcelRowImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelRow> implements AddExcelRow {
+	public static abstract class AddExcelRowImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelRow> implements AddExcelRow {
 
 		private static final Logger logger = Logger.getLogger(AddExcelRow.class.getPackage().getName());
 

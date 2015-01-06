@@ -38,7 +38,7 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
 @ModelEntity
 @ImplementationClass(AddOWLClass.AddOWLClassImpl.class)
 @XMLElement
-public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass> {
+public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass>, OWLAction<OWLClass> {
 
 	public static abstract class AddOWLClassImpl extends AddClassImpl<OWLModelSlot, OWLClass> implements AddOWLClass {
 

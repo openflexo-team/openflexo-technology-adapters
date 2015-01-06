@@ -191,7 +191,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	}
 
 	@Override
-	public <T> void hasPerformedAction(EditionAction<?, T> anAction, T object) {
+	public <T> void hasPerformedAction(EditionAction anAction, T object) {
 		super.hasPerformedAction(anAction, object);
 		if (anAction instanceof AddShape) {
 			AddShape action = (AddShape) anAction;

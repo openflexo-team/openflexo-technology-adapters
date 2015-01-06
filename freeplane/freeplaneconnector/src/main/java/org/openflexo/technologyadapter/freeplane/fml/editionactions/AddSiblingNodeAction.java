@@ -11,7 +11,6 @@ import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
@@ -34,7 +33,7 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 @FIBPanel("Fib/AddSiblingNodePanel.fib")
 @XMLElement
 @ImplementationClass(value = AddSiblingNodeActionImpl.class)
-public interface AddSiblingNodeAction extends AssignableAction<IFreeplaneModelSlot, IFreeplaneNode> {
+public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String TARGET_NODE_KEY = "targetNode";
@@ -58,7 +57,7 @@ public interface AddSiblingNodeAction extends AssignableAction<IFreeplaneModelSl
 	@Setter(value = IS_ABOVE_KEY)
 	public void setIsAbove(DataBinding<Boolean> isAbove);
 
-	public abstract static class AddSiblingNodeActionImpl extends AssignableActionImpl<IFreeplaneModelSlot, IFreeplaneNode>
+	public abstract static class AddSiblingNodeActionImpl extends TechnologySpecificActionImpl<IFreeplaneModelSlot, IFreeplaneNode>
 			implements AddSiblingNodeAction {
 
 		private static final Logger LOGGER = Logger.getLogger(AddSiblingNodeAction.class.getPackage().getName());
@@ -78,7 +77,7 @@ public interface AddSiblingNodeAction extends AssignableAction<IFreeplaneModelSl
 
 		@Override
 		public DataBinding<Boolean> isAbove() {
-			if(above == null){
+			if (above == null) {
 				above = new DataBinding<Boolean>(this, Boolean.class, BindingDefinitionType.GET);
 				above.setBindingName(IS_ABOVE_KEY);
 			}
@@ -98,7 +97,7 @@ public interface AddSiblingNodeAction extends AssignableAction<IFreeplaneModelSl
 
 		@Override
 		public void setIsAbove(DataBinding<Boolean> above) {
-			if (above !=null){
+			if (above != null) {
 				above.setOwner(this);
 				above.setDeclaredType(Boolean.class);
 				above.setBindingDefinitionType(BindingDefinitionType.GET);
@@ -127,7 +126,7 @@ public interface AddSiblingNodeAction extends AssignableAction<IFreeplaneModelSl
 			return null;
 		}
 
-		private IFreeplaneNode getTargetNode(FlexoBehaviourAction<?,?,?> action) {
+		private IFreeplaneNode getTargetNode(FlexoBehaviourAction<?, ?, ?> action) {
 			final String errorMsg = "Error while getting binding value for action " + action;
 			try {
 				return getTargetNode().getBindingValue(action);
@@ -141,7 +140,7 @@ public interface AddSiblingNodeAction extends AssignableAction<IFreeplaneModelSl
 			return null;
 		}
 
-		private boolean isAbove(FlexoBehaviourAction<?,?,?> action) {
+		private boolean isAbove(FlexoBehaviourAction<?, ?, ?> action) {
 			final String errorMsg = "Error while getting binding value for action " + action;
 			try {
 				return isAbove().getBindingValue(action);

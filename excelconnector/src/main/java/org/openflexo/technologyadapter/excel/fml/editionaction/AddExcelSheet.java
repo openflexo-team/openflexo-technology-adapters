@@ -11,7 +11,6 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
@@ -30,7 +29,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @ModelEntity
 @ImplementationClass(AddExcelSheet.AddExcelSheetImpl.class)
 @XMLElement
-public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, ExcelSheet> {
+public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SHEET_NAME_KEY = "sheetName";
@@ -52,7 +51,7 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 
 	@Setter(SHEET_ROWS_KEY)
 	public void setSheetRows(DataBinding<List<ExcelRow>> sheetRows);
-	
+
 	@Getter(value = OVERRIDE_KEY, defaultValue = "false")
 	@XMLAttribute
 	public boolean getOverride();
@@ -60,16 +59,17 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 	@Setter(OVERRIDE_KEY)
 	public void setOverride(boolean override);
 
-	public static abstract class AddExcelSheetImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelSheet> implements AddExcelSheet {
+	public static abstract class AddExcelSheetImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelSheet> implements
+			AddExcelSheet {
 
 		private static final Logger logger = Logger.getLogger(AddExcelSheet.class.getPackage().getName());
 
 		private DataBinding<String> sheetName;
 
 		private DataBinding<List<ExcelRow>> sheetRows;
-		
+
 		private boolean override = false;
-		
+
 		public AddExcelSheetImpl() {
 			super();
 		}
@@ -123,26 +123,26 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 
 			return result;
 		}
-		
+
 		// Create an Excel Sheet or get the existing one.
-		private Sheet retrieveOrCreateSheet(Workbook wb,String name){
+		private Sheet retrieveOrCreateSheet(Workbook wb, String name) {
 			Sheet sheet = null;
 			// A sheet with this name already exists
-			if(wb.getSheet(name)!=null){
-				if(override){
+			if (wb.getSheet(name) != null) {
+				if (override) {
 					// Override it
 					wb.removeSheetAt(wb.getSheetIndex(name));
 					sheet = wb.createSheet(name);
-					logger.info("Override excel sheet with the name "+name);
-				}else{
+					logger.info("Override excel sheet with the name " + name);
+				} else {
 					// Retrieve the existing one
 					sheet = wb.getSheet(name);
-					logger.warning("An excel sheet already exists with this name "+ name +" , retrieve existing sheet");
+					logger.warning("An excel sheet already exists with this name " + name + " , retrieve existing sheet");
 				}
-			}else{
+			} else {
 				// Create a new one
 				sheet = wb.createSheet(name);
-				logger.info("Create a new excel sheet with the name "+name);
+				logger.info("Create a new excel sheet with the name " + name);
 			}
 			return sheet;
 		}

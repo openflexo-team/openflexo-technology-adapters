@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Implementation;
+import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
@@ -19,6 +20,7 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  */
 
 @ModelEntity(isAbstract = true)
+@ImplementationClass(ModelSlot.ModelSlotImpl.class)
 public interface DiagramModelSlot extends ModelSlot<Diagram> {
 
 	@Implementation
@@ -38,6 +40,6 @@ public interface DiagramModelSlot extends ModelSlot<Diagram> {
 			logger.warning("Unexpected pattern role: " + patternRoleClass.getName());
 			return null;
 		}
-		
+
 	}
 }

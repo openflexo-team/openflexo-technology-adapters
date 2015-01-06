@@ -19,16 +19,20 @@
  */
 package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DiagramAction.DiagramActionImpl.class)
-public interface DiagramAction<T> extends AssignableAction<DiagramModelSlot, T> {
+public interface DiagramAction<MS extends DiagramModelSlot, T> extends TechnologySpecificAction<MS, T> {
 
-	public abstract class DiagramActionImpl<T> extends AssignableActionImpl<DiagramModelSlot, T> {
+	@Override
+	public DiagramTechnologyAdapter getModelSlotTechnologyAdapter();
+
+	public abstract class DiagramActionImpl<MS extends DiagramModelSlot, T> extends TechnologySpecificActionImpl<DiagramModelSlot, T> {
 
 		@Override
 		public DiagramModelSlot getModelSlot() {
@@ -39,6 +43,11 @@ public interface DiagramAction<T> extends AssignableAction<DiagramModelSlot, T> 
 				}
 			}
 			return returned;
+		}
+
+		@Override
+		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (DiagramTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 	}

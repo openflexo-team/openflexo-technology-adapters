@@ -66,7 +66,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObj
 @ModelEntity
 @ImplementationClass(AddEMFObjectIndividual.AddEMFObjectIndividualImpl.class)
 @XMLElement
-public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFObjectIndividual> {
+public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFObjectIndividual>, EMFAction<EMFObjectIndividual> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String CONTAINER_KEY = "container";

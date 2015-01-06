@@ -164,7 +164,7 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 	}
 
 	@Override
-	public <T> void hasPerformedAction(EditionAction<?, T> anAction, T object) {
+	public <T> void hasPerformedAction(EditionAction anAction, T object) {
 		super.hasPerformedAction(anAction, object);
 		if (anAction instanceof AddConnector) {
 			// AddConnector action = (AddConnector) anAction;

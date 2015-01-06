@@ -49,7 +49,7 @@ import org.openflexo.technologyadapter.owl.model.OWLProperty;
 @ModelEntity
 @ImplementationClass(AddOWLIndividual.AddOWLIndividualImpl.class)
 @XMLElement
-public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndividual> {
+public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndividual>, OWLAction<OWLIndividual> {
 
 	public static abstract class AddOWLIndividualImpl extends AddIndividualImpl<OWLModelSlot, OWLIndividual> implements AddOWLIndividual {
 

@@ -31,7 +31,6 @@ package org.openflexo.technologyadapter.emf.fml.editionaction;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -49,11 +48,10 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualAttributeObj
 @ModelEntity
 @ImplementationClass(RemoveEMFObjectIndividualAttributeObjectPropertyValue.RemoveEMFObjectIndividualAttributeObjectPropertyValueImpl.class)
 @XMLElement
-public interface RemoveEMFObjectIndividualAttributeObjectPropertyValue extends
-		AssignableAction<EMFModelSlot, EMFObjectIndividualAttributeObjectPropertyValue> {
+public interface RemoveEMFObjectIndividualAttributeObjectPropertyValue extends EMFAction<EMFObjectIndividualAttributeObjectPropertyValue> {
 
 	public static abstract class RemoveEMFObjectIndividualAttributeObjectPropertyValueImpl extends
-			AssignableActionImpl<EMFModelSlot, EMFObjectIndividualAttributeObjectPropertyValue> implements
+			TechnologySpecificActionImpl<EMFModelSlot, EMFObjectIndividualAttributeObjectPropertyValue> implements
 			RemoveEMFObjectIndividualAttributeObjectPropertyValue {
 
 		/**

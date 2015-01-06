@@ -27,7 +27,6 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.editionaction.SetPropertyValueAction;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -42,12 +41,13 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
+import org.openflexo.technologyadapter.emf.model.AEMFModelObjectImpl;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(SetEMFPropertyValue.SetEMFPropertyValueImpl.class)
-public abstract interface SetEMFPropertyValue<T> extends AssignableAction<EMFModelSlot, T>, SetPropertyValueAction<T> {
+public abstract interface SetEMFPropertyValue<T extends AEMFModelObjectImpl<?>> extends EMFAction<T>, SetPropertyValueAction<T> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";
@@ -61,7 +61,8 @@ public abstract interface SetEMFPropertyValue<T> extends AssignableAction<EMFMod
 	@Setter(SUBJECT_KEY)
 	public void setSubject(DataBinding<?> subject);
 
-	public static abstract class SetEMFPropertyValueImpl<T> extends AssignableActionImpl<EMFModelSlot, T> implements SetEMFPropertyValue<T> {
+	public static abstract class SetEMFPropertyValueImpl<T extends AEMFModelObjectImpl<?>> extends
+			TechnologySpecificActionImpl<EMFModelSlot, T> implements SetEMFPropertyValue<T> {
 
 		private static final Logger logger = Logger.getLogger(SetEMFPropertyValue.class.getPackage().getName());
 

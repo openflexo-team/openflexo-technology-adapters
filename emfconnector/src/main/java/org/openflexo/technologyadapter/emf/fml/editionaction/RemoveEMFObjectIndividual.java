@@ -35,7 +35,6 @@ import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 /**
@@ -46,9 +45,9 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @ModelEntity
 @ImplementationClass(RemoveEMFObjectIndividual.RemoveEMFObjectIndividualImpl.class)
 @XMLElement
-public interface RemoveEMFObjectIndividual extends DeleteAction<EMFModelSlot, EMFObjectIndividual> {
+public interface RemoveEMFObjectIndividual extends DeleteAction<EMFObjectIndividual>, EMFAction<EMFObjectIndividual> {
 
-	public static abstract class RemoveEMFObjectIndividualImpl extends DeleteActionImpl<EMFModelSlot, EMFObjectIndividual> implements
+	public static abstract class RemoveEMFObjectIndividualImpl extends DeleteActionImpl<EMFObjectIndividual> implements
 			RemoveEMFObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(RemoveEMFObjectIndividual.class.getPackage().getName());

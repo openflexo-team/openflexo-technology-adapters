@@ -10,7 +10,6 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -24,9 +23,9 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 @ModelEntity
 @ImplementationClass(AddPowerpointSlide.AddPowerpointSlideImpl.class)
 @XMLElement
-public interface AddPowerpointSlide extends AssignableAction<BasicPowerpointModelSlot, PowerpointSlide> {
+public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 
-	public static abstract class AddPowerpointSlideImpl extends AssignableActionImpl<BasicPowerpointModelSlot, PowerpointSlide> {
+	public static abstract class AddPowerpointSlideImpl extends TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointSlide> {
 
 		private static final Logger logger = Logger.getLogger(AddPowerpointSlide.class.getPackage().getName());
 

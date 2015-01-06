@@ -11,7 +11,6 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
@@ -32,7 +31,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @ModelEntity
 @ImplementationClass(AddExcelCell.AddExcelCellImpl.class)
 @XMLElement
-public interface AddExcelCell extends AssignableAction<BasicExcelModelSlot, ExcelCell> {
+public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String ROW_KEY = "row";
@@ -99,8 +98,9 @@ public interface AddExcelCell extends AssignableAction<BasicExcelModelSlot, Exce
 	public void setRowIndex(boolean isRowIndex);
 
 	public List<CellType> getAvailableCellTypes();
-	
-	public static abstract class AddExcelCellImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelCell> implements AddExcelCell {
+
+	public static abstract class AddExcelCellImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell> implements
+			AddExcelCell {
 
 		private static final Logger logger = Logger.getLogger(AddExcelCell.class.getPackage().getName());
 
@@ -140,14 +140,14 @@ public interface AddExcelCell extends AssignableAction<BasicExcelModelSlot, Exce
 					if (isRowIndex) {
 						Integer rowIndex = getRowIndex().getBindingValue(action);
 						ExcelSheet excelSheet = getSheet().getBindingValue(action);
-						if(excelSheet!=null && rowIndex!=null){
+						if (excelSheet != null && rowIndex != null) {
 							excelRow = excelSheet.getRowAt(rowIndex);
-						} else if(excelSheet==null){
+						} else if (excelSheet == null) {
 							logger.severe("Excel sheet is not defined.");
-						} else if(rowIndex==null){
+						} else if (rowIndex == null) {
 							logger.severe("Row index is not defined.");
 						}
-						
+
 					} else {
 						excelRow = getRow().getBindingValue(action);
 					}
@@ -283,6 +283,7 @@ public interface AddExcelCell extends AssignableAction<BasicExcelModelSlot, Exce
 
 		private List<CellType> availableCellTypes = null;
 
+		@Override
 		public List<CellType> getAvailableCellTypes() {
 			if (availableCellTypes == null) {
 				availableCellTypes = new Vector<CellType>();

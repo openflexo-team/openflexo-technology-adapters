@@ -24,6 +24,7 @@ import org.openflexo.foundation.fml.AbstractCreationScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -284,7 +285,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		 * @return newly created {@link EditionAction}
 		 */
 		@Override
-		public <A extends EditionAction<?, ?>> A createAction(Class<A> actionClass, ModelSlot<?> modelSlot) {
+		public <A extends TechnologySpecificAction<?, ?>> A createAction(Class<A> actionClass, ModelSlot<?> modelSlot) {
 			A returned = super.createAction(actionClass, modelSlot);
 			if (returned instanceof AddConnector) {
 				AddConnector newAction = (AddConnector) returned;

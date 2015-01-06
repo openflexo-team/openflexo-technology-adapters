@@ -34,7 +34,7 @@ import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.FlexoConceptNature;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
-import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -320,7 +320,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	}
 
 	@Override
-	public ImageIcon getIconForEditionAction(Class<? extends EditionAction<?, ?>> editionActionClass) {
+	public ImageIcon getIconForEditionAction(Class<? extends TechnologySpecificAction<?, ?>> editionActionClass) {
 		if (AddDiagram.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, IconLibrary.DUPLICATE);
 		} else if (AddShape.class.isAssignableFrom(editionActionClass)) {

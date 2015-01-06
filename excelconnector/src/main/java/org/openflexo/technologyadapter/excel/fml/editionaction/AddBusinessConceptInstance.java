@@ -3,7 +3,7 @@ package org.openflexo.technologyadapter.excel.fml.editionaction;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -15,10 +15,10 @@ import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptInst
 @ModelEntity
 @ImplementationClass(AddBusinessConceptInstance.AddBusinessConceptInstanceImpl.class)
 @XMLElement
-public interface AddBusinessConceptInstance extends AssignableAction<SemanticsExcelModelSlot, BusinessConceptInstance> {
+public interface AddBusinessConceptInstance extends TechnologySpecificAction<SemanticsExcelModelSlot, BusinessConceptInstance> {
 
 	public static abstract class AddBusinessConceptInstanceImpl extends
-			AssignableActionImpl<SemanticsExcelModelSlot, BusinessConceptInstance> implements AddBusinessConceptInstance {
+			TechnologySpecificActionImpl<SemanticsExcelModelSlot, BusinessConceptInstance> implements AddBusinessConceptInstance {
 
 		@Override
 		public Type getAssignableType() {

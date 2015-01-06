@@ -39,6 +39,8 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -49,7 +51,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(AddDiagram.AddDiagramImpl.class)
 @XMLElement
-public interface AddDiagram extends DiagramAction<Diagram> {
+public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String DIAGRAM_NAME_KEY = "diagramName";
@@ -78,15 +80,16 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 
 	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource);
 
-	public static abstract class AddDiagramImpl extends DiagramActionImpl<Diagram> implements AddDiagram {
+	public static abstract class AddDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram> implements AddDiagram {
 
 		private static final Logger logger = Logger.getLogger(AddDiagram.class.getPackage().getName());
 
 		private DiagramSpecificationResource diagramSpecificationResource;
 		private String diagramSpecificationURI;
 
-		public AddDiagramImpl() {
-			super();
+		@Override
+		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (DiagramTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override

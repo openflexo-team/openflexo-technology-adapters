@@ -31,7 +31,6 @@ import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -50,7 +49,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelCell.CellStyleFeature;
 @ModelEntity
 @ImplementationClass(CellStyleAction.CellStyleActionImpl.class)
 @XMLElement
-public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, ExcelCell> {
+public interface CellStyleAction extends ExcelAction<ExcelCell> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";
@@ -94,7 +93,7 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 
 	public boolean isBorderStyle();
 
-	public static abstract class CellStyleActionImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelCell> implements
+	public static abstract class CellStyleActionImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell> implements
 			CellStyleAction {
 
 		private static final Logger logger = Logger.getLogger(CellStyleAction.class.getPackage().getName());
