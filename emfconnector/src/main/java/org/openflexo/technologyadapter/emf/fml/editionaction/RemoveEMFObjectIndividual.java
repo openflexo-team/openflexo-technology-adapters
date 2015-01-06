@@ -56,10 +56,10 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFModelSlot, EM
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#performAction(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#execute(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
 		 */
 		@Override
-		public EMFObjectIndividual performAction(FlexoBehaviourAction action) {
+		public EMFObjectIndividual execute(FlexoBehaviourAction action) {
 			// ModelSlotInstance<EMFModel, EMFMetaModel> modelSlotInstance = getModelSlotInstance(action);
 			// EObject object = objectIndividual.getObject();
 			// EObject container = object.eContainer();
@@ -79,14 +79,5 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFModelSlot, EM
 			return null;
 		}
 
-		/**
-		 * Follow the link.
-		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#finalizePerformAction(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction,
-		 *      org.openflexo.foundation.FlexoModelObject)
-		 */
-		@Override
-		public void finalizePerformAction(FlexoBehaviourAction action, EMFObjectIndividual initialContext) {
-		}
 	}
 }

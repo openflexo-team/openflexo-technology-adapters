@@ -80,7 +80,7 @@ public interface AddExcelSheet extends AssignableAction<BasicExcelModelSlot, Exc
 		}
 
 		@Override
-		public ExcelSheet performAction(FlexoBehaviourAction action) {
+		public ExcelSheet execute(FlexoBehaviourAction action) {
 
 			ExcelSheet result = null;
 

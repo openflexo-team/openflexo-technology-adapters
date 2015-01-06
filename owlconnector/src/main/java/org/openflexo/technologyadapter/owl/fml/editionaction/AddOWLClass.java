@@ -61,7 +61,7 @@ public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass> {
 		}
 
 		@Override
-		public OWLClass performAction(FlexoBehaviourAction action) {
+		public OWLClass execute(FlexoBehaviourAction action) {
 			OWLClass father = getOntologyClass();
 			String newClassName = null;
 			try {

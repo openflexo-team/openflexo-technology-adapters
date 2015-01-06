@@ -275,7 +275,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 		}
 
 		@Override
-		public DiagramElement performAction(FlexoBehaviourAction action) {
+		public DiagramElement execute(FlexoBehaviourAction action) {
 			logger.info("Perform graphical action " + action);
 			DiagramElement graphicalElement = getSubject(action);
 			Object value = null;
@@ -297,9 +297,9 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			return graphicalElement;
 		}
 
-		@Override
+		/*@Override
 		public void finalizePerformAction(FlexoBehaviourAction action, DiagramElement initialContext) {
-		}
+		}*/
 
 	}
 

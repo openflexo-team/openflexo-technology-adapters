@@ -315,8 +315,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		try {
 			addObject.setOntologyClass(emfMetaModelResource.getResourceData(null).getClass(classURI));
 			// addObject.setEMFClassURI(classURI);
-			result = addObject.performAction(creationSchemeCreationAction);
-			addObject.finalizePerformAction(creationSchemeCreationAction, result);
+			result = addObject.execute(creationSchemeCreationAction);
+			// addObject.finalizePerformAction(creationSchemeCreationAction, result);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -331,15 +331,15 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	protected EMFObjectIndividual removeEMFObjectIndividual(EMFModelResource emfModelResource, EMFObjectIndividual objectIndividual,
-			VirtualModelModelFactory factory) {
+			VirtualModelModelFactory factory) throws FlexoException {
 		EMFObjectIndividual result = null;
 		RemoveEMFObjectIndividual removeObject = factory.newInstance(RemoveEMFObjectIndividual.class);
 		removeObject.setModelSlot(newModelSlot);
 		// removeObject.setEMFModelResource(emfModelResource);
 		// removeObject.setObjectIndividual(objectIndividual);
-		removeObject.performAction(creationSchemeCreationAction);
+		removeObject.execute(creationSchemeCreationAction);
 		result = objectIndividual;
-		removeObject.finalizePerformAction(creationSchemeCreationAction, null);
+		// removeObject.finalizePerformAction(creationSchemeCreationAction, null);
 		return result;
 	}
 
@@ -363,8 +363,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		addAttribute.setDataProperty(emfMetaModelResource.getResourceData(null).getDataProperty(propertyURI));
 		addAttribute.setSubject(new DataBinding("this"));
 		addAttribute.setValue(new DataBinding("\"" + value + "\""));
-		result = addAttribute.performAction(creationSchemeCreationAction);
-		addAttribute.finalizePerformAction(creationSchemeCreationAction, result);
+		result = addAttribute.execute(creationSchemeCreationAction);
+		// addAttribute.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
 
@@ -379,8 +379,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// addName.setAttributeDataProperty((EMFAttributeDataProperty)
 		// emfMetaModelResource.getResourceData(null).getDataProperty(propertyURI));
 		// addName.setValue(value);
-		result = removeProperty.performAction(creationSchemeCreationAction);
-		removeProperty.finalizePerformAction(creationSchemeCreationAction, result);
+		result = removeProperty.execute(creationSchemeCreationAction);
+		// removeProperty.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
 
@@ -395,8 +395,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// addName.setAttributeObjectProperty((EMFAttributeObjectProperty) emfMetaModelResource.getResourceData(null).getDataProperty(
 		// propertyURI));
 		// addName.setValue(value);
-		result = addPropValue.performAction(creationSchemeCreationAction);
-		addPropValue.finalizePerformAction(creationSchemeCreationAction, result);
+		result = addPropValue.execute(creationSchemeCreationAction);
+		// addPropValue.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
 
@@ -412,8 +412,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// addName.setAttributeObjectProperty((EMFAttributeObjectProperty) emfMetaModelResource.getResourceData(null).getDataProperty(
 		// propertyURI));
 		// addName.setValue(value);
-		result = removePropVal.performAction(creationSchemeCreationAction);
-		removePropVal.finalizePerformAction(creationSchemeCreationAction, result);
+		result = removePropVal.execute(creationSchemeCreationAction);
+		// removePropVal.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
 
@@ -428,8 +428,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// addName.setReferenceObjectProperty((EMFReferenceObjectProperty) emfMetaModelResource.getResourceData(null).getObjectProperty(
 		// propertyURI));
 		// addName.setValue(value);
-		result = addRefPropVal.performAction(creationSchemeCreationAction);
-		addRefPropVal.finalizePerformAction(creationSchemeCreationAction, result);
+		result = addRefPropVal.execute(creationSchemeCreationAction);
+		// addRefPropVal.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
 
@@ -445,8 +445,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// addName.setReferenceObjectProperty((EMFReferenceObjectProperty) emfMetaModelResource.getResourceData(null).getObjectProperty(
 		// propertyURI));
 		// addName.setValue(value);
-		result = removeRefPropVal.performAction(creationSchemeCreationAction);
-		removeRefPropVal.finalizePerformAction(creationSchemeCreationAction, result);
+		result = removeRefPropVal.execute(creationSchemeCreationAction);
+		// removeRefPropVal.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
 

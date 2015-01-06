@@ -19,7 +19,6 @@
  */
 package org.openflexo.technologyadapter.diagram.model.action;
 
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -119,7 +118,7 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 	}
 
 	@Override
-	public LinkScheme getEditionScheme() {
+	public LinkScheme getFlexoBehaviour() {
 		return getLinkScheme();
 	}
 
@@ -165,6 +164,15 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 	}
 
 	@Override
+	public <T> void hasPerformedAction(EditionAction<?, T> anAction, T object) {
+		super.hasPerformedAction(anAction, object);
+		if (anAction instanceof AddConnector) {
+			// AddConnector action = (AddConnector) anAction;
+			_newConnector = (DiagramConnector) object;
+		}
+	}
+
+	/*@Override
 	protected Object performAction(EditionAction anAction, Hashtable<EditionAction, Object> performedActions) throws FlexoException {
 		Object assignedObject = super.performAction(anAction, performedActions);
 		if (anAction instanceof AddConnector) {
@@ -172,7 +180,7 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 			_newConnector = (DiagramConnector) assignedObject;
 		}
 		return assignedObject;
-	}
+	}*/
 
 	@Override
 	public Object getValue(BindingVariable variable) {

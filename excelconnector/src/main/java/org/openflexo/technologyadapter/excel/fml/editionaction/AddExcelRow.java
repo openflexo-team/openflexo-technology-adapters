@@ -82,7 +82,7 @@ public interface AddExcelRow extends AssignableAction<BasicExcelModelSlot, Excel
 		}
 
 		@Override
-		public ExcelRow performAction(FlexoBehaviourAction action) {
+		public ExcelRow execute(FlexoBehaviourAction action) {
 			ExcelRow excelRow = null;
 
 			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(action);

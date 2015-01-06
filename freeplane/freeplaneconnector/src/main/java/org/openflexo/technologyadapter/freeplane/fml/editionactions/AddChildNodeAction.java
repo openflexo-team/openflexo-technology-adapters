@@ -64,7 +64,7 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 		}
 
 		@Override
-		public IFreeplaneNode performAction(final FlexoBehaviourAction action) {
+		public IFreeplaneNode execute(final FlexoBehaviourAction action) {
 			final FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 				final IFreeplaneNode bindedParent = getParent(action);

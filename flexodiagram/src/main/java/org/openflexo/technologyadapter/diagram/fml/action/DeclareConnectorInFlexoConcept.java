@@ -20,8 +20,6 @@
 package org.openflexo.technologyadapter.diagram.fml.action;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -31,25 +29,20 @@ import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.fml.DeletionScheme;
-import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.IndividualRole;
 import org.openflexo.foundation.fml.URIParameter;
 import org.openflexo.foundation.fml.editionaction.AddIndividual;
-import org.openflexo.foundation.fml.editionaction.DeclareFlexoRole;
-import org.openflexo.foundation.fml.editionaction.DeleteAction;
+import org.openflexo.foundation.fml.editionaction.AssignationAction;
+import org.openflexo.foundation.fml.editionaction.ExpressionAction;
 import org.openflexo.foundation.fml.inspector.FlexoConceptInspector;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
-import org.openflexo.foundation.fml.rt.editionaction.AddFlexoConceptInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.binding.LinkSchemeBindingModel;
@@ -141,7 +134,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 	private IndividualRole individualRole;
 	private FlexoConceptInstanceRole flexoConceptPatternRole;
 
-	//private LinkScheme selectedLinkScheme;
+	// private LinkScheme selectedLinkScheme;
 
 	private String errorMessage;
 
@@ -315,9 +308,11 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 						// Declare pattern role
 						for (IndividualRole r : otherRoles) {
-							DeclareFlexoRole action = getFactory().newDeclareFlexoRole();
+							AssignationAction<?> action = getFactory().newAssignationAction();
 							action.setAssignation(new DataBinding<Object>(r.getRoleName()));
-							action.setObject(new DataBinding<Object>("parameters." + r.getName()));
+							ExpressionAction expressionAction = getFactory().newExpressionAction();
+							expressionAction.setExpression(new DataBinding<Object>("parameters." + r.getName()));
+							action.setAssignableAction(expressionAction);
 							newLinkScheme.addToActions(action);
 						}
 
@@ -355,22 +350,26 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				}
 
 				// Add connector action
-				AddConnector newAddConnector = getFactory().newInstance(AddConnector.class);
-				newAddConnector.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));
-				ShapeRole fromPatternRole=null;
+				AddConnector newAddConnector;
+				AssignationAction<DiagramConnector> assignationAction = getFactory().newAssignationAction(
+						newAddConnector = getFactory().newInstance(AddConnector.class));
+				// AddConnector newAddConnector = getFactory().newInstance(AddConnector.class);
+				assignationAction.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));
+				ShapeRole fromPatternRole = null;
 				ShapeRole toPatternRole = null;
-				if(fromFlexoConcept.getFlexoRoles(ShapeRole.class).size()>0){
+				if (fromFlexoConcept.getFlexoRoles(ShapeRole.class).size() > 0) {
 					fromPatternRole = fromFlexoConcept.getFlexoRoles(ShapeRole.class).get(0);
-				}if(fromFlexoConcept.getFlexoRoles(ShapeRole.class).size()>0){
+				}
+				if (fromFlexoConcept.getFlexoRoles(ShapeRole.class).size() > 0) {
 					toPatternRole = toFlexoConcept.getFlexoRoles(ShapeRole.class).get(0);
 				}
-				 
+
 				newAddConnector.setFromShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.FROM_TARGET + "."
 						+ fromPatternRole.getRoleName()));
-				newAddConnector
-						.setToShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.TO_TARGET + "." + toPatternRole.getRoleName()));
+				newAddConnector.setToShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.TO_TARGET + "."
+						+ toPatternRole.getRoleName()));
 
-				newLinkScheme.addToActions(newAddConnector);
+				newLinkScheme.addToActions(assignationAction);
 
 				// Add new drop scheme
 				newFlexoConcept.addToFlexoBehaviours(newLinkScheme);
@@ -644,7 +643,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 	}
 
 	public String getLinkSchemeName() {
-		if (StringUtils.isEmpty(linkSchemeName) && fromFlexoConcept!=null && toFlexoConcept!=null) {
+		if (StringUtils.isEmpty(linkSchemeName) && fromFlexoConcept != null && toFlexoConcept != null) {
 			return "link" + (fromFlexoConcept != null ? fromFlexoConcept.getName() : "") + "To"
 					+ (toFlexoConcept != null ? toFlexoConcept.getName() : "");
 		}
@@ -801,7 +800,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		FlexoBehaviourConfiguration FlexoBehaviourConfiguration = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.LINK);
 		getFlexoBehaviours().add(FlexoBehaviourConfiguration);
 	}
-*/
+	*/
 	@Override
 	public void initializeBehaviours() {
 		if (getVirtualModel() != null && getVirtualModel().getFlexoConcepts() != null && !getVirtualModel().getFlexoConcepts().isEmpty()) {
@@ -822,7 +821,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		if (flexoConceptsFromList == null) {
 			flexoConceptsFromList = new ArrayList<FlexoConcept>();
 		}
-		if(getVirtualModel()!=null){
+		if (getVirtualModel() != null) {
 			flexoConceptsFromList.clear();
 			flexoConceptsFromList.addAll(getVirtualModel().getFlexoConcepts());
 		}
@@ -845,7 +844,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		if (flexoConceptsToList == null) {
 			flexoConceptsToList = new ArrayList<FlexoConcept>();
 		}
-		if(getVirtualModel()!=null){
+		if (getVirtualModel() != null) {
 			flexoConceptsToList.clear();
 			flexoConceptsToList.addAll(getVirtualModel().getFlexoConcepts());
 		}

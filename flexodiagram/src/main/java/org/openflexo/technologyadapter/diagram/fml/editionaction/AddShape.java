@@ -39,6 +39,7 @@ import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOu
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
@@ -110,16 +111,16 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			if (getAssignation().isSet()) {
+			/*if (getAssignation().isSet()) {
 				out.append(getAssignation().toString() + " = (", context);
-			}
+			}*/
 			out.append(getClass().getSimpleName() + " conformTo ShapeSpecification from " + getModelSlot().getName() + " {"
 					+ StringUtils.LINE_SEPARATOR, context);
 			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
 			out.append("}", context);
-			if (getAssignation().isSet()) {
+			/*if (getAssignation().isSet()) {
 				out.append(")", context);
-			}
+			}*/
 			return out.toString();
 		}
 
@@ -201,13 +202,13 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			return DiagramShape.class;
 		}
 
-		@Override
+		/*@Override
 		public boolean isAssignationRequired() {
 			return true;
-		}
+		}*/
 
 		@Override
-		public DiagramShape performAction(FlexoBehaviourAction action) {
+		public DiagramShape execute(FlexoBehaviourAction action) {
 			DiagramContainerElement<?> container = getContainer(action);
 			Diagram diagram = container.getDiagram();
 
@@ -257,15 +258,24 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 			container.addToShapes(newShape);
 
+			action.hasPerformedAction(this, newShape);
+
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("Added shape " + newShape + " under " + container);
 			}
 
+			// Well, not easy to understand here
+			// The new shape has well be added to the diagram, and the drawing (which listen to the diagram) has well received the event
+			// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
+			// Since the shape has been added BEFORE the FlexoConceptInstance has been set, the drawing only knows about the DiagamShape,
+			// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
+			// sure that the Drawing can discover that the new shape is FML-controlled
+			newShape.getParent().getPropertyChangeSupport().firePropertyChange(DiagramElement.INVALIDATE, null, newShape.getParent());
+
 			System.out.println("Added shape " + newShape);
 			return newShape;
 		}
-
-		@Override
+		/*@Override
 		public void finalizePerformAction(FlexoBehaviourAction action, DiagramShape newShape) {
 			super.finalizePerformAction(action, newShape);
 
@@ -276,7 +286,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
 			// sure that the Drawing can discover that the new shape is FML-controlled
 			newShape.getParent().getPropertyChangeSupport().firePropertyChange(DiagramElement.INVALIDATE, null, newShape.getParent());
-		}
+		}*/
 	}
 
 	@DefineValidationRule
@@ -287,34 +297,34 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 		@Override
 		public ValidationIssue<AddShapeActionMustAdressAValidShapeRole, AddShape> applyValidation(AddShape action) {
-			if (action.getFlexoRole() == null) {
+			if (action.getFlexoRole() == null && action.getOwner() instanceof AssignationAction) {
 				Vector<FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape>> v = new Vector<FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape>>();
 				for (ShapeRole pr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
-					v.add(new SetsPatternRole(pr));
+					v.add(new SetsFlexoRole(pr));
 				}
 				return new ValidationError<AddShapeActionMustAdressAValidShapeRole, AddShape>(this, action,
-						"add_shape_action_does_not_address_a_valid_shape_pattern_role", v);
+						"add_shape_action_does_not_address_a_valid_shape_flexo_role", v);
 			}
 			return null;
 		}
 
-		protected static class SetsPatternRole extends FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape> {
+		protected static class SetsFlexoRole extends FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape> {
 
-			private final ShapeRole patternRole;
+			private final ShapeRole flexoRole;
 
-			public SetsPatternRole(ShapeRole patternRole) {
-				super("assign_action_to_pattern_role_($patternRole.patternRoleName)");
-				this.patternRole = patternRole;
+			public SetsFlexoRole(ShapeRole flexoRole) {
+				super("assign_action_to_flexo_role_($flexoRole.flexoRoleName)");
+				this.flexoRole = flexoRole;
 			}
 
-			public ShapeRole getPatternRole() {
-				return patternRole;
+			public ShapeRole getFlexoRole() {
+				return flexoRole;
 			}
 
 			@Override
 			protected void fixAction() {
 				AddShape action = getValidable();
-				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
+				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<Object>(flexoRole.getRoleName()));
 			}
 
 		}

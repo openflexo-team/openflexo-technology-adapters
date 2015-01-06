@@ -42,7 +42,7 @@ public interface AddPowerpointShape extends AssignableAction<BasicPowerpointMode
 		}
 
 		@Override
-		public PowerpointShape performAction(FlexoBehaviourAction action) {
+		public PowerpointShape execute(FlexoBehaviourAction action) {
 			PowerpointShape powerpointShape = null;
 
 			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(action);

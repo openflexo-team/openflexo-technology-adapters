@@ -107,7 +107,7 @@ public interface AddXMLType extends AssignableAction<XMLModelSlot, XMLType> {
 
 
 		@Override
-		public XMLType performAction(FlexoBehaviourAction action) {
+		public XMLType execute(FlexoBehaviourAction action) {
 
 			XMLType newClass = null;
 			try {

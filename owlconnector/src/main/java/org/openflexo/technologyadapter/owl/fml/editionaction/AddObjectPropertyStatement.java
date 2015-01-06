@@ -34,6 +34,7 @@ import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.SetObjectPropertyValueAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
@@ -275,7 +276,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		}
 
 		@Override
-		public ObjectPropertyStatement performAction(FlexoBehaviourAction action) {
+		public ObjectPropertyStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
 			OWLObjectProperty property = getObjectProperty();
 			OWLConcept<?> subject = getPropertySubject(action);
 			OWLConcept<?> object = getPropertyObject(action);
@@ -303,10 +304,10 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		@Override
 		public ValidationIssue<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> applyValidation(
 				AddObjectPropertyStatement action) {
-			if (action.getObjectProperty() == null) {
+			if (action.getObjectProperty() == null && action.getOwner() instanceof AssignationAction) {
 				Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>> v = new Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>>();
 				for (ObjectPropertyStatementRole pr : action.getFlexoConcept().getFlexoRoles(ObjectPropertyStatementRole.class)) {
-					v.add(new SetsPatternRole(pr));
+					v.add(new SetsFlexoRole(pr));
 				}
 				return new ValidationError<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>(this,
 						action, "add_object_property_statement_action_does_not_define_an_object_property", v);
@@ -314,24 +315,24 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			return null;
 		}
 
-		protected static class SetsPatternRole extends
+		protected static class SetsFlexoRole extends
 				FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
 
-			private final ObjectPropertyStatementRole patternRole;
+			private final ObjectPropertyStatementRole flexoRole;
 
-			public SetsPatternRole(ObjectPropertyStatementRole patternRole) {
-				super("assign_action_to_pattern_role_($patternRole.patternRoleName)");
-				this.patternRole = patternRole;
+			public SetsFlexoRole(ObjectPropertyStatementRole flexoRole) {
+				super("assign_action_to_flexo_role_($flexoRole.flexoRoleName)");
+				this.flexoRole = flexoRole;
 			}
 
-			public ObjectPropertyStatementRole getPatternRole() {
-				return patternRole;
+			public ObjectPropertyStatementRole getFlexoRole() {
+				return flexoRole;
 			}
 
 			@Override
 			protected void fixAction() {
 				AddObjectPropertyStatement action = getValidable();
-				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
+				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<Object>(flexoRole.getRoleName()));
 			}
 
 		}

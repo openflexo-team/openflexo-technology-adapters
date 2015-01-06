@@ -167,7 +167,7 @@ public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndi
 
 		
 		@Override
-		public XMLIndividual performAction(FlexoBehaviourAction action) {	
+		public XMLIndividual execute(FlexoBehaviourAction action) {	
 
 			XMLIndividual newIndividual = null;
 			try {

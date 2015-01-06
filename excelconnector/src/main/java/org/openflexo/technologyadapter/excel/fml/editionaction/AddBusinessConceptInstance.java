@@ -27,7 +27,7 @@ public interface AddBusinessConceptInstance extends AssignableAction<SemanticsEx
 		}
 
 		@Override
-		public BusinessConceptInstance performAction(FlexoBehaviourAction action) {
+		public BusinessConceptInstance execute(FlexoBehaviourAction action) {
 			// TODO Auto-generated method stub
 			return null;
 		}

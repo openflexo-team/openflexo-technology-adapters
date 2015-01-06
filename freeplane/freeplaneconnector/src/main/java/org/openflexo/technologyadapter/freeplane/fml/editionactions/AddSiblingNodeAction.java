@@ -108,7 +108,7 @@ public interface AddSiblingNodeAction extends AssignableAction<IFreeplaneModelSl
 		}
 
 		@Override
-		public IFreeplaneNode performAction(FlexoBehaviourAction action) {
+		public IFreeplaneNode execute(FlexoBehaviourAction action) {
 			final FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 				final IFreeplaneNode bindedTarget = getTargetNode(action);

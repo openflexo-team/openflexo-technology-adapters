@@ -38,7 +38,7 @@ public interface AddPowerpointSlide extends AssignableAction<BasicPowerpointMode
 		}
 
 		@Override
-		public PowerpointSlide performAction(FlexoBehaviourAction action) {
+		public PowerpointSlide execute(FlexoBehaviourAction action) {
 
 			PowerpointSlide result = null;
 

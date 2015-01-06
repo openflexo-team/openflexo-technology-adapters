@@ -72,10 +72,10 @@ public interface RemoveEMFObjectIndividualReferenceObjectPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#performAction(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#execute(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
 		 */
 		@Override
-		public EMFObjectIndividualReferenceObjectPropertyValue performAction(FlexoBehaviourAction action) {
+		public EMFObjectIndividualReferenceObjectPropertyValue execute(FlexoBehaviourAction action) {
 			EMFObjectIndividualReferenceObjectPropertyValue result = null;
 			// ModelSlotInstance<EMFModel, EMFMetaModel> modelSlotInstance = getModelSlotInstance(action);
 			// EMFModel model = modelSlotInstance.getModel();

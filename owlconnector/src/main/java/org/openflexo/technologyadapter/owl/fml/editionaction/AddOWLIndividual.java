@@ -72,7 +72,7 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndivid
 		}
 
 		@Override
-		public OWLIndividual performAction(FlexoBehaviourAction action) {
+		public OWLIndividual execute(FlexoBehaviourAction action) {
 			OWLClass father = getOntologyClass();
 			// IFlexoOntologyConcept father = action.getOntologyObject(getProject());
 			// System.out.println("Individual name param = "+action.getIndividualNameParameter());

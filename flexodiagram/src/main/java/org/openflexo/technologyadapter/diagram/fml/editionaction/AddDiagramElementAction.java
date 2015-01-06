@@ -45,10 +45,10 @@ public abstract interface AddDiagramElementAction<T extends DiagramElement<?>> e
 		}*/
 
 		@Override
-		public GraphicalElementRole<?, ?> getFlexoRole() {
+		public GraphicalElementRole<T, ?> getFlexoRole() {
 			FlexoRole<?> superPatternRole = super.getFlexoRole();
 			if (superPatternRole instanceof GraphicalElementRole) {
-				return (GraphicalElementRole<?, ?>) superPatternRole;
+				return (GraphicalElementRole<T, ?>) superPatternRole;
 			} else if (superPatternRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;

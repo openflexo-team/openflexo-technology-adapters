@@ -259,7 +259,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		}
 
 		@Override
-		public OWLStatement performAction(FlexoBehaviourAction action) {
+		public OWLStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
 			OWLProperty property = getObjectProperty();
 			OWLConcept<?> subject = getPropertySubject(action);
 			OWLConcept<?> object = getPropertyObject(action);

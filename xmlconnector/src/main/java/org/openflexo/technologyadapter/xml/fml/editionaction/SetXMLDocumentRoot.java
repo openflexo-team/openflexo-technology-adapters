@@ -53,7 +53,7 @@ public interface SetXMLDocumentRoot extends ProcedureAction<XMLModelSlot, XMLInd
 		}
 
 		@Override
-		public XMLIndividual performAction(FlexoBehaviourAction action) {
+		public XMLIndividual execute(FlexoBehaviourAction action) {
 
 			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = (ModelSlotInstance<XMLModelSlot, XMLModel>) getModelSlotInstance(action);
 			XMLModel model = modelSlotInstance.getAccessedResourceData();

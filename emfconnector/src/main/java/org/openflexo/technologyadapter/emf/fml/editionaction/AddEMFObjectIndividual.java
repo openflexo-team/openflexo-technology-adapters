@@ -106,7 +106,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 		}
 
 		@Override
-		public EMFObjectIndividual performAction(FlexoBehaviourAction action) {
+		public EMFObjectIndividual execute(FlexoBehaviourAction action) {
 			EMFObjectIndividual result = null;
 			List container = null;
 			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(action);

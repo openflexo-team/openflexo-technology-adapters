@@ -19,7 +19,6 @@
  */
 package org.openflexo.technologyadapter.diagram.model.action;
 
-import java.util.Hashtable;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -165,7 +164,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	}
 
 	@Override
-	public DropScheme getEditionScheme() {
+	public DropScheme getFlexoBehaviour() {
 		return getDropScheme();
 	}
 
@@ -192,11 +191,11 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	}
 
 	@Override
-	protected Object performAction(EditionAction anAction, Hashtable<EditionAction, Object> performedActions) throws FlexoException {
-		Object assignedObject = super.performAction(anAction, performedActions);
+	public <T> void hasPerformedAction(EditionAction<?, T> anAction, T object) {
+		super.hasPerformedAction(anAction, object);
 		if (anAction instanceof AddShape) {
 			AddShape action = (AddShape) anAction;
-			DiagramShape newShape = (DiagramShape) assignedObject;
+			DiagramShape newShape = (DiagramShape) object;
 			if (newShape != null) {
 				ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 				// if (action.getPatternRole().getIsPrimaryRepresentationRole()) {
@@ -259,8 +258,65 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 			}*/
 
 		}
-		return assignedObject;
 	}
+
+	/*@Override
+	protected Object performAction(EditionAction anAction, Hashtable<EditionAction, Object> performedActions) throws FlexoException {
+		Object assignedObject = super.performAction(anAction, performedActions);
+		if (anAction instanceof AddShape) {
+			AddShape action = (AddShape) anAction;
+			DiagramShape newShape = (DiagramShape) assignedObject;
+			if (newShape != null) {
+				ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
+				// if (action.getPatternRole().getIsPrimaryRepresentationRole()) {
+				// Declare shape as new shape only if it is the primary representation role of the EP
+
+				_primaryShape = newShape;
+				gr.setX(dropLocation.getX());
+				gr.setY(dropLocation.getY());
+
+				// Temporary comment this portion of code if child shapes are declared inside this shape
+				if (!action.getFlexoRole().containsShapes()
+						&& action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
+					ShapeBorder border = gr.getBorder();
+					ShapeBorder newBorder = gr.getFactory().makeShapeBorder(border);
+					boolean requireNewBorder = false;
+					double deltaX = 0;
+					double deltaY = 0;
+					if (border.getTop() < 25) {
+						requireNewBorder = true;
+						deltaY = border.getTop() - 25;
+						newBorder.setTop(25);
+					}
+					if (border.getLeft() < 25) {
+						requireNewBorder = true;
+						deltaX = border.getLeft() - 25;
+						newBorder.setLeft(25);
+					}
+					if (border.getRight() < 25) {
+						requireNewBorder = true;
+						newBorder.setRight(25);
+					}
+					if (border.getBottom() < 25) {
+						requireNewBorder = true;
+						newBorder.setBottom(25);
+					}
+					if (requireNewBorder) {
+						gr.setBorder(newBorder);
+						gr.setX(gr.getX() + deltaX);
+						gr.setY(gr.getY() + deltaY);
+						if (gr.getIsFloatingLabel()) {
+							gr.setAbsoluteTextX(gr.getAbsoluteTextX() - deltaX);
+							gr.setAbsoluteTextY(gr.getAbsoluteTextY() - deltaY);
+						}
+					}
+			} else {
+				logger.warning("Inconsistant data: shape has not been created");
+			}
+
+		}
+		return assignedObject;
+	}*/
 
 	@Override
 	public Object getValue(BindingVariable variable) {

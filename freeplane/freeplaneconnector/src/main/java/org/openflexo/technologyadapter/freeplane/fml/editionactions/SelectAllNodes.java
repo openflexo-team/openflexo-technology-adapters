@@ -27,7 +27,7 @@ public interface SelectAllNodes extends FetchRequest<IFreeplaneModelSlot, IFreep
 		private static final Logger LOGGER = Logger.getLogger(SelectAllNodes.class.getPackage().getName());
 
 		@Override
-		public List<IFreeplaneNode> performAction(final FlexoBehaviourAction action) {
+		public List<IFreeplaneNode> execute(final FlexoBehaviourAction action) {
 			if (getModelSlotInstance(action) == null) {
 				return Collections.emptyList();
 			}

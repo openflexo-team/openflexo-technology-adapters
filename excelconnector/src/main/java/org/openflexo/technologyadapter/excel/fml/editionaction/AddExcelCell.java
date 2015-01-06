@@ -128,7 +128,7 @@ public interface AddExcelCell extends AssignableAction<BasicExcelModelSlot, Exce
 		}
 
 		@Override
-		public ExcelCell performAction(FlexoBehaviourAction action) {
+		public ExcelCell execute(FlexoBehaviourAction action) {
 
 			ExcelCell excelCell = null;
 

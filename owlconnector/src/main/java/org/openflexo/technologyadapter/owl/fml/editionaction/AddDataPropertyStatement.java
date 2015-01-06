@@ -32,6 +32,7 @@ import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.SetDataPropertyValueAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
@@ -249,7 +250,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		}
 
 		@Override
-		public DataPropertyStatement performAction(FlexoBehaviourAction action) {
+		public DataPropertyStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
 			OWLDataProperty property = getDataProperty();
 			OWLConcept<?> subject = getPropertySubject(action);
 			Object value = getValue(action);
@@ -276,10 +277,10 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		@Override
 		public ValidationIssue<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> applyValidation(
 				AddDataPropertyStatement action) {
-			if (action.getDataProperty() == null) {
+			if (action.getDataProperty() == null && action.getOwner() instanceof AssignationAction) {
 				Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>> v = new Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>>();
 				for (DataPropertyStatementRole pr : action.getFlexoConcept().getFlexoRoles(DataPropertyStatementRole.class)) {
-					v.add(new SetsPatternRole(pr));
+					v.add(new SetsFlexoRole(pr));
 				}
 				return new ValidationError<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>(this, action,
 						"add_data_property_statement_action_does_not_define_an_data_property", v);
@@ -287,24 +288,24 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			return null;
 		}
 
-		protected static class SetsPatternRole extends
+		protected static class SetsFlexoRole extends
 				FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
 
-			private final DataPropertyStatementRole patternRole;
+			private final DataPropertyStatementRole flexoRole;
 
-			public SetsPatternRole(DataPropertyStatementRole patternRole) {
-				super("assign_action_to_pattern_role_($patternRole.patternRoleName)");
-				this.patternRole = patternRole;
+			public SetsFlexoRole(DataPropertyStatementRole flexoRole) {
+				super("assign_action_to_flexo_role_($flexoRole.flexoRoleName)");
+				this.flexoRole = flexoRole;
 			}
 
-			public DataPropertyStatementRole getPatternRole() {
-				return patternRole;
+			public DataPropertyStatementRole getFlexoRole() {
+				return flexoRole;
 			}
 
 			@Override
 			protected void fixAction() {
 				AddDataPropertyStatement action = getValidable();
-				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
+				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<Object>(flexoRole.getRoleName()));
 			}
 
 		}

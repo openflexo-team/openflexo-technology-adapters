@@ -79,22 +79,23 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 
 	@Setter(CELL_STYLE_KEY)
 	public void setCellStyle(CellStyleFeature cellStyle);
-	
+
 	public List<CellStyleFeature> getAvailableCellStyles();
-	
+
 	public CellBorderStyleFeature getCellBorderStyle();
-	
+
 	public CellAlignmentStyleFeature getCellAlignmentStyle();
-	
+
 	public List<CellAlignmentStyleFeature> getAvailableCellAlignmentStyles();
-	
+
 	public List<CellBorderStyleFeature> getAvailableCellBorderStyles();
-	
+
 	public boolean isAlignmentStyle();
-	
+
 	public boolean isBorderStyle();
 
-	public static abstract class CellStyleActionImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelCell> implements CellStyleAction {
+	public static abstract class CellStyleActionImpl extends AssignableActionImpl<BasicExcelModelSlot, ExcelCell> implements
+			CellStyleAction {
 
 		private static final Logger logger = Logger.getLogger(CellStyleAction.class.getPackage().getName());
 
@@ -109,7 +110,7 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 		private CellAlignmentStyleFeature cellAlignmentStyle = null;
 
 		private DataBinding<?> value;
-		
+
 		@Override
 		public Type getAssignableType() {
 			return ExcelCell.class;
@@ -224,6 +225,7 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 
 		private List<CellStyleFeature> availableCellStyles = null;
 
+		@Override
 		public List<CellStyleFeature> getAvailableCellStyles() {
 			if (availableCellStyles == null) {
 				availableCellStyles = new Vector<CellStyleFeature>();
@@ -251,10 +253,12 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 
 		private boolean isBorderStyle = false;
 
+		@Override
 		public boolean isBorderStyle() {
 			return isBorderStyle;
 		}
 
+		@Override
 		public CellBorderStyleFeature getCellBorderStyle() {
 			if (cellBorderStyle == null) {
 				if (_cellBorderStyleName != null) {
@@ -274,6 +278,7 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 
 		private List<CellBorderStyleFeature> availableCellBorderStyles = null;
 
+		@Override
 		public List<CellBorderStyleFeature> getAvailableCellBorderStyles() {
 			if (availableCellBorderStyles == null) {
 				availableCellBorderStyles = new Vector<CellBorderStyleFeature>();
@@ -301,10 +306,12 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 
 		private boolean isAlignmentStyle = false;
 
+		@Override
 		public boolean isAlignmentStyle() {
 			return isAlignmentStyle;
 		}
 
+		@Override
 		public CellAlignmentStyleFeature getCellAlignmentStyle() {
 			if (cellAlignmentStyle == null) {
 				if (_cellAlignmentStyleName != null) {
@@ -324,6 +331,7 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 
 		private List<CellAlignmentStyleFeature> availableCellAlignmentStyles = null;
 
+		@Override
 		public List<CellAlignmentStyleFeature> getAvailableCellAlignmentStyles() {
 			if (availableCellAlignmentStyles == null) {
 				availableCellAlignmentStyles = new Vector<CellAlignmentStyleFeature>();
@@ -350,7 +358,7 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 		// ACTION
 
 		@Override
-		public ExcelCell performAction(FlexoBehaviourAction action) {
+		public ExcelCell execute(FlexoBehaviourAction action) {
 			logger.info("Perform graphical action " + action);
 			ExcelCell excelCell = getSubject(action);
 			Object value = null;
@@ -376,12 +384,6 @@ public interface CellStyleAction extends AssignableAction<BasicExcelModelSlot, E
 			}
 			excelCell.setCellStyle(cellStyle, value);
 			return excelCell;
-		}
-
-		@Override
-		public void finalizePerformAction(FlexoBehaviourAction action, ExcelCell initialContext) {
-			// TODO Auto-generated method stub
-
 		}
 
 	}

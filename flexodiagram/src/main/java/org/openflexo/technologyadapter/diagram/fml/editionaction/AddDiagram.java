@@ -27,8 +27,8 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -92,15 +92,15 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			if (getAssignation().isSet()) {
+			/*if (getAssignation().isSet()) {
 				out.append(getAssignation().toString() + " = (", context);
-			}
+			}*/
 			out.append(getClass().getSimpleName() + " conformTo " + getDiagramSpecification().getURI() + " from "
 					+ getModelSlot().getName() + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append("}", context);
-			if (getAssignation().isSet()) {
+			/*if (getAssignation().isSet()) {
 				out.append(")", context);
-			}
+			}*/
 			return out.toString();
 		}
 
@@ -204,7 +204,7 @@ public interface AddDiagram extends DiagramAction<Diagram> {
 		}
 
 		@Override
-		public Diagram performAction(FlexoBehaviourAction action) {
+		public Diagram execute(FlexoBehaviourAction action) {
 			// TODO: reimplement this
 			logger.warning("AddDiagram not implemented yet");
 			/*Diagram initialDiagram = (Diagram) action.retrieveVirtualModelInstance();

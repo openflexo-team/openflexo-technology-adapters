@@ -37,6 +37,7 @@ import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOu
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
@@ -108,16 +109,16 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			if (getAssignation().isSet()) {
+			/*if (getAssignation().isSet()) {
 				out.append(getAssignation().toString() + " = (", context);
-			}
+			}*/
 			out.append(getClass().getSimpleName() + " conformTo ConnectorSpecification from " + getModelSlot().getName() + " {"
 					+ StringUtils.LINE_SEPARATOR, context);
 			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
 			out.append("}", context);
-			if (getAssignation().isSet()) {
+			/*if (getAssignation().isSet()) {
 				out.append(")", context);
-			}
+			}*/
 			return out.toString();
 		}
 
@@ -249,13 +250,13 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			return DiagramConnector.class;
 		}
 
-		@Override
+		/*@Override
 		public boolean isAssignationRequired() {
 			return true;
-		}
+		}*/
 
 		@Override
-		public DiagramConnector performAction(FlexoBehaviourAction action) {
+		public DiagramConnector execute(FlexoBehaviourAction action) {
 
 			DiagramShape fromShape = getFromShape(action);
 			DiagramShape toShape = getToShape(action);
@@ -294,12 +295,25 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 				parent.addToConnectors(newConnector);
 
+				action.hasPerformedAction(this, newConnector);
+
 				// Register reference
 				// newConnector.registerFlexoConceptReference(action.getFlexoConceptInstance());
 
 				if (logger.isLoggable(Level.FINE)) {
 					logger.fine("Added connector " + newConnector + " under " + parent);
 				}
+
+				// Well, not easy to understand here
+				// The new connector has well be added to the diagram, and the drawing (which listen to the diagram) has well received the
+				// event
+				// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
+				// Since the connector has been added BEFORE the FlexoConceptInstance has been set, the drawing only knows about the
+				// DiagamShape,
+				// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
+				// sure that the Drawing can discover that the new shape is FML-controlled
+				newConnector.getParent().getPropertyChangeSupport().firePropertyChange("invalidate", null, newConnector.getParent());
+
 				return newConnector;
 			} else {
 				logger.warning("AddConnector Failed due to null source or target shape");
@@ -307,7 +321,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			}
 		}
 
-		@Override
+		/*@Override
 		public void finalizePerformAction(FlexoBehaviourAction action, DiagramConnector newConnector) {
 			super.finalizePerformAction(action, newConnector);
 
@@ -319,7 +333,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
 			// sure that the Drawing can discover that the new shape is FML-controlled
 			newConnector.getParent().getPropertyChangeSupport().firePropertyChange("invalidate", null, newConnector.getParent());
-		}
+		}*/
 
 	}
 
@@ -332,34 +346,34 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public ValidationIssue<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> applyValidation(AddConnector action) {
-			if (action.getFlexoRole() == null) {
+			if (action.getFlexoRole() == null && action.getOwner() instanceof AssignationAction) {
 				Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>>();
 				for (ConnectorRole pr : action.getFlexoConcept().getFlexoRoles(ConnectorRole.class)) {
-					v.add(new SetsPatternRole(pr));
+					v.add(new SetsFlexoRole(pr));
 				}
 				return new ValidationError<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>(this, action,
-						"add_connector_action_does_not_address_a_valid_connector_pattern_role", v);
+						"add_connector_action_does_not_address_a_valid_connector_flexo_role", v);
 			}
 			return null;
 		}
 
-		protected static class SetsPatternRole extends FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> {
+		protected static class SetsFlexoRole extends FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> {
 
-			private final ConnectorRole patternRole;
+			private final ConnectorRole flexoRole;
 
-			public SetsPatternRole(ConnectorRole patternRole) {
-				super("assign_action_to_pattern_role_($patternRole.patternRoleName)");
-				this.patternRole = patternRole;
+			public SetsFlexoRole(ConnectorRole flexoRole) {
+				super("assign_action_to_flexo_role_($flexoRole.flexoRoleName)");
+				this.flexoRole = flexoRole;
 			}
 
-			public ConnectorRole getPatternRole() {
-				return patternRole;
+			public ConnectorRole getFlexoRole() {
+				return flexoRole;
 			}
 
 			@Override
 			protected void fixAction() {
 				AddConnector action = getValidable();
-				action.setAssignation(new DataBinding<Object>(patternRole.getRoleName()));
+				((AssignationAction) action.getOwner()).setAssignation(new DataBinding<Object>(flexoRole.getRoleName()));
 			}
 
 		}
