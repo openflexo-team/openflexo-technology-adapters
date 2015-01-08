@@ -23,6 +23,7 @@
 		<module>excelconnector-ui</module>
 		<module>powerpointconnector-ui</module>
 		<module>xmlconnector-ui</module>
+		<module>oslcconnector-ui</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
