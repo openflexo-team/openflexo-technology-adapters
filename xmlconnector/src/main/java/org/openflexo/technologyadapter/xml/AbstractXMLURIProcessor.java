@@ -27,8 +27,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProperty;
-import org.openflexo.foundation.fml.NamedFMLObject;
-import org.openflexo.foundation.fml.ViewPoint;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
@@ -55,16 +56,16 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 @ModelEntity
 @XMLElement
 @ImplementationClass(AbstractXMLURIProcessor.AbstractXMLURIProcessorImpl.class)
-public interface AbstractXMLURIProcessor extends NamedFMLObject {
+public interface AbstractXMLURIProcessor extends VirtualModelObject {
 
 	public enum MappingStyle {
 		ATTRIBUTE_VALUE, SINGLETON;
 	}
 
 	@PropertyIdentifier(type = String.class)
-	public static final String TYPE_URI_KEY       = "typeURI";
+	public static final String TYPE_URI_KEY = "typeURI";
 	@PropertyIdentifier(type = MappingStyle.class)
-	public static final String MAPPING_STYLE_KEY  = "mappingStyle";
+	public static final String MAPPING_STYLE_KEY = "mappingStyle";
 	@PropertyIdentifier(type = String.class)
 	public static final String ATTRIBUTE_NAME_KEY = "attributeName";
 	@PropertyIdentifier(type = XMLType.class)
@@ -74,13 +75,11 @@ public interface AbstractXMLURIProcessor extends NamedFMLObject {
 	@PropertyIdentifier(type = XMLDataProperty.class)
 	public static final String BASE_PROPERTY = "basePropertyForURI";
 
-
 	@Initializer
 	public AbstractXMLURIProcessor init();
 
 	@Initializer
 	public AbstractXMLURIProcessor init(@Parameter(TYPE_URI_KEY) String typeURI);
-
 
 	@Getter(value = TYPE_URI_KEY)
 	@XMLAttribute
@@ -115,7 +114,6 @@ public interface AbstractXMLURIProcessor extends NamedFMLObject {
 	@Getter(MODELSLOT)
 	public AbstractXMLModelSlot getModelSlot();
 
-
 	@Getter(BASE_PROPERTY)
 	public XMLDataProperty getBasePropertyForURI();
 
@@ -128,15 +126,15 @@ public interface AbstractXMLURIProcessor extends NamedFMLObject {
 
 	public void reset();
 
-	/** 
+	/**
 	 * XSURIProcessor interface implementation
+	 * 
 	 * @author xtof
 	 *
 	 */
-	public static abstract class AbstractXMLURIProcessorImpl extends NamedFMLObjectImpl implements AbstractXMLURIProcessor {
+	public static abstract class AbstractXMLURIProcessorImpl extends FlexoConceptObjectImpl implements AbstractXMLURIProcessor {
 
-		static final Logger  logger   = Logger.getLogger(AbstractXMLURIProcessor.class.getPackage().getName());
-
+		static final Logger logger = Logger.getLogger(AbstractXMLURIProcessor.class.getPackage().getName());
 
 		// Properties used to calculate URIs
 
@@ -146,24 +144,22 @@ public interface AbstractXMLURIProcessor extends NamedFMLObject {
 		protected String attributeName;
 		protected XMLDataProperty baseDataPropertyForURI;
 
-
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
 		private final Map<String, XMLObject> uriCache = new HashMap<String, XMLObject>();
 
-
-
 		/**
 		 * initialises an URIProcessor with the given URI
+		 * 
 		 * @param typeURI
 		 */
 		public AbstractXMLURIProcessorImpl() {
 			super();
 		}
 
-
 		/**
 		 * initialises an URIProcessor with the given URI
+		 * 
 		 * @param typeURI
 		 */
 		public AbstractXMLURIProcessorImpl(String typeURI) {
@@ -175,12 +171,22 @@ public interface AbstractXMLURIProcessor extends NamedFMLObject {
 		}
 
 		@Override
-		public String getTypeURI(){
+		public FlexoConcept getFlexoConcept() {
+			return getModelSlot().getFlexoConcept();
+		}
+
+		@Override
+		public AbstractVirtualModel<?> getVirtualModel() {
+			return getModelSlot().getVirtualModel();
+		}
+
+		@Override
+		public String getTypeURI() {
 			return this.typeURI.toString();
 		}
 
 		@Override
-		public void setTypeURI(String typeURI){
+		public void setTypeURI(String typeURI) {
 			this.typeURI = URI.create(typeURI);
 		}
 
@@ -194,32 +200,30 @@ public interface AbstractXMLURIProcessor extends NamedFMLObject {
 
 		@Override
 		public String getAttributeName() {
-			if (baseDataPropertyForURI != null){
+			if (baseDataPropertyForURI != null) {
 				return baseDataPropertyForURI.getName();
-			}
-			else {
+			} else {
 				return attributeName;
 			}
 		}
 
-
 		@Override
 		public void setAttributeName(String aName) {
-			attributeName  = aName;
-			if (aName != null && mappedXMLType != null){
+			attributeName = aName;
+			if (aName != null && mappedXMLType != null) {
 				FlexoProperty dataP = mappedXMLType.getPropertyNamed(aName);
-				attributeName  = aName;
-				if (dataP != null){
+				attributeName = aName;
+				if (dataP != null) {
 					baseDataPropertyForURI = (XMLDataProperty) dataP;
+				} else {
+					logger.warning("Unable to set attribute name for uri processor : property not found in XMLType "
+							+ mappedXMLType.getName());
 				}
-			else {
-				logger.warning("Unable to set attribute name for uri processor : property not found in XMLType " + mappedXMLType.getName());
-			}
-			}
-			else 
+			} else
 				logger.warning("Unable to set attribute name for uri processor : null XMLType ");
 
 		}
+
 		@Override
 		public XMLDataProperty getBasePropertyForURI() {
 			return baseDataPropertyForURI;
@@ -241,7 +245,7 @@ public interface AbstractXMLURIProcessor extends NamedFMLObject {
 
 			fullURI = URI.create(objectURI);
 			typeURIStr.append(fullURI.getScheme()).append("://").append(fullURI.getHost()).append(fullURI.getPath()).append("#")
-			.append(fullURI.getFragment());
+					.append(fullURI.getFragment());
 
 			return typeURIStr.toString();
 		}
@@ -249,14 +253,6 @@ public interface AbstractXMLURIProcessor extends NamedFMLObject {
 		@Override
 		public String getURI() {
 			return "URIProcessor/" + this.getFlexoID();
-		}
-
-		@Override
-		public ViewPoint getViewPoint() {
-			if (getModelSlot() != null) {
-				return getModelSlot().getViewPoint();
-			}
-			return null;
 		}
 
 	}

@@ -96,7 +96,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getVirtualModel().getName() + ";", context);
+			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getOwningVirtualModel().getName() + ";", context);
 			return out.toString();
 		}
 
@@ -110,7 +110,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				// Try to find one somewhere
 				TypedDiagramModelSlot ms = (TypedDiagramModelSlot) getModelSlot();
 				for (FMLDiagramPaletteElementBinding binding : ms.getPaletteElementBindings()) {
-					if (binding.getFlexoConcept() == getFlexoConcept()) {
+					if (binding.getBoundFlexoConcept() == getFlexoConcept()) {
 						setGraphicalRepresentation(binding.getPaletteElement().getGraphicalRepresentation());
 					}
 				}

@@ -40,7 +40,7 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelModelFactory;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.localization.FlexoLocalization;
@@ -211,7 +211,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 				FMLDiagramPaletteElementBinding newBinding = getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
 				newBinding.setPaletteElement(_newPaletteElement);
 				newBinding.setDiagramModelSlot(getDiagramModelSlot());
-				newBinding.setFlexoConcept(flexoConcept);
+				newBinding.setBoundFlexoConcept(flexoConcept);
 				newBinding.setDropScheme(dropScheme);
 				newBinding.setBoundLabelToElementName(!takeScreenshotForTopLevelElement);
 				
@@ -484,7 +484,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		this.virtualModel = virtualModel;
 	}
 
-	public VirtualModelModelFactory getFactory() {
+	public FMLModelFactory getFactory() {
 		if (getVirtualModel() != null) {
 			return getVirtualModel().getVirtualModelFactory();
 		}

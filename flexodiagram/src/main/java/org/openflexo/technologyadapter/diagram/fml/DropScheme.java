@@ -119,8 +119,8 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 			if (isTopTarget()) {
 				return null;
 			}
-			if (getVirtualModel() != null) {
-				FlexoConcept returned = getVirtualModel().getFlexoConcept(_getTarget());
+			if (getOwningVirtualModel() != null) {
+				FlexoConcept returned = getOwningVirtualModel().getFlexoConcept(_getTarget());
 				if (lastKnownTargetFlexoConcept != returned) {
 					FlexoConcept oldValue = lastKnownTargetFlexoConcept;
 					lastKnownTargetFlexoConcept = returned;

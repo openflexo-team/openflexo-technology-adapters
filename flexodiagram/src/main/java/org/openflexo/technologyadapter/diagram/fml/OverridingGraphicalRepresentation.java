@@ -4,10 +4,10 @@ import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.NamedFMLObject;
-import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -23,7 +23,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 @ImplementationClass(OverridingGraphicalRepresentation.OverridingGraphicalRepresentationImpl.class)
 @Imports({ @Import(OverridingGraphicalRepresentation.ShapeOverridingGraphicalRepresentation.class),
 		@Import(OverridingGraphicalRepresentation.ConnectorOverridingGraphicalRepresentation.class) })
-public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresentation> extends NamedFMLObject {
+public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresentation> extends VirtualModelObject {
 
 	@PropertyIdentifier(type = FMLDiagramPaletteElementBinding.class)
 	public static final String PALETTE_ELEMENT_BINDING_KEY = "paletteElementBinding";
@@ -32,6 +32,7 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 	@PropertyIdentifier(type = GraphicalRepresentation.class)
 	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
 
+	// TODO: remove inverse
 	@Getter(value = PALETTE_ELEMENT_BINDING_KEY, inverse = FMLDiagramPaletteElementBinding.OVERRIDING_GRAPHICAL_REPRESENTATIONS_KEY)
 	public FMLDiagramPaletteElementBinding getDiagramPaletteElementBinding();
 
@@ -52,7 +53,7 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 	@Setter(GRAPHICAL_REPRESENTATION_KEY)
 	public void setGraphicalRepresentation(GR graphicalRepresentation);
 
-	public abstract class OverridingGraphicalRepresentationImpl<GR extends GraphicalRepresentation> extends NamedFMLObjectImpl
+	public abstract class OverridingGraphicalRepresentationImpl<GR extends GraphicalRepresentation> extends FlexoConceptObjectImpl
 			implements OverridingGraphicalRepresentation<GR> {
 
 		// FMLDiagramPaletteElementBinding paletteElementBinding;
@@ -68,6 +69,16 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 			super();
 			setPatternRole(patternRole);
 			// patternRoleName = patternRole.getPatternRoleName();
+		}
+
+		@Override
+		public FlexoConcept getFlexoConcept() {
+			return getDiagramPaletteElementBinding().getFlexoConcept();
+		}
+
+		@Override
+		public AbstractVirtualModel<?> getVirtualModel() {
+			return getDiagramPaletteElementBinding().getVirtualModel();
 		}
 
 		@Override
@@ -101,18 +112,9 @@ public interface OverridingGraphicalRepresentation<GR extends GraphicalRepresent
 			return getDiagramPaletteElementBinding().getPaletteElement().getPalette();
 		}
 
-		public VirtualModel getVirtualModel() {
-			return getDiagramPaletteElementBinding().getVirtualModel();
-		}
-
 		@Override
 		public String getURI() {
 			return null;
-		}
-
-		@Override
-		public ViewPoint getViewPoint() {
-			return getVirtualModel().getViewPoint();
 		}
 
 	}

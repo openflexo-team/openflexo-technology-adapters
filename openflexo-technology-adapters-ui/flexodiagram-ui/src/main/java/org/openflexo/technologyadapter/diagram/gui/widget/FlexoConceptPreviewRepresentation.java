@@ -41,7 +41,7 @@ import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.VirtualModelModelFactory;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 
@@ -80,7 +80,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		toArtifacts = new Hashtable<FlexoRole, ConnectorToArtifact>();
 	}
 
-	private final VirtualModelModelFactory factory;
+	private final FMLModelFactory factory;
 
 	@Override
 	public void init() {

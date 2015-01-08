@@ -128,8 +128,8 @@ public interface AddEMFObjectIndividualAttributeDataPropertyValue extends
 
 		@Override
 		public IFlexoOntologyDataProperty getDataProperty() {
-			if (getVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
-				return getVirtualModel().getOntologyDataProperty(dataPropertyURI);
+			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
+				return getOwningVirtualModel().getOntologyDataProperty(dataPropertyURI);
 			}
 			return null;
 		}

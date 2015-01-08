@@ -49,7 +49,7 @@ import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
-import org.openflexo.foundation.fml.VirtualModelModelFactory;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
@@ -299,7 +299,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	protected EMFObjectIndividual addEMFObjectIndividual(EMFModelResource emfModelResource, String classURI,
-			VirtualModelModelFactory factory) {
+			FMLModelFactory factory) {
 
 		EMFObjectIndividual result = null;
 
@@ -331,7 +331,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	protected EMFObjectIndividual removeEMFObjectIndividual(EMFModelResource emfModelResource, EMFObjectIndividual objectIndividual,
-			VirtualModelModelFactory factory) throws FlexoException {
+			FMLModelFactory factory) throws FlexoException {
 		EMFObjectIndividual result = null;
 		RemoveEMFObjectIndividual removeObject = factory.newInstance(RemoveEMFObjectIndividual.class);
 		removeObject.setModelSlot(newModelSlot);
@@ -345,7 +345,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected EMFObjectIndividualAttributeDataPropertyValue addEMFObjectIndividualAttributeDataPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
-			VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividualAttributeDataPropertyValue result = null;
 
 		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
@@ -370,7 +370,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected EMFObjectIndividualAttributeDataPropertyValue removeEMFObjectIndividualAttributeDataPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
-			VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividualAttributeDataPropertyValue result = null;
 		RemoveEMFObjectIndividualAttributeDataPropertyValue removeProperty = factory
 				.newInstance(RemoveEMFObjectIndividualAttributeDataPropertyValue.class);
@@ -386,7 +386,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected EMFObjectIndividualAttributeObjectPropertyValue addEMFObjectIndividualAttributeObjectPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
-			VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividualAttributeObjectPropertyValue result = null;
 		AddEMFObjectIndividualAttributeObjectPropertyValue addPropValue = factory
 				.newInstance(AddEMFObjectIndividualAttributeObjectPropertyValue.class);
@@ -402,7 +402,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected EMFObjectIndividualAttributeObjectPropertyValue removeEMFObjectIndividualAttributeObjectPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
-			VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividualAttributeObjectPropertyValue result = null;
 		RemoveEMFObjectIndividualAttributeObjectPropertyValue removePropVal = factory
 				.newInstance(RemoveEMFObjectIndividualAttributeObjectPropertyValue.class);
@@ -419,7 +419,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected EMFObjectIndividualReferenceObjectPropertyValue addEMFObjectIndividualReferenceObjectPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
-			VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividualReferenceObjectPropertyValue result = null;
 		AddEMFObjectIndividualReferenceObjectPropertyValue addRefPropVal = factory
 				.newInstance(AddEMFObjectIndividualReferenceObjectPropertyValue.class);
@@ -435,7 +435,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	protected EMFObjectIndividualReferenceObjectPropertyValue removeEMFObjectIndividualReferenceObjectPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
-			VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividualReferenceObjectPropertyValue result = null;
 		RemoveEMFObjectIndividualReferenceObjectPropertyValue removeRefPropVal = factory
 				.newInstance(RemoveEMFObjectIndividualReferenceObjectPropertyValue.class);
@@ -451,7 +451,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	protected EMFObjectIndividual createParameterSet(EMFModelResource emfModelResource, EMFMetaModelResource emfMetaModelResource,
-			String name, List<EMFObjectIndividual> ownedParameters, VirtualModelModelFactory factory) throws FileNotFoundException,
+			String name, List<EMFObjectIndividual> ownedParameters, FMLModelFactory factory) throws FileNotFoundException,
 			ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividual result = null;
 		// ParameterSet object
@@ -468,7 +468,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	protected EMFObjectIndividual createIntParameter(EMFModelResource emfModelResource, EMFMetaModelResource emfMetaModelResource,
-			String name, Integer value, VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
+			String name, Integer value, FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 		EMFObjectIndividual result = null;
 		// IntParameter object
@@ -496,7 +496,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	protected EMFObjectIndividual createDoubleParameter(EMFModelResource emfModelResource, EMFMetaModelResource emfMetaModelResource,
-			String name, Double value, VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
+			String name, Double value, FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 		EMFObjectIndividual result = null;
 		// DoubleParameter object
@@ -527,7 +527,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	protected EMFObjectIndividual createBoolParameter(EMFModelResource emfModelResource, EMFMetaModelResource emfMetaModelResource,
-			String name, Boolean value, VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
+			String name, Boolean value, FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 		EMFObjectIndividual result = null;
 		// BoolParameter object
@@ -542,7 +542,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	protected EMFObjectIndividual createStringParameter(EMFModelResource emfModelResource, EMFMetaModelResource emfMetaModelResource,
-			String name, String value, VirtualModelModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
+			String name, String value, FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 		EMFObjectIndividual result = null;
 		// StringParameter object

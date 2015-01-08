@@ -175,8 +175,8 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 
 			FlexoConcept returned = null;
 
-			if (!StringUtils.isEmpty(_getFromTarget()) && getVirtualModel() != null) {
-				returned = getVirtualModel().getFlexoConcept(_getFromTarget());
+			if (!StringUtils.isEmpty(_getFromTarget()) && getOwningVirtualModel() != null) {
+				returned = getOwningVirtualModel().getFlexoConcept(_getFromTarget());
 			}
 			if (lastKnownFromTargetFlexoConcept != returned) {
 				FlexoConcept oldValue = lastKnownFromTargetFlexoConcept;
@@ -195,8 +195,8 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		public FlexoConcept getToTargetFlexoConcept() {
 
 			FlexoConcept returned = null;
-			if (!StringUtils.isEmpty(_getToTarget()) && getVirtualModel() != null) {
-				returned = getVirtualModel().getFlexoConcept(_getToTarget());
+			if (!StringUtils.isEmpty(_getToTarget()) && getOwningVirtualModel() != null) {
+				returned = getOwningVirtualModel().getFlexoConcept(_getToTarget());
 			}
 			if (lastKnownToTargetFlexoConcept != returned) {
 				FlexoConcept oldValue = lastKnownToTargetFlexoConcept;

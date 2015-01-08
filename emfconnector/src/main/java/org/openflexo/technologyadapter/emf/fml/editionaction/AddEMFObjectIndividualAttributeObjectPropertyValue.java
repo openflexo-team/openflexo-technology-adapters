@@ -130,8 +130,8 @@ public interface AddEMFObjectIndividualAttributeObjectPropertyValue extends
 
 		@Override
 		public IFlexoOntologyObjectProperty getObjectProperty() {
-			if (getVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
-				return getVirtualModel().getOntologyObjectProperty(objectPropertyURI);
+			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
+				return getOwningVirtualModel().getOntologyObjectProperty(objectPropertyURI);
 			}
 			return null;
 		}

@@ -31,7 +31,7 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelModelFactory;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
@@ -350,7 +350,7 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	}
 
 	// TODO: i think that sometimes FlexoConcept is null !!!
-	public VirtualModelModelFactory getFactory() {
+	public FMLModelFactory getFactory() {
 		if (getFlexoConcept() != null) {
 			return getFlexoConcept().getVirtualModelFactory();
 		}else if(virtualModel!=null){

@@ -45,8 +45,8 @@ public class FMLControlledDiagramFlexoConceptNature implements FlexoConceptNatur
 	@Override
 	public boolean hasNature(FlexoConcept concept) {
 
-		if (concept != null && concept.getVirtualModel() != null) {
-			return concept.getVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE);
+		if (concept != null && concept.getOwningVirtualModel() != null) {
+			return concept.getOwningVirtualModel().hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE);
 		}
 		return false;
 	}
@@ -56,6 +56,6 @@ public class FMLControlledDiagramFlexoConceptNature implements FlexoConceptNatur
 	}
 
 	private TypedDiagramModelSlot _getTypedDiagramModelSlot(FlexoConcept concept) {
-		return FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(concept.getVirtualModel());
+		return FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(concept.getOwningVirtualModel());
 	}
 }

@@ -141,8 +141,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 
 		@Override
 		public OWLDataProperty getDataProperty() {
-			if (getVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
-				return (OWLDataProperty) getVirtualModel().getOntologyDataProperty(dataPropertyURI);
+			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
+				return (OWLDataProperty) getOwningVirtualModel().getOntologyDataProperty(dataPropertyURI);
 			} else {
 				if (getFlexoRole() != null) {
 					return getFlexoRole().getDataProperty();

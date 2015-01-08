@@ -38,8 +38,8 @@ public interface DiagramAction<MS extends DiagramModelSlot, T> extends Technolog
 		public DiagramModelSlot getModelSlot() {
 			DiagramModelSlot returned = super.getModelSlot();
 			if (returned == null) {
-				if (getVirtualModel() != null && getVirtualModel().getModelSlots(DiagramModelSlot.class).size() > 0) {
-					return getVirtualModel().getModelSlots(DiagramModelSlot.class).get(0);
+				if (getOwningVirtualModel() != null && getOwningVirtualModel().getModelSlots(DiagramModelSlot.class).size() > 0) {
+					return getOwningVirtualModel().getModelSlots(DiagramModelSlot.class).get(0);
 				}
 			}
 			return returned;

@@ -4,7 +4,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.Bindable;
 import org.openflexo.antar.binding.BindingFactory;
 import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.antar.binding.DataBinding;
@@ -15,7 +14,6 @@ import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptObject;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -36,7 +34,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 @ModelEntity
 @ImplementationClass(GraphicalElementSpecification.GraphicalElementSpecificationImpl.class)
 @XMLElement(xmlTag = "GRSpec")
-public interface GraphicalElementSpecification<T, GR extends GraphicalRepresentation> extends FlexoConceptObject, Bindable {
+public interface GraphicalElementSpecification<T, GR extends GraphicalRepresentation> extends FlexoConceptObject {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String FEATURE_NAME_KEY = "featureName";
@@ -213,11 +211,6 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 				return getFlexoConcept().getInspector().getBindingModel();
 			}
 			return null;
-		}
-
-		@Override
-		public VirtualModel getVirtualModel() {
-			return getFlexoConcept() != null ? getFlexoConcept().getVirtualModel() : null;
 		}
 
 		/**

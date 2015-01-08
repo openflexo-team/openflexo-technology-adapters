@@ -165,8 +165,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 		@Override
 		public OWLObjectProperty getObjectProperty() {
-			if (getVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
-				return (OWLObjectProperty) getVirtualModel().getOntologyObjectProperty(objectPropertyURI);
+			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
+				return (OWLObjectProperty) getOwningVirtualModel().getOntologyObjectProperty(objectPropertyURI);
 			} else {
 				if (getFlexoRole() != null) {
 					return getFlexoRole().getObjectProperty();

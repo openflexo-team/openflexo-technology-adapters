@@ -183,8 +183,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		@Override
-		public void finalizeFlexoRoleDeserialization() {
-			super.finalizeFlexoRoleDeserialization();
+		public void finalizeDeserialization() {
+			super.finalizeDeserialization();
 			// Give a chance to GRSpecs to be well deserialized
 			initDefaultSpecifications();
 		}
@@ -544,11 +544,11 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public ModelSlot<?> getModelSlot() {
 			ModelSlot<?> returned = super.getModelSlot();
 			if (returned == null) {
-				if (getVirtualModel() != null && getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
-					return getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
+				if (getOwningVirtualModel() != null && getOwningVirtualModel().getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
+					return getOwningVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
 				}
-				if (getVirtualModel() != null && getVirtualModel().getModelSlots(FreeDiagramModelSlot.class).size() > 0) {
-					return getVirtualModel().getModelSlots(FreeDiagramModelSlot.class).get(0);
+				if (getOwningVirtualModel() != null && getOwningVirtualModel().getModelSlots(FreeDiagramModelSlot.class).size() > 0) {
+					return getOwningVirtualModel().getModelSlots(FreeDiagramModelSlot.class).get(0);
 				}
 			}
 			return returned;

@@ -103,8 +103,8 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 
 		@Override
 		public OWLObjectProperty getObjectProperty() {
-			if (getVirtualModel() != null) {
-				return (OWLObjectProperty) getVirtualModel().getOntologyObjectProperty(_getObjectPropertyURI());
+			if (getOwningVirtualModel() != null) {
+				return (OWLObjectProperty) getOwningVirtualModel().getOntologyObjectProperty(_getObjectPropertyURI());
 			}
 			return null;
 		}

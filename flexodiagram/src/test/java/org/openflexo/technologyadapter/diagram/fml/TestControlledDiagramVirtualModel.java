@@ -21,7 +21,7 @@ import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
-import org.openflexo.foundation.fml.VirtualModelModelFactory;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
@@ -222,7 +222,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		assertTrue(createShapeRole.hasActionExecutionSucceeded());
 
 		ShapeRole role = (ShapeRole) createShapeRole.getNewFlexoRole();
-		VirtualModelModelFactory factory = flexoConcept.getVirtualModelFactory();
+		FMLModelFactory factory = flexoConcept.getVirtualModelFactory();
 		ShapeGraphicalRepresentation shapeGR = factory.newInstance(ShapeGraphicalRepresentation.class);
 		Rectangle rectangleShape = factory.newInstance(Rectangle.class);
 		shapeGR.setShapeSpecification(rectangleShape);
@@ -245,7 +245,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		FMLDiagramPaletteElementBinding newBinding = virtualModel.getVirtualModelFactory().newInstance(
 				FMLDiagramPaletteElementBinding.class);
 		newBinding.setPaletteElement(diagramPaletteElement);
-		newBinding.setFlexoConcept(flexoConcept);
+		newBinding.setBoundFlexoConcept(flexoConcept);
 		newBinding.setDropScheme(dropScheme);
 
 		typedDiagramModelSlot.addToPaletteElementBindings(newBinding);

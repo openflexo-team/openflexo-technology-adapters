@@ -125,8 +125,8 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		}
 
 		public OWLProperty getObjectProperty() {
-			if (getVirtualModel() != null) {
-				return (OWLProperty) getVirtualModel().getOntologyProperty(_getPropertyURI());
+			if (getOwningVirtualModel() != null) {
+				return (OWLProperty) getOwningVirtualModel().getOntologyProperty(_getPropertyURI());
 			}
 			return null;
 		}
