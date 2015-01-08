@@ -1,18 +1,27 @@
-/*******************************************************************************
- * Copyright (c) 2012 IBM Corporation.
+/*
+ * (c) Copyright 2013 Openflexo
  *
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * and Eclipse Distribution License v. 1.0 which accompanies this distribution.
+ * This file is part of OpenFlexo.
  *
- * The Eclipse Public License is available at http://www.eclipse.org/legal/epl-v10.html
- * and the Eclipse Distribution License is available at
- * http://www.eclipse.org/org/documents/edl-v10.php.
+ * OpenFlexo is free software: you can redistribute it and/or modify
+ * it under the terms of either : 
+ * - GNU General Public License as published by
+ * the Free Software Foundation version 3 of the License.
+ * - EUPL v1.1 : European Union Public Licence
+ * 
+ * OpenFlexo is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License or EUPL for more details.
  *
- * Contributors:
+ * You should have received a copy of the GNU General Public License or 
+ * European Union Public Licence along with OpenFlexo. 
+ * If not, see <http://www.gnu.org/licenses/>, or http://ec.europa.eu/idabc/eupl.html
  *
- *     Michael Fiedler         - initial API and implementation
- *******************************************************************************/
+ * By the way, this Class is partially inspired from Michael Fiedler 
+ * initial API OSLCClient and implementation of LYO4J
+ *
+ */
 package org.openflexo.technologyadapter.oslc.model.io;
 
 import java.lang.reflect.Array;
