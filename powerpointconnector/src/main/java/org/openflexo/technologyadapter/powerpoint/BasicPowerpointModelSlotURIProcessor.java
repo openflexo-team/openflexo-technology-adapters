@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.foundation.fml.FMLRepresentationContext;
-import org.openflexo.foundation.fml.NamedFMLObject;
-import org.openflexo.foundation.fml.ViewPoint;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -44,14 +44,19 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 @ModelEntity
 @ImplementationClass(BasicPowerpointModelSlotURIProcessor.BasicPowerpointModelSlotURIProcessorImpl.class)
 @XMLElement
-public interface BasicPowerpointModelSlotURIProcessor extends NamedFMLObject {
+public interface BasicPowerpointModelSlotURIProcessor extends VirtualModelObject {
 
 	public String getURIForObject(ModelSlotInstance msInstance, PowerpointObject powerpointObject);
 
 	// get the Object given the URI
 	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception;
 
-	public static abstract class BasicPowerpointModelSlotURIProcessorImpl extends NamedFMLObjectImpl {
+	public BasicPowerpointModelSlot getModelSlot();
+
+	public void setModelSlot(BasicPowerpointModelSlot powerpointModelSlot);
+
+	public static abstract class BasicPowerpointModelSlotURIProcessorImpl extends FlexoConceptObjectImpl implements
+			BasicPowerpointModelSlotURIProcessor {
 
 		private static final Logger logger = Logger.getLogger(BasicPowerpointModelSlotURIProcessor.class.getPackage().getName());
 
@@ -67,6 +72,22 @@ public interface BasicPowerpointModelSlotURIProcessor extends NamedFMLObject {
 			this.typeURI = URI.create(typeURI);
 		}
 
+		@Override
+		public FlexoConcept getFlexoConcept() {
+			return getModelSlot().getFlexoConcept();
+		}
+
+		@Override
+		public AbstractVirtualModel<?> getVirtualModel() {
+			return getModelSlot().getVirtualModel();
+		}
+
+		@Override
+		public BasicPowerpointModelSlot getModelSlot() {
+			return modelSlot;
+		}
+
+		@Override
 		public void setModelSlot(BasicPowerpointModelSlot powerpointModelSlot) {
 			modelSlot = powerpointModelSlot;
 		}
@@ -99,6 +120,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends NamedFMLObject {
 
 		// URI Calculation
 
+		@Override
 		public String getURIForObject(ModelSlotInstance msInstance, PowerpointObject powerpointObject) {
 			String builtURI = null;
 
@@ -119,6 +141,7 @@ public interface BasicPowerpointModelSlotURIProcessor extends NamedFMLObject {
 		}
 
 		// get the Object given the URI
+		@Override
 		public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception {
 			PowerpointObject o = uriCache.get(objectURI);
 			return o;
@@ -137,17 +160,6 @@ public interface BasicPowerpointModelSlotURIProcessor extends NamedFMLObject {
 
 		@Override
 		public String getURI() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public ViewPoint getViewPoint() {
-			return this.modelSlot.getViewPoint();
-		}
-
-		@Override
-		public String getFMLRepresentation(FMLRepresentationContext context) {
 			// TODO Auto-generated method stub
 			return null;
 		}

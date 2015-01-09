@@ -1,5 +1,6 @@
 /*
- * (c) Copyright 2013- Openflexo
+ * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2012-2013 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -17,17 +18,23 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+package org.openflexo.technologyadapter.xml.fml.editionaction;
 
-package org.openflexo.technologyadapter.freeplane;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.technologyadapter.xml.AbstractXMLModelSlot;
+import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
+/**
+ * Abstract action for any {@link AbstractXMLModelSlot}
+ * 
+ * @author sylvain
+ * 
+ * @param <T>
+ *            xml object type
+ */
 
-public class FreeplaneModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<IFreeplaneMap, FreeplaneModelSlot> {
-
-    public FreeplaneModelSlotInstanceConfiguration(final FreeplaneModelSlot ms, final CreateVirtualModelInstance action) {
-        super(ms, action);
-    }
+@ModelEntity(isAbstract = true)
+public interface XMLAction<MS extends AbstractXMLModelSlot<?>, T extends XMLObject> extends TechnologySpecificAction<MS, T> {
 
 }

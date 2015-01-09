@@ -26,7 +26,6 @@ import java.util.logging.Logger;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
@@ -45,7 +44,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @ModelEntity
 @ImplementationClass(AddXMLType.AddXMLTypeImpl.class)
 @XMLElement
-public interface AddXMLType extends AssignableAction<XMLModelSlot, XMLType> {
+public interface AddXMLType extends XMLAction<XMLModelSlot, XMLType> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String TYPE_NAME = "typeName";
@@ -90,24 +89,20 @@ public interface AddXMLType extends AssignableAction<XMLModelSlot, XMLType> {
 	 * @author xtof
 	 *
 	 */
-	public static abstract class AddXMLTypeImpl extends AssignableActionImpl<XMLModelSlot, XMLType> implements AddXMLType {
+	public static abstract class AddXMLTypeImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLType> implements AddXMLType {
 
 		private static final Logger logger = Logger.getLogger(AddXMLType.class.getPackage().getName());
 
 		private final String dataPropertyURI = null;
 
-
-		// TODO create all the bindings needed 
+		// TODO create all the bindings needed
 
 		public AddXMLTypeImpl() {
 			super();
 		}
 
-
-
-
 		@Override
-		public XMLType performAction(FlexoBehaviourAction action) {
+		public XMLType execute(FlexoBehaviourAction action) {
 
 			XMLType newClass = null;
 			try {
@@ -118,21 +113,21 @@ public interface AddXMLType extends AssignableAction<XMLModelSlot, XMLType> {
 				logger.info("Adding class " + newTypeName + " as " + father);
 				// FIXME : Something wrong here!
 				XMLMetaModel mm = getMetamodel().getBindingValue(action);
-				if (mm != null){
+				if (mm != null) {
 
-					if (father != null) {					
-						newClass = getModelSlotInstance(action).getAccessedResourceData().getMetaModel().createNewType(father.getURI().replace('#', '/') + "#" + newTypeName, newTypeName, isSimpleType());
+					if (father != null) {
+						newClass = getModelSlotInstance(action).getAccessedResourceData().getMetaModel()
+								.createNewType(father.getURI().replace('#', '/') + "#" + newTypeName, newTypeName, isSimpleType());
 
 						newClass.setSuperType(father);
-					}
-					else {
+					} else {
 
-						newClass = getModelSlotInstance(action).getAccessedResourceData().getMetaModel().createNewType(mm.getURI() + "/" + newTypeName, newTypeName, isSimpleType());
+						newClass = getModelSlotInstance(action).getAccessedResourceData().getMetaModel()
+								.createNewType(mm.getURI() + "/" + newTypeName, newTypeName, isSimpleType());
 					}
 					logger.info("Added class " + newClass.getName() + " as " + father);
 
-				}
-				else {
+				} else {
 					logger.warning("CANNOT create a new type in a null MetaModel!");
 				}
 			} catch (TypeMismatchException e) {

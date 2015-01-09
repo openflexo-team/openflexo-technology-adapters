@@ -29,8 +29,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.foundation.fml.NamedFMLObject;
-import org.openflexo.foundation.fml.ViewPoint;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -38,7 +39,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelObject;
 
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlotURIProcessor.BasicExcelModelSlotURIProcessorImpl.class)
-public interface BasicExcelModelSlotURIProcessor extends NamedFMLObject {
+public interface BasicExcelModelSlotURIProcessor extends VirtualModelObject {
 
 	// URI Calculation
 	public String getURIForObject(ModelSlotInstance msInstance, ExcelObject excelObject);
@@ -46,7 +47,11 @@ public interface BasicExcelModelSlotURIProcessor extends NamedFMLObject {
 	// get the Object given the URI
 	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws Exception;
 
-	public static abstract class BasicExcelModelSlotURIProcessorImpl extends NamedFMLObjectImpl implements
+	public BasicExcelModelSlot getModelSlot();
+
+	public void setModelSlot(BasicExcelModelSlot excelModelSlot);
+
+	public static abstract class BasicExcelModelSlotURIProcessorImpl extends FlexoConceptObjectImpl implements
 			BasicExcelModelSlotURIProcessor {
 
 		private static final Logger logger = Logger.getLogger(BasicExcelModelSlotURIProcessor.class.getPackage().getName());
@@ -72,6 +77,22 @@ public interface BasicExcelModelSlotURIProcessor extends NamedFMLObject {
 			this.typeURI = URI.create(typeURI);
 		}
 
+		@Override
+		public FlexoConcept getFlexoConcept() {
+			return getModelSlot().getFlexoConcept();
+		}
+
+		@Override
+		public AbstractVirtualModel<?> getVirtualModel() {
+			return getModelSlot().getVirtualModel();
+		}
+
+		@Override
+		public BasicExcelModelSlot getModelSlot() {
+			return modelSlot;
+		}
+
+		@Override
 		public void setModelSlot(BasicExcelModelSlot excelModelSlot) {
 			modelSlot = excelModelSlot;
 		}
@@ -136,11 +157,6 @@ public interface BasicExcelModelSlotURIProcessor extends NamedFMLObject {
 		public String getURI() {
 			// TODO Auto-generated method stub
 			return null;
-		}
-
-		@Override
-		public ViewPoint getViewPoint() {
-			return this.modelSlot.getViewPoint();
 		}
 
 	}

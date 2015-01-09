@@ -29,7 +29,7 @@ public interface SelectPowerpointSlide extends FetchRequest<BasicPowerpointModel
 		}
 
 		@Override
-		public List<PowerpointSlide> performAction(FlexoBehaviourAction action) {
+		public List<PowerpointSlide> execute(FlexoBehaviourAction action) {
 
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");

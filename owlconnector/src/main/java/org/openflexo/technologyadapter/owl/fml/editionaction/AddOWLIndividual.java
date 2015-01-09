@@ -49,7 +49,7 @@ import org.openflexo.technologyadapter.owl.model.OWLProperty;
 @ModelEntity
 @ImplementationClass(AddOWLIndividual.AddOWLIndividualImpl.class)
 @XMLElement
-public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndividual> {
+public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndividual>, OWLAction<OWLIndividual> {
 
 	public static abstract class AddOWLIndividualImpl extends AddIndividualImpl<OWLModelSlot, OWLIndividual> implements AddOWLIndividual {
 
@@ -72,7 +72,7 @@ public interface AddOWLIndividual extends AddIndividual<OWLModelSlot, OWLIndivid
 		}
 
 		@Override
-		public OWLIndividual performAction(FlexoBehaviourAction action) {
+		public OWLIndividual execute(FlexoBehaviourAction action) {
 			OWLClass father = getOntologyClass();
 			// IFlexoOntologyConcept father = action.getOntologyObject(getProject());
 			// System.out.println("Individual name param = "+action.getIndividualNameParameter());

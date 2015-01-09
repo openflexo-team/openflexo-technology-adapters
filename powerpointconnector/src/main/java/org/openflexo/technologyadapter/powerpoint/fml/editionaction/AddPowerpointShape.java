@@ -11,7 +11,6 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -26,9 +25,10 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 @ModelEntity
 @ImplementationClass(AddPowerpointShape.AddPowerpointShapeImpl.class)
 @XMLElement
-public interface AddPowerpointShape extends AssignableAction<BasicPowerpointModelSlot, PowerpointShape> {
+public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 
-	public static abstract class AddPowerpointShapeImpl extends AssignableActionImpl<BasicPowerpointModelSlot, PowerpointShape> {
+	public static abstract class AddPowerpointShapeImpl extends TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointShape>
+			implements AddPowerpointShape {
 
 		private static final Logger logger = Logger.getLogger(AddPowerpointShape.class.getPackage().getName());
 
@@ -42,7 +42,7 @@ public interface AddPowerpointShape extends AssignableAction<BasicPowerpointMode
 		}
 
 		@Override
-		public PowerpointShape performAction(FlexoBehaviourAction action) {
+		public PowerpointShape execute(FlexoBehaviourAction action) {
 			PowerpointShape powerpointShape = null;
 
 			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(action);
@@ -100,7 +100,8 @@ public interface AddPowerpointShape extends AssignableAction<BasicPowerpointMode
 		}
 
 		@Override
-		public FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
+		public FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> getModelSlotInstance(
+				FlexoBehaviourAction<?, ?, ?> action) {
 			return (FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot>) super.getModelSlotInstance(action);
 		}
 

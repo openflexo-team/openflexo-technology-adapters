@@ -29,7 +29,6 @@ import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.AbstractActionScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptObject;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -164,14 +163,6 @@ public interface GraphicalElementAction extends FlexoConceptObject {
 		@Override
 		public BindingModel getBindingModel() {
 			return getFlexoConcept().getBindingModel();
-		}
-
-		@Override
-		public VirtualModel getVirtualModel() {
-			if(getFlexoConcept()!=null){
-				return getFlexoConcept().getVirtualModel();
-			}
-			return null;
 		}
 
 		@Override

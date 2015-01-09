@@ -68,7 +68,8 @@ import org.openflexo.toolbox.StringUtils;
 @ImplementationClass(AddEMFObjectIndividualAttributeDataPropertyValue.AddEMFObjectIndividualAttributeDataPropertyValueImpl.class)
 @XMLElement
 public interface AddEMFObjectIndividualAttributeDataPropertyValue extends
-		SetEMFPropertyValue<EMFObjectIndividualAttributeDataPropertyValue>, SetDataPropertyValueAction {
+		SetEMFPropertyValue<EMFObjectIndividualAttributeDataPropertyValue>,
+		SetDataPropertyValueAction<EMFObjectIndividualAttributeDataPropertyValue> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String VALUE_KEY = "value";
@@ -127,8 +128,8 @@ public interface AddEMFObjectIndividualAttributeDataPropertyValue extends
 
 		@Override
 		public IFlexoOntologyDataProperty getDataProperty() {
-			if (getVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
-				return getVirtualModel().getOntologyDataProperty(dataPropertyURI);
+			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
+				return getOwningVirtualModel().getOntologyDataProperty(dataPropertyURI);
 			}
 			return null;
 		}
@@ -211,10 +212,10 @@ public interface AddEMFObjectIndividualAttributeDataPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#performAction(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#execute(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
 		 */
 		@Override
-		public EMFObjectIndividualAttributeDataPropertyValue performAction(FlexoBehaviourAction action) {
+		public EMFObjectIndividualAttributeDataPropertyValue execute(FlexoBehaviourAction action) {
 			EMFObjectIndividualAttributeDataPropertyValue result = null;
 			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			EMFModel model = modelSlotInstance.getAccessedResourceData();

@@ -31,7 +31,6 @@ package org.openflexo.technologyadapter.emf.fml.editionaction;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -49,11 +48,10 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObj
 @ModelEntity
 @ImplementationClass(RemoveEMFObjectIndividualReferenceObjectPropertyValue.RemoveEMFObjectIndividualReferenceObjectPropertyValueImpl.class)
 @XMLElement
-public interface RemoveEMFObjectIndividualReferenceObjectPropertyValue extends
-		AssignableAction<EMFModelSlot, EMFObjectIndividualReferenceObjectPropertyValue> {
+public interface RemoveEMFObjectIndividualReferenceObjectPropertyValue extends EMFAction<EMFObjectIndividualReferenceObjectPropertyValue> {
 
 	public static abstract class RemoveEMFObjectIndividualReferenceObjectPropertyValueImpl extends
-			AssignableActionImpl<EMFModelSlot, EMFObjectIndividualReferenceObjectPropertyValue> implements
+			TechnologySpecificActionImpl<EMFModelSlot, EMFObjectIndividualReferenceObjectPropertyValue> implements
 			RemoveEMFObjectIndividualReferenceObjectPropertyValue {
 
 		/**
@@ -72,10 +70,10 @@ public interface RemoveEMFObjectIndividualReferenceObjectPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#performAction(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#execute(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
 		 */
 		@Override
-		public EMFObjectIndividualReferenceObjectPropertyValue performAction(FlexoBehaviourAction action) {
+		public EMFObjectIndividualReferenceObjectPropertyValue execute(FlexoBehaviourAction action) {
 			EMFObjectIndividualReferenceObjectPropertyValue result = null;
 			// ModelSlotInstance<EMFModel, EMFMetaModel> modelSlotInstance = getModelSlotInstance(action);
 			// EMFModel model = modelSlotInstance.getModel();

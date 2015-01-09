@@ -23,6 +23,8 @@ import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementSpecification;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -30,25 +32,21 @@ import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(AddDiagramElementAction.AddDiagramElementActionImpl.class)
-public abstract interface AddDiagramElementAction<T extends DiagramElement<?>> extends DiagramAction<T> {
+public abstract interface AddDiagramElementAction<T extends DiagramElement<?>> extends DiagramAction<DiagramModelSlot, T> {
 
-	public static abstract class AddDiagramElementActionImpl<T extends DiagramElement<?>> extends DiagramActionImpl<T> implements
-			AddDiagramElementAction<T> {
-
-		public AddDiagramElementActionImpl() {
-			super();
-		}
-
-		/*@Override
-		protected void updatePatternRoleType()
-		{
-		}*/
+	public static abstract class AddDiagramElementActionImpl<T extends DiagramElement<?>> extends
+			TechnologySpecificActionImpl<DiagramModelSlot, T> implements AddDiagramElementAction<T> {
 
 		@Override
-		public GraphicalElementRole<?, ?> getFlexoRole() {
+		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (DiagramTechnologyAdapter) super.getModelSlotTechnologyAdapter();
+		}
+
+		@Override
+		public GraphicalElementRole<T, ?> getFlexoRole() {
 			FlexoRole<?> superPatternRole = super.getFlexoRole();
 			if (superPatternRole instanceof GraphicalElementRole) {
-				return (GraphicalElementRole<?, ?>) superPatternRole;
+				return (GraphicalElementRole<T, ?>) superPatternRole;
 			} else if (superPatternRole != null) {
 				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
 				return null;

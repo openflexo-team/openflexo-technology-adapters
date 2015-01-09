@@ -27,8 +27,8 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.editionaction.SetPropertyValueAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
@@ -45,7 +45,8 @@ import org.openflexo.technologyadapter.owl.model.OWLStatement;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(AddStatement.AddStatementImpl.class)
-public abstract interface AddStatement<S extends OWLStatement> extends AssignableAction<OWLModelSlot, S>, SetPropertyValueAction {
+public abstract interface AddStatement<S extends OWLStatement> extends TechnologySpecificAction<OWLModelSlot, S>,
+		SetPropertyValueAction<S>, OWLAction<S> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";
@@ -61,7 +62,7 @@ public abstract interface AddStatement<S extends OWLStatement> extends Assignabl
 
 	public OWLOntology getMetaModel();
 
-	public static abstract class AddStatementImpl<S extends OWLStatement> extends AssignableActionImpl<OWLModelSlot, S> implements
+	public static abstract class AddStatementImpl<S extends OWLStatement> extends TechnologySpecificActionImpl<OWLModelSlot, S> implements
 			AddStatement<S> {
 
 		private static final Logger logger = Logger.getLogger(AddStatement.class.getPackage().getName());

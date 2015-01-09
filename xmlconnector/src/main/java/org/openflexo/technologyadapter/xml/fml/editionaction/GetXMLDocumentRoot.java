@@ -23,7 +23,6 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -37,9 +36,9 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @ModelEntity
 @ImplementationClass(GetXMLDocumentRoot.GetXMLDocumentRootImpl.class)
 @XMLElement
-public interface GetXMLDocumentRoot extends AssignableAction<XMLModelSlot, XMLIndividual> {
+public interface GetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividual> {
 
-	public static abstract class GetXMLDocumentRootImpl extends AssignableActionImpl<XMLModelSlot, XMLIndividual> implements
+	public static abstract class GetXMLDocumentRootImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLIndividual> implements
 			GetXMLDocumentRoot {
 
 		private static final Logger logger = Logger.getLogger(GetXMLDocumentRoot.class.getPackage().getName());
@@ -49,7 +48,7 @@ public interface GetXMLDocumentRoot extends AssignableAction<XMLModelSlot, XMLIn
 		}
 
 		@Override
-		public XMLIndividual performAction(FlexoBehaviourAction action) {
+		public XMLIndividual execute(FlexoBehaviourAction action) {
 
 			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = (ModelSlotInstance<XMLModelSlot, XMLModel>) getModelSlotInstance(action);
 			XMLModel model = modelSlotInstance.getAccessedResourceData();

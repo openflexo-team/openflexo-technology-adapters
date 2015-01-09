@@ -20,12 +20,12 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.antar.binding.BindingModel;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
-import org.openflexo.foundation.fml.NamedFMLObject;
+import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.URIParameter;
-import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.VirtualModelObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -44,7 +44,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 @ModelEntity
 @ImplementationClass(FMLDiagramPaletteElementBindingParameter.FMLDiagramPaletteElementBindingParameterImpl.class)
 @XMLElement
-public interface FMLDiagramPaletteElementBindingParameter extends NamedFMLObject {
+public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelObject {
 
 	@PropertyIdentifier(type = FMLDiagramPaletteElementBinding.class)
 	public static final String PALETTE_ELEMENT_BINDING_KEY = "paletteElementBinding";
@@ -53,6 +53,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedFMLObject
 	@PropertyIdentifier(type = String.class)
 	public static final String VALUE_KEY = "value";
 
+	// TODO: remove inverse
 	@Getter(value = PALETTE_ELEMENT_BINDING_KEY, inverse = FMLDiagramPaletteElementBinding.PARAMETERS_KEY)
 	public FMLDiagramPaletteElementBinding getDiagramPaletteElementBinding();
 
@@ -72,7 +73,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedFMLObject
 	@Setter(VALUE_KEY)
 	public void setValue(String value);
 
-	public abstract class FMLDiagramPaletteElementBindingParameterImpl extends NamedFMLObjectImpl implements
+	public abstract class FMLDiagramPaletteElementBindingParameterImpl extends FlexoConceptObjectImpl implements
 			FMLDiagramPaletteElementBindingParameter {
 
 		private FlexoBehaviourParameter _parameter;
@@ -88,6 +89,19 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedFMLObject
 			_parameter = p;
 			setName(p.getName());
 			setValue(p.getDefaultValue().toString());
+		}
+
+		@Override
+		public FlexoConcept getFlexoConcept() {
+			return getDiagramPaletteElementBinding().getFlexoConcept();
+		}
+
+		@Override
+		public AbstractVirtualModel<?> getVirtualModel() {
+			if (getDiagramPaletteElementBinding() != null) {
+				return getDiagramPaletteElementBinding().getVirtualModel();
+			}
+			return null;
 		}
 
 		@Override
@@ -123,21 +137,6 @@ public interface FMLDiagramPaletteElementBindingParameter extends NamedFMLObject
 		public DiagramPalette getPalette() {
 			if (getDiagramPaletteElementBinding() != null) {
 				return getDiagramPaletteElementBinding().getPaletteElement().getPalette();
-			}
-			return null;
-		}
-
-		@Override
-		public ViewPoint getViewPoint() {
-			if (getVirtualModel() != null) {
-				return getVirtualModel().getViewPoint();
-			}
-			return null;
-		}
-
-		public VirtualModel getVirtualModel() {
-			if (getDiagramPaletteElementBinding() != null) {
-				return getDiagramPaletteElementBinding().getVirtualModel();
 			}
 			return null;
 		}

@@ -8,11 +8,16 @@ import org.freeplane.features.map.NodeModel;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
-import org.openflexo.model.annotations.*;
-import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot;
+import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.freeplane.FreeplaneModelSlot;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.AddChildNodeAction.AddChildNodeActionImpl;
 import org.openflexo.technologyadapter.freeplane.fml.structural.IFreeplaneNodeRole;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
@@ -22,7 +27,7 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 @XMLElement
 @FIBPanel("Fib/AddChildNodePanel.fib")
 @ImplementationClass(value = AddChildNodeActionImpl.class)
-public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot, IFreeplaneNode> {
+public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String PARENT_KEY = "parent";
@@ -44,8 +49,8 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 	@Setter(value = NODE_TEXT_KEY)
 	public void setNodeText(DataBinding<String> nodeText);
 
-	public abstract static class AddChildNodeActionImpl extends AssignableActionImpl<IFreeplaneModelSlot, IFreeplaneNode>
-			implements AddChildNodeAction {
+	public abstract static class AddChildNodeActionImpl extends TechnologySpecificActionImpl<FreeplaneModelSlot, IFreeplaneNode> implements
+			AddChildNodeAction {
 
 		private static final Logger LOGGER = Logger.getLogger(AddChildNodeActionImpl.class.getPackage().getName());
 
@@ -64,8 +69,8 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 		}
 
 		@Override
-		public IFreeplaneNode performAction(final FlexoBehaviourAction action) {
-			final FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
+		public IFreeplaneNode execute(final FlexoBehaviourAction action) {
+			final FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 				final IFreeplaneNode bindedParent = getParent(action);
 				final String bindedNodeText = getBindedNodeText(action);
@@ -142,8 +147,8 @@ public interface AddChildNodeAction extends AssignableAction<IFreeplaneModelSlot
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot> getModelSlotInstance(final FlexoBehaviourAction<?, ?, ?> action) {
-			return (FreeModelSlotInstance<IFreeplaneMap, IFreeplaneModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> getModelSlotInstance(final FlexoBehaviourAction<?, ?, ?> action) {
+			return (FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot>) super.getModelSlotInstance(action);
 		}
 	}
 }

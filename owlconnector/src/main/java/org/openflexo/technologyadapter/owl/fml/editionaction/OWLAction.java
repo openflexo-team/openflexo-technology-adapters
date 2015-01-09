@@ -1,5 +1,6 @@
 /*
- * (c) Copyright 2013- Openflexo
+ * (c) Copyright 2010-2011 AgileBirds
+ * (c) Copyright 2012-2013 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -17,17 +18,23 @@
  * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
  *
  */
+package org.openflexo.technologyadapter.owl.fml.editionaction;
 
-package org.openflexo.technologyadapter.freeplane;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.technologyadapter.owl.OWLModelSlot;
+import org.openflexo.technologyadapter.owl.model.OWLObject;
 
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
+/**
+ * Abstract action for {@link OWLModelSlot}
+ * 
+ * @author sylvain
+ * 
+ * @param <T>
+ *            powerpoint object type
+ */
 
-public class FreeplaneModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<IFreeplaneMap, FreeplaneModelSlot> {
-
-    public FreeplaneModelSlotInstanceConfiguration(final FreeplaneModelSlot ms, final CreateVirtualModelInstance action) {
-        super(ms, action);
-    }
+@ModelEntity(isAbstract = true)
+public interface OWLAction<T extends OWLObject> extends TechnologySpecificAction<OWLModelSlot, T> {
 
 }

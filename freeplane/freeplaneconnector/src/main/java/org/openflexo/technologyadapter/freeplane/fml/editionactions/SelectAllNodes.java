@@ -12,7 +12,7 @@ import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.freeplane.IFreeplaneModelSlot;
+import org.openflexo.technologyadapter.freeplane.FreeplaneModelSlot;
 import org.openflexo.technologyadapter.freeplane.fml.editionactions.SelectAllNodes.SelectAllNodesImpl;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
@@ -20,14 +20,14 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 @ModelEntity
 @ImplementationClass(SelectAllNodesImpl.class)
 @XMLElement
-public interface SelectAllNodes extends FetchRequest<IFreeplaneModelSlot, IFreeplaneNode> {
+public interface SelectAllNodes extends FetchRequest<FreeplaneModelSlot, IFreeplaneNode> {
 
-	public abstract class SelectAllNodesImpl extends FetchRequestImpl<IFreeplaneModelSlot, IFreeplaneNode> implements SelectAllNodes {
+	public abstract class SelectAllNodesImpl extends FetchRequestImpl<FreeplaneModelSlot, IFreeplaneNode> implements SelectAllNodes {
 
 		private static final Logger LOGGER = Logger.getLogger(SelectAllNodes.class.getPackage().getName());
 
 		@Override
-		public List<IFreeplaneNode> performAction(final FlexoBehaviourAction action) {
+		public List<IFreeplaneNode> execute(final FlexoBehaviourAction action) {
 			if (getModelSlotInstance(action) == null) {
 				return Collections.emptyList();
 			}

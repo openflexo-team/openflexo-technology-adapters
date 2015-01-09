@@ -79,8 +79,8 @@ public interface DataPropertyStatementRole extends StatementRole<DataPropertySta
 
 		@Override
 		public OWLDataProperty getDataProperty() {
-			if (getVirtualModel() != null) {
-				return (OWLDataProperty) getVirtualModel().getOntologyDataProperty(_getDataPropertyURI());
+			if (getOwningVirtualModel() != null) {
+				return (OWLDataProperty) getOwningVirtualModel().getOntologyDataProperty(_getDataPropertyURI());
 			}
 			return null;
 		}

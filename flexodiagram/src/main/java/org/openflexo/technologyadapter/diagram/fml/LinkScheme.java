@@ -24,6 +24,7 @@ import org.openflexo.foundation.fml.AbstractCreationScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -174,8 +175,8 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 
 			FlexoConcept returned = null;
 
-			if (!StringUtils.isEmpty(_getFromTarget()) && getVirtualModel() != null) {
-				returned = getVirtualModel().getFlexoConcept(_getFromTarget());
+			if (!StringUtils.isEmpty(_getFromTarget()) && getOwningVirtualModel() != null) {
+				returned = getOwningVirtualModel().getFlexoConcept(_getFromTarget());
 			}
 			if (lastKnownFromTargetFlexoConcept != returned) {
 				FlexoConcept oldValue = lastKnownFromTargetFlexoConcept;
@@ -194,8 +195,8 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		public FlexoConcept getToTargetFlexoConcept() {
 
 			FlexoConcept returned = null;
-			if (!StringUtils.isEmpty(_getToTarget()) && getVirtualModel() != null) {
-				returned = getVirtualModel().getFlexoConcept(_getToTarget());
+			if (!StringUtils.isEmpty(_getToTarget()) && getOwningVirtualModel() != null) {
+				returned = getOwningVirtualModel().getFlexoConcept(_getToTarget());
 			}
 			if (lastKnownToTargetFlexoConcept != returned) {
 				FlexoConcept oldValue = lastKnownToTargetFlexoConcept;
@@ -284,7 +285,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		 * @return newly created {@link EditionAction}
 		 */
 		@Override
-		public <A extends EditionAction<?, ?>> A createAction(Class<A> actionClass, ModelSlot<?> modelSlot) {
+		public <A extends TechnologySpecificAction<?, ?>> A createAction(Class<A> actionClass, ModelSlot<?> modelSlot) {
 			A returned = super.createAction(actionClass, modelSlot);
 			if (returned instanceof AddConnector) {
 				AddConnector newAction = (AddConnector) returned;

@@ -70,7 +70,8 @@ import org.openflexo.toolbox.StringUtils;
 @ImplementationClass(AddEMFObjectIndividualReferenceObjectPropertyValue.AddEMFObjectIndividualReferenceObjectPropertyValueImpl.class)
 @XMLElement
 public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
-		SetEMFPropertyValue<EMFObjectIndividualReferenceObjectPropertyValue>, SetObjectPropertyValueAction {
+		SetEMFPropertyValue<EMFObjectIndividualReferenceObjectPropertyValue>,
+		SetObjectPropertyValueAction<EMFObjectIndividualReferenceObjectPropertyValue> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String OBJECT_KEY = "object";
@@ -129,8 +130,8 @@ public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
 
 		@Override
 		public IFlexoOntologyObjectProperty getObjectProperty() {
-			if (getVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
-				return getVirtualModel().getOntologyObjectProperty(objectPropertyURI);
+			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
+				return getOwningVirtualModel().getOntologyObjectProperty(objectPropertyURI);
 			}
 			return null;
 		}
@@ -221,10 +222,10 @@ public interface AddEMFObjectIndividualReferenceObjectPropertyValue extends
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#performAction(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.EditionAction#execute(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
 		 */
 		@Override
-		public EMFObjectIndividualReferenceObjectPropertyValue performAction(FlexoBehaviourAction action) {
+		public EMFObjectIndividualReferenceObjectPropertyValue execute(FlexoBehaviourAction action) {
 			EMFObjectIndividualReferenceObjectPropertyValue result = null;
 			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			EMFModel model = modelSlotInstance.getAccessedResourceData();

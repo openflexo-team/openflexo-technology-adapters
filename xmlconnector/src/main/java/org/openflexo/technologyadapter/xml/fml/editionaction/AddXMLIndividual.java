@@ -62,13 +62,12 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @ModelEntity
 @XMLElement
 @ImplementationClass(AddXMLIndividual.AddXMLIndividualImpl.class)
-@Imports({@Import(XMLDataPropertyAssertion.class),@Import(XMLActorReference.class),})
-public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndividual> {
+@Imports({ @Import(XMLDataPropertyAssertion.class), @Import(XMLActorReference.class), })
+public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAction<XMLModelSlot, XMLIndividual> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String TYPE_URI = "typeURI";
 	public static final String DATA_ASSERTIONS_KEY = "dataAssertions";
-
 
 	@Getter(TYPE_URI)
 	@XMLAttribute
@@ -76,7 +75,6 @@ public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndi
 
 	@Setter(TYPE_URI)
 	public void setTypeURI(String aTypeURI);
-	
 
 	@Getter(value = DATA_ASSERTIONS_KEY, cardinality = Cardinality.LIST, inverse = DataPropertyAssertion.ACTION_KEY)
 	@XMLElement(xmlTag = "DataPropertyAssertion")
@@ -90,17 +88,19 @@ public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndi
 
 	@Remover(DATA_ASSERTIONS_KEY)
 	public void removeFromDataAssertions(XMLDataPropertyAssertion aDataAssertion);
-	
+
 	public XMLDataPropertyAssertion deleteDataPropertyAssertion(XMLDataPropertyAssertion assertion);
-	
+
 	public XMLDataPropertyAssertion createDataPropertyAssertion();
-	
+
 	public XMLComplexType getXMLType();
+
 	public void setXMLType(XMLComplexType myType);
-	
+
 	public XMLMetaModel getMetamodel();
 
-	public abstract static class AddXMLIndividualImpl extends AssignableActionImpl<XMLModelSlot, XMLIndividual> implements AddXMLIndividual {
+	public abstract static class AddXMLIndividualImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLIndividual> implements
+			AddXMLIndividual {
 
 		private static final Logger logger = Logger.getLogger(AddXMLIndividualImpl.class.getPackage().getName());
 
@@ -109,35 +109,34 @@ public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndi
 		public AddXMLIndividualImpl() {
 			super();
 		}
-		
+
 		@Override
-		public XMLMetaModel getMetamodel(){
+		public XMLMetaModel getMetamodel() {
 			return this.getModelSlot().getMetamodel();
 		}
 
-		@Override 
-		public XMLComplexType getXMLType(){
-			if (xmlType == null && getTypeURI() != null ){
+		@Override
+		public XMLComplexType getXMLType() {
+			if (xmlType == null && getTypeURI() != null) {
 				rebindTypeURI();
 			}
 			return xmlType;
 		}
 
 		@Override
-		public void setXMLType(XMLComplexType myType){
+		public void setXMLType(XMLComplexType myType) {
 			xmlType = myType;
 			setTypeURI(myType.getURI());
 		}
 
-		private void rebindTypeURI(){
+		private void rebindTypeURI() {
 			String aTypeURI = getTypeURI();
-			if (aTypeURI != null && getModelSlot() != null){
+			if (aTypeURI != null && getModelSlot() != null) {
 				XMLType t = getModelSlot().getMetamodel().getTypeFromURI(aTypeURI);
 
-				if (t instanceof XMLComplexType){
+				if (t instanceof XMLComplexType) {
 					xmlType = (XMLComplexType) t;
-				}
-				else {
+				} else {
 					logger.warning("Did not found XMLComplextType corresponding to URI " + aTypeURI);
 				}
 			}
@@ -149,14 +148,12 @@ public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndi
 			return XMLIndividual.class;
 		}
 
-
 		@Override
 		public XMLDataPropertyAssertion deleteDataPropertyAssertion(XMLDataPropertyAssertion assertion) {
 			removeFromDataAssertions(assertion);
 			assertion.delete();
 			return assertion;
 		}
-		
 
 		@Override
 		public XMLDataPropertyAssertion createDataPropertyAssertion() {
@@ -165,14 +162,13 @@ public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndi
 			return newDataPropertyAssertion;
 		}
 
-		
 		@Override
-		public XMLIndividual performAction(FlexoBehaviourAction action) {	
+		public XMLIndividual execute(FlexoBehaviourAction action) {
 
 			XMLIndividual newIndividual = null;
 			try {
 
-				if (getXMLType() != null){
+				if (getXMLType() != null) {
 					ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel> modelSlotInstance = (ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel>) getModelSlotInstance(action);
 					XMLModel model = modelSlotInstance.getAccessedResourceData();
 					XMLModelSlot modelSlot = (XMLModelSlot) modelSlotInstance.getModelSlot();
@@ -187,7 +183,7 @@ public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndi
 							newIndividual.addPropertyValue(property, value);
 						}
 					}
-					
+
 					// add it to the model
 					// Two phase creation, then addition, to be able to process URIs once you have the property values
 					// and verify that there is no duplicate URIs
@@ -201,12 +197,11 @@ public interface AddXMLIndividual extends AssignableAction<XMLModelSlot, XMLIndi
 						}
 
 						return newIndividual;
-					}
-					else {
+					} else {
 						// TODO Provide a way to push an error message to the user!
 						logger.warning("Error while creating Individual of type " + getXMLType().getURI());
-						if (newIndividual != null){
-						model.removeFromIndividuals(newIndividual);
+						if (newIndividual != null) {
+							model.removeFromIndividuals(newIndividual);
 						}
 					}
 				}

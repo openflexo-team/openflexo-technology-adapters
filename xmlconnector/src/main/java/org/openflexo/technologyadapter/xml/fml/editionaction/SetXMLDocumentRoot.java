@@ -22,15 +22,19 @@ package org.openflexo.technologyadapter.xml.fml.editionaction;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
+import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.fml.editionaction.ProcedureAction;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
 import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.XMLModelSlot;
 import org.openflexo.technologyadapter.xml.fml.XMLActorReference;
@@ -40,20 +44,60 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @ModelEntity
 @ImplementationClass(SetXMLDocumentRoot.SetXMLDocumentRootImpl.class)
 @XMLElement
-@Imports({@Import(XMLActorReference.class),})
-public interface SetXMLDocumentRoot extends ProcedureAction<XMLModelSlot, XMLIndividual> {
+@Imports({ @Import(XMLActorReference.class), })
+public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividual> {
 
-	public static abstract class SetXMLDocumentRootImpl extends ProcedureActionImpl<XMLModelSlot, XMLIndividual> implements
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String PARAMETER_KEY = "parameter";
+
+	@Getter(value = PARAMETER_KEY)
+	@XMLAttribute
+	public DataBinding<Object> getParameter();
+
+	@Setter(value = PARAMETER_KEY)
+	public void setParameter(DataBinding<Object> param);
+
+	public static abstract class SetXMLDocumentRootImpl extends TechnologySpecificActionImpl<XMLModelSlot, XMLIndividual> implements
 			SetXMLDocumentRoot {
 
 		private static final Logger logger = Logger.getLogger(SetXMLDocumentRoot.class.getPackage().getName());
 
-		public SetXMLDocumentRootImpl() {
-			super();
+		private DataBinding<Object> parameter;
+
+		@Override
+		public DataBinding<Object> getParameter() {
+
+			if (parameter == null) {
+				parameter = new DataBinding<Object>(this, Object.class, DataBinding.BindingDefinitionType.GET);
+				parameter.setBindingName("parameter");
+			}
+			return parameter;
+
 		}
 
 		@Override
-		public XMLIndividual performAction(FlexoBehaviourAction action) {
+		public void setParameter(DataBinding<Object> paramIndivBinding) {
+
+			if (paramIndivBinding != null) {
+				paramIndivBinding.setOwner(this);
+				paramIndivBinding.setDeclaredType(Object.class);
+				paramIndivBinding.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				paramIndivBinding.setBindingName("parameter");
+			}
+
+			this.parameter = paramIndivBinding;
+
+		}
+
+		@Override
+		public void notifiedBindingChanged(DataBinding<?> dataBinding) {
+			if (dataBinding == getParameter()) {
+			}
+			super.notifiedBindingChanged(dataBinding);
+		}
+
+		@Override
+		public XMLIndividual execute(FlexoBehaviourAction action) {
 
 			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = (ModelSlotInstance<XMLModelSlot, XMLModel>) getModelSlotInstance(action);
 			XMLModel model = modelSlotInstance.getAccessedResourceData();

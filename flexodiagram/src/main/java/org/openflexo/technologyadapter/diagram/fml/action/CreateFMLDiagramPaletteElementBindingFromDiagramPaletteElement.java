@@ -91,7 +91,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 		
 		getTypedDiagramModelSlot().addToPaletteElementBindings(newBinding);
 		newBinding.setPaletteElement(getFocusedObject());
-		newBinding.setFlexoConcept(flexoConcept);
+		newBinding.setBoundFlexoConcept(flexoConcept);
 		if(createDropScheme){
 			dropScheme = getVirtualModel().getVirtualModelFactory().newInstance(DropScheme.class);
 			dropScheme.setName(getDropSchemeName());

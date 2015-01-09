@@ -66,7 +66,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualReferenceObj
 @ModelEntity
 @ImplementationClass(AddEMFObjectIndividual.AddEMFObjectIndividualImpl.class)
 @XMLElement
-public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFObjectIndividual> {
+public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFObjectIndividual>, EMFAction<EMFObjectIndividual> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String CONTAINER_KEY = "container";
@@ -106,7 +106,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 		}
 
 		@Override
-		public EMFObjectIndividual performAction(FlexoBehaviourAction action) {
+		public EMFObjectIndividual execute(FlexoBehaviourAction action) {
 			EMFObjectIndividual result = null;
 			List container = null;
 			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(action);

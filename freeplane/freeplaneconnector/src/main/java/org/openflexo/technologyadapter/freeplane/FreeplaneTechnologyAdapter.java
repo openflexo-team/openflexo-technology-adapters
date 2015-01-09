@@ -48,7 +48,7 @@ import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
  */
 
 @DeclareModelSlots({ // ModelSlot(s) declaration
-		@DeclareModelSlot(FML = "FreeplaneModelSlot", modelSlotClass = IFreeplaneModelSlot.class) })
+		@DeclareModelSlot(FML = "FreeplaneModelSlot", modelSlotClass = FreeplaneModelSlot.class) })
 @DeclareRepositoryType({ FreeplaneResourceRepository.class })
 public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 

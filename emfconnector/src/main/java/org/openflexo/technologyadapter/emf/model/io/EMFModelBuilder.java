@@ -104,14 +104,13 @@ public class EMFModelBuilder {
 	 */
 	public EMFObjectIndividualReferenceObjectPropertyValue buildObjectIndividualReferenceObjectPropertyValue(EMFModel model,
 			EObject eObject, EReference eReference) {
-		
-		 Object refList = eObject.eGet(eObject.eClass().getEStructuralFeature(eReference.getFeatureID()));
-		
-		if (refList instanceof EObjectEList){
+
+		Object refList = eObject.eGet(eObject.eClass().getEStructuralFeature(eReference.getFeatureID()));
+
+		if (refList instanceof EObjectEList) {
 			return new EMFObjectIndividualReferenceObjectPropertyValueAsList(model, eObject, eReference, refList);
-		}
-		else {
+		} else {
 			return new EMFObjectIndividualReferenceObjectPropertyValue(model, eObject, eReference);
-		} 
-	} 
+		}
+	}
 }

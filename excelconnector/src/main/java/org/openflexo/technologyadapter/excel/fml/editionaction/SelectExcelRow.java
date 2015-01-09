@@ -56,7 +56,7 @@ public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelR
 		}
 
 		@Override
-		public List<ExcelRow> performAction(FlexoBehaviourAction action) {
+		public List<ExcelRow> execute(FlexoBehaviourAction action) {
 
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");

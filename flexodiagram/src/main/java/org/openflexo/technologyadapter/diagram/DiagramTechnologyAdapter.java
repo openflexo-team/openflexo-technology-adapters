@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.FilenameUtils;
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.VirtualModelModelFactory;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -389,9 +389,9 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	// Override when required
 	@Override
-	public void initVirtualModelFactory(VirtualModelModelFactory virtualModelModelFactory) {
+	public void initVirtualModelFactory(FMLModelFactory fMLModelFactory) {
 		try {
-			FGEModelFactoryImpl.installImplementingClasses(virtualModelModelFactory);
+			FGEModelFactoryImpl.installImplementingClasses(fMLModelFactory);
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}

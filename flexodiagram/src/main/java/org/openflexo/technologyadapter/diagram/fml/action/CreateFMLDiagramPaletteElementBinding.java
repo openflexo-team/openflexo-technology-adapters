@@ -84,7 +84,7 @@ public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFML
 		FMLDiagramPaletteElementBinding newBinding = getFocusedObject().getVirtualModelFactory().newInstance(
 				FMLDiagramPaletteElementBinding.class);
 		newBinding.setPaletteElement(diagramPaletteElement);
-		newBinding.setFlexoConcept(flexoConcept);
+		newBinding.setBoundFlexoConcept(flexoConcept);
 		newBinding.setDropScheme(dropScheme);
 
 		getFocusedObject().addToPaletteElementBindings(newBinding);

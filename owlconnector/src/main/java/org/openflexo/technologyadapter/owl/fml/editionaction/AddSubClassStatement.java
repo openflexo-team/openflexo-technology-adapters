@@ -121,7 +121,7 @@ public interface AddSubClassStatement extends AddStatement<SubClassStatement> {
 		}
 
 		@Override
-		public SubClassStatement performAction(FlexoBehaviourAction action) {
+		public SubClassStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
 			OWLConcept<?> subject = getPropertySubject(action);
 			OWLConcept<?> father = getPropertyFather(action);
 			if (father instanceof OWLClass) {

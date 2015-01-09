@@ -62,7 +62,7 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 		}
 
 		@Override
-		public List<EMFObjectIndividual> performAction(FlexoBehaviourAction action) {
+		public List<EMFObjectIndividual> execute(FlexoBehaviourAction action) {
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;
