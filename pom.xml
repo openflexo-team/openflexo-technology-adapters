@@ -37,7 +37,7 @@
 		<module>excelconnector</module>
 		<module>powerpointconnector</module>
 		<module>xmlconnector</module>
-		
+		<module>oslcconnector</module>
 		<module>openflexo-technologyadapter-archetype</module>
 		<module>openflexo-technologyadapter-archetype-simplemodel</module>
         <module>freeplane</module>
