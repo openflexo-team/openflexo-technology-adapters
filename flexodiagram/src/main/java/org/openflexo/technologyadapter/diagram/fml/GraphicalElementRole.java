@@ -179,7 +179,9 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public GraphicalElementRoleImpl() {
 			super();
 			pendingGRSpecs = new ArrayList<GraphicalElementSpecification<?, GR>>();
-			initDefaultSpecifications();
+			// Don't do it now: remember that this is forbidden to call from the constructor any method which has to be interpretated by
+			// PAMELA
+			// initDefaultSpecifications();
 		}
 
 		@Override
