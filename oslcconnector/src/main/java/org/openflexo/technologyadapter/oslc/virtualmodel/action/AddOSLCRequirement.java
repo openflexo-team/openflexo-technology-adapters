@@ -25,13 +25,12 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
+import org.openflexo.technologyadapter.oslc.OSLCRMModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 
@@ -39,9 +38,9 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 @ModelEntity
 @ImplementationClass(AddOSLCRequirement.AddOSLCRequirementImpl.class)
 @XMLElement
-public interface AddOSLCRequirement extends AssignableAction<OSLCCoreModelSlot, OSLCRequirement> {
+public interface AddOSLCRequirement extends OSLCRmAction<OSLCRequirement> {
 
-	public static abstract class AddOSLCRequirementImpl extends AssignableActionImpl<OSLCCoreModelSlot, OSLCRequirement> implements
+	public static abstract class AddOSLCRequirementImpl extends TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCRequirement> implements
 			AddOSLCRequirement {
 
 		private static final Logger logger = Logger.getLogger(AddOSLCRequirement.class.getPackage().getName());
@@ -56,11 +55,11 @@ public interface AddOSLCRequirement extends AssignableAction<OSLCCoreModelSlot, 
 		}
 
 		@Override
-		public OSLCRequirement performAction(FlexoBehaviourAction action) {
+		public OSLCRequirement execute(FlexoBehaviourAction action) {
 
 			OSLCRequirement cdlActivity = null;
 
-			FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot> modelSlotInstance = getModelSlotInstance(action);
+			FreeModelSlotInstance<OSLCResource, OSLCRMModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 
 			}
@@ -73,8 +72,8 @@ public interface AddOSLCRequirement extends AssignableAction<OSLCCoreModelSlot, 
 		}
 
 		@Override
-		public FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<OSLCResource, OSLCRMModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
+			return (FreeModelSlotInstance<OSLCResource, OSLCRMModelSlot>) super.getModelSlotInstance(action);
 		}
 
 	}

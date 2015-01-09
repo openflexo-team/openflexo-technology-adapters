@@ -13,7 +13,7 @@ public class TestOSLCWidgetFibs extends GenericFIBTestCase {
 
 	@Test
 	public void testFIBOSLCResourceViewWidget() {
-		validateFIB("Fib/OSLCResourceView.fib");
+		validateFIB("Fib/OSLCCatalogView.fib");
 	}
 
 }

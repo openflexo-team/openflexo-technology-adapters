@@ -25,7 +25,6 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -39,10 +38,10 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirementCollection;
 @ModelEntity
 @ImplementationClass(AddOSLCRequirementCollection.AddOSLCRequirementCollectionImpl.class)
 @XMLElement
-public interface AddOSLCRequirementCollection extends AssignableAction<OSLCRMModelSlot, OSLCRequirementCollection> {
+public interface AddOSLCRequirementCollection extends OSLCRmAction<OSLCRequirementCollection> {
 
-	public static abstract class AddOSLCRequirementCollectionImpl extends AssignableActionImpl<OSLCRMModelSlot, OSLCRequirementCollection>
-			implements AddOSLCRequirementCollection {
+	public static abstract class AddOSLCRequirementCollectionImpl extends
+			TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCRequirementCollection> implements AddOSLCRequirementCollection {
 
 		private static final Logger logger = Logger.getLogger(AddOSLCRequirementCollection.class.getPackage().getName());
 
@@ -56,7 +55,7 @@ public interface AddOSLCRequirementCollection extends AssignableAction<OSLCRMMod
 		}
 
 		@Override
-		public OSLCRequirementCollection performAction(FlexoBehaviourAction action) {
+		public OSLCRequirementCollection execute(FlexoBehaviourAction action) {
 
 			OSLCRequirementCollection cdlActivity = null;
 

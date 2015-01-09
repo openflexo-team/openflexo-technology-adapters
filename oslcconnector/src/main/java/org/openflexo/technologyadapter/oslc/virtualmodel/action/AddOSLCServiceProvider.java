@@ -25,7 +25,6 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -39,10 +38,10 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProvider;
 @ModelEntity
 @ImplementationClass(AddOSLCServiceProvider.AddOSLCServiceProviderImpl.class)
 @XMLElement
-public interface AddOSLCServiceProvider extends AssignableAction<OSLCCoreModelSlot, OSLCServiceProvider> {
+public interface AddOSLCServiceProvider extends OSLCCoreAction<OSLCServiceProvider> {
 
-	public static abstract class AddOSLCServiceProviderImpl extends AssignableActionImpl<OSLCCoreModelSlot, OSLCServiceProvider> implements
-			AddOSLCServiceProvider {
+	public static abstract class AddOSLCServiceProviderImpl extends TechnologySpecificActionImpl<OSLCCoreModelSlot, OSLCServiceProvider>
+			implements AddOSLCServiceProvider {
 
 		private static final Logger logger = Logger.getLogger(AddOSLCServiceProvider.class.getPackage().getName());
 
@@ -56,7 +55,7 @@ public interface AddOSLCServiceProvider extends AssignableAction<OSLCCoreModelSl
 		}
 
 		@Override
-		public OSLCServiceProvider performAction(FlexoBehaviourAction action) {
+		public OSLCServiceProvider execute(FlexoBehaviourAction action) {
 
 			OSLCServiceProvider cdlActivity = null;
 

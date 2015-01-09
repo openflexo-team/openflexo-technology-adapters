@@ -57,7 +57,7 @@ public interface SelectOSLCRequirementCollection extends FetchRequest<OSLCCoreMo
 		}
 
 		@Override
-		public List<OSLCRequirementCollection> performAction(FlexoBehaviourAction action) {
+		public List<OSLCRequirementCollection> execute(FlexoBehaviourAction action) {
 
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
