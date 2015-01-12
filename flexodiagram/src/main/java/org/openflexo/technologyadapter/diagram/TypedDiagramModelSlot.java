@@ -191,8 +191,8 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String diagramUri, FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 			try {
-				return getModelSlotTechnologyAdapter().createNewDiagram((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
-						diagramUri, (DiagramSpecificationResource) metaModelResource);
+				return getModelSlotTechnologyAdapter().createNewDiagram((FileSystemBasedResourceCenter) resourceCenter, relativePath,
+						filename, diagramUri, (DiagramSpecificationResource) metaModelResource);
 			} catch (SaveResourceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -241,7 +241,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 		@Override
 		public FMLDiagramPaletteElementBinding addFMLDiagramPaletteElementBinding() {
-			FMLDiagramPaletteElementBinding newBinding = getVirtualModelFactory().newInstance(FMLDiagramPaletteElementBinding.class);
+			FMLDiagramPaletteElementBinding newBinding = getFMLModelFactory().newInstance(FMLDiagramPaletteElementBinding.class);
 			addToPaletteElementBindings(newBinding);
 			return newBinding;
 		}

@@ -16,12 +16,12 @@ import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoTestCase;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
-import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
@@ -212,7 +212,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		virtualModel.addToModelSlots(typedDiagramModelSlot);
 		assertTrue(virtualModel.getModelSlots(TypedDiagramModelSlot.class).size() == 1);
 
-		FlexoConcept flexoConcept = virtualModel.getVirtualModelFactory().newInstance(FlexoConcept.class);
+		FlexoConcept flexoConcept = virtualModel.getFMLModelFactory().newInstance(FlexoConcept.class);
 		virtualModel.addToFlexoConcepts(flexoConcept);
 
 		CreateFlexoRole createShapeRole = CreateFlexoRole.actionType.makeNewAction(flexoConcept, null, editor);
@@ -222,7 +222,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		assertTrue(createShapeRole.hasActionExecutionSucceeded());
 
 		ShapeRole role = (ShapeRole) createShapeRole.getNewFlexoRole();
-		FMLModelFactory factory = flexoConcept.getVirtualModelFactory();
+		FMLModelFactory factory = flexoConcept.getFMLModelFactory();
 		ShapeGraphicalRepresentation shapeGR = factory.newInstance(ShapeGraphicalRepresentation.class);
 		Rectangle rectangleShape = factory.newInstance(Rectangle.class);
 		shapeGR.setShapeSpecification(rectangleShape);
@@ -242,8 +242,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		createAddShape.doAction();
 		assertTrue(createAddShape.hasActionExecutionSucceeded());
 
-		FMLDiagramPaletteElementBinding newBinding = virtualModel.getVirtualModelFactory().newInstance(
-				FMLDiagramPaletteElementBinding.class);
+		FMLDiagramPaletteElementBinding newBinding = virtualModel.getFMLModelFactory().newInstance(FMLDiagramPaletteElementBinding.class);
 		newBinding.setPaletteElement(diagramPaletteElement);
 		newBinding.setBoundFlexoConcept(flexoConcept);
 		newBinding.setDropScheme(dropScheme);
@@ -252,7 +251,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		virtualModel.getResource().save(null);
 
-		System.out.println(virtualModel.getVirtualModelFactory().stringRepresentation(virtualModel));
+		System.out.println(virtualModel.getFMLModelFactory().stringRepresentation(virtualModel));
 
 		assertTrue(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE));
 		assertEquals(typedDiagramModelSlot, FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(virtualModel));

@@ -438,7 +438,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 				case BLANK_FLEXO_CONCEPT:
 
 					// Create new flexo concept
-					newFlexoConcept = getVirtualModel().getVirtualModelFactory().newFlexoConcept();
+					newFlexoConcept = getVirtualModel().getFMLModelFactory().newFlexoConcept();
 					newFlexoConcept.setName(getFlexoConceptName());
 
 					// And add the newly created flexo concept

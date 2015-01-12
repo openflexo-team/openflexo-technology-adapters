@@ -52,7 +52,7 @@ public class FlexoConceptPreviewController extends SelectionManagingDianaEditor<
 	}
 
 	public FlexoConceptPreviewController(FlexoConcept flexoConcept, SelectionManager sm) {
-		super(obtainFlexoConceptPreviewRepresentations(flexoConcept), sm, flexoConcept.getVirtualModelFactory(), null);
+		super(obtainFlexoConceptPreviewRepresentations(flexoConcept), sm, flexoConcept.getFMLModelFactory(), null);
 	}
 
 	@Override

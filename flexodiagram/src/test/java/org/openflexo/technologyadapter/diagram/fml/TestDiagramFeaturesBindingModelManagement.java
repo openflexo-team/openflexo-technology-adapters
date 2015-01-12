@@ -235,7 +235,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		virtualModel.addToModelSlots(typedDiagramModelSlot);
 		assertTrue(virtualModel.getModelSlots(TypedDiagramModelSlot.class).size() == 1);
 
-		flexoConcept = virtualModel.getVirtualModelFactory().newInstance(FlexoConcept.class);
+		flexoConcept = virtualModel.getFMLModelFactory().newInstance(FlexoConcept.class);
 		flexoConcept.setName("Concept");
 		virtualModel.addToFlexoConcepts(flexoConcept);
 
@@ -246,7 +246,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertTrue(createShapeRole.hasActionExecutionSucceeded());
 
 		ShapeRole role = (ShapeRole) createShapeRole.getNewFlexoRole();
-		FMLModelFactory factory = flexoConcept.getVirtualModelFactory();
+		FMLModelFactory factory = flexoConcept.getFMLModelFactory();
 		ShapeGraphicalRepresentation shapeGR = factory.newInstance(ShapeGraphicalRepresentation.class);
 		Rectangle rectangleShape = factory.newInstance(Rectangle.class);
 		shapeGR.setShapeSpecification(rectangleShape);
@@ -254,7 +254,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 
 		virtualModel.getResource().save(null);
 
-		System.out.println(virtualModel.getVirtualModelFactory().stringRepresentation(virtualModel));
+		System.out.println(virtualModel.getFMLModelFactory().stringRepresentation(virtualModel));
 
 		assertTrue(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE));
 		assertEquals(typedDiagramModelSlot, FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(virtualModel));
@@ -299,7 +299,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		createAddShape.doAction();
 		assertTrue(createAddShape.hasActionExecutionSucceeded());
 
-		FMLDiagramPaletteElementBinding newBinding = virtualModel.getVirtualModelFactory().newInstance(
+		FMLDiagramPaletteElementBinding newBinding = virtualModel.getFMLModelFactory().newInstance(
 				FMLDiagramPaletteElementBinding.class);
 		newBinding.setPaletteElement(paletteElement);
 		newBinding.setBoundFlexoConcept(flexoConcept);
@@ -309,7 +309,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 
 		virtualModel.getResource().save(null);
 
-		System.out.println(virtualModel.getVirtualModelFactory().stringRepresentation(virtualModel));
+		System.out.println(virtualModel.getFMLModelFactory().stringRepresentation(virtualModel));
 
 		assertEquals(11, dropScheme.getBindingModel().getBindingVariablesCount());
 		assertNotNull(dropScheme.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
@@ -349,7 +349,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		assertEquals(FlexoConceptInstanceType.getFlexoConceptInstanceType(flexoConcept),
 				dropScheme.getBindingModel().bindingVariableNamed(DropSchemeBindingModel.TARGET).getType());
 
-		flexoConcept2 = virtualModel.getVirtualModelFactory().newInstance(FlexoConcept.class);
+		flexoConcept2 = virtualModel.getFMLModelFactory().newInstance(FlexoConcept.class);
 		flexoConcept2.setName("Concept2");
 		virtualModel.addToFlexoConcepts(flexoConcept2);
 		dropScheme.setTargetFlexoConcept(flexoConcept2);

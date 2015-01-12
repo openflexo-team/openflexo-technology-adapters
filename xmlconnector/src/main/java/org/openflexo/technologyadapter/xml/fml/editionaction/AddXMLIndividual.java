@@ -157,7 +157,7 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 
 		@Override
 		public XMLDataPropertyAssertion createDataPropertyAssertion() {
-			XMLDataPropertyAssertion newDataPropertyAssertion = getVirtualModelFactory().newInstance(XMLDataPropertyAssertion.class);
+			XMLDataPropertyAssertion newDataPropertyAssertion = getFMLModelFactory().newInstance(XMLDataPropertyAssertion.class);
 			addToDataAssertions(newDataPropertyAssertion);
 			return newDataPropertyAssertion;
 		}

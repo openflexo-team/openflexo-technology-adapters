@@ -70,11 +70,11 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 	private final Hashtable<FlexoRole, ConnectorToArtifact> toArtifacts;
 
 	public FlexoConceptPreviewRepresentation(FlexoConcept model) {
-		super(model, model.getVirtualModelFactory(), PersistenceMode.UniqueGraphicalRepresentations);
+		super(model, model.getFMLModelFactory(), PersistenceMode.UniqueGraphicalRepresentations);
 		// Sylvain: commented this because not movable nor rezizable shapes
 		// setEditable(false);
 
-		factory = model.getVirtualModelFactory();
+		factory = model.getFMLModelFactory();
 
 		fromArtifacts = new Hashtable<FlexoRole, ConnectorFromArtifact>();
 		toArtifacts = new Hashtable<FlexoRole, ConnectorToArtifact>();

@@ -192,10 +192,10 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		protected void initDefaultSpecifications() {
-			if (getVirtualModelFactory() != null) {
+			if (getFMLModelFactory() != null) {
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
+					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
 							GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
@@ -437,7 +437,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public GraphicalElementAction createAction() {
-			GraphicalElementAction newAction = getVirtualModelFactory().newInstance(GraphicalElementAction.class);
+			GraphicalElementAction newAction = getFMLModelFactory().newInstance(GraphicalElementAction.class);
 			addToActions(newAction);
 			return newAction;
 		}
@@ -451,7 +451,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementSpecification<?, GR>> getGrSpecifications() {
-			if (grSpecifications == null && getVirtualModelFactory() != null) {
+			if (grSpecifications == null && getFMLModelFactory() != null) {
 				initDefaultSpecifications();
 			} else if (grSpecifications == null) {
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();

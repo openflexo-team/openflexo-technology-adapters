@@ -260,26 +260,26 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			assertNotNull(creationSchemeCreationAction);
 
 			EMFObjectIndividual intParameter = createIntParameter(emfModelResource, emfMetaModelResource, "IntParameter Name",
-					Integer.valueOf(12), newVirtualModel.getVirtualModelFactory());
+					Integer.valueOf(12), newVirtualModel.getFMLModelFactory());
 			assertNotNull(intParameter);
 
 			EMFObjectIndividual doubleParameter = createDoubleParameter(emfModelResource, emfMetaModelResource, "DoubleParameter Name",
-					Double.valueOf(42.12), newVirtualModel.getVirtualModelFactory());
+					Double.valueOf(42.12), newVirtualModel.getFMLModelFactory());
 			assertNotNull(doubleParameter);
 
 			// TODO : this does not work yet
 
 			/*
 			EMFObjectIndividual boolParameter = createBoolParameter(emfModelResource, emfMetaModelResource, "BoolParameter Name", true,
-					newVirtualModel.getVirtualModelFactory());
+					newVirtualModel.getFMLModelFactory());
 			assertNotNull(boolParameter);
 
 			EMFObjectIndividual stringParameter = createStringParameter(emfModelResource, emfMetaModelResource, "StringParameter Name",
-					"StringParameter Value", newVirtualModel.getVirtualModelFactory());
+					"StringParameter Value", newVirtualModel.getFMLModelFactory());
 			assertNotNull(stringParameter);
 
 			EMFObjectIndividual parameterSet = createParameterSet(emfModelResource, emfMetaModelResource, "ParameterSet Name",
-					Arrays.asList(intParameter, doubleParameter, boolParameter, stringParameter), newVirtualModel.getVirtualModelFactory());
+					Arrays.asList(intParameter, doubleParameter, boolParameter, stringParameter), newVirtualModel.getFMLModelFactory());
 			assertNotNull(parameterSet);
 			 */
 

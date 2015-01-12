@@ -28,10 +28,10 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
@@ -48,7 +48,6 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.toolbox.StringUtils;
 
 /**
  * This abstract class is an action that allows to create an flexo concept from a graphical representation(for instance a shape or
@@ -133,7 +132,7 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	 * This {@link VirtualModel} must be set with external API.
 	 */
 	public VirtualModel getVirtualModel() {
-		if(virtualModel==null && getVirtualModelResource()!=null){
+		if (virtualModel == null && getVirtualModelResource() != null) {
 			return getVirtualModelResource().getVirtualModel();
 		}
 		return virtualModel;
@@ -218,7 +217,6 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 		return getFocusedObject().getDiagram().getDiagramSpecification();
 	}
 
-
 	/**
 	 * Return the model slot used as source of information (data) in pattern proposal
 	 * 
@@ -243,7 +241,7 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	 * @return
 	 */
 	public List<ModelSlot<?>> getModelSlots() {
-		if(getVirtualModel()!=null){
+		if (getVirtualModel() != null) {
 			return getVirtualModel().getModelSlots();
 		}
 		return null;
@@ -294,7 +292,7 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	public FlexoMetaModel getAdressedFlexoMetaModel() {
 		if (isTypeAwareModelSlot()) {
 			TypeAwareModelSlot typeAwareModelSlot = (TypeAwareModelSlot) getModelSlot();
-			if(typeAwareModelSlot!=null && typeAwareModelSlot.getMetaModelResource()!=null){
+			if (typeAwareModelSlot != null && typeAwareModelSlot.getMetaModelResource() != null) {
 				return typeAwareModelSlot.getMetaModelResource().getMetaModelData();
 			}
 		}
@@ -308,7 +306,7 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 		if (!virtualModelModelSlots.isEmpty()) {
 			virtualModelModelSlots.clear();
 		}
-		if(getVirtualModel()!=null){
+		if (getVirtualModel() != null) {
 			for (ModelSlot<?> modelSlot : getVirtualModel().getModelSlots()) {
 				if (modelSlot instanceof FMLRTModelSlot) {
 					virtualModelModelSlots.add((FMLRTModelSlot) modelSlot);
@@ -325,7 +323,7 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 		if (!typeAwareModelSlots.isEmpty()) {
 			typeAwareModelSlots.clear();
 		}
-		if(getVirtualModel()!=null){
+		if (getVirtualModel() != null) {
 			for (ModelSlot<?> modelSlot : getVirtualModel().getModelSlots()) {
 				if (modelSlot instanceof TypeAwareModelSlot) {
 					typeAwareModelSlots.add((TypeAwareModelSlot<?, ?>) modelSlot);
@@ -352,9 +350,9 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	// TODO: i think that sometimes FlexoConcept is null !!!
 	public FMLModelFactory getFactory() {
 		if (getFlexoConcept() != null) {
-			return getFlexoConcept().getVirtualModelFactory();
-		}else if(virtualModel!=null){
-			return virtualModel.getVirtualModelFactory();
+			return getFlexoConcept().getFMLModelFactory();
+		} else if (virtualModel != null) {
+			return virtualModel.getFMLModelFactory();
 		}
 		return null;
 	}
@@ -399,16 +397,19 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	public void updateSpecialSchemeNames() {
 
 	}
-	
-	public TypedDiagramModelSlot getTypedDiagramModelSlot(){
-		if(getVirtualModel().getModelSlots(TypedDiagramModelSlot.class)!=null &&
-				getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).size()>0){
+
+	public TypedDiagramModelSlot getTypedDiagramModelSlot() {
+		if (getVirtualModel().getModelSlots(TypedDiagramModelSlot.class) != null
+				&& getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
 			return getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
-		}else{;
-			DiagramTechnologyAdapter diagramTechnologyAdapter = getEditor().getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-			TypedDiagramModelSlot typedDiagramModelSlot = diagramTechnologyAdapter.makeModelSlot(TypedDiagramModelSlot.class, getVirtualModel());
+		} else {
+			;
+			DiagramTechnologyAdapter diagramTechnologyAdapter = getEditor().getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			TypedDiagramModelSlot typedDiagramModelSlot = diagramTechnologyAdapter.makeModelSlot(TypedDiagramModelSlot.class,
+					getVirtualModel());
 			typedDiagramModelSlot.setName("typedDiagramModelSlot");
-				//((TypeAwareModelSlot) newModelSlot).setMetaModelResource(mmRes);
+			// ((TypeAwareModelSlot) newModelSlot).setMetaModelResource(mmRes);
 			getVirtualModel().addToModelSlots(typedDiagramModelSlot);
 			return typedDiagramModelSlot;
 		}

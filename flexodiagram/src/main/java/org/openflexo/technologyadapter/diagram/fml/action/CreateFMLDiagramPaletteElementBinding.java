@@ -29,8 +29,8 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -40,7 +40,8 @@ import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBindi
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 
-public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> {
+public class CreateFMLDiagramPaletteElementBinding extends
+		FlexoAction<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateFMLDiagramPaletteElementBinding.class.getPackage().getName());
 
@@ -81,7 +82,7 @@ public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFML
 	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException {
 		logger.info("Add palette element binding to typed diagram modelslot");
-		FMLDiagramPaletteElementBinding newBinding = getFocusedObject().getVirtualModelFactory().newInstance(
+		FMLDiagramPaletteElementBinding newBinding = getFocusedObject().getFMLModelFactory().newInstance(
 				FMLDiagramPaletteElementBinding.class);
 		newBinding.setPaletteElement(diagramPaletteElement);
 		newBinding.setBoundFlexoConcept(flexoConcept);
@@ -91,16 +92,16 @@ public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFML
 	}
 
 	private DropScheme dropScheme;
-	
+
 	private FlexoConcept flexoConcept;
-	
+
 	private DiagramPaletteElement diagramPaletteElement;
-	
+
 	private List<FMLDiagramPaletteElementBindingParameter> paletteElementBindingParameter;
-	
+
 	private DiagramPalette diagramPalette;
-	
-	private String nameValidityMessage = EMPTY_NAME;
+
+	private final String nameValidityMessage = EMPTY_NAME;
 
 	private static final String NAME_IS_VALID = FlexoLocalization.localizedForKey("name_is_valid");
 	private static final String DUPLICATED_NAME = FlexoLocalization.localizedForKey("this_name_is_already_used_please_choose_an_other_one");
@@ -121,7 +122,7 @@ public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFML
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public FlexoConcept getFlexoConcept() {
 		return flexoConcept;
 	}
@@ -129,7 +130,7 @@ public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFML
 	public void setFlexoConcept(FlexoConcept flexoConcept) {
 		this.flexoConcept = flexoConcept;
 	}
-	
+
 	public DropScheme getDropScheme() {
 		return dropScheme;
 	}
@@ -144,16 +145,16 @@ public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFML
 		}
 		return null;
 	}
-	
+
 	public List<DiagramPalette> allAvailableDiagramPalette() {
-		if(getFocusedObject().getMetaModelResource()!=null){
+		if (getFocusedObject().getMetaModelResource() != null) {
 			return getFocusedObject().getMetaModelResource().getMetaModelData().getPalettes();
 		}
 		return null;
 	}
-	
+
 	public List<DiagramPaletteElement> allAvailableDiagramPaletteElements() {
-		if(diagramPalette!=null){
+		if (diagramPalette != null) {
 			return diagramPalette.getElements();
 		}
 		return null;
@@ -163,8 +164,7 @@ public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFML
 		return paletteElementBindingParameter;
 	}
 
-	public void setPaletteElementBindingParameter(
-			List<FMLDiagramPaletteElementBindingParameter> paletteElementBindingParameter) {
+	public void setPaletteElementBindingParameter(List<FMLDiagramPaletteElementBindingParameter> paletteElementBindingParameter) {
 		this.paletteElementBindingParameter = paletteElementBindingParameter;
 	}
 
@@ -183,6 +183,5 @@ public class CreateFMLDiagramPaletteElementBinding extends FlexoAction<CreateFML
 	public void setDiagramPalette(DiagramPalette diagramPalette) {
 		this.diagramPalette = diagramPalette;
 	}
-
 
 }

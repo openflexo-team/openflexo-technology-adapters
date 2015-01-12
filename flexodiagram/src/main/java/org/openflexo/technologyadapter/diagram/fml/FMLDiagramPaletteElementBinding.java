@@ -375,7 +375,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 						unusedParameterInstances.remove(parameterInstance);
 						parameterInstance.setParameter(parameter);
 					} else if (getOwningVirtualModel() != null) {
-						FMLModelFactory factory = getVirtualModelFactory();
+						FMLModelFactory factory = getFMLModelFactory();
 						parameterInstance = factory.newInstance(FMLDiagramPaletteElementBindingParameter.class);
 						parameterInstance.setParameter(parameter);
 						addToParameters(parameterInstance);
@@ -389,9 +389,9 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		}
 
 		@Override
-		public FMLModelFactory getVirtualModelFactory() {
+		public FMLModelFactory getFMLModelFactory() {
 			if (getOwningVirtualModel() != null) {
-				return getOwningVirtualModel().getVirtualModelFactory();
+				return getOwningVirtualModel().getFMLModelFactory();
 			}
 			return getDeserializationFactory();
 		}

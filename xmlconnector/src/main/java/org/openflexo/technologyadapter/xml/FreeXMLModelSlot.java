@@ -105,7 +105,7 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>,AbstractXMLMod
 
 		@Override
 		public FreeXMLURIProcessor createURIProcessor() {
-			FreeXMLURIProcessor xsuriProc = getVirtualModelFactory().newInstance(FreeXMLURIProcessor.class);
+			FreeXMLURIProcessor xsuriProc = getFMLModelFactory().newInstance(FreeXMLURIProcessor.class);
 			xsuriProc.setModelSlot(this);
 			this.addToUriProcessorsList(xsuriProc);
 			return xsuriProc;

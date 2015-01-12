@@ -114,8 +114,8 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		private final Map<String, ExcelObject> uriCache = new HashMap<String, ExcelObject>();
 
 		/*public BasicExcelModelSlotURIProcessor getUriProcessor() {
-			if (uriProcessor == null && getVirtualModelFactory() != null) {
-				uriProcessor = getVirtualModelFactory().newInstance(BasicExcelModelSlotURIProcessor.class);
+			if (uriProcessor == null && getFMLModelFactory() != null) {
+				uriProcessor = getFMLModelFactory().newInstance(BasicExcelModelSlotURIProcessor.class);
 			}
 			return uriProcessor;
 		}*/

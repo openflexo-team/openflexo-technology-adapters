@@ -45,9 +45,11 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.toolbox.StringUtils;
 
-public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement extends FlexoAction<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> {
+public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement extends
+		FlexoAction<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> {
 
-	private static final Logger logger = Logger.getLogger(CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement.class.getPackage()
+			.getName());
 
 	public static FlexoActionType<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement> actionType = new FlexoActionType<CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement, DiagramPaletteElement, DiagramPaletteElement>(
 			"create_new_palette_binding", FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
@@ -56,8 +58,8 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 		 * Factory method
 		 */
 		@Override
-		public CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement makeNewAction(DiagramPaletteElement focusedObject, Vector<DiagramPaletteElement> globalSelection,
-				FlexoEditor editor) {
+		public CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement makeNewAction(DiagramPaletteElement focusedObject,
+				Vector<DiagramPaletteElement> globalSelection, FlexoEditor editor) {
 			return new CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement(focusedObject, globalSelection, editor);
 		}
 
@@ -74,26 +76,28 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	};
 
 	static {
-		FlexoObjectImpl.addActionForClass(CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement.actionType, DiagramPaletteElement.class);
+		FlexoObjectImpl.addActionForClass(CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement.actionType,
+				DiagramPaletteElement.class);
 	}
 
 	private String description;
 
-	CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement(DiagramPaletteElement focusedObject, Vector<DiagramPaletteElement> globalSelection, FlexoEditor editor) {
+	CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement(DiagramPaletteElement focusedObject,
+			Vector<DiagramPaletteElement> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
 	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException {
 		logger.info("Add palette element binding to typed diagram modelslot");
-		FMLDiagramPaletteElementBinding newBinding = getTypedDiagramModelSlot().getVirtualModelFactory().newInstance(
+		FMLDiagramPaletteElementBinding newBinding = getTypedDiagramModelSlot().getFMLModelFactory().newInstance(
 				FMLDiagramPaletteElementBinding.class);
-		
+
 		getTypedDiagramModelSlot().addToPaletteElementBindings(newBinding);
 		newBinding.setPaletteElement(getFocusedObject());
 		newBinding.setBoundFlexoConcept(flexoConcept);
-		if(createDropScheme){
-			dropScheme = getVirtualModel().getVirtualModelFactory().newInstance(DropScheme.class);
+		if (createDropScheme) {
+			dropScheme = getVirtualModel().getFMLModelFactory().newInstance(DropScheme.class);
 			dropScheme.setName(getDropSchemeName());
 			dropScheme.setFlexoConcept(getFlexoConcept());
 			flexoConcept.addToFlexoBehaviours(dropScheme);
@@ -113,7 +117,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	private List<FlexoConcept> flexoConcepts;
 	private Image image;
 	private boolean createDropScheme;
-	
+
 	private String errorMessage = EMPTY_NAME;
 
 	private static final String NAME_IS_VALID = FlexoLocalization.localizedForKey("name_is_valid");
@@ -138,11 +142,11 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
+
 	public FlexoConcept getFlexoConcept() {
 		return flexoConcept;
 	}
-	
+
 	public List<FlexoConcept> getFlexoConcepts() {
 		return flexoConcepts;
 	}
@@ -155,7 +159,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 		this.flexoConcept = flexoConcept;
 		computeDropSchemes();
 	}
-	
+
 	public DropScheme getDropScheme() {
 		return dropScheme;
 	}
@@ -168,11 +172,10 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 		return paletteElementBindingParameter;
 	}
 
-	public void setPaletteElementBindingParameter(
-			List<FMLDiagramPaletteElementBindingParameter> paletteElementBindingParameter) {
+	public void setPaletteElementBindingParameter(List<FMLDiagramPaletteElementBindingParameter> paletteElementBindingParameter) {
 		this.paletteElementBindingParameter = paletteElementBindingParameter;
 	}
-	
+
 	public DiagramPalette getDiagramPalette() {
 		return diagramPalette;
 	}
@@ -182,9 +185,9 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	}
 
 	public TypedDiagramModelSlot getTypedDiagramModelSlot() {
-		if(getVirtualModel()!=null){
-			for(TypedDiagramModelSlot ms : getVirtualModel().getModelSlots(TypedDiagramModelSlot.class)){
-				if(ms.getDiagramSpecification().equalsObject(getDiagramSpecification()))
+		if (getVirtualModel() != null) {
+			for (TypedDiagramModelSlot ms : getVirtualModel().getModelSlots(TypedDiagramModelSlot.class)) {
+				if (ms.getDiagramSpecification().equalsObject(getDiagramSpecification()))
 					return ms;
 			}
 		}
@@ -194,18 +197,18 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 	public DiagramSpecification getDiagramSpecification() {
 		return getFocusedObject().getDiagramSpecification();
 	}
-	
+
 	public VirtualModelResource getVirtualModelResource() {
 		return virtualModelResource;
 	}
 
 	public void setVirtualModelResource(VirtualModelResource virtualModelResource) {
 		this.virtualModelResource = virtualModelResource;
-		if(virtualModelResource!=null){
+		if (virtualModelResource != null) {
 			setVirtualModel(virtualModelResource.getVirtualModel());
 		}
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -230,7 +233,7 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 		this.virtualModel = virtualModel;
 		computeFlexoConcepts();
 	}
-	
+
 	public List<DropScheme> getDropSchemes() {
 		return dropSchemes;
 	}
@@ -239,39 +242,39 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 		this.dropSchemes = dropSchemes;
 	}
 
-	private void computeDropSchemes(){
-		if(dropSchemes==null){
+	private void computeDropSchemes() {
+		if (dropSchemes == null) {
 			dropSchemes = new ArrayList<DropScheme>();
 		}
 		dropSchemes.clear();
-		if(getFlexoConcept()!=null){
+		if (getFlexoConcept() != null) {
 			dropSchemes.addAll(getFlexoConcept().getFlexoBehaviours(DropScheme.class));
 		}
 	}
-	
-	private void computeFlexoConcepts(){
-		if(flexoConcepts==null){
+
+	private void computeFlexoConcepts() {
+		if (flexoConcepts == null) {
 			flexoConcepts = new ArrayList<FlexoConcept>();
 		}
 		flexoConcepts.clear();
-		if(getVirtualModel()!=null){
-			for(FlexoConcept fc :getVirtualModel().getFlexoConcepts()){
-				if(fc.getFlexoBehaviours(DropScheme.class)!=null){
+		if (getVirtualModel() != null) {
+			for (FlexoConcept fc : getVirtualModel().getFlexoConcepts()) {
+				if (fc.getFlexoBehaviours(DropScheme.class) != null) {
 					flexoConcepts.add(fc);
 				}
 			}
 		}
-		//getPropertyChangeSupport().firePropertyChange("flexoConcepts", null, flexoConcepts);
+		// getPropertyChangeSupport().firePropertyChange("flexoConcepts", null, flexoConcepts);
 	}
 
 	@Override
 	public boolean isValid() {
 		if (!isNameValid()) {
 			return false;
-		} else if(getDropScheme()==null && !createDropScheme) {
+		} else if (getDropScheme() == null && !createDropScheme) {
 			setErrorMessage(DROP_SCHEME_IS_EMPTY);
 			return false;
-		} else if(getFlexoConcept()==null) {
+		} else if (getFlexoConcept() == null) {
 			setErrorMessage(FLEXO_CONCEPT_IS_EMPTY);
 			return false;
 		}
@@ -302,5 +305,4 @@ public class CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElement exte
 		this.dropSchemeName = dropSchemeName;
 	}
 
-	
 }

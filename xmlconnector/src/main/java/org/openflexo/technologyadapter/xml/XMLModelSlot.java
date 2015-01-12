@@ -128,7 +128,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 		@Override
 		public XMLURIProcessor createURIProcessor() {
-			XMLURIProcessor xsuriProc = getVirtualModelFactory().newInstance(XMLURIProcessor.class);
+			XMLURIProcessor xsuriProc = getFMLModelFactory().newInstance(XMLURIProcessor.class);
 			xsuriProc.setModelSlot(this);
 			uriProcessors.add(xsuriProc);
 			return xsuriProc;

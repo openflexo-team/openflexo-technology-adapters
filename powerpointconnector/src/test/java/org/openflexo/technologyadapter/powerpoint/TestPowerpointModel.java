@@ -120,7 +120,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		VirtualModel newVirtualModel = null;
 		try {
 			newVirtualModel = VirtualModelImpl.newVirtualModel("TestPPTVirtualModel", newViewPoint);
-			FlexoConcept newFlexoConcept = newVirtualModel.getVirtualModelFactory().newFlexoConcept();
+			FlexoConcept newFlexoConcept = newVirtualModel.getFMLModelFactory().newFlexoConcept();
 			newVirtualModel.addToFlexoConcepts(newFlexoConcept);
 			if (powerpointAdapter.getAvailableModelSlotTypes() != null) {
 				for (Class msType : powerpointAdapter.getAvailableModelSlotTypes()) {
