@@ -20,7 +20,6 @@
 		<flexodocresourcecenter.version>1.7.1-SNAPSHOT</flexodocresourcecenter.version>
 		<flexodocresourcemanager.version>1.7.1-SNAPSHOT</flexodocresourcemanager.version>
 		<flexocore.version>1.7.1-SNAPSHOT</flexocore.version>
-		<flexomodules.testversion>1.7.1-SNAPSHOT</flexomodules.testversion>
 		<poi.version>3.10.1</poi.version>
 	</properties>
 	<scm>

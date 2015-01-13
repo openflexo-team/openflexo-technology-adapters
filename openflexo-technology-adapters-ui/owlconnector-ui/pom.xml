@@ -50,12 +50,6 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>flexoviewpointmodeler</artifactId>
-			<version>${flexomodules.testversion}</version>
-			<scope>test</scope>
-		</dependency>
 	</dependencies>
 </project>
 

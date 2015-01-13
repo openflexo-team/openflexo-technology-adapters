@@ -35,12 +35,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
-			<artifactId>flexoviewpointmodeler</artifactId>
-			<version>${flexomodules.testversion}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
 			<scope>test</scope>
 			<classifier>tests</classifier>
