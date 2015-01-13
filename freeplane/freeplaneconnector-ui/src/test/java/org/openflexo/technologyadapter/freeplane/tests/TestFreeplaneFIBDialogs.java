@@ -8,8 +8,7 @@ import org.openflexo.rm.ResourceLocator;
 public class TestFreeplaneFIBDialogs extends GenericFIBTestCase {
 
 	/**
-	 * Print tent class in console, copy paste to have the full class. Maybe use
-	 * parameterized runner instead.
+	 * Print tent class in console, copy paste to have the full class. Maybe use parameterized runner instead.
 	 * 
 	 * @param args
 	 */
@@ -19,7 +18,7 @@ public class TestFreeplaneFIBDialogs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testAddChildNodeFIB() {
-		this.validateFIB("Fib/AddChildNodePanel.fib");
+	public void testNewFreeplaneMapDialog() {
+		validateFIB("Fib/Dialog/NewFreeplaneMapDialog.fib");
 	}
 }
