@@ -49,13 +49,13 @@ import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.PrimitiveRole;
+import org.openflexo.foundation.fml.PrimitiveRole.PrimitiveType;
 import org.openflexo.foundation.fml.ViewPoint;
+import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.ViewType;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelInstanceType;
-import org.openflexo.foundation.fml.PrimitiveRole.PrimitiveType;
-import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
+import org.openflexo.foundation.fml.VirtualModelInstanceType;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.action.CreateFlexoRole;
 import org.openflexo.foundation.fml.binding.FlexoConceptBindingModel;
@@ -71,9 +71,6 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLModelSlot;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-import org.openflexo.technologyadapter.owl.fml.OWLIndividualRole;
-import org.openflexo.technologyadapter.owl.fml.OWLObjectPropertyRole;
-import org.openflexo.technologyadapter.owl.fml.ObjectPropertyStatementRole;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.test.OrderedRunner;
@@ -140,8 +137,9 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		assertTrue(((ViewPointResource) viewPoint.getResource()).getFlexoIODelegate().exists());
 
 		assertNotNull(viewPoint.getBindingModel());
-		assertEquals(1, viewPoint.getBindingModel().getBindingVariablesCount());
+		assertEquals(2, viewPoint.getBindingModel().getBindingVariablesCount());
 		assertNotNull(viewPoint.getBindingModel().bindingVariableNamed(ViewPointBindingModel.REFLEXIVE_ACCESS_PROPERTY));
+		assertNotNull(viewPoint.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
 
 	}
 
@@ -171,10 +169,10 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		viewPoint.removeFromVirtualModels(virtualModel1);
 		System.out.println("VirtualModel BindingModel = " + virtualModel1.getBindingModel());
 		assertNotNull(virtualModel1.getBindingModel());
-		assertEquals(3, virtualModel1.getBindingModel().getBindingVariablesCount());
+		assertEquals(2, virtualModel1.getBindingModel().getBindingVariablesCount());
 		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.REFLEXIVE_ACCESS_PROPERTY));
-		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
-		assertEquals(View.class, virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY).getType());
+		// assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY));
+		// assertEquals(View.class, virtualModel1.getBindingModel().bindingVariableNamed(ViewPointBindingModel.VIEW_PROPERTY).getType());
 		assertNotNull(virtualModel1.getBindingModel().bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY));
 		// assertEquals(VirtualModelInstanceType.getVirtualModelInstanceType(virtualModel1), virtualModel1.getBindingModel()
 		// .bindingVariableNamed(VirtualModelBindingModel.VIRTUAL_MODEL_INSTANCE_PROPERTY).getType());
