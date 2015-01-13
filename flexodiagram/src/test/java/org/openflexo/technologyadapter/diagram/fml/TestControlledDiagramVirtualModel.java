@@ -23,7 +23,6 @@ import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
-import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoRole;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
@@ -236,9 +235,9 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		dropScheme = (DropScheme) createDropScheme.getNewFlexoBehaviour();
 
 		CreateEditionAction createAddShape = CreateEditionAction.actionType.makeNewAction(dropScheme.getControlGraph(), null, editor);
-		createAddShape.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
+		// createAddShape.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createAddShape.setModelSlot(typedDiagramModelSlot);
-		createAddShape.setModelSlotSpecificActionClass(AddShape.class);
+		createAddShape.setEditionActionClass(AddShape.class);
 		createAddShape.doAction();
 		assertTrue(createAddShape.hasActionExecutionSucceeded());
 

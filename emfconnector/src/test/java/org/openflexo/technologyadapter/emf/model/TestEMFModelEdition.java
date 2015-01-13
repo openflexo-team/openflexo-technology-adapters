@@ -44,14 +44,13 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.fml.CreationScheme;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
-import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
-import org.openflexo.foundation.fml.action.CreateEditionAction.CreateEditionActionChoice;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
@@ -298,15 +297,14 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	}
 
-	protected EMFObjectIndividual addEMFObjectIndividual(EMFModelResource emfModelResource, String classURI,
-			FMLModelFactory factory) {
+	protected EMFObjectIndividual addEMFObjectIndividual(EMFModelResource emfModelResource, String classURI, FMLModelFactory factory) {
 
 		EMFObjectIndividual result = null;
 
 		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
 				editor);
-		createEditionAction1.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
-		createEditionAction1.setModelSlotSpecificActionClass(AddEMFObjectIndividual.class);
+		// createEditionAction1.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
+		createEditionAction1.setEditionActionClass(AddEMFObjectIndividual.class);
 		createEditionAction1.setModelSlot(newModelSlot);
 		createEditionAction1.doAction();
 
@@ -350,8 +348,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
 				editor);
-		createEditionAction1.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
-		createEditionAction1.setModelSlotSpecificActionClass(AddEMFObjectIndividualAttributeDataPropertyValue.class);
+		// createEditionAction1.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
+		createEditionAction1.setEditionActionClass(AddEMFObjectIndividualAttributeDataPropertyValue.class);
 		createEditionAction1.setModelSlot(newModelSlot);
 		createEditionAction1.doAction();
 

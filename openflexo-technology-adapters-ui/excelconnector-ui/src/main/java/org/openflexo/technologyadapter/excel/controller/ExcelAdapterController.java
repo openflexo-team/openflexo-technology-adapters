@@ -3,7 +3,7 @@ package org.openflexo.technologyadapter.excel.controller;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -91,7 +91,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForEditionAction(Class<? extends TechnologySpecificAction<?, ?>> editionActionClass) {
+	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
 		if (AddExcelSheet.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelSheet.class), IconLibrary.DUPLICATE);
 		} else if (AddExcelCell.class.isAssignableFrom(editionActionClass)) {
