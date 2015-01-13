@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.fml.AbstractModelFactoryIntegrationTest;
+import org.openflexo.foundation.fml.AbstractModelFactoryIntegrationTestCase;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
@@ -41,7 +41,7 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class OWLFMLModelFactoryIntegrationTest extends AbstractModelFactoryIntegrationTest {
+public class OWLFMLModelFactoryIntegrationTest extends AbstractModelFactoryIntegrationTestCase {
 
 	private static final Logger logger = FlexoLogger.getLogger(OWLFMLModelFactoryIntegrationTest.class.getPackage().getName());
 
