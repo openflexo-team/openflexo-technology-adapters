@@ -48,40 +48,33 @@ import org.w3c.dom.Element;
  * 
  */
 
-public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel {
+public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 
 	// Constants
 
-
-	private static final String              Version         = "0";
+	private static final String Version = "0";
 
 	// Attributes
 
-	protected static final Logger            logger          = Logger.getLogger(XMLModelImpl.class.getPackage().getName());
-	private FlexoResource<?>                 xmlResource;
-	private final boolean                          isReadOnly      = true;
+	protected static final Logger logger = Logger.getLogger(XMLModelImpl.class.getPackage().getName());
+	private FlexoResource<?> xmlResource;
+	private final boolean isReadOnly = true;
 
 	private final Map<String, XMLIndividual> individuals;
 
-	private final List<String>                           namespace = new ArrayList<String>();
+	private final List<String> namespace = new ArrayList<String>();
 
 	private static ModelFactory MF;
 
-
-	static{
+	static {
 		try {
-			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class,
-					XMLIndividual.class,
-					XMLPropertyValue.class,
-					XMLDataPropertyValue.class,
-					XMLObjectPropertyValue.class));
+			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class, XMLIndividual.class, XMLPropertyValue.class,
+					XMLDataPropertyValue.class, XMLObjectPropertyValue.class));
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-
 
 	public static ModelFactory getModelFactory() {
 		return MF;
@@ -96,8 +89,7 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 	public String getName() {
 		if (xmlResource != null) {
 			return xmlResource.getName();
-		}
-		else
+		} else
 			return "";
 	}
 
@@ -109,14 +101,14 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 
 	@Override
 	public List<String> getNamespace() {
-		
-		if (namespace.size() < 2 && this.getMetaModel() != null){
+
+		if (namespace.size() < 2 && this.getMetaModel() != null) {
 			namespace.add(XMLModel.NSPREFIX_INDEX, XMLCst.DEFAULT_NS);
 			namespace.add(XMLModel.NSURI_INDEX, this.getMetaModel().getURI());
-			}
-		
+		}
+
 		return namespace;
-		
+
 	}
 
 	@Override
@@ -128,7 +120,6 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 	public void setResource(FlexoResource<XMLModel> resource) {
 		this.xmlResource = resource;
 	}
-
 
 	@Override
 	public String getURI() {
@@ -160,8 +151,8 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 
 	@Override
 	public Object addNewIndividual(Type aType) {
-		XMLIndividual anIndividual = getModelFactory().newInstance(XMLIndividual.class, this, aType );
-		//XMLIndividual anIndividual = new XMLIndividual(this, (XMLType) aType);
+		XMLIndividual anIndividual = getModelFactory().newInstance(XMLIndividual.class, this, aType);
+		// XMLIndividual anIndividual = new XMLIndividual(this, (XMLType) aType);
 		this.addIndividual(anIndividual);
 		return anIndividual;
 	}
@@ -193,6 +184,5 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 			return rsc.getTechnologyAdapter();
 		return null;
 	}
-
 
 }

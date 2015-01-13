@@ -31,7 +31,7 @@ import org.openflexo.model.annotations.Setter;
 
 @ModelEntity
 @ImplementationClass(XMLTypeImpl.class)
-public interface XMLType  extends XMLObject , Type{
+public interface XMLType extends XMLObject, Type {
 
 	public final String MM = "metamodel";
 
@@ -41,30 +41,30 @@ public interface XMLType  extends XMLObject , Type{
 	public final String SUPERTYPE = "superType";
 	public final String ABSTRACT = "abstract";
 
-    static final String NAME_ATTR = "name";
-	
+	static final String NAME_ATTR = "name";
+
 	@Initializer
 	public XMLType init(@Parameter(MM) XMLMetaModel mm);
-	
+
 	@Getter(FQN)
 	public String getFullyQualifiedName();
-	
+
 	@Getter(MM)
 	XMLMetaModel getMetamodel();
+
 	@Setter(NAME)
 	public void setName(String name);
-	
+
 	@Getter(SUPERTYPE)
 	public XMLType getSuperType();
-	
+
 	@Setter(SUPERTYPE)
 	public void setSuperType(XMLType t);
 
 	@Getter(value = ABSTRACT, defaultValue = "false")
 	public boolean isAbstract();
-	
+
 	@Setter(ABSTRACT)
 	public void setIsAbstract(boolean t);
-	
-	
+
 }

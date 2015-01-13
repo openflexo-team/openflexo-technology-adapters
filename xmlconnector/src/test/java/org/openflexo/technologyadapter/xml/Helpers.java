@@ -35,6 +35,7 @@ public class Helpers {
 
 	/**
 	 * Prints all types...
+	 * 
 	 * @param metamodel
 	 */
 	public static final void dumpTypes(XMLMetaModel metamodel) {
@@ -43,27 +44,27 @@ public class Helpers {
 
 		for (XMLType t : metamodel.getTypes()) {
 			String prefix = new String();
-			if ( t.isAbstract() ) prefix = "*";
-			else prefix = "-";
-			if (t.getSuperType() != null){
-				System.out.println("Parsed Type: "+prefix + t.getName() + " :: " + t.getSuperType().getName() + " [ " + t.getURI() +" ]");
-			}
-			else {
-				System.out.println("Parsed Type: "+prefix + t.getName() + " [ " + t.getURI() +" ]");
+			if (t.isAbstract())
+				prefix = "*";
+			else
+				prefix = "-";
+			if (t.getSuperType() != null) {
+				System.out
+						.println("Parsed Type: " + prefix + t.getName() + " :: " + t.getSuperType().getName() + " [ " + t.getURI() + " ]");
+			} else {
+				System.out.println("Parsed Type: " + prefix + t.getName() + " [ " + t.getURI() + " ]");
 
 			}
 			if (t instanceof XMLComplexType) {
-				for ( XMLProperty x : ((XMLComplexType) t).getProperties()) {
+				for (XMLProperty x : ((XMLComplexType) t).getProperties()) {
 					XMLType pt = x.getType();
-					if (pt instanceof XMLSimpleType){
-						System.out.println("     -data: " + x.getName() + "  :: " + pt.getName() + " [ " + pt.getURI() +" ]");
-					}
-					else {
-						System.out.println("    --obj: " + x.getName() + "  :: " + pt.getName() + " [ " + pt.getURI() +" ]");
+					if (pt instanceof XMLSimpleType) {
+						System.out.println("     -data: " + x.getName() + "  :: " + pt.getName() + " [ " + pt.getURI() + " ]");
+					} else {
+						System.out.println("    --obj: " + x.getName() + "  :: " + pt.getName() + " [ " + pt.getURI() + " ]");
 					}
 				}
-			}
-			else {
+			} else {
 				System.out.println("Its a simple Type...");
 			}
 			System.out.flush();
@@ -74,39 +75,35 @@ public class Helpers {
 	 * Prints all the property values of an indivudal
 	 */
 
-	public static final void dumpProperties (XMLIndividual indiv, XMLType aType, String prefix) {
-		if (aType == null){
+	public static final void dumpProperties(XMLIndividual indiv, XMLType aType, String prefix) {
+		if (aType == null) {
 			dumpProperties(indiv, indiv.getType(), prefix);
-		}
-		else {
-			if (aType instanceof XMLComplexType){
+		} else {
+			if (aType instanceof XMLComplexType) {
 				for (XMLProperty prop : ((XMLComplexType) aType).getProperties()) {
 					if (prop instanceof XMLDataProperty) {
 						XMLPropertyValue val = indiv.getPropertyValue(prop);
-						if (val != null){
+						if (val != null) {
 							System.out.println(prefix + "    * attr: " + prop.getName() + " = " + indiv.getPropertyValue(prop).toString());
+						} else {
+							System.out.println(prefix + "    ! attr: " + prop.getName() + " n'est pas valuée");
 						}
-						else {
-							System.out.println(prefix + "    ! attr: " + prop.getName() + " n'est pas valuée" );
-						}
-					}
-					else if (prop instanceof XMLObjectProperty) {
-						System.out.println(prefix + "    * obj: " + prop.getName() );
+					} else if (prop instanceof XMLObjectProperty) {
+						System.out.println(prefix + "    * obj: " + prop.getName());
 						XMLObjectPropertyValue vals = (XMLObjectPropertyValue) indiv.getPropertyValue(prop);
-						if (vals != null){
-							for (XMLIndividual v : vals.getValues()){
-								dumpIndividual (v, prefix + "          + ");
+						if (vals != null) {
+							for (XMLIndividual v : vals.getValues()) {
+								dumpIndividual(v, prefix + "          + ");
 							}
-						}
-						else {
-							System.out.println(" !! Etrange, la propriete " + prop.getName() + " ne contient rien ?!?" );
+						} else {
+							System.out.println(" !! Etrange, la propriete " + prop.getName() + " ne contient rien ?!?");
 						}
 					}
 				}
 
 			}
-			if (aType.getSuperType() != null){
-				dumpProperties(indiv,aType.getSuperType(),prefix);
+			if (aType.getSuperType() != null) {
+				dumpProperties(indiv, aType.getSuperType(), prefix);
 			}
 		}
 	}
@@ -116,9 +113,9 @@ public class Helpers {
 	 * 
 	 */
 
-	public  static final void dumpIndividual (XMLIndividual indiv, String prefix) {
+	public static final void dumpIndividual(XMLIndividual indiv, String prefix) {
 
-		System.out.println(prefix + "Indiv : " +  indiv.getName());
+		System.out.println(prefix + "Indiv : " + indiv.getName());
 		dumpProperties(indiv, null, prefix);
 
 		for (XMLIndividual x : indiv.getChildren())
@@ -127,6 +124,5 @@ public class Helpers {
 		System.out.flush();
 
 	}
-
 
 }

@@ -21,8 +21,6 @@
 
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import java.lang.reflect.Type;
-
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 
@@ -62,9 +60,4 @@ public abstract class XMLPropertyImpl extends FlexoObjectImpl implements XMLProp
 			return "(Unknown)";
 	}
 
-	@Override
-	public XMLProperty init(String s, Type t, XMLType container) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

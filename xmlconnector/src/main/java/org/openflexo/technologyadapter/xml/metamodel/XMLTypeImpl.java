@@ -48,9 +48,4 @@ public abstract class XMLTypeImpl extends FlexoObjectImpl implements XMLType {
 			return "(Unknown)";
 	}
 
-	@Override
-	public XMLType init(XMLMetaModel mm) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

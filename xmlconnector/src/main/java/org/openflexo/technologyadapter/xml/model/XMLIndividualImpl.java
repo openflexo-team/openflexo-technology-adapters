@@ -50,14 +50,13 @@ import org.w3c.dom.Element;
 
 public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIndividual {
 
-
-	private static final java.util.logging.Logger  logger = org.openflexo.logging.FlexoLogger.getLogger(XMLIndividualImpl.class
-			.getPackage().getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XMLIndividualImpl.class.getPackage()
+			.getName());
 
 	/* Properties */
 
-	private Map<XMLComplexType, Set<XMLIndividualImpl>>  children  = null;
-	private Map<XMLProperty, XMLPropertyValue> propertiesValues   = null;
+	private Map<XMLComplexType, Set<XMLIndividualImpl>> children = null;
+	private Map<XMLProperty, XMLPropertyValue> propertiesValues = null;
 	private final String uuid;
 
 	/**
@@ -73,7 +72,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	}
 
 	@Override
-	public String getUUID(){
+	public String getUUID() {
 		return uuid;
 	}
 
@@ -87,14 +86,12 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	}
 
 	@Override
-	public String getName(){
+	public String getName() {
 		return getType().getName();
 	}
 
-
-
 	@Override
-	public void removeChild(XMLIndividual indiv){
+	public void removeChild(XMLIndividual indiv) {
 		children.get(indiv.getType()).remove(indiv);
 	}
 
@@ -122,14 +119,12 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		return returned;
 	}
 
-
 	@Override
 	public String getPropertyStringValue(XMLProperty prop) {
 		XMLPropertyValue pv = propertiesValues.get(prop);
-		if (pv != null){
+		if (pv != null) {
 			return propertiesValues.get(prop).getStringValue();
-		}
-		else {
+		} else {
 			return "";
 		}
 	}
@@ -139,43 +134,40 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		return propertiesValues;
 	}
 
-
 	@Override
 	public XMLPropertyValue getPropertyValue(String attributeName) {
 
-		XMLProperty attr =  getType().getPropertyByName(attributeName);
+		XMLProperty attr = getType().getPropertyByName(attributeName);
 
 		if (attr != null) {
 			return propertiesValues.get(attr);
-		}
-		else
+		} else
 			return null;
 	}
 
 	@Override
-	public XMLPropertyValue getPropertyValue(XMLProperty prop){
+	public XMLPropertyValue getPropertyValue(XMLProperty prop) {
 
 		if (prop != null) {
 			return propertiesValues.get(prop);
-		}
-		else
+		} else
 			return null;
 
 	}
 
 	@Override
-	public void addPropertyValue(XMLProperty attr, XMLPropertyValue value){
+	public void addPropertyValue(XMLProperty attr, XMLPropertyValue value) {
 		// TODO
 	}
 
-	@Override	
-	public void deletePropertyValues(XMLProperty attr){
+	@Override
+	public void deletePropertyValues(XMLProperty attr) {
 		// TODO
-	}	
+	}
 
 	@Override
 	public void addPropertyValue(String name, Object value) {
-		
+
 		XMLProperty prop = getType().getPropertyByName(name);
 
 		if (prop == null) {
@@ -183,28 +175,26 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 			if (!mm.isReadOnly()) {
 				// TODO Manage complex types and actual types for objects.
 				prop = this.getType().createProperty(name, mm.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-			}
-			else {
-				logger.warning("CANNOT give a value  for a non existant attribute :" + name );
+			} else {
+				logger.warning("CANNOT give a value  for a non existant attribute :" + name);
 			}
 		}
 		if (prop != null) {
 			XMLPropertyValue vals = propertiesValues.get(prop);
 
-			if (vals == null){
+			if (vals == null) {
 
-				if (prop instanceof XMLDataProperty){
-					vals = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class,prop);
+				if (prop instanceof XMLDataProperty) {
+					vals = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class, prop);
 					((XMLDataPropertyValue) vals).setValue(value);
-					propertiesValues.put(prop,vals);
-				}
-				else {
+					propertiesValues.put(prop, vals);
+				} else {
 					// TODO..... complex attributes, collections
-				}	}
-
+				}
+			}
 
 			else {
-				// TODO.....  manage this case also
+				// TODO..... manage this case also
 			}
 		}
 
@@ -213,15 +203,14 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	@Override
 	public void addPropertyValue(XMLProperty prop, Object value) {
 		XMLPropertyValue val = propertiesValues.get(prop);
-		
-		if (val == null){
 
-			if (prop instanceof XMLDataProperty){
+		if (val == null) {
+
+			if (prop instanceof XMLDataProperty) {
 				val = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class, prop);
 				((XMLDataPropertyValue) val).setValue(value);
 				propertiesValues.put(prop, val);
-			}
-			else if (prop instanceof XMLObjectProperty){
+			} else if (prop instanceof XMLObjectProperty) {
 
 				val = XMLModelImpl.getModelFactory().newInstance(XMLObjectPropertyValue.class, prop);
 				((XMLObjectPropertyValue) val).addToValues((XMLIndividual) value);
@@ -230,17 +219,15 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		}
 
 		if (val != null) {
-			if (prop instanceof XMLDataProperty){
+			if (prop instanceof XMLDataProperty) {
 				((XMLDataPropertyValue) val).setValue(value);
-			}
-			else if (prop instanceof XMLObjectProperty){
+			} else if (prop instanceof XMLObjectProperty) {
 				((XMLObjectPropertyValue) val).addToValues((XMLIndividual) value);
 			}
 		}
 
 	}
-	
-	
+
 	/* (non-Javadoc)
 	 * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#toXML(org.w3c.dom.Document)
 	 */
@@ -250,8 +237,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		Element element = null;
 		if (nsURI != null) {
 			element = doc.createElementNS(nsURI, getType().getFullyQualifiedName());
-		}
-		else {
+		} else {
 			element = doc.createElement(getType().getName());
 		}
 
@@ -264,16 +250,15 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		return element;
 	}
 
+	@Override
+	public XMLTechnologyAdapter getTechnologyAdapter() {
+		return this.getContainerModel().getTechnologyAdapter();
+	}
 
 	@Override
-	public XMLTechnologyAdapter getTechnologyAdapter(){
-		return (XMLTechnologyAdapter) this.getContainerModel().getTechnologyAdapter();
-	}
-	
-	@Override
-	public String getDisplayableDescription(){
+	public String getDisplayableDescription() {
 		return "XML Individual of type: " + getName();
-		
+
 	}
-	
+
 }
