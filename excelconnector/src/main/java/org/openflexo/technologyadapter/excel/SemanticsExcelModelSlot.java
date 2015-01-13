@@ -137,6 +137,12 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 			return true;
 		}
 
+		@Override
+		public String getPreciseType() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	}
 
 }

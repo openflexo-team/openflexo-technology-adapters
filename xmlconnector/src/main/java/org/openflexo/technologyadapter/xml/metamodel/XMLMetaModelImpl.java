@@ -25,102 +25,93 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 /**
- * A simple MetaModeling Structure that is not backed up in an XSD file and where you can
- * create new types freely
+ * A simple MetaModeling Structure that is not backed up in an XSD file and where you can create new types freely
  * 
  * @author xtof
  *
  */
 
-public abstract class XMLMetaModelImpl  extends FlexoObjectImpl implements XMLMetaModel {
+public abstract class XMLMetaModelImpl extends FlexoObjectImpl implements XMLMetaModel {
 
 	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XMLMetaModelImpl.class.getPackage()
 			.getName());
 
 	protected Map<String, XMLType> types = null;
 
-	 
-    private static ModelFactory MF;
-    
-    public XMLMetaModelImpl (){
-    	super();
-    	types = new HashMap<String, XMLType>();
-    }
-    
-    static{
-    	try {
-			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class,
-									  										  XMLType.class,
-									  										  XMLComplexType.class,
-									  										  XMLSimpleType.class,
-									  										  XMLProperty.class,
-									  										  XMLDataProperty.class,
-									  										  XMLObjectProperty.class));
+	private static ModelFactory MF;
+
+	public XMLMetaModelImpl() {
+		super();
+		types = new HashMap<String, XMLType>();
+	}
+
+	static {
+		try {
+			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class, XMLType.class, XMLComplexType.class,
+					XMLSimpleType.class, XMLProperty.class, XMLDataProperty.class, XMLObjectProperty.class));
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
-    
+	}
 
 	public static ModelFactory getModelFactory() {
 		return MF;
 	}
 
-
 	@Override
 	public XMLType getTypeFromURI(String uri) {
-		
+
 		XMLType t = types.get(uri);
-		
-		if (t == null && uri.equals(XMLMetaModel.STR_SIMPLETYPE_URI)){
-			XMLSimpleType stringSimple = (XMLSimpleType) createNewType(XMLMetaModel.STR_SIMPLETYPE_URI, "STRING_BASIC_TYPE",true);
+
+		if (t == null && uri.equals(XMLMetaModel.STR_SIMPLETYPE_URI)) {
+			XMLSimpleType stringSimple = (XMLSimpleType) createNewType(XMLMetaModel.STR_SIMPLETYPE_URI, "STRING_BASIC_TYPE", true);
 			stringSimple.setBasicType(String.class);
 			return stringSimple;
 		}
 		return t;
-		
+
 	}
 
 	@Override
-	public void addType(XMLType aType){
+	public void addType(XMLType aType) {
 		types.put(aType.getURI(), aType);
 	}
 
 	@Override
-	public void removeType(XMLType aType){
+	public void removeType(XMLType aType) {
 		types.remove(aType);
 	}
 
 	@Override
-	public Collection<? extends XMLType> getTypes(){
+	public Collection<? extends XMLType> getTypes() {
 		return types.values();
 	}
 
 	@Override
 	public XMLType createNewType(String uri, String localName, boolean simpleType) {
 		XMLType aType = null;
-		if (simpleType){
-			aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLSimpleType.class,this);
-		}
-		else {
-			aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLComplexType.class,this);
+		if (simpleType) {
+			aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLSimpleType.class, this);
+		} else {
+			aType = XMLMetaModelImpl.getModelFactory().newInstance(XMLComplexType.class, this);
 		}
 		aType.setIsAbstract(false);
 		aType.setURI(uri);
 		aType.setName(localName);
-		
+
 		addType(aType);
 
 		return aType;
 	}
-
 
 	/**
 	 * 
@@ -128,9 +119,8 @@ public abstract class XMLMetaModelImpl  extends FlexoObjectImpl implements XMLMe
 	 * 
 	 * @return
 	 */
-	public static XMLMetaModel createEmptyMetaModel(String uri){
+	public static XMLMetaModel createEmptyMetaModel(String uri) {
 
-		
 		XMLMetaModel metamodel = MF.newInstance(XMLMetaModel.class);
 		metamodel.setReadOnly(false);
 
@@ -140,5 +130,40 @@ public abstract class XMLMetaModelImpl  extends FlexoObjectImpl implements XMLMe
 
 	}
 
-	
+	@Override
+	public String getDisplayableDescription() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public XMLTechnologyAdapter getTechnologyAdapter() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getObject(String objectURI) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setIsReadOnly(boolean b) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public FlexoResource<XMLMetaModel> getResource() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setResource(FlexoResource<XMLMetaModel> resource) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

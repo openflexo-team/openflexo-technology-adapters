@@ -25,7 +25,8 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 @XMLElement
 public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 
-	public static abstract class AddPowerpointSlideImpl extends TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointSlide> {
+	public static abstract class AddPowerpointSlideImpl extends TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointSlide>
+			implements AddPowerpointSlide {
 
 		private static final Logger logger = Logger.getLogger(AddPowerpointSlide.class.getPackage().getName());
 

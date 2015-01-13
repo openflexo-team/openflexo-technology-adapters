@@ -20,6 +20,7 @@
 package org.openflexo.technologyadapter.xml.fml.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.antar.binding.DataBinding;
@@ -130,5 +131,9 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 			return rootIndiv;
 		}
 
+		@Override
+		public Type getAssignableType() {
+			return XMLIndividual.class;
+		}
 	}
 }

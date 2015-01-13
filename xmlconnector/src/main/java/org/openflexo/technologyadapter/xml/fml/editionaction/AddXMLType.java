@@ -21,6 +21,7 @@
 package org.openflexo.technologyadapter.xml.fml.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.antar.binding.DataBinding;
@@ -146,6 +147,11 @@ public interface AddXMLType extends XMLAction<XMLModelSlot, XMLType> {
 		@Override
 		public TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, XMLModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
 			return (TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, XMLModelSlot>) super.getModelSlotInstance(action);
+		}
+
+		@Override
+		public Type getAssignableType() {
+			return XMLType.class;
 		}
 
 	}

@@ -21,8 +21,10 @@
 
 package org.openflexo.technologyadapter.xml.metamodel;
 
-import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
+import java.lang.reflect.Type;
 
+import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 
 /**
  * 
@@ -31,38 +33,38 @@ import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
  * @author xtof
  * 
  */
-public abstract class XMLPropertyImpl implements XMLProperty {
+public abstract class XMLPropertyImpl extends FlexoObjectImpl implements XMLProperty {
 
 	public XMLPropertyImpl() {
 		super();
 	}
-	
 
 	@Override
 	public int compareTo(Object arg0) {
-		if (arg0 instanceof XMLProperty){
+		if (arg0 instanceof XMLProperty) {
 			return this.getName().compareTo(((XMLProperty) arg0).getName());
-		}
-		else 
-		return -1;
+		} else
+			return -1;
 	}
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter() {
-		return (XMLTechnologyAdapter) this.getContainer().getTechnologyAdapter();
+		return this.getContainer().getTechnologyAdapter();
 	}
-
 
 	@Override
-	public String getDisplayableDescription(){
-		if (this instanceof XMLDataProperty){
+	public String getDisplayableDescription() {
+		if (this instanceof XMLDataProperty) {
 			return "XML Simple property named : " + this.getName();
-		}
-		else if (this instanceof XMLObjectProperty) {
+		} else if (this instanceof XMLObjectProperty) {
 			return "XML Object Property named : " + this.getName();
-		}
-		else return "(Unknown)";
+		} else
+			return "(Unknown)";
 	}
 
-	
+	@Override
+	public XMLProperty init(String s, Type t, XMLType container) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

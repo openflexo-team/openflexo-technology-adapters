@@ -19,7 +19,8 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 @XMLElement
 public interface SelectPowerpointSlide extends FetchRequest<BasicPowerpointModelSlot, PowerpointSlide> {
 
-	public static abstract class SelectPowerpointSlideImpl extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointSlide> {
+	public static abstract class SelectPowerpointSlideImpl extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointSlide> implements
+			SelectPowerpointSlide {
 
 		private static final Logger logger = Logger.getLogger(SelectPowerpointSlide.class.getPackage().getName());
 

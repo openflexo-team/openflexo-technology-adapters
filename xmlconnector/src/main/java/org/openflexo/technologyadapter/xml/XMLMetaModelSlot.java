@@ -24,12 +24,17 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
 import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
 import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
 import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -41,16 +46,16 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 /**
  * 
- *   An XML ModelSlot used to edit an XML MetaModel, that can ben serialized as an XSD document...
- *   
+ * An XML ModelSlot used to edit an XML MetaModel, that can ben serialized as an XSD document...
+ * 
  * @author Luka Le Roux, Sylvain Guerin, Christophe Guychard
  * 
  */
 
 @DeclarePatternRoles({ // All pattern roles available through this model slot
-	@DeclarePatternRole(FML = "XMLType", flexoRoleClass = XMLTypeRole.class), })
+@DeclarePatternRole(FML = "XMLType", flexoRoleClass = XMLTypeRole.class), })
 @DeclareEditionActions({ // All edition actions available through this model slot
-	@DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXMLType.class)})
+@DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXMLType.class) })
 @DeclareFetchRequests({ // All requests available through this model slot
 })
 @ModelEntity
@@ -58,11 +63,9 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @XMLElement
 public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 
-
 	public static abstract class XSDModelSlotImpl extends FreeModelSlotImpl<XMLMetaModel> implements XMLMetaModelSlot {
 
 		static final Logger logger = Logger.getLogger(XMLMetaModelSlot.class.getPackage().getName());
-
 
 		public XSDModelSlotImpl() {
 			super();
@@ -95,20 +98,28 @@ public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 
 		// FIXME
 
-		/*
 		@Override
-		public XMLFileResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
-				FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
-			return getTechnologyAdapter().createNewXMLFile(project, filename, modelUri, metaModelResource);
+		public TechnologyAdapterResource<XMLMetaModel, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
+			// TODO
+			// return getTechnologyAdapter().createNewXMLFile(project, filename, modelUri, metaModelResource);
+			return null;
 		}
 
 		@Override
-		public XMLFileResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
-				String modelUri, FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
-			return (XMLFileResource) getTechnologyAdapter().createNewXMLFile((FileSystemBasedResourceCenter) resourceCenter,
-					relativePath, filename, modelUri, (XSDMetaModelResource) metaModelResource);
+		public TechnologyAdapterResource<XMLMetaModel, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
+				String relativePath, String filename, String modelUri) {
+			// TODO
+			// return (XMLFileResource) getTechnologyAdapter().createNewXMLFile((FileSystemBasedResourceCenter) resourceCenter,
+			// relativePath,
+			// filename, modelUri, (XSDMetaModelResource) metaModelResource);
+			return null;
 		}
-		 */
 
+		@Override
+		public ModelSlotInstanceConfiguration<? extends FreeModelSlot<XMLMetaModel>, XMLMetaModel> createConfiguration(
+				CreateVirtualModelInstance action) {
+			// TODO
+			return null;
+		}
 	}
 }

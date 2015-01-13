@@ -39,7 +39,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 @ModelEntity
 @ImplementationClass(XMLActorReference.XMLActorReferenceImpl.class)
 @XMLElement
-public interface XMLActorReference<T extends XMLObject> extends ActorReference<T>,TechnologyObject<XMLTechnologyAdapter> {
+public interface XMLActorReference<T extends XMLObject> extends ActorReference<T>, TechnologyObject<XMLTechnologyAdapter> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String OBJECT_URI_KEY = "objectURI";
@@ -107,6 +107,13 @@ public interface XMLActorReference<T extends XMLObject> extends ActorReference<T
 			this.objectURI = objectURI;
 		}
 
+		@Override
+		public XMLTechnologyAdapter getTechnologyAdapter() {
+			if (getModelSlotInstance() != null) {
+				return (XMLTechnologyAdapter) getModelSlotInstance().getModelSlot().getModelSlotTechnologyAdapter();
+			}
+			return null;
+		}
 	}
 
 }

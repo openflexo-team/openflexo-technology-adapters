@@ -38,20 +38,19 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 /**
  * 
- *   Properties common to all XML Model Slots
+ * Properties common to all XML Model Slots
  *
  * @author xtof
  * 
  */
 
-@ModelEntity
-@XMLElement
-public interface AbstractXMLModelSlot< T extends AbstractXMLURIProcessor> extends ModelSlot<XMLModel> {
+@ModelEntity(isAbstract = true)
+public interface AbstractXMLModelSlot<T extends AbstractXMLURIProcessor> extends ModelSlot<XMLModel> {
 
 	@PropertyIdentifier(type = List.class)
 	public static final String URI_PROCESSORS_LIST_KEY = "uriProcessorsList";
 
-	@Getter(value = URI_PROCESSORS_LIST_KEY,  cardinality = Cardinality.LIST, inverse = AbstractXMLURIProcessor.MODELSLOT)
+	@Getter(value = URI_PROCESSORS_LIST_KEY, cardinality = Cardinality.LIST, inverse = AbstractXMLURIProcessor.MODELSLOT)
 	@XMLElement
 	@Embedded
 	public List<T> getUriProcessorsList();

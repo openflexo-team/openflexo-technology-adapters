@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.antar.binding.BindingFactory;
+import org.openflexo.antar.binding.BindingModel;
 import org.openflexo.foundation.FlexoProperty;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -41,7 +43,6 @@ import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -53,8 +54,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 
 // TODO Manage the fact that URI May Change
 
-@ModelEntity
-@XMLElement
+@ModelEntity(isAbstract = true)
 @ImplementationClass(AbstractXMLURIProcessor.AbstractXMLURIProcessorImpl.class)
 public interface AbstractXMLURIProcessor extends VirtualModelObject {
 
@@ -253,6 +253,19 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 		@Override
 		public String getURI() {
 			return "URIProcessor/" + this.getFlexoID();
+		}
+
+		@Override
+		public BindingModel getBindingModel() {
+			return null;
+		}
+
+		@Override
+		public BindingFactory getBindingFactory() {
+			if (getModelSlot() != null) {
+				return getModelSlot().getBindingFactory();
+			}
+			return null;
 		}
 
 	}

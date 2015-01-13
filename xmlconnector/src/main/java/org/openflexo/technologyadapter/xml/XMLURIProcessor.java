@@ -58,32 +58,32 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 @ImplementationClass(XMLURIProcessor.XMLURIProcessorImpl.class)
 public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 
-	/** 
+	/**
 	 * XMLURIProcessor interface implementation
+	 * 
 	 * @author xtof
 	 *
 	 */
 	public static abstract class XMLURIProcessorImpl extends AbstractXMLURIProcessorImpl implements XMLURIProcessor {
 
-		static final Logger  logger   = Logger.getLogger(XMLURIProcessor.class.getPackage().getName());
-
+		static final Logger logger = Logger.getLogger(XMLURIProcessor.class.getPackage().getName());
 
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
 		private final Map<String, XMLObject> uriCache = new HashMap<String, XMLObject>();
 
-
 		/**
 		 * initialises an URIProcessor with the given URI
+		 * 
 		 * @param typeURI
 		 */
 		public XMLURIProcessorImpl() {
 			super();
 		}
 
-
 		/**
 		 * initialises an URIProcessor with the given URI
+		 * 
 		 * @param typeURI
 		 */
 		public XMLURIProcessorImpl(String typeURI) {
@@ -92,8 +92,6 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 				this.typeURI = URI.create(typeURI);
 			}
 		}
-
-
 
 		// Lifecycle management methods
 		@Override
@@ -106,10 +104,11 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 
 		@Override
 		public void setTypeURI(String name) {
-			if (name != null){
+			if (name != null) {
 				typeURI = URI.create(name);
-				bindtypeURIToMappedType();}
-			else typeURI=null;
+				bindtypeURIToMappedType();
+			} else
+				typeURI = null;
 		}
 
 		@Override
@@ -117,15 +116,13 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			if (mappedXMLType != null) {
 				String _uri = mappedXMLType.getURI();
 				return _uri;
-			} 
-			else if (typeURI != null) {
+			} else if (typeURI != null) {
 				return typeURI.toString();
-			} 
+			}
 
 			return null;
 
 		}
-
 
 		@Override
 		public XMLType getMappedXMLType() {
@@ -153,16 +150,13 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 						if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attrName != null) {
 							setBasePropertyForURI((XMLDataProperty) ((XMLComplexType) getMappedXMLType()).getPropertyByName(attrName));
 						}
-					}
-					else {
+					} else {
 						logger.warning("unable to map typeURI to an OntClass, as metaModelResource or Type URI  is Null ");
 					}
-				}
-				else
+				} else
 					setMappedXMLType(null);
 			}
 		}
-
 
 		// URI Calculation
 		// TODO : manage the fact that URI might change:
@@ -179,8 +173,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			if (getMappedXMLType() == null) {
 				logger.warning("Cannot process URI as URIProcessor is not initialized for that class: " + typeURI);
 				return null;
-			}
-			else {
+			} else {
 				String attrName = getAttributeName();
 				if (getMappingStyle() == MappingStyle.ATTRIBUTE_VALUE && attrName != null && getMappedXMLType() != null) {
 
@@ -190,8 +183,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 						// NPE protection
 						if (value != null) {
 							builtURI = URLEncoder.encode(value.toString(), "UTF-8");
-						}
-						else {
+						} else {
 							logger.severe("XSURI: unable to compute an URI for given object");
 							builtURI = null;
 						}
@@ -199,16 +191,14 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 						logger.warning("Cannot process URI - Unexpected encoding error");
 						e.printStackTrace();
 					}
-				}
-				else if (getMappingStyle() == MappingStyle.SINGLETON) {
+				} else if (getMappingStyle() == MappingStyle.SINGLETON) {
 					try {
 						builtURI = URLEncoder.encode(((XMLIndividual) xsO).getType().getURI(), "UTF-8");
 					} catch (UnsupportedEncodingException e) {
 						logger.warning("Cannot process URI - Unexpected encoding error");
 						e.printStackTrace();
 					}
-				}
-				else {
+				} else {
 					logger.warning("Cannot process URI - Unexpected or Unspecified mapping parameters");
 				}
 			}
@@ -220,7 +210,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 				}
 			}
 			completeURIStr.append(typeURI.getScheme()).append("://").append(typeURI.getHost()).append(typeURI.getPath()).append("?")
-			.append(builtURI).append("#").append(typeURI.getFragment());
+					.append(builtURI).append("#").append(typeURI.getFragment());
 			return completeURIStr.toString();
 		}
 
@@ -235,7 +225,7 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 			if (getMappedXMLType() == null) {
 				bindtypeURIToMappedType();
 			}
-			
+
 			// should not be a preoccupation of XSURI
 			// if (!resource.isLoaded()) {
 			// resource.getModelData();
@@ -262,22 +252,18 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 						}
 					}
 
-				}
-				else if (getMappingStyle() == MappingStyle.SINGLETON) {
+				} else if (getMappingStyle() == MappingStyle.SINGLETON) {
 					List<?> indivList = ((XMLModel) msInstance.getAccessedResourceData()).getIndividualsOfType(getMappedXMLType());
 					if (indivList.size() > 1) {
 						throw new DuplicateURIException("Cannot process URI - Several individuals found for singleton of type "
 								+ this.getTypeURI().toString());
-					}
-					else if (indivList.size() == 0) {
+					} else if (indivList.size() == 0) {
 						logger.warning("Cannot find Singleton for type : " + this.getTypeURI().toString());
-					}
-					else {
+					} else {
 						o = (XMLObject) indivList.get(0);
 					}
 				}
-			}
-			else {
+			} else {
 				logger.warning("Cannot process URI - Unexpected or Unspecified mapping parameters");
 
 			}
@@ -293,23 +279,31 @@ public interface XMLURIProcessor extends AbstractXMLURIProcessor {
 
 			fullURI = URI.create(objectURI);
 			typeURIStr.append(fullURI.getScheme()).append("://").append(fullURI.getHost()).append(fullURI.getPath()).append("#")
-			.append(fullURI.getFragment());
+					.append(fullURI.getFragment());
 
 			return typeURIStr.toString();
 		}
 
-
-
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
-			if (mappedXMLType != null){
+			if (mappedXMLType != null) {
 				return "XMLURIProcessor for " + this.mappedXMLType.getName();
-			}
-			else {
+			} else {
 				return "";
 			}
 		}
 
+		@Override
+		public AbstractXMLURIProcessor init() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public AbstractXMLURIProcessor init(String typeURI) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 
 	}
 }

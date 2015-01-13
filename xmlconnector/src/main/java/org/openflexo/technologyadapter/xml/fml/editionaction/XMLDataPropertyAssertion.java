@@ -27,7 +27,6 @@ import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.editionaction.AbstractAssertion;
 import org.openflexo.foundation.fml.editionaction.AddIndividual;
-import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.model.annotations.Getter;
@@ -61,8 +60,9 @@ public interface XMLDataPropertyAssertion extends AbstractAssertion {
 	@Getter(value = ACTION_KEY, inverse = AddXMLIndividual.DATA_ASSERTIONS_KEY)
 	public AddIndividual<?, ?> getAction();
 
+	@Override
 	@Setter(ACTION_KEY)
-	public void setAction(AssignableAction action);
+	public void setAction(AddIndividual<?, ?> action);
 
 	@Getter(value = DATA_PROPERTY_NAME_KEY)
 	@XMLAttribute

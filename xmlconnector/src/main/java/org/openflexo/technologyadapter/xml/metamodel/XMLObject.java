@@ -32,24 +32,21 @@ import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
  * @author xtof
  * 
  */
-@ModelEntity 
-public interface XMLObject extends FlexoObject,TechnologyObject<XMLTechnologyAdapter> {
-
+@ModelEntity(isAbstract = true)
+public interface XMLObject extends FlexoObject, TechnologyObject<XMLTechnologyAdapter> {
 
 	public static final String NAME = "name";
 
 	public final String URI = "uri";
 
-	
 	@Getter(NAME)
 	public String getName();
-	
+
 	@Getter(URI)
 	public String getURI();
-	
+
 	@Setter(URI)
 	public void setURI(String uri);
-	
 
 	public String getDisplayableDescription();
 

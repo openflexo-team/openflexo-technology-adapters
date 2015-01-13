@@ -19,7 +19,8 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
 @XMLElement
 public interface SelectPowerpointShape extends FetchRequest<BasicPowerpointModelSlot, PowerpointShape> {
 
-	public static abstract class SelectPowerpointShapeImpl extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointShape> {
+	public static abstract class SelectPowerpointShapeImpl extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointShape> implements
+			SelectPowerpointShape {
 
 		private static final Logger logger = Logger.getLogger(SelectPowerpointShape.class.getPackage().getName());
 

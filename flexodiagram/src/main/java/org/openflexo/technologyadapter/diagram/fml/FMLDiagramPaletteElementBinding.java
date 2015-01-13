@@ -189,6 +189,11 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		}
 
 		@Override
+		public String getURI() {
+			return null;
+		}
+
+		@Override
 		public FlexoConcept getFlexoConcept() {
 			return getDiagramModelSlot().getFlexoConcept();
 		}

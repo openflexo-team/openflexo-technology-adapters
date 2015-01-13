@@ -35,7 +35,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 @XMLElement
 public interface PowerpointSlideRole extends FlexoRole<PowerpointSlide> {
 
-	public static abstract class PowerpointSlidePatternRoleImpl extends FlexoRoleImpl<PowerpointSlide> {
+	public static abstract class PowerpointSlidePatternRoleImpl extends FlexoRoleImpl<PowerpointSlide> implements PowerpointSlideRole {
 
 		@Override
 		public Type getType() {

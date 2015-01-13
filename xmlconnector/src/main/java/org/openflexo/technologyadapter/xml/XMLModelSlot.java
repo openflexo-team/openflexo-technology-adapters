@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
@@ -70,7 +71,7 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 
 /**
  * 
- *   An XML ModelSlot used to edit an XML document conformant to a (XSD) MetaModel
+ * An XML ModelSlot used to edit an XML document conformant to a (XSD) MetaModel
  *
  * @author xtof
  * 
@@ -78,39 +79,35 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 @DeclarePatternRoles({ @DeclarePatternRole(flexoRoleClass = XMLIndividualRole.class, FML = "XMLIndividual"), // Instances
 })
 @DeclareActorReferences({ // All actor references available through this model slot
-	@DeclareActorReference(FML = "XMLActorReference", actorReferenceClass = XMLActorReference.class) })
-@DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add instance
-	@DeclareEditionAction(editionActionClass = GetXMLDocumentRoot.class, FML = "GetXMLDocumentRoot"),
-	@DeclareEditionAction(editionActionClass = SetXMLDocumentRoot.class, FML = "SetXMLDocumentRoot"),
-})
+@DeclareActorReference(FML = "XMLActorReference", actorReferenceClass = XMLActorReference.class) })
+@DeclareEditionActions({
+		@DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add instance
+		@DeclareEditionAction(editionActionClass = GetXMLDocumentRoot.class, FML = "GetXMLDocumentRoot"),
+		@DeclareEditionAction(editionActionClass = SetXMLDocumentRoot.class, FML = "SetXMLDocumentRoot"), })
 @ModelEntity
 @XMLElement
 @ImplementationClass(XMLModelSlot.XMLModelSlotImpl.class)
-@Imports({@Import(XMLURIProcessor.class),})
-public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>, AbstractXMLModelSlot<XMLURIProcessor>  {
+@Imports({ @Import(XMLURIProcessor.class), })
+public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>, AbstractXMLModelSlot<XMLURIProcessor> {
 
 	@PropertyIdentifier(type = XMLMetaModel.class)
 	public static final String METAMODEL = "metamodel";
 
-
 	@Getter(value = METAMODEL)
 	public XMLMetaModel getMetamodel();
 
-
-	// public static abstract class XMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<XMLURIProcessor> implements XMLModelSlot {
+	// public static abstract class XMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<XMLURIProcessor> implements
+	// XMLModelSlot {
 	// TODO : check for multiple inheritance issues in PAMELA
 	public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel> implements XMLModelSlot {
 
-
-
 		private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
-
 
 		/* Used to process URIs for XML Objects */
 		private List<XMLURIProcessor> uriProcessors;
-		private Hashtable<String,  XMLURIProcessor> uriProcessorsMap;
+		private Hashtable<String, XMLURIProcessor> uriProcessorsMap;
 
-		public XMLModelSlotImpl(){
+		public XMLModelSlotImpl() {
 			super();
 			if (uriProcessorsMap == null) {
 				uriProcessorsMap = new Hashtable<String, XMLURIProcessor>();
@@ -119,7 +116,6 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 				uriProcessors = new ArrayList<XMLURIProcessor>();
 			}
 		}
-
 
 		@Override
 		public Class<? extends TechnologyAdapter> getTechnologyAdapterClass() {
@@ -134,39 +130,34 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			return xsuriProc;
 		}
 
-
 		/*=====================================================================================
 		 * URI Accessors
 		 */
 		// TODO Manage the fact that URI May Change
 
-
 		@Override
 		public String getURIForObject(
 				TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,
-						Object o) {
+				Object o) {
 
-			if (o instanceof XMLIndividual){
+			if (o instanceof XMLIndividual) {
 				XMLURIProcessor p = retrieveURIProcessorForType(((XMLIndividual) o).getType());
-				if (p != null){
+				if (p != null) {
 					return p.getURIForObject(msInstance, (XMLObject) o);
-				}
-				else {
+				} else {
 					logger.warning("Unable to calculate URI as I have no XMLURIProcessor");
 				}
-			}
-			else if (o instanceof XMLType){
+			} else if (o instanceof XMLType) {
 				return ((XMLType) o).getURI();
 			}
 
 			return null;
 		}
 
-
 		@Override
 		public Object retrieveObjectWithURI(
 				TypeAwareModelSlotInstance<XMLModel, XMLMetaModel, ? extends TypeAwareModelSlot<XMLModel, XMLMetaModel>> msInstance,
-						String objectURI) {
+				String objectURI) {
 
 			String typeUri = XMLURIProcessorImpl.retrieveTypeURI(msInstance, objectURI);
 			XMLModel model = msInstance.getModel();
@@ -188,7 +179,6 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 			return null;
 		}
-
 
 		@Override
 		public XMLURIProcessor retrieveURIProcessorForType(XMLType aXmlType) {
@@ -212,7 +202,6 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			return mapParams;
 		}
 
-
 		// ==========================================================================
 		// ============================== uriProcessors Map ===================
 		// ==========================================================================
@@ -220,7 +209,6 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		public void setUriProcessors(List<XMLURIProcessor> uriProcessingParameters) {
 			this.uriProcessors = uriProcessingParameters;
 		}
-
 
 		public void updateURIMapForProcessor(XMLURIProcessor xmluriProc) {
 			String uri = xmluriProc.getTypeURI();
@@ -278,7 +266,6 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			removeFromUriProcessors(xmluriProc);
 		}
 
-
 		/**
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
@@ -289,14 +276,13 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 		@Override
 		@Getter(value = METAMODEL)
-		public XMLMetaModel getMetamodel(){
+		public XMLMetaModel getMetamodel() {
 			FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> mmRes = this.getMetaModelResource();
-			if (mmRes != null ){
+			if (mmRes != null) {
 				return mmRes.getMetaModelData();
-			}
-			else return null;
+			} else
+				return null;
 		}
-
 
 		@Override
 		public XMLFileResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
@@ -304,11 +290,9 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 			File xmlFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
 
-
 			XMLModelRepository modelRepository = project.getRepository(XMLModelRepository.class, getModelSlotTechnologyAdapter());
 
-
-			return createEmptyXMLFileResource(xmlFile,modelRepository, (XSDMetaModelResource) metaModelResource);
+			return createEmptyXMLFileResource(xmlFile, modelRepository, (XSDMetaModelResource) metaModelResource);
 		}
 
 		@Override
@@ -317,37 +301,40 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 			XMLFileResource returned = null;
 
-			if (resourceCenter instanceof FileSystemBasedResourceCenter){
-				File xmlFile = new File(((FileSystemBasedResourceCenter)resourceCenter).getRootDirectory(), relativePath + System.getProperty("file.separator") +filename);
+			if (resourceCenter instanceof FileSystemBasedResourceCenter) {
+				File xmlFile = new File(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory(), relativePath
+						+ System.getProperty("file.separator") + filename);
 
 				modelUri = xmlFile.toURI().toString();
 
-				XMLModelRepository modelRepository = resourceCenter.getRepository(XMLModelRepository.class, getModelSlotTechnologyAdapter());
+				XMLModelRepository modelRepository = resourceCenter
+						.getRepository(XMLModelRepository.class, getModelSlotTechnologyAdapter());
 
-				return createEmptyXMLFileResource(xmlFile,modelRepository, (XSDMetaModelResource) metaModelResource);
+				return createEmptyXMLFileResource(xmlFile, modelRepository, (XSDMetaModelResource) metaModelResource);
 			}
 			return null;
 
 		}
 
-		private XMLFileResource createEmptyXMLFileResource(File xmlFile, XMLModelRepository modelRepository, XSDMetaModelResource metaModelResource){
+		private XMLFileResource createEmptyXMLFileResource(File xmlFile, XMLModelRepository modelRepository,
+				XSDMetaModelResource metaModelResource) {
 
-			XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile, (XMLTechnologyContextManager) this.getModelSlotTechnologyAdapter().getTechnologyContextManager());
+			XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile, (XMLTechnologyContextManager) this
+					.getModelSlotTechnologyAdapter().getTechnologyContextManager());
 
 			RepositoryFolder<XMLFileResource> folder;
 			try {
 				folder = modelRepository.getRepositoryFolder(xmlFile, true);
-				if (folder != null){
+				if (folder != null) {
 					modelRepository.registerResource(returned, folder);
-				}else{
+				} else {
 					modelRepository.registerResource(returned);
 				}
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
 
-
-			if (metaModelResource != null && returned != null){
+			if (metaModelResource != null && returned != null) {
 				returned.setMetaModelResource(metaModelResource);
 				returned.getModel().setMetaModel(metaModelResource.getMetaModelData());
 			}
@@ -356,15 +343,20 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 		}
 
-
 		@Override
 		public Type getType() {
 			return XMLModelSlot.class;
 		}
 
+		@Override
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> flexoRoleClass) {
+			return flexoRoleClass.getSimpleName();
+		}
 
-
-
+		@Override
+		public String getPreciseType() {
+			return "xml";
+		}
 	}
 
 }

@@ -21,10 +21,12 @@
 
 package org.openflexo.technologyadapter.xml;
 
+import java.lang.reflect.Type;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
@@ -56,44 +58,38 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @DeclarePatternRoles({ @DeclarePatternRole(flexoRoleClass = XMLIndividualRole.class, FML = "XMLIndividual"), // Instances
 })
 @DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add
-	// instance
+// instance
 })
 @ModelEntity
 @XMLElement
 @ImplementationClass(FreeXMLModelSlot.FreeXMLModelSlotImpl.class)
-@Imports({@Import(FreeXMLURIProcessor.class),})
-public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>,AbstractXMLModelSlot<FreeXMLURIProcessor> {
+@Imports({ @Import(FreeXMLURIProcessor.class), })
+public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLModelSlot<FreeXMLURIProcessor> {
 
-
-	// public static abstract class FreeXMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<FreeXMLURIProcessor> implements FreeXMLModelSlot {
+	// public static abstract class FreeXMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<FreeXMLURIProcessor>
+	// implements FreeXMLModelSlot {
 	public static abstract class FreeXMLModelSlotImpl extends FreeModelSlotImpl<XMLModel> implements FreeXMLModelSlot {
-
 
 		private static final Logger logger = Logger.getLogger(FreeXMLModelSlot.class.getPackage().getName());
 
-
 		/* Used to process URIs for XML Objects */
 		private List<FreeXMLURIProcessor> uriProcessors;
-		private Hashtable<String,  FreeXMLURIProcessor> uriProcessorsMap;
-		
+		private Hashtable<String, FreeXMLURIProcessor> uriProcessorsMap;
 
-		    
-		public FreeXMLModelSlotImpl(){
+		public FreeXMLModelSlotImpl() {
 			super();
 		}
-		
+
 		@Override
 		public Class<? extends TechnologyAdapter> getTechnologyAdapterClass() {
 			return XMLTechnologyAdapter.class;
 		}
-		
-		
+
 		@Override
 		public TechnologyAdapterResource<XMLModel, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
 			// TODO Auto-generated method stub
 			return null;
 		}
-
 
 		@Override
 		public TechnologyAdapterResource<XMLModel, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter, String relativePath,
@@ -102,7 +98,6 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>,AbstractXMLMod
 			return null;
 		}
 
-
 		@Override
 		public FreeXMLURIProcessor createURIProcessor() {
 			FreeXMLURIProcessor xsuriProc = getFMLModelFactory().newInstance(FreeXMLURIProcessor.class);
@@ -110,8 +105,6 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>,AbstractXMLMod
 			this.addToUriProcessorsList(xsuriProc);
 			return xsuriProc;
 		}
-
-
 
 		/*=====================================================================================
 		 * URI Accessors
@@ -140,7 +133,6 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>,AbstractXMLMod
 			}
 			return mapParams;
 		}
-
 
 		// ==========================================================================
 		// ============================== uriProcessors Map ===================
@@ -210,14 +202,20 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>,AbstractXMLMod
 			removeFromUriProcessors(xmluriProc);
 		}
 
-
-		
-
 		@Override
 		public ModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
 			return new FreeXMLModelSlotInstanceConfiguration(this, action);
 		}
 
+		@Override
+		public Type getType() {
+			return XMLModel.class;
+		}
+
+		@Override
+		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> flexoRoleClass) {
+			return flexoRoleClass.getSimpleName();
+		}
 	}
 
 }

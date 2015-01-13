@@ -311,5 +311,17 @@ public interface FreeXMLURIProcessor extends AbstractXMLURIProcessor {
 			}
 		}
 
+		@Override
+		public AbstractXMLURIProcessor init() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public AbstractXMLURIProcessor init(String typeURI) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
 	}
 }

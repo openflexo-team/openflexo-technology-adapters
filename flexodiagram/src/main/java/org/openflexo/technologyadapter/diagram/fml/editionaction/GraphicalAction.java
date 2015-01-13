@@ -20,6 +20,7 @@
 package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -297,6 +298,14 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 			}
 			((GraphicalFeature) getGraphicalFeature()).applyToGraphicalRepresentation(graphicalElement.getGraphicalRepresentation(), value);
 			return graphicalElement;
+		}
+
+		@Override
+		public Type getAssignableType() {
+			if (getSubject() != null && getSubject().isSet() && getSubject().isValid()) {
+				return getSubject().getAnalyzedType();
+			}
+			return DiagramElement.class;
 		}
 
 	}
