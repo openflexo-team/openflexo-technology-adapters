@@ -29,6 +29,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
+			<artifactId>fml-technologyadapter-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
 			<artifactId>xmlconnector</artifactId>
 			<version>${project.version}</version>
 		</dependency>
