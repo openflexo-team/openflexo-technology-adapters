@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -101,23 +101,18 @@ public class OSLCAdapterController extends TechnologyAdapterController<OSLCTechn
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForEditionAction(Class<? extends TechnologySpecificAction<?, ?>> editionActionClass) {
+	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
 		if (AddOSLCResource.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCResource.class), IconLibrary.DUPLICATE);
-		}
-		else if (AddOSLCRequirement.class.isAssignableFrom(editionActionClass)) {
+		} else if (AddOSLCRequirement.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCRequirement.class), IconLibrary.DUPLICATE);
-		}
-		else if (SelectOSLCResource.class.isAssignableFrom(editionActionClass)) {
+		} else if (SelectOSLCResource.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCResource.class), IconLibrary.IMPORT);
-		}
-		else if (SelectOSLCRequirement.class.isAssignableFrom(editionActionClass)) {
+		} else if (SelectOSLCRequirement.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCRequirement.class), IconLibrary.IMPORT);
-		}
-		else if (SelectOSLCServiceProvider.class.isAssignableFrom(editionActionClass)) {
+		} else if (SelectOSLCServiceProvider.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCServiceProvider.class), IconLibrary.IMPORT);
-		}
-		else if (SelectOSLCService.class.isAssignableFrom(editionActionClass)) {
+		} else if (SelectOSLCService.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCService.class), IconLibrary.IMPORT);
 		}
 		return super.getIconForEditionAction(editionActionClass);
