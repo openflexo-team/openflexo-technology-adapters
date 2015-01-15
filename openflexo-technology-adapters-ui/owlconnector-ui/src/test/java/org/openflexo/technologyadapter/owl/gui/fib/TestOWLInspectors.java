@@ -23,16 +23,28 @@ package org.openflexo.technologyadapter.owl.gui.fib;
 
 import org.junit.Test;
 import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.ResourceLocator;
 
 public class TestOWLInspectors extends GenericFIBInspectorTestCase {
 
+	/*
+	 * Use this method to print all
+	 * Then copy-paste 
+	 */
+
+	public static void main(String[] args) {
+		System.out.println(generateInspectorTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Inspectors/OWL")).getFile(),
+				"Inspectors/OWL/"));
+	}
+
 	@Test
-	public void testDataPropertyStatementPatternRoleInspector() {
+	public void testDataPropertyStatementRoleInspector() {
 		validateFIB("Inspectors/OWL/DataPropertyStatementRole.inspector");
 	}
 
 	@Test
-	public void testObjectPropertyStatementPatternRoleInspector() {
+	public void testObjectPropertyStatementRoleInspector() {
 		validateFIB("Inspectors/OWL/ObjectPropertyStatementRole.inspector");
 	}
 
