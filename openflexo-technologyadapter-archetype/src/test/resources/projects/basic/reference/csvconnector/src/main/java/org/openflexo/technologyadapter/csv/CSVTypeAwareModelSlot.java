@@ -57,8 +57,8 @@ import org.openflexo.technologyadapter.csv.virtualmodel.action.SelectCSVObjectIn
  * @author Jean Le Paon
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-	@DeclarePatternRole(FML = "CSVObjectIndividual", flexoRoleClass = CSVObjectIndividualRole.class)
+@DeclareFlexoRoles({ // All pattern roles available through this model slot
+	@DeclareFlexoRole(FML = "CSVObjectIndividual", flexoRoleClass = CSVObjectIndividualRole.class)
 	})
 @DeclareEditionActions({ // All edition actions available through this model slot
 	@DeclareEditionAction(FML = "AddCSVObjectIndividual", editionActionClass = AddCSVObjectIndividual.class)

@@ -3,17 +3,17 @@ package org.openflexo.technologyadapter.diagram;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviour;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviour;
-import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviours;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -40,16 +40,15 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
  * @author sylvain
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "ShapeSpecification", flexoRoleClass = ShapeRole.class), // Shapes
-		@DeclarePatternRole(FML = "ConnectorSpecification", flexoRoleClass = ConnectorRole.class), // Connectors
-		@DeclarePatternRole(FML = "Diagram", flexoRoleClass = DiagramRole.class) // Diagrams
+@DeclareFlexoRoles({ // All pattern roles available through this model slot
+@DeclareFlexoRole(FML = "ShapeSpecification", flexoRoleClass = ShapeRole.class), // Shapes
+		@DeclareFlexoRole(FML = "ConnectorSpecification", flexoRoleClass = ConnectorRole.class), // Connectors
+		@DeclareFlexoRole(FML = "Diagram", flexoRoleClass = DiagramRole.class) // Diagrams
 })
 @DeclareFlexoBehaviours({ // All edition actions available through this model slot
-		@DeclareFlexoBehaviour(FML = "DropScheme", flexoBehaviourClass = DropScheme.class),
+@DeclareFlexoBehaviour(FML = "DropScheme", flexoBehaviourClass = DropScheme.class),
 		@DeclareFlexoBehaviour(FML = "LinkScheme", flexoBehaviourClass = LinkScheme.class),
-		@DeclareFlexoBehaviour(FML = "NavigationScheme", flexoBehaviourClass = DiagramNavigationScheme.class)
-})
+		@DeclareFlexoBehaviour(FML = "NavigationScheme", flexoBehaviourClass = DiagramNavigationScheme.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddDiagram", editionActionClass = AddDiagram.class),
 		@DeclareEditionAction(FML = "AddShape", editionActionClass = AddShape.class),

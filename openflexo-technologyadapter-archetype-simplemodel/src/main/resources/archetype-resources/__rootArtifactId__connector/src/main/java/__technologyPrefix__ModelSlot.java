@@ -46,8 +46,8 @@ import ${package}.fml.${technologyPrefix}Role;
  * @author ${author}
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-        @DeclarePatternRole(flexoRoleClass = ${technologyPrefix}Role.class, FML = "Object"),
+@DeclareFlexoRoles({ // All pattern roles available through this model slot
+        @DeclareFlexoRole(flexoRoleClass = ${technologyPrefix}Role.class, FML = "Object"),
     })
 @DeclareEditionActions({ // All edition actions available through this model slot
     })

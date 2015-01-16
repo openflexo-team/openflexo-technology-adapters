@@ -29,19 +29,19 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareActorReference;
+import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
+import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequest;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.DeclareActorReference;
-import org.openflexo.foundation.technologyadapter.DeclareActorReferences;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -72,11 +72,11 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
  */
 @DeclareActorReferences({ // All actor references available through this model slot
 @DeclareActorReference(FML = "ExcelActorReference", actorReferenceClass = ExcelActorReference.class) })
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "ExcelSheet", flexoRoleClass = ExcelSheetRole.class), // Sheet
-		@DeclarePatternRole(FML = "ExcelColumn", flexoRoleClass = ExcelColumnRole.class), // Sheet
-		@DeclarePatternRole(FML = "ExcelRow", flexoRoleClass = ExcelRowRole.class), // Row
-		@DeclarePatternRole(FML = "ExcelCell", flexoRoleClass = ExcelCellRole.class) // Cell
+@DeclareFlexoRoles({ // All pattern roles available through this model slot
+@DeclareFlexoRole(FML = "ExcelSheet", flexoRoleClass = ExcelSheetRole.class), // Sheet
+		@DeclareFlexoRole(FML = "ExcelColumn", flexoRoleClass = ExcelColumnRole.class), // Sheet
+		@DeclareFlexoRole(FML = "ExcelRow", flexoRoleClass = ExcelRowRole.class), // Row
+		@DeclareFlexoRole(FML = "ExcelCell", flexoRoleClass = ExcelCellRole.class) // Cell
 })
 @DeclareEditionActions({ // All edition actions available through this model
 // slot
@@ -176,21 +176,22 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 			try {
 				String builtURI = URLEncoder.encode(objectURI, "UTF-8");
 				ExcelObject o = uriCache.get(builtURI);
-				if(o!=null){
+				if (o != null) {
 					return o;
-				}else{
+				} else {
 					TechnologyAdapterResource<ExcelWorkbook, ?> resource = msInstance.getResource();
 					if (!resource.isLoaded()) {
 						resource.loadResourceData(null);
 					}
-					ArrayList<ExcelObject> excelObject = (ArrayList<ExcelObject>)msInstance.getAccessedResourceData().getAccessibleExcelObjects();
+					ArrayList<ExcelObject> excelObject = (ArrayList<ExcelObject>) msInstance.getAccessedResourceData()
+							.getAccessibleExcelObjects();
 					for (ExcelObject obj : excelObject) {
 						if (obj.getUri().equals(URLDecoder.decode(objectURI, "UTF-8"))) {
 							return obj;
 						}
 					}
 				}
-				
+
 				return o;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block

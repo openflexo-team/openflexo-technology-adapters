@@ -25,12 +25,12 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
@@ -43,9 +43,9 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
  * @author sylvain
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassRole.class),
-		@DeclarePatternRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassRole.class) })
+@DeclareFlexoRoles({ // All pattern roles available through this model slot
+@DeclareFlexoRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassRole.class),
+		@DeclareFlexoRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model
 // slot
 })

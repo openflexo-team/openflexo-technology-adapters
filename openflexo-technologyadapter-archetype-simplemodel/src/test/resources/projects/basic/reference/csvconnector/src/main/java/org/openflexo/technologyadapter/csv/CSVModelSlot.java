@@ -43,8 +43,8 @@ import org.openflexo.technologyadapter.csv.fml.CSVRole;
  * @author Jean Le Paon
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-        @DeclarePatternRole(flexoRoleClass = CSVRole.class, FML = "Object"),
+@DeclareFlexoRoles({ // All pattern roles available through this model slot
+        @DeclareFlexoRole(flexoRoleClass = CSVRole.class, FML = "Object"),
     })
 @DeclareEditionActions({ // All edition actions available through this model slot
     })

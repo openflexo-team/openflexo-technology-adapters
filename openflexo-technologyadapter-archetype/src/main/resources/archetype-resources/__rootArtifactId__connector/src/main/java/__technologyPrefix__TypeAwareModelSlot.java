@@ -60,8 +60,8 @@ import ${package}.virtualmodel.action.Select${technologyPrefix}ObjectIndividual;
  * @author ${author}
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-	@DeclarePatternRole(FML = "${technologyPrefix}ObjectIndividual", flexoRoleClass = ${technologyPrefix}ObjectIndividualRole.class)
+@DeclareFlexoRoles({ // All pattern roles available through this model slot
+	@DeclareFlexoRole(FML = "${technologyPrefix}ObjectIndividual", flexoRoleClass = ${technologyPrefix}ObjectIndividualRole.class)
 	})
 @DeclareEditionActions({ // All edition actions available through this model slot
 	@DeclareEditionAction(FML = "Add${technologyPrefix}ObjectIndividual", editionActionClass = Add${technologyPrefix}ObjectIndividual.class)

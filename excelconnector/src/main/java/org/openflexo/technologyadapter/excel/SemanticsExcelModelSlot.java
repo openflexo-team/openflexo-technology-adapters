@@ -25,14 +25,14 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.FlexoModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
@@ -55,9 +55,9 @@ import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
  * @author Vincent Leildé, Sylvain Guérin
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "BusinessConceptType", flexoRoleClass = BusinessConceptTypeRole.class), // Workbook
-		@DeclarePatternRole(FML = "BusinessConceptInstance", flexoRoleClass = BusinessConceptInstanceRole.class) // Cell
+@DeclareFlexoRoles({ // All pattern roles available through this model slot
+@DeclareFlexoRole(FML = "BusinessConceptType", flexoRoleClass = BusinessConceptTypeRole.class), // Workbook
+		@DeclareFlexoRole(FML = "BusinessConceptInstance", flexoRoleClass = BusinessConceptInstanceRole.class) // Cell
 })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddBusinessConceptInstance", editionActionClass = AddBusinessConceptInstance.class) // Add instance of BC

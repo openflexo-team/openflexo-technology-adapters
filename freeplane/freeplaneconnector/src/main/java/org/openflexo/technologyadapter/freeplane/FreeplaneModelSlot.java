@@ -29,10 +29,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequest;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.technologyadapter.*;
+import org.openflexo.foundation.technologyadapter.FreeModelSlot;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -52,16 +60,12 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
  * @author eloubout
  */
 // All pattern roles available through this model slot
-@DeclarePatternRoles({
-		@DeclarePatternRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
-		@DeclarePatternRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map")
-})
+@DeclareFlexoRoles({ @DeclareFlexoRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
+		@DeclareFlexoRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
 // All editions actions available through this model slot
-@DeclareEditionActions({
-		@DeclareEditionAction(editionActionClass = AddChildNodeAction.class, FML = "AddChildNode"),
-		@DeclareEditionAction(editionActionClass = AddSiblingNodeAction.class, FML = "AddSiblingNode")
-})
-@DeclareFlexoBehaviours({ })
+@DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddChildNodeAction.class, FML = "AddChildNode"),
+		@DeclareEditionAction(editionActionClass = AddSiblingNodeAction.class, FML = "AddSiblingNode") })
+@DeclareFlexoBehaviours({})
 @DeclareFetchRequests({ @DeclareFetchRequest(fetchRequestClass = SelectAllNodes.class, FML = "SelectAllNodes") })
 @ModelEntity
 @ImplementationClass(FreeplaneModelSlotImpl.class)
@@ -133,7 +137,8 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		}
 
 		@Override
-		public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createProjectSpecificEmptyResource(final View view, final String filename, final String modelUri) {
+		public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createProjectSpecificEmptyResource(final View view,
+				final String filename, final String modelUri) {
 			return getModelSlotTechnologyAdapter().createNewFreeplaneMap(view.getProject(), filename);
 		}
 	}

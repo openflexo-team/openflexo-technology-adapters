@@ -26,15 +26,15 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequest;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -56,9 +56,9 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.rm.OSLCRequirementRole;
 @ModelEntity
 @ImplementationClass(OSLCRMModelSlot.OSLCRMModelSlotImpl.class)
 @XMLElement
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "OSLCRequirement", flexoRoleClass = OSLCRequirementRole.class),
-		@DeclarePatternRole(FML = "OSLCRequirementCollection", flexoRoleClass = OSLCRequirementCollectionRole.class), })
+@DeclareFlexoRoles({ // All pattern roles available through this model slot
+@DeclareFlexoRole(FML = "OSLCRequirement", flexoRoleClass = OSLCRequirementRole.class),
+		@DeclareFlexoRole(FML = "OSLCRequirementCollection", flexoRoleClass = OSLCRequirementCollectionRole.class), })
 @DeclareEditionActions({ // All edition actions available through this modelslot
 @DeclareEditionAction(FML = "AddOSLCRequirement", editionActionClass = AddOSLCRequirement.class),
 		@DeclareEditionAction(FML = "AddOSLCRequirementCollection", editionActionClass = AddOSLCRequirementCollection.class) })
@@ -91,8 +91,7 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (OSLCRequirementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "requirement";
-			}
-			else if (OSLCRequirementCollectionRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (OSLCRequirementCollectionRole.class.isAssignableFrom(patternRoleClass)) {
 				return "requirementCollection";
 			}
 			return null;

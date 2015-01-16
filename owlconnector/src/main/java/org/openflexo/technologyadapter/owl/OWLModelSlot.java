@@ -29,14 +29,14 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.model.ModelContextLibrary;
@@ -73,16 +73,16 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
  * @author sylvain, luka
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "OWLIndividual", flexoRoleClass = OWLIndividualRole.class),
-		@DeclarePatternRole(FML = "OWLClass", flexoRoleClass = OWLClassRole.class),
-		@DeclarePatternRole(FML = "OWLDataProperty", flexoRoleClass = OWLDataPropertyRole.class),
-		@DeclarePatternRole(FML = "OWLObjectProperty", flexoRoleClass = OWLObjectPropertyRole.class),
-		@DeclarePatternRole(FML = "OWLProperty", flexoRoleClass = OWLPropertyRole.class),
-		@DeclarePatternRole(FML = "DataPropertyStatement", flexoRoleClass = DataPropertyStatementRole.class),
-		@DeclarePatternRole(FML = "ObjectPropertyStatement", flexoRoleClass = ObjectPropertyStatementRole.class),
+@DeclareFlexoRoles({ // All pattern roles available through this model slot
+@DeclareFlexoRole(FML = "OWLIndividual", flexoRoleClass = OWLIndividualRole.class),
+		@DeclareFlexoRole(FML = "OWLClass", flexoRoleClass = OWLClassRole.class),
+		@DeclareFlexoRole(FML = "OWLDataProperty", flexoRoleClass = OWLDataPropertyRole.class),
+		@DeclareFlexoRole(FML = "OWLObjectProperty", flexoRoleClass = OWLObjectPropertyRole.class),
+		@DeclareFlexoRole(FML = "OWLProperty", flexoRoleClass = OWLPropertyRole.class),
+		@DeclareFlexoRole(FML = "DataPropertyStatement", flexoRoleClass = DataPropertyStatementRole.class),
+		@DeclareFlexoRole(FML = "ObjectPropertyStatement", flexoRoleClass = ObjectPropertyStatementRole.class),
 		// @DeclareFlexoRole(FML = "RestrictionStatement", flexoRoleClass = RestrictionStatementRole.class),
-		@DeclarePatternRole(FML = "SubClassStatement", flexoRoleClass = SubClassStatementRole.class) })
+		@DeclareFlexoRole(FML = "SubClassStatement", flexoRoleClass = SubClassStatementRole.class) })
 @DeclareEditionActions({ // All edition actions available through this model slot
 @DeclareEditionAction(FML = "AddOWLIndividual", editionActionClass = AddOWLIndividual.class), // Add instance
 		@DeclareEditionAction(FML = "AddOWLClass", editionActionClass = AddOWLClass.class), // Add class
@@ -139,26 +139,19 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (OWLClassRole.class.isAssignableFrom(patternRoleClass)) {
 				return "class";
-			}
-			else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
-			}
-			else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "property";
-			}
-			else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "dataProperty";
-			}
-			else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "objectProperty";
-			}
-			else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
-			}
-			else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
-			}
-			else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
 			}
 			return null;
@@ -202,8 +195,8 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		@Override
 		public OWLOntologyResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewOntology((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
-					modelUri, (OWLOntologyResource) metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewOntology((FileSystemBasedResourceCenter) resourceCenter, relativePath,
+					filename, modelUri, (OWLOntologyResource) metaModelResource);
 		}
 
 		/**
