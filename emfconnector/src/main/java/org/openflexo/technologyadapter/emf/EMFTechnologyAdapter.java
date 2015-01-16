@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.annotations.DeclareModelSlot;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
@@ -62,11 +61,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResourceImpl;
  * @author sylvain
  * 
  */
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "EMFModelSlot", modelSlotClass = EMFModelSlot.class), // Classical type-safe interpretation
-// Removed because it is unusable
-// @DeclareModelSlot(FML = "EMFMetaModelSlot", modelSlotClass = EMFMetaModelSlot.class) // Classical type-safe interpretation
-})
+@DeclareModelSlots({ EMFModelSlot.class /*,EMFMetaModelSlot.class*/})
 @DeclareRepositoryType({ EMFMetaModelRepository.class, EMFModelRepository.class })
 public class EMFTechnologyAdapter extends TechnologyAdapter {
 

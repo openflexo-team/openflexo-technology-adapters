@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -19,6 +20,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @ModelEntity
 @ImplementationClass(SelectExcelSheet.SelectExcelSheetImpl.class)
 @XMLElement
+@FML("SelectExcelSheet")
 public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, ExcelSheet> {
 
 	public static abstract class SelectExcelSheetImpl extends FetchRequestImpl<BasicExcelModelSlot, ExcelSheet> implements SelectExcelSheet {

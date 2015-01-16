@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AddClass;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -38,6 +39,7 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
 @ModelEntity
 @ImplementationClass(AddOWLClass.AddOWLClassImpl.class)
 @XMLElement
+@FML("AddOWLClass")
 public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass>, OWLAction<OWLClass> {
 
 	public static abstract class AddOWLClassImpl extends AddClassImpl<OWLModelSlot, OWLClass> implements AddOWLClass {

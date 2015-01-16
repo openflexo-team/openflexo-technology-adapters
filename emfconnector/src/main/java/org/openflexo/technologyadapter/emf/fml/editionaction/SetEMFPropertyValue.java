@@ -27,6 +27,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.SetPropertyValueAction;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -47,6 +48,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(SetEMFPropertyValue.SetEMFPropertyValueImpl.class)
+@FML("SetEMFPropertyValue")
 public abstract interface SetEMFPropertyValue<T extends AEMFModelObjectImpl<?>> extends EMFAction<T>, SetPropertyValueAction<T> {
 
 	@PropertyIdentifier(type = DataBinding.class)

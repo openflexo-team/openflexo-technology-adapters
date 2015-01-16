@@ -24,12 +24,10 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
-import org.openflexo.foundation.fml.annotations.DeclareFetchRequest;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
@@ -55,18 +53,13 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
  * @author Vincent Leildé, Sylvain Guérin
  * 
  */
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-@DeclareFlexoRole(FML = "PowerpointSlide", flexoRoleClass = PowerpointSlideRole.class),
-		@DeclareFlexoRole(FML = "PowerpointShape", flexoRoleClass = PowerpointShapeRole.class) })
-@DeclareEditionActions({ // All edition actions available through this model slot
-@DeclareEditionAction(FML = "AddPowerpointSlide", editionActionClass = AddPowerpointSlide.class),
-		@DeclareEditionAction(FML = "AddPowerpointShape", editionActionClass = AddPowerpointShape.class) })
-@DeclareFetchRequests({ // All requests available through this model slot
-@DeclareFetchRequest(FML = "RemoveReferencePropertyValue", fetchRequestClass = SelectPowerpointSlide.class),
-		@DeclareFetchRequest(FML = "RemoveReferencePropertyValue", fetchRequestClass = SelectPowerpointShape.class) })
+@DeclareFlexoRoles({ PowerpointSlideRole.class, PowerpointShapeRole.class })
+@DeclareEditionActions({ AddPowerpointSlide.class, AddPowerpointShape.class })
+@DeclareFetchRequests({ SelectPowerpointSlide.class, SelectPowerpointShape.class })
 @ModelEntity
 @ImplementationClass(BasicPowerpointModelSlot.BasicPowerpointModelSlotImpl.class)
 @XMLElement
+@FML("BasicPowerpointModelSlot")
 public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow>, PowerpointModelSlot {
 
 	public static abstract class BasicPowerpointModelSlotImpl extends FreeModelSlotImpl<PowerpointSlideshow> implements

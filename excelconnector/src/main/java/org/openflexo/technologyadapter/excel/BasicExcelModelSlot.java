@@ -29,13 +29,9 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareActorReference;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
-import org.openflexo.foundation.fml.annotations.DeclareFetchRequest;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
@@ -70,36 +66,10 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
  * @author Vincent LeildÃ©, Sylvain GuÃ©rin
  * 
  */
-@DeclareActorReferences({ // All actor references available through this model slot
-@DeclareActorReference(FML = "ExcelActorReference", actorReferenceClass = ExcelActorReference.class) })
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-@DeclareFlexoRole(FML = "ExcelSheet", flexoRoleClass = ExcelSheetRole.class), // Sheet
-		@DeclareFlexoRole(FML = "ExcelColumn", flexoRoleClass = ExcelColumnRole.class), // Sheet
-		@DeclareFlexoRole(FML = "ExcelRow", flexoRoleClass = ExcelRowRole.class), // Row
-		@DeclareFlexoRole(FML = "ExcelCell", flexoRoleClass = ExcelCellRole.class) // Cell
-})
-@DeclareEditionActions({ // All edition actions available through this model
-// slot
-@DeclareEditionAction(FML = "AddExcelCell", editionActionClass = AddExcelCell.class), // Add
-																						// cell
-		@DeclareEditionAction(FML = "AddExcelRow", editionActionClass = AddExcelRow.class), // Add
-																							// row
-		@DeclareEditionAction(FML = "AddExcelSheet", editionActionClass = AddExcelSheet.class), // Add
-																								// sheet
-		@DeclareEditionAction(FML = "CellStyleAction", editionActionClass = CellStyleAction.class) // Cell
-// Style
-})
-@DeclareFetchRequests({ // All requests available through this model slot
-@DeclareFetchRequest(FML = "SelectExcelSheet", fetchRequestClass = SelectExcelSheet.class), // Select
-																							// Excel
-																							// Sheet
-		@DeclareFetchRequest(FML = "SelectExcelRow", fetchRequestClass = SelectExcelRow.class), // Select
-																								// Excel
-																								// Row
-		@DeclareFetchRequest(FML = "SelectExcelCell", fetchRequestClass = SelectExcelCell.class) // Select
-// Excel
-// Cell
-})
+@DeclareActorReferences({ ExcelActorReference.class })
+@DeclareFlexoRoles({ ExcelSheetRole.class, ExcelColumnRole.class, ExcelRowRole.class, ExcelCellRole.class })
+@DeclareEditionActions({ AddExcelCell.class, AddExcelRow.class, AddExcelSheet.class, CellStyleAction.class })
+@DeclareFetchRequests({ SelectExcelSheet.class, SelectExcelRow.class, SelectExcelCell.class })
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlot.BasicExcelModelSlotImpl.class)
 @XMLElement

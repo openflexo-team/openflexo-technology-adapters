@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.owl.fml;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.Getter;
@@ -39,6 +40,7 @@ import org.openflexo.technologyadapter.owl.model.SubClassStatement;
 @ModelEntity
 @ImplementationClass(SubClassStatementActorReference.SubClassStatementActorReferenceImpl.class)
 @XMLElement
+@FML("SubClassStatementActorReference")
 public interface SubClassStatementActorReference extends ActorReference<SubClassStatement> {
 
 	@PropertyIdentifier(type = String.class)
@@ -103,8 +105,7 @@ public interface SubClassStatementActorReference extends ActorReference<SubClass
 						// TODO: also handle value here
 						statement = ((OWLConcept<?>) subject).getSubClassStatement(parent);
 					}
-				}
-				else {
+				} else {
 					logger.warning("Could not access to ontology referenced by " + getModelSlotInstance());
 				}
 			}

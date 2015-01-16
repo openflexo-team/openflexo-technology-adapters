@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -20,6 +21,7 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 @ModelEntity
 @ImplementationClass(SelectAllNodesImpl.class)
 @XMLElement
+@FML("SelectAllNodes")
 public interface SelectAllNodes extends FetchRequest<FreeplaneModelSlot, IFreeplaneNode> {
 
 	public abstract class SelectAllNodesImpl extends FetchRequestImpl<FreeplaneModelSlot, IFreeplaneNode> implements SelectAllNodes {

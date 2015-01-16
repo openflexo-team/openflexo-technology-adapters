@@ -30,6 +30,7 @@ package org.openflexo.technologyadapter.emf.fml.editionaction;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -45,6 +46,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @ModelEntity
 @ImplementationClass(RemoveEMFObjectIndividual.RemoveEMFObjectIndividualImpl.class)
 @XMLElement
+@FML("RemoveEMFObjectIndividual")
 public interface RemoveEMFObjectIndividual extends DeleteAction<EMFObjectIndividual>, EMFAction<EMFObjectIndividual> {
 
 	public static abstract class RemoveEMFObjectIndividualImpl extends DeleteActionImpl<EMFObjectIndividual> implements

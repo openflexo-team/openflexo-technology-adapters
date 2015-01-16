@@ -29,13 +29,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
-import org.openflexo.foundation.fml.annotations.DeclareFetchRequest;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
@@ -59,17 +57,14 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
  *
  * @author eloubout
  */
-// All pattern roles available through this model slot
-@DeclareFlexoRoles({ @DeclareFlexoRole(flexoRoleClass = IFreeplaneNodeRole.class, FML = "Node"),
-		@DeclareFlexoRole(flexoRoleClass = IFreeplaneMapRole.class, FML = "Map") })
-// All editions actions available through this model slot
-@DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddChildNodeAction.class, FML = "AddChildNode"),
-		@DeclareEditionAction(editionActionClass = AddSiblingNodeAction.class, FML = "AddSiblingNode") })
+@DeclareFlexoRoles({ IFreeplaneNodeRole.class, IFreeplaneMapRole.class })
+@DeclareEditionActions({ AddChildNodeAction.class, AddSiblingNodeAction.class })
 @DeclareFlexoBehaviours({})
-@DeclareFetchRequests({ @DeclareFetchRequest(fetchRequestClass = SelectAllNodes.class, FML = "SelectAllNodes") })
+@DeclareFetchRequests({ SelectAllNodes.class })
 @ModelEntity
 @ImplementationClass(FreeplaneModelSlotImpl.class)
 @XMLElement
+@FML("FreeplaneModelSlot")
 public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 
 	public abstract static class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap> implements FreeplaneModelSlot {

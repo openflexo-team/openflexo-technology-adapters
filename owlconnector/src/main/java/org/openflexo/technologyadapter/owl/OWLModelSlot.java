@@ -29,10 +29,9 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -73,27 +72,14 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
  * @author sylvain, luka
  * 
  */
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-@DeclareFlexoRole(FML = "OWLIndividual", flexoRoleClass = OWLIndividualRole.class),
-		@DeclareFlexoRole(FML = "OWLClass", flexoRoleClass = OWLClassRole.class),
-		@DeclareFlexoRole(FML = "OWLDataProperty", flexoRoleClass = OWLDataPropertyRole.class),
-		@DeclareFlexoRole(FML = "OWLObjectProperty", flexoRoleClass = OWLObjectPropertyRole.class),
-		@DeclareFlexoRole(FML = "OWLProperty", flexoRoleClass = OWLPropertyRole.class),
-		@DeclareFlexoRole(FML = "DataPropertyStatement", flexoRoleClass = DataPropertyStatementRole.class),
-		@DeclareFlexoRole(FML = "ObjectPropertyStatement", flexoRoleClass = ObjectPropertyStatementRole.class),
-		// @DeclareFlexoRole(FML = "RestrictionStatement", flexoRoleClass = RestrictionStatementRole.class),
-		@DeclareFlexoRole(FML = "SubClassStatement", flexoRoleClass = SubClassStatementRole.class) })
-@DeclareEditionActions({ // All edition actions available through this model slot
-@DeclareEditionAction(FML = "AddOWLIndividual", editionActionClass = AddOWLIndividual.class), // Add instance
-		@DeclareEditionAction(FML = "AddOWLClass", editionActionClass = AddOWLClass.class), // Add class
-		@DeclareEditionAction(FML = "AddDataPropertyStatement", editionActionClass = AddDataPropertyStatement.class), // Add class
-		@DeclareEditionAction(FML = "AddObjectPropertyStatement", editionActionClass = AddObjectPropertyStatement.class), // Add class
-		@DeclareEditionAction(FML = "AddRestrictionStatement", editionActionClass = AddRestrictionStatement.class), // Add class
-		@DeclareEditionAction(FML = "AddSubClassStatement", editionActionClass = AddSubClassStatement.class), // Add class
-})
+@DeclareFlexoRoles({ OWLIndividualRole.class, OWLClassRole.class, OWLDataPropertyRole.class, OWLObjectPropertyRole.class,
+		OWLPropertyRole.class, DataPropertyStatementRole.class, ObjectPropertyStatementRole.class, SubClassStatementRole.class })
+@DeclareEditionActions({ AddOWLIndividual.class, AddOWLClass.class, AddDataPropertyStatement.class, AddObjectPropertyStatement.class,
+		AddRestrictionStatement.class, AddSubClassStatement.class })
 @ModelEntity
 @ImplementationClass(OWLModelSlot.OWLModelSlotImpl.class)
 @XMLElement
+@FML("OWLModelSlot")
 public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntology> {
 
 	@Override

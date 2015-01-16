@@ -3,6 +3,7 @@ package org.openflexo.technologyadapter.owl.fml;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -24,6 +25,7 @@ import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 @ModelEntity
 @ImplementationClass(DataPropertyStatementRole.DataPropertyStatementRoleImpl.class)
 @XMLElement
+@FML("DataPropertyStatementRole")
 public interface DataPropertyStatementRole extends StatementRole<DataPropertyStatement> {
 
 	@PropertyIdentifier(type = String.class)

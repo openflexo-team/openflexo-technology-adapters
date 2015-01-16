@@ -8,6 +8,7 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -24,6 +25,7 @@ import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationC
 @ModelEntity
 @ImplementationClass(ConnectorRole.ConnectorRoleImpl.class)
 @XMLElement
+@FML("ConnectorRole")
 public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, ConnectorGraphicalRepresentation> {
 
 	@PropertyIdentifier(type = GraphicalRepresentation.class)

@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.annotations.DeclareModelSlot;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
@@ -59,13 +58,7 @@ import org.openflexo.xml.XMLRootElementReader;
  * 
  */
 
-@DeclareModelSlots({ // ModelSlot(s) declaration
-// Pure XML, without strict MetaModel
-		@DeclareModelSlot(FML = "XMLModelSlot", modelSlotClass = FreeXMLModelSlot.class),
-		// Classical type-safe interpretation
-		@DeclareModelSlot(FML = "XMLModelSlot", modelSlotClass = XMLModelSlot.class),
-		// A ModelSlot to edit MetaModels
-		@DeclareModelSlot(FML = "XSDModelSlot", modelSlotClass = XMLMetaModelSlot.class) })
+@DeclareModelSlots({ FreeXMLModelSlot.class, XMLModelSlot.class, XMLMetaModelSlot.class })
 @DeclareRepositoryType({ XMLModelRepository.class, XSDMetaModelRepository.class })
 public class XMLTechnologyAdapter extends TechnologyAdapter {
 
@@ -391,10 +384,10 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 	}
 
-	private FileFlexoIODelegate getFileFlexoIODelegate(FlexoResource resource){
-		return (FileFlexoIODelegate)resource.getFlexoIODelegate();
+	private FileFlexoIODelegate getFileFlexoIODelegate(FlexoResource resource) {
+		return (FileFlexoIODelegate) resource.getFlexoIODelegate();
 	}
-	
+
 	/**
 	 * 
 	 * Create a XMLModel repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}

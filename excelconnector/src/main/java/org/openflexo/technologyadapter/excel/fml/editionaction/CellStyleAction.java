@@ -31,6 +31,7 @@ import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -49,6 +50,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelCell.CellStyleFeature;
 @ModelEntity
 @ImplementationClass(CellStyleAction.CellStyleActionImpl.class)
 @XMLElement
+@FML("CellStyleAction")
 public interface CellStyleAction extends ExcelAction<ExcelCell> {
 
 	@PropertyIdentifier(type = DataBinding.class)

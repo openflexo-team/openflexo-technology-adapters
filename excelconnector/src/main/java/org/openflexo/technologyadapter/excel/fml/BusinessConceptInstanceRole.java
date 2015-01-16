@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.excel.fml;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -32,6 +33,7 @@ import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptInst
 @ModelEntity
 @ImplementationClass(BusinessConceptInstanceRole.BusinessConceptInstanceRoleImpl.class)
 @XMLElement
+@FML("BusinessConceptInstanceRole")
 public interface BusinessConceptInstanceRole extends FlexoRole<BusinessConceptInstance> {
 
 	public static abstract class BusinessConceptInstanceRoleImpl extends FlexoRoleImpl<BusinessConceptInstance> implements

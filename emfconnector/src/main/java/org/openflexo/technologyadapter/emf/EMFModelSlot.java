@@ -26,12 +26,10 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
-import org.openflexo.foundation.fml.annotations.DeclareFetchRequest;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
@@ -48,6 +46,10 @@ import org.openflexo.technologyadapter.emf.fml.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualAttributeDataPropertyValue;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualAttributeObjectPropertyValue;
+import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualReferenceObjectPropertyValue;
+import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividualAttributeDataPropertyValue;
+import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividualAttributeObjectPropertyValue;
+import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividualReferenceObjectPropertyValue;
 import org.openflexo.technologyadapter.emf.fml.editionaction.SelectEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
@@ -61,32 +63,16 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
  * @author sylvain
  * 
  */
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-@DeclareFlexoRole(FML = "EMFObjectIndividual", flexoRoleClass = EMFObjectIndividualRole.class),
-		@DeclareFlexoRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassRole.class),
-		@DeclareFlexoRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassRole.class) })
-@DeclareEditionActions({ // All edition actions available through this model slot
-		@DeclareEditionAction(FML = "AddEMFObjectIndividual", editionActionClass = AddEMFObjectIndividual.class),
-		@DeclareEditionAction(FML = "AddDataPropertyValue", editionActionClass = AddEMFObjectIndividualAttributeDataPropertyValue.class),
-		@DeclareEditionAction(FML = "AddObjectPropertyValue", editionActionClass = AddEMFObjectIndividualAttributeObjectPropertyValue.class),
-// @DeclareEditionAction(
-// FML = "AddReferencePropertyValue",
-// editionActionClass = AddEMFObjectIndividualReferenceObjectPropertyValue.class),
-// @DeclareEditionAction(
-// FML = "RemoveDataPropertyValue",
-// editionActionClass = RemoveEMFObjectIndividualAttributeDataPropertyValue.class),
-// @DeclareEditionAction(
-// FML = "RemoveObjectPropertyValue",
-// editionActionClass = RemoveEMFObjectIndividualAttributeObjectPropertyValue.class),
-// @DeclareEditionAction(
-// FML = "RemoveReferencePropertyValue",
-// editionActionClass = RemoveEMFObjectIndividualReferenceObjectPropertyValue.class)
-})
-@DeclareFetchRequests({ // All requests available through this model slot
-@DeclareFetchRequest(FML = "SelectEMFObjectIndividual", fetchRequestClass = SelectEMFObjectIndividual.class) })
+@DeclareFlexoRoles({ EMFObjectIndividualRole.class, EMFClassClassRole.class, EMFEnumClassRole.class })
+@DeclareEditionActions({ AddEMFObjectIndividual.class, AddEMFObjectIndividualAttributeDataPropertyValue.class,
+		AddEMFObjectIndividualAttributeObjectPropertyValue.class, AddEMFObjectIndividualReferenceObjectPropertyValue.class,
+		RemoveEMFObjectIndividualAttributeDataPropertyValue.class, RemoveEMFObjectIndividualAttributeObjectPropertyValue.class,
+		RemoveEMFObjectIndividualReferenceObjectPropertyValue.class })
+@DeclareFetchRequests({ SelectEMFObjectIndividual.class })
 @ModelEntity
 @ImplementationClass(EMFModelSlot.EMFModelSlotImpl.class)
 @XMLElement
+@FML("EMFModelSlot")
 public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel> {
 
 	@Override

@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.annotations.DeclareModelSlot;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -49,9 +48,7 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.bindings.OSLCBindingFac
  * 
  */
 
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "OSLCModelSlot", modelSlotClass = OSLCCoreModelSlot.class),
-		@DeclareModelSlot(FML = "OSLCRMModelSlot", modelSlotClass = OSLCRMModelSlot.class) })
+@DeclareModelSlots({ OSLCCoreModelSlot.class, OSLCRMModelSlot.class })
 @DeclareRepositoryType({ OSLCRepository.class })
 public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	private static String OSLC_FILE_EXTENSION = ".oslc";

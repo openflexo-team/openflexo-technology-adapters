@@ -24,11 +24,10 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
@@ -52,15 +51,13 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
  * 
  */
 
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-@DeclareFlexoRole(FML = "XMLType", flexoRoleClass = XMLTypeRole.class), })
-@DeclareEditionActions({ // All edition actions available through this model slot
-@DeclareEditionAction(FML = "AddXSIndividual", editionActionClass = AddXMLType.class) })
-@DeclareFetchRequests({ // All requests available through this model slot
-})
+@DeclareFlexoRoles({ XMLTypeRole.class })
+@DeclareEditionActions({ AddXMLType.class })
+@DeclareFetchRequests({})
 @ModelEntity
 @ImplementationClass(XMLMetaModelSlot.XSDModelSlotImpl.class)
 @XMLElement
+@FML("XMLMetaModelSlot")
 public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 
 	public static abstract class XSDModelSlotImpl extends FreeModelSlotImpl<XMLMetaModel> implements XMLMetaModelSlot {

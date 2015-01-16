@@ -28,7 +28,6 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.annotations.DeclareModelSlot;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -55,9 +54,7 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceImpl;
  * @author sylvain, luka
  * 
  */
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "OWLModelSlot", modelSlotClass = OWLModelSlot.class) // Classical type-safe interpretation
-})
+@DeclareModelSlots({ OWLModelSlot.class })
 @DeclareRepositoryType({ OWLOntologyAsModelRepository.class })
 public class OWLTechnologyAdapter extends TechnologyAdapter {
 

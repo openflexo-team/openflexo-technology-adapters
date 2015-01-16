@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -39,6 +40,7 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 @ModelEntity
 @ImplementationClass(SelectOSLCResource.SelectOSLCResourceImpl.class)
 @XMLElement
+@FML("SelectOSLCResource")
 public interface SelectOSLCResource extends FetchRequest<OSLCCoreModelSlot, OSLCResource> {
 
 	public static abstract class SelectOSLCResourceImpl extends FetchRequestImpl<OSLCCoreModelSlot, OSLCResource> implements

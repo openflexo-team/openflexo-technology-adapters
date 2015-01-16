@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
 import org.openflexo.foundation.fml.rt.View;
@@ -28,6 +29,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(DiagramRole.DiagramRoleImpl.class)
 @XMLElement
+@FML("DiagramRole")
 public interface DiagramRole extends FlexoRole<Diagram> {
 
 	@PropertyIdentifier(type = String.class)

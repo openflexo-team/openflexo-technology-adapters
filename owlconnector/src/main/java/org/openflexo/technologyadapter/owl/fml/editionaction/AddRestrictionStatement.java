@@ -28,6 +28,7 @@ import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
@@ -55,6 +56,7 @@ import org.openflexo.technologyadapter.owl.model.SubClassStatement;
 @ModelEntity
 @ImplementationClass(AddRestrictionStatement.AddRestrictionStatementImpl.class)
 @XMLElement
+@FML("AddRestrictionStatement")
 public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 
 	@PropertyIdentifier(type = DataBinding.class)

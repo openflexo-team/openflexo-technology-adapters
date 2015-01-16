@@ -10,6 +10,7 @@ import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -27,6 +28,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 @ModelEntity
 @ImplementationClass(ShapeRole.ShapeRoleImpl.class)
 @XMLElement
+@FML("ShapeRole")
 public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraphicalRepresentation> {
 
 	@PropertyIdentifier(type = GraphicalRepresentation.class)

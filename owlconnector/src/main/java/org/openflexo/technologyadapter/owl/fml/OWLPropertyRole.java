@@ -1,6 +1,7 @@
 package org.openflexo.technologyadapter.owl.fml;
 
 import org.openflexo.foundation.fml.PropertyRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -13,6 +14,7 @@ import org.openflexo.technologyadapter.owl.model.OWLProperty;
 @ModelEntity
 @ImplementationClass(OWLPropertyRole.OWLPropertyRoleImpl.class)
 @XMLElement
+@FML("OWLPropertyRole")
 public interface OWLPropertyRole extends PropertyRole<OWLProperty> {
 
 	@PropertyIdentifier(type = String.class)

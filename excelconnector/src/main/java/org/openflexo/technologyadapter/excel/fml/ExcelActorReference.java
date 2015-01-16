@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.excel.fml;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.logging.FlexoLogger;
@@ -45,6 +46,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelObject;
 @ModelEntity
 @ImplementationClass(ExcelActorReference.ExcelActorReferenceImpl.class)
 @XMLElement
+@FML("ExcelActorReference")
 public interface ExcelActorReference<T extends ExcelObject> extends ActorReference<T> {
 
 	@PropertyIdentifier(type = String.class)
@@ -79,8 +81,7 @@ public interface ExcelActorReference<T extends ExcelObject> extends ActorReferen
 				if (msInstance != null && msInstance.getAccessedResourceData() != null) {
 					/** Model Slot is responsible for URI mapping */
 					object = (T) msInstance.getModelSlot().retrieveObjectWithURI(msInstance, objectURI);
-				}
-				else {
+				} else {
 					logger.warning("Could not access to model in model slot " + getModelSlotInstance());
 				}
 			}

@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.eclipse.emf.common.util.TreeIterator;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.editionaction.SelectIndividual;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
@@ -50,6 +51,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @ModelEntity
 @ImplementationClass(SelectEMFObjectIndividual.SelectEMFObjectIndividualImpl.class)
 @XMLElement
+@FML("SelectEMFObjectIndividual")
 public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot, EMFObjectIndividual> {
 
 	public static abstract class SelectEMFObjectIndividualImpl extends SelectIndividualImpl<EMFModelSlot, EMFObjectIndividual> implements

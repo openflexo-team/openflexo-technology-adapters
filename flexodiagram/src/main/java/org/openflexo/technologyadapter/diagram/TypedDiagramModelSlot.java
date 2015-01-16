@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviour;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -55,26 +53,14 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
  * @author sylvain
  * 
  */
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-@DeclareFlexoRole(FML = "ShapeSpecification", flexoRoleClass = ShapeRole.class), // Shapes
-		@DeclareFlexoRole(FML = "ConnectorSpecification", flexoRoleClass = ConnectorRole.class), // Connectors
-		@DeclareFlexoRole(FML = "Diagram", flexoRoleClass = DiagramRole.class) // Diagrams
-})
-@DeclareFlexoBehaviours({ // All edition actions available through this model slot
-@DeclareFlexoBehaviour(FML = "DropScheme", flexoBehaviourClass = DropScheme.class),
-		@DeclareFlexoBehaviour(FML = "LinkScheme", flexoBehaviourClass = LinkScheme.class),
-		@DeclareFlexoBehaviour(FML = "NavigationScheme", flexoBehaviourClass = DiagramNavigationScheme.class) })
-@DeclareEditionActions({ // All edition actions available through this model
-		// slot
-		@DeclareEditionAction(FML = "AddDiagram", editionActionClass = AddDiagram.class),
-		@DeclareEditionAction(FML = "AddShape", editionActionClass = AddShape.class),
-		@DeclareEditionAction(FML = "AddConnector", editionActionClass = AddConnector.class),
-		@DeclareEditionAction(FML = "GraphicalAction", editionActionClass = GraphicalAction.class) })
-@DeclareFetchRequests({ // All requests available through this model slot
-})
+@DeclareFlexoRoles({ ShapeRole.class, ConnectorRole.class, DiagramRole.class })
+@DeclareFlexoBehaviours({ DropScheme.class, LinkScheme.class, DiagramNavigationScheme.class })
+@DeclareEditionActions({ AddDiagram.class, AddShape.class, AddConnector.class, GraphicalAction.class })
+@DeclareFetchRequests({})
 @ModelEntity
 @ImplementationClass(TypedDiagramModelSlot.TypedDiagramModelSlotImpl.class)
 @XMLElement
+@FML("TypedDiagramModelSlot")
 public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, DiagramSpecification>, DiagramModelSlot {
 
 	@PropertyIdentifier(type = List.class)

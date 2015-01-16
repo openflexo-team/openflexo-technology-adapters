@@ -10,6 +10,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
@@ -28,6 +29,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @ModelEntity
 @ImplementationClass(SelectExcelRow.SelectExcelRowImpl.class)
 @XMLElement
+@FML("SelectExcelRow")
 public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelRow> {
 
 	@PropertyIdentifier(type = DataBinding.class)

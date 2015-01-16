@@ -25,6 +25,7 @@ package org.openflexo.technologyadapter.oslc.virtualmodel.rm;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
@@ -37,6 +38,7 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 @ModelEntity
 @ImplementationClass(OSLCRequirementRole.OSLCRequirementRoleImpl.class)
 @XMLElement
+@FML("OSLCRequirementRole")
 public interface OSLCRequirementRole extends FlexoRole<OSLCRequirement> {
 
 	public static abstract class OSLCRequirementRoleImpl extends FlexoRoleImpl<OSLCRequirement> implements OSLCRequirementRole {

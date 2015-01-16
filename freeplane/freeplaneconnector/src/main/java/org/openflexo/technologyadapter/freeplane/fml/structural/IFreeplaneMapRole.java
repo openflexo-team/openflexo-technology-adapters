@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.freeplane.fml.structural;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
@@ -37,6 +38,7 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 @ModelEntity
 @ImplementationClass(value = FreeplaneMapRoleImpl.class)
 @XMLElement
+@FML("FreeplaneMapRole")
 public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
 
 	public FreeplaneTechnologyAdapter getFreePlaneTechnologyAdapter();

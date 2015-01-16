@@ -26,12 +26,10 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
-import org.openflexo.foundation.fml.annotations.DeclareFetchRequest;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
@@ -56,15 +54,10 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.rm.OSLCRequirementRole;
 @ModelEntity
 @ImplementationClass(OSLCRMModelSlot.OSLCRMModelSlotImpl.class)
 @XMLElement
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-@DeclareFlexoRole(FML = "OSLCRequirement", flexoRoleClass = OSLCRequirementRole.class),
-		@DeclareFlexoRole(FML = "OSLCRequirementCollection", flexoRoleClass = OSLCRequirementCollectionRole.class), })
-@DeclareEditionActions({ // All edition actions available through this modelslot
-@DeclareEditionAction(FML = "AddOSLCRequirement", editionActionClass = AddOSLCRequirement.class),
-		@DeclareEditionAction(FML = "AddOSLCRequirementCollection", editionActionClass = AddOSLCRequirementCollection.class) })
-@DeclareFetchRequests({ // All requests available through this model slot
-@DeclareFetchRequest(FML = "SelectOSLCRequirement", fetchRequestClass = SelectOSLCRequirement.class), // Sheet
-		@DeclareFetchRequest(FML = "SelectOSLCRequirementCollection", fetchRequestClass = SelectOSLCRequirementCollection.class), })
+@DeclareFlexoRoles({ OSLCRequirementRole.class, OSLCRequirementCollectionRole.class })
+@DeclareEditionActions({ AddOSLCRequirement.class, AddOSLCRequirementCollection.class })
+@DeclareFetchRequests({ SelectOSLCRequirement.class, SelectOSLCRequirementCollection.class })
+@FML("OSLCCoreModelSlot")
 public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 
 	// @Override

@@ -2,6 +2,7 @@ package org.openflexo.technologyadapter.owl.fml;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.model.annotations.Getter;
@@ -26,6 +27,7 @@ import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 @ModelEntity
 @ImplementationClass(ObjectPropertyStatementActorReference.ObjectPropertyStatementActorReferenceImpl.class)
 @XMLElement
+@FML("ObjectPropertyStatementActorReference")
 public interface ObjectPropertyStatementActorReference extends ActorReference<ObjectPropertyStatement> {
 
 	@PropertyIdentifier(type = String.class)

@@ -36,6 +36,7 @@ import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.SetDataPropertyValueAction;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -67,6 +68,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(AddEMFObjectIndividualAttributeDataPropertyValue.AddEMFObjectIndividualAttributeDataPropertyValueImpl.class)
 @XMLElement
+@FML("AddEMFObjectIndividualAttributeDataPropertyValue")
 public interface AddEMFObjectIndividualAttributeDataPropertyValue extends
 		SetEMFPropertyValue<EMFObjectIndividualAttributeDataPropertyValue>,
 		SetDataPropertyValueAction<EMFObjectIndividualAttributeDataPropertyValue> {

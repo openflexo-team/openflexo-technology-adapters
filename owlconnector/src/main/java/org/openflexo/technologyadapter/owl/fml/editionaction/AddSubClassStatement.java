@@ -28,6 +28,7 @@ import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
@@ -49,6 +50,7 @@ import org.openflexo.technologyadapter.owl.model.SubClassStatement;
 @ModelEntity
 @ImplementationClass(AddSubClassStatement.AddSubClassStatementImpl.class)
 @XMLElement(xmlTag = "AddIsAPropertyStatement")
+@FML("AddSubClassStatement")
 public interface AddSubClassStatement extends AddStatement<SubClassStatement> {
 
 	@PropertyIdentifier(type = DataBinding.class)

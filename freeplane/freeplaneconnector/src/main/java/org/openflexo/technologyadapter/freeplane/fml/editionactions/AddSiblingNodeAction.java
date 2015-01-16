@@ -11,6 +11,7 @@ import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
@@ -33,6 +34,7 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
 @FIBPanel("Fib/AddSiblingNodePanel.fib")
 @XMLElement
 @ImplementationClass(value = AddSiblingNodeActionImpl.class)
+@FML("AddSiblingNodeAction")
 public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 
 	@PropertyIdentifier(type = DataBinding.class)

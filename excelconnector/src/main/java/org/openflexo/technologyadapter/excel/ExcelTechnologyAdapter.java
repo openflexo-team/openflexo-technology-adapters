@@ -25,7 +25,6 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.annotations.DeclareModelSlot;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -49,10 +48,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceImpl;
  * @author sylvain, vincent, Christophe
  * 
  */
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "BasicExcelModelSlot", modelSlotClass = BasicExcelModelSlot.class), // Pure spreadsheet interpretation
-		@DeclareModelSlot(FML = "SemanticsExcelModelSlot", modelSlotClass = SemanticsExcelModelSlot.class) // Wrapping into business objects
-})
+@DeclareModelSlots({ BasicExcelModelSlot.class, SemanticsExcelModelSlot.class })
 @DeclareRepositoryType({ ExcelWorkbookRepository.class, ExcelMetaModelRepository.class, ExcelModelRepository.class })
 public class ExcelTechnologyAdapter extends TechnologyAdapter {
 
@@ -102,13 +98,13 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 
 		while (it.hasNext()) {
 			I item = it.next();
-			//if (item instanceof File) {
-				// System.out.println("searching " + item);
-			//	File candidateFile = (File) item;
-				ExcelWorkbookResource wbRes = tryToLookupWorkbook(resourceCenter, item);
-			//}
+			// if (item instanceof File) {
+			// System.out.println("searching " + item);
+			// File candidateFile = (File) item;
+			ExcelWorkbookResource wbRes = tryToLookupWorkbook(resourceCenter, item);
+			// }
 		}
-		
+
 		// Call it to update the current repositories
 		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 
@@ -139,13 +135,14 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	 * *
 	 */
 	public ExcelWorkbookResource retrieveWorkbookResource(Object workbook) {
-		
+
 		ExcelWorkbookResource returned = getTechnologyContextManager().getExcelWorkbookResource(workbook);
 		if (returned == null) {
-			if(workbook instanceof File){
-				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File)workbook,getTechnologyContextManager());
-			}else if (workbook instanceof InJarResourceImpl){
-				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((InJarResourceImpl)workbook,getTechnologyContextManager());
+			if (workbook instanceof File) {
+				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File) workbook, getTechnologyContextManager());
+			} else if (workbook instanceof InJarResourceImpl) {
+				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((InJarResourceImpl) workbook,
+						getTechnologyContextManager());
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerExcelWorkbook(returned);
@@ -157,16 +154,15 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 		return returned;
 	}
 
-	
 	public boolean isValidWorkbook(Object candidateElement) {
-		if (candidateElement instanceof File && isValidWorkbookFile(((File)candidateElement))){
+		if (candidateElement instanceof File && isValidWorkbookFile(((File) candidateElement))) {
 			return true;
-		}else if(candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl)candidateElement)){
+		} else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	/**
 	 * Return flag indicating if supplied file appears as a valid workbook
 	 * 
@@ -177,10 +173,9 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	public boolean isValidWorkbookFile(File candidateFile) {
 		return candidateFile.getName().endsWith(".xlsx") || candidateFile.getName().endsWith(".xls");
 	}
-	
+
 	public boolean isValidWorkbookInJar(InJarResourceImpl candidateInJar) {
-		if(((InJarResourceImpl)candidateInJar).getRelativePath().endsWith(".xlsx") || 
-			((InJarResourceImpl)candidateInJar).getRelativePath().endsWith(".xls")){
+		if (candidateInJar.getRelativePath().endsWith(".xlsx") || candidateInJar.getRelativePath().endsWith(".xls")) {
 			return true;
 		}
 		return false;

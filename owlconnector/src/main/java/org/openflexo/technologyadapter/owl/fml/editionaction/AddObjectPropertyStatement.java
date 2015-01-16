@@ -34,6 +34,7 @@ import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.SetObjectPropertyValueAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -65,6 +66,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(AddObjectPropertyStatement.AddObjectPropertyStatementImpl.class)
 @XMLElement
+@FML("AddObjectPropertyStatement")
 public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyStatement>,
 		SetObjectPropertyValueAction<ObjectPropertyStatement> {
 

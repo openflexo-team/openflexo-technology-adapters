@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.editionaction.DataPropertyAssertion;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
@@ -63,6 +64,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @XMLElement
 @ImplementationClass(AddXMLIndividual.AddXMLIndividualImpl.class)
 @Imports({ @Import(XMLDataPropertyAssertion.class), @Import(XMLActorReference.class), })
+@FML("AddXMLIndividual")
 public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAction<XMLModelSlot, XMLIndividual> {
 
 	@PropertyIdentifier(type = String.class)

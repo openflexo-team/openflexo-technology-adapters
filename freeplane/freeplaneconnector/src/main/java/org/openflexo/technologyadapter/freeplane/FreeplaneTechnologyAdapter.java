@@ -32,7 +32,6 @@ import org.freeplane.features.mapio.mindmapmode.MMapIO;
 import org.freeplane.features.mode.Controller;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.fml.annotations.DeclareModelSlot;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -53,8 +52,7 @@ import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
  * @author SomeOne
  */
 
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "FreeplaneModelSlot", modelSlotClass = FreeplaneModelSlot.class) })
+@DeclareModelSlots({ FreeplaneModelSlot.class })
 @DeclareRepositoryType({ FreeplaneResourceRepository.class })
 public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 

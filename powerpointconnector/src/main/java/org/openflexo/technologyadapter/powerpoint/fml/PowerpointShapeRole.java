@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.powerpoint.fml;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
@@ -33,6 +34,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 @ModelEntity
 @ImplementationClass(PowerpointShapeRole.PowerpointShapePatternRoleImpl.class)
 @XMLElement
+@FML("PowerpointShapeRole")
 public interface PowerpointShapeRole extends FlexoRole<PowerpointSlide> {
 
 	public static abstract class PowerpointShapePatternRoleImpl extends FlexoRoleImpl<PowerpointSlide> implements PowerpointShapeRole {

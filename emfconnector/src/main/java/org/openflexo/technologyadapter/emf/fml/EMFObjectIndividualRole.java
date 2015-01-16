@@ -20,6 +20,7 @@
 package org.openflexo.technologyadapter.emf.fml;
 
 import org.openflexo.foundation.fml.IndividualRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -28,6 +29,7 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @ModelEntity
 @ImplementationClass(EMFObjectIndividualRole.EMFObjectIndividualRoleImpl.class)
 @XMLElement
+@FML("EMFClassClassRole")
 public interface EMFObjectIndividualRole extends IndividualRole<EMFObjectIndividual> {
 
 	public static abstract class EMFObjectIndividualRoleImpl extends IndividualRoleImpl<EMFObjectIndividual> implements

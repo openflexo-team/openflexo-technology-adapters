@@ -25,6 +25,7 @@ import java.lang.reflect.Type;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
@@ -45,6 +46,7 @@ import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 @ModelEntity
 @XMLElement
 @ImplementationClass(XMLIndividualRole.XMLIndividualRoleImpl.class)
+@FML("XMLIndividualRole")
 public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 
 	@PropertyIdentifier(type = String.class)

@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.excel.fml;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
@@ -33,6 +34,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 @ModelEntity
 @ImplementationClass(ExcelSheetRole.ExcelSheetRoleImpl.class)
 @XMLElement
+@FML("ExcelSheetRole")
 public interface ExcelSheetRole extends FlexoRole<ExcelSheet> {
 
 	public static abstract class ExcelSheetRoleImpl extends FlexoRoleImpl<ExcelSheet> implements ExcelSheetRole {

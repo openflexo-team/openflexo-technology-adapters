@@ -27,10 +27,9 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
@@ -55,15 +54,13 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
  * @author xtof
  * 
  */
-@DeclareFlexoRoles({ @DeclareFlexoRole(flexoRoleClass = XMLIndividualRole.class, FML = "XMLIndividual"), // Instances
-})
-@DeclareEditionActions({ @DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add
-// instance
-})
+@DeclareFlexoRoles({ XMLIndividualRole.class })
+@DeclareEditionActions({ AddXMLIndividual.class })
 @ModelEntity
 @XMLElement
 @ImplementationClass(FreeXMLModelSlot.FreeXMLModelSlotImpl.class)
 @Imports({ @Import(FreeXMLURIProcessor.class), })
+@FML("FreeXMLModelSlot")
 public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLModelSlot<FreeXMLURIProcessor> {
 
 	// public static abstract class FreeXMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<FreeXMLURIProcessor>

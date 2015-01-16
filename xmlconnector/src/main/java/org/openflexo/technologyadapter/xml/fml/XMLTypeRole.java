@@ -3,6 +3,7 @@ package org.openflexo.technologyadapter.xml.fml;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -13,6 +14,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 @ModelEntity
 @ImplementationClass(XMLTypeRole.XMLTypeRoleImpl.class)
 @XMLElement
+@FML("XMLTypeRole")
 public interface XMLTypeRole extends FlexoRole<XMLType> {
 
 	public static abstract class XMLTypeRoleImpl extends FlexoRoleImpl<XMLType> implements XMLTypeRole {

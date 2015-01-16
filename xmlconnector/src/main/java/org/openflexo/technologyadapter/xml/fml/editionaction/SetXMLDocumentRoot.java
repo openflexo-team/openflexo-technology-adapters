@@ -26,6 +26,7 @@ import java.util.logging.Logger;
 import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
@@ -46,6 +47,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @ImplementationClass(SetXMLDocumentRoot.SetXMLDocumentRootImpl.class)
 @XMLElement
 @Imports({ @Import(XMLActorReference.class), })
+@FML("SetXMLDocumentRoot")
 public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividual> {
 
 	@PropertyIdentifier(type = DataBinding.class)

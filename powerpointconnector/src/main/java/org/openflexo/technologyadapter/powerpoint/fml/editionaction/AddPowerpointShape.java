@@ -11,6 +11,7 @@ import org.openflexo.antar.binding.DataBinding;
 import org.openflexo.antar.expr.NullReferenceException;
 import org.openflexo.antar.expr.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -25,6 +26,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 @ModelEntity
 @ImplementationClass(AddPowerpointShape.AddPowerpointShapeImpl.class)
 @XMLElement
+@FML("AddPowerpointShape")
 public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 
 	public static abstract class AddPowerpointShapeImpl extends TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointShape>

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -17,6 +18,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
 @ModelEntity
 @ImplementationClass(SelectPowerpointShape.SelectPowerpointShapeImpl.class)
 @XMLElement
+@FML("SelectPowerpointShape")
 public interface SelectPowerpointShape extends FetchRequest<BasicPowerpointModelSlot, PowerpointShape> {
 
 	public static abstract class SelectPowerpointShapeImpl extends FetchRequestImpl<BasicPowerpointModelSlot, PowerpointShape> implements

@@ -27,8 +27,8 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
@@ -43,14 +43,10 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
  * @author sylvain
  * 
  */
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-@DeclareFlexoRole(FML = "EMFClassClass", flexoRoleClass = EMFClassClassRole.class),
-		@DeclareFlexoRole(FML = "EMFEnumClass", flexoRoleClass = EMFEnumClassRole.class) })
-@DeclareEditionActions({ // All edition actions available through this model
-// slot
-})
-@DeclareFetchRequests({ // All requests available through this model slot
-})
+@DeclareFlexoRoles({ EMFClassClassRole.class, EMFEnumClassRole.class })
+@DeclareEditionActions({})
+@DeclareFetchRequests({})
+@FML("EMFModelSlot")
 public interface EMFMetaModelSlot extends ModelSlot<EMFMetaModel> {
 
 	public abstract static class EMFMetaModelSlotImpl extends ModelSlotImpl<EMFMetaModel> implements EMFMetaModelSlot {

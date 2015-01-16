@@ -26,12 +26,10 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
-import org.openflexo.foundation.fml.annotations.DeclareFetchRequest;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
@@ -58,17 +56,10 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.core.OSLCServiceRole;
 @ModelEntity
 @ImplementationClass(OSLCCoreModelSlot.CDLModelSlotImpl.class)
 @XMLElement
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-@DeclareFlexoRole(FML = "OSLCResource", flexoRoleClass = OSLCResourceRole.class),
-		@DeclareFlexoRole(FML = "OSLCServiceProvider", flexoRoleClass = OSLCServiceProviderRole.class),
-		@DeclareFlexoRole(FML = "OSLCService", flexoRoleClass = OSLCServiceRole.class) })
-@DeclareEditionActions({ // All edition actions available through this modelslot
-@DeclareEditionAction(FML = "AddOSLCResource", editionActionClass = AddOSLCResource.class),
-		@DeclareEditionAction(FML = "AddOSLCServiceProvider", editionActionClass = AddOSLCServiceProvider.class) })
-@DeclareFetchRequests({ // All requests available through this model slot
-		@DeclareFetchRequest(FML = "SelectOSLCResource", fetchRequestClass = SelectOSLCResource.class), // Sheet
-		@DeclareFetchRequest(FML = "SelectOSLCServiceProvider", fetchRequestClass = SelectOSLCServiceProvider.class),
-		@DeclareFetchRequest(FML = "SelectOSLCService", fetchRequestClass = SelectOSLCService.class) })
+@DeclareFlexoRoles({ OSLCResourceRole.class, OSLCServiceProviderRole.class, OSLCServiceRole.class })
+@DeclareEditionActions({ AddOSLCResource.class, AddOSLCServiceProvider.class })
+@DeclareFetchRequests({ SelectOSLCResource.class, SelectOSLCServiceProvider.class, SelectOSLCService.class })
+@FML("OSLCCoreModelSlot")
 public interface OSLCCoreModelSlot extends FreeModelSlot<OSLCResource> {
 
 	// @Override

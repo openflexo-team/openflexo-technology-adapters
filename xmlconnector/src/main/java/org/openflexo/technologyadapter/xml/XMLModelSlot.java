@@ -31,12 +31,10 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.annotations.DeclareActorReference;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
-import org.openflexo.foundation.fml.annotations.DeclareEditionAction;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
-import org.openflexo.foundation.fml.annotations.DeclareFlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
@@ -76,18 +74,14 @@ import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
  * @author xtof
  * 
  */
-@DeclareFlexoRoles({ @DeclareFlexoRole(flexoRoleClass = XMLIndividualRole.class, FML = "XMLIndividual"), // Instances
-})
-@DeclareActorReferences({ // All actor references available through this model slot
-@DeclareActorReference(FML = "XMLActorReference", actorReferenceClass = XMLActorReference.class) })
-@DeclareEditionActions({
-		@DeclareEditionAction(editionActionClass = AddXMLIndividual.class, FML = "AddXMLIndividual"), // Add instance
-		@DeclareEditionAction(editionActionClass = GetXMLDocumentRoot.class, FML = "GetXMLDocumentRoot"),
-		@DeclareEditionAction(editionActionClass = SetXMLDocumentRoot.class, FML = "SetXMLDocumentRoot"), })
+@DeclareFlexoRoles({ XMLIndividualRole.class })
+@DeclareActorReferences({ XMLActorReference.class })
+@DeclareEditionActions({ AddXMLIndividual.class, GetXMLDocumentRoot.class, SetXMLDocumentRoot.class })
 @ModelEntity
 @XMLElement
 @ImplementationClass(XMLModelSlot.XMLModelSlotImpl.class)
 @Imports({ @Import(XMLURIProcessor.class), })
+@FML("XMLModelSlot")
 public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>, AbstractXMLModelSlot<XMLURIProcessor> {
 
 	@PropertyIdentifier(type = XMLMetaModel.class)

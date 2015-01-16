@@ -3,6 +3,7 @@ package org.openflexo.technologyadapter.owl.fml;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
@@ -15,6 +16,7 @@ import org.openflexo.technologyadapter.owl.model.SubClassStatement;
 @ModelEntity
 @ImplementationClass(SubClassStatementRole.SubClassStatementRoleImpl.class)
 @XMLElement
+@FML("SubClassStatementRole")
 public interface SubClassStatementRole extends StatementRole<SubClassStatement> {
 
 	public static abstract class SubClassStatementRoleImpl extends StatementRoleImpl<SubClassStatement> implements SubClassStatementRole {

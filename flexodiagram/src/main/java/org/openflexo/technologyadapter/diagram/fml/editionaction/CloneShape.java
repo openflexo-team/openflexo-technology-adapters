@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.diagram.fml.editionaction;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -36,6 +37,7 @@ import org.openflexo.model.annotations.XMLElement;
 @ModelEntity
 @ImplementationClass(CloneShape.CloneShapeImpl.class)
 @XMLElement
+@FML("CloneShape")
 public interface CloneShape extends AddShape {
 
 	public static abstract class CloneShapeImpl extends AddShapeImpl implements CloneShape {

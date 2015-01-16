@@ -25,6 +25,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -38,6 +39,7 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 @ModelEntity
 @ImplementationClass(AddOSLCRequirement.AddOSLCRequirementImpl.class)
 @XMLElement
+@FML("AddOSLCRequirement")
 public interface AddOSLCRequirement extends OSLCRmAction<OSLCRequirement> {
 
 	public static abstract class AddOSLCRequirementImpl extends TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCRequirement> implements
@@ -62,8 +64,7 @@ public interface AddOSLCRequirement extends OSLCRmAction<OSLCRequirement> {
 			FreeModelSlotInstance<OSLCResource, OSLCRMModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 
-			}
-			else {
+			} else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}

@@ -21,6 +21,7 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import org.openflexo.foundation.fml.NavigationScheme;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -28,6 +29,7 @@ import org.openflexo.model.annotations.XMLElement;
 @ModelEntity
 @XMLElement
 @ImplementationClass(DiagramNavigationScheme.DiagramNavigationSchemeImpl.class)
+@FML("DiagramNavigationScheme")
 public interface DiagramNavigationScheme extends NavigationScheme, DiagramFlexoBehaviour {
 
 	public static abstract class DiagramNavigationSchemeImpl extends NavigationSchemeImpl implements DiagramNavigationScheme {

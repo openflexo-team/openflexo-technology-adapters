@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.powerpoint.fml;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.logging.FlexoLogger;
@@ -31,6 +32,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 
+@FML("PowerpointActorReference")
 public interface PowerpointActorReference<T extends PowerpointObject> extends ActorReference<T> {
 
 	@PropertyIdentifier(type = String.class)

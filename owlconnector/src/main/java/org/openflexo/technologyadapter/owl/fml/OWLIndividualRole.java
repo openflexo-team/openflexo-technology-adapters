@@ -22,6 +22,7 @@
 package org.openflexo.technologyadapter.owl.fml;
 
 import org.openflexo.foundation.fml.IndividualRole;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -30,6 +31,7 @@ import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 @ModelEntity
 @ImplementationClass(OWLIndividualRole.OWLIndividualRoleImpl.class)
 @XMLElement
+@FML("OWLIndividualRole")
 public interface OWLIndividualRole extends IndividualRole<OWLIndividual> {
 
 	public static abstract class OWLIndividualRoleImpl extends IndividualRoleImpl<OWLIndividual> implements OWLIndividualRole {
