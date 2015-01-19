@@ -39,7 +39,7 @@ import org.openflexo.technologyadapter.csv.fml.CSVRole.CSVRoleImpl;
 @XMLElement
 public interface CSVRole extends FlexoRole<CSVModel> {
 
-    public CSVTechnologyAdapter getTechnologyAdapter();
+    public CSVTechnologyAdapter getModelSlotTechnologyAdapter();
 
     public abstract static class CSVRoleImpl extends FlexoRoleImpl<CSVModel> implements CSVRole {
 
@@ -97,7 +97,7 @@ public interface CSVRole extends FlexoRole<CSVModel> {
          * @return CSV technology adapter in service manager.
          */
         @Override
-        public CSVTechnologyAdapter getTechnologyAdapter() {
+        public CSVTechnologyAdapter getModelSlotTechnologyAdapter() {
             return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(CSVTechnologyAdapter.class);
         }
     }

@@ -25,10 +25,9 @@ package ${package};
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.fml.FlexoRole;
@@ -46,20 +45,16 @@ import ${package}.fml.${technologyPrefix}Role;
  * @author ${author}
  * 
  */
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-        @DeclareFlexoRole(flexoRoleClass = ${technologyPrefix}Role.class, FML = "Object"),
-    })
-@DeclareEditionActions({ // All edition actions available through this model slot
-    })
-@DeclareFetchRequests({ // All requests available through this model slot
-    })
+@DeclareFlexoRoles({${technologyPrefix}Role.class})
+@DeclareEditionActions({})
+@DeclareFetchRequests({})
 @ModelEntity
 @ImplementationClass(${technologyPrefix}ModelSlot.${technologyPrefix}ModelSlotImpl.class)
 @XMLElement
 public interface ${technologyPrefix}ModelSlot extends FreeModelSlot<${technologyPrefix}Model> {
 
     @Override
-    public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter();
+    public ${technologyPrefix}TechnologyAdapter getModelSlotTechnologyAdapter();
 
     public static abstract class ${technologyPrefix}ModelSlotImpl extends FreeModelSlotImpl<${technologyPrefix}Model> implements ${technologyPrefix}ModelSlot {
 
@@ -90,8 +85,8 @@ public interface ${technologyPrefix}ModelSlot extends FreeModelSlot<${technology
         }
 
         @Override
-        public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter() {
-            return (${technologyPrefix}TechnologyAdapter) super.getTechnologyAdapter();
+        public ${technologyPrefix}TechnologyAdapter getModelSlotTechnologyAdapter() {
+            return (${technologyPrefix}TechnologyAdapter) super.getModelSlotTechnologyAdapter();
         }
 
     }

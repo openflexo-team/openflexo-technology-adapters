@@ -22,10 +22,9 @@ package org.openflexo.technologyadapter.csv;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.fml.FlexoRole;
@@ -43,20 +42,16 @@ import org.openflexo.technologyadapter.csv.fml.CSVRole;
  * @author Jean Le Paon
  * 
  */
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-        @DeclareFlexoRole(flexoRoleClass = CSVRole.class, FML = "Object"),
-    })
-@DeclareEditionActions({ // All edition actions available through this model slot
-    })
-@DeclareFetchRequests({ // All requests available through this model slot
-    })
+@DeclareFlexoRoles({CSVRole.class})
+@DeclareEditionActions({})
+@DeclareFetchRequests({})
 @ModelEntity
 @ImplementationClass(CSVModelSlot.CSVModelSlotImpl.class)
 @XMLElement
 public interface CSVModelSlot extends FreeModelSlot<CSVModel> {
 
     @Override
-    public CSVTechnologyAdapter getTechnologyAdapter();
+    public CSVTechnologyAdapter getModelSlotTechnologyAdapter();
 
     public static abstract class CSVModelSlotImpl extends FreeModelSlotImpl<CSVModel> implements CSVModelSlot {
 
@@ -87,8 +82,8 @@ public interface CSVModelSlot extends FreeModelSlot<CSVModel> {
         }
 
         @Override
-        public CSVTechnologyAdapter getTechnologyAdapter() {
-            return (CSVTechnologyAdapter) super.getTechnologyAdapter();
+        public CSVTechnologyAdapter getModelSlotTechnologyAdapter() {
+            return (CSVTechnologyAdapter) super.getModelSlotTechnologyAdapter();
         }
 
     }

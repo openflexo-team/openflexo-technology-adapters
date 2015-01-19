@@ -29,9 +29,8 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
-import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
-import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
+import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
@@ -48,9 +47,7 @@ import org.openflexo.technologyadapter.csv.rm.CSVResourceRepository;
  * 
  */
 
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "CSVModelSlot", modelSlotClass = CSVModelSlot.class), 
-})
+@DeclareModelSlots({CSVModelSlot.class})
 @DeclareRepositoryType({CSVResourceRepository.class })
 public class CSVTechnologyAdapter extends TechnologyAdapter {
 

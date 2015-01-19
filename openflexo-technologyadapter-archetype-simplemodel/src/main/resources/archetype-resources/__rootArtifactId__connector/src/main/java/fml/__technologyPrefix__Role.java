@@ -39,7 +39,7 @@ import ${package}.fml.${technologyPrefix}Role.${technologyPrefix}RoleImpl;
 @XMLElement
 public interface ${technologyPrefix}Role extends FlexoRole<${technologyPrefix}Model> {
 
-    public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter();
+    public ${technologyPrefix}TechnologyAdapter getModelSlotTechnologyAdapter();
 
     public abstract static class ${technologyPrefix}RoleImpl extends FlexoRoleImpl<${technologyPrefix}Model> implements ${technologyPrefix}Role {
 
@@ -97,7 +97,7 @@ public interface ${technologyPrefix}Role extends FlexoRole<${technologyPrefix}Mo
          * @return ${technologyPrefix} technology adapter in service manager.
          */
         @Override
-        public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter() {
+        public ${technologyPrefix}TechnologyAdapter getModelSlotTechnologyAdapter() {
             return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(${technologyPrefix}TechnologyAdapter.class);
         }
     }
