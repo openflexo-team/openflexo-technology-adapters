@@ -29,8 +29,10 @@ import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
+
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.gui.CSVIconLibrary;
+
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -76,7 +78,7 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<CSVTechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		// TODO Auto-generated method stub
 		return null;
 	}
