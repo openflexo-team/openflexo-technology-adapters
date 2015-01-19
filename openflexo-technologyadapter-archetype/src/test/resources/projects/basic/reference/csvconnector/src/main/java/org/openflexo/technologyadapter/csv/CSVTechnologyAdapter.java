@@ -34,7 +34,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.technologyadapter.csv.rm.CSVMetaModelResource;
 import org.openflexo.technologyadapter.csv.rm.CSVModelResource;
 import org.openflexo.technologyadapter.csv.CSVTypeAwareModelSlot;

@@ -21,7 +21,7 @@
 
 package org.openflexo.technologyadapter.csv.virtualmodel;
 
-import org.openflexo.foundation.viewpoint.IndividualRole;
+import org.openflexo.foundation.fml.IndividualRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;

@@ -22,7 +22,7 @@
 package org.openflexo.technologyadapter.csv;
 
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.csv.metamodel.CSVMetaModel;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.technologyadapter.csv.rm.CSVMetaModelResource;

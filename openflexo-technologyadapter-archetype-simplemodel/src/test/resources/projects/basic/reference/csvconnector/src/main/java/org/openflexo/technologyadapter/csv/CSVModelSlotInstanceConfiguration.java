@@ -22,7 +22,7 @@
 package org.openflexo.technologyadapter.csv;
 
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 
 public class CSVModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration< CSVModel, CSVModelSlot> {

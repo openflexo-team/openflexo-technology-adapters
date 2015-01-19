@@ -40,6 +40,7 @@ import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.annotations.FMLProperty;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -85,6 +86,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 	@Getter(value = CONTAINER_KEY)
 	@XMLAttribute
+	@FMLProperty(value = CONTAINER_KEY, required = true)
 	public DataBinding<DiagramContainerElement<?>> getContainer();
 
 	@Setter(CONTAINER_KEY)
@@ -92,6 +94,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 	@Getter(value = EXTEND_PARENT_BOUNDS_TO_HOST_THIS_SHAPE_KEY, defaultValue = "false")
 	@XMLAttribute
+	@FMLProperty(value = EXTEND_PARENT_BOUNDS_TO_HOST_THIS_SHAPE_KEY, defaultValue = "false")
 	public boolean getExtendParentBoundsToHostThisShape();
 
 	@Setter(EXTEND_PARENT_BOUNDS_TO_HOST_THIS_SHAPE_KEY)

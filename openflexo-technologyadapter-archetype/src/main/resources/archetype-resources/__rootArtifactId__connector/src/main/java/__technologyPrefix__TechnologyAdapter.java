@@ -37,7 +37,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import ${package}.rm.${technologyPrefix}MetaModelResource;
 import ${package}.rm.${technologyPrefix}ModelResource;
 import ${package}.${technologyPrefix}TypeAwareModelSlot;
