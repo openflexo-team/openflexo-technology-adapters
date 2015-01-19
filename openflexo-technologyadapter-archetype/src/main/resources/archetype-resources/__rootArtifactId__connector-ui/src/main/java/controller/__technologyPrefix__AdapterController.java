@@ -32,8 +32,10 @@ import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.rm.ResourceLocator;
+
 import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.gui.${technologyPrefix}IconLibrary;
+
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -79,7 +81,7 @@ public class ${technologyPrefix}AdapterController extends TechnologyAdapterContr
 	}
 
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<${technologyPrefix}TechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		// TODO Auto-generated method stub
 		return null;
 	}
