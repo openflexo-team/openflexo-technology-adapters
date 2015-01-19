@@ -51,9 +51,7 @@ import ${package}.rm.${technologyPrefix}ModelRepository;
  * 
  */
 
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "${technologyPrefix}TypeAwareModelSlot", modelSlotClass = ${technologyPrefix}TypeAwareModelSlot.class), 
-})
+@DeclareModelSlots({${technologyPrefix}TypeAwareModelSlot.class})
 @DeclareRepositoryType({ ${technologyPrefix}MetaModelRepository.class, ${technologyPrefix}ModelRepository.class })
 public class ${technologyPrefix}TechnologyAdapter extends TechnologyAdapter {
 	private static String ${technologyPrefix}_FILE_EXTENSION = ".${technologyExtension}";
