@@ -73,7 +73,7 @@ public interface Add${technologyPrefix}ObjectIndividual extends AddIndividual<${
 		}
 
 		@Override
-		public ${technologyPrefix}ObjectIndividual performAction(FlexoBehaviourAction action) {
+		public ${technologyPrefix}ObjectIndividual execute(FlexoBehaviourAction action) {
 			${technologyPrefix}ObjectIndividual result = null;
 			// TODO : Implement Action
 			return result;

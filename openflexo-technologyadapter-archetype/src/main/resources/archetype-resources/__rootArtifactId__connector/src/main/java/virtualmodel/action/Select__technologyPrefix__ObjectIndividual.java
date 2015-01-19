@@ -62,7 +62,7 @@ public interface Select${technologyPrefix}ObjectIndividual extends SelectIndivid
 		}
 
 		@Override
-		public List<${technologyPrefix}ObjectIndividual> performAction(FlexoBehaviourAction action) {
+		public List<${technologyPrefix}ObjectIndividual> execute(FlexoBehaviourAction action) {
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;

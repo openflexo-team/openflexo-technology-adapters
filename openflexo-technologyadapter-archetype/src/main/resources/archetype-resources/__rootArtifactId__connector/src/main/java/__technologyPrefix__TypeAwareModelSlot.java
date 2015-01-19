@@ -60,15 +60,9 @@ import ${package}.virtualmodel.action.Select${technologyPrefix}ObjectIndividual;
  * @author ${author}
  * 
  */
-@DeclareFlexoRoles({ // All pattern roles available through this model slot
-	@DeclareFlexoRole(FML = "${technologyPrefix}ObjectIndividual", flexoRoleClass = ${technologyPrefix}ObjectIndividualRole.class)
-	})
-@DeclareEditionActions({ // All edition actions available through this model slot
-	@DeclareEditionAction(FML = "Add${technologyPrefix}ObjectIndividual", editionActionClass = Add${technologyPrefix}ObjectIndividual.class)
-	})
-@DeclareFetchRequests({ // All requests available through this model slot
-	@DeclareFetchRequest(FML = "Select${technologyPrefix}ObjectIndividual", fetchRequestClass = Select${technologyPrefix}ObjectIndividual.class) 
-	})
+@DeclareFlexoRoles({${technologyPrefix}ObjectIndividualRole.class})
+@DeclareEditionActions({Add${technologyPrefix}ObjectIndividual.class})
+@DeclareFetchRequests({Select${technologyPrefix}ObjectIndividual.class})
 @ModelEntity
 @ImplementationClass(${technologyPrefix}TypeAwareModelSlot.${technologyPrefix}TypeAwareModelSlotImpl.class)
 @XMLElement
