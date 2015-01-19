@@ -59,7 +59,7 @@ public interface SelectCSVObjectIndividual extends SelectIndividual<CSVTypeAware
 		}
 
 		@Override
-		public List<CSVObjectIndividual> performAction(FlexoBehaviourAction action) {
+		public List<CSVObjectIndividual> execute(FlexoBehaviourAction action) {
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;

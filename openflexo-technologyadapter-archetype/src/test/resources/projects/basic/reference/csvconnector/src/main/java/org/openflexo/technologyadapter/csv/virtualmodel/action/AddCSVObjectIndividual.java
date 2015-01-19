@@ -70,7 +70,7 @@ public interface AddCSVObjectIndividual extends AddIndividual<CSVTypeAwareModelS
 		}
 
 		@Override
-		public CSVObjectIndividual performAction(FlexoBehaviourAction action) {
+		public CSVObjectIndividual execute(FlexoBehaviourAction action) {
 			CSVObjectIndividual result = null;
 			// TODO : Implement Action
 			return result;

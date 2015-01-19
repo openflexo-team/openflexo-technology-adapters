@@ -33,7 +33,7 @@ import org.openflexo.technologyadapter.csv.model.CSVModel;
 
 @ModelEntity
 @ImplementationClass(CSVModelResourceImpl.class)
-public abstract interface CSVModelResource extends FlexoResource<CSVModel>, FlexoModelResource<CSVModel, CSVMetaModel, CSVTechnologyAdapter>
+public abstract interface CSVModelResource extends FlexoResource<CSVModel>, FlexoModelResource<CSVModel, CSVMetaModel, CSVTechnologyAdapter, CSVTechnologyAdapter>
 {
   public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
