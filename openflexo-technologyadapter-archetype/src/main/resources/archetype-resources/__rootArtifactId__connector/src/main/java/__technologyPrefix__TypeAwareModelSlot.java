@@ -27,20 +27,17 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -69,7 +66,7 @@ import ${package}.virtualmodel.action.Select${technologyPrefix}ObjectIndividual;
 public interface ${technologyPrefix}TypeAwareModelSlot extends TypeAwareModelSlot<${technologyPrefix}Model, ${technologyPrefix}MetaModel> {
 
 	@Override
-	public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter();
+	public ${technologyPrefix}TechnologyAdapter getModelSlotTechnologyAdapter();
 
 	public static abstract class ${technologyPrefix}TypeAwareModelSlotImpl extends TypeAwareModelSlotImpl<${technologyPrefix}Model, ${technologyPrefix}MetaModel> implements ${technologyPrefix}TypeAwareModelSlot {
 
@@ -119,20 +116,20 @@ public interface ${technologyPrefix}TypeAwareModelSlot extends TypeAwareModelSlo
 		}
 
 		@Override
-		public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter() {
-			return (${technologyPrefix}TechnologyAdapter) super.getTechnologyAdapter();
+		public ${technologyPrefix}TechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (${technologyPrefix}TechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
 		public ${technologyPrefix}ModelResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
 				FlexoMetaModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ?> metaModelResource) {
-			return ((${technologyPrefix}TechnologyAdapter) getTechnologyAdapter()).createNew${technologyPrefix}Model(project, filename, modelUri, (${technologyPrefix}MetaModelResource) metaModelResource);
+			return ((${technologyPrefix}TechnologyAdapter) getModelSlotTechnologyAdapter()).createNew${technologyPrefix}Model(project, filename, modelUri, (${technologyPrefix}MetaModelResource) metaModelResource);
 		}
 
 		@Override
 		public ${technologyPrefix}ModelResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ?> metaModelResource) {
-			return ((${technologyPrefix}TechnologyAdapter) getTechnologyAdapter()).createNew${technologyPrefix}Model((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
+			return ((${technologyPrefix}TechnologyAdapter) getModelSlotTechnologyAdapter()).createNew${technologyPrefix}Model((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
 					modelUri, (${technologyPrefix}MetaModelResource) metaModelResource);
 		}
 

@@ -37,7 +37,7 @@ public class ${technologyPrefix}TypeAwareModelSlotInstanceConfiguration extends 
 	}
 
 	@Override
-	public void setOption(import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
+	public void setOption(org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		// TODO : add specific options here
 	}

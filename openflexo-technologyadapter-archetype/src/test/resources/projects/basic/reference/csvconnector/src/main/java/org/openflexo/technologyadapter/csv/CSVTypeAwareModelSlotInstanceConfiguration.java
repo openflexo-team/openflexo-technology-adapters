@@ -18,23 +18,22 @@
  *
  */
 
-
 package org.openflexo.technologyadapter.csv;
 
-import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.csv.metamodel.CSVMetaModel;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
-import org.openflexo.technologyadapter.csv.rm.CSVMetaModelResource;
 
-public class CSVTypeAwareModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<CSVModel, CSVMetaModel, CSVTypeAwareModelSlot> {
+public class CSVTypeAwareModelSlotInstanceConfiguration extends
+		TypeAwareModelSlotInstanceConfiguration<CSVModel, CSVMetaModel, CSVTypeAwareModelSlot> {
 
 	protected CSVTypeAwareModelSlotInstanceConfiguration(CSVTypeAwareModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 
 	@Override
-	public void setOption(import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
+	public void setOption(org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		// TODO : add specific options here
 	}

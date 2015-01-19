@@ -24,24 +24,20 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
-import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.metamodel.CSVMetaModel;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.technologyadapter.csv.rm.CSVMetaModelResource;
@@ -57,18 +53,19 @@ import org.openflexo.technologyadapter.csv.virtualmodel.action.SelectCSVObjectIn
  * @author Jean Le Paon
  * 
  */
-@DeclareFlexoRoles({CSVObjectIndividualRole.class})
-@DeclareEditionActions({AddCSVObjectIndividual.class})
-@DeclareFetchRequests({SelectCSVObjectIndividual.class})
+@DeclareFlexoRoles({ CSVObjectIndividualRole.class })
+@DeclareEditionActions({ AddCSVObjectIndividual.class })
+@DeclareFetchRequests({ SelectCSVObjectIndividual.class })
 @ModelEntity
 @ImplementationClass(CSVTypeAwareModelSlot.CSVTypeAwareModelSlotImpl.class)
 @XMLElement
 public interface CSVTypeAwareModelSlot extends TypeAwareModelSlot<CSVModel, CSVMetaModel> {
 
 	@Override
-	public CSVTechnologyAdapter getTechnologyAdapter();
+	public CSVTechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public static abstract class CSVTypeAwareModelSlotImpl extends TypeAwareModelSlotImpl<CSVModel, CSVMetaModel> implements CSVTypeAwareModelSlot {
+	public static abstract class CSVTypeAwareModelSlotImpl extends TypeAwareModelSlotImpl<CSVModel, CSVMetaModel> implements
+			CSVTypeAwareModelSlot {
 
 		private static final Logger logger = Logger.getLogger(CSVTypeAwareModelSlot.class.getPackage().getName());
 
@@ -116,21 +113,21 @@ public interface CSVTypeAwareModelSlot extends TypeAwareModelSlot<CSVModel, CSVM
 		}
 
 		@Override
-		public CSVTechnologyAdapter getTechnologyAdapter() {
-			return (CSVTechnologyAdapter) super.getTechnologyAdapter();
+		public CSVTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (CSVTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
 		public CSVModelResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
 				FlexoMetaModelResource<CSVModel, CSVMetaModel, ?> metaModelResource) {
-			return ((CSVTechnologyAdapter) getTechnologyAdapter()).createNewCSVModel(project, filename, modelUri, (CSVMetaModelResource) metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewCSVModel(project, filename, modelUri, (CSVMetaModelResource) metaModelResource);
 		}
 
 		@Override
 		public CSVModelResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<CSVModel, CSVMetaModel, ?> metaModelResource) {
-			return ((CSVTechnologyAdapter) getTechnologyAdapter()).createNewCSVModel((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
-					modelUri, (CSVMetaModelResource) metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewCSVModel((FileSystemBasedResourceCenter) resourceCenter, relativePath,
+					filename, modelUri, (CSVMetaModelResource) metaModelResource);
 		}
 
 		@Override

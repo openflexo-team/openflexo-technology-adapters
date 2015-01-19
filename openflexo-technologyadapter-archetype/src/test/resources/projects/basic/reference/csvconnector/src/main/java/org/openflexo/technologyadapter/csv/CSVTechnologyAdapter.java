@@ -23,24 +23,19 @@ package org.openflexo.technologyadapter.csv;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
+import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
-import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
-import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
-import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.technologyadapter.csv.rm.CSVMetaModelResource;
-import org.openflexo.technologyadapter.csv.rm.CSVModelResource;
-import org.openflexo.technologyadapter.csv.CSVTypeAwareModelSlot;
 import org.openflexo.technologyadapter.csv.rm.CSVMetaModelRepository;
+import org.openflexo.technologyadapter.csv.rm.CSVMetaModelResource;
 import org.openflexo.technologyadapter.csv.rm.CSVModelRepository;
-
+import org.openflexo.technologyadapter.csv.rm.CSVModelResource;
 
 /**
  * This class defines and implements the CSV technology adapter
@@ -49,9 +44,7 @@ import org.openflexo.technologyadapter.csv.rm.CSVModelRepository;
  * 
  */
 
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "CSVTypeAwareModelSlot", modelSlotClass = CSVTypeAwareModelSlot.class), 
-})
+@DeclareModelSlots({ CSVTypeAwareModelSlot.class })
 @DeclareRepositoryType({ CSVMetaModelRepository.class, CSVModelRepository.class })
 public class CSVTechnologyAdapter extends TechnologyAdapter {
 	private static String CSV_FILE_EXTENSION = ".csv";
@@ -101,21 +94,16 @@ public class CSVTechnologyAdapter extends TechnologyAdapter {
 		// TODO Auto-generated method stub
 
 	}
-	
 
-	public CSVModelResource createNewCSVModel(FlexoProject project,
-			String filename, String modelUri,
-			CSVMetaModelResource metaModelResource) {
+	public CSVModelResource createNewCSVModel(FlexoProject project, String filename, String modelUri, CSVMetaModelResource metaModelResource) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public CSVModelResource createNewCSVModel(
-			FileSystemBasedResourceCenter resourceCenter, String relativePath,
-			String filename, String modelUri,
-			CSVMetaModelResource metaModelResource) {
+	public CSVModelResource createNewCSVModel(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
+			String modelUri, CSVMetaModelResource metaModelResource) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 }
