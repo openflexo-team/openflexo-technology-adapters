@@ -26,7 +26,7 @@ import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.metamodel.CSVMetaModel;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 
-public class CSVModelRepository extends ModelRepository<CSVModelResource, CSVModel, CSVMetaModel, CSVTechnologyAdapter> {
+public class CSVModelRepository extends ModelRepository<CSVModelResource, CSVModel, CSVMetaModel, CSVTechnologyAdapter, CSVTechnologyAdapter> {
 
 	public CSVModelRepository(CSVTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
 		super(adapter, resourceCenter);
