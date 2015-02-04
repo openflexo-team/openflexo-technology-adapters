@@ -70,4 +70,5 @@
   		<url>http://oauth.googlecode.com/svn/code/maven</url>
 	</repository>
   </repositories>
+  <name>OSLC technology adaptor</name>
 </project>
