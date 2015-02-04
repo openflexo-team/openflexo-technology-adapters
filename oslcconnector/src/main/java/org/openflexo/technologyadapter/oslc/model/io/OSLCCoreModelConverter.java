@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.oslc.model.io;
 
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -99,14 +100,20 @@ public class OSLCCoreModelConverter {
 
 	public OSLCServiceProviderCatalog convertAllCoreResourcesFromCatalog() {
 		OSLCServiceProviderCatalog oslcResource = null;
-		ServiceProviderCatalog catalog = oslcClient.getResource(baseUri, ServiceProviderCatalog.class);
-		if (catalog != null) {
-			oslcResource = convertOSLCServiceProviderCatalog(catalog);
-			for (ServiceProvider sp : catalog.getServiceProviders()) {
-				oslcResource.addToOSLCServiceProviders(convertOSLCServiceProvider(sp));
-			}
-		}
+		ServiceProviderCatalog catalog;
+		try {
+			catalog = (ServiceProviderCatalog) oslcClient.retrieve(baseUri);
 
+			if (catalog != null) {
+				oslcResource = convertOSLCServiceProviderCatalog(catalog);
+				for (ServiceProvider sp : catalog.getServiceProviders()) {
+					oslcResource.addToOSLCServiceProviders(convertOSLCServiceProvider(sp));
+				}
+			}
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return oslcResource;
 	}
 
