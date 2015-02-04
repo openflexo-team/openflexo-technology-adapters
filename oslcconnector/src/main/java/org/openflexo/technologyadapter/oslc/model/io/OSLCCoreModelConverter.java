@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.model.io;
 
 import java.util.HashMap;
@@ -70,18 +69,20 @@ public class OSLCCoreModelConverter {
 
 	private ModelFactory factory;
 	private ModelContext modelContext;
-	private OSLCClient client;
+	private String baseUri;
 	private OSLCTechnologyAdapter technologyAdapter;
+	private FlexoOslcClient oslcClient;
 
 	/**
 	 * Constructor.
 	 */
-	public OSLCCoreModelConverter(OSLCClient client) {
+	public OSLCCoreModelConverter(FlexoOslcAdaptorConfiguration adaptorConfiguration) {
 		try {
-			this.client = client;
+			this.baseUri = adaptorConfiguration.getBaseUri();
 			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(OSLCResource.class, OSLCServiceProviderCatalog.class,
 					OSLCServiceProvider.class, OSLCQueryCapability.class, OSLCCreationFactory.class));
 			modelContext = new ModelContext(OSLCResource.class);
+			oslcClient = new FlexoOslcClient(adaptorConfiguration);
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -96,12 +97,17 @@ public class OSLCCoreModelConverter {
 		this.technologyAdapter = technologyAdapter;
 	}
 
-	public OSLCServiceProviderCatalog convertAllCoreResources() {
-		OSLCServiceProviderCatalog catalog = convertOSLCServiceProviderCatalog(client.getSpc());
-		for (ServiceProvider sp : client.getSps()) {
-			catalog.addToOSLCServiceProviders(convertOSLCServiceProvider(sp));
+	public OSLCServiceProviderCatalog convertAllCoreResourcesFromCatalog() {
+		OSLCServiceProviderCatalog oslcResource = null;
+		ServiceProviderCatalog catalog = oslcClient.getResource(baseUri, ServiceProviderCatalog.class);
+		if (catalog != null) {
+			oslcResource = convertOSLCServiceProviderCatalog(catalog);
+			for (ServiceProvider sp : catalog.getServiceProviders()) {
+				oslcResource.addToOSLCServiceProviders(convertOSLCServiceProvider(sp));
+			}
 		}
-		return catalog;
+
+		return oslcResource;
 	}
 
 	public OSLCServiceProviderCatalog convertOSLCServiceProviderCatalog(ServiceProviderCatalog resource) {
@@ -112,14 +118,14 @@ public class OSLCCoreModelConverter {
 		return oslcResource;
 	}
 
-	public OSLCServiceProvider convertOSLCServiceProvider(ServiceProvider resource) {
+	public OSLCServiceProvider convertOSLCServiceProvider(ServiceProvider serviceProvider) {
 		OSLCServiceProvider oslcResource = factory.newInstance(OSLCServiceProvider.class);
-		for (Service service : resource.getServices()) {
+		for (Service service : serviceProvider.getServices()) {
 			oslcResource.addToOSLCServices(convertOSLCService(service));
 		}
-		oslcResource.setOSLCServiceProvider(resource);
+		oslcResource.setOSLCServiceProvider(serviceProvider);
 		oslcResource.setTechnologyAdapter(technologyAdapter);
-		OSLCObjects.put(resource, oslcResource);
+		OSLCObjects.put(serviceProvider, oslcResource);
 		return oslcResource;
 	}
 
@@ -141,6 +147,7 @@ public class OSLCCoreModelConverter {
 		OSLCQueryCapability oslcResource = factory.newInstance(OSLCQueryCapability.class);
 		oslcResource.setOSLCQueryCapability(resource);
 		oslcResource.setTechnologyAdapter(technologyAdapter);
+		// catalogOslcClient.getResourcesFromQueryCapability(OslcMediaType.APPLICATION_RDF_XML, resource);
 		OSLCObjects.put(resource, oslcResource);
 		return oslcResource;
 	}

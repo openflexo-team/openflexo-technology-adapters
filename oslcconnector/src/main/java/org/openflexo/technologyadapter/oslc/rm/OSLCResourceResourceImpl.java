@@ -36,13 +36,14 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.rm;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,9 +67,8 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyContextManager;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.io.FlexoOslcAdaptorConfiguration;
 import org.openflexo.technologyadapter.oslc.model.io.OSLCCoreModelConverter;
-import org.openflexo.technologyadapter.oslc.model.io.OSLCResourceClient;
-import org.openflexo.toolbox.FileUtils;
 import org.openflexo.toolbox.IProgress;
 
 public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCResource> implements OSLCResourceResource {
@@ -136,15 +136,17 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 
 		if (getFlexoIODelegate().exists()) {
 			try {
-				// Retrieve the URL of the provider from a configuration file
-				OSLCResourceClient client = createClientFromProviderURL();
+				// Retrieve the configuration from a configuration file
+				FlexoOslcAdaptorConfiguration adaptorConfiguration = loadAdaptorConfiguration();
 
 				if (converter == null) {
-					converter = new OSLCCoreModelConverter(client);
+					converter = new OSLCCoreModelConverter(adaptorConfiguration);
 					converter.setTechnologyAdapter(getTechnologyAdapter());
 				}
-				resourceData = converter.convertAllCoreResources();
-				resourceData.setResource(this);
+				resourceData = converter.convertAllCoreResourcesFromCatalog();
+				if (resourceData != null) {
+					resourceData.setResource(this);
+				}
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -219,18 +221,36 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 		return OSLCResource.class;
 	}
 
-	private OSLCResourceClient createClientFromProviderURL() {
-		OSLCResourceClient client = null;
+	/**
+	 * load an oslc file and get the informations
+	 * 
+	 * @return
+	 */
+	private FlexoOslcAdaptorConfiguration loadAdaptorConfiguration() {
+		FlexoOslcAdaptorConfiguration adaptor = null;
+		File providerFile = (File) getFlexoIODelegate().getSerializationArtefact();
+		Properties properties = new Properties();
+		FileInputStream input = null;
 		try {
-			File providerFile = (File) getFlexoIODelegate().getSerializationArtefact();
-			String provider = FileUtils.fileContents(providerFile);
-
-			provider = provider.replaceAll("(\\r|\\n)", "");
-			client = new OSLCResourceClient(provider);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			input = new FileInputStream(providerFile);
+			properties.load(input);
+			adaptor = new FlexoOslcAdaptorConfiguration(properties.getProperty("catalogUri"));
+			adaptor.setAccessToken(properties.getProperty("accessToken"));
+			adaptor.setRequestTokenUrl(properties.getProperty("requestTokenUrl"));
+			adaptor.setAuthorizationUrl(properties.getProperty("authorizationUrl"));
+			adaptor.setConsumerKey(properties.getProperty("consumerKey"));
+			adaptor.setConsumerSecret(properties.getProperty("consumerSecret"));
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		} finally {
+			if (input != null) {
+				try {
+					input.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
-		return client;
+		return adaptor;
 	}
 }
