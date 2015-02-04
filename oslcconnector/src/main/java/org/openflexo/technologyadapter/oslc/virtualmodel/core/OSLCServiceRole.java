@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.virtualmodel.core;
 
 import java.lang.reflect.Type;
@@ -90,5 +89,10 @@ public interface OSLCServiceRole extends FlexoRole<OSLCService> {
 			return returned;
 		}
 
+		@Override
+		public boolean defaultBehaviourIsToBeDeleted() {
+			// TODO Auto-generated method stub
+			return false;
+		}
 	}
 }

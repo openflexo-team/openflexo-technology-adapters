@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc;
 
 import java.lang.reflect.Type;
@@ -48,9 +47,12 @@ import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -101,7 +103,8 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (OSLCRequirementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "requirement";
-			} else if (OSLCRequirementCollectionRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (OSLCRequirementCollectionRole.class.isAssignableFrom(patternRoleClass)) {
 				return "requirementCollection";
 			}
 			return null;
@@ -130,6 +133,19 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 		public OSLCTechnologyAdapter getTechnologyAdapter() {
 			return (OSLCTechnologyAdapter) super.getTechnologyAdapter();
 		}*/
+
+		@Override
+		public TechnologyAdapterResource<OSLCResource, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public TechnologyAdapterResource<OSLCResource, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
+				String relativePath, String filename, String modelUri) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 
 	}
 }
