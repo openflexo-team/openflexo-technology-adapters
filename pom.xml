@@ -21,6 +21,7 @@
 		<flexodocresourcemanager.version>1.7.1-SNAPSHOT</flexodocresourcemanager.version>
 		<flexocore.version>1.7.1-SNAPSHOT</flexocore.version>
 		<poi.version>3.10.1</poi.version>
+		<ta.logo>https://media.openflexo.org/images/ta_logo64x64.png</ta.logo>
 	</properties>
 	<scm>
 		<connection>scm:git:ssh://git@github.com/openflexo-team/openflexo-technology-adapters.git</connection>
