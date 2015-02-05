@@ -40,8 +40,8 @@ package org.openflexo.technologyadapter.diagram.fml.binding;
 
 import java.beans.PropertyChangeEvent;
 
-import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.antar.binding.BindingVariable;
+import org.openflexo.connie.BindingModel;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;

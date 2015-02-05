@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram.fml;
 
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.AbstractCreationScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.annotations.FIBPanel;

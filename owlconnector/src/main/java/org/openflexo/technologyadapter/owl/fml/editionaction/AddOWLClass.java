@@ -41,8 +41,8 @@ package org.openflexo.technologyadapter.owl.fml.editionaction;
 import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.expr.NullReferenceException;
-import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AddClass;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;

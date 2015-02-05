@@ -40,10 +40,10 @@ package org.openflexo.technologyadapter.xml.fml.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
 
-import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
-import org.openflexo.antar.expr.NullReferenceException;
-import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.editionaction.AbstractAssertion;
 import org.openflexo.foundation.fml.editionaction.AddIndividual;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;

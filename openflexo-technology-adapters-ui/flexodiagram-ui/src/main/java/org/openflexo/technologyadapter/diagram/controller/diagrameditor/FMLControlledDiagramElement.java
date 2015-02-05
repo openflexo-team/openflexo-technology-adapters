@@ -44,10 +44,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openflexo.antar.binding.BindingValueChangeListener;
-import org.openflexo.antar.expr.NotSettableContextException;
-import org.openflexo.antar.expr.NullReferenceException;
-import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.connie.binding.BindingValueChangeListener;
+import org.openflexo.connie.exception.NotSettableContextException;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;

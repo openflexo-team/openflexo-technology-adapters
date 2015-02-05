@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.diagram.model.action;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.BindingVariable;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.ShapeBorder;

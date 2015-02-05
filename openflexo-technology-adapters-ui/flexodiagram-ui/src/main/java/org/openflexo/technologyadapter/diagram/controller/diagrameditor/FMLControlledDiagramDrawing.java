@@ -44,8 +44,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.BindingFactory;
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.BindingFactory;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactory;

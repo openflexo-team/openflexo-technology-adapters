@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.diagram.controller.paletteeditor;
 
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.fge.GRBinding.DrawingGRBinding;

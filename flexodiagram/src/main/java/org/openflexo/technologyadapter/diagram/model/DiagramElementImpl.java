@@ -45,7 +45,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.BindingVariable;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.fml.VirtualModel;

@@ -44,10 +44,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.freeplane.features.map.NodeModel;
-import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
-import org.openflexo.antar.expr.NullReferenceException;
-import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;

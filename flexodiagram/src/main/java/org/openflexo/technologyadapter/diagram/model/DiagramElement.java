@@ -42,7 +42,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import org.openflexo.antar.binding.BindingEvaluationContext;
+import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.InnerResourceData;

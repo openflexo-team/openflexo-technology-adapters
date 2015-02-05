@@ -44,12 +44,12 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.BindingModel;
-import org.openflexo.antar.binding.BindingVariable;
-import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
-import org.openflexo.antar.expr.NullReferenceException;
-import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.connie.BindingModel;
+import org.openflexo.connie.BindingVariable;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoObject;

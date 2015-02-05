@@ -46,7 +46,7 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;

@@ -44,11 +44,11 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.BindingPathElement;
-import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.binding.Function;
-import org.openflexo.antar.binding.FunctionPathElement;
-import org.openflexo.antar.binding.SimplePathElement;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.Function;
+import org.openflexo.connie.binding.FunctionPathElement;
+import org.openflexo.connie.binding.SimplePathElement;
 import org.openflexo.foundation.fml.TechnologySpecificCustomType;
 import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.foundation.ontology.SubClassOfClass;

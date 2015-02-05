@@ -44,10 +44,10 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.Bindable;
-import org.openflexo.antar.binding.BindingDefinition;
-import org.openflexo.antar.binding.BindingFactory;
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.Bindable;
+import org.openflexo.connie.BindingFactory;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FlexoRole;

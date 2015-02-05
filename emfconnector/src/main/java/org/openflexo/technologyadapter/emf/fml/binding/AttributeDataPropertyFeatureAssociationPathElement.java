@@ -42,12 +42,12 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.BindingEvaluationContext;
-import org.openflexo.antar.binding.BindingPathElement;
-import org.openflexo.antar.binding.ParameterizedTypeImpl;
-import org.openflexo.antar.binding.SimplePathElement;
-import org.openflexo.antar.expr.NullReferenceException;
-import org.openflexo.antar.expr.TypeMismatchException;
+import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.binding.SimplePathElement;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.type.ParameterizedTypeImpl;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeAssociation;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAttributeDataProperty;
 import org.openflexo.technologyadapter.emf.model.EMFModel;

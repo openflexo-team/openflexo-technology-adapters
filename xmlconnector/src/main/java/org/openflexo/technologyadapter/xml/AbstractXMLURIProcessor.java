@@ -44,8 +44,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.BindingFactory;
-import org.openflexo.antar.binding.BindingModel;
+import org.openflexo.connie.BindingFactory;
+import org.openflexo.connie.BindingModel;
 import org.openflexo.foundation.FlexoProperty;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;

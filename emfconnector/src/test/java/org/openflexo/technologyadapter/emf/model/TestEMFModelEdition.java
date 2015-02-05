@@ -49,7 +49,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
