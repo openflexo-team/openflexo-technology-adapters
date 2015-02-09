@@ -240,6 +240,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 			adaptor.setAuthorizationUrl(properties.getProperty("authorizationUrl"));
 			adaptor.setConsumerKey(properties.getProperty("consumerKey"));
 			adaptor.setConsumerSecret(properties.getProperty("consumerSecret"));
+			adaptor.setAuthURL(properties.getProperty("authURL"));
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {

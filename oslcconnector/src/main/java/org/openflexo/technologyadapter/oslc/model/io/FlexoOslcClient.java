@@ -38,17 +38,15 @@
 
 package org.openflexo.technologyadapter.oslc.model.io;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -57,21 +55,7 @@ import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
-import net.oauth.client.OAuthClient;
-import net.oauth.client.httpclient4.HttpClient4;
-
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.NameValuePair;
-import org.apache.http.auth.InvalidCredentialsException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.params.HttpClientParams;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.protocol.HTTP;
+import org.apache.wink.client.ClientResponse;
 import org.apache.wink.client.ClientWebException;
 import org.eclipse.lyo.oslc4j.client.OslcRestClient;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
@@ -85,71 +69,92 @@ import org.eclipse.lyo.oslc4j.core.model.ServiceProviderCatalog;
 import org.eclipse.lyo.oslc4j.provider.jena.JenaProvidersRegistry;
 import org.eclipse.lyo.oslc4j.provider.json4j.Json4JProvidersRegistry;
 
+/**
+ * FlexoOslcClient is used to manipulate OSLC resource handled by OSLC providers. It configures and uses an OslcRestClient to access OSLC
+ * resource. OslcRestClient is based on Apache API. An oAuth authentification is processed if the acces is unauthorized. <br/>
+ * FlexoOslcClient provides basic services : <li>{@link #create(CreationFactory factory, T resource) create(CreationFactory factory, T
+ * resource)}</li> <li>{@link #delete(T resource) delete(T resource)}</li> <li>{@link #retrieve(String resourceUri) retrieve(String
+ * resourceUri)}</li> <li>
+ * {@link #update(T resource) update(T resource)}</li>
+ * 
+ * @author Vincent
+ * 
+ */
 public class FlexoOslcClient {
 
+	private static final Logger logger = Logger.getLogger(FlexoOslcClient.class.getPackage().getName());
+
+	// Providers converts server data into a specific format requested by the client
 	private static Set<Class<?>> PROVIDERS = new HashSet<Class<?>>();
 	private final String mediaType;
 	private final FlexoOslcAdaptorConfiguration adaptorConfiguration;
+	// At a minimum an OSLC resource is available in RDF/XML format.
+	private final static String DEFAULT_MEDIA_TYPE = "application/" + OslcMediaType.RDF_XML;
 
+	/**
+	 * Common providers for OSLC
+	 */
 	static {
 		PROVIDERS.addAll(JenaProvidersRegistry.getProviders());
 		PROVIDERS.addAll(Json4JProvidersRegistry.getProviders());
 		PROVIDERS.add(ServiceProviderCatalog.class);
 		PROVIDERS.add(ServiceProvider.class);
+		PROVIDERS.add(Service.class);
+		PROVIDERS.add(CreationFactory.class);
+		PROVIDERS.add(QueryCapability.class);
 	}
 
 	public FlexoOslcClient(FlexoOslcAdaptorConfiguration adaptorConfiguration) {
-		this.mediaType = OslcMediaType.RDF_XML;
+		this.mediaType = DEFAULT_MEDIA_TYPE;
 		this.adaptorConfiguration = adaptorConfiguration;
 	}
 
 	public FlexoOslcClient(FlexoOslcAdaptorConfiguration adaptorConfiguration, String mediaType) {
 		this.mediaType = mediaType;
+		if (mediaType == null) {
+			mediaType = DEFAULT_MEDIA_TYPE;
+		}
 		this.adaptorConfiguration = adaptorConfiguration;
 	}
 
+	/**
+	 * Use this client to set other providers.
+	 * 
+	 * @param adaptorConfiguration
+	 * @param providers
+	 * @param mediaType
+	 */
 	public FlexoOslcClient(FlexoOslcAdaptorConfiguration adaptorConfiguration, Set<Class<?>> providers, String mediaType) {
 		PROVIDERS.addAll(providers);
 		this.mediaType = mediaType;
+		if (mediaType == null) {
+			mediaType = DEFAULT_MEDIA_TYPE;
+		}
 		this.adaptorConfiguration = adaptorConfiguration;
 	}
 
 	/**
 	 * Create a resource using a creation factory
 	 * 
-	 * @param factory
-	 * @param resource
-	 * @return
-	 * @throws URISyntaxException
-	 */
-	public AbstractResource create(CreationFactory factory, AbstractResource resource) throws URISyntaxException {
-		final OslcRestClient oslcRestClient = new OslcRestClient(PROVIDERS, factory.getCreation(), mediaType);
-		final AbstractResource addedResource = oslcRestClient.addOslcResource(resource);
-		return addedResource;
-	}
-
-	/**
-	 * Create a resource using a service
+	 * @see <a href="http://open-services.net/bin/view/Main/OslcCoreSpecification#Creation_Factories">Creation Factories</a>
 	 * 
 	 * @param factory
 	 * @param resource
-	 * @return
+	 * @return The created OSLC resource.
 	 * @throws URISyntaxException
 	 */
-	public AbstractResource create(CreationFactory factory, AbstractResource resource, Service service) throws URISyntaxException {
-		final OslcRestClient oslcRestClient = new OslcRestClient(PROVIDERS, factory.getCreation(), mediaType);
-		final AbstractResource addedResource = oslcRestClient.addOslcResource(resource);
-		return addedResource;
+	public <T extends AbstractResource> T create(CreationFactory factory, T resource, String mediaType) throws URISyntaxException {
+		final OslcRestClient oslcRestClient = createOslcRestClient(factory.getCreation().toString(), mediaType);
+		return oslcRestClient.addOslcResource(resource);
 	}
 
 	/**
 	 * Delete a resource
 	 * 
-	 * @param mediaType
 	 * @param resource
 	 */
-	public void delete(final String mediaType, AbstractResource resource) {
-		final OslcRestClient oslcRestClient = new OslcRestClient(PROVIDERS, resource.getAbout(), mediaType);
+	public <T extends AbstractResource> void delete(T resource) {
+		final OslcRestClient oslcRestClient = createOslcRestClient(resource.getAbout().toString(), null);
 		oslcRestClient.removeOslcResourceReturnClientResponse();
 	}
 
@@ -159,33 +164,9 @@ public class FlexoOslcClient {
 	 * @param mediaType
 	 * @param uri
 	 */
-	public void delete(final String mediaType, String uri) {
-		final OslcRestClient oslcRestClient = new OslcRestClient(PROVIDERS, uri, mediaType);
+	public void delete(String uri) {
+		final OslcRestClient oslcRestClient = createOslcRestClient(uri, null);
 		oslcRestClient.removeOslcResourceReturnClientResponse();
-	}
-
-	/**
-	 * Retrieve an OSLC resource given an URI and a media type
-	 * 
-	 * @param mediaType
-	 * @param resourceUri
-	 * @return
-	 * @throws URISyntaxException
-	 */
-	public AbstractResource retrieve(final String mediaType, String resourceUri) throws URISyntaxException {
-		return getResource(AbstractResource.class, resourceUri, mediaType);
-	}
-
-	/**
-	 * Retrieve an OSLC resource given an URI and a media typen and a resource
-	 * 
-	 * @param mediaType
-	 * @param resourceUri
-	 * @return
-	 * @throws URISyntaxException
-	 */
-	public <T> T retrieve(final Class<T> resourceClass, final String mediaType, String resourceUri) throws URISyntaxException {
-		return getResource(resourceClass, resourceUri, mediaType);
 	}
 
 	/**
@@ -196,84 +177,155 @@ public class FlexoOslcClient {
 	 * @return
 	 * @throws URISyntaxException
 	 */
-	public AbstractResource retrieve(String resourceUri) throws URISyntaxException {
-		return getResource(resourceUri, AbstractResource.class);
+	@SuppressWarnings("unchecked")
+	public <T extends AbstractResource> T retrieve(String resourceUri) throws URISyntaxException {
+		final OslcRestClient oslcRestClient = createOslcRestClient(resourceUri, null);
+		return (T) getClientResource(oslcRestClient, null);
 	}
 
 	/**
-	 * Retrieve an OSLC resource given an Uri and a class
+	 * Retrieve an OSLC resource given an URI
 	 * 
 	 * @param mediaType
 	 * @param resourceUri
-	 * @param resourceClass
 	 * @return
 	 * @throws URISyntaxException
 	 */
-	public <T> T retrieve(final String mediaType, String resourceUri, final Class<T> resourceClass) throws URISyntaxException {
-		return getResource(resourceUri, resourceClass);
+	/*@SuppressWarnings("unchecked")
+	public <T extends AbstractResource> T retrieve(QueryCapability queryCapability, String resourceUri) throws URISyntaxException {
+		return (T) getResourceFromClient(resourceUri, null, null);
+	}*/
+
+	/**
+	 * Retrieve an OSLC resource given an URI and a media type
+	 * 
+	 * @param mediaType
+	 * @param resourceUri
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	@SuppressWarnings("unchecked")
+	public <T extends AbstractResource> T retrieve(String resourceUri, final String mediaType) throws URISyntaxException {
+		final OslcRestClient oslcRestClient = createOslcRestClient(resourceUri, mediaType);
+		return (T) getClientResource(oslcRestClient, null);
 	}
 
 	/**
-	 * Retrive a set of OSLC resource of a given type
+	 * Retrieve an OSLC resource given an URI and a resource type
+	 * 
+	 * @param mediaType
+	 * @param resourceUri
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	public <T extends AbstractResource> T retrieve(String resourceUri, final Class<T> resourceClass) throws URISyntaxException {
+		final OslcRestClient oslcRestClient = createOslcRestClient(resourceUri, null);
+		return getClientResource(oslcRestClient, resourceClass);
+	}
+
+	/**
+	 * Retrieve an OSLC resource given an URI and a type of resource
+	 * 
+	 * @param mediaType
+	 * @param resourceUri
+	 * @return
+	 * @throws URISyntaxException
+	 */
+	public <T extends AbstractResource> T retrieve(String resourceUri, final Class<T> resourceClass, final String mediaType)
+			throws URISyntaxException {
+		final OslcRestClient oslcRestClient = createOslcRestClient(resourceUri, mediaType);
+		return getClientResource(oslcRestClient, resourceClass);
+	}
+
+	/**
+	 * Retrieve a set of OSLC resource of a given type
 	 * 
 	 * @param mediaType
 	 * @param serviceProvider
 	 * @param resourceClass
 	 * @throws URISyntaxException
 	 */
-	// TODO
-	/*public void retrieves(final String mediaType, ServiceProvider serviceProvider, String type) throws URISyntaxException {
-		final String queryBase = getQueryCapability(mediaType, type, );
-		final OslcRestClient oslcRestClient = new OslcRestClient(PROVIDERS, queryBase, mediaType);
-		final T[] resources = oslcRestClient.getOslcResources(resourceArrayType);
+	public <T extends AbstractResource> T[] retrieves(String uri, final Class<T[]> oslcResourceArrayClass) throws URISyntaxException {
+		final OslcRestClient oslcRestClient = createOslcRestClient(uri, null);
+		return getResources(oslcRestClient, oslcResourceArrayClass);
 	}
 
-	public void update(final String mediaType, ServiceProvider serviceProvider) throws URISyntaxException {
-		final OslcRestClient oslcRestClient = new OslcRestClient(PROVIDERS, CREATED_RESOURCE_URI, mediaType);
-		final T resource = oslcRestClient.getOslcResource(resourceType);
-		final ClientResponse clientResponse = oslcRestClient.updateOslcResourceReturnClientResponse(resource);
-		final T updatedResource = oslcRestClient.getOslcResource(resourceType);
-
+	/*public <T> T[] retrieves(final String mediaType, Service service, String type, final Class<T[]> oslcResourceArrayClass)
+			throws URISyntaxException {
+		final String queryBase = getFirstQueryCapability(type, service).getAbout().toString();
+		final OslcRestClient oslcRestClient = new OslcRestClient(PROVIDERS, queryBase, mediaType);
+		final T[] resources = oslcRestClient.getOslcResources(oslcResourceArrayClass);
+		return resources;
 	}*/
 
+	public <T extends AbstractResource> T update(T resource) throws URISyntaxException {
+		final OslcRestClient oslcRestClient = new OslcRestClient(PROVIDERS, resource.getAbout(), mediaType);
+		oslcRestClient.updateOslcResourceReturnClientResponse(resource);
+		return retrieve(resource.getAbout().toString());
+	}
+
+	protected CreationFactory getFirstCreationFactory(final String type, Service service) {
+		final CreationFactory[] creationFactory = getCreationFactories(type, service);
+		if (creationFactory.length > 0) {
+			return creationFactory[0];
+		}
+		else {
+			logger.warning("No creation factory was found for type " + type + " and Service " + service.getAbout());
+			return null;
+		}
+	}
+
 	/**
-	 * Get the creation factory from a service that corresponds to a particular type
+	 * Get the creation factories from a service that corresponds to a particular type
 	 * 
 	 * @param type
 	 * @param service
 	 * @return a CreationFactory
 	 */
-	protected CreationFactory getCreationFactory(final String type, Service service) {
+	protected CreationFactory[] getCreationFactories(final String type, Service service) {
+		List<CreationFactory> correctCreationFactories = new ArrayList<CreationFactory>();
 		final CreationFactory[] creationFactories = service.getCreationFactories();
 		for (final CreationFactory creationFactory : creationFactories) {
 			final URI[] resourceTypes = creationFactory.getResourceTypes();
 			for (final URI resourceType : resourceTypes) {
 				if (resourceType.toString().equals(type)) {
-					return creationFactory;
+					correctCreationFactories.add(creationFactory);
 				}
 			}
 		}
-		return null;
+		return correctCreationFactories.toArray(new CreationFactory[correctCreationFactories.size()]);
+	}
+
+	protected QueryCapability getFirstQueryCapability(final String type, Service service) {
+		final QueryCapability[] queryCapabilities = getQueryCapabilities(type, service);
+		if (queryCapabilities.length > 0) {
+			return queryCapabilities[0];
+		}
+		else {
+			logger.warning("No query capability was found for type " + type + " and Service " + service.getAbout());
+			return null;
+		}
 	}
 
 	/**
-	 * Get the QueryCapability from a service that corresponds to a particular type
+	 * Get the QueryCapabilities from a service that corresponds to a particular type
 	 * 
 	 * @param type
 	 * @param service
 	 * @return a QueryCapability
 	 */
-	protected QueryCapability getQueryCapability(final String type, Service service) {
+	protected QueryCapability[] getQueryCapabilities(final String type, Service service) {
+		List<QueryCapability> correctQueryCapabilities = new ArrayList<QueryCapability>();
 		final QueryCapability[] queryCapabilities = service.getQueryCapabilities();
 		for (final QueryCapability queryCapability : queryCapabilities) {
 			final URI[] resourceTypes = queryCapability.getResourceTypes();
 			for (final URI resourceType : resourceTypes) {
 				if (resourceType.toString().equals(type)) {
-					return queryCapability;
+					correctQueryCapabilities.add(queryCapability);
 				}
 			}
 		}
-		return null;
+		return correctQueryCapabilities.toArray(new QueryCapability[correctQueryCapabilities.size()]);
 	}
 
 	/**
@@ -294,7 +346,7 @@ public class FlexoOslcClient {
 					if (resourceType.toString().equals(type)) {
 						final URI resourceShape = queryCapability.getResourceShape();
 						if (resourceShape != null) {
-							return getResource(resourceShape.toString(), ResourceShape.class);
+							return getResourceFromClient(resourceShape.toString(), ResourceShape.class, null);
 						}
 					}
 				}
@@ -305,55 +357,138 @@ public class FlexoOslcClient {
 	}
 
 	/**
-	 * Get an OSLC resource of a certain class from a given uri, in preconfigured media type
+	 * Create the Client and set its media type. If not media type is selected then select the default one.
 	 * 
 	 * @param resourceClass
 	 * @param uri
 	 * @return the OSLC resource
 	 */
-	private <T> T getResource(String uri, final Class<T> resourceClass) {
-		return getResource(resourceClass, uri, mediaType);
+	private <T extends AbstractResource> T getResourceFromClient(String uri, final Class<T> resourceClass, String mediaType) {
+		OslcRestClient client = createOslcRestClient(uri, mediaType);
+		return getClientResource(client, resourceClass);
+	}
+
+	private OslcRestClient createOslcRestClient(String uri, String mediaType) {
+		// Create the client
+		OslcRestClient client = null;
+		if (mediaType == null) {
+			client = new OslcRestClient(PROVIDERS, uri, this.mediaType);
+		}
+		else {
+			client = new OslcRestClient(PROVIDERS, uri, mediaType);
+		}
+		// TODO If certificate is not authetificated, then automatically trust it. This should be remove later!!
+		trustIt();
+		return client;
 	}
 
 	/**
-	 * Get an OSLC resource of a certain class from a given uri and a media type
+	 * Get the resource using an OslcRestClient. If the resource class is not given, then it will be determinated using the providers.
 	 * 
+	 * @param client
 	 * @param resourceClass
-	 * @param uri
-	 * @param mediaType
-	 * @return the OSLC resource
+	 * @return an OSLC resource
 	 */
-	private <T> T getResource(final Class<T> resourceClass, String uri, String mediaType) {
+	@SuppressWarnings("unchecked")
+	private <T extends AbstractResource> T getClientResource(OslcRestClient client, final Class<T> resourceClass) {
+		if (resourceClass == null) {
+			return (T) getResource(client);
+		}
+		else {
+			return getResource(client, resourceClass);
+		}
+	}
+
+	/**
+	 * Get the OSLC resource, retrieve the kind of resource given the set of providers.
+	 * 
+	 * @param client
+	 * @return an OSLC resource
+	 */
+	@SuppressWarnings("unchecked")
+	private <T extends AbstractResource> T getResource(OslcRestClient client) {
+		T result = null;
+		try {
+			// Try to get the resource
+			ClientResponse reponse = client.getClientResource().get();
+
+			// Find the type of this resource given the providers
+			for (Class<?> p : PROVIDERS) {
+				try {
+					if (reponse.getEntity(p) != null) {
+						return (T) reponse.getEntity(p);
+					}
+				} catch (RuntimeException e) {
+					// Skip this provider
+				}
+			}
+			// Choose the String one
+			return convertStringToAbstractResource(reponse.getEntity(String.class));
+		} catch (ClientWebException e) {
+			// Not Authorize, try to set the oAuth configuration
+			if (e.getResponse().getStatusCode() == 401) {
+				System.out.println("Autorization required");
+				result = getoAuthResource(client);
+			}
+		} catch (Exception e) {
+			System.out.println("Connection Error " + e.getMessage());
+		}
+		return result;
+	}
+
+	private <T extends AbstractResource> T convertStringToAbstractResource(String source) {
+		// TODO
+		return null;
+	}
+
+	/**
+	 * Get an OSLC Resource given a resource class
+	 * 
+	 * @param client
+	 * @param resourceClass
+	 * @return an OSLC resource
+	 */
+	private <T extends AbstractResource> T getResource(OslcRestClient client, final Class<T> resourceClass) {
 		// Create the client
 		T result = null;
-		trustIt();
-		OslcRestClient client = new OslcRestClient(PROVIDERS, uri);
 		try {
 			// Try to get the resource
 			result = client.getOslcResource(resourceClass);
 		} catch (ClientWebException e) {
+			// Not Authorize, try to set the oAuth configuration
 			if (e.getResponse().getStatusCode() == 401) {
 				System.out.println("Autorization required");
-				result = getoAuthResource(resourceClass, uri, mediaType);
+				result = getoAuthResource(client, resourceClass);
 			}
 		} catch (Exception e) {
-			System.out.println("Connection Error");
+			System.out.println("Connection Error " + e.getMessage());
 		}
 		return result;
 	}
 
 	/**
-	 * Get an OSLC resource requiring oAuth of a certain class from a given uri and a media type, and a set of required parameters for oAuth
-	 * potential authentification
+	 * Get an OSLC Resource given a resource class
 	 * 
+	 * @param client
 	 * @param resourceClass
-	 * @param uri
-	 * @param mediaType
-	 * @return
+	 * @return an OSLC resource
 	 */
-	private <T> T getoAuthResource(final Class<T> resourceClass, String uri, String mediaType) {
-		FlexoOAuthClient oAuth = new FlexoOAuthClient(adaptorConfiguration, null, null);
-		return getoAuthResource(uri, oAuth, resourceClass);
+	private <T extends AbstractResource> T[] getResources(OslcRestClient client, final Class<T[]> resourceClass) {
+		// Create the client
+		T[] result = null;
+		try {
+			// Try to get the resource
+			result = client.getOslcResources(resourceClass);
+		} catch (ClientWebException e) {
+			// Not Authorize, try to set the oAuth configuration
+			if (e.getResponse().getStatusCode() == 401) {
+				System.out.println("Autorization required");
+				result = getoAuthResources(client, resourceClass);
+			}
+		} catch (Exception e) {
+			System.out.println("Connection Error " + e.getMessage());
+		}
+		return result;
 	}
 
 	/**
@@ -362,71 +497,15 @@ public class FlexoOslcClient {
 	 * @param resourceUri
 	 * @param oAuth
 	 * @param resourceClass
-	 * @return
+	 * @return an OSLC resource
 	 */
-	private <T> T getoAuthResource(String resourceUri, FlexoOAuthClient oAuth, final Class<T> resourceClass) {
+	private <T extends AbstractResource> T getoAuthResource(OslcRestClient client, final Class<T> resourceClass) {
 		try {
-			// Create an oAuth client
-			OAuthClient client = new OAuthClient(new HttpClient4());
-
-			// get the Request Token
-			client.getRequestToken(oAuth.getAccessor());
-
-			// Get the redirection url
-			String redirect = oAuth.getConsumer().serviceProvider.userAuthorizationURL + "?oauth_token=" + oAuth.getAccessor().requestToken;
-			HttpClient httpClient = new DefaultHttpClient();
-			HttpGet request1 = new HttpGet(redirect);
-			HttpClientParams.setRedirecting(request1.getParams(), false);
-			HttpResponse response = httpClient.execute(request1);
-
-			// Get the location of the redirection
-			Header location = response.getFirstHeader("Location");
-			if (location != null) {
-				HttpGet request2 = new HttpGet(location.getValue());
-				HttpClientParams.setRedirecting(request2.getParams(), false);
-				response = httpClient.execute(request2);
-			}
-
-			// POST user login and password to the authorization url
-
-			HttpPost formPost = new HttpPost(oAuth.getAuthorizationUrl());
-			List<NameValuePair> nvps = new ArrayList<NameValuePair>();
-			nvps.add(new BasicNameValuePair("j_username", oAuth.getLogin()));
-			nvps.add(new BasicNameValuePair("j_password", oAuth.getPassword()));
-			formPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
-			HttpResponse formResponse = httpClient.execute(formPost);
-			location = formResponse.getFirstHeader("Location");
-
-			// Get the refirection
-			if (location != null) {
-				HttpGet request4 = new HttpGet(location.getValue());
-				HttpClientParams.setRedirecting(request4.getParams(), false);
-				response = httpClient.execute(request4);
-
-				Map<String, String> oAuthMap = getQueryMap(location.getValue());
-				String oauthToken = oAuthMap.get("oauth_token");
-				String oauthverifier = oAuthMap.get("oauth_verifier");
-				// The server requires an authentication: Create the login form
-				HttpPost formPost2 = new HttpPost(oAuth.getAuthURL());
-				formPost2.getParams().setParameter("oauth_token", oauthToken);
-				formPost2.getParams().setParameter("oauth_verifier", oauthverifier);
-				formPost2.getParams().setParameter("authorize", "true");
-				formPost2.addHeader("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
-				formResponse = httpClient.execute(formPost2);
-			}
-
-			Header header = formResponse.getFirstHeader("Content-Length");
-			if ((header != null) && (!("0".equals(header.getValue())))) {
-				// The login failed
-				throw new InvalidCredentialsException("Authentication failed");
-			}
-			else {
-				// The login succeed, Request again the protected resource
-				return getResource(resourceUri, resourceClass);
-			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FlexoOAuthHandler oAuth = new FlexoOAuthHandler(adaptorConfiguration, "vince012", "vincevince");
+			oAuth.performoAuthAuthentification();
+			client = new OslcRestClient(PROVIDERS, client.getUri(), mediaType, 1000000, oAuth);
+			// The login succeed, Request again the protected resource
+			return getResource(client, resourceClass);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -434,17 +513,49 @@ public class FlexoOslcClient {
 		return null;
 	}
 
-	private static Map<String, String> getQueryMap(String query) {
-		Map<String, String> map = new HashMap<String, String>();
-		String[] params = query.split("&");
-
-		for (String param : params) {
-			String name = param.split("=")[0];
-			String value = param.split("=")[1];
-			map.put(name, value);
+	/**
+	 * Get an OSLC resource using oAuth authentification
+	 * 
+	 * @param resourceUri
+	 * @param oAuth
+	 * @param resourceClass
+	 * @return an OSLC resource
+	 */
+	private <T extends AbstractResource> T getoAuthResource(OslcRestClient client) {
+		try {
+			FlexoOAuthHandler oAuth = new FlexoOAuthHandler(adaptorConfiguration, "???", "???");
+			oAuth.performoAuthAuthentification();
+			client = new OslcRestClient(PROVIDERS, client.getUri(), mediaType, 1000000);
+			// performoAuthAuthentification(oAuth);
+			// The login succeed, Request again the protected resource
+			return getResource(client);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		return null;
+	}
 
-		return map;
+	/**
+	 * Get an OSLC resource using oAuth authentification
+	 * 
+	 * @param resourceUri
+	 * @param oAuth
+	 * @param resourceClass
+	 * @return an OSLC resource
+	 */
+	private <T extends AbstractResource> T[] getoAuthResources(OslcRestClient client, final Class<T[]> resourceClass) {
+		try {
+			FlexoOAuthHandler oAuth = new FlexoOAuthHandler(adaptorConfiguration, "vince012", "vincevince");
+			oAuth.performoAuthAuthentification();
+			client = new OslcRestClient(PROVIDERS, client.getUri(), mediaType, 1000000, oAuth);
+			// The login succeed, Request again the protected resource
+			return getResources(client, resourceClass);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	/*private SecureRandom secureRandom;

@@ -38,12 +38,14 @@
 
 package org.openflexo.technologyadapter.oslc.model.io;
 
+import java.lang.reflect.Array;
 import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.logging.Logger;
 
+import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.eclipse.lyo.oslc4j.core.model.QueryCapability;
 import org.eclipse.lyo.oslc4j.core.model.Service;
@@ -101,18 +103,15 @@ public class OSLCCoreModelConverter {
 	public OSLCServiceProviderCatalog convertAllCoreResourcesFromCatalog() {
 		OSLCServiceProviderCatalog oslcResource = null;
 		ServiceProviderCatalog catalog;
-		try {
-			catalog = (ServiceProviderCatalog) oslcClient.retrieve(baseUri);
+		catalog = retrieveResource(baseUri, ServiceProviderCatalog.class);
+		// Could be as well
+		// catalog = oslcClient.retrieve(baseUri);
 
-			if (catalog != null) {
-				oslcResource = convertOSLCServiceProviderCatalog(catalog);
-				for (ServiceProvider sp : catalog.getServiceProviders()) {
-					oslcResource.addToOSLCServiceProviders(convertOSLCServiceProvider(sp));
-				}
+		if (catalog != null) {
+			oslcResource = convertOSLCServiceProviderCatalog(catalog);
+			for (ServiceProvider sp : catalog.getServiceProviders()) {
+				oslcResource.addToOSLCServiceProviders(convertOSLCServiceProvider(sp));
 			}
-		} catch (URISyntaxException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 		return oslcResource;
 	}
@@ -127,7 +126,11 @@ public class OSLCCoreModelConverter {
 
 	public OSLCServiceProvider convertOSLCServiceProvider(ServiceProvider serviceProvider) {
 		OSLCServiceProvider oslcResource = factory.newInstance(OSLCServiceProvider.class);
-		for (Service service : serviceProvider.getServices()) {
+		Service[] services = serviceProvider.getServices();
+		if (services == null || services.length == 0) {
+			services = retrieveResources(serviceProvider.getAbout().toString(), Service.class);
+		}
+		for (Service service : services) {
 			oslcResource.addToOSLCServices(convertOSLCService(service));
 		}
 		oslcResource.setOSLCServiceProvider(serviceProvider);
@@ -169,6 +172,26 @@ public class OSLCCoreModelConverter {
 
 	public Map<Object, OSLCObject> getOSLCObjects() {
 		return OSLCObjects;
+	}
+
+	private <T extends AbstractResource> T[] retrieveResources(String uri, Class<T> resourceClasses) {
+		try {
+			return oslcClient.retrieves(uri, (Class<T[]>) Array.newInstance(resourceClasses, 0).getClass());
+		} catch (URISyntaxException e) {
+			logger.warning("URI " + uri + " is not correct");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	private <T extends AbstractResource> T retrieveResource(String uri, Class<T> resourceClass) {
+		try {
+			return oslcClient.retrieve(uri, resourceClass);
+		} catch (URISyntaxException e) {
+			logger.warning("URI " + uri + " is not correct");
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	private Object getOSLCObjectFromFlexoOSLCObject(OSLCObject object) {

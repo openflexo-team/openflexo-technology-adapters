@@ -57,6 +57,8 @@ public class FlexoOslcAdaptorConfiguration {
 	private String login;
 	private String password;
 
+	private String realm;
+
 	private String baseUri;
 
 	public FlexoOslcAdaptorConfiguration(String baseUri) {
