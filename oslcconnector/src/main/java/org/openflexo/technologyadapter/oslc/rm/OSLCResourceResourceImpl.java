@@ -241,6 +241,8 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 			adaptor.setConsumerKey(properties.getProperty("consumerKey"));
 			adaptor.setConsumerSecret(properties.getProperty("consumerSecret"));
 			adaptor.setAuthURL(properties.getProperty("authURL"));
+			adaptor.setPassword(properties.getProperty("password"));
+			adaptor.setLogin(properties.getProperty("login"));
 		} catch (IOException ex) {
 			ex.printStackTrace();
 		} finally {

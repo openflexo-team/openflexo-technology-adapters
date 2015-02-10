@@ -501,7 +501,7 @@ public class FlexoOslcClient {
 	 */
 	private <T extends AbstractResource> T getoAuthResource(OslcRestClient client, final Class<T> resourceClass) {
 		try {
-			FlexoOAuthHandler oAuth = new FlexoOAuthHandler(adaptorConfiguration, "vince012", "vincevince");
+			FlexoOAuthHandler oAuth = new FlexoOAuthHandler(adaptorConfiguration);
 			oAuth.performoAuthAuthentification();
 			client = new OslcRestClient(PROVIDERS, client.getUri(), mediaType, 1000000, oAuth);
 			// The login succeed, Request again the protected resource
@@ -523,7 +523,7 @@ public class FlexoOslcClient {
 	 */
 	private <T extends AbstractResource> T getoAuthResource(OslcRestClient client) {
 		try {
-			FlexoOAuthHandler oAuth = new FlexoOAuthHandler(adaptorConfiguration, "???", "???");
+			FlexoOAuthHandler oAuth = new FlexoOAuthHandler(adaptorConfiguration);
 			oAuth.performoAuthAuthentification();
 			client = new OslcRestClient(PROVIDERS, client.getUri(), mediaType, 1000000);
 			// performoAuthAuthentification(oAuth);
@@ -546,7 +546,7 @@ public class FlexoOslcClient {
 	 */
 	private <T extends AbstractResource> T[] getoAuthResources(OslcRestClient client, final Class<T[]> resourceClass) {
 		try {
-			FlexoOAuthHandler oAuth = new FlexoOAuthHandler(adaptorConfiguration, "vince012", "vincevince");
+			FlexoOAuthHandler oAuth = new FlexoOAuthHandler(adaptorConfiguration);
 			oAuth.performoAuthAuthentification();
 			client = new OslcRestClient(PROVIDERS, client.getUri(), mediaType, 1000000, oAuth);
 			// The login succeed, Request again the protected resource

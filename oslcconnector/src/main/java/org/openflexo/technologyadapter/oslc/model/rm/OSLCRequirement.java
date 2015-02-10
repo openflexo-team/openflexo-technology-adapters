@@ -36,11 +36,13 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.model.rm;
 
+import org.eclipse.lyo.client.oslc.resources.Requirement;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 
@@ -48,6 +50,14 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 @ImplementationClass(OSLCRequirement.OSLCRequirementImpl.class)
 @XMLElement(xmlTag = "OSLCRequirement")
 public interface OSLCRequirement extends OSLCResource {
+
+	public static final String OSLC_REQUIREMENT_KEY = "OSLCRequirement";
+
+	@Getter(value = OSLC_REQUIREMENT_KEY, ignoreType = true)
+	public Requirement getOSLCRequirement();
+
+	@Setter(OSLC_REQUIREMENT_KEY)
+	public void setOSLCRequirement(Requirement requirement);
 
 	public static abstract class OSLCRequirementImpl extends OSLCResourceImpl implements OSLCRequirement {
 

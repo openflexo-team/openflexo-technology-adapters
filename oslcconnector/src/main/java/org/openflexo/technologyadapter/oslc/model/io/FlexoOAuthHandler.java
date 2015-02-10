@@ -82,11 +82,9 @@ public class FlexoOAuthHandler implements ClientHandler {
 	private final OAuthConsumer consumer;
 	private final OAuthAccessor accessor;
 
-	public FlexoOAuthHandler(FlexoOslcAdaptorConfiguration adaptorConfiguration, String login, String password) {
+	public FlexoOAuthHandler(FlexoOslcAdaptorConfiguration adaptorConfiguration) {
 		super();
 		this.configuration = adaptorConfiguration;
-		this.login = login;
-		this.password = password;
 		this.provider = new OAuthServiceProvider(adaptorConfiguration.getRequestTokenUrl(), adaptorConfiguration.getAuthorizationUrl(),
 				adaptorConfiguration.getAccessToken());
 		this.consumer = new OAuthConsumer("", adaptorConfiguration.getConsumerKey(), adaptorConfiguration.getConsumerSecret(), provider);
@@ -211,6 +209,10 @@ public class FlexoOAuthHandler implements ClientHandler {
 	 */
 	private void userAuthentification(HttpClient httpClient) {
 		// TODO Check authentification is OK and also how to give the username/password?
+		if (getPassword() == null || getLogin() == null) {
+			// TODO Ask for user authentification...
+		}
+
 		try {
 			HttpPost formPost = new HttpPost(getAuthURL() + "?j_username=" + getLogin() + "&" + "j_password=" + getPassword());
 			HttpResponse formResponse = httpClient.execute(formPost);

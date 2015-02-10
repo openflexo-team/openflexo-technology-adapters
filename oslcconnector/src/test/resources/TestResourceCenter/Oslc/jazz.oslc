@@ -8,3 +8,5 @@ accessToken = https://localhost:9443/jts/oauth-access-token
 consumerKey = 1b056a2100674ff586fce88a2c72620e
 consumerSecret = Openflexo
 authURL = https://localhost:9443/jts/authenticated/j_security_check
+password = ???
+login = ???

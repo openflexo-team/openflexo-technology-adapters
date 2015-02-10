@@ -39,6 +39,11 @@
        	<artifactId>oslc4j-jena-provider</artifactId>
        	<version>3.0.0-SNAPSHOT</version>
     </dependency>
+     <dependency>
+   		<groupId>org.eclipse.lyo.clients</groupId>
+    	<artifactId>oslc-java-client</artifactId>
+    	<version>3.0.0-SNAPSHOT</version>
+    </dependency>
     <dependency>
     	<groupId>javax.servlet</groupId>
 		<artifactId>servlet-api</artifactId>
@@ -68,6 +73,11 @@
   		<id>oauth</id>
   		<name>OAuth Repository</name>
   		<url>http://oauth.googlecode.com/svn/code/maven</url>
+	</repository>
+	<repository>
+  		<id>lyo-releases</id>
+  		<name>lyo releases</name>
+  		<url>https://repo.eclipse.org</url>
 	</repository>
   </repositories>
   <name>OSLC technology adaptor</name>
