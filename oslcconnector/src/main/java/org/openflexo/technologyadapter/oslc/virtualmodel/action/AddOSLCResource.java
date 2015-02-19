@@ -41,12 +41,18 @@ package org.openflexo.technologyadapter.oslc.virtualmodel.action;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.annotations.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
@@ -58,8 +64,20 @@ import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 @FML("AddOSLCResource")
 public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String CREATION_FACTORY = "creationFactory";
+
+	@Getter(value = CREATION_FACTORY)
+	@XMLAttribute
+	public DataBinding<CreationFactory> getCreationFactory();
+
+	@Setter(CREATION_FACTORY)
+	public void setCreationFactory(DataBinding<CreationFactory> creationFactory);
+
 	public static abstract class AddOSLCResourceImpl extends TechnologySpecificActionImpl<OSLCCoreModelSlot, OSLCResource> implements
 			AddOSLCResource {
+
+		private DataBinding<CreationFactory> creationFactory;
 
 		private static final Logger logger = Logger.getLogger(AddOSLCResource.class.getPackage().getName());
 
@@ -75,22 +93,34 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 		@Override
 		public OSLCResource execute(FlexoBehaviourAction action) {
 
-			OSLCResource cdlActivity = null;
+			OSLCResource resource = null;
 
-			FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot> modelSlotInstance = getModelSlotInstance(action);
-			if (modelSlotInstance.getResourceData() != null) {
-
-			} else {
-				logger.warning("Model slot not correctly initialised : model is null");
-				return null;
-			}
-
-			return cdlActivity;
+			return resource;
 		}
 
 		@Override
 		public FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
 			return (FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot>) super.getModelSlotInstance(action);
+		}
+
+		@Override
+		public DataBinding<CreationFactory> getCreationFactory() {
+			if (creationFactory == null) {
+				creationFactory = new DataBinding<CreationFactory>(this, CreationFactory.class, DataBinding.BindingDefinitionType.GET);
+				creationFactory.setBindingName("creationFactory");
+			}
+			return creationFactory;
+		}
+
+		@Override
+		public void setCreationFactory(DataBinding<CreationFactory> creationFactory) {
+			if (creationFactory != null) {
+				creationFactory.setOwner(this);
+				creationFactory.setDeclaredType(CreationFactory.class);
+				creationFactory.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				creationFactory.setBindingName("creationFactory");
+			}
+			this.creationFactory = creationFactory;
 		}
 
 	}

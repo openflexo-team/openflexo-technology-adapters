@@ -129,10 +129,10 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 			return OSLCResource.class;
 		}
 
-		/*@Override
-		public OSLCTechnologyAdapter getTechnologyAdapter() {
-			return (OSLCTechnologyAdapter) super.getTechnologyAdapter();
-		}*/
+		@Override
+		public OSLCTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (OSLCTechnologyAdapter) super.getModelSlotTechnologyAdapter();
+		}
 
 		@Override
 		public TechnologyAdapterResource<OSLCResource, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {

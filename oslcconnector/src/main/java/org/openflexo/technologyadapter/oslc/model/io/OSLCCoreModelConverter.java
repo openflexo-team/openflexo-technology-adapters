@@ -170,6 +170,13 @@ public class OSLCCoreModelConverter {
 		return oslcResource;
 	}
 
+	public <R extends OSLCResource> R createOSLCResource(Class<R> klass, AbstractResource resource) {
+		R oslcResource = factory.newInstance(klass);
+		oslcResource.setTechnologyAdapter(technologyAdapter);
+		OSLCObjects.put(resource, oslcResource);
+		return oslcResource;
+	}
+
 	public Map<Object, OSLCObject> getOSLCObjects() {
 		return OSLCObjects;
 	}
@@ -204,4 +211,7 @@ public class OSLCCoreModelConverter {
 		return null;
 	}
 
+	public FlexoOslcClient getOslcClient() {
+		return oslcClient;
+	}
 }
