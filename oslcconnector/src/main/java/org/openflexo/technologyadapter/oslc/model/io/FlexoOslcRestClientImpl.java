@@ -75,21 +75,21 @@ import org.eclipse.lyo.oslc4j.provider.json4j.Json4JProvidersRegistry;
 public class FlexoOslcRestClientImpl implements FlexoOslcRestClient {
 
 	// Providers converts server data into a specific format requested by the client
-	private static Set<Class<?>> PROVIDERS = new HashSet<Class<?>>();
+	private static Set<Class<?>> providers = new HashSet<Class<?>>();
 
 	/**
 	 * Common providers for OSLC
 	 */
 	static {
-		PROVIDERS.addAll(JenaProvidersRegistry.getProviders());
-		PROVIDERS.addAll(Json4JProvidersRegistry.getProviders());
-		PROVIDERS.add(ServiceProviderCatalog.class);
-		PROVIDERS.add(ServiceProvider.class);
-		PROVIDERS.add(Service.class);
-		PROVIDERS.add(CreationFactory.class);
-		PROVIDERS.add(QueryCapability.class);
-		PROVIDERS.add(Requirement.class);
-		PROVIDERS.add(RequirementCollection.class);
+		providers.addAll(JenaProvidersRegistry.getProviders());
+		providers.addAll(Json4JProvidersRegistry.getProviders());
+		providers.add(ServiceProviderCatalog.class);
+		providers.add(ServiceProvider.class);
+		providers.add(Service.class);
+		providers.add(CreationFactory.class);
+		providers.add(QueryCapability.class);
+		providers.add(Requirement.class);
+		providers.add(RequirementCollection.class);
 	}
 
 	private static final Logger logger = Logger.getLogger(FlexoOslcRestClientImpl.class.getPackage().getName());
@@ -98,13 +98,17 @@ public class FlexoOslcRestClientImpl implements FlexoOslcRestClient {
 
 	private OslcRestClient oslcRestClient;
 
-	public FlexoOslcRestClientImpl(String uri, String mediaType, FlexoOslcAdaptorConfiguration adaptorConfiguration, Set<Class<?>> PROVIDERS) {
+	public FlexoOslcRestClientImpl(String uri, String mediaType, FlexoOslcAdaptorConfiguration adaptorConfiguration,
+			Set<Class<?>> otherProviders) {
+		if (otherProviders != null) {
+			providers.addAll(otherProviders);
+		}
 		// Create the client
 		if (mediaType == null) {
-			oslcRestClient = new OslcRestClient(PROVIDERS, uri, DEFAULT_MEDIA_TYPE);
+			oslcRestClient = new OslcRestClient(providers, uri, DEFAULT_MEDIA_TYPE);
 		}
 		else {
-			oslcRestClient = new OslcRestClient(PROVIDERS, uri, mediaType);
+			oslcRestClient = new OslcRestClient(providers, uri, mediaType);
 		}
 		try {
 			ClientResponse response = oslcRestClient.getClientResource().accept(oslcRestClient.getMediaType()).get();
@@ -112,7 +116,7 @@ public class FlexoOslcRestClientImpl implements FlexoOslcRestClient {
 				try {
 					FlexoOAuthHandler oAuth = new FlexoOAuthHandlerImpl(adaptorConfiguration);
 					oAuth.performoAuthAuthentification(oslcRestClient.getUri());
-					oslcRestClient = new OslcRestClient(PROVIDERS, oslcRestClient.getUri(), oslcRestClient.getMediaType(),
+					oslcRestClient = new OslcRestClient(providers, oslcRestClient.getUri(), oslcRestClient.getMediaType(),
 							oslcRestClient.getReadTimeout(), oAuth);
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block

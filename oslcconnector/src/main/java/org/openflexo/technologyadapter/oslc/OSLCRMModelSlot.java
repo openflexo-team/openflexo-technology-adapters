@@ -76,7 +76,7 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.rm.OSLCRequirementRole;
 @DeclareFlexoRoles({ OSLCRequirementRole.class, OSLCRequirementCollectionRole.class })
 @DeclareEditionActions({ AddOSLCRequirement.class, AddOSLCRequirementCollection.class })
 @DeclareFetchRequests({ SelectOSLCRequirement.class, SelectOSLCRequirementCollection.class })
-@FML("OSLCCoreModelSlot")
+@FML("OSLCRMModelSlot")
 public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 
 	// @Override

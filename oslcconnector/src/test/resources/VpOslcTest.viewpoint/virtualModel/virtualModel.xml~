@@ -13,7 +13,7 @@
     </ExcelCellRole>
     <CreationScheme id="8" userID="FLX" useSpecificDescriptions="false" width="800" label="create" definePopupDefaultSize="false" height="600" flexoID="16" skipConfirmationPanel="false" name="create">
       <BehaviourControlGraph_Sequence id="9" flexoID="29" userID="FLX" useSpecificDescriptions="false">
-        <ControlGraph1_AddExcelCell id="10" cellType="String" userID="FLX" useSpecificDescriptions="false" isRowIndex="true" flexoID="21" ownerContext="controlGraph1" rowIndex="virtualModelInstance.sheet.excelRows.size.intValue" value="parameters.reqName" columnIndex="0" sheet="virtualModelInstance.sheet" />
+        <ControlGraph1_AddExcelCell id="10" cellType="String" userID="FLX" useSpecificDescriptions="false" isRowIndex="true" flexoID="21" ownerContext="controlGraph1" rowIndex="virtualModelInstance.sheet.excelRows.size.intValue" value="parameters.reqName" conditional="sheet.excelRows" columnIndex="0" sheet="virtualModelInstance.sheet" />
         <ControlGraph2_Sequence id="11" flexoID="35" ownerContext="controlGraph2" userID="FLX" useSpecificDescriptions="false">
           <ControlGraph1_AddExcelCell id="12" cellType="String" userID="FLX" useSpecificDescriptions="false" isRowIndex="true" flexoID="28" ownerContext="controlGraph1" rowIndex="virtualModelInstance.sheet.excelRows.size" value="parameters.reqDescription" columnIndex="1" sheet="virtualModelInstance.sheet" />
           <ControlGraph2_AssignationAction id="13" userID="FLX" useSpecificDescriptions="false" flexoID="34" ownerContext="controlGraph2" assign="requirement">
