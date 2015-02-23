@@ -62,6 +62,8 @@ import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.eclipse.lyo.oslc4j.core.model.QueryCapability;
 import org.eclipse.lyo.oslc4j.core.model.ResourceShape;
 import org.eclipse.lyo.oslc4j.core.model.Service;
+import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
+import org.eclipse.lyo.oslc4j.core.model.ServiceProviderCatalog;
 
 /**
  * FlexoOslcClient provides HighLevel services to manipulate OSLC resource. It creates and uses an OslcRestClient to access OSLC resource.
@@ -246,6 +248,30 @@ public class FlexoOslcClient {
 			logger.warning("No creation factory was found for type " + type + " and Service " + service.getAbout());
 			return null;
 		}
+	}
+
+	public CreationFactory getFirstCreationFactory(final String type, String domain, ServiceProviderCatalog catalog) {
+		for (ServiceProvider sp : catalog.getServiceProviders()) {
+			Service[] services = sp.getServices();
+			if (services == null || services.length == 0) {
+				try {
+					services = retrieves(sp.getAbout().toString(), (Class<Service[]>) Array.newInstance(Service.class, 0).getClass());
+				} catch (NegativeArraySizeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			for (Service service : services) {
+				if (service.getDomain().toString().equals(domain)) {
+					return getFirstCreationFactory(type, service);
+				}
+			}
+		}
+		logger.warning("No creation factory was found for type " + type + " and ServiceProviderCatalog " + catalog.getAbout());
+		return null;
 	}
 
 	/**

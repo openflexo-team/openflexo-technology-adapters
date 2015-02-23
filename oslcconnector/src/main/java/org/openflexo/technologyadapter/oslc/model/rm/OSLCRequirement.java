@@ -63,7 +63,7 @@ public interface OSLCRequirement extends OSLCResource {
 
 		@Override
 		public String getUri() {
-			return getName();
+			return getOSLCRequirement().getAbout().toString();
 		}
 
 	}

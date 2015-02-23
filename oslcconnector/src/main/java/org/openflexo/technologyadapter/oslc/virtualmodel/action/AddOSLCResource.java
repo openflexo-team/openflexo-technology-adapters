@@ -56,6 +56,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
 @FIBPanel("Fib/AddOSLCResourcePanel.fib")
 @ModelEntity
@@ -99,8 +100,8 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 		}
 
 		@Override
-		public FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
+			return (FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot>) super.getModelSlotInstance(action);
 		}
 
 		@Override

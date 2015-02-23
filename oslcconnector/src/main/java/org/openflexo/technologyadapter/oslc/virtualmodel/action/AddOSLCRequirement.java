@@ -40,10 +40,9 @@ package org.openflexo.technologyadapter.oslc.virtualmodel.action;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
-import java.net.URISyntaxException;
 import java.util.logging.Logger;
 
-import org.eclipse.lyo.client.oslc.resources.Requirement;
+import org.eclipse.lyo.client.oslc.OSLCConstants;
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
@@ -62,7 +61,7 @@ import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCRMModelSlot;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
-import org.openflexo.technologyadapter.oslc.model.io.FlexoOslcClient;
+import org.openflexo.technologyadapter.oslc.model.io.OSLCRMModelConverter;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResource;
 
@@ -76,6 +75,12 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String CREATION_FACTORY = "creationFactory";
 
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String TITLE_KEY = "title";
+
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String REQ_DESCRIPTION_KEY = "req_description";
+
 	@Getter(value = CREATION_FACTORY)
 	@XMLAttribute
 	public DataBinding<CreationFactory> getCreationFactory();
@@ -83,12 +88,30 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 	@Setter(CREATION_FACTORY)
 	public void setCreationFactory(DataBinding<CreationFactory> creationFactory);
 
+	@Getter(value = TITLE_KEY)
+	@XMLAttribute
+	public DataBinding<String> getTitle();
+
+	@Setter(TITLE_KEY)
+	public void setTitle(DataBinding<String> title);
+
+	@Getter(value = REQ_DESCRIPTION_KEY)
+	@XMLAttribute
+	public DataBinding<String> getReqDescription();
+
+	@Setter(REQ_DESCRIPTION_KEY)
+	public void setReqDescription(DataBinding<String> description);
+
 	public static abstract class AddOSLCRequirementImpl extends TechnologySpecificActionImpl<OSLCRMModelSlot, OSLCResource> implements
 			AddOSLCRequirement {
 
 		private static final Logger logger = Logger.getLogger(AddOSLCRequirement.class.getPackage().getName());
 
 		private DataBinding<CreationFactory> creationFactory;
+
+		private DataBinding<String> title;
+
+		private DataBinding<String> reqDescription;
 
 		public AddOSLCRequirementImpl() {
 			super();
@@ -108,15 +131,18 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 			if (msi.getResourceData() != null) {
 
 				try {
-					OSLCResourceResource resource = (OSLCResourceResource) (msi.getAccessedResourceData().getResource());
-					FlexoOslcClient oslcClient = new FlexoOslcClient(resource.getAdaptorConfiguration());
-					Requirement requirement = new Requirement();
-					requirement.setTitle("Test");
-					oslcClient.create(getCreationFactory().getBindingValue(action), requirement, null);
-					oslcRequirement = resource.getConverter().createOSLCResource(OSLCRequirement.class, requirement);
-				} catch (URISyntaxException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					OSLCResourceResource resource = getResource(msi);
+					CreationFactory creationFactory = null;
+					String title = getTitle().getBindingValue(action);
+					String desc = getReqDescription().getBindingValue(action);
+					if (getCreationFactory().getBindingValue(action) != null) {
+						creationFactory = getCreationFactory().getBindingValue(action);
+					}
+					else {
+						creationFactory = getDefaultRequirementCreationFactory(resource);
+					}
+					OSLCRMModelConverter converter = resource.getConverter().getConverter(OSLCRMModelConverter.class);
+					oslcRequirement = converter.createOSLCRequirement(title, desc, creationFactory);
 				} catch (TypeMismatchException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -142,11 +168,6 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 			return super.getModelSlotInstance(action);
 		}
 
-		/*@Override
-		public FreeModelSlotInstance<OSLCResource, OSLCRMModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<OSLCResource, OSLCRMModelSlot>) super.getModelSlotInstance(action);
-		}*/
-
 		@Override
 		public DataBinding<CreationFactory> getCreationFactory() {
 			if (creationFactory == null) {
@@ -165,6 +186,59 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 				creationFactory.setBindingName("creationFactory");
 			}
 			this.creationFactory = creationFactory;
+		}
+
+		@Override
+		public DataBinding<String> getTitle() {
+			if (title == null) {
+				title = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				title.setBindingName("title");
+			}
+			return title;
+		}
+
+		@Override
+		public void setTitle(DataBinding<String> title) {
+			if (title != null) {
+				title.setOwner(this);
+				title.setDeclaredType(String.class);
+				title.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				title.setBindingName("title");
+			}
+			this.title = title;
+		}
+
+		@Override
+		public DataBinding<String> getReqDescription() {
+			if (reqDescription == null) {
+				reqDescription = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				reqDescription.setBindingName("reqDescription");
+			}
+			return title;
+		}
+
+		@Override
+		public void setReqDescription(DataBinding<String> reqDescription) {
+			if (reqDescription != null) {
+				reqDescription.setOwner(this);
+				reqDescription.setDeclaredType(String.class);
+				reqDescription.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				reqDescription.setBindingName("reqDescription");
+			}
+			this.reqDescription = reqDescription;
+		}
+
+		private CreationFactory getDefaultRequirementCreationFactory(OSLCResourceResource resource) {
+			CreationFactory factory = resource
+					.getConverter()
+					.getOslcClient()
+					.getFirstCreationFactory(OSLCConstants.RM_REQUIREMENT_TYPE, OSLCConstants.OSLC_RM_V2,
+							resource.getLoadedResourceData().getOSLCServiceProviderCatalog());
+			return factory;
+		}
+
+		private OSLCResourceResource getResource(ModelSlotInstance<OSLCRMModelSlot, ?> msi) {
+			return (OSLCResourceResource) (msi.getAccessedResourceData().getResource());
 		}
 	}
 }

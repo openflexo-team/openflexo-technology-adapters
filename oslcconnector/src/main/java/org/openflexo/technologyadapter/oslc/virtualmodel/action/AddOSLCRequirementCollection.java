@@ -49,7 +49,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCRMModelSlot;
-import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirementCollection;
 
 @FIBPanel("Fib/AddCDLActivityPanel.fib")
@@ -78,10 +78,11 @@ public interface AddOSLCRequirementCollection extends OSLCRmAction<OSLCRequireme
 
 			OSLCRequirementCollection cdlActivity = null;
 
-			FreeModelSlotInstance<OSLCResource, OSLCRMModelSlot> modelSlotInstance = getModelSlotInstance(action);
+			FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCRMModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}
@@ -90,8 +91,8 @@ public interface AddOSLCRequirementCollection extends OSLCRmAction<OSLCRequireme
 		}
 
 		@Override
-		public FreeModelSlotInstance<OSLCResource, OSLCRMModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<OSLCResource, OSLCRMModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCRMModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
+			return (FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCRMModelSlot>) super.getModelSlotInstance(action);
 		}
 
 	}

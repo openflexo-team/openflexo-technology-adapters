@@ -49,8 +49,8 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.OSLCCoreModelSlot;
-import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProvider;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
 @FIBPanel("Fib/AddOSLCServiceProviderPanel.fib")
 @ModelEntity
@@ -78,7 +78,7 @@ public interface AddOSLCServiceProvider extends OSLCCoreAction<OSLCServiceProvid
 
 			OSLCServiceProvider cdlActivity = null;
 
-			FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot> modelSlotInstance = getModelSlotInstance(action);
+			FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot> modelSlotInstance = getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 
 			}
@@ -91,8 +91,8 @@ public interface AddOSLCServiceProvider extends OSLCCoreAction<OSLCServiceProvid
 		}
 
 		@Override
-		public FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<OSLCResource, OSLCCoreModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
+			return (FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot>) super.getModelSlotInstance(action);
 		}
 
 	}
