@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;

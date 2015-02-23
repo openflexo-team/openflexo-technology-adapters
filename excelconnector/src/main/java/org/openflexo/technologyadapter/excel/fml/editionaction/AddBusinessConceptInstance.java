@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.excel.fml.editionaction;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
