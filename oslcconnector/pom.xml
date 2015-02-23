@@ -96,17 +96,5 @@
 		<scope>test</scope>
 	</dependency>
   </dependencies>
-  <repositories>
-  	<repository>
-  		<id>oauth</id>
-  		<name>OAuth Repository</name>
-  		<url>http://oauth.googlecode.com/svn/code/maven</url>
-	</repository>
-	<repository>
-  		<id>lyo-releases</id>
-  		<name>lyo releases</name>
-  		<url>https://repo.eclipse.org</url>
-	</repository>
-  </repositories>
   <name>OSLC technology adaptor</name>
 </project>
