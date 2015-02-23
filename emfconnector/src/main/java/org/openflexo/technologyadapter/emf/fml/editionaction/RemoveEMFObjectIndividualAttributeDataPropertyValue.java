@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.emf.fml.editionaction;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.fml.annotations.FIBPanel;
+import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
