@@ -45,22 +45,22 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyContextManager;
-import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.io.FlexoOslcAdaptorConfiguration;
-import org.openflexo.technologyadapter.oslc.model.io.OSLCCoreModelConverter;
+import org.openflexo.technologyadapter.oslc.model.io.OSLCModelConverter;
 
 @ModelEntity
 @ImplementationClass(OSLCResourceResourceImpl.class)
-public abstract interface OSLCResourceResource extends TechnologyAdapterResource<OSLCResource, OSLCTechnologyAdapter> {
+public abstract interface OSLCResourceResource extends TechnologyAdapterResource<OSLCServiceProviderCatalog, OSLCTechnologyAdapter> {
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
 	@Getter(value = "technologyContextManager", ignoreType = true)
 	public abstract OSLCTechnologyContextManager getTechnologyContextManager();
 
 	@Setter("technologyContextManager")
-	public abstract void setTechnologyContextManager(OSLCTechnologyContextManager paramCDLTechnologyContextManager);
+	public abstract void setTechnologyContextManager(OSLCTechnologyContextManager technologyContextManager);
 
-	public abstract OSLCCoreModelConverter getConverter();
+	public abstract OSLCModelConverter getConverter();
 
 	public abstract FlexoOslcAdaptorConfiguration getAdaptorConfiguration();
 

@@ -36,12 +36,12 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.model.core;
 
 import java.util.List;
 
 import org.eclipse.lyo.oslc4j.core.model.ServiceProviderCatalog;
+import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -55,7 +55,7 @@ import org.openflexo.model.annotations.XMLElement;
 @ModelEntity
 @ImplementationClass(OSLCServiceProviderCatalog.OSLCServiceProviderCatalogImpl.class)
 @XMLElement(xmlTag = "OSLCServiceProviderCatalog")
-public interface OSLCServiceProviderCatalog extends OSLCResource {
+public interface OSLCServiceProviderCatalog extends OSLCResource, ResourceData<OSLCServiceProviderCatalog> {
 
 	public static final String OSLC_SERVICE_PROVIDER_CATALOG_KEY = "OSLCServiceProviderCatalog";
 

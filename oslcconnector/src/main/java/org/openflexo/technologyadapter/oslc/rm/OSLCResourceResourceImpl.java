@@ -67,23 +67,24 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyContextManager;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.io.FlexoOslcAdaptorConfiguration;
-import org.openflexo.technologyadapter.oslc.model.io.OSLCCoreModelConverter;
+import org.openflexo.technologyadapter.oslc.model.io.OSLCModelConverter;
 import org.openflexo.toolbox.IProgress;
 
-public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCResource> implements OSLCResourceResource {
+public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCServiceProviderCatalog> implements OSLCResourceResource {
 	private static final Logger logger = Logger.getLogger(OSLCResourceResourceImpl.class.getPackage().getName());
 
-	private OSLCCoreModelConverter converter;
+	private OSLCModelConverter converter;
 
 	private FlexoOslcAdaptorConfiguration adaptorConfiguration;
 
 	@Override
-	public OSLCCoreModelConverter getConverter() {
+	public OSLCModelConverter getConverter() {
 		return converter;
 	}
 
-	public void setConverter(OSLCCoreModelConverter converter) {
+	public void setConverter(OSLCModelConverter converter) {
 		this.converter = converter;
 	}
 
@@ -132,7 +133,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 	}
 
 	@Override
-	public OSLCResource loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException,
+	public OSLCServiceProviderCatalog loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException,
 			FlexoException {
 		AbstractResource unit = null;
 
@@ -142,7 +143,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 				adaptorConfiguration = loadAdaptorConfiguration();
 
 				if (converter == null) {
-					converter = new OSLCCoreModelConverter(adaptorConfiguration);
+					converter = new OSLCModelConverter(adaptorConfiguration);
 					converter.setTechnologyAdapter(getTechnologyAdapter());
 				}
 				resourceData = converter.convertAllCoreResourcesFromCatalog();
@@ -187,7 +188,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 			writeToFile();
 			((FileFlexoIODelegateImpl) getFlexoIODelegate()).hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
-			resourceData.clearIsModified(false);
+			// resourceData.clearIsModified(false);
 			if (logger.isLoggable(Level.INFO)) {
 				logger.info("Succeeding to save Resource " + getURI() + " : "
 						+ ((File) getFlexoIODelegate().getSerializationArtefact()).getName());
@@ -219,8 +220,8 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 	}
 
 	@Override
-	public Class<OSLCResource> getResourceDataClass() {
-		return OSLCResource.class;
+	public Class<OSLCServiceProviderCatalog> getResourceDataClass() {
+		return OSLCServiceProviderCatalog.class;
 	}
 
 	/**
@@ -259,6 +260,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 		return adaptor;
 	}
 
+	@Override
 	public FlexoOslcAdaptorConfiguration getAdaptorConfiguration() {
 		return adaptorConfiguration;
 	}

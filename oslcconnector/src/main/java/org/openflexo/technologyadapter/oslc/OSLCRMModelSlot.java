@@ -57,6 +57,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.virtualmodel.action.AddOSLCRequirement;
 import org.openflexo.technologyadapter.oslc.virtualmodel.action.AddOSLCRequirementCollection;
 import org.openflexo.technologyadapter.oslc.virtualmodel.action.SelectOSLCRequirement;
@@ -77,12 +78,12 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.rm.OSLCRequirementRole;
 @DeclareEditionActions({ AddOSLCRequirement.class, AddOSLCRequirementCollection.class })
 @DeclareFetchRequests({ SelectOSLCRequirement.class, SelectOSLCRequirementCollection.class })
 @FML("OSLCRMModelSlot")
-public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
+public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalog> {
 
 	// @Override
 	// public OSLCTechnologyAdapter getTechnologyAdapter();
 
-	public static abstract class OSLCRMModelSlotImpl extends FreeModelSlotImpl<OSLCResource> implements OSLCRMModelSlot {
+	public static abstract class OSLCRMModelSlotImpl extends FreeModelSlotImpl<OSLCServiceProviderCatalog> implements OSLCRMModelSlot {
 
 		private static final Logger logger = Logger.getLogger(OSLCRMModelSlot.class.getPackage().getName());
 
@@ -111,7 +112,8 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 		}
 
 		@Override
-		public String getURIForObject(FreeModelSlotInstance<OSLCResource, ? extends FreeModelSlot<OSLCResource>> msInstance, Object o) {
+		public String getURIForObject(
+				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance, Object o) {
 			if (o instanceof IFlexoOntologyObject) {
 				return ((IFlexoOntologyObject) o).getURI();
 			}
@@ -119,7 +121,8 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 		}
 
 		@Override
-		public Object retrieveObjectWithURI(FreeModelSlotInstance<OSLCResource, ? extends FreeModelSlot<OSLCResource>> msInstance,
+		public Object retrieveObjectWithURI(
+				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance,
 				String objectURI) {
 			return msInstance.getResourceData().getObject(objectURI);
 		}
@@ -135,17 +138,17 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 		}
 
 		@Override
-		public TechnologyAdapterResource<OSLCResource, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
+		public TechnologyAdapterResource<OSLCServiceProviderCatalog, ?> createProjectSpecificEmptyResource(View view, String filename,
+				String modelUri) {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public TechnologyAdapterResource<OSLCResource, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
+		public TechnologyAdapterResource<OSLCServiceProviderCatalog, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
 				String relativePath, String filename, String modelUri) {
 			// TODO Auto-generated method stub
 			return null;
 		}
-
 	}
 }

@@ -40,9 +40,6 @@ package org.openflexo.technologyadapter.oslc.model.io;
 
 import java.lang.reflect.Array;
 import java.net.URISyntaxException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.logging.Logger;
 
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
@@ -51,59 +48,43 @@ import org.eclipse.lyo.oslc4j.core.model.QueryCapability;
 import org.eclipse.lyo.oslc4j.core.model.Service;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProviderCatalog;
-import org.openflexo.model.ModelContext;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCCreationFactory;
-import org.openflexo.technologyadapter.oslc.model.core.OSLCObject;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCQueryCapability;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCService;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProvider;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
-public class OSLCCoreModelConverter {
+public class OSLCCoreModelConverter implements OSLCModelDedicatedConverter {
 
 	private static final Logger logger = Logger.getLogger(OSLCCoreModelConverter.class.getPackage().getName());
 
-	protected final Map<Object, OSLCObject> OSLCObjects = new HashMap<Object, OSLCObject>();
-
 	private ModelFactory factory;
-	private ModelContext modelContext;
-	private String baseUri;
 	private OSLCTechnologyAdapter technologyAdapter;
-	private FlexoOslcClient oslcClient;
+	private final OSLCModelConverter mainConverter;
 
 	/**
 	 * Constructor.
 	 */
-	public OSLCCoreModelConverter(FlexoOslcAdaptorConfiguration adaptorConfiguration) {
+	public OSLCCoreModelConverter(OSLCModelConverter mainConverter) {
+		this.mainConverter = mainConverter;
 		try {
-			this.baseUri = adaptorConfiguration.getBaseUri();
 			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(OSLCResource.class, OSLCServiceProviderCatalog.class,
 					OSLCServiceProvider.class, OSLCQueryCapability.class, OSLCCreationFactory.class));
-			modelContext = new ModelContext(OSLCResource.class);
-			oslcClient = new FlexoOslcClient(adaptorConfiguration);
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public OSLCTechnologyAdapter getTechnologyAdapter() {
-		return technologyAdapter;
-	}
-
-	public void setTechnologyAdapter(OSLCTechnologyAdapter technologyAdapter) {
-		this.technologyAdapter = technologyAdapter;
-	}
-
 	public OSLCServiceProviderCatalog convertAllCoreResourcesFromCatalog() {
 		OSLCServiceProviderCatalog oslcResource = null;
 		ServiceProviderCatalog catalog;
-		catalog = retrieveResource(baseUri, ServiceProviderCatalog.class);
+		catalog = retrieveResource(getBaseUri(), ServiceProviderCatalog.class);
 		// Could be as well
 		// catalog = oslcClient.retrieve(baseUri);
 
@@ -120,7 +101,7 @@ public class OSLCCoreModelConverter {
 		OSLCServiceProviderCatalog oslcResource = factory.newInstance(OSLCServiceProviderCatalog.class);
 		oslcResource.setOSLCServiceProviderCatalog(resource);
 		oslcResource.setTechnologyAdapter(technologyAdapter);
-		OSLCObjects.put(resource, oslcResource);
+		mainConverter.getOSLCObjects().put(resource, oslcResource);
 		return oslcResource;
 	}
 
@@ -135,7 +116,7 @@ public class OSLCCoreModelConverter {
 		}
 		oslcResource.setOSLCServiceProvider(serviceProvider);
 		oslcResource.setTechnologyAdapter(technologyAdapter);
-		OSLCObjects.put(serviceProvider, oslcResource);
+		mainConverter.getOSLCObjects().put(serviceProvider, oslcResource);
 		return oslcResource;
 	}
 
@@ -149,7 +130,7 @@ public class OSLCCoreModelConverter {
 			oslcResource.addToOSLCQueryCapabilities(convertOSLCQueryCapability(query));
 		}
 		oslcResource.setTechnologyAdapter(technologyAdapter);
-		OSLCObjects.put(resource, oslcResource);
+		mainConverter.getOSLCObjects().put(resource, oslcResource);
 		return oslcResource;
 	}
 
@@ -158,7 +139,7 @@ public class OSLCCoreModelConverter {
 		oslcResource.setOSLCQueryCapability(resource);
 		oslcResource.setTechnologyAdapter(technologyAdapter);
 		// catalogOslcClient.getResourcesFromQueryCapability(OslcMediaType.APPLICATION_RDF_XML, resource);
-		OSLCObjects.put(resource, oslcResource);
+		mainConverter.getOSLCObjects().put(resource, oslcResource);
 		return oslcResource;
 	}
 
@@ -166,24 +147,28 @@ public class OSLCCoreModelConverter {
 		OSLCCreationFactory oslcResource = factory.newInstance(OSLCCreationFactory.class);
 		oslcResource.setOSLCCreationFactory(resource);
 		oslcResource.setTechnologyAdapter(technologyAdapter);
-		OSLCObjects.put(resource, oslcResource);
+		mainConverter.getOSLCObjects().put(resource, oslcResource);
 		return oslcResource;
 	}
 
-	public <R extends OSLCResource> R createOSLCResource(Class<R> klass, AbstractResource resource) {
+	public <R extends OSLCResource> R createOSLCResource(Class<R> klass, AbstractResource resource, CreationFactory creationFactory) {
 		R oslcResource = factory.newInstance(klass);
 		oslcResource.setTechnologyAdapter(technologyAdapter);
-		OSLCObjects.put(resource, oslcResource);
+		mainConverter.getOSLCObjects().put(resource, oslcResource);
 		return oslcResource;
 	}
 
-	public Map<Object, OSLCObject> getOSLCObjects() {
-		return OSLCObjects;
+	private String getBaseUri() {
+		return mainConverter.getAdaptorConfiguration().getBaseUri();
+	}
+
+	private FlexoOslcClient getClient() {
+		return mainConverter.getOslcClient();
 	}
 
 	private <T extends AbstractResource> T[] retrieveResources(String uri, Class<T> resourceClasses) {
 		try {
-			return oslcClient.retrieves(uri, (Class<T[]>) Array.newInstance(resourceClasses, 0).getClass());
+			return getClient().retrieves(uri, (Class<T[]>) Array.newInstance(resourceClasses, 0).getClass());
 		} catch (URISyntaxException e) {
 			logger.warning("URI " + uri + " is not correct");
 			e.printStackTrace();
@@ -193,25 +178,11 @@ public class OSLCCoreModelConverter {
 
 	private <T extends AbstractResource> T retrieveResource(String uri, Class<T> resourceClass) {
 		try {
-			return oslcClient.retrieve(uri, resourceClass);
+			return getClient().retrieve(uri, resourceClass);
 		} catch (URISyntaxException e) {
 			logger.warning("URI " + uri + " is not correct");
 			e.printStackTrace();
 			return null;
 		}
-	}
-
-	private Object getOSLCObjectFromFlexoOSLCObject(OSLCObject object) {
-		for (Entry entry : OSLCObjects.entrySet()) {
-			Object key = entry.getKey();
-			if (object.equals(OSLCObjects.get(key))) {
-				return key;
-			}
-		}
-		return null;
-	}
-
-	public FlexoOslcClient getOslcClient() {
-		return oslcClient;
 	}
 }

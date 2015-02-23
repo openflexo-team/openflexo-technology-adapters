@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.oslc.model.core;
 
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
-import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -48,7 +47,7 @@ import org.openflexo.technologyadapter.oslc.model.io.OSLCCoreModelConverter;
 @ModelEntity
 @ImplementationClass(OSLCResource.OSLCResourceImpl.class)
 @XMLElement(xmlTag = "OSLCResource")
-public interface OSLCResource extends OSLCObject, ResourceData<OSLCResource> {
+public interface OSLCResource extends OSLCObject {
 
 	public static final String OSLCResource_KEY = "OSLCResource";
 
