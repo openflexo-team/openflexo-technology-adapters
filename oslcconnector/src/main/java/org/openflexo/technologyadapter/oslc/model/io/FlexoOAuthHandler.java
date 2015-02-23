@@ -49,15 +49,7 @@ import net.oauth.OAuthServiceProvider;
 import net.oauth.client.OAuthClient;
 import net.oauth.client.httpclient4.HttpClient4;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 import org.apache.http.auth.InvalidCredentialsException;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.params.HttpClientParams;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.wink.client.ClientRequest;
 import org.apache.wink.client.ClientResponse;
 import org.apache.wink.client.handlers.ClientHandler;
@@ -69,10 +61,12 @@ import org.apache.wink.client.handlers.HandlerContext;
  * to the protected resources thanks to the request token The request token is exchanged to an access token Now it is possible to access
  * protected resources thanks to this acces token
  * 
+ * If this handler is set on a client, each http request will call the handle method which add Authorization automatically to the request
+ * 
  * @author Vincent
  * 
  */
-public class FlexoOAuthHandler implements ClientHandler {
+public abstract class FlexoOAuthHandler implements ClientHandler {
 
 	private String login;
 	private String password;
@@ -135,6 +129,9 @@ public class FlexoOAuthHandler implements ClientHandler {
 	 * @return
 	 */
 	public String getLogin() {
+		if (login == null) {
+			return configuration.getLogin();
+		}
 		return login;
 	}
 
@@ -148,6 +145,9 @@ public class FlexoOAuthHandler implements ClientHandler {
 	 * @return
 	 */
 	public String getPassword() {
+		if (password == null) {
+			return configuration.getPassword();
+		}
 		return password;
 	}
 
@@ -165,41 +165,20 @@ public class FlexoOAuthHandler implements ClientHandler {
 	 * @throws URISyntaxException
 	 * @throws InvalidCredentialsException
 	 */
-	public void performoAuthAuthentification() throws IOException, OAuthException, URISyntaxException, InvalidCredentialsException {
+	public void performoAuthAuthentification(String uri) throws IOException, OAuthException, URISyntaxException,
+			InvalidCredentialsException {
 		// Create an oAuth client
 		OAuthClient client = new OAuthClient(new HttpClient4());
-		// get the temporary Request Token from the provider given the consumer key and shared secret
+		// Get the temporary Request Token from the provider given the consumer key and shared secret
+		askForARequestToken(client);
+		// Using the request token and the oauth-autorize, redirect the user to identification form
+		userAuthentification(client);
+		// Exchange a request Token for an Access Token
+		exchangeRequestForAccessToken(client);
+	}
+
+	private void askForARequestToken(OAuthClient client) throws IOException, OAuthException, URISyntaxException {
 		client.getRequestToken(getAccessor());
-
-		// Get the redirection url
-		// TODO do it automatically
-		String redirect = getConsumer().serviceProvider.userAuthorizationURL + "?oauth_token=" + getAccessor().requestToken;
-		HttpClient httpClient = new DefaultHttpClient();
-		HttpGet request1 = new HttpGet(redirect);
-		HttpClientParams.setRedirecting(request1.getParams(), false);
-		HttpResponse response = httpClient.execute(request1);
-		// Get the location of the redirection
-		Header location = response.getFirstHeader("Location");
-		if (location != null) {
-			HttpGet request2 = new HttpGet(location.getValue());
-			HttpClientParams.setRedirecting(request2.getParams(), false);
-			response = httpClient.execute(request2);
-		}
-
-		// The user might identificate himself
-		userAuthentification(httpClient);
-
-		// Exchange request token for access token.
-		if (accessor.accessToken == null) {
-			try {
-				client.getAccessToken(accessor, OAuthMessage.POST, null);
-			} catch (OAuthException e) {
-				// restart
-				accessor.accessToken = null;
-				accessor.requestToken = null;
-				performoAuthAuthentification();
-			}
-		}
 	}
 
 	/**
@@ -207,23 +186,22 @@ public class FlexoOAuthHandler implements ClientHandler {
 	 * 
 	 * @param httpClient
 	 */
-	private void userAuthentification(HttpClient httpClient) {
-		// TODO Check authentification is OK and also how to give the username/password?
-		if (getPassword() == null || getLogin() == null) {
-			// TODO Ask for user authentification...
-		}
+	public abstract void userAuthentification(OAuthClient client);
 
-		try {
-			HttpPost formPost = new HttpPost(getAuthURL() + "?j_username=" + getLogin() + "&" + "j_password=" + getPassword());
-			HttpResponse formResponse = httpClient.execute(formPost);
-		} catch (ClientProtocolException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+	private void exchangeRequestForAccessToken(OAuthClient client) throws IOException, URISyntaxException, InvalidCredentialsException,
+			OAuthException {
+		// Exchange request token for access token.
+		if (accessor.accessToken == null) {
+			try {
+				client.getAccessToken(accessor, OAuthMessage.POST, null);
+			} catch (OAuthException e) {
+				accessor.accessToken = null;
+				accessor.requestToken = null;
+			}
 		}
 	}
+
+	// private String sessionID;
 
 	/**
 	 * This is called in the chain, here we add the authorization header to access the data using oAuth.
@@ -232,6 +210,8 @@ public class FlexoOAuthHandler implements ClientHandler {
 	public ClientResponse handle(ClientRequest request, HandlerContext context) throws Exception {
 		OAuthMessage message = getAccessor().newRequestMessage(request.getMethod(), request.getURI().toString(), null);
 		request.getHeaders().add("Authorization", message.getAuthorizationHeader(""));
+		// request.getHeaders().add("X-Jazz-CSRF-Prevent", sessionID);
 		return context.doChain(request);
 	}
+
 }

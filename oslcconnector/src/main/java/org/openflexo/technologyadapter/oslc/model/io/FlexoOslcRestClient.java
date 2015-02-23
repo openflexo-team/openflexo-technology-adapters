@@ -36,40 +36,30 @@
  * 
  */
 
-package org.openflexo.technologyadapter.oslc.model.core;
+package org.openflexo.technologyadapter.oslc.model.io;
 
-import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
-import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.oslc.model.io.OSLCCoreModelConverter;
+import org.apache.wink.client.ClientResponse;
 
-@ModelEntity
-@ImplementationClass(OSLCResource.OSLCResourceImpl.class)
-@XMLElement(xmlTag = "OSLCResource")
-public interface OSLCResource extends OSLCObject, ResourceData<OSLCResource> {
+/**
+ * This is the REST client to Access OSLC resources
+ * 
+ * @author Vincent
+ * 
+ */
+public interface FlexoOslcRestClient {
 
-	public static final String OSLCResource_KEY = "OSLCResource";
+	public <T> String addOslcResource(T oslcResource);
 
-	public AbstractResource getOSLCResource();
+	public ClientResponse removeOslcResourceReturnClientResponse();
 
-	public void setOSLCResource(AbstractResource oslcResource);
+	public <T> ClientResponse removeOslcResourceReturnClientResponse(T resource);
 
-	public OSLCCoreModelConverter getConverter();
+	public <T> T getOslcResource(final Class<T> oslcResourceClass);
 
-	public void setConverter(OSLCCoreModelConverter converter);
+	public <T> T[] getOslcResources(final Class<T[]> oslcResourceArrayClass);
 
-	public static abstract class OSLCResourceImpl extends OSLCObjectImpl implements OSLCResource {
+	public ClientResponse updateOslcResourceReturnClientResponse(final Object oslcResource);
 
-		public OSLCResourceImpl() {
-			// TODO Auto-generated constructor stub
-		}
-
-		@Override
-		public String getUri() {
-			return getName();
-		}
-	}
+	public ClientResponse getOslcResource();
 
 }

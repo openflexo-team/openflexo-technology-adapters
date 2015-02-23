@@ -141,5 +141,9 @@ public interface OSLCCoreModelSlot extends FreeModelSlot<OSLCResource> {
 			return null;
 		}
 
+		@Override
+		public OSLCTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (OSLCTechnologyAdapter) super.getModelSlotTechnologyAdapter();
+		}
 	}
 }

@@ -76,6 +76,8 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 
 	private OSLCCoreModelConverter converter;
 
+	private FlexoOslcAdaptorConfiguration adaptorConfiguration;
+
 	@Override
 	public OSLCCoreModelConverter getConverter() {
 		return converter;
@@ -137,7 +139,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 		if (getFlexoIODelegate().exists()) {
 			try {
 				// Retrieve the configuration from a configuration file
-				FlexoOslcAdaptorConfiguration adaptorConfiguration = loadAdaptorConfiguration();
+				adaptorConfiguration = loadAdaptorConfiguration();
 
 				if (converter == null) {
 					converter = new OSLCCoreModelConverter(adaptorConfiguration);
@@ -255,5 +257,13 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCRes
 			}
 		}
 		return adaptor;
+	}
+
+	public FlexoOslcAdaptorConfiguration getAdaptorConfiguration() {
+		return adaptorConfiguration;
+	}
+
+	public void setAdaptorConfiguration(FlexoOslcAdaptorConfiguration adaptorConfiguration) {
+		this.adaptorConfiguration = adaptorConfiguration;
 	}
 }

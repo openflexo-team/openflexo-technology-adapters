@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.rm;
 
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
@@ -47,6 +46,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyContextManager;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
+import org.openflexo.technologyadapter.oslc.model.io.FlexoOslcAdaptorConfiguration;
 import org.openflexo.technologyadapter.oslc.model.io.OSLCCoreModelConverter;
 
 @ModelEntity
@@ -61,5 +61,7 @@ public abstract interface OSLCResourceResource extends TechnologyAdapterResource
 	public abstract void setTechnologyContextManager(OSLCTechnologyContextManager paramCDLTechnologyContextManager);
 
 	public abstract OSLCCoreModelConverter getConverter();
+
+	public abstract FlexoOslcAdaptorConfiguration getAdaptorConfiguration();
 
 }

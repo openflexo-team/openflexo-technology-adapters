@@ -76,7 +76,7 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.rm.OSLCRequirementRole;
 @DeclareFlexoRoles({ OSLCRequirementRole.class, OSLCRequirementCollectionRole.class })
 @DeclareEditionActions({ AddOSLCRequirement.class, AddOSLCRequirementCollection.class })
 @DeclareFetchRequests({ SelectOSLCRequirement.class, SelectOSLCRequirementCollection.class })
-@FML("OSLCCoreModelSlot")
+@FML("OSLCRMModelSlot")
 public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 
 	// @Override
@@ -129,10 +129,10 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCResource> {
 			return OSLCResource.class;
 		}
 
-		/*@Override
-		public OSLCTechnologyAdapter getTechnologyAdapter() {
-			return (OSLCTechnologyAdapter) super.getTechnologyAdapter();
-		}*/
+		@Override
+		public OSLCTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (OSLCTechnologyAdapter) super.getModelSlotTechnologyAdapter();
+		}
 
 		@Override
 		public TechnologyAdapterResource<OSLCResource, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
