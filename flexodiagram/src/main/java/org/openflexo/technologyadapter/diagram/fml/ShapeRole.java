@@ -141,7 +141,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		}
 
 		@Override
-		public String getStringRepresentation() {
+		public String getTypeDescription() {
 			return FlexoLocalization.localizedForKey("shape");
 		}
 

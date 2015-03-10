@@ -158,7 +158,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		}
 
 		@Override
-		public String getStringRepresentation() {
+		public String getTypeDescription() {
 			return FlexoLocalization.localizedForKey("connector");
 		}
 
