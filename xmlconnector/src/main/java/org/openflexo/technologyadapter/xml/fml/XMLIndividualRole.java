@@ -94,7 +94,7 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return XMLIndividual.class.getSimpleName();
 		}
 
@@ -136,7 +136,7 @@ public interface XMLIndividualRole extends FlexoRole<XMLIndividual> {
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("XMLIndividualRole " + getName() + " as Individual conformTo " + getPreciseType() + " from "
+			out.append("XMLIndividualRole " + getName() + " as Individual conformTo " + getTypeDescription() + " from "
 					+ getModelSlot().getName() + " ;", context);
 			return out.toString();
 		}

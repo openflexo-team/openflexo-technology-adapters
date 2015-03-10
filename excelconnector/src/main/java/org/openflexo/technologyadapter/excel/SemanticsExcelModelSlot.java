@@ -149,7 +149,7 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			// TODO Auto-generated method stub
 			return null;
 		}

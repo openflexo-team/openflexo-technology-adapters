@@ -259,7 +259,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return "Diagram Specification";
 		}
 

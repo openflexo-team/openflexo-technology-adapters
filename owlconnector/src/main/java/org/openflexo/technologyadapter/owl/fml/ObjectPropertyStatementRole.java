@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml;
 
 import java.lang.reflect.Type;
@@ -102,7 +101,7 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			if (getObjectProperty() != null) {
 				return getObjectProperty().getName();
 			}

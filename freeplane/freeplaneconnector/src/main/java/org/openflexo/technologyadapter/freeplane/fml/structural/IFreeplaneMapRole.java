@@ -80,7 +80,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
 		 * @see org.openflexo.foundation.fml.FlexoRole.FlexoRoleImpl#getPreciseType()
 		 */
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return IFreeplaneMap.class.getSimpleName();
 		}
 

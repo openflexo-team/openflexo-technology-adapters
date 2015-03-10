@@ -69,7 +69,7 @@ public interface ExcelRowRole extends FlexoRole<ExcelRow> {
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return ExcelRow.class.getSimpleName();
 		}
 

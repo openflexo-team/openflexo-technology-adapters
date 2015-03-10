@@ -64,7 +64,7 @@ public interface ExcelColumnRole extends FlexoRole<ExcelColumn> {
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return ExcelColumn.class.getSimpleName();
 		}
 
