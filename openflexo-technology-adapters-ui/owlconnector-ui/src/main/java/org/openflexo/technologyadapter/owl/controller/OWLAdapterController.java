@@ -106,6 +106,11 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 		return OWLTechnologyAdapter.class;
 	}
 
+	/**
+	 * Initialize inspectors for supplied module using supplied {@link FlexoController}
+	 * 
+	 * @param controller
+	 */
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
@@ -114,6 +119,11 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 
 	private InspectorGroup owlInspectorGroup;
 
+	/**
+	 * Return inspector group for this technology
+	 * 
+	 * @return
+	 */
 	@Override
 	public InspectorGroup getTechnologyAdapterInspectorGroup() {
 		return owlInspectorGroup;

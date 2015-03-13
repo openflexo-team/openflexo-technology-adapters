@@ -42,10 +42,10 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.gui.CSVIconLibrary;
 import org.openflexo.view.ModuleView;
@@ -62,9 +62,33 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 		return CSVTechnologyAdapter.class;
 	}
 
+	/**
+	 * Initialize inspectors for supplied module using supplied {@link FlexoController}
+	 * 
+	 * @param controller
+	 */
+	@Override
+	protected void initializeInspectors(FlexoController controller) {
+
+		csvInspectorGroup = controller.loadInspectorGroup("CSV", getFMLTechnologyAdapterInspectorGroup());
+		// actionInitializer.getController().getModuleInspectorController()
+		// .loadDirectory(ResourceLocator.locateResource("Inspectors/CSV"));
+	}
+
+	private InspectorGroup csvInspectorGroup;
+
+	/**
+	 * Return inspector group for this technology
+	 * 
+	 * @return
+	 */
+	@Override
+	public InspectorGroup getTechnologyAdapterInspectorGroup() {
+		return csvInspectorGroup;
+	}
+
 	@Override
 	protected void initializeActions(ControllerActionInitializer actionInitializer) {
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/CSV"));
 	}
 
 	@Override

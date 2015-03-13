@@ -44,11 +44,11 @@ import java.util.List;
 import javax.swing.ImageIcon;
 
 import org.freeplane.main.application.FreeplaneBasicAdapter;
+import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.AddChildNodeInitializer;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.DeleteNodeInitializer;
@@ -76,11 +76,33 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 		return FreeplaneTechnologyAdapter.class;
 	}
 
+	/**
+	 * Initialize inspectors for supplied module using supplied {@link FlexoController}
+	 * 
+	 * @param controller
+	 */
+	@Override
+	protected void initializeInspectors(FlexoController controller) {
+
+		freeplaneInspectorGroup = controller.loadInspectorGroup("Freeplane", getFMLTechnologyAdapterInspectorGroup());
+		// actionInitializer.getController().getModuleInspectorController()
+		// .loadDirectory(ResourceLocator.locateResource("Inspectors/Freeplane"));
+	}
+
+	private InspectorGroup freeplaneInspectorGroup;
+
+	/**
+	 * Return inspector group for this technology
+	 * 
+	 * @return
+	 */
+	@Override
+	public InspectorGroup getTechnologyAdapterInspectorGroup() {
+		return freeplaneInspectorGroup;
+	}
+
 	@Override
 	protected void initializeActions(final ControllerActionInitializer actionInitializer) {
-		actionInitializer.getController().getModuleInspectorController()
-				.loadDirectory(ResourceLocator.locateResource("Inspectors/Freeplane"));
-
 		new AddChildNodeInitializer(actionInitializer);
 		new NewSiblingAboveNodeInitializer(actionInitializer);
 		new NewSiblingNodeInitializer(actionInitializer);
