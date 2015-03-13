@@ -145,7 +145,7 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return "EMF Model";
 		};
 

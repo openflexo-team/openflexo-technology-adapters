@@ -64,7 +64,7 @@ public interface PowerpointShapeRole extends FlexoRole<PowerpointSlide> {
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return PowerpointSlide.class.getSimpleName();
 		}
 

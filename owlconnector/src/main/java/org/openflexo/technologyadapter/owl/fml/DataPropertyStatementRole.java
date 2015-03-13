@@ -98,7 +98,7 @@ public interface DataPropertyStatementRole extends StatementRole<DataPropertySta
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			if (getDataProperty() != null) {
 				return getDataProperty().getName();
 			}

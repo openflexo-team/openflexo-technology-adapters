@@ -102,7 +102,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			if (getDiagramSpecification() != null) {
 				return getDiagramSpecification().getName();
 			}

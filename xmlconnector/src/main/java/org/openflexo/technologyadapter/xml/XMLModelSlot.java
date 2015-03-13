@@ -366,7 +366,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return "xml";
 		}
 	}

@@ -71,7 +71,7 @@ public interface SubClassStatementRole extends StatementRole<SubClassStatement> 
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return FlexoLocalization.localizedForKey("sub_class_statement");
 		}
 

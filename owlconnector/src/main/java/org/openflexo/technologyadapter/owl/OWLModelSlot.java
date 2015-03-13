@@ -182,7 +182,7 @@ public interface OWLModelSlot extends TypeAwareModelSlot<OWLOntology, OWLOntolog
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return "OWL Ontology";
 		};
 

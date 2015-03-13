@@ -67,7 +67,7 @@ public interface XMLTypeRole extends FlexoRole<XMLType> {
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			// TODO Auto-generated method stub
 			return null;
 		}

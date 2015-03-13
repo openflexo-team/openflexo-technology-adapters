@@ -75,7 +75,7 @@ public interface OSLCRequirementRole extends FlexoRole<OSLCRequirement> {
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return OSLCRequirement.class.getSimpleName();
 		}
 

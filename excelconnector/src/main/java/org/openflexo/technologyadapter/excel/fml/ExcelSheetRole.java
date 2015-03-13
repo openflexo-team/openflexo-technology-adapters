@@ -64,7 +64,7 @@ public interface ExcelSheetRole extends FlexoRole<ExcelSheet> {
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return ExcelSheet.class.getSimpleName();
 		}
 

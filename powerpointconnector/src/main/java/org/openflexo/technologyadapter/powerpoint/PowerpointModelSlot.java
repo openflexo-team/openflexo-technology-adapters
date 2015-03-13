@@ -72,7 +72,7 @@ public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return "Powerpoint Slide Show";
 		};
 

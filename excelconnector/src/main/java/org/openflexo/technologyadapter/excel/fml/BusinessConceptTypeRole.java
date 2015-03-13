@@ -64,7 +64,7 @@ public interface BusinessConceptTypeRole extends FlexoRole<BusinessConceptType> 
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			// TODO Auto-generated method stub
 			return null;
 		}
