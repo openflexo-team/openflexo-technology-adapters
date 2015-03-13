@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc.controller;
 
 import java.util.logging.Logger;
@@ -86,7 +85,7 @@ public class OSLCAdapterController extends TechnologyAdapterController<OSLCTechn
 	}
 
 	@Override
-	public void initializeActions(ControllerActionInitializer actionInitializer) {
+	protected void initializeActions(ControllerActionInitializer actionInitializer) {
 		actionInitializer.getController().getModuleInspectorController()
 				.loadDirectory(ResourceLocator.locateResource("src/main/resources/Inspectors/oslc"));
 	}

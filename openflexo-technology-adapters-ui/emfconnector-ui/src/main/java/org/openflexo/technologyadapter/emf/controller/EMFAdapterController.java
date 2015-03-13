@@ -99,7 +99,7 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	 * @see org.openflexo.view.controller.TechnologyAdapterController#initializeActions(org.openflexo.view.controller.ControllerActionInitializer)
 	 */
 	@Override
-	public void initializeActions(ControllerActionInitializer actionInitializer) {
+	protected void initializeActions(ControllerActionInitializer actionInitializer) {
 
 		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/EMF"));
 	}

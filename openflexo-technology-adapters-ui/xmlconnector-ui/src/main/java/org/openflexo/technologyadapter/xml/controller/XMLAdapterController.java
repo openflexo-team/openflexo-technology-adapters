@@ -37,7 +37,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.controller;
 
 import java.util.logging.Logger;
@@ -77,7 +76,7 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 	}
 
 	@Override
-	public void initializeActions(ControllerActionInitializer actionInitializer) {
+	protected void initializeActions(ControllerActionInitializer actionInitializer) {
 
 		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/XML"));
 	}

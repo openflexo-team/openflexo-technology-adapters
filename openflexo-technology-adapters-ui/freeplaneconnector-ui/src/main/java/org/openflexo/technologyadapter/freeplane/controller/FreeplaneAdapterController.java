@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.freeplane.controller;
 
 import java.util.Collections;
@@ -78,7 +77,7 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 	}
 
 	@Override
-	public void initializeActions(final ControllerActionInitializer actionInitializer) {
+	protected void initializeActions(final ControllerActionInitializer actionInitializer) {
 		actionInitializer.getController().getModuleInspectorController()
 				.loadDirectory(ResourceLocator.locateResource("Inspectors/Freeplane"));
 
