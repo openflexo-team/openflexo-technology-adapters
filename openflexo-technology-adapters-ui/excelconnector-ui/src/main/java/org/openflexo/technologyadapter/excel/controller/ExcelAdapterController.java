@@ -156,9 +156,9 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 		if (AddExcelSheet.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelSheet.class), IconLibrary.DUPLICATE);
 		} else if (AddExcelCell.class.isAssignableFrom(editionActionClass)) {
-			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelCell.class), IconLibrary.DUPLICATE);
+			return ExcelIconLibrary.ADD_EXCEL_CELL_ICON;
 		} else if (AddExcelRow.class.isAssignableFrom(editionActionClass)) {
-			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelRow.class), IconLibrary.DUPLICATE);
+			return ExcelIconLibrary.ADD_EXCEL_ROW_ICON;
 		} else if (CellStyleAction.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(ExcelIconLibrary.EXCEL_GRAPHICAL_ACTION_ICON, IconLibrary.DUPLICATE);
 		} else if (SelectExcelSheet.class.isAssignableFrom(editionActionClass)) {

@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2014-2015, Openflexo
  * 
  * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
  * developed at Openflexo.
@@ -39,18 +39,70 @@
 package org.openflexo.technologyadapter.excel;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
+import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
-public class ExcelFIBTest extends GenericFIBTestCase {
+public class TestExcelInspectors extends GenericFIBInspectorTestCase {
 
-	public static void main(final String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib")).getFile(), "Fib/"));
+	/*
+	 * Use this method to print all
+	 * Then copy-paste 
+	 */
+
+	public static void main(String[] args) {
+		System.out.println(generateInspectorTestCaseClass(
+				((FileResourceImpl) ResourceLocator.locateResource("Inspectors/Excel")).getFile(), "Inspectors/Excel/"));
 	}
 
 	@Test
-	public void removeThisTest() {
+	public void testAddExcelCellInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/AddExcelCell.inspector");
+	}
+
+	@Test
+	public void testAddExcelRowInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/AddExcelRow.inspector");
+	}
+
+	@Test
+	public void testAddExcelSheetInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/AddExcelSheet.inspector");
+	}
+
+	@Test
+	public void testCellStyleActionInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/CellStyleAction.inspector");
+	}
+
+	@Test
+	public void testSelectExcelCellInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/SelectExcelCell.inspector");
+	}
+
+	@Test
+	public void testSelectExcelRowInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/SelectExcelRow.inspector");
+	}
+
+	@Test
+	public void testSelectExcelSheetInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/SelectExcelSheet.inspector");
+	}
+
+	@Test
+	public void testExcelCellInspector() {
+		validateFIB("Inspectors/Excel/ExcelCell.inspector");
+	}
+
+	@Test
+	public void testExcelSheetInspector() {
+		validateFIB("Inspectors/Excel/ExcelSheet.inspector");
+	}
+
+	@Test
+	public void testExcelWorkbookInspector() {
+		validateFIB("Inspectors/Excel/ExcelWorkbook.inspector");
 	}
 
 }
