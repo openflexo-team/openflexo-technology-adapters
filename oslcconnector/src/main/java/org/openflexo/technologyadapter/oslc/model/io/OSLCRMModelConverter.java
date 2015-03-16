@@ -90,11 +90,8 @@ public class OSLCRMModelConverter implements OSLCModelDedicatedConverter {
 			requirement.setInstanceShape(resourceShape.getAbout());
 			requirement = (Requirement) mainConverter.getOslcClient().create(creationFactory, requirement,
 					OslcMediaType.APPLICATION_RDF_XML);
-			OSLCRequirement oslcResource = factory.newInstance(OSLCRequirement.class);
-			oslcResource.setTechnologyAdapter(mainConverter.getTechnologyAdapter());
-			mainConverter.getOSLCResources().put(requirement, oslcResource);
-			oslcResource.setOSLCRequirement(requirement);
-			return oslcResource;
+
+			return convertAbstractResource(requirement);
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
