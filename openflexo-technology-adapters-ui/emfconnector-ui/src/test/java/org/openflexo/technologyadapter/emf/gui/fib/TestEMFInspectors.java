@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.emf.gui.fib;
 
+import org.junit.Test;
 import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
@@ -54,18 +55,37 @@ public class TestEMFInspectors extends GenericFIBInspectorTestCase {
 				"Inspectors/EMF/"));
 	}
 
+	@Test
+	public void testAddEMFIndividualAttributeDataPropertyValueInspector() {
+		validateFIB("Inspectors/EMF/EditionAction/AddEMFIndividualAttributeDataPropertyValue.inspector");
+	}
+
+	@Test
+	public void testAddEMFIndividualAttributeObjectPropertyValueInspector() {
+		validateFIB("Inspectors/EMF/EditionAction/AddEMFIndividualAttributeObjectPropertyValue.inspector");
+	}
+
+	@Test
+	public void testAddEMFObjectIndividualInspector() {
+		validateFIB("Inspectors/EMF/EditionAction/AddEMFObjectIndividual.inspector");
+	}
+
+	@Test
 	public void testEMFMetaModelInspector() {
 		validateFIB("Inspectors/EMF/EMFMetaModel.inspector");
 	}
 
+	@Test
 	public void testEMFMetaModelResourceInspector() {
 		validateFIB("Inspectors/EMF/EMFMetaModelResource.inspector");
 	}
 
+	@Test
 	public void testEMFModelInspector() {
 		validateFIB("Inspectors/EMF/EMFModel.inspector");
 	}
 
+	@Test
 	public void testEMFModelResourceInspector() {
 		validateFIB("Inspectors/EMF/EMFModelResource.inspector");
 	}
