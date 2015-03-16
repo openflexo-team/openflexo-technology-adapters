@@ -36,13 +36,44 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.gui.fib;
 
 import org.junit.Test;
 import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.ResourceLocator;
 
 public class TestXMLInspectors extends GenericFIBInspectorTestCase {
+
+	/*
+	 * Use this method to print all
+	 * Then copy-paste 
+	 */
+
+	public static void main(String[] args) {
+		System.out.println(generateInspectorTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Inspectors/XML")).getFile(),
+				"Inspectors/XML/"));
+	}
+
+	@Test
+	public void testAddXMLIndividualInspector() {
+		validateFIB("Inspectors/XML/EditionAction/AddXMLIndividual.inspector");
+	}
+
+	@Test
+	public void testGetXMLDocumentRootInspector() {
+		validateFIB("Inspectors/XML/EditionAction/GetXMLDocumentRoot.inspector");
+	}
+
+	@Test
+	public void testFreeXMLModelSlotInspector() {
+		validateFIB("Inspectors/XML/ModelSlot/FreeXMLModelSlot.inspector");
+	}
+
+	@Test
+	public void testXMLModelSlotInspector() {
+		validateFIB("Inspectors/XML/ModelSlot/XMLModelSlot.inspector");
+	}
 
 	@Test
 	public void testXMLFileResourceInspector() {
@@ -62,16 +93,6 @@ public class TestXMLInspectors extends GenericFIBInspectorTestCase {
 	@Test
 	public void testXSDMetaModelResourceInspector() {
 		validateFIB("Inspectors/XML/XSDMetaModelResource.inspector");
-	}
-
-	@Test
-	public void testXMLModelSlotInspector() {
-		validateFIB("Inspectors/XML/XMLModelSlot.inspector");
-	}
-
-	@Test
-	public void testFreeXMLModelSlotInspector() {
-		validateFIB("Inspectors/XML/FreeXMLModelSlot.inspector");
 	}
 
 }
