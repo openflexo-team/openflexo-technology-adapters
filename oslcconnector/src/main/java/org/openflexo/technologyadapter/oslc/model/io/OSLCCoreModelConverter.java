@@ -51,7 +51,6 @@ import org.eclipse.lyo.oslc4j.core.model.ServiceProviderCatalog;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCCreationFactory;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCQueryCapability;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
@@ -64,7 +63,6 @@ public class OSLCCoreModelConverter implements OSLCModelDedicatedConverter {
 	private static final Logger logger = Logger.getLogger(OSLCCoreModelConverter.class.getPackage().getName());
 
 	private ModelFactory factory;
-	private OSLCTechnologyAdapter technologyAdapter;
 	private final OSLCModelConverter mainConverter;
 
 	/**
@@ -100,7 +98,7 @@ public class OSLCCoreModelConverter implements OSLCModelDedicatedConverter {
 	public OSLCServiceProviderCatalog convertOSLCServiceProviderCatalog(ServiceProviderCatalog resource) {
 		OSLCServiceProviderCatalog oslcResource = factory.newInstance(OSLCServiceProviderCatalog.class);
 		oslcResource.setOSLCServiceProviderCatalog(resource);
-		oslcResource.setTechnologyAdapter(technologyAdapter);
+		oslcResource.setTechnologyAdapter(mainConverter.getTechnologyAdapter());
 		mainConverter.getOSLCObjects().put(resource, oslcResource);
 		return oslcResource;
 	}
@@ -115,7 +113,7 @@ public class OSLCCoreModelConverter implements OSLCModelDedicatedConverter {
 			oslcResource.addToOSLCServices(convertOSLCService(service));
 		}
 		oslcResource.setOSLCServiceProvider(serviceProvider);
-		oslcResource.setTechnologyAdapter(technologyAdapter);
+		oslcResource.setTechnologyAdapter(mainConverter.getTechnologyAdapter());
 		mainConverter.getOSLCObjects().put(serviceProvider, oslcResource);
 		return oslcResource;
 	}
@@ -129,7 +127,7 @@ public class OSLCCoreModelConverter implements OSLCModelDedicatedConverter {
 		for (QueryCapability query : resource.getQueryCapabilities()) {
 			oslcResource.addToOSLCQueryCapabilities(convertOSLCQueryCapability(query));
 		}
-		oslcResource.setTechnologyAdapter(technologyAdapter);
+		oslcResource.setTechnologyAdapter(mainConverter.getTechnologyAdapter());
 		mainConverter.getOSLCObjects().put(resource, oslcResource);
 		return oslcResource;
 	}
@@ -137,7 +135,7 @@ public class OSLCCoreModelConverter implements OSLCModelDedicatedConverter {
 	public OSLCQueryCapability convertOSLCQueryCapability(QueryCapability resource) {
 		OSLCQueryCapability oslcResource = factory.newInstance(OSLCQueryCapability.class);
 		oslcResource.setOSLCQueryCapability(resource);
-		oslcResource.setTechnologyAdapter(technologyAdapter);
+		oslcResource.setTechnologyAdapter(mainConverter.getTechnologyAdapter());
 		// catalogOslcClient.getResourcesFromQueryCapability(OslcMediaType.APPLICATION_RDF_XML, resource);
 		mainConverter.getOSLCObjects().put(resource, oslcResource);
 		return oslcResource;
@@ -146,14 +144,14 @@ public class OSLCCoreModelConverter implements OSLCModelDedicatedConverter {
 	public OSLCCreationFactory convertOSLCCreationFactory(CreationFactory resource) {
 		OSLCCreationFactory oslcResource = factory.newInstance(OSLCCreationFactory.class);
 		oslcResource.setOSLCCreationFactory(resource);
-		oslcResource.setTechnologyAdapter(technologyAdapter);
+		oslcResource.setTechnologyAdapter(mainConverter.getTechnologyAdapter());
 		mainConverter.getOSLCObjects().put(resource, oslcResource);
 		return oslcResource;
 	}
 
 	public <R extends OSLCResource> R createOSLCResource(Class<R> klass, AbstractResource resource, CreationFactory creationFactory) {
 		R oslcResource = factory.newInstance(klass);
-		oslcResource.setTechnologyAdapter(technologyAdapter);
+		oslcResource.setTechnologyAdapter(mainConverter.getTechnologyAdapter());
 		mainConverter.getOSLCObjects().put(resource, oslcResource);
 		return oslcResource;
 	}
