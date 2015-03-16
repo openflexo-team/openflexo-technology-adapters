@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.owl.gui.fib;
 
-
 import org.junit.Test;
 import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
 import org.openflexo.rm.FileResourceImpl;
@@ -57,13 +56,43 @@ public class TestOWLInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
+	public void testAddDataPropertyStatementInspector() {
+		validateFIB("Inspectors/OWL/EditionAction/AddDataPropertyStatement.inspector");
+	}
+
+	@Test
+	public void testAddObjectPropertyStatementInspector() {
+		validateFIB("Inspectors/OWL/EditionAction/AddObjectPropertyStatement.inspector");
+	}
+
+	@Test
+	public void testAddOWLIndividualInspector() {
+		validateFIB("Inspectors/OWL/EditionAction/AddOWLIndividual.inspector");
+	}
+
+	@Test
+	public void testAddRestrictionStatementInspector() {
+		validateFIB("Inspectors/OWL/EditionAction/AddRestrictionStatement.inspector");
+	}
+
+	@Test
+	public void testAddStatementInspector() {
+		validateFIB("Inspectors/OWL/EditionAction/AddStatement.inspector");
+	}
+
+	@Test
+	public void testAddSubClassStatementInspector() {
+		validateFIB("Inspectors/OWL/EditionAction/AddSubClassStatement.inspector");
+	}
+
+	@Test
 	public void testDataPropertyStatementRoleInspector() {
-		validateFIB("Inspectors/OWL/DataPropertyStatementRole.inspector");
+		validateFIB("Inspectors/OWL/FlexoRole/DataPropertyStatementRole.inspector");
 	}
 
 	@Test
 	public void testObjectPropertyStatementRoleInspector() {
-		validateFIB("Inspectors/OWL/ObjectPropertyStatementRole.inspector");
+		validateFIB("Inspectors/OWL/FlexoRole/ObjectPropertyStatementRole.inspector");
 	}
 
 	@Test

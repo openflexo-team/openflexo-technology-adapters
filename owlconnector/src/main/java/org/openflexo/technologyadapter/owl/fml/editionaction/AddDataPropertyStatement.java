@@ -105,6 +105,12 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 	@Setter(DATA_PROPERTY_URI_KEY)
 	public void _setDataPropertyURI(String dataPropertyURI);
 
+	@Override
+	public IFlexoOntologyStructuralProperty getProperty();
+
+	@Override
+	public void setProperty(IFlexoOntologyStructuralProperty aProperty);
+
 	public static abstract class AddDataPropertyStatementImpl extends AddStatementImpl<DataPropertyStatement> implements
 			AddDataPropertyStatement {
 

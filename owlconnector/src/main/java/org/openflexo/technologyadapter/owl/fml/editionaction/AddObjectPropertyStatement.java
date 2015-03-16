@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
@@ -108,6 +107,12 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 	@Setter(OBJECT_PROPERTY_URI_KEY)
 	public void _setObjectPropertyURI(String objectPropertyURI);
+
+	@Override
+	public IFlexoOntologyStructuralProperty getProperty();
+
+	@Override
+	public void setProperty(IFlexoOntologyStructuralProperty aProperty);
 
 	public static abstract class AddObjectPropertyStatementImpl extends AddStatementImpl<ObjectPropertyStatement> implements
 			AddObjectPropertyStatement {

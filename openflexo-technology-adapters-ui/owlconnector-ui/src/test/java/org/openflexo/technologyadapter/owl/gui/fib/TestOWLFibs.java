@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.gui.fib;
 
 import org.junit.Test;
@@ -55,33 +54,28 @@ public class TestOWLFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testAddDataPropertyStatementPanel() {
-		validateFIB("Fib/AddDataPropertyStatementPanel.fib");
+	public void testCreateDataPropertyDialog() {
+		validateFIB("Fib/Dialog/CreateDataPropertyDialog.fib");
 	}
 
 	@Test
-	public void testAddIsAPropertyPanel() {
-		validateFIB("Fib/AddIsAPropertyPanel.fib");
+	public void testCreateObjectPropertyDialog() {
+		validateFIB("Fib/Dialog/CreateObjectPropertyDialog.fib");
 	}
 
 	@Test
-	public void testAddObjectPropertyStatementPanel() {
-		validateFIB("Fib/AddObjectPropertyStatementPanel.fib");
+	public void testCreateOntologyClassDialog() {
+		validateFIB("Fib/Dialog/CreateOntologyClassDialog.fib");
 	}
 
 	@Test
-	public void testAddOWLIndividualPanel() {
-		validateFIB("Fib/AddOWLIndividualPanel.fib");
+	public void testCreateOntologyIndividualDialog() {
+		validateFIB("Fib/Dialog/CreateOntologyIndividualDialog.fib");
 	}
 
 	@Test
-	public void testAddRestrictionStatementPanel() {
-		validateFIB("Fib/AddRestrictionStatementPanel.fib");
-	}
-
-	@Test
-	public void testFIBOWLOntologyBrowser() {
-		validateFIB("Fib/FIBOWLOntologyBrowser.fib");
+	public void testDeleteOntologyObjectsDialog() {
+		validateFIB("Fib/Dialog/DeleteOntologyObjectsDialog.fib");
 	}
 
 	/*
@@ -110,5 +104,19 @@ public class TestOWLFibs extends GenericFIBTestCase {
 		validateFIB("Fib/FIBOWLObjectPropertyEditor.fib");
 	}
 	*/
+	@Test
+	public void testFIBOWLOntologyBrowser() {
+		validateFIB("Fib/FIBOWLOntologyBrowser.fib");
+	}
+
+	@Test
+	public void testFIBOWLOntologyEditor() {
+		validateFIB("Fib/FIBOWLOntologyEditor.fib");
+	}
+
+	/*@Test
+	public void testFIBOWLOntologySelector() {
+		validateFIB("Fib/FIBOWLOntologySelector.fib");
+	}*/
 
 }
