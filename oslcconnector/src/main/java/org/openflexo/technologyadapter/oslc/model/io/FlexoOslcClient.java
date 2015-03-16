@@ -44,6 +44,7 @@ import java.net.URISyntaxException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -57,6 +58,8 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.wink.client.ClientResponse;
 import org.apache.wink.client.ClientWebException;
+import org.eclipse.lyo.client.oslc.resources.Requirement;
+import org.eclipse.lyo.client.oslc.resources.RequirementCollection;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.eclipse.lyo.oslc4j.core.model.QueryCapability;
@@ -64,6 +67,8 @@ import org.eclipse.lyo.oslc4j.core.model.ResourceShape;
 import org.eclipse.lyo.oslc4j.core.model.Service;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
 import org.eclipse.lyo.oslc4j.core.model.ServiceProviderCatalog;
+import org.eclipse.lyo.oslc4j.provider.jena.JenaProvidersRegistry;
+import org.eclipse.lyo.oslc4j.provider.json4j.Json4JProvidersRegistry;
 
 /**
  * FlexoOslcClient provides HighLevel services to manipulate OSLC resource. It creates and uses an OslcRestClient to access OSLC resource.
@@ -80,7 +85,22 @@ public class FlexoOslcClient {
 	private static final Logger logger = Logger.getLogger(FlexoOslcClient.class.getPackage().getName());
 
 	// Extra Providers to convert server data into a specific format requested by the client.
-	private static Set<Class<?>> PROVIDERS;
+	private static Set<Class<?>> PROVIDERS = new LinkedHashSet<Class<?>>();
+
+	/**
+	 * Common providers for OSLC
+	 */
+	static {
+		PROVIDERS.add(ServiceProviderCatalog.class);
+		PROVIDERS.add(ServiceProvider.class);
+		PROVIDERS.add(Service.class);
+		PROVIDERS.add(CreationFactory.class);
+		PROVIDERS.add(QueryCapability.class);
+		PROVIDERS.add(Requirement.class);
+		PROVIDERS.add(RequirementCollection.class);
+		PROVIDERS.addAll(JenaProvidersRegistry.getProviders());
+		PROVIDERS.addAll(Json4JProvidersRegistry.getProviders());
+	}
 
 	private String mediaType;
 	private final FlexoOslcAdaptorConfiguration adaptorConfiguration;
@@ -118,8 +138,10 @@ public class FlexoOslcClient {
 	 * @throws URISyntaxException
 	 */
 	public <T extends AbstractResource> Object create(CreationFactory factory, T resource, String mediaType) throws URISyntaxException {
-		final FlexoOslcRestClient oslcRestClient = createNewFlexoOslcClient(factory.getCreation().toString(), mediaType);
-		return oslcRestClient.addOslcResource(resource);
+		final FlexoOslcRestClient oslcRestClientCreate = createNewFlexoOslcClient(factory.getCreation().toString(), mediaType);
+		String createdResourceUri = oslcRestClientCreate.addOslcResource(resource);
+		final FlexoOslcRestClient oslcRestClientRetrieve = createNewFlexoOslcClient(createdResourceUri, mediaType);
+		return oslcRestClientRetrieve.getOslcResource(resource.getClass());
 	}
 
 	/**
@@ -412,12 +434,12 @@ public class FlexoOslcClient {
 	private <T extends AbstractResource> T getResource(FlexoOslcRestClient client) {
 		T result = null;
 		try {
-			// Try to get the resource
-			ClientResponse reponse = client.getOslcResource();
 
 			// Find the type of this resource given the providers
 			for (Class<?> p : PROVIDERS) {
 				try {
+					// Try to get the resource
+					ClientResponse reponse = client.getOslcResource();
 					if (reponse.getEntity(p) != null) {
 						return (T) reponse.getEntity(p);
 					}
@@ -426,7 +448,7 @@ public class FlexoOslcClient {
 				}
 			}
 			// Choose the String one
-			return convertStringToAbstractResource(reponse.getEntity(String.class));
+			return convertStringToAbstractResource(client.getOslcResource().getEntity(String.class));
 		} catch (ClientWebException e) {
 
 		} catch (Exception e) {

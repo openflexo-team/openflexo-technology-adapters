@@ -52,17 +52,8 @@ import org.apache.http.auth.InvalidCredentialsException;
 import org.apache.wink.client.ClientResponse;
 import org.apache.wink.client.ClientWebException;
 import org.apache.wink.client.Resource;
-import org.eclipse.lyo.client.oslc.resources.Requirement;
-import org.eclipse.lyo.client.oslc.resources.RequirementCollection;
 import org.eclipse.lyo.oslc4j.client.OslcRestClient;
-import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.eclipse.lyo.oslc4j.core.model.OslcMediaType;
-import org.eclipse.lyo.oslc4j.core.model.QueryCapability;
-import org.eclipse.lyo.oslc4j.core.model.Service;
-import org.eclipse.lyo.oslc4j.core.model.ServiceProvider;
-import org.eclipse.lyo.oslc4j.core.model.ServiceProviderCatalog;
-import org.eclipse.lyo.oslc4j.provider.jena.JenaProvidersRegistry;
-import org.eclipse.lyo.oslc4j.provider.json4j.Json4JProvidersRegistry;
 
 /**
  * 
@@ -76,21 +67,6 @@ public class FlexoOslcRestClientImpl implements FlexoOslcRestClient {
 
 	// Providers converts server data into a specific format requested by the client
 	private static Set<Class<?>> providers = new HashSet<Class<?>>();
-
-	/**
-	 * Common providers for OSLC
-	 */
-	static {
-		providers.addAll(JenaProvidersRegistry.getProviders());
-		providers.addAll(Json4JProvidersRegistry.getProviders());
-		providers.add(ServiceProviderCatalog.class);
-		providers.add(ServiceProvider.class);
-		providers.add(Service.class);
-		providers.add(CreationFactory.class);
-		providers.add(QueryCapability.class);
-		providers.add(Requirement.class);
-		providers.add(RequirementCollection.class);
-	}
 
 	private static final Logger logger = Logger.getLogger(FlexoOslcRestClientImpl.class.getPackage().getName());
 
@@ -150,7 +126,9 @@ public class FlexoOslcRestClientImpl implements FlexoOslcRestClient {
 	@Override
 	public <T> String addOslcResource(T oslcResource) {
 		try {
-			return oslcRestClient.addOslcResourceReturnClientResponse(oslcResource).getEntity(String.class);
+			ClientResponse response = oslcRestClient.addOslcResourceReturnClientResponse(oslcResource);
+			String location = response.getHeaders().getFirst("Location");
+			return location;
 		} catch (ClientWebException e) {
 			logger.warning(e.getResponse().getEntity(String.class));
 			return null;
@@ -185,7 +163,7 @@ public class FlexoOslcRestClientImpl implements FlexoOslcRestClient {
 
 	@Override
 	public ClientResponse getOslcResource() {
-		return getClientResource().get();
+		return getClientResource().accept(DEFAULT_MEDIA_TYPE).get();
 	}
 
 }
