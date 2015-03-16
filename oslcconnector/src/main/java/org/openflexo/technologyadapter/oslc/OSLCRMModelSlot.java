@@ -42,6 +42,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
@@ -49,7 +50,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
@@ -58,10 +58,12 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
+import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResource;
 import org.openflexo.technologyadapter.oslc.virtualmodel.action.AddOSLCRequirement;
 import org.openflexo.technologyadapter.oslc.virtualmodel.action.AddOSLCRequirementCollection;
 import org.openflexo.technologyadapter.oslc.virtualmodel.action.SelectOSLCRequirement;
 import org.openflexo.technologyadapter.oslc.virtualmodel.action.SelectOSLCRequirementCollection;
+import org.openflexo.technologyadapter.oslc.virtualmodel.core.OSLCActorReference;
 import org.openflexo.technologyadapter.oslc.virtualmodel.rm.OSLCRequirementCollectionRole;
 import org.openflexo.technologyadapter.oslc.virtualmodel.rm.OSLCRequirementRole;
 
@@ -74,6 +76,7 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.rm.OSLCRequirementRole;
 @ModelEntity
 @ImplementationClass(OSLCRMModelSlot.OSLCRMModelSlotImpl.class)
 @XMLElement
+@DeclareActorReferences({ OSLCActorReference.class })
 @DeclareFlexoRoles({ OSLCRequirementRole.class, OSLCRequirementCollectionRole.class })
 @DeclareEditionActions({ AddOSLCRequirement.class, AddOSLCRequirementCollection.class })
 @DeclareFetchRequests({ SelectOSLCRequirement.class, SelectOSLCRequirementCollection.class })
@@ -114,8 +117,8 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 		@Override
 		public String getURIForObject(
 				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance, Object o) {
-			if (o instanceof IFlexoOntologyObject) {
-				return ((IFlexoOntologyObject) o).getURI();
+			if (o instanceof OSLCResource) {
+				return ((OSLCResource) o).getUri();
 			}
 			return null;
 		}
@@ -124,7 +127,21 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 		public Object retrieveObjectWithURI(
 				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance,
 				String objectURI) {
-			return msInstance.getResourceData().getObject(objectURI);
+
+			try {
+				OSLCResourceResource resource = (OSLCResourceResource) msInstance.getResource();
+				if (!resource.isLoaded()) {
+					resource.loadResourceData(null);
+				}
+				if (resource.getConverter().getOSLCResources().get(objectURI) == null) {
+					return resource.getConverter().retrieveOslcResource(objectURI);
+				}
+				return resource.getConverter().getOSLCResources().get(objectURI);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
 		}
 
 		@Override

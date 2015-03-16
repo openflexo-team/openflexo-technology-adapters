@@ -44,12 +44,12 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
+import org.openflexo.technologyadapter.oslc.virtualmodel.core.OSLCActorReference;
 
 @ModelEntity
 @ImplementationClass(OSLCRequirementRole.OSLCRequirementRoleImpl.class)
@@ -82,7 +82,7 @@ public interface OSLCRequirementRole extends FlexoRole<OSLCRequirement> {
 		@Override
 		public ActorReference<OSLCRequirement> makeActorReference(OSLCRequirement object, FlexoConceptInstance epi) {
 			VirtualModelInstanceModelFactory factory = epi.getFactory();
-			ModelObjectActorReference<OSLCRequirement> returned = factory.newInstance(ModelObjectActorReference.class);
+			OSLCActorReference<OSLCRequirement> returned = factory.newInstance(OSLCActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(epi);
 			returned.setModellingElement(object);

@@ -42,6 +42,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
@@ -63,6 +64,7 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.action.AddOSLCServicePr
 import org.openflexo.technologyadapter.oslc.virtualmodel.action.SelectOSLCResource;
 import org.openflexo.technologyadapter.oslc.virtualmodel.action.SelectOSLCService;
 import org.openflexo.technologyadapter.oslc.virtualmodel.action.SelectOSLCServiceProvider;
+import org.openflexo.technologyadapter.oslc.virtualmodel.core.OSLCActorReference;
 import org.openflexo.technologyadapter.oslc.virtualmodel.core.OSLCResourceRole;
 import org.openflexo.technologyadapter.oslc.virtualmodel.core.OSLCServiceProviderRole;
 import org.openflexo.technologyadapter.oslc.virtualmodel.core.OSLCServiceRole;
@@ -76,6 +78,7 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.core.OSLCServiceRole;
 @ModelEntity
 @ImplementationClass(OSLCCoreModelSlot.CDLModelSlotImpl.class)
 @XMLElement
+@DeclareActorReferences({ OSLCActorReference.class })
 @DeclareFlexoRoles({ OSLCResourceRole.class, OSLCServiceProviderRole.class, OSLCServiceRole.class })
 @DeclareEditionActions({ AddOSLCResource.class, AddOSLCServiceProvider.class })
 @DeclareFetchRequests({ SelectOSLCResource.class, SelectOSLCServiceProvider.class, SelectOSLCService.class })

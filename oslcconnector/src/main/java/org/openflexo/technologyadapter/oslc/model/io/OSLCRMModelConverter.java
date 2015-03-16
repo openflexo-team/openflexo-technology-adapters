@@ -39,9 +39,13 @@
 package org.openflexo.technologyadapter.oslc.model.io;
 
 import java.net.URISyntaxException;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import org.eclipse.lyo.client.oslc.OSLCConstants;
 import org.eclipse.lyo.client.oslc.resources.Requirement;
+import org.eclipse.lyo.client.oslc.resources.RequirementCollection;
+import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.eclipse.lyo.oslc4j.core.model.OslcMediaType;
 import org.eclipse.lyo.oslc4j.core.model.ResourceShape;
@@ -55,6 +59,7 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirementCollection;
 public class OSLCRMModelConverter implements OSLCModelDedicatedConverter {
 
 	private final OSLCModelConverter mainConverter;
+	private final Set<Class<?>> providers = new LinkedHashSet<Class<?>>();
 
 	private ModelFactory factory;
 
@@ -66,6 +71,8 @@ public class OSLCRMModelConverter implements OSLCModelDedicatedConverter {
 		try {
 			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(OSLCResource.class, OSLCRequirement.class,
 					OSLCRequirementCollection.class));
+			providers.add(Requirement.class);
+			providers.add(RequirementCollection.class);
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -81,10 +88,11 @@ public class OSLCRMModelConverter implements OSLCModelDedicatedConverter {
 			requirement.setTitle(title);
 			requirement.setDescription(description);
 			requirement.setInstanceShape(resourceShape.getAbout());
-			mainConverter.getOslcClient().create(creationFactory, requirement, OslcMediaType.APPLICATION_RDF_XML);
+			requirement = (Requirement) mainConverter.getOslcClient().create(creationFactory, requirement,
+					OslcMediaType.APPLICATION_RDF_XML);
 			OSLCRequirement oslcResource = factory.newInstance(OSLCRequirement.class);
 			oslcResource.setTechnologyAdapter(mainConverter.getTechnologyAdapter());
-			mainConverter.getOSLCObjects().put(requirement, oslcResource);
+			mainConverter.getOSLCResources().put(requirement, oslcResource);
 			oslcResource.setOSLCRequirement(requirement);
 			return oslcResource;
 		} catch (URISyntaxException e) {
@@ -93,5 +101,27 @@ public class OSLCRMModelConverter implements OSLCModelDedicatedConverter {
 			return null;
 		}
 
+	}
+
+	@Override
+	public <AR extends AbstractResource> boolean handleAbstractResource(AR resource) {
+		for (Class<?> p : providers) {
+			if (resource.getClass().equals(p)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public <AR extends AbstractResource, OR extends OSLCResource> OR convertAbstractResource(AR resource) {
+		OR oslcResource = null;
+		if (resource instanceof Requirement) {
+			oslcResource = (OR) factory.newInstance(OSLCRequirement.class);
+		}
+		oslcResource.setOSLCResource(resource);
+		mainConverter.getOSLCResources().put(resource, oslcResource);
+		return oslcResource;
 	}
 }

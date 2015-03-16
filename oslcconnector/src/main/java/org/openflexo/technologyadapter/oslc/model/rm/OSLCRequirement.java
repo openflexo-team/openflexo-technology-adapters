@@ -66,6 +66,11 @@ public interface OSLCRequirement extends OSLCResource {
 			return getOSLCRequirement().getAbout().toString();
 		}
 
+		@Override
+		public Requirement getOSLCRequirement() {
+			return (Requirement) getOSLCResource();
+		}
+
 	}
 
 }

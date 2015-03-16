@@ -50,13 +50,14 @@ import java.util.logging.Logger;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCObject;
+import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
 public class OSLCModelConverter {
 
 	private static final Logger logger = Logger.getLogger(OSLCModelConverter.class.getPackage().getName());
 
-	protected final Map<Object, OSLCObject> OSLCObjects = new HashMap<Object, OSLCObject>();
+	protected final Map<AbstractResource, OSLCResource> oslcResources = new HashMap<AbstractResource, OSLCResource>();
 
 	private OSLCTechnologyAdapter technologyAdapter;
 	private final FlexoOslcClient oslcClient;
@@ -91,8 +92,8 @@ public class OSLCModelConverter {
 		return null;
 	}
 
-	public Map<Object, OSLCObject> getOSLCObjects() {
-		return OSLCObjects;
+	public Map<AbstractResource, OSLCResource> getOSLCResources() {
+		return oslcResources;
 	}
 
 	private <T extends AbstractResource> T[] retrieveResources(String uri, Class<T> resourceClasses) {
@@ -105,7 +106,28 @@ public class OSLCModelConverter {
 		}
 	}
 
-	private <T extends AbstractResource> T retrieveResource(String uri, Class<T> resourceClass) {
+	public OSLCResource retrieveOslcResource(String uri) {
+		try {
+			if (getOSLCResourceFromUri(uri) != null) {
+				return getOSLCResourceFromUri(uri);
+			}
+			else {
+				AbstractResource resource = oslcClient.retrieve(uri);
+				for (OSLCModelDedicatedConverter converter : getConverters()) {
+					if (converter.handleAbstractResource(resource)) {
+						converter.convertAbstractResource(resource);
+					}
+				}
+				return getOSLCResourceFromUri(uri);
+			}
+		} catch (URISyntaxException e) {
+			logger.warning("URI " + uri + " is not correct");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public <T extends AbstractResource> T retrieveResource(String uri, Class<T> resourceClass) {
 		try {
 			return oslcClient.retrieve(uri, resourceClass);
 		} catch (URISyntaxException e) {
@@ -115,11 +137,20 @@ public class OSLCModelConverter {
 		}
 	}
 
-	private Object getOSLCObjectFromFlexoOSLCObject(OSLCObject object) {
-		for (Entry entry : OSLCObjects.entrySet()) {
+	public Object getOSLCObjectFromFlexoOSLCObject(OSLCObject object) {
+		for (Entry entry : oslcResources.entrySet()) {
 			Object key = entry.getKey();
-			if (object.equals(OSLCObjects.get(key))) {
+			if (object.equals(oslcResources.get(key))) {
 				return key;
+			}
+		}
+		return null;
+	}
+
+	public OSLCResource getOSLCResourceFromUri(String uri) {
+		for (Entry<AbstractResource, OSLCResource> entry : oslcResources.entrySet()) {
+			if (entry.getValue().getUri().equals(uri)) {
+				return entry.getValue();
 			}
 		}
 		return null;
