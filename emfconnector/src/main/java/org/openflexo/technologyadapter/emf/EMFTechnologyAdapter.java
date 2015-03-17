@@ -61,6 +61,7 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.model.ModelContextLibrary;
@@ -183,7 +184,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 					folder = mmRepo.getRepositoryFolder(candidateFile, true);
 					if (folder != null) {
 						mmRepo.registerResource(mmRes, folder);
-					} else
+					}
+					else
 						mmRepo.registerResource(mmRes);
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -238,7 +240,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			File candidateFile = (File) contents;
 			if (tryToLookupMetaModel(resourceCenter, candidateFile) != null) {
 				// This is a meta-model, this one has just been registered
-			} else {
+			}
+			else {
 				tryToLookupModel(resourceCenter, candidateFile);
 			}
 		}
@@ -281,7 +284,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			ecoreMetaModelResource.setResourceFactoryClassName(ECORE_MM_FACTORYCLSNAME);
 			ecoreMetaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
 			getTechnologyContextManager().registerResource(ecoreMetaModelResource);
-		} else {
+		}
+		else {
 
 			RepositoryFolder<EMFMetaModelResource> folder;
 			folder = mmRepository.getRootFolder();
@@ -521,8 +525,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		EMFModelResource emfModelResource = EMFModelResourceImpl.makeEMFModelResource(modelUri, modelFile, emfMetaModelResource,
 				getTechnologyContextManager());
 		getTechnologyContextManager().registerResource(emfModelResource);
-		// XTOF: Commented out as it throws error when model is empty
-		/*
 		try {
 			emfModelResource.save(null);
 		} catch (SaveResourceException e) {
@@ -530,7 +532,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		}
 		System.out.println("Created empty model " + modelFile.getAbsolutePath() + " as " + modelUri + " conform to "
 				+ metaModelResource.getURI());
-				*/
 		return emfModelResource;
 	}
 
