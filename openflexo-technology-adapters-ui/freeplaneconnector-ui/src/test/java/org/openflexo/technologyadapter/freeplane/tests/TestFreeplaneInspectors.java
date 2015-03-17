@@ -2,7 +2,7 @@
  * 
  * Copyright (c) 2014, Openflexo
  * 
- * This file is part of Freeplane, a component of the software infrastructure 
+ * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -39,22 +39,40 @@
 package org.openflexo.technologyadapter.freeplane.tests;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
+import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
-public class TestFreeplaneFIB extends GenericFIBTestCase {
+public class TestFreeplaneInspectors extends GenericFIBInspectorTestCase {
 
-	/**
-	 * Print tent class in console, copy paste to have the full class. Maybe use parameterized runner instead.
-	 * 
-	 * @param args
+	/*
+	 * Use this method to print all
+	 * Then copy-paste 
 	 */
-	public static void main(final String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib")).getFile(), "Fib/"));
+
+	public static void main(String[] args) {
+		System.out.println(generateInspectorTestCaseClass(
+				((FileResourceImpl) ResourceLocator.locateResource("Inspectors/Freeplane")).getFile(), "Inspectors/Freeplane/"));
 	}
 
 	@Test
-	public void removeThisTest() {
+	public void testAddChildNodeActionInspector() {
+		validateFIB("Inspectors/Freeplane/EditionAction/AddChildNodeAction.inspector");
 	}
+
+	@Test
+	public void testAddSiblingNodeActionInspector() {
+		validateFIB("Inspectors/Freeplane/EditionAction/AddSiblingNodeAction.inspector");
+	}
+
+	@Test
+	public void testFreeplaneNodeInspector() {
+		validateFIB("Inspectors/Freeplane/FreeplaneNode.inspector");
+	}
+
+	@Test
+	public void testFreeplaneResourceInspector() {
+		validateFIB("Inspectors/Freeplane/FreeplaneResource.inspector");
+	}
+
 }
