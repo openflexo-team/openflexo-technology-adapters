@@ -54,21 +54,6 @@ public class TestDiagramFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testAddConnectorPanel() {
-		validateFIB("Fib/AddConnectorPanel.fib");
-	}
-
-	@Test
-	public void testAddDiagramPanel() {
-		validateFIB("Fib/AddDiagramPanel.fib");
-	}
-
-	@Test
-	public void testAddShapePanel() {
-		validateFIB("Fib/AddShapePanel.fib");
-	}
-
-	@Test
 	public void testDiagramFlexoConceptView() {
 		validateFIB("Fib/DiagramFlexoConceptView.fib");
 	}
@@ -76,21 +61,6 @@ public class TestDiagramFibs extends GenericFIBTestCase {
 	@Test
 	public void testDiagramSpecificationView() {
 		validateFIB("Fib/DiagramSpecificationView.fib");
-	}
-
-	@Test
-	public void testDropSchemePanel() {
-		validateFIB("Fib/DropSchemePanel.fib");
-	}
-
-	@Test
-	public void testGraphicalActionPanel() {
-		validateFIB("Fib/GraphicalActionPanel.fib");
-	}
-
-	@Test
-	public void testLinkSchemePanel() {
-		validateFIB("Fib/LinkSchemePanel.fib");
 	}
 
 }

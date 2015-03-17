@@ -55,33 +55,8 @@ public class TestDiagramInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
-	public void testConnectorRoleInspector() {
-		validateFIB("Inspectors/Diagram/ConnectorRole.inspector");
-	}
-
-	@Test
 	public void testDiagramInspector() {
 		validateFIB("Inspectors/Diagram/Diagram.inspector");
-	}
-
-	@Test
-	public void testDiagramModelSlotInspector() {
-		validateFIB("Inspectors/Diagram/DiagramModelSlot.inspector");
-	}
-
-	@Test
-	public void testDiagramPaletteInspector() {
-		validateFIB("Inspectors/Diagram/DiagramPalette.inspector");
-	}
-
-	@Test
-	public void testDiagramPaletteElementInspector() {
-		validateFIB("Inspectors/Diagram/DiagramPaletteElement.inspector");
-	}
-
-	@Test
-	public void testDiagramRoleInspector() {
-		validateFIB("Inspectors/Diagram/DiagramRole.inspector");
 	}
 
 	@Test
@@ -95,28 +70,78 @@ public class TestDiagramInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
+	public void testAddConnectorInspector() {
+		validateFIB("Inspectors/Diagram/EditionAction/AddConnector.inspector");
+	}
+
+	@Test
+	public void testAddDiagramInspector() {
+		validateFIB("Inspectors/Diagram/EditionAction/AddDiagram.inspector");
+	}
+
+	@Test
+	public void testAddShapeInspector() {
+		validateFIB("Inspectors/Diagram/EditionAction/AddShape.inspector");
+	}
+
+	@Test
+	public void testGraphicalActionInspector() {
+		validateFIB("Inspectors/Diagram/EditionAction/GraphicalAction.inspector");
+	}
+
+	@Test
 	public void testDropSchemeInspector() {
-		validateFIB("Inspectors/Diagram/DropScheme.inspector");
-	}
-
-	@Test
-	public void testFMLDiagramPaletteElementBindingInspector() {
-		validateFIB("Inspectors/Diagram/FMLDiagramPaletteElementBinding.inspector");
-	}
-
-	@Test
-	public void testGraphicalElementRoleInspector() {
-		validateFIB("Inspectors/Diagram/GraphicalElementRole.inspector");
+		validateFIB("Inspectors/Diagram/FlexoBehaviour/DropScheme.inspector");
 	}
 
 	@Test
 	public void testLinkSchemeInspector() {
-		validateFIB("Inspectors/Diagram/LinkScheme.inspector");
+		validateFIB("Inspectors/Diagram/FlexoBehaviour/LinkScheme.inspector");
+	}
+
+	@Test
+	public void testConnectorRoleInspector() {
+		validateFIB("Inspectors/Diagram/FlexoRole/ConnectorRole.inspector");
+	}
+
+	@Test
+	public void testDiagramRoleInspector() {
+		validateFIB("Inspectors/Diagram/FlexoRole/DiagramRole.inspector");
+	}
+
+	@Test
+	public void testGraphicalElementRoleInspector() {
+		validateFIB("Inspectors/Diagram/FlexoRole/GraphicalElementRole.inspector");
 	}
 
 	@Test
 	public void testShapeRoleInspector() {
-		validateFIB("Inspectors/Diagram/ShapeRole.inspector");
+		validateFIB("Inspectors/Diagram/FlexoRole/ShapeRole.inspector");
+	}
+
+	@Test
+	public void testDiagramModelSlotInspector() {
+		validateFIB("Inspectors/Diagram/ModelSlot/DiagramModelSlot.inspector");
+	}
+
+	@Test
+	public void testTypedDiagramModelSlotInspector() {
+		validateFIB("Inspectors/Diagram/ModelSlot/TypedDiagramModelSlot.inspector");
+	}
+
+	@Test
+	public void testDiagramPaletteInspector() {
+		validateFIB("Inspectors/Diagram/Palette/DiagramPalette.inspector");
+	}
+
+	@Test
+	public void testDiagramPaletteElementInspector() {
+		validateFIB("Inspectors/Diagram/Palette/DiagramPaletteElement.inspector");
+	}
+
+	@Test
+	public void testFMLDiagramPaletteElementBindingInspector() {
+		validateFIB("Inspectors/Diagram/Palette/FMLDiagramPaletteElementBinding.inspector");
 	}
 
 }

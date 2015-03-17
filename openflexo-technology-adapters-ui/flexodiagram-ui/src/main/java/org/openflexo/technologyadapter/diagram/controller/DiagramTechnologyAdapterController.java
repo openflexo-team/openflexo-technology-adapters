@@ -47,6 +47,7 @@ import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaDialogInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaInspectors;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
+import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
@@ -62,7 +63,6 @@ import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.undo.CompoundEdit;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.action.AddConnectorInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.AddShapeInitializer;
@@ -148,9 +148,9 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	}
 
 	@Override
-	public void initializeActions(ControllerActionInitializer actionInitializer) {
+	protected void initializeInspectors(FlexoController controller) {
 
-		swingToolFactory = new SwingToolFactory(actionInitializer.getController().getFlexoFrame());
+		swingToolFactory = new SwingToolFactory(controller.getFlexoFrame());
 
 		scaleSelector = swingToolFactory.makeDianaScaleSelector(null);
 		dialogInspectors = swingToolFactory.makeDianaDialogInspectors();
@@ -164,8 +164,18 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		dialogInspectors.getConnectorInspector().setLocation(1000, 700);
 		dialogInspectors.getLocationSizeInspector().setLocation(1000, 50);
 
-		actionInitializer.getController().getModuleInspectorController()
-				.loadDirectory(ResourceLocator.locateResource("Inspectors/Diagram"));
+		diagramInspectorGroup = controller.loadInspectorGroup("Diagram", getFMLTechnologyAdapterInspectorGroup());
+	}
+
+	private InspectorGroup diagramInspectorGroup;
+
+	@Override
+	public InspectorGroup getTechnologyAdapterInspectorGroup() {
+		return diagramInspectorGroup;
+	}
+
+	@Override
+	protected void initializeActions(ControllerActionInitializer actionInitializer) {
 
 		WindowMenu viewMenu = actionInitializer.getController().getMenuBar().getWindowMenu();
 		viewMenu.addSeparator();

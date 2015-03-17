@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
+	titleFont="SansSerif,0,12" darkLevel="0"
+	dataClassName="org.openflexo.technologyadapter.excel.fml.editionaction.CellStyleAction"
+	controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
+	font="SansSerif,0,12" name="Inspector">
+	<TabPanel name="Tab" constraints="border(location=center)">
+		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
+			<Label label="cell style" align="right" index="6" data=""
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				visible="" format="" icon="" tooltip="" localize="true" enable=""
+				clickAction="" doubleClickAction="" rightClickAction=""
+				enterPressedAction="" valueChangedAction="" valueTransform=""
+				valueValidator="" />
+			<DropDown index="7" data="data.cellStyle" name="cellStyleDD"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				visible="" format="object.name" icon="" tooltip="" localize="true"
+				enable="" clickAction="" doubleClickAction="" rightClickAction=""
+				enterPressedAction="" valueChangedAction="" valueTransform=""
+				valueValidator="" list="data.availableCellStyles" array=""
+				iteratorClassName="org.openflexo.technologyadapter.excel.model.ExcelCell$CellStyleFeature"
+				autoSelectFirstRow="false">
+			</DropDown>
+			<Label label="value" align="right" index="7" data=""
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=4;insetsTop=5;location=left)"
+				visible="!(data.isBorderStyle | data.isAlignmentStyle)" format=""
+				icon="" tooltip="" localize="true" enable="" clickAction=""
+				doubleClickAction="" rightClickAction="" enterPressedAction=""
+				valueChangedAction="" valueTransform="" valueValidator="">
+				<Dependancy componentName="cellStyleDD" />
+			</Label>
+			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+				format="" icon="" tooltip="" localize="true" enable=""
+				manageDynamicModel="true" opaque="false" clickAction=""
+				doubleClickAction="" rightClickAction="" enterPressedAction=""
+				valueChangedAction="" valueTransform="" valueValidator="" index="7"
+				data="data.value"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				visible="!(data.isBorderStyle | data.isAlignmentStyle)">
+				<Assignment variable="component.bindable" value="data" />
+				<Dependancy componentName="cellStyleDD" />
+			</Custom>
+			<Label label="border style" align="right" index="7" data=""
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=4;insetsTop=5;location=left)"
+				visible="data.isBorderStyle" format="" icon="" tooltip="" localize="true"
+				enable="" clickAction="" doubleClickAction="" rightClickAction=""
+				enterPressedAction="" valueChangedAction="" valueTransform=""
+				valueValidator="">
+				<Dependancy componentName="cellStyleDD" />
+			</Label>
+			<DropDown index="7" data="data.cellBorderStyle"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				visible="data.isBorderStyle" format="object.name" icon="" tooltip=""
+				localize="true" enable="" clickAction="" doubleClickAction=""
+				rightClickAction="" enterPressedAction="" valueChangedAction=""
+				valueTransform="" valueValidator="" list="data.availableCellBorderStyles"
+				array=""
+				iteratorClassName="org.openflexo.technologyadapter.excel.model.ExcelCell$CellBorderStyleFeature"
+				autoSelectFirstRow="false">
+				<Dependancy componentName="cellStyleDD" />
+			</DropDown>
+			<Label label="alignment style" align="right" index="7" data=""
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=4;insetsTop=5;location=left)"
+				visible="data.isAlignmentStyle" format="" icon="" tooltip=""
+				localize="true" enable="" clickAction="" doubleClickAction=""
+				rightClickAction="" enterPressedAction="" valueChangedAction=""
+				valueTransform="" valueValidator="">
+				<Dependancy componentName="cellStyleDD" />
+			</Label>
+			<DropDown index="7" data="data.cellAlignmentStyle"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				visible="data.isAlignmentStyle" format="object.name" icon=""
+				tooltip="" localize="true" enable="" clickAction=""
+				doubleClickAction="" rightClickAction="" enterPressedAction=""
+				valueChangedAction="" valueTransform="" valueValidator=""
+				list="data.availableCellAlignmentStyles" array=""
+				iteratorClassName="org.openflexo.technologyadapter.excel.model.ExcelCell$CellAlignmentStyleFeature"
+				autoSelectFirstRow="false">
+				<Dependancy componentName="cellStyleDD" />
+			</DropDown>
+		</Tab>
+	</TabPanel>
+	<LocalizedDictionary>
+		<Localized key="Advanced" lang="French" value="Avancé" />
+		<Localized key="Basic" lang="French" value="Basique" />
+	</LocalizedDictionary>
+	<Parameter name="title" value="CellStyleAction action" />
+</Panel>

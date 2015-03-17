@@ -45,11 +45,11 @@
        	<artifactId>slf4j-api</artifactId>
        	<version>1.6.4</version>
     </dependency>
-    <dependency>
+   <!-- <dependency>
     	<groupId>xerces</groupId>
         <artifactId>xercesImpl</artifactId>
        	<version>2.11.0</version>   
-    </dependency>
+    </dependency> --> 
     <dependency>
    		<groupId>org.eclipse.lyo.clients</groupId>
     	<artifactId>oslc-java-client</artifactId>
@@ -59,13 +59,17 @@
 				<groupId>org.apache.wink</groupId>
             	<artifactId>wink-client-apache-httpclient</artifactId>
 			</exclusion>
-			<exclusion>
+			<!--  <exclusion>
 				<groupId>org.eclipse.lyo.oslc4j.core</groupId>
     			<artifactId>oslc4j-jena-provider</artifactId>
+			</exclusion>-->
+			<exclusion>
+				<groupId>net.oauth.core</groupId>
+       	 		<artifactId>oauth-httpclient4</artifactId>
 			</exclusion>
 		</exclusions>
     </dependency>
-    <dependency>
+    <!--  <dependency>
     	<groupId>org.eclipse.lyo.oslc4j.core</groupId>
     	<artifactId>oslc4j-jena-provider</artifactId>
 		<version>3.0.0-SNAPSHOT</version>
@@ -79,18 +83,24 @@
             	 <artifactId>xml-apis</artifactId>
 			</exclusion>
 		</exclusions>
-	</dependency>
+	</dependency>-->
     <dependency>
     	<groupId>javax.servlet</groupId>
 		<artifactId>servlet-api</artifactId>
 		<version>2.5</version>
 	</dependency>
-	<!--  <dependency>
+	<dependency>
 		<groupId>net.oauth.core</groupId>
         <artifactId>oauth-httpclient4</artifactId>
         <version>20090913</version>
         <scope>compile</scope>
-    </dependency>-->
+        <exclusions>
+			<exclusion>
+				<groupId>org.apache.httpcomponents</groupId>
+            	<artifactId>httpclient</artifactId>
+			</exclusion>
+		</exclusions>
+    </dependency>
     <dependency>
     	<groupId>org.openflexo</groupId>
       	<artifactId>flexo-foundation</artifactId>

@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.gui.fib;
 
 import org.junit.Test;
@@ -53,19 +52,12 @@ public class TestXMLFibs extends GenericFIBTestCase {
 	public void testModelView() {
 		validateFIB("Fib/FIBXMLModelView.fib");
 	}
-	@Test
-	public void testGetXMLDocumentRoot() {
-		validateFIB("Fib/GetXMLDocumentRoot.fib");
-	}
-	@Test
-	public void testAddXMLIndividual() {
-		validateFIB("Fib/AddXMLIndividual.fib");
-	}
+
 	@Test
 	public void testPanelXMLIndividual() {
 		validateFIB("Fib/FIBPanelXMLIndividual.fib");
 	}
-	
+
 	@Test
 	public void testPanelXMLProperty() {
 		validateFIB("Fib/FIBPanelXMLProperty.fib");

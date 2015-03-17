@@ -111,16 +111,16 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 		return null;
 	}
 
-	public static OSLCResourceResource retrieveOSLCResource(File cdlFile, OSLCTechnologyContextManager technologyContextManager) {
+	public static OSLCResourceResource retrieveOSLCResource(File oslcFile, OSLCTechnologyContextManager technologyContextManager) {
 		try {
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
 					OSLCResourceResource.class));
 			OSLCResourceResourceImpl returned = (OSLCResourceResourceImpl) factory.newInstance(OSLCResourceResource.class);
 			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
 			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(cdlFile);
-			returned.setName(cdlFile.getName());
-			returned.setURI(cdlFile.toURI().toString());
+			fileIODelegate.setFile(oslcFile);
+			returned.setName(oslcFile.getName());
+			returned.setURI(oslcFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);

@@ -58,7 +58,7 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  */
 
 @ModelEntity(isAbstract = true)
-@ImplementationClass(ModelSlot.ModelSlotImpl.class)
+@ImplementationClass(DiagramModelSlot.DiagramModelSlotImpl.class)
 public interface DiagramModelSlot extends ModelSlot<Diagram> {
 
 	@Implementation
