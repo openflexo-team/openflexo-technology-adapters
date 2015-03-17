@@ -54,18 +54,7 @@ public class TestEMFFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testAddEMFObjectIndividual() {
-		validateFIB("Fib/AddEMFObjectIndividual.fib");
-	}
-
-	@Test
-	public void testAddEMFObjectIndividualAttributeDataPropertyValuePanel() {
-		validateFIB("Fib/AddEMFObjectIndividualAttributeDataPropertyValuePanel.fib");
-	}
-
-	@Test
-	public void testAddEMFObjectIndividualAttributeObjectPropertyValuePanel() {
-		validateFIB("Fib/AddEMFObjectIndividualAttributeObjectPropertyValuePanel.fib");
+	public void removeThisTest() {
 	}
 
 }

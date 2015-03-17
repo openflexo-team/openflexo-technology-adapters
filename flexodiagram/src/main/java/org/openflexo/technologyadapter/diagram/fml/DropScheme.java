@@ -76,6 +76,8 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 	@PropertyIdentifier(type = FlexoConcept.class)
 	public static final String TARGET_FLEXO_CONCEPT_KEY = "targetFlexoConcept";
 
+	public static final String TOP_TARGET_KEY = "topTarget";
+
 	@Getter(value = TARGET_KEY)
 	@XMLAttribute
 	public String _getTarget();
@@ -129,6 +131,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 				FlexoConcept oldValue = getTargetFlexoConcept();
 				this.target = target;
 				getPropertyChangeSupport().firePropertyChange(TARGET_FLEXO_CONCEPT_KEY, oldValue, getTargetFlexoConcept());
+				getPropertyChangeSupport().firePropertyChange(TOP_TARGET_KEY, !isTopTarget(), isTopTarget());
 			}
 		}
 

@@ -54,22 +54,35 @@ import org.openflexo.toolbox.ImageIconResource;
 public class ExcelIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(ExcelIconLibrary.class.getPackage().getName());
-	
 
-	public static final ImageIconResource EXCEL_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelBig.png"));
-	public static final ImageIconResource EXCEL_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelSmall.png"));
-	public static final ImageIconResource EXCEL_GRAPHICAL_ACTION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/GraphicalActionIcon.png"));
-	
+	public static final ImageIconResource EXCEL_TECHNOLOGY_BIG_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/ExcelBig.png"));
+	public static final ImageIconResource EXCEL_TECHNOLOGY_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/ExcelSmall.png"));
+	public static final ImageIconResource EXCEL_GRAPHICAL_ACTION_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/GraphicalActionIcon.png"));
+
+	public static final ImageIconResource ADD_EXCEL_CELL_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/AddExcelCell.png"));
+	public static final ImageIconResource ADD_EXCEL_ROW_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/AddExcelRow.png"));
+	public static final ImageIconResource ADD_EXCEL_SHEET_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/ExcelSmall.png"));
+
+	public static final ImageIconResource EXCEL_CELL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelCell.png"));
+	public static final ImageIconResource EXCEL_ROW_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelRow.png"));
+	public static final ImageIconResource EXCEL_SHEET_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ExcelSmall.png"));
+
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
 		if (ExcelWorkbook.class.isAssignableFrom(objectClass)) {
 			return EXCEL_TECHNOLOGY_ICON;
 		} else if (ExcelCell.class.isAssignableFrom(objectClass)) {
-			return EXCEL_TECHNOLOGY_ICON;
+			return EXCEL_CELL_ICON;
 		} else if (ExcelSheet.class.isAssignableFrom(objectClass)) {
-			return EXCEL_TECHNOLOGY_ICON;
+			return EXCEL_SHEET_ICON;
 		} else if (ExcelRow.class.isAssignableFrom(objectClass)) {
-			return EXCEL_TECHNOLOGY_ICON;
-		} 
+			return EXCEL_ROW_ICON;
+		}
 		logger.warning("No icon for " + objectClass);
 		return null;
 	}

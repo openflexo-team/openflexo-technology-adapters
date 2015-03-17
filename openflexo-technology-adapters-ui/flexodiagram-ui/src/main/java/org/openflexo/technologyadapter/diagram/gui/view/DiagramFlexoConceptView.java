@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram.gui.view;
 
-import org.openflexo.components.widget.CommonFIB;
+import org.openflexo.fml.controller.CommonFIB;
 import org.openflexo.fml.controller.view.FlexoConceptView;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;

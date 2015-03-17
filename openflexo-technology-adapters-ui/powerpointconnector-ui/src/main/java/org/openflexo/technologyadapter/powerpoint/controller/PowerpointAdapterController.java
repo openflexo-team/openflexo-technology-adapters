@@ -40,9 +40,9 @@ package org.openflexo.technologyadapter.powerpoint.controller;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.fml.PowerpointShapeRole;
 import org.openflexo.technologyadapter.powerpoint.fml.PowerpointSlideRole;
@@ -65,9 +65,32 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 		return PowerpointTechnologyAdapter.class;
 	}
 
+	/**
+	 * Initialize inspectors for supplied module using supplied {@link FlexoController}
+	 * 
+	 * @param controller
+	 */
 	@Override
-	public void initializeActions(ControllerActionInitializer actionInitializer) {
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/Excel"));
+	protected void initializeInspectors(FlexoController controller) {
+
+		pptInspectorGroup = controller.loadInspectorGroup("PowerPoint", getFMLTechnologyAdapterInspectorGroup());
+		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/Excel"));
+	}
+
+	private InspectorGroup pptInspectorGroup;
+
+	/**
+	 * Return inspector group for this technology
+	 * 
+	 * @return
+	 */
+	@Override
+	public InspectorGroup getTechnologyAdapterInspectorGroup() {
+		return pptInspectorGroup;
+	}
+
+	@Override
+	protected void initializeActions(ControllerActionInitializer actionInitializer) {
 	}
 
 	@Override

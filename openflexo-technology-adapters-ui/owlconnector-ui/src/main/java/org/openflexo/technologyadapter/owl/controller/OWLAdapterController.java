@@ -37,7 +37,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.controller;
 
 import java.util.logging.Logger;
@@ -46,13 +45,13 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.components.widget.OntologyView;
+import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.fml.DataPropertyStatementRole;
 import org.openflexo.technologyadapter.owl.fml.OWLClassRole;
@@ -107,12 +106,33 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 		return OWLTechnologyAdapter.class;
 	}
 
+	/**
+	 * Initialize inspectors for supplied module using supplied {@link FlexoController}
+	 * 
+	 * @param controller
+	 */
 	@Override
-	public void initializeActions(ControllerActionInitializer actionInitializer) {
+	protected void initializeInspectors(FlexoController controller) {
+
+		owlInspectorGroup = controller.loadInspectorGroup("OWL", getFMLTechnologyAdapterInspectorGroup());
+	}
+
+	private InspectorGroup owlInspectorGroup;
+
+	/**
+	 * Return inspector group for this technology
+	 * 
+	 * @return
+	 */
+	@Override
+	public InspectorGroup getTechnologyAdapterInspectorGroup() {
+		return owlInspectorGroup;
+	}
+
+	@Override
+	protected void initializeActions(ControllerActionInitializer actionInitializer) {
 
 		// TODO : Des choses à faire ici pour améliorer le support des répertoires dans le ClassPath
-
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/OWL"));
 
 		new CreateOntologyClassInitializer(actionInitializer);
 		new CreateOntologyIndividualInitializer(actionInitializer);

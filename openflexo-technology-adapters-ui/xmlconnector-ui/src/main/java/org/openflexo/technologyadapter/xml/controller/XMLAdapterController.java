@@ -37,19 +37,18 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.controller;
 
 import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.fml.XMLIndividualRole;
 import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLIndividual;
@@ -76,10 +75,33 @@ public class XMLAdapterController extends TechnologyAdapterController<XMLTechnol
 		return XMLTechnologyAdapter.class;
 	}
 
+	/**
+	 * Initialize inspectors for supplied module using supplied {@link FlexoController}
+	 * 
+	 * @param controller
+	 */
 	@Override
-	public void initializeActions(ControllerActionInitializer actionInitializer) {
+	protected void initializeInspectors(FlexoController controller) {
 
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/XML"));
+		xmlInspectorGroup = controller.loadInspectorGroup("XML", getFMLTechnologyAdapterInspectorGroup());
+		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/XML"));
+	}
+
+	private InspectorGroup xmlInspectorGroup;
+
+	/**
+	 * Return inspector group for this technology
+	 * 
+	 * @return
+	 */
+	@Override
+	public InspectorGroup getTechnologyAdapterInspectorGroup() {
+		return xmlInspectorGroup;
+	}
+
+	@Override
+	protected void initializeActions(ControllerActionInitializer actionInitializer) {
+
 	}
 
 	/**

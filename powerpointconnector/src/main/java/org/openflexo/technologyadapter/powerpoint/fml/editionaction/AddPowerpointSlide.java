@@ -65,6 +65,10 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 @FML("AddPowerpointSlide")
 public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 
+	public DataBinding<Integer> getSlideIndex();
+
+	public void setSlideIndex(DataBinding<Integer> slideIndex);
+
 	public static abstract class AddPowerpointSlideImpl extends TechnologySpecificActionImpl<BasicPowerpointModelSlot, PowerpointSlide>
 			implements AddPowerpointSlide {
 
@@ -120,6 +124,7 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 			return result;
 		}
 
+		@Override
 		public DataBinding<Integer> getSlideIndex() {
 			if (slideIndex == null) {
 				slideIndex = new DataBinding<Integer>(this, Integer.class, DataBinding.BindingDefinitionType.GET);
@@ -128,6 +133,7 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 			return slideIndex;
 		}
 
+		@Override
 		public void setSlideIndex(DataBinding<Integer> slideIndex) {
 			if (slideIndex != null) {
 				slideIndex.setOwner(this);

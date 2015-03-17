@@ -24,6 +24,7 @@
 		<module>powerpointconnector-ui</module>
 		<module>xmlconnector-ui</module>
 		<module>oslcconnector-ui</module>
+		<module>freeplaneconnector-ui</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
