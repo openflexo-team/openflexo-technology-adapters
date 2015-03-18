@@ -103,6 +103,7 @@ public class CreateFMLDiagramPaletteElementBinding extends
 		logger.info("Add palette element binding to typed diagram modelslot");
 		FMLDiagramPaletteElementBinding newBinding = getFocusedObject().getFMLModelFactory().newInstance(
 				FMLDiagramPaletteElementBinding.class);
+		newBinding.setDiagramModelSlot(getFocusedObject());
 		newBinding.setPaletteElement(diagramPaletteElement);
 		newBinding.setBoundFlexoConcept(flexoConcept);
 		newBinding.setDropScheme(dropScheme);
