@@ -48,7 +48,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -129,12 +129,12 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 		}
 
 		@Override
-		public DiagramRole getFlexoRole() {
-			FlexoRole superFlexoRole = super.getFlexoRole();
+		public DiagramRole getAssignedFlexoProperty() {
+			FlexoProperty<?> superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof DiagramRole) {
 				return (DiagramRole) superFlexoRole;
 			} else if (superFlexoRole != null) {
-				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
+				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
 			return null;
@@ -177,8 +177,8 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 
 		@Override
 		public DiagramSpecificationResource getDiagramSpecificationResource() {
-			if (getFlexoRole() instanceof DiagramRole) {
-				return getFlexoRole().getDiagramSpecificationResource();
+			if (getAssignedFlexoProperty() instanceof DiagramRole) {
+				return getAssignedFlexoProperty().getDiagramSpecificationResource();
 			}
 			if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI)) {
 				diagramSpecificationResource = (DiagramSpecificationResource) getModelSlot().getModelSlotTechnologyAdapter()
@@ -190,8 +190,8 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 
 		@Override
 		public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource) {
-			if (getFlexoRole() instanceof DiagramRole) {
-				getFlexoRole().setDiagramSpecificationResource(diagramSpecificationResource);
+			if (getAssignedFlexoProperty() instanceof DiagramRole) {
+				getAssignedFlexoProperty().setDiagramSpecificationResource(diagramSpecificationResource);
 			}
 			this.diagramSpecificationResource = diagramSpecificationResource;
 		}
@@ -243,10 +243,10 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 			// Diagram newDiagram = addDiagramAction.getNewDiagram();
 			/*ShapeRole shapePatternRole = action.getShapePatternRole();
 			if (shapePatternRole == null) {
-				logger.warning("Sorry, shape pattern role is undefined");
+				logger.warning("Sorry, shape pattern property is undefined");
 				return newShema;
 			}
-			// logger.info("ShapeSpecification pattern role: " + shapePatternRole);
+			// logger.info("ShapeSpecification pattern property: " + shapePatternRole);
 			FlexoConceptInstance newFlexoConceptInstance = getProject().makeNewFlexoConceptInstance(getFlexoConcept());
 			DiagramShape newShape = new DiagramShape(newShema);
 			if (getFlexoConceptInstance().getPatternActor(shapePatternRole) instanceof DiagramShape) {
@@ -260,12 +260,12 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 			newShema.addToChilds(newShape);
 			newFlexoConceptInstance.setObjectForPatternRole(newShape, shapePatternRole);
 			// Duplicates all other pattern roles
-			for (FlexoRole role : getFlexoConcept().getPatternRoles()) {
-				if (role != action.getPatternRole() && role != shapePatternRole) {
-					FlexoModelObject patternActor = getFlexoConceptInstance().getPatternActor(role);
-					logger.info("Duplicate pattern actor for role " + role + " value=" + patternActor);
-					newFlexoConceptInstance.setObjectForPatternRole(patternActor, role);
-					patternActor.registerFlexoConceptReference(newFlexoConceptInstance, role);
+			for (FlexoRole property : getFlexoConcept().getPatternRoles()) {
+				if (property != action.getPatternRole() && property != shapePatternRole) {
+					FlexoModelObject patternActor = getFlexoConceptInstance().getPatternActor(property);
+					logger.info("Duplicate pattern actor for property " + property + " value=" + patternActor);
+					newFlexoConceptInstance.setObjectForPatternRole(patternActor, property);
+					patternActor.registerFlexoConceptReference(newFlexoConceptInstance, property);
 				}
 			}*/
 

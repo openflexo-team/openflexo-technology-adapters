@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml;
 
 import static org.junit.Assert.assertEquals;
@@ -77,7 +76,7 @@ import org.openflexo.foundation.fml.VirtualModelInstanceType;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.action.CreateFlexoRole;
 import org.openflexo.foundation.fml.binding.FlexoConceptBindingModel;
-import org.openflexo.foundation.fml.binding.FlexoRoleBindingVariable;
+import org.openflexo.foundation.fml.binding.FlexoPropertyBindingVariable;
 import org.openflexo.foundation.fml.binding.ViewPointBindingModel;
 import org.openflexo.foundation.fml.binding.VirtualModelBindingModel;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
@@ -345,17 +344,18 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		ObjectPropertyStatementRole bRole = (ObjectPropertyStatementRole) createPR6.getNewFlexoRole();
 		bRole.setObjectProperty(hasObjectProperty);
 
-		assertEquals(6, flexoConceptA.getFlexoRoles().size());
-		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR1.getNewFlexoRole()));
-		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR2.getNewFlexoRole()));
-		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR3.getNewFlexoRole()));
-		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR4.getNewFlexoRole()));
-		assertTrue(flexoConceptA.getFlexoRoles().contains(createPR5.getNewFlexoRole()));
+		assertEquals(6, flexoConceptA.getFlexoProperties().size());
+		assertTrue(flexoConceptA.getFlexoProperties().contains(createPR1.getNewFlexoRole()));
+		assertTrue(flexoConceptA.getFlexoProperties().contains(createPR2.getNewFlexoRole()));
+		assertTrue(flexoConceptA.getFlexoProperties().contains(createPR3.getNewFlexoRole()));
+		assertTrue(flexoConceptA.getFlexoProperties().contains(createPR4.getNewFlexoRole()));
+		assertTrue(flexoConceptA.getFlexoProperties().contains(createPR5.getNewFlexoRole()));
 
 		System.out.println("FlexoConcept BindingModel = " + flexoConceptA.getBindingModel());
-		System.out.println("OWLIndividualRole BindingModel = " + flexoConceptA.getFlexoRole("anIndividual").getBindingModel());
+		System.out.println("OWLIndividualRole BindingModel = " + flexoConceptA.getFlexoProperty("anIndividual").getBindingModel());
 
-		FlexoRoleBindingVariable bv = (FlexoRoleBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("anIndividual");
+		FlexoPropertyBindingVariable bv = (FlexoPropertyBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed(
+				"anIndividual");
 
 		List<? extends SimplePathElement> listSPE = flexoConceptA.getBindingFactory().getAccessibleSimplePathElements(bv);
 
@@ -369,7 +369,7 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 			}
 		}
 
-		bv = (FlexoRoleBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("anObjectProperty");
+		bv = (FlexoPropertyBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("anObjectProperty");
 		listSPE = flexoConceptA.getBindingFactory().getAccessibleSimplePathElements(bv);
 
 		System.out.println("\n** Accessible Elements for ObjectProperty");
@@ -382,7 +382,7 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 			}
 		}
 
-		bv = (FlexoRoleBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("anObjectPropertyStatement");
+		bv = (FlexoPropertyBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("anObjectPropertyStatement");
 		listSPE = flexoConceptA.getBindingFactory().getAccessibleSimplePathElements(bv);
 
 		System.out.println("\n** Accessible Elements for ObjectPropertyStatement");
@@ -412,10 +412,10 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 		assertNotNull(flexoConceptA.getBindingModel().bindingVariableNamed("anIntegerInA"));
 		assertEquals(Integer.TYPE, flexoConceptA.getBindingModel().bindingVariableNamed("anIntegerInA").getType());
 
-		PrimitiveRole aStringInA = (PrimitiveRole) flexoConceptA.getFlexoRole("aStringInA");
+		PrimitiveRole aStringInA = (PrimitiveRole) flexoConceptA.getFlexoProperty("aStringInA");
 		assertNotNull(aStringInA);
 
-		bv = (FlexoRoleBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("aStringInA");
+		bv = (FlexoPropertyBindingVariable) flexoConceptA.getBindingModel().bindingVariableNamed("aStringInA");
 		assertNotNull(bv);
 
 		// Attempt to change name

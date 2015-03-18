@@ -195,7 +195,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 			try {
 				return super.getPatternRole();
 			} catch (ClassCastException e) {
-				logger.warning("Unexpected pattern role type");
+				logger.warning("Unexpected pattern property type");
 				setPatternRole(null);
 				return null;
 			}
@@ -203,7 +203,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 
 		@Override
 		public void setPatternRole(GraphicalElementRole patternRole) {
-			System.out.println("set pattern role with " + patternRole);
+			System.out.println("set pattern property with " + patternRole);
 			super.setPatternRole(patternRole);
 			availableFeatures = null;
 		}*/
@@ -343,10 +343,10 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 				return null;
 			} else {
 				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>>();
-				for (ShapeRole pr : graphicalAction.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+				for (ShapeRole pr : graphicalAction.getFlexoConcept().getFlexoProperties(ShapeRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
-				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getFlexoRoles(ConnectorRole.class)) {
+				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getFlexoProperties(ConnectorRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
 				return new ValidationError<GraphicalActionMustHaveASubject, GraphicalAction>(this, graphicalAction,

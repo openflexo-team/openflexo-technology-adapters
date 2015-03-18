@@ -45,7 +45,8 @@ import org.openflexo.connie.BindingVariable;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.FlexoBehaviour;
-import org.openflexo.foundation.fml.binding.FlexoRoleBindingVariable;
+import org.openflexo.foundation.fml.FlexoProperty;
+import org.openflexo.foundation.fml.binding.FlexoPropertyBindingVariable;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.technologyadapter.diagram.fml.DiagramFlexoBehaviour;
@@ -92,8 +93,8 @@ public abstract class DiagramFlexoBehaviourAction<A extends FlexoBehaviourAction
 
 	@Override
 	public void setValue(Object value, BindingVariable variable) {
-		if (variable instanceof FlexoRoleBindingVariable) {
-			getFlexoConceptInstance().setFlexoActor(value, ((FlexoRoleBindingVariable) variable).getFlexoRole());
+		if (variable instanceof FlexoPropertyBindingVariable) {
+			getFlexoConceptInstance().setFlexoActor(value, (FlexoProperty) ((FlexoPropertyBindingVariable) variable).getFlexoProperty());
 			return;
 		}
 		super.setValue(value, variable);

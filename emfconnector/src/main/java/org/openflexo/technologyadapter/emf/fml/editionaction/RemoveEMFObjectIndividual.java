@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.emf.fml.editionaction;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -91,5 +92,10 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFObjectIndivid
 			return null;
 		}
 
+		@Override
+		public FlexoProperty getAssignedFlexoProperty() {
+			// TODO Auto-generated method stub
+			return super.getAssignedFlexoProperty();
+		}
 	}
 }

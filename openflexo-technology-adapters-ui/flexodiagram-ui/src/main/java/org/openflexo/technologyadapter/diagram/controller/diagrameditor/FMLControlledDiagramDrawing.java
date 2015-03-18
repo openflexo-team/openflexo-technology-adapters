@@ -157,7 +157,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				federatedShapes.put(shape, returned);
 				returned.setDrawing(this);
 				returned.setFlexoConceptInstance(r.flexoConceptInstance);
-				returned.setRole((ShapeRole) r.role);
+				returned.setRole((ShapeRole) r.property);
 				returned.setDiagramElement(shape);
 				registerNewFMLControlledDiagramElement(returned);
 				// shape.setName(returned.getLabel());
@@ -178,7 +178,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				federatedConnectors.put(connector, returned);
 				returned.setDrawing(this);
 				returned.setFlexoConceptInstance(r.flexoConceptInstance);
-				returned.setRole((ConnectorRole) r.role);
+				returned.setRole((ConnectorRole) r.property);
 				returned.setDiagramElement(connector);
 				registerNewFMLControlledDiagramElement(returned);
 			} else {

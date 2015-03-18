@@ -36,9 +36,9 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.diagram.fml.action;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
@@ -57,7 +57,7 @@ import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceParameter;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
-import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.IndividualParameter;
 import org.openflexo.foundation.fml.IndividualRole;
 import org.openflexo.foundation.fml.URIParameter;
@@ -269,7 +269,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 	@Override
 	public List<ShapeRole> getAvailableFlexoRoles() {
 		if (getFlexoConcept() != null) {
-			return getFlexoConcept().getFlexoRoles(ShapeRole.class);
+			return getFlexoConcept().getFlexoProperties(ShapeRole.class);
 		}
 		return null;
 	}
@@ -466,7 +466,8 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					// Find best URI base candidate
 					// PropertyEntry mainPropertyDescriptor = selectBestEntryForURIBaseName();
 
-					// Create pattern role, if it is an ontology then we create an individual, otherwise if it is a virtual model we create
+					// Create pattern property, if it is an ontology then we create an individual, otherwise if it is a virtual model we
+					// create
 					// an flexo concept instance
 					individualFlexoRole = null;
 					FlexoConceptInstanceRole flexoConceptFlexoRole = null;
@@ -476,7 +477,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							individualFlexoRole = flexoOntologyModelSlot.makeIndividualRole(getConcept());
 							individualFlexoRole.setRoleName(getIndividualFlexoRoleName());
 							individualFlexoRole.setOntologicType(getConcept());
-							newFlexoConcept.addToFlexoRoles(individualFlexoRole);
+							newFlexoConcept.addToFlexoProperties(individualFlexoRole);
 							// newFlexoConcept.setPrimaryConceptRole(individualFlexoRole);
 						}
 					}
@@ -485,11 +486,11 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							FMLRTModelSlot virtualModelModelSlot = (FMLRTModelSlot) getModelSlot();
 							flexoConceptFlexoRole = virtualModelModelSlot.makeFlexoConceptInstanceRole(getVirtualModelConcept());
 							flexoConceptFlexoRole.setRoleName(getVirtualModelFlexoRoleName());
-							newFlexoConcept.addToFlexoRoles(flexoConceptFlexoRole);
+							newFlexoConcept.addToFlexoProperties(flexoConceptFlexoRole);
 						}
 					}
 
-					// Create graphical elements pattern role
+					// Create graphical elements pattern property
 
 					newGraphicalElementRoles = new LinkedHashMap<DrawingObjectEntry, GraphicalElementRole>();
 
@@ -516,7 +517,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 										.clone());
 								// Forces GR to be displayed in view
 								newShapeRole.getGraphicalRepresentation().setAllowToLeaveBounds(false);
-								newFlexoConcept.addToFlexoRoles(newShapeRole);
+								newFlexoConcept.addToFlexoProperties(newShapeRole);
 								if (entry.getParentEntry() != null) {
 									newShapeRole.setParentShapeRole((ShapeRole) newGraphicalElementRoles.get(entry.getParentEntry()));
 								}
@@ -536,7 +537,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 								newConnectorRole.setExampleLabel(grConnector.getGraphicalRepresentation().getText());
 								newConnectorRole.setGraphicalRepresentation((ConnectorGraphicalRepresentation) grConnector
 										.getGraphicalRepresentation().clone());
-								newFlexoConcept.addToFlexoRoles(newConnectorRole);
+								newFlexoConcept.addToFlexoProperties(newConnectorRole);
 								// Set the source/target
 								// newConnectorFlexoRole.setEndShapeFlexoRole(endShapeFlexoRole);
 								if (entry.isMainEntry()) {
@@ -646,7 +647,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							}*/
 							newDropScheme.addToParameters(uriParameter);
 
-							// Declare pattern role
+							// Declare pattern property
 							/*for (IndividualRole r : otherRoles) {
 								DeclareFlexoRole action = new DeclareFlexoRole(builder);
 								action.setAssignation(new DataBinding<Object>(r.getRoleName()));
@@ -781,7 +782,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 				logger.warning("Pattern not implemented");
 			}
 		} else {
-			logger.warning("Focused role is null !");
+			logger.warning("Focused property is null !");
 		}
 	}
 
@@ -811,22 +812,22 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 		DeletionScheme editionScheme = (DeletionScheme) editionSchemeConfiguration.getFlexoBehaviour();
 
-		Vector<FlexoRole> rolesToDelete = new Vector<FlexoRole>();
+		List<FlexoProperty<?>> propertiesToDelete = new ArrayList<FlexoProperty<?>>();
 		if (shapeOnly) {
-			for (FlexoRole pr : newFlexoConcept.getFlexoRoles()) {
+			for (FlexoProperty<?> pr : newFlexoConcept.getFlexoProperties()) {
 				if (pr instanceof GraphicalElementRole) {
-					rolesToDelete.add(pr);
+					propertiesToDelete.add(pr);
 				}
 			}
 		} else {
-			for (FlexoRole pr : newFlexoConcept.getFlexoRoles()) {
-				rolesToDelete.add(pr);
+			for (FlexoProperty<?> pr : newFlexoConcept.getFlexoProperties()) {
+				propertiesToDelete.add(pr);
 			}
 		}
 
-		Collections.sort(rolesToDelete, new Comparator<FlexoRole>() {
+		Collections.sort(propertiesToDelete, new Comparator<FlexoProperty<?>>() {
 			@Override
-			public int compare(FlexoRole o1, FlexoRole o2) {
+			public int compare(FlexoProperty<?> o1, FlexoProperty<?> o2) {
 				if (o1 instanceof ShapeRole && o2 instanceof ConnectorRole) {
 					return 1;
 				} else if (o1 instanceof ConnectorRole && o2 instanceof ShapeRole) {
@@ -848,9 +849,9 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 			}
 
 		});
-		for (FlexoRole pr : rolesToDelete) {
+		for (FlexoProperty<?> pr : propertiesToDelete) {
 			DeleteAction a = getFactory().newDeleteAction();
-			a.setObject(new DataBinding<Object>(pr.getRoleName()));
+			a.setObject(new DataBinding<Object>(pr.getPropertyName()));
 			editionScheme.addToActions(a);
 		}
 		return editionScheme;
@@ -937,7 +938,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramBehaviourBindingModel.TOP_LEVEL));
 					} else {
 						ShapeRole containerRole = getVirtualModel().getFlexoConcept(editionScheme._getTarget())
-								.getFlexoRoles(ShapeRole.class).get(0);
+								.getFlexoProperties(ShapeRole.class).get(0);
 						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DropSchemeBindingModel.TARGET + "."
 								+ containerRole.getRoleName()));
 					}

@@ -194,7 +194,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		@Override
 		public List<ShapeRole> getAvailableTargetShapeRoles() {
 			if (getTargetFlexoConcept() != null) {
-				return getTargetFlexoConcept().getFlexoRoles(ShapeRole.class);
+				return getTargetFlexoConcept().getFlexoProperties(ShapeRole.class);
 			}
 			return null;
 		}
@@ -213,7 +213,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		public boolean isValidTarget(FlexoConcept aTarget, FlexoRole contextRole) {
 			if (getTargetFlexoConcept() != null && getTargetFlexoConcept().isAssignableFrom(aTarget)) {
 				if (targetHasMultipleRoles()) {
-					// TODO make proper implementation when role inheritance will be in use !!!
+					// TODO make proper implementation when property inheritance will be in use !!!
 					return getTargetShapeRole() == null || getTargetShapeRole().getRoleName().equals(contextRole.getRoleName());
 				} else {
 					return true;

@@ -405,7 +405,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public boolean containsShapes() {
-			for (ShapeRole role : getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+			for (ShapeRole role : getFlexoConcept().getFlexoProperties(ShapeRole.class)) {
 				if (role.getParentShapeRole() == this) {
 					return true;
 				}

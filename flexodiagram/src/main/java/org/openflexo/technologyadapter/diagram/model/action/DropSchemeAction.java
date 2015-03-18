@@ -218,14 +218,14 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 			if (newShape != null) {
 				ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 				// if (action.getPatternRole().getIsPrimaryRepresentationRole()) {
-				// Declare shape as new shape only if it is the primary representation role of the EP
+				// Declare shape as new shape only if it is the primary representation property of the EP
 
 				_primaryShape = newShape;
 				gr.setX(dropLocation.getX());
 				gr.setY(dropLocation.getY());
 
 				// Temporary comment this portion of code if child shapes are declared inside this shape
-				if (!action.getFlexoRole().containsShapes()
+				if (!action.getAssignedFlexoProperty().containsShapes()
 						&& action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
 					ShapeBorder border = gr.getBorder();
 					ShapeBorder newBorder = gr.getFactory().makeShapeBorder(border);
@@ -288,7 +288,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 			if (newShape != null) {
 				ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 				// if (action.getPatternRole().getIsPrimaryRepresentationRole()) {
-				// Declare shape as new shape only if it is the primary representation role of the EP
+				// Declare shape as new shape only if it is the primary representation property of the EP
 
 				_primaryShape = newShape;
 				gr.setX(dropLocation.getX());
