@@ -79,7 +79,7 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 	public static final String TITLE_KEY = "title";
 
 	@PropertyIdentifier(type = DataBinding.class)
-	public static final String REQ_DESCRIPTION_KEY = "req_description";
+	public static final String REQ_DESCRIPTION_KEY = "reqDescription";
 
 	@Getter(value = CREATION_FACTORY)
 	@XMLAttribute
@@ -214,7 +214,7 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 				reqDescription = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
 				reqDescription.setBindingName("reqDescription");
 			}
-			return title;
+			return reqDescription;
 		}
 
 		@Override
