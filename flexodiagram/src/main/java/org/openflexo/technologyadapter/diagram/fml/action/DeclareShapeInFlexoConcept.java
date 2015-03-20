@@ -269,7 +269,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 	@Override
 	public List<ShapeRole> getAvailableFlexoRoles() {
 		if (getFlexoConcept() != null) {
-			return getFlexoConcept().getFlexoProperties(ShapeRole.class);
+			return getFlexoConcept().getDeclaredProperties(ShapeRole.class);
 		}
 		return null;
 	}
@@ -938,7 +938,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramBehaviourBindingModel.TOP_LEVEL));
 					} else {
 						ShapeRole containerRole = getVirtualModel().getFlexoConcept(editionScheme._getTarget())
-								.getFlexoProperties(ShapeRole.class).get(0);
+								.getDeclaredProperties(ShapeRole.class).get(0);
 						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DropSchemeBindingModel.TARGET + "."
 								+ containerRole.getRoleName()));
 					}

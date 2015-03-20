@@ -194,7 +194,7 @@ public interface DropScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		@Override
 		public List<ShapeRole> getAvailableTargetShapeRoles() {
 			if (getTargetFlexoConcept() != null) {
-				return getTargetFlexoConcept().getFlexoProperties(ShapeRole.class);
+				return getTargetFlexoConcept().getDeclaredProperties(ShapeRole.class);
 			}
 			return null;
 		}

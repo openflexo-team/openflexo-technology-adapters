@@ -343,10 +343,10 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 				return null;
 			} else {
 				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>>();
-				for (ShapeRole pr : graphicalAction.getFlexoConcept().getFlexoProperties(ShapeRole.class)) {
+				for (ShapeRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
-				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getFlexoProperties(ConnectorRole.class)) {
+				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
 				return new ValidationError<GraphicalActionMustHaveASubject, GraphicalAction>(this, graphicalAction,

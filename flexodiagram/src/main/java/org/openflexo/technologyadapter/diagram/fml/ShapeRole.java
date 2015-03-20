@@ -241,7 +241,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		public List<ShapeRole> getPossibleParentShapeRoles() {
 			List<ShapeRole> returned = new ArrayList<ShapeRole>();
 			if (getFlexoConcept() != null) {
-				List<ShapeRole> shapesPatternRoles = getFlexoConcept().getFlexoProperties(ShapeRole.class);
+				List<ShapeRole> shapesPatternRoles = getFlexoConcept().getDeclaredProperties(ShapeRole.class);
 				for (ShapeRole shapeRole : shapesPatternRoles) {
 					if (!shapeRole.isContainedIn(this)) {
 						returned.add(shapeRole);

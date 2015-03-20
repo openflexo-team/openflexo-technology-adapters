@@ -369,7 +369,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		public ValidationIssue<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> applyValidation(AddConnector action) {
 			if (action.getAssignedFlexoProperty() == null && action.getOwner() instanceof AssignationAction) {
 				Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>>();
-				for (ConnectorRole pr : action.getFlexoConcept().getFlexoProperties(ConnectorRole.class)) {
+				for (ConnectorRole pr : action.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
 				return new ValidationError<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>(this, action,
@@ -416,12 +416,12 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				if (action.getRootOwner() instanceof LinkScheme) {
 					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getRootOwner()).getFromTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
-						for (ShapeRole spr : action.getFlexoConcept().getFlexoProperties(ShapeRole.class)) {
+						for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 							v.add(new SetsStartingShapeToStartTargetShape(targetFlexoConcept, spr));
 						}
 					}
 				}
-				for (ShapeRole spr : action.getFlexoConcept().getFlexoProperties(ShapeRole.class)) {
+				for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsStartingShapeToShape(spr));
 				}
 				return new ValidationError<AddConnectorActionMustHaveAValidStartingShape, AddConnector>(this, action,
@@ -495,12 +495,12 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				if (action.getRootOwner() instanceof LinkScheme) {
 					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getRootOwner()).getToTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
-						for (ShapeRole spr : action.getFlexoConcept().getFlexoProperties(ShapeRole.class)) {
+						for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 							v.add(new SetsEndingShapeToToTargetShape(targetFlexoConcept, spr));
 						}
 					}
 				}
-				for (ShapeRole spr : action.getFlexoConcept().getFlexoProperties(ShapeRole.class)) {
+				for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsEndingShapeToShape(spr));
 				}
 				return new ValidationError<AddConnectorActionMustHaveAValidEndingShape, AddConnector>(this, action,

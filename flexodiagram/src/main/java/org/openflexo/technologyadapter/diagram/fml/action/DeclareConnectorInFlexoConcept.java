@@ -376,11 +376,11 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				assignationAction.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));
 				ShapeRole fromPatternRole = null;
 				ShapeRole toPatternRole = null;
-				if (fromFlexoConcept.getFlexoProperties(ShapeRole.class).size() > 0) {
-					fromPatternRole = fromFlexoConcept.getFlexoProperties(ShapeRole.class).get(0);
+				if (fromFlexoConcept.getDeclaredProperties(ShapeRole.class).size() > 0) {
+					fromPatternRole = fromFlexoConcept.getDeclaredProperties(ShapeRole.class).get(0);
 				}
-				if (fromFlexoConcept.getFlexoProperties(ShapeRole.class).size() > 0) {
-					toPatternRole = toFlexoConcept.getFlexoProperties(ShapeRole.class).get(0);
+				if (fromFlexoConcept.getDeclaredProperties(ShapeRole.class).size() > 0) {
+					toPatternRole = toFlexoConcept.getDeclaredProperties(ShapeRole.class).get(0);
 				}
 
 				newAddConnector.setFromShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.FROM_TARGET + "."
@@ -553,7 +553,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 	@Override
 	public List<ConnectorRole> getAvailableFlexoRoles() {
 		if (getFlexoConcept() != null) {
-			return getFlexoConcept().getFlexoProperties(ConnectorRole.class);
+			return getFlexoConcept().getDeclaredProperties(ConnectorRole.class);
 		}
 		return null;
 	}
