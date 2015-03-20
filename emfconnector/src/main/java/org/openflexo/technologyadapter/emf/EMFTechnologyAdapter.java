@@ -309,8 +309,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			// register ecore MM once for all resource centers
 			MMFromClasspathIODelegate iodelegate = MMFromClasspathIODelegateImpl.makeMMFromClasspathIODelegate(factory);
 			umlMetaModelResource = factory.newInstance(EMFMetaModelResource.class);
-			ecoreMetaModelResource.setFlexoIODelegate(iodelegate);
-			iodelegate.setFlexoResource(ecoreMetaModelResource);
+			umlMetaModelResource.setFlexoIODelegate(iodelegate);
+			iodelegate.setFlexoResource(umlMetaModelResource);
 			umlMetaModelResource.setTechnologyAdapter(this);
 			umlMetaModelResource.setURI(UML_MM_URI);
 			umlMetaModelResource.setName(UML_MM_NAME);
@@ -371,23 +371,28 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 
 		ModelFactory factory;
 		try {
+			
 			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(MMFromJarsInDirIODelegate.class, EMFMetaModelResource.class));
+			
 			MMFromJarsInDirIODelegate iodelegate = MMFromJarsInDirIODelegateImpl.makeMMFromJarsInDirIODelegate(aMetaModelFile, factory);
-
+			
+			System.out.println("Retrieving: " + aMetaModelFile.getAbsolutePath());
 
 
 			metaModelResource = factory.newInstance(EMFMetaModelResource.class);
 			iodelegate.setFlexoResource(metaModelResource);
+			metaModelResource.setFlexoIODelegate(iodelegate);
 			metaModelResource.setTechnologyAdapter(this);
 			metaModelResource.setURI(iodelegate.getProperty("URI"));
 			metaModelResource.setName(aMetaModelFile.getName());
-			metaModelResource.setFlexoIODelegate(iodelegate);
 
 			metaModelResource.setModelFileExtension(iodelegate.getProperty("EXTENSION"));
 			metaModelResource.setPackageClassName(iodelegate.getProperty("PACKAGE"));
 			metaModelResource.setResourceFactoryClassName(iodelegate.getProperty("RESOURCE_FACTORY"));
 			metaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
-			getTechnologyContextManager().registerResource(metaModelResource);
+			getTechnologyContextManager().registerResource(metaModelResource);			
+			getTechnologyContextManager().registerMetaModel(metaModelResource);
+
 
 			return metaModelResource;
 

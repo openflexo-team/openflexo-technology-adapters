@@ -54,9 +54,11 @@ import org.openflexo.toolbox.IProgress;
  * 
  * @author xtof
  */
-public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMetaModel> implements EMFMetaModelResource {
+public abstract class EMFMetaModelResourceImpl extends
+		FlexoResourceImpl<EMFMetaModel> implements EMFMetaModelResource {
 
-	protected static final Logger logger = Logger.getLogger(EMFMetaModelResourceImpl.class.getPackage().getName());
+	protected static final Logger logger = Logger
+			.getLogger(EMFMetaModelResourceImpl.class.getPackage().getName());
 
 	/**
 	 * 
@@ -84,11 +86,17 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	 * @see org.openflexo.foundation.resource.FlexoResource#loadResourceData(org.openflexo.toolbox.IProgress)
 	 */
 	@Override
-	public EMFMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException {
-		
+	public EMFMetaModel loadResourceData(IProgress progress)
+			throws ResourceLoadingCancelledException {
+
 		EMFMetaModelIODelegate<?> ffd = (EMFMetaModelIODelegate<?>) getFlexoIODelegate();
 
-		return ffd.loadMetaModel(this.getTechnologyAdapter().getTechnologyContextManager());
+		if (ffd == null) {
+			logger.warning("Unable to get FlexoIODelegate to reade MetaModel");
+			return null;
+		}
+		return ffd.loadMetaModel(this.getTechnologyAdapter()
+				.getTechnologyContextManager());
 	}
 
 	/**

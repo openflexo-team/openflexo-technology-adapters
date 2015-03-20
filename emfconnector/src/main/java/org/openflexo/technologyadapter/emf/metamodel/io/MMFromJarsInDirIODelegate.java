@@ -86,14 +86,13 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 		protected static final Logger logger = Logger.getLogger(MMFromJarsInDirIODelegate.class.getPackage().getName());
 
 		private EMFMetaModelResource emfMetaModelResource = null;
-		private File directory = null;
 		private Properties emfproperties = null;
 
 
 		public static MMFromJarsInDirIODelegate makeMMFromJarsInDirIODelegate(File file, ModelFactory factory) {
-			MMFromJarsInDirIODelegate jarindirIODelegate = factory.newInstance(MMFromJarsInDirIODelegate.class);
-			jarindirIODelegate.setSerializationArtefact(file);
-			return jarindirIODelegate;
+			MMFromJarsInDirIODelegate iodelegate = factory.newInstance(MMFromJarsInDirIODelegate.class);
+			iodelegate.setSerializationArtefact(file);
+			return iodelegate;
 		}
 
 
@@ -126,9 +125,11 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 								resource.setResourceData(result);
 							}
 						}
+						else {
+							logger.warning("I will not be able to initialize EMF Model Factory for: " + resource.getURI());
+						}
 					}
 				}
-				((URLClassLoader) classLoader).close();
 				return result;
 
 			} catch (ClassNotFoundException e) {
@@ -149,10 +150,7 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 			} catch (InstantiationException e) {
 				logger.warning("Unable to load EMF MEtaModel:");
 				e.printStackTrace();
-			} catch (IOException e) {
-				logger.warning("Unable to load EMF MEtaModel:");
-				e.printStackTrace();
-			}
+			} 
 			return null;
 
 
@@ -160,8 +158,8 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 
 		@Override
 		public String getParentPath() {
-			if (directory != null){
-				return directory.getParent();
+			if (getSerializationArtefact() != null){
+				return getSerializationArtefact().getParent();
 			}
 			else return "";
 		}
@@ -170,13 +168,13 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 		/** a Metamodel exists if directory contains jar and an emf.properties file  **/
 		@Override
 		public boolean exists() {
-			return isValidMetaModelFile(directory);
+			return isValidMetaModelFile(getSerializationArtefact());
 		}
 
 		@Override
 		public String stringRepresentation() {
-			if (directory != null){
-				return "MMFromJarsInDirIODelegate for directory " + directory.getAbsolutePath();
+			if (getSerializationArtefact() != null){
+				return "MMFromJarsInDirIODelegate for directory " + getSerializationArtefact().getAbsolutePath();
 			}
 			else {
 				return "MMFromJarsInDirIODelegate for NO directory";

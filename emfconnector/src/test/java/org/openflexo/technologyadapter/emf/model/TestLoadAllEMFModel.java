@@ -51,6 +51,7 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
+import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
@@ -66,8 +67,8 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestLoadUMLModel extends OpenflexoProjectAtRunTimeTestCase {
-	protected static final Logger logger = Logger.getLogger(TestLoadUMLModel.class.getPackage().getName());
+public class TestLoadAllEMFModel extends OpenflexoProjectAtRunTimeTestCase {
+	protected static final Logger logger = Logger.getLogger(TestLoadAllEMFModel.class.getPackage().getName());
 
 	private static FlexoEditor editor;
 	private static FlexoProject project;
@@ -75,6 +76,8 @@ public class TestLoadUMLModel extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
+		log("test0InstantiateResourceCenter()");
+
 		instanciateTestServiceManager();
 	}
 
@@ -88,23 +91,35 @@ public class TestLoadUMLModel extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
 	}
 
+
+
+
 	@Test
 	@TestOrder(3)
-	public void testLoadUMLMetaModel() {
+	public void TestListAllMetaModelsl() {
+		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				EMFTechnologyAdapter.class);
+
+		EMFTechnologyContextManager ctxManager = technologicalAdapter.getTechnologyContextManager();
+
+		System.out.println("ALL REGISTERED METAMODELS: ");
+
+		for (String uri : ctxManager.getAllMetaModelURIs()) {
+			System.out.println("\t " + uri);
+		}
+		
+	}
+
+	@Test
+	@TestOrder(4)
+	public void TestLoadAllEMFModel() {
 		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				EMFTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
 			assertNotNull(metaModelRepository);
-			Collection<EMFMetaModelResource> metaModelResources = metaModelRepository.getAllResources();
-			for (EMFMetaModelResource metaModelResource : metaModelResources) {
-				// TODO: this hack should be removed when TA-46 issue will be fixed
-				if (!metaModelResource.getURI().equals(EMFTechnologyAdapter.ECORE_MM_URI)) {
-					EMFMetaModel metaModel = metaModelResource.getMetaModelData();
-					assertNotNull(metaModel);
-				}
-			}
+
 			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
 			Collection<EMFModelResource> modelResources = modelRepository.getAllResources();
 			for (EMFModelResource modelResource : modelResources) {

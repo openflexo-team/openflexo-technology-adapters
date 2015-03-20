@@ -121,6 +121,9 @@ public interface MMFromClasspathIODelegate extends EMFMetaModelIODelegate<String
 								resource.setResourceData(result);
 							}
 						}
+						else {
+							logger.warning("I will not be able to initialize EMF Model Factory for: " + resource.getURI());
+						}
 					}
 				}
 				return result;

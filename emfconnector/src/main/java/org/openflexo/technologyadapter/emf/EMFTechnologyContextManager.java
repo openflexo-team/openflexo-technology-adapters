@@ -40,7 +40,9 @@
 package org.openflexo.technologyadapter.emf;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.resource.Resource;
@@ -86,6 +88,15 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 		EMFExtensionToFactoryMap.put(newMetaModelResource.getModelFileExtension(), newMetaModelResource.getEMFResourceFactory());
 	}
 
+	public List<String> getAllMetaModelURIs(){
+		return new ArrayList<String>(metamodels.keySet());
+	}
+	
+
+	public EMFMetaModelResource getMetaModelByURI(String uri){
+		return metamodels.get(uri);
+	}
+	
 	/**
 	 * Called when a new model was registered, notify the {@link TechnologyContextManager}
 	 * 

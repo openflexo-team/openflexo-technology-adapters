@@ -100,18 +100,15 @@ public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
 			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
 			assertNotNull(metaModelRepository);
 			Collection<EMFMetaModelResource> metaModelResources = metaModelRepository.getAllResources();
-			for (EMFMetaModelResource metaModelResource : metaModelResources) {
-				// TODO: this hack should be removed when TA-46 issue will be fixed
-				if (!metaModelResource.getURI().equals(EMFTechnologyAdapter.ECORE_MM_URI)) {
-					EMFMetaModel metaModel = metaModelResource.getMetaModelData();
-					assertNotNull(metaModel);
-				}
-			}
-			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
-			Collection<EMFModelResource> modelResources = modelRepository.getAllResources();
-			for (EMFModelResource modelResource : modelResources) {
-				EMFModel model = modelResource.getModel();
-				assertNotNull(model);
+		
+
+			for (EMFMetaModelResource mmResource : metaModelResources) {
+
+				System.out.println("\t Loading " + mmResource.getURI());
+				
+				EMFMetaModel metamodel = mmResource.getMetaModelData();
+				
+				assertNotNull(metamodel);
 			}
 		}
 	}

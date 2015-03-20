@@ -262,7 +262,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 */
 	public Resource getEMFResource() {
 		if (modelResource == null) {
-			FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter> mmResource = getMetaModelResource();
+			EMFMetaModelResource mmResource = (EMFMetaModelResource) getMetaModelResource();
 			if (mmResource == null) {
 				logger.warning("EMFModel has no meta-model !!!");
 				return null;
@@ -285,7 +285,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 				
 			}
 			// TODO: should be refactored with IODelegates Also
-			modelResource = ((EMFMetaModelResource) getMetaModelResource()).getEMFResourceFactory()
+			modelResource = mmResource.getEMFResourceFactory()
 					.createResource(org.eclipse.emf.common.util.URI.createFileURI(getFileFlexoIODelegate().getFile().getAbsolutePath()));
 		}
 		return modelResource;
