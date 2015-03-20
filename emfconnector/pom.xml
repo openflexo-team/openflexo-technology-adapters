@@ -9,7 +9,13 @@
 	<artifactId>emfconnector</artifactId>
 	<name>EMF technology connector</name>
 		<properties>
-		<emf.version>2.7.0.v20120127</emf.version>
+		<emfcommon.version>2.10.1</emfcommon.version>
+		<emfcore.version>2.10.2</emfcore.version>
+		<emfuml.baseversion>5.0.0</emfuml.baseversion>
+		<emfuml.version>5.0.1</emfuml.version>
+		<emfuml.types.version>2.0.0</emfuml.types.version>
+		<emfuml.common.version>2.0.1</emfuml.common.version>
+		<emfuml.profile.version>1.0.0</emfuml.profile.version>
 	</properties>
 	
 	<build>
@@ -31,30 +37,62 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexoutils</artifactId>
+			<classifier>tests</classifier>
+			<scope>test</scope>
+		</dependency>
 		<!-- Direct dependencies for EMF support -->
 		<!--  3rd party -->
 			<dependency>
 				<groupId>org.eclipse.emf</groupId>
 				<artifactId>common</artifactId>
-				<version>${emf.version}</version>
+				<version>${emfcommon.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.emf</groupId>
 				<artifactId>ecore</artifactId>
-				<version>${emf.version}</version>
+				<version>${emfcore.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.eclipse.emf</groupId>
 				<artifactId>ecore-xmi</artifactId>
-				<version>${emf.version}</version>
+				<version>${emfcore.version}</version>
 			</dependency>
-
+			<!-- UML Dependency 			-->
 			<dependency>
-				<groupId>org.openflexo</groupId>
-				<artifactId>flexoutils</artifactId>
-				<classifier>tests</classifier>
-				<scope>test</scope>
+				<groupId>org.eclipse</groupId>
+				<artifactId>uml2</artifactId>
+				<version>${emfuml.baseversion}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.eclipse.uml2</groupId>
+				<artifactId>uml</artifactId>
+				<version>${emfuml.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.uml2</groupId>
+				<artifactId>uml-resources</artifactId>
+				<version>${emfuml.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.uml2</groupId>
+				<artifactId>types</artifactId>
+				<version>${emfuml.types.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.uml2</groupId>
+				<artifactId>common</artifactId>
+				<version>${emfuml.common.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.eclipse.uml2.uml</groupId>
+				<artifactId>profile-standard</artifactId>
+				<version>${emfuml.profile.version}</version>
+			</dependency>
+			<!-- Xtext Dependency -->
+			
 	</dependencies>
 </project>
 

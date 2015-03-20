@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2013-2015, Openflexo
  * Copyright (c) 2012-2012, AgileBirds
  * 
  * This file is part of Emfconnector, a component of the software infrastructure 
@@ -43,6 +43,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
@@ -55,13 +56,19 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 	/** Stores all known models where key is the URI of model */
 	protected Map<String, EMFModelResource> models = new HashMap<String, EMFModelResource>();
 
+	/** Stores a reference to EMF Registry instance in order to register every MM available */
+
+	protected Resource.Factory.Registry EMFRegistry = Resource.Factory.Registry.INSTANCE;
+	protected Map<String, Object> EMFExtensionToFactoryMap;
+
 	public EMFTechnologyContextManager(EMFTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
+		EMFExtensionToFactoryMap = EMFRegistry.getExtensionToFactoryMap();
 	}
 
 	@Override
 	public EMFTechnologyAdapter getTechnologyAdapter() {
-		return (EMFTechnologyAdapter) super.getTechnologyAdapter();
+		return super.getTechnologyAdapter();
 	}
 
 	public EMFModelResource getModel(File modelFile) {
@@ -76,6 +83,7 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 	public void registerMetaModel(EMFMetaModelResource newMetaModelResource) {
 		registerResource(newMetaModelResource);
 		metamodels.put(newMetaModelResource.getURI(), newMetaModelResource);
+		EMFExtensionToFactoryMap.put(newMetaModelResource.getModelFileExtension(), newMetaModelResource.getResourceFactory());
 	}
 
 	/**
