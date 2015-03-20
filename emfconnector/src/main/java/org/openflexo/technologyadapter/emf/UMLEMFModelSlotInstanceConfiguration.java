@@ -57,23 +57,7 @@ public class UMLEMFModelSlotInstanceConfiguration extends TypeAwareModelSlotInst
 						(EMFMetaModelResource) getModelSlot().getMetaModelResource()));
 	}
 
-	/*@Override
-	public void setOption(org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
-		super.setOption(option);
-		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
-			modelUri = getAction().getFocusedObject().getProject().getURI() + "/Models/myEMFModel";
-			relativePath = "/";
-			filename = "myEMFModel"
-					+ getModelSlot().getTechnologyAdapter().getExpectedModelExtension(
-							(EMFMetaModelResource) getModelSlot().getMetaModelResource());
-		} else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
-			modelUri = "ResourceCenter/Models/";
-			relativePath = "/";
-			filename = "myEMFModel"
-					+ getModelSlot().getTechnologyAdapter().getExpectedModelExtension(
-							(EMFMetaModelResource) getModelSlot().getMetaModelResource());
-			}
-	}*/
+	
 
 	@Override
 	public boolean isURIEditable() {

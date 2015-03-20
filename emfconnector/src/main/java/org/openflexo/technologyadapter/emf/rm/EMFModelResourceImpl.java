@@ -53,9 +53,11 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
@@ -260,11 +262,30 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 */
 	public Resource getEMFResource() {
 		if (modelResource == null) {
-			if (getMetaModelResource() == null) {
+			FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter> mmResource = getMetaModelResource();
+			if (mmResource == null) {
 				logger.warning("EMFModel has no meta-model !!!");
 				return null;
 			}
-			modelResource = getMetaModelResource().getMetaModelData().getResource().getResourceFactory()
+			else { 
+				if (!mmResource.isLoaded()){
+					try {
+						mmResource.loadResourceData(null);
+					} catch (FileNotFoundException e) {
+						logger.warning("Cannot load EMF MetaModel");
+						return null;
+					} catch (ResourceLoadingCancelledException e) {
+						logger.warning("Cannot load EMF MetaModel");
+						return null;
+					} catch (FlexoException e) {
+						logger.warning("Cannot load EMF MetaModel");
+						return null;
+					}
+				}
+				
+			}
+			// TODO: should be refactored with IODelegates Also
+			modelResource = ((EMFMetaModelResource) getMetaModelResource()).getEMFResourceFactory()
 					.createResource(org.eclipse.emf.common.util.URI.createFileURI(getFileFlexoIODelegate().getFile().getAbsolutePath()));
 		}
 		return modelResource;

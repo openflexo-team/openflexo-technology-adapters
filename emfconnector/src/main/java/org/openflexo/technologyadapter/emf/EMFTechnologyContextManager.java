@@ -83,7 +83,7 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 	public void registerMetaModel(EMFMetaModelResource newMetaModelResource) {
 		registerResource(newMetaModelResource);
 		metamodels.put(newMetaModelResource.getURI(), newMetaModelResource);
-		EMFExtensionToFactoryMap.put(newMetaModelResource.getModelFileExtension(), newMetaModelResource.getResourceFactory());
+		EMFExtensionToFactoryMap.put(newMetaModelResource.getModelFileExtension(), newMetaModelResource.getEMFResourceFactory());
 	}
 
 	/**

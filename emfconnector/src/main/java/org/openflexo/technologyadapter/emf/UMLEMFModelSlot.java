@@ -90,7 +90,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 @ModelEntity
 @ImplementationClass(UMLEMFModelSlot.UMLEMFModelSlotImpl.class)
 @XMLElement
-@FML("EMFModelSlot")
+@FML("UMLEMFModelSlot")
 public interface UMLEMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel> {
 
 	@Override

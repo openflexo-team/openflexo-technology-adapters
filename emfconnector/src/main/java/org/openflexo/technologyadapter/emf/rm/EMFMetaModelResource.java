@@ -59,8 +59,8 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	public static final String EXTENSION = "extension";
 	public static final String PACKAGE_CLASSNAME = "package.classname";
 	public static final String PACKAGE = "package";
-	public static final String RESOURCE_FACTORY_CLASSNAME = "resourcefactory.classname";
-	public static final String RESOURCE_FACTORY = "resourcefactory";
+	public static final String EMFRESOURCE_FACTORY_CLASSNAME = "resourcefactory.classname";
+	public static final String EMFRESOURCE_FACTORY = "resourcefactory";
 
 	/**
 	 * Setter of extension for model files related to this MtaModel.
@@ -115,7 +115,7 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	 * 
 	 * @param resourceFactory
 	 */
-	@Setter(RESOURCE_FACTORY_CLASSNAME)
+	@Setter(EMFRESOURCE_FACTORY_CLASSNAME)
 	void setResourceFactoryClassName(String resourceFactory);
 
 	/**
@@ -123,24 +123,24 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	 * 
 	 * @return
 	 */
-	@Getter(value = RESOURCE_FACTORY_CLASSNAME, ignoreType = true)
-	String getResourceFactoryClassName();
+	@Getter(value = EMFRESOURCE_FACTORY_CLASSNAME, ignoreType = true)
+	String getEMFResourceFactoryClassName();
 
 	/**
 	 * Setter of ResourceFactory of Model for MetaModel.
 	 * 
 	 * @param resourceFactory
 	 */
-	@Setter(RESOURCE_FACTORY)
-	void setResourceFactory(Resource.Factory resourceFactory);
+	@Setter(EMFRESOURCE_FACTORY)
+	void setEMFResourceFactory(Resource.Factory resourceFactory);
 
 	/**
 	 * Getter of ResourceFactory of Model for MetaModel.
 	 * 
 	 * @return
 	 */
-	@Getter(value = RESOURCE_FACTORY, ignoreType = true)
-	Resource.Factory getResourceFactory();
+	@Getter(value = EMFRESOURCE_FACTORY, ignoreType = true)
+	Resource.Factory getEMFResourceFactory();
 
 	/**
 	 * Get the MetaModel stored in the Resource..
