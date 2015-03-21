@@ -100,7 +100,7 @@ public interface UMLEMFModelSlot extends EMFModelSlot{
 		@Getter(value = META_MODEL_URI_KEY)
 		@XMLAttribute
 		public String getMetaModelURI(){
-			return EMFTechnologyAdapter.ECORE_MM_URI;
+			return EMFTechnologyAdapter.UML_MM_URI;
 		}
 
 		@Override
@@ -108,7 +108,7 @@ public interface UMLEMFModelSlot extends EMFModelSlot{
 		public void setMetaModelURI(String metaModelURI){
 			// TODO: do best here sometime.
 			logger.warning("You cannot override MetaModel URI here, I will use the default URI for UML");
-			performSuperSetter(META_MODEL_URI_KEY,EMFTechnologyAdapter.ECORE_MM_URI);
+			performSuperSetter(META_MODEL_URI_KEY,EMFTechnologyAdapter.UML_MM_URI);
 		}
 		
 		@Override
