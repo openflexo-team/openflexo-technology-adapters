@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.openflexo.foundation.fml.FMLTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
@@ -70,7 +71,7 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 
 	@Override
 	public EMFTechnologyAdapter getTechnologyAdapter() {
-		return super.getTechnologyAdapter();
+		return (EMFTechnologyAdapter) super.getTechnologyAdapter();
 	}
 
 	public EMFModelResource getModel(File modelFile) {
@@ -93,7 +94,7 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 	}
 	
 
-	public EMFMetaModelResource getMetaModelByURI(String uri){
+	public EMFMetaModelResource getMetaModelResourceByURI(String uri){
 		return metamodels.get(uri);
 	}
 	

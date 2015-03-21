@@ -46,36 +46,23 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 
-public class UMLEMFModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<EMFModel, EMFMetaModel, UMLEMFModelSlot> {
+
+/** UML Model Slot configuration 
+ * 
+ * Will enable users to select profiles to attach to the UML model attached to the MS
+ * @author xtof
+ *
+ */
+
+public class UMLEMFModelSlotInstanceConfiguration extends EMFModelSlotInstanceConfiguration {
 
 	protected UMLEMFModelSlotInstanceConfiguration(UMLEMFModelSlotImpl emfModelSlotImpl, CreateVirtualModelInstance action) {
-		super(emfModelSlotImpl, action);
-		setModelUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myEMFModel");
+		super((UMLEMFModelSlot) emfModelSlotImpl, action);
+		setModelUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myUMLModel");
 		setRelativePath("/");
-		setFilename("myEMFModel"
+		setFilename("myUMLModel"
 				+ getModelSlot().getModelSlotTechnologyAdapter().getExpectedModelExtension(
 						(EMFMetaModelResource) getModelSlot().getMetaModelResource()));
-	}
-
-	
-
-	@Override
-	public boolean isURIEditable() {
-		return false;
-	}
-
-	@Override
-	protected boolean checkValidFileName() {
-		if (!super.checkValidFileName()) {
-			return false;
-		}
-		String expectedSuffix = getModelSlot().getModelSlotTechnologyAdapter().getExpectedModelExtension(
-				(EMFMetaModelResource) getModelSlot().getMetaModelResource());
-		if (!getFilename().endsWith(expectedSuffix)) {
-			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_right_suffix" + " : " + expectedSuffix));
-			return false;
-		}
-		return true;
 	}
 
 }

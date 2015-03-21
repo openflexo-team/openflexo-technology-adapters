@@ -42,6 +42,7 @@ package org.openflexo.technologyadapter.emf.rm;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -54,7 +55,7 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
 @ModelEntity
 @ImplementationClass(EMFMetaModelResourceImpl.class)
 @XMLElement
-public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter> {
+public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter>, TechnologyAdapterResource<EMFMetaModel,EMFTechnologyAdapter> {
 
 	public static final String EXTENSION = "extension";
 	public static final String PACKAGE_CLASSNAME = "package.classname";

@@ -52,6 +52,7 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
@@ -64,6 +65,7 @@ import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -73,6 +75,7 @@ import org.openflexo.technologyadapter.emf.metamodel.io.MMFromClasspathIODelegat
 import org.openflexo.technologyadapter.emf.metamodel.io.MMFromClasspathIODelegate.MMFromClasspathIODelegateImpl;
 import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate;
 import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate.MMFromJarsInDirIODelegateImpl;
+import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
@@ -87,7 +90,8 @@ import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
  * @author sylvain
  * 
  */
-@DeclareModelSlots({ EMFModelSlot.class /*,EMFMetaModelSlot.class*/})
+@DeclareModelSlots({ EMFModelSlot.class, /*,EMFMetaModelSlot.class*/
+					 UMLEMFModelSlot.class  /* EMFUMLModelSlot.class */})
 @DeclareRepositoryType({ EMFMetaModelRepository.class, EMFModelRepository.class })
 public class EMFTechnologyAdapter extends TechnologyAdapter {
 
@@ -280,6 +284,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 */
 	public EMFMetaModelRepository createMetaModelRepository(FlexoResourceCenter<?> resourceCenter) throws ModelDefinitionException {
 
+		
 		EMFMetaModelRepository mmRepository = new EMFMetaModelRepository(this, resourceCenter);
 
 		ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,MMFromClasspathIODelegate.class,
@@ -301,7 +306,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			ecoreMetaModelResource.setPackageClassName(ECORE_MM_PKGCLSNAME);
 			ecoreMetaModelResource.setResourceFactoryClassName(ECORE_MM_FACTORYCLSNAME);
 			ecoreMetaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
-			getTechnologyContextManager().registerResource(ecoreMetaModelResource);
 			getTechnologyContextManager().registerMetaModel(ecoreMetaModelResource);
 		}
 
@@ -318,7 +322,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			umlMetaModelResource.setPackageClassName(UML_MM_PKGCLSNAME);
 			umlMetaModelResource.setResourceFactoryClassName(UML_MM_FACTORYCLSNAME);
 			umlMetaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
-			getTechnologyContextManager().registerResource(umlMetaModelResource);
 			getTechnologyContextManager().registerMetaModel(umlMetaModelResource);
 		}
 
@@ -521,7 +524,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 * @return
 	 */
 	public EMFModelResource createNewEMFModel(File modelFile, String modelUri, EMFMetaModelResource metaModelResource) {
-		EMFMetaModelResource emfMetaModelResource = metaModelResource;
+		EMFMetaModelResource emfMetaModelResource = (EMFMetaModelResource) metaModelResource;
 		EMFModelResource emfModelResource = EMFModelResourceImpl.makeEMFModelResource(modelUri, modelFile, emfMetaModelResource,
 				getTechnologyContextManager());
 		getTechnologyContextManager().registerResource(emfModelResource);
