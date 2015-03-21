@@ -378,9 +378,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(MMFromJarsInDirIODelegate.class, EMFMetaModelResource.class));
 			
 			MMFromJarsInDirIODelegate iodelegate = MMFromJarsInDirIODelegateImpl.makeMMFromJarsInDirIODelegate(aMetaModelFile, factory);
-			
-			System.out.println("Retrieving: " + aMetaModelFile.getAbsolutePath());
-
 
 			metaModelResource = factory.newInstance(EMFMetaModelResource.class);
 			iodelegate.setFlexoResource(metaModelResource);
