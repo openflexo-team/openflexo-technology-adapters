@@ -44,15 +44,19 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.fml.FMLTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 
 public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTechnologyAdapter> {
+
+	protected static final Logger logger = Logger.getLogger(EMFTechnologyContextManager.class.getPackage().getName());
 
 	/** Stores all known metamodels where key is the URI of metamodel */
 	protected Map<String, EMFMetaModelResource> metamodels = new HashMap<String, EMFMetaModelResource>();
@@ -84,20 +88,28 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 	 * @param newModel
 	 */
 	public void registerMetaModel(EMFMetaModelResource newMetaModelResource) {
-		registerResource(newMetaModelResource);
-		metamodels.put(newMetaModelResource.getURI(), newMetaModelResource);
-		EMFExtensionToFactoryMap.put(newMetaModelResource.getModelFileExtension(), newMetaModelResource.getEMFResourceFactory());
+		String mmURI = newMetaModelResource.getURI();
+		EMFMetaModelResource existingMM = metamodels.get(mmURI);
+		if (existingMM == null)	{
+			registerResource(newMetaModelResource);
+			metamodels.put(mmURI, newMetaModelResource);
+			EMFExtensionToFactoryMap.put(newMetaModelResource.getModelFileExtension(), newMetaModelResource.getEMFResourceFactory());
+		}
+		else {
+			// TODO : xtof, manage duplicate URIs
+			logger.warning(" There already exists a MM with that URI => I will not register this one!");
+		}
 	}
 
 	public List<String> getAllMetaModelURIs(){
 		return new ArrayList<String>(metamodels.keySet());
 	}
-	
+
 
 	public EMFMetaModelResource getMetaModelResourceByURI(String uri){
 		return metamodels.get(uri);
 	}
-	
+
 	/**
 	 * Called when a new model was registered, notify the {@link TechnologyContextManager}
 	 * 
