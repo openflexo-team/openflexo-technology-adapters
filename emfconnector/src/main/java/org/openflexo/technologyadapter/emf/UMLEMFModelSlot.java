@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.emf;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
