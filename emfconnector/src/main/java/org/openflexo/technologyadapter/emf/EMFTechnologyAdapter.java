@@ -390,7 +390,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			metaModelResource.setPackageClassName(iodelegate.getProperty("PACKAGE"));
 			metaModelResource.setResourceFactoryClassName(iodelegate.getProperty("RESOURCE_FACTORY"));
 			metaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
-			getTechnologyContextManager().registerResource(metaModelResource);			
 			getTechnologyContextManager().registerMetaModel(metaModelResource);
 
 
@@ -524,7 +523,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		EMFMetaModelResource emfMetaModelResource = (EMFMetaModelResource) metaModelResource;
 		EMFModelResource emfModelResource = EMFModelResourceImpl.makeEMFModelResource(modelUri, modelFile, emfMetaModelResource,
 				getTechnologyContextManager());
-		getTechnologyContextManager().registerResource(emfModelResource);
+		getTechnologyContextManager().registerModel(emfModelResource);
 		try {
 			emfModelResource.save(null);
 		} catch (SaveResourceException e) {
