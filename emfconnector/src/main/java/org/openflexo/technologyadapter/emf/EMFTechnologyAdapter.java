@@ -221,13 +221,9 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		EMFMetaModelRepository mmRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, this);
 		EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, this);
 
-		List<FlexoResourceCenter> rscCenters = technologyContextManager.getResourceCenterService().getResourceCenters();
-
-		for (FlexoResourceCenter<?> rscCenter : rscCenters) {
-			mmRepository = rscCenter.getRepository(EMFMetaModelRepository.class, this);
-			if (mmRepository != null) {
-
-				for (EMFMetaModelResource mmRes : mmRepository.getAllResources()) {
+		
+		
+				for (EMFMetaModelResource mmRes : technologyContextManager.getAllMetaModelResources()) {
 					if (isValidModelFile(candidateFile, mmRes)) {
 						EMFModelResource mRes = retrieveModelResource(candidateFile, mmRes);
 						if (mRes != null) {
@@ -243,8 +239,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 						}
 					}
 				}
-			}
-		}
 		return null;
 	}
 

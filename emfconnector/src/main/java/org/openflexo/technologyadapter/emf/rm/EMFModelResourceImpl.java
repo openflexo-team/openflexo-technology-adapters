@@ -142,7 +142,6 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
 			returned.setName(modelFile.getName());
-			//returned.setFile(modelFile);
 
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 			

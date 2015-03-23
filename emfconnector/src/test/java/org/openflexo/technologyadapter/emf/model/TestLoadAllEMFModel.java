@@ -123,8 +123,11 @@ public class TestLoadAllEMFModel extends OpenflexoProjectAtRunTimeTestCase {
 			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
 			Collection<EMFModelResource> modelResources = modelRepository.getAllResources();
 			for (EMFModelResource modelResource : modelResources) {
+				System.out.println("\t Loading " + modelResource.getURI());
+				System.out.println("LOADING MODELS: ");
 				EMFModel model = modelResource.getModel();
 				assertNotNull(model);
+				assertNotNull(model.getMetaModel());
 			}
 		}
 	}

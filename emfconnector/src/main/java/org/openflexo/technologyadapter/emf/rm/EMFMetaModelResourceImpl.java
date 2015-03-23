@@ -95,8 +95,15 @@ public abstract class EMFMetaModelResourceImpl extends
 			logger.warning("Unable to get FlexoIODelegate to reade MetaModel");
 			return null;
 		}
-		return ffd.loadMetaModel(this.getTechnologyAdapter()
+		EMFMetaModel metamodel = ffd.loadMetaModel(this.getTechnologyAdapter()
 				.getTechnologyContextManager());
+		
+		if (metamodel != null){
+			this.setResourceData(metamodel);
+		}
+		
+		return metamodel;
+	
 	}
 
 	/**
