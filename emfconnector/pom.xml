@@ -16,6 +16,9 @@
 		<emfuml.types.version>2.0.0</emfuml.types.version>
 		<emfuml.common.version>2.0.1</emfuml.common.version>
 		<emfuml.profile.version>1.0.0</emfuml.profile.version>
+		<log4j.version>1.2.15</log4j.version>
+		<antlr.version>3.2</antlr.version>
+		<xtext.version>2.8.0</xtext.version>
 	</properties>
 	
 	<build>
@@ -92,7 +95,42 @@
 				<version>${emfuml.profile.version}</version>
 			</dependency>
 			<!-- Xtext Dependency -->
-			
+			<dependency>
+				<groupId>org.eclipse.xtext</groupId>
+				<artifactId>org.eclipse.xtext</artifactId>
+				<version>${xtext.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>log4j</groupId>
+				<artifactId>log4j</artifactId>
+				<version>${log4j.version}</version>
+				  <scope>provided</scope>
+				  <!-- exclusions according to this: http://unitstep.net/blog/2009/05/18/resolving-log4j-1215-dependency-problems-in-maven-using-exclusions/ 
+				  -->
+				  <exclusions>
+				    <exclusion>
+				      <groupId>javax.mail</groupId>
+				      <artifactId>mail</artifactId>
+				    </exclusion>
+				    <exclusion>
+				      <groupId>javax.jms</groupId>
+				      <artifactId>jms</artifactId>
+				    </exclusion>
+				    <exclusion>
+				      <groupId>com.sun.jdmk</groupId>
+				      <artifactId>jmxtools</artifactId>
+				    </exclusion>
+				    <exclusion>
+				      <groupId>com.sun.jmx</groupId>
+				      <artifactId>jmxri</artifactId>
+				    </exclusion>
+				  </exclusions>
+			</dependency>
+			<dependency>
+				<groupId>org.antlr</groupId>
+				<artifactId>antlr</artifactId>
+				<version>${antlr.version}</version>
+			</dependency>
 	</dependencies>
 </project>
 

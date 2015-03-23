@@ -49,6 +49,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.fml.FMLTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -68,12 +69,13 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 
 	/** Stores a reference to EMF Registry instance in order to register every MM available */
 
-	protected Resource.Factory.Registry EMFRegistry = Resource.Factory.Registry.INSTANCE;
+	protected Resource.Factory.Registry EMFRscFactoryRegistry = Resource.Factory.Registry.INSTANCE;
+	protected EPackage.Registry EMFPackageRegistry = EPackage.Registry.INSTANCE;
 	protected Map<String, Object> EMFExtensionToFactoryMap;
 
 	public EMFTechnologyContextManager(EMFTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
-		EMFExtensionToFactoryMap = EMFRegistry.getExtensionToFactoryMap();
+		EMFExtensionToFactoryMap = EMFRscFactoryRegistry.getExtensionToFactoryMap();
 	}
 
 	@Override
@@ -97,6 +99,13 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 			registerResource(newMetaModelResource);
 			metamodels.put(mmURI, newMetaModelResource);
 			EMFExtensionToFactoryMap.put(newMetaModelResource.getModelFileExtension(), newMetaModelResource.getEMFResourceFactory());
+			EPackage ePackage = newMetaModelResource.getPackage();
+			if (!EMFPackageRegistry.containsKey(mmURI) && ePackage != null) {
+				EMFPackageRegistry.put(newMetaModelResource.getURI(), ePackage); 
+			}
+			else {
+				logger.warning("EMF MEtamodel already exists in registry : " + newMetaModelResource.getURI());
+			}
 		}
 		else {
 			// TODO : xtof, manage duplicate URIs

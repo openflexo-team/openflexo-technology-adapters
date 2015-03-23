@@ -44,15 +44,12 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.net.URLClassLoader;
 import java.util.Collections;
 import java.util.Properties;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -60,7 +57,6 @@ import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
-import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResourceImpl;
 import org.openflexo.toolbox.FileUtils;
 import org.openflexo.toolbox.JarInDirClassLoader;
 
