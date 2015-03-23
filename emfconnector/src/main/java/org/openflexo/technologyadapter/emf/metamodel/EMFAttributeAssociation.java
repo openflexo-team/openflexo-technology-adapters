@@ -100,7 +100,7 @@ public class EMFAttributeAssociation extends AEMFMetaModelObjectImpl<EAttribute>
 	 */
 	@Override
 	public IFlexoOntologyFeature<EMFTechnologyAdapter> getFeature() {
-		return ontology.getConverter().convertAttributeProperty(ontology, object);
+		return ontology.getConverter().convertAttributeProperty(ontology, object,null);
 	}
 
 	@Override

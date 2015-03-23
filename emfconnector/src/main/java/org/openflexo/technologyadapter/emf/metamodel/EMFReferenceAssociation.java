@@ -111,7 +111,7 @@ public class EMFReferenceAssociation extends AEMFMetaModelObjectImpl<EReference>
 	 */
 	@Override
 	public IFlexoOntologyFeature<EMFTechnologyAdapter> getFeature() {
-		return ontology.getConverter().convertReferenceObjectProperty(ontology, object);
+		return ontology.getConverter().convertReferenceObjectProperty(ontology, object,null);
 	}
 
 	@Override

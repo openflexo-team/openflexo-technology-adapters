@@ -113,7 +113,7 @@ public class EMFObjectIndividualAttributeObjectPropertyValue extends AEMFModelOb
 	 */
 	@Override
 	public IFlexoOntologyObjectProperty getObjectProperty() {
-		return ontology.getMetaModel().getConverter().convertAttributeObjectProperty(ontology.getMetaModel(), attribute);
+		return ontology.getMetaModel().getConverter().convertAttributeObjectProperty(ontology.getMetaModel(), attribute,null);
 	}
 
 	/**

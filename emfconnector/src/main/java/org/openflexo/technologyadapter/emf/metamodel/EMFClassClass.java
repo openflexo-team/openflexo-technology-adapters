@@ -161,10 +161,10 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>(
 				0);
 		for (EAttribute attribute : object.getEAttributes()) {
-			featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute));
+			featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute, this));
 		}
 		for (EReference reference : object.getEReferences()) {
-			featureAssociations.add(ontology.getConverter().convertReferenceAssociation(ontology, reference));
+			featureAssociations.add(ontology.getConverter().convertReferenceAssociation(ontology, reference,this));
 		}
 		return Collections.unmodifiableList(featureAssociations);
 	}
@@ -249,7 +249,6 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getSuperClasses() {
 		
-		System.out.println("Looking for superclasses of: " + this.getName());
 		
 		List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
 		for (EClass superClass : object.getESuperTypes()) {

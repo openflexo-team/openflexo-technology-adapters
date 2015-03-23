@@ -281,8 +281,6 @@ public class EMFMetaModelConverter {
 	public EMFClassClass convertClass(EMFMetaModel metaModel, EClass aClass) {
 		EMFClassClass emfClass = null;
 		
-
-		System.out.println("converting class: " + aClass.getName());
 		
 		if (classes.get(aClass) == null) {
 			if (aClass.getEPackage() != null) {
@@ -299,10 +297,10 @@ public class EMFMetaModelConverter {
 			for (EStructuralFeature eStructuralFeature : aClass.getEStructuralFeatures()) {
 				if (eStructuralFeature.eClass().getClassifierID() == EcorePackage.EREFERENCE) {
 					EMFReferenceAssociation emfReferenceAssociation = convertReferenceAssociation(metaModel,
-							(EReference) eStructuralFeature);
+							(EReference) eStructuralFeature, emfClass);
 				} else if (eStructuralFeature.eClass().getClassifierID() == EcorePackage.EATTRIBUTE) {
 					EMFAttributeAssociation emfAttributeAssociation = convertAttributeAssociation(metaModel,
-							(EAttribute) eStructuralFeature);
+							(EAttribute) eStructuralFeature, emfClass);
 				}
 			}
 
@@ -319,16 +317,16 @@ public class EMFMetaModelConverter {
 	 * @param aAttribute
 	 * @return
 	 */
-	public EMFAttributeAssociation convertAttributeAssociation(EMFMetaModel metaModel, EAttribute aAttribute) {
+	public EMFAttributeAssociation convertAttributeAssociation(EMFMetaModel metaModel, EAttribute aAttribute, EMFClassClass containingClass) {
 		EMFAttributeAssociation emfAttributeAssociation = null;
 		if (attributeAssociations.get(aAttribute) == null) {
-			if (aAttribute.getEContainingClass() != null) {
+			if (containingClass == null && aAttribute.getEContainingClass() != null) {
 				EMFClassClass emfClass = convertClass(metaModel, aAttribute.getEContainingClass());
 			}
 
 			emfAttributeAssociation = builder.buildAttributeAssociation(metaModel, aAttribute);
 			attributeAssociations.put(aAttribute, emfAttributeAssociation);
-			IFlexoOntologyStructuralProperty emfAttributeProperty = convertAttributeProperty(metaModel, aAttribute);
+			IFlexoOntologyStructuralProperty emfAttributeProperty = convertAttributeProperty(metaModel, aAttribute, containingClass);
 		} else {
 			emfAttributeAssociation = attributeAssociations.get(aAttribute);
 		}
@@ -342,16 +340,16 @@ public class EMFMetaModelConverter {
 	 * @param aReference
 	 * @return
 	 */
-	public EMFReferenceAssociation convertReferenceAssociation(EMFMetaModel metaModel, EReference aReference) {
+	public EMFReferenceAssociation convertReferenceAssociation(EMFMetaModel metaModel, EReference aReference, EMFClassClass containingClass) {
 		EMFReferenceAssociation emfReferenceAssociation = null;
 		if (referenceAssociations.get(aReference) == null) {
-			if (aReference.getEContainingClass() != null) {
+			if (containingClass == null && aReference.getEContainingClass() != null) {
 				EMFClassClass emfClass = convertClass(metaModel, aReference.getEContainingClass());
 			}
 
 			emfReferenceAssociation = builder.buildReferenceAssociation(metaModel, aReference);
 			referenceAssociations.put(aReference, emfReferenceAssociation);
-			EMFReferenceObjectProperty emfReferenceObjectProperty = convertReferenceObjectProperty(metaModel, aReference);
+			EMFReferenceObjectProperty emfReferenceObjectProperty = convertReferenceObjectProperty(metaModel, aReference, containingClass);
 		} else {
 			emfReferenceAssociation = referenceAssociations.get(aReference);
 		}
@@ -365,12 +363,12 @@ public class EMFMetaModelConverter {
 	 * @param aAttribute
 	 * @return
 	 */
-	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> convertAttributeProperty(EMFMetaModel metaModel, EAttribute aAttribute) {
+	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> convertAttributeProperty(EMFMetaModel metaModel, EAttribute aAttribute, EMFClassClass containingClass) {
 		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> structuralProperty = null;
 		if (aAttribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
-			structuralProperty = convertAttributeDataProperty(metaModel, aAttribute);
+			structuralProperty = convertAttributeDataProperty(metaModel, aAttribute, containingClass);
 		} else if (aAttribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EENUM) {
-			structuralProperty = convertAttributeObjectProperty(metaModel, aAttribute);
+			structuralProperty = convertAttributeObjectProperty(metaModel, aAttribute, containingClass);
 		}
 		return structuralProperty;
 	}
@@ -382,10 +380,10 @@ public class EMFMetaModelConverter {
 	 * @param aAttribute
 	 * @return
 	 */
-	public EMFAttributeDataProperty convertAttributeDataProperty(EMFMetaModel metaModel, EAttribute aAttribute) {
+	public EMFAttributeDataProperty convertAttributeDataProperty(EMFMetaModel metaModel, EAttribute aAttribute, EMFClassClass containingClass) {
 		EMFAttributeDataProperty dataProperty = null;
 		if (dataAttributes.get(aAttribute) == null) {
-			if (aAttribute.getEContainingClass() != null) {
+			if (containingClass == null && aAttribute.getEContainingClass() != null) {
 				EMFClassClass emfClass = convertClass(metaModel, aAttribute.getEContainingClass());
 			}
 
@@ -408,10 +406,10 @@ public class EMFMetaModelConverter {
 	 * @param aAttribute
 	 * @return
 	 */
-	public EMFAttributeObjectProperty convertAttributeObjectProperty(EMFMetaModel metaModel, EAttribute aAttribute) {
+	public EMFAttributeObjectProperty convertAttributeObjectProperty(EMFMetaModel metaModel, EAttribute aAttribute, EMFClassClass containingClass) {
 		EMFAttributeObjectProperty objectProperty = null;
 		if (objectAttributes.get(aAttribute) == null) {
-			if (aAttribute.getEContainingClass() != null) {
+			if (containingClass == null && aAttribute.getEContainingClass() != null) {
 				EMFClassClass emfClass = convertClass(metaModel, aAttribute.getEContainingClass());
 			}
 
@@ -434,10 +432,10 @@ public class EMFMetaModelConverter {
 	 * @param aReference
 	 * @return
 	 */
-	public EMFReferenceObjectProperty convertReferenceObjectProperty(EMFMetaModel metaModel, EReference aReference) {
+	public EMFReferenceObjectProperty convertReferenceObjectProperty(EMFMetaModel metaModel, EReference aReference, EMFClassClass containingClass) {
 		EMFReferenceObjectProperty objectProperty = null;
 		if (references.get(aReference) == null) {
-			if (aReference.getEContainingClass() != null) {
+			if (containingClass == null && aReference.getEContainingClass() != null) {
 				EMFClassClass emfClass = convertClass(metaModel, aReference.getEContainingClass());
 			}
 

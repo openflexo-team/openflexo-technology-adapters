@@ -279,11 +279,12 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
 				EClass eClass = (EClass) classifier;
+				EMFClassClass emfClass = ontology.getConverter().convertClass(ontology, eClass);
 				for (EStructuralFeature feature : eClass.getEStructuralFeatures()) {
 					if (feature.eClass().getClassifierID() == EcorePackage.EATTRIBUTE) {
 						EAttribute attribute = (EAttribute) feature;
 						if (attribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
-							concepts.add(ontology.getConverter().convertAttributeDataProperty(ontology, attribute));
+							concepts.add(ontology.getConverter().convertAttributeDataProperty(ontology, attribute,emfClass));
 						}
 					}
 				}
@@ -319,14 +320,15 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
 				EClass eClass = (EClass) classifier;
+				EMFClassClass emfClass = ontology.getConverter().convertClass(ontology, eClass);
 				for (EStructuralFeature feature : eClass.getEStructuralFeatures()) {
 					if (feature.eClass().getClassifierID() == EcorePackage.EREFERENCE) {
 						EReference reference = (EReference) feature;
-						concepts.add(ontology.getConverter().convertReferenceObjectProperty(ontology, reference));
+						concepts.add(ontology.getConverter().convertReferenceObjectProperty(ontology, reference,emfClass));
 					} else if (feature.eClass().getClassifierID() == EcorePackage.EATTRIBUTE) {
 						EAttribute attribute = (EAttribute) feature;
 						if (attribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EENUM) {
-							concepts.add(ontology.getConverter().convertAttributeObjectProperty(ontology, attribute));
+							concepts.add(ontology.getConverter().convertAttributeObjectProperty(ontology, attribute,emfClass));
 						}
 					}
 				}

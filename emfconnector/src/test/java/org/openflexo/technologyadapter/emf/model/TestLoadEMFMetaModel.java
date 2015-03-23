@@ -54,6 +54,7 @@ import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
+import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
@@ -109,6 +110,35 @@ public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
 				EMFMetaModel metamodel = mmResource.getMetaModelData();
 				
 				assertNotNull(metamodel);
+			}
+		}
+	}
+	
+	@Test
+	@TestOrder(4)
+	public void testConvertEMFMetaModel() {
+		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				EMFTechnologyAdapter.class);
+
+		EMFMetaModelConverter converter = new EMFMetaModelConverter(technologicalAdapter);
+		
+		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
+			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+			assertNotNull(metaModelRepository);
+			Collection<EMFMetaModelResource> metaModelResources = metaModelRepository.getAllResources();
+		
+
+			for (EMFMetaModelResource mmResource : metaModelResources) {
+
+				System.out.println("\t Converting " + mmResource.getURI());
+				long startTime = System.currentTimeMillis();
+
+				EMFMetaModel metamodel = converter.convertMetaModel(mmResource.getPackage());
+
+				long endTime = System.currentTimeMillis();
+
+				System.out.println("\t\t MetaModel Conversion  took " + (endTime - startTime) + " milliseconds");
+				
 			}
 		}
 	}
