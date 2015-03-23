@@ -102,7 +102,7 @@ import org.openflexo.test.TestOrder;
  */
 @RunWith(OrderedRunner.class)
 public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
-	protected static final Logger logger = Logger.getLogger(TestEMFModelEdition.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(TestUMLModelEdition.class.getPackage().getName());
 
 	static FlexoEditor editor;
 	static EMFTechnologyAdapter technologicalAdapter;

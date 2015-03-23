@@ -99,6 +99,14 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 
 	private static final EMFBindingFactory BINDING_FACTORY = new EMFBindingFactory();
 
+	// Static properties (emf.properties content definition)
+	
+	public static String PROPERTY_TYPE = "TYPE";
+	public static String TYPE_METAMODEL ="metamodel";
+	public static String TYPE_PROFILE = "profile";
+	public static String TYPE_XTEXT = "xtext";
+	
+	
 	// Static references to ECORE properties
 
 	public static String ECORE_MM_NAME = "Ecore Metamodel";
@@ -281,12 +289,23 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		
 		EMFMetaModelRepository mmRepository = new EMFMetaModelRepository(this, resourceCenter);
 
+		// Register Global MetaModels if ever we had a ResourceCenter configured
+		
+		registerClasspathMetaModels();
+
+		resourceCenter.registerRepository(mmRepository, EMFMetaModelRepository.class, this);
+
+		return mmRepository;
+	}
+
+	/** 
+	 * Registers the Metamodel that are provided by this technology adapter
+	 */
+	private void registerClasspathMetaModels()throws ModelDefinitionException  {
+
 		ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,MMFromClasspathIODelegate.class,
 				EMFMetaModelResource.class));
-
-		// TODO: xtof, change this because it is a nonsense!
-		// SHOULD GO INTO TechnologyContextManager
-
+		
 		if (ecoreMetaModelResource == null) {
 			// register ecore MM once for all resource centers
 			MMFromClasspathIODelegate iodelegate = MMFromClasspathIODelegateImpl.makeMMFromClasspathIODelegate(factory);
@@ -318,17 +337,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			umlMetaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
 			getTechnologyContextManager().registerMetaModel(umlMetaModelResource);
 		}
-
-
-		// TODO: Xtof. This is temporary and will be removed
-		RepositoryFolder<EMFMetaModelResource> folder;
-		folder = mmRepository.getRootFolder();
-		mmRepository.registerResource(ecoreMetaModelResource, folder);
-		mmRepository.registerResource(umlMetaModelResource,folder);
-
-		resourceCenter.registerRepository(mmRepository, EMFMetaModelRepository.class, this);
-
-		return mmRepository;
+		
 	}
 
 	/**
@@ -384,8 +393,21 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			metaModelResource.setPackageClassName(iodelegate.getProperty("PACKAGE"));
 			metaModelResource.setResourceFactoryClassName(iodelegate.getProperty("RESOURCE_FACTORY"));
 			metaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
-			getTechnologyContextManager().registerMetaModel(metaModelResource);
-
+			
+			// Depending on the MM Type, you must do different things
+			
+			String mmType = iodelegate.getProperty(PROPERTY_TYPE);
+			if (mmType != null && mmType.equals(TYPE_PROFILE)) {
+				getTechnologyContextManager().registerProfile(metaModelResource);
+				}
+			// mmType == null || mmType.equals(TYPE_METAMODEL) || mmType.equals(TYPE_XTEXT)
+			else {
+				getTechnologyContextManager().registerMetaModel(metaModelResource);
+				}
+			// XTEXT Only
+			if (mmType != null && mmType.equals(TYPE_XTEXT)){
+				
+			}
 
 			return metaModelResource;
 

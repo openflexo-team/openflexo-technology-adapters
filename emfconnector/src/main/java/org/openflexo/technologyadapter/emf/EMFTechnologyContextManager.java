@@ -40,23 +40,21 @@
 package org.openflexo.technologyadapter.emf;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.openflexo.foundation.fml.FMLTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
+
+import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
 
 public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTechnologyAdapter> {
 
@@ -64,6 +62,8 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 
 	/** Stores all known metamodels where key is the URI of metamodel */
 	protected Map<String, EMFMetaModelResource> metamodels = new HashMap<String, EMFMetaModelResource>();
+	/** Stores all known metamodels where key is the URI of profiles (UML) */
+	protected Map<String, EMFMetaModelResource> profiles = new HashMap<String, EMFMetaModelResource>();
 	/** Stores all known models where key is the URI of model */
 	protected Map<String, EMFModelResource> models = new HashMap<String, EMFModelResource>();
 
@@ -76,6 +76,8 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 	public EMFTechnologyContextManager(EMFTechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
 		super(adapter, resourceCenterService);
 		EMFExtensionToFactoryMap = EMFRscFactoryRegistry.getExtensionToFactoryMap();
+		// This enables working with UML Models
+		UMLResourcesUtil.initGlobalRegistries();
 	}
 
 	@Override
@@ -112,7 +114,50 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 			logger.warning(" There already exists a MM with that URI => I will not register this one!");
 		}
 	}
+	
+	
+	/**
+	 * Called when a new profile was registered, notify the {@link TechnologyContextManager}
+	 * 
+	 * @param newModel
+	 */
+	public void registerProfile(EMFMetaModelResource newMetaModelResource) {
+		String mmURI = newMetaModelResource.getURI();
+		EMFMetaModelResource existingMM = profiles.get(mmURI);
+		if (existingMM == null)	{
+			registerResource(newMetaModelResource);
+			profiles.put(mmURI, newMetaModelResource);
+			EPackage ePackage = newMetaModelResource.getPackage();
+			if (!EMFPackageRegistry.containsKey(mmURI) && ePackage != null) {
+				EMFPackageRegistry.put(newMetaModelResource.getURI(), ePackage); 
+			}
+			else {
+				logger.warning("UML Profile already exists in registry : " + newMetaModelResource.getURI());
+			}
+		}
+		else {
+			// TODO : xtof, manage duplicate URIs
+			logger.warning(" There already exists a MM with that URI => I will not register this one!");
+		}
+	}
 
+	/** Accessors for Profile  Collection */
+	
+	public Set<String> getAllProfileURIs(){
+		return  profiles.keySet();
+	}
+
+	public Collection<EMFMetaModelResource> getAllProfileResources(){
+		return  Collections.unmodifiableCollection(profiles.values());
+	}
+
+	public EMFMetaModelResource geProfileResourceByURI(String uri){
+		return profiles.get(uri);
+	}
+
+	
+	/** Accessors for MetaModel Collection */
+	
 	public Set<String> getAllMetaModelURIs(){
 		return  metamodels.keySet();
 	}
@@ -127,7 +172,7 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 	}
 
 	/**
-	 * Called when a new model was registered, notify the {@link TechnologyContextManager}
+	 * Called when a new model is registered, notify the {@link TechnologyContextManager}
 	 * 
 	 * @param newModel
 	 */

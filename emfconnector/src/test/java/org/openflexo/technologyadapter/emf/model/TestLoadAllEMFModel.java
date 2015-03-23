@@ -108,6 +108,12 @@ public class TestLoadAllEMFModel extends OpenflexoProjectAtRunTimeTestCase {
 			System.out.println("\t " + uri);
 		}
 		
+		System.out.println("ALL REGISTERED PROFILES: ");
+
+		for (String uri : ctxManager.getAllProfileURIs()) {
+			System.out.println("\t " + uri);
+		}
+		
 	}
 
 	@Test
