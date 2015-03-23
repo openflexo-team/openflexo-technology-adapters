@@ -277,27 +277,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 		return Collections.emptyList();
 	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsRange()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
-		return Collections.emptyList();
-	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsDomain()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
-		return Collections.emptyList();
-	}
 
 	/**
 	 * Follow the link.

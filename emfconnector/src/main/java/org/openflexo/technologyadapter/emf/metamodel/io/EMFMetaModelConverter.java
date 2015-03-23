@@ -280,6 +280,10 @@ public class EMFMetaModelConverter {
 	 */
 	public EMFClassClass convertClass(EMFMetaModel metaModel, EClass aClass) {
 		EMFClassClass emfClass = null;
+		
+
+		System.out.println("converting class: " + aClass.getName());
+		
 		if (classes.get(aClass) == null) {
 			if (aClass.getEPackage() != null) {
 				EMFPackageContainer emfPackageContainer = convertPackage(metaModel, aClass.getEPackage());

@@ -53,6 +53,7 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoIODelegate;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -88,6 +89,12 @@ public interface MMFromClasspathIODelegate extends EMFMetaModelIODelegate<String
 		@Override
 		public String getParentPath() {
 			return "";
+		}
+
+		@Getter(value = SERIALIZATION_ARTEFACT, ignoreType = true)
+		@Override
+		public String getSerializationArtefact(){
+			return "EMF MetaModel From Classpath: " + getFlexoResource().getURI();
 		}
 
 

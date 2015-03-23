@@ -945,7 +945,6 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		return declaredPropertiesTakingMySelfAsDomain;
 	}
 
-	@Override
 	public List<OWLProperty> getPropertiesTakingMySelfAsRange() {
 		getDeclaredPropertiesTakingMySelfAsRange(); // Required in some cases: TODO: investigate this
 		if (!domainsAndRangesAreRecursivelyUpToDate) {
@@ -954,7 +953,7 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		return propertiesTakingMySelfAsRange;
 	}
 
-	@Override
+	
 	public List<OWLProperty> getPropertiesTakingMySelfAsDomain() {
 		getDeclaredPropertiesTakingMySelfAsDomain(); // Required in some cases: TODO: investigate this
 		if (!domainsAndRangesAreRecursivelyUpToDate) {

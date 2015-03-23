@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2013-2015, Openflexo
  * Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
  * Copyright (c) 2012-2012, AgileBirds
  * 
@@ -48,7 +48,6 @@ import java.util.Map.Entry;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
@@ -56,9 +55,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
@@ -251,6 +248,9 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	 */
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getSuperClasses() {
+		
+		System.out.println("Looking for superclasses of: " + this.getName());
+		
 		List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
 		for (EClass superClass : object.getESuperTypes()) {
 			superClasses.add(ontology.getConverter().convertClass(ontology, superClass));
@@ -258,59 +258,7 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 		return Collections.unmodifiableList(superClasses);
 	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsRange()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
-		List<IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>>();
-		for (EObject crossReference : object.eCrossReferences()) {
-			if (crossReference instanceof EAttribute) {
-				IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property = ontology.getConverter().convertAttributeProperty(
-						ontology, (EAttribute) crossReference);
-				if (!result.contains(property)) {
-					result.add(property);
-				}
-			} else if (crossReference instanceof EReference) {
-				IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property = ontology.getConverter().convertReferenceObjectProperty(
-						ontology, (EReference) crossReference);
-				if (!result.contains(property)) {
-					result.add(property);
-				}
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsDomain()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
-		List<IFlexoOntologyFeature<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyFeature<EMFTechnologyAdapter>>();
-		for (EAttribute attribute : object.getEAttributes()) {
-			IFlexoOntologyFeature<EMFTechnologyAdapter> attr = ontology.getConverter().convertAttributeProperty(ontology, attribute);
-			if (!result.contains(attr)) {
-				result.add(attr);
-			}
-		}
-		for (EReference reference : object.getEReferences()) {
-			IFlexoOntologyFeature<EMFTechnologyAdapter> ref = ontology.getConverter().convertReferenceObjectProperty(ontology, reference);
-			if (!result.contains(ref)) {
-				result.add(ref);
-			}
-		}
-		/*for (EOperation operation : object.getEOperations()) {
-		}*/
-		return result;
-	}
-
+	
 	/**
 	 * Follow the link.
 	 * 
@@ -318,6 +266,9 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	 */
 	@Override
 	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getSubClasses(IFlexoOntology<EMFTechnologyAdapter> context) {
+		
+		System.out.println("Looking for subclasses of: " + this.getName());
+		
 		List<IFlexoOntologyClass<EMFTechnologyAdapter>> subClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
 		if (context instanceof EMFMetaModel) {
 			for (Entry<EClass, EMFClassClass> classEntry : ontology.getConverter().getClasses().entrySet()) {

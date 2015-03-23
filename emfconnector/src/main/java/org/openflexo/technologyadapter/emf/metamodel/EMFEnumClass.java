@@ -243,43 +243,7 @@ public class EMFEnumClass extends AEMFMetaModelObjectImpl<EEnum> implements IFle
 		return visitor.visit(this);
 	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsRange()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
-		List<IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>>();
-		for (EObject crossReference : object.eCrossReferences()) {
-			if (crossReference instanceof EAttribute) {
-				IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property = ontology.getConverter().convertAttributeProperty(
-						ontology, (EAttribute) crossReference);
-				if (!result.contains(property)) {
-					result.add(property);
-				}
-			} else if (crossReference instanceof EReference) {
-				IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property = ontology.getConverter().convertReferenceObjectProperty(
-						ontology, (EReference) crossReference);
-				if (!result.contains(property)) {
-					result.add(property);
-				}
-			}
-		}
-		return result;
-	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsDomain()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
-		return Collections.emptyList();
-	}
 
 	/**
 	 * Follow the link.
