@@ -47,7 +47,7 @@ import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.FunctionPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
-import org.openflexo.foundation.fml.TechnologySpecificCustomType;
+import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
@@ -73,7 +73,7 @@ public final class OSLCBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public boolean handleType(TechnologySpecificCustomType technologySpecificType) {
+	public boolean handleType(TechnologySpecificType technologySpecificType) {
 		if (technologySpecificType instanceof OSLCResource) {
 			return true;
 		}

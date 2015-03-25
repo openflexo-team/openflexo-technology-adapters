@@ -37,7 +37,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.emf;
 
 import java.lang.reflect.Type;
