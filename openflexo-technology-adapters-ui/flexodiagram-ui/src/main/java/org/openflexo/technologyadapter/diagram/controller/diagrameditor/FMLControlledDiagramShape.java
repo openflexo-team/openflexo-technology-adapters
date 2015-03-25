@@ -66,14 +66,14 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<DiagramShape, ShapeGraphicalRepresentation> {
 
 	/**
-	 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the role of starting shape
+	 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting shape
 	 * 
 	 * @return a list of {@link LinkScheme}
 	 */
 	public List<LinkScheme> getAvailableLinkSchemes();
 
 	/**
-	 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the role of starting
+	 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting
 	 * shape, and where toTarget is compatible with supplied targetFlexoConcept
 	 * 
 	 * @return a list of {@link LinkScheme}
@@ -81,7 +81,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 	public List<LinkScheme> getAvailableLinkSchemes(FlexoConcept targetFlexoConcept);
 
 	/**
-	 * Build and return a new list of available DropAndLinkScheme where this {@link FMLControlledDiagramShape} may plays the role of
+	 * Build and return a new list of available DropAndLinkScheme where this {@link FMLControlledDiagramShape} may plays the property of
 	 * starting shape, and where target concept of DropScheme is compatible with supplied targetFlexoConcept
 	 * 
 	 * @return a list of {@link DropAndLinkScheme}
@@ -110,7 +110,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 			implements FMLControlledDiagramShape {
 
 		/**
-		 * Build and return a new list of available DropAndLinkScheme where this {@link FMLControlledDiagramShape} may plays the role of
+		 * Build and return a new list of available DropAndLinkScheme where this {@link FMLControlledDiagramShape} may plays the property of
 		 * starting shape, and where target concept of DropScheme is compatible with supplied targetFlexoConcept
 		 * 
 		 * @return a list of {@link DropAndLinkScheme}
@@ -146,7 +146,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 		}
 
 		/**
-		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the role of starting
+		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting
 		 * shape
 		 * 
 		 * @return a list of {@link LinkScheme}
@@ -178,7 +178,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 		}
 
 		/**
-		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the role of starting
+		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting
 		 * shape, and where toTarget is compatible with supplied targetFlexoConcept
 		 * 
 		 * @return a list of {@link LinkScheme}

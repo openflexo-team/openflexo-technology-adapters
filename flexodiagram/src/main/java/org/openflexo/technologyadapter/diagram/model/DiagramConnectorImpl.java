@@ -82,7 +82,7 @@ public abstract class DiagramConnectorImpl extends DiagramElementImpl<ConnectorG
 	}*/
 
 	/**
-	 * Reset graphical representation to be the one defined in related pattern role
+	 * Reset graphical representation to be the one defined in related pattern property
 	 */
 	/*@Override
 	public void resetGraphicalRepresentation() {

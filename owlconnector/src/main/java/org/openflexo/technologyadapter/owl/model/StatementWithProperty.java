@@ -40,11 +40,12 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.fml.TechnologySpecificCustomType;
+import org.openflexo.connie.type.CustomTypeFactory;
+import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
-public class StatementWithProperty implements TechnologySpecificCustomType<OWLTechnologyAdapter> {
+public class StatementWithProperty implements TechnologySpecificType<OWLTechnologyAdapter> {
 
 	public static StatementWithProperty getStatementWithProperty(OWLProperty aProperty) {
 		if (aProperty == null) {
@@ -101,6 +102,24 @@ public class StatementWithProperty implements TechnologySpecificCustomType<OWLTe
 			return getProperty().getTechnologyAdapter();
 		}
 		return null;
+	}
+
+	@Override
+	public String getSerializationRepresentation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isResolved() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public void resolve(CustomTypeFactory<?> factory) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

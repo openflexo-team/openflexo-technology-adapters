@@ -120,7 +120,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 	public void setExtendParentBoundsToHostThisShape(boolean extendParentBoundsToHostThisShape);
 
 	@Override
-	public ShapeRole getFlexoRole();
+	public ShapeRole getAssignedFlexoProperty();
 
 	public static abstract class AddShapeImpl extends AddDiagramElementActionImpl<DiagramShape> implements AddShape {
 
@@ -149,9 +149,9 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 
 		public DiagramContainerElement<?> getContainer(FlexoBehaviourAction action) {
-			if (getFlexoRole() != null && !getFlexoRole().getParentShapeAsDefinedInAction()) {
-				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapeRole());
-				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getParentShapeRole());
+			if (getAssignedFlexoProperty() != null && !getAssignedFlexoProperty().getParentShapeAsDefinedInAction()) {
+				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
+				return action.getFlexoConceptInstance().getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
 			} else {
 				BindingModel bm = getContainer().getOwner().getBindingModel();
 				for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
@@ -177,12 +177,12 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}
 
 		@Override
-		public ShapeRole getFlexoRole() {
-			FlexoRole superFlexoRole = super.getFlexoRole();
+		public ShapeRole getAssignedFlexoProperty() {
+			FlexoRole superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof ShapeRole) {
 				return (ShapeRole) superFlexoRole;
 			} else if (superFlexoRole != null) {
-				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
+				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
 			return null;
@@ -244,8 +244,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			// If an overriden graphical representation is defined, use it
 			/*if (action.getOverridingGraphicalRepresentation(getPatternRole()) != null) {
 				grToUse = action.getOverridingGraphicalRepresentation(getPatternRole());
-			} else*/if (getFlexoRole().getGraphicalRepresentation() != null) {
-				grToUse = getFlexoRole().getGraphicalRepresentation();
+			} else*/if (getAssignedFlexoProperty().getGraphicalRepresentation() != null) {
+				grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
 			}
 
 			ShapeGraphicalRepresentation newGR = factory.makeShapeGraphicalRepresentation();
@@ -275,7 +275,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			// newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());
 
 			if (container == null) {
-				logger.warning("When adding shape, cannot find container for action " + getFlexoRole() + " container="
+				logger.warning("When adding shape, cannot find container for action " + getAssignedFlexoProperty() + " container="
 						+ getContainer(action) + " container=" + getContainer());
 				return null;
 			}
@@ -321,9 +321,9 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 		@Override
 		public ValidationIssue<AddShapeActionMustAdressAValidShapeRole, AddShape> applyValidation(AddShape action) {
-			if (action.getFlexoRole() == null && action.getOwner() instanceof AssignationAction) {
+			if (action.getAssignedFlexoProperty() == null && action.getOwner() instanceof AssignationAction) {
 				Vector<FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape>> v = new Vector<FixProposal<AddShapeActionMustAdressAValidShapeRole, AddShape>>();
-				for (ShapeRole pr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+				for (ShapeRole pr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
 				return new ValidationError<AddShapeActionMustAdressAValidShapeRole, AddShape>(this, action,
@@ -362,19 +362,19 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 		@Override
 		public ValidationIssue<AddShapeActionMustHaveAValidContainer, AddShape> applyValidation(AddShape action) {
-			if (action.getFlexoRole() != null && action.getFlexoRole().getParentShapeAsDefinedInAction()
+			if (action.getAssignedFlexoProperty() != null && action.getAssignedFlexoProperty().getParentShapeAsDefinedInAction()
 					&& !(action.getContainer().isSet() && action.getContainer().isValid())) {
 				Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>> v = new Vector<FixProposal<AddShapeActionMustHaveAValidContainer, AddShape>>();
 				if (action.getRootOwner() instanceof DropScheme) {
 					FlexoConcept targetFlexoConcept = ((DropScheme) action.getRootOwner()).getTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
-						for (ShapeRole pr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+						for (ShapeRole pr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 							v.add(new SetsContainerToTargetShape(targetFlexoConcept, pr));
 						}
 					}
 				}
 				v.add(new SetsContainerToTopLevel());
-				for (ShapeRole pr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+				for (ShapeRole pr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsContainerToShape(pr));
 				}
 				String details;

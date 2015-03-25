@@ -205,8 +205,8 @@ public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 		}
 
 		@Override
-		public IFreeplaneNodeRole getFlexoRole() {
-			return (IFreeplaneNodeRole) super.getFlexoRole();
+		public IFreeplaneNodeRole getAssignedFlexoProperty() {
+			return (IFreeplaneNodeRole) super.getAssignedFlexoProperty();
 		}
 
 	}

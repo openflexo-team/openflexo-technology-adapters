@@ -117,7 +117,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	public void setToShape(DataBinding<DiagramShape> toShape);
 
 	@Override
-	public ConnectorRole getFlexoRole();
+	public ConnectorRole getAssignedFlexoProperty();
 
 	public static abstract class AddConnectorImpl extends AddDiagramElementActionImpl<DiagramConnector> implements AddConnector {
 
@@ -152,21 +152,21 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}*/
 
 		@Override
-		public ConnectorRole getFlexoRole() {
-			FlexoRole superFlexoRole = super.getFlexoRole();
+		public ConnectorRole getAssignedFlexoProperty() {
+			FlexoRole superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof ConnectorRole) {
 				return (ConnectorRole) superFlexoRole;
 			} else if (superFlexoRole != null) {
-				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
+				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
 			return null;
 		}
 
 		public DiagramShape getFromShape(FlexoBehaviourAction action) {
-			if (getFlexoRole() != null && !getFlexoRole().getStartShapeAsDefinedInAction()) {
-				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getStartShapeRole());
-				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getStartShapeRole());
+			if (getAssignedFlexoProperty() != null && !getAssignedFlexoProperty().getStartShapeAsDefinedInAction()) {
+				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getAssignedFlexoProperty().getStartShapeRole());
+				return action.getFlexoConceptInstance().getFlexoActor(getAssignedFlexoProperty().getStartShapeRole());
 			} else {
 				try {
 					return getFromShape().getBindingValue(action);
@@ -182,8 +182,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}
 
 		public DiagramShape getToShape(FlexoBehaviourAction action) {
-			if (getFlexoRole() != null && !getFlexoRole().getEndShapeAsDefinedInAction()) {
-				return action.getFlexoConceptInstance().getFlexoActor(getFlexoRole().getEndShapeRole());
+			if (getAssignedFlexoProperty() != null && !getAssignedFlexoProperty().getEndShapeAsDefinedInAction()) {
+				return action.getFlexoConceptInstance().getFlexoActor(getAssignedFlexoProperty().getEndShapeRole());
 			} else {
 				try {
 					return getToShape().getBindingValue(action);
@@ -200,7 +200,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public String toString() {
-			return "AddConnector " + Integer.toHexString(hashCode()) + " patternRole=" + getFlexoRole();
+			return "AddConnector " + Integer.toHexString(hashCode()) + " patternRole=" + getAssignedFlexoProperty();
 		}
 
 		/*@Override
@@ -208,7 +208,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			try {
 				return super.getPatternRole();
 			} catch (ClassCastException e) {
-				logger.warning("Unexpected pattern role type");
+				logger.warning("Unexpected pattern property type");
 				setPatternRole(null);
 				return null;
 			}
@@ -301,10 +301,10 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				// grToUse = action.getOverridingGraphicalRepresentation(getPatternRole());
 				// } else*/
 
-				ConnectorRole fr = getFlexoRole();
+				ConnectorRole fr = getAssignedFlexoProperty();
 				if (fr != null) {
 					if (fr.getGraphicalRepresentation() != null) {
-						grToUse = getFlexoRole().getGraphicalRepresentation();
+						grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
 					}
 				} else {
 					logger.warning("INVESTIGATE your ViewPoint, No FlexoRole defined for action " + this.getName());
@@ -367,9 +367,9 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public ValidationIssue<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> applyValidation(AddConnector action) {
-			if (action.getFlexoRole() == null && action.getOwner() instanceof AssignationAction) {
+			if (action.getAssignedFlexoProperty() == null && action.getOwner() instanceof AssignationAction) {
 				Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>>();
-				for (ConnectorRole pr : action.getFlexoConcept().getFlexoRoles(ConnectorRole.class)) {
+				for (ConnectorRole pr : action.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
 				return new ValidationError<AddConnectorActionMustAdressAValidConnectorRole, AddConnector>(this, action,
@@ -409,19 +409,19 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public ValidationIssue<AddConnectorActionMustHaveAValidStartingShape, AddConnector> applyValidation(AddConnector action) {
-			ConnectorRole pr = action.getFlexoRole();
+			ConnectorRole pr = action.getAssignedFlexoProperty();
 			DataBinding<DiagramShape> db = action.getFromShape();
 			if (pr != null && pr.getStartShapeAsDefinedInAction() && !(db.isSet() && db.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector>>();
 				if (action.getRootOwner() instanceof LinkScheme) {
 					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getRootOwner()).getFromTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
-						for (ShapeRole spr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+						for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 							v.add(new SetsStartingShapeToStartTargetShape(targetFlexoConcept, spr));
 						}
 					}
 				}
-				for (ShapeRole spr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+				for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsStartingShapeToShape(spr));
 				}
 				return new ValidationError<AddConnectorActionMustHaveAValidStartingShape, AddConnector>(this, action,
@@ -488,19 +488,19 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 		@Override
 		public ValidationIssue<AddConnectorActionMustHaveAValidEndingShape, AddConnector> applyValidation(AddConnector action) {
-			ConnectorRole pr = action.getFlexoRole();
+			ConnectorRole pr = action.getAssignedFlexoProperty();
 			DataBinding<DiagramShape> shape = action.getToShape();
 			if (pr != null && pr.getEndShapeAsDefinedInAction() && !(shape.isSet() && shape.isValid())) {
 				Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>> v = new Vector<FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector>>();
 				if (action.getRootOwner() instanceof LinkScheme) {
 					FlexoConcept targetFlexoConcept = ((LinkScheme) action.getRootOwner()).getToTargetFlexoConcept();
 					if (targetFlexoConcept != null) {
-						for (ShapeRole spr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+						for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 							v.add(new SetsEndingShapeToToTargetShape(targetFlexoConcept, spr));
 						}
 					}
 				}
-				for (ShapeRole spr : action.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+				for (ShapeRole spr : action.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsEndingShapeToShape(spr));
 				}
 				return new ValidationError<AddConnectorActionMustHaveAValidEndingShape, AddConnector>(this, action,

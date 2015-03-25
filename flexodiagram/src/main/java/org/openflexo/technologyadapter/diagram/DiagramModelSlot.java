@@ -75,7 +75,7 @@ public interface DiagramModelSlot extends ModelSlot<Diagram> {
 			} else if (ConnectorRole.class.isAssignableFrom(patternRoleClass)) {
 				return "connector";
 			}
-			logger.warning("Unexpected pattern role: " + patternRoleClass.getName());
+			logger.warning("Unexpected pattern property: " + patternRoleClass.getName());
 			return null;
 		}
 
