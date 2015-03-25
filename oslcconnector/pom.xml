@@ -4,14 +4,14 @@
   <parent>
 	<groupId>org.openflexo</groupId>
 	<artifactId>openflexo-technology-adapters</artifactId>
-	<version>1.7.1-SYLVAIN-SNAPSHOT</version>
+	<version>1.7.1-SNAPSHOT</version>
   </parent>
   <artifactId>oslcconnector</artifactId>
   <description>technology Adapter for OSLC data</description>
   <url>http://www.openflexo.com/technologyadapter/oslcconnector</url>
   <properties>
     <technology.prefix>OSLC</technology.prefix>
-    <oslcVersion>1.7.1-SYLVAIN-SNAPSHOT</oslcVersion>
+    <oslcVersion>1.7.1-SNAPSHOT</oslcVersion>
   </properties>
   <dependencies>
     <dependency>

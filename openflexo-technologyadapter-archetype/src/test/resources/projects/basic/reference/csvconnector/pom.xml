@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.openflexo.technologyadapter</groupId>
     <artifactId>csv</artifactId>
-    <version>1.7.1-SYLVAIN-SNAPSHOT</version>
+    <version>1.7.1-SNAPSHOT</version>
   </parent>
   <artifactId>csvconnector</artifactId>
   <description>technology Adapter for CSV data</description>
