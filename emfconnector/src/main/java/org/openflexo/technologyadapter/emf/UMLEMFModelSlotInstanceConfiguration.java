@@ -39,12 +39,9 @@
 package org.openflexo.technologyadapter.emf;
 
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.emf.UMLEMFModelSlot.UMLEMFModelSlotImpl;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
+
 
 
 /** UML Model Slot configuration 

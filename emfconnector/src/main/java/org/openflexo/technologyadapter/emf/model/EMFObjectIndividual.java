@@ -256,6 +256,16 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	}
 
 	/**
+	 * returns the type by wich EObject instance has been created
+	 * @return
+	 */
+	public IFlexoOntologyClass<EMFTechnologyAdapter> getMainType() {
+		
+		return (IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getMetaModel().getConverter().convertClass(ontology.getMetaModel(), object.eClass());
+	}
+	
+	
+	/**
 	 * Follow the link.
 	 * 
 	 * @see org.openflexo.foundation.ontology.IFlexoOntologyIndividual#isIndividualOf(org.openflexo.foundation.ontology.IFlexoOntologyClass)

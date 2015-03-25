@@ -81,6 +81,11 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
+
+import org.eclipse.uml2.uml.profile.*;
+import org.eclipse.uml2.uml.NamedElement;
+import org.eclipse.uml2.uml.Profile;
+
 /**
  * Test Class for EMF Model Edition.
  * 
@@ -239,6 +244,13 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getFlexoIODelegate().toString());
 
+		/**
+		NamedElement e = null;
+		Profile profile = null;
+		profile.getAllProfileApplications();
+		e.getApplicableStereotypes();
+		 **/
+		
 	}
 
 	@Test

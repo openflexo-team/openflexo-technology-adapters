@@ -130,6 +130,7 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 			EPackage ePackage = newMetaModelResource.getPackage();
 			if (!EMFPackageRegistry.containsKey(mmURI) && ePackage != null) {
 				EMFPackageRegistry.put(newMetaModelResource.getURI(), ePackage); 
+				EMFPackageRegistry.put(ePackage.getNsPrefix(), ePackage);
 			}
 			else {
 				logger.warning("UML Profile already exists in registry : " + newMetaModelResource.getURI());

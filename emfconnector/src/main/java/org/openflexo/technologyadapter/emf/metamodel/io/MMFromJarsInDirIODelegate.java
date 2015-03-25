@@ -108,7 +108,6 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 					if (ePackageField != null) {
 						EPackage ePack = (EPackage) ePackageField.get(null);
 						resource.setPackage(ePack);
-						EPackage.Registry.INSTANCE.put(ePack.getNsPrefix(), ePack);
 						Class<?> resourceFactoryClass = classLoader.loadClass(resource.getEMFResourceFactoryClassName());
 						if (resourceFactoryClass != null) {
 							resource.setEMFResourceFactory((Resource.Factory) resourceFactoryClass.newInstance());
