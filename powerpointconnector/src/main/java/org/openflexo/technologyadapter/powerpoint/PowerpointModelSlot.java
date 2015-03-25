@@ -67,7 +67,7 @@ public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
 			} else if (AutoShape.class.isAssignableFrom(patternRoleClass)) {
 				return "shape";
 			}
-			logger.warning("Unexpected pattern role: " + patternRoleClass.getName());
+			logger.warning("Unexpected pattern property: " + patternRoleClass.getName());
 			return null;
 		}
 

@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.openflexo</groupId>
     <artifactId>openflexo-technology-adapters</artifactId>
-    <version>1.7.1-SNAPSHOT</version>
+    <version>1.7.1-SYLVAIN-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.openflexo.technologyadapter</groupId>
@@ -15,12 +15,12 @@
   		<dependency>
   			<groupId>org.openflexo</groupId>
   			<artifactId>flexo-foundation</artifactId>
-  			<version>1.7.1-SNAPSHOT</version>
+  			<version>1.7.1-SYLVAIN-SNAPSHOT</version>
   		</dependency>
   		<dependency>
   			<groupId>org.openflexo</groupId>
   			<artifactId>flexo-ui</artifactId>
-  			<version>1.7.1-SNAPSHOT</version>
+  			<version>1.7.1-SYLVAIN-SNAPSHOT</version>
   		</dependency>
     </dependencies>
   </dependencyManagement>

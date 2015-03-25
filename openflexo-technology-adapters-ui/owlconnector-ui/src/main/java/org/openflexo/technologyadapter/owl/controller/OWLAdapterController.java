@@ -199,7 +199,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	}
 
 	/**
-	 * Return icon representing supplied pattern role
+	 * Return icon representing supplied pattern property
 	 * 
 	 * @param object
 	 * @return

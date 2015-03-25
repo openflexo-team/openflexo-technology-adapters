@@ -50,6 +50,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -65,6 +66,7 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology.OntologyNotFoundExc
 import org.openflexo.technologyadapter.owl.model.OWLOntologyAsMetaModelRepository;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyAsModelRepository;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
+import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceImpl;
 
@@ -76,6 +78,7 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceImpl;
  */
 @DeclareModelSlots({ OWLModelSlot.class })
 @DeclareRepositoryType({ OWLOntologyAsModelRepository.class })
+@DeclareTechnologySpecificTypes({ StatementWithProperty.class })
 public class OWLTechnologyAdapter extends TechnologyAdapter {
 
 	private static final Logger logger = Logger.getLogger(OWLTechnologyAdapter.class.getPackage().getName());

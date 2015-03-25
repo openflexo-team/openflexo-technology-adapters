@@ -3,9 +3,9 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-        <version>1.7.1-SNAPSHOT</version>
+        <version>1.7.1-SYLVAIN-SNAPSHOT</version>
 	</parent>
-	<version>1.7.1-SNAPSHOT</version>
+	<version>1.7.1-SYLVAIN-SNAPSHOT</version>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>openflexo-technology-adapters-ui</artifactId>
 	<name>Openflexo-Technology-Adapters UI</name>

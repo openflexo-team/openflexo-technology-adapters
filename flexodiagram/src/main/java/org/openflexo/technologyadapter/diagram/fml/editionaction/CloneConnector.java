@@ -70,7 +70,7 @@ public interface CloneConnector extends AddConnector {
 
 		@Override
 		public String toString() {
-			return "CloneConnector " + Integer.toHexString(hashCode()) + " patternRole=" + getFlexoRole();
+			return "CloneConnector " + Integer.toHexString(hashCode()) + " patternRole=" + getAssignedFlexoProperty();
 		}
 
 	}

@@ -214,7 +214,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 		}
 		// TODO: optimize this, use FlexoObjectReference<FlexoConceptInstance> in FlexoObject
 		for (FlexoConceptInstance fci : vmInstance.getFlexoConceptInstances()) {
-			if (fci.getRoleForActor(this) != null) {
+			if (fci.getPropertyForActor(this) != null) {
 				return fci;
 			}
 		}
@@ -234,7 +234,7 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 	public GraphicalElementRole<?, ?> getPatternRole(VirtualModelInstance vmInstance) {
 		FlexoConceptInstance epi = getFlexoConceptInstance(vmInstance);
 		if (epi != null) {
-			return (GraphicalElementRole<?, ?>) epi.getRoleForActor(this);
+			return (GraphicalElementRole<?, ?>) epi.getPropertyForActor(this);
 		}
 		return null;
 	}

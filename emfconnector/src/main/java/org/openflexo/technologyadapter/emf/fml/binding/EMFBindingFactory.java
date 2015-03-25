@@ -46,7 +46,7 @@ import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.binding.BindingPathElement;
 import org.openflexo.connie.binding.FunctionPathElement;
 import org.openflexo.connie.binding.SimplePathElement;
-import org.openflexo.foundation.fml.TechnologySpecificCustomType;
+import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.foundation.ontology.SubClassOfClass;
@@ -94,7 +94,7 @@ public final class EMFBindingFactory extends TechnologyAdapterBindingFactory {
 	}
 
 	@Override
-	public boolean handleType(TechnologySpecificCustomType technologySpecificType) {
+	public boolean handleType(TechnologySpecificType technologySpecificType) {
 		if ((technologySpecificType instanceof IndividualOfClass)
 				&& ((IndividualOfClass) technologySpecificType).getOntologyClass() instanceof EMFClassClass) {
 			return true;

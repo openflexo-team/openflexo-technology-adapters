@@ -118,7 +118,7 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 			parent.addToConnectors(newConnector);
 		} else {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Focused role is null !");
+				logger.warning("Focused property is null !");
 			}
 		}
 	}

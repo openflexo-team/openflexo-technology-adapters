@@ -42,11 +42,12 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.openflexo.foundation.fml.TechnologySpecificCustomType;
+import org.openflexo.connie.type.CustomTypeFactory;
+import org.openflexo.foundation.fml.TechnologySpecificType;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 
-public class DiagramType implements TechnologySpecificCustomType<TechnologyAdapter> {
+public class DiagramType implements TechnologySpecificType<TechnologyAdapter> {
 
 	protected DiagramSpecification diagramSpecification;
 
@@ -102,6 +103,24 @@ public class DiagramType implements TechnologySpecificCustomType<TechnologyAdapt
 			dsMap.put(diagramSpecification, returned);
 		}
 		return returned;
+	}
+
+	@Override
+	public String getSerializationRepresentation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isResolved() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public void resolve(CustomTypeFactory<?> factory) {
+		// TODO Auto-generated method stub
+
 	}
 
 }
