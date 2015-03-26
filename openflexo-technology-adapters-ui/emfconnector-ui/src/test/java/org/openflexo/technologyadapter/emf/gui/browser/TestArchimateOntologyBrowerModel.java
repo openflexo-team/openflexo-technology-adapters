@@ -71,8 +71,8 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
-	protected static final Logger logger = Logger.getLogger(TestUMLOntologyBrowerModel.class.getPackage().getName());
+public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
+	protected static final Logger logger = Logger.getLogger(TestArchimateOntologyBrowerModel.class.getPackage().getName());
 
 	static EMFTechnologyAdapter technologicalAdapter;
 	static EMFModelResource umlModelResource = null;
@@ -81,7 +81,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	private static GraphicalContextDelegate gcDelegate;
 
-	static String umlModelResourceRelativeURI = "/TestResourceCenter/EMF/Model/uml/test1.uml";
+	static String umlModelResourceRelativeURI = "/TestResourceCenter/EMF/Model/archimate/OceanObservatoryModel.archimate";
 
 
 	@BeforeClass
@@ -117,7 +117,6 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			umlModel = umlModelResource.getModel();
 			assertNotNull(umlModel);
 			assertNotNull(umlModel.getMetaModel());
-			assertEquals(umlModel.getMetaModel().getURI(),technologicalAdapter.UML_MM_URI );
 		}
 	}
 
@@ -127,8 +126,6 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	public void TestCreateOntologyBrowser() {
 
 		long previousDate, currentDate;
-		int latency_time = 0;
-
 
 
 		long startTime = System.currentTimeMillis();
@@ -154,101 +151,100 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		obm.setShowIndividuals(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowIndividuals took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowIndividuals took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowClasses(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowClasses took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowClasses took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowDataProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowDataProperties took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowDataProperties took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowObjectProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowObjectProperties took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowObjectProperties took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowAnnotationProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowAnnotationProperties took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowAnnotationProperties took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.recomputeStructure();
 		currentDate = System.currentTimeMillis();
-		System.out.println (" recomputeStructure took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" recomputeStructure took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowClasses(true);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowClasses took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowClasses took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowDataProperties(true);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowDataProperties took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowDataProperties took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowObjectProperties(true);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowObjectProperties took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowObjectProperties took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowAnnotationProperties(true);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowAnnotationProperties took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowAnnotationProperties took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowIndividuals(true);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowIndividuals took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowIndividuals took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 
 		obm.recomputeStructure();
 		currentDate = System.currentTimeMillis();
-		System.out.println (" recomputeStructure took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" recomputeStructure took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 
 		obm.setShowIndividuals(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowIndividuals took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowIndividuals took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
-		System.out.println (" setShowClasses took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowClasses took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowDataProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowDataProperties took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowDataProperties took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowObjectProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowObjectProperties took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowObjectProperties took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.setShowAnnotationProperties(false);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" setShowAnnotationProperties took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" setShowAnnotationProperties took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		obm.recomputeStructure();
 		currentDate = System.currentTimeMillis();
-		System.out.println (" recomputeStructure took: " + (currentDate-previousDate-latency_time));
+		System.out.println (" recomputeStructure took: " + (currentDate-previousDate));
 		previousDate=currentDate;
 	}
 
 
 	@Test
 	@TestOrder(4)
-	public void TestCreateEMFModelView() throws InterruptedException {
+	public void TestCreateEMFModelView() {
 		long previousDate, currentDate;
-		int latency_time = 2000;
 
 		logger.info("TestCreateEMFModelView");
 
@@ -256,7 +252,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		EMFModelView modelView = new EMFModelView(umlModel,null,null);
 		currentDate = System.currentTimeMillis();
-		System.out.println (" initial creation of view took : " + (currentDate-previousDate-latency_time));
+		System.out.println (" initial creation of view took : " + (currentDate-previousDate));
 		previousDate=currentDate;
 
 		gcDelegate.addTab("umlView", modelView.getFIBController());
@@ -269,92 +265,64 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			i--;
 			modelView.setShowIndividuals(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowIndividuals (FALSE)  took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" setShowIndividuals (FALSE)  took: " + (currentDate-previousDate));
 			previousDate=currentDate;
 
 			modelView.setShowClasses(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowClasses (FALSE)  took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" setShowClasses (FALSE)  took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowDataProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowDataProperties (FALSE)  took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" setShowDataProperties (FALSE)  took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			Thread.sleep(latency_time);
-
 
 			modelView.setShowObjectProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowObjectProperties (FALSE)  took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" setShowObjectProperties (FALSE)  took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			Thread.sleep(latency_time);
-
 
 			modelView.setShowAnnotationProperties(false);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowAnnotationProperties (FALSE)  took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" setShowAnnotationProperties (FALSE)  took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.update();
 			currentDate = System.currentTimeMillis();
-			System.out.println (" update   took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" update   took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			Thread.sleep(latency_time);
 
-			// showing only individuals 
-			
-			modelView.setShowIndividuals(true);
-			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowIndividuals (TRUE) took: " + (currentDate-previousDate-latency_time));
-			previousDate=currentDate;
-			Thread.sleep(latency_time);
-
-			modelView.setShowIndividuals(false);
-			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowIndividuals (FALSE) took: " + (currentDate-previousDate-latency_time));
-			previousDate=currentDate;
-			Thread.sleep(latency_time);
-
-			
-			
 			modelView.setShowClasses(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowClasses (TRUE)  took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" setShowClasses (TRUE)  took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowDataProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowDataProperties (TRUE) took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" setShowDataProperties (TRUE) took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowObjectProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowObjectProperties (TRUE)  took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" setShowObjectProperties (TRUE)  took: " + (currentDate-previousDate));
 			previousDate=currentDate;
 
 			modelView.setShowAnnotationProperties(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowAnnotationProperties (TRUE) took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" setShowAnnotationProperties (TRUE) took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			Thread.sleep(latency_time);
 
 			modelView.setShowIndividuals(true);
 			currentDate = System.currentTimeMillis();
-			System.out.println (" setShowIndividuals (TRUE) took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" setShowIndividuals (TRUE) took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			Thread.sleep(latency_time);
 
 
 			modelView.update();
 			currentDate = System.currentTimeMillis();
-			System.out.println (" update  took: " + (currentDate-previousDate-latency_time));
+			System.out.println (" update  took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			Thread.sleep(latency_time);
 			
 			 
 	        int mb = 1024*1024;
@@ -383,7 +351,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestUMLOntologyBrowerModel.class.getSimpleName());
+		gcDelegate = new GraphicalContextDelegate(TestArchimateOntologyBrowerModel.class.getSimpleName());
 	}
 
 	@AfterClass

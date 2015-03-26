@@ -71,15 +71,19 @@ public class EMFModelBrowserModel extends OntologyBrowserModel<EMFTechnologyAdap
 	@Override
 	protected IFlexoOntologyClass<EMFTechnologyAdapter> getPreferredStorageLocation(IFlexoOntologyIndividual<EMFTechnologyAdapter> i) {
 
-		if (i instanceof EMFObjectIndividual){
-			// Do Better sometime
-			return ((EMFObjectIndividual) i).getMainType();
+		if (this.getShowClasses()){
+
+			if ( i instanceof EMFObjectIndividual){
+				// Do Better sometime
+				return ((EMFObjectIndividual) i).getMainType();
+			}
+			else if (   i instanceof EMFEnumIndividual){
+				return ((EMFEnumIndividual) i ).getTypes().get(0);
+			}
+
+			return getContext().getRootConcept();
 		}
-		else if (i instanceof EMFEnumIndividual){
-			return ((EMFEnumIndividual) i ).getTypes().get(0);
-		}
-		
-		return getContext().getRootConcept();
+		else return null;
 	}
-	
+
 }
