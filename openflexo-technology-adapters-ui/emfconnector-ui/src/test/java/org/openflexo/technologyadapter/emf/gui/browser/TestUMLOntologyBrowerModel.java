@@ -248,7 +248,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	@TestOrder(4)
 	public void TestCreateEMFModelView() throws InterruptedException {
 		long previousDate, currentDate;
-		int latency_time = 2000;
+		int latency_time = 1000;
 
 		logger.info("TestCreateEMFModelView");
 
@@ -263,7 +263,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		previousDate = System.currentTimeMillis();
 
-		int i = 4;
+		int i = 2;
 
 		while (i>0){
 			i--;

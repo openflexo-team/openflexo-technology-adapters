@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.emf.gui.browser;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.util.logging.Logger;
@@ -51,7 +50,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.components.widget.OntologyBrowserModel;
-import org.openflexo.connie.binding.BindingValueChangeListener;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -259,7 +257,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		previousDate = System.currentTimeMillis();
 
-		int i = 4;
+		int i = 2;
 
 		while (i>0){
 			i--;
