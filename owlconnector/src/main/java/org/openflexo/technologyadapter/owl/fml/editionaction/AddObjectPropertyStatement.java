@@ -50,7 +50,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.SetObjectPropertyValueAction;
@@ -127,12 +127,12 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		}
 
 		@Override
-		public ObjectPropertyStatementRole getFlexoRole() {
-			FlexoRole superFlexoRole = super.getFlexoRole();
+		public ObjectPropertyStatementRole getAssignedFlexoProperty() {
+			FlexoProperty<?> superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof ObjectPropertyStatementRole) {
 				return (ObjectPropertyStatementRole) superFlexoRole;
 			} else if (superFlexoRole != null) {
-				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
+				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
 			return null;
@@ -193,8 +193,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
 				return (OWLObjectProperty) getOwningVirtualModel().getOntologyObjectProperty(objectPropertyURI);
 			} else {
-				if (getFlexoRole() != null) {
-					return getFlexoRole().getObjectProperty();
+				if (getAssignedFlexoProperty() != null) {
+					return getAssignedFlexoProperty().getObjectProperty();
 				}
 			}
 			return null;
@@ -204,11 +204,11 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		@Override
 		public void setObjectProperty(IFlexoOntologyObjectProperty ontologyProperty) {
 			if (ontologyProperty != null) {
-				if (getFlexoRole() != null) {
-					if (getFlexoRole().getObjectProperty().isSuperConceptOf(ontologyProperty)) {
+				if (getAssignedFlexoProperty() != null) {
+					if (getAssignedFlexoProperty().getObjectProperty().isSuperConceptOf(ontologyProperty)) {
 						objectPropertyURI = ontologyProperty.getURI();
 					} else {
-						getFlexoRole().setObjectProperty((OWLObjectProperty) ontologyProperty);
+						getAssignedFlexoProperty().setObjectProperty((OWLObjectProperty) ontologyProperty);
 					}
 				} else {
 					objectPropertyURI = ontologyProperty.getURI();
@@ -221,8 +221,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		@Override
 		public String _getObjectPropertyURI() {
 			if (getObjectProperty() != null) {
-				if (getFlexoRole() != null && getFlexoRole().getObjectProperty() == getObjectProperty()) {
-					// No need to store an overriding type, just use default provided by pattern role
+				if (getAssignedFlexoProperty() != null && getAssignedFlexoProperty().getObjectProperty() == getObjectProperty()) {
+					// No need to store an overriding type, just use default provided by pattern property
 					return null;
 				}
 				return getObjectProperty().getURI();
@@ -331,7 +331,7 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 				AddObjectPropertyStatement action) {
 			if (action.getObjectProperty() == null && action.getOwner() instanceof AssignationAction) {
 				Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>> v = new Vector<FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>>();
-				for (ObjectPropertyStatementRole pr : action.getFlexoConcept().getFlexoRoles(ObjectPropertyStatementRole.class)) {
+				for (ObjectPropertyStatementRole pr : action.getFlexoConcept().getDeclaredProperties(ObjectPropertyStatementRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
 				return new ValidationError<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement>(this,

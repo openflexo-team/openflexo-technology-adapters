@@ -117,8 +117,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 					// updatePalette();
 					// getController().updatePalette(diagramPalette, oldPaletteView);
 					logger.warning("Sans doute des choses a faire ici ???");
-				}
-				else if (evt.getOldValue() instanceof DiagramPaletteElement) {
+				} else if (evt.getOldValue() instanceof DiagramPaletteElement) {
 					ContextualPaletteElement e = getContextualPaletteElement((DiagramPaletteElement) evt.getOldValue());
 					removeElement(e);
 					// DrawingView<PaletteDrawing> oldPaletteView = getPaletteView();
@@ -195,8 +194,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 
 				if (getEditor() instanceof FMLControlledDiagramEditor) {
 					return handleFMLControlledDrop(target, diagramPaletteElement, dropLocation, (FMLControlledDiagramEditor) getEditor());
-				}
-				else {
+				} else {
 					return handleBasicGraphicalRepresentationDrop(target, getGraphicalRepresentation(), dropLocation, false, false, false,
 							false, false, false);
 				}
@@ -235,8 +233,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 					if (ds.isTopTarget()) {
 						availableDropSchemes.add(ds);
 					}
-				}
-				else if (target.getDrawable() instanceof FMLControlledDiagramShape) {
+				} else if (target.getDrawable() instanceof FMLControlledDiagramShape) {
 					FMLControlledDiagramShape fmlControlledShape = (FMLControlledDiagramShape) target.getDrawable();
 					if (ds.isValidTarget(fmlControlledShape.getFlexoConceptInstance().getFlexoConcept(), fmlControlledShape.getRole())) {
 						availableDropSchemes.add(ds);
@@ -274,8 +271,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 		if (availableDropSchemes.size() == 0) {
 			logger.warning("Unexpected empty list: availableDropSchemes");
 			return false;
-		}
-		else if (availableDropSchemes.size() > 1) {
+		} else if (availableDropSchemes.size() > 1) {
 			JPopupMenu popup = new JPopupMenu();
 			for (final DropScheme dropScheme : availableDropSchemes) {
 				JMenuItem menuItem = new JMenuItem(FlexoLocalization.localizedForKey(dropScheme.getLabel() != null ? dropScheme.getLabel()
@@ -285,8 +281,7 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 				popup.add(menuItem);
 			}
 			popup.show(editor.getDrawingView(), (int) dropLocation.x, (int) dropLocation.y);
-		}
-		else { // availableDropSchemes.size() == 1
+		} else { // availableDropSchemes.size() == 1
 			DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(editor.getVirtualModelInstance(), null, editor
 					.getFlexoController().getEditor());
 			action.setDropScheme(availableDropSchemes.get(0));

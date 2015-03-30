@@ -76,7 +76,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 	public static final String DRAWING_KEY = "drawing";
 	public static final String FLEXO_CONCEPT_INSTANCE_KEY = "flexoConceptInstance";
 	public static final String DIAGRAM_ELEMENT_KEY = "diagramElement";
-	public static final String ROLE_KEY = "role";
+	public static final String ROLE_KEY = "property";
 
 	/**
 	 * Return the {@link FMLControlledDiagramDrawing} where this {@link FMLControlledDiagramElement} is referenced
@@ -126,7 +126,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 	public void setDiagramElement(E diagramElement);
 
 	/**
-	 * Return the role from which related {@link FlexoConceptInstance} addresses the {@link DiagramElement}
+	 * Return the property from which related {@link FlexoConceptInstance} addresses the {@link DiagramElement}
 	 * 
 	 * @return
 	 */
@@ -134,7 +134,7 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 	public GraphicalElementRole<E, GR> getRole();
 
 	/**
-	 * Sets the role from which related {@link FlexoConceptInstance} addresses the {@link DiagramElement}
+	 * Sets the property from which related {@link FlexoConceptInstance} addresses the {@link DiagramElement}
 	 * 
 	 * @return
 	 */

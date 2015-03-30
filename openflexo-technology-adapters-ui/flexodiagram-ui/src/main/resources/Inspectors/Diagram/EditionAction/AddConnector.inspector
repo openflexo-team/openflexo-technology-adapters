@@ -11,7 +11,7 @@
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
 			<Label label="from_shape" align="right" index="6" data=""
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				visible="data.flexoRole.startShapeAsDefinedInAction" format="" icon=""
+				visible="data.assignedFlexoProperty.startShapeAsDefinedInAction" format="" icon=""
 				tooltip="" localize="true" enable="" clickAction=""
 				doubleClickAction="" rightClickAction="" enterPressedAction=""
 				valueChangedAction="" valueTransform="" valueValidator="" />
@@ -21,12 +21,12 @@
 				rightClickAction="" enterPressedAction="" valueChangedAction=""
 				valueTransform="" valueValidator="" index="7" data="data.fromShape"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-				visible="data.flexoRole.startShapeAsDefinedInAction">
+				visible="data.assignedFlexoProperty.startShapeAsDefinedInAction">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
 			<Label label="to_shape" align="right" index="8" data=""
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=8;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				visible="data.flexoRole.endShapeAsDefinedInAction" format="" icon=""
+				visible="data.assignedFlexoProperty.endShapeAsDefinedInAction" format="" icon=""
 				tooltip="" localize="true" enable="" clickAction=""
 				doubleClickAction="" rightClickAction="" enterPressedAction=""
 				valueChangedAction="" valueTransform="" valueValidator="" />
@@ -36,7 +36,7 @@
 				rightClickAction="" enterPressedAction="" valueChangedAction=""
 				valueTransform="" valueValidator="" index="9" data="data.toShape"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-				visible="data.flexoRole.endShapeAsDefinedInAction">
+				visible="data.assignedFlexoProperty.endShapeAsDefinedInAction">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
 		</Tab>

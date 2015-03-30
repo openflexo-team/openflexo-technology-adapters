@@ -58,9 +58,10 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.FMLModelFactory;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoProperty;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 
@@ -157,12 +158,12 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 			@Override
 			public void visit(FlexoConcept flexoConcept) {
 
-				for (FlexoRole<?> role : flexoConcept.getFlexoRoles()) {
+				for (FlexoProperty<?> role : flexoConcept.getFlexoProperties()) {
 					if (role instanceof ShapeRole) {
 						if (((ShapeRole) role).getParentShapeAsDefinedInAction()) {
 							drawShape(shapeBinding, (ShapeRole) role, getFlexoConcept());
-							// System.out.println("Add shape " + role.getRoleName() + " under FlexoConcept");
-						} 
+							// System.out.println("Add shape " + property.getRoleName() + " under FlexoConcept");
+						}
 					} else if (role instanceof ConnectorRole) {
 						ConnectorRole connectorRole = (ConnectorRole) role;
 						ShapeGRBinding fromBinding;
@@ -187,7 +188,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 							toBinding = shapeBinding;
 							toDrawable = connectorRole.getEndShapeRole();
 						}
-						// System.out.println("Add connector " + role.getPatternRoleName() + " under FlexoConcept");
+						// System.out.println("Add connector " + property.getPatternRoleName() + " under FlexoConcept");
 						drawConnector(connectorBinding, connectorRole, fromBinding, fromDrawable, toBinding, toDrawable);
 					}
 				}
@@ -200,11 +201,11 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 			@Override
 			public void visit(ShapeRole parentRole) {
 
-				for (FlexoRole<?> role : parentRole.getFlexoConcept().getFlexoRoles()) {
+				for (FlexoProperty<?> role : parentRole.getFlexoConcept().getFlexoProperties()) {
 					if (role instanceof ShapeRole) {
 						if (((ShapeRole) role).getParentShapeRole() == parentRole) {
 							drawShape(shapeBinding, (ShapeRole) role, parentRole);
-							//System.out.println("Add shape " + role.getRoleName() + " under " + parentRole.getRoleName());
+							// System.out.println("Add shape " + property.getRoleName() + " under " + parentRole.getRoleName());
 						}
 					}
 				}
@@ -226,8 +227,8 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		/*if (getFlexoConcept() != null) {
 			getFlexoConcept().deleteObserver(this);
 		}*/
-		/*for (FlexoRole role : getFlexoConcept().getPatternRoles()) {
-			role.deleteObserver(this);
+		/*for (FlexoRole property : getFlexoConcept().getPatternRoles()) {
+			property.deleteObserver(this);
 		}*/
 		super.delete();
 	}

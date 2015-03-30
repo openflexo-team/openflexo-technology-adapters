@@ -11,11 +11,11 @@
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
 			<Label label="container" align="right" index="6"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				visible="data.flexoRole.parentShapeAsDefinedInAction" localize="true" />
+				visible="data.assignedFlexoProperty.parentShapeAsDefinedInAction" localize="true" />
 			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" index="7" data="data.container"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-				visible="data.flexoRole.parentShapeAsDefinedInAction">
+				visible="data.assignedFlexoProperty.parentShapeAsDefinedInAction">
 				<Assignment variable="component.bindable" value="data" />
 			</Custom>
 			<CheckBox selected="true" index="8"
