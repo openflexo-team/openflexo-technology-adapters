@@ -248,16 +248,22 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	 */
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getSuperClasses() {
-		
-		
+
+
 		List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
-		for (EClass superClass : object.getESuperTypes()) {
-			superClasses.add(ontology.getConverter().convertClass(ontology, superClass));
+		for (EClass superClass : object.getESuperTypes()) {		
+			// prevent
+			if (((EMFMetaModel) ontology).getResource().getPackage() == org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
+				superClasses.add(ontology.getConverter().convertClass(ontology, superClass));
+			}
+			else if (superClass.getEPackage() != org.eclipse.emf.ecore.EcorePackage.eINSTANCE){
+				superClasses.add(ontology.getConverter().convertClass(ontology, superClass));
+			}
 		}
 		return Collections.unmodifiableList(superClasses);
 	}
 
-	
+
 	/**
 	 * Follow the link.
 	 * 
@@ -265,9 +271,9 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	 */
 	@Override
 	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getSubClasses(IFlexoOntology<EMFTechnologyAdapter> context) {
-		
+
 		System.out.println("Looking for subclasses of: " + this.getName());
-		
+
 		List<IFlexoOntologyClass<EMFTechnologyAdapter>> subClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
 		if (context instanceof EMFMetaModel) {
 			for (Entry<EClass, EMFClassClass> classEntry : ontology.getConverter().getClasses().entrySet()) {
