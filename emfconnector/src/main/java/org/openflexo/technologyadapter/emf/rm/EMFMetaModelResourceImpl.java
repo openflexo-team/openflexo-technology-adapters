@@ -42,7 +42,10 @@ package org.openflexo.technologyadapter.emf.rm;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
+import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
@@ -120,5 +123,18 @@ public abstract class EMFMetaModelResourceImpl extends
 	public Class<EMFMetaModel> getResourceDataClass() {
 		return EMFMetaModel.class;
 	}
+
+	/**
+	 * Creates a new ModelResource, for EMF, MetaModel decides wich type of serialization you should use!
+	 * @param flexoIODelegate
+	 * @return
+	 */	
+	@Override
+	public 	Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate){
+		// TODO : refactor with proper IODelegate Support
+		return getEMFResourceFactory().createResource(org.eclipse.emf.common.util.URI.createFileURI(((FileFlexoIODelegate)flexoIODelegate).getFile().getAbsolutePath()));
+		
+	}
+	
 
 }

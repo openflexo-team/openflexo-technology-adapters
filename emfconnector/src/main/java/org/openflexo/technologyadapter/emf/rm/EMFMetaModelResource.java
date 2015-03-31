@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.emf.rm;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
@@ -150,4 +151,11 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	 */
 	@Override
 	public EMFMetaModel getMetaModelData();
+
+	/**
+	 * Creates a new ModelResource, for EMF, MetaModel decides wich type of serialization you should use!
+	 * @param flexoIODelegate
+	 * @return
+	 */
+	Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate);
 }
