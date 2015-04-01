@@ -122,7 +122,7 @@ public interface MMFromClasspathIODelegate extends EMFMetaModelIODelegate<String
 							if (resource.getPackage() != null && resource.getPackage().getNsURI().equalsIgnoreCase(resource.getURI()) && resource.getEMFResourceFactory() != null) {
 
 								EMFMetaModelConverter converter = new EMFMetaModelConverter(resource.getTechnologyAdapter());
-								result = converter.convertMetaModel(resource.getPackage());
+								result = converter.convertMetaModel(resource.getPackage());								
 								result.setResource(resource);
 								resource.setResourceData(result);
 							}

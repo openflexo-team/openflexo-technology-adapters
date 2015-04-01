@@ -220,7 +220,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	@Override
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getReferencingFeatureAssociations() {
 		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> referencingFeatureAssociation = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>();
-		referencingFeatureAssociation.add(ontology.getConverter().convertAttributeAssociation(ontology, object,null));
+		referencingFeatureAssociation.add(ontology.getConverter().convertAttributeAssociation(ontology, object,null,null));
 		return Collections.unmodifiableList(referencingFeatureAssociation);
 	}
 
@@ -241,7 +241,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 */
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getDomain() {
-		return ontology.getConverter().convertClass(ontology, object.getEContainingClass());
+		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(),null);
 	}
 
 	/**

@@ -232,7 +232,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	 */
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getRange() {
-		return ontology.getConverter().convertClass(ontology, object.getEReferenceType());
+		return ontology.getConverter().convertClass(ontology, object.getEReferenceType(),null);
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getDomain() {
 		// FIXME Pas de sens car ce lien ce fait plutot avec l'association (en EMF le lien est 1-1-1 donc pas de soucis.)
-		return ontology.getConverter().convertClass(ontology, object.getEContainingClass());
+		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(),null);
 	}
 
 	/**

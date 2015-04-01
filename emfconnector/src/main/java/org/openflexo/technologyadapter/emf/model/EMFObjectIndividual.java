@@ -252,7 +252,7 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getTypes() {
 		return Collections.unmodifiableList(Collections.singletonList((IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getMetaModel()
-				.getConverter().convertClass(ontology.getMetaModel(), object.eClass())));
+				.getConverter().convertClass(ontology.getMetaModel(), object.eClass(),null)));
 	}
 
 	/**
@@ -261,7 +261,7 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	 */
 	public IFlexoOntologyClass<EMFTechnologyAdapter> getMainType() {
 		
-		return (IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getMetaModel().getConverter().convertClass(ontology.getMetaModel(), object.eClass());
+		return (IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getMetaModel().getConverter().convertClass(ontology.getMetaModel(), object.eClass(),null);
 	}
 	
 	

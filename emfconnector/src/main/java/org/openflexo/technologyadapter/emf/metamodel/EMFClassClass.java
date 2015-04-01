@@ -48,6 +48,7 @@ import java.util.Map.Entry;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
@@ -161,10 +162,10 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>(
 				0);
 		for (EAttribute attribute : object.getEAttributes()) {
-			featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute, this));
+			featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute, this,null));
 		}
 		for (EReference reference : object.getEReferences()) {
-			featureAssociations.add(ontology.getConverter().convertReferenceAssociation(ontology, reference,this));
+			featureAssociations.add(ontology.getConverter().convertReferenceAssociation(ontology, reference,this,null));
 		}
 		return Collections.unmodifiableList(featureAssociations);
 	}
@@ -252,12 +253,13 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 
 		List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
 		for (EClass superClass : object.getESuperTypes()) {		
-			// prevent
-			if (((EMFMetaModel) ontology).getResource().getPackage() == org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
-				superClasses.add(ontology.getConverter().convertClass(ontology, superClass));
+			// prevent returning classes from EcorePackage when not in Ecore MM
+			EPackage myRootPackage = ((EMFMetaModel) ontology).getResource().getPackage();
+			if (myRootPackage == org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
+				superClasses.add(ontology.getConverter().convertClass(ontology, superClass,myRootPackage));
 			}
 			else if (superClass.getEPackage() != org.eclipse.emf.ecore.EcorePackage.eINSTANCE){
-				superClasses.add(ontology.getConverter().convertClass(ontology, superClass));
+				superClasses.add(ontology.getConverter().convertClass(ontology, superClass,org.eclipse.emf.ecore.EcorePackage.eINSTANCE));
 			}
 		}
 		return Collections.unmodifiableList(superClasses);
