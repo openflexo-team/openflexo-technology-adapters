@@ -179,16 +179,21 @@ public class EMFMetaModelConverter {
 
 			// DataTypes
 			for (EClassifier aClassifier : aPackage.getEClassifiers()) {
-				if (aClassifier.eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
-					convertDataType(metaModel, (EDataType) aClassifier);
-				}
-				// Enum
-				else if (aClassifier.eClass().getClassifierID() == EcorePackage.EENUM) {
-					convertEnum(metaModel, (EEnum) aClassifier);
-				}
-				// Classes
-				else if (aClassifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
-					convertClass(metaModel, (EClass) aClassifier, aPackage);
+
+				// Prevent conerting stuff from Ecore MM at first
+				if (aClassifier.getEPackage() != EcorePackage.eINSTANCE){
+
+					if (aClassifier.eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
+						convertDataType(metaModel, (EDataType) aClassifier);
+					}
+					// Enum
+					else if (aClassifier.eClass().getClassifierID() == EcorePackage.EENUM) {
+						convertEnum(metaModel, (EEnum) aClassifier);
+					}
+					// Classes
+					else if (aClassifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
+						convertClass(metaModel, (EClass) aClassifier, aPackage);
+					}
 				}
 			}
 
@@ -284,22 +289,26 @@ public class EMFMetaModelConverter {
 					aClass.getEPackage() != org.eclipse.emf.ecore.EcorePackage.eINSTANCE ) {
 				emfClass = builder.buildClass(metaModel, aClass);
 				classes.put(aClass, emfClass);
-			}
 
-			if (aClass.getEPackage() != null) {
-				convertPackage(metaModel, aClass.getEPackage());
-			}
-
-			for (EClass eSuperClass : aClass.getESuperTypes()) {
-				convertClass(metaModel, eSuperClass, mmRootEPackage);
-			}
-
-			for (EStructuralFeature eStructuralFeature : aClass.getEStructuralFeatures()) {
-				if (eStructuralFeature.eClass().getClassifierID() == EcorePackage.EREFERENCE) {
-					convertReferenceAssociation(metaModel, (EReference) eStructuralFeature, emfClass, mmRootEPackage);
-				} else if (eStructuralFeature.eClass().getClassifierID() == EcorePackage.EATTRIBUTE) {
-					convertAttributeAssociation(metaModel, (EAttribute) eStructuralFeature, emfClass, mmRootEPackage);
+				// TODO : prevent converting EcorePackage MM
+				EPackage localPackage = aClass.getEPackage();
+				if (localPackage != null && localPackage !=  org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
+					if (localPackage != mmRootEPackage) logger.warning("Converting an EClass from a package different that MM Root One");
+					convertPackage(metaModel, aClass.getEPackage());
 				}
+
+				for (EClass eSuperClass : aClass.getESuperTypes()) {
+					convertClass(metaModel, eSuperClass, mmRootEPackage);
+				}
+
+				for (EStructuralFeature eStructuralFeature : aClass.getEStructuralFeatures()) {
+					if (eStructuralFeature.eClass().getClassifierID() == EcorePackage.EREFERENCE) {
+						convertReferenceAssociation(metaModel, (EReference) eStructuralFeature, emfClass, mmRootEPackage);
+					} else if (eStructuralFeature.eClass().getClassifierID() == EcorePackage.EATTRIBUTE) {
+						convertAttributeAssociation(metaModel, (EAttribute) eStructuralFeature, emfClass, mmRootEPackage);
+					}
+				}
+
 			}
 		}
 
@@ -315,7 +324,7 @@ public class EMFMetaModelConverter {
 	 */
 	public EMFAttributeAssociation convertAttributeAssociation(EMFMetaModel metaModel, EAttribute aAttribute, EMFClassClass containingClass, EPackage mmRootEPackage) {
 		EMFAttributeAssociation emfAttributeAssociation = attributeAssociations.get(aAttribute);
-		
+
 		if (emfAttributeAssociation == null) {
 			if (containingClass == null && aAttribute.getEContainingClass() != null) {
 				convertClass(metaModel, aAttribute.getEContainingClass(), mmRootEPackage);

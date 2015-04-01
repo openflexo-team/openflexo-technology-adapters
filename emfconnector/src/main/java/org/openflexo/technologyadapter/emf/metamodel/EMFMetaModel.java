@@ -45,9 +45,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EAnnotation;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
@@ -195,7 +193,7 @@ IFlexoOntologyMetaModel<EMFTechnologyAdapter> {
 	 */
 	@Override
 	public IFlexoOntologyClass<EMFTechnologyAdapter> getRootConcept() {
-		return getClass(EcorePackage.eNS_URI + "/" + EObject.class.getSimpleName());
+		return null;
 	}
 
 	/**

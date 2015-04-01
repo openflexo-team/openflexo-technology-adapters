@@ -217,7 +217,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> impl
 	 */
 	@Override
 	public IFlexoOntologyClass<EMFTechnologyAdapter> getRootConcept() {
-		return metaModel.getClass("http://www.eclipse.org/emf/2002/Ecore/EObject");
+		return metaModel.getRootConcept();
 	}
 
 	/**

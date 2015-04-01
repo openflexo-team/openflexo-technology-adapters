@@ -74,7 +74,6 @@ public class EMFModelBrowserModel extends OntologyBrowserModel<EMFTechnologyAdap
 		if (this.getShowClasses()){
 
 			if ( i instanceof EMFObjectIndividual){
-				// Do Better sometime
 				return ((EMFObjectIndividual) i).getMainType();
 			}
 			else if (   i instanceof EMFEnumIndividual){
@@ -85,5 +84,7 @@ public class EMFModelBrowserModel extends OntologyBrowserModel<EMFTechnologyAdap
 		}
 		else return null;
 	}
+	
+	
 
 }
