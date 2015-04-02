@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.emf.gui.browser;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -55,8 +56,10 @@ import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.gui.EMFModelView;
+import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
+import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
@@ -75,6 +78,8 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	static EMFTechnologyAdapter technologicalAdapter;
 	static EMFModelResource archimateModelResource = null;
 	static EMFModel archimateModel = null;
+	
+	private static String ARCHIMATE_URI = "http://www.bolton.ac.uk/archimate";
 
 
 	private static GraphicalContextDelegate gcDelegate;
@@ -97,9 +102,27 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	@Test
 	@TestOrder(1)
 	public void TestLoadArchimateEMFMetaModel() {
-		
+
+		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				EMFTechnologyAdapter.class);
+
+		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
+			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+			assertNotNull(metaModelRepository);
+
+			EMFMetaModelResource metaModelResource = metaModelRepository.getResource(ARCHIMATE_URI);
+
+			if (metaModelResource != null ){
+
+				System.out.println("\t Loading " + metaModelResource.getURI());
+
+				EMFMetaModel metamodel = metaModelResource.getMetaModelData();
+
+				assertNotNull(metamodel);
+			}
+		}
 	}
-	
+
 	@Test
 	@TestOrder(2)
 	public void TestLoadArchimateEMFModel() {
@@ -326,29 +349,29 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			currentDate = System.currentTimeMillis();
 			System.out.println (" update  took: " + (currentDate-previousDate));
 			previousDate=currentDate;
-			
-			 
-	        int mb = 1024*1024;
-	         
-	        //Getting the runtime reference from system
-	        Runtime runtime = Runtime.getRuntime();
-	         
-	        System.out.println("##### Heap utilization statistics [MB] #####");
-	         
-	        //Print used memory
-	        System.out.println("Used Memory:"
-	            + (runtime.totalMemory() - runtime.freeMemory()) / mb);
-	 
-	        //Print free memory
-	        System.out.println("Free Memory:"
-	            + runtime.freeMemory() / mb);
-	         
-	        //Print total available memory
-	        System.out.println("Total Memory:" + runtime.totalMemory() / mb);
-	 
-	        //Print Maximum available memory
-	        System.out.println("Max Memory:" + runtime.maxMemory() / mb);
-			
+
+
+			int mb = 1024*1024;
+
+			//Getting the runtime reference from system
+			Runtime runtime = Runtime.getRuntime();
+
+			System.out.println("##### Heap utilization statistics [MB] #####");
+
+			//Print used memory
+			System.out.println("Used Memory:"
+					+ (runtime.totalMemory() - runtime.freeMemory()) / mb);
+
+			//Print free memory
+			System.out.println("Free Memory:"
+					+ runtime.freeMemory() / mb);
+
+			//Print total available memory
+			System.out.println("Total Memory:" + runtime.totalMemory() / mb);
+
+			//Print Maximum available memory
+			System.out.println("Max Memory:" + runtime.maxMemory() / mb);
+
 		}
 	}
 
