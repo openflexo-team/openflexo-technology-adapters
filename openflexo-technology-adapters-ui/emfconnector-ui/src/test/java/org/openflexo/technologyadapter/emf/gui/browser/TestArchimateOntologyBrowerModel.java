@@ -73,13 +73,13 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	protected static final Logger logger = Logger.getLogger(TestArchimateOntologyBrowerModel.class.getPackage().getName());
 
 	static EMFTechnologyAdapter technologicalAdapter;
-	static EMFModelResource umlModelResource = null;
-	static EMFModel umlModel = null;
+	static EMFModelResource archimateModelResource = null;
+	static EMFModel archimateModel = null;
 
 
 	private static GraphicalContextDelegate gcDelegate;
 
-	static String umlModelResourceRelativeURI = "/TestResourceCenter/EMF/Model/archimate/OceanObservatoryModel.archimate";
+	static String archimateModelResourceRelativeURI = "/TestResourceCenter/EMF/Model/archimate/OceanObservatoryModel.archimate";
 
 
 	@BeforeClass
@@ -97,7 +97,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@Test
 	@TestOrder(1)
-	public void TestLoadUMLEMFModel() {
+	public void TestLoadArchimateEMFModel() {
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
 			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
@@ -106,15 +106,15 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
 			assertNotNull(modelRepository);
 
-			System.out.println("Loading " + ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().getAbsolutePath() +  umlModelResourceRelativeURI);
+			System.out.println("Loading " + ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().getAbsolutePath() +  archimateModelResourceRelativeURI);
 
-			umlModelResource = modelRepository.getResource("file:" +((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().getAbsolutePath() +  umlModelResourceRelativeURI);
+			archimateModelResource = modelRepository.getResource("file:" +((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().getAbsolutePath() +  archimateModelResourceRelativeURI);
 
-			assertNotNull(umlModelResource);
+			assertNotNull(archimateModelResource);
 
-			umlModel = umlModelResource.getModel();
-			assertNotNull(umlModel);
-			assertNotNull(umlModel.getMetaModel());
+			archimateModel = archimateModelResource.getModel();
+			assertNotNull(archimateModel);
+			assertNotNull(archimateModel.getMetaModel());
 		}
 	}
 
@@ -128,7 +128,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		long startTime = System.currentTimeMillis();
 
-		OntologyBrowserModel<EMFTechnologyAdapter> obm = new OntologyBrowserModel<EMFTechnologyAdapter>(umlModel);
+		OntologyBrowserModel<EMFTechnologyAdapter> obm = new OntologyBrowserModel<EMFTechnologyAdapter>(archimateModel);
 
 		long endTime = System.currentTimeMillis();
 
@@ -248,7 +248,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		previousDate = System.currentTimeMillis();
 
-		EMFModelView modelView = new EMFModelView(umlModel,null,null);
+		EMFModelView modelView = new EMFModelView(archimateModel,null,null);
 		currentDate = System.currentTimeMillis();
 		System.out.println (" initial creation of view took : " + (currentDate-previousDate));
 		previousDate=currentDate;
