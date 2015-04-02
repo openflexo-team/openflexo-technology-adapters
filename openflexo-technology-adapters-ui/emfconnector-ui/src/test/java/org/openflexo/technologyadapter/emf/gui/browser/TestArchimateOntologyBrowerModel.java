@@ -94,9 +94,14 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 		initGUI();
 	}
 
-
 	@Test
 	@TestOrder(1)
+	public void TestLoadArchimateEMFMetaModel() {
+		
+	}
+	
+	@Test
+	@TestOrder(2)
 	public void TestLoadArchimateEMFModel() {
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
