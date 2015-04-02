@@ -1,8 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
- * Copyright (c) 2012-2012, AgileBirds
+ * Copyright (c) 2015-2015, Openflexo
  * 
  * This file is part of Emfconnector, a component of the software infrastructure 
  * developed at Openflexo.
@@ -40,77 +38,72 @@
 
 package org.openflexo.technologyadapter.emf.model;
 
-import org.eclipse.emf.ecore.EObject;
-import org.openflexo.foundation.InnerResourceData;
-import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
-import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.eclipse.emf.ecore.EAnnotation;
+import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 
 /**
- * Abstract Simple implementation of Flexo ontology object.
+ * EMFAnnotation in Models.
  * 
- * @author gbesancon
- * 
+ * @author xtof
  */
-public abstract class AEMFModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements InnerResourceData<EMFModel>{
-
-	/** MetaModel. */
-	protected final EMFModel ontology;
-	/** EMF Object Wrapped. */
-	protected final T object;
+public class EMFAnnotationAnnotation extends AEMFModelObjectImpl<EAnnotation> implements IFlexoOntologyAnnotation {
 
 	/**
 	 * Constructor.
 	 */
-	public AEMFModelObjectImpl(EMFModel ontology, T object) {
-		this.ontology = ontology;
-		this.object = object;
+	public EMFAnnotationAnnotation(EMFModel model, EAnnotation annotation) {
+		super(model, annotation);
 	}
 
-	public EMFTechnologyAdapter getTechnologyAdapter() {
-		return getEMFModel().getTechnologyAdapter();
-	}
-
-
-	/**
-	 * Return the {@link ResourceData} where this object is defined (the global functional root object giving access to the
-	 * {@link FlexoResource})
-	 * 
-	 * @return
-	 */
-	@Override
-	public EMFModel getResourceData(){
-		return ontology;
-	}
-	
 	/**
 	 * Follow the link.
 	 * 
-	 * @see org.openflexo.foundation.ontology.FlexoOntologyObjectImpl#getFlexoOntology()
+	 * @see org.openflexo.foundation.ontology.IFlexoOntologyAnnotation#getName()
 	 */
 	@Override
-	public EMFModel getFlexoOntology() {
-		return ontology;
+	public String getName() {
+		return object.getSource();
 	}
 
 	/**
-	 * Return the EMF model this object belongs to
+	 * Follow the link.
 	 * 
-	 * @return
+	 * @see org.openflexo.foundation.ontology.FlexoOntologyObjectImpl#getDisplayableDescription()
 	 */
-	public EMFModel getEMFModel() {
-		return ontology;
+	@Override
+	public String getDisplayableDescription() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	/**
-	 * Return the wrapped objects.
+	 * Follow the link.
 	 * 
-	 * @return
+	 * @see org.openflexo.foundation.ontology.IFlexoOntologyAnnotation#getDetails()
 	 */
-	public T getObject() {
-		return object;
+	@Override
+	public Map<String, String> getDetails() {
+		Map<String, String> details = new HashMap<String, String>();
+		for (Entry<String, String> entry : object.getDetails().entrySet()) {
+			details.put(entry.getKey(), entry.getValue());
+		}
+		return Collections.unmodifiableMap(details);
 	}
 
+	@Override
+	public String getURI() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setName(String name) throws Exception {
+		// TODO Auto-generated method stub
+
+	}
 }

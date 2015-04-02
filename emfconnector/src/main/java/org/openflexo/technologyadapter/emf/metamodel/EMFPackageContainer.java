@@ -64,6 +64,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
+import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
 
 /**
  * EMF Package Container.
@@ -226,7 +227,7 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
 				EClass eClass = (EClass) classifier;
-				concepts.add(ontology.getConverter().convertClass(ontology, eClass));
+				concepts.add(ontology.getConverter().convertClass(ontology, eClass,this.object));
 			} else if (classifier.eClass().getClassifierID() == EcorePackage.EENUM) {
 				EEnum eEnum = (EEnum) classifier;
 				concepts.add(ontology.getConverter().convertEnum(ontology, eEnum));
@@ -279,11 +280,12 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
 				EClass eClass = (EClass) classifier;
+				EMFClassClass emfClass = ontology.getConverter().convertClass(ontology, eClass,this.object);
 				for (EStructuralFeature feature : eClass.getEStructuralFeatures()) {
 					if (feature.eClass().getClassifierID() == EcorePackage.EATTRIBUTE) {
 						EAttribute attribute = (EAttribute) feature;
 						if (attribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
-							concepts.add(ontology.getConverter().convertAttributeDataProperty(ontology, attribute));
+							concepts.add(ontology.getConverter().convertAttributeDataProperty(ontology, attribute,emfClass,this.object));
 						}
 					}
 				}
@@ -316,17 +318,19 @@ public class EMFPackageContainer extends AEMFMetaModelObjectImpl<EPackage> imple
 	@Override
 	public List<? extends IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> getObjectProperties() {
 		List<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>> concepts = new ArrayList<IFlexoOntologyObjectProperty<EMFTechnologyAdapter>>();
+		EMFMetaModelConverter converter = ontology.getConverter();
 		for (EClassifier classifier : object.getEClassifiers()) {
 			if (classifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
 				EClass eClass = (EClass) classifier;
+				EMFClassClass emfClass = converter.convertClass(ontology, eClass,this.object);
 				for (EStructuralFeature feature : eClass.getEStructuralFeatures()) {
 					if (feature.eClass().getClassifierID() == EcorePackage.EREFERENCE) {
 						EReference reference = (EReference) feature;
-						concepts.add(ontology.getConverter().convertReferenceObjectProperty(ontology, reference));
+						concepts.add(converter.convertReferenceObjectProperty(ontology, reference,emfClass,null));
 					} else if (feature.eClass().getClassifierID() == EcorePackage.EATTRIBUTE) {
 						EAttribute attribute = (EAttribute) feature;
 						if (attribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EENUM) {
-							concepts.add(ontology.getConverter().convertAttributeObjectProperty(ontology, attribute));
+							concepts.add(converter.convertAttributeObjectProperty(ontology, attribute,emfClass,null));
 						}
 					}
 				}

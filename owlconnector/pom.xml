@@ -17,6 +17,9 @@
 			</plugin>
 		</plugins>
 	</build>
+	<properties>
+		<jena-core.version>2.13.0</jena-core.version>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>org.openflexo</groupId>
@@ -35,9 +38,9 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.hp.hpl.jena</groupId>
-			<artifactId>jena</artifactId>
-			<version>2.6.4</version>
+			<groupId>org.apache.jena</groupId>
+			<artifactId>jena-core</artifactId>
+			<version>${jena-core.version}</version>
 		</dependency>
 	</dependencies>
 </project>

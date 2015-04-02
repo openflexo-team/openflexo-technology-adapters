@@ -101,7 +101,7 @@ public class EMFReferenceAssociation extends AEMFMetaModelObjectImpl<EReference>
 	 */
 	@Override
 	public EMFClassClass getDomain() {
-		return ontology.getConverter().convertClass(ontology, object.getEContainingClass());
+		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(),null);
 	}
 
 	/**
@@ -111,7 +111,7 @@ public class EMFReferenceAssociation extends AEMFMetaModelObjectImpl<EReference>
 	 */
 	@Override
 	public IFlexoOntologyFeature<EMFTechnologyAdapter> getFeature() {
-		return ontology.getConverter().convertReferenceObjectProperty(ontology, object);
+		return ontology.getConverter().convertReferenceObjectProperty(ontology, object,null,null);
 	}
 
 	@Override

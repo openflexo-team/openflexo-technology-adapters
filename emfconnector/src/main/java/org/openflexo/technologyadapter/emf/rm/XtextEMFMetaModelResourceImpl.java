@@ -1,7 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2012-2012, AgileBirds
+ * Copyright (c) 2015-2015, Openflexo
  * 
  * This file is part of Emfconnector, a component of the software infrastructure 
  * developed at Openflexo.
@@ -39,32 +38,41 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
-import org.openflexo.foundation.technologyadapter.FlexoModelResource;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
-import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.resource.XtextResource;
+import org.eclipse.xtext.resource.XtextResourceSet;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoIODelegate;
+
+
 
 /**
- * EMF Model Resource.
+ * IO Delegate to load a MetaModelResource from Directory in FileSystem
  * 
- * @author gbesancon
+ * @author xtof
  */
-@ModelEntity
-@ImplementationClass(EMFModelResourceImpl.class)
-public interface EMFModelResource extends FlexoModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter, EMFTechnologyAdapter>,TechnologyAdapterResource<EMFModel,EMFTechnologyAdapter> {
+public abstract class XtextEMFMetaModelResourceImpl extends EMFMetaModelResourceImpl implements XtextEMFMetaModelResource {
+		
 
-	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
+	/**
+	 * Creates a new ModelResource, for EMF, MetaModel decides wich type of serialization you should use!
+	 * @param flexoIODelegate
+	 * @return
+	 */	
+	@Override
+	public 	Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate){
 
-	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
-	public EMFTechnologyContextManager getTechnologyContextManager();
+		// TODO : refactor with proper IODelegate Support
 
-	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
-	public void setTechnologyContextManager(EMFTechnologyContextManager technologyContextManager);
+		XtextResourceSet resourceSet = getInjector().getInstance(XtextResourceSet.class);
 
-}
+		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
+
+		Resource resource = resourceSet.createResource(org.eclipse.emf.common.util.URI.createFileURI(((FileFlexoIODelegate)flexoIODelegate).getFile().getAbsolutePath())); 
+		
+		return resource;
+		
+	}
+	
+	}
+

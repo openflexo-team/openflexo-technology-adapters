@@ -220,7 +220,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	@Override
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getReferencingFeatureAssociations() {
 		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> referencingFeatureAssociation = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>();
-		referencingFeatureAssociation.add(ontology.getConverter().convertAttributeAssociation(ontology, object));
+		referencingFeatureAssociation.add(ontology.getConverter().convertAttributeAssociation(ontology, object,null,null));
 		return Collections.unmodifiableList(referencingFeatureAssociation);
 	}
 
@@ -241,7 +241,7 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 	 */
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getDomain() {
-		return ontology.getConverter().convertClass(ontology, object.getEContainingClass());
+		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(),null);
 	}
 
 	/**
@@ -275,27 +275,8 @@ public class EMFAttributeDataProperty extends AEMFMetaModelObjectImpl<EAttribute
 		return Collections.emptyList();
 	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsRange()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
-		return Collections.emptyList();
-	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsDomain()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
-		return Collections.emptyList();
-	}
+
 
 	/**
 	 * Follow the link.

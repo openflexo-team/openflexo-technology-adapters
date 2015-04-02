@@ -1,7 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2012-2012, AgileBirds
+ * Copyright (c) 2015-2015, Openflexo
  * 
  * This file is part of Emfconnector, a component of the software infrastructure 
  * developed at Openflexo.
@@ -39,32 +38,27 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
-import org.openflexo.foundation.technologyadapter.FlexoModelResource;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
-import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.model.annotations.XMLElement;
 
-/**
- * EMF Model Resource.
- * 
- * @author gbesancon
- */
+import com.google.inject.Injector;
+
 @ModelEntity
-@ImplementationClass(EMFModelResourceImpl.class)
-public interface EMFModelResource extends FlexoModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter, EMFTechnologyAdapter>,TechnologyAdapterResource<EMFModel,EMFTechnologyAdapter> {
+@ImplementationClass(XtextEMFMetaModelResourceImpl.class)
+@XMLElement
+public interface XtextEMFMetaModelResource extends EMFMetaModelResource {
+	
+	public static String INJECTOR_KEY="injector";
+	
+	@Setter(value = INJECTOR_KEY)
+	void setInjector(Injector injector);
+	
+	@Getter(value = INJECTOR_KEY, ignoreType = true)
+	Injector getInjector();
 
-	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
-	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
-	public EMFTechnologyContextManager getTechnologyContextManager();
-
-	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
-	public void setTechnologyContextManager(EMFTechnologyContextManager technologyContextManager);
 
 }

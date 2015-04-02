@@ -232,7 +232,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	 */
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getRange() {
-		return ontology.getConverter().convertClass(ontology, object.getEReferenceType());
+		return ontology.getConverter().convertClass(ontology, object.getEReferenceType(),null);
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getDomain() {
 		// FIXME Pas de sens car ce lien ce fait plutot avec l'association (en EMF le lien est 1-1-1 donc pas de soucis.)
-		return ontology.getConverter().convertClass(ontology, object.getEContainingClass());
+		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(),null);
 	}
 
 	/**
@@ -277,27 +277,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 		return Collections.emptyList();
 	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsRange()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
-		return Collections.emptyList();
-	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsDomain()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
-		return Collections.emptyList();
-	}
 
 	/**
 	 * Follow the link.

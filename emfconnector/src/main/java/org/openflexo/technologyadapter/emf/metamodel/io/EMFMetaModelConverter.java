@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2013-2015, Openflexo
  * Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
  * Copyright (c) 2012-2012, AgileBirds
  * 
@@ -40,8 +40,10 @@
 
 package org.openflexo.technologyadapter.emf.metamodel.io;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.Enumerator;
 import org.eclipse.emf.ecore.EAnnotation;
@@ -51,11 +53,13 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAnnotationAnnotation;
@@ -77,6 +81,10 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFReferenceObjectProperty;
  * @author gbesancon
  */
 public class EMFMetaModelConverter {
+
+
+	protected static final Logger logger = Logger.getLogger(EMFMetaModelConverter.class.getPackage().getName());
+
 
 	/** Builder. */
 	protected final EMFMetaModelBuilder builder;
@@ -162,11 +170,11 @@ public class EMFMetaModelConverter {
 	 * @return
 	 */
 	public EMFPackageContainer convertPackage(EMFMetaModel metaModel, EPackage aPackage) {
-		EMFPackageContainer emfPackageContainer = null;
-		if (packages.get(aPackage) == null) {
+		EMFPackageContainer emfPackageContainer = packages.get(aPackage);
+		if (emfPackageContainer == null) {
 			// Super Package.
 			if (aPackage.getESuperPackage() != null) {
-				EMFPackageContainer emfSuperPackageContainer = convertPackage(metaModel, aPackage.getESuperPackage());
+				convertPackage(metaModel, aPackage.getESuperPackage());
 			}
 
 			emfPackageContainer = builder.buildPackage(metaModel, aPackage);
@@ -174,30 +182,29 @@ public class EMFMetaModelConverter {
 
 			// DataTypes
 			for (EClassifier aClassifier : aPackage.getEClassifiers()) {
-				if (aClassifier.eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
-					EMFDataTypeDataType emfDataType = convertDataType(metaModel, (EDataType) aClassifier);
-				}
-			}
-			// Enum
-			for (EClassifier aClassifier : aPackage.getEClassifiers()) {
-				if (aClassifier.eClass().getClassifierID() == EcorePackage.EENUM) {
-					EMFEnumClass emfEnum = convertEnum(metaModel, (EEnum) aClassifier);
-				}
-			}
-			// Classes
-			for (EClassifier aClassifier : aPackage.getEClassifiers()) {
-				if (aClassifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
-					EMFClassClass emfClass = convertClass(metaModel, (EClass) aClassifier);
+
+				// Prevent converting stuff from Ecore MM at first
+				if (aClassifier.getEPackage() != EcorePackage.eINSTANCE){
+
+					if (aClassifier.eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
+						convertDataType(metaModel, (EDataType) aClassifier);
+					}
+					// Enum
+					else if (aClassifier.eClass().getClassifierID() == EcorePackage.EENUM) {
+						convertEnum(metaModel, (EEnum) aClassifier);
+					}
+					// Classes
+					else if (aClassifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
+						convertClass(metaModel, (EClass) aClassifier, aPackage);
+					}
 				}
 			}
 
 			// Sub Packages
 			for (EPackage aSubPackage : aPackage.getESubpackages()) {
-				EMFPackageContainer emfSubPackageContainer = convertPackage(metaModel, aSubPackage);
+				convertPackage(metaModel, aSubPackage);
 			}
-		} else {
-			emfPackageContainer = packages.get(aPackage);
-		}
+		} 
 
 		return emfPackageContainer;
 	}
@@ -213,7 +220,7 @@ public class EMFMetaModelConverter {
 		EMFDataTypeDataType emfDataType = null;
 		if (dataTypes.get(aDataType) == null) {
 			if (aDataType.getEPackage() != null) {
-				EMFPackageContainer emfPackageContainer = convertPackage(metaModel, aDataType.getEPackage());
+				convertPackage(metaModel, aDataType.getEPackage());
 			}
 
 			emfDataType = builder.buildDataType(metaModel, aDataType);
@@ -232,20 +239,18 @@ public class EMFMetaModelConverter {
 	 * @return
 	 */
 	public EMFEnumClass convertEnum(EMFMetaModel metaModel, EEnum aEnum) {
-		EMFEnumClass emfEnum = null;
-		if (enums.get(aEnum) == null) {
+		EMFEnumClass emfEnum = enums.get(aEnum);
+		if (emfEnum == null) {
 			if (aEnum.getEPackage() != null) {
-				EMFPackageContainer emfPackageContainer = convertPackage(metaModel, aEnum.getEPackage());
+				convertPackage(metaModel, aEnum.getEPackage());
 			}
 
 			emfEnum = builder.buildEnum(metaModel, aEnum);
 			enums.put(aEnum, emfEnum);
 			for (EEnumLiteral aEnumLiteral : aEnum.getELiterals()) {
-				EMFEnumIndividual emfEnumIndividual = convertEnumLiteral(metaModel, aEnumLiteral);
+				convertEnumLiteral(metaModel, aEnumLiteral);
 			}
-		} else {
-			emfEnum = enums.get(aEnum);
-		}
+		} 
 		return emfEnum;
 	}
 
@@ -257,16 +262,14 @@ public class EMFMetaModelConverter {
 	 * @return
 	 */
 	public EMFEnumIndividual convertEnumLiteral(EMFMetaModel metaModel, EEnumLiteral aEnumLiteral) {
-		EMFEnumIndividual emfEnumLiteral = null;
-		if (enumLiterals.get(aEnumLiteral.getInstance()) == null) {
+		EMFEnumIndividual emfEnumLiteral = enumLiterals.get(aEnumLiteral.getInstance());
+		if (emfEnumLiteral == null) {
 			if (aEnumLiteral.getEEnum() != null) {
-				EMFEnumClass emfEnum = convertEnum(metaModel, aEnumLiteral.getEEnum());
+				convertEnum(metaModel, aEnumLiteral.getEEnum());
 			}
 
 			emfEnumLiteral = builder.buildEnumLiteral(metaModel, aEnumLiteral);
 			enumLiterals.put(aEnumLiteral.getInstance(), emfEnumLiteral);
-		} else {
-			emfEnumLiteral = enumLiterals.get(aEnumLiteral.getInstance());
 		}
 		return emfEnumLiteral;
 	}
@@ -278,32 +281,46 @@ public class EMFMetaModelConverter {
 	 * @param aClass
 	 * @return
 	 */
-	public EMFClassClass convertClass(EMFMetaModel metaModel, EClass aClass) {
-		EMFClassClass emfClass = null;
-		if (classes.get(aClass) == null) {
-			if (aClass.getEPackage() != null) {
-				EMFPackageContainer emfPackageContainer = convertPackage(metaModel, aClass.getEPackage());
-			}
+	public EMFClassClass convertClass(EMFMetaModel metaModel, EClass aClass, EPackage mmRootEPackage) {
 
-			emfClass = builder.buildClass(metaModel, aClass);
-			classes.put(aClass, emfClass);
+		EMFClassClass emfClass = classes.get(aClass);;
 
-			for (EClass eSuperClass : aClass.getESuperTypes()) {
-				EMFClassClass emfSuperClass = convertClass(metaModel, eSuperClass);
-			}
+		if (emfClass == null) {
 
-			for (EStructuralFeature eStructuralFeature : aClass.getEStructuralFeatures()) {
-				if (eStructuralFeature.eClass().getClassifierID() == EcorePackage.EREFERENCE) {
-					EMFReferenceAssociation emfReferenceAssociation = convertReferenceAssociation(metaModel,
-							(EReference) eStructuralFeature);
-				} else if (eStructuralFeature.eClass().getClassifierID() == EcorePackage.EATTRIBUTE) {
-					EMFAttributeAssociation emfAttributeAssociation = convertAttributeAssociation(metaModel,
-							(EAttribute) eStructuralFeature);
+			// prevent converting EBObjects from EcorePackage when not in Ecore MM
+			if ( (mmRootEPackage == org.eclipse.emf.ecore.EcorePackage.eINSTANCE) || 
+					aClass.getEPackage() != org.eclipse.emf.ecore.EcorePackage.eINSTANCE ) {
+				emfClass = builder.buildClass(metaModel, aClass);
+				classes.put(aClass, emfClass);
+
+				EPackage localPackage = aClass.getEPackage();
+				if (localPackage != null && localPackage !=  org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
+					if (localPackage != mmRootEPackage) logger.warning("Converting an EClass from a package different that MM Root One");
+					convertPackage(metaModel, aClass.getEPackage());
+				}
+				// convert superTypes	
+				for (EClass eSuperClass : aClass.getESuperTypes()) {
+					convertClass(metaModel, eSuperClass, mmRootEPackage);
+				}
+				//convert StructuralFeatures
+				for (EStructuralFeature eSF : aClass.getEAllStructuralFeatures()) {
+					if (eSF instanceof EAttribute){
+						// Attribute
+						convertAttributeAssociation(metaModel, (EAttribute) eSF, emfClass, mmRootEPackage);
+					}
+					else if (eSF instanceof EReference){
+						// Annotation content
+						if (aClass instanceof EModelElement && eSF.getFeatureID() == EcorePackage.EMODEL_ELEMENT__EANNOTATIONS){
+							emfClass.getAnnotations();
+						}
+						else{
+							// Other References
+							convertReferenceAssociation(metaModel, (EReference) eSF, emfClass, mmRootEPackage);
+						}
+					}
+
 				}
 			}
-
-		} else {
-			emfClass = classes.get(aClass);
 		}
 		return emfClass;
 	}
@@ -315,19 +332,18 @@ public class EMFMetaModelConverter {
 	 * @param aAttribute
 	 * @return
 	 */
-	public EMFAttributeAssociation convertAttributeAssociation(EMFMetaModel metaModel, EAttribute aAttribute) {
-		EMFAttributeAssociation emfAttributeAssociation = null;
-		if (attributeAssociations.get(aAttribute) == null) {
-			if (aAttribute.getEContainingClass() != null) {
-				EMFClassClass emfClass = convertClass(metaModel, aAttribute.getEContainingClass());
+	public EMFAttributeAssociation convertAttributeAssociation(EMFMetaModel metaModel, EAttribute aAttribute, EMFClassClass containingClass, EPackage mmRootEPackage) {
+		EMFAttributeAssociation emfAttributeAssociation = attributeAssociations.get(aAttribute);
+
+		if (emfAttributeAssociation == null) {
+			if (containingClass == null && aAttribute.getEContainingClass() != null) {
+				convertClass(metaModel, aAttribute.getEContainingClass(), mmRootEPackage);
 			}
 
 			emfAttributeAssociation = builder.buildAttributeAssociation(metaModel, aAttribute);
 			attributeAssociations.put(aAttribute, emfAttributeAssociation);
-			IFlexoOntologyStructuralProperty emfAttributeProperty = convertAttributeProperty(metaModel, aAttribute);
-		} else {
-			emfAttributeAssociation = attributeAssociations.get(aAttribute);
-		}
+			convertAttributeProperty(metaModel, aAttribute, containingClass,mmRootEPackage);
+		} 
 		return emfAttributeAssociation;
 	}
 
@@ -338,19 +354,17 @@ public class EMFMetaModelConverter {
 	 * @param aReference
 	 * @return
 	 */
-	public EMFReferenceAssociation convertReferenceAssociation(EMFMetaModel metaModel, EReference aReference) {
-		EMFReferenceAssociation emfReferenceAssociation = null;
-		if (referenceAssociations.get(aReference) == null) {
-			if (aReference.getEContainingClass() != null) {
-				EMFClassClass emfClass = convertClass(metaModel, aReference.getEContainingClass());
+	public EMFReferenceAssociation convertReferenceAssociation(EMFMetaModel metaModel, EReference aReference, EMFClassClass containingClass, EPackage mmRootEPackage) {
+		EMFReferenceAssociation emfReferenceAssociation = referenceAssociations.get(aReference);
+		if ( emfReferenceAssociation == null) {
+			if (containingClass == null && aReference.getEContainingClass() != null) {
+				convertClass(metaModel, aReference.getEContainingClass(),mmRootEPackage);
 			}
 
 			emfReferenceAssociation = builder.buildReferenceAssociation(metaModel, aReference);
 			referenceAssociations.put(aReference, emfReferenceAssociation);
-			EMFReferenceObjectProperty emfReferenceObjectProperty = convertReferenceObjectProperty(metaModel, aReference);
-		} else {
-			emfReferenceAssociation = referenceAssociations.get(aReference);
-		}
+			convertReferenceObjectProperty(metaModel, aReference, containingClass, mmRootEPackage);
+		} 
 		return emfReferenceAssociation;
 	}
 
@@ -361,12 +375,12 @@ public class EMFMetaModelConverter {
 	 * @param aAttribute
 	 * @return
 	 */
-	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> convertAttributeProperty(EMFMetaModel metaModel, EAttribute aAttribute) {
+	public IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> convertAttributeProperty(EMFMetaModel metaModel, EAttribute aAttribute, EMFClassClass containingClass, EPackage mmRootEPackage) {
 		IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> structuralProperty = null;
 		if (aAttribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
-			structuralProperty = convertAttributeDataProperty(metaModel, aAttribute);
+			structuralProperty = convertAttributeDataProperty(metaModel, aAttribute, containingClass,mmRootEPackage);
 		} else if (aAttribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EENUM) {
-			structuralProperty = convertAttributeObjectProperty(metaModel, aAttribute);
+			structuralProperty = convertAttributeObjectProperty(metaModel, aAttribute, containingClass, mmRootEPackage);
 		}
 		return structuralProperty;
 	}
@@ -378,22 +392,20 @@ public class EMFMetaModelConverter {
 	 * @param aAttribute
 	 * @return
 	 */
-	public EMFAttributeDataProperty convertAttributeDataProperty(EMFMetaModel metaModel, EAttribute aAttribute) {
-		EMFAttributeDataProperty dataProperty = null;
-		if (dataAttributes.get(aAttribute) == null) {
-			if (aAttribute.getEContainingClass() != null) {
-				EMFClassClass emfClass = convertClass(metaModel, aAttribute.getEContainingClass());
+	public EMFAttributeDataProperty convertAttributeDataProperty(EMFMetaModel metaModel, EAttribute aAttribute, EMFClassClass containingClass, EPackage mmRootEPackage) {
+		EMFAttributeDataProperty dataProperty = dataAttributes.get(aAttribute);
+		if ( dataProperty == null) {
+			if (containingClass == null && aAttribute.getEContainingClass() != null) {
+				convertClass(metaModel, aAttribute.getEContainingClass(),mmRootEPackage);
 			}
 
 			dataProperty = builder.buildAttributeDataProperty(metaModel, aAttribute);
 			dataAttributes.put(aAttribute, dataProperty);
 
 			if (aAttribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
-				EMFDataTypeDataType emfDataType = convertDataType(metaModel, aAttribute.getEAttributeType());
+				convertDataType(metaModel, aAttribute.getEAttributeType());
 			}
-		} else {
-			dataProperty = dataAttributes.get(aAttribute);
-		}
+		} 
 		return dataProperty;
 	}
 
@@ -404,21 +416,19 @@ public class EMFMetaModelConverter {
 	 * @param aAttribute
 	 * @return
 	 */
-	public EMFAttributeObjectProperty convertAttributeObjectProperty(EMFMetaModel metaModel, EAttribute aAttribute) {
-		EMFAttributeObjectProperty objectProperty = null;
-		if (objectAttributes.get(aAttribute) == null) {
-			if (aAttribute.getEContainingClass() != null) {
-				EMFClassClass emfClass = convertClass(metaModel, aAttribute.getEContainingClass());
+	public EMFAttributeObjectProperty convertAttributeObjectProperty(EMFMetaModel metaModel, EAttribute aAttribute, EMFClassClass containingClass, EPackage mmRootEPackage) {
+		EMFAttributeObjectProperty objectProperty = objectAttributes.get(aAttribute);
+		if ( objectProperty == null) {
+			if (containingClass == null && aAttribute.getEContainingClass() != null) {
+				convertClass(metaModel, aAttribute.getEContainingClass(),mmRootEPackage);
 			}
 
 			objectProperty = builder.buildAttributeObjectProperty(metaModel, aAttribute);
 			objectAttributes.put(aAttribute, objectProperty);
 
 			if (aAttribute.getEAttributeType().eClass().getClassifierID() == EcorePackage.EENUM) {
-				EMFEnumClass emfEnum = convertEnum(metaModel, (EEnum) aAttribute.getEAttributeType());
+				convertEnum(metaModel, (EEnum) aAttribute.getEAttributeType());
 			}
-		} else {
-			objectProperty = objectAttributes.get(aAttribute);
 		}
 		return objectProperty;
 	}
@@ -430,18 +440,16 @@ public class EMFMetaModelConverter {
 	 * @param aReference
 	 * @return
 	 */
-	public EMFReferenceObjectProperty convertReferenceObjectProperty(EMFMetaModel metaModel, EReference aReference) {
-		EMFReferenceObjectProperty objectProperty = null;
-		if (references.get(aReference) == null) {
-			if (aReference.getEContainingClass() != null) {
-				EMFClassClass emfClass = convertClass(metaModel, aReference.getEContainingClass());
+	public EMFReferenceObjectProperty convertReferenceObjectProperty(EMFMetaModel metaModel, EReference aReference, EMFClassClass containingClass,EPackage mmRootEPackage) {
+		EMFReferenceObjectProperty objectProperty = references.get(aReference);
+		if ( objectProperty == null) {
+			if (containingClass == null && aReference.getEContainingClass() != null) {
+				convertClass(metaModel, aReference.getEContainingClass(), mmRootEPackage);
 			}
 
 			objectProperty = builder.buildReferenceObjectProperty(metaModel, aReference);
 			references.put(aReference, objectProperty);
-		} else {
-			objectProperty = references.get(aReference);
-		}
+		} 
 		return objectProperty;
 	}
 

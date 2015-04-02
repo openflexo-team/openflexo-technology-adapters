@@ -42,7 +42,12 @@ package org.openflexo.technologyadapter.emf.gui;
 import java.util.logging.Logger;
 
 import org.openflexo.components.widget.OntologyBrowserModel;
+import org.openflexo.foundation.ontology.IFlexoOntologyClass;
+import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
+import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
+import org.openflexo.technologyadapter.emf.metamodel.EMFEnumIndividual;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
+import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 
 /**
  * Model supporting browsing through models or metamodels conform to {@link FlexoOntology} API<br>
@@ -55,12 +60,31 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
  * 
  * @author sguerin
  */
-public class EMFMetaModelBrowserModel extends OntologyBrowserModel {
+public class EMFMetaModelBrowserModel extends OntologyBrowserModel<EMFTechnologyAdapter> {
 
 	static final Logger logger = Logger.getLogger(EMFMetaModelBrowserModel.class.getPackage().getName());
 
 	public EMFMetaModelBrowserModel(EMFMetaModel metaModel) {
 		super(metaModel);
+	}	
+	
+	@Override
+	protected IFlexoOntologyClass<EMFTechnologyAdapter> getPreferredStorageLocation(IFlexoOntologyIndividual<EMFTechnologyAdapter> i) {
+
+		if (this.getShowClasses()){
+
+			if ( i instanceof EMFObjectIndividual){
+				return ((EMFObjectIndividual) i).getMainType();
+			}
+			else if (   i instanceof EMFEnumIndividual){
+				return ((EMFEnumIndividual) i ).getTypes().get(0);
+			}
+
+			return getContext().getRootConcept();
+		}
+		else return null;
 	}
+	
+	
 
 }

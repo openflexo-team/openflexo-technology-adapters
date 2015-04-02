@@ -1,8 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
- * Copyright (c) 2012-2012, AgileBirds
+ * Copyright (c) 2015, Openflexo
  * 
  * This file is part of Emfconnector, a component of the software infrastructure 
  * developed at Openflexo.
@@ -53,8 +51,8 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
+import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
@@ -63,14 +61,14 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test EMF Meta-Model and model loading.
+ * Test UML Meta-Model and model loading.
  * 
- * @author gbesancon
+ * @author xtof
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
-	protected static final Logger logger = Logger.getLogger(TestLoadEMFMetaModel.class.getPackage().getName());
+public class TestLoadAllEMFModel extends OpenflexoProjectAtRunTimeTestCase {
+	protected static final Logger logger = Logger.getLogger(TestLoadAllEMFModel.class.getPackage().getName());
 
 	private static FlexoEditor editor;
 	private static FlexoProject project;
@@ -78,6 +76,8 @@ public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
+		log("test0InstantiateResourceCenter()");
+
 		instanciateTestServiceManager();
 	}
 
@@ -91,54 +91,48 @@ public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
 	}
 
+
+
+
 	@Test
 	@TestOrder(3)
-	public void testLoadEMFMetaModel() {
+	public void TestListAllMetaModelsl() {
 		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				EMFTechnologyAdapter.class);
 
-		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
-			assertNotNull(metaModelRepository);
-			Collection<EMFMetaModelResource> metaModelResources = metaModelRepository.getAllResources();
-		
+		EMFTechnologyContextManager ctxManager = technologicalAdapter.getTechnologyContextManager();
 
-			for (EMFMetaModelResource mmResource : metaModelResources) {
+		System.out.println("ALL REGISTERED METAMODELS: ");
 
-				System.out.println("\t Loading " + mmResource.getURI());
-				
-				EMFMetaModel metamodel = mmResource.getMetaModelData();
-				
-				assertNotNull(metamodel);
-			}
+		for (String uri : ctxManager.getAllMetaModelURIs()) {
+			System.out.println("\t " + uri);
 		}
+		
+		System.out.println("ALL REGISTERED PROFILES: ");
+
+		for (String uri : ctxManager.getAllProfileURIs()) {
+			System.out.println("\t " + uri);
+		}
+		
 	}
-	
+
 	@Test
 	@TestOrder(4)
-	public void testConvertEMFMetaModel() {
+	public void TestLoadAllEMFModel() {
 		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				EMFTechnologyAdapter.class);
 
-		EMFMetaModelConverter converter = new EMFMetaModelConverter(technologicalAdapter);
-		
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
 			assertNotNull(metaModelRepository);
-			Collection<EMFMetaModelResource> metaModelResources = metaModelRepository.getAllResources();
-		
 
-			for (EMFMetaModelResource mmResource : metaModelResources) {
-
-				System.out.println("\t Converting " + mmResource.getURI());
-				long startTime = System.currentTimeMillis();
-
-				EMFMetaModel metamodel = converter.convertMetaModel(mmResource.getPackage());
-
-				long endTime = System.currentTimeMillis();
-
-				System.out.println("\t\t MetaModel Conversion  took " + (endTime - startTime) + " milliseconds");
-				
+			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
+			Collection<EMFModelResource> modelResources = modelRepository.getAllResources();
+			for (EMFModelResource modelResource : modelResources) {
+				System.out.println("\t Loading " + modelResource.getURI());
+				EMFModel model = modelResource.getModel();
+				assertNotNull(model);
+				assertNotNull(model.getMetaModel());
 			}
 		}
 	}

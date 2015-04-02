@@ -1,7 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2012-2012, AgileBirds
+ * Copyright (c) 2015, Openflexo
  * 
  * This file is part of Emfconnector, a component of the software infrastructure 
  * developed at Openflexo.
@@ -37,34 +36,30 @@
  * 
  */
 
-package org.openflexo.technologyadapter.emf.rm;
+package org.openflexo.technologyadapter.emf;
 
-import org.openflexo.foundation.technologyadapter.FlexoModelResource;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
-import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.model.EMFModel;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.technologyadapter.emf.UMLEMFModelSlot.UMLEMFModelSlotImpl;
+import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 
-/**
- * EMF Model Resource.
+
+
+/** UML Model Slot configuration 
  * 
- * @author gbesancon
+ * Will enable users to select profiles to attach to the UML model attached to the MS
+ * @author xtof
+ *
  */
-@ModelEntity
-@ImplementationClass(EMFModelResourceImpl.class)
-public interface EMFModelResource extends FlexoModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter, EMFTechnologyAdapter>,TechnologyAdapterResource<EMFModel,EMFTechnologyAdapter> {
 
-	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
+public class UMLEMFModelSlotInstanceConfiguration extends EMFModelSlotInstanceConfiguration {
 
-	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)
-	public EMFTechnologyContextManager getTechnologyContextManager();
-
-	@Setter(TECHNOLOGY_CONTEXT_MANAGER)
-	public void setTechnologyContextManager(EMFTechnologyContextManager technologyContextManager);
+	protected UMLEMFModelSlotInstanceConfiguration(UMLEMFModelSlotImpl emfModelSlotImpl, CreateVirtualModelInstance action) {
+		super((UMLEMFModelSlot) emfModelSlotImpl, action);
+		setModelUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myUMLModel");
+		setRelativePath("/");
+		setFilename("myUMLModel"
+				+ getModelSlot().getModelSlotTechnologyAdapter().getExpectedModelExtension(
+						(EMFMetaModelResource) getModelSlot().getMetaModelResource()));
+	}
 
 }
