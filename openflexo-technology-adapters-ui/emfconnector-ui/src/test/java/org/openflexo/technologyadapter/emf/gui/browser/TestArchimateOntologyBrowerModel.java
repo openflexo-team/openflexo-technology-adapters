@@ -79,7 +79,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	private static GraphicalContextDelegate gcDelegate;
 
-	static String archimateModelResourceRelativeURI = "/TestResourceCenter/EMF/Model/archimate/OceanObservatoryModel.archimate";
+	static String archimateModelResourceRelativeURI = "/TestResourceCenter/EMF/Model/archimate/test1.archimate";
 
 
 	@BeforeClass
