@@ -40,6 +40,7 @@
 
 package org.openflexo.technologyadapter.emf.metamodel.io;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -52,11 +53,13 @@ import org.eclipse.emf.ecore.EClassifier;
 import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.emf.ecore.EEnum;
 import org.eclipse.emf.ecore.EEnumLiteral;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.EcorePackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFAnnotationAnnotation;
@@ -180,7 +183,7 @@ public class EMFMetaModelConverter {
 			// DataTypes
 			for (EClassifier aClassifier : aPackage.getEClassifiers()) {
 
-				// Prevent conerting stuff from Ecore MM at first
+				// Prevent converting stuff from Ecore MM at first
 				if (aClassifier.getEPackage() != EcorePackage.eINSTANCE){
 
 					if (aClassifier.eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
@@ -284,34 +287,41 @@ public class EMFMetaModelConverter {
 
 		if (emfClass == null) {
 
-			// prevent converting EBObjects om EcorePackage when not in Ecore MM
+			// prevent converting EBObjects from EcorePackage when not in Ecore MM
 			if ( (mmRootEPackage == org.eclipse.emf.ecore.EcorePackage.eINSTANCE) || 
 					aClass.getEPackage() != org.eclipse.emf.ecore.EcorePackage.eINSTANCE ) {
 				emfClass = builder.buildClass(metaModel, aClass);
 				classes.put(aClass, emfClass);
 
-				// TODO : prevent converting EcorePackage MM
 				EPackage localPackage = aClass.getEPackage();
 				if (localPackage != null && localPackage !=  org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
 					if (localPackage != mmRootEPackage) logger.warning("Converting an EClass from a package different that MM Root One");
 					convertPackage(metaModel, aClass.getEPackage());
 				}
-
+				// convert superTypes	
 				for (EClass eSuperClass : aClass.getESuperTypes()) {
 					convertClass(metaModel, eSuperClass, mmRootEPackage);
 				}
-
-				for (EStructuralFeature eStructuralFeature : aClass.getEStructuralFeatures()) {
-					if (eStructuralFeature.eClass().getClassifierID() == EcorePackage.EREFERENCE) {
-						convertReferenceAssociation(metaModel, (EReference) eStructuralFeature, emfClass, mmRootEPackage);
-					} else if (eStructuralFeature.eClass().getClassifierID() == EcorePackage.EATTRIBUTE) {
-						convertAttributeAssociation(metaModel, (EAttribute) eStructuralFeature, emfClass, mmRootEPackage);
+				//convert StructuralFeatures
+				for (EStructuralFeature eSF : aClass.getEAllStructuralFeatures()) {
+					if (eSF instanceof EAttribute){
+						// Attribute
+						convertAttributeAssociation(metaModel, (EAttribute) eSF, emfClass, mmRootEPackage);
 					}
-				}
+					else if (eSF instanceof EReference){
+						// Annotation content
+						if (aClass instanceof EModelElement && eSF.getFeatureID() == EcorePackage.EMODEL_ELEMENT__EANNOTATIONS){
+							emfClass.getAnnotations();
+						}
+						else{
+							// Other References
+							convertReferenceAssociation(metaModel, (EReference) eSF, emfClass, mmRootEPackage);
+						}
+					}
 
+				}
 			}
 		}
-
 		return emfClass;
 	}
 

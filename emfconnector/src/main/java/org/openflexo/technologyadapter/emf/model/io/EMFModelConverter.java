@@ -50,6 +50,7 @@ import org.eclipse.emf.common.util.EList;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -118,8 +119,9 @@ public class EMFModelConverter {
 		if (individuals.get(eObject) == null) {
 			individual = builder.buildObjectIndividual(model, eObject);
 			individuals.put(eObject, individual);
-			EStructuralFeature eContainingFeature = eObject.eContainingFeature();
 
+			// Convert container
+			EStructuralFeature eContainingFeature = eObject.eContainingFeature();
 			if (eContainingFeature != null) {
 				eContainingFeature.eContainer();
 				EObject eContainer = eObject.eContainer();
@@ -129,6 +131,7 @@ public class EMFModelConverter {
 				}
 			}
 
+			// Convert Structural Features
 			EClass objectClass = eObject.eClass();
 			for (EStructuralFeature eSF : objectClass.getEAllStructuralFeatures()) {
 					if (eSF instanceof EAttribute){
@@ -137,7 +140,7 @@ public class EMFModelConverter {
 					}
 					else if (eSF instanceof EReference){
 						// Annotation content
-						if (eSF.getFeatureID() == EcorePackage.EMODEL_ELEMENT__EANNOTATIONS){
+						if (eObject instanceof EModelElement && eSF.getFeatureID() == EcorePackage.EMODEL_ELEMENT__EANNOTATIONS){
 							convertObjectIndividualAnnotations(model, individual, eObject, (EReference) eSF);
 						}
 						else{

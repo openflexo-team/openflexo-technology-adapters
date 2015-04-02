@@ -293,8 +293,11 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public List<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> getPropertyValues() {
 		List<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> propertyValues = new ArrayList<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>();
+		// TODO : Some optimization required here!
 		for (EStructuralFeature structuralFeature : object.eClass().getEAllStructuralFeatures()) {
-			propertyValues.add(ontology.getConverter().getPropertyValues().get(object).get(structuralFeature));
+			IFlexoOntologyPropertyValue<EMFTechnologyAdapter> pvalue = ontology.getConverter().getPropertyValues().get(object).get(structuralFeature);
+			if (pvalue != null)
+				propertyValues.add(pvalue);
 		}
 		return Collections.unmodifiableList(propertyValues);
 	}
@@ -302,7 +305,6 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public boolean delete(Object... context) {
 		// TODO XTOF => implement an actual deletion mechanism
-		// TODO URGENT => there might be a memory leak here !
 		logger.warning("YOU NEED TO IMPLEMENT AN ACTUAL DELETION MECHANISM");
 		if (this.containingPropertyValue == null) {
 			this.getEMFModel().getEMFResource().getContents().remove(this.getObject());
