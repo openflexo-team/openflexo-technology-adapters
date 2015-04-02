@@ -9,12 +9,6 @@
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<Label label="prout" align="right" index="7" data=""
-				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				visible="" format="" icon="" tooltip="" localize="true" enable=""
-				clickAction="" doubleClickAction="" rightClickAction=""
-				enterPressedAction="" valueChangedAction="" valueTransform=""
-				valueValidator="" />
 		</Tab>
 	</TabPanel>
 	<LocalizedDictionary>
