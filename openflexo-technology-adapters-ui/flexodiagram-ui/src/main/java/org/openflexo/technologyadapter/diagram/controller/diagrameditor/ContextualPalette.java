@@ -38,8 +38,6 @@
 
 package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
-import static org.junit.Assert.assertTrue;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -335,7 +333,6 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			action.setPaletteElement(paletteElement);
 			action.setDropLocation(dropLocation);
 			action.doAction();
-			assertTrue(action.hasActionExecutionSucceeded());
 		}
 
 	}
