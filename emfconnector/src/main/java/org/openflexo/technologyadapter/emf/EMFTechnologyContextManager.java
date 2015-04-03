@@ -171,6 +171,11 @@ public class EMFTechnologyContextManager extends TechnologyContextManager<EMFTec
 	public EMFMetaModelResource getMetaModelResourceByURI(String uri){
 		return metamodels.get(uri);
 	}
+	
+	// TODO: maybe it does not need/have to be a EMFMetaModelResource
+	public EMFMetaModelResource getProfileResourceByURI(String uri){
+		return profiles.get(uri);
+	}
 
 	/**
 	 * Called when a new model is registered, notify the {@link TechnologyContextManager}
