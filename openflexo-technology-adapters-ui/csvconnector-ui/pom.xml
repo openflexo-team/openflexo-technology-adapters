@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters-ui</artifactId>
-		<version>1.7.1-SNAPSHOT</version>
+		<version>1.7.1-RC1</version>
 	</parent>
   <artifactId>csvconnector-ui</artifactId>
   <dependencies>
