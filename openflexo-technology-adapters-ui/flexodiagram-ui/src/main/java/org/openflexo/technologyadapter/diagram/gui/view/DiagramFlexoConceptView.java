@@ -97,4 +97,10 @@ public class DiagramFlexoConceptView extends FlexoConceptView<FlexoConcept> {
 		repaint();
 	}
 
+	@Override
+	public void willHide() {
+		super.willHide();
+		getPerspective().getController().getControllerModel().setRightViewVisible(false);
+	}
+
 }
