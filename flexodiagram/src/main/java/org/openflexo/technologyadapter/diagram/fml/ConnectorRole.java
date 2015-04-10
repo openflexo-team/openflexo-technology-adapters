@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.diagram.fml;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
@@ -127,6 +128,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	public static abstract class ConnectorRoleImpl extends GraphicalElementRoleImpl<DiagramConnector, ConnectorGraphicalRepresentation>
 			implements ConnectorRole {
 
+		private static final Logger logger = Logger.getLogger(ConnectorRole.class.getPackage().getName());
+
 		private ShapeGraphicalRepresentation artifactFromGraphicalRepresentation;
 		private ShapeGraphicalRepresentation artifactToGraphicalRepresentation;
 
@@ -139,6 +142,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 			super.initDefaultSpecifications();
 			if (getFMLModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
+					//logger.info("[CONNECTOR:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
 					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
 							GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
@@ -148,6 +152,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
 			}
+			handlePendingGRSpecs();
 		}
 
 		@Override
