@@ -74,6 +74,7 @@ public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
 
 	private static FlexoEditor editor;
 	private static FlexoProject project;
+	private static EMFTechnologyAdapter technologicalAdapter;
 
 	@Test
 	@TestOrder(1)
@@ -89,57 +90,38 @@ public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
 		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+		
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				EMFTechnologyAdapter.class);
 	}
-
 	@Test
 	@TestOrder(3)
-	public void testLoadEMFMetaModel() {
-		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				EMFTechnologyAdapter.class);
+	public void testConvertAllEMFMetaModel() {
 
-		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
-			assertNotNull(metaModelRepository);
-			Collection<EMFMetaModelResource> metaModelResources = metaModelRepository.getAllResources();
+
+		Collection<EMFMetaModelResource> metaModelResources = technologicalAdapter.getTechnologyContextManager().getAllMetaModelResources();
+
 		
-
 			for (EMFMetaModelResource mmResource : metaModelResources) {
 
-				System.out.println("\t Loading " + mmResource.getURI());
+				EMFMetaModelConverter converter = new EMFMetaModelConverter(technologicalAdapter);
 				
-				EMFMetaModel metamodel = mmResource.getMetaModelData();
-				
-				assertNotNull(metamodel);
-			}
-		}
-	}
-	
-	@Test
-	@TestOrder(4)
-	public void testConvertEMFMetaModel() {
-		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				EMFTechnologyAdapter.class);
-
-		EMFMetaModelConverter converter = new EMFMetaModelConverter(technologicalAdapter);
-		
-		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
-			assertNotNull(metaModelRepository);
-			Collection<EMFMetaModelResource> metaModelResources = metaModelRepository.getAllResources();
-		
-
-			for (EMFMetaModelResource mmResource : metaModelResources) {
-
-				System.out.println("\t Converting " + mmResource.getURI());
+				System.out.println("\t Loading and Converting " + mmResource.getURI());
 				long startTime = System.currentTimeMillis();
 
-				EMFMetaModel metamodel = converter.convertMetaModel(mmResource.getPackage());
+				EMFMetaModel metamodel = mmResource.getMetaModelData();
 
+				assertNotNull(metamodel);
+				assertNotNull(metamodel.getRootConcept());
+				
 				long endTime = System.currentTimeMillis();
 
 				System.out.println("\t\t MetaModel Conversion  took " + (endTime - startTime) + " milliseconds");
-				
-			}
+
 		}
 	}
+
+	
+
+
 }

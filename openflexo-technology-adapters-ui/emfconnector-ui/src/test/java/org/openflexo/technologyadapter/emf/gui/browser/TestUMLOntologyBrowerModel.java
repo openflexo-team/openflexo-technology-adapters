@@ -56,6 +56,7 @@ import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
+import org.openflexo.technologyadapter.emf.gui.EMFModelBrowserModel;
 import org.openflexo.technologyadapter.emf.gui.EMFModelView;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
@@ -133,7 +134,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 		long startTime = System.currentTimeMillis();
 
-		OntologyBrowserModel<EMFTechnologyAdapter> obm = new OntologyBrowserModel<EMFTechnologyAdapter>(umlModel);
+		OntologyBrowserModel<EMFTechnologyAdapter> obm = new EMFModelBrowserModel(umlModel);
 
 		long endTime = System.currentTimeMillis();
 
