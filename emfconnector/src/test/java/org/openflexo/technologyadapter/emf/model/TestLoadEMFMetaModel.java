@@ -40,6 +40,7 @@
 
 package org.openflexo.technologyadapter.emf.model;
 
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -112,7 +113,7 @@ public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
 				EMFMetaModel metamodel = mmResource.getMetaModelData();
 
 				assertNotNull(metamodel);
-				assertNotNull(metamodel.getRootConcept());
+				assertNull(metamodel.getRootConcept());
 				
 				long endTime = System.currentTimeMillis();
 

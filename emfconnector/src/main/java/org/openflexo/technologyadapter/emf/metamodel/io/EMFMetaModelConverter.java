@@ -183,20 +183,17 @@ public class EMFMetaModelConverter {
 			// DataTypes
 			for (EClassifier aClassifier : aPackage.getEClassifiers()) {
 
-				// Prevent converting stuff from Ecore MM at first
-				if (aClassifier.getEPackage() != EcorePackage.eINSTANCE){
 
-					if (aClassifier.eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
-						convertDataType(metaModel, (EDataType) aClassifier);
-					}
-					// Enum
-					else if (aClassifier.eClass().getClassifierID() == EcorePackage.EENUM) {
-						convertEnum(metaModel, (EEnum) aClassifier);
-					}
-					// Classes
-					else if (aClassifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
-						convertClass(metaModel, (EClass) aClassifier, aPackage);
-					}
+				if (aClassifier.eClass().getClassifierID() == EcorePackage.EDATA_TYPE) {
+					convertDataType(metaModel, (EDataType) aClassifier);
+				}
+				// Enum
+				else if (aClassifier.eClass().getClassifierID() == EcorePackage.EENUM) {
+					convertEnum(metaModel, (EEnum) aClassifier);
+				}
+				// Classes
+				else if (aClassifier.eClass().getClassifierID() == EcorePackage.ECLASS) {
+					convertClass(metaModel, (EClass) aClassifier, aPackage);
 				}
 			}
 
