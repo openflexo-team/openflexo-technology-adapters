@@ -122,6 +122,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 			super.initDefaultSpecifications();
 			if (getFMLModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
+					//logger.info("[SHAPE:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
 					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
 							GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
@@ -131,6 +132,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
 			}
+			handlePendingGRSpecs();
+
 		}
 
 		@Override
