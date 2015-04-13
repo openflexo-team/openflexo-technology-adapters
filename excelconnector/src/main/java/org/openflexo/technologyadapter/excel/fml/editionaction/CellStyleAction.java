@@ -230,16 +230,18 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 		@Override
 		public void setCellStyle(CellStyleFeature cellStyle) {
 			this.cellStyle = cellStyle;
-			if (cellStyle.equals(CellStyleFeature.BorderBottom) || cellStyle.equals(CellStyleFeature.BorderTop)
-					|| cellStyle.equals(CellStyleFeature.BorderLeft) || cellStyle.equals(CellStyleFeature.BorderRight)) {
-				isBorderStyle = true;
-			} else {
-				isBorderStyle = false;
-			}
-			if (cellStyle.equals(CellStyleFeature.Alignment)) {
-				isAlignmentStyle = true;
-			} else {
-				isAlignmentStyle = false;
+			if (cellStyle != null) {
+				if (cellStyle.equals(CellStyleFeature.BorderBottom) || cellStyle.equals(CellStyleFeature.BorderTop)
+						|| cellStyle.equals(CellStyleFeature.BorderLeft) || cellStyle.equals(CellStyleFeature.BorderRight)) {
+					isBorderStyle = true;
+				} else {
+					isBorderStyle = false;
+				}
+				if (cellStyle.equals(CellStyleFeature.Alignment)) {
+					isAlignmentStyle = true;
+				} else {
+					isAlignmentStyle = false;
+				}
 			}
 		}
 
