@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram.controller;
 
+import java.awt.Dimension;
 import java.util.Collections;
 import java.util.List;
 
@@ -155,6 +156,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		scaleSelector = swingToolFactory.makeDianaScaleSelector(null);
 		dialogInspectors = swingToolFactory.makeDianaDialogInspectors();
 		inspectors = swingToolFactory.makeDianaInspectors();
+		//inspectors.getPanelGroup().setPreferredSize(new Dimension(800, 800));
+		//inspectors.getPanelGroup().setMinimumSize(new Dimension(500, 500));
 
 		dialogInspectors.getForegroundStyleInspector().setLocation(1000, 100);
 		dialogInspectors.getTextStyleInspector().setLocation(1000, 300);
