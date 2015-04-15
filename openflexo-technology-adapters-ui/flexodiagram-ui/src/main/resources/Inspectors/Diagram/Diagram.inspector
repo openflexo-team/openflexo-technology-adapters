@@ -3,10 +3,13 @@
   <TabPanel name="Tab" constraints="border(location=center)">
     <Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11" darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
      <!-- Already in NamedViewPointObject.inspector --> 
-     <!--  <Label label="name" index="0" constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=left)" name="NameLabel" localize="true" />
+      <Label label="name" index="0" constraints="twocols(expandHorizontally=false;expandVertically=false;index=0;location=left)" name="NameLabel" localize="true" />
       <TextField index="1" data="data.name" constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;location=right)" name="NameTF" localize="true" columns="10" /> -->
       <Label label="diagram" index="2" constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;location=left)" name="DiagramNameLabel" localize="true" />
       <TextField index="3" data="data.diagramSpecification.name" constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;location=right)" name="DiagramName" readOnly="true" localize="true" columns="10" />
+      <!--<Panel id="25" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" useScrollBar="true" protectContent="false" opaque="false" name="DiagramPaletteScreenshotPanel" constraints="split(index=0;location=north;splitIdentifier=right)" trackViewPortHeight="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">-->
+      <Image id="26" manageDynamicModel="false" useScrollBar="false" data="data.screenshotImage.image" sizeAdjustment="FitToAvailableSizeRespectRatio" imageHeight="32" localize="true" align="left" readOnly="false" imageWidth="32" constraints="twocols(expandHorizontally=true;expandVertically=true;index=4;location=right)"/>
+      <!--	</Panel> -->
     </Tab>
   </TabPanel>
   <LocalizedDictionary>

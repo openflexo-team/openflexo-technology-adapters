@@ -40,11 +40,17 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
+
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.model.FIBTab;
+import org.openflexo.fib.utils.FIBInspector;
+import org.openflexo.foundation.FlexoObject;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagram;
 import org.openflexo.technologyadapter.diagram.fml.action.DeleteDiagramPalette;
+import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -63,7 +69,7 @@ public class DiagramFIBController extends FlexoFIBController {
 	public DiagramFIBController(FIBComponent component, FlexoController controller) {
 		super(component, controller);
 	}
-	
+
 	public Diagram createExampleDiagram(DiagramSpecification diagramSpecification) {
 		CreateExampleDiagram createExampleDiagram = CreateExampleDiagram.actionType.makeNewAction(diagramSpecification, null, getEditor());
 		createExampleDiagram.doAction();
@@ -74,7 +80,7 @@ public class DiagramFIBController extends FlexoFIBController {
 		DeleteDiagram deleteDiagram = DeleteDiagram.actionType.makeNewAction(diagram, null, getEditor());
 		deleteDiagram.doAction();
 	}
-	
+
 	public DiagramPalette createDiagramPalette(DiagramSpecification diagramSpecification) {
 		CreateDiagramPalette createDiagramPalette = CreateDiagramPalette.actionType.makeNewAction(diagramSpecification, null, getEditor());
 		createDiagramPalette.doAction();
@@ -84,5 +90,28 @@ public class DiagramFIBController extends FlexoFIBController {
 	public void deleteDiagramPalette(DiagramPalette diagramPalette) {
 		DeleteDiagramPalette deleteDiagramPalette = DeleteDiagramPalette.actionType.makeNewAction(diagramPalette, null, getEditor());
 		deleteDiagramPalette.doAction();
+	}
+
+	@Override
+	public ImageIcon iconForObject(Object object) {
+		// TODO Auto-generated method stub
+		if (object instanceof FlexoObject) {
+			return DiagramIconLibrary.iconForObject((FlexoObject) object);
+		} else {
+			return DiagramIconLibrary.DIAGRAM_ICON;
+		}
+
+	}
+
+	public FIBInspector inspectorForObject(Object object) {
+		return getFlexoController().getModuleInspectorController().inspectorForObject(object);
+	}
+
+	public FIBTab basicInspectorTabForObject(Object object) {
+		FIBInspector inspector = inspectorForObject(object);
+		if (inspector != null && inspector.getTabPanel() != null) {
+			return (FIBTab) inspector.getTabPanel().getSubComponentNamed("BasicTab");
+		}
+		return null;
 	}
 }
