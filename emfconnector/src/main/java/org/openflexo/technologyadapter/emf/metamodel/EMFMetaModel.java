@@ -54,7 +54,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
-import org.openflexo.foundation.ontology.IFlexoOntologyMetaModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
@@ -68,7 +67,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
  * @author gbesancon
  */
 public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements FlexoMetaModel<EMFMetaModel>,
-IFlexoOntologyMetaModel<EMFTechnologyAdapter> {
+IFlexoOntology<EMFTechnologyAdapter> {
 	/** MetaModel Resource. */
 	protected EMFMetaModelResource metaModelResource;
 	/** Adapter. */

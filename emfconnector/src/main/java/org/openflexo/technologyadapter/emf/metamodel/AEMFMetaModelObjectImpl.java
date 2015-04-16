@@ -43,7 +43,6 @@ package org.openflexo.technologyadapter.emf.metamodel;
 import org.eclipse.emf.ecore.EObject;
 import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
-import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
@@ -88,8 +87,8 @@ public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOn
 	 * @see org.openflexo.foundation.ontology.FlexoOntologyObjectImpl#getFlexoOntology()
 	 */
 	@Override
-	public IFlexoOntology<EMFTechnologyAdapter> getFlexoOntology() {
-		return ontology;
+	public EMFMetaModel getFlexoOntology() {
+		return  ontology;
 	}
 
 	/**

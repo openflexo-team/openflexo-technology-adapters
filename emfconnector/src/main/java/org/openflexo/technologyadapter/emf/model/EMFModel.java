@@ -54,8 +54,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
-import org.openflexo.foundation.ontology.IFlexoOntologyMetaModel;
-import org.openflexo.foundation.ontology.IFlexoOntologyModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -71,7 +69,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
  * @author gbesancon
  */
 public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements FlexoModel<EMFModel, EMFMetaModel>,
-		IFlexoOntologyModel<EMFTechnologyAdapter> {
+		IFlexoOntology<EMFTechnologyAdapter> {
 
 	/** Resource. */
 	protected EMFModelResource modelResource;
@@ -190,15 +188,7 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> impl
 		getResource().save(null);
 	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyModel#getMetaModels()
-	 */
-	@Override
-	public List<IFlexoOntologyMetaModel<EMFTechnologyAdapter>> getMetaModels() {
-		return Collections.unmodifiableList(Collections.singletonList((IFlexoOntologyMetaModel<EMFTechnologyAdapter>) metaModel));
-	}
+
 
 	/**
 	 * Getter of metaModel.
