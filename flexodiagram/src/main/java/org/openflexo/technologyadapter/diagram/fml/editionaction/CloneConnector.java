@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -53,7 +52,6 @@ import org.openflexo.technologyadapter.diagram.model.action.LinkSchemeAction;
  * @author sylvain
  * 
  */
-@FIBPanel("Fib/CloneConnectorPanel.fib")
 @ModelEntity
 @ImplementationClass(CloneConnector.CloneConnectorImpl.class)
 @XMLElement

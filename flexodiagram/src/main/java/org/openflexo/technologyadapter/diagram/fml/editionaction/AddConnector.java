@@ -50,7 +50,6 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
@@ -90,7 +89,6 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-@FIBPanel("Fib/AddConnectorPanel.fib")
 @ModelEntity
 @ImplementationClass(AddConnector.AddConnectorImpl.class)
 @XMLElement
