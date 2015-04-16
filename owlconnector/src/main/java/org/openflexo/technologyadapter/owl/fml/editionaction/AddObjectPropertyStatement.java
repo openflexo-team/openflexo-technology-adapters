@@ -47,7 +47,6 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoProperty;
@@ -79,7 +78,6 @@ import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 import org.openflexo.toolbox.StringUtils;
 
-@FIBPanel("Fib/AddObjectPropertyStatementPanel.fib")
 @ModelEntity
 @ImplementationClass(AddObjectPropertyStatement.AddObjectPropertyStatementImpl.class)
 @XMLElement
@@ -147,18 +145,15 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 			if (getSubject() != null)
 				subjstr = getSubject().toString();
-			else
-				subjstr = "<No Subject>";
+			else subjstr = "<No Subject>";
 
 			if (getObject() != null)
 				objstr = getObject().toString();
-			else
-				objstr = "<No Object>";
+			else objstr = "<No Object>";
 
 			if (getObjectProperty() != null)
 				propstr = getObjectProperty().getName();
-			else
-				propstr = "<No Property>";
+			else propstr = "<No Property>";
 
 			out.append(subjstr + "." + propstr + " = " + objstr + ";", context);
 
