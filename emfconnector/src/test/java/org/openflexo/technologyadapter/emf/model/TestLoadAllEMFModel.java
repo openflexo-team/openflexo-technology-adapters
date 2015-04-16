@@ -39,22 +39,17 @@
 package org.openflexo.technologyadapter.emf.model;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
-import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
@@ -67,11 +62,9 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestLoadAllEMFModel extends OpenflexoProjectAtRunTimeTestCase {
+public class TestLoadAllEMFModel extends OpenflexoTestCase {
 	protected static final Logger logger = Logger.getLogger(TestLoadAllEMFModel.class.getPackage().getName());
 
-	private static FlexoEditor editor;
-	private static FlexoProject project;
 
 	@Test
 	@TestOrder(1)
@@ -81,22 +74,10 @@ public class TestLoadAllEMFModel extends OpenflexoProjectAtRunTimeTestCase {
 		instanciateTestServiceManager();
 	}
 
+
 	@Test
 	@TestOrder(2)
-	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
-		System.out.println("Created project " + project.getProjectDirectory());
-		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
-	}
-
-
-
-
-	@Test
-	@TestOrder(3)
-	public void TestListAllMetaModelsl() {
+	public void TestListAllMetaModels() {
 		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				EMFTechnologyAdapter.class);
 
@@ -117,8 +98,8 @@ public class TestLoadAllEMFModel extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	@Test
-	@TestOrder(4)
-	public void TestLoadAllEMFModel() {
+	@TestOrder(3)
+	public void TestLoadAllEMFModels() {
 		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				EMFTechnologyAdapter.class);
 
