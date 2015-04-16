@@ -40,15 +40,10 @@ package org.openflexo.technologyadapter.emf.model;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.connie.binding.SimplePathElement;
-import org.openflexo.connie.exception.InvocationTargetTransformException;
-import org.openflexo.connie.exception.NullReferenceException;
-import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
@@ -108,23 +103,9 @@ public class TestEMFBindingModels extends OpenflexoTestCase {
 
 		assertNotNull(metaModel);
 
-		List<? extends SimplePathElement> listPathElemtents = bindingFactory.getAccessibleSimplePathElements(metaModel);
-
-		for (SimplePathElement p : listPathElemtents){
-			try {
-				System.out.println("Rhatapong : " + p.getPropertyName() + " ->  "+	p.getBindingValue(metaModel, null));
-			} catch (TypeMismatchException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NullReferenceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvocationTargetTransformException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
+	// TODO Write tests
+		
+		
 	}
 
 	/*
