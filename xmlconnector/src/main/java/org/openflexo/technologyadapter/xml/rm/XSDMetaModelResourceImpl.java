@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.File;
@@ -45,9 +44,9 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -73,7 +72,7 @@ import com.sun.xml.xsom.XSType;
  * 
  */
 
-public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMetaModel>  implements XSDMetaModelResource {
+public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMetaModel> implements XSDMetaModelResource {
 
 	private static final Logger logger = Logger.getLogger(XSDMetaModelResourceImpl.class.getPackage().getName());
 
@@ -89,12 +88,12 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	public static XSDMetaModelResource makeXSDMetaModelResource(File xsdMetaModelFile, String uri,
 			XMLTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,XSDMetaModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					XSDMetaModelResource.class));
 			XSDMetaModelResource returned = factory.newInstance(XSDMetaModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setURI(uri);
-			returned.setName("Unnamed");
+			returned.initName("Unnamed");
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xsdMetaModelFile, factory));
 
 			return returned;
@@ -141,25 +140,24 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 		// TODO if a declaration (base) type is derived, get the correct
 		// superclass
 
-		
-		if (resourceData != null){
+		if (resourceData != null) {
 			for (XSComplexType complexType : fetcher.getComplexTypes()) {
-				
+
 				XMLType xsType = resourceData.getTypeFromURI(fetcher.getUri(complexType));
-				
+
 				if (xsType == null) {
 					// create New XMLComplexeType as it does not exist
-					xsType = resourceData.createNewType(fetcher.getUri(complexType), complexType.getName(),false);
+					xsType = resourceData.createNewType(fetcher.getUri(complexType), complexType.getName(), false);
 					xsType.setIsAbstract(true);
 				}
-				
+
 				XSType btype = complexType.getBaseType();
-				
+
 				if (btype != null && !btype.getName().equalsIgnoreCase("anyType")) {
 					XMLType superType = resourceData.getTypeFromURI(fetcher.getUri(btype));
 					if (superType == null) {
 						// create New Type if it does not exist
-						superType = resourceData.createNewType(btype.getName(), fetcher.getUri(btype),false);
+						superType = resourceData.createNewType(btype.getName(), fetcher.getUri(btype), false);
 						xsType.setIsAbstract(true);
 					}
 					if (superType != null) {
@@ -170,10 +168,10 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 			}
 
 			// Creates complex types that come with complex Element declarations
-			
+
 			for (XSElementDecl element : fetcher.getElementDecls()) {
 				if (element.getType().isComplexType()) {
-					XMLType xsType = resourceData.createNewType(fetcher.getUri(element),element.getName(),false);
+					XMLType xsType = resourceData.createNewType(fetcher.getUri(element), element.getName(), false);
 					XSType type = element.getType();
 					if (type != null) {
 						XMLType superType = resourceData.getTypeFromURI(fetcher.getUri(type));
@@ -182,8 +180,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					}
 				}
 			}
-		}
-		else {
+		} else {
 			logger.warning("Cannot load Types as MetaModel (resourceData) is NULL");
 		}
 	}
@@ -192,7 +189,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 
 		// Simple Elements that maps to a simpleType
 		for (XSElementDecl element : fetcher.getElementDecls()) {
-			XSType elementType = element.getType(); 
+			XSType elementType = element.getType();
 			if (!elementType.isComplexType()) {
 				String uri = fetcher.getUri(element);
 				String ownerUri = fetcher.getOwnerURI(uri);
@@ -200,13 +197,12 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					XMLType owner = resourceData.getTypeFromURI(ownerUri);
 					if (owner != null && owner instanceof XMLComplexType) {
 						// TODO: better manage types
-						((XMLComplexType) owner).createProperty(element.getName(), resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-					}
-					else {
+						((XMLComplexType) owner).createProperty(element.getName(),
+								resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
+					} else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
-				}
-				else {
+				} else {
 					logger.warning("unable to find an owner for : " + uri);
 				}
 
@@ -221,15 +217,14 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 
 			if (ownerUri != null) {
 				XMLType owner = resourceData.getTypeFromURI(ownerUri);
-				if (owner != null && owner instanceof XMLComplexType ) {
+				if (owner != null && owner instanceof XMLComplexType) {
 					// TODO: better manage types
-					((XMLComplexType) owner).createProperty(attribute.getName(), resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-				}
-				else {
+					((XMLComplexType) owner).createProperty(attribute.getName(),
+							resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
+				} else {
 					logger.warning("unable to find an owner type for attribute: " + uri);
 				}
-			}
-			else {
+			} else {
 				logger.warning("unable to find an owner for : " + uri);
 			}
 		}
@@ -240,7 +235,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 		for (XSElementDecl element : fetcher.getElementDecls()) {
 
 			XSType elementType = element.getType();
-			
+
 			if (elementType.isComplexType()) {
 				String uri = fetcher.getUri(element);
 				XMLType t = resourceData.getTypeFromURI(fetcher.getUri(element));
@@ -250,12 +245,11 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 
 				if (ownerUri != null) {
 					XMLType owner = resourceData.getTypeFromURI(ownerUri);
-					if (owner != null && owner instanceof XMLComplexType ) {
+					if (owner != null && owner instanceof XMLComplexType) {
 
 						// TODO: better manage types
 						((XMLComplexType) owner).createProperty(name, t);
-					}
-					else {
+					} else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
 				}
@@ -267,7 +261,7 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	public boolean load() {
 
 		if (resourceData == null) {
-			this.resourceData =  XSDMetaModelImpl.getModelFactory().newInstance(XSDMetaModel.class);
+			this.resourceData = XSDMetaModelImpl.getModelFactory().newInstance(XSDMetaModel.class);
 			resourceData.getResource();
 			resourceData.setResource(this);
 			resourceData.setURI(this.getURI());
@@ -335,14 +329,14 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	public Class<XMLMetaModel> getResourceDataClass() {
 		return XMLMetaModel.class;
 	}
-	
-	private File getFile(){
+
+	private File getFile() {
 		return getFileFlexoIODelegate().getFile();
 	}
-	
+
 	@Override
 	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate)getFlexoIODelegate();
+		return (FileFlexoIODelegate) getFlexoIODelegate();
 	}
 
 }

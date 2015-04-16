@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.csv.rm;
 
 import java.io.File;
@@ -72,10 +71,10 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 	public static CSVModelResource makeCSVModelResource(String modelURI, File modelFile,
 			CSVTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,CSVModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					CSVModelResource.class));
 			CSVModelResourceImpl returned = (CSVModelResourceImpl) factory.newInstance(CSVModelResource.class);
-			returned.setName(modelFile.getName());
+			returned.initName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 
 			returned.setURI(modelURI);
@@ -93,10 +92,10 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 
 	public static CSVModelResource retrieveCSVModelResource(File modelFile, CSVTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,CSVModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					CSVModelResource.class));
 			CSVModelResourceImpl returned = (CSVModelResourceImpl) factory.newInstance(CSVModelResource.class);
-			returned.setName(modelFile.getName());
+			returned.initName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 			returned.setURI(modelFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
@@ -200,12 +199,12 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel> i
 	public Class<CSVModel> getResourceDataClass() {
 		return CSVModel.class;
 	}
-	
-	private File getFile(){
+
+	private File getFile() {
 		return getFileFlexoIODelegate().getFile();
 	}
-	
+
 	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate)getFlexoIODelegate();
+		return (FileFlexoIODelegate) getFlexoIODelegate();
 	}
 }

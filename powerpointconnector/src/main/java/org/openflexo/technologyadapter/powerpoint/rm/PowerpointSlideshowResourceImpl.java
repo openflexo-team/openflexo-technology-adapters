@@ -86,19 +86,19 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	public static PowerpointSlideshowResource makePowerpointSlideshowResource(String modelURI, File powerpointFile,
 			PowerpointTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,PowerpointSlideshowResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					PowerpointSlideshowResource.class));
 			PowerpointSlideshowResourceImpl returned = (PowerpointSlideshowResourceImpl) factory
 					.newInstance(PowerpointSlideshowResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
-			returned.setName(powerpointFile.getName());
-			
-			//returned.setFile(powerpointFile);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class) ;
+			returned.initName(powerpointFile.getName());
+
+			// returned.setFile(powerpointFile);
+			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
 			returned.setFlexoIODelegate(fileIODelegate);
 			fileIODelegate.setFile(powerpointFile);
-			
+
 			returned.setURI(modelURI);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerResource(returned);
@@ -122,19 +122,19 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	public static PowerpointSlideshowResource retrievePowerpointSlideshowResource(File modelFile,
 			PowerpointTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,PowerpointSlideshowResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					PowerpointSlideshowResource.class));
 			PowerpointSlideshowResourceImpl returned = (PowerpointSlideshowResourceImpl) factory
 					.newInstance(PowerpointSlideshowResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
-			returned.setName(modelFile.getName());
-			
-			//returned.setFile(modelFile);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class) ;
+			returned.initName(modelFile.getName());
+
+			// returned.setFile(modelFile);
+			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
 			returned.setFlexoIODelegate(fileIODelegate);
 			fileIODelegate.setFile(modelFile);
-			
+
 			returned.setURI(modelFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerResource(returned);
@@ -175,10 +175,10 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 
 		PowerpointSlideshow resourceData = null;
 		SlideShow ssOpenned = null;
-		FileFlexoIODelegate delegate = (FileFlexoIODelegate)getFlexoIODelegate();
+		FileFlexoIODelegate delegate = (FileFlexoIODelegate) getFlexoIODelegate();
 		try {
 			if (!getFlexoIODelegate().exists()) {
-				
+
 				// Creates a new file
 				delegate.getFile().createNewFile();
 				ssOpenned = new SlideShow();
@@ -232,7 +232,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 
 		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Permission denied : " +getFlexoIODelegate().toString());
+				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
 			}
 			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
 		}
@@ -256,7 +256,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	private void writeToFile(SlideShow slideshow) throws SaveResourceException {
 		logger.info("Wrote " + getFlexoIODelegate().toString());
 		FileOutputStream fileOut;
-		FileFlexoIODelegate delegate = (FileFlexoIODelegate)getFlexoIODelegate();
+		FileFlexoIODelegate delegate = (FileFlexoIODelegate) getFlexoIODelegate();
 		try {
 			fileOut = new FileOutputStream(delegate.getFile());
 			slideshow.write(fileOut);

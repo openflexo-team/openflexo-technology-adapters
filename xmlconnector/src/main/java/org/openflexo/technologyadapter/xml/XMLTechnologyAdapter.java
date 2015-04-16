@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml;
 
 import java.io.File;
@@ -242,7 +241,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				if (mmRes == null) {
 
 					mmRes = XSDMetaModelResourceImpl.makeXSDMetaModelResource(candidateFile, uri, xmlContextManager);
-					mmRes.setName(candidateFile.getName());
+					mmRes.initName(candidateFile.getName());
 					mmRes.setServiceManager(getTechnologyAdapterService().getServiceManager());
 				} else {
 					logger.warning("Found another file with an already existing URI: " + uri);

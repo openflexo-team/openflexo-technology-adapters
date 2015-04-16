@@ -244,7 +244,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		public void setName(String name) {
 			if (requireChange(getName(), name)) {
 				if (getResource() != null) {
-					getResource().setName(name);
+					getResource().initName(name);
 					// getResource().renameFileTo(name + ".palette");
 				}
 			}

@@ -501,7 +501,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		public void setName(String name) {
 			if (requireChange(getName(), name)) {
 				if (getResource() != null) {
-					getResource().setName(name);
+					getResource().initName(name);
 				}
 			}
 		}

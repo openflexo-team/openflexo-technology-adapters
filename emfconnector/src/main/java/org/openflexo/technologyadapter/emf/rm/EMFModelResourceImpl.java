@@ -87,15 +87,16 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	public static EMFModelResource makeEMFModelResource(String modelURI, File modelFile, EMFMetaModelResource emfMetaModelResource,
 			EMFTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,EMFModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					EMFModelResource.class));
 			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
-			returned.setName(modelFile.getName());
+			returned.initName(modelFile.getName());
 
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 
-			//returned.setFile(modelFile);
+			// returned.setFile(modelFile);
 			// TODO: URI should be defined by the parameter,because its not manageable (FOR NOW)
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
@@ -133,11 +134,12 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	public static EMFModelResource retrieveEMFModelResource(File modelFile, EMFMetaModelResource emfMetaModelResource,
 			EMFTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,EMFModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					EMFModelResource.class));
 			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
-			returned.setName(modelFile.getName());
+			returned.initName(modelFile.getName());
 
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 
@@ -199,7 +201,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 
 		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				//logger.warning("Permission denied : " + getFile().getAbsolutePath());
+				// logger.warning("Permission denied : " + getFile().getAbsolutePath());
 				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
 			}
 			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
@@ -263,9 +265,8 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 			if (mmResource == null) {
 				logger.warning("EMFModel has no meta-model !!!");
 				return null;
-			}
-			else { 
-				if (!mmResource.isLoaded()){
+			} else {
+				if (!mmResource.isLoaded()) {
 					try {
 						mmResource.loadResourceData(null);
 					} catch (FileNotFoundException e) {
@@ -282,14 +283,13 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 
 			}
 
-
-			// TODO: should be refactored with IODelegates Also (BE AWARE THAT FOR EMF, THE METAMODEL DECIDES WHO IS CREATING THE RESOURCES!! 
+			// TODO: should be refactored with IODelegates Also (BE AWARE THAT FOR EMF, THE METAMODEL DECIDES WHO IS CREATING THE
+			// RESOURCES!!
 			modelResource = mmResource.createEMFModelResource(getFlexoIODelegate());
 
 		}
 		return modelResource;
 	}
-
 
 	@Override
 	public Class<EMFModel> getResourceDataClass() {

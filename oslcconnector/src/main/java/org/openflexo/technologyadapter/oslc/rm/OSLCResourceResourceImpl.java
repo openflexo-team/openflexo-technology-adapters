@@ -97,7 +97,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
 			returned.setFlexoIODelegate(fileIODelegate);
 			fileIODelegate.setFile(modelFile);
-			returned.setName(modelFile.getName());
+			returned.initName(modelFile.getName());
 			returned.setURI(modelURI);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -119,7 +119,7 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
 			returned.setFlexoIODelegate(fileIODelegate);
 			fileIODelegate.setFile(oslcFile);
-			returned.setName(oslcFile.getName());
+			returned.initName(oslcFile.getName());
 			returned.setURI(oslcFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
