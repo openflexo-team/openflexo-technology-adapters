@@ -46,7 +46,6 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.SetDataPropertyValueAction;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
@@ -75,7 +74,6 @@ import org.openflexo.toolbox.StringUtils;
  * @author gbesancon
  * 
  */
-@FIBPanel("Fib/AddEMFObjectIndividualAttributeDataPropertyValuePanel.fib")
 @ModelEntity
 @ImplementationClass(AddEMFObjectIndividualAttributeDataPropertyValue.AddEMFObjectIndividualAttributeDataPropertyValueImpl.class)
 @XMLElement
