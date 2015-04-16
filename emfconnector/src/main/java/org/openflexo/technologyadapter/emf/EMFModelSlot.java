@@ -62,12 +62,7 @@ import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
-import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualAttributeDataPropertyValue;
-import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualAttributeObjectPropertyValue;
-import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualReferenceObjectPropertyValue;
-import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividualAttributeDataPropertyValue;
-import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividualAttributeObjectPropertyValue;
-import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividualReferenceObjectPropertyValue;
+import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.fml.editionaction.SelectEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
@@ -82,10 +77,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
  * 
  */
 @DeclareFlexoRoles({ EMFObjectIndividualRole.class, EMFClassClassRole.class, EMFEnumClassRole.class })
-@DeclareEditionActions({ AddEMFObjectIndividual.class, AddEMFObjectIndividualAttributeDataPropertyValue.class,
-		AddEMFObjectIndividualAttributeObjectPropertyValue.class, AddEMFObjectIndividualReferenceObjectPropertyValue.class,
-		RemoveEMFObjectIndividualAttributeDataPropertyValue.class, RemoveEMFObjectIndividualAttributeObjectPropertyValue.class,
-		RemoveEMFObjectIndividualReferenceObjectPropertyValue.class })
+@DeclareEditionActions({ AddEMFObjectIndividual.class,RemoveEMFObjectIndividual.class })
 @DeclareFetchRequests({ SelectEMFObjectIndividual.class })
 @ModelEntity
 @ImplementationClass(EMFModelSlot.EMFModelSlotImpl.class)
