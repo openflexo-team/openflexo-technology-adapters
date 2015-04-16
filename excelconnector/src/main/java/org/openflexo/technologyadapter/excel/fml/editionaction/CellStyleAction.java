@@ -49,7 +49,6 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
@@ -65,7 +64,6 @@ import org.openflexo.technologyadapter.excel.model.ExcelCell.CellAlignmentStyleF
 import org.openflexo.technologyadapter.excel.model.ExcelCell.CellBorderStyleFeature;
 import org.openflexo.technologyadapter.excel.model.ExcelCell.CellStyleFeature;
 
-@FIBPanel("Fib/CellStyleActionPanel.fib")
 @ModelEntity
 @ImplementationClass(CellStyleAction.CellStyleActionImpl.class)
 @XMLElement
