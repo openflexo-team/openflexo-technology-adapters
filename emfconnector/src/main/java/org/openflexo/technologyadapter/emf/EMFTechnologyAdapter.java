@@ -83,7 +83,7 @@ import org.openflexo.technologyadapter.emf.rm.XtextEMFMetaModelResource;
  * 
  */
 @DeclareModelSlots({ EMFModelSlot.class, /*,EMFMetaModelSlot.class*/
-					 UMLEMFModelSlot.class  /* EMFUMLModelSlot.class */})
+UMLEMFModelSlot.class /* EMFUMLModelSlot.class */})
 @DeclareRepositoryType({ EMFMetaModelRepository.class, EMFModelRepository.class })
 public class EMFTechnologyAdapter extends TechnologyAdapter {
 
@@ -91,7 +91,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 
 	private static final EMFBindingFactory BINDING_FACTORY = new EMFBindingFactory();
 
-	
 	// Static references to ECORE properties
 
 	public static String ECORE_MM_NAME = "Ecore Metamodel";
@@ -196,8 +195,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 					folder = mmRepo.getRepositoryFolder(candidateFile, true);
 					if (folder != null) {
 						mmRepo.registerResource(mmRes, folder);
-					}
-					else
+					} else
 						mmRepo.registerResource(mmRes);
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -214,24 +212,22 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		EMFMetaModelRepository mmRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, this);
 		EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, this);
 
-		
-		
-				for (EMFMetaModelResource mmRes : technologyContextManager.getAllMetaModelResources()) {
-					if (isValidModelFile(candidateFile, mmRes)) {
-						EMFModelResource mRes = retrieveModelResource(candidateFile, mmRes);
-						if (mRes != null) {
-							RepositoryFolder<EMFModelResource> folder;
-							try {
-								folder = modelRepository.getRepositoryFolder(candidateFile, true);
-								modelRepository.registerResource(mRes, folder);
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-							referenceResource(mRes, resourceCenter);
-							return mRes;
-						}
+		for (EMFMetaModelResource mmRes : technologyContextManager.getAllMetaModelResources()) {
+			if (isValidModelFile(candidateFile, mmRes)) {
+				EMFModelResource mRes = retrieveModelResource(candidateFile, mmRes);
+				if (mRes != null) {
+					RepositoryFolder<EMFModelResource> folder;
+					try {
+						folder = modelRepository.getRepositoryFolder(candidateFile, true);
+						modelRepository.registerResource(mRes, folder);
+					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
+					referenceResource(mRes, resourceCenter);
+					return mRes;
 				}
+			}
+		}
 		return null;
 	}
 
@@ -246,8 +242,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			File candidateFile = (File) contents;
 			if (tryToLookupMetaModel(resourceCenter, candidateFile) != null) {
 				// This is a meta-model, this one has just been registered
-			}
-			else {
+			} else {
 				tryToLookupModel(resourceCenter, candidateFile);
 			}
 		}
@@ -257,7 +252,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
 			System.out
-			.println("File DELETED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
+					.println("File DELETED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
 		}
 	}
 
@@ -271,11 +266,10 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 */
 	public EMFMetaModelRepository createMetaModelRepository(FlexoResourceCenter<?> resourceCenter) throws ModelDefinitionException {
 
-		
 		EMFMetaModelRepository mmRepository = new EMFMetaModelRepository(this, resourceCenter);
 
 		// Register Global MetaModels if ever we had a ResourceCenter configured
-		
+
 		registerClasspathMetaModels();
 
 		resourceCenter.registerRepository(mmRepository, EMFMetaModelRepository.class, this);
@@ -283,14 +277,14 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		return mmRepository;
 	}
 
-	/** 
+	/**
 	 * Registers the Metamodel that are provided by this technology adapter
 	 */
-	private void registerClasspathMetaModels()throws ModelDefinitionException  {
+	private void registerClasspathMetaModels() throws ModelDefinitionException {
 
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,MMFromClasspathIODelegate.class,
-				EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
-		
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+				MMFromClasspathIODelegate.class, EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
+
 		if (ecoreMetaModelResource == null) {
 			// register ecore MM once for all resource centers
 			MMFromClasspathIODelegate iodelegate = MMFromClasspathIODelegateImpl.makeMMFromClasspathIODelegate(factory);
@@ -299,7 +293,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			iodelegate.setFlexoResource(ecoreMetaModelResource);
 			ecoreMetaModelResource.setTechnologyAdapter(this);
 			ecoreMetaModelResource.setURI(ECORE_MM_URI);
-			ecoreMetaModelResource.setName(ECORE_MM_NAME);
+			ecoreMetaModelResource.initName(ECORE_MM_NAME);
 			ecoreMetaModelResource.setModelFileExtension(ECORE_MM_EXT);
 			ecoreMetaModelResource.setPackageClassName(ECORE_MM_PKGCLSNAME);
 			ecoreMetaModelResource.setResourceFactoryClassName(ECORE_MM_FACTORYCLSNAME);
@@ -315,14 +309,14 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			iodelegate.setFlexoResource(umlMetaModelResource);
 			umlMetaModelResource.setTechnologyAdapter(this);
 			umlMetaModelResource.setURI(UML_MM_URI);
-			umlMetaModelResource.setName(UML_MM_NAME);
+			umlMetaModelResource.initName(UML_MM_NAME);
 			umlMetaModelResource.setModelFileExtension(UML_MM_EXT);
 			umlMetaModelResource.setPackageClassName(UML_MM_PKGCLSNAME);
 			umlMetaModelResource.setResourceFactoryClassName(UML_MM_FACTORYCLSNAME);
 			umlMetaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
 			getTechnologyContextManager().registerMetaModel(umlMetaModelResource);
 		}
-		
+
 	}
 
 	/**
@@ -362,22 +356,22 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 
 		ModelFactory factory;
 		try {
-			
-			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(MMFromJarsInDirIODelegate.class, EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
-			
+
+			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(MMFromJarsInDirIODelegate.class,
+					EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
+
 			MMFromJarsInDirIODelegate iodelegate = MMFromJarsInDirIODelegateImpl.makeMMFromJarsInDirIODelegate(aMetaModelFile, factory);
 
 			metaModelResource = iodelegate.retrieveMetaModelResource(aMetaModelFile, factory, this.getTechnologyContextManager());
-			
-			metaModelResource.setTechnologyAdapter(this);		
-			metaModelResource.setFlexoIODelegate(iodelegate);	
+
+			metaModelResource.setTechnologyAdapter(this);
+			metaModelResource.setFlexoIODelegate(iodelegate);
 			metaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
 
-			
 			return metaModelResource;
 
 		} catch (ModelDefinitionException e) {
-			logger.warning("Unable to Create EMF Metamodel from directory: " + aMetaModelFile );
+			logger.warning("Unable to Create EMF Metamodel from directory: " + aMetaModelFile);
 			e.printStackTrace();
 		}
 
@@ -437,7 +431,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		return emfModelResource;
 	}
 
-
 	/**
 	 * Create empty EMFModel.
 	 * 
@@ -478,7 +471,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 * @return
 	 */
 	public EMFModelResource createNewEMFModel(File modelFile, String modelUri, EMFMetaModelResource metaModelResource) {
-		EMFMetaModelResource emfMetaModelResource = (EMFMetaModelResource) metaModelResource;
+		EMFMetaModelResource emfMetaModelResource = metaModelResource;
 		EMFModelResource emfModelResource = EMFModelResourceImpl.makeEMFModelResource(modelUri, modelFile, emfMetaModelResource,
 				getTechnologyContextManager());
 		getTechnologyContextManager().registerModel(emfModelResource);

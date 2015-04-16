@@ -52,15 +52,12 @@ import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.xtext.ISetup;
 import org.openflexo.model.annotations.Implementation;
-import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
-import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResourceImpl;
 import org.openflexo.technologyadapter.emf.rm.XtextEMFMetaModelResource;
 import org.openflexo.toolbox.FileUtils;
 import org.openflexo.toolbox.JarInDirClassLoader;
@@ -77,32 +74,29 @@ import com.google.inject.Injector;
 @XMLElement
 public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> {
 
-
 	/** Name of the .properties file to use **/
 	static String EMF_PROPERTIES_FILENAME = "emf.properties";
 
 	// Static properties (emf.properties content definition)
 
 	public static String PROPERTY_TYPE = "TYPE";
-	public static String TYPE_METAMODEL ="standard";
+	public static String TYPE_METAMODEL = "standard";
 	public static String TYPE_PROFILE = "profile";
 	public static String TYPE_XTEXT = "xtext";
-	public static String PROPERTY_XTEXT_STANDALONE_SETUP="XTEXT_STANDALONE_SETUP";
-
+	public static String PROPERTY_XTEXT_STANDALONE_SETUP = "XTEXT_STANDALONE_SETUP";
 
 	public String getProperty(String name);
 
-	public EMFMetaModelResource retrieveMetaModelResource(final File aMetaModelFile, ModelFactory factory, EMFTechnologyContextManager contextManager);
-
+	public EMFMetaModelResource retrieveMetaModelResource(final File aMetaModelFile, ModelFactory factory,
+			EMFTechnologyContextManager contextManager);
 
 	@Implementation
 	public abstract class MMFromJarsInDirIODelegateImpl extends EMFMetaModelIODelegateImpl<File> implements MMFromJarsInDirIODelegate {
 
 		protected static final Logger logger = Logger.getLogger(MMFromJarsInDirIODelegate.class.getPackage().getName());
 
-		private EMFMetaModelResource emfMetaModelResource = null;
+		private final EMFMetaModelResource emfMetaModelResource = null;
 		private Properties emfproperties = null;
-
 
 		public static MMFromJarsInDirIODelegate makeMMFromJarsInDirIODelegate(File file, ModelFactory factory) {
 			MMFromJarsInDirIODelegate iodelegate = factory.newInstance(MMFromJarsInDirIODelegate.class);
@@ -110,20 +104,22 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 			return iodelegate;
 		}
 
-		public EMFMetaModelResource retrieveMetaModelResource(final File aMetaModelFile, ModelFactory factory, EMFTechnologyContextManager contextManager) {
+		@Override
+		public EMFMetaModelResource retrieveMetaModelResource(final File aMetaModelFile, ModelFactory factory,
+				EMFTechnologyContextManager contextManager) {
 
 			String mmType = getProperty(PROPERTY_TYPE);
 			EMFMetaModelResource metaModelResource = null;
 
-			if (mmType != null && mmType.equals(TYPE_XTEXT)){
+			if (mmType != null && mmType.equals(TYPE_XTEXT)) {
 				metaModelResource = factory.newInstance(XtextEMFMetaModelResource.class);
 
-			}else{
+			} else {
 				metaModelResource = factory.newInstance(EMFMetaModelResource.class);
 			}
 			setFlexoResource(metaModelResource);
 			metaModelResource.setURI(getProperty("URI"));
-			metaModelResource.setName(aMetaModelFile.getName());
+			metaModelResource.initName(aMetaModelFile.getName());
 
 			metaModelResource.setModelFileExtension(getProperty("EXTENSION"));
 			metaModelResource.setPackageClassName(getProperty("PACKAGE"));
@@ -142,10 +138,8 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 			return metaModelResource;
 		}
 
-
-		@Override 
+		@Override
 		public EMFMetaModel loadMetaModel(EMFTechnologyContextManager ctxtManager) {
-
 
 			EMFMetaModel result = null;
 			Class<?> ePackageClass = null;
@@ -167,12 +161,11 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 						Class<?> resourceFactoryClass = classLoader.loadClass(resource.getEMFResourceFactoryClassName());
 						if (resourceFactoryClass != null) {
 							resource.setEMFResourceFactory((Resource.Factory) resourceFactoryClass.newInstance());
-						}
-						else {
+						} else {
 							logger.warning("I will not be able to initialize EMF Model Factory for: " + resource.getURI());
 						}
 					}
-					if (mmType != null && mmType.equals(TYPE_XTEXT)){
+					if (mmType != null && mmType.equals(TYPE_XTEXT)) {
 
 						Class<?> standaloneSetupClass = classLoader.loadClass(this.getProperty(PROPERTY_XTEXT_STANDALONE_SETUP));
 						ISetup standaloneSetup = ((ISetup) standaloneSetupClass.newInstance());
@@ -208,22 +201,20 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 			} catch (InstantiationException e) {
 				logger.warning("Unable to load EMF MEtaModel:");
 				e.printStackTrace();
-			} 
+			}
 			return null;
-
 
 		}
 
 		@Override
 		public String getParentPath() {
-			if (getSerializationArtefact() != null){
+			if (getSerializationArtefact() != null) {
 				return getSerializationArtefact().getParent();
-			}
-			else return "";
+			} else
+				return "";
 		}
 
-
-		/** a Metamodel exists if directory contains jar and an emf.properties file  **/
+		/** a Metamodel exists if directory contains jar and an emf.properties file **/
 		@Override
 		public boolean exists() {
 			return isValidMetaModelFile(getSerializationArtefact());
@@ -231,28 +222,30 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 
 		@Override
 		public String stringRepresentation() {
-			if (getSerializationArtefact() != null){
+			if (getSerializationArtefact() != null) {
 				return "MMFromJarsInDirIODelegate for directory " + getSerializationArtefact().getAbsolutePath();
-			}
-			else {
+			} else {
 				return "MMFromJarsInDirIODelegate for NO directory";
 			}
 		}
 
-		/** Return the property value for given name 
+		/**
+		 * Return the property value for given name
 		 * 
 		 * @return String
 		 */
 
-		public String getProperty(String name){
-			if (emfproperties == null){
+		@Override
+		public String getProperty(String name) {
+			if (emfproperties == null) {
 				emfproperties = getEmfProperties(getSerializationArtefact());
 			}
-			if (emfproperties != null){
+			if (emfproperties != null) {
 				return emfproperties.getProperty(name);
 			}
 			return null;
 		}
+
 		/**
 		 * Return EMF Property file of MetaModel Directory.
 		 * 
@@ -277,26 +270,25 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 			return emfProperties;
 		}
 
-		/** 
+		/**
 		 * Verifies that all is ok for a MetaModel to be found
 		 */
 
-		static public boolean isValidMetaModelFile(File aMetaModelFile){
+		static public boolean isValidMetaModelFile(File aMetaModelFile) {
 			if (aMetaModelFile != null && aMetaModelFile.isDirectory()) {
 				File[] jarFiles = aMetaModelFile.listFiles(FileUtils.JARFileNameFilter);
 
 				Properties emfProperties = MMFromJarsInDirIODelegateImpl.getEmfProperties(aMetaModelFile);
-				if (emfProperties != null){
+				if (emfProperties != null) {
 					String uri = emfProperties.getProperty("URI");
 					String extension = emfProperties.getProperty("EXTENSION");
 					String ePackageClassName = emfProperties.getProperty("PACKAGE");
 					String resourceFactoryClassName = emfProperties.getProperty("RESOURCE_FACTORY");
 
 					return (uri != null && extension != null && ePackageClassName != null && resourceFactoryClassName != null && jarFiles.length > 0);
-				}
-				else return false;
-			}
-			else {
+				} else
+					return false;
+			} else {
 				return false;
 			}
 		}

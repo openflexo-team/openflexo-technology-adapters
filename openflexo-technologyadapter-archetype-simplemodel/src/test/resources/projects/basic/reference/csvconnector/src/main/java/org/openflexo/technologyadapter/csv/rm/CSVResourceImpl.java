@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.csv.rm;
 
 import java.io.File;
@@ -57,18 +56,15 @@ import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
-
-import org.openflexo.technologyadapter.csv.CSVTechnologyContextManager;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
+import org.openflexo.technologyadapter.csv.CSVTechnologyContextManager;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 import org.openflexo.technologyadapter.csv.model.CSVModelImpl;
-import org.openflexo.technologyadapter.csv.rm.CSVResource;
-
 import org.openflexo.toolbox.IProgress;
 
 public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implements CSVResource {
-    
-    private static final Logger LOGGER = Logger.getLogger(CSVResourceImpl.class.getPackage().getName());
+
+	private static final Logger LOGGER = Logger.getLogger(CSVResourceImpl.class.getPackage().getName());
 
 	private static ModelFactory MODEL_FACTORY;
 
@@ -81,46 +77,47 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
 		}
 	}
 
-    public static CSVResource makeCSVResource(String modelURI, File modelFile,
-            CSVTechnologyContextManager technologyContextManager) {
-        try {
-        	ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(CSVResource.class,FileFlexoIODelegate.class));
-            CSVResourceImpl returned = (CSVResourceImpl) factory.newInstance(CSVResource.class);
-            returned.setName(modelFile.getName());
-            returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+	public static CSVResource makeCSVResource(String modelURI, File modelFile, CSVTechnologyContextManager technologyContextManager) {
+		try {
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(CSVResource.class,
+					FileFlexoIODelegate.class));
+			CSVResourceImpl returned = (CSVResourceImpl) factory.newInstance(CSVResource.class);
+			returned.initName(modelFile.getName());
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 
-            returned.setURI(modelURI);
-            returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-            returned.setTechnologyAdapter((CSVTechnologyAdapter) technologyContextManager.getTechnologyAdapter());
-            returned.setTechnologyContextManager(technologyContextManager);
-            technologyContextManager.registerResource(returned);
+			returned.setURI(modelURI);
+			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
+			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+			returned.setTechnologyContextManager(technologyContextManager);
+			technologyContextManager.registerResource(returned);
 
-            return returned;
-        } catch (ModelDefinitionException e) {
-            final String msg = "Error while initializing CSV model resource";
-            LOGGER.log(Level.SEVERE, msg, e);
-        }
-        return null;
-    }
+			return returned;
+		} catch (ModelDefinitionException e) {
+			final String msg = "Error while initializing CSV model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+		}
+		return null;
+	}
 
-    public static CSVResource retrieveCSVResource(File modelFile, CSVTechnologyContextManager technologyContextManager) {
-        try {
-        	ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(CSVResource.class,FileFlexoIODelegate.class));
-        	CSVResourceImpl returned = (CSVResourceImpl) factory.newInstance(CSVResource.class);
-            returned.setName(modelFile.getName());
-            returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-            returned.setURI(modelFile.toURI().toString());
-            returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-            returned.setTechnologyAdapter((CSVTechnologyAdapter) technologyContextManager.getTechnologyAdapter());
-            returned.setTechnologyContextManager(technologyContextManager);
-            technologyContextManager.registerResource(returned);
-            return returned;
-        } catch (ModelDefinitionException e) {
-        	final String msg = "Error while initializing CSV model resource";
-        	LOGGER.log(Level.SEVERE, msg, e);
-        }
-        return null;
-    }
+	public static CSVResource retrieveCSVResource(File modelFile, CSVTechnologyContextManager technologyContextManager) {
+		try {
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(CSVResource.class,
+					FileFlexoIODelegate.class));
+			CSVResourceImpl returned = (CSVResourceImpl) factory.newInstance(CSVResource.class);
+			returned.initName(modelFile.getName());
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+			returned.setURI(modelFile.toURI().toString());
+			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
+			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+			returned.setTechnologyContextManager(technologyContextManager);
+			technologyContextManager.registerResource(returned);
+			return returned;
+		} catch (ModelDefinitionException e) {
+			final String msg = "Error while initializing CSV model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+		}
+		return null;
+	}
 
 	@Override
 	public CSVTechnologyAdapter getTechnologyAdapter() {
@@ -130,72 +127,72 @@ public abstract class CSVResourceImpl extends FlexoResourceImpl<CSVModel> implem
 		return null;
 	}
 
-    @Override
-    public CSVModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-        // TODO: Auto-generated Method
+	@Override
+	public CSVModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+		// TODO: Auto-generated Method
 		final CSVModelImpl csvObject = (CSVModelImpl) MODEL_FACTORY.newInstance(CSVModel.class);
 		csvObject.setTechnologyAdapter(getTechnologyAdapter());
 		csvObject.setResource(this);
 		// Now you have to add here your parsing and call the correct set.
 		return csvObject;
-    }
+	}
 
-    @Override
-    public void save(IProgress progress) throws SaveResourceException {
-        CSVModel resourceData = null;
-        try {
-            resourceData = getResourceData(progress);
-        } catch (FileNotFoundException e) {
-            final String msg = "Error while saving CSV model resource";
-            LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(getFlexoIODelegate());
-        } catch (ResourceLoadingCancelledException e) {
-            final String msg = "Error while saving CSV model resource";
-            LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(getFlexoIODelegate());
-        } catch (FlexoException e) {
-            final String msg = "Error while saving CSV model resource";
-            LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(getFlexoIODelegate());
-        }
+	@Override
+	public void save(IProgress progress) throws SaveResourceException {
+		CSVModel resourceData = null;
+		try {
+			resourceData = getResourceData(progress);
+		} catch (FileNotFoundException e) {
+			final String msg = "Error while saving CSV model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+			throw new SaveResourceException(getFlexoIODelegate());
+		} catch (ResourceLoadingCancelledException e) {
+			final String msg = "Error while saving CSV model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+			throw new SaveResourceException(getFlexoIODelegate());
+		} catch (FlexoException e) {
+			final String msg = "Error while saving CSV model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+			throw new SaveResourceException(getFlexoIODelegate());
+		}
 
-        if (!getFlexoIODelegate().hasWritePermission()) {
-            if (LOGGER.isLoggable(Level.WARNING)) {
-                LOGGER.warning("Permission denied : " + getFlexoIODelegate().toString());
-            }
-            throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
-        }
-        if (resourceData != null) {
-        	FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
-            writeToFile();
-            getFlexoIODelegate().hasWrittenOnDisk(lock);
-            notifyResourceStatusChanged();
-            resourceData.clearIsModified(false);
-            if (LOGGER.isLoggable(Level.INFO)) {
-                LOGGER.info("Succeeding to save Resource " + getURI() + " : " + getFlexoIODelegate().toString());
-            }
-        }
-    }
+		if (!getFlexoIODelegate().hasWritePermission()) {
+			if (LOGGER.isLoggable(Level.WARNING)) {
+				LOGGER.warning("Permission denied : " + getFlexoIODelegate().toString());
+			}
+			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
+		}
+		if (resourceData != null) {
+			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
+			writeToFile();
+			getFlexoIODelegate().hasWrittenOnDisk(lock);
+			notifyResourceStatusChanged();
+			resourceData.clearIsModified(false);
+			if (LOGGER.isLoggable(Level.INFO)) {
+				LOGGER.info("Succeeding to save Resource " + getURI() + " : " + getFlexoIODelegate().toString());
+			}
+		}
+	}
 
-    private void writeToFile() throws SaveResourceException {
-        //TODO : Auto-generated method skeleton.
-        FileOutputStream out = null;
-        try {
-        	FileFlexoIODelegate delegate = (FileFlexoIODelegate)getFlexoIODelegate();
+	private void writeToFile() throws SaveResourceException {
+		// TODO : Auto-generated method skeleton.
+		FileOutputStream out = null;
+		try {
+			FileFlexoIODelegate delegate = (FileFlexoIODelegate) getFlexoIODelegate();
 			out = new FileOutputStream(delegate.getFile());
-        } catch (FileNotFoundException e) {
-            final String msg = "Error while saving CSV model resource";
-            LOGGER.log(Level.SEVERE, msg, e);
-            throw new SaveResourceException(getFlexoIODelegate());
-        } finally {
-            IOUtils.closeQuietly(out);
-        }
+		} catch (FileNotFoundException e) {
+			final String msg = "Error while saving CSV model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+			throw new SaveResourceException(getFlexoIODelegate());
+		} finally {
+			IOUtils.closeQuietly(out);
+		}
 
-        LOGGER.info("Wrote " + getFlexoIODelegate().toString());
-    }
+		LOGGER.info("Wrote " + getFlexoIODelegate().toString());
+	}
 
-    @Override
-    public Class<CSVModel> getResourceDataClass() {
-        return CSVModel.class;
-    }
+	@Override
+	public Class<CSVModel> getResourceDataClass() {
+		return CSVModel.class;
+	}
 }

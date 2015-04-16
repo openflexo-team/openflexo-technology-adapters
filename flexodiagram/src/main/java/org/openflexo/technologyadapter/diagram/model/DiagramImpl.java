@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
+import org.openflexo.foundation.resource.CannotRenameException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -109,13 +110,12 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 
 	private File getExpectedScreenshotImageFile() {
 		if (expectedScreenshotImageFile == null && getResource().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			FileFlexoIODelegate delegate = (FileFlexoIODelegate)getResource().getFlexoIODelegate();
-			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName()
-					+ ".diagram.png");
+			FileFlexoIODelegate delegate = (FileFlexoIODelegate) getResource().getFlexoIODelegate();
+			expectedScreenshotImageFile = new File(delegate.getFile().getParentFile(), getName() + ".diagram.png");
 		}
 		return expectedScreenshotImageFile;
 	}
-	
+
 	private ScreenshotImage<Diagram> buildAndSaveScreenshotImage() {
 		if (getTechnologyAdapter().getScreenshotBuilder() != null) {
 			ScreenshotBuilder<Diagram> builder = getTechnologyAdapter().getScreenshotBuilder();
@@ -154,7 +154,7 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 		super.setModified(modified);
 		screenshotModified = true;
 	}
-	
+
 	@Override
 	public ScreenshotImage<Diagram> getScreenshotImage() {
 		if (screenshotImage == null || screenshotModified) {
@@ -184,7 +184,11 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	public void setName(String name) {
 		if (requireChange(getName(), name)) {
 			if (getResource() != null) {
-				getResource().setName(name);
+				try {
+					getResource().setName(name);
+				} catch (CannotRenameException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

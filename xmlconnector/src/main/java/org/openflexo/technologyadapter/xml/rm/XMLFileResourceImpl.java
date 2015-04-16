@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.File;
@@ -51,12 +50,12 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.factory.ModelFactory;
@@ -76,12 +75,12 @@ import org.openflexo.xml.XMLRootElementReader;
  */
 public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> implements XMLFileResource {
 
-	protected static final Logger logger   = Logger.getLogger(XMLFileResourceImpl.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(XMLFileResourceImpl.class.getPackage().getName());
 	protected static XMLRootElementReader REreader = new XMLRootElementReader();
 
 	// Properties
 
-	private boolean               isLoaded = false;
+	private boolean isLoaded = false;
 
 	/**
 	 * 
@@ -92,10 +91,10 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	 */
 	public static XMLFileResource makeXMLFileResource(File xmlFile, XMLTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,XMLFileResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					XMLFileResource.class));
 			XMLFileResourceImpl returned = (XMLFileResourceImpl) factory.newInstance(XMLFileResource.class);
-			returned.setName(xmlFile.getName());
+			returned.initName(xmlFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xmlFile, factory));
 
 			returned.setURI(xmlFile.toURI().toString());
@@ -177,32 +176,30 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	}
 
 	/**
-	 * Retrieves the target Namespace from the file when not loaded
-	 * or from MetamModel when it is loaded and exists
-	 * @throws IOException 
+	 * Retrieves the target Namespace from the file when not loaded or from MetamModel when it is loaded and exists
+	 * 
+	 * @throws IOException
 	 * 
 	 */
 	@Override
 	public String getTargetNamespace() throws IOException {
 
-		if (!isLoaded()){
+		if (!isLoaded()) {
 			XMLRootElementInfo rootInfo;
-			rootInfo = REreader.readRootElement(this.getFile());		
-			return  rootInfo.getURI();
-		}
-		else{
+			rootInfo = REreader.readRootElement(this.getFile());
+			return rootInfo.getURI();
+		} else {
 			return this.getModel().getMetaModel().getURI();
 		}
 
 	}
 
-	public static final String getTargetNamespace(File f) throws IOException{
-		if (f != null && f.exists()){
-		XMLRootElementInfo rootInfo;
-		rootInfo = REreader.readRootElement(f);		
-		return  rootInfo.getURI();
-		}
-		else {
+	public static final String getTargetNamespace(File f) throws IOException {
+		if (f != null && f.exists()) {
+			XMLRootElementInfo rootInfo;
+			rootInfo = REreader.readRootElement(f);
+			return rootInfo.getURI();
+		} else {
 			throw new IOException("File Not Found ");
 		}
 	}
@@ -231,7 +228,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	FlexoException {
 
 		if (resourceData == null) {
-			resourceData =  XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
+			resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
 			resourceData.setResource(this);
 
 			attachMetamodel();
@@ -242,8 +239,9 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 
 			try {
 
-				FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = ((XMLFileResource) resourceData.getResource()).getMetaModelResource();
-				if (resourceData.getMetaModel() == null && mmRes != null){
+				FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = ((XMLFileResource) resourceData.getResource())
+						.getMetaModelResource();
+				if (resourceData.getMetaModel() == null && mmRes != null) {
 					resourceData.setMetaModel(mmRes.getMetaModelData());
 				}
 
@@ -273,12 +271,11 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		return getModelData();
 	}
 
-
 	@Override
 	public XMLModel getModelData() {
 
 		if (resourceData == null) {
-			resourceData =  XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
+			resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
 			resourceData.setResource(this);
 		}
 		// TODO : check lifecycle for Resource.... should it be loaded on getModelData?
@@ -299,7 +296,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	}
 
 	@Override
-	public void attachMetamodel(){
+	public void attachMetamodel() {
 		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = this.getMetaModelResource();
 		if (mmRes != null) {
 			resourceData.setMetaModel(mmRes.getMetaModelData());
@@ -309,7 +306,6 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 		}
 	}
 
-
 	@Override
 	public Class<XMLModel> getResourceDataClass() {
 		return XMLModel.class;
@@ -317,14 +313,14 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	}
 
 	@Override
-	public synchronized XMLModel getResourceData(IProgress progress) throws ResourceLoadingCancelledException, ResourceLoadingCancelledException,
-	FileNotFoundException, FlexoException {
+	public synchronized XMLModel getResourceData(IProgress progress) throws ResourceLoadingCancelledException,
+			ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		if (isLoading()) {
 			logger.warning("trying to load a resource data from itself, please investigate");
 			return null;
 		}
-		if (isLoadable() && ! isLoaded()) {
+		if (isLoadable() && !isLoaded()) {
 			setLoading(true);
 			resourceData = loadResourceData(progress);
 			setLoading(false);
@@ -343,10 +339,10 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 
 	@Override
 	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate)getFlexoIODelegate();
+		return (FileFlexoIODelegate) getFlexoIODelegate();
 	}
-	
-	private File getFile(){
+
+	private File getFile() {
 		return getFileFlexoIODelegate().getFile();
 	}
 }

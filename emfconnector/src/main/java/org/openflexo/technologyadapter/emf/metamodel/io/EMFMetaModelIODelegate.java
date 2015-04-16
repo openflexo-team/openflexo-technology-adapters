@@ -39,23 +39,16 @@
 
 package org.openflexo.technologyadapter.emf.metamodel.io;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.Properties;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.resource.CannotRenameException;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
-import org.openflexo.toolbox.FileUtils;
 
 /**
  * An IO Delegate that can read an EMFMetaModel Resource
@@ -75,7 +68,6 @@ public interface EMFMetaModelIODelegate<I> extends FlexoIODelegate<I> {
 
 		protected static final Logger logger = Logger.getLogger(EMFMetaModelIODelegate.class.getPackage().getName());
 
-		
 		/** a Metamodel is ReadOnly and undeletable **/
 		@Override
 		public boolean isReadOnly() {
@@ -87,7 +79,6 @@ public interface EMFMetaModelIODelegate<I> extends FlexoIODelegate<I> {
 			return false;
 		}
 
-
 		@Override
 		public boolean hasWritePermission() {
 			return false;
@@ -98,7 +89,6 @@ public interface EMFMetaModelIODelegate<I> extends FlexoIODelegate<I> {
 			// Nothing todo has a MM is never written
 			return null;
 		}
-
 
 		@Override
 		public void hasWrittenOnDisk(FileWritingLock lock) {
@@ -112,7 +102,10 @@ public interface EMFMetaModelIODelegate<I> extends FlexoIODelegate<I> {
 
 		}
 
+		@Override
+		public void rename() throws CannotRenameException {
+			throw new CannotRenameException(getFlexoResource());
+		}
 	}
-
 
 }
