@@ -5,7 +5,7 @@
 		<artifactId>openflexo-component</artifactId>
 		<version>0.3-RC4</version>
 	</parent>
-	<version>1.7.1-SNAPSHOT</version>
+	<version>1.7.1-RC4</version>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>openflexo-technology-adapters</artifactId>
 	<name>Openflexo-Technology-Adapters</name>
@@ -26,7 +26,7 @@
 	<scm>
 		<connection>scm:git:ssh://git@github.com/openflexo-team/openflexo-technology-adapters.git</connection>
 		<url>https://github.com/openflexo-team/openflexo-core</url>
-	  <tag>1.7.1</tag>
+	  <tag>Openflexo-Technology-Adapters-1.7.1-RC4</tag>
   </scm>
 	<modules>
 		<module>openflexo-technology-adapters-ui</module>
