@@ -135,7 +135,10 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 		public Object retrieveObjectWithURI(
 				TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, ? extends TypeAwareModelSlot<EMFModel, EMFMetaModel>> msInstance,
 				String objectURI) {
-			return msInstance.getAccessedResourceData().getObject(objectURI);
+			if (msInstance.getAccessedResourceData() != null) {
+				return msInstance.getAccessedResourceData().getObject(objectURI);
+			}
+			return null;
 		}
 
 		@Override
