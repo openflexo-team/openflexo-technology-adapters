@@ -3,9 +3,9 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-        <version>1.7.1-RC4</version>
+        <version>1.7.1-SNAPSHOT</version>
 	</parent>
-	<version>1.7.1-RC4</version>
+	<version>1.7.1-SNAPSHOT</version>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>openflexo-technology-adapters-ui</artifactId>
 	<name>Openflexo-Technology-Adapters UI</name>
@@ -13,7 +13,7 @@
 	<scm>
 		<connection>scm:git:ssh://git@github.com:openflexo-team/openflexo-technology-adapters.git</connection>
 		<url>https://github.com/openflexo-team/openflexo-technology-adapters</url>
-	  <tag>Openflexo-Technology-Adapters-1.7.1-RC4</tag>
+	  <tag>1.7.1</tag>
   </scm>
 	<modules>
 		<module>owlconnector-ui</module>
