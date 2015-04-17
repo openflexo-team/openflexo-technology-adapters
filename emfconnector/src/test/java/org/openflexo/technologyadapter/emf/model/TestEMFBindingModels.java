@@ -1,8 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
- * Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
- * Copyright (c) 2012-2012, AgileBirds
+ * Copyright (c) 2015-2015, Openflexo
  * 
  * This file is part of Emfconnector, a component of the software infrastructure 
  * developed at Openflexo.
@@ -41,67 +39,102 @@
 package org.openflexo.technologyadapter.emf.model;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 
-import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.OpenflexoTestCase;
+import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
+import org.openflexo.technologyadapter.emf.fml.binding.EMFBindingFactory;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
+import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test EMF Meta-Model and model loading.
+ * Test Class for EMF BindingModels Checks
  * 
- * @author gbesancon
+ * @author xtof
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestLoadEMFMetaModel extends OpenflexoTestCase {
-	protected static final Logger logger = Logger.getLogger(TestLoadEMFMetaModel.class.getPackage().getName());
+public class TestEMFBindingModels extends OpenflexoTestCase {
 
-	private static EMFTechnologyAdapter technologicalAdapter;
+	protected static final Logger logger = Logger.getLogger(TestEMFBindingModels.class.getPackage().getName());
+
+	private static String cityOne_MM_URI = "http://www.thalesgroup.com/openflexo/emf/model/city1";
+
+	static EMFBindingFactory bindingFactory = null;
+	static EMFTechnologyAdapter technologicalAdapter;
+	static EMFModelSlot newModelSlot = null;
+	static EMFModelResource emfModelResource = null;
+	static EMFMetaModelResource emfMetaModelResource = null;
+	static EMFObjectIndividual individual = null;
+
 
 	@Test
 	@TestOrder(1)
-	public void testInitializeServiceManager() throws Exception {
+	public void testInitializeServiceManager()  {
+
 		instanciateTestServiceManager();
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				EMFTechnologyAdapter.class);
+
+		assertNotNull(technologicalAdapter);
+		assertNotNull(technologicalAdapter.getTechnologyContextManager());
+
+		bindingFactory = new EMFBindingFactory();
 	}
+
 
 	@Test
 	@TestOrder(2)
-	public void testConvertAllEMFMetaModel() {
+	public void testEMFMetaModelBindingModel() {
 
+		EMFMetaModelResource metaModelResource = technologicalAdapter.getTechnologyContextManager().getMetaModelResourceByURI(cityOne_MM_URI);
 
-		Collection<EMFMetaModelResource> metaModelResources = technologicalAdapter.getTechnologyContextManager().getAllMetaModelResources();
+		assertNotNull(metaModelResource);
 
+		EMFMetaModel metaModel = metaModelResource.getMetaModelData();
+
+		assertNotNull(metaModel);
+
+	// TODO Write tests
 		
-			for (EMFMetaModelResource mmResource : metaModelResources) {
-				
-				System.out.println("\t Loading and Converting " + mmResource.getURI());
-				long startTime = System.currentTimeMillis();
+		
+	}
 
-				EMFMetaModel metamodel = mmResource.getMetaModelData();
+	/*
+	@Test
+	@TestOrder(3)
+	public void testEMFModelBindingModel() {
 
-				assertNotNull(metamodel);
-				assertNull(metamodel.getRootConcept());
-				
-				long endTime = System.currentTimeMillis();
+		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
+			/*
+		EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+		assertNotNull(metaModelRepository);
 
-				System.out.println("\t\t MetaModel Conversion  took " + (endTime - startTime) + " milliseconds");
+		EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
+		Collection<EMFModelResource> modelResources = modelRepository.getAllResources();
+		for (EMFModelResource modelResource : modelResources) {
+			System.out.println("\t Loading " + modelResource.getURI());
+			EMFModel model = modelResource.getModel();
+			assertNotNull(model);
+			assertNotNull(model.getMetaModel());
 
+
+		}
 		}
 	}
 
-	
+	@Test
+	@TestOrder(4)
+	public void testEMFIndividualBindingModel() {
 
-
+	}
+	 */
 }

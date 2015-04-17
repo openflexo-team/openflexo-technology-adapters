@@ -58,12 +58,6 @@ import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
 import org.openflexo.technologyadapter.emf.fml.EMFObjectIndividualRole;
 import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
-import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualAttributeDataPropertyValue;
-import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualAttributeObjectPropertyValue;
-import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividualReferenceObjectPropertyValue;
-import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividualAttributeDataPropertyValue;
-import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividualAttributeObjectPropertyValue;
-import org.openflexo.technologyadapter.emf.fml.editionaction.RemoveEMFObjectIndividualReferenceObjectPropertyValue;
 import org.openflexo.technologyadapter.emf.fml.editionaction.SelectEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
@@ -77,10 +71,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
  * 
  */
 @DeclareFlexoRoles({ EMFObjectIndividualRole.class, EMFClassClassRole.class, EMFEnumClassRole.class })
-@DeclareEditionActions({ AddEMFObjectIndividual.class, AddEMFObjectIndividualAttributeDataPropertyValue.class,
-		AddEMFObjectIndividualAttributeObjectPropertyValue.class, AddEMFObjectIndividualReferenceObjectPropertyValue.class,
-		RemoveEMFObjectIndividualAttributeDataPropertyValue.class, RemoveEMFObjectIndividualAttributeObjectPropertyValue.class,
-		RemoveEMFObjectIndividualReferenceObjectPropertyValue.class })
+@DeclareEditionActions({ AddEMFObjectIndividual.class })
 @DeclareFetchRequests({ SelectEMFObjectIndividual.class })
 @ModelEntity
 @ImplementationClass(UMLEMFModelSlot.UMLEMFModelSlotImpl.class)
@@ -112,12 +103,12 @@ public interface UMLEMFModelSlot extends EMFModelSlot{
 		
 		@Override
 		public  FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter> getMetaModelResource(){
-			return  ((EMFTechnologyAdapter) getModelSlotTechnologyAdapter()).getTechnologyContextManager().getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
+			return  getModelSlotTechnologyAdapter().getTechnologyContextManager().getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
 		}
 
 		@Override
 		public void setMetaModelResource(FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			EMFMetaModelResource umlMetamodelREsource = ((EMFTechnologyAdapter) getModelSlotTechnologyAdapter()).getTechnologyContextManager().getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
+			EMFMetaModelResource umlMetamodelREsource = getModelSlotTechnologyAdapter().getTechnologyContextManager().getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
 			if (metaModelResource != umlMetamodelREsource) {
 				logger.warning("You cannot override MetaModel Resource here, I will use the default MetaModelResource for UML");
 			}
