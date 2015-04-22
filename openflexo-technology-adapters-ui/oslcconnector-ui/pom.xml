@@ -13,7 +13,7 @@
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>oslcconnector</artifactId>
-			<version>1.7.1-RC4</version>
+			<version>1.7.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
