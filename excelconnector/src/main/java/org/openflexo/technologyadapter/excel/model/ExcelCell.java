@@ -145,8 +145,7 @@ public class ExcelCell extends ExcelObject {
 	public int getColumnIndex() {
 		if (cell != null) {
 			return cell.getColumnIndex();
-		}
-		else {
+		} else {
 			return getExcelRow().getExcelCells().indexOf(this);
 		}
 	}
@@ -154,8 +153,7 @@ public class ExcelCell extends ExcelObject {
 	public int getRowIndex() {
 		if (cell != null) {
 			return cell.getRowIndex();
-		}
-		else {
+		} else {
 			return getExcelRow().getRowIndex();
 		}
 	}
@@ -192,8 +190,7 @@ public class ExcelCell extends ExcelObject {
 				}
 			}
 			return returned;
-		}
-		else {
+		} else {
 			return null;
 		}
 	}
@@ -435,12 +432,33 @@ public class ExcelCell extends ExcelObject {
 	};
 
 	public String getCellValueAsString() {
-		if (cell != null) {
-			return cell.getStringCellValue();
-		}
-		else {
-			logger.warning("Trying to get value for a null ExcelCell (" + this.toString() + ")");
-			return "";
+		switch (getCellType()) {
+			case Blank:
+				return null;
+			case Boolean:
+				return Boolean.toString(cell.getBooleanCellValue());
+			case Numeric:
+				if (DateUtil.isCellDateFormatted(cell)) {
+					return cell.getDateCellValue().toString();
+				}
+				return Double.toString(cell.getNumericCellValue());
+			case NumericFormula:
+				if (DateUtil.isCellDateFormatted(cell)) {
+					return cell.getDateCellValue().toString();
+				}
+				return Double.toString(cell.getNumericCellValue());
+			case String:
+				return cell.getStringCellValue();
+			case StringFormula:
+				return cell.getStringCellValue();
+			case Empty:
+				return null;
+			case Error:
+				return Byte.toString(cell.getErrorCellValue());
+			case Unknown:
+				return "???";
+			default:
+				return "????";
 		}
 	}
 
@@ -480,8 +498,7 @@ public class ExcelCell extends ExcelObject {
 			cell.setCellValue(true);
 			getExcelSheet().getEvaluator().clearAllCachedResultValues();
 			return;
-		}
-		else if (value.equalsIgnoreCase("false")) {
+		} else if (value.equalsIgnoreCase("false")) {
 			cell.setCellValue(false);
 			getExcelSheet().getEvaluator().clearAllCachedResultValues();
 			return;
@@ -626,8 +643,7 @@ public class ExcelCell extends ExcelObject {
 					}
 					if (value instanceof Long) {
 						newStyle.setFillForegroundColor(((Long) value).shortValue());
-					}
-					else {
+					} else {
 						break;
 					}
 				case Background:
@@ -635,8 +651,7 @@ public class ExcelCell extends ExcelObject {
 						newStyle.setFillForegroundColor(((Long) value).shortValue());
 						newStyle.setFillBackgroundColor(((Long) value).shortValue());
 						newStyle.setFillPattern(CellStyle.SOLID_FOREGROUND);
-					}
-					else {
+					} else {
 						break;
 					}
 				default:
@@ -651,44 +666,31 @@ public class ExcelCell extends ExcelObject {
 	private Short getPOIBorderStyle(CellBorderStyleFeature borderStyle) {
 		if (borderStyle.name().equals("BORDER_DASH_DOT")) {
 			return CellStyle.BORDER_DASH_DOT;
-		}
-		else if (borderStyle.name().equals("BORDER_DASH_DOT_DOT")) {
+		} else if (borderStyle.name().equals("BORDER_DASH_DOT_DOT")) {
 			return CellStyle.BORDER_DASH_DOT_DOT;
-		}
-		else if (borderStyle.name().equals("BORDER_DASHED")) {
+		} else if (borderStyle.name().equals("BORDER_DASHED")) {
 			return CellStyle.BORDER_DASHED;
-		}
-		else if (borderStyle.name().equals("BORDER_DOTTED")) {
+		} else if (borderStyle.name().equals("BORDER_DOTTED")) {
 			return CellStyle.BORDER_DOTTED;
-		}
-		else if (borderStyle.name().equals("BORDER_DOUBLE")) {
+		} else if (borderStyle.name().equals("BORDER_DOUBLE")) {
 			return CellStyle.BORDER_DOUBLE;
-		}
-		else if (borderStyle.name().equals("BORDER_HAIR")) {
+		} else if (borderStyle.name().equals("BORDER_HAIR")) {
 			return CellStyle.BORDER_HAIR;
-		}
-		else if (borderStyle.name().equals("BORDER_MEDIUM")) {
+		} else if (borderStyle.name().equals("BORDER_MEDIUM")) {
 			return CellStyle.BORDER_MEDIUM;
-		}
-		else if (borderStyle.name().equals("BORDER_MEDIUM_DASH_DOT")) {
+		} else if (borderStyle.name().equals("BORDER_MEDIUM_DASH_DOT")) {
 			return CellStyle.BORDER_MEDIUM_DASH_DOT;
-		}
-		else if (borderStyle.name().equals("BORDER_MEDIUM_DASH_DOT_DOT")) {
+		} else if (borderStyle.name().equals("BORDER_MEDIUM_DASH_DOT_DOT")) {
 			return CellStyle.BORDER_MEDIUM_DASH_DOT_DOT;
-		}
-		else if (borderStyle.name().equals("BORDER_MEDIUM_DASHED")) {
+		} else if (borderStyle.name().equals("BORDER_MEDIUM_DASHED")) {
 			return CellStyle.BORDER_MEDIUM_DASHED;
-		}
-		else if (borderStyle.name().equals("BORDER_NONE")) {
+		} else if (borderStyle.name().equals("BORDER_NONE")) {
 			return CellStyle.BORDER_NONE;
-		}
-		else if (borderStyle.name().equals("BORDER_SLANTED_DASH_DOT")) {
+		} else if (borderStyle.name().equals("BORDER_SLANTED_DASH_DOT")) {
 			return CellStyle.BORDER_SLANTED_DASH_DOT;
-		}
-		else if (borderStyle.name().equals("BORDER_THICK")) {
+		} else if (borderStyle.name().equals("BORDER_THICK")) {
 			return CellStyle.BORDER_THICK;
-		}
-		else if (borderStyle.name().equals("BORDER_THIN")) {
+		} else if (borderStyle.name().equals("BORDER_THIN")) {
 			return CellStyle.BORDER_THIN;
 		}
 		return null;
@@ -697,35 +699,25 @@ public class ExcelCell extends ExcelObject {
 	private Short getPOIAlignmentStyle(CellAlignmentStyleFeature alignmentStyle) {
 		if (alignmentStyle.name().equals("ALIGN_CENTER")) {
 			return CellStyle.ALIGN_CENTER;
-		}
-		else if (alignmentStyle.name().equals("ALIGN_CENTER_SELECTION")) {
+		} else if (alignmentStyle.name().equals("ALIGN_CENTER_SELECTION")) {
 			return CellStyle.ALIGN_CENTER_SELECTION;
-		}
-		else if (alignmentStyle.name().equals("ALIGN_FILL")) {
+		} else if (alignmentStyle.name().equals("ALIGN_FILL")) {
 			return CellStyle.ALIGN_FILL;
-		}
-		else if (alignmentStyle.name().equals("ALIGN_GENERAL")) {
+		} else if (alignmentStyle.name().equals("ALIGN_GENERAL")) {
 			return CellStyle.ALIGN_GENERAL;
-		}
-		else if (alignmentStyle.name().equals("ALIGN_JUSTIFY")) {
+		} else if (alignmentStyle.name().equals("ALIGN_JUSTIFY")) {
 			return CellStyle.ALIGN_JUSTIFY;
-		}
-		else if (alignmentStyle.name().equals("ALIGN_LEFT")) {
+		} else if (alignmentStyle.name().equals("ALIGN_LEFT")) {
 			return CellStyle.ALIGN_LEFT;
-		}
-		else if (alignmentStyle.name().equals("ALIGN_RIGHT")) {
+		} else if (alignmentStyle.name().equals("ALIGN_RIGHT")) {
 			return CellStyle.ALIGN_RIGHT;
-		}
-		else if (alignmentStyle.name().equals("VERTICAL_BOTTOM")) {
+		} else if (alignmentStyle.name().equals("VERTICAL_BOTTOM")) {
 			return CellStyle.VERTICAL_BOTTOM;
-		}
-		else if (alignmentStyle.name().equals("VERTICAL_JUSTIFY")) {
+		} else if (alignmentStyle.name().equals("VERTICAL_JUSTIFY")) {
 			return CellStyle.VERTICAL_JUSTIFY;
-		}
-		else if (alignmentStyle.name().equals("VERTICAL_CENTER")) {
+		} else if (alignmentStyle.name().equals("VERTICAL_CENTER")) {
 			return CellStyle.VERTICAL_CENTER;
-		}
-		else if (alignmentStyle.name().equals("VERTICAL_TOP")) {
+		} else if (alignmentStyle.name().equals("VERTICAL_TOP")) {
 			return CellStyle.VERTICAL_TOP;
 		}
 		return null;

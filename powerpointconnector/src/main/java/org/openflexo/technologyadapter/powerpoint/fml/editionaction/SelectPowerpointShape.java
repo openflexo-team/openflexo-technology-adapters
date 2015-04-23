@@ -42,7 +42,6 @@ import java.lang.reflect.Type;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -52,7 +51,6 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.powerpoint.BasicPowerpointModelSlot;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
 
-@FIBPanel("Fib/SelectPowerpointShapePanel.fib")
 @ModelEntity
 @ImplementationClass(SelectPowerpointShape.SelectPowerpointShapeImpl.class)
 @XMLElement

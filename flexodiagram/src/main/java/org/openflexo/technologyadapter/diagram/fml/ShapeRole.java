@@ -97,8 +97,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	public void setParentShapeAsDefinedInAction(boolean flag);
 
 	/**
-	 * Get the list of shape pattern roles that can be set as parent shape pattern role. This list contains all other shape pattern roles of
-	 * current flexo concept which are not already in the containment subtree
+	 * Get the list of shape pattern roles that can be set as parent shape pattern property. This list contains all other shape pattern
+	 * roles of current flexo concept which are not already in the containment subtree
 	 * 
 	 * @return
 	 */
@@ -122,6 +122,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 			super.initDefaultSpecifications();
 			if (getFMLModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
+					//logger.info("[SHAPE:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
 					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
 							GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
@@ -131,6 +132,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
 			}
+			handlePendingGRSpecs();
+
 		}
 
 		@Override
@@ -187,7 +190,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				logger.info(">>>> setParentShapePatternRole() with " + parentShapeRole);
 				this.parentShapeRole = parentShapeRole;
 				if (detectLoopInParentShapePatternRoleDefinition()) {
-					logger.warning("Detecting a loop in parent shape pattern role definition. Resetting parent shape pattern role");
+					logger.warning("Detecting a loop in parent shape pattern property definition. Resetting parent shape pattern property");
 					this.parentShapeRole = null;
 				}
 				// setChanged();
@@ -232,7 +235,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		}
 
 		/**
-		 * Get the list of shape pattern roles that can be set as parent shape pattern role. This list contains all other shape pattern
+		 * Get the list of shape pattern roles that can be set as parent shape pattern property. This list contains all other shape pattern
 		 * roles of current flexo concept which are not already in the containment subtree
 		 * 
 		 * @return
@@ -241,7 +244,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		public List<ShapeRole> getPossibleParentShapeRoles() {
 			List<ShapeRole> returned = new ArrayList<ShapeRole>();
 			if (getFlexoConcept() != null) {
-				List<ShapeRole> shapesPatternRoles = getFlexoConcept().getFlexoRoles(ShapeRole.class);
+				List<ShapeRole> shapesPatternRoles = getFlexoConcept().getDeclaredProperties(ShapeRole.class);
 				for (ShapeRole shapeRole : shapesPatternRoles) {
 					if (!shapeRole.isContainedIn(this)) {
 						returned.add(shapeRole);

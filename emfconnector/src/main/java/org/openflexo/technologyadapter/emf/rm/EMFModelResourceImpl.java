@@ -47,17 +47,16 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
 import org.openflexo.toolbox.IProgress;
@@ -88,15 +87,16 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	public static EMFModelResource makeEMFModelResource(String modelURI, File modelFile, EMFMetaModelResource emfMetaModelResource,
 			EMFTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,EMFModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					EMFModelResource.class));
 			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
-			returned.setName(modelFile.getName());
-			
+			returned.initName(modelFile.getName());
+
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 
-			//returned.setFile(modelFile);
+			// returned.setFile(modelFile);
 			// TODO: URI should be defined by the parameter,because its not manageable (FOR NOW)
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
@@ -118,7 +118,8 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 */
 	@Override
 	public String getURI() {
-		return getFileFlexoIODelegate().getFile().toURI().toString();
+		// TODO FIX THIS When refactoring with clean IoDelegate support
+		return ((FileFlexoIODelegate) getFlexoIODelegate()).getFile().toURI().toString();
 	}
 
 	/**
@@ -133,15 +134,15 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	public static EMFModelResource retrieveEMFModelResource(File modelFile, EMFMetaModelResource emfMetaModelResource,
 			EMFTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,EMFModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					EMFModelResource.class));
 			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
-			returned.setName(modelFile.getName());
-			//returned.setFile(modelFile);
+			returned.initName(modelFile.getName());
 
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			
+
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
@@ -200,7 +201,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 
 		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				//logger.warning("Permission denied : " + getFile().getAbsolutePath());
+				// logger.warning("Permission denied : " + getFile().getAbsolutePath());
 				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
 			}
 			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
@@ -260,18 +261,34 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 */
 	public Resource getEMFResource() {
 		if (modelResource == null) {
-			if (getMetaModelResource() == null) {
+			EMFMetaModelResource mmResource = (EMFMetaModelResource) getMetaModelResource();
+			if (mmResource == null) {
 				logger.warning("EMFModel has no meta-model !!!");
 				return null;
+			} else {
+				if (!mmResource.isLoaded()) {
+					try {
+						mmResource.loadResourceData(null);
+					} catch (FileNotFoundException e) {
+						logger.warning("Cannot load EMF MetaModel");
+						return null;
+					} catch (ResourceLoadingCancelledException e) {
+						logger.warning("Cannot load EMF MetaModel");
+						return null;
+					} catch (FlexoException e) {
+						logger.warning("Cannot load EMF MetaModel");
+						return null;
+					}
+				}
+
 			}
-			modelResource = getMetaModelResource().getMetaModelData().getResource().getResourceFactory()
-					.createResource(org.eclipse.emf.common.util.URI.createFileURI(getFileFlexoIODelegate().getFile().getAbsolutePath()));
+
+			// TODO: should be refactored with IODelegates Also (BE AWARE THAT FOR EMF, THE METAMODEL DECIDES WHO IS CREATING THE
+			// RESOURCES!!
+			modelResource = mmResource.createEMFModelResource(getFlexoIODelegate());
+
 		}
 		return modelResource;
-	}
-	
-	private FileFlexoIODelegate getFileFlexoIODelegate(){
-		return (FileFlexoIODelegate)getFlexoIODelegate();
 	}
 
 	@Override

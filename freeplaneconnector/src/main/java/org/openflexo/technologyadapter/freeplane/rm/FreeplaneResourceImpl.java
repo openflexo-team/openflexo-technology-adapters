@@ -64,115 +64,114 @@ import org.openflexo.toolbox.IProgress;
  */
 public abstract class FreeplaneResourceImpl extends FlexoResourceImpl<IFreeplaneMap> implements IFreeplaneResource {
 
-    private static final Logger LOGGER = Logger.getLogger(FreeplaneResourceImpl.class.getPackage().getName());
-    private static ModelFactory MODEL_FACTORY;
+	private static final Logger LOGGER = Logger.getLogger(FreeplaneResourceImpl.class.getPackage().getName());
+	private static ModelFactory MODEL_FACTORY;
 
-    static {
-        try {
-            MODEL_FACTORY = new ModelFactory(IFreeplaneMap.class);
-        } catch (final ModelDefinitionException e) {
-            final String msg = "Error while initializing Freeplane model resource";
-            LOGGER.log(Level.SEVERE, msg, e);
-        }
-    }
+	static {
+		try {
+			MODEL_FACTORY = new ModelFactory(IFreeplaneMap.class);
+		} catch (final ModelDefinitionException e) {
+			final String msg = "Error while initializing Freeplane model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+		}
+	}
 
-    public static IFreeplaneResource makeFreeplaneResource(final String modelURI, final File modelFile,
-            final FreeplaneTechnologyContextManager technologyContextManager) {
-        try {
-            final             ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,IFreeplaneResource.class));
-            final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
-            
-            returned.setName(modelFile.getName());
-            //returned.setFile(modelFile);
-            
-            FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class) ;
+	public static IFreeplaneResource makeFreeplaneResource(final String modelURI, final File modelFile,
+			final FreeplaneTechnologyContextManager technologyContextManager) {
+		try {
+			final ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					IFreeplaneResource.class));
+			final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
+
+			returned.initName(modelFile.getName());
+			// returned.setFile(modelFile);
+
+			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
 			returned.setFlexoIODelegate(fileIODelegate);
 			fileIODelegate.setFile(modelFile);
-            
-            returned.setURI(modelURI);
-            returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-            returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-            returned.setTechnologyContextManager(technologyContextManager);
-            technologyContextManager.registerResource(returned);
-            return returned;
 
-        } catch (final ModelDefinitionException e) {
-            final String msg = "Error while initializing Freeplane model resource";
-            LOGGER.log(Level.SEVERE, msg, e);
-        }
-        return null;
-    }
+			returned.setURI(modelURI);
+			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
+			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+			returned.setTechnologyContextManager(technologyContextManager);
+			technologyContextManager.registerResource(returned);
+			return returned;
 
-    public static IFreeplaneResource makeFreeplaneResource(final File modelFile,
-            final FreeplaneTechnologyContextManager technologyContextManager) {
-        try {
-        	final             ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,IFreeplaneResource.class));
-            final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
-            returned.setName(modelFile.getName());
-            //returned.setFile(modelFile);
-            
-            FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class) ;
+		} catch (final ModelDefinitionException e) {
+			final String msg = "Error while initializing Freeplane model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+		}
+		return null;
+	}
+
+	public static IFreeplaneResource makeFreeplaneResource(final File modelFile,
+			final FreeplaneTechnologyContextManager technologyContextManager) {
+		try {
+			final ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					IFreeplaneResource.class));
+			final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
+			returned.initName(modelFile.getName());
+			// returned.setFile(modelFile);
+
+			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
 			returned.setFlexoIODelegate(fileIODelegate);
 			fileIODelegate.setFile(modelFile);
-            
-            returned.setURI(modelFile.toURI().toString());
-            returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-            returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-            returned.setTechnologyContextManager(technologyContextManager);
-            technologyContextManager.registerResource(returned);
-            return returned;
-        } catch (final ModelDefinitionException e) {
-            final String msg = "Error while initializing Freeplane model resource";
-            LOGGER.log(Level.SEVERE, msg, e);
-        }
-        return null;
-    }
 
-    @Override
-    public FreeplaneTechnologyAdapter getTechnologyAdapter() {
-        if (getServiceManager() != null) {
-            return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
-        }
-        return null;
-    }
+			returned.setURI(modelFile.toURI().toString());
+			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
+			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+			returned.setTechnologyContextManager(technologyContextManager);
+			technologyContextManager.registerResource(returned);
+			return returned;
+		} catch (final ModelDefinitionException e) {
+			final String msg = "Error while initializing Freeplane model resource";
+			LOGGER.log(Level.SEVERE, msg, e);
+		}
+		return null;
+	}
 
-    @Override
-    public IFreeplaneMap loadResourceData(final IProgress progress) {
-        final FreeplaneMapImpl map = (FreeplaneMapImpl) MODEL_FACTORY.newInstance(IFreeplaneMap.class);
-        map.setTechnologyAdapter(getTechnologyAdapter());
-        map.setMapModel(FreeplaneBasicAdapter.getInstance().loadMapFromFile(getFile()));
+	@Override
+	public FreeplaneTechnologyAdapter getTechnologyAdapter() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
+		}
+		return null;
+	}
+
+	@Override
+	public IFreeplaneMap loadResourceData(final IProgress progress) {
+		final FreeplaneMapImpl map = (FreeplaneMapImpl) MODEL_FACTORY.newInstance(IFreeplaneMap.class);
+		map.setTechnologyAdapter(getTechnologyAdapter());
+		map.setMapModel(FreeplaneBasicAdapter.getInstance().loadMapFromFile(getFile()));
 		map.setResource(this);
 
-        return map;
-    }
-
-    @Override
-    public Class<IFreeplaneMap> getResourceDataClass() {
-        return IFreeplaneMap.class;
-    }
-
-    /**
-     * Save modification. A unique call to Freeplane save is done. A boolean
-     * could be return, but we stay correct to TA API.<br>
-     * Freeplane save only on last opened map it seems. TODO investigate
-     */
-    @Override
-    public void save(final IProgress progress) {
-        if (progress != null) {
-            ((MModeController) Controller.getCurrentModeController()).save();
-            this.resourceData.clearIsModified(false);
-            notifyResourceSaved();
-        }
-    }
-    
-    @Override
-	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate)getFlexoIODelegate();
+		return map;
 	}
-	
-	private File getFile(){
+
+	@Override
+	public Class<IFreeplaneMap> getResourceDataClass() {
+		return IFreeplaneMap.class;
+	}
+
+	/**
+	 * Save modification. A unique call to Freeplane save is done. A boolean could be return, but we stay correct to TA API.<br>
+	 * Freeplane save only on last opened map it seems. TODO investigate
+	 */
+	@Override
+	public void save(final IProgress progress) {
+		if (progress != null) {
+			((MModeController) Controller.getCurrentModeController()).save();
+			this.resourceData.clearIsModified(false);
+			notifyResourceSaved();
+		}
+	}
+
+	@Override
+	public FileFlexoIODelegate getFileFlexoIODelegate() {
+		return (FileFlexoIODelegate) getFlexoIODelegate();
+	}
+
+	private File getFile() {
 		return getFileFlexoIODelegate().getFile();
 	}
 }

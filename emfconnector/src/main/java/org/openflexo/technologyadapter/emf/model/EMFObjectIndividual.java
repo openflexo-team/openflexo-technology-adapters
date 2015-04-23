@@ -83,7 +83,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
@@ -252,9 +251,19 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getTypes() {
 		return Collections.unmodifiableList(Collections.singletonList((IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getMetaModel()
-				.getConverter().convertClass(ontology.getMetaModel(), object.eClass())));
+				.getConverter().convertClass(ontology.getMetaModel(), object.eClass(),null)));
 	}
 
+	/**
+	 * returns the type by wich EObject instance has been created
+	 * @return
+	 */
+	public IFlexoOntologyClass<EMFTechnologyAdapter> getMainType() {
+		
+		return (IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getMetaModel().getConverter().convertClass(ontology.getMetaModel(), object.eClass(),null);
+	}
+	
+	
 	/**
 	 * Follow the link.
 	 * 
@@ -265,28 +274,7 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 		return getTypes().contains(aClass);
 	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsRange()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsDomain()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
-		return Collections.emptyList();
-	}
-
+	
 	/**
 	 * Follow the link.
 	 * 
@@ -305,8 +293,11 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public List<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> getPropertyValues() {
 		List<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> propertyValues = new ArrayList<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>();
+		// TODO : Some optimization required here!
 		for (EStructuralFeature structuralFeature : object.eClass().getEAllStructuralFeatures()) {
-			propertyValues.add(ontology.getConverter().getPropertyValues().get(object).get(structuralFeature));
+			IFlexoOntologyPropertyValue<EMFTechnologyAdapter> pvalue = ontology.getConverter().getPropertyValues().get(object).get(structuralFeature);
+			if (pvalue != null)
+				propertyValues.add(pvalue);
 		}
 		return Collections.unmodifiableList(propertyValues);
 	}
@@ -314,7 +305,6 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public boolean delete(Object... context) {
 		// TODO XTOF => implement an actual deletion mechanism
-		// TODO URGENT => there might be a memory leak here !
 		logger.warning("YOU NEED TO IMPLEMENT AN ACTUAL DELETION MECHANISM");
 		if (this.containingPropertyValue == null) {
 			this.getEMFModel().getEMFResource().getContents().remove(this.getObject());

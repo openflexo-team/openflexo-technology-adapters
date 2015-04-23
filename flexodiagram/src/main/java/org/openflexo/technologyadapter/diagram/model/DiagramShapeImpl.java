@@ -94,7 +94,7 @@ public abstract class DiagramShapeImpl extends DiagramContainerElementImpl<Shape
 		super.setDescription(description);
 	}*/
 	/**
-	 * Reset graphical representation to be the one defined in related pattern role
+	 * Reset graphical representation to be the one defined in related pattern property
 	 */
 	/*@Override
 	public void resetGraphicalRepresentation() {

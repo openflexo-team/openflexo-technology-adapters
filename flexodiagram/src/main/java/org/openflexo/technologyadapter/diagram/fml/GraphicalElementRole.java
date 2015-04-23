@@ -212,6 +212,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		private GR graphicalRepresentation;
 
+		private boolean defaultSpecificationsInitialized = false;
+
 		private final List<GraphicalElementSpecification<?, GR>> pendingGRSpecs;
 
 		public GraphicalElementRoleImpl() {
@@ -226,13 +228,17 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public void finalizeDeserialization() {
 			super.finalizeDeserialization();
 			// Give a chance to GRSpecs to be well deserialized
-			initDefaultSpecifications();
+			if (!defaultSpecificationsInitialized) {
+				initDefaultSpecifications();
+			}
 		}
 
 		protected void initDefaultSpecifications() {
 			if (getFMLModelFactory() != null) {
+				defaultSpecificationsInitialized = true;
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
+					//logger.info("[COMMON:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
 					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
 							GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
@@ -241,12 +247,14 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					newGraphicalElementSpecification.setMandatory(true);
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
-				for (GraphicalElementSpecification<?, GR> grSpec : pendingGRSpecs) {
-					registerGRSpecification(grSpec);
-				}
-
 			}
 
+		}
+
+		protected void handlePendingGRSpecs() {
+			for (GraphicalElementSpecification<?, GR> grSpec : pendingGRSpecs) {
+				registerGRSpecification(grSpec);
+			}
 		}
 
 		public DiagramSpecification getDiagramSpecification() {
@@ -405,7 +413,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public boolean containsShapes() {
-			for (ShapeRole role : getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+			for (ShapeRole role : getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 				if (role.getParentShapeRole() == this) {
 					return true;
 				}

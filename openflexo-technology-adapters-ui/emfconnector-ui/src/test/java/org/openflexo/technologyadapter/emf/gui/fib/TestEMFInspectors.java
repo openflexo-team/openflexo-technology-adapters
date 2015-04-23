@@ -55,15 +55,6 @@ public class TestEMFInspectors extends GenericFIBInspectorTestCase {
 				"Inspectors/EMF/"));
 	}
 
-	@Test
-	public void testAddEMFIndividualAttributeDataPropertyValueInspector() {
-		validateFIB("Inspectors/EMF/EditionAction/AddEMFIndividualAttributeDataPropertyValue.inspector");
-	}
-
-	@Test
-	public void testAddEMFIndividualAttributeObjectPropertyValueInspector() {
-		validateFIB("Inspectors/EMF/EditionAction/AddEMFIndividualAttributeObjectPropertyValue.inspector");
-	}
 
 	@Test
 	public void testAddEMFObjectIndividualInspector() {

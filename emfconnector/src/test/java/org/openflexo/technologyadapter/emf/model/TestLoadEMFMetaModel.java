@@ -41,23 +41,17 @@
 package org.openflexo.technologyadapter.emf.model;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 
 import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
-import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
-import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -68,51 +62,46 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestLoadEMFMetaModel extends OpenflexoProjectAtRunTimeTestCase {
+public class TestLoadEMFMetaModel extends OpenflexoTestCase {
 	protected static final Logger logger = Logger.getLogger(TestLoadEMFMetaModel.class.getPackage().getName());
 
-	private static FlexoEditor editor;
-	private static FlexoProject project;
+	private static EMFTechnologyAdapter technologicalAdapter;
 
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager();
+
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				EMFTechnologyAdapter.class);
 	}
 
 	@Test
 	@TestOrder(2)
-	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
-		System.out.println("Created project " + project.getProjectDirectory());
-		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
-	}
+	public void testConvertAllEMFMetaModel() {
 
-	@Test
-	@TestOrder(3)
-	public void testLoadEMFMetaModel() {
-		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				EMFTechnologyAdapter.class);
 
-		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
-			assertNotNull(metaModelRepository);
-			Collection<EMFMetaModelResource> metaModelResources = metaModelRepository.getAllResources();
-			for (EMFMetaModelResource metaModelResource : metaModelResources) {
-				// TODO: this hack should be removed when TA-46 issue will be fixed
-				if (!metaModelResource.getURI().equals(EMFTechnologyAdapter.ECORE_MM_URI)) {
-					EMFMetaModel metaModel = metaModelResource.getMetaModelData();
-					assertNotNull(metaModel);
-				}
-			}
-			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
-			Collection<EMFModelResource> modelResources = modelRepository.getAllResources();
-			for (EMFModelResource modelResource : modelResources) {
-				EMFModel model = modelResource.getModel();
-				assertNotNull(model);
-			}
+		Collection<EMFMetaModelResource> metaModelResources = technologicalAdapter.getTechnologyContextManager().getAllMetaModelResources();
+
+		
+			for (EMFMetaModelResource mmResource : metaModelResources) {
+				
+				System.out.println("\t Loading and Converting " + mmResource.getURI());
+				long startTime = System.currentTimeMillis();
+
+				EMFMetaModel metamodel = mmResource.getMetaModelData();
+
+				assertNotNull(metamodel);
+				assertNull(metamodel.getRootConcept());
+				
+				long endTime = System.currentTimeMillis();
+
+				System.out.println("\t\t MetaModel Conversion  took " + (endTime - startTime) + " milliseconds");
+
 		}
 	}
+
+	
+
+
 }

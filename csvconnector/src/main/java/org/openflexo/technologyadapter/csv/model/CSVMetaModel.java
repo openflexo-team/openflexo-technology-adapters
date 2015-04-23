@@ -50,7 +50,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
-import org.openflexo.foundation.ontology.IFlexoOntologyMetaModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -58,7 +57,7 @@ import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 
 public class CSVMetaModel extends FlexoOntologyObjectImpl<CSVTechnologyAdapter> implements FlexoMetaModel<CSVMetaModel>,
-		IFlexoOntologyMetaModel<CSVTechnologyAdapter> {
+		IFlexoOntology<CSVTechnologyAdapter> {
 	@Override
 	public FlexoResource<CSVMetaModel> getResource() {
 		return null;

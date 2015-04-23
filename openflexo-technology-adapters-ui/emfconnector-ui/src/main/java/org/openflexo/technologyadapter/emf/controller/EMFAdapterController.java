@@ -178,7 +178,7 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	}
 
 	/**
-	 * /** Return icon representing supplied pattern role
+	 * /** Return icon representing supplied pattern property
 	 * 
 	 * @param object
 	 * @return
@@ -247,7 +247,7 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 			FlexoPerspective perspective) {
 		if (object instanceof EMFModel) {
 			OntologyView<EMFModel> returned = new EMFModelView((EMFModel) object, controller, perspective);
-			returned.setShowClasses(false);
+			returned.setShowClasses(true);
 			returned.setShowDataProperties(false);
 			returned.setShowObjectProperties(false);
 			returned.setShowAnnotationProperties(false);

@@ -272,7 +272,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			}
 
 		} else {
-			logger.warning("Focused role is null !");
+			logger.warning("Focused property is null !");
 		}
 	}
 
@@ -381,7 +381,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			selectThis = aFlag;
 			if (patternRole == null && graphicalObject instanceof DiagramShape && flexoConcept != null) {
 				GraphicalElementRole<?, ?> parentEntryPatternRole = getParentEntry().patternRole;
-				for (ShapeRole r : flexoConcept.getFlexoRoles(ShapeRole.class)) {
+				for (ShapeRole r : flexoConcept.getDeclaredProperties(ShapeRole.class)) {
 					if (r.getParentShapeRole() == parentEntryPatternRole && patternRole == null) {
 						patternRole = r;
 					}
@@ -395,9 +395,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 		public List<? extends GraphicalElementRole<?, ?>> getAvailablePatternRoles() {
 			if (graphicalObject instanceof DiagramShape) {
-				return flexoConcept.getFlexoRoles(ShapeRole.class);
+				return flexoConcept.getDeclaredProperties(ShapeRole.class);
 			} else if (graphicalObject instanceof DiagramConnector) {
-				return flexoConcept.getFlexoRoles(ConnectorRole.class);
+				return flexoConcept.getDeclaredProperties(ConnectorRole.class);
 			}
 			return null;
 		}

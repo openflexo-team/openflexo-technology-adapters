@@ -113,7 +113,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValue extends AEMFModelOb
 	 */
 	@Override
 	public IFlexoOntologyObjectProperty<EMFTechnologyAdapter> getObjectProperty() {
-		return ontology.getMetaModel().getConverter().convertReferenceObjectProperty(ontology.getMetaModel(), reference);
+		return ontology.getMetaModel().getConverter().convertReferenceObjectProperty(ontology.getMetaModel(), reference,null,null);
 	}
 
 	/**

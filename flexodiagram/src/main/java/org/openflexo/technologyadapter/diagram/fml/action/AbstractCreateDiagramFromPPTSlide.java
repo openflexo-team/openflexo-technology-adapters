@@ -53,7 +53,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Logger;
 
@@ -77,10 +79,12 @@ import org.apache.poi.hslf.model.TextRun;
 import org.apache.poi.hslf.model.TextShape;
 import org.apache.poi.hslf.usermodel.RichTextRun;
 import org.apache.poi.hslf.usermodel.SlideShow;
+import org.apache.poi.sl.usermodel.Background;
 import org.openflexo.fge.BackgroundImageBackgroundStyle;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ForegroundStyle.DashStyle;
+import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation.HorizontalTextAlignment;
 import org.openflexo.fge.GraphicalRepresentation.ParagraphAlignment;
 import org.openflexo.fge.GraphicalRepresentation.VerticalTextAlignment;
@@ -106,6 +110,7 @@ import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
@@ -189,14 +194,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			getPropertyChangeSupport().firePropertyChange("errorMessage", null, getErrorMessage());
 		}
 
-	}
-
-	public HashMap<DiagramShape, Shape> getShapesMap() {
-		return shapesMap;
-	}
-
-	public void setShapesMap(HashMap<DiagramShape, Shape> shapesMap) {
-		this.shapesMap = shapesMap;
 	}
 
 	public List<Shape> getPoiShapes() {
@@ -455,14 +452,37 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	private HashMap<DiagramShape, Shape> shapesMap;
+	private HashMap<DiagramConnector, Shape> connectorsMap;
 	private List<Shape> poiShapes;
+
+	// This cannot be determinated safely
+	private final boolean computeOrderOfShape = true;
+	// This cannot be determinated safely
+	private final boolean computeStartEndShapesOfConnectors = true;
+
+	public HashMap<DiagramShape, Shape> getDiagramShapesMap() {
+		return shapesMap;
+	}
+
+	public void setDiagramShapesMap(HashMap<DiagramShape, Shape> shapesMap) {
+		this.shapesMap = shapesMap;
+	}
+
+	public HashMap<DiagramConnector, Shape> getDiagramConnectorsMap() {
+		return connectorsMap;
+	}
+
+	public void setDiagramConnectorsMap(HashMap<DiagramConnector, Shape> connectorsMap) {
+		this.connectorsMap = connectorsMap;
+	}
 
 	/*
 	 * Transfo PPT to Diagram
 	 */
 	public void convertSlideToDiagram(Slide slide) {
 		MasterSheet master = slide.getMasterSheet();
-		shapesMap = new HashMap<DiagramShape, Shape>();
+		shapesMap = new LinkedHashMap<DiagramShape, Shape>();
+		connectorsMap = new LinkedHashMap<DiagramConnector, Shape>();
 		poiShapes = new ArrayList<Shape>();
 
 		// Retrieve all transformable elements
@@ -481,127 +501,189 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			poiShapes.add(shape);
 		}
 
-		// Transform shapes
+		// Transform POI shapes into Flexo Shapes
 		for (Shape shape : poiShapes) {
-			transformPowerpointShape(getDiagram(), shape);
+			transformPPTShapeInDiagramElement(getDiagram(), shape);
 		}
-		// Transform connectors
-		for (Shape shape : poiShapes) {
-			transformPowerpointConnector(getDiagram(), shape);
-		}
-	}
 
-	private DiagramConnector transformPowerpointConnector(DiagramContainerElement<?> container, Shape shape) {
-		DiagramConnector diagramConnector = null;
-		if (shape instanceof AutoShape) {
-			// In the case the connector is a shape, the shape type give the kind of connector, no source/target
-			// are available, we can only make an intersection with the already know shapes
-			if (isConnector(shape.getShapeType())) {
-				diagramConnector = makeConnector((AutoShape) shape, shapesMap);
-				// If we are not able to find source/target shapes, create a line
-				if (diagramConnector == null) {
-					makeLine((AutoShape) shape);
-				}
+		if (computeOrderOfShape) {
+			computeLayers();
+		}
+
+		// Attach connectors.
+		if (computeStartEndShapesOfConnectors) {
+			for (Map.Entry<DiagramConnector, Shape> diagramConnectorEntry : getDiagramConnectorsMap().entrySet()) {
+				attachConnector(diagramConnectorEntry.getKey(), diagramConnectorEntry.getValue());
 			}
 		}
-		else if (shape instanceof Line) {
-			diagramConnector = makeLine((Line) shape);
-		}
-		if (diagramConnector != null) {
-			container.addToConnectors(diagramConnector);
-			container.addToShapes(diagramConnector.getStartShape());
-			container.addToShapes(diagramConnector.getEndShape());
-			return diagramConnector;
-		}
-		return null;
+
 	}
 
-	private DiagramShape transformPowerpointShape(DiagramContainerElement<?> container, Shape shape) {
-		DiagramShape diagramShape = null;
-		if (shape instanceof Freeform) {
-			diagramShape = makeFreeformShape((Freeform) shape);
+	private void computeLayers() {
+		int currentLayer = 0;// getDiagramShapesMap().size() + getDiagramConnectorsMap().size();
+		for (Map.Entry<DiagramShape, Shape> diagramShapeEntry : getDiagramShapesMap().entrySet()) {
+			diagramShapeEntry.getKey().getGraphicalRepresentation().setLayer(currentLayer++);
 		}
-		else if (shape instanceof Picture) {
-			diagramShape = makePictureShape((Picture) shape);
+		for (Map.Entry<DiagramConnector, Shape> diagramConnectorEntry : getDiagramConnectorsMap().entrySet()) {
+			diagramConnectorEntry.getKey().getGraphicalRepresentation().setLayer(currentLayer++);
 		}
-		else if ((shape instanceof AutoShape) && (!isConnector(shape.getShapeType()))) {
-			diagramShape = makeAutoShape((AutoShape) shape);
+	}
+
+	/**
+	 * Transform a POI shape in a DiagramElement
+	 * 
+	 * @param container
+	 * @param shape
+	 * @return
+	 */
+	private DiagramElement<?> transformPPTShapeInDiagramElement(DiagramContainerElement<?> container, Shape shape) {
+		DiagramElement<?> diagramElement = null;
+		if (shape instanceof SimpleShape) {
+			diagramElement = transformSimpleShape((SimpleShape) shape);
+
 		}
-		else if (shape instanceof Table) {
-			diagramShape = makeTable((Table) shape);
+		else if (shape instanceof Background) {
+			diagramElement = transformBackground((Background) shape);
 		}
 		else if (shape instanceof ShapeGroup) {
-			diagramShape = makeGroupShape((ShapeGroup) shape);
+			diagramElement = transformShapeGroup((ShapeGroup) shape);
+		}
+		return diagramElement;
+	}
+
+	private DiagramElement<?> transformSimpleShape(SimpleShape shape) {
+		DiagramElement<?> diagramElement = null;
+		if (shape instanceof Line) {
+			diagramElement = makeDiagramConnector(shape);
+		}
+		else if (shape instanceof Picture) {
+			diagramElement = transformPicture((Picture) shape);
+		}
+		else if (shape instanceof TextShape) {
+			diagramElement = transformTextShape((TextShape) shape);
+		}
+		return diagramElement;
+	}
+
+	private DiagramElement<?> transformPicture(Picture shape) {
+		DiagramElement<?> diagramElement = makePictureShape(shape);
+		return diagramElement;
+	}
+
+	private DiagramElement<?> transformTextShape(TextShape shape) {
+		DiagramElement<?> diagramElement = null;
+		if (shape instanceof AutoShape) {
+			diagramElement = transformAutoShape((AutoShape) shape);
 		}
 		else if (shape instanceof TextBox) {
-			diagramShape = makeTextBox((TextBox) shape);
+			diagramElement = makeTextBox((TextBox) shape);
 		}
-		if (diagramShape != null) {
-			shapesMap.put(diagramShape, shape);
-			container.addToShapes(diagramShape);
-			return diagramShape;
+		return diagramElement;
+	}
+
+	private DiagramElement<?> transformAutoShape(AutoShape shape) {
+		DiagramElement<?> diagramElement = null;
+		if (isConnector(shape.getShapeType())) {
+			diagramElement = makeDiagramConnector(shape);
+			applySimpleShapeGr(diagramElement.getGraphicalRepresentation(), shape);
 		}
-		return null;
+		else {
+			diagramElement = makeDiagramShape(shape);
+			applyTextShapeGr((ShapeGraphicalRepresentation) diagramElement.getGraphicalRepresentation(), shape);
+		}
+		return diagramElement;
+	}
+
+	private DiagramElement<?> transformBackground(Background shape) {
+		DiagramElement<?> diagramElement = null;
+		return diagramElement;
+	}
+
+	private DiagramElement<?> transformShapeGroup(ShapeGroup shape) {
+		DiagramElement<?> diagramElement = null;
+		if (shape instanceof Table) {
+			diagramElement = makeTable((Table) shape);
+		}
+		else
+			diagramElement = makeGroupShape(shape);
+		return diagramElement;
+	}
+
+	private DiagramShape makeTextBox(TextBox textBox) {
+		DiagramShape newShape = makeDiagramShape(textBox);
+		applyTextShapeGr(newShape.getGraphicalRepresentation(), textBox);
+		newShape.getGraphicalRepresentation().setLayer(2);
+		return newShape;
 	}
 
 	// To optimize the group shape convertion, if there is a textbox and a shape, then the shape is the container of the text
 	// This should cover a large set of cases
-	private DiagramShape makeGroupShape(ShapeGroup shapeGroup) {
-		// If we find a shape and a text, then it could be optimized as a shape containing this text
+	private DiagramElement<?> makeGroupShape(ShapeGroup shapeGroup) {
+		// If we find a shape without text and a text, then it could be optimized as a shape containing this text
 		boolean isShapeAndText = false;
 		if (shapeGroup.getShapes().length == 2) {
 			TextShape textShape = null;
-			TextShape containerShape = null;
+			SimpleShape containerShape = null;
 			for (Shape shape : shapeGroup.getShapes()) {
 				if ((shape instanceof TextShape) && (((TextShape) shape).getTextRun() != null)) {
 					textShape = (TextShape) shape;
 				}
-				if ((shape instanceof TextShape) && (((TextShape) shape).getTextRun() == null)) {
+				else if ((shape instanceof TextShape) && (((TextShape) shape).getTextRun() == null)) {
 					containerShape = (TextShape) shape;
+				}
+				else if ((shape instanceof SimpleShape)) {
+					containerShape = (SimpleShape) shape;
 				}
 			}
 			if (containerShape != null && textShape != null) {
-				isShapeAndText = true;
-				DiagramShape newShape = transformPowerpointShape(getDiagram(), containerShape);
-				setTextProperties(newShape, newShape.getGraphicalRepresentation(), textShape, true);
-				newShape.setName(textShape.getText());
+				DiagramElement<?> shape = null;
+				shape = transformTextShape(textShape);
+				if (isConnector(containerShape.getShapeType())) {
+					shape = makeDiagramConnector(containerShape);
+					applySimpleShapeGr(shape.getGraphicalRepresentation(), containerShape);
+				}
+				else {
+					if (containerShape instanceof Picture) {
+						applyPictureGr((ShapeGraphicalRepresentation) shape.getGraphicalRepresentation(), (Picture) containerShape);
+					}
+					else {
+						applySimpleShapeGr(shape.getGraphicalRepresentation(), containerShape);
+					}
+				}
+
+				return shape;
 			}
 		}
 		if (!isShapeAndText) {
 			// Transform shapes
 			for (Shape shape : shapeGroup.getShapes()) {
-				transformPowerpointShape(getDiagram(), shape);
-			}
-			// Transform connectors
-			for (Shape shape : shapeGroup.getShapes()) {
-				transformPowerpointConnector(getDiagram(), shape);
+				transformPPTShapeInDiagramElement(getDiagram(), shape);
 			}
 		}
-
 		return null;
 	}
 
 	private DiagramShape makeTable(Table table) {
 
-		DiagramShape newTable = getDiagramFactory().makeNewShape(getShapeName(table), getDiagram());
-		ShapeGraphicalRepresentation gr = newTable.getGraphicalRepresentation();
-		setDefaultGraphicalProperties(gr, table);
-		gr.getForeground().setNoStroke(true);
-		gr.setTransparency(1);
+		DiagramShape shape = makeDiagramShape(table);
+		applyTableGr(shape.getGraphicalRepresentation(), table);
 		for (int col = 0; col < table.getNumberOfColumns(); col++) {
 			for (int row = 0; row < table.getNumberOfRows(); row++) {
 				TableCell cell = table.getCell(row, col);
 				if (cell != null) {
 					DiagramShape newCell = makeTextBox(cell);
-					newCell.getGraphicalRepresentation().getForeground().setNoStroke(false);
-					newCell.getGraphicalRepresentation().setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
+					applyTableCellGr(newCell.getGraphicalRepresentation(), cell);
 					getDiagram().addToShapes(newCell);
 				}
 			}
 		}
+		return shape;
+	}
 
-		newTable.setGraphicalRepresentation(gr);
-		return newTable;
+	private DiagramShape makePictureShape(Picture pictureShape) {
+		DiagramShape shape = makeDiagramShape(pictureShape);
+		applyPictureGr(shape.getGraphicalRepresentation(), pictureShape);
+		return shape;
 	}
 
 	private DiagramShape makeFreeformShape(Freeform freeformShape) {
@@ -609,7 +691,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 		gr.setShapeType(ShapeType.CUSTOM_POLYGON);
 		Polygon ss = ((Polygon) gr.getShapeSpecification());
-
 		PathIterator pi = freeformShape.getPath().getPathIterator(null);
 		double[] coordinates = new double[6];
 		while (pi.isDone() == false) {
@@ -640,187 +721,431 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			}
 			pi.next();
 		}
-
-		gr.setShapeSpecification(ss);
-		setDefaultGraphicalProperties(gr, freeformShape);
-		setTextProperties(newShape, gr, freeformShape, true);
-		newShape.setGraphicalRepresentation(gr);
 		return newShape;
 	}
 
-	private DiagramShape makeAutoShape(AutoShape autoShape) {
-		DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(autoShape), getDiagram());
-		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
-		setDiagramShapeShapeType(gr, autoShape);
-		setDefaultGraphicalProperties(gr, autoShape);
-		setTextProperties(newShape, gr, autoShape, true);
-		newShape.setGraphicalRepresentation(gr);
+	private DiagramShape makeDiagramShape(Shape shape) {
+		DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(shape), getDiagram());
+		shapesMap.put(newShape, shape);
 		return newShape;
+	}
+
+	/**
+	 * A line is without start/end shapes
+	 * 
+	 * @param line
+	 * @return
+	 */
+	private DiagramConnector makeDiagramConnector(SimpleShape line) {
+		DiagramConnector newConnector = getDiagramFactory().makeNewConnector(getShapeName(line), null, null, getDiagram());
+		connectorsMap.put(newConnector, line);
+		return newConnector;
 	}
 
 	private String getShapeName(Shape shape) {
-		if (shape instanceof TextShape && ((TextShape) shape).getText() != null) {
+		if (shape != null && shape instanceof TextShape && ((TextShape) shape).getText() != null) {
 			return ((TextShape) shape).getText();
-		} /*else if (shape instanceof Picture && ((Picture) shape).getPictureName() != null) {
-			return ((Picture) shape).getPictureName();
-			}*/
+		}
 		else {
-			return "";/* if (shape.getShapeName() != null) {
-						return shape.getShapeName();
-						} else {
-						return "shape_" + shape.getShapeId();
-						}*/
+			return "";
 		}
 	}
 
-	/**
-	 * A line is without start/end shapes
-	 * 
-	 * @param line
-	 * @return
-	 */
-	private DiagramConnector makeLine(Line line) {
-		// Create a virtual start/end shape.
-		DiagramShape sourceShape = getDiagramFactory().makeNewShape("", getDiagram());
-		DiagramShape targetShape = getDiagramFactory().makeNewShape("", getDiagram());
-		ShapeGraphicalRepresentation sourceShapeGR = sourceShape.getGraphicalRepresentation();
-		sourceShapeGR.setX(line.getLogicalAnchor2D().getMinX());
-		sourceShapeGR.setY(line.getLogicalAnchor2D().getMaxY());
-		sourceShapeGR.setWidth(2);
-		sourceShapeGR.setHeight(2);
-		sourceShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
-		ShapeGraphicalRepresentation targetShapeGR = targetShape.getGraphicalRepresentation();
-		targetShapeGR.setX(line.getLogicalAnchor2D().getMaxX());
-		targetShapeGR.setY(line.getLogicalAnchor2D().getMinY());
-		targetShapeGR.setWidth(2);
-		targetShapeGR.setHeight(2);
-		targetShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
-
-		DiagramConnector newConnector = getDiagramFactory().makeNewConnector(getShapeName(line), sourceShape, targetShape, getDiagram());
-		ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
-		setConnectorType(gr, line);
-		newConnector.setGraphicalRepresentation(gr);
-		return newConnector;
-	}
-
-	/**
-	 * A line is without start/end shapes
-	 * 
-	 * @param line
-	 * @return
-	 */
-	private DiagramConnector makeLine(AutoShape poiConnector) {
-		// Create a virtual start/end shape.
-		DiagramShape sourceShape = getDiagramFactory().makeNewShape("", getDiagram());
-		DiagramShape targetShape = getDiagramFactory().makeNewShape("", getDiagram());
-		ShapeGraphicalRepresentation sourceShapeGR = sourceShape.getGraphicalRepresentation();
-		sourceShapeGR.setX(poiConnector.getLogicalAnchor2D().getMinX());
-		sourceShapeGR.setY(poiConnector.getLogicalAnchor2D().getMaxY());
-		sourceShapeGR.setWidth(2);
-		sourceShapeGR.setHeight(2);
-		sourceShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
-		ShapeGraphicalRepresentation targetShapeGR = targetShape.getGraphicalRepresentation();
-		targetShapeGR.setX(poiConnector.getLogicalAnchor2D().getMaxX());
-		targetShapeGR.setY(poiConnector.getLogicalAnchor2D().getMinY());
-		targetShapeGR.setWidth(2);
-		targetShapeGR.setHeight(2);
-		targetShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
-
-		DiagramConnector newConnector = getDiagramFactory().makeNewConnector(getShapeName(poiConnector), sourceShape, targetShape,
-				getDiagram());
-		ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
-		setConnectorType(gr, poiConnector);
-		newConnector.setGraphicalRepresentation(gr);
-		return newConnector;
-	}
-
-	private DiagramConnector makeConnector(AutoShape poiConnector, HashMap<DiagramShape, Shape> possibleShapes) {
+	private void attachConnector(DiagramConnector connector, Shape poiConnector) {
 		DiagramShape sourceShape = null, targetShape = null;
+		List<DiagramShape> potentialShapes = new ArrayList<DiagramShape>();
 
-		for (DiagramShape diagramShape : possibleShapes.keySet()) {
-			Shape poiShape = possibleShapes.get(diagramShape);
+		// We must count the size of the arrow head
+		double arrowStartWidth = poiConnector.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) + 1;
+		double arrowEndWidth = poiConnector.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) + 1 + arrowStartWidth;
+		// Connectors which are closed to the shape are considered as linked to this shape.
+		Rectangle2D connectorBorder = null;
+		if (poiConnector instanceof Line) {
+			connectorBorder = new Rectangle2D.Double(poiConnector.getOutline().getBounds().getX() - arrowStartWidth, poiConnector
+					.getOutline().getBounds().getY()
+					- arrowStartWidth, poiConnector.getOutline().getBounds().getWidth() + arrowEndWidth, poiConnector.getOutline()
+					.getBounds().getHeight()
+					+ arrowEndWidth);
+		}
+		else {
+			connectorBorder = new Rectangle2D.Double(poiConnector.getAnchor2D().getX() - arrowStartWidth, poiConnector.getAnchor2D().getY()
+					- arrowStartWidth, poiConnector.getAnchor2D().getWidth() + arrowEndWidth, poiConnector.getAnchor2D().getHeight()
+					+ arrowEndWidth);
+		}
 
-			// Connectors which are closed to the shape are considered as linked to this shape.
-			Rectangle2D r1 = new Rectangle2D.Double(poiConnector.getAnchor2D().getX(), poiConnector.getAnchor2D().getY(), poiConnector
-					.getAnchor2D().getWidth() + 5, poiConnector.getAnchor2D().getHeight() + 5);
+		// Find the closest source and target shape
+		for (Map.Entry<DiagramShape, Shape> diagramShapeEntry : getDiagramShapesMap().entrySet()) {
+			Shape poiShape = diagramShapeEntry.getValue();
+			DiagramShape diagramShape = diagramShapeEntry.getKey();
+			if (poiShape.getOutline().intersects(connectorBorder)) {
+				potentialShapes.add(diagramShape);
+			}
+		}
 
-			if (poiShape.getAnchor().intersects(r1)) {
-				if (sourceShape == null && targetShape == null) {
-					sourceShape = diagramShape;
-				}
-				else if (sourceShape != null && targetShape == null) {
-					targetShape = diagramShape;
+		// Now the problem is what shape to connect? Because of overlapping shapes choose the most frontal ones.
+		int layer = 0;
+		for (DiagramShape potentialShape : potentialShapes) {
+			if (layer <= potentialShape.getGraphicalRepresentation().getLayer()) {
+				layer = potentialShape.getGraphicalRepresentation().getLayer();
+				sourceShape = potentialShape;
+			}
+		}
+		if (potentialShapes.size() > 1) {
+			potentialShapes.remove(sourceShape);
+			layer = 0;
+			for (DiagramShape potentialShape : potentialShapes) {
+				if (layer < potentialShape.getGraphicalRepresentation().getLayer()) {
+					layer = potentialShape.getGraphicalRepresentation().getLayer();
+					targetShape = potentialShape;
 				}
 			}
 		}
-		if (sourceShape != null && targetShape == null) {
+		else if (potentialShapes.size() == 1) {
 			targetShape = sourceShape;
 		}
-		else if (targetShape != null && sourceShape == null) {
-			sourceShape = targetShape;
+
+		// Create fictives end/start shapes
+		else if (sourceShape == null && targetShape == null) {
+			sourceShape = getDiagramFactory().makeNewShape("", getDiagram());
+			targetShape = getDiagramFactory().makeNewShape("", getDiagram());
+			ShapeGraphicalRepresentation sourceShapeGR = sourceShape.getGraphicalRepresentation();
+			sourceShapeGR.setX(poiConnector.getLogicalAnchor2D().getMinX());
+			sourceShapeGR.setY(poiConnector.getLogicalAnchor2D().getMaxY());
+			sourceShapeGR.setWidth(2);
+			sourceShapeGR.setHeight(2);
+			sourceShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
+			ShapeGraphicalRepresentation targetShapeGR = targetShape.getGraphicalRepresentation();
+			targetShapeGR.setX(poiConnector.getLogicalAnchor2D().getMaxX());
+			targetShapeGR.setY(poiConnector.getLogicalAnchor2D().getMinY());
+			targetShapeGR.setWidth(2);
+			targetShapeGR.setHeight(2);
+			targetShapeGR.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
 		}
-		if (sourceShape != null && targetShape != null) {
-			DiagramConnector newConnector = getDiagramFactory().makeNewConnector(getShapeName(poiConnector), sourceShape, targetShape,
-					getDiagram());
-			ConnectorGraphicalRepresentation gr = newConnector.getGraphicalRepresentation();
-			setConnectorType(gr, poiConnector);
-			newConnector.setGraphicalRepresentation(gr);
-			return newConnector;
-		}
-		else {
-			return null;
+
+		connector.setStartShape(sourceShape);
+		connector.setEndShape(targetShape);
+	}
+
+	private void setDiagramElementType(GraphicalRepresentation gr, Shape shape) {
+		switch (shape.getShapeType()) {
+			case ShapeTypes.Chevron:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.CHEVRON);
+				break;
+			case ShapeTypes.Plus:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.PLUS);
+				break;
+			case ShapeTypes.Rectangle:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.RECTANGLE);
+				break;
+			case ShapeTypes.RoundRectangle:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.RECTANGLE);
+				((Rectangle) ((ShapeGraphicalRepresentation) gr).getShapeSpecification()).setIsRounded(true);
+				((Rectangle) ((ShapeGraphicalRepresentation) gr).getShapeSpecification()).setArcSize(20);
+				break;
+			case ShapeTypes.Star:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.STAR);
+				break;
+			case ShapeTypes.Ellipse:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.OVAL);
+				break;
+			case ShapeTypes.IsocelesTriangle:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.TRIANGLE);
+				break;
+			case ShapeTypes.CurvedConnector2:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
+				break;
+			case ShapeTypes.CurvedConnector3:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
+				break;
+			case ShapeTypes.CurvedConnector4:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
+				break;
+			case ShapeTypes.CurvedConnector5:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
+				break;
+			case ShapeTypes.Line:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.LINE);
+				break;
+			case ShapeTypes.StraightConnector1:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.LINE);
+				break;
+			case ShapeTypes.BentConnector2:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
+				break;
+			case ShapeTypes.BentConnector3:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
+				break;
+			case ShapeTypes.BentConnector4:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
+				break;
+			case ShapeTypes.BentConnector5:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
+				break;
 		}
 	}
 
-	private DiagramShape makeTextBox(TextBox textBox) {
-		DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(textBox), getDiagram());
-		ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
-		setDiagramShapeShapeType(gr, textBox);
-		setDefaultGraphicalProperties(gr, textBox);
-		setTextProperties(newShape, gr, textBox, true);
-		gr.setLayer(2);
-		newShape.setGraphicalRepresentation(gr);
-		return newShape;
+	private void applySimpleShapeGr(GraphicalRepresentation gr, SimpleShape shape) {
+
+		if (gr instanceof ShapeGraphicalRepresentation) {
+			((ShapeGraphicalRepresentation) gr).setX(shape.getLogicalAnchor2D().getX());
+			((ShapeGraphicalRepresentation) gr).setY(shape.getLogicalAnchor2D().getY());
+			((ShapeGraphicalRepresentation) gr).setWidth(shape.getLogicalAnchor2D().getWidth());
+			((ShapeGraphicalRepresentation) gr).setHeight(shape.getLogicalAnchor2D().getHeight());
+			((ShapeGraphicalRepresentation) gr).setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+			((ShapeGraphicalRepresentation) gr).setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
+			((ShapeGraphicalRepresentation) gr).setForeground(getDiagramFactory().makeNoneForegroundStyle());
+			((ShapeGraphicalRepresentation) gr).setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
+			if (shape.getLineColor() != null) {
+				((ShapeGraphicalRepresentation) gr).setForeground(getDiagramFactory().makeForegroundStyle(shape.getLineColor(),
+						(float) shape.getLineWidth(), convertDashLineStyles(shape.getLineDashing())));
+			}
+			if (shape.getFillColor() != null) {
+				((ShapeGraphicalRepresentation) gr).setBackground(getDiagramFactory().makeColoredBackground(shape.getFillColor()));
+			}
+			else {
+				((ShapeGraphicalRepresentation) gr).setBackground(getDiagramFactory().makeEmptyBackground());
+			}
+		}
+		if (gr instanceof ConnectorGraphicalRepresentation) {
+			if (shape.getLineColor() != null) {
+				((ConnectorGraphicalRepresentation) gr).setForeground(getDiagramFactory().makeForegroundStyle(shape.getLineColor(),
+						(float) shape.getLineWidth(), convertDashLineStyles(shape.getLineDashing())));
+			}
+			// For now it we don't know how to determinate to whom end of the connector is affected the symbol
+			// Because in the case of connectors, we don't knwo the end/start shape, which is computed by intersection.
+			// So we can only handle correctly two cases, when there is no arrows ends at all and when there is two arrows ends
+			if (shape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWHEAD) != 0
+					&& shape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWHEAD) != 0) {
+				if (shape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWHEAD) != 0) {
+					((ConnectorGraphicalRepresentation) gr).getConnectorSpecification().setStartSymbol(StartSymbolType.ARROW);
+				}
+				if (shape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) != 0) {
+					((ConnectorGraphicalRepresentation) gr).getConnectorSpecification().setStartSymbolSize(
+							shape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) * 10);
+				}
+				if (shape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWHEAD) != 0) {
+					((ConnectorGraphicalRepresentation) gr).getConnectorSpecification().setEndSymbol(EndSymbolType.ARROW);
+				}
+				if (shape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) != 0) {
+					((ConnectorGraphicalRepresentation) gr).getConnectorSpecification().setEndSymbolSize(
+							shape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) * 10);
+				}
+			}
+		}
+		setDiagramElementType(gr, shape);
 	}
 
-	private DiagramShape makePictureShape(Picture pictureShape) {
+	private void applyTextShapeGr(ShapeGraphicalRepresentation gr, TextShape shape) {
+		applySimpleShapeGr(gr, shape);
+		if (shape.getTextRun() != null) {
+			TextRun textRun = shape.getTextRun();
+			RichTextRun[] rts = textRun.getRichTextRuns();
+			if (rts.length > 0) {
+				RichTextRun rtr = rts[0];
+				String fontName = rtr.getFontName();
+				int fontSize = rtr.getFontSize();
+				Color color = rtr.getFontColor();
+				int fontStyle = Font.PLAIN | (rtr.isBold() ? Font.BOLD : Font.PLAIN) | (rtr.isItalic() ? Font.ITALIC : Font.PLAIN);
+				Font f = new Font(fontName, fontStyle, fontSize);
+				TextStyle textStyle = getDiagramFactory().makeTextStyle(color, f);
+				gr.setTextStyle(textStyle);
+			}
+		}
+		if (gr instanceof ShapeGraphicalRepresentation) {
+			gr.setIsFloatingLabel(false);
+			gr.setRelativeTextX(0.5);
+			gr.setRelativeTextY(0.5);
+		}
+		gr.setIsMultilineAllowed(true);
+		try {
+			switch (shape.getVerticalAlignment()) {
+				case TextShape.AnchorTop:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorMiddle:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+					break;
+				case TextShape.AnchorBottom:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+				case TextShape.AnchorTopCentered:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorMiddleCentered:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+					break;
+				case TextShape.AnchorBottomCentered:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+				case TextShape.AnchorTopBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorBottomBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+				case TextShape.AnchorTopCenteredBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorBottomCenteredBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+			}
+		} catch (Exception e) {
+			// Set by default
+			gr.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+		}
 
-		int width = (int) pictureShape.getLogicalAnchor2D().getWidth() < 0 ? 0 : (int) pictureShape.getLogicalAnchor2D().getWidth();
-		int height = (int) pictureShape.getLogicalAnchor2D().getHeight() < 0 ? 0 : (int) pictureShape.getLogicalAnchor2D().getHeight();
-		int x = (int) pictureShape.getLogicalAnchor2D().getX() < 0 ? 0 : (int) pictureShape.getLogicalAnchor2D().getX();
-		int y = (int) pictureShape.getLogicalAnchor2D().getY() < 0 ? 0 : (int) pictureShape.getLogicalAnchor2D().getY();
+		try {
+			switch (shape.getHorizontalAlignment()) {
+				case TextShape.AlignLeft:
+					gr.setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
+					gr.setParagraphAlignment(ParagraphAlignment.LEFT);
+					break;
+				case TextShape.AlignCenter:
+					gr.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+					gr.setParagraphAlignment(ParagraphAlignment.CENTER);
+					break;
+				case TextShape.AlignRight:
+					gr.setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT);
+					gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
+					break;
+				case TextShape.AlignJustify:
+					gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
+					gr.setParagraphAlignment(ParagraphAlignment.JUSTIFY);
+					break;
+			}
+		} catch (Exception e) {
+			gr.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+			gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
+		}
+
+		gr.setLineWrap(true);
+	}
+
+	private void applyTableGr(ShapeGraphicalRepresentation gr, Table shape) {
+		gr.getForeground().setNoStroke(true);
+		gr.setTransparency(1);
+		gr.setBackground(getDiagramFactory().makeEmptyBackground());
+	}
+
+	private void applyTableCellGr(ShapeGraphicalRepresentation gr, TableCell shape) {
+		gr.getForeground().setNoStroke(false);
+		gr.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
+	}
+
+	private void applyPictureGr(ShapeGraphicalRepresentation gr, Picture shape) {
+		applySimpleShapeGr(gr, shape);
+		int width = (int) shape.getLogicalAnchor2D().getWidth() < 0 ? 0 : (int) shape.getLogicalAnchor2D().getWidth();
+		int height = (int) shape.getLogicalAnchor2D().getHeight() < 0 ? 0 : (int) shape.getLogicalAnchor2D().getHeight();
+		int x = (int) shape.getLogicalAnchor2D().getX() < 0 ? 0 : (int) shape.getLogicalAnchor2D().getX();
+		int y = (int) shape.getLogicalAnchor2D().getY() < 0 ? 0 : (int) shape.getLogicalAnchor2D().getY();
 		if (width * height < Integer.MAX_VALUE) {
-			DiagramShape newShape = getDiagramFactory().makeNewShape(getShapeName(pictureShape), getDiagram());
-
-			ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
-
 			gr.setX(x);
 			gr.setY(y);
 			gr.setWidth(width);
 			gr.setHeight(height);
-			// gr.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
 			BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			Graphics2D graphics = image.createGraphics();
 			graphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
 			graphics.translate(-x, -y);
 			graphics.clipRect(x, y, width, height);
-			// graphics.transform(AffineTransform.getScaleInstance(WIDTH / d.width, WIDTH / d.width));
-
 			graphics.setPaint(Color.WHITE);
 			graphics.fillRect(x, y, width, height);
-
-			pictureShape.getPictureData().draw(graphics, pictureShape);
-			File imageFile = saveImageFile(image, getDiagramName() + getSlide().getTitle() + pictureShape.getShapeId());
+			shape.getPictureData().draw(graphics, shape);
+			File imageFile = saveImageFile(image, getDiagramName() + getSlide().getTitle() + shape.getShapeId());
 			gr.setBackground(getDiagramFactory().makeImageBackground(ResourceLocator.locateResource(imageFile.getAbsolutePath())));
 			gr.setForeground(getDiagramFactory().makeNoneForegroundStyle());
 			gr.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 			((BackgroundImageBackgroundStyle) gr.getBackground()).setFitToShape(true);
-			newShape.setGraphicalRepresentation(gr);
-
-			return newShape;
 		}
-		return null;
 	}
+
+	/*private void setTextProperties(DiagramElement<?> shape, TextShape textShape, boolean convertBulletsToShapes) {
+		GraphicalRepresentation gr = shape.getGraphicalRepresentation();
+		if (textShape.getTextRun() != null) {
+			TextRun textRun = textShape.getTextRun();
+			RichTextRun[] rts = textRun.getRichTextRuns();
+			if (rts.length > 0) {
+				RichTextRun rtr = rts[0];
+				String fontName = rtr.getFontName();
+				int fontSize = rtr.getFontSize();
+				Color color = rtr.getFontColor();
+				int fontStyle = Font.PLAIN | (rtr.isBold() ? Font.BOLD : Font.PLAIN) | (rtr.isItalic() ? Font.ITALIC : Font.PLAIN);
+				Font f = new Font(fontName, fontStyle, fontSize);
+				TextStyle textStyle = getDiagramFactory().makeTextStyle(color, f);
+				gr.setTextStyle(textStyle);
+			}
+		}
+		if (gr instanceof ShapeGraphicalRepresentation) {
+			((ShapeGraphicalRepresentation) gr).setIsFloatingLabel(false);
+			((ShapeGraphicalRepresentation) gr).setRelativeTextX(0.5);
+			((ShapeGraphicalRepresentation) gr).setRelativeTextY(0.5);
+		}
+		gr.setIsMultilineAllowed(true);
+		try {
+			switch (textShape.getVerticalAlignment()) {
+				case TextShape.AnchorTop:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorMiddle:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+					break;
+				case TextShape.AnchorBottom:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+				case TextShape.AnchorTopCentered:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorMiddleCentered:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+					break;
+				case TextShape.AnchorBottomCentered:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+				case TextShape.AnchorTopBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorBottomBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+				case TextShape.AnchorTopCenteredBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorBottomCenteredBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+			}
+		} catch (Exception e) {
+			// Set by default
+			gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+		}
+
+		try {
+			switch (textShape.getHorizontalAlignment()) {
+				case TextShape.AlignLeft:
+					gr.setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT);
+					gr.setParagraphAlignment(ParagraphAlignment.LEFT);
+					break;
+				case TextShape.AlignCenter:
+					gr.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+					gr.setParagraphAlignment(ParagraphAlignment.CENTER);
+					break;
+				case TextShape.AlignRight:
+					gr.setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
+					gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
+					break;
+				case TextShape.AlignJustify:
+					gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
+					gr.setParagraphAlignment(ParagraphAlignment.JUSTIFY);
+					break;
+			}
+		} catch (Exception e) {
+			gr.setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
+			gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
+		}
+
+		gr.setLineWrap(true);
+	}*/
 
 	private DashStyle convertDashLineStyles(int powerpointDashStyle) {
 
@@ -877,37 +1202,41 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		return false;
 	}
 
-	private void setDefaultGraphicalProperties(ShapeGraphicalRepresentation returned, Shape shape) {
-		returned.setX(shape.getLogicalAnchor2D().getX());
-		returned.setY(shape.getLogicalAnchor2D().getY());
-		returned.setWidth(shape.getLogicalAnchor2D().getWidth());
-		returned.setHeight(shape.getLogicalAnchor2D().getHeight());
-		returned.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
-		returned.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
-		if (shape instanceof SimpleShape) {
-			if (((SimpleShape) shape).getLineColor() != null) {
-				returned.setForeground(getDiagramFactory().makeForegroundStyle(((SimpleShape) shape).getLineColor(),
-						(float) ((SimpleShape) shape).getLineWidth(), convertDashLineStyles(((SimpleShape) shape).getLineDashing())));
-			}
-			else {
-				returned.setForeground(getDiagramFactory().makeNoneForegroundStyle());
-			}
-			if (((SimpleShape) shape).getFillColor() != null) {
-				returned.setBackground(getDiagramFactory().makeColoredBackground(((SimpleShape) shape).getFillColor()));
-			}
-			else {
-				returned.setBackground(getDiagramFactory().makeEmptyBackground());
-				returned.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
-			}
+	/*private void setDefaultGraphicalProperties(GraphicalRepresentation returned, SimpleShape shape) {
+
+	if (returned instanceof ShapeGraphicalRepresentation) {
+
+	}
+	returned.setX(shape.getLogicalAnchor2D().getX());
+	returned.setY(shape.getLogicalAnchor2D().getY());
+	returned.setWidth(shape.getLogicalAnchor2D().getWidth());
+	returned.setHeight(shape.getLogicalAnchor2D().getHeight());
+	returned.setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+	returned.setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
+	if (shape instanceof SimpleShape) {
+		if (shape.getLineColor() != null) {
+			returned.setForeground(getDiagramFactory().makeForegroundStyle(shape.getLineColor(), (float) shape.getLineWidth(),
+					convertDashLineStyles(shape.getLineDashing())));
 		}
 		else {
 			returned.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+		}
+		if (shape.getFillColor() != null) {
+			returned.setBackground(getDiagramFactory().makeColoredBackground(shape.getFillColor()));
+		}
+		else {
 			returned.setBackground(getDiagramFactory().makeEmptyBackground());
 			returned.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 		}
 	}
+	else {
+		returned.setForeground(getDiagramFactory().makeNoneForegroundStyle());
+		returned.setBackground(getDiagramFactory().makeEmptyBackground());
+		returned.setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
+	}
+	}*/
 
-	private DiagramShape makeShapeFromBullet(TextRun textRun, RichTextRun rtr, DiagramShape shape, TextShape textShape) {
+	/*private DiagramShape makeShapeFromBullet(TextRun textRun, RichTextRun rtr, DiagramShape shape, TextShape textShape) {
 		// Create Bullet
 		FGEPoint bulletPosition = new FGEPoint(textRun.getTextRuler().getBulletOffsets()[0] + rtr.getIndentLevel(), textRun.getTextRuler()
 				.getBulletOffsets()[1] + rtr.getLineSpacing() * 0.1 * rtr.getStartIndex());
@@ -956,187 +1285,6 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			}
 		}
 		return hasBullets;
-	}
+	}*/
 
-	private void setTextProperties(DiagramShape shape, ShapeGraphicalRepresentation returned, TextShape textShape,
-			boolean convertBulletsToShapes) {
-
-		if (textShape.getTextRun() != null) {
-			TextRun textRun = textShape.getTextRun();
-			RichTextRun[] rts = textRun.getRichTextRuns();
-			if (rts.length > 0) {
-				/*if (convertBulletsToShapes && hasBullets(textRun)) {
-				for (int i = 0; i < rts.length; i++) {
-					RichTextRun rtr = rts[i];
-					makeShapeFromBullet(textRun, rtr, shape, textShape);
-				}
-				} else {*/
-				RichTextRun rtr = rts[0];
-				String fontName = rtr.getFontName();
-				int fontSize = rtr.getFontSize();
-				Color color = rtr.getFontColor();
-				int fontStyle = Font.PLAIN | (rtr.isBold() ? Font.BOLD : Font.PLAIN) | (rtr.isItalic() ? Font.ITALIC : Font.PLAIN);
-				Font f = new Font(fontName, fontStyle, fontSize);
-				TextStyle textStyle = getDiagramFactory().makeTextStyle(color, f);
-				returned.setTextStyle(textStyle);
-				// }
-			}
-		}
-
-		returned.setIsFloatingLabel(false);
-		returned.setIsMultilineAllowed(true);
-
-		returned.setRelativeTextX(0.5);
-		returned.setRelativeTextY(0.5);
-
-		try {
-			switch (textShape.getVerticalAlignment()) {
-				case TextShape.AnchorTop:
-					returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-					break;
-				case TextShape.AnchorMiddle:
-					returned.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
-					break;
-				case TextShape.AnchorBottom:
-					returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-					break;
-				case TextShape.AnchorTopCentered:
-					returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-					break;
-				case TextShape.AnchorMiddleCentered:
-					returned.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
-					break;
-				case TextShape.AnchorBottomCentered:
-					returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-					break;
-				case TextShape.AnchorTopBaseline:
-					returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-					break;
-				case TextShape.AnchorBottomBaseline:
-					returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-					break;
-				case TextShape.AnchorTopCenteredBaseline:
-					returned.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-					break;
-				case TextShape.AnchorBottomCenteredBaseline:
-					returned.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-					break;
-			}
-		} catch (NullPointerException e) {
-
-		}
-
-		switch (textShape.getHorizontalAlignment()) {
-			case TextShape.AlignLeft:
-				returned.setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT);
-				returned.setParagraphAlignment(ParagraphAlignment.LEFT);
-				break;
-			case TextShape.AlignCenter:
-				returned.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
-				returned.setParagraphAlignment(ParagraphAlignment.CENTER);
-				break;
-			case TextShape.AlignRight:
-				returned.setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
-				returned.setParagraphAlignment(ParagraphAlignment.RIGHT);
-				break;
-			case TextShape.AlignJustify:
-				returned.setParagraphAlignment(ParagraphAlignment.RIGHT);
-				returned.setParagraphAlignment(ParagraphAlignment.JUSTIFY);
-				break;
-		}
-
-		returned.setLineWrap(true);
-	}
-
-	private void setDiagramShapeShapeType(ShapeGraphicalRepresentation gr, Shape shape) {
-
-		try {
-			switch (shape.getShapeType()) {
-				case ShapeTypes.Chevron:
-					gr.setShapeType(ShapeType.CHEVRON);
-					break;
-				case ShapeTypes.Plus:
-					gr.setShapeType(ShapeType.PLUS);
-					break;
-				case ShapeTypes.Rectangle:
-					gr.setShapeType(ShapeType.RECTANGLE);
-					break;
-				case ShapeTypes.RoundRectangle:
-					gr.setShapeType(ShapeType.RECTANGLE);
-					((Rectangle) gr.getShapeSpecification()).setIsRounded(true);
-					((Rectangle) gr.getShapeSpecification()).setArcSize(20);
-					break;
-				case ShapeTypes.Star:
-					gr.setShapeType(ShapeType.STAR);
-					break;
-				case ShapeTypes.Ellipse:
-					gr.setShapeType(ShapeType.OVAL);
-					break;
-				case ShapeTypes.IsocelesTriangle:
-					gr.setShapeType(ShapeType.TRIANGLE);
-					break;
-			}
-		} catch (NullPointerException e) {
-
-		}
-	}
-
-	// there is still an issue for connectors ends, even if we can find at least that there is specific ends(such as arrows) it seems that
-	// there is no information on the side they are applied...
-	private void setConnectorType(ConnectorGraphicalRepresentation returned, SimpleShape connectorShape) {
-
-		switch (connectorShape.getShapeType()) {
-			case ShapeTypes.CurvedConnector2:
-				returned.setConnectorType(ConnectorType.CURVE);
-				break;
-			case ShapeTypes.CurvedConnector3:
-				returned.setConnectorType(ConnectorType.CURVE);
-				break;
-			case ShapeTypes.CurvedConnector4:
-				returned.setConnectorType(ConnectorType.CURVE);
-				break;
-			case ShapeTypes.CurvedConnector5:
-				returned.setConnectorType(ConnectorType.CURVE);
-				break;
-			case ShapeTypes.Line:
-				returned.setConnectorType(ConnectorType.LINE);
-				break;
-			case ShapeTypes.StraightConnector1:
-				returned.setConnectorType(ConnectorType.LINE);
-				break;
-			case ShapeTypes.BentConnector2:
-				returned.setConnectorType(ConnectorType.RECT_POLYLIN);
-				break;
-			case ShapeTypes.BentConnector3:
-				returned.setConnectorType(ConnectorType.RECT_POLYLIN);
-				break;
-			case ShapeTypes.BentConnector4:
-				returned.setConnectorType(ConnectorType.RECT_POLYLIN);
-				break;
-			case ShapeTypes.BentConnector5:
-				returned.setConnectorType(ConnectorType.RECT_POLYLIN);
-				break;
-		}
-
-		// For now it we don't know how to determinate to whom end of the connector is affected the symbol
-		// Because in the case of connectors, we don't knwo the end/start shape, which is computed by intersection.
-		// So we can only handle correctly two cases, when there is no arrows ends at all and when there is two arrows ends
-		if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWHEAD) != 0
-				&& connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWHEAD) != 0) {
-			if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWHEAD) != 0) {
-				returned.getConnectorSpecification().setStartSymbol(StartSymbolType.ARROW);
-			}
-			if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) != 0) {
-				returned.getConnectorSpecification().setStartSymbolSize(
-						connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) * 10);
-			}
-			if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWHEAD) != 0) {
-				returned.getConnectorSpecification().setEndSymbol(EndSymbolType.ARROW);
-			}
-			if (connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) != 0) {
-				returned.getConnectorSpecification().setEndSymbolSize(
-						connectorShape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) * 10);
-			}
-		}
-	}
 }

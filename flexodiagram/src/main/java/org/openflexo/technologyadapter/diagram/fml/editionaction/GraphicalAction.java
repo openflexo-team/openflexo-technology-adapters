@@ -50,7 +50,6 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -75,7 +74,6 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
-@FIBPanel("Fib/GraphicalActionPanel.fib")
 @ModelEntity
 @ImplementationClass(GraphicalAction.GraphicalActionImpl.class)
 @XMLElement
@@ -195,7 +193,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 			try {
 				return super.getPatternRole();
 			} catch (ClassCastException e) {
-				logger.warning("Unexpected pattern role type");
+				logger.warning("Unexpected pattern property type");
 				setPatternRole(null);
 				return null;
 			}
@@ -203,7 +201,7 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 
 		@Override
 		public void setPatternRole(GraphicalElementRole patternRole) {
-			System.out.println("set pattern role with " + patternRole);
+			System.out.println("set pattern property with " + patternRole);
 			super.setPatternRole(patternRole);
 			availableFeatures = null;
 		}*/
@@ -343,10 +341,10 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 				return null;
 			} else {
 				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>>();
-				for (ShapeRole pr : graphicalAction.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+				for (ShapeRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
-				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getFlexoRoles(ConnectorRole.class)) {
+				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));
 				}
 				return new ValidationError<GraphicalActionMustHaveASubject, GraphicalAction>(this, graphicalAction,

@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2013-2015, Openflexo
  * Copyright (c) 2012-2012, AgileBirds
  * 
  * This file is part of Emfconnector, a component of the software infrastructure 
@@ -39,31 +39,29 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.lang.reflect.Field;
-import java.util.Collections;
 import java.util.logging.Logger;
 
-import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
+import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelIODelegate;
 import org.openflexo.toolbox.IProgress;
-import org.openflexo.toolbox.JarInDirClassLoader;
 
 /**
- * EMF MetaModel Resource Implementation.
+ * IO Delegate to load a MetaModelResource from Directory in FileSystem
  * 
- * @author gbesancon
+ * @author xtof
  */
-public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMetaModel> implements EMFMetaModelResource {
+public abstract class EMFMetaModelResourceImpl extends
+		FlexoResourceImpl<EMFMetaModel> implements EMFMetaModelResource {
 
-	protected static final Logger logger = Logger.getLogger(EMFMetaModelResourceImpl.class.getPackage().getName());
+	protected static final Logger logger = Logger
+			.getLogger(EMFMetaModelResourceImpl.class.getPackage().getName());
 
 	/**
 	 * 
@@ -91,63 +89,24 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	 * @see org.openflexo.foundation.resource.FlexoResource#loadResourceData(org.openflexo.toolbox.IProgress)
 	 */
 	@Override
-	public EMFMetaModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException {
-		EMFMetaModel result = null;
-		Class<?> ePackageClass = null;
-		ClassLoader classLoader = null;
-		FileFlexoIODelegate ffd = (FileFlexoIODelegate) getFlexoIODelegate();
-		File f = ffd.getFile();
+	public EMFMetaModel loadResourceData(IProgress progress)
+			throws ResourceLoadingCancelledException {
 
-		// TODO: this should be totally refactored since IODelegate have been introduced
-		// See with Christophe: IODelegate should be a wrapper above eclipse resource
-		// > Eclipse Resource Center
-		// See TA-46
+		EMFMetaModelIODelegate<?> ffd = (EMFMetaModelIODelegate<?>) getFlexoIODelegate();
 
-		try {
-			if (f != null) {
-
-				classLoader = new JarInDirClassLoader(Collections.singletonList(ffd.getFile()));
-				ePackageClass = classLoader.loadClass(getPackageClassName());
-
-			} else {
-				classLoader = EMFMetaModelResourceImpl.class.getClassLoader();
-				ePackageClass = classLoader.loadClass(getPackageClassName());
-			}
-			if (ePackageClass != null) {
-				Field ePackageField = ePackageClass.getField("eINSTANCE");
-				if (ePackageField != null) {
-					EPackage ePack = (EPackage) ePackageField.get(null);
-					setPackage(ePack);
-					EPackage.Registry.INSTANCE.put(ePack.getNsPrefix(), ePack);
-					Class<?> resourceFactoryClass = classLoader.loadClass(getResourceFactoryClassName());
-					if (resourceFactoryClass != null) {
-						setResourceFactory((Resource.Factory) resourceFactoryClass.newInstance());
-
-						if (getPackage() != null && getPackage().getNsURI().equalsIgnoreCase(getURI()) && getResourceFactory() != null) {
-
-							EMFMetaModelConverter converter = new EMFMetaModelConverter(getTechnologyAdapter());
-							result = converter.convertMetaModel(getPackage());
-							result.setResource(this);
-							// this.resourceData = result;
-							setResourceData(result);
-						}
-					}
-				}
-			}
-		} catch (NoSuchFieldException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+		if (ffd == null) {
+			logger.warning("Unable to get FlexoIODelegate to reade MetaModel");
+			return null;
 		}
-		return result;
+		EMFMetaModel metamodel = ffd.loadMetaModel(this.getTechnologyAdapter()
+				.getTechnologyContextManager());
+		
+		if (metamodel != null){
+			this.setResourceData(metamodel);
+		}
+		
+		return metamodel;
+	
 	}
 
 	/**
@@ -164,5 +123,18 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	public Class<EMFMetaModel> getResourceDataClass() {
 		return EMFMetaModel.class;
 	}
+
+	/**
+	 * Creates a new ModelResource, for EMF, MetaModel decides wich type of serialization you should use!
+	 * @param flexoIODelegate
+	 * @return
+	 */	
+	@Override
+	public 	Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate){
+		// TODO : refactor with proper IODelegate Support
+		return getEMFResourceFactory().createResource(org.eclipse.emf.common.util.URI.createFileURI(((FileFlexoIODelegate)flexoIODelegate).getFile().getAbsolutePath()));
+		
+	}
+	
 
 }

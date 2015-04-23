@@ -47,10 +47,9 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
-import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.SetDataPropertyValueAction;
@@ -77,7 +76,6 @@ import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 import org.openflexo.toolbox.StringUtils;
 
-@FIBPanel("Fib/AddDataPropertyStatementPanel.fib")
 @ModelEntity
 @ImplementationClass(AddDataPropertyStatement.AddDataPropertyStatementImpl.class)
 @XMLElement
@@ -145,12 +143,12 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		}*/
 
 		@Override
-		public DataPropertyStatementRole getFlexoRole() {
-			FlexoRole superFlexoRole = super.getFlexoRole();
+		public DataPropertyStatementRole getAssignedFlexoProperty() {
+			FlexoProperty<?> superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof DataPropertyStatementRole) {
 				return (DataPropertyStatementRole) superFlexoRole;
 			} else if (superFlexoRole != null) {
-				// logger.warning("Unexpected pattern role of type " + superPatternRole.getClass().getSimpleName());
+				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
 			return null;
@@ -171,8 +169,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
 				return (OWLDataProperty) getOwningVirtualModel().getOntologyDataProperty(dataPropertyURI);
 			} else {
-				if (getFlexoRole() != null) {
-					return getFlexoRole().getDataProperty();
+				if (getAssignedFlexoProperty() != null) {
+					return getAssignedFlexoProperty().getDataProperty();
 				}
 			}
 			return null;
@@ -181,11 +179,11 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		@Override
 		public void setDataProperty(IFlexoOntologyDataProperty ontologyProperty) {
 			if (ontologyProperty != null) {
-				if (getFlexoRole() != null) {
-					if (getFlexoRole().getDataProperty().isSuperConceptOf(ontologyProperty)) {
+				if (getAssignedFlexoProperty() != null) {
+					if (getAssignedFlexoProperty().getDataProperty().isSuperConceptOf(ontologyProperty)) {
 						dataPropertyURI = ontologyProperty.getURI();
 					} else {
-						getFlexoRole().setDataProperty((OWLDataProperty) ontologyProperty);
+						getAssignedFlexoProperty().setDataProperty((OWLDataProperty) ontologyProperty);
 					}
 				} else {
 					dataPropertyURI = ontologyProperty.getURI();
@@ -198,8 +196,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		@Override
 		public String _getDataPropertyURI() {
 			if (getDataProperty() != null) {
-				if (getFlexoRole() != null && getFlexoRole().getDataProperty() == getDataProperty()) {
-					// No need to store an overriding type, just use default provided by pattern role
+				if (getAssignedFlexoProperty() != null && getAssignedFlexoProperty().getDataProperty() == getDataProperty()) {
+					// No need to store an overriding type, just use default provided by pattern property
 					return null;
 				}
 				return getDataProperty().getURI();
@@ -306,7 +304,7 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 				AddDataPropertyStatement action) {
 			if (action.getDataProperty() == null && action.getOwner() instanceof AssignationAction) {
 				Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>> v = new Vector<FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>>();
-				for (DataPropertyStatementRole pr : action.getFlexoConcept().getFlexoRoles(DataPropertyStatementRole.class)) {
+				for (DataPropertyStatementRole pr : action.getFlexoConcept().getDeclaredProperties(DataPropertyStatementRole.class)) {
 					v.add(new SetsFlexoRole(pr));
 				}
 				return new ValidationError<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement>(this, action,

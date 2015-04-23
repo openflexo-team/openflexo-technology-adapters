@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -56,7 +55,6 @@ import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
-@FIBPanel("Fib/SelectExcelCellPanel.fib")
 @ModelEntity
 @ImplementationClass(SelectExcelCell.SelectExcelCellImpl.class)
 @XMLElement

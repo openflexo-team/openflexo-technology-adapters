@@ -45,9 +45,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.emf.ecore.EAnnotation;
-import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EPackage;
-import org.eclipse.emf.ecore.EcorePackage;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
@@ -56,7 +54,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataType;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
-import org.openflexo.foundation.ontology.IFlexoOntologyMetaModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
@@ -70,7 +67,7 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
  * @author gbesancon
  */
 public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements FlexoMetaModel<EMFMetaModel>,
-IFlexoOntologyMetaModel<EMFTechnologyAdapter> {
+IFlexoOntology<EMFTechnologyAdapter> {
 	/** MetaModel Resource. */
 	protected EMFMetaModelResource metaModelResource;
 	/** Adapter. */
@@ -195,7 +192,7 @@ IFlexoOntologyMetaModel<EMFTechnologyAdapter> {
 	 */
 	@Override
 	public IFlexoOntologyClass<EMFTechnologyAdapter> getRootConcept() {
-		return getClass(EcorePackage.eNS_URI + "/" + EObject.class.getSimpleName());
+		return null;
 	}
 
 	/**

@@ -41,8 +41,10 @@
 package org.openflexo.technologyadapter.emf.metamodel;
 
 import org.eclipse.emf.ecore.EObject;
+import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
-import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
@@ -51,13 +53,26 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * @author gbesancon
  * 
  */
-public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> {
+public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements InnerResourceData<EMFMetaModel>{
 
 	/** MetaModel. */
 	protected final EMFMetaModel ontology;
 	/** EMF Object Wrapped. */
 	protected final T object;
 
+
+	/**
+	 * Return the {@link ResourceData} where this object is defined (the global functional root object giving access to the
+	 * {@link FlexoResource})
+	 * 
+	 * @return
+	 */
+	@Override
+	public EMFMetaModel getResourceData(){
+		return ontology;
+	}
+	
+	
 	/**
 	 * Constructor.
 	 */
@@ -72,8 +87,8 @@ public abstract class AEMFMetaModelObjectImpl<T extends EObject> extends FlexoOn
 	 * @see org.openflexo.foundation.ontology.FlexoOntologyObjectImpl#getFlexoOntology()
 	 */
 	@Override
-	public IFlexoOntology<EMFTechnologyAdapter> getFlexoOntology() {
-		return ontology;
+	public EMFMetaModel getFlexoOntology() {
+		return  ontology;
 	}
 
 	/**

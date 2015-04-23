@@ -37,7 +37,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl;
 
 import java.lang.reflect.Type;

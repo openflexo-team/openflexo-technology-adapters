@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.diagram.fml;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
@@ -127,6 +128,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	public static abstract class ConnectorRoleImpl extends GraphicalElementRoleImpl<DiagramConnector, ConnectorGraphicalRepresentation>
 			implements ConnectorRole {
 
+		private static final Logger logger = Logger.getLogger(ConnectorRole.class.getPackage().getName());
+
 		private ShapeGraphicalRepresentation artifactFromGraphicalRepresentation;
 		private ShapeGraphicalRepresentation artifactToGraphicalRepresentation;
 
@@ -139,6 +142,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 			super.initDefaultSpecifications();
 			if (getFMLModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
+					//logger.info("[CONNECTOR:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
 					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
 							GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
@@ -148,6 +152,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
 			}
+			handlePendingGRSpecs();
 		}
 
 		@Override
@@ -209,8 +214,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public void setStartShapeAsDefinedInAction(boolean flag) {
-			if (!flag && getFlexoConcept().getFlexoRoles(ShapeRole.class).size() > 0) {
-				setStartShapeRole(getFlexoConcept().getFlexoRoles(ShapeRole.class).get(0));
+			if (!flag && getFlexoConcept().getDeclaredProperties(ShapeRole.class).size() > 0) {
+				setStartShapeRole(getFlexoConcept().getDeclaredProperties(ShapeRole.class).get(0));
 			} else {
 				// System.out.println("setStartShapePatternRole with null");
 				setStartShapeRole(null);
@@ -237,8 +242,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public void setEndShapeAsDefinedInAction(boolean flag) {
-			if (!flag && getFlexoConcept().getFlexoRoles(ShapeRole.class).size() > 0) {
-				setEndShapeRole(getFlexoConcept().getFlexoRoles(ShapeRole.class).get(0));
+			if (!flag && getFlexoConcept().getDeclaredProperties(ShapeRole.class).size() > 0) {
+				setEndShapeRole(getFlexoConcept().getDeclaredProperties(ShapeRole.class).get(0));
 			} else {
 				// System.out.println("setEndShapePatternRole with null");
 				setEndShapeRole(null);
@@ -290,7 +295,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public List<ShapeRole> getAvailableShapeRoles() {
-			return getFlexoConcept().getFlexoRoles(ShapeRole.class);
+			return getFlexoConcept().getDeclaredProperties(ShapeRole.class);
 		}
 	}
 }

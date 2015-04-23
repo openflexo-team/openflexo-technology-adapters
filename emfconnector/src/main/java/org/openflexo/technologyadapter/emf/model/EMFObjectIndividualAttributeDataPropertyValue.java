@@ -108,7 +108,7 @@ public class EMFObjectIndividualAttributeDataPropertyValue extends AEMFModelObje
 	 */
 	@Override
 	public IFlexoOntologyDataProperty<EMFTechnologyAdapter> getDataProperty() {
-		return ontology.getMetaModel().getConverter().convertAttributeDataProperty(ontology.getMetaModel(), attribute);
+		return ontology.getMetaModel().getConverter().convertAttributeDataProperty(ontology.getMetaModel(), attribute,null,null);
 	}
 
 	/**

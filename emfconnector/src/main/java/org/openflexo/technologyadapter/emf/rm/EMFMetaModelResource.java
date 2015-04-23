@@ -41,7 +41,9 @@ package org.openflexo.technologyadapter.emf.rm;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
+import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -54,13 +56,13 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
 @ModelEntity
 @ImplementationClass(EMFMetaModelResourceImpl.class)
 @XMLElement
-public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter> {
+public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter>, TechnologyAdapterResource<EMFMetaModel,EMFTechnologyAdapter> {
 
 	public static final String EXTENSION = "extension";
 	public static final String PACKAGE_CLASSNAME = "package.classname";
 	public static final String PACKAGE = "package";
-	public static final String RESOURCE_FACTORY_CLASSNAME = "resourcefactory.classname";
-	public static final String RESOURCE_FACTORY = "resourcefactory";
+	public static final String EMFRESOURCE_FACTORY_CLASSNAME = "resourcefactory.classname";
+	public static final String EMFRESOURCE_FACTORY = "resourcefactory";
 
 	/**
 	 * Setter of extension for model files related to this MtaModel.
@@ -115,7 +117,7 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	 * 
 	 * @param resourceFactory
 	 */
-	@Setter(RESOURCE_FACTORY_CLASSNAME)
+	@Setter(EMFRESOURCE_FACTORY_CLASSNAME)
 	void setResourceFactoryClassName(String resourceFactory);
 
 	/**
@@ -123,24 +125,24 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	 * 
 	 * @return
 	 */
-	@Getter(value = RESOURCE_FACTORY_CLASSNAME, ignoreType = true)
-	String getResourceFactoryClassName();
+	@Getter(value = EMFRESOURCE_FACTORY_CLASSNAME, ignoreType = true)
+	String getEMFResourceFactoryClassName();
 
 	/**
 	 * Setter of ResourceFactory of Model for MetaModel.
 	 * 
 	 * @param resourceFactory
 	 */
-	@Setter(RESOURCE_FACTORY)
-	void setResourceFactory(Resource.Factory resourceFactory);
+	@Setter(EMFRESOURCE_FACTORY)
+	void setEMFResourceFactory(Resource.Factory resourceFactory);
 
 	/**
 	 * Getter of ResourceFactory of Model for MetaModel.
 	 * 
 	 * @return
 	 */
-	@Getter(value = RESOURCE_FACTORY, ignoreType = true)
-	Resource.Factory getResourceFactory();
+	@Getter(value = EMFRESOURCE_FACTORY, ignoreType = true)
+	Resource.Factory getEMFResourceFactory();
 
 	/**
 	 * Get the MetaModel stored in the Resource..
@@ -149,4 +151,11 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 	 */
 	@Override
 	public EMFMetaModel getMetaModelData();
+
+	/**
+	 * Creates a new ModelResource, for EMF, MetaModel decides wich type of serialization you should use!
+	 * @param flexoIODelegate
+	 * @return
+	 */
+	Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate);
 }

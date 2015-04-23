@@ -87,16 +87,16 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	 */
 	public static OWLOntologyResource makeOWLOntologyResource(String ontologyURI, File owlFile, OWLOntologyLibrary ontologyLibrary) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,OWLOntologyResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					OWLOntologyResource.class));
 			OWLOntologyResourceImpl returned = (OWLOntologyResourceImpl) factory.newInstance(OWLOntologyResource.class);
 			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
 			returned.setOntologyLibrary(ontologyLibrary);
-			returned.setName(owlFile.getName());
-			//returned.setFile(owlFile);
-			
+			returned.initName(owlFile.getName());
+			// returned.setFile(owlFile);
+
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
-			
+
 			returned.setURI(ontologyURI);
 			// Register the ontology
 			ontologyLibrary.registerResource(returned);
@@ -124,15 +124,15 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	 */
 	public static OWLOntologyResource retrieveOWLOntologyResource(File owlFile, OWLOntologyLibrary ontologyLibrary) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext( 
-					FileFlexoIODelegate.class,OWLOntologyResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					OWLOntologyResource.class));
 			OWLOntologyResourceImpl returned = (OWLOntologyResourceImpl) factory.newInstance(OWLOntologyResource.class);
 			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
 			returned.setOntologyLibrary(ontologyLibrary);
-			returned.setName(OWLOntology.findOntologyName(owlFile));
-			
+			returned.initName(OWLOntology.findOntologyName(owlFile));
+
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
-			
+
 			returned.setURI(OWLOntology.findOntologyURI(owlFile));
 			returned.setServiceManager(ontologyLibrary.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			// Register the ontology
@@ -284,12 +284,12 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	public Class<OWLOntology> getResourceDataClass() {
 		return OWLOntology.class;
 	}
-	
+
 	public FileFlexoIODelegate getFileFlexoIODelegate() {
-		return (FileFlexoIODelegate)getFlexoIODelegate();
+		return (FileFlexoIODelegate) getFlexoIODelegate();
 	}
-	
-	private File getFile(){
+
+	private File getFile() {
 		return getFileFlexoIODelegate().getFile();
 	}
 

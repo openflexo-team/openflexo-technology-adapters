@@ -113,7 +113,7 @@ public abstract interface AddStatement<S extends OWLStatement> extends Technolog
 			try {
 				return super.getPatternRole();
 			} catch (ClassCastException e) {
-				logger.warning("Unexpected pattern role type");
+				logger.warning("Unexpected pattern property type");
 				setPatternRole(null);
 				return null;
 			}

@@ -47,7 +47,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -65,7 +64,6 @@ import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
-@FIBPanel("Fib/AddExcelRowPanel.fib")
 @ModelEntity
 @ImplementationClass(AddExcelRow.AddExcelRowImpl.class)
 @XMLElement
