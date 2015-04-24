@@ -40,16 +40,20 @@
 package org.openflexo.technologyadapter.freeplane.model;
 
 import org.freeplane.features.map.MapModel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneMapImpl;
 
 @ModelEntity
+@XMLElement
+@FML("FreeplaneMapRole")
 @ImplementationClass(value = FreeplaneMapImpl.class)
 public interface IFreeplaneMap extends TechnologyObject<FreeplaneTechnologyAdapter>, ResourceData<IFreeplaneMap> {
 
