@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.diagram.controller;
 
-import java.awt.Dimension;
 import java.util.Collections;
 import java.util.List;
 
@@ -156,8 +155,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		scaleSelector = swingToolFactory.makeDianaScaleSelector(null);
 		dialogInspectors = swingToolFactory.makeDianaDialogInspectors();
 		inspectors = swingToolFactory.makeDianaInspectors();
-		//inspectors.getPanelGroup().setPreferredSize(new Dimension(800, 800));
-		//inspectors.getPanelGroup().setMinimumSize(new Dimension(500, 500));
+		// inspectors.getPanelGroup().setPreferredSize(new Dimension(800, 800));
+		// inspectors.getPanelGroup().setMinimumSize(new Dimension(500, 500));
 
 		dialogInspectors.getForegroundStyleInspector().setLocation(1000, 100);
 		dialogInspectors.getTextStyleInspector().setLocation(1000, 300);
@@ -294,7 +293,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	 */
 	@Override
 	public ImageIcon getMetaModelIcon() {
-		return DiagramIconLibrary.DIAGRAM_ICON;
+		return DiagramIconLibrary.DIAGRAM_SPECIFICATION_ICON;
 	}
 
 	public JDianaDialogInspectors getDialogInspectors() {
@@ -325,6 +324,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 			return DiagramIconLibrary.CONNECTOR_ICON;
 		} else if (DiagramSpecification.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.DIAGRAM_SPECIFICATION_ICON;
+		} else if (DiagramPalette.class.isAssignableFrom(objectClass)) {
+			return DiagramIconLibrary.DIAGRAM_PALETTE_ICON;
 		} else if (FMLDiagramPaletteElementBinding.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.FML_PALETTE_ELEMENT_BINDING_ICON_16X16;
 		}

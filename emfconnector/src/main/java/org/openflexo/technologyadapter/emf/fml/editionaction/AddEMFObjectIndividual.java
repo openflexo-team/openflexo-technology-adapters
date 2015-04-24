@@ -124,7 +124,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 		@Override
 		public EMFObjectIndividual execute(FlexoBehaviourAction action) {
 			EMFObjectIndividual result = null;
-			List container = null;
+			List<EMFObjectIndividual> container = null;
 			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(action);
 			if (modelSlotInstance.getResourceData() != null) {
 				IFlexoOntologyClass aClass = getOntologyClass();
