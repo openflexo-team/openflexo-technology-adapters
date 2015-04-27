@@ -77,8 +77,8 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @param <A>
  * @param <T1>
  */
-public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T>, T extends DiagramElement<?>> extends
-		FlexoAction<A, T, DiagramElement<?>> {
+public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T>, T extends DiagramElement<?>>
+		extends FlexoAction<A, T, DiagramElement<?>> {
 
 	private static final Logger logger = Logger.getLogger(DeclareInFlexoConcept.class.getPackage().getName());
 
@@ -86,7 +86,7 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	 * Stores the VirtualModel on which we are working<br>
 	 * This {@link VirtualModel} must be set with external API.
 	 */
-	private VirtualModel virtualModel;
+	// private VirtualModel virtualModel;
 
 	private VirtualModelResource virtualModelResource;
 
@@ -127,8 +127,8 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 		int shapeIndex = 1;
 		int connectorIndex = 1;
 
-		List<? extends DiagramElement<?>> elements = (getFocusedObject() instanceof DiagramContainerElement ? ((DiagramContainerElement<?>) getFocusedObject())
-				.getDescendants() : Collections.singletonList(getFocusedObject()));
+		List<? extends DiagramElement<?>> elements = (getFocusedObject() instanceof DiagramContainerElement
+				? ((DiagramContainerElement<?>) getFocusedObject()).getDescendants() : Collections.singletonList(getFocusedObject()));
 
 		for (DiagramElement<?> o : elements) {
 			if (o instanceof DiagramShape) {
@@ -151,25 +151,49 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	 * This {@link VirtualModel} must be set with external API.
 	 */
 	public VirtualModel getVirtualModel() {
-		if (virtualModel == null && getVirtualModelResource() != null) {
+		if (getVirtualModelResource() != null) {
 			return getVirtualModelResource().getVirtualModel();
 		}
-		return virtualModel;
+		return null;
 	}
 
 	/**
-	 * Sets the VirtualModel on which we are working<br>
-	 * This {@link VirtualModel} must be set with external API.
+	 * Return the VirtualModelResource on which we are working<br>
+	 * This {@link VirtualModelResource} must be set with external API.
 	 */
-	public void setVirtualModel(VirtualModel virtualModel) {
-		this.virtualModel = virtualModel;
+	public VirtualModelResource getVirtualModelResource() {
+		return virtualModelResource;
+	}
+
+	/**
+	 * Sets the VirtualModelResource on which we are working<br>
+	 * This {@link VirtualModelResource} must be set with external API.
+	 */
+	public void setVirtualModelResource(VirtualModelResource virtualModelResource) {
+		if (this.virtualModelResource != virtualModelResource) {
+			VirtualModelResource oldValue = this.virtualModelResource;
+			this.virtualModelResource = virtualModelResource;
+			getPropertyChangeSupport().firePropertyChange("virtualModelResource", oldValue, virtualModelResource);
+		}
 	}
 
 	public static enum DeclareInFlexoConceptChoices {
 		CREATES_FLEXO_CONCEPT, CHOOSE_EXISTING_FLEXO_CONCEPT
 	}
 
-	public DeclareInFlexoConceptChoices primaryChoice = DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT;
+	private DeclareInFlexoConceptChoices primaryChoice = DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT;
+
+	public DeclareInFlexoConceptChoices getPrimaryChoice() {
+		return primaryChoice;
+	}
+
+	public void setPrimaryChoice(DeclareInFlexoConceptChoices primaryChoice) {
+		if (this.primaryChoice != primaryChoice) {
+			DeclareInFlexoConceptChoices oldValue = this.primaryChoice;
+			this.primaryChoice = primaryChoice;
+			getPropertyChangeSupport().firePropertyChange("primaryChoice", oldValue, primaryChoice);
+		}
+	}
 
 	/**
 	 * Return the model slot which encodes the access to a {@link Diagram} conform to a {@link DiagramSpecification}, in the context of a
@@ -370,8 +394,8 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	public FMLModelFactory getFactory() {
 		if (getFlexoConcept() != null) {
 			return getFlexoConcept().getFMLModelFactory();
-		} else if (virtualModel != null) {
-			return virtualModel.getFMLModelFactory();
+		} else if (getVirtualModelResource() != null) {
+			return getVirtualModelResource().getFactory();
 		}
 		return null;
 	}
@@ -457,15 +481,6 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 
 	public void removeFlexoBehaviourConfiguration(FlexoBehaviourConfiguration editionSchemeConfiguration) {
 		getFlexoBehaviours().remove(editionSchemeConfiguration);
-	}
-
-	public VirtualModelResource getVirtualModelResource() {
-		return virtualModelResource;
-	}
-
-	public void setVirtualModelResource(VirtualModelResource virtualModelResource) {
-		this.virtualModelResource = virtualModelResource;
-		setVirtualModel(virtualModelResource.getVirtualModel());
 	}
 
 	public static enum FlexoBehaviourChoice {

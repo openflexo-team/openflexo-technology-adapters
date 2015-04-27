@@ -44,6 +44,7 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.icon.IconMarker;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -74,6 +75,8 @@ public class DiagramIconLibrary extends IconLibrary {
 	public static final ImageIconResource SHAPE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DiagramShape.png"));
 	public static final ImageIconResource CONNECTOR_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/DiagramConnector.png"));
+
+	public static final IconMarker SHAPE_MARKER = new IconMarker(SHAPE_ICON, 20, 20);
 
 	public static final ImageIconResource FML_PALETTE_ELEMENT_BINDING_ICON_16X16 = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/FMLPaletteElementBindingIcon16x16.png"));

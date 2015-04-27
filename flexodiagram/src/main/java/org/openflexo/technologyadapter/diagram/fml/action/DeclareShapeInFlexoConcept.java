@@ -184,7 +184,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 			errorMessage = FOCUSED_OBJECT_IS_NULL;
 			return false;
 		}
-		switch (primaryChoice) {
+		switch (getPrimaryChoice()) {
 		case CHOOSE_EXISTING_FLEXO_CONCEPT: {
 			if (getFlexoRole() == null) {
 				errorMessage = FLEXO_ROLE_IS_NULL;
@@ -309,7 +309,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 	@Override
 	public FlexoConcept getFlexoConcept() {
-		if (primaryChoice == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
+		if (getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
 			return newFlexoConcept;
 		}
 		return super.getFlexoConcept();
@@ -356,11 +356,11 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 	 */
 
 	/*public class PropertyEntry {
-
+	
 		public IFlexoOntologyStructuralProperty property;
 		public String label;
 		public boolean selectEntry = false;
-
+	
 		public PropertyEntry(IFlexoOntologyStructuralProperty property) {
 			this.property = property;
 			if (StringUtils.isNotEmpty(property.getDescription())) {
@@ -369,7 +369,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 				label = property.getName() + "_of_" + getIndividualFlexoRoleName();
 			}
 		}
-
+	
 		public String getRange() {
 			return property.getRange().getName();
 		}
@@ -394,17 +394,17 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		propertyEntries.add(newPropertyEntry);
 		return newPropertyEntry;
 	}
-
+	
 	public PropertyEntry deletePropertyEntry(PropertyEntry aPropertyEntry) {
 		propertyEntries.remove(aPropertyEntry);
 		return aPropertyEntry;
 	}
-
+	
 	public void selectAllProperties() {
 		for (PropertyEntry e : propertyEntries) {
 			e.selectEntry = true;
 		}
-
+	
 	 */
 
 	public String getVirtualModelFlexoRoleName() {
@@ -438,7 +438,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 	protected void doAction(Object context) {
 		logger.info("Declare shape in flexo concept");
 		if (isValid()) {
-			switch (primaryChoice) {
+			switch (getPrimaryChoice()) {
 			case CHOOSE_EXISTING_FLEXO_CONCEPT:
 				if (getFlexoRole() != null) {
 					getFlexoRole().updateGraphicalRepresentation(getFocusedObject().getGraphicalRepresentation());
@@ -513,8 +513,8 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 								// }
 								newShapeRole.setExampleLabel(grShape.getGraphicalRepresentation().getText());
 								// We clone here the GR (fixed unfocusable GR bug)
-								newShapeRole.setGraphicalRepresentation((ShapeGraphicalRepresentation) grShape.getGraphicalRepresentation()
-										.clone());
+								newShapeRole.setGraphicalRepresentation(
+										(ShapeGraphicalRepresentation) grShape.getGraphicalRepresentation().clone());
 								// Forces GR to be displayed in view
 								newShapeRole.getGraphicalRepresentation().setAllowToLeaveBounds(false);
 								newFlexoConcept.addToFlexoProperties(newShapeRole);
@@ -535,8 +535,8 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 									newConnectorRole.setLabel(new DataBinding<String>("\"" + entry.graphicalObject.getName() + "\""));
 								}
 								newConnectorRole.setExampleLabel(grConnector.getGraphicalRepresentation().getText());
-								newConnectorRole.setGraphicalRepresentation((ConnectorGraphicalRepresentation) grConnector
-										.getGraphicalRepresentation().clone());
+								newConnectorRole.setGraphicalRepresentation(
+										(ConnectorGraphicalRepresentation) grConnector.getGraphicalRepresentation().clone());
 								newFlexoConcept.addToFlexoProperties(newConnectorRole);
 								// Set the source/target
 								// newConnectorFlexoRole.setEndShapeFlexoRole(endShapeFlexoRole);
@@ -688,11 +688,11 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					/*if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 						if (isVirtualModelModelSlot()) {
 							FMLRTModelSlot<?, ?> virtualModelModelSlot = (FMLRTModelSlot<?, ?>) getModelSlot();
-
+					
 							// Add individual action
 							EditionAction newAddFlexoConcept = virtualModelModelSlot.makeAddFlexoConceptInstanceEditionAction(
 									flexoConceptFlexoRole, newDropScheme);
-
+					
 							newDropScheme.addToActions(newAddFlexoConcept);
 						}
 					}*/
@@ -704,21 +704,21 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 							ShapeRole grFlexoRole = (ShapeRole) graphicalElementRole;
 							// Add shape action
 							AddShape newAddShape;
-							AssignationAction<DiagramShape> assignationAction = getFactory().newAssignationAction(
-									newAddShape = getFactory().newInstance(AddShape.class));
+							AssignationAction<DiagramShape> assignationAction = getFactory()
+									.newAssignationAction(newAddShape = getFactory().newInstance(AddShape.class));
 							newDropScheme.addToActions(assignationAction);
 							assignationAction.setAssignation(new DataBinding<Object>(graphicalElementRole.getRoleName()));
 							if (mainFlexoRole) {
 								if (isTopLevel) {
-									newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(
-											DiagramBehaviourBindingModel.TOP_LEVEL));
+									newAddShape.setContainer(
+											new DataBinding<DiagramContainerElement<?>>(DiagramBehaviourBindingModel.TOP_LEVEL));
 								} /*else {
 									newAddShape.setContainer(new DataBinding<DiagramElement<?>>(DiagramFlexoBehaviour.TARGET + "."
 											+ containerFlexoConcept.getPrimaryRepresentationRole().getRoleName()));
 									}*/
 							} else {
-								newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(grFlexoRole.getParentShapeRole()
-										.getRoleName()));
+								newAddShape.setContainer(
+										new DataBinding<DiagramContainerElement<?>>(grFlexoRole.getParentShapeRole().getRoleName()));
 							}
 							mainFlexoRole = false;
 						}
@@ -904,8 +904,8 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					// editionPatternInstanceParameter.setFlexoConceptType(editionPatternFlexoRole.getFlexoConceptType());
 					editionScheme.addToParameters(flexoConceptInstanceParameter);
 					// Add individual action
-					AssignationAction<?> declareFlexoRole = getFactory().newAssignationAction(
-							new DataBinding<Object>("parameters." + flexoConceptInstanceParameter.getName()));
+					AssignationAction<?> declareFlexoRole = getFactory()
+							.newAssignationAction(new DataBinding<Object>("parameters." + flexoConceptInstanceParameter.getName()));
 					declareFlexoRole.setAssignation(new DataBinding<Object>(flexoConceptInstanceRole.getName()));
 					editionScheme.addToActions(declareFlexoRole);
 				}
@@ -914,8 +914,8 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					AddFlexoConceptInstance newAddFlexoConceptInstance = virtualModelModelSlot
 							.makeEditionAction(AddFlexoConceptInstance.class);
 					newAddFlexoConceptInstance.setFlexoConceptType(flexoConceptInstanceRole.getFlexoConceptType());
-					AssignationAction<FlexoConceptInstance> newAddFlexoConceptInstanceAssignation = getFactory().newAssignationAction(
-							newAddFlexoConceptInstance);
+					AssignationAction<FlexoConceptInstance> newAddFlexoConceptInstanceAssignation = getFactory()
+							.newAssignationAction(newAddFlexoConceptInstance);
 					newAddFlexoConceptInstanceAssignation.setAssignation(new DataBinding<Object>(flexoConceptInstanceRole.getName()));
 					editionScheme.addToActions(newAddFlexoConceptInstance);
 				}
@@ -929,8 +929,8 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 				ShapeRole grFlexoRole = (ShapeRole) graphicalElementFlexoRole;
 				// Add shape action
 				AddShape newAddShape;
-				AssignationAction<DiagramShape> assignationAction = getFactory().newAssignationAction(
-						newAddShape = getFactory().newInstance(AddShape.class));
+				AssignationAction<DiagramShape> assignationAction = getFactory()
+						.newAssignationAction(newAddShape = getFactory().newInstance(AddShape.class));
 				assignationAction.setAssignation(new DataBinding<Object>(graphicalElementFlexoRole.getRoleName()));
 				editionScheme.addToActions(assignationAction);
 				if (mainFlexoRole) {
@@ -939,8 +939,8 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 					} else {
 						ShapeRole containerRole = getVirtualModel().getFlexoConcept(editionScheme._getTarget())
 								.getDeclaredProperties(ShapeRole.class).get(0);
-						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DropSchemeBindingModel.TARGET + "."
-								+ containerRole.getRoleName()));
+						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(
+								DropSchemeBindingModel.TARGET + "." + containerRole.getRoleName()));
 					}
 				} else {
 					newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(grFlexoRole.getParentShapeRole().getRoleName()));
@@ -965,7 +965,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 		FlexoBehaviourConfiguration editionSchemeConfiguration = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.DROP_AND_CREATE);
 		getFlexoBehaviours().add(editionSchemeConfiguration);
 	}
-
+	
 	public void addFlexoBehaviourConfigurationDropAndSelect() {
 		FlexoBehaviourConfiguration editionSchemeConfiguration = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.DROP_AND_SELECT);
 		getFlexoBehaviours().add(editionSchemeConfiguration);
@@ -982,7 +982,7 @@ public class DeclareShapeInFlexoConcept extends DeclareInFlexoConcept<DeclareSha
 
 	/*
 		private List<FlexoConcept> editionPatternsDropList;
-
+	
 		public List<FlexoConcept> getFlexoConceptsDrop() {
 			if (editionPatternsDropList == null) {
 				editionPatternsDropList = new ArrayList<FlexoConcept>();

@@ -165,7 +165,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 	protected void doAction(Object context) {
 		logger.info("Declare connector in flexo concept");
 		if (isValid()) {
-			switch (primaryChoice) {
+			switch (getPrimaryChoice()) {
 			case CHOOSE_EXISTING_FLEXO_CONCEPT:
 				if (getFlexoRole() != null) {
 					System.out.println("Connector representation updated");
@@ -235,8 +235,8 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				newConnectorRole.setExampleLabel(getFocusedObject().getGraphicalRepresentation().getText());
 				// }
 				// We clone here the GR (fixed unfocusable GR bug)
-				newConnectorRole.setGraphicalRepresentation((ConnectorGraphicalRepresentation) getFocusedObject()
-						.getGraphicalRepresentation().clone());
+				newConnectorRole.setGraphicalRepresentation(
+						(ConnectorGraphicalRepresentation) getFocusedObject().getGraphicalRepresentation().clone());
 				newFlexoConcept.addToFlexoProperties(newConnectorRole);
 				// newFlexoConcept.setPrimaryRepresentationRole(newConnectorRole);
 
@@ -370,8 +370,8 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 				// Add connector action
 				AddConnector newAddConnector;
-				AssignationAction<DiagramConnector> assignationAction = getFactory().newAssignationAction(
-						newAddConnector = getFactory().newInstance(AddConnector.class));
+				AssignationAction<DiagramConnector> assignationAction = getFactory()
+						.newAssignationAction(newAddConnector = getFactory().newInstance(AddConnector.class));
 				// AddConnector newAddConnector = getFactory().newInstance(AddConnector.class);
 				assignationAction.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));
 				ShapeRole fromPatternRole = null;
@@ -383,10 +383,10 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 					toPatternRole = toFlexoConcept.getDeclaredProperties(ShapeRole.class).get(0);
 				}
 
-				newAddConnector.setFromShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.FROM_TARGET + "."
-						+ fromPatternRole.getRoleName()));
-				newAddConnector.setToShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.TO_TARGET + "."
-						+ toPatternRole.getRoleName()));
+				newAddConnector.setFromShape(
+						new DataBinding<DiagramShape>(LinkSchemeBindingModel.FROM_TARGET + "." + fromPatternRole.getRoleName()));
+				newAddConnector
+						.setToShape(new DataBinding<DiagramShape>(LinkSchemeBindingModel.TO_TARGET + "." + toPatternRole.getRoleName()));
 
 				newLinkScheme.addToActions(assignationAction);
 
@@ -463,7 +463,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 			errorMessage = FOCUSED_OBJECT_IS_NULL;
 			return false;
 		}
-		switch (primaryChoice) {
+		switch (getPrimaryChoice()) {
 		case CHOOSE_EXISTING_FLEXO_CONCEPT:
 			if (getFlexoRole() == null) {
 				errorMessage = PATTERN_ROLE_IS_NULL;
@@ -540,7 +540,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 	@Override
 	public ConnectorRole getFlexoRole() {
-		if (primaryChoice == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
+		if (getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
 			return newConnectorRole;
 		}
 		return patternRole;
@@ -675,7 +675,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 	@Override
 	public FlexoConcept getFlexoConcept() {
-		if (primaryChoice == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
+		if (getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT) {
 			return newFlexoConcept;
 		}
 		return super.getFlexoConcept();
@@ -683,17 +683,17 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 	/*private void createSchemeActions(FlexoBehaviourConfiguration configuration) {
 		FlexoBehaviour FlexoBehaviour = null;
-
+	
 		// Create new link scheme
 		if (configuration.getType() == FlexoBehaviourChoice.LINK) {
 			FlexoBehaviour = createLinkSchemeEditionActions(configuration);
 		}
-
+	
 		// Delete shapes as well as model
 		if (configuration.getType() == FlexoBehaviourChoice.DELETE_GR_AND_MODEL) {
 			FlexoBehaviour = createDeleteFlexoBehaviourActions(configuration, false);
 		}
-
+	
 		// Delete only shapes
 		if (configuration.getType() == FlexoBehaviourChoice.DELETE_GR_ONLY) {
 			FlexoBehaviour = createDeleteFlexoBehaviourActions(configuration, true);
@@ -702,9 +702,9 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 	}*/
 
 	/*private FlexoBehaviour createDeleteFlexoBehaviourActions(FlexoBehaviourConfiguration configuration, boolean shapeOnly) {
-
+	
 		DeletionScheme FlexoBehaviour = (DeletionScheme) configuration.getFlexoBehaviour();
-
+	
 		Vector<FlexoRole> rolesToDelete = new Vector<FlexoRole>();
 		if (shapeOnly) {
 			for (FlexoRole pr : newFlexoConcept.getFlexoRoles()) {
@@ -717,7 +717,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				rolesToDelete.add(pr);
 			}
 		}
-
+	
 		Collections.sort(rolesToDelete, new Comparator<FlexoRole>() {
 			@Override
 			public int compare(FlexoRole o1, FlexoRole o2) {
@@ -726,7 +726,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				} else if (o1 instanceof ConnectorRole && o2 instanceof ShapeRole) {
 					return -1;
 				}
-
+	
 				if (o1 instanceof ShapeRole) {
 					if (o2 instanceof ShapeRole) {
 						if (((ShapeRole) o1).isContainedIn((ShapeRole) o2)) {
@@ -740,7 +740,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				}
 				return 0;
 			}
-
+	
 		});
 		for (FlexoRole pr : rolesToDelete) {
 			DeleteAction a = getFactory().newDeleteAction();
@@ -752,18 +752,18 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 
 	/*private FlexoBehaviour createLinkSchemeEditionActions(FlexoBehaviourConfiguration FlexoBehaviourConfiguration) {
 		LinkScheme FlexoBehaviour = (LinkScheme) FlexoBehaviourConfiguration.getFlexoBehaviour();
-
+	
 		// Parameters
 		if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_INDIVIDUAL) {
 			if (isTypeAwareModelSlot()) {
 				TypeAwareModelSlot<?, ?> typeAwareModelSlot = (TypeAwareModelSlot<?, ?>) getModelSlot();
-
+	
 				URIParameter uriParameter = getFactory().newURIParameter();
 				uriParameter.setName("uri");
 				uriParameter.setLabel("uri");
-
+	
 				FlexoBehaviour.addToParameters(uriParameter);
-
+	
 				// Declare pattern property
 				for (IndividualRole r : otherRoles) {
 					DeclareFlexoRole action = getFactory().newDeclareFlexoRole();
@@ -771,7 +771,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 					action.setObject(new DataBinding<Object>("parameters." + r.getName()));
 					FlexoBehaviour.addToActions(action);
 				}
-
+	
 				// Add individual action
 				if (individualRole != null) {
 					AddIndividual newAddIndividual = typeAwareModelSlot.makeAddIndividualAction(individualRole, (FlexoBehaviour));
@@ -779,11 +779,11 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				}
 			}
 		}
-
+	
 		if (patternChoice == NewFlexoConceptChoices.MAP_SINGLE_FLEXO_CONCEPT) {
 			if (isVirtualModelModelSlot()) {
 				FMLRTModelSlot virtualModelModelSlot = (FMLRTModelSlot) getModelSlot();
-
+	
 				// Add individual action
 				AddFlexoConceptInstance newAddEditionPatternInstance = virtualModelModelSlot
 						.makeEditionAction(AddFlexoConceptInstance.class);
@@ -792,7 +792,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 				FlexoBehaviour.addToActions(newAddEditionPatternInstance);
 			}
 		}
-
+	
 		// Add connector action
 		AddConnector newAddConnector = getFactory().newInstance(AddConnector.class);
 		newAddConnector.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));
@@ -800,7 +800,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		ShapeRole toShapeRole = getVirtualModel().getFlexoConcept(FlexoBehaviour._getToTarget()).getFlexoRoles(ShapeRole.class).get(0);
 		newAddConnector.setFromShape(new DataBinding<DiagramShape>(DiagramFlexoBehaviour.FROM_TARGET + "." + fromShapeRole.getRoleName()));
 		newAddConnector.setToShape(new DataBinding<DiagramShape>(DiagramFlexoBehaviour.TO_TARGET + "." + toShapeRole.getRoleName()));
-
+	
 		FlexoBehaviour.addToActions(newAddConnector);
 		return FlexoBehaviour;
 	}*/
@@ -814,7 +814,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 		}
 		return null;
 	}
-
+	
 	public void addFlexoBehaviourConfigurationLink() {
 		FlexoBehaviourConfiguration FlexoBehaviourConfiguration = new FlexoBehaviourConfiguration(FlexoBehaviourChoice.LINK);
 		getFlexoBehaviours().add(FlexoBehaviourConfiguration);

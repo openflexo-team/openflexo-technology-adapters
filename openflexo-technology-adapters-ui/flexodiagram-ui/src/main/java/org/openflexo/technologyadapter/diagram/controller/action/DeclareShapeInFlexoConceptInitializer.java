@@ -43,10 +43,14 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.components.wizard.Wizard;
+import org.openflexo.components.wizard.WizardDialog;
+import org.openflexo.fib.controller.FIBController.Status;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.icon.FMLIconLibrary;
-import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.fml.action.DeclareShapeInFlexoConcept;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -68,7 +72,23 @@ public class DeclareShapeInFlexoConceptInitializer extends ActionInitializer<Dec
 			@Override
 			public boolean run(EventObject e, DeclareShapeInFlexoConcept action) {
 
-				return instanciateAndShowDialog(action, DiagramCst.DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB);
+				System.out.println("ModuleView=" + getController().getCurrentModuleView());
+
+				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
+					FMLControlledDiagramModuleView moduleView = (FMLControlledDiagramModuleView) getController().getCurrentModuleView();
+					action.setVirtualModelResource(
+							(VirtualModelResource) moduleView.getEditor().getVirtualModelInstance().getVirtualModel().getResource());
+				}
+
+				Wizard wizard = new DeclareShapeInFlexoConceptWizard(action, getController());
+				WizardDialog dialog = new WizardDialog(wizard, getController());
+				dialog.showDialog();
+				if (dialog.getStatus() != Status.VALIDATED) {
+					// Operation cancelled
+					return false;
+				}
+				return true;
+				// return instanciateAndShowDialog(action, DiagramCst.DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB);
 			}
 		};
 	}

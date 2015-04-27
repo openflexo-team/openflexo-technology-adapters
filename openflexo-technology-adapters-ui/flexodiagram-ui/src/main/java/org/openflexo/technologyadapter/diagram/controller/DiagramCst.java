@@ -70,12 +70,16 @@ public class DiagramCst {
 	public static Resource DELETE_DIAGRAM_ELEMENTS_AND_FLEXO_CONCEPT_INSTANCES_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/DeleteDiagramElementsAndFlexoConceptInstancesDialog.fib");
 
+	@Deprecated
 	public static Resource DECLARE_SHAPE_IN_FLEXO_CONCEPT_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/DeclareShapeInFlexoConceptDialog.fib");
+	@Deprecated
 	public static Resource DECLARE_CONNECTOR_IN_FLEXO_CONCEPT_DIALOG_FIB = ResourceLocator
 			.locateResource("Fib/Dialog/DeclareConnectorInFlexoConceptDialog.fib");
 	public static Resource PUSH_TO_PALETTE_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/PushToPaletteDialog.fib");
-	public static Resource CREATE_FML_DIAGRAM_PALETTE_ELEMENT_BINDING_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateFMLPaletteElementBindingDialog.fib");
-	public static Resource CREATE_FML_DIAGRAM_PALETTE_ELEMENT_BINDING_FROM_DIAGRAM_PALETTE_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateFMLPaletteElementBindingFromDiagramPaletteElementDialog.fib");
-	
+	public static Resource CREATE_FML_DIAGRAM_PALETTE_ELEMENT_BINDING_DIALOG_FIB = ResourceLocator
+			.locateResource("Fib/Dialog/CreateFMLPaletteElementBindingDialog.fib");
+	public static Resource CREATE_FML_DIAGRAM_PALETTE_ELEMENT_BINDING_FROM_DIAGRAM_PALETTE_DIALOG_FIB = ResourceLocator
+			.locateResource("Fib/Dialog/CreateFMLPaletteElementBindingFromDiagramPaletteElementDialog.fib");
+
 }
