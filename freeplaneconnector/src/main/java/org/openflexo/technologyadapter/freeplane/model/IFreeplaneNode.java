@@ -43,13 +43,22 @@ import java.util.Vector;
 
 import org.freeplane.features.attribute.Attribute;
 import org.freeplane.features.map.NodeModel;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.model.annotations.*;
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.Remover;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.model.impl.FreeplaneNodeImpl;
 
 @ModelEntity
+@XMLElement
+@FML("FreeplaneNodeRole")
 @ImplementationClass(value = FreeplaneNodeImpl.class)
 public interface IFreeplaneNode extends TechnologyObject<FreeplaneTechnologyAdapter> {
 
