@@ -154,6 +154,14 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	}
 
 	@Override
+	public void delete() {
+		if (getNode() != null && getNode().getPropertyChangeSupport() != null) {
+			getNode().getPropertyChangeSupport().removePropertyChangeListener(this);
+		}
+		super.delete();
+	}
+
+	@Override
 	public ShapeNode<FMLControlledDiagramShape> getNode() {
 		return (ShapeNode<FMLControlledDiagramShape>) super.getNode();
 	}
