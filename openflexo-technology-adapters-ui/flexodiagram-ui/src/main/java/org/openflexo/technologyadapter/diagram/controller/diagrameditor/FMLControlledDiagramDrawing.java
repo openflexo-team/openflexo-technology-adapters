@@ -58,7 +58,6 @@ import org.openflexo.fge.GRProvider.ShapeGRProvider;
 import org.openflexo.fge.GRStructureVisitor;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.cp.ControlArea;
 import org.openflexo.fge.geom.FGEGeometricObject.SimplifiedCardinalDirection;
 import org.openflexo.foundation.fml.binding.FlexoConceptBindingFactory;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -96,9 +95,15 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 	private final Map<DiagramShape, FMLControlledDiagramShape> federatedShapes;
 	private final Map<DiagramConnector, FMLControlledDiagramConnector> federatedConnectors;
 
+	private ShapeGRBinding<FMLControlledDiagramShape> fmlControlledShapeBinding;
+	private ConnectorGRBinding<FMLControlledDiagramConnector> fmlControlledConnectorBinding;
+
+	private final List<FMLControlledDiagramFloatingPalette> floatingPalettes;
+
 	public FMLControlledDiagramDrawing(VirtualModelInstance vmInstance, boolean readOnly) {
 		super(FMLControlledDiagramVirtualModelInstanceNature.getDiagram(vmInstance), readOnly);
 		this.virtualModelInstance = vmInstance;
+		floatingPalettes = new ArrayList<FMLControlledDiagramFloatingPalette>();
 		diagramElementsForFlexoConceptInstances = new HashMap<FlexoConceptInstance, List<FMLControlledDiagramElement<?, ?>>>();
 		federatedShapes = new HashMap<DiagramShape, FMLControlledDiagramShape>();
 		federatedConnectors = new HashMap<DiagramConnector, FMLControlledDiagramConnector>();
@@ -116,6 +121,14 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 			fmlControlledConnectorBinding.setBindingFactory(bindingFactory);
 		}
 
+	}
+
+	@Override
+	public void delete() {
+		for (FMLControlledDiagramFloatingPalette floatingPalette : floatingPalettes) {
+			floatingPalette.delete();
+		}
+		super.delete();
 	}
 
 	public VirtualModelInstance getVirtualModelInstance() {
@@ -210,9 +223,6 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 		return diagramElementsForFlexoConceptInstances.get(flexoConceptInstance);
 	}
 
-	private ShapeGRBinding<FMLControlledDiagramShape> fmlControlledShapeBinding;
-	private ConnectorGRBinding<FMLControlledDiagramConnector> fmlControlledConnectorBinding;
-
 	@Override
 	public void init() {
 
@@ -240,7 +250,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 					}
 
 					@Override
-					public List<ControlArea<?>> makeControlAreasFor(
+					public List<FMLControlledDiagramFloatingPalette> makeControlAreasFor(
 							DrawingTreeNode<FMLControlledDiagramShape, ShapeGraphicalRepresentation> dtn) {
 
 						ShapeNode<FMLControlledDiagramShape> node = (ShapeNode<FMLControlledDiagramShape>) dtn;
@@ -248,7 +258,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 
 						if (availableLinkSchemes != null && availableLinkSchemes.size() > 0) {
 
-							List<ControlArea<?>> returned = new ArrayList<ControlArea<?>>();
+							List<FMLControlledDiagramFloatingPalette> returned = new ArrayList<FMLControlledDiagramFloatingPalette>();
 
 							boolean northDirectionSupported = false;
 							boolean eastDirectionSupported = false;
@@ -281,6 +291,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 							if (westDirectionSupported) {
 								returned.add(new FMLControlledDiagramFloatingPalette(node, SimplifiedCardinalDirection.WEST));
 							}
+
+							floatingPalettes.addAll(returned);
 
 							return returned;
 						}

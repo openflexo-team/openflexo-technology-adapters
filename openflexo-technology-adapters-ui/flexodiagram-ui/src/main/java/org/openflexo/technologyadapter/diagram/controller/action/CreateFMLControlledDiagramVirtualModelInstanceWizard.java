@@ -36,53 +36,39 @@
  * 
  */
 
-package org.openflexo.technologyadapter.diagram.gui.fib;
+package org.openflexo.technologyadapter.diagram.controller.action;
 
-import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
-import org.openflexo.rm.FileResourceImpl;
-import org.openflexo.rm.ResourceLocator;
+import java.awt.Image;
+import java.util.logging.Logger;
 
-public class TestDiagramWizardFibs extends GenericFIBTestCase {
+import org.openflexo.icon.IconFactory;
+import org.openflexo.icon.IconLibrary;
+import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModelInstance;
+import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
+import org.openflexo.view.controller.FlexoController;
+import org.openflexo.view.controller.action.AbstractCreateVirtualModelInstanceWizard;
 
-	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Wizard")).getFile(),
-				"Fib/Wizard/"));
+public class CreateFMLControlledDiagramVirtualModelInstanceWizard extends
+		AbstractCreateVirtualModelInstanceWizard<CreateFMLControlledDiagramVirtualModelInstance> {
+
+	@SuppressWarnings("unused")
+	private static final Logger logger = Logger
+			.getLogger(CreateFMLControlledDiagramVirtualModelInstanceWizard.class.getPackage().getName());
+
+	public CreateFMLControlledDiagramVirtualModelInstanceWizard(CreateFMLControlledDiagramVirtualModelInstance action,
+			FlexoController controller) {
+		super(action, controller);
 	}
 
-	@Test
-	public void testChooseOption() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ChooseOption.fib");
+	@Override
+	public String getWizardTitle() {
+		return FlexoLocalization.localizedForKey("create_fml_controlled_diagram");
 	}
 
-	@Test
-	public void testCreateConnectorInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib");
-	}
-
-	@Test
-	public void testCreateNewFlexoConceptWithConnector() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithConnector.fib");
-	}
-
-	@Test
-	public void testCreateNewFlexoConceptWithShape() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithShape.fib");
-	}
-
-	@Test
-	public void testCreateShapeInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateShapeInExistingFlexoConcept.fib");
-	}
-
-	@Test
-	public void testReplaceConnectorInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib");
-	}
-
-	@Test
-	public void testReplaceShapeInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib");
+	@Override
+	public Image getDefaultPageImage() {
+		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_MEDIUM_ICON, IconLibrary.NEW_32_32).getImage();
 	}
 
 }

@@ -48,23 +48,24 @@ import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
+import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
-import org.openflexo.technologyadapter.diagram.fml.action.DeclareShapeInFlexoConcept;
-import org.openflexo.technologyadapter.diagram.fml.action.DeclareShapeInFlexoConcept.NewFlexoConceptChoices;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.action.DeclareConnectorInFlexoConcept;
+import org.openflexo.technologyadapter.diagram.fml.action.DeclareConnectorInFlexoConcept.NewFlexoConceptChoices;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.controller.FlexoController;
 
-public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConceptWizard<DeclareShapeInFlexoConcept> {
+public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareInFlexoConceptWizard<DeclareConnectorInFlexoConcept> {
 
 	private static final String FLEXO_ROLE_IS_NULL = FlexoLocalization.localizedForKey("please_choose_flexo_role");
-	private static final String NEW_SHAPE_ROLE_NAME_IS_NULL = FlexoLocalization.localizedForKey("please_supply_a_valid_role_name");
-	private static final String NEW_SHAPE_ROLE_NAME_ALREADY_EXISTS = FlexoLocalization.localizedForKey("this_role_name_already_exists");
+	private static final String NEW_CONNECTOR_ROLE_NAME_IS_NULL = FlexoLocalization.localizedForKey("please_supply_a_valid_role_name");
+	private static final String NEW_CONNECTOR_ROLE_NAME_ALREADY_EXISTS = FlexoLocalization.localizedForKey("this_role_name_already_exists");
 	private static final String FLEXO_CONCEPT_IS_NULL = FlexoLocalization.localizedForKey("please_choose_flexo_concept");
 
 	private static final String FLEXO_CONCEPT_NAME_IS_NULL = FlexoLocalization.localizedForKey("flexo_concept_name_is_null");
@@ -79,41 +80,41 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 	private static final String VIRTUAL_MODEL_CONCEPT_IS_NULL = FlexoLocalization.localizedForKey("virtual_model_concept_is_null");
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(DeclareShapeInFlexoConceptWizard.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(DeclareConnectorInFlexoConceptWizard.class.getPackage().getName());
 
-	public DeclareShapeInFlexoConceptWizard(DeclareShapeInFlexoConcept action, FlexoController controller) {
+	public DeclareConnectorInFlexoConceptWizard(DeclareConnectorInFlexoConcept action, FlexoController controller) {
 		super(action, controller);
 	}
 
 	@Override
 	public String getWizardTitle() {
-		return FlexoLocalization.localizedForKey("declare_shape_in_flexo_concept");
+		return FlexoLocalization.localizedForKey("declare_connector_in_flexo_concept");
 	}
 
 	@Override
 	public Image getDefaultPageImage() {
-		return IconFactory.getImageIcon(FMLIconLibrary.FLEXO_CONCEPT_MEDIUM_ICON, DiagramIconLibrary.SHAPE_MARKER).getImage();
+		return IconFactory.getImageIcon(FMLIconLibrary.FLEXO_CONCEPT_MEDIUM_ICON, DiagramIconLibrary.CONNECTOR_MARKER).getImage();
 	}
 
 	@Override
-	public ReplaceShapeInExistingFlexoConcept replaceElementInExistingFlexoConcept() {
-		return new ReplaceShapeInExistingFlexoConcept();
+	public ReplaceConnectorInExistingFlexoConcept replaceElementInExistingFlexoConcept() {
+		return new ReplaceConnectorInExistingFlexoConcept();
 	}
 
 	@Override
 	public WizardStep createsElementInExistingFlexoConcept() {
-		return new CreateShapeInExistingFlexoConcept();
+		return new CreateConnectorInExistingFlexoConcept();
 	}
 
 	@Override
 	public WizardStep chooseNewFlexoConcept() {
-		return new CreateNewFlexoConceptWithShape();
+		return new CreateNewFlexoConceptWithConnector();
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib")
-	public class ReplaceShapeInExistingFlexoConcept extends WizardStep {
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib")
+	public class ReplaceConnectorInExistingFlexoConcept extends WizardStep {
 
-		public ReplaceShapeInExistingFlexoConcept() {
+		public ReplaceConnectorInExistingFlexoConcept() {
 			if (getAction().getFlexoConcept() == null && getAction().getVirtualModel() != null
 					&& getAction().getVirtualModel().getFlexoConcepts().size() > 0) {
 				getAction().setFlexoConcept(getAction().getVirtualModel().getFlexoConcepts().get(0));
@@ -127,13 +128,13 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 			return getController().getApplicationContext();
 		}
 
-		public DeclareShapeInFlexoConcept getAction() {
-			return DeclareShapeInFlexoConceptWizard.this.getAction();
+		public DeclareConnectorInFlexoConcept getAction() {
+			return DeclareConnectorInFlexoConceptWizard.this.getAction();
 		}
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("choose_which_shape_you_want_to_set_or_replace");
+			return FlexoLocalization.localizedForKey("choose_which_connector_you_want_to_set_or_replace");
 		}
 
 		public FlexoConcept getFlexoConcept() {
@@ -150,19 +151,19 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 			}
 		}
 
-		public List<ShapeRole> getAvailableFlexoRoles() {
+		public List<ConnectorRole> getAvailableFlexoRoles() {
 			return getAction().getAvailableFlexoRoles();
 		}
 
-		public ShapeRole getFlexoRole() {
+		public ConnectorRole getFlexoRole() {
 			return getAction().getFlexoRole();
 		}
 
-		public void setFlexoRole(ShapeRole shapeRole) {
-			if (shapeRole != getFlexoRole()) {
-				ShapeRole oldValue = getFlexoRole();
-				getAction().setFlexoRole(shapeRole);
-				getPropertyChangeSupport().firePropertyChange("shapeRole", oldValue, shapeRole);
+		public void setFlexoRole(ConnectorRole ConnectorRole) {
+			if (ConnectorRole != getFlexoRole()) {
+				ConnectorRole oldValue = getFlexoRole();
+				getAction().setFlexoRole(ConnectorRole);
+				getPropertyChangeSupport().firePropertyChange("ConnectorRole", oldValue, ConnectorRole);
 				checkValidity();
 			}
 		}
@@ -183,17 +184,18 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/CreateShapeInExistingFlexoConcept.fib")
-	public class CreateShapeInExistingFlexoConcept extends WizardStep {
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib")
+	public class CreateConnectorInExistingFlexoConcept extends WizardStep {
 
-		public CreateShapeInExistingFlexoConcept() {
+		public CreateConnectorInExistingFlexoConcept() {
 			if (getAction().getFlexoConcept() == null && getAction().getVirtualModel() != null
 					&& getAction().getVirtualModel().getFlexoConcepts().size() > 0) {
 				getAction().setFlexoConcept(getAction().getVirtualModel().getFlexoConcepts().get(0));
 			}
 
-			if (StringUtils.isEmpty(getAction().getNewShapeRoleName()) && getFlexoConcept() != null) {
-				getAction().setNewShapeRoleName(getFlexoConcept().getAvailablePropertyName(DeclareShapeInFlexoConcept.DEFAULT_ROLE_NAME));
+			if (StringUtils.isEmpty(getAction().getConnectorRoleName()) && getFlexoConcept() != null) {
+				getAction().setConnectorRoleName(
+						getFlexoConcept().getAvailablePropertyName(DeclareConnectorInFlexoConcept.DEFAULT_ROLE_NAME));
 			}
 
 		}
@@ -202,13 +204,13 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 			return getController().getApplicationContext();
 		}
 
-		public DeclareShapeInFlexoConcept getAction() {
-			return DeclareShapeInFlexoConceptWizard.this.getAction();
+		public DeclareConnectorInFlexoConcept getAction() {
+			return DeclareConnectorInFlexoConceptWizard.this.getAction();
 		}
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("create_a_new_shape_role");
+			return FlexoLocalization.localizedForKey("create_a_new_connector_role");
 		}
 
 		public FlexoConcept getFlexoConcept() {
@@ -220,20 +222,20 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 				FlexoConcept oldValue = getFlexoConcept();
 				getAction().setFlexoConcept(flexoConcept);
 				getPropertyChangeSupport().firePropertyChange("flexoConcept", oldValue, flexoConcept);
-				getPropertyChangeSupport().firePropertyChange("newShapeRoleName", null, getNewShapeRoleName());
+				getPropertyChangeSupport().firePropertyChange("connectorRoleName", null, getConnectorRoleName());
 				checkValidity();
 			}
 		}
 
-		public String getNewShapeRoleName() {
-			return getAction().getNewShapeRoleName();
+		public String getConnectorRoleName() {
+			return getAction().getConnectorRoleName();
 		}
 
-		public void setNewShapeRoleName(String newShapeRoleName) {
-			if (newShapeRoleName != getNewShapeRoleName()) {
-				String oldValue = getNewShapeRoleName();
-				getAction().setNewShapeRoleName(newShapeRoleName);
-				getPropertyChangeSupport().firePropertyChange("newShapeRoleName", oldValue, newShapeRoleName);
+		public void setConnectorRoleName(String newConnectorRoleName) {
+			if (newConnectorRoleName != getConnectorRoleName()) {
+				String oldValue = getConnectorRoleName();
+				getAction().setConnectorRoleName(newConnectorRoleName);
+				getPropertyChangeSupport().firePropertyChange("connectorRoleName", oldValue, newConnectorRoleName);
 				checkValidity();
 			}
 		}
@@ -241,8 +243,8 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 		@Override
 		public boolean isValid() {
 
-			if (StringUtils.isEmpty(getNewShapeRoleName())) {
-				setIssueMessage(FlexoLocalization.localizedForKey(NEW_SHAPE_ROLE_NAME_IS_NULL), IssueMessageType.ERROR);
+			if (StringUtils.isEmpty(getConnectorRoleName())) {
+				setIssueMessage(FlexoLocalization.localizedForKey(NEW_CONNECTOR_ROLE_NAME_IS_NULL), IssueMessageType.ERROR);
 				return false;
 			}
 			if (getFlexoConcept() == null) {
@@ -250,8 +252,8 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 				return false;
 			}
 
-			if (getFlexoConcept().getAccessibleProperty(getNewShapeRoleName()) != null) {
-				setIssueMessage(FlexoLocalization.localizedForKey(NEW_SHAPE_ROLE_NAME_ALREADY_EXISTS), IssueMessageType.ERROR);
+			if (getFlexoConcept().getAccessibleProperty(getConnectorRoleName()) != null) {
+				setIssueMessage(FlexoLocalization.localizedForKey(NEW_CONNECTOR_ROLE_NAME_ALREADY_EXISTS), IssueMessageType.ERROR);
 				return false;
 			}
 			return true;
@@ -259,11 +261,11 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithShape.fib")
-	public class CreateNewFlexoConceptWithShape extends WizardStep {
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithConnector.fib")
+	public class CreateNewFlexoConceptWithConnector extends WizardStep {
 
-		public DeclareShapeInFlexoConcept getAction() {
-			return DeclareShapeInFlexoConceptWizard.this.getAction();
+		public DeclareConnectorInFlexoConcept getAction() {
+			return DeclareConnectorInFlexoConceptWizard.this.getAction();
 		}
 
 		@Override
@@ -332,6 +334,21 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 			}
 		}
 
+		public IFlexoOntologyObjectProperty<?> getObjectProperty() {
+			return getAction().getObjectProperty();
+		}
+
+		public void setObjectProperty(IFlexoOntologyObjectProperty<?> objectProperty) {
+			if (objectProperty != getObjectProperty()) {
+				IFlexoOntologyObjectProperty<?> oldValue = getObjectProperty();
+				getAction().setObjectProperty(objectProperty);
+				getPropertyChangeSupport().firePropertyChange("objectProperty", oldValue, objectProperty);
+				getPropertyChangeSupport().firePropertyChange("individualFlexoRoleName", null, getIndividualFlexoRoleName());
+				getPropertyChangeSupport().firePropertyChange("flexoConceptName", null, getFlexoConceptName());
+				checkValidity();
+			}
+		}
+
 		public String getVirtualModelFlexoRoleName() {
 			return getAction().getVirtualModelFlexoRoleName();
 		}
@@ -341,6 +358,20 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 				String oldValue = getVirtualModelFlexoRoleName();
 				getAction().setVirtualModelFlexoRoleName(virtualModelFlexoRoleName);
 				getPropertyChangeSupport().firePropertyChange("virtualModelFlexoRoleName", oldValue, virtualModelFlexoRoleName);
+				checkValidity();
+			}
+		}
+
+		public String getObjectPropertyStatementFlexoRoleName() {
+			return getAction().getObjectPropertyStatementFlexoRoleName();
+		}
+
+		public void setObjectPropertyStatementFlexoRoleName(String objectPropertyStatementFlexoRoleName) {
+			if (!objectPropertyStatementFlexoRoleName.equals(getObjectPropertyStatementFlexoRoleName())) {
+				String oldValue = getObjectPropertyStatementFlexoRoleName();
+				getAction().setObjectPropertyStatementFlexoRoleName(objectPropertyStatementFlexoRoleName);
+				getPropertyChangeSupport().firePropertyChange("objectPropertyStatementFlexoRoleName", oldValue,
+						objectPropertyStatementFlexoRoleName);
 				checkValidity();
 			}
 		}
@@ -381,6 +412,45 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 
 		public VirtualModel getAdressedVirtualModel() {
 			return getAction().getAdressedVirtualModel();
+		}
+
+		public String getLinkSchemeName() {
+			return getAction().getLinkSchemeName();
+		}
+
+		public void setLinkSchemeName(String linkSchemeName) {
+			if (!linkSchemeName.equals(getLinkSchemeName())) {
+				String oldValue = getLinkSchemeName();
+				getAction().setLinkSchemeName(linkSchemeName);
+				getPropertyChangeSupport().firePropertyChange("linkSchemeName", oldValue, linkSchemeName);
+				checkValidity();
+			}
+		}
+
+		public FlexoConcept getFromFlexoConcept() {
+			return getAction().getFromFlexoConcept();
+		}
+
+		public void setFromFlexoConcept(FlexoConcept fromFlexoConcept) {
+			if (fromFlexoConcept != getFromFlexoConcept()) {
+				FlexoConcept oldValue = getFromFlexoConcept();
+				getAction().setFromFlexoConcept(fromFlexoConcept);
+				getPropertyChangeSupport().firePropertyChange("fromFlexoConcept", oldValue, fromFlexoConcept);
+				checkValidity();
+			}
+		}
+
+		public FlexoConcept getToFlexoConcept() {
+			return getAction().getToFlexoConcept();
+		}
+
+		public void setToFlexoConcept(FlexoConcept toFlexoConcept) {
+			if (toFlexoConcept != getToFlexoConcept()) {
+				FlexoConcept oldValue = getToFlexoConcept();
+				getAction().setToFlexoConcept(toFlexoConcept);
+				getPropertyChangeSupport().firePropertyChange("toFlexoConcept", oldValue, toFlexoConcept);
+				checkValidity();
+			}
 		}
 
 		@Override

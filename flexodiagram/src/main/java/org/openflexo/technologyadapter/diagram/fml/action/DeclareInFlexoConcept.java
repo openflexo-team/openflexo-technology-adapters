@@ -77,8 +77,8 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @param <A>
  * @param <T1>
  */
-public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T>, T extends DiagramElement<?>>
-		extends FlexoAction<A, T, DiagramElement<?>> {
+public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T>, T extends DiagramElement<?>> extends
+		FlexoAction<A, T, DiagramElement<?>> {
 
 	private static final Logger logger = Logger.getLogger(DeclareInFlexoConcept.class.getPackage().getName());
 
@@ -127,8 +127,8 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 		int shapeIndex = 1;
 		int connectorIndex = 1;
 
-		List<? extends DiagramElement<?>> elements = (getFocusedObject() instanceof DiagramContainerElement
-				? ((DiagramContainerElement<?>) getFocusedObject()).getDescendants() : Collections.singletonList(getFocusedObject()));
+		List<? extends DiagramElement<?>> elements = (getFocusedObject() instanceof DiagramContainerElement ? ((DiagramContainerElement<?>) getFocusedObject())
+				.getDescendants() : Collections.singletonList(getFocusedObject()));
 
 		for (DiagramElement<?> o : elements) {
 			if (o instanceof DiagramShape) {
@@ -178,7 +178,7 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	}
 
 	public static enum DeclareInFlexoConceptChoices {
-		CREATES_FLEXO_CONCEPT, CHOOSE_EXISTING_FLEXO_CONCEPT
+		CREATES_FLEXO_CONCEPT, CREATE_ELEMENT_IN_EXISTING_FLEXO_CONCEPT, REPLACE_ELEMENT_IN_EXISTING_FLEXO_CONCEPT
 	}
 
 	private DeclareInFlexoConceptChoices primaryChoice = DeclareInFlexoConceptChoices.CREATES_FLEXO_CONCEPT;
@@ -332,9 +332,9 @@ public abstract class DeclareInFlexoConcept<A extends DeclareInFlexoConcept<A, T
 	 * 
 	 * @return
 	 */
-	public FlexoMetaModel getAdressedFlexoMetaModel() {
+	public FlexoMetaModel<?> getAdressedFlexoMetaModel() {
 		if (isTypeAwareModelSlot()) {
-			TypeAwareModelSlot typeAwareModelSlot = (TypeAwareModelSlot) getModelSlot();
+			TypeAwareModelSlot<?, ?> typeAwareModelSlot = (TypeAwareModelSlot<?, ?>) getModelSlot();
 			if (typeAwareModelSlot != null && typeAwareModelSlot.getMetaModelResource() != null) {
 				return typeAwareModelSlot.getMetaModelResource().getMetaModelData();
 			}

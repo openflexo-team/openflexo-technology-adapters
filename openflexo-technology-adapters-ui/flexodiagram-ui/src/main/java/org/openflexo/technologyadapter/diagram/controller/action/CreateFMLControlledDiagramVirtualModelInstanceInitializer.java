@@ -43,6 +43,8 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.components.wizard.Wizard;
+import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fib.controller.FIBController.Status;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
@@ -58,13 +60,13 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class CreateControlledDiagramVirtualModelInstanceInitializer extends
+public class CreateFMLControlledDiagramVirtualModelInstanceInitializer extends
 		ActionInitializer<CreateFMLControlledDiagramVirtualModelInstance, View, FlexoObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
-	public CreateControlledDiagramVirtualModelInstanceInitializer(ControllerActionInitializer actionInitializer) {
+	public CreateFMLControlledDiagramVirtualModelInstanceInitializer(ControllerActionInitializer actionInitializer) {
 		super(CreateFMLControlledDiagramVirtualModelInstance.actionType, actionInitializer);
 	}
 
@@ -78,6 +80,20 @@ public class CreateControlledDiagramVirtualModelInstanceInitializer extends
 		return new FlexoActionInitializer<CreateFMLControlledDiagramVirtualModelInstance>() {
 			@Override
 			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModelInstance action) {
+
+				if (action.skipChoosePopup) {
+					return true;
+				} else {
+					Wizard wizard = new CreateFMLControlledDiagramVirtualModelInstanceWizard(action, getController());
+					WizardDialog dialog = new WizardDialog(wizard, getController());
+					dialog.showDialog();
+					if (dialog.getStatus() != Status.VALIDATED) {
+						// Operation cancelled
+						return false;
+					}
+					return true;
+				}
+
 				/*if (action.skipChoosePopup) {
 					return true;
 				} else {
@@ -109,8 +125,8 @@ public class CreateControlledDiagramVirtualModelInstanceInitializer extends
 					return instanciateAndShowDialog(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
 				}*/
 
-				logger.warning("!!!!!!! Please reimplement me");
-				return false;
+				// logger.warning("!!!!!!! Please reimplement me");
+				// return false;
 			}
 		};
 	}
