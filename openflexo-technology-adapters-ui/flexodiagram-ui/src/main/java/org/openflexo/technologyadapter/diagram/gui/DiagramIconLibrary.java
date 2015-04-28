@@ -77,6 +77,7 @@ public class DiagramIconLibrary extends IconLibrary {
 			ResourceLocator.locateResource("Icons/DiagramConnector.png"));
 
 	public static final IconMarker SHAPE_MARKER = new IconMarker(SHAPE_ICON, 20, 20);
+	public static final IconMarker CONNECTOR_MARKER = new IconMarker(CONNECTOR_ICON, 20, 20);
 
 	public static final ImageIconResource FML_PALETTE_ELEMENT_BINDING_ICON_16X16 = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/FMLPaletteElementBindingIcon16x16.png"));

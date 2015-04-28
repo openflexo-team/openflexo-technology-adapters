@@ -80,25 +80,15 @@ public class TestDiagramDialogFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testDeclareConnectorInFlexoConceptDialog() {
-		validateFIB("Fib/Dialog/DeclareConnectorInFlexoConceptDialog.fib");
-	}
-
-	@Test
-	public void testDeclareShapeInFlexoConceptDialog() {
-		validateFIB("Fib/Dialog/DeclareShapeInFlexoConceptDialog.fib");
-	}
-
-	@Test
 	public void testDeleteDiagramElementsDialog() {
 		validateFIB("Fib/Dialog/DeleteDiagramElementsDialog.fib");
 	}
-	
+
 	@Test
 	public void testDeleteDiagramElementsAndFlexoConceptInstancesDialog() {
 		validateFIB("Fib/Dialog/DeleteDiagramElementsAndFlexoConceptInstancesDialog.fib");
 	}
-	
+
 	@Test
 	public void testImportImageFileDialog() {
 		validateFIB("Fib/Dialog/ImportImageFileDialog.fib");

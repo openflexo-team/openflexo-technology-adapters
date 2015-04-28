@@ -72,12 +72,10 @@ public class DeclareShapeInFlexoConceptInitializer extends ActionInitializer<Dec
 			@Override
 			public boolean run(EventObject e, DeclareShapeInFlexoConcept action) {
 
-				System.out.println("ModuleView=" + getController().getCurrentModuleView());
-
 				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
 					FMLControlledDiagramModuleView moduleView = (FMLControlledDiagramModuleView) getController().getCurrentModuleView();
-					action.setVirtualModelResource(
-							(VirtualModelResource) moduleView.getEditor().getVirtualModelInstance().getVirtualModel().getResource());
+					action.setVirtualModelResource((VirtualModelResource) moduleView.getEditor().getVirtualModelInstance()
+							.getVirtualModel().getResource());
 				}
 
 				Wizard wizard = new DeclareShapeInFlexoConceptWizard(action, getController());
@@ -98,6 +96,7 @@ public class DeclareShapeInFlexoConceptInitializer extends ActionInitializer<Dec
 		return new FlexoActionFinalizer<DeclareShapeInFlexoConcept>() {
 			@Override
 			public boolean run(EventObject e, DeclareShapeInFlexoConcept action) {
+				// TODO: try to switch first to ViewPointModeller !!!
 				getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
 				getController().getSelectionManager().setSelectedObject(action.getFlexoConcept());
 				return true;

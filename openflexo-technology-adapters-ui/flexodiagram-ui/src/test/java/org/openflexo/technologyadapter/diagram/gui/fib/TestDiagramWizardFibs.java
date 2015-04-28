@@ -46,13 +46,43 @@ import org.openflexo.rm.ResourceLocator;
 public class TestDiagramWizardFibs extends GenericFIBTestCase {
 
 	public static void main(String[] args) {
-		System.out.println(
-				generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Wizard")).getFile(), "Fib/Wizard/"));
+		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Wizard")).getFile(),
+				"Fib/Wizard/"));
 	}
 
 	@Test
 	public void testChooseOption() {
 		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ChooseOption.fib");
+	}
+
+	@Test
+	public void testCreateConnectorInExistingFlexoConcept() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib");
+	}
+
+	@Test
+	public void testCreateNewFlexoConceptWithConnector() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithConnector.fib");
+	}
+
+	@Test
+	public void testCreateNewFlexoConceptWithShape() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithShape.fib");
+	}
+
+	@Test
+	public void testCreateShapeInExistingFlexoConcept() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateShapeInExistingFlexoConcept.fib");
+	}
+
+	@Test
+	public void testReplaceConnectorInExistingFlexoConcept() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib");
+	}
+
+	@Test
+	public void testReplaceShapeInExistingFlexoConcept() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib");
 	}
 
 }
