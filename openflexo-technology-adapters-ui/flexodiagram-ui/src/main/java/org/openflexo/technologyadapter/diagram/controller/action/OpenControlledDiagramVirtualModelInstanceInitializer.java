@@ -67,6 +67,7 @@ public class OpenControlledDiagramVirtualModelInstanceInitializer extends
 		return new FlexoActionInitializer<OpenFMLControlledDiagramVirtualModelInstance>() {
 			@Override
 			public boolean run(EventObject e, OpenFMLControlledDiagramVirtualModelInstance action) {
+				System.out.println("Hop on est la");
 				return true;
 			}
 

@@ -57,6 +57,7 @@ import org.openflexo.foundation.fml.editionaction.DeleteAction;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
+import org.openflexo.foundation.nature.FlexoNature;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.icon.FMLRTIconLibrary;
 import org.openflexo.icon.IconFactory;
@@ -66,7 +67,6 @@ import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.action.AddConnectorInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.AddShapeInitializer;
-import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramPaletteElementInitializer;
@@ -75,6 +75,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSp
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramPaletteElementInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptInitializer;
@@ -105,7 +106,10 @@ import org.openflexo.technologyadapter.diagram.fml.DiagramNavigationScheme;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramFlexoConceptNature;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewNature;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewPointNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -124,16 +128,12 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
-import org.openflexo.view.controller.DeclareVirtualModelInstanceNature;
-import org.openflexo.view.controller.DeclareVirtualModelInstanceNatures;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 import org.openflexo.view.menu.WindowMenu;
 import org.openflexo.view.menu.WindowMenu.WindowMenuItem;
 
-@DeclareVirtualModelInstanceNatures({ // Natures declaration
-@DeclareVirtualModelInstanceNature(nature = FMLControlledDiagramVirtualModelInstanceNature.class) })
 public class DiagramTechnologyAdapterController extends TechnologyAdapterController<DiagramTechnologyAdapter> {
 
 	private SwingToolFactory swingToolFactory;
@@ -381,6 +381,23 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	}
 
 	@Override
+	public ImageIcon getIconForNature(FlexoNature<?> nature) {
+		if (nature instanceof FMLControlledDiagramVirtualModelInstanceNature) {
+			return DiagramIconLibrary.DIAGRAM_ICON;
+		}
+		if (nature instanceof FMLControlledDiagramViewNature) {
+			return DiagramIconLibrary.DIAGRAM_ICON;
+		}
+		if (nature instanceof FMLControlledDiagramVirtualModelNature) {
+			return DiagramIconLibrary.DIAGRAM_ICON;
+		}
+		if (nature instanceof FMLControlledDiagramViewPointNature) {
+			return DiagramIconLibrary.DIAGRAM_ICON;
+		}
+		return super.getIconForNature(nature);
+	}
+
+	@Override
 	public boolean hasModuleViewForObject(TechnologyObject<DiagramTechnologyAdapter> object, FlexoController controller) {
 		return object instanceof Diagram || object instanceof DiagramPalette || object instanceof DiagramSpecification;
 	}
@@ -501,10 +518,14 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	}
 
 	@Override
+	public List<? extends VirtualModelInstanceNature> getSpecificVirtualModelInstanceNatures() {
+		return Collections.singletonList(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
+	}
+
+	@Override
 	public ModuleView<VirtualModelInstance> createVirtualModelInstanceModuleViewForSpecificNature(VirtualModelInstance vmInstance,
 			VirtualModelInstanceNature nature, FlexoController controller, FlexoPerspective perspective) {
 		if (vmInstance.hasNature(nature) && nature == FMLControlledDiagramVirtualModelInstanceNature.INSTANCE) {
-			System.out.println("----------> Hop, je recree un editor");
 			FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor(vmInstance, false, controller, swingToolFactory);
 			return new FMLControlledDiagramModuleView(editor, perspective);
 		}

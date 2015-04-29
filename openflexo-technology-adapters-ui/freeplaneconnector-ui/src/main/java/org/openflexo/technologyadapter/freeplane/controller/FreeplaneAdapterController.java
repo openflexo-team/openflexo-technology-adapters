@@ -48,6 +48,7 @@ import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
+import org.openflexo.foundation.nature.FlexoNature;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.AddChildNodeInitializer;
@@ -56,6 +57,7 @@ import org.openflexo.technologyadapter.freeplane.controller.acitoninit.NewFreepl
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.NewSiblingAboveNodeInitializer;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.NewSiblingNodeInitializer;
 import org.openflexo.technologyadapter.freeplane.fml.FMLControlledFreeplaneVirtualModelInstanceNature;
+import org.openflexo.technologyadapter.freeplane.fml.FMLControlledFreeplaneVirtualModelNature;
 import org.openflexo.technologyadapter.freeplane.libraries.FreeplaneIconLibrary;
 import org.openflexo.technologyadapter.freeplane.listeners.FreeplaneListenersInitilizer;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
@@ -152,6 +154,17 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 	}
 
 	@Override
+	public ImageIcon getIconForNature(FlexoNature<?> nature) {
+		if (nature instanceof FMLControlledFreeplaneVirtualModelInstanceNature) {
+			return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_ICON;
+		}
+		if (nature instanceof FMLControlledFreeplaneVirtualModelNature) {
+			return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_ICON;
+		}
+		return super.getIconForNature(nature);
+	}
+
+	@Override
 	public String getWindowTitleforObject(final TechnologyObject<FreeplaneTechnologyAdapter> object, final FlexoController arg1) {
 		if (object instanceof IFreeplaneMap) {
 			return FreeplaneBasicAdapter.getInstance().getMapName();
@@ -173,6 +186,11 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 			return Collections.singletonList(FMLControlledFreeplaneVirtualModelInstanceNature.INSTANCE);
 		}
 		return super.getSpecificVirtualModelInstanceNatures(vmInstance);
+	}
+
+	@Override
+	public List<? extends VirtualModelInstanceNature> getSpecificVirtualModelInstanceNatures() {
+		return Collections.singletonList(FMLControlledFreeplaneVirtualModelInstanceNature.INSTANCE);
 	}
 
 	@Override
