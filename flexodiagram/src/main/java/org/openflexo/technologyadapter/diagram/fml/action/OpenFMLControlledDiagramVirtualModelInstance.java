@@ -49,13 +49,13 @@ import org.openflexo.foundation.action.FlexoGUIAction;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 
-public class OpenFMLControlledDiagramVirtualModelInstance extends
-		FlexoGUIAction<OpenFMLControlledDiagramVirtualModelInstance, VirtualModelInstance, FlexoObject> {
+public class OpenFMLControlledDiagramVirtualModelInstance
+		extends FlexoGUIAction<OpenFMLControlledDiagramVirtualModelInstance, VirtualModelInstance, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(OpenFMLControlledDiagramVirtualModelInstance.class.getPackage().getName());
 
 	public static FlexoActionType<OpenFMLControlledDiagramVirtualModelInstance, VirtualModelInstance, FlexoObject> actionType = new FlexoActionType<OpenFMLControlledDiagramVirtualModelInstance, VirtualModelInstance, FlexoObject>(
-			"open_as_fml_controlled_diagram", FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+			"open_as_fml_controlled_diagram", FlexoActionType.defaultGroup, FlexoActionType.NORMAL_ACTION_TYPE) {
 
 		/**
 		 * Factory method
@@ -82,14 +82,9 @@ public class OpenFMLControlledDiagramVirtualModelInstance extends
 		FlexoObjectImpl.addActionForClass(OpenFMLControlledDiagramVirtualModelInstance.actionType, VirtualModelInstance.class);
 	}
 
-	OpenFMLControlledDiagramVirtualModelInstance(VirtualModelInstance focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
+	OpenFMLControlledDiagramVirtualModelInstance(VirtualModelInstance focusedObject, Vector<FlexoObject> globalSelection,
+			FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
-	}
-
-	@Override
-	public OpenFMLControlledDiagramVirtualModelInstance doAction() {
-		System.out.println("Opening ControlledDiagramVirtualModelInstance");
-		return super.doAction();
 	}
 
 }

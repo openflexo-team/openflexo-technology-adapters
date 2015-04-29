@@ -85,7 +85,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.DropSchemeActio
 import org.openflexo.technologyadapter.diagram.controller.action.ExportDiagramToImageInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.ExportFMLControlledDiagramToImageInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.LinkSchemeActionInitializer;
-import org.openflexo.technologyadapter.diagram.controller.action.OpenControlledDiagramVirtualModelInstanceInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.OpenFMLControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.PushToPaletteInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.ResetGraphicalRepresentationInitializer;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramEditor;
@@ -208,7 +208,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new DeleteDiagramPaletteElementInitializer(actionInitializer);
 
 		new CreateFMLControlledDiagramVirtualModelInstanceInitializer(actionInitializer);
-		new OpenControlledDiagramVirtualModelInstanceInitializer(actionInitializer);
+		new OpenFMLControlledDiagramVirtualModelInstanceInitializer(actionInitializer);
 		new CreateDiagramInitializer(actionInitializer);
 		new DeleteDiagramInitializer(actionInitializer);
 		new AddShapeInitializer(actionInitializer);
@@ -414,16 +414,26 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		return new EmptyPanel<TechnologyObject<DiagramTechnologyAdapter>>(controller, perspective, object);
 	}
 
+	private FMLControlledDiagramNaturePerspective fmlControlledDiagramNaturePerspective;
+	private FMLRTControlledDiagramNaturePerspective fmlRTControlledDiagramNaturePerspective;
+
 	@Override
 	public void installFMLNatureSpecificPerspectives(FlexoController controller) {
 		super.installFMLNatureSpecificPerspectives(controller);
-		controller.addToPerspectives(new FMLControlledDiagramNaturePerspective(controller));
+		controller.addToPerspectives(fmlControlledDiagramNaturePerspective = new FMLControlledDiagramNaturePerspective(controller));
 	}
 
 	@Override
 	public void installFMLRTNatureSpecificPerspectives(FlexoController controller) {
 		super.installFMLRTNatureSpecificPerspectives(controller);
-		controller.addToPerspectives(new FMLRTControlledDiagramNaturePerspective(controller));
+		controller.addToPerspectives(fmlRTControlledDiagramNaturePerspective = new FMLRTControlledDiagramNaturePerspective(controller));
 	}
 
+	public FMLControlledDiagramNaturePerspective getFMLControlledDiagramNaturePerspective() {
+		return fmlControlledDiagramNaturePerspective;
+	}
+
+	public FMLRTControlledDiagramNaturePerspective getFMLRTControlledDiagramNaturePerspective() {
+		return fmlRTControlledDiagramNaturePerspective;
+	}
 }

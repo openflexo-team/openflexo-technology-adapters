@@ -47,18 +47,20 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.fml.action.OpenFMLControlledDiagramVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class OpenControlledDiagramVirtualModelInstanceInitializer extends
-		ActionInitializer<OpenFMLControlledDiagramVirtualModelInstance, VirtualModelInstance, FlexoObject> {
+public class OpenFMLControlledDiagramVirtualModelInstanceInitializer
+		extends ActionInitializer<OpenFMLControlledDiagramVirtualModelInstance, VirtualModelInstance, FlexoObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
-	public OpenControlledDiagramVirtualModelInstanceInitializer(ControllerActionInitializer actionInitializer) {
+	public OpenFMLControlledDiagramVirtualModelInstanceInitializer(ControllerActionInitializer actionInitializer) {
 		super(OpenFMLControlledDiagramVirtualModelInstance.actionType, actionInitializer);
 	}
 
@@ -67,7 +69,6 @@ public class OpenControlledDiagramVirtualModelInstanceInitializer extends
 		return new FlexoActionInitializer<OpenFMLControlledDiagramVirtualModelInstance>() {
 			@Override
 			public boolean run(EventObject e, OpenFMLControlledDiagramVirtualModelInstance action) {
-				System.out.println("Hop on est la");
 				return true;
 			}
 
@@ -79,6 +80,11 @@ public class OpenControlledDiagramVirtualModelInstanceInitializer extends
 		return new FlexoActionFinalizer<OpenFMLControlledDiagramVirtualModelInstance>() {
 			@Override
 			public boolean run(EventObject e, OpenFMLControlledDiagramVirtualModelInstance action) {
+				DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
+						.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
+				// getController().switchToPerspective(diagramTAController.getFmlRTControlledDiagramNaturePerspective());
+				getController().setCurrentEditedObjectAsModuleView(action.getFocusedObject(),
+						diagramTAController.getFMLRTControlledDiagramNaturePerspective());
 				return true;
 			}
 		};
