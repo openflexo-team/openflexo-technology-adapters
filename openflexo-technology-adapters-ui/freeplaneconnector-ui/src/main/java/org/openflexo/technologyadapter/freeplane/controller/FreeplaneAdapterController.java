@@ -38,16 +38,11 @@
 
 package org.openflexo.technologyadapter.freeplane.controller;
 
-import java.util.Collections;
-import java.util.List;
-
 import javax.swing.ImageIcon;
 
 import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.AddChildNodeInitializer;
@@ -55,12 +50,10 @@ import org.openflexo.technologyadapter.freeplane.controller.acitoninit.DeleteNod
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.NewFreeplaneMapInitializer;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.NewSiblingAboveNodeInitializer;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.NewSiblingNodeInitializer;
-import org.openflexo.technologyadapter.freeplane.fml.FMLControlledFreeplaneVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.freeplane.libraries.FreeplaneIconLibrary;
 import org.openflexo.technologyadapter.freeplane.listeners.FreeplaneListenersInitilizer;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneNode;
-import org.openflexo.technologyadapter.freeplane.view.FMLControlledFreeplaneModuleView;
 import org.openflexo.technologyadapter.freeplane.view.FreeplaneModuleView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
@@ -85,8 +78,6 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 	protected void initializeInspectors(FlexoController controller) {
 
 		freeplaneInspectorGroup = controller.loadInspectorGroup("Freeplane", getFMLTechnologyAdapterInspectorGroup());
-		// actionInitializer.getController().getModuleInspectorController()
-		// .loadDirectory(ResourceLocator.locateResource("Inspectors/Freeplane"));
 	}
 
 	private InspectorGroup freeplaneInspectorGroup;
@@ -168,20 +159,9 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 	}
 
 	@Override
-	public List<? extends VirtualModelInstanceNature> getSpecificVirtualModelInstanceNatures(final VirtualModelInstance vmInstance) {
-		if (vmInstance.hasNature(FMLControlledFreeplaneVirtualModelInstanceNature.INSTANCE)) {
-			return Collections.singletonList(FMLControlledFreeplaneVirtualModelInstanceNature.INSTANCE);
-		}
-		return super.getSpecificVirtualModelInstanceNatures(vmInstance);
+	public void installFMLRTNatureSpecificPerspectives(FlexoController controller) {
+		super.installFMLRTNatureSpecificPerspectives(controller);
+		controller.addToPerspectives(new FMLControlledFreeplaneNaturePerspective(controller));
 	}
 
-	@Override
-	public ModuleView<VirtualModelInstance> createVirtualModelInstanceModuleViewForSpecificNature(final VirtualModelInstance vmInstance,
-			final VirtualModelInstanceNature nature, final FlexoController controller, final FlexoPerspective perspective) {
-		if (vmInstance.hasNature(nature) & nature == FMLControlledFreeplaneVirtualModelInstanceNature.INSTANCE) {
-			FreeplaneListenersInitilizer.init(vmInstance, controller);
-			return new FMLControlledFreeplaneModuleView(controller, vmInstance, perspective);
-		}
-		return super.createVirtualModelInstanceModuleViewForSpecificNature(vmInstance, nature, controller, perspective);
-	}
 }
