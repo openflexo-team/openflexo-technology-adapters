@@ -66,11 +66,12 @@ public class TypedDiagramModelSlotInstanceConfiguration extends
 		super.setOption(option);
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
 			modelUri = getAction().getFocusedObject().getProject().getURI() + "/Diagrams/myDiagram";
-			relativePath = "/";
+			relativePath = "/Diagram/";
 			filename = "myDiagram" + DiagramResource.DIAGRAM_SUFFIX;
-		} else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
+		}
+		else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
 			modelUri = "ResourceCenter/Models/";
-			relativePath = "/";
+			relativePath = "/Diagram/";
 			filename = "myDiagram" + DiagramResource.DIAGRAM_SUFFIX;
 		}
 	}
@@ -82,8 +83,8 @@ public class TypedDiagramModelSlotInstanceConfiguration extends
 
 	@Override
 	public String getModelUri() {
-		ResourceRepository<?> repository = getResourceCenter()
-				.getRepository(DiagramRepository.class, getModelSlot().getModelSlotTechnologyAdapter());
+		ResourceRepository<?> repository = getResourceCenter().getRepository(DiagramRepository.class,
+				getModelSlot().getModelSlotTechnologyAdapter());
 		String generatedUri = repository.generateURI(getFilename());
 		if (repository != null) {
 			while (repository.getResource(generatedUri) != null) {
