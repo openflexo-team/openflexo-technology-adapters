@@ -38,6 +38,7 @@
 		<module>powerpointconnector</module>
 		<module>xmlconnector</module>
 		<module>oslcconnector</module>
+		<module>docxconnector</module>
         <module>freeplaneconnector</module>
 		<module>openflexo-technologyadapter-archetype</module>
 		<module>openflexo-technologyadapter-archetype-simplemodel</module>
