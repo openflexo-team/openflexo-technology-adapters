@@ -29,6 +29,7 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.gui.DocXIconLibrary;
+import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -69,7 +70,9 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 
 	@Override
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
-		// TODO Auto-generated method stub
+		if (DocXDocument.class.isAssignableFrom(objectClass)) {
+			return DocXIconLibrary.DOCX_FILE_ICON;
+		}
 		return null;
 	}
 
