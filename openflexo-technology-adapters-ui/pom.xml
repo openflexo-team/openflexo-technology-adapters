@@ -24,6 +24,7 @@
 		<module>xmlconnector-ui</module>
 		<module>oslcconnector-ui</module>
 		<module>docxconnector-ui</module>
+		<module>odtconnector-ui</module>
 		<module>freeplaneconnector-ui</module>
 	</modules>
 	<dependencyManagement>

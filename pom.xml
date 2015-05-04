@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-component</artifactId>
@@ -26,8 +27,8 @@
 	<scm>
 		<connection>scm:git:ssh://git@github.com/openflexo-team/openflexo-technology-adapters.git</connection>
 		<url>https://github.com/openflexo-team/openflexo-core</url>
-	  <tag>1.7.1</tag>
-  </scm>
+		<tag>1.7.1</tag>
+	</scm>
 	<modules>
 		<module>openflexo-technology-adapters-ui</module>
 		<module>flexodiagram</module>
@@ -39,7 +40,8 @@
 		<module>xmlconnector</module>
 		<module>oslcconnector</module>
 		<module>docxconnector</module>
-        <module>freeplaneconnector</module>
+		<module>odtconnector</module>
+		<module>freeplaneconnector</module>
 		<module>openflexo-technologyadapter-archetype</module>
 		<module>openflexo-technologyadapter-archetype-simplemodel</module>
 	</modules>
@@ -142,12 +144,12 @@
 				<version>${diana.version}</version>
 				<classifier>tests</classifier>
 			</dependency>
-	    	<dependency>
-		    	<groupId>org.openflexo</groupId>
-		    	<artifactId>flexo-ui</artifactId>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>flexo-ui</artifactId>
 				<version>${flexocore.version}</version>
-	    	</dependency>
-	    	<dependency>
+			</dependency>
+			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
 				<version>${flexocore.version}</version>
