@@ -23,9 +23,13 @@ package org.openflexo.technologyadapter.docx.rm;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.bind.JAXBElement;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
@@ -34,8 +38,8 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.IOUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
-import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
-import org.docx4j.wml.P;
+import org.docx4j.wml.ContentAccessor;
+import org.docx4j.wml.Text;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
@@ -50,6 +54,7 @@ import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.docx.DocXTechnologyContextManager;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.toolbox.IProgress;
+import org.openflexo.toolbox.StringUtils;
 
 public abstract class DocXDocumentResourceImpl extends FlexoResourceImpl<DocXDocument>implements DocXDocumentResource {
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceImpl.class.getPackage().getName());
@@ -104,14 +109,17 @@ public abstract class DocXDocumentResourceImpl extends FlexoResourceImpl<DocXDoc
 		try {
 			WordprocessingMLPackage result = WordprocessingMLPackage.load(getFile());
 			System.out.println("result=" + result);
-			MainDocumentPart mdp = result.getMainDocumentPart();
+			/*MainDocumentPart mdp = result.getMainDocumentPart();
 			for (Object o : mdp.getContent()) {
 				System.out.println("> " + o + " of " + o.getClass());
 				if (o instanceof P) {
 					System.out.println("paraId=" + ((P) o).getParaId());
 					System.out.println("textId=" + ((P) o).getTextId());
 				}
-			}
+			}*/
+			System.out.println("Je lis ca:");
+			System.out.println(printContents(result.getMainDocumentPart(), 0));
+			System.out.println("Au hasard: " + UUID.randomUUID().toString());
 		} catch (Docx4JException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -121,6 +129,53 @@ public abstract class DocXDocumentResourceImpl extends FlexoResourceImpl<DocXDoc
 		// returned.loadWhenUnloaded();
 		// return returned;
 		return null;
+	}
+
+	private static String printContents(Object obj, int indent) {
+		StringBuffer result = new StringBuffer();
+		if (obj instanceof JAXBElement)
+			obj = ((JAXBElement<?>) obj).getValue();
+
+		result.append(
+				StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj + "\n");
+
+		if (obj instanceof ContentAccessor) {
+			indent++;
+			List<?> children = ((ContentAccessor) obj).getContent();
+			for (Object child : children) {
+				result.append(printContents(child, indent));
+			}
+
+		}
+		return result.toString();
+	}
+
+	private static List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
+		List<Object> result = new ArrayList<Object>();
+		if (obj instanceof JAXBElement)
+			obj = ((JAXBElement<?>) obj).getValue();
+
+		if (obj.getClass().equals(toSearch))
+			result.add(obj);
+		else if (obj instanceof ContentAccessor) {
+			List<?> children = ((ContentAccessor) obj).getContent();
+			for (Object child : children) {
+				result.addAll(getAllElementFromObject(child, toSearch));
+			}
+
+		}
+		return result;
+	}
+
+	private void replacePlaceholder(WordprocessingMLPackage template, String name, String placeholder) {
+		List<Object> texts = getAllElementFromObject(template.getMainDocumentPart(), Text.class);
+
+		for (Object text : texts) {
+			Text textElement = (Text) text;
+			if (textElement.getValue().equals(placeholder)) {
+				textElement.setValue(name);
+			}
+		}
 	}
 
 	@Override
