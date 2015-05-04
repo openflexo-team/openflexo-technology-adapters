@@ -20,6 +20,7 @@
 
 package org.openflexo.technologyadapter.docx.rm;
 
+import org.openflexo.foundation.resource.PamelaResource;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -28,10 +29,12 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.DocXTechnologyContextManager;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXFactory;
 
 @ModelEntity
 @ImplementationClass(DocXDocumentResourceImpl.class)
-public abstract interface DocXDocumentResource extends TechnologyAdapterResource<DocXDocument, DocXTechnologyAdapter> {
+public abstract interface DocXDocumentResource
+		extends TechnologyAdapterResource<DocXDocument, DocXTechnologyAdapter>, PamelaResource<DocXDocument, DocXFactory> {
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
 	public DocXDocument getDocXDocument();

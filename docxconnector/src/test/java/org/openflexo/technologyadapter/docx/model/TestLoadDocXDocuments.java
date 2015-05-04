@@ -92,9 +92,9 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
 			assertNotNull(docXRepository);
 			Collection<DocXDocumentResource> documents = docXRepository.getAllResources();
-			for (DocXDocumentResource doc : documents) {
+			for (DocXDocumentResource docResource : documents) {
 				try {
-					doc.loadResourceData(null);
+					docResource.loadResourceData(null);
 				} catch (FileNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -105,7 +105,7 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				assertNotNull(doc.getLoadedResourceData());
+				assertNotNull(docResource.getLoadedResourceData());
 			}
 		}
 	}
