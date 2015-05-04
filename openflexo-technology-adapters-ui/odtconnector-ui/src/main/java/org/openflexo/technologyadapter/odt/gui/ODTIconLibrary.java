@@ -37,7 +37,7 @@ public class ODTIconLibrary {
 			ResourceLocator.locateResource("Icons/OpenOfficeIcon_16x16.png"));
 	public static final ImageIcon ODT_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/ODTFile_16x16.png"));
 
-	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
+	public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
 		return null;
 	}
 }
