@@ -41,7 +41,9 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceImpl;
 
 /**
- * This class defines and implements the DOCX technology adapter, which allows to manage .docx documents
+ * This class defines and implements the DOCX technology adapter, which allows to manage .docx documents (format used in MS/Office)<br>
+ * This technology adapter internally uses docx4j library.
+ * 
  * 
  * @author sylvain
  * 

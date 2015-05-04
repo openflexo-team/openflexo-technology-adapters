@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ImageIconResource;
 
@@ -32,8 +31,8 @@ public class DocXIconLibrary {
 	private static final Logger logger = Logger.getLogger(DocXIconLibrary.class.getPackage().getName());
 
 	public static final ImageIcon DOCX_TECHNOLOGY_BIG_ICON = new ImageIconResource(
-			ResourceLocator.locateResource("Icons/WordIcon32x32.png"));
-	public static final ImageIcon DOCX_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/WordIcon16x16.png"));
+			ResourceLocator.locateResource("Icons/WordIcon_32x32.png"));
+	public static final ImageIcon DOCX_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/WordIcon_16x16.png"));
 	public static final ImageIcon DOCX_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DocXFile_16x16.png"));
 
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
