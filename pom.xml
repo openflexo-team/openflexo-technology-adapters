@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-component</artifactId>
-		<version>0.3-SNAPSHOT</version>
+		<version>0.3-RC5</version>
 	</parent>
 	<version>1.7.1-SNAPSHOT</version>
 	<modelVersion>4.0.0</modelVersion>
@@ -11,15 +11,15 @@
 	<name>Openflexo-Technology-Adapters</name>
 	<packaging>pom</packaging>
 	<properties>
-		<gina.version>1.2-SNAPSHOT</gina.version>
-		<connie.version>1.2-SNAPSHOT</connie.version>
-		<pamela.version>1.2-SNAPSHOT</pamela.version>
-		<diana.version>1.2-SNAPSHOT</diana.version>
-		<jiraclient.version>1.2-SNAPSHOT</jiraclient.version>
-		<flexohelp.version>1.2-SNAPSHOT</flexohelp.version>
-		<flexodocresourcecenter.version>1.7.1-SNAPSHOT</flexodocresourcecenter.version>
-		<flexodocresourcemanager.version>1.7.1-SNAPSHOT</flexodocresourcemanager.version>
-		<flexocore.version>1.7.1-SNAPSHOT</flexocore.version>
+		<gina.version>1.2-RC5</gina.version>
+		<connie.version>1.2-RC5</connie.version>
+		<pamela.version>1.2-RC5</pamela.version>
+		<diana.version>1.2-RC5</diana.version>
+		<jiraclient.version>1.2-RC5</jiraclient.version>
+		<flexohelp.version>1.2-RC5</flexohelp.version>
+		<flexodocresourcecenter.version>1.7.1-RC5</flexodocresourcecenter.version>
+		<flexodocresourcemanager.version>1.7.1-RC5</flexodocresourcemanager.version>
+		<flexocore.version>1.7.1-RC5</flexocore.version>
 		<poi.version>3.12-beta1</poi.version>
 		<ta.logo>https://media.openflexo.org/images/ta_logo64x64.png</ta.logo>
 	</properties>
