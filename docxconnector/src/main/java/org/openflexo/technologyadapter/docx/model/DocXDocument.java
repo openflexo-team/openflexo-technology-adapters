@@ -25,38 +25,32 @@ import java.util.List;
 
 import javax.xml.bind.JAXBElement;
 
+import org.docx4j.model.styles.Node;
+import org.docx4j.model.styles.StyleTree;
+import org.docx4j.model.styles.StyleTree.AugmentedStyle;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.P;
 import org.docx4j.wml.Text;
-import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.model.annotations.Adder;
-import org.openflexo.model.annotations.CloningStrategy;
-import org.openflexo.model.annotations.CloningStrategy.StrategyType;
-import org.openflexo.model.annotations.Embedded;
+import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.model.annotations.Getter;
-import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PastingPoint;
 import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
 @ImplementationClass(DocXDocument.DocXDocumentImpl.class)
 @XMLElement
-public interface DocXDocument extends DocXObject, ResourceData<DocXDocument> {
+public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = WordprocessingMLPackage.class)
 	public static final String WORD_PROCESSING_ML_PACKAGE_KEY = "wordprocessingMLPackage";
-
-	@PropertyIdentifier(type = DocXParagraph.class, cardinality = Cardinality.LIST)
-	public static final String PARAGRAPHS_KEY = "paragraphs";
 
 	@Getter(value = WORD_PROCESSING_ML_PACKAGE_KEY, ignoreType = true)
 	public WordprocessingMLPackage getWordprocessingMLPackage();
@@ -65,39 +59,18 @@ public interface DocXDocument extends DocXObject, ResourceData<DocXDocument> {
 	public void setWordprocessingMLPackage(WordprocessingMLPackage wpmlPackage);
 
 	/**
-	 * Return the list of shapes contained in this container
-	 * 
-	 * @return
-	 */
-	@Getter(value = PARAGRAPHS_KEY, cardinality = Cardinality.LIST, inverse = DocXParagraph.DOCX_DOCUMENT_KEY)
-	@XMLElement(primary = true)
-	@CloningStrategy(StrategyType.CLONE)
-	@Embedded
-	public List<DocXParagraph> getDocXParagraphs();
-
-	@Setter(PARAGRAPHS_KEY)
-	public void setDocXParagraphs(List<DocXParagraph> someParagraphs);
-
-	@Adder(PARAGRAPHS_KEY)
-	@PastingPoint
-	public void addToDocXParagraphs(DocXParagraph aParagraph);
-
-	@Remover(PARAGRAPHS_KEY)
-	public void removeFromDocXParagraphs(DocXParagraph aParagraph);
-
-	/**
 	 * This is the starting point for updating {@link DocXDocument} with the document provided from docx4j library<br>
 	 * Take care that the supplied wpmlPackage is the object we should update with, but that {@link #getWordprocessingMLPackage()} is unsafe
 	 * in this context, because return former value
 	 */
 	public void updateFromWordprocessingMLPackage(WordprocessingMLPackage wpmlPackage, DocXFactory factory);
 
-	public static abstract class DocXDocumentImpl extends DocXObjectImpl implements DocXDocument {
+	public String debugContents();
 
-		private List<DocXParagraph> paragraphs;
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
 
 		@Override
-		public DocXDocument getDocXDocument() {
+		public DocXDocument getFlexoDocument() {
 			return this;
 		}
 
@@ -106,7 +79,6 @@ public interface DocXDocument extends DocXObject, ResourceData<DocXDocument> {
 			if ((wpmlPackage == null && getWordprocessingMLPackage() != null)
 					|| (wpmlPackage != null && !wpmlPackage.equals(getWordprocessingMLPackage()))) {
 				updateFromWordprocessingMLPackage(wpmlPackage, ((DocXDocumentResource) getResource()).getFactory());
-				performSuperSetter(WORD_PROCESSING_ML_PACKAGE_KEY, wpmlPackage);
 			}
 		}
 
@@ -124,22 +96,41 @@ public interface DocXDocument extends DocXObject, ResourceData<DocXDocument> {
 			for (Object o : mdp.getContent()) {
 				if (o instanceof P) {
 					DocXParagraph paragraph = factory.makeNewDocXParagraph((P) o);
-					System.out.println("paraId=" + ((P) o).getParaId());
-					addToDocXParagraphs(paragraph);
+					addToElements(paragraph);
 				}
 			}
 
-			System.out.println("Je lis ca:");
-			System.out.println(printContents(wpmlPackage.getMainDocumentPart(), 0));
+			StyleTree styleTree = mdp.getStyleTree();
+
+			System.out.println("les styles disponibles=" + styleTree.getParagraphStylesTree());
+
+			registerStyle(styleTree.getParagraphStylesTree().getRootElement(), null);
+
+			performSuperSetter(WORD_PROCESSING_ML_PACKAGE_KEY, wpmlPackage);
+
 		}
 
-		private static String printContents(Object obj, int indent) {
+		private void registerStyle(Node<AugmentedStyle> styleNode, Node<AugmentedStyle> parentNode) {
+			if (styleNode != null && styleNode.getData() != null) {
+				System.out.println("> Found style " + styleNode + " based on " + parentNode);
+				for (Node<AugmentedStyle> child : styleNode.getChildren()) {
+					registerStyle(child, styleNode);
+				}
+			}
+		}
+
+		@Override
+		public String debugContents() {
+			return printContents(getWordprocessingMLPackage().getMainDocumentPart(), 0);
+		}
+
+		private String printContents(Object obj, int indent) {
 			StringBuffer result = new StringBuffer();
 			if (obj instanceof JAXBElement)
 				obj = ((JAXBElement<?>) obj).getValue();
 
-			result.append(
-					StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj + "\n");
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj
+					+ "\n");
 
 			if (obj instanceof ContentAccessor) {
 				indent++;

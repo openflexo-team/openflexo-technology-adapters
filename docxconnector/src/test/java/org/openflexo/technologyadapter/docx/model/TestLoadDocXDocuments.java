@@ -38,19 +38,25 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.logging.Logger;
 
+import org.docx4j.model.styles.StyleTree.AugmentedStyle;
+import org.docx4j.model.styles.Tree;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.foundation.doc.FlexoDocumentElement;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -85,8 +91,8 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -106,7 +112,135 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 					e.printStackTrace();
 				}
 				assertNotNull(docResource.getLoadedResourceData());
+				System.out.println("URI of document: " + docResource.getURI());
 			}
 		}
 	}
+
+	private DocXDocument getDocument(String documentName) {
+		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
+		System.out.println("Searching " + documentURI);
+
+		FlexoResource<DocXDocument> documentResource = serviceManager.getInformationSpace().getResource(documentURI, null,
+				DocXDocument.class);
+		assertNotNull(documentResource);
+
+		DocXDocument document = documentResource.getLoadedResourceData();
+		assertNotNull(document);
+		assertNotNull(document.getWordprocessingMLPackage());
+
+		return document;
+	}
+
+	@Test
+	@TestOrder(4)
+	public void testSimpleDocumentLoading() {
+
+		DocXDocument simpleDocument = getDocument("SimpleDocument.docx");
+
+		// System.out.println(documentWithImage.debugContents());
+
+		System.out.println("Elements: " + simpleDocument.getElements().size());
+
+		for (FlexoDocumentElement<?, ?> element : simpleDocument.getElements()) {
+			if (element instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) element;
+				System.out.println("* Paragraph "
+						+ paragraph.getP().getParaId()
+						+ " "
+						+ paragraph.getP()
+						+ " "
+						+ (paragraph.getP().getPPr() != null && paragraph.getP().getPPr().getPStyle() != null ? "["
+								+ paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
+			} else {
+				System.out.println("* Element " + element);
+			}
+		}
+
+		assertEquals(11, simpleDocument.getElements().size());
+
+		DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
+
+	}
+
+	@Test
+	@TestOrder(5)
+	public void testStructuredDocumentLoading() {
+
+		DocXDocument structuredDocument = getDocument("StructuredDocument.docx");
+
+		// System.out.println(documentWithImage.debugContents());
+
+		System.out.println("Elements: " + structuredDocument.getElements().size());
+
+		for (FlexoDocumentElement<?, ?> element : structuredDocument.getElements()) {
+			if (element instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) element;
+				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
+						+ (paragraph.getP().getPPr() != null ? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
+			} else {
+				System.out.println("* Element " + element);
+			}
+		}
+
+		System.out.println("Tous les styles utilises: "
+				+ structuredDocument.getWordprocessingMLPackage().getMainDocumentPart().getStylesInUse());
+
+		System.out.println("Les styles: "
+				+ structuredDocument.getWordprocessingMLPackage().getMainDocumentPart().getStyleTree().getParagraphStylesTree());
+
+		Tree<AugmentedStyle> tree = structuredDocument.getWordprocessingMLPackage().getMainDocumentPart().getStyleTree()
+				.getParagraphStylesTree();
+
+		System.out.println("root="
+				+ structuredDocument.getWordprocessingMLPackage().getMainDocumentPart().getStyleTree().getParagraphStylesTree()
+						.getRootElement().data.getStyle());
+
+	}
+	/*@Test
+	@TestOrder(6)
+	public void testDocumentWithTableLoading() {
+
+		DocXDocument documentWithTable = getDocument("DocumentWithTable.docx");
+
+		// System.out.println(documentWithImage.debugContents());
+
+		System.out.println("Elements: " + documentWithTable.getElements().size());
+
+		for (FlexoDocumentElement<?, ?> element : documentWithTable.getElements()) {
+			if (element instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph)element;
+				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
+						+ (paragraph.getP().getPPr() != null ? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
+			}
+			else {
+				System.out.println("* Element " + element);
+			}
+		}
+
+	}
+
+	@Test
+	@TestOrder(7)
+	public void testDocumentWithImageLoading() {
+
+		DocXDocument documentWithImage = getDocument("DocumentWithImage.docx");
+
+		// System.out.println(documentWithImage.debugContents());
+
+		System.out.println("Elements: " + documentWithImage.getElements().size());
+
+		for (FlexoDocumentElement<?, ?> element : documentWithImage.getElements()) {
+			if (element instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph)element;
+				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
+						+ (paragraph.getP().getPPr() != null ? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
+			}
+			else {
+				System.out.println("* Element " + element);
+			}
+		}
+
+	}*/
+
 }

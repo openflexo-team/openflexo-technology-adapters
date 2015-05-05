@@ -46,6 +46,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
+import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
@@ -68,7 +69,7 @@ public class DocXFactory extends ModelFactory implements PamelaResourceModelFact
 	private FlexoUndoManager undoManager = null;
 
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(DocXDocument.class);
+		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class));
 		this.resource = resource;
 		setEditingContext(editingContext);
 		if (resource != null) {

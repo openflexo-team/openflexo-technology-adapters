@@ -20,30 +20,11 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
-import org.openflexo.foundation.InnerResourceData;
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.foundation.doc.FlexoDocObject;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
-@ModelEntity
-@ImplementationClass(DocXObject.DocXObjectImpl.class)
-@XMLElement
-public interface DocXObject extends TechnologyObject<DocXTechnologyAdapter>, InnerResourceData<DocXDocument> {
-
-	public DocXDocument getDocXDocument();
-
-	public static abstract class DocXObjectImpl extends FlexoObjectImpl implements DocXObject {
-
-		public DocXObjectImpl() {
-			super();
-		}
-
-		@Override
-		public DocXDocument getResourceData() {
-			return getDocXDocument();
-		}
-	}
+@ModelEntity(isAbstract = true)
+public interface DocXObject extends FlexoDocObject<DocXDocument, DocXTechnologyAdapter> {
 
 }
