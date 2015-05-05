@@ -24,6 +24,12 @@ import org.openflexo.foundation.doc.FlexoDocObject;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
+/**
+ * Implementation of {@link FlexoDocObject} for {@link DocXTechnologyAdapter}
+ * 
+ * @author sylvain
+ *
+ */
 @ModelEntity(isAbstract = true)
 public interface DocXObject extends FlexoDocObject<DocXDocument, DocXTechnologyAdapter> {
 

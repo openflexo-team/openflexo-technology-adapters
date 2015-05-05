@@ -31,6 +31,12 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
+/**
+ * Implementation of {@link FlexoParagraph} for {@link DocXTechnologyAdapter}
+ * 
+ * @author sylvain
+ *
+ */
 @ModelEntity
 @ImplementationClass(DocXParagraph.DocXParagraphImpl.class)
 @XMLElement
@@ -52,7 +58,7 @@ public interface DocXParagraph extends DocXObject, FlexoParagraph<DocXDocument, 
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
 
 		public DocXParagraphImpl() {
 			super();

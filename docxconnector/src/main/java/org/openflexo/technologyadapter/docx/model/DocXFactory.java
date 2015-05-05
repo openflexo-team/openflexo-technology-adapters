@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.P;
+import org.docx4j.wml.Style;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
@@ -69,7 +70,7 @@ public class DocXFactory extends ModelFactory implements PamelaResourceModelFact
 	private FlexoUndoManager undoManager = null;
 
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class));
+		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXStyle.class));
 		this.resource = resource;
 		setEditingContext(editingContext);
 		if (resource != null) {
@@ -91,6 +92,15 @@ public class DocXFactory extends ModelFactory implements PamelaResourceModelFact
 	public DocXParagraph makeNewDocXParagraph(P p) {
 		DocXParagraph returned = newInstance(DocXParagraph.class);
 		returned.updateFromP(p, this);
+		return returned;
+	}
+
+	public DocXStyle makeNewDocXStyle(Style style, DocXStyle parent) {
+		DocXStyle returned = newInstance(DocXStyle.class);
+		returned.updateFromStyle(style, this);
+		if (parent != null) {
+			returned.setParentStyle(parent);
+		}
 		return returned;
 	}
 
