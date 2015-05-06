@@ -29,6 +29,7 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.gui.DocXIconLibrary;
+import org.openflexo.technologyadapter.docx.gui.view.DocXDocumentModuleView;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -77,27 +78,33 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<DocXTechnologyAdapter> arg0, FlexoController arg1,
-			FlexoPerspective arg2) {
+	public ModuleView<?> createModuleViewForObject(TechnologyObject<DocXTechnologyAdapter> object, FlexoController controller,
+			FlexoPerspective perspective) {
+		if (object instanceof DocXDocument) {
+			return new DocXDocumentModuleView((DocXDocument) object, perspective);
+		}
+		return null;
+	}
+
+	@Override
+	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> roleClass) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> arg0) {
-		// TODO Auto-generated method stub
+	public String getWindowTitleforObject(TechnologyObject<DocXTechnologyAdapter> object, FlexoController controller) {
+		if (object instanceof DocXDocument) {
+			return ((DocXDocument) object).getName();
+		}
 		return null;
 	}
 
 	@Override
-	public String getWindowTitleforObject(TechnologyObject<DocXTechnologyAdapter> arg0, FlexoController arg1) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public boolean hasModuleViewForObject(TechnologyObject<DocXTechnologyAdapter> arg0, FlexoController arg1) {
-		// TODO Auto-generated method stub
+	public boolean hasModuleViewForObject(TechnologyObject<DocXTechnologyAdapter> object, FlexoController controller) {
+		if (object instanceof DocXDocument) {
+			return true;
+		}
 		return false;
 	}
 
