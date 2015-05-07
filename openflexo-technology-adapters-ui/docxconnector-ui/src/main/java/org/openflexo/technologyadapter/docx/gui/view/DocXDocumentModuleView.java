@@ -62,6 +62,7 @@ import org.docx4all.util.DocUtil;
 import org.jdesktop.application.ResourceMap;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.technologyadapter.docx.controller.DocXAdapterController;
+import org.openflexo.technologyadapter.docx.gui.widget.FIBDocXDocumentBrowser;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
@@ -82,6 +83,8 @@ public class DocXDocumentModuleView extends JPanel implements ModuleView<DocXDoc
 	private JPanel docxEditor;
 	// private final JPanel bottomPanel;
 
+	private final FIBDocXDocumentBrowser browser;
+
 	public DocXDocumentModuleView(DocXDocument document, FlexoPerspective perspective) {
 		super();
 		setLayout(new BorderLayout());
@@ -97,9 +100,13 @@ public class DocXDocumentModuleView extends JPanel implements ModuleView<DocXDoc
 			e.printStackTrace();
 		}
 
+		browser = new FIBDocXDocumentBrowser(document, perspective.getController());
+
 		// bottomPanel = new JPanel(new BorderLayout());
 		// bottomPanel.add(perspective.getController().makeInfoLabel(), BorderLayout.CENTER);
 		// add(bottomPanel, BorderLayout.SOUTH);
+
+		add(browser, BorderLayout.EAST);
 
 		// perspective.getController().setInfoMessage(document.getResource().getURI(), false);
 
@@ -149,6 +156,9 @@ public class DocXDocumentModuleView extends JPanel implements ModuleView<DocXDoc
 
 	@Override
 	public void show(final FlexoController controller, FlexoPerspective perspective) {
+
+		// perspective.setTopRightView(browser);
+		// controller.getControllerModel().setRightViewVisible(true);
 
 		// Sets palette view of editor to be the top right view
 		// perspective.setTopRightView(getEditor().getPaletteView());

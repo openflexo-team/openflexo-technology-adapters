@@ -31,6 +31,7 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.gui.DocXIconLibrary;
 import org.openflexo.technologyadapter.docx.gui.view.DocXDocumentModuleView;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -70,9 +71,25 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 	}
 
 	@Override
+	public ImageIcon getIconForTechnologyObject(TechnologyObject<?> object) {
+		if (object instanceof DocXParagraph) {
+			DocXParagraph paragraph = (DocXParagraph) object;
+			if (paragraph.getStyle() != null && paragraph.getStyle().isLevelled()) {
+				return DocXIconLibrary.SECTION_ICON;
+			} else {
+				return DocXIconLibrary.PARAGRAPH_ICON;
+			}
+		}
+		return super.getIconForTechnologyObject(object);
+	}
+
+	@Override
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (DocXDocument.class.isAssignableFrom(objectClass)) {
 			return DocXIconLibrary.DOCX_FILE_ICON;
+		}
+		if (DocXParagraph.class.isAssignableFrom(objectClass)) {
+			return DocXIconLibrary.SECTION_ICON;
 		}
 		return null;
 	}

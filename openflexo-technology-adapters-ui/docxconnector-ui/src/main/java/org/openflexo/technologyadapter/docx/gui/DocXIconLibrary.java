@@ -24,7 +24,6 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ImageIconResource;
 
@@ -36,7 +35,10 @@ public class DocXIconLibrary {
 	public static final ImageIcon DOCX_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/WordIcon_16x16.png"));
 	public static final ImageIcon DOCX_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/DocXFile_16x16.png"));
 
-	public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
+	public static final ImageIcon SECTION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Section_16x16.png"));
+	public static final ImageIcon PARAGRAPH_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Paragraph_16x16.png"));
+
+	/*public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
 		return null;
-	}
+	}*/
 }
