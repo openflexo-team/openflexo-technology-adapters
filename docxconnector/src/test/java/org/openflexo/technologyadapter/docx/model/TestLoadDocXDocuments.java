@@ -55,7 +55,6 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -91,8 +90,8 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -132,36 +131,32 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 		return document;
 	}
 
-	/*@Test
+	@Test
 	@TestOrder(4)
 	public void testSimpleDocumentLoading() {
 
 		DocXDocument simpleDocument = getDocument("SimpleDocument.docx");
 
-		// System.out.println(documentWithImage.debugContents());
+		System.out.println("SimpleDocument.docx:\n" + simpleDocument.debugStructuredContents());
 
-		System.out.println("Elements: " + simpleDocument.getElements().size());
-
+		/*System.out.println("Elements: " + simpleDocument.getElements().size());
+		
 		for (FlexoDocumentElement<?, ?> element : simpleDocument.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
-				System.out.println("* Paragraph "
-						+ paragraph.getP().getParaId()
-						+ " "
-						+ paragraph.getP()
-						+ " "
-						+ (paragraph.getP().getPPr() != null && paragraph.getP().getPPr().getPStyle() != null ? "["
-								+ paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
+				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
+						+ (paragraph.getP().getPPr() != null && paragraph.getP().getPPr().getPStyle() != null
+								? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
 			} else {
 				System.out.println("* Element " + element);
 			}
-		}
+		}*/
 
 		assertEquals(11, simpleDocument.getElements().size());
 
 		DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
 
-	}*/
+	}
 
 	@Test
 	@TestOrder(5)
@@ -169,12 +164,13 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 
 		DocXDocument structuredDocument = getDocument("StructuredDocument.docx");
 
-		// System.out.println(documentWithImage.debugContents());
-
-		System.out.println("Elements: " + structuredDocument.getElements().size());
+		System.out.println("StructuredDocument.docx:\n" + structuredDocument.debugStructuredContents());
 
 		assertEquals(13, structuredDocument.getElements().size());
 
+		/*System.out.println("Elements: " + structuredDocument.getElements().size());
+		
+		
 		for (FlexoDocumentElement<?, ?> element : structuredDocument.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
@@ -183,11 +179,10 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 			} else {
 				System.out.println("* Element " + element);
 			}
-		}
-		System.out.println("contents:\n" + structuredDocument.debugContents());
-		System.out.println("structure:\n" + structuredDocument.debugStructuredContents());
-
-		System.out.println("Used styles: " + structuredDocument.getStyles());
+		}*/
+		// System.out.println("contents:\n" + structuredDocument.debugContents());
+		// System.out.println("structure:\n" + structuredDocument.debugStructuredContents());
+		// System.out.println("Used styles: " + structuredDocument.getStyles());
 
 		assertEquals(5, structuredDocument.getStyles().size());
 		DocXStyle docDefaults = (DocXStyle) structuredDocument.getStyleByName("DocDefaults");
@@ -212,32 +207,54 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 		DocXParagraph section1Paragraph = (DocXParagraph) structuredDocument.getElements().get(1);
 		assertSame(heading1, section1Paragraph.getStyle());
 
-		DocXParagraph paragraph = (DocXParagraph) structuredDocument.getElements().get(2);
-		assertNull(paragraph.getStyle());
+		DocXParagraph paragraph1 = (DocXParagraph) structuredDocument.getElements().get(2);
+		assertNull(paragraph1.getStyle());
 
-		System.out.println("UIPriority docDefaults = "
-				+ (docDefaults.getStyle().getUiPriority() != null ? docDefaults.getStyle().getUiPriority().getVal() : "none"));
-		System.out.println("UIPriority normal = "
-				+ (normal.getStyle().getUiPriority() != null ? normal.getStyle().getUiPriority().getVal() : "none"));
-		System.out.println("UIPriority title = "
-				+ (title.getStyle().getUiPriority() != null ? title.getStyle().getUiPriority().getVal() : "none"));
-		System.out.println("UIPriority heading1 = "
-				+ (heading1.getStyle().getUiPriority() != null ? heading1.getStyle().getUiPriority().getVal() : "none"));
-		System.out.println("UIPriority heading2 = "
-				+ (heading2.getStyle().getUiPriority() != null ? heading2.getStyle().getUiPriority().getVal() : "none"));
+		DocXParagraph subSection1Paragraph = (DocXParagraph) structuredDocument.getElements().get(3);
+		assertSame(heading2, subSection1Paragraph.getStyle());
 
+		DocXParagraph paragraph2 = (DocXParagraph) structuredDocument.getElements().get(4);
+		assertNull(paragraph2.getStyle());
+
+		DocXParagraph subSection2Paragraph = (DocXParagraph) structuredDocument.getElements().get(5);
+		assertSame(heading2, subSection2Paragraph.getStyle());
+
+		DocXParagraph paragraph3 = (DocXParagraph) structuredDocument.getElements().get(6);
+		assertNull(paragraph3.getStyle());
+
+		DocXParagraph section2Paragraph = (DocXParagraph) structuredDocument.getElements().get(7);
+		assertSame(heading1, section2Paragraph.getStyle());
+
+		DocXParagraph paragraph4 = (DocXParagraph) structuredDocument.getElements().get(8);
+		assertNull(paragraph4.getStyle());
+		DocXParagraph paragraph5 = (DocXParagraph) structuredDocument.getElements().get(9);
+		assertNull(paragraph5.getStyle());
+		DocXParagraph paragraph6 = (DocXParagraph) structuredDocument.getElements().get(10);
+		assertNull(paragraph6.getStyle());
+		DocXParagraph paragraph7 = (DocXParagraph) structuredDocument.getElements().get(11);
+		assertNull(paragraph7.getStyle());
+		DocXParagraph paragraph8 = (DocXParagraph) structuredDocument.getElements().get(12);
+		assertNull(paragraph8.getStyle());
+
+		assertSameList(structuredDocument.getRootElements(), titleParagraph, section1Paragraph, section2Paragraph);
+
+		assertSameList(structuredDocument.getRootElements(), titleParagraph, section1Paragraph, section2Paragraph);
+		assertSameList(section1Paragraph.getChildrenElements(), paragraph1, subSection1Paragraph, subSection2Paragraph);
+		assertSameList(subSection1Paragraph.getChildrenElements(), paragraph2);
+		assertSameList(subSection2Paragraph.getChildrenElements(), paragraph3);
+		assertSameList(section2Paragraph.getChildrenElements(), paragraph4, paragraph5, paragraph6, paragraph7, paragraph8);
 	}
 
-	/*@Test
+	@Test
 	@TestOrder(6)
 	public void testDocumentWithTableLoading() {
 
 		DocXDocument documentWithTable = getDocument("DocumentWithTable.docx");
 
-		// System.out.println(documentWithImage.debugContents());
+		System.out.println("DocumentWithTable.docx:\n" + documentWithTable.debugStructuredContents());
 
-		System.out.println("Elements: " + documentWithTable.getElements().size());
-
+		/*System.out.println("Elements: " + documentWithTable.getElements().size());
+		
 		for (FlexoDocumentElement<?, ?> element : documentWithTable.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
@@ -246,7 +263,7 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 			} else {
 				System.out.println("* Element " + element);
 			}
-		}
+		}*/
 
 	}
 
@@ -256,10 +273,10 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 
 		DocXDocument documentWithImage = getDocument("DocumentWithImage.docx");
 
-		// System.out.println(documentWithImage.debugContents());
+		System.out.println("DocumentWithImage.docx:\n" + documentWithImage.debugStructuredContents());
 
-		System.out.println("Elements: " + documentWithImage.getElements().size());
-
+		/*System.out.println("Elements: " + documentWithImage.getElements().size());
+		
 		for (FlexoDocumentElement<?, ?> element : documentWithImage.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
@@ -268,8 +285,8 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 			} else {
 				System.out.println("* Element " + element);
 			}
-		}
+		}*/
 
-	}*/
+	}
 
 }

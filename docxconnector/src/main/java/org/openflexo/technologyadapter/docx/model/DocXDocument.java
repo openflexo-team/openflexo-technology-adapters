@@ -80,7 +80,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 	public String debugStructuredContents();
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
 
 		@Override
 		public DocXDocument getFlexoDocument() {
@@ -218,8 +218,6 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		}
 
 		private String debugStructuredContents(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> element, int indent) {
-			System.out.println("element=" + element);
-			System.out.println("children=" + element.getChildrenElements());
 			StringBuffer result = new StringBuffer();
 			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + element + "\n");
 			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
@@ -233,8 +231,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			if (obj instanceof JAXBElement)
 				obj = ((JAXBElement<?>) obj).getValue();
 
-			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj
-					+ "\n");
+			result.append(
+					StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj + "\n");
 
 			if (obj instanceof ContentAccessor) {
 				indent++;
