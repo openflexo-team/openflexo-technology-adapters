@@ -91,8 +91,8 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -132,7 +132,7 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 		return document;
 	}
 
-	@Test
+	/*@Test
 	@TestOrder(4)
 	public void testSimpleDocumentLoading() {
 
@@ -145,9 +145,13 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 		for (FlexoDocumentElement<?, ?> element : simpleDocument.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
-				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
-						+ (paragraph.getP().getPPr() != null && paragraph.getP().getPPr().getPStyle() != null
-								? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
+				System.out.println("* Paragraph "
+						+ paragraph.getP().getParaId()
+						+ " "
+						+ paragraph.getP()
+						+ " "
+						+ (paragraph.getP().getPPr() != null && paragraph.getP().getPPr().getPStyle() != null ? "["
+								+ paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
 			} else {
 				System.out.println("* Element " + element);
 			}
@@ -157,7 +161,7 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 
 		DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
 
-	}
+	}*/
 
 	@Test
 	@TestOrder(5)
@@ -180,6 +184,8 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 				System.out.println("* Element " + element);
 			}
 		}
+		System.out.println("contents:\n" + structuredDocument.debugContents());
+		System.out.println("structure:\n" + structuredDocument.debugStructuredContents());
 
 		System.out.println("Used styles: " + structuredDocument.getStyles());
 
@@ -208,9 +214,21 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 
 		DocXParagraph paragraph = (DocXParagraph) structuredDocument.getElements().get(2);
 		assertNull(paragraph.getStyle());
+
+		System.out.println("UIPriority docDefaults = "
+				+ (docDefaults.getStyle().getUiPriority() != null ? docDefaults.getStyle().getUiPriority().getVal() : "none"));
+		System.out.println("UIPriority normal = "
+				+ (normal.getStyle().getUiPriority() != null ? normal.getStyle().getUiPriority().getVal() : "none"));
+		System.out.println("UIPriority title = "
+				+ (title.getStyle().getUiPriority() != null ? title.getStyle().getUiPriority().getVal() : "none"));
+		System.out.println("UIPriority heading1 = "
+				+ (heading1.getStyle().getUiPriority() != null ? heading1.getStyle().getUiPriority().getVal() : "none"));
+		System.out.println("UIPriority heading2 = "
+				+ (heading2.getStyle().getUiPriority() != null ? heading2.getStyle().getUiPriority().getVal() : "none"));
+
 	}
 
-	@Test
+	/*@Test
 	@TestOrder(6)
 	public void testDocumentWithTableLoading() {
 
@@ -252,6 +270,6 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 			}
 		}
 
-	}
+	}*/
 
 }

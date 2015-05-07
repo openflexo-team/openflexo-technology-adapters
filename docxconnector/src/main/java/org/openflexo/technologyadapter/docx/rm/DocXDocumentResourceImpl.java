@@ -50,14 +50,14 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFactory;
 import org.openflexo.toolbox.FileUtils;
 
-public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory>implements DocXDocumentResource {
+public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory> implements DocXDocumentResource {
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceImpl.class.getPackage().getName());
 
 	public static DocXDocumentResource makeDocXDocumentResource(String modelURI, File modelFile,
 			DocXTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, FileFlexoIODelegate.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class,
+					FileFlexoIODelegate.class));
 			DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
 			returned.initName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
@@ -79,8 +79,8 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 
 	public static DocXDocumentResource retrieveDocXDocumentResource(File modelFile, DocXTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, FileFlexoIODelegate.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class,
+					FileFlexoIODelegate.class));
 			DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
 			returned.initName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
@@ -101,8 +101,6 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 
 	@Override
 	protected DocXDocument performLoad() throws IOException, Exception {
-
-		System.out.println("Hop, on charge le document " + getFile());
 
 		try {
 			WordprocessingMLPackage wpmlPackage = WordprocessingMLPackage.load(getFile());
@@ -163,8 +161,8 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 		try {
 			out = new FileOutputStream(docxDir);
 			StreamResult result = new StreamResult(out);
-			TransformerFactory factory = TransformerFactory
-					.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
+			TransformerFactory factory = TransformerFactory.newInstance(
+					"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
 
 			Transformer transformer = factory.newTransformer();
 

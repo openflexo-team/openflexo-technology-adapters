@@ -37,6 +37,7 @@ import org.docx4j.wml.P;
 import org.docx4j.wml.Style;
 import org.docx4j.wml.Text;
 import org.openflexo.foundation.doc.FlexoDocument;
+import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoStyle;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -77,7 +78,9 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 	public String debugContents();
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
+	public String debugStructuredContents();
+
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
 
 		@Override
 		public DocXDocument getFlexoDocument() {
@@ -123,14 +126,35 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 			StyleTree styleTree = wpmlPackage.getMainDocumentPart().getStyleTree();
 
-			System.out.println("les styles disponibles=" + styleTree.getParagraphStylesTree());
-
 			List<DocXStyle> stylesToRemove = new ArrayList<>(styles.values());
 
 			registerStyle(styleTree.getParagraphStylesTree().getRootElement(), null, stylesToRemove, factory);
 
 			for (DocXStyle styleToRemove : stylesToRemove) {
 				removeFromStyles(styleToRemove);
+			}
+
+			/*StyleDefinitionsPart sdp = wpmlPackage.getMainDocumentPart().getStyleDefinitionsPart();
+			try {
+				for (Style s : sdp.getContents().getStyle()) {
+					System.out.println("# style " + s.getName().getVal() + " "
+							+ (s.getUiPriority() != null ? s.getUiPriority().getVal() : ""));
+				}
+			} catch (Docx4JException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+
+			/*for (FlexoStyle<DocXDocument, DocXTechnologyAdapter> s : getStyles()) {
+				System.out.println("% Style " + s.getStyleId() + " name=" + s.getName());
+			}*/
+
+			// Temporaray solution to provide structuring styles
+			for (int i = 1; i < 10; i++) {
+				DocXStyle headingStyle = (DocXStyle) getStyleByName("heading " + i);
+				if (headingStyle != null) {
+					addToStructuringStyles(headingStyle);
+				}
 			}
 
 			for (DocXParagraph p : getElements(DocXParagraph.class)) {
@@ -149,9 +173,9 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				DocXFactory factory) {
 			if (styleNode != null && styleNode.getData() != null) {
 				Style style = styleNode.getData().getStyle();
-				System.out.println("Registering Style " + style.getName().getVal());
-				System.out.println("StyleId " + style.getStyleId());
-				System.out.println("Aliases " + style.getAliases());
+				// System.out.println("Registering Style " + style.getName().getVal());
+				// System.out.println("StyleId " + style.getStyleId());
+				// System.out.println("Aliases " + style.getAliases());
 				DocXStyle parentStyle = (parentNode != null ? styles.get(parentNode.data.getStyle()) : null);
 				DocXStyle docXStyle = styles.get(style);
 				if (docXStyle != null) {
@@ -184,13 +208,33 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			return printContents(getWordprocessingMLPackage().getMainDocumentPart(), 0);
 		}
 
+		@Override
+		public String debugStructuredContents() {
+			StringBuffer result = new StringBuffer();
+			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : getRootElements()) {
+				result.append(debugStructuredContents(e, 1));
+			}
+			return result.toString();
+		}
+
+		private String debugStructuredContents(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> element, int indent) {
+			System.out.println("element=" + element);
+			System.out.println("children=" + element.getChildrenElements());
+			StringBuffer result = new StringBuffer();
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + element + "\n");
+			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
+				result.append(debugStructuredContents(e, indent + 1));
+			}
+			return result.toString();
+		}
+
 		private String printContents(Object obj, int indent) {
 			StringBuffer result = new StringBuffer();
 			if (obj instanceof JAXBElement)
 				obj = ((JAXBElement<?>) obj).getValue();
 
-			result.append(
-					StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj + "\n");
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj
+					+ "\n");
 
 			if (obj instanceof ContentAccessor) {
 				indent++;
