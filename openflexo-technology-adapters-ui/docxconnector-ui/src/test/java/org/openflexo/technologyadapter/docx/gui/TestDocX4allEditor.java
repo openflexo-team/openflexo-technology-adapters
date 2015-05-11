@@ -40,28 +40,9 @@ package org.openflexo.technologyadapter.docx.gui;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.awt.BorderLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
 
-import javax.swing.JEditorPane;
-import javax.swing.JPanel;
-
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileSystemManager;
-import org.apache.commons.vfs.VFS;
-import org.apache.commons.vfs.provider.local.DefaultLocalFileProvider;
-import org.docx4all.datatransfer.TransferHandler;
-import org.docx4all.script.FxScriptUIHelper;
-import org.docx4all.swing.WordMLTextPane;
-import org.docx4all.swing.text.WordMLDocument;
-import org.docx4all.swing.text.WordMLDocumentFilter;
-import org.docx4all.swing.text.WordMLEditorKit;
-import org.docx4all.ui.main.Constants;
-import org.docx4all.ui.main.ToolBarStates;
-import org.docx4all.util.DocUtil;
-import org.jdesktop.application.ResourceMap;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -71,16 +52,14 @@ import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.gui.widget.DocXEditor;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-
-import net.sf.vfsjfilechooser.utils.VFSUtils;
 
 /**
  * Test the structural and behavioural features of FIBOWLPropertySelector
@@ -146,34 +125,34 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 
 	@Test
 	@TestOrder(2)
-	public void testOpenSimpleDocumentEditor() throws FileSystemException {
+	public void testOpenSimpleDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		simpleDocument = getDocument("SimpleDocument.docx");
 		assertNotNull(simpleDocument);
-		openDoxEditor(simpleDocument.getResource());
+		openDocXEditor(simpleDocument.getResource());
 	}
 
 	@Test
 	@TestOrder(3)
-	public void testOpenStructuredDocumentEditor() throws FileSystemException {
+	public void testOpenStructuredDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		structuredDocument = getDocument("StructuredDocument.docx");
 		assertNotNull(structuredDocument);
-		openDoxEditor(structuredDocument.getResource());
+		openDocXEditor(structuredDocument.getResource());
 	}
 
 	@Test
 	@TestOrder(4)
-	public void testOpenDocumentWithTableEditor() throws FileSystemException {
+	public void testOpenDocumentWithTableEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithTable = getDocument("DocumentWithTable.docx");
 		assertNotNull(documentWithTable);
-		openDoxEditor(documentWithTable.getResource());
+		openDocXEditor(documentWithTable.getResource());
 	}
 
 	@Test
 	@TestOrder(5)
-	public void testOpenDocumentWithImageEditor() throws FileSystemException {
+	public void testOpenDocumentWithImageEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		documentWithImage = getDocument("DocumentWithImage.docx");
 		assertNotNull(documentWithImage);
-		openDoxEditor(documentWithImage.getResource());
+		openDocXEditor(documentWithImage.getResource());
 	}
 
 	public static void initGUI() {
@@ -196,30 +175,35 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		gcDelegate.tearDown();
 	}
 
-	private void openDoxEditor(FlexoResource<DocXDocument> docResource) throws FileSystemException {
+	private void openDocXEditor(FlexoResource<DocXDocument> docResource) throws FileNotFoundException, ResourceLoadingCancelledException,
+			FlexoException {
 
-		DefaultLocalFileProvider p = new DefaultLocalFileProvider();
+		/*DefaultLocalFileProvider p = new DefaultLocalFileProvider();
 		File f = ((FileFlexoIODelegate) docResource.getFlexoIODelegate()).getFile();
 		FileSystemManager fsManager = VFS.getManager();
-		FileObject fo = fsManager.resolveFile(docResource.getURI());
+		FileObject fo = fsManager.resolveFile(docResource.getURI());*/
 
-		ToolBarStates _toolbarStates = new ToolBarStates();
+		/*ToolBarStates _toolbarStates = new ToolBarStates();
 
 		JPanel toolbar = FxScriptUIHelper.getInstance().createToolBar(_toolbarStates);
 
-		JEditorPane editorView = createEditorView(fo, _toolbarStates);
+		DocXDocument document = docResource.getResourceData(null);
+
+		JEditorPane editorView = createEditorView(document, _toolbarStates);
 
 		JPanel editorPanel = FxScriptUIHelper.getInstance().createEditorPanel(editorView);
 
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(toolbar, BorderLayout.NORTH);
-		panel.add(editorPanel, BorderLayout.CENTER);
+		panel.add(editorPanel, BorderLayout.CENTER);*/
 
-		gcDelegate.addTab(f.getName(), panel);
+		DocXEditor editor = new DocXEditor(docResource.getResourceData(null));
+
+		gcDelegate.addTab(docResource.getName(), editor);
 
 	}
 
-	private JEditorPane createEditorView(FileObject f, ToolBarStates _toolbarStates) {
+	/*private JEditorPane createEditorView(DocXDocument document, ToolBarStates _toolbarStates) {
 
 		// Clipboard clipboard = getContext().getClipboard();
 		// clipboard.addFlavorListener(_toolbarStates);
@@ -227,11 +211,6 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		// when there is a DataFlavor change in Clipboard.
 		// Therefore, make sure that toolbarStates' _isPasteEnable property
 		// is initialised correctly.
-		/*	boolean available = clipboard.isDataFlavorAvailable(WordMLTransferable.STRING_FLAVOR)
-					|| clipboard.isDataFlavorAvailable(WordMLTransferable.WORDML_FRAGMENT_FLAVOR);
-			_toolbarStates.setPasteEnabled(available);*/
-
-		String fileUri = f.getName().getURI();
 
 		WordMLTextPane editorView = new WordMLTextPane();
 		editorView.addFocusListener(_toolbarStates);
@@ -244,37 +223,24 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		WordMLDocument doc = null;
 
 		try {
-			if (f.exists()) {
-				doc = editorKit.read(f);
+			doc = editorKit.openDocument(document.getWordprocessingMLPackage());
+
+			doc.putProperty(WordMLDocument.FILE_PATH_PROPERTY, document.getResource().getURI());
+			doc.addDocumentListener(_toolbarStates);
+			doc.setDocumentFilter(new WordMLDocumentFilter());
+			editorView.setDocument(doc);
+			editorView.putClientProperty(Constants.LOCAL_VIEWS_SYNCHRONIZED_FLAG, Boolean.TRUE);
+
+			if (DocUtil.isSharedDocument(doc)) {
+				editorKit.initPlutextClient(editorView);
 			}
+
 		} catch (Exception exc) {
 			exc.printStackTrace();
-
-			ResourceMap rm = null; // getContext().getResourceMap();
-			String title = rm.getString(Constants.INIT_EDITOR_VIEW_IO_ERROR_DIALOG_TITLE);
-			StringBuffer msg = new StringBuffer();
-			msg.append(rm.getString(Constants.INIT_EDITOR_VIEW_IO_ERROR_MESSAGE));
-			msg.append(Constants.NEWLINE);
-			msg.append(VFSUtils.getFriendlyName(fileUri));
-			// showMessageDialog(title, msg.toString(), JOptionPane.ERROR_MESSAGE);
 			doc = null;
 		}
 
-		if (doc == null) {
-			doc = (WordMLDocument) editorKit.createDefaultDocument();
-		}
-
-		doc.putProperty(WordMLDocument.FILE_PATH_PROPERTY, fileUri);
-		doc.addDocumentListener(_toolbarStates);
-		doc.setDocumentFilter(new WordMLDocumentFilter());
-		editorView.setDocument(doc);
-		editorView.putClientProperty(Constants.LOCAL_VIEWS_SYNCHRONIZED_FLAG, Boolean.TRUE);
-
-		if (DocUtil.isSharedDocument(doc)) {
-			editorKit.initPlutextClient(editorView);
-		}
-
 		return editorView;
-	}
+	}*/
 
 }

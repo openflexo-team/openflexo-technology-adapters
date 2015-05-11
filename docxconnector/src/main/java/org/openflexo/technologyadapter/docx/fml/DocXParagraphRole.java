@@ -20,7 +20,11 @@
 
 package org.openflexo.technologyadapter.docx.fml;
 
+import java.lang.reflect.Type;
+
 import org.openflexo.foundation.doc.fml.FlexoParagraphRole;
+import org.openflexo.foundation.fml.rt.ActorReference;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -33,5 +37,25 @@ public interface DocXParagraphRole extends FlexoParagraphRole<DocXParagraph> {
 
 	public static abstract class DocXParagraphRoleImpl extends FlexoParagraphRoleImpl<DocXParagraph> implements DocXParagraphRole {
 
+		@Override
+		public Type getType() {
+			return DocXParagraph.class;
+		}
+
+		@Override
+		public boolean defaultBehaviourIsToBeDeleted() {
+			return true;
+		}
+
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Clone;
+		}
+
+		@Override
+		public ActorReference<DocXParagraph> makeActorReference(DocXParagraph object, FlexoConceptInstance epi) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 }

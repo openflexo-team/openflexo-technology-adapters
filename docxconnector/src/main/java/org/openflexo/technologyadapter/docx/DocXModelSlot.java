@@ -26,10 +26,12 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.technologyadapter.FreeModelSlot.FreeModelSlotImpl;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -41,6 +43,8 @@ import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
 import org.openflexo.technologyadapter.docx.fml.action.AddDocXParagraph;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * Implementation of the ModelSlot class for the DOCX technology adapter<br>
@@ -74,10 +78,10 @@ public interface DocXModelSlot extends FreeModelSlot<DocXDocument> {
 	public void setTemplateDocumentURI(String templateDocumentURI);
 
 	@Getter(TEMPLATE_RESOURCE_KEY)
-	public FlexoResource<DocXDocument> getTemplateResource();
+	public DocXDocumentResource getTemplateResource();
 
 	@Setter(TEMPLATE_RESOURCE_KEY)
-	public void setTemplateResource(FlexoResource<DocXDocument> templateResource);
+	public void setTemplateResource(DocXDocumentResource templateResource);
 
 	public static abstract class DocXModelSlotImpl extends FreeModelSlotImpl<DocXDocument> implements DocXModelSlot {
 
@@ -112,6 +116,48 @@ public interface DocXModelSlot extends FreeModelSlot<DocXDocument> {
 		@Override
 		public DocXTechnologyAdapter getModelSlotTechnologyAdapter() {
 			return (DocXTechnologyAdapter) super.getModelSlotTechnologyAdapter();
+		}
+
+		private String templateDocumentURI;
+
+		@Override
+		public DocXDocumentResource getTemplateResource() {
+			DocXDocumentResource returned = (DocXDocumentResource) performSuperGetter(TEMPLATE_RESOURCE_KEY);
+			if (returned == null && StringUtils.isNotEmpty(templateDocumentURI) && getInformationSpace() != null) {
+				returned = (DocXDocumentResource) getInformationSpace().getResource(templateDocumentURI, null);
+			}
+			return returned;
+		}
+
+		@Override
+		public String getTemplateDocumentURI() {
+			if (getTemplateResource() != null) {
+				return getTemplateResource().getURI();
+			}
+			return templateDocumentURI;
+		}
+
+		@Override
+		public void setTemplateDocumentURI(String templateDocumentURI) {
+			if ((templateDocumentURI == null && this.templateDocumentURI != null)
+					|| (templateDocumentURI != null && !templateDocumentURI.equals(this.templateDocumentURI))) {
+				String oldValue = this.templateDocumentURI;
+				this.templateDocumentURI = templateDocumentURI;
+				getPropertyChangeSupport().firePropertyChange("templateDocumentURI", oldValue, templateDocumentURI);
+			}
+		}
+
+		@Override
+		public TechnologyAdapterResource<DocXDocument, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public TechnologyAdapterResource<DocXDocument, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
+				String relativePath, String filename, String modelUri) {
+			// TODO Auto-generated method stub
+			return null;
 		}
 
 	}

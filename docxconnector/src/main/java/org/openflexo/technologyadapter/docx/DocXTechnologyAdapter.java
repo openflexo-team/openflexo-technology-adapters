@@ -180,8 +180,10 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 
 	@Override
 	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-
+		if (contents instanceof File) {
+			File candidateFile = (File) contents;
+			DocXDocumentResource docXRes = tryToLookupDocX(resourceCenter, candidateFile);
+		}
 	}
 
 	@Override

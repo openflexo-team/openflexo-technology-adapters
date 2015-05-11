@@ -70,7 +70,7 @@ public class DocXFactory extends ModelFactory implements PamelaResourceModelFact
 	private FlexoUndoManager undoManager = null;
 
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXStyle.class));
+		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXFragment.class, DocXStyle.class));
 		this.resource = resource;
 		setEditingContext(editingContext);
 		if (resource != null) {
@@ -101,6 +101,13 @@ public class DocXFactory extends ModelFactory implements PamelaResourceModelFact
 		if (parent != null) {
 			returned.setParentStyle(parent);
 		}
+		return returned;
+	}
+
+	public DocXFragment makeNewDocXFragment(DocXParagraph startParagraph, DocXParagraph endParagraph) {
+		DocXFragment returned = newInstance(DocXFragment.class);
+		returned.setStartElement(startParagraph);
+		returned.setEndElement(endParagraph);
 		return returned;
 	}
 

@@ -20,18 +20,42 @@
 
 package org.openflexo.technologyadapter.docx.fml;
 
-import org.openflexo.foundation.doc.fml.FlexoParagraphRole;
+import java.lang.reflect.Type;
+
+import org.openflexo.foundation.doc.fml.FlexoDocumentFragmentRole;
+import org.openflexo.foundation.fml.rt.ActorReference;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 @ModelEntity
-@ImplementationClass(DocXFragmentRole.DocXParagraphRoleImpl.class)
+@ImplementationClass(DocXFragmentRole.DocXFragmentRoleImpl.class)
 @XMLElement
-public interface DocXFragmentRole extends FlexoParagraphRole<DocXParagraph> {
+public interface DocXFragmentRole extends FlexoDocumentFragmentRole<DocXFragment> {
 
-	public static abstract class DocXParagraphRoleImpl extends FlexoParagraphRoleImpl<DocXParagraph> implements DocXFragmentRole {
+	public static abstract class DocXFragmentRoleImpl extends FlexoDocumentFragmentRoleImpl<DocXFragment> implements DocXFragmentRole {
 
+		@Override
+		public Type getType() {
+			return DocXFragment.class;
+		}
+
+		@Override
+		public boolean defaultBehaviourIsToBeDeleted() {
+			return true;
+		}
+
+		@Override
+		public RoleCloningStrategy defaultCloningStrategy() {
+			return RoleCloningStrategy.Clone;
+		}
+
+		@Override
+		public ActorReference<DocXFragment> makeActorReference(DocXFragment object, FlexoConceptInstance epi) {
+			// TODO Auto-generated method stub
+			return null;
+		}
 	}
 }

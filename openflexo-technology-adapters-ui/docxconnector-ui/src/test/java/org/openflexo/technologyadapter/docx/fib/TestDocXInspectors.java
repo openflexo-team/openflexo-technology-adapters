@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2014-2015, Openflexo
  * 
  * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
  * developed at Openflexo.
@@ -39,29 +39,35 @@
 package org.openflexo.technologyadapter.docx.fib;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
+import org.openflexo.fib.utils.GenericFIBInspectorTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
-public class TestDocXWidgetFibs extends GenericFIBTestCase {
+public class TestDocXInspectors extends GenericFIBInspectorTestCase {
 
 	/*
 	 * Use this method to print all
 	 * Then copy-paste 
 	 */
+
 	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Widget")).getFile(),
-				"Fib/Widget/"));
+		System.out.println(generateInspectorTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Inspectors/DocX")).getFile(),
+				"Inspectors/DocX/"));
 	}
 
 	@Test
-	public void testFIBDocXDocumentBrowser() {
-		validateFIB("Fib/Widget/FIBDocXDocumentBrowser.fib");
+	public void testDocXDocumentInspector() {
+		validateFIB("Inspectors/DocX/DocXDocument.inspector");
 	}
 
 	@Test
-	public void testFIBDocXFragmentSelector() {
-		validateFIB("Fib/Widget/FIBDocXFragmentSelector.fib");
+	public void testDocXDocumentResourceInspector() {
+		validateFIB("Inspectors/DocX/DocXDocumentResource.inspector");
+	}
+
+	@Test
+	public void testDocXModelSlotInspector() {
+		validateFIB("Inspectors/DocX/DocXModelSlot.inspector");
 	}
 
 }

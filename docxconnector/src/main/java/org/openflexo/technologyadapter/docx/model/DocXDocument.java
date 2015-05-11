@@ -39,6 +39,7 @@ import org.docx4j.wml.Text;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoStyle;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -80,7 +81,9 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 	public String debugStructuredContents();
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
+	public DocXFactory getDocXFactory();
+
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
 
 		@Override
 		public DocXDocument getFlexoDocument() {
@@ -91,7 +94,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		public void setWordprocessingMLPackage(WordprocessingMLPackage wpmlPackage) {
 			if ((wpmlPackage == null && getWordprocessingMLPackage() != null)
 					|| (wpmlPackage != null && !wpmlPackage.equals(getWordprocessingMLPackage()))) {
-				updateFromWordprocessingMLPackage(wpmlPackage, ((DocXDocumentResource) getResource()).getFactory());
+				updateFromWordprocessingMLPackage(wpmlPackage, getResource().getFactory());
 			}
 		}
 
@@ -231,8 +234,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			if (obj instanceof JAXBElement)
 				obj = ((JAXBElement<?>) obj).getValue();
 
-			result.append(
-					StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj + "\n");
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj
+					+ "\n");
 
 			if (obj instanceof ContentAccessor) {
 				indent++;
@@ -270,6 +273,31 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				if (textElement.getValue().equals(placeholder)) {
 					textElement.setValue(name);
 				}
+			}
+		}
+
+		@Override
+		public DocXFactory getDocXFactory() {
+
+			if (getResource() != null) {
+				return getResource().getFactory();
+			}
+			return null;
+		}
+
+		private DocXDocumentResource resource;
+
+		@Override
+		public DocXDocumentResource getResource() {
+			return resource;
+		}
+
+		@Override
+		public void setResource(FlexoResource<DocXDocument> resource) {
+			if ((resource == null && this.resource != null) || (resource != null && !resource.equals(this.resource))) {
+				FlexoResource<DocXDocument> oldValue = this.resource;
+				this.resource = (DocXDocumentResource) resource;
+				getPropertyChangeSupport().firePropertyChange("resource", oldValue, resource);
 			}
 		}
 
