@@ -27,32 +27,59 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
+import org.openflexo.foundation.technologyadapter.FreeModelSlot.FreeModelSlotImpl;
+import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
 import org.openflexo.technologyadapter.docx.fml.action.AddDocXParagraph;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 
 /**
  * Implementation of the ModelSlot class for the DOCX technology adapter<br>
- * We expect here to connect an .docx document
+ * We expect here to connect an .docx document<br>
+ * 
+ * We might here supply a template document, which might be used as a "metamodel" to help manage connected document
  * 
  * @author sylvain
  * 
  */
-@DeclareFlexoRoles({ DocXParagraphRole.class })
+@DeclareFlexoRoles({ DocXParagraphRole.class, DocXFragmentRole.class })
 @DeclareEditionActions({ AddDocXParagraph.class })
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
 @XMLElement
 public interface DocXModelSlot extends FreeModelSlot<DocXDocument> {
 
+	@PropertyIdentifier(type = String.class)
+	public static final String TEMPLATE_DOCUMENT_URI_KEY = "templateDocumentURI";
+	@PropertyIdentifier(type = FlexoResource.class)
+	public static final String TEMPLATE_RESOURCE_KEY = "templateResource";
+
 	@Override
 	public DocXTechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public static abstract class DocXModelSlotImpl extends FreeModelSlotImpl<DocXDocument>implements DocXModelSlot {
+	@Getter(value = TEMPLATE_DOCUMENT_URI_KEY)
+	@XMLAttribute
+	public String getTemplateDocumentURI();
+
+	@Setter(TEMPLATE_DOCUMENT_URI_KEY)
+	public void setTemplateDocumentURI(String templateDocumentURI);
+
+	@Getter(TEMPLATE_RESOURCE_KEY)
+	public FlexoResource<DocXDocument> getTemplateResource();
+
+	@Setter(TEMPLATE_RESOURCE_KEY)
+	public void setTemplateResource(FlexoResource<DocXDocument> templateResource);
+
+	public static abstract class DocXModelSlotImpl extends FreeModelSlotImpl<DocXDocument> implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 

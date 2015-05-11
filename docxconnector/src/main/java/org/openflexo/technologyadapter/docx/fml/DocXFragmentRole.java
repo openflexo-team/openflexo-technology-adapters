@@ -27,11 +27,11 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
 @ModelEntity
-@ImplementationClass(DocXParagraphRole.DocXParagraphRoleImpl.class)
+@ImplementationClass(DocXFragmentRole.DocXParagraphRoleImpl.class)
 @XMLElement
-public interface DocXParagraphRole extends FlexoParagraphRole<DocXParagraph> {
+public interface DocXFragmentRole extends FlexoParagraphRole<DocXParagraph> {
 
-	public static abstract class DocXParagraphRoleImpl extends FlexoParagraphRoleImpl<DocXParagraph> implements DocXParagraphRole {
+	public static abstract class DocXParagraphRoleImpl extends FlexoParagraphRoleImpl<DocXParagraph> implements DocXFragmentRole {
 
 	}
 }

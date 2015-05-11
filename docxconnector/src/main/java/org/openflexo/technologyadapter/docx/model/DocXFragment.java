@@ -1,5 +1,5 @@
 /*
- * (c) Copyright 2013- Openflexo
+ * (c) Copyright 2013 Openflexo
  *
  * This file is part of OpenFlexo.
  *
@@ -18,20 +18,28 @@
  *
  */
 
-package org.openflexo.technologyadapter.docx.fml;
+package org.openflexo.technologyadapter.docx.model;
 
-import org.openflexo.foundation.doc.fml.FlexoParagraphRole;
+import org.openflexo.foundation.doc.FlexoDocumentFragment;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
+/**
+ * Implementation of {@link FlexoDocumentFragment} for {@link DocXTechnologyAdapter}
+ * 
+ * @author sylvain
+ *
+ */
 @ModelEntity
-@ImplementationClass(DocXParagraphRole.DocXParagraphRoleImpl.class)
+@ImplementationClass(DocXFragment.DocXFragmentImpl.class)
 @XMLElement
-public interface DocXParagraphRole extends FlexoParagraphRole<DocXParagraph> {
+public interface DocXFragment extends DocXObject, FlexoDocumentFragment<DocXDocument, DocXTechnologyAdapter> {
 
-	public static abstract class DocXParagraphRoleImpl extends FlexoParagraphRoleImpl<DocXParagraph> implements DocXParagraphRole {
+	public static abstract class DocXFragmentImpl extends FlexoDocumentFragmentImpl<DocXDocument, DocXTechnologyAdapter> implements
+			DocXFragment {
 
 	}
+
 }
