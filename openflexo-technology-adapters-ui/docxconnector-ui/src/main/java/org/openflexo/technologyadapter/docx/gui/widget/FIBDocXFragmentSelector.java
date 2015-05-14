@@ -39,13 +39,22 @@
 
 package org.openflexo.technologyadapter.docx.gui.widget;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.components.widget.FIBFlexoObjectSelector;
+import org.docx4all.swing.text.DocumentElement;
+import org.openflexo.components.widget.FIBDocumentFragmentSelector;
 import org.openflexo.foundation.doc.FlexoDocument;
+import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoDocumentFragment;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXFragment;
+import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
 /**
  * Widget allowing to select an {@link FlexoDocumentFragment} inside a {@link FlexoDocument}<br>
@@ -54,14 +63,12 @@ import org.openflexo.rm.ResourceLocator;
  * 
  */
 @SuppressWarnings("serial")
-public class FIBDocXFragmentSelector extends FIBFlexoObjectSelector<FlexoDocumentFragment> {
+public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFragment, DocXDocument, DocXTechnologyAdapter> {
 	static final Logger logger = Logger.getLogger(FIBDocXFragmentSelector.class.getPackage().getName());
 
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/Widget/FIBDocXFragmentSelector.fib");
 
-	private FlexoDocument<?, ?> document;
-
-	public FIBDocXFragmentSelector(FlexoDocumentFragment editedObject) {
+	public FIBDocXFragmentSelector(DocXFragment editedObject) {
 		super(editedObject);
 	}
 
@@ -71,26 +78,50 @@ public class FIBDocXFragmentSelector extends FIBFlexoObjectSelector<FlexoDocumen
 	}
 
 	@Override
-	public Class<FlexoDocumentFragment> getRepresentedType() {
-		return FlexoDocumentFragment.class;
+	public Class<DocXFragment> getRepresentedType() {
+		return DocXFragment.class;
 	}
 
-	public FlexoDocument<?, ?> getDocument() {
-		return document;
-	}
+	@Override
+	protected void selectFragmentInDocumentEditor(DocXFragment fragment) {
+		super.selectFragmentInDocumentEditor(fragment);
 
-	public void setDocument(FlexoDocument<?, ?> document) {
-		if ((document == null && this.document != null) || (document != null && !document.equals(this.document))) {
-			FlexoDocument<?, ?> oldValue = this.document;
-			this.document = document;
-			getPropertyChangeSupport().firePropertyChange("document", oldValue, document);
+		// System.out.println("customPanel" + getCustomPanel());
+		// System.out.println("docEditorWidget=" + getCustomPanel().getDocEditorWidget());
+
+		DocXEditor docXEditor = (DocXEditor) getCustomPanel().getDocEditorWidget().getCustomComponent();
+
+		if (fragment == null) {
+			docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
+			return;
 		}
-	}
 
-	public String renderedString(FlexoDocument editedObject) {
-		if (editedObject != null) {
-			return editedObject.getName();
+		try {
+
+			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> fragmentElements = fragment.getElements();
+
+			List<DocumentElement> elts = new ArrayList<DocumentElement>();
+
+			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : fragment.getElements()) {
+				if (e instanceof DocXParagraph) {
+					DocumentElement docElement = docXEditor.getMLDocument().getElement(((DocXParagraph) e).getP());
+					elts.add(docElement);
+				}
+			}
+			docXEditor.getMLDocument().setSelectedElements(elts);
+
+			if (fragment.getStartElement() instanceof DocXParagraph) {
+				DocumentElement startElement = docXEditor.getMLDocument().getElement(((DocXParagraph) fragment.getStartElement()).getP());
+				System.out.println("startElement=" + startElement);
+				if (startElement != null) {
+					docXEditor.getEditorView().scrollToElement(startElement);
+				}
+			}
+
+			docXEditor.getEditorView().repaint();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		return "";
 	}
 }

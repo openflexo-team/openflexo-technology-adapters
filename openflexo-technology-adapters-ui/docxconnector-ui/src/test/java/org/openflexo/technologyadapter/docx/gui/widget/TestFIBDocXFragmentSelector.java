@@ -117,7 +117,7 @@ public class TestFIBDocXFragmentSelector extends OpenflexoTestCaseWithGUI {
 		DocXParagraph section1Paragraph = (DocXParagraph) structuredDocument.getElements().get(1);
 		DocXParagraph paragraph3 = (DocXParagraph) structuredDocument.getElements().get(6);
 
-		DocXFragment fragment = structuredDocument.getDocXFactory().makeNewDocXFragment(section1Paragraph, paragraph3);
+		DocXFragment fragment = structuredDocument.getFactory().makeNewDocXFragment(section1Paragraph, paragraph3);
 
 		selector = new FIBDocXFragmentSelector(fragment);
 		selector.setDocument(structuredDocument);

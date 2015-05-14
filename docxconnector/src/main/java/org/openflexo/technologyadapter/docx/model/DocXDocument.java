@@ -81,9 +81,10 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 	public String debugStructuredContents();
 
-	public DocXFactory getDocXFactory();
+	@Override
+	public DocXFactory getFactory();
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
 
 		@Override
 		public DocXDocument getFlexoDocument() {
@@ -234,8 +235,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			if (obj instanceof JAXBElement)
 				obj = ((JAXBElement<?>) obj).getValue();
 
-			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj
-					+ "\n");
+			result.append(
+					StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj + "\n");
 
 			if (obj instanceof ContentAccessor) {
 				indent++;
@@ -277,12 +278,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		}
 
 		@Override
-		public DocXFactory getDocXFactory() {
-
-			if (getResource() != null) {
-				return getResource().getFactory();
-			}
-			return null;
+		public DocXFactory getFactory() {
+			return (DocXFactory) super.getFactory();
 		}
 
 		private DocXDocumentResource resource;

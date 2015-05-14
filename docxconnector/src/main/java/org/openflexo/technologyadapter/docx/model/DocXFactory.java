@@ -43,15 +43,11 @@ import java.util.logging.Logger;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.P;
 import org.docx4j.wml.Style;
-import org.openflexo.foundation.FlexoObject;
-import org.openflexo.foundation.PamelaResourceModelFactory;
-import org.openflexo.foundation.action.FlexoUndoManager;
-import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
+import org.openflexo.foundation.doc.DocumentFactory;
 import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
-import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
@@ -61,46 +57,60 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
  * @author sylvain
  * 
  */
-public class DocXFactory extends ModelFactory implements PamelaResourceModelFactory<DocXDocumentResource> {
+public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAdapter> {
 
 	private static final Logger logger = Logger.getLogger(DocXFactory.class.getPackage().getName());
 
-	private final DocXDocumentResource resource;
-	private IgnoreLoadingEdits ignoreHandler = null;
-	private FlexoUndoManager undoManager = null;
-
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXFragment.class, DocXStyle.class));
-		this.resource = resource;
-		setEditingContext(editingContext);
-		if (resource != null) {
-			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
-		}
+		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXFragment.class, DocXStyle.class),
+				resource, editingContext);
 	}
 
 	@Override
 	public DocXDocumentResource getResource() {
-		return resource;
+		return (DocXDocumentResource) super.getResource();
+	}
+
+	@Override
+	protected DocXDocument makeDocument() {
+		return newInstance(DocXDocument.class);
 	}
 
 	public DocXDocument makeNewDocXDocument(WordprocessingMLPackage wpmlPackage) {
-		DocXDocument returned = newInstance(DocXDocument.class);
+		DocXDocument returned = makeDocument();
 		returned.updateFromWordprocessingMLPackage(wpmlPackage, this);
 		return returned;
 	}
 
+	@Override
+	protected DocXParagraph makeParagraph() {
+		return newInstance(DocXParagraph.class);
+	}
+
 	public DocXParagraph makeNewDocXParagraph(P p) {
-		DocXParagraph returned = newInstance(DocXParagraph.class);
+		DocXParagraph returned = makeParagraph();
 		returned.updateFromP(p, this);
 		return returned;
 	}
 
+	@Override
+	protected DocXStyle makeStyle() {
+		return newInstance(DocXStyle.class);
+	}
+
 	public DocXStyle makeNewDocXStyle(Style style, DocXStyle parent) {
-		DocXStyle returned = newInstance(DocXStyle.class);
+		DocXStyle returned = makeStyle();
 		returned.updateFromStyle(style, this);
 		if (parent != null) {
 			returned.setParentStyle(parent);
 		}
+		return returned;
+	}
+
+	@Override
+	protected DocXFragment makeFragment(DocXDocument document) {
+		DocXFragment returned = newInstance(DocXFragment.class);
+		returned.setFlexoDocument(document);
 		return returned;
 	}
 
@@ -109,39 +119,6 @@ public class DocXFactory extends ModelFactory implements PamelaResourceModelFact
 		returned.setStartElement(startParagraph);
 		returned.setEndElement(endParagraph);
 		return returned;
-	}
-
-	@Override
-	public synchronized void startDeserializing() {
-		EditingContext editingContext = getResource().getServiceManager().getEditingContext();
-
-		if (editingContext != null && editingContext.getUndoManager() instanceof FlexoUndoManager) {
-			undoManager = (FlexoUndoManager) editingContext.getUndoManager();
-			undoManager.addToIgnoreHandlers(ignoreHandler = new IgnoreLoadingEdits(resource));
-			// System.out.println("@@@@@@@@@@@@@@@@ START LOADING RESOURCE " + resource.getURI());
-		}
-
-	}
-
-	@Override
-	public synchronized void stopDeserializing() {
-		if (ignoreHandler != null) {
-			undoManager.removeFromIgnoreHandlers(ignoreHandler);
-			// System.out.println("@@@@@@@@@@@@@@@@ END LOADING RESOURCE " + resource.getURI());
-		}
-
-	}
-
-	@Override
-	public <I> void objectHasBeenDeserialized(I newlyCreatedObject, Class<I> implementedInterface) {
-		super.objectHasBeenDeserialized(newlyCreatedObject, implementedInterface);
-		if (newlyCreatedObject instanceof FlexoObject) {
-			if (getResource() != null) {
-				getResource().setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
-			} else {
-				logger.warning("Could not access resource beeing deserialized");
-			}
-		}
 	}
 
 }

@@ -39,17 +39,21 @@
 package org.openflexo.technologyadapter.docx.gui.widget;
 
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JEditorPane;
 import javax.swing.JPanel;
+import javax.swing.text.Element;
 
 import org.docx4all.datatransfer.TransferHandler;
 import org.docx4all.script.FxScriptUIHelper;
 import org.docx4all.swing.WordMLTextPane;
+import org.docx4all.swing.text.DocumentElement;
+import org.docx4all.swing.text.ViewFactory;
 import org.docx4all.swing.text.WordMLDocument;
 import org.docx4all.swing.text.WordMLDocumentFilter;
 import org.docx4all.swing.text.WordMLEditorKit;
@@ -71,7 +75,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 	private DocXDocument document;
 	private ToolBarStates _toolbarStates = new ToolBarStates();
 	private final JPanel toolbar;
-	private JEditorPane editorView;
+	private WordMLTextPane editorView;
 	private final List<ApplyCancelListener> applyCancelListener = new ArrayList<ApplyCancelListener>();
 
 	private FIBCustom component;
@@ -89,7 +93,18 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		revalidate();
 	}
 
-	private JEditorPane createEditorView(DocXDocument document, ToolBarStates _toolbarStates) {
+	public WordMLTextPane getEditorView() {
+		return editorView;
+	}
+
+	public WordMLDocument getMLDocument() {
+		if (getEditorView() != null) {
+			return getEditorView().getDocument();
+		}
+		return null;
+	}
+
+	private WordMLTextPane createEditorView(DocXDocument document, ToolBarStates _toolbarStates) {
 
 		// Clipboard clipboard = getContext().getClipboard();
 		// clipboard.addFlavorListener(_toolbarStates);
@@ -101,7 +116,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 			|| clipboard.isDataFlavorAvailable(WordMLTransferable.WORDML_FRAGMENT_FLAVOR);
 		_toolbarStates.setPasteEnabled(available);*/
 
-		WordMLTextPane editorView = new WordMLTextPane();
+		editorView = new WordMLTextPane();
 		editorView.addFocusListener(_toolbarStates);
 		editorView.addCaretListener(_toolbarStates);
 		editorView.setTransferHandler(new TransferHandler());
@@ -109,10 +124,10 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		WordMLEditorKit editorKit = (WordMLEditorKit) editorView.getEditorKit();
 		editorKit.addInputAttributeListener(_toolbarStates);
 
-		WordMLDocument doc = null;
+		// final WordMLDocument doc = null;
 
 		try {
-			doc = editorKit.openDocument(document.getWordprocessingMLPackage());
+			WordMLDocument doc = editorKit.openDocument(document.getWordprocessingMLPackage());
 
 			doc.putProperty(WordMLDocument.FILE_PATH_PROPERTY, document.getResource().getURI());
 			doc.addDocumentListener(_toolbarStates);
@@ -124,9 +139,11 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 				editorKit.initPlutextClient(editorView);
 			}
 
+			editorView.addMouseListener(new DocumentSelectionListener(doc));
+
 		} catch (Exception exc) {
 			exc.printStackTrace();
-			doc = null;
+			// doc = null;
 		}
 
 		return editorView;
@@ -207,4 +224,90 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		// TODO Auto-generated method stub
 	}
 
+	public class DocumentSelectionListener extends MouseAdapter {
+
+		private final WordMLDocument doc;
+
+		// private LabelView selectedView = null;
+
+		public DocumentSelectionListener(WordMLDocument doc) {
+			this.doc = doc;
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			super.mouseClicked(e);
+			System.out.println("On clique ici, en " + e);
+			/*System.out.println("selection start = " + editorView.getSelectionStart());
+			System.out.println("selection end = " + editorView.getSelectionEnd());*/
+			int pos = editorView.getSelectionStart();
+			System.out.println("pos=" + pos);
+			System.out.println("paragraphML=" + doc.getParagraphElement(pos));
+			System.out.println("runML=" + doc.getRunMLElement(pos));
+			System.out.println("characterElement=" + doc.getCharacterElement(pos));
+			ViewFactory viewFactory = (ViewFactory) editorView.getEditorKit().getViewFactory();
+			Element characterElement = doc.getCharacterElement(pos);
+			if (characterElement instanceof DocumentElement) {
+				doc.setSelectedElements((DocumentElement) characterElement);
+
+				/*if (selectedElement != null) {
+					selectedElement.setSelected(false);
+				}
+				selectedElement = (DocumentElement) characterElement;
+				
+				System.out.println("Paf, on selectionne " + selectedElement);
+				selectedElement.setSelected(true);*/
+
+				/*ElementML elementML = selectedElement.getElementML();
+				View v = viewFactory.getViewForElementML(elementML);
+				if (v instanceof LabelView) {
+					((LabelView) v).setPropertiesFromAttributes();
+				}*/
+
+				// editorView.revalidate();
+				editorView.repaint();
+			}
+
+			/*if (characterElement instanceof TextElement) {
+				System.out.println("Il s'agit bien de texte");
+				ElementML elementML = ((TextElement) characterElement).getElementML();
+				System.out.println("elementML=" + elementML);
+				View v = viewFactory.getViewForElementML(elementML);
+				System.out.println("View = " + v);
+				System.out.println("parent = " + v.getParent());
+				if (v instanceof LabelView) {
+					LabelView labelView = (LabelView) v;
+					if (selectedView != null) {
+						selectedView.setSelected(false);
+					}
+					labelView.setSelected(true);
+					selectedView = labelView;
+					editorView.repaint();
+					// labelView.modelToView(pos, a)
+					Shape s;
+					try {
+						s = labelView.modelToView(pos, getBounds(), Position.Bias.Forward);
+						System.out.println("Shape = " + s);
+						s = labelView.getParent().modelToView(pos, getBounds(), Position.Bias.Forward);
+						System.out.println("Parent Shape = " + s);
+					} catch (BadLocationException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				Object docxobject = elementML.getDocxObject();
+				System.out.println("docxobject=" + docxobject);
+				if (docxobject instanceof JAXBElement) {
+					Object obj = ((JAXBElement) docxobject).getValue();
+					System.out.println("docxobject=" + obj);
+					if (obj instanceof Text) {
+						System.out.println("Texte=" + ((Text) obj).getValue());
+					}
+				}
+			
+			}*/
+
+		}
+
+	}
 }

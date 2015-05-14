@@ -23,21 +23,18 @@ package org.openflexo.technologyadapter.docx;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.doc.fml.FlexoDocumentModelSlot;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
@@ -60,30 +57,16 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
 @XMLElement
-public interface DocXModelSlot extends FreeModelSlot<DocXDocument> {
-
-	@PropertyIdentifier(type = String.class)
-	public static final String TEMPLATE_DOCUMENT_URI_KEY = "templateDocumentURI";
-	@PropertyIdentifier(type = FlexoResource.class)
-	public static final String TEMPLATE_RESOURCE_KEY = "templateResource";
+public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 
 	@Override
-	public DocXTechnologyAdapter getModelSlotTechnologyAdapter();
-
-	@Getter(value = TEMPLATE_DOCUMENT_URI_KEY)
-	@XMLAttribute
-	public String getTemplateDocumentURI();
-
-	@Setter(TEMPLATE_DOCUMENT_URI_KEY)
-	public void setTemplateDocumentURI(String templateDocumentURI);
-
 	@Getter(TEMPLATE_RESOURCE_KEY)
 	public DocXDocumentResource getTemplateResource();
 
 	@Setter(TEMPLATE_RESOURCE_KEY)
 	public void setTemplateResource(DocXDocumentResource templateResource);
 
-	public static abstract class DocXModelSlotImpl extends FreeModelSlotImpl<DocXDocument> implements DocXModelSlot {
+	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument>implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 
@@ -118,8 +101,6 @@ public interface DocXModelSlot extends FreeModelSlot<DocXDocument> {
 			return (DocXTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
-		private String templateDocumentURI;
-
 		@Override
 		public DocXDocumentResource getTemplateResource() {
 			DocXDocumentResource returned = (DocXDocumentResource) performSuperGetter(TEMPLATE_RESOURCE_KEY);
@@ -127,24 +108,6 @@ public interface DocXModelSlot extends FreeModelSlot<DocXDocument> {
 				returned = (DocXDocumentResource) getInformationSpace().getResource(templateDocumentURI, null);
 			}
 			return returned;
-		}
-
-		@Override
-		public String getTemplateDocumentURI() {
-			if (getTemplateResource() != null) {
-				return getTemplateResource().getURI();
-			}
-			return templateDocumentURI;
-		}
-
-		@Override
-		public void setTemplateDocumentURI(String templateDocumentURI) {
-			if ((templateDocumentURI == null && this.templateDocumentURI != null)
-					|| (templateDocumentURI != null && !templateDocumentURI.equals(this.templateDocumentURI))) {
-				String oldValue = this.templateDocumentURI;
-				this.templateDocumentURI = templateDocumentURI;
-				getPropertyChangeSupport().firePropertyChange("templateDocumentURI", oldValue, templateDocumentURI);
-			}
 		}
 
 		@Override

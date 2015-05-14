@@ -24,7 +24,7 @@
 		</BrowserElement>
 		<BrowserElement
 			dataClassName="org.openflexo.technologyadapter.docx.model.DocXParagraph"
-			label="paragraph.rawText" icon="controller.iconForObject(paragraph)"
+			label="paragraph.rawTextPreview" icon="controller.iconForObject(paragraph)"
 			tooltip="" enabled="" visible="" isEditable="false" editableLabel=""
 			filtered="false" defaultVisible="true" dynamicFont="" name="paragraph">
 			<Children data="paragraph.childrenElements" name="childrenElements" />

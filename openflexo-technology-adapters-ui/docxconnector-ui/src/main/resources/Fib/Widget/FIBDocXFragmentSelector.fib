@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Panel layout="border" darkLevel="0"
 	dataClassName="org.openflexo.technologyadapter.docx.gui.widget.FIBDocXFragmentSelector"
-	controllerClassName="org.openflexo.components.widget.FIBFlexoObjectSelector$SelectorFIBController"
+	controllerClassName="org.openflexo.components.widget.FIBDocumentFragmentSelector$FragmentSelectorFIBController"
 	opaque="false" width="270" height="300">
 	<Browser root="data.document"
 		iteratorClassName="org.openflexo.technologyadapter.docx.model.DocXObject"
 		visibleRowCount="5" rowHeight="18" boundToSelectionManager="true"
-		selectionMode="DiscontiguousTreeSelection" showFooter="true"
+		selectionMode="MultipleIntervalSelection" showFooter="true"
 		rootVisible="true" showRootsHandle="true" 
 		localize="true" manageDynamicModel="true"
 		clickAction="controller.singleClick(DocumentBrowser.selected)"
@@ -24,7 +24,7 @@
 		</BrowserElement>
 		<BrowserElement
 			dataClassName="org.openflexo.technologyadapter.docx.model.DocXParagraph"
-			label="paragraph.rawText" icon="controller.iconForObject(paragraph)"
+			label="paragraph.rawTextPreview" icon="controller.iconForObject(paragraph)"
 			tooltip="" enabled="" visible="" isEditable="false" editableLabel=""
 			filtered="false" defaultVisible="true" dynamicFont="" name="paragraph">
 			<Children data="paragraph.childrenElements" name="childrenElements" />

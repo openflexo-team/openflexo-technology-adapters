@@ -20,28 +20,19 @@
 
 package org.openflexo.technologyadapter.docx.rm;
 
-import org.openflexo.foundation.resource.PamelaResource;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.model.annotations.Getter;
+import org.openflexo.foundation.doc.rm.FlexoDocumentResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.DocXTechnologyContextManager;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFactory;
 
 @ModelEntity
 @ImplementationClass(DocXDocumentResourceImpl.class)
-public abstract interface DocXDocumentResource
-		extends TechnologyAdapterResource<DocXDocument, DocXTechnologyAdapter>, PamelaResource<DocXDocument, DocXFactory> {
+public abstract interface DocXDocumentResource extends FlexoDocumentResource<DocXDocument, DocXTechnologyAdapter, DocXFactory> {
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
-	public DocXDocument getDocXDocument();
+	@Override
+	public DocXDocument getDocument();
 
-	@Getter(value = "technologyContextManager", ignoreType = true)
-	public abstract DocXTechnologyContextManager getTechnologyContextManager();
-
-	@Setter("technologyContextManager")
-	public abstract void setTechnologyContextManager(DocXTechnologyContextManager paramDOCXTechnologyContextManager);
 }
