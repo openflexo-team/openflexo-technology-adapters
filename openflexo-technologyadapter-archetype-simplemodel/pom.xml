@@ -4,12 +4,12 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-		<version>1.7.2-SNAPSHOT</version>
+		<version>1.7.1-SNAPSHOT</version>
 	</parent>
 
   <groupId>org.openflexo.archetypes</groupId>
   <artifactId>technologyadapter-archetype-simplemodel</artifactId>
-  <version>1.7.2-SNAPSHOT</version>
+  <version>1.7.1-SNAPSHOT</version>
   
   <!--  <packaging>maven-archetype</packaging> -->
   <name>technologyadapter-archetype-simplemodel</name>
@@ -19,7 +19,7 @@
   </properties>
 
   <scm>
-    <tag>1.7.2</tag>
+    <tag>1.7.1</tag>
   </scm>
   
     <dependencies>
