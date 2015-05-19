@@ -1,22 +1,42 @@
-/*
- * (c) Copyright 2010-2011 AgileBirds
+/**
+ * 
+ * Copyright (c) 2013-2015, Openflexo
+ * Copyright (c) 2012-2012, AgileBirds
+ * 
+ * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.emf.controller;
 
 import java.util.logging.Logger;
@@ -25,14 +45,19 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.components.widget.OntologyView;
+import org.openflexo.fib.utils.InspectorGroup;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.FlexoRole;
-import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
+import org.openflexo.technologyadapter.emf.fml.EMFClassClassRole;
+import org.openflexo.technologyadapter.emf.fml.EMFEnumClassRole;
+import org.openflexo.technologyadapter.emf.fml.EMFObjectIndividualRole;
+import org.openflexo.technologyadapter.emf.fml.editionaction.AddEMFObjectIndividual;
+import org.openflexo.technologyadapter.emf.fml.editionaction.SelectEMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.gui.EMFIconLibrary;
 import org.openflexo.technologyadapter.emf.gui.EMFMetaModelBrowserModel;
 import org.openflexo.technologyadapter.emf.gui.EMFMetaModelView;
@@ -43,11 +68,6 @@ import org.openflexo.technologyadapter.emf.metamodel.EMFEnumClass;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFClassClassRole;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFEnumClassRole;
-import org.openflexo.technologyadapter.emf.viewpoint.EMFObjectIndividualRole;
-import org.openflexo.technologyadapter.emf.viewpoint.editionaction.AddEMFObjectIndividual;
-import org.openflexo.technologyadapter.emf.viewpoint.editionaction.SelectEMFObjectIndividual;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -73,15 +93,37 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	}
 
 	/**
+	 * Initialize inspectors for supplied module using supplied {@link FlexoController}
+	 * 
+	 * @param controller
+	 */
+	@Override
+	protected void initializeInspectors(FlexoController controller) {
+
+		emfInspectorGroup = controller.loadInspectorGroup("EMF", getFMLTechnologyAdapterInspectorGroup());
+	}
+
+	private InspectorGroup emfInspectorGroup;
+
+	/**
+	 * Return inspector group for this technology
+	 * 
+	 * @return
+	 */
+	@Override
+	public InspectorGroup getTechnologyAdapterInspectorGroup() {
+		return emfInspectorGroup;
+	}
+
+	/**
 	 * 
 	 * Follow the link.
 	 * 
 	 * @see org.openflexo.view.controller.TechnologyAdapterController#initializeActions(org.openflexo.view.controller.ControllerActionInitializer)
 	 */
 	@Override
-	public void initializeActions(ControllerActionInitializer actionInitializer) {
+	protected void initializeActions(ControllerActionInitializer actionInitializer) {
 
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/EMF"));
 	}
 
 	/**
@@ -131,12 +173,12 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<EMFTechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		return EMFIconLibrary.iconForObject(objectClass);
 	}
 
 	/**
-	 * /** Return icon representing supplied pattern role
+	 * /** Return icon representing supplied pattern property
 	 * 
 	 * @param object
 	 * @return
@@ -145,11 +187,9 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (EMFObjectIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFObjectIndividual.class);
-		}
-		else if (EMFClassClassRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (EMFClassClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFClassClass.class);
-		}
-		else if (EMFEnumClassRole.class.isAssignableFrom(patternRoleClass)) {
+		} else if (EMFEnumClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(EMFEnumClass.class);
 		}
 		return null;
@@ -162,7 +202,7 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForEditionAction(Class<? extends EditionAction<?, ?>> editionActionClass) {
+	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
 		if (AddEMFObjectIndividual.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(EMFObjectIndividual.class), IconLibrary.DUPLICATE);
 		}
@@ -178,11 +218,9 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 	public OntologyBrowserModel makeOntologyBrowserModel(IFlexoOntology context) {
 		if (context instanceof EMFMetaModel) {
 			return new EMFMetaModelBrowserModel((EMFMetaModel) context);
-		}
-		else if (context instanceof EMFModel) {
+		} else if (context instanceof EMFModel) {
 			return new EMFModelBrowserModel((EMFModel) context);
-		}
-		else {
+		} else {
 			logger.warning("Unexpected " + context);
 			return null;
 		}
@@ -209,14 +247,13 @@ public class EMFAdapterController extends TechnologyAdapterController<EMFTechnol
 			FlexoPerspective perspective) {
 		if (object instanceof EMFModel) {
 			OntologyView<EMFModel> returned = new EMFModelView((EMFModel) object, controller, perspective);
-			returned.setShowClasses(false);
+			returned.setShowClasses(true);
 			returned.setShowDataProperties(false);
 			returned.setShowObjectProperties(false);
 			returned.setShowAnnotationProperties(false);
 			returned.update();
 			return returned;
-		}
-		else if (object instanceof EMFMetaModel) {
+		} else if (object instanceof EMFMetaModel) {
 			OntologyView<EMFMetaModel> returned = new EMFMetaModelView((EMFMetaModel) object, controller, perspective);
 			returned.setShowClasses(true);
 			returned.setShowDataProperties(true);

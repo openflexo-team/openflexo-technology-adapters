@@ -22,11 +22,11 @@ package ${package}.fml;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.view.ActorReference;
-import org.openflexo.foundation.view.FlexoConceptInstance;
-import org.openflexo.foundation.view.ModelObjectActorReference;
-import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
-import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.foundation.fml.rt.ActorReference;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -39,7 +39,7 @@ import ${package}.fml.${technologyPrefix}Role.${technologyPrefix}RoleImpl;
 @XMLElement
 public interface ${technologyPrefix}Role extends FlexoRole<${technologyPrefix}Model> {
 
-    public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter();
+    public ${technologyPrefix}TechnologyAdapter getModelSlotTechnologyAdapter();
 
     public abstract static class ${technologyPrefix}RoleImpl extends FlexoRoleImpl<${technologyPrefix}Model> implements ${technologyPrefix}Role {
 
@@ -97,7 +97,7 @@ public interface ${technologyPrefix}Role extends FlexoRole<${technologyPrefix}Mo
          * @return ${technologyPrefix} technology adapter in service manager.
          */
         @Override
-        public ${technologyPrefix}TechnologyAdapter getTechnologyAdapter() {
+        public ${technologyPrefix}TechnologyAdapter getModelSlotTechnologyAdapter() {
             return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(${technologyPrefix}TechnologyAdapter.class);
         }
     }

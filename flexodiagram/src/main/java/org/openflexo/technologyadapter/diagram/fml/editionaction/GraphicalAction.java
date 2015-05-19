@@ -1,38 +1,57 @@
-/*
- * (c) Copyright 2010-2011 AgileBirds
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.DataBinding;
-import org.openflexo.antar.binding.DataBinding.BindingDefinitionType;
-import org.openflexo.antar.binding.TypeUtils;
-import org.openflexo.antar.expr.NullReferenceException;
-import org.openflexo.antar.expr.TypeMismatchException;
-import org.openflexo.foundation.view.action.FlexoBehaviourAction;
-import org.openflexo.foundation.viewpoint.annotations.FIBPanel;
-import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
+import org.openflexo.connie.type.TypeUtils;
+import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -45,6 +64,7 @@ import org.openflexo.model.validation.FixProposal;
 import org.openflexo.model.validation.ValidationError;
 import org.openflexo.model.validation.ValidationIssue;
 import org.openflexo.model.validation.ValidationRule;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
@@ -54,11 +74,11 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
-@FIBPanel("Fib/GraphicalActionPanel.fib")
 @ModelEntity
 @ImplementationClass(GraphicalAction.GraphicalActionImpl.class)
 @XMLElement
-public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, DiagramElement<?>> {
+@FML("GraphicalAction")
+public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, DiagramElement<?>> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String SUBJECT_KEY = "subject";
@@ -94,16 +114,17 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 
 	public List<GraphicalFeature<?, ?>> getAvailableGraphicalFeatures();
 
-	public static abstract class GraphicalActionImpl extends EditionActionImpl<TypedDiagramModelSlot, DiagramElement<?>> implements
-			GraphicalAction {
+	public static abstract class GraphicalActionImpl extends TechnologySpecificActionImpl<TypedDiagramModelSlot, DiagramElement<?>>
+			implements GraphicalAction {
 
 		private static final Logger logger = Logger.getLogger(GraphicalAction.class.getPackage().getName());
 
 		private GraphicalFeature<?, ?> graphicalFeature = null;
 		private DataBinding<Object> value;
 
-		public GraphicalActionImpl() {
-			super();
+		@Override
+		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (DiagramTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		public java.lang.reflect.Type getGraphicalFeatureType() {
@@ -113,7 +134,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			return Object.class;
 		}
 
-		public Object getValue(FlexoBehaviourAction action) {
+		public Object getValue(FlexoBehaviourAction<?, ?, ?> action) {
 			try {
 				return getValue().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -172,7 +193,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			try {
 				return super.getPatternRole();
 			} catch (ClassCastException e) {
-				logger.warning("Unexpected pattern role type");
+				logger.warning("Unexpected pattern property type");
 				setPatternRole(null);
 				return null;
 			}
@@ -180,7 +201,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 
 		@Override
 		public void setPatternRole(GraphicalElementRole patternRole) {
-			System.out.println("set pattern role with " + patternRole);
+			System.out.println("set pattern property with " + patternRole);
 			super.setPatternRole(patternRole);
 			availableFeatures = null;
 		}*/
@@ -190,7 +211,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			if (availableFeatures == null) {
 				availableFeatures = new Vector<GraphicalFeature<?, ?>>();
 				if (getSubject().isSet() && getSubject().isValid()) {
-					Class accessedClass = TypeUtils.getBaseClass(getSubject().getAnalyzedType());
+					Class<?> accessedClass = TypeUtils.getBaseClass(getSubject().getAnalyzedType());
 					if (DiagramElement.class.isAssignableFrom(accessedClass)) {
 						for (GraphicalFeature<?, ?> GF : GraphicalElementRole.AVAILABLE_FEATURES) {
 							availableFeatures.add(GF);
@@ -248,7 +269,7 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			this.subject = subject;
 		}
 
-		public DiagramElement getSubject(FlexoBehaviourAction action) {
+		public DiagramElement<?> getSubject(FlexoBehaviourAction<?, ?, ?> action) {
 			try {
 				return getSubject().getBindingValue(action);
 			} catch (TypeMismatchException e) {
@@ -274,10 +295,11 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 			return getClass().getSimpleName() + " (" + getSubject() + "." + _getGraphicalFeatureName() + "=" + getValue() + ")";
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
-		public DiagramElement performAction(FlexoBehaviourAction action) {
+		public DiagramElement<?> execute(FlexoBehaviourAction<?, ?, ?> action) {
 			logger.info("Perform graphical action " + action);
-			DiagramElement graphicalElement = getSubject(action);
+			DiagramElement<?> graphicalElement = getSubject(action);
 			Object value = null;
 			try {
 				value = getValue().getBindingValue(action);
@@ -298,7 +320,11 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 		}
 
 		@Override
-		public void finalizePerformAction(FlexoBehaviourAction action, DiagramElement initialContext) {
+		public Type getAssignableType() {
+			if (getSubject() != null && getSubject().isSet() && getSubject().isValid()) {
+				return getSubject().getAnalyzedType();
+			}
+			return DiagramElement.class;
 		}
 
 	}
@@ -315,34 +341,34 @@ public interface GraphicalAction extends EditionAction<TypedDiagramModelSlot, Di
 				return null;
 			} else {
 				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>>();
-				for (ShapeRole pr : graphicalAction.getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
-					v.add(new SetsPatternRoleForSubject(pr));
+				for (ShapeRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
+					v.add(new SetsFlexoRoleForSubject(pr));
 				}
-				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getFlexoRoles(ConnectorRole.class)) {
-					v.add(new SetsPatternRoleForSubject(pr));
+				for (ConnectorRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ConnectorRole.class)) {
+					v.add(new SetsFlexoRoleForSubject(pr));
 				}
 				return new ValidationError<GraphicalActionMustHaveASubject, GraphicalAction>(this, graphicalAction,
 						"graphical_action_has_no_valid_subject", v);
 			}
 		}
 
-		protected static class SetsPatternRoleForSubject extends FixProposal<GraphicalActionMustHaveASubject, GraphicalAction> {
+		protected static class SetsFlexoRoleForSubject extends FixProposal<GraphicalActionMustHaveASubject, GraphicalAction> {
 
-			private final GraphicalElementRole patternRole;
+			private final GraphicalElementRole<?, ?> flexoRole;
 
-			public SetsPatternRoleForSubject(GraphicalElementRole patternRole) {
-				super("set_subject_to_($patternRole.patternRoleName)");
-				this.patternRole = patternRole;
+			public SetsFlexoRoleForSubject(GraphicalElementRole<?, ?> flexoRole) {
+				super("set_subject_to_($flexoRole.flexoRoleName)");
+				this.flexoRole = flexoRole;
 			}
 
-			public GraphicalElementRole getPatternRole() {
-				return patternRole;
+			public GraphicalElementRole<?, ?> getFlexoRole() {
+				return flexoRole;
 			}
 
 			@Override
 			protected void fixAction() {
 				GraphicalAction graphicalAction = getValidable();
-				graphicalAction.setSubject(new DataBinding<DiagramElement<?>>(patternRole.getRoleName()));
+				graphicalAction.setSubject(new DataBinding<DiagramElement<?>>(flexoRole.getRoleName()));
 			}
 
 		}

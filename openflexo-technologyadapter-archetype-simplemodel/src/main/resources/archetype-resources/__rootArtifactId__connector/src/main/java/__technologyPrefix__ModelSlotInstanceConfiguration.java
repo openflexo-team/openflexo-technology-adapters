@@ -25,7 +25,7 @@
 package ${package};
 
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import ${package}.model.${technologyPrefix}Model;
 
 public class ${technologyPrefix}ModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration< ${technologyPrefix}Model, ${technologyPrefix}ModelSlot> {

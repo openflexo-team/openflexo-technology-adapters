@@ -1,22 +1,41 @@
-/*
- * (c) Copyright 2013 Openflexo
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Excelconnector, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.excel;
 
 import java.io.UnsupportedEncodingException;
@@ -28,40 +47,36 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.DeclareActorReference;
-import org.openflexo.foundation.technologyadapter.DeclareActorReferences;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.foundation.view.FreeModelSlotInstance;
-import org.openflexo.foundation.view.View;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.excel.fml.ExcelActorReference;
+import org.openflexo.technologyadapter.excel.fml.ExcelCellRole;
+import org.openflexo.technologyadapter.excel.fml.ExcelColumnRole;
+import org.openflexo.technologyadapter.excel.fml.ExcelRowRole;
+import org.openflexo.technologyadapter.excel.fml.ExcelSheetRole;
+import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelCell;
+import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelRow;
+import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelSheet;
+import org.openflexo.technologyadapter.excel.fml.editionaction.CellStyleAction;
+import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelCell;
+import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelRow;
+import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelObject;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelActorReference;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelCellRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelColumnRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelRowRole;
-import org.openflexo.technologyadapter.excel.viewpoint.ExcelSheetRole;
-import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelCell;
-import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelRow;
-import org.openflexo.technologyadapter.excel.viewpoint.editionaction.AddExcelSheet;
-import org.openflexo.technologyadapter.excel.viewpoint.editionaction.CellStyleAction;
-import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelCell;
-import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelRow;
-import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcelSheet;
 
 /**
  * Implementation of a basic ModelSlot class for the Excel technology adapter<br>
@@ -70,36 +85,10 @@ import org.openflexo.technologyadapter.excel.viewpoint.editionaction.SelectExcel
  * @author Vincent LeildÃ©, Sylvain GuÃ©rin
  * 
  */
-@DeclareActorReferences({ // All actor references available through this model slot
-@DeclareActorReference(FML = "ExcelActorReference", actorReferenceClass = ExcelActorReference.class) })
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "ExcelSheet", flexoRoleClass = ExcelSheetRole.class), // Sheet
-		@DeclarePatternRole(FML = "ExcelColumn", flexoRoleClass = ExcelColumnRole.class), // Sheet
-		@DeclarePatternRole(FML = "ExcelRow", flexoRoleClass = ExcelRowRole.class), // Row
-		@DeclarePatternRole(FML = "ExcelCell", flexoRoleClass = ExcelCellRole.class) // Cell
-})
-@DeclareEditionActions({ // All edition actions available through this model
-// slot
-@DeclareEditionAction(FML = "AddExcelCell", editionActionClass = AddExcelCell.class), // Add
-																						// cell
-		@DeclareEditionAction(FML = "AddExcelRow", editionActionClass = AddExcelRow.class), // Add
-																							// row
-		@DeclareEditionAction(FML = "AddExcelSheet", editionActionClass = AddExcelSheet.class), // Add
-																								// sheet
-		@DeclareEditionAction(FML = "CellStyleAction", editionActionClass = CellStyleAction.class) // Cell
-// Style
-})
-@DeclareFetchRequests({ // All requests available through this model slot
-@DeclareFetchRequest(FML = "SelectExcelSheet", fetchRequestClass = SelectExcelSheet.class), // Select
-																							// Excel
-																							// Sheet
-		@DeclareFetchRequest(FML = "SelectExcelRow", fetchRequestClass = SelectExcelRow.class), // Select
-																								// Excel
-																								// Row
-		@DeclareFetchRequest(FML = "SelectExcelCell", fetchRequestClass = SelectExcelCell.class) // Select
-// Excel
-// Cell
-})
+@DeclareActorReferences({ ExcelActorReference.class })
+@DeclareFlexoRoles({ ExcelSheetRole.class, ExcelColumnRole.class, ExcelRowRole.class, ExcelCellRole.class })
+@DeclareEditionActions({ AddExcelCell.class, AddExcelRow.class, AddExcelSheet.class, CellStyleAction.class })
+@DeclareFetchRequests({ SelectExcelSheet.class, SelectExcelRow.class, SelectExcelCell.class })
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlot.BasicExcelModelSlotImpl.class)
 @XMLElement
@@ -114,8 +103,8 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		private final Map<String, ExcelObject> uriCache = new HashMap<String, ExcelObject>();
 
 		/*public BasicExcelModelSlotURIProcessor getUriProcessor() {
-			if (uriProcessor == null && getVirtualModelFactory() != null) {
-				uriProcessor = getVirtualModelFactory().newInstance(BasicExcelModelSlotURIProcessor.class);
+			if (uriProcessor == null && getFMLModelFactory() != null) {
+				uriProcessor = getFMLModelFactory().newInstance(BasicExcelModelSlotURIProcessor.class);
 			}
 			return uriProcessor;
 		}*/
@@ -176,21 +165,22 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 			try {
 				String builtURI = URLEncoder.encode(objectURI, "UTF-8");
 				ExcelObject o = uriCache.get(builtURI);
-				if(o!=null){
+				if (o != null) {
 					return o;
-				}else{
+				} else {
 					TechnologyAdapterResource<ExcelWorkbook, ?> resource = msInstance.getResource();
 					if (!resource.isLoaded()) {
 						resource.loadResourceData(null);
 					}
-					ArrayList<ExcelObject> excelObject = (ArrayList<ExcelObject>)msInstance.getAccessedResourceData().getAccessibleExcelObjects();
+					ArrayList<ExcelObject> excelObject = (ArrayList<ExcelObject>) msInstance.getAccessedResourceData()
+							.getAccessibleExcelObjects();
 					for (ExcelObject obj : excelObject) {
 						if (obj.getUri().equals(URLDecoder.decode(objectURI, "UTF-8"))) {
 							return obj;
 						}
 					}
 				}
-				
+
 				return o;
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -200,13 +190,13 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		}
 
 		@Override
-		public ExcelTechnologyAdapter getTechnologyAdapter() {
-			return (ExcelTechnologyAdapter) super.getTechnologyAdapter();
+		public ExcelTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (ExcelTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
 		public ExcelWorkbookResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getTechnologyAdapter().createNewWorkbook(view.getProject(), filename, modelUri);
+			return getModelSlotTechnologyAdapter().createNewWorkbook(view.getProject(), filename, modelUri);
 		}
 
 		@Override

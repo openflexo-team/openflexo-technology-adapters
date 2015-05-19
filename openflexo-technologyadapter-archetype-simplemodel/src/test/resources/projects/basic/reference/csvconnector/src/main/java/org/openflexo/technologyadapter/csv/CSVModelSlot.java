@@ -1,34 +1,52 @@
-/*
- * (c) Copyright 2013- Openflexo
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Openflexo-technologyadapter-archetype-simplemodel, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 
 package org.openflexo.technologyadapter.csv;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.viewpoint.FlexoRole;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -43,20 +61,16 @@ import org.openflexo.technologyadapter.csv.fml.CSVRole;
  * @author Jean Le Paon
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-        @DeclarePatternRole(flexoRoleClass = CSVRole.class, FML = "Object"),
-    })
-@DeclareEditionActions({ // All edition actions available through this model slot
-    })
-@DeclareFetchRequests({ // All requests available through this model slot
-    })
+@DeclareFlexoRoles({CSVRole.class})
+@DeclareEditionActions({})
+@DeclareFetchRequests({})
 @ModelEntity
 @ImplementationClass(CSVModelSlot.CSVModelSlotImpl.class)
 @XMLElement
 public interface CSVModelSlot extends FreeModelSlot<CSVModel> {
 
     @Override
-    public CSVTechnologyAdapter getTechnologyAdapter();
+    public CSVTechnologyAdapter getModelSlotTechnologyAdapter();
 
     public static abstract class CSVModelSlotImpl extends FreeModelSlotImpl<CSVModel> implements CSVModelSlot {
 
@@ -87,8 +101,8 @@ public interface CSVModelSlot extends FreeModelSlot<CSVModel> {
         }
 
         @Override
-        public CSVTechnologyAdapter getTechnologyAdapter() {
-            return (CSVTechnologyAdapter) super.getTechnologyAdapter();
+        public CSVTechnologyAdapter getModelSlotTechnologyAdapter() {
+            return (CSVTechnologyAdapter) super.getModelSlotTechnologyAdapter();
         }
 
     }

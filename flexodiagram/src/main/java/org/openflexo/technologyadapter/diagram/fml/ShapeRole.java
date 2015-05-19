@@ -1,3 +1,41 @@
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
+ *
+ *          Additional permission under GNU GPL version 3 section 7
+ *
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
+ *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
+ */
+
 package org.openflexo.technologyadapter.diagram.fml;
 
 import java.lang.reflect.Type;
@@ -5,11 +43,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
-import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.FMLRepresentationContext;
+import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -27,6 +66,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 @ModelEntity
 @ImplementationClass(ShapeRole.ShapeRoleImpl.class)
 @XMLElement
+@FML("ShapeRole")
 public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraphicalRepresentation> {
 
 	@PropertyIdentifier(type = GraphicalRepresentation.class)
@@ -57,8 +97,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	public void setParentShapeAsDefinedInAction(boolean flag);
 
 	/**
-	 * Get the list of shape pattern roles that can be set as parent shape pattern role. This list contains all other shape pattern roles of
-	 * current flexo concept which are not already in the containment subtree
+	 * Get the list of shape pattern roles that can be set as parent shape pattern property. This list contains all other shape pattern
+	 * roles of current flexo concept which are not already in the containment subtree
 	 * 
 	 * @return
 	 */
@@ -80,9 +120,10 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		@Override
 		protected void initDefaultSpecifications() {
 			super.initDefaultSpecifications();
-			if (getVirtualModelFactory() != null) {
+			if (getFMLModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
+					//logger.info("[SHAPE:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
+					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
 							GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
@@ -91,17 +132,19 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
 			}
+			handlePendingGRSpecs();
+
 		}
 
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getVirtualModel().getName() + ";", context);
+			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getOwningVirtualModel().getName() + ";", context);
 			return out.toString();
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return FlexoLocalization.localizedForKey("shape");
 		}
 
@@ -110,7 +153,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				// Try to find one somewhere
 				TypedDiagramModelSlot ms = (TypedDiagramModelSlot) getModelSlot();
 				for (FMLDiagramPaletteElementBinding binding : ms.getPaletteElementBindings()) {
-					if (binding.getFlexoConcept() == getFlexoConcept()) {
+					if (binding.getBoundFlexoConcept() == getFlexoConcept()) {
 						setGraphicalRepresentation(binding.getPaletteElement().getGraphicalRepresentation());
 					}
 				}
@@ -147,7 +190,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				logger.info(">>>> setParentShapePatternRole() with " + parentShapeRole);
 				this.parentShapeRole = parentShapeRole;
 				if (detectLoopInParentShapePatternRoleDefinition()) {
-					logger.warning("Detecting a loop in parent shape pattern role definition. Resetting parent shape pattern role");
+					logger.warning("Detecting a loop in parent shape pattern property definition. Resetting parent shape pattern property");
 					this.parentShapeRole = null;
 				}
 				// setChanged();
@@ -192,7 +235,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		}
 
 		/**
-		 * Get the list of shape pattern roles that can be set as parent shape pattern role. This list contains all other shape pattern
+		 * Get the list of shape pattern roles that can be set as parent shape pattern property. This list contains all other shape pattern
 		 * roles of current flexo concept which are not already in the containment subtree
 		 * 
 		 * @return
@@ -201,7 +244,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		public List<ShapeRole> getPossibleParentShapeRoles() {
 			List<ShapeRole> returned = new ArrayList<ShapeRole>();
 			if (getFlexoConcept() != null) {
-				List<ShapeRole> shapesPatternRoles = getFlexoConcept().getFlexoRoles(ShapeRole.class);
+				List<ShapeRole> shapesPatternRoles = getFlexoConcept().getDeclaredProperties(ShapeRole.class);
 				for (ShapeRole shapeRole : shapesPatternRoles) {
 					if (!shapeRole.isContainedIn(this)) {
 						returned.add(shapeRole);

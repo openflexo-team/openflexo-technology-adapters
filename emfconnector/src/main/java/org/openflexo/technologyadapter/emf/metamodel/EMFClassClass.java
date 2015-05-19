@@ -1,31 +1,43 @@
-/** Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
- * Author : Gilles Besançon
+/**
+ * 
+ * Copyright (c) 2013-2015, Openflexo
+ * Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
+ * Copyright (c) 2012-2012, AgileBirds
+ * 
+ * This file is part of Emfconnector, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
- * Additional permission under GNU GPL version 3 section 7
- *
- * If you modify this Program, or any covered work, by linking or 
- * combining it with eclipse EMF (or a modified version of that library), 
- * containing parts covered by the terms of EPL 1.0, the licensors of this 
- * Program grant you additional permission to convey the resulting work.
- *
- * Contributors :
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.emf.metamodel;
 
 import java.util.ArrayList;
@@ -36,7 +48,7 @@ import java.util.Map.Entry;
 import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EObject;
+import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.EReference;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
@@ -44,9 +56,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
-import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 
 /**
@@ -152,10 +162,10 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> featureAssociations = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>(
 				0);
 		for (EAttribute attribute : object.getEAttributes()) {
-			featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute));
+			featureAssociations.add(ontology.getConverter().convertAttributeAssociation(ontology, attribute, this,null));
 		}
 		for (EReference reference : object.getEReferences()) {
-			featureAssociations.add(ontology.getConverter().convertReferenceAssociation(ontology, reference));
+			featureAssociations.add(ontology.getConverter().convertReferenceAssociation(ontology, reference,this,null));
 		}
 		return Collections.unmodifiableList(featureAssociations);
 	}
@@ -239,65 +249,22 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	 */
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getSuperClasses() {
+
+
 		List<IFlexoOntologyClass<EMFTechnologyAdapter>> superClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
-		for (EClass superClass : object.getESuperTypes()) {
-			superClasses.add(ontology.getConverter().convertClass(ontology, superClass));
+		for (EClass superClass : object.getESuperTypes()) {		
+			// prevent returning classes from EcorePackage when not in Ecore MM
+			EPackage myRootPackage = ((EMFMetaModel) ontology).getResource().getPackage();
+			if (myRootPackage == org.eclipse.emf.ecore.EcorePackage.eINSTANCE) {
+				superClasses.add(ontology.getConverter().convertClass(ontology, superClass,myRootPackage));
+			}
+			else if (superClass.getEPackage() != org.eclipse.emf.ecore.EcorePackage.eINSTANCE){
+				superClasses.add(ontology.getConverter().convertClass(ontology, superClass,org.eclipse.emf.ecore.EcorePackage.eINSTANCE));
+			}
 		}
 		return Collections.unmodifiableList(superClasses);
 	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsRange()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
-		List<IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>>();
-		for (EObject crossReference : object.eCrossReferences()) {
-			if (crossReference instanceof EAttribute) {
-				IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property = ontology.getConverter().convertAttributeProperty(
-						ontology, (EAttribute) crossReference);
-				if (!result.contains(property)) {
-					result.add(property);
-				}
-			} else if (crossReference instanceof EReference) {
-				IFlexoOntologyStructuralProperty<EMFTechnologyAdapter> property = ontology.getConverter().convertReferenceObjectProperty(
-						ontology, (EReference) crossReference);
-				if (!result.contains(property)) {
-					result.add(property);
-				}
-			}
-		}
-		return result;
-	}
-
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsDomain()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
-		List<IFlexoOntologyFeature<EMFTechnologyAdapter>> result = new ArrayList<IFlexoOntologyFeature<EMFTechnologyAdapter>>();
-		for (EAttribute attribute : object.getEAttributes()) {
-			IFlexoOntologyFeature<EMFTechnologyAdapter> attr = ontology.getConverter().convertAttributeProperty(ontology, attribute);
-			if (!result.contains(attr)) {
-				result.add(attr);
-			}
-		}
-		for (EReference reference : object.getEReferences()) {
-			IFlexoOntologyFeature<EMFTechnologyAdapter> ref = ontology.getConverter().convertReferenceObjectProperty(ontology, reference);
-			if (!result.contains(ref)) {
-				result.add(ref);
-			}
-		}
-		/*for (EOperation operation : object.getEOperations()) {
-		}*/
-		return result;
-	}
 
 	/**
 	 * Follow the link.
@@ -306,6 +273,9 @@ public class EMFClassClass extends AEMFMetaModelObjectImpl<EClass> implements IF
 	 */
 	@Override
 	public List<? extends IFlexoOntologyClass<EMFTechnologyAdapter>> getSubClasses(IFlexoOntology<EMFTechnologyAdapter> context) {
+
+		System.out.println("Looking for subclasses of: " + this.getName());
+
 		List<IFlexoOntologyClass<EMFTechnologyAdapter>> subClasses = new ArrayList<IFlexoOntologyClass<EMFTechnologyAdapter>>();
 		if (context instanceof EMFMetaModel) {
 			for (Entry<EClass, EMFClassClass> classEntry : ontology.getConverter().getClasses().entrySet()) {

@@ -1,39 +1,56 @@
-/** Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
- * Author : Gilles Besançon
+/**
+ * 
+ * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
+ * Copyright (c) 2012-2012, AgileBirds
+ * 
+ * This file is part of Emfconnector, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
- * Additional permission under GNU GPL version 3 section 7
- *
- * If you modify this Program, or any covered work, by linking or 
- * combining it with eclipse EMF (or a modified version of that library), 
- * containing parts covered by the terms of EPL 1.0, the licensors of this 
- * Program grant you additional permission to convey the resulting work.
- *
- * Contributors :
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.emf.model.io;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.EList;
+import org.eclipse.emf.ecore.EAnnotation;
 import org.eclipse.emf.ecore.EAttribute;
+import org.eclipse.emf.ecore.EClass;
+import org.eclipse.emf.ecore.EModelElement;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
@@ -43,6 +60,7 @@ import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.EMFReferenceObjectProperty;
+import org.openflexo.technologyadapter.emf.model.EMFAnnotationAnnotation;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 import org.openflexo.technologyadapter.emf.model.EMFObjectIndividualAttributeDataPropertyValue;
@@ -65,6 +83,9 @@ public class EMFModelConverter {
 	/** Property Values. */
 	protected final Map<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>> propertyValues = new HashMap<EObject, Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>>();
 
+	/** Concepts. */
+	protected final Map<EObject, List<EMFAnnotationAnnotation>> annotations = new HashMap<EObject, List<EMFAnnotationAnnotation>>();
+
 	/**
 	 * Constructor.
 	 */
@@ -81,7 +102,7 @@ public class EMFModelConverter {
 	public EMFModel convertModel(EMFMetaModel metaModel, Resource aResource) {
 		EMFModel model = builder.buildModel(metaModel, this, aResource);
 		for (EObject aObject : aResource.getContents()) {
-			EMFObjectIndividual individual = convertObjectIndividual(model, aObject);
+			convertObjectIndividual(model, aObject);
 		}
 		return model;
 	}
@@ -98,6 +119,8 @@ public class EMFModelConverter {
 		if (individuals.get(eObject) == null) {
 			individual = builder.buildObjectIndividual(model, eObject);
 			individuals.put(eObject, individual);
+
+			// Convert container
 			EStructuralFeature eContainingFeature = eObject.eContainingFeature();
 			if (eContainingFeature != null) {
 				eContainingFeature.eContainer();
@@ -106,22 +129,77 @@ public class EMFModelConverter {
 				if (containingIndiv == null) {
 					containingIndiv = convertObjectIndividual(model, eContainer);
 				}
-				// containingIndiv.getPr
 			}
 
-			// Attribute
-			for (EAttribute eAttribute : eObject.eClass().getEAllAttributes()) {
-				IFlexoOntologyPropertyValue propertyValue = convertObjectIndividualAttribute(model, eObject, eAttribute);
+			// Convert Structural Features
+			EClass objectClass = eObject.eClass();
+			for (EStructuralFeature eSF : objectClass.getEAllStructuralFeatures()) {
+					if (eSF instanceof EAttribute){
+						// Attribute
+						convertObjectIndividualAttribute(model, eObject, (EAttribute) eSF);
+					}
+					else if (eSF instanceof EReference){
+						// Annotation content
+						if (eObject instanceof EModelElement && eSF.getFeatureID() == EcorePackage.EMODEL_ELEMENT__EANNOTATIONS){
+							convertObjectIndividualAnnotations(model, individual, eObject, (EReference) eSF);
+						}
+						else{
+							// Other References
+							convertObjectIndividualReferenceObjectPropertyValue(model, eObject, (EReference) eSF);
+						}
+					}
 			}
-			// Reference
-			for (EReference eReference : eObject.eClass().getEAllReferences()) {
-				IFlexoOntologyPropertyValue propertyValue = convertObjectIndividualReferenceObjectPropertyValue(model, eObject, eReference);
-			}
+
 
 		} else {
 			individual = individuals.get(eObject);
 		}
 		return individual;
+	}
+	/**
+	 * Convert a EAnnotation to an Annotation
+	 * 
+	 * @param model
+	 * @param emfAnswer
+	 * @param eObject
+	 * @param eSF 
+	 * @return
+	 */
+
+
+
+	private void convertObjectIndividualAnnotations(EMFModel model,EMFObjectIndividual indiv, EObject eObject, EReference eSF) {
+
+		List< EMFAnnotationAnnotation> listAnn = annotations.get(eObject);
+		if (listAnn == null){
+			listAnn =  new ArrayList< EMFAnnotationAnnotation>();
+			annotations.put(eObject,listAnn);
+		}
+
+		if (annotations != null) {
+
+			Object value = eObject.eGet(eSF);
+			if (value != null) {
+				if (value instanceof EList) {
+					for (Object aListValue : (EList<Object>) value) {
+						if (aListValue instanceof EObject) {
+							EMFAnnotationAnnotation annotation = convertObjectAnnotationl(model, indiv, (EAnnotation) aListValue);
+							listAnn.add(annotation);
+						}
+					}
+				}
+			}
+
+		} 
+	}
+
+	
+	
+	private EMFAnnotationAnnotation convertObjectAnnotationl(EMFModel model, EMFObjectIndividual container, EAnnotation anAnnotation) {
+		// TODO, for now basic support for Annotations
+		EMFAnnotationAnnotation annotation = new EMFAnnotationAnnotation(model,anAnnotation);
+		// TODO : add annotations to container.addAnnotation();
+		return annotation;
 	}
 
 	/**
@@ -234,11 +312,13 @@ public class EMFModelConverter {
 	 */
 	public EMFObjectIndividualReferenceObjectPropertyValue convertObjectIndividualReferenceObjectPropertyValue(EMFModel model,
 			EObject eObject, EReference eReference) {
-		EMFObjectIndividualReferenceObjectPropertyValue propertyValue = null;
-		if (propertyValues.get(eObject) == null) {
-			propertyValues.put(eObject, new HashMap<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>());
+		Map<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> listVals = propertyValues.get(eObject);
+		if (listVals == null) {
+			listVals =  new HashMap<EStructuralFeature, IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>();
+			propertyValues.put(eObject,listVals);
 		}
-		if (propertyValues.get(eObject).get(eReference) == null) {
+		EMFObjectIndividualReferenceObjectPropertyValue propertyValue = (EMFObjectIndividualReferenceObjectPropertyValue) listVals.get(eReference);
+		if (propertyValue == null) {
 			propertyValue = builder.buildObjectIndividualReferenceObjectPropertyValue(model, eObject, eReference);
 			propertyValues.get(eObject).put(eReference, propertyValue);
 
@@ -246,22 +326,20 @@ public class EMFModelConverter {
 			if (value != null) {
 				if (eReference.getUpperBound() == 1) {
 					if (value instanceof EObject) {
-						EMFObjectIndividual individual = convertObjectIndividual(model, (EObject) value);
+						convertObjectIndividual(model, (EObject) value);
 					}
 				} else if (eReference.getUpperBound() == -1) {
 					if (value instanceof EList) {
 						for (Object aListValue : (EList<Object>) value) {
 							if (aListValue instanceof EObject) {
-								EMFObjectIndividual individual = convertObjectIndividual(model, (EObject) aListValue);
+								convertObjectIndividual(model, (EObject) aListValue);
 							}
 						}
 					}
 				}
 			}
 
-		} else {
-			propertyValue = (EMFObjectIndividualReferenceObjectPropertyValue) propertyValues.get(eObject).get(eReference);
-		}
+		} 
 		return propertyValue;
 	}
 

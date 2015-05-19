@@ -1,22 +1,41 @@
-/*
- * (c) Copyright 2013- Openflexo
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Openflexo-technologyadapter-archetype, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 
 package org.openflexo.technologyadapter.csv;
 
@@ -24,20 +43,17 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
-import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -57,22 +73,16 @@ import org.openflexo.technologyadapter.csv.virtualmodel.action.SelectCSVObjectIn
  * @author Jean Le Paon
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-	@DeclarePatternRole(FML = "CSVObjectIndividual", flexoRoleClass = CSVObjectIndividualRole.class)
-	})
-@DeclareEditionActions({ // All edition actions available through this model slot
-	@DeclareEditionAction(FML = "AddCSVObjectIndividual", editionActionClass = AddCSVObjectIndividual.class)
-	})
-@DeclareFetchRequests({ // All requests available through this model slot
-	@DeclareFetchRequest(FML = "SelectCSVObjectIndividual", fetchRequestClass = SelectCSVObjectIndividual.class) 
-	})
+@DeclareFlexoRoles({CSVObjectIndividualRole.class})
+@DeclareEditionActions({AddCSVObjectIndividual.class})
+@DeclareFetchRequests({SelectCSVObjectIndividual.class})
 @ModelEntity
 @ImplementationClass(CSVTypeAwareModelSlot.CSVTypeAwareModelSlotImpl.class)
 @XMLElement
 public interface CSVTypeAwareModelSlot extends TypeAwareModelSlot<CSVModel, CSVMetaModel> {
 
 	@Override
-	public CSVTechnologyAdapter getTechnologyAdapter();
+	public CSVTechnologyAdapter getModelSlotTechnologyAdapter();
 
 	public static abstract class CSVTypeAwareModelSlotImpl extends TypeAwareModelSlotImpl<CSVModel, CSVMetaModel> implements CSVTypeAwareModelSlot {
 
@@ -122,20 +132,20 @@ public interface CSVTypeAwareModelSlot extends TypeAwareModelSlot<CSVModel, CSVM
 		}
 
 		@Override
-		public CSVTechnologyAdapter getTechnologyAdapter() {
-			return (CSVTechnologyAdapter) super.getTechnologyAdapter();
+		public CSVTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (CSVTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
 		public CSVModelResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
 				FlexoMetaModelResource<CSVModel, CSVMetaModel, ?> metaModelResource) {
-			return ((CSVTechnologyAdapter) getTechnologyAdapter()).createNewCSVModel(project, filename, modelUri, (CSVMetaModelResource) metaModelResource);
+			return ((CSVTechnologyAdapter) getModelSlotTechnologyAdapter()).createNewCSVModel(project, filename, modelUri, (CSVMetaModelResource) metaModelResource);
 		}
 
 		@Override
 		public CSVModelResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<CSVModel, CSVMetaModel, ?> metaModelResource) {
-			return ((CSVTechnologyAdapter) getTechnologyAdapter()).createNewCSVModel((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
+			return ((CSVTechnologyAdapter) getModelSlotTechnologyAdapter()).createNewCSVModel((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
 					modelUri, (CSVMetaModelResource) metaModelResource);
 		}
 

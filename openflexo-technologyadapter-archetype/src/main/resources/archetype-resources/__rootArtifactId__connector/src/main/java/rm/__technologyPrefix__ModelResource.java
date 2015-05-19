@@ -36,7 +36,7 @@ import ${package}.model.${technologyPrefix}Model;
 
 @ModelEntity
 @ImplementationClass(${technologyPrefix}ModelResourceImpl.class)
-public abstract interface ${technologyPrefix}ModelResource extends FlexoResource<${technologyPrefix}Model>, FlexoModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TechnologyAdapter>
+public abstract interface ${technologyPrefix}ModelResource extends FlexoResource<${technologyPrefix}Model>, FlexoModelResource<${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TechnologyAdapter, ${technologyPrefix}TechnologyAdapter>
 {
   public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 

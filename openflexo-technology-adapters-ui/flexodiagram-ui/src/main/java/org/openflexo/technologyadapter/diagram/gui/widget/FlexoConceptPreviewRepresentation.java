@@ -1,29 +1,48 @@
-/*
- * (c) Copyright 2010-2011 AgileBirds
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.diagram.gui.widget;
 
 import java.awt.Color;
 import java.util.Hashtable;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactory;
@@ -39,9 +58,10 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.FlexoRole;
-import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
+import org.openflexo.foundation.fml.FMLModelFactory;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoProperty;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 
@@ -70,33 +90,33 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 	private final Hashtable<FlexoRole, ConnectorToArtifact> toArtifacts;
 
 	public FlexoConceptPreviewRepresentation(FlexoConcept model) {
-		super(model, model.getVirtualModelFactory(), PersistenceMode.UniqueGraphicalRepresentations);
+		super(model, model.getFMLModelFactory(), PersistenceMode.UniqueGraphicalRepresentations);
 		// Sylvain: commented this because not movable nor rezizable shapes
 		// setEditable(false);
 
-		factory = model.getVirtualModelFactory();
+		factory = model.getFMLModelFactory();
 
 		fromArtifacts = new Hashtable<FlexoRole, ConnectorFromArtifact>();
 		toArtifacts = new Hashtable<FlexoRole, ConnectorToArtifact>();
 	}
 
-	private final VirtualModelModelFactory factory;
+	private final FMLModelFactory factory;
 
 	@Override
 	public void init() {
 
 		final DrawingGRBinding<FlexoConcept> drawingBinding = bindDrawing(FlexoConcept.class, "flexoConcept",
 				new DrawingGRProvider<FlexoConcept>() {
-					@Override
-					public DrawingGraphicalRepresentation provideGR(FlexoConcept drawable, FGEModelFactory factory) {
-						DrawingGraphicalRepresentation returned = factory.makeDrawingGraphicalRepresentation();
-						returned.setWidth(WIDTH);
-						returned.setHeight(HEIGHT);
-						returned.setBackgroundColor(BACKGROUND_COLOR);
-						returned.setDrawWorkingArea(false);
-						return returned;
-					}
-				});
+			@Override
+			public DrawingGraphicalRepresentation provideGR(FlexoConcept drawable, FGEModelFactory factory) {
+				DrawingGraphicalRepresentation returned = factory.makeDrawingGraphicalRepresentation();
+				returned.setWidth(WIDTH);
+				returned.setHeight(HEIGHT);
+				returned.setBackgroundColor(BACKGROUND_COLOR);
+				returned.setDrawWorkingArea(false);
+				return returned;
+			}
+		});
 		final ShapeGRBinding<ShapeRole> shapeBinding = bindShape(ShapeRole.class, "shapePatternRole", new ShapeGRProvider<ShapeRole>() {
 			@Override
 			public ShapeGraphicalRepresentation provideGR(ShapeRole drawable, FGEModelFactory factory) {
@@ -108,42 +128,42 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		});
 		final ConnectorGRBinding<ConnectorRole> connectorBinding = bindConnector(ConnectorRole.class, "connector", shapeBinding,
 				shapeBinding, new ConnectorGRProvider<ConnectorRole>() {
-					@Override
-					public ConnectorGraphicalRepresentation provideGR(ConnectorRole drawable, FGEModelFactory factory) {
-						if (drawable.getGraphicalRepresentation() == null) {
-							drawable.setGraphicalRepresentation(makeDefaultConnectorGR());
-						}
-						return drawable.getGraphicalRepresentation();
-					}
-				});
+			@Override
+			public ConnectorGraphicalRepresentation provideGR(ConnectorRole drawable, FGEModelFactory factory) {
+				if (drawable.getGraphicalRepresentation() == null) {
+					drawable.setGraphicalRepresentation(makeDefaultConnectorGR());
+				}
+				return drawable.getGraphicalRepresentation();
+			}
+		});
 		final ShapeGRBinding<ConnectorFromArtifact> fromArtefactBinding = bindShape(ConnectorFromArtifact.class, "fromArtifact",
 				new ShapeGRProvider<ConnectorFromArtifact>() {
-					@Override
-					public ShapeGraphicalRepresentation provideGR(ConnectorFromArtifact drawable, FGEModelFactory factory) {
-						return makeFromArtefactGR();
-					}
+			@Override
+			public ShapeGraphicalRepresentation provideGR(ConnectorFromArtifact drawable, FGEModelFactory factory) {
+				return makeFromArtefactGR();
+			}
 
-				});
+		});
 		final ShapeGRBinding<ConnectorToArtifact> toArtefactBinding = bindShape(ConnectorToArtifact.class, "toArtifact",
 				new ShapeGRProvider<ConnectorToArtifact>() {
-					@Override
-					public ShapeGraphicalRepresentation provideGR(ConnectorToArtifact drawable, FGEModelFactory factory) {
-						return makeToArtefactGR();
-					}
+			@Override
+			public ShapeGraphicalRepresentation provideGR(ConnectorToArtifact drawable, FGEModelFactory factory) {
+				return makeToArtefactGR();
+			}
 
-				});
+		});
 
 		drawingBinding.addToWalkers(new GRStructureVisitor<FlexoConcept>() {
 
 			@Override
 			public void visit(FlexoConcept flexoConcept) {
 
-				for (FlexoRole<?> role : flexoConcept.getFlexoRoles()) {
+				for (FlexoProperty<?> role : flexoConcept.getFlexoProperties()) {
 					if (role instanceof ShapeRole) {
 						if (((ShapeRole) role).getParentShapeAsDefinedInAction()) {
 							drawShape(shapeBinding, (ShapeRole) role, getFlexoConcept());
-							// System.out.println("Add shape " + role.getRoleName() + " under FlexoConcept");
-						} 
+							// System.out.println("Add shape " + property.getRoleName() + " under FlexoConcept");
+						}
 					} else if (role instanceof ConnectorRole) {
 						ConnectorRole connectorRole = (ConnectorRole) role;
 						ShapeGRBinding fromBinding;
@@ -168,7 +188,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 							toBinding = shapeBinding;
 							toDrawable = connectorRole.getEndShapeRole();
 						}
-						// System.out.println("Add connector " + role.getPatternRoleName() + " under FlexoConcept");
+						// System.out.println("Add connector " + property.getPatternRoleName() + " under FlexoConcept");
 						drawConnector(connectorBinding, connectorRole, fromBinding, fromDrawable, toBinding, toDrawable);
 					}
 				}
@@ -181,11 +201,16 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 			@Override
 			public void visit(ShapeRole parentRole) {
 
-				for (FlexoRole<?> role : parentRole.getFlexoConcept().getFlexoRoles()) {
-					if (role instanceof ShapeRole) {
-						if (((ShapeRole) role).getParentShapeRole() == parentRole) {
-							drawShape(shapeBinding, (ShapeRole) role, parentRole);
-							//System.out.println("Add shape " + role.getRoleName() + " under " + parentRole.getRoleName());
+				// NPE Protection - no impact at this stage
+
+				FlexoConcept concept = parentRole.getFlexoConcept();
+				if (concept != null){
+					for (FlexoProperty<?> role : concept.getFlexoProperties()) {
+						if (role instanceof ShapeRole) {
+							if (((ShapeRole) role).getParentShapeRole() == parentRole) {
+								drawShape(shapeBinding, (ShapeRole) role, parentRole);
+								// System.out.println("Add shape " + property.getRoleName() + " under " + parentRole.getRoleName());
+							}
 						}
 					}
 				}
@@ -207,8 +232,8 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		/*if (getFlexoConcept() != null) {
 			getFlexoConcept().deleteObserver(this);
 		}*/
-		/*for (FlexoRole role : getFlexoConcept().getPatternRoles()) {
-			role.deleteObserver(this);
+		/*for (FlexoRole property : getFlexoConcept().getPatternRoles()) {
+			property.deleteObserver(this);
 		}*/
 		super.delete();
 	}

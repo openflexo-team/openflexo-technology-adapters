@@ -1,25 +1,42 @@
-/*
- * (c) Copyright 2010-2011 AgileBirds
+/**
+ * 
+ * Copyright (c) 2014, Openflexo
+ * 
+ * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
-package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
-import static org.junit.Assert.assertTrue;
+package org.openflexo.technologyadapter.diagram.controller.diagrameditor;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,9 +56,9 @@ import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.control.PaletteElement;
 import org.openflexo.fge.geom.FGEPoint;
-import org.openflexo.foundation.view.FlexoConceptInstance;
-import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.foundation.viewpoint.FlexoConcept;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -51,6 +68,8 @@ import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
 
@@ -231,12 +250,18 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 
 		FlexoConceptInstance parentFlexoConceptInstance = null;
 		ShapeRole parentShapeRole = null;
+		DiagramContainerElement<?> container = null;
 
 		if (target.getDrawable() instanceof FMLControlledDiagramElement) {
 			parentFlexoConceptInstance = ((FMLControlledDiagramElement<?, ?>) target.getDrawable()).getFlexoConceptInstance();
+			container = (DiagramContainerElement<?>) ((FMLControlledDiagramElement<?, ?>) target.getDrawable()).getDiagramElement();
 		}
 		if (target.getDrawable() instanceof FMLControlledDiagramShape) {
 			parentShapeRole = (ShapeRole) ((FMLControlledDiagramShape) target.getDrawable()).getRole();
+			container = (DiagramContainerElement<?>) ((FMLControlledDiagramElement<?, ?>) target.getDrawable()).getDiagramElement();
+		}
+		if (target.getDrawable() instanceof Diagram) {
+			container = (Diagram) target.getDrawable();
 		}
 
 		List<DropScheme> availableDropSchemes = getAvailableDropSchemes(target, paletteElement);
@@ -263,6 +288,15 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			action.setDropLocation(dropLocation);
 
 			action.doAction();
+
+			// The new shape has well be added to the diagram, and the drawing (which listen to the diagram) has well received the event
+			// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
+			// Since the shape has been added BEFORE the FlexoConceptInstance has been set, the drawing only knows about the DiagamShape,
+			// and not about an FMLControlledDiagramShape. That's why we need to notify again the new diagram element's parent, to be
+			// sure that the Drawing can discover that the new shape is FML-controlled
+
+			container.getPropertyChangeSupport().firePropertyChange(DiagramElement.INVALIDATE, null, container);
+
 			return action.hasActionExecutionSucceeded();
 		}
 
@@ -299,7 +333,6 @@ public class ContextualPalette extends AbstractDiagramPalette implements Propert
 			action.setPaletteElement(paletteElement);
 			action.setDropLocation(dropLocation);
 			action.doAction();
-			assertTrue(action.hasActionExecutionSucceeded());
 		}
 
 	}

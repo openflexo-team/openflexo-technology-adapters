@@ -13,6 +13,17 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-assembly-plugin</artifactId>
 			</plugin>
+			<!-- Remove assertion because of an unimplemented hashcode method in Poi that returns false
+			Therefor if we use a HashMap in the code it automatically fails the test
+			This problem is encountered since from the version 3.11-3.12(beta) of poi, not in 3.10.
+			However since 3.11 many important bugs are fixed and it should be used instead of 3.10 -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+                	<enableAssertions>false</enableAssertions>
+            	</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<dependencies>

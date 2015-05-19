@@ -1,53 +1,69 @@
-/*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2013 Openflexo
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Powerpointconnector, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.powerpoint;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequest;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
-import org.openflexo.foundation.view.FreeModelSlotInstance;
-import org.openflexo.foundation.view.View;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.view.action.ModelSlotInstanceConfiguration;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.powerpoint.fml.PowerpointShapeRole;
+import org.openflexo.technologyadapter.powerpoint.fml.PowerpointSlideRole;
+import org.openflexo.technologyadapter.powerpoint.fml.editionaction.AddPowerpointShape;
+import org.openflexo.technologyadapter.powerpoint.fml.editionaction.AddPowerpointSlide;
+import org.openflexo.technologyadapter.powerpoint.fml.editionaction.SelectPowerpointShape;
+import org.openflexo.technologyadapter.powerpoint.fml.editionaction.SelectPowerpointSlide;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointObject;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointShapeRole;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.PowerpointSlideRole;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointShape;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.AddPowerpointSlide;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.SelectPowerpointShape;
-import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.SelectPowerpointSlide;
 
 /**
  * Implementation of a basic ModelSlot class for the Powerpoint technology adapter<br>
@@ -55,18 +71,13 @@ import org.openflexo.technologyadapter.powerpoint.viewpoint.editionaction.Select
  * @author Vincent Leildé, Sylvain Guérin
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "PowerpointSlide", flexoRoleClass = PowerpointSlideRole.class),
-		@DeclarePatternRole(FML = "PowerpointShape", flexoRoleClass = PowerpointShapeRole.class) })
-@DeclareEditionActions({ // All edition actions available through this model slot
-@DeclareEditionAction(FML = "AddPowerpointSlide", editionActionClass = AddPowerpointSlide.class),
-		@DeclareEditionAction(FML = "AddPowerpointShape", editionActionClass = AddPowerpointShape.class) })
-@DeclareFetchRequests({ // All requests available through this model slot
-@DeclareFetchRequest(FML = "RemoveReferencePropertyValue", fetchRequestClass = SelectPowerpointSlide.class),
-		@DeclareFetchRequest(FML = "RemoveReferencePropertyValue", fetchRequestClass = SelectPowerpointShape.class) })
+@DeclareFlexoRoles({ PowerpointSlideRole.class, PowerpointShapeRole.class })
+@DeclareEditionActions({ AddPowerpointSlide.class, AddPowerpointShape.class })
+@DeclareFetchRequests({ SelectPowerpointSlide.class, SelectPowerpointShape.class })
 @ModelEntity
 @ImplementationClass(BasicPowerpointModelSlot.BasicPowerpointModelSlotImpl.class)
 @XMLElement
+@FML("BasicPowerpointModelSlot")
 public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow>, PowerpointModelSlot {
 
 	public static abstract class BasicPowerpointModelSlotImpl extends FreeModelSlotImpl<PowerpointSlideshow> implements
@@ -77,8 +88,8 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 		private BasicPowerpointModelSlotURIProcessor uriProcessor;
 
 		public BasicPowerpointModelSlotURIProcessor getUriProcessor() {
-			if (uriProcessor == null && getVirtualModelFactory() != null) {
-				uriProcessor = getVirtualModelFactory().newInstance(BasicPowerpointModelSlotURIProcessor.class);
+			if (uriProcessor == null && getFMLModelFactory() != null) {
+				uriProcessor = getFMLModelFactory().newInstance(BasicPowerpointModelSlotURIProcessor.class);
 			}
 			return uriProcessor;
 		}
@@ -131,13 +142,13 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 		}
 
 		@Override
-		public PowerpointTechnologyAdapter getTechnologyAdapter() {
-			return (PowerpointTechnologyAdapter) super.getTechnologyAdapter();
+		public PowerpointTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (PowerpointTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
 		public PowerpointSlideshowResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getTechnologyAdapter().createNewSlideshow(view.getProject(), filename, modelUri);
+			return getModelSlotTechnologyAdapter().createNewSlideshow(view.getProject(), filename, modelUri);
 		}
 
 		@Override

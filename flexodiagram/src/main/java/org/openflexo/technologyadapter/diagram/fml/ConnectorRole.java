@@ -1,13 +1,53 @@
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
+ *
+ *          Additional permission under GNU GPL version 3 section 7
+ *
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
+ *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
+ */
+
 package org.openflexo.technologyadapter.diagram.fml;
 
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.logging.Logger;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.foundation.viewpoint.FMLRepresentationContext;
-import org.openflexo.foundation.viewpoint.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.FMLRepresentationContext;
+import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
+import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -24,6 +64,7 @@ import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationC
 @ModelEntity
 @ImplementationClass(ConnectorRole.ConnectorRoleImpl.class)
 @XMLElement
+@FML("ConnectorRole")
 public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, ConnectorGraphicalRepresentation> {
 
 	@PropertyIdentifier(type = GraphicalRepresentation.class)
@@ -87,6 +128,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	public static abstract class ConnectorRoleImpl extends GraphicalElementRoleImpl<DiagramConnector, ConnectorGraphicalRepresentation>
 			implements ConnectorRole {
 
+		private static final Logger logger = Logger.getLogger(ConnectorRole.class.getPackage().getName());
+
 		private ShapeGraphicalRepresentation artifactFromGraphicalRepresentation;
 		private ShapeGraphicalRepresentation artifactToGraphicalRepresentation;
 
@@ -97,9 +140,10 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		@Override
 		protected void initDefaultSpecifications() {
 			super.initDefaultSpecifications();
-			if (getVirtualModelFactory() != null) {
+			if (getFMLModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
+					//logger.info("[CONNECTOR:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
+					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
 							GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
@@ -108,17 +152,18 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
 			}
+			handlePendingGRSpecs();
 		}
 
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("FlexoRole " + getName() + " as ConnectorSpecification from " + getVirtualModel().getName() + ";", context);
+			out.append("FlexoRole " + getName() + " as ConnectorSpecification from " + getOwningVirtualModel().getName() + ";", context);
 			return out.toString();
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return FlexoLocalization.localizedForKey("connector");
 		}
 
@@ -169,8 +214,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public void setStartShapeAsDefinedInAction(boolean flag) {
-			if (!flag && getFlexoConcept().getFlexoRoles(ShapeRole.class).size() > 0) {
-				setStartShapeRole(getFlexoConcept().getFlexoRoles(ShapeRole.class).get(0));
+			if (!flag && getFlexoConcept().getDeclaredProperties(ShapeRole.class).size() > 0) {
+				setStartShapeRole(getFlexoConcept().getDeclaredProperties(ShapeRole.class).get(0));
 			} else {
 				// System.out.println("setStartShapePatternRole with null");
 				setStartShapeRole(null);
@@ -197,8 +242,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public void setEndShapeAsDefinedInAction(boolean flag) {
-			if (!flag && getFlexoConcept().getFlexoRoles(ShapeRole.class).size() > 0) {
-				setEndShapeRole(getFlexoConcept().getFlexoRoles(ShapeRole.class).get(0));
+			if (!flag && getFlexoConcept().getDeclaredProperties(ShapeRole.class).size() > 0) {
+				setEndShapeRole(getFlexoConcept().getDeclaredProperties(ShapeRole.class).get(0));
 			} else {
 				// System.out.println("setEndShapePatternRole with null");
 				setEndShapeRole(null);
@@ -250,7 +295,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public List<ShapeRole> getAvailableShapeRoles() {
-			return getFlexoConcept().getFlexoRoles(ShapeRole.class);
+			return getFlexoConcept().getDeclaredProperties(ShapeRole.class);
 		}
 	}
 }

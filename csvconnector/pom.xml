@@ -18,4 +18,5 @@
 			<scope>test</scope>
 		</dependency>
   </dependencies>
+  <name>CSV technology adaptor</name>
 </project>

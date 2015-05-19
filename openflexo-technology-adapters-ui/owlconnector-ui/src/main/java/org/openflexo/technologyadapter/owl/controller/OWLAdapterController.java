@@ -1,22 +1,40 @@
-/*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2013-2015 Openflexo
+/**
+ * 
+ * Copyright (c) 2013-2015, Openflexo
+ * Copyright (c) 2012-2012, AgileBirds
+ * 
+ * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
 
 package org.openflexo.technologyadapter.owl.controller;
@@ -27,14 +45,28 @@ import javax.swing.ImageIcon;
 
 import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.components.widget.OntologyView;
+import org.openflexo.fib.utils.InspectorGroup;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.foundation.viewpoint.FlexoRole;
-import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
+import org.openflexo.technologyadapter.owl.fml.DataPropertyStatementRole;
+import org.openflexo.technologyadapter.owl.fml.OWLClassRole;
+import org.openflexo.technologyadapter.owl.fml.OWLDataPropertyRole;
+import org.openflexo.technologyadapter.owl.fml.OWLIndividualRole;
+import org.openflexo.technologyadapter.owl.fml.OWLObjectPropertyRole;
+import org.openflexo.technologyadapter.owl.fml.OWLPropertyRole;
+import org.openflexo.technologyadapter.owl.fml.ObjectPropertyStatementRole;
+import org.openflexo.technologyadapter.owl.fml.SubClassStatementRole;
+import org.openflexo.technologyadapter.owl.fml.editionaction.AddDataPropertyStatement;
+import org.openflexo.technologyadapter.owl.fml.editionaction.AddOWLClass;
+import org.openflexo.technologyadapter.owl.fml.editionaction.AddOWLIndividual;
+import org.openflexo.technologyadapter.owl.fml.editionaction.AddObjectPropertyStatement;
+import org.openflexo.technologyadapter.owl.fml.editionaction.AddRestrictionStatement;
+import org.openflexo.technologyadapter.owl.fml.editionaction.AddSubClassStatement;
 import org.openflexo.technologyadapter.owl.gui.OWLIconLibrary;
 import org.openflexo.technologyadapter.owl.gui.OWLOntologyBrowserModel;
 import org.openflexo.technologyadapter.owl.gui.OWLOntologyView;
@@ -49,20 +81,6 @@ import org.openflexo.technologyadapter.owl.model.OWLProperty;
 import org.openflexo.technologyadapter.owl.model.OWLStatement;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.SubClassStatement;
-import org.openflexo.technologyadapter.owl.viewpoint.DataPropertyStatementRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLClassRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLDataPropertyRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLIndividualRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLObjectPropertyRole;
-import org.openflexo.technologyadapter.owl.viewpoint.OWLPropertyRole;
-import org.openflexo.technologyadapter.owl.viewpoint.ObjectPropertyStatementRole;
-import org.openflexo.technologyadapter.owl.viewpoint.SubClassStatementRole;
-import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddDataPropertyStatement;
-import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddOWLClass;
-import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddOWLIndividual;
-import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddObjectPropertyStatement;
-import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddRestrictionStatement;
-import org.openflexo.technologyadapter.owl.viewpoint.editionaction.AddSubClassStatement;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
@@ -88,12 +106,33 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 		return OWLTechnologyAdapter.class;
 	}
 
+	/**
+	 * Initialize inspectors for supplied module using supplied {@link FlexoController}
+	 * 
+	 * @param controller
+	 */
 	@Override
-	public void initializeActions(ControllerActionInitializer actionInitializer) {
+	protected void initializeInspectors(FlexoController controller) {
+
+		owlInspectorGroup = controller.loadInspectorGroup("OWL", getFMLTechnologyAdapterInspectorGroup());
+	}
+
+	private InspectorGroup owlInspectorGroup;
+
+	/**
+	 * Return inspector group for this technology
+	 * 
+	 * @return
+	 */
+	@Override
+	public InspectorGroup getTechnologyAdapterInspectorGroup() {
+		return owlInspectorGroup;
+	}
+
+	@Override
+	protected void initializeActions(ControllerActionInitializer actionInitializer) {
 
 		// TODO : Des choses à faire ici pour améliorer le support des répertoires dans le ClassPath
-
-		actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/OWL"));
 
 		new CreateOntologyClassInitializer(actionInitializer);
 		new CreateOntologyIndividualInitializer(actionInitializer);
@@ -150,7 +189,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<OWLTechnologyAdapter>> objectClass) {
+	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (OWLObject.class.isAssignableFrom(objectClass)) {
 			return OWLIconLibrary.iconForObject((Class<? extends OWLObject>) objectClass);
 		} else if (OWLStatement.class.isAssignableFrom(objectClass)) {
@@ -160,7 +199,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	}
 
 	/**
-	 * Return icon representing supplied pattern role
+	 * Return icon representing supplied pattern property
 	 * 
 	 * @param object
 	 * @return
@@ -194,7 +233,7 @@ public class OWLAdapterController extends TechnologyAdapterController<OWLTechnol
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForEditionAction(Class<? extends EditionAction<?, ?>> editionActionClass) {
+	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
 		if (AddOWLIndividual.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLIndividual.class), IconLibrary.DUPLICATE);
 		}

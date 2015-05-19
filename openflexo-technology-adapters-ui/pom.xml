@@ -23,6 +23,8 @@
 		<module>excelconnector-ui</module>
 		<module>powerpointconnector-ui</module>
 		<module>xmlconnector-ui</module>
+		<module>oslcconnector-ui</module>
+		<module>freeplaneconnector-ui</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
@@ -35,12 +37,50 @@
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
-				<version>${project.version}</version>
-				<classifier>flexocore</classifier>
+				<version>${flexocore.version}</version>
+				<classifier>tests</classifier>
 			</dependency>
 			<dependency>
 				<groupId>org.openflexo</groupId>
 				<artifactId>flexo-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>resources</classifier>
+				<type>zip</type>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fml-technologyadapter-ui</artifactId>
+				<version>${flexocore.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fml-technologyadapter-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>tests</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fml-technologyadapter-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>resources</classifier>
+				<type>zip</type>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fml-rt-technologyadapter-ui</artifactId>
+				<version>${flexocore.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fml-rt-technologyadapter-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>tests</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>fml-rt-technologyadapter-ui</artifactId>
 				<version>${flexocore.version}</version>
 				<classifier>resources</classifier>
 				<type>zip</type>

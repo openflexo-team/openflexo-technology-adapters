@@ -1,22 +1,41 @@
-/*
- * (c) Copyright 2010-2011 AgileBirds
+/**
+ * 
+ * Copyright (c) 2014, Openflexo
+ * 
+ * This file is part of Emfconnector, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.emf.rm;
 
 import java.io.File;
@@ -28,17 +47,16 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
-import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
 import org.openflexo.toolbox.IProgress;
@@ -69,15 +87,16 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	public static EMFModelResource makeEMFModelResource(String modelURI, File modelFile, EMFMetaModelResource emfMetaModelResource,
 			EMFTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,EMFModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					EMFModelResource.class));
 			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
-			returned.setName(modelFile.getName());
-			
+			returned.initName(modelFile.getName());
+
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 
-			//returned.setFile(modelFile);
+			// returned.setFile(modelFile);
 			// TODO: URI should be defined by the parameter,because its not manageable (FOR NOW)
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
@@ -99,7 +118,8 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 */
 	@Override
 	public String getURI() {
-		return getFileFlexoIODelegate().getFile().toURI().toString();
+		// TODO FIX THIS When refactoring with clean IoDelegate support
+		return ((FileFlexoIODelegate) getFlexoIODelegate()).getFile().toURI().toString();
 	}
 
 	/**
@@ -114,15 +134,15 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	public static EMFModelResource retrieveEMFModelResource(File modelFile, EMFMetaModelResource emfMetaModelResource,
 			EMFTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,EMFModelResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					EMFModelResource.class));
 			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
-			returned.setName(modelFile.getName());
-			//returned.setFile(modelFile);
+			returned.initName(modelFile.getName());
 
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			
+
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
@@ -181,7 +201,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 
 		if (!getFlexoIODelegate().hasWritePermission()) {
 			if (logger.isLoggable(Level.WARNING)) {
-				//logger.warning("Permission denied : " + getFile().getAbsolutePath());
+				// logger.warning("Permission denied : " + getFile().getAbsolutePath());
 				logger.warning("Permission denied : " + getFlexoIODelegate().toString());
 			}
 			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
@@ -241,18 +261,34 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 */
 	public Resource getEMFResource() {
 		if (modelResource == null) {
-			if (getMetaModelResource() == null) {
+			EMFMetaModelResource mmResource = (EMFMetaModelResource) getMetaModelResource();
+			if (mmResource == null) {
 				logger.warning("EMFModel has no meta-model !!!");
 				return null;
+			} else {
+				if (!mmResource.isLoaded()) {
+					try {
+						mmResource.loadResourceData(null);
+					} catch (FileNotFoundException e) {
+						logger.warning("Cannot load EMF MetaModel");
+						return null;
+					} catch (ResourceLoadingCancelledException e) {
+						logger.warning("Cannot load EMF MetaModel");
+						return null;
+					} catch (FlexoException e) {
+						logger.warning("Cannot load EMF MetaModel");
+						return null;
+					}
+				}
+
 			}
-			modelResource = getMetaModelResource().getMetaModelData().getResource().getResourceFactory()
-					.createResource(org.eclipse.emf.common.util.URI.createFileURI(getFileFlexoIODelegate().getFile().getAbsolutePath()));
+
+			// TODO: should be refactored with IODelegates Also (BE AWARE THAT FOR EMF, THE METAMODEL DECIDES WHO IS CREATING THE
+			// RESOURCES!!
+			modelResource = mmResource.createEMFModelResource(getFlexoIODelegate());
+
 		}
 		return modelResource;
-	}
-	
-	private FileFlexoIODelegate getFileFlexoIODelegate(){
-		return (FileFlexoIODelegate)getFlexoIODelegate();
 	}
 
 	@Override

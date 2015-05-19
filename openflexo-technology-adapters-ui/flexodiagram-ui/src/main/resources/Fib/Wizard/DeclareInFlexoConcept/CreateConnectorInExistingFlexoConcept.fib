@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false"
+	height="400" opaque="false" layout="twocols"
+	controllerClassName="org.openflexo.view.controller.FlexoFIBController"
+	border="empty" trackViewPortWidth="true" width="600"
+	dataClassName="org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptWizard$CreateConnectorInExistingFlexoConcept"
+	trackViewPortHeight="true">
+	<LocalizedDictionary id="1" />
+	<Label id="13" manageDynamicModel="false" useScrollBar="false"
+		index="1" localize="true" align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=50;insetsRight=2;insetsTop=5;location=left)"
+		label="flexo_concept" readOnly="false">
+	</Label>
+	<DropDown id="15" manageDynamicModel="false" useScrollBar="false"
+		data="data.flexoConcept" showReset="false" staticList=""
+		autoSelectFirstRow="true" name="flexoConceptDropdown" index="2"
+		localize="true"
+		constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		list="data.action.virtualModel.flexoConcepts" format="object.name"
+		showText="true" readOnly="false" iteratorClassName="org.openflexo.foundation.fml.FlexoConcept"
+		showIcon="false">
+	</DropDown>
+	<Label id="18" manageDynamicModel="false" useScrollBar="false"
+		index="3" localize="true" align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		label="flexo_role" readOnly="false">
+	</Label>
+	<TextField index="20" data="data.connectorRoleName"
+		constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		localize="true" columns="7" />
+	<Label manageDynamicModel="false" useScrollBar="false" localize="true"
+		align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		label="preview" readOnly="false">
+	</Label>
+	<Custom
+		componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FlexoConceptPreviewComponent"
+		localize="true" manageDynamicModel="true" name="PreviewComponent"
+		index="0" data="data.flexoConcept"
+		constraints="twocols(expandHorizontally=true;expandVertically=true;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+		<!-- <Assignment variable="component.selectionManager" value="controller.selectionManager" 
+			/> -->
+	</Custom>
+
+</Panel>

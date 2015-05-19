@@ -34,6 +34,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
+			<artifactId>fml-technologyadapter-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
 			<artifactId>gina-core</artifactId>
 			<classifier>tests</classifier>
 			<scope>test</scope>
@@ -48,12 +52,6 @@
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-foundation</artifactId>
 			<classifier>tests</classifier>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.openflexo</groupId>
-			<artifactId>flexoviewpointmodeler</artifactId>
-			<version>${flexomodules.testversion}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

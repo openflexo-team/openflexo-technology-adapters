@@ -1,29 +1,47 @@
-/*
- * (c) Copyright 2010-2011 AgileBirds
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.diagram.model.action;
 
-import java.util.Hashtable;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.BindingVariable;
+import org.openflexo.connie.BindingVariable;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation.ShapeBorder;
@@ -35,10 +53,10 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.view.FlexoConceptInstance;
-import org.openflexo.foundation.view.VirtualModelInstance;
-import org.openflexo.foundation.view.VirtualModelInstanceObject;
-import org.openflexo.foundation.viewpoint.editionaction.EditionAction;
+import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
@@ -165,7 +183,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	}
 
 	@Override
-	public DropScheme getEditionScheme() {
+	public DropScheme getFlexoBehaviour() {
 		return getDropScheme();
 	}
 
@@ -192,22 +210,22 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	}
 
 	@Override
-	protected Object performAction(EditionAction anAction, Hashtable<EditionAction, Object> performedActions) throws FlexoException {
-		Object assignedObject = super.performAction(anAction, performedActions);
+	public <T> void hasPerformedAction(EditionAction anAction, T object) {
+		super.hasPerformedAction(anAction, object);
 		if (anAction instanceof AddShape) {
 			AddShape action = (AddShape) anAction;
-			DiagramShape newShape = (DiagramShape) assignedObject;
+			DiagramShape newShape = (DiagramShape) object;
 			if (newShape != null) {
 				ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 				// if (action.getPatternRole().getIsPrimaryRepresentationRole()) {
-				// Declare shape as new shape only if it is the primary representation role of the EP
+				// Declare shape as new shape only if it is the primary representation property of the EP
 
 				_primaryShape = newShape;
 				gr.setX(dropLocation.getX());
 				gr.setY(dropLocation.getY());
 
 				// Temporary comment this portion of code if child shapes are declared inside this shape
-				if (!action.getFlexoRole().containsShapes()
+				if (!action.getAssignedFlexoProperty().containsShapes()
 						&& action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
 					ShapeBorder border = gr.getBorder();
 					ShapeBorder newBorder = gr.getFactory().makeShapeBorder(border);
@@ -259,8 +277,65 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 			}*/
 
 		}
-		return assignedObject;
 	}
+
+	/*@Override
+	protected Object performAction(EditionAction anAction, Hashtable<EditionAction, Object> performedActions) throws FlexoException {
+		Object assignedObject = super.performAction(anAction, performedActions);
+		if (anAction instanceof AddShape) {
+			AddShape action = (AddShape) anAction;
+			DiagramShape newShape = (DiagramShape) assignedObject;
+			if (newShape != null) {
+				ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
+				// if (action.getPatternRole().getIsPrimaryRepresentationRole()) {
+				// Declare shape as new shape only if it is the primary representation property of the EP
+
+				_primaryShape = newShape;
+				gr.setX(dropLocation.getX());
+				gr.setY(dropLocation.getY());
+
+				// Temporary comment this portion of code if child shapes are declared inside this shape
+				if (!action.getFlexoRole().containsShapes()
+						&& action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
+					ShapeBorder border = gr.getBorder();
+					ShapeBorder newBorder = gr.getFactory().makeShapeBorder(border);
+					boolean requireNewBorder = false;
+					double deltaX = 0;
+					double deltaY = 0;
+					if (border.getTop() < 25) {
+						requireNewBorder = true;
+						deltaY = border.getTop() - 25;
+						newBorder.setTop(25);
+					}
+					if (border.getLeft() < 25) {
+						requireNewBorder = true;
+						deltaX = border.getLeft() - 25;
+						newBorder.setLeft(25);
+					}
+					if (border.getRight() < 25) {
+						requireNewBorder = true;
+						newBorder.setRight(25);
+					}
+					if (border.getBottom() < 25) {
+						requireNewBorder = true;
+						newBorder.setBottom(25);
+					}
+					if (requireNewBorder) {
+						gr.setBorder(newBorder);
+						gr.setX(gr.getX() + deltaX);
+						gr.setY(gr.getY() + deltaY);
+						if (gr.getIsFloatingLabel()) {
+							gr.setAbsoluteTextX(gr.getAbsoluteTextX() - deltaX);
+							gr.setAbsoluteTextY(gr.getAbsoluteTextY() - deltaY);
+						}
+					}
+			} else {
+				logger.warning("Inconsistant data: shape has not been created");
+			}
+
+		}
+		return assignedObject;
+	}*/
 
 	@Override
 	public Object getValue(BindingVariable variable) {

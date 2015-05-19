@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" useSpecificDescriptions="false" userID="FLX" flexoID="1" name="virtualModel">
+  <FlexoConcept id="1" useSpecificDescriptions="false" userID="FLX" flexoID="5" name="RequirementConcept">
+    <Inspector id="2" flexoID="2" useSpecificDescriptions="false" userID="FLX" inspectorTitle="RequirementConcept" />
+    <OSLCRequirementRole id="3" flexoID="12" name="requirement" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Clone" cardinality="ZeroOne">
+      <OSLCRMModelSlot idref="4" />
+    </OSLCRequirementRole>
+    <ExcelCellRole id="5" flexoID="13" name="name" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Reference" cardinality="ZeroOne">
+      <BasicExcelModelSlot idref="6" />
+    </ExcelCellRole>
+    <ExcelCellRole id="7" flexoID="24" name="description" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Reference" cardinality="ZeroOne">
+      <BasicExcelModelSlot idref="6" />
+    </ExcelCellRole>
+    <CreationScheme id="8" userID="FLX" useSpecificDescriptions="false" width="800" label="create" definePopupDefaultSize="false" height="600" flexoID="16" skipConfirmationPanel="false" name="create">
+      <BehaviourControlGraph_Sequence id="9" flexoID="29" userID="FLX" useSpecificDescriptions="false">
+        <ControlGraph1_AddExcelCell id="10" cellType="String" userID="FLX" useSpecificDescriptions="false" isRowIndex="true" flexoID="21" ownerContext="controlGraph1" rowIndex="virtualModelInstance.sheet.excelRows.size.intValue" value="parameters.reqName" conditional="" columnIndex="0" sheet="virtualModelInstance.sheet" />
+        <ControlGraph2_Sequence id="11" flexoID="35" ownerContext="controlGraph2" userID="FLX" useSpecificDescriptions="false">
+          <ControlGraph1_AddExcelCell id="12" cellType="String" userID="FLX" useSpecificDescriptions="false" isRowIndex="true" flexoID="28" ownerContext="controlGraph1" rowIndex="virtualModelInstance.sheet.excelRows.size" value="parameters.reqDescription" columnIndex="1" sheet="virtualModelInstance.sheet" />
+          <ControlGraph2_AssignationAction id="13" userID="FLX" useSpecificDescriptions="false" flexoID="34" ownerContext="controlGraph2" assign="requirement">
+            <AssignableAction_AddOSLCRequirement id="14" flexoID="33" useSpecificDescriptions="false" userID="FLX" />
+          </ControlGraph2_AssignationAction>
+        </ControlGraph2_Sequence>
+      </BehaviourControlGraph_Sequence>
+      <TextFieldParameter id="15" flexoID="22" isRequired="false" name="reqName" useSpecificDescriptions="false" userID="FLX" label="reqName" />
+      <TextFieldParameter id="16" flexoID="23" isRequired="false" name="reqDescription" useSpecificDescriptions="false" userID="FLX" label="reqDescription" />
+    </CreationScheme>
+    <ActionScheme id="17" userID="FLX" useSpecificDescriptions="false" width="800" label="createNewRequirement" definePopupDefaultSize="false" height="600" flexoID="36" skipConfirmationPanel="false" name="createNewRequirement">
+      <BehaviourControlGraph_Sequence id="18" flexoID="56" userID="FLX" useSpecificDescriptions="false">
+        <ControlGraph1_AssignationAction id="19" userID="FLX" useSpecificDescriptions="false" flexoID="50" ownerContext="controlGraph1" assign="name">
+          <AssignableAction_AddExcelCell id="20" cellType="String" userID="FLX" useSpecificDescriptions="false" isRowIndex="true" flexoID="49" rowIndex="virtualModelInstance.sheet.excelRows.size" value="parameters.name" columnIndex="0" sheet="virtualModelInstance.sheet" />
+        </ControlGraph1_AssignationAction>
+        <ControlGraph2_Sequence id="21" flexoID="62" ownerContext="controlGraph2" userID="FLX" useSpecificDescriptions="false">
+          <ControlGraph1_AssignationAction id="22" userID="FLX" useSpecificDescriptions="false" flexoID="55" ownerContext="controlGraph1" assign="description">
+            <AssignableAction_AddExcelCell id="23" cellType="String" userID="FLX" useSpecificDescriptions="false" isRowIndex="true" flexoID="54" rowIndex="virtualModelInstance.sheet.excelRows.size" value="parameters.descrition" columnIndex="1" sheet="virtualModelInstance.sheet" />
+          </ControlGraph1_AssignationAction>
+          <ControlGraph2_AssignationAction id="24" userID="FLX" useSpecificDescriptions="false" flexoID="61" ownerContext="controlGraph2" assign="requirement">
+            <AssignableAction_AddOSLCRequirement id="25" flexoID="60" useSpecificDescriptions="false" userID="FLX" />
+          </ControlGraph2_AssignationAction>
+        </ControlGraph2_Sequence>
+      </BehaviourControlGraph_Sequence>
+      <TextFieldParameter id="26" flexoID="44" isRequired="false" name="name" useSpecificDescriptions="false" userID="FLX" label="name" />
+      <TextFieldParameter id="27" flexoID="45" isRequired="false" name="descrition" useSpecificDescriptions="false" userID="FLX" label="descrition" />
+    </ActionScheme>
+  </FlexoConcept>
+  <Inspector id="28" flexoID="16" useSpecificDescriptions="false" userID="FLX" inspectorTitle="virtualModel" />
+  <ExcelSheetRole id="29" flexoID="17" name="sheet" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Reference" cardinality="ZeroOne">
+    <BasicExcelModelSlot idref="6" />
+  </ExcelSheetRole>
+  <ModelSlot_OSLCRMModelSlot id="4" flexoID="11" isRequired="true" name="RequirementModelSlot" userID="FLX" useSpecificDescriptions="false" isReadOnly="false" cloningStrategy="Reference" cardinality="ZeroOne" />
+  <ModelSlot_BasicExcelModelSlot id="6" flexoID="6" isRequired="true" name="ExcelModelSlot" userID="FLX" useSpecificDescriptions="false" isReadOnly="false" cloningStrategy="Reference" cardinality="ZeroOne" />
+  <ActionScheme id="30" userID="FLX" useSpecificDescriptions="false" width="800" label="createReq" definePopupDefaultSize="false" height="600" flexoID="4" skipConfirmationPanel="false" name="createReq">
+    <BehaviourControlGraph_AddFlexoConceptInstance id="31" useSpecificDescriptions="false" userID="FLX" virtualModelInstance="virtualModelInstance" flexoID="15" creationSchemeURI="http://VpOslcTest/virtualModel#RequirementConcept.create">
+      <AddFlexoConceptInstanceParameter id="32" flexoID="67" userID="FLX" useSpecificDescriptions="false" value="parameters.name" paramName="reqName" />
+      <AddFlexoConceptInstanceParameter id="33" flexoID="68" userID="FLX" useSpecificDescriptions="false" value="parameters.description" paramName="reqDescription" />
+    </BehaviourControlGraph_AddFlexoConceptInstance>
+    <TextFieldParameter id="34" flexoID="10" isRequired="false" name="name" useSpecificDescriptions="false" userID="FLX" label="name" />
+    <TextFieldParameter id="35" flexoID="11" isRequired="false" name="description" useSpecificDescriptions="false" userID="FLX" label="description" />
+  </ActionScheme>
+  <CreationScheme id="36" userID="FLX" useSpecificDescriptions="false" width="800" label="creation" definePopupDefaultSize="false" height="600" flexoID="2" skipConfirmationPanel="false" name="creation">
+    <BehaviourControlGraph_AssignationAction id="37" userID="FLX" useSpecificDescriptions="false" flexoID="8" assign="sheet">
+      <AssignableAction_AddExcelSheet id="38" useSpecificDescriptions="false" userID="FLX" flexoID="7" override="false" sheetName="parameters.sheetName" />
+    </BehaviourControlGraph_AssignationAction>
+    <TextFieldParameter id="39" flexoID="3" isRequired="false" name="sheetName" useSpecificDescriptions="false" userID="FLX" label="sheetName" />
+  </CreationScheme>
+</VirtualModel>

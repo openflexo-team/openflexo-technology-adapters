@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Panel opaque="false" layout="twocols" borderTitle="Panel"
-	borderLeft="10" titleFont="SansSerif,0,11" darkLevel="0" index="7"
-	data=""
-	dataClassName="org.openflexo.technologyadapter.freeplane.fml.behavioural.FreeplaneCreationScheme"
-	controllerClassName="org.openflexo.view.controller.FlexoFIBController"
-	constraints="gridbag(anchor=center;fill=both;gridHeight=0;gridWidth=0;gridX=-1;gridY=-1;index=7;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)"
-	visible="" name="FreeplaneCreationSchemePanel">
-</Panel>

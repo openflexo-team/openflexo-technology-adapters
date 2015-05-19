@@ -1,60 +1,80 @@
-/*
- * (c) Copyright 2010-2011 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+/**
+ * 
+ * Copyright (c) 2013-2015, Openflexo
+ * Copyright (c) 2012-2012, AgileBirds
+ * 
+ * This file is part of Emfconnector, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.emf;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
 import org.eclipse.emf.ecore.xmi.impl.EcoreResourceFactoryImpl;
+import org.eclipse.uml2.uml.UMLPackage;
+import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
+import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
-import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
-import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.emf.fml.binding.EMFBindingFactory;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
+import org.openflexo.technologyadapter.emf.metamodel.io.MMFromClasspathIODelegate;
+import org.openflexo.technologyadapter.emf.metamodel.io.MMFromClasspathIODelegate.MMFromClasspathIODelegateImpl;
+import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate;
+import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate.MMFromJarsInDirIODelegateImpl;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResourceImpl;
-import org.openflexo.technologyadapter.emf.viewpoint.binding.EMFBindingFactory;
+import org.openflexo.technologyadapter.emf.rm.XtextEMFMetaModelResource;
 
 /**
  * This class defines and implements the EMF technology adapter
@@ -62,11 +82,8 @@ import org.openflexo.technologyadapter.emf.viewpoint.binding.EMFBindingFactory;
  * @author sylvain
  * 
  */
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "EMFModelSlot", modelSlotClass = EMFModelSlot.class), // Classical type-safe interpretation
-// Removed because it is unusable
-// @DeclareModelSlot(FML = "EMFMetaModelSlot", modelSlotClass = EMFMetaModelSlot.class) // Classical type-safe interpretation
-})
+@DeclareModelSlots({ EMFModelSlot.class, /*,EMFMetaModelSlot.class*/
+UMLEMFModelSlot.class /* EMFUMLModelSlot.class */})
 @DeclareRepositoryType({ EMFMetaModelRepository.class, EMFModelRepository.class })
 public class EMFTechnologyAdapter extends TechnologyAdapter {
 
@@ -82,6 +99,15 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	private static String ECORE_MM_PKGCLSNAME = EcorePackageImpl.class.getName();
 	private static String ECORE_MM_FACTORYCLSNAME = EcoreResourceFactoryImpl.class.getName();
 	private EMFMetaModelResource ecoreMetaModelResource = null;
+
+	// Static references to UML properties
+
+	public static String UML_MM_NAME = "UML Metamodel";
+	public static String UML_MM_URI = "http://www.eclipse.org/uml2/5.0.0/UML";
+	private static String UML_MM_EXT = "uml";
+	private static String UML_MM_PKGCLSNAME = UMLPackage.class.getName();
+	private static String UML_MM_FACTORYCLSNAME = UMLResourceFactoryImpl.class.getName();
+	private EMFMetaModelResource umlMetaModelResource = null;
 
 	/**
 	 * 
@@ -186,27 +212,19 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		EMFMetaModelRepository mmRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, this);
 		EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, this);
 
-		List<FlexoResourceCenter> rscCenters = technologyContextManager.getResourceCenterService().getResourceCenters();
-
-		for (FlexoResourceCenter<?> rscCenter : rscCenters) {
-			mmRepository = rscCenter.getRepository(EMFMetaModelRepository.class, this);
-			if (mmRepository != null) {
-
-				for (EMFMetaModelResource mmRes : mmRepository.getAllResources()) {
-					if (isValidModelFile(candidateFile, mmRes)) {
-						EMFModelResource mRes = retrieveModelResource(candidateFile, mmRes);
-						if (mRes != null) {
-							RepositoryFolder<EMFModelResource> folder;
-							try {
-								folder = modelRepository.getRepositoryFolder(candidateFile, true);
-								modelRepository.registerResource(mRes, folder);
-							} catch (IOException e1) {
-								e1.printStackTrace();
-							}
-							referenceResource(mRes, resourceCenter);
-							return mRes;
-						}
+		for (EMFMetaModelResource mmRes : technologyContextManager.getAllMetaModelResources()) {
+			if (isValidModelFile(candidateFile, mmRes)) {
+				EMFModelResource mRes = retrieveModelResource(candidateFile, mmRes);
+				if (mRes != null) {
+					RepositoryFolder<EMFModelResource> folder;
+					try {
+						folder = modelRepository.getRepositoryFolder(candidateFile, true);
+						modelRepository.registerResource(mRes, folder);
+					} catch (IOException e1) {
+						e1.printStackTrace();
 					}
+					referenceResource(mRes, resourceCenter);
+					return mRes;
 				}
 			}
 		}
@@ -249,33 +267,56 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	public EMFMetaModelRepository createMetaModelRepository(FlexoResourceCenter<?> resourceCenter) throws ModelDefinitionException {
 
 		EMFMetaModelRepository mmRepository = new EMFMetaModelRepository(this, resourceCenter);
+
+		// Register Global MetaModels if ever we had a ResourceCenter configured
+
+		registerClasspathMetaModels();
+
+		resourceCenter.registerRepository(mmRepository, EMFMetaModelRepository.class, this);
+
+		return mmRepository;
+	}
+
+	/**
+	 * Registers the Metamodel that are provided by this technology adapter
+	 */
+	private void registerClasspathMetaModels() throws ModelDefinitionException {
+
+		ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+				MMFromClasspathIODelegate.class, EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
+
 		if (ecoreMetaModelResource == null) {
-			// register ecore MM in every resource center
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					EMFMetaModelResource.class));
+			// register ecore MM once for all resource centers
+			MMFromClasspathIODelegate iodelegate = MMFromClasspathIODelegateImpl.makeMMFromClasspathIODelegate(factory);
 			ecoreMetaModelResource = factory.newInstance(EMFMetaModelResource.class);
+			ecoreMetaModelResource.setFlexoIODelegate(iodelegate);
+			iodelegate.setFlexoResource(ecoreMetaModelResource);
 			ecoreMetaModelResource.setTechnologyAdapter(this);
 			ecoreMetaModelResource.setURI(ECORE_MM_URI);
-			ecoreMetaModelResource.setName(ECORE_MM_NAME);
-			// Sylvain: no io for such resource
-			// FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			// ecoreMetaModelResource.setFlexoIODelegate(fileIODelegate);
-			// fileIODelegate.setFile(null);
-			// See TA-46
+			ecoreMetaModelResource.initName(ECORE_MM_NAME);
 			ecoreMetaModelResource.setModelFileExtension(ECORE_MM_EXT);
 			ecoreMetaModelResource.setPackageClassName(ECORE_MM_PKGCLSNAME);
 			ecoreMetaModelResource.setResourceFactoryClassName(ECORE_MM_FACTORYCLSNAME);
 			ecoreMetaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
-			getTechnologyContextManager().registerResource(ecoreMetaModelResource);
-		} else {
-
-			RepositoryFolder<EMFMetaModelResource> folder;
-			folder = mmRepository.getRootFolder();
-			mmRepository.registerResource(ecoreMetaModelResource, folder);
+			getTechnologyContextManager().registerMetaModel(ecoreMetaModelResource);
 		}
-		resourceCenter.registerRepository(mmRepository, EMFMetaModelRepository.class, this);
 
-		return mmRepository;
+		if (umlMetaModelResource == null) {
+			// register ecore MM once for all resource centers
+			MMFromClasspathIODelegate iodelegate = MMFromClasspathIODelegateImpl.makeMMFromClasspathIODelegate(factory);
+			umlMetaModelResource = factory.newInstance(EMFMetaModelResource.class);
+			umlMetaModelResource.setFlexoIODelegate(iodelegate);
+			iodelegate.setFlexoResource(umlMetaModelResource);
+			umlMetaModelResource.setTechnologyAdapter(this);
+			umlMetaModelResource.setURI(UML_MM_URI);
+			umlMetaModelResource.initName(UML_MM_NAME);
+			umlMetaModelResource.setModelFileExtension(UML_MM_EXT);
+			umlMetaModelResource.setPackageClassName(UML_MM_PKGCLSNAME);
+			umlMetaModelResource.setResourceFactoryClassName(UML_MM_FACTORYCLSNAME);
+			umlMetaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
+			getTechnologyContextManager().registerMetaModel(umlMetaModelResource);
+		}
+
 	}
 
 	/**
@@ -291,36 +332,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	/**
-	 * Return EMF Property file of MetaModel Directory.
-	 * 
-	 * @param aMetaModelFile
-	 * @return
-	 */
-	public Properties getEmfProperties(final File aMetaModelFile) {
-		Properties emfProperties = null;
-		if (aMetaModelFile.isDirectory()) {
-			// Read emf.properties file.
-			File[] emfPropertiesFiles = aMetaModelFile.listFiles(new FilenameFilter() {
-				@Override
-				public boolean accept(File dir, String name) {
-					return dir == aMetaModelFile && name.equalsIgnoreCase("emf.properties");
-				}
-			});
-			if (emfPropertiesFiles.length == 1) {
-				try {
-					emfProperties = new Properties();
-					emfProperties.load(new FileReader(emfPropertiesFiles[0]));
-				} catch (FileNotFoundException e) {
-					emfProperties = null;
-				} catch (IOException e) {
-					emfProperties = null;
-				}
-			}
-		}
-		return emfProperties;
-	}
-
-	/**
 	 * Return flag indicating if supplied file represents a valid metamodel
 	 * 
 	 * @param aMetaModelFile
@@ -329,18 +340,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 * @return
 	 */
 	public boolean isValidMetaModelFile(File aMetaModelFile) {
-		return getEmfProperties(aMetaModelFile) != null;
-	}
-
-	/**
-	 * Retrieve and return URI for supplied meta model file, if supplied file represents a valid meta model
-	 * 
-	 * @param aMetaModelFile
-	 * @param technologyContextManager
-	 * @return
-	 */
-	public String retrieveMetaModelURI(File aMetaModelFile, EMFTechnologyContextManager technologyContextManager) {
-		return getEmfProperties(aMetaModelFile).getProperty("URI");
+		return MMFromJarsInDirIODelegateImpl.isValidMetaModelFile(aMetaModelFile);
 	}
 
 	/**
@@ -351,40 +351,32 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 *      org.openflexo.foundation.resource.FlexoResourceCenter)
 	 */
 	public EMFMetaModelResource retrieveMetaModelResource(final File aMetaModelFile) {
+
 		EMFMetaModelResource metaModelResource = null;
 
-		Properties emfProperties = getEmfProperties(aMetaModelFile);
-		if (emfProperties != null) {
-			try {
-				String uri = emfProperties.getProperty("URI");
-				String extension = emfProperties.getProperty("EXTENSION");
-				String ePackageClassName = emfProperties.getProperty("PACKAGE");
-				String resourceFactoryClassName = emfProperties.getProperty("RESOURCE_FACTORY");
-				if (uri != null && extension != null && ePackageClassName != null && resourceFactoryClassName != null) {
-					ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-							EMFMetaModelResource.class));
-					metaModelResource = factory.newInstance(EMFMetaModelResource.class);
-					metaModelResource.setTechnologyAdapter(this);
-					metaModelResource.setURI(uri);
-					metaModelResource.setName(aMetaModelFile.getName());
-					// metaModelResource.setFile(aMetaModelFile);
-					metaModelResource.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(aMetaModelFile, factory));
+		ModelFactory factory;
+		try {
 
-					metaModelResource.setModelFileExtension(extension);
-					metaModelResource.setPackageClassName(ePackageClassName);
-					metaModelResource.setResourceFactoryClassName(resourceFactoryClassName);
-					metaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
-					getTechnologyContextManager().registerResource(metaModelResource);
-				}
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (ModelDefinitionException e) {
-				e.printStackTrace();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(MMFromJarsInDirIODelegate.class,
+					EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
+
+			MMFromJarsInDirIODelegate iodelegate = MMFromJarsInDirIODelegateImpl.makeMMFromJarsInDirIODelegate(aMetaModelFile, factory);
+
+			metaModelResource = iodelegate.retrieveMetaModelResource(aMetaModelFile, factory, this.getTechnologyContextManager());
+
+			metaModelResource.setTechnologyAdapter(this);
+			metaModelResource.setFlexoIODelegate(iodelegate);
+			metaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
+
+			return metaModelResource;
+
+		} catch (ModelDefinitionException e) {
+			logger.warning("Unable to Create EMF Metamodel from directory: " + aMetaModelFile);
+			e.printStackTrace();
 		}
-		return metaModelResource;
+
+		return null;
+
 	}
 
 	/**
@@ -431,37 +423,13 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		emfModelResource = getTechnologyContextManager().getModel(aModelFile);
 
 		if (emfModelResource == null) {
+			// TODO refactor with ioDelegates
 			emfModelResource = EMFModelResourceImpl.retrieveEMFModelResource(aModelFile, (EMFMetaModelResource) metaModelResource,
 					getTechnologyContextManager());
 		}
 
 		return emfModelResource;
 	}
-
-	/**
-	 * Create Model Resource from file.
-	 * 
-	 * @param aModelFile
-	 * @param emfMetaModelResource
-	 * @param emfTechnologyContextManager
-	 * @return
-	 */
-	/*protected EMFModelResource createModelResource(File aModelFile, EMFMetaModelResource emfMetaModelResource,
-	EMFTechnologyContextManager emfTechnologyContextManager) {
-	EMFModelResource emfModelResource = null;
-	try {
-	emfModelResource = new EMFModelResource(aModelFile, emfMetaModelResource, this, URI.createFileURI(aModelFile.getAbsolutePath())
-			.toString());
-	emfModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
-
-	emfTechnologyContextManager.registerModel(emfModelResource);
-	} catch (InvalidFileNameException e) {
-	e.printStackTrace();
-	} catch (DuplicateResourceException e) {
-	e.printStackTrace();
-	}
-	return emfModelResource;
-	}*/
 
 	/**
 	 * Create empty EMFModel.
@@ -506,9 +474,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		EMFMetaModelResource emfMetaModelResource = metaModelResource;
 		EMFModelResource emfModelResource = EMFModelResourceImpl.makeEMFModelResource(modelUri, modelFile, emfMetaModelResource,
 				getTechnologyContextManager());
-		getTechnologyContextManager().registerResource(emfModelResource);
-		// XTOF: Commented out as it throws error when model is empty
-		/*
+		getTechnologyContextManager().registerModel(emfModelResource);
 		try {
 			emfModelResource.save(null);
 		} catch (SaveResourceException e) {
@@ -516,7 +482,6 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		}
 		System.out.println("Created empty model " + modelFile.getAbsolutePath() + " as " + modelUri + " conform to "
 				+ metaModelResource.getURI());
-				*/
 		return emfModelResource;
 	}
 
@@ -524,7 +489,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 * 
 	 * Follow the link.
 	 * 
-	 * @see org.openflexo.foundation.technologyadapter.TechnologyAdapter#createNewModelSlot(org.openflexo.foundation.viewpoint.ViewPoint)
+	 * @see org.openflexo.foundation.technologyadapter.TechnologyAdapter#createNewModelSlot(org.openflexo.foundation.fml.ViewPoint)
 	 */
 	@Override
 	public EMFTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {

@@ -1,22 +1,41 @@
-/*
- * (c) Copyright 2013-2014 Openflexo
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Xmlconnector, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 
 package org.openflexo.technologyadapter.xml.model;
 
@@ -48,40 +67,33 @@ import org.w3c.dom.Element;
  * 
  */
 
-public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel {
+public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 
 	// Constants
 
-
-	private static final String              Version         = "0";
+	private static final String Version = "0";
 
 	// Attributes
 
-	protected static final Logger            logger          = Logger.getLogger(XMLModelImpl.class.getPackage().getName());
-	private FlexoResource<?>                 xmlResource;
-	private final boolean                          isReadOnly      = true;
+	protected static final Logger logger = Logger.getLogger(XMLModelImpl.class.getPackage().getName());
+	private FlexoResource<?> xmlResource;
+	private final boolean isReadOnly = true;
 
 	private final Map<String, XMLIndividual> individuals;
 
-	private final List<String>                           namespace = new ArrayList<String>();
+	private final List<String> namespace = new ArrayList<String>();
 
 	private static ModelFactory MF;
 
-
-	static{
+	static {
 		try {
-			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class,
-					XMLIndividual.class,
-					XMLPropertyValue.class,
-					XMLDataPropertyValue.class,
-					XMLObjectPropertyValue.class));
+			MF = new ModelFactory(ModelContextLibrary.getCompoundModelContext(XMLModel.class, XMLIndividual.class, XMLPropertyValue.class,
+					XMLDataPropertyValue.class, XMLObjectPropertyValue.class));
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-
-
 
 	public static ModelFactory getModelFactory() {
 		return MF;
@@ -96,8 +108,7 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 	public String getName() {
 		if (xmlResource != null) {
 			return xmlResource.getName();
-		}
-		else
+		} else
 			return "";
 	}
 
@@ -109,14 +120,14 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 
 	@Override
 	public List<String> getNamespace() {
-		
-		if (namespace.size() < 2 && this.getMetaModel() != null){
+
+		if (namespace.size() < 2 && this.getMetaModel() != null) {
 			namespace.add(XMLModel.NSPREFIX_INDEX, XMLCst.DEFAULT_NS);
 			namespace.add(XMLModel.NSURI_INDEX, this.getMetaModel().getURI());
-			}
-		
+		}
+
 		return namespace;
-		
+
 	}
 
 	@Override
@@ -128,7 +139,6 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 	public void setResource(FlexoResource<XMLModel> resource) {
 		this.xmlResource = resource;
 	}
-
 
 	@Override
 	public String getURI() {
@@ -160,8 +170,8 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 
 	@Override
 	public Object addNewIndividual(Type aType) {
-		XMLIndividual anIndividual = getModelFactory().newInstance(XMLIndividual.class, this, aType );
-		//XMLIndividual anIndividual = new XMLIndividual(this, (XMLType) aType);
+		XMLIndividual anIndividual = getModelFactory().newInstance(XMLIndividual.class, this, aType);
+		// XMLIndividual anIndividual = new XMLIndividual(this, (XMLType) aType);
 		this.addIndividual(anIndividual);
 		return anIndividual;
 	}
@@ -193,6 +203,5 @@ public abstract class XMLModelImpl  extends FlexoObjectImpl implements XMLModel 
 			return rsc.getTechnologyAdapter();
 		return null;
 	}
-
 
 }

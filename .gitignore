@@ -1,6 +1,5 @@
 **/target
 *.class
-*.jar
 *.war
 *.ear
 *.ipr
@@ -10,3 +9,4 @@
 .classpath
 .project
 .settings
+/.DS_Store

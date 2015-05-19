@@ -28,10 +28,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
-import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.FlexoBehaviourAction;
-import org.openflexo.foundation.viewpoint.editionaction.FetchRequest;
-import org.openflexo.foundation.viewpoint.editionaction.SelectIndividual;
+import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.editionaction.FetchRequest;
+import org.openflexo.foundation.fml.editionaction.SelectIndividual;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -62,7 +62,7 @@ public interface Select${technologyPrefix}ObjectIndividual extends SelectIndivid
 		}
 
 		@Override
-		public List<${technologyPrefix}ObjectIndividual> performAction(FlexoBehaviourAction action) {
+		public List<${technologyPrefix}ObjectIndividual> execute(FlexoBehaviourAction action) {
 			if (getModelSlotInstance(action) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;

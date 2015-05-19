@@ -1,3 +1,41 @@
+/**
+ * 
+ * Copyright (c) 2014, Openflexo
+ * 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
+ *
+ *          Additional permission under GNU GPL version 3 section 7
+ *
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
+ *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
+ */
+
 package org.openflexo.technologyadapter.diagram.rm;
 
 import java.io.File;
@@ -16,15 +54,15 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
+import org.openflexo.foundation.resource.DirectoryBasedFlexoIODelegate;
+import org.openflexo.foundation.resource.DirectoryBasedFlexoIODelegate.DirectoryBasedFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.InJarFlexoIODelegate;
 import org.openflexo.foundation.resource.InJarFlexoIODelegate.InJarFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.rm.BasicResourceImpl;
@@ -51,16 +89,20 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 	public static DiagramSpecificationResource makeDiagramSpecificationResource(String name, RepositoryFolder<?> folder, String uri,
 			FlexoServiceManager serviceManager) {
 		try {
-			File diagramSpecificationDirectory = new File(folder.getFile(), name + DIAGRAM_SPECIFICATION_SUFFIX);
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+			// File diagramSpecificationDirectory = new File(folder.getFile(), name + DIAGRAM_SPECIFICATION_SUFFIX);
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(DirectoryBasedFlexoIODelegate.class,
 					DiagramSpecificationResource.class));
 			DiagramSpecificationResourceImpl returned = (DiagramSpecificationResourceImpl) factory
 					.newInstance(DiagramSpecificationResource.class);
-			
-			String baseName = name;
-			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
-			returned.setName(name);
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramSpecificationXMLFile, factory));		
+
+			// String baseName = name;
+			// File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
+			returned.initName(name);
+
+			returned.setFlexoIODelegate(DirectoryBasedFlexoIODelegateImpl.makeDirectoryBasedFlexoIODelegate(folder.getFile(),
+					DIAGRAM_SPECIFICATION_SUFFIX, CORE_FILE_SUFFIX, returned, factory));
+
+			// returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramSpecificationXMLFile, factory));
 			DiagramSpecificationFactory diagramSpecificationFactory = new DiagramSpecificationFactory(returned,
 					serviceManager.getEditingContext());
 			returned.setFactory(diagramSpecificationFactory);
@@ -82,15 +124,15 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 	public static DiagramSpecificationResource retrieveDiagramSpecificationResource(File diagramSpecificationDirectory,
 			RepositoryFolder<?> folder, FlexoServiceManager serviceManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(DirectoryBasedFlexoIODelegate.class,
 					DiagramSpecificationResource.class));
 			DiagramSpecificationResourceImpl returned = (DiagramSpecificationResourceImpl) factory
 					.newInstance(DiagramSpecificationResource.class);
-			
+
 			String baseName = diagramSpecificationDirectory.getName().substring(0,
 					diagramSpecificationDirectory.getName().length() - DIAGRAM_SPECIFICATION_SUFFIX.length());
 
-			returned.setName(baseName);
+			returned.initName(baseName);
 			File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName + ".xml");
 
 			DiagramSpecificationInfo vpi = null;
@@ -106,14 +148,18 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 				return null;
 			}
 			returned.setURI(vpi.uri);
-			returned.setName(vpi.name);
+			returned.initName(vpi.name);
 
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramSpecificationXMLFile, factory));
+			returned.setFlexoIODelegate(DirectoryBasedFlexoIODelegateImpl.makeDirectoryBasedFlexoIODelegate(
+					diagramSpecificationDirectory.getParentFile(), DIAGRAM_SPECIFICATION_SUFFIX, CORE_FILE_SUFFIX, returned, factory));
+
+			// returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramSpecificationXMLFile, factory));
 			DiagramSpecificationFactory diagramSpecificationFactory = new DiagramSpecificationFactory(returned,
 					serviceManager.getEditingContext());
 			returned.setFactory(diagramSpecificationFactory);
 
-			returned.setName(vpi.name);
+			// TODO: why do we set the name twice ???
+			returned.initName(vpi.name);
 			if (StringUtils.isNotEmpty(vpi.version)) {
 				returned.setVersion(new FlexoVersion(vpi.version));
 			}
@@ -125,7 +171,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 					+ returned.getModelVersion());
 
 			returned.exploreInternalResources(returned.getDirectory());
-			
+
 			return returned;
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
@@ -152,7 +198,7 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			}
 			returned.setURI(vpi.uri);
 
-			returned.setName(vpi.name);
+			returned.initName(vpi.name);
 			if (StringUtils.isNotEmpty(vpi.version)) {
 				returned.setVersion(new FlexoVersion(vpi.version));
 			}
@@ -188,6 +234,9 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 										ResourceLocator.retrieveResourceAsFile(child), getServiceManager());
 							}
 							addToContents(exampleDiagramResource);
+							if (exampleDiagramResource.getMetaModelResource() == null) {
+								exampleDiagramResource.setMetaModelResource(this);
+							}
 							getTechnologyAdapter().getTechnologyContextManager().registerDiagram(exampleDiagramResource);
 							logger.fine("ExampleDiagramResource " + exampleDiagramResource.getFlexoIODelegate().toString() + " version "
 									+ exampleDiagramResource.getModelVersion());
@@ -197,6 +246,9 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 							DiagramResource exampleDiagramResource = DiagramResourceImpl.retrieveDiagramResource((InJarResourceImpl) child,
 									getServiceManager());
 							addToContents(exampleDiagramResource);
+							if (exampleDiagramResource.getMetaModelResource() == null) {
+								exampleDiagramResource.setMetaModelResource(this);
+							}
 						}
 					}
 					if (child.getURI().endsWith(".palette")) {

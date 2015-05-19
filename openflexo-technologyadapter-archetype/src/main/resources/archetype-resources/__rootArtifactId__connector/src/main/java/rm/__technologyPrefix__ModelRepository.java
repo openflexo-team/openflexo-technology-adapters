@@ -29,7 +29,7 @@ import ${package}.${technologyPrefix}TechnologyAdapter;
 import ${package}.metamodel.${technologyPrefix}MetaModel;
 import ${package}.model.${technologyPrefix}Model;
 
-public class ${technologyPrefix}ModelRepository extends ModelRepository<${technologyPrefix}ModelResource, ${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TechnologyAdapter> {
+public class ${technologyPrefix}ModelRepository extends ModelRepository<${technologyPrefix}ModelResource, ${technologyPrefix}Model, ${technologyPrefix}MetaModel, ${technologyPrefix}TechnologyAdapter, ${technologyPrefix}TechnologyAdapter> {
 
 	public ${technologyPrefix}ModelRepository(${technologyPrefix}TechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
 		super(adapter, resourceCenter);

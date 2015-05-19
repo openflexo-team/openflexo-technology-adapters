@@ -1,23 +1,41 @@
-/*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2013 Openflexo
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Xmlconnector, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.xml.model;
 
 import java.util.ArrayList;
@@ -50,14 +68,13 @@ import org.w3c.dom.Element;
 
 public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIndividual {
 
-
-	private static final java.util.logging.Logger  logger = org.openflexo.logging.FlexoLogger.getLogger(XMLIndividualImpl.class
-			.getPackage().getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(XMLIndividualImpl.class.getPackage()
+			.getName());
 
 	/* Properties */
 
-	private Map<XMLComplexType, Set<XMLIndividualImpl>>  children  = null;
-	private Map<XMLProperty, XMLPropertyValue> propertiesValues   = null;
+	private Map<XMLComplexType, Set<XMLIndividualImpl>> children = null;
+	private Map<XMLProperty, XMLPropertyValue> propertiesValues = null;
 	private final String uuid;
 
 	/**
@@ -73,7 +90,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	}
 
 	@Override
-	public String getUUID(){
+	public String getUUID() {
 		return uuid;
 	}
 
@@ -87,14 +104,12 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	}
 
 	@Override
-	public String getName(){
+	public String getName() {
 		return getType().getName();
 	}
 
-
-
 	@Override
-	public void removeChild(XMLIndividual indiv){
+	public void removeChild(XMLIndividual indiv) {
 		children.get(indiv.getType()).remove(indiv);
 	}
 
@@ -122,14 +137,12 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		return returned;
 	}
 
-
 	@Override
 	public String getPropertyStringValue(XMLProperty prop) {
 		XMLPropertyValue pv = propertiesValues.get(prop);
-		if (pv != null){
+		if (pv != null) {
 			return propertiesValues.get(prop).getStringValue();
-		}
-		else {
+		} else {
 			return "";
 		}
 	}
@@ -139,43 +152,40 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		return propertiesValues;
 	}
 
-
 	@Override
 	public XMLPropertyValue getPropertyValue(String attributeName) {
 
-		XMLProperty attr =  getType().getPropertyByName(attributeName);
+		XMLProperty attr = getType().getPropertyByName(attributeName);
 
 		if (attr != null) {
 			return propertiesValues.get(attr);
-		}
-		else
+		} else
 			return null;
 	}
 
 	@Override
-	public XMLPropertyValue getPropertyValue(XMLProperty prop){
+	public XMLPropertyValue getPropertyValue(XMLProperty prop) {
 
 		if (prop != null) {
 			return propertiesValues.get(prop);
-		}
-		else
+		} else
 			return null;
 
 	}
 
 	@Override
-	public void addPropertyValue(XMLProperty attr, XMLPropertyValue value){
+	public void addPropertyValue(XMLProperty attr, XMLPropertyValue value) {
 		// TODO
 	}
 
-	@Override	
-	public void deletePropertyValues(XMLProperty attr){
+	@Override
+	public void deletePropertyValues(XMLProperty attr) {
 		// TODO
-	}	
+	}
 
 	@Override
 	public void addPropertyValue(String name, Object value) {
-		
+
 		XMLProperty prop = getType().getPropertyByName(name);
 
 		if (prop == null) {
@@ -183,28 +193,26 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 			if (!mm.isReadOnly()) {
 				// TODO Manage complex types and actual types for objects.
 				prop = this.getType().createProperty(name, mm.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-			}
-			else {
-				logger.warning("CANNOT give a value  for a non existant attribute :" + name );
+			} else {
+				logger.warning("CANNOT give a value  for a non existant attribute :" + name);
 			}
 		}
 		if (prop != null) {
 			XMLPropertyValue vals = propertiesValues.get(prop);
 
-			if (vals == null){
+			if (vals == null) {
 
-				if (prop instanceof XMLDataProperty){
-					vals = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class,prop);
+				if (prop instanceof XMLDataProperty) {
+					vals = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class, prop);
 					((XMLDataPropertyValue) vals).setValue(value);
-					propertiesValues.put(prop,vals);
-				}
-				else {
+					propertiesValues.put(prop, vals);
+				} else {
 					// TODO..... complex attributes, collections
-				}	}
-
+				}
+			}
 
 			else {
-				// TODO.....  manage this case also
+				// TODO..... manage this case also
 			}
 		}
 
@@ -213,15 +221,14 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 	@Override
 	public void addPropertyValue(XMLProperty prop, Object value) {
 		XMLPropertyValue val = propertiesValues.get(prop);
-		
-		if (val == null){
 
-			if (prop instanceof XMLDataProperty){
+		if (val == null) {
+
+			if (prop instanceof XMLDataProperty) {
 				val = XMLModelImpl.getModelFactory().newInstance(XMLDataPropertyValue.class, prop);
 				((XMLDataPropertyValue) val).setValue(value);
 				propertiesValues.put(prop, val);
-			}
-			else if (prop instanceof XMLObjectProperty){
+			} else if (prop instanceof XMLObjectProperty) {
 
 				val = XMLModelImpl.getModelFactory().newInstance(XMLObjectPropertyValue.class, prop);
 				((XMLObjectPropertyValue) val).addToValues((XMLIndividual) value);
@@ -230,17 +237,15 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		}
 
 		if (val != null) {
-			if (prop instanceof XMLDataProperty){
+			if (prop instanceof XMLDataProperty) {
 				((XMLDataPropertyValue) val).setValue(value);
-			}
-			else if (prop instanceof XMLObjectProperty){
+			} else if (prop instanceof XMLObjectProperty) {
 				((XMLObjectPropertyValue) val).addToValues((XMLIndividual) value);
 			}
 		}
 
 	}
-	
-	
+
 	/* (non-Javadoc)
 	 * @see org.openflexo.technologyadapter.xml.model.IXMLIndividual#toXML(org.w3c.dom.Document)
 	 */
@@ -250,8 +255,7 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		Element element = null;
 		if (nsURI != null) {
 			element = doc.createElementNS(nsURI, getType().getFullyQualifiedName());
-		}
-		else {
+		} else {
 			element = doc.createElement(getType().getName());
 		}
 
@@ -264,16 +268,15 @@ public abstract class XMLIndividualImpl extends FlexoObjectImpl implements XMLIn
 		return element;
 	}
 
+	@Override
+	public XMLTechnologyAdapter getTechnologyAdapter() {
+		return this.getContainerModel().getTechnologyAdapter();
+	}
 
 	@Override
-	public XMLTechnologyAdapter getTechnologyAdapter(){
-		return (XMLTechnologyAdapter) this.getContainerModel().getTechnologyAdapter();
-	}
-	
-	@Override
-	public String getDisplayableDescription(){
+	public String getDisplayableDescription() {
 		return "XML Individual of type: " + getName();
-		
+
 	}
-	
+
 }

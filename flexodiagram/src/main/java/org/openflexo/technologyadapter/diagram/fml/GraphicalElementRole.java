@@ -1,3 +1,41 @@
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
+ *
+ *          Additional permission under GNU GPL version 3 section 7
+ *
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
+ *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
+ */
+
 package org.openflexo.technologyadapter.diagram.fml;
 
 import java.io.FileNotFoundException;
@@ -6,18 +44,18 @@ import java.util.List;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.antar.binding.Bindable;
-import org.openflexo.antar.binding.BindingDefinition;
-import org.openflexo.antar.binding.BindingFactory;
-import org.openflexo.antar.binding.DataBinding;
+import org.openflexo.connie.Bindable;
+import org.openflexo.connie.BindingFactory;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.view.FlexoConceptInstance;
-import org.openflexo.foundation.view.ModelObjectActorReference;
-import org.openflexo.foundation.view.VirtualModelInstanceModelFactory;
-import org.openflexo.foundation.viewpoint.FlexoRole;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -174,26 +212,34 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		private GR graphicalRepresentation;
 
+		private boolean defaultSpecificationsInitialized = false;
+
 		private final List<GraphicalElementSpecification<?, GR>> pendingGRSpecs;
 
 		public GraphicalElementRoleImpl() {
 			super();
 			pendingGRSpecs = new ArrayList<GraphicalElementSpecification<?, GR>>();
-			initDefaultSpecifications();
+			// Don't do it now: remember that this is forbidden to call from the constructor any method which has to be interpretated by
+			// PAMELA
+			// initDefaultSpecifications();
 		}
 
 		@Override
-		public void finalizeFlexoRoleDeserialization() {
-			super.finalizeFlexoRoleDeserialization();
+		public void finalizeDeserialization() {
+			super.finalizeDeserialization();
 			// Give a chance to GRSpecs to be well deserialized
-			initDefaultSpecifications();
+			if (!defaultSpecificationsInitialized) {
+				initDefaultSpecifications();
+			}
 		}
 
 		protected void initDefaultSpecifications() {
-			if (getVirtualModelFactory() != null) {
+			if (getFMLModelFactory() != null) {
+				defaultSpecificationsInitialized = true;
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-					GraphicalElementSpecification newGraphicalElementSpecification = getVirtualModelFactory().newInstance(
+					//logger.info("[COMMON:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
+					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
 							GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
@@ -201,12 +247,14 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					newGraphicalElementSpecification.setMandatory(true);
 					grSpecifications.add(newGraphicalElementSpecification);
 				}
-				for (GraphicalElementSpecification<?, GR> grSpec : pendingGRSpecs) {
-					registerGRSpecification(grSpec);
-				}
-
 			}
 
+		}
+
+		protected void handlePendingGRSpecs() {
+			for (GraphicalElementSpecification<?, GR> grSpec : pendingGRSpecs) {
+				registerGRSpecification(grSpec);
+			}
 		}
 
 		public DiagramSpecification getDiagramSpecification() {
@@ -365,7 +413,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public boolean containsShapes() {
-			for (ShapeRole role : getFlexoConcept().getFlexoRoles(ShapeRole.class)) {
+			for (ShapeRole role : getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 				if (role.getParentShapeRole() == this) {
 					return true;
 				}
@@ -435,7 +483,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public GraphicalElementAction createAction() {
-			GraphicalElementAction newAction = getVirtualModelFactory().newInstance(GraphicalElementAction.class);
+			GraphicalElementAction newAction = getFMLModelFactory().newInstance(GraphicalElementAction.class);
 			addToActions(newAction);
 			return newAction;
 		}
@@ -449,7 +497,7 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 		@Override
 		public List<GraphicalElementSpecification<?, GR>> getGrSpecifications() {
-			if (grSpecifications == null && getVirtualModelFactory() != null) {
+			if (grSpecifications == null && getFMLModelFactory() != null) {
 				initDefaultSpecifications();
 			} else if (grSpecifications == null) {
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
@@ -544,11 +592,11 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public ModelSlot<?> getModelSlot() {
 			ModelSlot<?> returned = super.getModelSlot();
 			if (returned == null) {
-				if (getVirtualModel() != null && getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
-					return getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
+				if (getOwningVirtualModel() != null && getOwningVirtualModel().getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
+					return getOwningVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
 				}
-				if (getVirtualModel() != null && getVirtualModel().getModelSlots(FreeDiagramModelSlot.class).size() > 0) {
-					return getVirtualModel().getModelSlots(FreeDiagramModelSlot.class).get(0);
+				if (getOwningVirtualModel() != null && getOwningVirtualModel().getModelSlots(FreeDiagramModelSlot.class).size() > 0) {
+					return getOwningVirtualModel().getModelSlots(FreeDiagramModelSlot.class).get(0);
 				}
 			}
 			return returned;

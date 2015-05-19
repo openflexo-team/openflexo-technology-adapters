@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>org.openflexo</groupId>
-    <artifactId>openflexo-archetypes</artifactId>
-    <version>0.1</version>
-  </parent>
+	<parent>
+		<groupId>org.openflexo</groupId>
+		<artifactId>openflexo-technology-adapters</artifactId>
+		<version>1.7.1-SNAPSHOT</version>
+	</parent>
 
   <groupId>org.openflexo.archetypes</groupId>
   <artifactId>technologyadapter-archetype-simplemodel</artifactId>
   <version>1.7.0-SNAPSHOT</version>
   
-  <packaging>maven-archetype</packaging>
+  <!--  <packaging>maven-archetype</packaging> -->
   <name>technologyadapter-archetype-simplemodel</name>
   <description>Provides technologyadapter development generator for Openflexo with no metamodel</description>
   <properties>
@@ -21,4 +21,19 @@
   <scm>
     <tag>1.7.0</tag>
   </scm>
+  
+    <dependencies>
+    <dependency>
+      <groupId>org.openflexo</groupId>
+      <artifactId>flexo-foundation</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.openflexo</groupId>
+      <artifactId>flexo-foundation</artifactId>
+      <classifier>tests</classifier>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+  
 </project>

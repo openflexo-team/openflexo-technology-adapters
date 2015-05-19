@@ -1,22 +1,43 @@
-/*
- * (c) Copyright 2012-2013 Openflexo
+/**
+ * 
+ * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
+ * Copyright (c) 2012-2012, AgileBirds
+ * 
+ * This file is part of Emfconnector, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 
 /** Copyright (c) 2012, THALES SYSTEMES AEROPORTES - All Rights Reserved
  * Author : Gilles Besançon
@@ -62,7 +83,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IFlexoOntologyPropertyValue;
@@ -231,9 +251,19 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public List<IFlexoOntologyClass<EMFTechnologyAdapter>> getTypes() {
 		return Collections.unmodifiableList(Collections.singletonList((IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getMetaModel()
-				.getConverter().convertClass(ontology.getMetaModel(), object.eClass())));
+				.getConverter().convertClass(ontology.getMetaModel(), object.eClass(),null)));
 	}
 
+	/**
+	 * returns the type by wich EObject instance has been created
+	 * @return
+	 */
+	public IFlexoOntologyClass<EMFTechnologyAdapter> getMainType() {
+		
+		return (IFlexoOntologyClass<EMFTechnologyAdapter>) ontology.getMetaModel().getConverter().convertClass(ontology.getMetaModel(), object.eClass(),null);
+	}
+	
+	
 	/**
 	 * Follow the link.
 	 * 
@@ -244,28 +274,7 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 		return getTypes().contains(aClass);
 	}
 
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsRange()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyStructuralProperty<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsRange() {
-		return Collections.emptyList();
-	}
-
-	/**
-	 * Follow the link.
-	 * 
-	 * @see org.openflexo.foundation.ontology.IFlexoOntologyConcept#getPropertiesTakingMySelfAsDomain()
-	 */
-	@Override
-	@Deprecated
-	public List<? extends IFlexoOntologyFeature<EMFTechnologyAdapter>> getPropertiesTakingMySelfAsDomain() {
-		return Collections.emptyList();
-	}
-
+	
 	/**
 	 * Follow the link.
 	 * 
@@ -284,8 +293,11 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public List<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> getPropertyValues() {
 		List<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>> propertyValues = new ArrayList<IFlexoOntologyPropertyValue<EMFTechnologyAdapter>>();
+		// TODO : Some optimization required here!
 		for (EStructuralFeature structuralFeature : object.eClass().getEAllStructuralFeatures()) {
-			propertyValues.add(ontology.getConverter().getPropertyValues().get(object).get(structuralFeature));
+			IFlexoOntologyPropertyValue<EMFTechnologyAdapter> pvalue = ontology.getConverter().getPropertyValues().get(object).get(structuralFeature);
+			if (pvalue != null)
+				propertyValues.add(pvalue);
 		}
 		return Collections.unmodifiableList(propertyValues);
 	}
@@ -293,7 +305,6 @@ public class EMFObjectIndividual extends AEMFModelObjectImpl<EObject> implements
 	@Override
 	public boolean delete(Object... context) {
 		// TODO XTOF => implement an actual deletion mechanism
-		// TODO URGENT => there might be a memory leak here !
 		logger.warning("YOU NEED TO IMPLEMENT AN ACTUAL DELETION MECHANISM");
 		if (this.containingPropertyValue == null) {
 			this.getEMFModel().getEMFResource().getContents().remove(this.getObject());

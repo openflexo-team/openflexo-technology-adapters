@@ -1,3 +1,41 @@
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
+ *
+ *          Additional permission under GNU GPL version 3 section 7
+ *
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
+ *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
+ */
+
 package org.openflexo.technologyadapter.diagram;
 
 import java.lang.reflect.Type;
@@ -6,20 +44,18 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
+import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
+import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.foundation.technologyadapter.DeclareEditionAction;
-import org.openflexo.foundation.technologyadapter.DeclareEditionActions;
-import org.openflexo.foundation.technologyadapter.DeclareFetchRequests;
-import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviour;
-import org.openflexo.foundation.technologyadapter.DeclareFlexoBehaviours;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRole;
-import org.openflexo.foundation.technologyadapter.DeclarePatternRoles;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
-import org.openflexo.foundation.view.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.view.action.CreateVirtualModelInstance;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
@@ -55,26 +91,14 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
  * @author sylvain
  * 
  */
-@DeclarePatternRoles({ // All pattern roles available through this model slot
-@DeclarePatternRole(FML = "ShapeSpecification", flexoRoleClass = ShapeRole.class), // Shapes
-		@DeclarePatternRole(FML = "ConnectorSpecification", flexoRoleClass = ConnectorRole.class), // Connectors
-		@DeclarePatternRole(FML = "Diagram", flexoRoleClass = DiagramRole.class) // Diagrams
-})
-@DeclareFlexoBehaviours({ // All edition actions available through this model slot
-@DeclareFlexoBehaviour(FML = "DropScheme", flexoBehaviourClass = DropScheme.class),
-		@DeclareFlexoBehaviour(FML = "LinkScheme", flexoBehaviourClass = LinkScheme.class),
-		@DeclareFlexoBehaviour(FML = "NavigationScheme", flexoBehaviourClass = DiagramNavigationScheme.class) })
-@DeclareEditionActions({ // All edition actions available through this model
-		// slot
-		@DeclareEditionAction(FML = "AddDiagram", editionActionClass = AddDiagram.class),
-		@DeclareEditionAction(FML = "AddShape", editionActionClass = AddShape.class),
-		@DeclareEditionAction(FML = "AddConnector", editionActionClass = AddConnector.class),
-		@DeclareEditionAction(FML = "GraphicalAction", editionActionClass = GraphicalAction.class) })
-@DeclareFetchRequests({ // All requests available through this model slot
-})
+@DeclareFlexoRoles({ ShapeRole.class, ConnectorRole.class, DiagramRole.class })
+@DeclareFlexoBehaviours({ DropScheme.class, LinkScheme.class, DiagramNavigationScheme.class })
+@DeclareEditionActions({ AddDiagram.class, AddShape.class, AddConnector.class, GraphicalAction.class })
+@DeclareFetchRequests({})
 @ModelEntity
 @ImplementationClass(TypedDiagramModelSlot.TypedDiagramModelSlotImpl.class)
 @XMLElement
+@FML("TypedDiagramModelSlot")
 public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, DiagramSpecification>, DiagramModelSlot {
 
 	@PropertyIdentifier(type = List.class)
@@ -135,8 +159,8 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public DiagramTechnologyAdapter getTechnologyAdapter() {
-			return (DiagramTechnologyAdapter) super.getTechnologyAdapter();
+		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {
+			return (DiagramTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
 		@Override
@@ -175,7 +199,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 
 			try {
-				DiagramResource returned = getTechnologyAdapter().createNewDiagram(project, filename, diagramUri,
+				DiagramResource returned = getModelSlotTechnologyAdapter().createNewDiagram(project, filename, diagramUri,
 						(DiagramSpecificationResource) metaModelResource);
 				return returned;
 
@@ -191,8 +215,8 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String diagramUri, FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 			try {
-				return getTechnologyAdapter().createNewDiagram((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
-						diagramUri, (DiagramSpecificationResource) metaModelResource);
+				return getModelSlotTechnologyAdapter().createNewDiagram((FileSystemBasedResourceCenter) resourceCenter, relativePath,
+						filename, diagramUri, (DiagramSpecificationResource) metaModelResource);
 			} catch (SaveResourceException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -235,13 +259,13 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public String getPreciseType() {
+		public String getTypeDescription() {
 			return "Diagram Specification";
 		}
 
 		@Override
 		public FMLDiagramPaletteElementBinding addFMLDiagramPaletteElementBinding() {
-			FMLDiagramPaletteElementBinding newBinding = getVirtualModelFactory().newInstance(FMLDiagramPaletteElementBinding.class);
+			FMLDiagramPaletteElementBinding newBinding = getFMLModelFactory().newInstance(FMLDiagramPaletteElementBinding.class);
 			addToPaletteElementBindings(newBinding);
 			return newBinding;
 		}

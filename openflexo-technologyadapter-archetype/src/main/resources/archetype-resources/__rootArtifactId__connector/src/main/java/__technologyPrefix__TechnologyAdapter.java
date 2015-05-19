@@ -26,18 +26,17 @@ package ${package};
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
+import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.technologyadapter.DeclareModelSlot;
-import org.openflexo.foundation.technologyadapter.DeclareModelSlots;
-import org.openflexo.foundation.technologyadapter.DeclareRepositoryType;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.foundation.viewpoint.VirtualModel;
+import org.openflexo.foundation.fml.VirtualModel;
 import ${package}.rm.${technologyPrefix}MetaModelResource;
 import ${package}.rm.${technologyPrefix}ModelResource;
 import ${package}.${technologyPrefix}TypeAwareModelSlot;
@@ -52,9 +51,7 @@ import ${package}.rm.${technologyPrefix}ModelRepository;
  * 
  */
 
-@DeclareModelSlots({ // ModelSlot(s) declaration
-@DeclareModelSlot(FML = "${technologyPrefix}TypeAwareModelSlot", modelSlotClass = ${technologyPrefix}TypeAwareModelSlot.class), 
-})
+@DeclareModelSlots({${technologyPrefix}TypeAwareModelSlot.class})
 @DeclareRepositoryType({ ${technologyPrefix}MetaModelRepository.class, ${technologyPrefix}ModelRepository.class })
 public class ${technologyPrefix}TechnologyAdapter extends TechnologyAdapter {
 	private static String ${technologyPrefix}_FILE_EXTENSION = ".${technologyExtension}";

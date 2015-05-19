@@ -8,7 +8,7 @@
 		<requiredProperty key="artifactId">
 		</requiredProperty>
 		<requiredProperty key="flexoCoreVersion">
-			<defaultValue>1.7.0-SNAPSHOT</defaultValue>
+			<defaultValue>1.7.1-SNAPSHOT</defaultValue>
 		</requiredProperty>
 		
 		<requiredProperty key="technologyadapterApiVersion">

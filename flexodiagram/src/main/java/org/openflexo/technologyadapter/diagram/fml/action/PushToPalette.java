@@ -1,22 +1,41 @@
-/*
- * (c) Copyright 2010-2011 AgileBirds
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 package org.openflexo.technologyadapter.diagram.fml.action;
 
 import java.awt.Image;
@@ -38,11 +57,11 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.foundation.fml.FMLModelFactory;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
-import org.openflexo.foundation.viewpoint.FlexoConcept;
-import org.openflexo.foundation.viewpoint.VirtualModel;
-import org.openflexo.foundation.viewpoint.VirtualModelModelFactory;
-import org.openflexo.foundation.viewpoint.rm.VirtualModelResource;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
@@ -97,9 +116,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	};
 
 	private TypedDiagramModelSlot diagramModelSlot;
-	
+
 	private VirtualModel virtualModel;
-	
+
 	private VirtualModelResource virtualModelResource;
 
 	public GraphicalRepresentation graphicalRepresentation;
@@ -111,13 +130,13 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	private String newElementName;
 	public boolean takeScreenshotForTopLevelElement = true;
 	public boolean overrideDefaultGraphicalRepresentations = false;
-	
+
 	private String errorMessage;
 
 	private ScreenshotImage<DiagramShape> screenshot;
 	public int imageWidth;
 	public int imageHeight;
-	
+
 	private Image image;
 
 	private DiagramPaletteElement _newPaletteElement;
@@ -125,11 +144,11 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	static {
 		FlexoObjectImpl.addActionForClass(PushToPalette.actionType, DiagramShape.class);
 	}
-	
+
 	public static enum PushToPaletteChoices {
 		CONFIGURE_FML_CONTROL, FREE
 	}
-	
+
 	public PushToPaletteChoices primaryChoice = PushToPaletteChoices.CONFIGURE_FML_CONTROL;
 
 	protected PushToPalette(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
@@ -145,7 +164,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	 * @return
 	 */
 	public TypedDiagramModelSlot getDiagramModelSlot() {
-		if(virtualModel!=null){
+		if (virtualModel != null) {
 			return FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(virtualModel);
 		}
 		return null;
@@ -204,20 +223,19 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 				}
 			}
 
-			((ShapeGraphicalRepresentation)graphicalRepresentation).setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
+			((ShapeGraphicalRepresentation) graphicalRepresentation).setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
 			_newPaletteElement = palette.addPaletteElement(newElementName, graphicalRepresentation);
 
-			if(primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)){
+			if (primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)) {
 				FMLDiagramPaletteElementBinding newBinding = getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
 				newBinding.setPaletteElement(_newPaletteElement);
 				newBinding.setDiagramModelSlot(getDiagramModelSlot());
-				newBinding.setFlexoConcept(flexoConcept);
+				newBinding.setBoundFlexoConcept(flexoConcept);
 				newBinding.setDropScheme(dropScheme);
 				newBinding.setBoundLabelToElementName(!takeScreenshotForTopLevelElement);
-				
+
 				getDiagramModelSlot().addToPaletteElementBindings(newBinding);
 			}
-		
 
 			/*for (DrawingObjectEntry entry : diagramElementEntries) {
 				if(!entry.isMainEntry()){
@@ -254,7 +272,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			}
 
 		} else {
-			logger.warning("Focused role is null !");
+			logger.warning("Focused property is null !");
 		}
 	}
 
@@ -272,33 +290,33 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 	@Override
 	public boolean isValid() {
-		if(!StringUtils.isNotEmpty(newElementName)){
+		if (!StringUtils.isNotEmpty(newElementName)) {
 			setErrorMessage(noNameMessage());
 			return false;
 		}
-		
-		if(palette==null){
+
+		if (palette == null) {
 			setErrorMessage(noPaletteSelectedMessage());
 			return false;
 		}
-		
-		if(primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)){
-			if(flexoConcept==null){
+
+		if (primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)) {
+			if (flexoConcept == null) {
 				setErrorMessage(noFlexoConceptSelectedMessage());
 				return false;
 			}
-			
-			if(dropScheme==null){
+
+			if (dropScheme == null) {
 				setErrorMessage(noDropSchemeSelectedMessage());
 				return false;
 			}
-			
-			if(virtualModel==null){
+
+			if (virtualModel == null) {
 				setErrorMessage(noVirtualModelSelectedMessage());
 				return false;
 			}
 		}
-		
+
 		return true;
 	}
 
@@ -309,19 +327,19 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	public String noPaletteSelectedMessage() {
 		return FlexoLocalization.localizedForKey("no_palette_selected");
 	}
-	
+
 	public String noFlexoConceptSelectedMessage() {
 		return FlexoLocalization.localizedForKey("no_flexo_concept_selected");
 	}
-	
+
 	public String noDropSchemeSelectedMessage() {
 		return FlexoLocalization.localizedForKey("no_drop_scheme_selected");
 	}
-	
+
 	public String noVirtualModelSelectedMessage() {
 		return FlexoLocalization.localizedForKey("no_virtual_model_selected");
 	}
-	
+
 	private List<DiagramElementEntry> diagramElementEntries;
 
 	public List<DiagramElementEntry> getDiagramElementEntries() {
@@ -361,9 +379,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 		public void setSelectThis(boolean aFlag) {
 			selectThis = aFlag;
-			if (patternRole == null && graphicalObject instanceof DiagramShape && flexoConcept!=null) {
+			if (patternRole == null && graphicalObject instanceof DiagramShape && flexoConcept != null) {
 				GraphicalElementRole<?, ?> parentEntryPatternRole = getParentEntry().patternRole;
-				for (ShapeRole r : flexoConcept.getFlexoRoles(ShapeRole.class)) {
+				for (ShapeRole r : flexoConcept.getDeclaredProperties(ShapeRole.class)) {
 					if (r.getParentShapeRole() == parentEntryPatternRole && patternRole == null) {
 						patternRole = r;
 					}
@@ -377,9 +395,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 		public List<? extends GraphicalElementRole<?, ?>> getAvailablePatternRoles() {
 			if (graphicalObject instanceof DiagramShape) {
-				return flexoConcept.getFlexoRoles(ShapeRole.class);
+				return flexoConcept.getDeclaredProperties(ShapeRole.class);
 			} else if (graphicalObject instanceof DiagramConnector) {
-				return flexoConcept.getFlexoRoles(ConnectorRole.class);
+				return flexoConcept.getDeclaredProperties(ConnectorRole.class);
 			}
 			return null;
 		}
@@ -446,8 +464,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public ScreenshotImage<DiagramShape> getScreenshot() {
-		if(this.screenshot==null ||this.screenshot != ((DiagramShape)getFocusedObject()).getScreenshotImage()){
-			setScreenshot((ScreenshotImage<DiagramShape>) ((DiagramShape)getFocusedObject()).getScreenshotImage());
+		if (this.screenshot == null || this.screenshot != getFocusedObject().getScreenshotImage()) {
+			setScreenshot(getFocusedObject().getScreenshotImage());
 		}
 		return this.screenshot;
 	}
@@ -459,8 +477,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public File saveScreenshot() {
-		File imageFile = new File(ResourceLocator.retrieveResourceAsFile(getDiagramSpecification().getResource().getDirectory()), JavaUtils.getClassName(newElementName)
-				+ ".palette-element" + ".png");
+		File imageFile = new File(ResourceLocator.retrieveResourceAsFile(getDiagramSpecification().getResource().getDirectory()),
+				JavaUtils.getClassName(newElementName) + ".palette-element" + ".png");
 		logger.info("Saving " + imageFile);
 		try {
 			ImageUtils.saveImageToFile(getScreenshot().image, imageFile, ImageType.PNG);
@@ -479,14 +497,14 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	public VirtualModel getVirtualModel() {
 		return virtualModel;
 	}
-	
+
 	public void setVirtualModel(VirtualModel virtualModel) {
 		this.virtualModel = virtualModel;
 	}
 
-	public VirtualModelModelFactory getFactory() {
+	public FMLModelFactory getFactory() {
 		if (getVirtualModel() != null) {
-			return getVirtualModel().getVirtualModelFactory();
+			return getVirtualModel().getFMLModelFactory();
 		}
 		return null;
 	}
@@ -506,8 +524,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		// System.out.println("errorMessage=" + errorMessage);
 		return errorMessage;
 	}
-	
-	public void setErrorMessage(String message){
+
+	public void setErrorMessage(String message) {
 		this.errorMessage = message;
 	}
 

@@ -1,23 +1,41 @@
-/*
- * (c) Copyright 2010-2012 AgileBirds
- * (c) Copyright 2012-2014 Openflexo
+/**
+ * 
+ * Copyright (c) 2014-2015, Openflexo
+ * 
+ * This file is part of Xmlconnector, a component of the software infrastructure 
+ * developed at Openflexo.
+ * 
+ * 
+ * Openflexo is dual-licensed under the European Union Public License (EUPL, either 
+ * version 1.1 of the License, or any later version ), which is available at 
+ * https://joinup.ec.europa.eu/software/page/eupl/licence-eupl
+ * and the GNU General Public License (GPL, either version 3 of the License, or any 
+ * later version), which is available at http://www.gnu.org/licenses/gpl.html .
+ * 
+ * You can redistribute it and/or modify under the terms of either of these licenses
+ * 
+ * If you choose to redistribute it and/or modify under the terms of the GNU GPL, you
+ * must include the following additional permission.
  *
- * This file is part of OpenFlexo.
+ *          Additional permission under GNU GPL version 3 section 7
  *
- * OpenFlexo is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
+ *          If you modify this Program, or any covered work, by linking or 
+ *          combining it with software containing parts covered by the terms 
+ *          of EPL 1.0, the licensors of this Program grant you additional permission
+ *          to convey the resulting work. * 
+ * 
+ * This software is distributed in the hope that it will be useful, but WITHOUT ANY 
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A 
+ * PARTICULAR PURPOSE. 
  *
- * OpenFlexo is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with OpenFlexo. If not, see <http://www.gnu.org/licenses/>.
- *
+ * See http://www.openflexo.org/license.html for details.
+ * 
+ * 
+ * Please contact Openflexo (openflexo-contacts@openflexo.org)
+ * or visit www.openflexo.org if you need additional information.
+ * 
  */
+
 
 package org.openflexo.technologyadapter.xml;
 
@@ -26,12 +44,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.BindingFactory;
+import org.openflexo.connie.BindingModel;
 import org.openflexo.foundation.FlexoProperty;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.FlexoConcept;
+import org.openflexo.foundation.fml.VirtualModelObject;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.ontology.DuplicateURIException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.foundation.view.ModelSlotInstance;
-import org.openflexo.foundation.viewpoint.NamedViewPointObject;
-import org.openflexo.foundation.viewpoint.ViewPoint;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Initializer;
@@ -40,7 +61,6 @@ import org.openflexo.model.annotations.Parameter;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
-import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.xml.metamodel.XMLDataProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -52,19 +72,18 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 
 // TODO Manage the fact that URI May Change
 
-@ModelEntity
-@XMLElement
+@ModelEntity(isAbstract = true)
 @ImplementationClass(AbstractXMLURIProcessor.AbstractXMLURIProcessorImpl.class)
-public interface AbstractXMLURIProcessor extends NamedViewPointObject {
+public interface AbstractXMLURIProcessor extends VirtualModelObject {
 
 	public enum MappingStyle {
 		ATTRIBUTE_VALUE, SINGLETON;
 	}
 
 	@PropertyIdentifier(type = String.class)
-	public static final String TYPE_URI_KEY       = "typeURI";
+	public static final String TYPE_URI_KEY = "typeURI";
 	@PropertyIdentifier(type = MappingStyle.class)
-	public static final String MAPPING_STYLE_KEY  = "mappingStyle";
+	public static final String MAPPING_STYLE_KEY = "mappingStyle";
 	@PropertyIdentifier(type = String.class)
 	public static final String ATTRIBUTE_NAME_KEY = "attributeName";
 	@PropertyIdentifier(type = XMLType.class)
@@ -74,13 +93,11 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 	@PropertyIdentifier(type = XMLDataProperty.class)
 	public static final String BASE_PROPERTY = "basePropertyForURI";
 
-
 	@Initializer
 	public AbstractXMLURIProcessor init();
 
 	@Initializer
 	public AbstractXMLURIProcessor init(@Parameter(TYPE_URI_KEY) String typeURI);
-
 
 	@Getter(value = TYPE_URI_KEY)
 	@XMLAttribute
@@ -115,7 +132,6 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 	@Getter(MODELSLOT)
 	public AbstractXMLModelSlot getModelSlot();
 
-
 	@Getter(BASE_PROPERTY)
 	public XMLDataProperty getBasePropertyForURI();
 
@@ -128,15 +144,15 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 
 	public void reset();
 
-	/** 
+	/**
 	 * XSURIProcessor interface implementation
+	 * 
 	 * @author xtof
 	 *
 	 */
-	public static abstract class AbstractXMLURIProcessorImpl extends NamedViewPointObjectImpl implements AbstractXMLURIProcessor {
+	public static abstract class AbstractXMLURIProcessorImpl extends FlexoConceptObjectImpl implements AbstractXMLURIProcessor {
 
-		static final Logger  logger   = Logger.getLogger(AbstractXMLURIProcessor.class.getPackage().getName());
-
+		static final Logger logger = Logger.getLogger(AbstractXMLURIProcessor.class.getPackage().getName());
 
 		// Properties used to calculate URIs
 
@@ -146,24 +162,22 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 		protected String attributeName;
 		protected XMLDataProperty baseDataPropertyForURI;
 
-
 		// Cache des URis Pour aller plus vite ??
 		// TODO some optimization required
 		private final Map<String, XMLObject> uriCache = new HashMap<String, XMLObject>();
 
-
-
 		/**
 		 * initialises an URIProcessor with the given URI
+		 * 
 		 * @param typeURI
 		 */
 		public AbstractXMLURIProcessorImpl() {
 			super();
 		}
 
-
 		/**
 		 * initialises an URIProcessor with the given URI
+		 * 
 		 * @param typeURI
 		 */
 		public AbstractXMLURIProcessorImpl(String typeURI) {
@@ -175,12 +189,22 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 		}
 
 		@Override
-		public String getTypeURI(){
+		public FlexoConcept getFlexoConcept() {
+			return getModelSlot().getFlexoConcept();
+		}
+
+		@Override
+		public AbstractVirtualModel<?> getVirtualModel() {
+			return getModelSlot().getVirtualModel();
+		}
+
+		@Override
+		public String getTypeURI() {
 			return this.typeURI.toString();
 		}
 
 		@Override
-		public void setTypeURI(String typeURI){
+		public void setTypeURI(String typeURI) {
 			this.typeURI = URI.create(typeURI);
 		}
 
@@ -194,32 +218,30 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 
 		@Override
 		public String getAttributeName() {
-			if (baseDataPropertyForURI != null){
+			if (baseDataPropertyForURI != null) {
 				return baseDataPropertyForURI.getName();
-			}
-			else {
+			} else {
 				return attributeName;
 			}
 		}
 
-
 		@Override
 		public void setAttributeName(String aName) {
-			attributeName  = aName;
-			if (aName != null && mappedXMLType != null){
+			attributeName = aName;
+			if (aName != null && mappedXMLType != null) {
 				FlexoProperty dataP = mappedXMLType.getPropertyNamed(aName);
-				attributeName  = aName;
-				if (dataP != null){
+				attributeName = aName;
+				if (dataP != null) {
 					baseDataPropertyForURI = (XMLDataProperty) dataP;
+				} else {
+					logger.warning("Unable to set attribute name for uri processor : property not found in XMLType "
+							+ mappedXMLType.getName());
 				}
-			else {
-				logger.warning("Unable to set attribute name for uri processor : property not found in XMLType " + mappedXMLType.getName());
-			}
-			}
-			else 
+			} else
 				logger.warning("Unable to set attribute name for uri processor : null XMLType ");
 
 		}
+
 		@Override
 		public XMLDataProperty getBasePropertyForURI() {
 			return baseDataPropertyForURI;
@@ -241,7 +263,7 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 
 			fullURI = URI.create(objectURI);
 			typeURIStr.append(fullURI.getScheme()).append("://").append(fullURI.getHost()).append(fullURI.getPath()).append("#")
-			.append(fullURI.getFragment());
+					.append(fullURI.getFragment());
 
 			return typeURIStr.toString();
 		}
@@ -252,9 +274,14 @@ public interface AbstractXMLURIProcessor extends NamedViewPointObject {
 		}
 
 		@Override
-		public ViewPoint getViewPoint() {
+		public BindingModel getBindingModel() {
+			return null;
+		}
+
+		@Override
+		public BindingFactory getBindingFactory() {
 			if (getModelSlot() != null) {
-				return getModelSlot().getViewPoint();
+				return getModelSlot().getBindingFactory();
 			}
 			return null;
 		}
