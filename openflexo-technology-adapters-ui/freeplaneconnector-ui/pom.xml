@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters-ui</artifactId>
-		<version>1.7.1</version>
+		<version>1.7.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>freeplaneconnector-ui</artifactId>
 	<description>technology Adapter graphical interface for Freeplane data</description>
