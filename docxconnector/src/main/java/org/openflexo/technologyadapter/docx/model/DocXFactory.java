@@ -114,11 +114,4 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		return returned;
 	}
 
-	public DocXFragment makeNewDocXFragment(DocXParagraph startParagraph, DocXParagraph endParagraph) {
-		DocXFragment returned = newInstance(DocXFragment.class);
-		returned.setStartElement(startParagraph);
-		returned.setEndElement(endParagraph);
-		return returned;
-	}
-
 }

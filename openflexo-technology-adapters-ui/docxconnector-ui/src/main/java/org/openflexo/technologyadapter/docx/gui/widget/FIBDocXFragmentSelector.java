@@ -44,14 +44,20 @@ import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.event.CaretEvent;
+
 import org.docx4all.swing.text.DocumentElement;
+import org.docx4j.wml.P;
 import org.openflexo.components.widget.FIBDocumentFragmentSelector;
+import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoDocumentFragment;
+import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.gui.widget.DocXEditor.DocXEditorSelectionListener;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
@@ -83,13 +89,13 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 	}
 
 	@Override
-	protected void selectFragmentInDocumentEditor(DocXFragment fragment) {
-		super.selectFragmentInDocumentEditor(fragment);
+	protected void selectFragmentInDocumentEditor(DocXFragment fragment, FIBCustomWidget<?, ?> documentEditorWidget) {
+		super.selectFragmentInDocumentEditor(fragment, documentEditorWidget);
 
 		// System.out.println("customPanel" + getCustomPanel());
 		// System.out.println("docEditorWidget=" + getCustomPanel().getDocEditorWidget());
 
-		DocXEditor docXEditor = (DocXEditor) getCustomPanel().getDocEditorWidget().getCustomComponent();
+		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 
 		if (fragment == null) {
 			docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
@@ -124,4 +130,91 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 			e.printStackTrace();
 		}
 	}
+
+	@Override
+	protected FragmentSelectorDetailsPanel makeCustomPanel(DocXFragment editedObject) {
+		FragmentSelectorDetailsPanel returned = super.makeCustomPanel(editedObject);
+		FIBCustomWidget<?, ?> documentEditorWidget = returned.getDocEditorWidget();
+		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
+		docXEditor.getEditorView().addCaretListener(new DocXEditorSelectionListener(docXEditor) {
+			@Override
+			public void caretUpdate(CaretEvent e) {
+
+				if (isSelecting) {
+					return;
+				}
+
+				super.caretUpdate(e);
+
+				int startLocation = getEditor().getEditorView().getSelectionStart();
+				int endLocation = getEditor().getEditorView().getSelectionEnd();
+
+				// If selection is not empty, reduce the selection to be sure to be in a not implied run
+				if (endLocation > startLocation) {
+					endLocation = endLocation - 1;
+				}
+
+				DocumentElement startParagraphMLElement = (DocumentElement) getEditor().getMLDocument().getParagraphMLElement(
+						startLocation, false);
+				DocumentElement endParagraphMLElement = (DocumentElement) getEditor().getMLDocument().getParagraphMLElement(endLocation,
+						false);
+
+				Object startDocXObject = startParagraphMLElement.getElementML().getDocxObject();
+				Object endDocXObject = endParagraphMLElement.getElementML().getDocxObject();
+
+				System.out.println("start=" + startDocXObject + " of " + (startDocXObject != null ? startDocXObject.getClass() : null));
+				System.out.println("end=" + endDocXObject + " of " + (endDocXObject != null ? endDocXObject.getClass() : null));
+
+				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement = null;
+				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement = null;
+
+				if (startDocXObject instanceof P) {
+					startElement = getDocument().getParagraph((P) startDocXObject);
+				}
+				if (endDocXObject instanceof P) {
+					endElement = getDocument().getParagraph((P) endDocXObject);
+				}
+
+				DocXFragment newFragment = null;
+
+				if (startElement != null && endElement != null) {
+
+					try {
+						newFragment = getDocument().getFragment(startElement, endElement);
+					} catch (FragmentConsistencyException exception) {
+						System.out.println("This fragment is not valid: start=" + startElement + " end=" + endElement);
+						newFragment = null;
+					}
+
+				}
+
+				System.out.println("fragment=" + newFragment);
+
+				isSelecting = true;
+
+				setEditedObject(newFragment);
+
+				isSelecting = false;
+
+				/*
+
+				FlexoDocumentElement<D, TA> startElement = elements.get(0);
+				FlexoDocumentElement<D, TA> endElement = elements.get(elements.size() - 1);
+				try {
+					newFragment = (F) document.getFragment(startElement, endElement);
+				} catch (FragmentConsistencyException e) {
+					System.out.println("This fragment is not valid: start=" + startElement + " end=" + endElement);
+					newFragment = null;
+				}
+
+
+				System.out.println("fragment=" + newFragment);
+				setEditedObject(newFragment);*/
+
+			}
+		});
+		return returned;
+	}
+
+	private boolean isSelecting = false;
 }

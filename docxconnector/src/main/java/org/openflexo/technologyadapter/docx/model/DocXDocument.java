@@ -38,6 +38,7 @@ import org.docx4j.wml.Style;
 import org.docx4j.wml.Text;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
+import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.FlexoStyle;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.Getter;
@@ -81,10 +82,20 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 	public String debugStructuredContents();
 
+	public DocXParagraph getParagraph(P p);
+
 	@Override
 	public DocXFactory getFactory();
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
+	@Override
+	public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
+			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
+
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
+
+		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
+
+		private final Map<P, DocXParagraph> paragraphs = new HashMap<P, DocXParagraph>();
 
 		@Override
 		public DocXDocument getFlexoDocument() {
@@ -123,8 +134,6 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			performSuperSetter(WORD_PROCESSING_ML_PACKAGE_KEY, wpmlPackage);
 
 		}
-
-		private final Map<Style, DocXStyle> styles = new HashMap<>();
 
 		private void updateStylesFromWmlPackage(WordprocessingMLPackage wpmlPackage, DocXFactory factory) {
 
@@ -235,8 +244,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			if (obj instanceof JAXBElement)
 				obj = ((JAXBElement<?>) obj).getValue();
 
-			result.append(
-					StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj + "\n");
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj
+					+ "\n");
 
 			if (obj instanceof ContentAccessor) {
 				indent++;
@@ -298,6 +307,38 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			}
 		}
 
+		@Override
+		public void addToElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
+			performSuperAdder(ELEMENTS_KEY, anElement);
+			if (anElement instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) anElement;
+				if (paragraph.getP() != null) {
+					paragraphs.put(paragraph.getP(), paragraph);
+				}
+			}
+		}
+
+		@Override
+		public void removeFromElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
+			if (anElement instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) anElement;
+				if (paragraph.getP() != null) {
+					paragraphs.remove(paragraph.getP());
+				}
+			}
+			performSuperRemover(ELEMENTS_KEY, anElement);
+		}
+
+		@Override
+		public DocXParagraph getParagraph(P p) {
+			return paragraphs.get(p);
+		}
+
+		@Override
+		public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
+				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException {
+			return (DocXFragment) super.getFragment(startElement, endElement);
+		}
 	}
 
 }

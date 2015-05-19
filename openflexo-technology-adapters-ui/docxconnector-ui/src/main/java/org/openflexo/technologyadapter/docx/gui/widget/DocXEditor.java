@@ -47,13 +47,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
 import javax.swing.text.Element;
 
 import org.docx4all.datatransfer.TransferHandler;
 import org.docx4all.script.FxScriptUIHelper;
 import org.docx4all.swing.WordMLTextPane;
 import org.docx4all.swing.text.DocumentElement;
-import org.docx4all.swing.text.ViewFactory;
 import org.docx4all.swing.text.WordMLDocument;
 import org.docx4all.swing.text.WordMLDocumentFilter;
 import org.docx4all.swing.text.WordMLEditorKit;
@@ -139,8 +140,6 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 				editorKit.initPlutextClient(editorView);
 			}
 
-			editorView.addMouseListener(new DocumentSelectionListener(doc));
-
 		} catch (Exception exc) {
 			exc.printStackTrace();
 			// doc = null;
@@ -224,28 +223,45 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		// TODO Auto-generated method stub
 	}
 
-	public class DocumentSelectionListener extends MouseAdapter {
+	public static class DocXEditorSelectionListener implements CaretListener {
+
+		private final DocXEditor editor;
+
+		public DocXEditorSelectionListener(DocXEditor editor) {
+			this.editor = editor;
+		}
+
+		public DocXEditor getEditor() {
+			return editor;
+		}
+
+		@Override
+		public void caretUpdate(CaretEvent e) {
+			System.out.println("Une nouvelle selection dot=" + e.getDot() + " mark=" + e.getMark());
+		}
+	}
+
+	public class DeprecatedDocumentSelectionListener extends MouseAdapter {
 
 		private final WordMLDocument doc;
 
 		// private LabelView selectedView = null;
 
-		public DocumentSelectionListener(WordMLDocument doc) {
+		public DeprecatedDocumentSelectionListener(WordMLDocument doc) {
 			this.doc = doc;
 		}
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			super.mouseClicked(e);
-			System.out.println("On clique ici, en " + e);
-			/*System.out.println("selection start = " + editorView.getSelectionStart());
-			System.out.println("selection end = " + editorView.getSelectionEnd());*/
+			// System.out.println("selection start = " + editorView.getSelectionStart());
+			// System.out.println("selection end = " + editorView.getSelectionEnd());
 			int pos = editorView.getSelectionStart();
-			System.out.println("pos=" + pos);
-			System.out.println("paragraphML=" + doc.getParagraphElement(pos));
-			System.out.println("runML=" + doc.getRunMLElement(pos));
-			System.out.println("characterElement=" + doc.getCharacterElement(pos));
-			ViewFactory viewFactory = (ViewFactory) editorView.getEditorKit().getViewFactory();
+			// System.out.println("pos=" + pos);
+			// System.out.println("paragraphML=" + doc.getParagraphElement(pos));
+			// System.out.println("runML=" + doc.getRunMLElement(pos));
+			// System.out.println("characterElement=" + doc.getCharacterElement(pos));
+			// ViewFactory viewFactory = (ViewFactory) editorView.getEditorKit().getViewFactory();
 			Element characterElement = doc.getCharacterElement(pos);
 			if (characterElement instanceof DocumentElement) {
 				doc.setSelectedElements((DocumentElement) characterElement);

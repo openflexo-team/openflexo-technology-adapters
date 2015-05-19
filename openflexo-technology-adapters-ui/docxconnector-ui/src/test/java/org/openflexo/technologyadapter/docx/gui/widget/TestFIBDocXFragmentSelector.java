@@ -52,6 +52,7 @@ import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -109,7 +110,7 @@ public class TestFIBDocXFragmentSelector extends OpenflexoTestCaseWithGUI {
 
 	@Test
 	@TestOrder(2)
-	public void test2InstanciateWidget() {
+	public void test2InstanciateWidget() throws FragmentConsistencyException {
 
 		DocXDocument structuredDocument = getDocument("StructuredDocument.docx");
 		assertNotNull(structuredDocument);
@@ -117,7 +118,7 @@ public class TestFIBDocXFragmentSelector extends OpenflexoTestCaseWithGUI {
 		DocXParagraph section1Paragraph = (DocXParagraph) structuredDocument.getElements().get(1);
 		DocXParagraph paragraph3 = (DocXParagraph) structuredDocument.getElements().get(6);
 
-		DocXFragment fragment = structuredDocument.getFactory().makeNewDocXFragment(section1Paragraph, paragraph3);
+		DocXFragment fragment = (DocXFragment) structuredDocument.getFactory().makeFragment(section1Paragraph, paragraph3);
 
 		selector = new FIBDocXFragmentSelector(fragment);
 		selector.setDocument(structuredDocument);

@@ -14,7 +14,8 @@
 		rightClickAction="controller.rightClick(DocumentBrowser.selected,event)"
 		name="DocumentBrowser" index="0"
 		constraints="border(location=west)"
-		visible="">
+		selection="data.selectedDocumentElements"
+		deepExploration="true">
 		<BrowserElement
 			dataClassName="org.openflexo.technologyadapter.docx.model.DocXDocument"
 			label="document.name" icon="controller.iconForObject(document)"
