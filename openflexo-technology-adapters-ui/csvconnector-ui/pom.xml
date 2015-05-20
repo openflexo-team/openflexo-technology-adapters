@@ -6,7 +6,7 @@
 		<version>1.7.2-SYLVAIN-SNAPSHOT</version>
 	</parent>
   <artifactId>csvconnector-ui</artifactId>
-  <dependencies>
+  <dependencies> 
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>csvconnector</artifactId>

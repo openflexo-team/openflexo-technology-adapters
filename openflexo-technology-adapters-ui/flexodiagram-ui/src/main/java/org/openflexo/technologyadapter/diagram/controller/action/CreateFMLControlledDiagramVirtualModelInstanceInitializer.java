@@ -54,6 +54,8 @@ import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
@@ -83,7 +85,8 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer extends
 
 				if (action.skipChoosePopup) {
 					return true;
-				} else {
+				}
+				else {
 					Wizard wizard = new CreateFMLControlledDiagramVirtualModelInstanceWizard(action, getController());
 					WizardDialog dialog = new WizardDialog(wizard, getController());
 					dialog.showDialog();
@@ -136,8 +139,11 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer extends
 		return new FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModelInstance>() {
 			@Override
 			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModelInstance action) {
-				// getController().setCurrentEditedObjectAsModuleView(action.getNewVirtualModelInstance());
-				getController().selectAndFocusObject(action.getNewVirtualModelInstance());
+
+				DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
+						.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
+				getController().setCurrentEditedObjectAsModuleView(action.getNewVirtualModelInstance(),
+						diagramTAController.getFMLRTControlledDiagramNaturePerspective());
 				return true;
 			}
 		};
