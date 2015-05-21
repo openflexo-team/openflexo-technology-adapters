@@ -118,7 +118,6 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 
 			if (fragment.getStartElement() instanceof DocXParagraph) {
 				DocumentElement startElement = docXEditor.getMLDocument().getElement(((DocXParagraph) fragment.getStartElement()).getP());
-				System.out.println("startElement=" + startElement);
 				if (startElement != null) {
 					docXEditor.getEditorView().scrollToElement(startElement);
 				}
@@ -162,8 +161,8 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 				Object startDocXObject = startParagraphMLElement.getElementML().getDocxObject();
 				Object endDocXObject = endParagraphMLElement.getElementML().getDocxObject();
 
-				System.out.println("start=" + startDocXObject + " of " + (startDocXObject != null ? startDocXObject.getClass() : null));
-				System.out.println("end=" + endDocXObject + " of " + (endDocXObject != null ? endDocXObject.getClass() : null));
+				// System.out.println("start=" + startDocXObject + " of " + (startDocXObject != null ? startDocXObject.getClass() : null));
+				// System.out.println("end=" + endDocXObject + " of " + (endDocXObject != null ? endDocXObject.getClass() : null));
 
 				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement = null;
 				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement = null;
@@ -188,28 +187,13 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 
 				}
 
-				System.out.println("fragment=" + newFragment);
+				// System.out.println("fragment=" + newFragment);
 
 				isSelecting = true;
 
 				setEditedObject(newFragment);
 
 				isSelecting = false;
-
-				/*
-
-				FlexoDocumentElement<D, TA> startElement = elements.get(0);
-				FlexoDocumentElement<D, TA> endElement = elements.get(elements.size() - 1);
-				try {
-					newFragment = (F) document.getFragment(startElement, endElement);
-				} catch (FragmentConsistencyException e) {
-					System.out.println("This fragment is not valid: start=" + startElement + " end=" + endElement);
-					newFragment = null;
-				}
-
-
-				System.out.println("fragment=" + newFragment);
-				setEditedObject(newFragment);*/
 
 			}
 		});
