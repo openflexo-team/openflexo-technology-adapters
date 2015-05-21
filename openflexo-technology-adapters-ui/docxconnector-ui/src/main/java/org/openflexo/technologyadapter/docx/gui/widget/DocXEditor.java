@@ -61,6 +61,9 @@ import org.docx4all.swing.text.WordMLEditorKit;
 import org.docx4all.ui.main.Constants;
 import org.docx4all.ui.main.ToolBarStates;
 import org.docx4all.util.DocUtil;
+import org.docx4all.xml.IObjectFactory;
+import org.docx4all.xml.ObjectFactory;
+import org.docx4j.wml.P;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
@@ -81,6 +84,8 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 
 	private FIBCustom component;
 	private FIBController controller;
+
+	private IObjectFactory objectFactory;
 
 	public DocXEditor(DocXDocument document) {
 		super(new BorderLayout());
@@ -105,7 +110,34 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		return null;
 	}
 
-	private WordMLTextPane createEditorView(DocXDocument document, ToolBarStates _toolbarStates) {
+	/**
+	 * Return {@link IObjectFactory} used to edit this document, create default one when non existant
+	 * 
+	 * @return
+	 */
+	public IObjectFactory getObjectFactory() {
+		if (objectFactory == null) {
+			return new ObjectFactory() {
+				@Override
+				public P createP(String textContent) {
+					System.out.println("**************** on cree un paragraphe pour " + textContent);
+					return super.createP(textContent);
+				}
+			};
+		}
+		return objectFactory;
+	}
+
+	/**
+	 * Sets {@link IObjectFactory} used to edit this document
+	 * 
+	 * @param objectFactory
+	 */
+	public void setObjectFactory(IObjectFactory objectFactory) {
+		this.objectFactory = objectFactory;
+	}
+
+	private WordMLTextPane createEditorView(DocXDocument document, ToolBarStates _toolbarStates, IObjectFactory objectFactory) {
 
 		// Clipboard clipboard = getContext().getClipboard();
 		// clipboard.addFlavorListener(_toolbarStates);
@@ -120,7 +152,6 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		editorView = new WordMLTextPane();
 		editorView.addFocusListener(_toolbarStates);
 		editorView.addCaretListener(_toolbarStates);
-		editorView.setTransferHandler(new TransferHandler());
 
 		WordMLEditorKit editorKit = (WordMLEditorKit) editorView.getEditorKit();
 		editorKit.addInputAttributeListener(_toolbarStates);
@@ -128,7 +159,9 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		// final WordMLDocument doc = null;
 
 		try {
-			WordMLDocument doc = editorKit.openDocument(document.getWordprocessingMLPackage());
+			WordMLDocument doc = editorKit.openDocument(document.getWordprocessingMLPackage(), objectFactory);
+
+			editorView.setTransferHandler(new TransferHandler(doc));
 
 			doc.putProperty(WordMLDocument.FILE_PATH_PROPERTY, document.getResource().getURI());
 			doc.addDocumentListener(_toolbarStates);
@@ -162,7 +195,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 	public void setEditedObject(DocXDocument document) {
 		this.document = document;
 		if (document != null) {
-			editorView = createEditorView(document, _toolbarStates);
+			editorView = createEditorView(document, _toolbarStates, getObjectFactory());
 			JPanel editorPanel = FxScriptUIHelper.getInstance().createEditorPanel(editorView);
 			add(editorPanel, BorderLayout.CENTER);
 		}
@@ -237,7 +270,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 
 		@Override
 		public void caretUpdate(CaretEvent e) {
-			System.out.println("Une nouvelle selection dot=" + e.getDot() + " mark=" + e.getMark());
+			// System.out.println("caretUpdate dot=" + e.getDot() + " mark=" + e.getMark());
 		}
 	}
 
