@@ -91,7 +91,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 	public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
 			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
 
 		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
 
@@ -120,13 +120,34 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 			System.out.println("wpmlPackage=" + wpmlPackage);
 
+			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>(
+					getElements());
+
+			postponeRootElementChangedNotifications = true;
+
 			MainDocumentPart mdp = wpmlPackage.getMainDocumentPart();
 			for (Object o : mdp.getContent()) {
 				if (o instanceof P) {
-					DocXParagraph paragraph = factory.makeNewDocXParagraph((P) o);
-					addToElements(paragraph);
+					DocXParagraph paragraph = paragraphs.get(o);
+					if (paragraph == null) {
+						System.out.println("# Create new paragraph for " + o);
+						paragraph = factory.makeNewDocXParagraph((P) o);
+						addToElements(paragraph);
+					} else {
+						// OK paragraph was found and is ok
+						System.out.println("# Found existing paragraph for " + o);
+						elementsToRemove.remove(paragraph);
+					}
 				}
 			}
+
+			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : elementsToRemove) {
+				System.out.println("# Remove paragraph for " + e);
+				removeFromElements(e);
+			}
+
+			postponeRootElementChangedNotifications = true;
+			notifyRootElementsChanged();
 
 			updateStylesFromWmlPackage(wpmlPackage, factory);
 
@@ -244,8 +265,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			if (obj instanceof JAXBElement)
 				obj = ((JAXBElement<?>) obj).getValue();
 
-			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj
-					+ "\n");
+			result.append(
+					StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj + "\n");
 
 			if (obj instanceof ContentAccessor) {
 				indent++;
@@ -316,6 +337,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 					paragraphs.put(paragraph.getP(), paragraph);
 				}
 			}
+			invalidateRootElements();
+			notifyRootElementsChanged();
 		}
 
 		@Override
@@ -327,6 +350,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				}
 			}
 			performSuperRemover(ELEMENTS_KEY, anElement);
+			invalidateRootElements();
+			notifyRootElementsChanged();
 		}
 
 		@Override

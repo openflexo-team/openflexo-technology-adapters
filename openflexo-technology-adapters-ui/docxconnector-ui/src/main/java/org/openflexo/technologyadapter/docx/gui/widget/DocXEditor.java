@@ -62,8 +62,6 @@ import org.docx4all.ui.main.Constants;
 import org.docx4all.ui.main.ToolBarStates;
 import org.docx4all.util.DocUtil;
 import org.docx4all.xml.IObjectFactory;
-import org.docx4all.xml.ObjectFactory;
-import org.docx4j.wml.P;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
@@ -110,6 +108,10 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		return null;
 	}
 
+	public DocXDocument getDocument() {
+		return getEditedObject();
+	}
+
 	/**
 	 * Return {@link IObjectFactory} used to edit this document, create default one when non existant
 	 * 
@@ -117,13 +119,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 	 */
 	public IObjectFactory getObjectFactory() {
 		if (objectFactory == null) {
-			return new ObjectFactory() {
-				@Override
-				public P createP(String textContent) {
-					System.out.println("**************** on cree un paragraphe pour " + textContent);
-					return super.createP(textContent);
-				}
-			};
+			return new DocXEditorObjectFactory(getDocument());
 		}
 		return objectFactory;
 	}

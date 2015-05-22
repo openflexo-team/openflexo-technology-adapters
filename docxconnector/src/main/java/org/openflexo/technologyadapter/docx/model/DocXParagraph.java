@@ -20,6 +20,9 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.io.StringWriter;
+
+import org.docx4j.TextUtils;
 import org.docx4j.wml.P;
 import org.openflexo.foundation.doc.FlexoParagraph;
 import org.openflexo.model.annotations.Getter;
@@ -58,7 +61,7 @@ public interface DocXParagraph extends DocXObject, FlexoParagraph<DocXDocument, 
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
 
 		public DocXParagraphImpl() {
 			super();
@@ -95,7 +98,13 @@ public interface DocXParagraph extends DocXObject, FlexoParagraph<DocXDocument, 
 
 		@Override
 		public String getRawText() {
-			return getP().toString();
+			StringWriter sw = new StringWriter();
+			try {
+				TextUtils.extractText(getP(), sw);
+			} catch (Exception e) {
+				return "<" + e.getClass().getSimpleName() + " message: " + e.getMessage() + ">";
+			}
+			return sw.toString();
 		}
 	}
 
