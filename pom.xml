@@ -5,7 +5,7 @@
 		<artifactId>openflexo-component</artifactId>
 		<version>0.4-SNAPSHOT</version>
 	</parent>
-	<version>1.7.2-SNAPSHOT</version>
+	<version>1.8.0-SNAPSHOT</version>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>openflexo-technology-adapters</artifactId>
 	<name>Openflexo-Technology-Adapters</name>
@@ -17,9 +17,9 @@
 		<diana.version>1.3-SNAPSHOT</diana.version>
 		<jiraclient.version>1.3-SNAPSHOT</jiraclient.version>
 		<flexohelp.version>1.3-SNAPSHOT</flexohelp.version>
-		<flexodocresourcecenter.version>1.7.2-SNAPSHOT</flexodocresourcecenter.version>
-		<flexodocresourcemanager.version>1.7.2-SNAPSHOT</flexodocresourcemanager.version>
-		<flexocore.version>1.7.2-SNAPSHOT</flexocore.version>
+		<flexodocresourcecenter.version>1.8.0-SNAPSHOT</flexodocresourcecenter.version>
+		<flexodocresourcemanager.version>1.8.0-SNAPSHOT</flexodocresourcemanager.version>
+		<flexocore.version>1.8.0-SNAPSHOT</flexocore.version>
 		<poi.version>3.12-beta1</poi.version>
 		<ta.logo>https://media.openflexo.org/images/ta_logo64x64.png</ta.logo>
 	</properties>
