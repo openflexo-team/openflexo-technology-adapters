@@ -61,7 +61,7 @@ public interface DocXParagraph extends DocXObject, FlexoParagraph<DocXDocument, 
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
 
 		public DocXParagraphImpl() {
 			super();
@@ -102,10 +102,12 @@ public interface DocXParagraph extends DocXObject, FlexoParagraph<DocXDocument, 
 			try {
 				TextUtils.extractText(getP(), sw);
 			} catch (Exception e) {
+				e.printStackTrace();
 				return "<" + e.getClass().getSimpleName() + " message: " + e.getMessage() + ">";
 			}
 			return sw.toString();
 		}
+
 	}
 
 }

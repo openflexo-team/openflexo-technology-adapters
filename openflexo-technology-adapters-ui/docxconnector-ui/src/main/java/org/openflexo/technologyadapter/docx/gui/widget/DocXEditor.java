@@ -71,7 +71,6 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 @SuppressWarnings("serial")
 public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocument, DocXEditor> {
 
-	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(DocXEditor.class.getPackage().getName());
 
 	private DocXDocument document;

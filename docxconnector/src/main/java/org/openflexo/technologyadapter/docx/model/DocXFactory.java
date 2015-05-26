@@ -49,6 +49,7 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * DocX factory for managing {@link DocXDocument}<br>
@@ -90,6 +91,12 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	public DocXParagraph makeNewDocXParagraph(P p) {
 		DocXParagraph returned = makeParagraph();
 		returned.updateFromP(p, this);
+		if (StringUtils.isEmpty(returned.getIdentifier())) {
+			java.util.Random RANDOM = new java.util.Random();
+			java.math.BigInteger id = java.math.BigInteger.valueOf(Math.abs(RANDOM.nextInt()));
+			String newId = "Prout-" + id;
+			p.setParaId(newId);
+		}
 		return returned;
 	}
 

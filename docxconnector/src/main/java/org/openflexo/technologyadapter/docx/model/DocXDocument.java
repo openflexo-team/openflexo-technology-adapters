@@ -91,7 +91,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 	public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
 			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
 
 		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
 
@@ -118,12 +118,25 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		@Override
 		public void updateFromWordprocessingMLPackage(WordprocessingMLPackage wpmlPackage, DocXFactory factory) {
 
-			System.out.println("wpmlPackage=" + wpmlPackage);
+			System.out.println("updateFromWordprocessingMLPackage with " + wpmlPackage);
 
 			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>(
 					getElements());
 
+			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> oldRoots = new ArrayList<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>(
+					getRootElements());
+
+			// This map stores old document hierarchy
+			Map<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>, List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>> oldChildren = new HashMap<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>, List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>>();
+			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
+				oldChildren.put(e, new ArrayList<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>(e.getChildrenElements()));
+				e.invalidateChildrenElements();
+			}
+
+			// We don't want to changes to be fired during update cycle.
 			postponeRootElementChangedNotifications = true;
+
+			int currentIndex = 0;
 
 			MainDocumentPart mdp = wpmlPackage.getMainDocumentPart();
 			for (Object o : mdp.getContent()) {
@@ -132,12 +145,18 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 					if (paragraph == null) {
 						System.out.println("# Create new paragraph for " + o);
 						paragraph = factory.makeNewDocXParagraph((P) o);
-						addToElements(paragraph);
+						inserElementAtIndex(paragraph, currentIndex);
 					} else {
-						// OK paragraph was found and is ok
-						System.out.println("# Found existing paragraph for " + o);
+						// OK paragraph was found
+						if (getElements().indexOf(paragraph) != currentIndex) {
+							// Paragraph was existing but is not at the right position
+							moveElementToIndex(paragraph, currentIndex);
+						} else {
+							// System.out.println("# Found existing paragraph for " + o);
+						}
 						elementsToRemove.remove(paragraph);
 					}
+					currentIndex++;
 				}
 			}
 
@@ -146,13 +165,39 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				removeFromElements(e);
 			}
 
-			postponeRootElementChangedNotifications = true;
-			notifyRootElementsChanged();
-
 			updateStylesFromWmlPackage(wpmlPackage, factory);
 
 			// Then we call generic method, where notification will be thrown
 			performSuperSetter(WORD_PROCESSING_ML_PACKAGE_KEY, wpmlPackage);
+
+			// OK, since we have disactivated notification, we have to notify the whole document hierarchy
+			postponeRootElementChangedNotifications = false;
+
+			// First we notify root elements if they have changed
+			// notifyRootElementsChanged();
+
+			invalidateRootElements();
+			if (!oldRoots.equals(getRootElements())) {
+				// System.out.println("************** We notify root elements");
+				// System.out.println("old: " + oldRoots);
+				// System.out.println("new: " + getRootElements());
+				// notifyRootElementsChanged();
+			}
+
+			// Then we iterate on all elements to see if some structural modifications need to be fired
+			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
+				List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> oldChild = oldChildren.get(e);
+				if (oldChild == null || !oldChild.equals(e.getChildrenElements())) {
+					if (e.getChildrenElements().size() > 0) {
+						if (e instanceof DocXParagraph) {
+							// System.out.println("********* We notify element " + e + " [" + ((DocXParagraph) e).getRawText() + "]");
+							// System.out.println("old: " + oldChild);
+							// System.out.println("new: " + e.getChildrenElements());
+						}
+						e.notifyChildrenElementsChanged();
+					}
+				}
+			}
 
 		}
 
@@ -265,8 +310,13 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			if (obj instanceof JAXBElement)
 				obj = ((JAXBElement<?>) obj).getValue();
 
-			result.append(
-					StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] " + obj + "\n");
+			String objectAsString = obj.toString();
+			if (obj instanceof Text) {
+				objectAsString = objectAsString + "[" + ((Text) obj).getValue() + "]";
+			}
+
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] "
+					+ objectAsString + "\n");
 
 			if (obj instanceof ContentAccessor) {
 				indent++;
@@ -326,6 +376,28 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				this.resource = (DocXDocumentResource) resource;
 				getPropertyChangeSupport().firePropertyChange("resource", oldValue, resource);
 			}
+		}
+
+		@Override
+		public void inserElementAtIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
+			performSuperAdder(ELEMENTS_KEY, anElement, index);
+			if (anElement instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) anElement;
+				if (paragraph.getP() != null) {
+					paragraphs.put(paragraph.getP(), paragraph);
+				}
+			}
+			invalidateRootElements();
+			notifyRootElementsChanged();
+		}
+
+		@Override
+		public void moveElementToIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
+			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> elements = getElements();
+			elements.remove(anElement);
+			elements.add(index, anElement);
+			invalidateRootElements();
+			notifyRootElementsChanged();
 		}
 
 		@Override

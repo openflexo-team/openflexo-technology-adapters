@@ -1,6 +1,7 @@
 package org.openflexo.technologyadapter.docx.gui.widget;
 
 import java.math.BigInteger;
+import java.util.logging.Logger;
 
 import javax.swing.SwingUtilities;
 
@@ -26,9 +27,14 @@ import org.docx4j.wml.SdtPr;
 import org.docx4j.wml.Tag;
 import org.docx4j.wml.Text;
 import org.docx4j.wml.U;
+import org.jvnet.jaxb2_commons.ppp.Child;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
 final class DocXEditorObjectFactory extends ObjectFactory {
+
+	private static final Logger logger = Logger.getLogger(DocXEditorObjectFactory.class.getPackage().getName());
+
 	/**
 	 * 
 	 */
@@ -190,5 +196,38 @@ final class DocXEditorObjectFactory extends ObjectFactory {
 	public U createUnderline(String value, String color) {
 		System.out.println("**************** on cree un U avec " + value + " and " + color);
 		return super.createUnderline(value, color);
+	}
+
+	@Override
+	public void textChanged(Text text) {
+
+		// We first update the structure, in case of inducted structure modifications
+		updateDocXDocument();
+
+		P docXP = getContainer(text, P.class);
+		if (docXP != null) {
+			DocXParagraph paragraph = document.getParagraph(docXP);
+			if (paragraph != null) {
+				// We then fire textChanged on related paragraph
+				paragraph.fireTextChanged();
+			} else {
+				logger.warning("Cannot find paragraph for " + docXP);
+			}
+		} else {
+			logger.warning("Cannot find paragraph for " + text);
+		}
+	}
+
+	public static <T> T getContainer(Object o, Class<T> containerClass) {
+		if (o == null) {
+			return null;
+		}
+		if (containerClass.isAssignableFrom(o.getClass())) {
+			return (T) o;
+		}
+		if (o instanceof Child) {
+			return getContainer(((Child) o).getParent(), containerClass);
+		}
+		return null;
 	}
 }
