@@ -23,12 +23,10 @@ package org.openflexo.technologyadapter.docx.fml.action;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
 /**
@@ -41,10 +39,9 @@ import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 @ModelEntity
 @ImplementationClass(AddDocXParagraph.AddDocXParagraphImpl.class)
 @XMLElement
-public interface AddDocXParagraph extends TechnologySpecificAction<DocXModelSlot, DocXParagraph> {
+public interface AddDocXParagraph extends DocXAction<DocXParagraph> {
 
-	public static abstract class AddDocXParagraphImpl extends TechnologySpecificActionImpl<DocXModelSlot, DocXParagraph>
-			implements AddDocXParagraph {
+	public static abstract class AddDocXParagraphImpl extends DocXActionImpl<DocXParagraph>implements AddDocXParagraph {
 
 		private static final Logger logger = Logger.getLogger(AddDocXParagraph.class.getPackage().getName());
 
