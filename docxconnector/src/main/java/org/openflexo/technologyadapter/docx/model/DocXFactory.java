@@ -92,12 +92,18 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		DocXParagraph returned = makeParagraph();
 		returned.updateFromP(p, this);
 		if (StringUtils.isEmpty(returned.getIdentifier())) {
-			java.util.Random RANDOM = new java.util.Random();
-			java.math.BigInteger id = java.math.BigInteger.valueOf(Math.abs(RANDOM.nextInt()));
+			/*java.math.BigInteger id = java.math.BigInteger.valueOf(Math.abs(RANDOM.nextInt()));
 			String newId = "Prout-" + id;
-			p.setParaId(newId);
+			p.setParaId(newId);*/
+			p.setParaId(generateId());
 		}
 		return returned;
+	}
+
+	private final java.util.Random RANDOM = new java.util.Random();
+
+	public String generateId() {
+		return java.math.BigInteger.valueOf(Math.abs(RANDOM.nextInt())).toString(16).toUpperCase();
 	}
 
 	@Override

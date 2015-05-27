@@ -27,11 +27,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.stream.StreamResult;
-
 import org.apache.commons.io.IOUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
@@ -160,16 +155,18 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 		FileOutputStream out = null;
 		try {
 			out = new FileOutputStream(docxDir);
-			StreamResult result = new StreamResult(out);
+			/*StreamResult result = new StreamResult(out);
 			TransformerFactory factory = TransformerFactory
 					.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
+			
+			Transformer transformer = factory.newTransformer();*/
 
-			Transformer transformer = factory.newTransformer();
+			getDocument().getWordprocessingMLPackage().save(out);
 
-		} catch (FileNotFoundException e) {
+		} catch (Docx4JException e) {
 			e.printStackTrace();
 			throw new SaveResourceException(getFlexoIODelegate());
-		} catch (TransformerConfigurationException e) {
+		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			throw new SaveResourceException(getFlexoIODelegate());
 		} finally {

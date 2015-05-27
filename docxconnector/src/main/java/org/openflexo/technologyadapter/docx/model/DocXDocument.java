@@ -91,7 +91,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 	public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
 			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
 
 		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
 
@@ -106,7 +106,9 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		public void setWordprocessingMLPackage(WordprocessingMLPackage wpmlPackage) {
 			if ((wpmlPackage == null && getWordprocessingMLPackage() != null)
 					|| (wpmlPackage != null && !wpmlPackage.equals(getWordprocessingMLPackage()))) {
-				updateFromWordprocessingMLPackage(wpmlPackage, getResource().getFactory());
+				if (wpmlPackage != null && getResource() != null) {
+					updateFromWordprocessingMLPackage(wpmlPackage, getResource().getFactory());
+				}
 			}
 		}
 
@@ -329,33 +331,33 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			return result.toString();
 		}
 
-		private static List<Object> getAllElementFromObject(Object obj, Class<?> toSearch) {
-			List<Object> result = new ArrayList<Object>();
+		public static <T> List<T> getAllElementsFromObject(Object obj, Class<T> toSearch) {
+			List<T> result = new ArrayList<T>();
 			if (obj instanceof JAXBElement)
 				obj = ((JAXBElement<?>) obj).getValue();
 
-			if (obj.getClass().equals(toSearch))
-				result.add(obj);
-			else if (obj instanceof ContentAccessor) {
+			if (toSearch.isAssignableFrom(obj.getClass())) {
+				result.add((T) obj);
+			} else if (obj instanceof ContentAccessor) {
 				List<?> children = ((ContentAccessor) obj).getContent();
 				for (Object child : children) {
-					result.addAll(getAllElementFromObject(child, toSearch));
+					result.addAll(getAllElementsFromObject(child, toSearch));
 				}
 
 			}
 			return result;
 		}
 
-		private void replacePlaceholder(WordprocessingMLPackage template, String name, String placeholder) {
+		/*private void replacePlaceholder(WordprocessingMLPackage template, String name, String placeholder) {
 			List<Object> texts = getAllElementFromObject(template.getMainDocumentPart(), Text.class);
-
+		
 			for (Object text : texts) {
 				Text textElement = (Text) text;
 				if (textElement.getValue().equals(placeholder)) {
 					textElement.setValue(name);
 				}
 			}
-		}
+		}*/
 
 		@Override
 		public DocXFactory getFactory() {

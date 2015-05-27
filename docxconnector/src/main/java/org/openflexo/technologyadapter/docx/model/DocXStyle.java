@@ -76,7 +76,9 @@ public interface DocXStyle extends DocXObject, FlexoStyle<DocXDocument, DocXTech
 		@Override
 		public void setStyle(Style style) {
 			if ((style == null && getStyle() != null) || (style != null && !style.equals(getStyle()))) {
-				updateFromStyle(style, ((DocXDocumentResource) getResourceData().getResource()).getFactory());
+				if (style != null && getResourceData() != null && getResourceData().getResource() != null) {
+					updateFromStyle(style, ((DocXDocumentResource) getResourceData().getResource()).getFactory());
+				}
 			}
 		}
 

@@ -61,7 +61,7 @@ public interface DocXParagraph extends DocXObject, FlexoParagraph<DocXDocument, 
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
 
 		public DocXParagraphImpl() {
 			super();
@@ -70,7 +70,9 @@ public interface DocXParagraph extends DocXObject, FlexoParagraph<DocXDocument, 
 		@Override
 		public void setP(P p) {
 			if ((p == null && getP() != null) || (p != null && !p.equals(getP()))) {
-				updateFromP(p, ((DocXDocumentResource) getResourceData().getResource()).getFactory());
+				if (p != null && getResourceData() != null && getResourceData().getResource() != null) {
+					updateFromP(p, ((DocXDocumentResource) getResourceData().getResource()).getFactory());
+				}
 			}
 		}
 
