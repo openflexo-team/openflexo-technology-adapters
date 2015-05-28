@@ -28,7 +28,9 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -107,21 +109,46 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	protected DocXDocumentResource tryToLookupDocX(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
 		DocXTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidDocX(candidateElement)) {
-			DocXDocumentResource wbRes = retrieveDocXResource(candidateElement);
-			DocXDocumentRepository wbRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
-			if (wbRes != null) {
+			DocXDocumentResource docXDocumentResource = retrieveDocXResource(candidateElement);
+			DocXDocumentRepository docXDocumentRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
+			if (docXDocumentResource != null) {
 				RepositoryFolder<DocXDocumentResource> folder;
 				try {
-					folder = wbRepository.getRepositoryFolder(candidateElement, true);
-					wbRepository.registerResource(wbRes, folder);
+					folder = docXDocumentRepository.getRepositoryFolder(candidateElement, true);
+					docXDocumentRepository.registerResource(docXDocumentResource, folder);
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				referenceResource(wbRes, resourceCenter);
-				return wbRes;
+				referenceResource(docXDocumentResource, resourceCenter);
+				return docXDocumentResource;
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void referenceResource(FlexoResource<?> resource, FlexoResourceCenter<?> resourceCenter) {
+		super.referenceResource(resource, resourceCenter);
+		if (resource instanceof DocXDocumentResource) {
+			registerInDocXDocumentRepository((DocXDocumentResource) resource, resourceCenter);
+		}
+	}
+
+	private void registerInDocXDocumentRepository(DocXDocumentResource docXDocumentResource, FlexoResourceCenter<?> resourceCenter) {
+		if (docXDocumentResource == null) {
+			return;
+		}
+		DocXDocumentRepository docXDocumentRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
+		if (docXDocumentResource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+			RepositoryFolder<DocXDocumentResource> folder;
+			try {
+				folder = docXDocumentRepository.getRepositoryFolder(
+						((FileFlexoIODelegate) docXDocumentResource.getFlexoIODelegate()).getFile(), true);
+				docXDocumentRepository.registerResource(docXDocumentResource, folder);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -203,15 +230,48 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		return returned;
 	}
 
-	public DocXDocumentResource createNewDocXDocument(FlexoProject project, String filename, String modelUri) {
-		// TODO Auto-generated method stub
-		return null;
+	/**
+	 * Create a new {@link DocXDocumentResource} using supplied configuration options<br>
+	 * 
+	 * @param project
+	 * @param filename
+	 * @param modelUri
+	 * @param createEmptyDocument
+	 *            a flag indicating if created resource should encodes an empty (but existing) document or if resource data should remain
+	 *            empty
+	 * @return
+	 */
+	public DocXDocumentResource createNewDocXDocumentResource(FlexoProject project, String filename, boolean createEmptyDocument) {
+
+		return createNewDocXDocumentResource(project, File.separator + "DocX", filename, createEmptyDocument);
+
 	}
 
-	public DocXDocumentResource createNewDocXDocument(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
-			String modelUri) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	/**
+	 * Create a new {@link DocXDocumentResource} using supplied configuration options<br>
+	 * 
+	 * @param resourceCenter
+	 * @param relativePath
+	 * @param filename
+	 * @param createEmptyDocument
+	 *            a flag indicating if created resource should encodes an empty (but existing) document or if resource data should remain
+	 *            empty
+	 * @return
+	 */
+	public DocXDocumentResource createNewDocXDocumentResource(FileSystemBasedResourceCenter resourceCenter, String relativePath,
+			String filename, boolean createEmptyDocument) {
 
+		if (!relativePath.startsWith(File.separator)) {
+			relativePath = File.separator + relativePath;
+		}
+
+		File docXFile = new File(resourceCenter.getDirectory() + relativePath, filename);
+
+		DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeDocXDocumentResource(docXFile,
+				getTechnologyContextManager());
+
+		referenceResource(docXDocumentResource, resourceCenter);
+
+		return docXDocumentResource;
+	}
 }

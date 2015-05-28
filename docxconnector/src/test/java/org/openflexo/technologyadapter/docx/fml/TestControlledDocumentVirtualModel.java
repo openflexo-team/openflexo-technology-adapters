@@ -66,21 +66,22 @@ import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoRole;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
+import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateView;
-import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
 import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
+import org.openflexo.technologyadapter.docx.DocXModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.action.GenerateDocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -163,9 +164,9 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 	}
 
-	private DocXDocumentResource getDocument(String documentName)
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
+	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
+			FlexoException {
+		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 
 		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getInformationSpace().getResource(documentURI, null,
@@ -179,17 +180,26 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		return documentResource;
 	}
 
-	/**
-	 * Test the VP creation
-	 */
 	@Test
 	@TestOrder(4)
+	public void testCreateProject() {
+		editor = createProject("TestProject");
+		project = editor.getProject();
+		System.out.println("Created project " + project.getProjectDirectory());
+		assertTrue(project.getProjectDirectory().exists());
+		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+	}
+
+	/**
+	 * Test the VP creation, in the project
+	 */
+	@Test
+	@TestOrder(5)
 	public void testCreateViewPoint() {
 
 		log("testCreateViewPoint()");
 
-		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
-				((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), serviceManager.getViewPointLibrary());
+		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, project.getDirectory(), serviceManager.getViewPointLibrary());
 		viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
@@ -200,7 +210,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	 * Test the VirtualModel creation
 	 */
 	@Test
-	@TestOrder(5)
+	@TestOrder(6)
 	public void testCreateVirtualModel() throws SaveResourceException {
 
 		log("testCreateVirtualModel()");
@@ -254,16 +264,6 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertEquals(docXModelSlot, FMLControlledDocumentVirtualModelNature.getDocumentModelSlot(virtualModel));
 	}
 
-	@Test
-	@TestOrder(6)
-	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
-		System.out.println("Created project " + project.getProjectDirectory());
-		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
-	}
-
 	/**
 	 * Instantiate in project a View conform to the ViewPoint
 	 */
@@ -305,9 +305,14 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance for document generation");
 		action.setVirtualModel(virtualModel);
 
-		ModelSlotInstanceConfiguration<?, ?> docXModelSlotInstanceConfiguration = action.getModelSlotInstanceConfiguration(ms);
+		DocXModelSlotInstanceConfiguration docXModelSlotInstanceConfiguration = (DocXModelSlotInstanceConfiguration) action
+				.getModelSlotInstanceConfiguration(ms);
 		assertNotNull(docXModelSlotInstanceConfiguration);
-		docXModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.LeaveEmpty);
+		docXModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource);
+		docXModelSlotInstanceConfiguration.setRelativePath("DocX");
+		docXModelSlotInstanceConfiguration.setFilename("GeneratedDocument.docx");
+		docXModelSlotInstanceConfiguration.setResourceUri("GeneratedDocument.docx");
+
 		assertTrue(docXModelSlotInstanceConfiguration.isValidConfiguration());
 
 		action.doAction();
@@ -327,25 +332,83 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		FreeModelSlotInstance<DocXDocument, DocXModelSlot> docXMSInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) newVirtualModelInstance
 				.getModelSlotInstances().get(0);
 		assertNotNull(docXMSInstance);
-		assertNotNull(generatedDocument = docXMSInstance.getAccessedResourceData());
+		// Only resource was created, resource data remains null here
+		assertNull(docXMSInstance.getAccessedResourceData());
 		assertNotNull(docXMSInstance.getResource());
-		assertTrue(((DocXDocumentResource) docXMSInstance.getResource()).getFlexoIODelegate().exists());
 
-		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
+		// The VMI does not have the FMLControlledDocumentVirtualModelInstanceNature yet, because document still null
+		assertFalse(newVirtualModelInstance.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
 
 		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
 		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
 
-		assertFalse(generatedDocument.isModified());
+		// assertFalse(generatedDocument.isModified());
 		assertFalse(newVirtualModelInstance.isModified());
 
 	}
 
 	/**
-	 * Try to populate VirtualModelInstance
+	 * Try to generate the document in VirtualModelInstance
 	 * 
 	 * @throws SaveResourceException
 	 */
+	@Test
+	@TestOrder(9)
+	public void testGenerateDocument() throws SaveResourceException {
+
+		log("testGenerateDocument()");
+
+		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) newVirtualModelInstance.getResource();
+
+		assertFalse(templateResource.isModified());
+		assertFalse(newVirtualModelInstance.isModified());
+
+		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
+
+		ActionSchemeActionType actionType = new ActionSchemeActionType(actionScheme, newVirtualModelInstance);
+		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(newVirtualModelInstance, null, editor);
+		assertNotNull(actionSchemeCreationAction);
+		actionSchemeCreationAction.doAction();
+		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
+
+		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
+
+		FreeModelSlotInstance<DocXDocument, DocXModelSlot> docXMSInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) newVirtualModelInstance
+				.getModelSlotInstances().get(0);
+		assertNotNull(docXMSInstance);
+
+		assertNotNull(docXMSInstance.getResource());
+		// Resource data is the generated document now, and is not null
+		assertNotNull(generatedDocument = docXMSInstance.getAccessedResourceData());
+
+		// The VMI has now the FMLControlledDocumentVirtualModelInstanceNature yet, because document not null anymore
+		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
+
+		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
+		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
+
+		newVirtualModelInstance.getResource().save(null);
+		newView.getResource().save(null);
+
+		// assertFalse(generatedDocument.isModified());
+		// assertFalse(newVirtualModelInstance.isModified());
+
+		/*System.out.println("Unsaved resources=" + serviceManager.getResourceManager().getUnsavedResources());
+
+		assertEquals(2, serviceManager.getResourceManager().getUnsavedResources().size());
+		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(newVirtualModelInstance.getResource()));
+		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(generatedDocument.getResource()));
+
+		newVirtualModelInstance.getResource().save(null);
+		assertTrue(((VirtualModelInstanceResource) newVirtualModelInstance.getResource()).getFlexoIODelegate().exists());
+		assertFalse(newVirtualModelInstance.isModified());
+
+		generatedDocument.getResource().save(null);
+		assertFalse(generatedDocument.isModified());
+
+		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());*/
+	}
+
 	/*@Test
 	@TestOrder(9)
 	public void testPopulateVirtualModelInstance() throws SaveResourceException {
@@ -407,7 +470,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertNotNull(editor);
 		assertNotNull(project);
 
-		assertEquals(2, project.getAllResources().size());
+		assertEquals(3, project.getAllResources().size());
 		System.out.println("All resources=" + project.getAllResources());
 		assertNotNull(project.getResource(newView.getURI()));
 
@@ -424,15 +487,21 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		vmiResource.loadResourceData(null);
 		assertNotNull(newVirtualModelInstance = vmiResource.getVirtualModelInstance());
 
-		assertEquals(1, newVirtualModelInstance.getFlexoConceptInstances().size());
+		assertTrue(newVirtualModelInstance.getVirtualModel().hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE));
+
+		/*assertEquals(1, newVirtualModelInstance.getFlexoConceptInstances().size());
 		FlexoConceptInstance fci = newVirtualModelInstance.getFlexoConceptInstances().get(0);
-		assertNotNull(fci);
+		assertNotNull(fci);*/
 
 		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
-		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
-		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
 
-		assertEquals(1, fci.getActors().size());
+		ModelSlotInstance<DocXModelSlot, DocXDocument> msInstance = FMLControlledDocumentVirtualModelInstanceNature
+				.getModelSlotInstance(newVirtualModelInstance);
+
+		assertNotNull(msInstance);
+		assertNotNull(msInstance.getAccessedResourceData());
+
+		// assertEquals(1, fci.getActors().size());
 
 		/*ModelObjectActorReference<DiagramShape> actorReference = (ModelObjectActorReference<DiagramShape>) fci.getActors().get(0);
 		assertNotNull(actorReference);

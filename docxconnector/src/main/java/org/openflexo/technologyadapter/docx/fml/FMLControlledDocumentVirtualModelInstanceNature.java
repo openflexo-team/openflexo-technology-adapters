@@ -66,6 +66,9 @@ public class FMLControlledDocumentVirtualModelInstanceNature implements VirtualM
 	@Override
 	public boolean hasNature(VirtualModelInstance virtualModelInstance) {
 
+		System.out.println("virtualModelInstance=" + virtualModelInstance);
+		System.out.println("virtualModelInstance.getVirtualModel()=" + virtualModelInstance.getVirtualModel());
+
 		// The corresponding VirtualModel should have FMLControlledDiagramVirtualModelNature
 		if (!virtualModelInstance.getVirtualModel().hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE)) {
 			return false;

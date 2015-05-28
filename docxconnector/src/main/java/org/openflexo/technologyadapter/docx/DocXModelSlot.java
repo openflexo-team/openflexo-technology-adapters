@@ -29,6 +29,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
@@ -67,7 +68,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 	@Setter(TEMPLATE_RESOURCE_KEY)
 	public void setTemplateResource(DocXDocumentResource templateResource);
 
-	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument>implements DocXModelSlot {
+	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument> implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 
@@ -113,16 +114,20 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 
 		@Override
 		public TechnologyAdapterResource<DocXDocument, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			// TODO Auto-generated method stub
-			return null;
+
+			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getProject(), filename, false);
 		}
 
 		@Override
 		public TechnologyAdapterResource<DocXDocument, ?> createSharedEmptyResource(FlexoResourceCenter<?> resourceCenter,
 				String relativePath, String filename, String modelUri) {
-			// TODO Auto-generated method stub
+			if (resourceCenter instanceof FileSystemBasedResourceCenter) {
+				return getModelSlotTechnologyAdapter().createNewDocXDocumentResource((FileSystemBasedResourceCenter) resourceCenter,
+						relativePath, filename, false);
+			}
+			// TODO
+			logger.warning("Could not create docx in this kind of ResourceCenter");
 			return null;
 		}
-
 	}
 }

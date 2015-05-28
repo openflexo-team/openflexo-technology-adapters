@@ -28,13 +28,22 @@ public class DocXModelSlotInstanceConfiguration extends FreeModelSlotInstanceCon
 
 	protected DocXModelSlotInstanceConfiguration(DocXModelSlot ms, CreateVirtualModelInstance action) {
 		super(ms, action);
+		/*setResourceUri(getAction().getFocusedObject().getProject().getURI() + "/DocX/MyDocument");
+		setRelativePath("/");
+		setFilename("MyDocument.docx");*/
 	}
 
 	@Override
-	public void setOption(
-			org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
+	public void setOption(ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		// TODO : add specific options here
 	}
 
+	@Override
+	public String getResourceUri() {
+		if (getOption() == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource) {
+			return getAction().getFocusedObject().getProject().getURI() + getRelativePath() + getFilename();
+		}
+		return super.getResourceUri();
+	}
 }

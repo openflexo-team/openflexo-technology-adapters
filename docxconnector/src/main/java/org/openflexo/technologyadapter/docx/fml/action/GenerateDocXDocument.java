@@ -41,12 +41,19 @@ package org.openflexo.technologyadapter.docx.fml.action;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.docx4j.wml.P;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXDocument.DocXDocumentImpl;
+import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 @ModelEntity
 @ImplementationClass(GenerateDocXDocument.GenerateDocXDocumentImpl.class)
@@ -54,7 +61,17 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 @FML("GenerateDocXDocument")
 public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 
-	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument>implements GenerateDocXDocument {
+	/*@PropertyIdentifier(type = File.class)
+	public static final String FILE_KEY = "file";
+
+	@Getter(value = FILE_KEY)
+	@XMLAttribute
+	public File getFile();
+
+	@Setter(FILE_KEY)
+	public void setFile(File aFile);*/
+
+	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument> implements GenerateDocXDocument {
 
 		private static final Logger logger = Logger.getLogger(GenerateDocXDocument.class.getPackage().getName());
 
@@ -64,9 +81,67 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 		}
 
 		@Override
-		public DocXDocument execute(FlexoBehaviourAction action) {
-			return null;
-		}
+		public DocXDocument execute(FlexoBehaviourAction action) throws FlexoException {
 
+			DocXDocument generatedDocument = null;
+
+			try {
+
+				DocXDocumentResource templateResource = getModelSlot().getTemplateResource();
+				DocXDocument templateDocument = templateResource.getResourceData(null);
+
+				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(action);
+
+				FlexoResource<DocXDocument> generatedResource = msInstance.getResource();
+
+				System.out.println("-------------> generating document " + generatedResource);
+
+				/*FlexoResource<DocXDocument> generatedResource = DocXDocumentResourceImpl.makeDocXDocumentResource(getFile().toURI()
+						.toString(), getFile(), (DocXTechnologyContextManager) getModelSlotTechnologyAdapter()
+						.getTechnologyContextManager());*/
+
+				// WordprocessingMLPackage generatedPackage = new WordprocessingMLPackage();
+
+				// MainDocumentPart mdp = XmlUtils.deepCopy(templateDocument.getWordprocessingMLPackage().getMainDocumentPart());
+				// generatedPackage.set
+				// templateDocument.getWordprocessingMLPackage().getMainDocumentPart()
+
+				generatedResource.setResourceData(templateDocument);
+				generatedResource.save(null);
+				generatedResource.unloadResourceData();
+				generatedResource.loadResourceData(null);
+
+				generatedDocument = generatedResource.getResourceData(null);
+
+				for (P p : DocXDocumentImpl.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
+						P.class)) {
+					String oldId = p.getParaId();
+					p.setParaId(generatedDocument.getFactory().generateId());
+					System.out.println("Paragraph " + p + " change id from " + oldId + " to " + p.getParaId());
+				}
+
+				System.out.println("Pour la resource " + generatedResource);
+				System.out.println("La resource data c'est: " + generatedResource.getResourceData(null));
+
+			}
+
+			catch (Exception e) {
+				e.printStackTrace();
+				throw new FlexoException(e);
+			}
+
+			/*generatedResource.save(null);
+			generatedResource.unloadResourceData();
+			generatedResource.loadResourceData(null);
+			generatedDocument = generatedResource.getResourceData(null);*/
+
+			/*assertFalse(generatedDocument == templateDocument);
+
+			assertEquals(13, generatedDocument.getElements().size());
+
+			assertEquals(5, generatedDocument.getStyles().size());*/
+
+			return generatedDocument;
+		}
 	}
 }

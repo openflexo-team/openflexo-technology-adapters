@@ -148,7 +148,7 @@ public class TestGenerateDocXDocument extends OpenflexoProjectAtRunTimeTestCase 
 		File f = new File(((FileFlexoIODelegate) templateResource.getFlexoIODelegate()).getFile().getParent(), "Generated.docx");
 
 		System.out.println("Generating " + f);
-		FlexoResource<DocXDocument> generatedResource = DocXDocumentResourceImpl.makeDocXDocumentResource(f.toURI().toString(), f,
+		FlexoResource<DocXDocument> generatedResource = DocXDocumentResourceImpl.makeDocXDocumentResource(f,
 				technologicalAdapter.getTechnologyContextManager());
 
 		WordprocessingMLPackage generatedPackage = new WordprocessingMLPackage();
@@ -164,8 +164,7 @@ public class TestGenerateDocXDocument extends OpenflexoProjectAtRunTimeTestCase 
 
 		generatedDocument = generatedResource.getResourceData(null);
 
-		for (P p : DocXDocumentImpl.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
-				P.class)) {
+		for (P p : DocXDocumentImpl.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
 			String oldId = p.getParaId();
 			p.setParaId(generatedDocument.getFactory().generateId());
 			System.out.println("Paragraph " + p + " change id from " + oldId + " to " + p.getParaId());

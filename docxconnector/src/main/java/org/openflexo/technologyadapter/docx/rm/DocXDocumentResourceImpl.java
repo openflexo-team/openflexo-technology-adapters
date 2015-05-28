@@ -45,21 +45,20 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFactory;
 import org.openflexo.toolbox.FileUtils;
 
-public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory>implements DocXDocumentResource {
+public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory> implements DocXDocumentResource {
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceImpl.class.getPackage().getName());
 
-	public static DocXDocumentResource makeDocXDocumentResource(String modelURI, File modelFile,
-			DocXTechnologyContextManager technologyContextManager) {
+	public static DocXDocumentResource makeDocXDocumentResource(File modelFile, DocXTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, FileFlexoIODelegate.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class,
+					FileFlexoIODelegate.class));
 			DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
 			returned.initName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 			DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
 			returned.setFactory(docXFactory);
 
-			returned.setURI(modelURI);
+			// returned.setURI(modelURI);
 			returned.setServiceManager(technologyContextManager.getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
@@ -74,15 +73,15 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 
 	public static DocXDocumentResource retrieveDocXDocumentResource(File modelFile, DocXTechnologyContextManager technologyContextManager) {
 		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, FileFlexoIODelegate.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class,
+					FileFlexoIODelegate.class));
 			DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
 			returned.initName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
 			DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
 			returned.setFactory(docXFactory);
 
-			returned.setURI(modelFile.toURI().toString());
+			// returned.setURI(modelFile.toURI().toString());
 			returned.setServiceManager(technologyContextManager.getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
@@ -211,5 +210,17 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 
 	public FileFlexoIODelegate getFileFlexoIODelegate() {
 		return (FileFlexoIODelegate) getFlexoIODelegate();
+	}
+
+	@Override
+	public String getURI() {
+		if (getResourceCenter() != null) {
+			return getResourceCenter().getDefaultBaseURI() + File.separator + getName();
+		}
+		String returned = (String) performSuperGetter(URI);
+		if (returned == null && getFile() != null) {
+			return getFile().toURI().toString();
+		}
+		return returned;
 	}
 }
