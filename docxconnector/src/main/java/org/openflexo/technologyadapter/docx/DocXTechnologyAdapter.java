@@ -110,7 +110,8 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		DocXTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidDocX(candidateElement)) {
 			DocXDocumentResource docXDocumentResource = retrieveDocXResource(candidateElement);
-			DocXDocumentRepository docXDocumentRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
+			referenceResource(docXDocumentResource, resourceCenter);
+			/*DocXDocumentRepository docXDocumentRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
 			if (docXDocumentResource != null) {
 				RepositoryFolder<DocXDocumentResource> folder;
 				try {
@@ -121,7 +122,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 				}
 				referenceResource(docXDocumentResource, resourceCenter);
 				return docXDocumentResource;
-			}
+			}*/
 		}
 		return null;
 	}
@@ -142,8 +143,8 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		if (docXDocumentResource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
 			RepositoryFolder<DocXDocumentResource> folder;
 			try {
-				folder = docXDocumentRepository.getRepositoryFolder(
-						((FileFlexoIODelegate) docXDocumentResource.getFlexoIODelegate()).getFile(), true);
+				folder = docXDocumentRepository
+						.getRepositoryFolder(((FileFlexoIODelegate) docXDocumentResource.getFlexoIODelegate()).getFile(), true);
 				docXDocumentRepository.registerResource(docXDocumentResource, folder);
 			} catch (IOException e1) {
 				e1.printStackTrace();

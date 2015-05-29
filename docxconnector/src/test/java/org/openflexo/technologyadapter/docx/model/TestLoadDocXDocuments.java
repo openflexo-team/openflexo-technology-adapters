@@ -117,7 +117,7 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	private DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 
 		FlexoResource<DocXDocument> documentResource = serviceManager.getInformationSpace().getResource(documentURI, null,

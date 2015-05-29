@@ -108,7 +108,7 @@ public class TestGenerateDocXDocument extends OpenflexoProjectAtRunTimeTestCase 
 	}
 
 	private DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 
 		FlexoResource<DocXDocument> documentResource = serviceManager.getInformationSpace().getResource(documentURI, null,
@@ -164,7 +164,8 @@ public class TestGenerateDocXDocument extends OpenflexoProjectAtRunTimeTestCase 
 
 		generatedDocument = generatedResource.getResourceData(null);
 
-		for (P p : DocXDocumentImpl.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
+		for (P p : DocXDocumentImpl.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
+				P.class)) {
 			String oldId = p.getParaId();
 			p.setParaId(generatedDocument.getFactory().generateId());
 			System.out.println("Paragraph " + p + " change id from " + oldId + " to " + p.getParaId());

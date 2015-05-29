@@ -77,6 +77,7 @@ import org.openflexo.foundation.fml.rt.action.CreateView;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
 import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.rm.ResourceLocator;
@@ -143,6 +144,8 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertNotNull(technologicalAdapter);
 		assertNotNull(resourceCenter);
 		assertNotNull(repository);
+
+		System.out.println("URI" + resourceCenter.getDefaultBaseURI());
 	}
 
 	/**
@@ -164,8 +167,13 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 	}
 
-	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
-			FlexoException {
+	private DocXDocumentResource getDocument(String documentName)
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+
+		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
+			System.out.println("Resource " + r + " uri=" + r.getURI());
+		}
+
 		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 
@@ -394,18 +402,18 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		// assertFalse(newVirtualModelInstance.isModified());
 
 		/*System.out.println("Unsaved resources=" + serviceManager.getResourceManager().getUnsavedResources());
-
+		
 		assertEquals(2, serviceManager.getResourceManager().getUnsavedResources().size());
 		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(newVirtualModelInstance.getResource()));
 		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(generatedDocument.getResource()));
-
+		
 		newVirtualModelInstance.getResource().save(null);
 		assertTrue(((VirtualModelInstanceResource) newVirtualModelInstance.getResource()).getFlexoIODelegate().exists());
 		assertFalse(newVirtualModelInstance.isModified());
-
+		
 		generatedDocument.getResource().save(null);
 		assertFalse(generatedDocument.isModified());
-
+		
 		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());*/
 	}
 
