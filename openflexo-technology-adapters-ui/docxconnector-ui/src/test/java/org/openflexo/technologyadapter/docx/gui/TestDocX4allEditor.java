@@ -84,7 +84,7 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 	}
 
 	private DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 
 		FlexoResource<DocXDocument> documentResource = serviceManager.getInformationSpace().getResource(documentURI, null,
@@ -175,8 +175,8 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		gcDelegate.tearDown();
 	}
 
-	private void openDocXEditor(FlexoResource<DocXDocument> docResource) throws FileNotFoundException, ResourceLoadingCancelledException,
-			FlexoException {
+	private void openDocXEditor(FlexoResource<DocXDocument> docResource)
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		/*DefaultLocalFileProvider p = new DefaultLocalFileProvider();
 		File f = ((FileFlexoIODelegate) docResource.getFlexoIODelegate()).getFile();
@@ -184,15 +184,15 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		FileObject fo = fsManager.resolveFile(docResource.getURI());*/
 
 		/*ToolBarStates _toolbarStates = new ToolBarStates();
-
+		
 		JPanel toolbar = FxScriptUIHelper.getInstance().createToolBar(_toolbarStates);
-
+		
 		DocXDocument document = docResource.getResourceData(null);
-
+		
 		JEditorPane editorView = createEditorView(document, _toolbarStates);
-
+		
 		JPanel editorPanel = FxScriptUIHelper.getInstance().createEditorPanel(editorView);
-
+		
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(toolbar, BorderLayout.NORTH);
 		panel.add(editorPanel, BorderLayout.CENTER);*/
@@ -204,42 +204,42 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 	}
 
 	/*private JEditorPane createEditorView(DocXDocument document, ToolBarStates _toolbarStates) {
-
+	
 		// Clipboard clipboard = getContext().getClipboard();
 		// clipboard.addFlavorListener(_toolbarStates);
 		// As a FlavorListener, _toolbarStates will ONLY be notified
 		// when there is a DataFlavor change in Clipboard.
 		// Therefore, make sure that toolbarStates' _isPasteEnable property
 		// is initialised correctly.
-
+	
 		WordMLTextPane editorView = new WordMLTextPane();
 		editorView.addFocusListener(_toolbarStates);
 		editorView.addCaretListener(_toolbarStates);
 		editorView.setTransferHandler(new TransferHandler());
-
+	
 		WordMLEditorKit editorKit = (WordMLEditorKit) editorView.getEditorKit();
 		editorKit.addInputAttributeListener(_toolbarStates);
-
+	
 		WordMLDocument doc = null;
-
+	
 		try {
 			doc = editorKit.openDocument(document.getWordprocessingMLPackage());
-
+	
 			doc.putProperty(WordMLDocument.FILE_PATH_PROPERTY, document.getResource().getURI());
 			doc.addDocumentListener(_toolbarStates);
 			doc.setDocumentFilter(new WordMLDocumentFilter());
 			editorView.setDocument(doc);
 			editorView.putClientProperty(Constants.LOCAL_VIEWS_SYNCHRONIZED_FLAG, Boolean.TRUE);
-
+	
 			if (DocUtil.isSharedDocument(doc)) {
 				editorKit.initPlutextClient(editorView);
 			}
-
+	
 		} catch (Exception exc) {
 			exc.printStackTrace();
 			doc = null;
 		}
-
+	
 		return editorView;
 	}*/
 
