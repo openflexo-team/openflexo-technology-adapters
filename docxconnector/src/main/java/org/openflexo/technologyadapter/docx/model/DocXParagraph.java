@@ -23,8 +23,12 @@ package org.openflexo.technologyadapter.docx.model;
 import java.io.StringWriter;
 
 import org.docx4j.TextUtils;
+import org.docx4j.XmlUtils;
+import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.P;
 import org.openflexo.foundation.doc.FlexoParagraph;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -49,10 +53,13 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 	public static final String P_KEY = "p";
 
 	@Getter(value = P_KEY, ignoreType = true)
+	@CloningStrategy(value = StrategyType.FACTORY, factory = "cloneP()")
 	public P getP();
 
 	@Setter(P_KEY)
 	public void setP(P p);
+
+	public P cloneP();
 
 	/**
 	 * This is the starting point for updating {@link DocXParagraph} with the paragraph provided from docx4j library<br>
@@ -108,6 +115,34 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				return "<" + e.getClass().getSimpleName() + " message: " + e.getMessage() + ">";
 			}
 			return sw.toString();
+		}
+
+		@Override
+		public ContentAccessor getParent() {
+			return getFlexoDocument().getWordprocessingMLPackage().getMainDocumentPart();
+		}
+
+		@Override
+		public P cloneP() {
+			if (getP() == null) {
+				return null;
+			}
+			P copiedP = XmlUtils.deepCopy(getP());
+			return copiedP;
+		}
+
+		@Override
+		public void appendToWordprocessingMLPackage(ContentAccessor parent, int index) {
+
+			System.out.println("Avant le append");
+			System.out.println("contents=\n" + getFlexoDocument().debugContents());
+
+			parent.getContent().add(index, getP());
+			getFlexoDocument().setIsModified();
+
+			System.out.println("Apres le append");
+			System.out.println("contents=\n" + getFlexoDocument().debugContents());
+
 		}
 
 	}

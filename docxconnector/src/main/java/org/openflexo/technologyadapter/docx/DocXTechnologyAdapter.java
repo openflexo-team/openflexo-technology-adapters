@@ -39,6 +39,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.rm.InJarResourceImpl;
+import org.openflexo.technologyadapter.docx.model.DocXElementConverter;
 import org.openflexo.technologyadapter.docx.model.DocXFragmentConverter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
@@ -283,6 +284,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		super.initFMLModelFactory(fMLModelFactory);
 
 		fMLModelFactory.addConverter(new DocXFragmentConverter());
+		fMLModelFactory.addConverter(new DocXElementConverter());
 
 	}
 }

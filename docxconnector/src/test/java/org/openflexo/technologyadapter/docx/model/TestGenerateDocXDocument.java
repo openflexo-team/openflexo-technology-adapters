@@ -143,7 +143,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		generatedResource.setResourceData(templateDocument);
 		generatedResource.save(null);
-		generatedResource.unloadResourceData();
+		generatedResource.unloadResourceData(false);
 		generatedResource.loadResourceData(null);
 
 		generatedDocument = generatedResource.getResourceData(null);

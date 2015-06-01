@@ -30,9 +30,9 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
 /**
- * Create DOCX Object.
+ * Create DOCX paragraph
  * 
- * @author gbesancon
+ * @author sylvain
  * 
  */
 

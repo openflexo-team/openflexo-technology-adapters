@@ -59,6 +59,7 @@ import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.gui.widget.DocXEditor.DocXEditorSelectionListener;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
@@ -104,7 +105,7 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 
 		try {
 
-			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> fragmentElements = fragment.getElements();
+			List<DocXElement> fragmentElements = fragment.getElements();
 
 			List<DocumentElement> elts = new ArrayList<DocumentElement>();
 

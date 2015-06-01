@@ -108,7 +108,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 
 				generatedResource.setResourceData(templateDocument);
 				generatedResource.save(null);
-				generatedResource.unloadResourceData();
+				generatedResource.unloadResourceData(false);
 				generatedResource.loadResourceData(null);
 
 				generatedDocument = generatedResource.getResourceData(null);

@@ -39,6 +39,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
+import org.openflexo.technologyadapter.docx.fml.action.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.action.AddDocXParagraph;
 import org.openflexo.technologyadapter.docx.fml.action.GenerateDocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -55,7 +56,7 @@ import org.openflexo.toolbox.StringUtils;
  * 
  */
 @DeclareFlexoRoles({ DocXParagraphRole.class, DocXFragmentRole.class })
-@DeclareEditionActions({ GenerateDocXDocument.class, AddDocXParagraph.class })
+@DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class })
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
 @XMLElement

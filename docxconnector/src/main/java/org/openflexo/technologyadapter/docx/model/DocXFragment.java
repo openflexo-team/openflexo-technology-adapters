@@ -20,6 +20,8 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.util.List;
+
 import org.openflexo.foundation.doc.FlexoDocumentFragment;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -37,8 +39,16 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 @XMLElement
 public interface DocXFragment extends DocXObject, FlexoDocumentFragment<DocXDocument, DocXTechnologyAdapter> {
 
+	@Override
+	public List<DocXElement> getElements();
+
 	public static abstract class DocXFragmentImpl extends FlexoDocumentFragmentImpl<DocXDocument, DocXTechnologyAdapter> implements
 			DocXFragment {
+
+		@Override
+		public List<DocXElement> getElements() {
+			return (List<DocXElement>) super.getElements();
+		}
 
 	}
 

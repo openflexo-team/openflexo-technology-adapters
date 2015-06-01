@@ -455,6 +455,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException {
 			return (DocXFragment) super.getFragment(startElement, endElement);
 		}
+
 	}
 
 }
