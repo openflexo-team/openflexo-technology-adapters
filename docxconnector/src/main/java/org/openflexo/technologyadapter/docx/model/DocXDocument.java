@@ -91,11 +91,15 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 	public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
 			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
+
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXDocumentImpl.class
+				.getPackage().getName());
 
 		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
 
 		private final Map<P, DocXParagraph> paragraphs = new HashMap<P, DocXParagraph>();
+		private final Map<String, DocXElement> elementsForIdentifier = new HashMap<String, DocXElement>();
 
 		@Override
 		public DocXDocument getFlexoDocument() {
@@ -147,7 +151,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 					if (paragraph == null) {
 						System.out.println("# Create new paragraph for " + o);
 						paragraph = factory.makeNewDocXParagraph((P) o);
-						inserElementAtIndex(paragraph, currentIndex);
+						insertElementAtIndex(paragraph, currentIndex);
 					} else {
 						// OK paragraph was found
 						if (getElements().indexOf(paragraph) != currentIndex) {
@@ -350,7 +354,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 		/*private void replacePlaceholder(WordprocessingMLPackage template, String name, String placeholder) {
 			List<Object> texts = getAllElementFromObject(template.getMainDocumentPart(), Text.class);
-		
+
 			for (Object text : texts) {
 				Text textElement = (Text) text;
 				if (textElement.getValue().equals(placeholder)) {
@@ -381,13 +385,23 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		}
 
 		@Override
-		public void inserElementAtIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
+		public void insertElementAtIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
 			performSuperAdder(ELEMENTS_KEY, anElement, index);
+			internallyHandleElementAdding(anElement);
+		}
+
+		private void internallyHandleElementAdding(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
 			if (anElement instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) anElement;
 				if (paragraph.getP() != null) {
 					paragraphs.put(paragraph.getP(), paragraph);
 				}
+			}
+			if (anElement.getIdentifier() != null) {
+				System.out.println("Register " + anElement + " for " + anElement.getIdentifier());
+				elementsForIdentifier.put(anElement.getIdentifier(), (DocXElement) anElement);
+			} else {
+				logger.warning("internallyHandleElementAdding() called for element with null identifier: " + anElement);
 			}
 			invalidateRootElements();
 			notifyRootElementsChanged();
@@ -405,14 +419,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		@Override
 		public void addToElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
 			performSuperAdder(ELEMENTS_KEY, anElement);
-			if (anElement instanceof DocXParagraph) {
-				DocXParagraph paragraph = (DocXParagraph) anElement;
-				if (paragraph.getP() != null) {
-					paragraphs.put(paragraph.getP(), paragraph);
-				}
-			}
-			invalidateRootElements();
-			notifyRootElementsChanged();
+			internallyHandleElementAdding(anElement);
 		}
 
 		@Override
@@ -423,9 +430,19 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 					paragraphs.remove(paragraph.getP());
 				}
 			}
+			if (anElement.getIdentifier() != null) {
+				elementsForIdentifier.remove(anElement.getIdentifier());
+			} else {
+				logger.warning("removeFromElements() called for element with null identifier: " + anElement);
+			}
 			performSuperRemover(ELEMENTS_KEY, anElement);
 			invalidateRootElements();
 			notifyRootElementsChanged();
+		}
+
+		@Override
+		public DocXElement getElementWithIdentifier(String identifier) {
+			return elementsForIdentifier.get(identifier);
 		}
 
 		@Override

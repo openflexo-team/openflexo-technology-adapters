@@ -41,7 +41,7 @@ import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 @XMLElement
 public interface AddDocXParagraph extends DocXAction<DocXParagraph> {
 
-	public static abstract class AddDocXParagraphImpl extends DocXActionImpl<DocXParagraph>implements AddDocXParagraph {
+	public static abstract class AddDocXParagraphImpl extends DocXActionImpl<DocXParagraph> implements AddDocXParagraph {
 
 		private static final Logger logger = Logger.getLogger(AddDocXParagraph.class.getPackage().getName());
 

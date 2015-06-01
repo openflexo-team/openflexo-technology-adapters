@@ -43,7 +43,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ModelEntity
 @ImplementationClass(DocXParagraph.DocXParagraphImpl.class)
 @XMLElement
-public interface DocXParagraph extends DocXObject, FlexoParagraph<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = P.class)
 	public static final String P_KEY = "p";
@@ -61,7 +61,7 @@ public interface DocXParagraph extends DocXObject, FlexoParagraph<DocXDocument, 
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
 
 		public DocXParagraphImpl() {
 			super();

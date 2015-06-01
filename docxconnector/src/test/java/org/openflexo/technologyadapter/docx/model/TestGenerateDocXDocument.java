@@ -53,7 +53,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -67,7 +66,7 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
-public class TestGenerateDocXDocument extends OpenflexoProjectAtRunTimeTestCase {
+public class TestGenerateDocXDocument extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestGenerateDocXDocument.class.getPackage().getName());
 
 	private static FlexoEditor editor;
@@ -105,21 +104,6 @@ public class TestGenerateDocXDocument extends OpenflexoProjectAtRunTimeTestCase 
 				System.out.println("URI of document: " + docResource.getURI());
 			}
 		}
-	}
-
-	private DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
-		System.out.println("Searching " + documentURI);
-
-		FlexoResource<DocXDocument> documentResource = serviceManager.getInformationSpace().getResource(documentURI, null,
-				DocXDocument.class);
-		assertNotNull(documentResource);
-
-		DocXDocument document = documentResource.getLoadedResourceData();
-		assertNotNull(document);
-		assertNotNull(document.getWordprocessingMLPackage());
-
-		return document;
 	}
 
 	private static DocXDocument templateDocument;
@@ -164,8 +148,7 @@ public class TestGenerateDocXDocument extends OpenflexoProjectAtRunTimeTestCase 
 
 		generatedDocument = generatedResource.getResourceData(null);
 
-		for (P p : DocXDocumentImpl.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
-				P.class)) {
+		for (P p : DocXDocumentImpl.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
 			String oldId = p.getParaId();
 			p.setParaId(generatedDocument.getFactory().generateId());
 			System.out.println("Paragraph " + p + " change id from " + oldId + " to " + p.getParaId());

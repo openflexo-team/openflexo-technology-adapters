@@ -406,7 +406,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	// Override when required
 	@Override
-	public void initVirtualModelFactory(FMLModelFactory fMLModelFactory) {
+	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
 		try {
 			FGEModelFactoryImpl.installImplementingClasses(fMLModelFactory);
 		} catch (ModelDefinitionException e) {

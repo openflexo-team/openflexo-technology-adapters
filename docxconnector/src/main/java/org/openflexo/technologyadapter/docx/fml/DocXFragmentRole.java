@@ -30,6 +30,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
@@ -41,13 +42,14 @@ public interface DocXFragmentRole extends FlexoDocumentFragmentRole<DocXFragment
 	@PropertyIdentifier(type = DocXFragment.class)
 	public static final String FRAGMENT_KEY = "fragment";
 
-	@Getter(value = FRAGMENT_KEY)
+	@Getter(value = FRAGMENT_KEY, isStringConvertable = true)
+	@XMLAttribute
 	public DocXFragment getFragment();
 
 	@Setter(FRAGMENT_KEY)
 	public void setFragment(DocXFragment fragment);
 
-	public static abstract class DocXFragmentRoleImpl extends FlexoDocumentFragmentRoleImpl<DocXFragment>implements DocXFragmentRole {
+	public static abstract class DocXFragmentRoleImpl extends FlexoDocumentFragmentRoleImpl<DocXFragment> implements DocXFragmentRole {
 
 		@Override
 		public Type getType() {

@@ -54,6 +54,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -86,6 +87,8 @@ import org.openflexo.technologyadapter.docx.DocXModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.action.GenerateDocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXFragment;
+import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
@@ -163,12 +166,12 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		templateResource = getDocument("StructuredDocument.docx");
 
-		assertNotNull(templateResource.getResourceData(null));
+		assertNotNull(templateDocument = templateResource.getResourceData(null));
 
 	}
 
-	private DocXDocumentResource getDocument(String documentName)
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
+			FlexoException {
 
 		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 			System.out.println("Resource " + r + " uri=" + r.getURI());
@@ -216,10 +219,12 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 	/**
 	 * Test the VirtualModel creation
+	 * 
+	 * @throws FragmentConsistencyException
 	 */
 	@Test
 	@TestOrder(6)
-	public void testCreateVirtualModel() throws SaveResourceException {
+	public void testCreateVirtualModel() throws SaveResourceException, FragmentConsistencyException {
 
 		log("testCreateVirtualModel()");
 
@@ -244,10 +249,17 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		createFragmentRole.doAction();
 		assertTrue(createFragmentRole.hasActionExecutionSucceeded());
 
-		DocXFragmentRole role = (DocXFragmentRole) createFragmentRole.getNewFlexoRole();
+		DocXFragmentRole fragmentRole = (DocXFragmentRole) createFragmentRole.getNewFlexoRole();
 		FMLModelFactory factory = flexoConcept.getFMLModelFactory();
 
-		// TODO: init with right fragment
+		DocXParagraph startParagraph = (DocXParagraph) templateDocument.getElements().get(7);
+		DocXParagraph endParagraph = (DocXParagraph) templateDocument.getElements().get(11);
+
+		System.out.println("start=" + startParagraph.getRawText());
+		System.out.println("end=" + endParagraph.getRawText());
+
+		DocXFragment fragment = (DocXFragment) templateResource.getFactory().makeFragment(startParagraph, endParagraph);
+		fragmentRole.setFragment(fragment);
 
 		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(flexoConcept, null, editor);
 		createActionScheme.setFlexoBehaviourName("generate");
@@ -270,6 +282,9 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		assertTrue(virtualModel.hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE));
 		assertEquals(docXModelSlot, FMLControlledDocumentVirtualModelNature.getDocumentModelSlot(virtualModel));
+
+		System.exit(-1);
+
 	}
 
 	/**

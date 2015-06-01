@@ -44,7 +44,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -54,8 +53,6 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -65,7 +62,7 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
-public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
+public class TestLoadDocXDocuments extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestLoadDocXDocuments.class.getPackage().getName());
 
 	private static FlexoEditor editor;
@@ -90,8 +87,8 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -114,21 +111,6 @@ public class TestLoadDocXDocuments extends OpenflexoProjectAtRunTimeTestCase {
 				System.out.println("URI of document: " + docResource.getURI());
 			}
 		}
-	}
-
-	private DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
-		System.out.println("Searching " + documentURI);
-
-		FlexoResource<DocXDocument> documentResource = serviceManager.getInformationSpace().getResource(documentURI, null,
-				DocXDocument.class);
-		assertNotNull(documentResource);
-
-		DocXDocument document = documentResource.getLoadedResourceData();
-		assertNotNull(document);
-		assertNotNull(document.getWordprocessingMLPackage());
-
-		return document;
 	}
 
 	@Test

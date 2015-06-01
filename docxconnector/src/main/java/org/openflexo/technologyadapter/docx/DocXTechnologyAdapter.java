@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
@@ -38,6 +39,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.rm.InJarResourceImpl;
+import org.openflexo.technologyadapter.docx.model.DocXFragmentConverter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceImpl;
@@ -143,8 +145,8 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		if (docXDocumentResource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
 			RepositoryFolder<DocXDocumentResource> folder;
 			try {
-				folder = docXDocumentRepository
-						.getRepositoryFolder(((FileFlexoIODelegate) docXDocumentResource.getFlexoIODelegate()).getFile(), true);
+				folder = docXDocumentRepository.getRepositoryFolder(
+						((FileFlexoIODelegate) docXDocumentResource.getFlexoIODelegate()).getFile(), true);
 				docXDocumentRepository.registerResource(docXDocumentResource, folder);
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -274,5 +276,13 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		referenceResource(docXDocumentResource, resourceCenter);
 
 		return docXDocumentResource;
+	}
+
+	@Override
+	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
+		super.initFMLModelFactory(fMLModelFactory);
+
+		fMLModelFactory.addConverter(new DocXFragmentConverter());
+
 	}
 }
