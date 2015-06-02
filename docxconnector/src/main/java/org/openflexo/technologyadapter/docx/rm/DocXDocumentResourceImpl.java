@@ -131,6 +131,7 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 			}
 			writeToFile(temporaryFile);
 
+			System.out.println("Renamed " + temporaryFile + " to " + getFile());
 			FileUtils.rename(temporaryFile, getFile());
 			getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 			if (clearIsModified) {
@@ -159,6 +160,17 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 					.newInstance("com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl", null);
 			
 			Transformer transformer = factory.newTransformer();*/
+
+			System.out.println("Writing docx file in : " + docxDir);
+
+			System.out.println("getDocument().getWordprocessingMLPackage().getMainDocumentPart()="
+					+ getDocument().getWordprocessingMLPackage().getMainDocumentPart());
+
+			for (Object o : getDocument().getWordprocessingMLPackage().getMainDocumentPart().getContent()) {
+				System.out.println("% " + o);
+			}
+
+			// System.out.println(XmlUtils.marshaltoString(getDocument().getWordprocessingMLPackage().getMainDocumentPart()));
 
 			getDocument().getWordprocessingMLPackage().save(out);
 

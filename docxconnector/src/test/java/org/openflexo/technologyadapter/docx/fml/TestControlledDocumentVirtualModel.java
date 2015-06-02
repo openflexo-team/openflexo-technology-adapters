@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.docx.fml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -68,6 +69,7 @@ import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
@@ -169,6 +171,8 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		assertNotNull(templateDocument = templateResource.getResourceData(null));
 
+		assertEquals(13, templateDocument.getElements().size());
+
 	}
 
 	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
@@ -263,11 +267,6 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		fragmentRole.setFragment(fragment);
 
 		assertEquals(fragmentRole.getFragment(), fragment);
-
-		System.out.println("HOP1");
-		System.out.println("fragment.getFlexoDocument()=" + fragment.getFlexoDocument());
-		System.out.println("startElement.getFlexoDocument()=" + fragment.getStartElement().getFlexoDocument());
-		System.out.println("endElement.getFlexoDocument()=" + fragment.getEndElement().getFlexoDocument());
 
 		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(virtualModel, null, editor);
 		createActionScheme.setFlexoBehaviourName("generate");
@@ -438,23 +437,13 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertTrue(generatedDocument.isModified());
 		// assertFalse(newVirtualModelInstance.isModified());
 
+		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
+
 		generatedDocument.getResource().save(null);
 		assertFalse(generatedDocument.isModified());
 
-		/*System.out.println("Unsaved resources=" + serviceManager.getResourceManager().getUnsavedResources());
-		
-		assertEquals(2, serviceManager.getResourceManager().getUnsavedResources().size());
-		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(newVirtualModelInstance.getResource()));
-		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(generatedDocument.getResource()));
-		
-		newVirtualModelInstance.getResource().save(null);
-		assertTrue(((VirtualModelInstanceResource) newVirtualModelInstance.getResource()).getFlexoIODelegate().exists());
-		assertFalse(newVirtualModelInstance.isModified());
-		
-		generatedDocument.getResource().save(null);
-		assertFalse(generatedDocument.isModified());
-		
-		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());*/
+		assertEquals(13 + 5, generatedDocument.getElements().size());
+
 	}
 
 	/*@Test
@@ -506,11 +495,14 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 	/**
 	 */
-	/*@Test
+	@Test
 	@TestOrder(10)
 	public void testReloadProject() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("testReloadProject()");
+
+		DocXDocument generatedDocumentBeforeReload = generatedDocument;
+		assertNotNull(generatedDocumentBeforeReload);
 
 		instanciateTestServiceManager();
 		editor = reloadProject(project.getDirectory());
@@ -519,7 +511,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertNotNull(project);
 
 		assertEquals(3, project.getAllResources().size());
-		System.out.println("All resources=" + project.getAllResources());
+		// System.out.println("All resources=" + project.getAllResources());
 		assertNotNull(project.getResource(newView.getURI()));
 
 		ViewResource newViewResource = project.getViewLibrary().getView(newView.getURI());
@@ -545,8 +537,11 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertNotNull(msInstance);
 		assertNotNull(msInstance.getAccessedResourceData());
 
-		// assertEquals(1, fci.getActors().size());
+		generatedDocument = msInstance.getAccessedResourceData();
 
+		assertNotSame(generatedDocumentBeforeReload, generatedDocument);
 
-	}*/
+		assertEquals(18, generatedDocument.getElements().size());
+
+	}
 }

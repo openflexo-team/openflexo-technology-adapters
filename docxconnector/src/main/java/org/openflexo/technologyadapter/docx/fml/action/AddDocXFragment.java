@@ -127,7 +127,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 
 			DocXDocument document = (DocXDocument) getModelSlotInstance(action).getAccessedResourceData();
 
-			System.out.println("document=" + document);
+			/*System.out.println("document=" + document);
 			System.out.println("location=" + location);
 			System.out.println("semantics=" + getLocationSemantics());
 			System.out.println("fragment=" + getFragment());
@@ -137,6 +137,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 			System.out.println("fragment.getFlexoDocument()=" + getFragment().getFlexoDocument());
 			System.out.println("startElement.getFlexoDocument()=" + getFragment().getStartElement().getFlexoDocument());
 			System.out.println("endElement.getFlexoDocument()=" + getFragment().getEndElement().getFlexoDocument());
+			 */
 
 			int insertIndex = -1;
 
@@ -170,16 +171,26 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 				DocXElement startElement = null;
 				DocXElement endElement = null;
 
+				/*for (DocXElement element : getFragment().getElements()) {
+					if (element instanceof DocXParagraph) {
+						System.out.println("*** element " + element + " p=" + ((DocXParagraph) element).getP());
+					}
+				}*/
+
+				// System.out.println("BEFORE addDocXFragment");
+				// System.out.println("contents=\n" + document.debugStructuredContents());
+
 				for (DocXElement element : getFragment().getElements()) {
 
-					System.out.println("element=" + element);
-					ContentAccessor parent = element.getParent();
-					System.out.println("parent=" + parent);
 					DocXElement clonedElement = (DocXElement) element.cloneObject();
-					System.out.println("Hop: clone=" + clonedElement);
+					/*if (element instanceof DocXParagraph) {
+						System.out.println(">>> CLONED paragraph " + clonedElement + " p=" + ((DocXParagraph) clonedElement).getP());
+					}*/
+
+					ContentAccessor parent = document.getWordprocessingMLPackage().getMainDocumentPart();
 					clonedElement.appendToWordprocessingMLPackage(parent, insertIndex);
 					document.insertElementAtIndex(clonedElement, insertIndex);
-					System.out.println("Added at index: " + insertIndex);
+
 					insertIndex++;
 					if (isFirst) {
 						startElement = clonedElement;
@@ -187,6 +198,9 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 					}
 					endElement = clonedElement;
 				}
+
+				// System.out.println("AFTER addDocXFragment");
+				// System.out.println("contents=\n" + document.debugStructuredContents());
 
 				return document.getFragment(startElement, endElement);
 			}

@@ -124,7 +124,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		@Override
 		public void updateFromWordprocessingMLPackage(WordprocessingMLPackage wpmlPackage, DocXFactory factory) {
 
-			System.out.println("updateFromWordprocessingMLPackage with " + wpmlPackage);
+			// System.out.println("updateFromWordprocessingMLPackage with " + wpmlPackage);
 
 			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>(
 					getElements());
@@ -149,7 +149,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				if (o instanceof P) {
 					DocXParagraph paragraph = paragraphs.get(o);
 					if (paragraph == null) {
-						System.out.println("# Create new paragraph for " + o);
+						// System.out.println("# Create new paragraph for " + o);
 						paragraph = factory.makeNewDocXParagraph((P) o);
 						insertElementAtIndex(paragraph, currentIndex);
 					} else {
@@ -167,7 +167,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			}
 
 			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : elementsToRemove) {
-				System.out.println("# Remove paragraph for " + e);
+				// System.out.println("# Remove paragraph for " + e);
 				removeFromElements(e);
 			}
 
@@ -304,7 +304,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 		private String debugStructuredContents(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> element, int indent) {
 			StringBuffer result = new StringBuffer();
-			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + element + "\n");
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + element
+					+ (element instanceof DocXParagraph ? ((DocXParagraph) element).getRawTextPreview() : "") + "\n");
 			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
 				result.append(debugStructuredContents(e, indent + 1));
 			}
@@ -398,7 +399,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				}
 			}
 			if (anElement.getIdentifier() != null) {
-				System.out.println("Register " + anElement + " for " + anElement.getIdentifier());
+				// System.out.println("Register " + anElement + " for " + anElement.getIdentifier());
 				elementsForIdentifier.put(anElement.getIdentifier(), (DocXElement) anElement);
 			} else {
 				logger.warning("internallyHandleElementAdding() called for element with null identifier: " + anElement);

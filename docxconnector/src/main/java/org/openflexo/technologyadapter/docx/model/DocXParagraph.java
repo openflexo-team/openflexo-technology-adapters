@@ -53,7 +53,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 	public static final String P_KEY = "p";
 
 	@Getter(value = P_KEY, ignoreType = true)
-	@CloningStrategy(value = StrategyType.FACTORY, factory = "cloneP()")
+	@CloningStrategy(value = StrategyType.CUSTOM_CLONE, factory = "cloneP()")
 	public P getP();
 
 	@Setter(P_KEY)
@@ -117,31 +117,32 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 			return sw.toString();
 		}
 
-		@Override
+		/*@Override
 		public ContentAccessor getParent() {
 			return getFlexoDocument().getWordprocessingMLPackage().getMainDocumentPart();
-		}
+		}*/
 
 		@Override
 		public P cloneP() {
+
 			if (getP() == null) {
 				return null;
 			}
 			P copiedP = XmlUtils.deepCopy(getP());
+
 			return copiedP;
 		}
 
 		@Override
 		public void appendToWordprocessingMLPackage(ContentAccessor parent, int index) {
 
-			System.out.println("Avant le append");
-			System.out.println("contents=\n" + getFlexoDocument().debugContents());
+			/*System.out.println("appendToWordprocessingMLPackage for " + this);
+			System.out.println("parent: " + parent);
+			System.out.println("index: " + index);
+			System.out.println("p=" + getP());*/
 
 			parent.getContent().add(index, getP());
 			getFlexoDocument().setIsModified();
-
-			System.out.println("Apres le append");
-			System.out.println("contents=\n" + getFlexoDocument().debugContents());
 
 		}
 

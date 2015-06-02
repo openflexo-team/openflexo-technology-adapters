@@ -67,16 +67,16 @@ public class DocXElementConverter extends Converter<DocXElement> {
 			String documentURI = value.substring(0, separatorIndex);
 			String elementId = value.substring(separatorIndex + 1);
 
-			System.out.println("documentURI: " + documentURI);
-			System.out.println("elementId: " + elementId);
+			// System.out.println("documentURI: " + documentURI);
+			// System.out.println("elementId: " + elementId);
 
-			System.out.println("factory: " + factory);
+			// System.out.println("factory: " + factory);
 
 			if (factory instanceof FMLModelFactory) {
-				System.out.println("serviceManager: " + ((FMLModelFactory) factory).getServiceManager());
+				// System.out.println("serviceManager: " + ((FMLModelFactory) factory).getServiceManager());
 				FlexoResource<DocXDocument> documentResource = ((FMLModelFactory) factory).getServiceManager().getInformationSpace()
 						.getResource(documentURI, null, DocXDocument.class);
-				System.out.println("document=" + documentResource);
+				// System.out.println("document=" + documentResource);
 
 				if (documentResource != null) {
 					DocXDocument document;

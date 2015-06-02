@@ -34,7 +34,7 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 @ModelEntity(isAbstract = true)
 public interface DocXElement extends DocXObject, FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> {
 
-	public ContentAccessor getParent();
+	// public ContentAccessor getParent();
 
 	public void appendToWordprocessingMLPackage(ContentAccessor parent, int index);
 
