@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-		<version>1.7.2-SYLVAIN-SNAPSHOT</version>
+		<version>1.8.0-SYLVAIN-SNAPSHOT</version>
 	</parent>
 
   <groupId>org.openflexo.archetypes</groupId>
