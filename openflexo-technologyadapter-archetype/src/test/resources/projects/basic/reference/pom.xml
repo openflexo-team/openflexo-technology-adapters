@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.openflexo</groupId>
     <artifactId>openflexo-technology-adapters</artifactId>
-    <version>1.7.1-SNAPSHOT</version>
+    <version>1.7.2-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.openflexo.technologyadapter</groupId>
