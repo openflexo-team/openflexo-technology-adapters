@@ -110,7 +110,8 @@ public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 											assertNotNull(row.getCellAt(0));
 											assertFalse(row.getRow() == refRow.getRow());
 											assertNotSame(row.getRow(), refRow.getRow());
-											assertNotSame(row.getRow().hashCode(), refRow.getRow().hashCode());
+											// Row do have the same hashcode
+											// assertNotSame(row.getRow().hashCode(), refRow.getRow().hashCode());
 											assertNotSame(row, refRow);
 											assertNotSame(row.hash(), refRow.hash());
 											assertFalse(row == refRow);
