@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters</artifactId>
-		<version>1.8.0-SYLVAIN-SNAPSHOT</version>
+		<version>1.8.0-SNAPSHOT</version>
 	</parent>
 	<artifactId>jdbcconnector</artifactId>
 	<name>Connector used to connect to Databases trough the jdbc API</name>
