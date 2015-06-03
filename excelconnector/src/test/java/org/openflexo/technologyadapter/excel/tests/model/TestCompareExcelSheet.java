@@ -90,7 +90,7 @@ public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 			assertNotNull(excelWorkbookRepository);
 			Collection<ExcelWorkbookResource> workbooks = excelWorkbookRepository.getAllResources();
 			for (ExcelWorkbookResource excelWorkbook : workbooks) {
-				if (excelWorkbook.getName().contains("Carto")) {
+				if (excelWorkbook.getName().contains("exemple")) {
 					try {
 						ExcelWorkbook excelModel = excelWorkbook.loadResourceData(null);
 						assertNotNull(excelWorkbook.getLoadedResourceData());
@@ -105,12 +105,12 @@ public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 								for (ExcelSheet sheet : sheets) {
 									for (ExcelRow row : sheet.getExcelRows()) {
 										if (sheet != refSheet) {
-											System.out.println("Comparing %" + sheet.getName() + "." + row.getRowNum() + " - With %"
-													+ refSheet.getName() + "." + row.getRowNum());
-
+											assertNotNull(row.getRow());
+											assertNotNull(row.getCellAt(0));
 											assertFalse(row.getRow() == refRow.getRow());
 											assertNotSame(row.getRow(), refRow.getRow());
 											assertNotSame(row, refRow);
+											assertNotSame(row.hash(), refRow.hash());
 											assertFalse(row == refRow);
 										}
 									}
