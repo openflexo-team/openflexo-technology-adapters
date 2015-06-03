@@ -57,6 +57,7 @@ import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.technologyadapter.excel.model.ExcelCell;
 import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
@@ -109,9 +110,23 @@ public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 											assertNotNull(row.getCellAt(0));
 											assertFalse(row.getRow() == refRow.getRow());
 											assertNotSame(row.getRow(), refRow.getRow());
+											assertNotSame(row.getRow().hashCode(), refRow.getRow().hashCode());
 											assertNotSame(row, refRow);
 											assertNotSame(row.hash(), refRow.hash());
 											assertFalse(row == refRow);
+										}
+										if (row != refRow) {
+											for (ExcelCell c : row.getExcelCells()) {
+												for (ExcelCell rc : refRow.getExcelCells()) {
+													assertNotNull(c.getCell());
+													assertFalse(c.getCell() == rc.getCell());
+													assertNotSame(c.getCell().hashCode(), rc.getCell().hashCode());
+													assertNotSame(c.hash(), rc.hash());
+													assertNotSame(c, rc);
+													assertNotSame(c.hash(), rc.hash());
+													assertFalse(c == rc);
+												}
+											}
 										}
 									}
 								}
