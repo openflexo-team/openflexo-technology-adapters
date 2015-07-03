@@ -178,4 +178,8 @@ public class ExcelSheet extends ExcelObject {
 		return getWorkbook().getUri()+"/"+getName();
 	}
 
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

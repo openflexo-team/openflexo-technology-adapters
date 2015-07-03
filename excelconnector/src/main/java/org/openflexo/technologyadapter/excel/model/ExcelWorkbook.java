@@ -41,21 +41,23 @@ package org.openflexo.technologyadapter.excel.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
 public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWorkbook> {
-
+	
 	private Workbook workbook;
 	private ExcelWorkbookResource resource;
 	private List<ExcelSheet> excelSheets;
 	private BasicExcelModelConverter converter;
 	private ArrayList<ExcelObject> accessibleExcelObjects;
+	private final ExcelStyleManager styleManager;
 
 	public Workbook getWorkbook() {
 		return workbook;
@@ -65,11 +67,13 @@ public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWork
 		super(adapter);
 		this.workbook = workbook;
 		excelSheets = new ArrayList<ExcelSheet>();
+		styleManager = new ExcelStyleManager(this);
 	}
 
 	public ExcelWorkbook(ExcelTechnologyAdapter adapter) {
 		super(adapter);
 		excelSheets = new ArrayList<ExcelSheet>();
+		styleManager = new ExcelStyleManager(this);
 	}
 
 	public ExcelWorkbook(Workbook workbook, BasicExcelModelConverter converter, ExcelTechnologyAdapter adapter) {
@@ -77,6 +81,7 @@ public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWork
 		this.workbook = workbook;
 		this.converter = converter;
 		excelSheets = new ArrayList<ExcelSheet>();
+		styleManager = new ExcelStyleManager(this);
 	}
 
 	public BasicExcelModelConverter getConverter() {
@@ -84,7 +89,7 @@ public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWork
 	}
 
 	@Override
-	public FlexoResource<ExcelWorkbook> getResource() {
+	public ExcelWorkbookResource getResource() {
 		return resource;
 	}
 
@@ -132,4 +137,7 @@ public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWork
 		return getName();
 	}
 
+	public ExcelStyleManager getStyleManager() {
+		return styleManager;
+	}
 }

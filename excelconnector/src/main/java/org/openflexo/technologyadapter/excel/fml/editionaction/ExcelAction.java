@@ -53,6 +53,6 @@ import org.openflexo.technologyadapter.excel.model.ExcelObject;
  */
 
 @ModelEntity(isAbstract = true)
-public interface ExcelAction<T extends ExcelObject> extends TechnologySpecificAction<BasicExcelModelSlot, T> {
+public interface ExcelAction<T extends Object> extends TechnologySpecificAction<BasicExcelModelSlot, T> {
 
 }

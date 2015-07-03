@@ -42,8 +42,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
+import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellStyleFeature;
 
 /**
  * Represents an Excel row, implemented as a wrapper of a POI row
@@ -51,7 +53,7 @@ import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
  * @author vincent, sylvain
  * 
  */
-public class ExcelRow extends ExcelObject {
+public class ExcelRow extends ExcelObject implements ExcelStyleObject{
 
 	private static final Logger logger = Logger.getLogger(ExcelRow.class.getPackage().getName());
 
@@ -135,12 +137,48 @@ public class ExcelRow extends ExcelObject {
 		}
 		return getExcelCells().get(column.getColNumber());
 	}
+	
+	public void setRowStyle(CellStyle style) {
+		if (getRow() != null) {
+			getRow().setRowStyle(style);
+			// Ensure that this is really done for all the cells
+			for(ExcelCell cell: getExcelCells()){
+				cell.setCellStyle(style);
+			}
+		}
+	}
+
+	public CellStyle getRowStyle() {
+		if (getRow() != null) {
+			return getRow().getRowStyle();
+		}
+		return null;
+	}
+	
+	@Override
+	public void setStyle(CellStyleFeature cellStyle, Object value) {
+		if (getRow() != null && cellStyle != null) {
+			// First get the old style
+			CellStyle oldStyle = getRowStyle();
+			// Create a new style
+			CellStyle newStyle = getExcelSheet().getWorkbook().getStyleManager().udapteCellStyle(cellStyle, value, oldStyle);
+			// Set the style of this cell to the new style
+			setRowStyle(newStyle);
+		}
+		return;
+	}
+	
 
 	@Override
 	public String getUri() {
 		return getExcelSheet().getUri() + "/" + getName();
 	}
 
+	@Override
+	public String toString() {
+		return getName();
+	}
+	
 	@Override
 	public boolean delete(Object... context) {
 		try {
