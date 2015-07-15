@@ -503,6 +503,9 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareInFlexo
 					setIssueMessage(FlexoLocalization.localizedForKey(NO_SELECTED_ENTRY), IssueMessageType.ERROR);
 					return false;
 				}
+				if(getToFlexoConcept()!=null && getFromFlexoConcept()!=null){
+					return true;
+				}
 			default:
 				break;
 			}

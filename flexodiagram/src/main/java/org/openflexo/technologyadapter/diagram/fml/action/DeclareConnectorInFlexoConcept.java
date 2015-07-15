@@ -229,7 +229,7 @@ public class DeclareConnectorInFlexoConcept extends DeclareInFlexoConcept<Declar
 					newConnectorRole.setLabel(new DataBinding<String>(getIndividualPatternRoleName() + "."
 							+ mainPropertyDescriptor.property.getName()));
 				} else {*/
-				newConnectorRole.setReadOnlyLabel(true);
+				newConnectorRole.setReadOnlyLabel(false);
 				newConnectorRole.setLabel(new DataBinding<String>("\"label\""));
 				newConnectorRole.setExampleLabel(getFocusedObject().getGraphicalRepresentation().getText());
 				// }
