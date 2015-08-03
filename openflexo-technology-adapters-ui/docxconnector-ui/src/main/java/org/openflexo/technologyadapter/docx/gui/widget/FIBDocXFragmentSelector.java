@@ -117,6 +117,11 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 			}
 			docXEditor.getMLDocument().setSelectedElements(elts);
 
+			//System.out.println("in FIBDocXFragmentSelector selectedDocElements=" + getSelectedDocumentElements());
+
+			// setSelectedDocumentElements(elts);
+			//getPropertyChangeSupport().firePropertyChange("selectedDocumentElements", null, getSelectedDocumentElements());
+
 			if (fragment.getStartElement() instanceof DocXParagraph) {
 				DocumentElement startElement = docXEditor.getMLDocument().getElement(((DocXParagraph) fragment.getStartElement()).getP());
 				if (startElement != null) {
@@ -202,4 +207,5 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 	}
 
 	private boolean isSelecting = false;
+
 }
