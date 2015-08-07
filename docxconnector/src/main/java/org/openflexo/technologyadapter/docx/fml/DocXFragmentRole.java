@@ -42,10 +42,21 @@ public interface DocXFragmentRole extends FlexoDocumentFragmentRole<DocXFragment
 	@PropertyIdentifier(type = DocXFragment.class)
 	public static final String FRAGMENT_KEY = "fragment";
 
+	/**
+	 * Return the represented fragment in the template resource<br>
+	 * Note that is not the fragment that is to be managed at run-time
+	 * 
+	 * @return
+	 */
 	@Getter(value = FRAGMENT_KEY, isStringConvertable = true)
 	@XMLAttribute
 	public DocXFragment getFragment();
 
+	/**
+	 * Sets the represented fragment in the template resource<br>
+	 * 
+	 * @param fragment
+	 */
 	@Setter(FRAGMENT_KEY)
 	public void setFragment(DocXFragment fragment);
 

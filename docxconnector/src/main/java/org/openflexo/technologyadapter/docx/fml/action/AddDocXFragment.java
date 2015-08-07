@@ -63,10 +63,21 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 	@PropertyIdentifier(type = LocationSemantics.class)
 	public static final String LOCATION_SEMANTICS_KEY = "locationSemantics";
 
+	/**
+	 * Return the represented fragment in the template resource<br>
+	 * Note that is not the fragment that is to be managed at run-time
+	 * 
+	 * @return
+	 */
 	@Getter(value = FRAGMENT_KEY, isStringConvertable = true)
 	@XMLAttribute
 	public DocXFragment getFragment();
 
+	/**
+	 * Sets the represented fragment in the template resource<br>
+	 * 
+	 * @param fragment
+	 */
 	@Setter(FRAGMENT_KEY)
 	public void setFragment(DocXFragment fragment);
 
