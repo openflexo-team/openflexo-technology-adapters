@@ -98,18 +98,14 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the creation of a VirtualModel whose instances have {@link FMLControlledDocumentVirtualModelNature}
+ * Test the creation and some manipulations of a {@link VirtualModel} with {@link FMLControlledDocumentVirtualModelNature}<br>
+ * We basically test here the generation of a plain document from a template, and the adding of a fragment at the end of the document
  * 
  * @author sylvain
  * 
  */
 @RunWith(OrderedRunner.class)
 public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTimeTestCase {
-
-	/*private final String DIAGRAM_SPECIFICATION_NAME = "myDiagramSpecification";
-	private final String DIAGRAM_SPECIFICATION_URI = "http://myDiagramSpecification";
-	private final String PALETTE_NAME = "myDiagramSpecificationPalette";
-	private final String PALETTE_ELEMENT_NAME = "myPaletteElement";*/
 
 	private final String VIEWPOINT_NAME = "TestViewPointControlledDocument";
 	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestViewPointControlledDocument";
@@ -132,7 +128,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	public static ActionScheme actionScheme;
 
 	/**
-	 * Initialize
+	 * Initialize an environment with DocX technology adapter, perform some checks
 	 */
 	@Test
 	@TestOrder(1)
@@ -155,7 +151,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	}
 
 	/**
-	 * Test Create diagram specification resource
+	 * Test docx template loading
 	 * 
 	 * @throws FlexoException
 	 * @throws ResourceLoadingCancelledException
@@ -175,6 +171,16 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 	}
 
+	/**
+	 * Internal method used to retrieve in test resource center a docx resource identified by document name<br>
+	 * Also assume this resource will be loaded
+	 * 
+	 * @param documentName
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws ResourceLoadingCancelledException
+	 * @throws FlexoException
+	 */
 	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 
@@ -196,6 +202,9 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		return documentResource;
 	}
 
+	/**
+	 * Create a brand new project
+	 */
 	@Test
 	@TestOrder(4)
 	public void testCreateProject() {
@@ -207,7 +216,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	}
 
 	/**
-	 * Test the VP creation, in the project
+	 * Creates a new empty ViewPoint in the project
 	 */
 	@Test
 	@TestOrder(5)
@@ -223,7 +232,11 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	}
 
 	/**
-	 * Test the VirtualModel creation
+	 * Test the VirtualModel creation<br>
+	 * We create here a VirtualModel with a unique {@link DocXModelSlot}, configured with template docx Then we define a fragment role on
+	 * the {@link VirtualModel}<br>
+	 * We also define an {@link ActionScheme} on the {@link VirtualModel}, which generate the docx document from the template and then add a
+	 * fragment to the end of document
 	 * 
 	 * @throws FragmentConsistencyException
 	 */
@@ -505,6 +518,9 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertNotNull(generatedDocumentBeforeReload);
 
 		instanciateTestServiceManager();
+
+		System.out.println("Project dir = " + project.getDirectory());
+
 		editor = reloadProject(project.getDirectory());
 		project = editor.getProject();
 		assertNotNull(editor);
