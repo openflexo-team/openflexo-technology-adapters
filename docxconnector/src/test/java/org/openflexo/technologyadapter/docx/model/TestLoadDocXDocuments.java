@@ -87,8 +87,8 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -225,6 +225,14 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		assertSameList(subSection1Paragraph.getChildrenElements(), paragraph2);
 		assertSameList(subSection2Paragraph.getChildrenElements(), paragraph3);
 		assertSameList(section2Paragraph.getChildrenElements(), paragraph4, paragraph5, paragraph6, paragraph7, paragraph8);
+
+		assertEquals(5, paragraph7.getRuns().size());
+
+		assertEquals("This is a paragraph with ", paragraph7.getRuns().get(0).getText());
+		assertEquals("a", paragraph7.getRuns().get(1).getText());
+		assertEquals(" ", paragraph7.getRuns().get(2).getText());
+		assertEquals("italic", paragraph7.getRuns().get(3).getText());
+		assertEquals(" word.", paragraph7.getRuns().get(4).getText());
 	}
 
 	@Test

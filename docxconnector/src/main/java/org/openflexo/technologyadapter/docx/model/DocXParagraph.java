@@ -21,12 +21,20 @@
 package org.openflexo.technologyadapter.docx.model;
 
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.xml.bind.JAXBElement;
 
 import org.docx4j.TextUtils;
 import org.docx4j.XmlUtils;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.P;
+import org.docx4j.wml.R;
 import org.openflexo.foundation.doc.FlexoParagraph;
+import org.openflexo.foundation.doc.FlexoRun;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -68,7 +76,9 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
+
+		private final Map<R, DocXRun> runs = new HashMap<R, DocXRun>();
 
 		public DocXParagraphImpl() {
 			super();
@@ -94,6 +104,41 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 			performSuperSetter(P_KEY, p);
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,
 			// if value of P given by getP() returns the new value
+
+			List<FlexoRun> runsToRemove = new ArrayList<FlexoRun>(getRuns());
+
+			int currentIndex = 0;
+
+			System.out.println("On regarde dans le paragraph");
+			for (Object o : p.getContent()) {
+				System.out.println("* dans le paragraph, y'a un " + o + " of " + o.getClass());
+				if (o instanceof JAXBElement) {
+					o = ((JAXBElement) o).getValue();
+				}
+				if (o instanceof R) {
+					DocXRun run = runs.get(o);
+					if (run == null) {
+						// System.out.println("# Create new run for " + o);
+						run = factory.makeNewDocXRun((R) o);
+						insertRunAtIndex(run, currentIndex);
+					} else {
+						// OK run was found
+						if (getRuns().indexOf(run) != currentIndex) {
+							// Paragraph was existing but is not at the right position
+							moveRunToIndex(run, currentIndex);
+						} else {
+							// System.out.println("# Found existing paragraph for " + o);
+						}
+						runsToRemove.remove(run);
+					}
+					currentIndex++;
+				}
+			}
+
+			for (FlexoRun<DocXDocument, DocXTechnologyAdapter> run : runsToRemove) {
+				// System.out.println("# Remove run for " + e);
+				removeFromRuns(run);
+			}
 
 		}
 
@@ -144,6 +189,45 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 			parent.getContent().add(index, getP());
 			getFlexoDocument().setIsModified();
 
+		}
+
+		@Override
+		public void insertRunAtIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
+			performSuperAdder(RUNS_KEY, aRun, index);
+			internallyHandleRunAdding(aRun);
+		}
+
+		private void internallyHandleRunAdding(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
+			if (aRun instanceof DocXRun) {
+				DocXRun run = (DocXRun) aRun;
+				if (run.getR() != null) {
+					runs.put(run.getR(), run);
+				}
+			}
+		}
+
+		@Override
+		public void moveRunToIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
+			List<FlexoRun<DocXDocument, DocXTechnologyAdapter>> runs = getRuns();
+			runs.remove(aRun);
+			runs.add(index, aRun);
+		}
+
+		@Override
+		public void addToRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
+			performSuperAdder(RUNS_KEY, aRun);
+			internallyHandleRunAdding(aRun);
+		}
+
+		@Override
+		public void removeFromRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
+			if (aRun instanceof DocXRun) {
+				DocXRun run = (DocXRun) aRun;
+				if (run.getR() != null) {
+					runs.remove(run.getR());
+				}
+			}
+			performSuperRemover(RUNS_KEY, aRun);
 		}
 
 	}

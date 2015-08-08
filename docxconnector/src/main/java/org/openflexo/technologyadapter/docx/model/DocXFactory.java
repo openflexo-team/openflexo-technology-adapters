@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.P;
+import org.docx4j.wml.R;
 import org.docx4j.wml.Style;
 import org.openflexo.foundation.doc.DocumentFactory;
 import org.openflexo.model.ModelContextLibrary;
@@ -63,8 +64,8 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	private static final Logger logger = Logger.getLogger(DocXFactory.class.getPackage().getName());
 
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXFragment.class, DocXStyle.class),
-				resource, editingContext);
+		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXRun.class, DocXFragment.class,
+				DocXStyle.class), resource, editingContext);
 	}
 
 	@Override
@@ -92,11 +93,19 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		DocXParagraph returned = makeParagraph();
 		returned.updateFromP(p, this);
 		if (StringUtils.isEmpty(returned.getIdentifier())) {
-			/*java.math.BigInteger id = java.math.BigInteger.valueOf(Math.abs(RANDOM.nextInt()));
-			String newId = "Prout-" + id;
-			p.setParaId(newId);*/
 			p.setParaId(generateId());
 		}
+		return returned;
+	}
+
+	@Override
+	protected DocXRun makeRun() {
+		return newInstance(DocXRun.class);
+	}
+
+	public DocXRun makeNewDocXRun(R r) {
+		DocXRun returned = makeRun();
+		returned.updateFromR(r, this);
 		return returned;
 	}
 
