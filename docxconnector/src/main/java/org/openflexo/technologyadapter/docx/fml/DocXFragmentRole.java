@@ -48,6 +48,7 @@ public interface DocXFragmentRole extends FlexoDocumentFragmentRole<DocXFragment
 	 * 
 	 * @return
 	 */
+	@Override
 	@Getter(value = FRAGMENT_KEY, isStringConvertable = true)
 	@XMLAttribute
 	public DocXFragment getFragment();
@@ -57,10 +58,11 @@ public interface DocXFragmentRole extends FlexoDocumentFragmentRole<DocXFragment
 	 * 
 	 * @param fragment
 	 */
+	@Override
 	@Setter(FRAGMENT_KEY)
 	public void setFragment(DocXFragment fragment);
 
-	public static abstract class DocXFragmentRoleImpl extends FlexoDocumentFragmentRoleImpl<DocXFragment> implements DocXFragmentRole {
+	public static abstract class DocXFragmentRoleImpl extends FlexoDocumentFragmentRoleImpl<DocXFragment>implements DocXFragmentRole {
 
 		@Override
 		public Type getType() {

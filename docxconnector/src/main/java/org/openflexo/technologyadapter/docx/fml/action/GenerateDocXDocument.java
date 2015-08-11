@@ -63,15 +63,15 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 
 	/*@PropertyIdentifier(type = File.class)
 	public static final String FILE_KEY = "file";
-
+	
 	@Getter(value = FILE_KEY)
 	@XMLAttribute
 	public File getFile();
-
+	
 	@Setter(FILE_KEY)
 	public void setFile(File aFile);*/
 
-	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument> implements GenerateDocXDocument {
+	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument>implements GenerateDocXDocument {
 
 		private static final Logger logger = Logger.getLogger(GenerateDocXDocument.class.getPackage().getName());
 
@@ -90,7 +90,8 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				DocXDocumentResource templateResource = getModelSlot().getTemplateResource();
 				DocXDocument templateDocument = templateResource.getResourceData(null);
 
-				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(action);
+				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
+						action);
 
 				FlexoResource<DocXDocument> generatedResource = msInstance.getResource();
 
@@ -129,17 +130,6 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				e.printStackTrace();
 				throw new FlexoException(e);
 			}
-
-			/*generatedResource.save(null);
-			generatedResource.unloadResourceData();
-			generatedResource.loadResourceData(null);
-			generatedDocument = generatedResource.getResourceData(null);*/
-
-			/*assertFalse(generatedDocument == templateDocument);
-
-			assertEquals(13, generatedDocument.getElements().size());
-
-			assertEquals(5, generatedDocument.getStyles().size());*/
 
 			return generatedDocument;
 		}

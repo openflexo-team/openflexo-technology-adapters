@@ -94,9 +94,7 @@ public interface DocXRun extends FlexoRun<DocXDocument, DocXTechnologyAdapter> {
 
 			performSuperSetter(R_KEY, r);
 
-			System.out.println("On regarde dedans");
 			for (Object o : r.getContent()) {
-				System.out.println("On trouve un " + o + " of " + o.getClass());
 				if (o instanceof JAXBElement) {
 					o = ((JAXBElement) o).getValue();
 				}

@@ -124,6 +124,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	public static ViewPoint viewPoint;
 	public static ViewPointResource viewPointResource;
 	public static DocXModelSlot docXModelSlot;
+	public static DocXFragmentRole fragmentRole;
 	public static VirtualModel virtualModel;
 	public static ActionScheme actionScheme;
 
@@ -181,8 +182,8 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	 * @throws ResourceLoadingCancelledException
 	 * @throws FlexoException
 	 */
-	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
-			FlexoException {
+	private DocXDocumentResource getDocument(String documentName)
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 			System.out.println("Resource " + r + " uri=" + r.getURI());
@@ -267,7 +268,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		createFragmentRole.doAction();
 		assertTrue(createFragmentRole.hasActionExecutionSucceeded());
 
-		DocXFragmentRole fragmentRole = (DocXFragmentRole) createFragmentRole.getNewFlexoRole();
+		fragmentRole = (DocXFragmentRole) createFragmentRole.getNewFlexoRole();
 		// FMLModelFactory factory = virtualModel.getFMLModelFactory();
 
 		DocXParagraph startParagraph = (DocXParagraph) templateDocument.getElements().get(7);
@@ -456,6 +457,12 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertFalse(generatedDocument.isModified());
 
 		assertEquals(13 + 5, generatedDocument.getElements().size());
+
+		System.out.println("Template fragment = " + fragmentRole.getFragment());
+
+		System.out.println("Generated fragment = " + newVirtualModelInstance.getFlexoActor(fragmentRole));
+
+		System.exit(-1);
 
 	}
 

@@ -91,10 +91,10 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 	public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
 			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXDocumentImpl.class
-				.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(DocXDocumentImpl.class.getPackage().getName());
 
 		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
 
@@ -108,6 +108,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 		@Override
 		public void setWordprocessingMLPackage(WordprocessingMLPackage wpmlPackage) {
+
 			if ((wpmlPackage == null && getWordprocessingMLPackage() != null)
 					|| (wpmlPackage != null && !wpmlPackage.equals(getWordprocessingMLPackage()))) {
 				if (wpmlPackage != null && getResource() != null) {
@@ -355,7 +356,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 		/*private void replacePlaceholder(WordprocessingMLPackage template, String name, String placeholder) {
 			List<Object> texts = getAllElementFromObject(template.getMainDocumentPart(), Text.class);
-
+		
 			for (Object text : texts) {
 				Text textElement = (Text) text;
 				if (textElement.getValue().equals(placeholder)) {

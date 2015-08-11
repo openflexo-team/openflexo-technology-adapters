@@ -56,6 +56,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoRun;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
@@ -110,6 +111,7 @@ import org.openflexo.technologyadapter.docx.fml.action.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.action.AddDocXFragment.LocationSemantics;
 import org.openflexo.technologyadapter.docx.fml.action.GenerateDocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
@@ -216,8 +218,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * @throws ResourceLoadingCancelledException
 	 * @throws FlexoException
 	 */
-	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
-			FlexoException {
+	private DocXDocumentResource getDocument(String documentName)
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 			System.out.println("Resource " + r + " uri=" + r.getURI());
@@ -298,8 +300,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		log("testCreateLibraryVirtualModel()");
 
 		libraryVirtualModel = VirtualModelImpl.newVirtualModel("LibraryVirtualModel", viewPoint);
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) libraryVirtualModel.getResource()).getDirectory())
-				.exists());
+		assertTrue(
+				ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) libraryVirtualModel.getResource()).getDirectory()).exists());
 		assertTrue(((VirtualModelResource) libraryVirtualModel.getResource()).getFlexoIODelegate().exists());
 
 		CreateFlexoConcept createConceptAction = CreateFlexoConcept.actionType.makeNewAction(libraryVirtualModel, null, editor);
@@ -454,8 +456,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * We create here a VirtualModel with two model slots:
 	 * <ul>
 	 * <li>A {@link FMLModelSlot}, pointing to the Library virtual model</li>
-	 * <li>A {@link DocXModelSlot}, configured with template docx</li>
-	 * Then we define some fragment roles on the {@link VirtualModel}, pointing to the three sections of the document<br>
+	 * <li>A {@link DocXModelSlot}, configured with template docx</li> Then we define some fragment roles on the {@link VirtualModel},
+	 * pointing to the three sections of the document<br>
 	 * We also define an {@link ActionScheme} on the {@link VirtualModel}, which generate the docx document from the template and then add a
 	 * fragment to the end of document
 	 * 
@@ -474,8 +476,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		// Now we create the library model slot
 		CreateModelSlot createLibraryModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null, editor);
-		createLibraryModelSlot.setTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				FMLTechnologyAdapter.class));
+		createLibraryModelSlot
+				.setTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(FMLTechnologyAdapter.class));
 		createLibraryModelSlot.setModelSlotClass(FMLRTModelSlot.class);
 		createLibraryModelSlot.setModelSlotName("library");
 		createLibraryModelSlot.setVmRes((VirtualModelResource) libraryVirtualModel.getResource());
@@ -587,15 +589,29 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createSectionRole.doAction();
 		assertTrue(createSectionRole.hasActionExecutionSucceeded());
 		DocXFragmentRole sectionRole = (DocXFragmentRole) createSectionRole.getNewFlexoRole();
-		DocXParagraph startParagraph = (DocXParagraph) templateDocument.getElements().get(5);
-		DocXParagraph endParagraph = (DocXParagraph) templateDocument.getElements().get(9);
+		DocXParagraph startParagraph = (DocXParagraph) templateDocument.getElements().get(6);
+		DocXParagraph endParagraph = (DocXParagraph) templateDocument.getElements().get(10);
 		System.out.println("BookDescription:");
 		System.out.println("start=" + startParagraph.getRawText());
 		System.out.println("end=" + endParagraph.getRawText());
+
 		DocXFragment bookDescriptionFragment = (DocXFragment) templateResource.getFactory().makeFragment(startParagraph, endParagraph);
 		sectionRole.setFragment(bookDescriptionFragment);
 		assertEquals(sectionRole.getFragment(), bookDescriptionFragment);
 		assertEquals(docXModelSlot, sectionRole.getModelSlot());
+
+		StringBuffer sb = new StringBuffer();
+		for (DocXElement element : bookDescriptionFragment.getElements()) {
+			if (element instanceof DocXParagraph) {
+				DocXParagraph para = (DocXParagraph) element;
+				for (FlexoRun run : para.getRuns()) {
+					sb.append("[" + run.getText() + "]");
+				}
+				sb.append("\n");
+			}
+		}
+
+		System.out.println(sb.toString());
 
 		CreateFlexoBehaviour createCreationScheme = CreateFlexoBehaviour.actionType.makeNewAction(bookDescriptionSection, null, editor);
 		createCreationScheme.setFlexoBehaviourClass(CreationScheme.class);
@@ -603,15 +619,15 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createCreationScheme.doAction();
 		CreationScheme bookDescriptionSectionCreationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
 
-		CreateFlexoBehaviourParameter createParameter = CreateFlexoBehaviourParameter.actionType.makeNewAction(
-				bookDescriptionSectionCreationScheme, null, editor);
+		CreateFlexoBehaviourParameter createParameter = CreateFlexoBehaviourParameter.actionType
+				.makeNewAction(bookDescriptionSectionCreationScheme, null, editor);
 		createParameter.setFlexoBehaviourParameterClass(FlexoConceptInstanceParameter.class);
 		createParameter.setParameterName("aBook");
 		createParameter.doAction();
 		FlexoBehaviourParameter bookParam = createParameter.getNewParameter();
 
-		CreateEditionAction createEditionAction = CreateEditionAction.actionType.makeNewAction(
-				bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
+		CreateEditionAction createEditionAction = CreateEditionAction.actionType
+				.makeNewAction(bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
 		createEditionAction.setEditionActionClass(ExpressionAction.class);
 		createEditionAction.setAssignation(new DataBinding<Object>("book"));
 		createEditionAction.doAction();
@@ -621,8 +637,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(action.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action.getAssignableAction()).getExpression().isValid());
 
-		CreateEditionAction createFragmentAction = CreateEditionAction.actionType.makeNewAction(
-				bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
+		CreateEditionAction createFragmentAction = CreateEditionAction.actionType
+				.makeNewAction(bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
 		createFragmentAction.setModelSlot(docXModelSlot);
 		createFragmentAction.setEditionActionClass(AddDocXFragment.class);
 		createFragmentAction.setAssignation(new DataBinding<Object>(sectionRole.getRoleName()));
@@ -649,8 +665,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(createActionScheme.hasActionExecutionSucceeded());
 		ActionScheme generateDocumentActionScheme = (ActionScheme) createActionScheme.getNewFlexoBehaviour();
 
-		CreateEditionAction createGenerateDocXDocumentAction = CreateEditionAction.actionType.makeNewAction(
-				generateDocumentActionScheme.getControlGraph(), null, editor);
+		CreateEditionAction createGenerateDocXDocumentAction = CreateEditionAction.actionType
+				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, editor);
 		createGenerateDocXDocumentAction.setModelSlot(docXModelSlot);
 		createGenerateDocXDocumentAction.setEditionActionClass(GenerateDocXDocument.class);
 		createGenerateDocXDocumentAction.doAction();
@@ -680,8 +696,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(createActionScheme2.hasActionExecutionSucceeded());
 		ActionScheme updateDocumentActionScheme = (ActionScheme) createActionScheme2.getNewFlexoBehaviour();
 
-		CreateEditionAction createSelectFetchRequestIterationAction = CreateEditionAction.actionType.makeNewAction(
-				updateDocumentActionScheme.getControlGraph(), null, editor);
+		CreateEditionAction createSelectFetchRequestIterationAction = CreateEditionAction.actionType
+				.makeNewAction(updateDocumentActionScheme.getControlGraph(), null, editor);
 		// createSelectFetchRequestIterationAction.actionChoice = CreateEditionActionChoice.ControlAction;
 		createSelectFetchRequestIterationAction.setEditionActionClass(IterationAction.class);
 		createSelectFetchRequestIterationAction.doAction();
@@ -695,13 +711,13 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		/*FetchRequestCondition condition1 = selectFlexoConceptInstance.createCondition();
 		condition1.setCondition(new DataBinding<Boolean>("selected.aBooleanInA = parameters.aBoolean"));
-
+		
 		FetchRequestCondition condition2 = selectFlexoConceptInstance.createCondition();
 		condition2.setCondition(new DataBinding<Boolean>("selected.aStringInA = parameters.aString"));
 		 */
 
-		CreateEditionAction createMatchFlexoConceptInstanceAction = CreateEditionAction.actionType.makeNewAction(
-				fetchRequestIteration.getControlGraph(), null, editor);
+		CreateEditionAction createMatchFlexoConceptInstanceAction = CreateEditionAction.actionType
+				.makeNewAction(fetchRequestIteration.getControlGraph(), null, editor);
 		// createMatchFlexoConceptInstanceAction.actionChoice = CreateEditionActionChoice.BuiltInAction;
 		createMatchFlexoConceptInstanceAction.setEditionActionClass(MatchFlexoConceptInstance.class);
 		createMatchFlexoConceptInstanceAction.doAction();
@@ -716,8 +732,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals(2, matchFlexoConceptInstance.getMatchingCriterias().size());
 
 		MatchingCriteria bookCriteria = matchFlexoConceptInstance.getMatchingCriteria(bookDescriptionSection.getAccessibleProperty("book"));
-		MatchingCriteria sectionCriteria = matchFlexoConceptInstance.getMatchingCriteria(bookDescriptionSection
-				.getAccessibleProperty("section"));
+		MatchingCriteria sectionCriteria = matchFlexoConceptInstance
+				.getMatchingCriteria(bookDescriptionSection.getAccessibleProperty("section"));
 
 		assertNotNull(bookCriteria);
 		assertNotNull(sectionCriteria);
@@ -728,8 +744,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		// We check here that creation parameters were updated
 		assertEquals(1, matchFlexoConceptInstance.getParameters().size());
 
-		CreateFlexoConceptInstanceParameter bookParam = matchFlexoConceptInstance.getParameter(bookDescriptionSection.getCreationSchemes()
-				.get(0).getParameters().get(0));
+		CreateFlexoConceptInstanceParameter bookParam = matchFlexoConceptInstance
+				.getParameter(bookDescriptionSection.getCreationSchemes().get(0).getParameters().get(0));
 		assertNotNull(bookParam);
 		bookParam.setValue(new DataBinding<Object>("book"));
 		assertTrue(bookParam.getValue().isValid());
@@ -739,7 +755,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createCreationScheme.setFlexoBehaviourName("creationScheme2");
 		createCreationScheme.doAction();
 		CreationScheme creationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
-
+		
 		CreateFlexoBehaviourParameter createStringParameter2 = CreateFlexoBehaviourParameter.actionType.makeNewAction(creationScheme, null,
 				editor);
 		createStringParameter2.setFlexoBehaviourParameterClass(TextFieldParameter.class);
@@ -748,7 +764,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		FlexoBehaviourParameter creationSchemeParam1 = createStringParameter2.getNewParameter();
 		assertNotNull(creationSchemeParam1);
 		assertTrue(creationScheme.getParameters().contains(creationSchemeParam1));
-
+		
 		CreateFlexoBehaviourParameter createBooleanParameter2 = CreateFlexoBehaviourParameter.actionType.makeNewAction(creationScheme,
 				null, editor);
 		createBooleanParameter2.setFlexoBehaviourParameterClass(CheckboxParameter.class);
@@ -757,7 +773,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		FlexoBehaviourParameter creationSchemeParam2 = createBooleanParameter2.getNewParameter();
 		assertNotNull(creationSchemeParam2);
 		assertTrue(creationScheme.getParameters().contains(creationSchemeParam2));
-
+		
 		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
 				editor);
 		// createEditionAction1.actionChoice = CreateEditionActionChoice.BuiltInAction;
@@ -766,10 +782,10 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createEditionAction1.doAction();
 		AssignationAction<?> action1 = (AssignationAction<?>) createEditionAction1.getNewEditionAction();
 		((ExpressionAction) action1.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aStringParameter"));
-
+		
 		assertTrue(action1.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action1.getAssignableAction()).getExpression().isValid());
-
+		
 		CreateEditionAction createEditionAction2 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
 				editor);
 		// createEditionAction2.actionChoice = CreateEditionActionChoice.BuiltInAction;
@@ -778,76 +794,76 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createEditionAction2.doAction();
 		AssignationAction<?> action2 = (AssignationAction<?>) createEditionAction2.getNewEditionAction();
 		((ExpressionAction) action2.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aBooleanParameter"));
-
+		
 		assertTrue(action2.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action2.getAssignableAction()).getExpression().isValid());
-
+		
 		assertNotNull(actionScheme);
 		System.out.println("FML=" + actionScheme.getFMLRepresentation());
-
+		
 		matchFlexoConceptInstance.setCreationScheme(creationScheme);
-
+		
 		// We check here that matching criterias were updated
 		assertEquals(4, matchFlexoConceptInstance.getMatchingCriterias().size());
-
+		
 		MatchingCriteria criteria1 = matchFlexoConceptInstance.getMatchingCriteria(flexoConceptA.getAccessibleProperty("aStringInA"));
 		MatchingCriteria criteria2 = matchFlexoConceptInstance.getMatchingCriteria(flexoConceptA.getAccessibleProperty("aBooleanInA"));
 		MatchingCriteria criteria3 = matchFlexoConceptInstance.getMatchingCriteria(flexoConceptA.getAccessibleProperty("anIntegerInA"));
 		MatchingCriteria criteria4 = matchFlexoConceptInstance
 				.getMatchingCriteria(flexoConceptA.getAccessibleProperty("anOtherBooleanInA"));
-
+		
 		assertNotNull(criteria1);
 		assertNotNull(criteria2);
 		assertNotNull(criteria3);
 		assertNotNull(criteria4);
-
+		
 		criteria1.setValue(new DataBinding<Object>("item.aStringInA"));
-
+		
 		System.out.println("FML=" + actionScheme.getFMLRepresentation());
-
+		
 		assertTrue(criteria1.getValue().isValid());
-
+		
 		MatchingCriteria criteria1bis = matchFlexoConceptInstance.getMatchingCriteria(flexoConceptA.getAccessibleProperty("aStringInA"));
 		assertSame(criteria1, criteria1bis);
-
+		
 		// We add a property
 		// We check here that matching criterias were updated: an other criteria should appear
-
+		
 		CreateFlexoRole createRole = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createRole.setRoleName("anOtherIntegerInA");
 		createRole.setFlexoRoleClass(PrimitiveRole.class);
 		createRole.setPrimitiveType(PrimitiveType.Integer);
 		createRole.doAction();
 		FlexoRole newRole = createRole.getNewFlexoRole();
-
+		
 		assertEquals(5, matchFlexoConceptInstance.getMatchingCriterias().size());
 		assertNotNull(matchFlexoConceptInstance.getMatchingCriteria(newRole));
-
+		
 		// We remove the property
 		// We check here that matching criterias were updated: the criteria should disappear
 		flexoConceptA.removeFromFlexoProperties(newRole);
-
+		
 		assertEquals(4, matchFlexoConceptInstance.getMatchingCriterias().size());
-
+		
 		// We check here that create parameters were updated
-
+		
 		assertEquals(2, matchFlexoConceptInstance.getParameters().size());
-
+		
 		CreateFlexoConceptInstanceParameter createFCIParam1 = matchFlexoConceptInstance.getParameter(creationSchemeParam1);
 		CreateFlexoConceptInstanceParameter createFCIParam2 = matchFlexoConceptInstance.getParameter(creationSchemeParam2);
 		assertNotNull(createFCIParam1);
 		assertNotNull(createFCIParam2);
-
+		
 		createFCIParam1.setValue(new DataBinding<Object>("item.aStringInA"));
 		createFCIParam2.setValue(new DataBinding<Object>("true"));
 		assertTrue(createFCIParam1.getValue().isValid());
 		assertTrue(createFCIParam2.getValue().isValid());
-
+		
 		// WE change creation scheme, parameters should disappear
 		matchFlexoConceptInstance.setCreationScheme(null);
-
+		
 		assertEquals(0, matchFlexoConceptInstance.getParameters().size());
-
+		
 		// We set again the creation scheme, parameters should come back
 		matchFlexoConceptInstance.setCreationScheme(creationScheme);
 		assertEquals(2, matchFlexoConceptInstance.getParameters().size());
@@ -857,7 +873,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createFCIParam2.setValue(new DataBinding<Object>("true"));
 		assertTrue(createFCIParam1.getValue().isValid());
 		assertTrue(createFCIParam2.getValue().isValid());
-
+		
 		// We try to add a parameter
 		CreateFlexoBehaviourParameter createBooleanParameter3 = CreateFlexoBehaviourParameter.actionType.makeNewAction(creationScheme,
 				null, editor);
@@ -868,17 +884,17 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(creationSchemeParam3);
 		assertTrue(creationScheme.getParameters().contains(creationSchemeParam3));
 		assertEquals(3, matchFlexoConceptInstance.getParameters().size());
-
+		
 		// We remove it
 		creationScheme.removeFromParameters(creationSchemeParam3);
 		assertEquals(2, matchFlexoConceptInstance.getParameters().size());
-
+		
 		assertEquals(12, fetchRequestIteration.getBindingModel().getBindingVariablesCount());
-
+		
 		assertEquals(13, condition1.getBindingModel().getBindingVariablesCount());
-
+		
 		assertEquals(13, createFCIParam1.getBindingModel().getBindingVariablesCount());
-
+		
 		System.out.println("FML: " + actionScheme.getFMLRepresentation());*/
 
 		return updateDocumentActionScheme;
@@ -939,10 +955,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createBook1.setParameterValue(authorParam, "Victor Hugo");
 		createBook1.setParameterValue(editionParam, "Dunod");
 		createBook1.setParameterValue(typeParam, "Roman");
-		createBook1
-				.setParameterValue(
-						descriptionParam,
-						"Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles par les Éditions Lacroix, Verboeckhoven et Cie, et le 3 avril de la même année à Paris1). Dans ce roman, un des plus emblématiques de la littérature française, Victor Hugo décrit la vie de misérables dans Paris et la France provinciale du xixe siècle et s'attache plus particulièrement aux pas du bagnard Jean Valjean.");
+		createBook1.setParameterValue(descriptionParam,
+				"Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles par les Éditions Lacroix, Verboeckhoven et Cie, et le 3 avril de la même année à Paris1). Dans ce roman, un des plus emblématiques de la littérature française, Victor Hugo décrit la vie de misérables dans Paris et la France provinciale du xixe siècle et s'attache plus particulièrement aux pas du bagnard Jean Valjean.");
 		assertNotNull(createBook1);
 		createBook1.doAction();
 		assertTrue(createBook1.hasActionExecutionSucceeded());
@@ -957,10 +971,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createBook2.setParameterValue(authorParam, "Emile Zola");
 		createBook2.setParameterValue(editionParam, "Gil Blas");
 		createBook2.setParameterValue(typeParam, "Roman");
-		createBook2
-				.setParameterValue(
-						descriptionParam,
-						"Germinal est un roman d'Émile Zola publié en 1885. Il s'agit du treizième roman de la série des Rougon-Macquart. Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord en feuilleton entre novembre 1884 et février 1885 dans le Gil Blas. Il connaît sa première édition en mars 1885. Depuis il a été publié dans plus d'une centaine de pays.");
+		createBook2.setParameterValue(descriptionParam,
+				"Germinal est un roman d'Émile Zola publié en 1885. Il s'agit du treizième roman de la série des Rougon-Macquart. Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord en feuilleton entre novembre 1884 et février 1885 dans le Gil Blas. Il connaît sa première édition en mars 1885. Depuis il a été publié dans plus d'une centaine de pays.");
 		assertNotNull(createBook2);
 		createBook2.doAction();
 		assertTrue(createBook2.hasActionExecutionSucceeded());
@@ -975,10 +987,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createBook3.setParameterValue(authorParam, "Stendhal");
 		createBook3.setParameterValue(editionParam, "J. Hetzel, 1846");
 		createBook3.setParameterValue(typeParam, "Roman");
-		createBook3
-				.setParameterValue(
-						descriptionParam,
-						"La Chartreuse de Parme est un roman publié par Stendhal. Cette œuvre majeure, qui lui valut la célébrité, fut publiée en deux volumes en mars 1839, puis refondue en 1841, soit peu avant la mort de Stendhal, à la suite d'un article fameux de Balzac et prenant de fait un tour plus « balzacien » : aujourd’hui, c’est le texte stendhalien d’origine que l’on lit encore.");
+		createBook3.setParameterValue(descriptionParam,
+				"La Chartreuse de Parme est un roman publié par Stendhal. Cette œuvre majeure, qui lui valut la célébrité, fut publiée en deux volumes en mars 1839, puis refondue en 1841, soit peu avant la mort de Stendhal, à la suite d'un article fameux de Balzac et prenant de fait un tour plus « balzacien » : aujourd’hui, c’est le texte stendhalien d’origine que l’on lit encore.");
 		assertNotNull(createBook3);
 		createBook3.doAction();
 		assertTrue(createBook3.hasActionExecutionSucceeded());
@@ -1028,8 +1038,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 				.getModelSlotInstanceConfiguration(libraryModelSlot);
 		assertNotNull(libraryModelSlotInstanceConfiguration);
 		libraryModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.SelectExistingVirtualModel);
-		libraryModelSlotInstanceConfiguration.setAddressedVirtualModelInstanceResource((VirtualModelInstanceResource) libraryVMI
-				.getResource());
+		libraryModelSlotInstanceConfiguration
+				.setAddressedVirtualModelInstanceResource((VirtualModelInstanceResource) libraryVMI.getResource());
 		assertTrue(libraryModelSlotInstanceConfiguration.isValidConfiguration());
 
 		DocXModelSlotInstanceConfiguration docXModelSlotInstanceConfiguration = (DocXModelSlotInstanceConfiguration) action
@@ -1190,53 +1200,53 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	/*@Test
 	@TestOrder(12)
 	public void testReloadProject() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-
+	
 		log("testReloadProject()");
-
+	
 		DocXDocument generatedDocumentBeforeReload = generatedDocument;
 		assertNotNull(generatedDocumentBeforeReload);
-
+	
 		instanciateTestServiceManager();
-
+	
 		System.out.println("Project dir = " + project.getDirectory());
-
+	
 		editor = reloadProject(project.getDirectory());
 		project = editor.getProject();
 		assertNotNull(editor);
 		assertNotNull(project);
-
+	
 		assertEquals(3, project.getAllResources().size());
 		// System.out.println("All resources=" + project.getAllResources());
 		assertNotNull(project.getResource(newView.getURI()));
-
+	
 		ViewResource newViewResource = project.getViewLibrary().getView(newView.getURI());
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
 		newViewResource.loadResourceData(null);
 		assertNotNull(newView = newViewResource.getView());
-
+	
 		assertEquals(1, newViewResource.getVirtualModelInstanceResources().size());
 		VirtualModelInstanceResource vmiResource = newViewResource.getVirtualModelInstanceResources().get(0);
 		assertNotNull(vmiResource);
 		assertNull(vmiResource.getLoadedResourceData());
 		vmiResource.loadResourceData(null);
 		assertNotNull(libraryVMI = vmiResource.getVirtualModelInstance());
-
+	
 		assertTrue(libraryVMI.getVirtualModel().hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE));
-
+	
 		assertTrue(libraryVMI.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
-
+	
 		ModelSlotInstance<DocXModelSlot, DocXDocument> msInstance = FMLControlledDocumentVirtualModelInstanceNature
 				.getModelSlotInstance(libraryVMI);
-
+	
 		assertNotNull(msInstance);
 		assertNotNull(msInstance.getAccessedResourceData());
-
+	
 		generatedDocument = msInstance.getAccessedResourceData();
-
+	
 		assertNotSame(generatedDocumentBeforeReload, generatedDocument);
-
+	
 		assertEquals(18, generatedDocument.getElements().size());
-
+	
 	}*/
 }

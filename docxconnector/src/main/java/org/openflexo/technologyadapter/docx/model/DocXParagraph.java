@@ -86,6 +86,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 
 		@Override
 		public void setP(P p) {
+
 			if ((p == null && getP() != null) || (p != null && !p.equals(getP()))) {
 				if (p != null && getResourceData() != null && getResourceData().getResource() != null) {
 					updateFromP(p, ((DocXDocumentResource) getResourceData().getResource()).getFactory());
@@ -109,9 +110,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 
 			int currentIndex = 0;
 
-			System.out.println("On regarde dans le paragraph");
 			for (Object o : p.getContent()) {
-				System.out.println("* dans le paragraph, y'a un " + o + " of " + o.getClass());
 				if (o instanceof JAXBElement) {
 					o = ((JAXBElement) o).getValue();
 				}
@@ -174,6 +173,12 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				return null;
 			}
 			P copiedP = XmlUtils.deepCopy(getP());
+
+			String oldId = getP().getParaId();
+			String newId = getFlexoDocument().getFactory().generateId();
+			copiedP.setParaId(newId);
+
+			// System.out.println("Paragraph [" + getRawTextPreview() + "] changed id from " + oldId + " to " + copiedP.getParaId());
 
 			return copiedP;
 		}

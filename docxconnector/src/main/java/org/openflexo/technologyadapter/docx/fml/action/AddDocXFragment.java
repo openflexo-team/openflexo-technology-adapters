@@ -99,7 +99,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 		InsertAfter, InsertBefore, InsertAfterLastChild, EndOfDocument
 	}
 
-	public static abstract class AddDocXFragmentImpl extends DocXActionImpl<DocXFragment> implements AddDocXFragment {
+	public static abstract class AddDocXFragmentImpl extends DocXActionImpl<DocXFragment>implements AddDocXFragment {
 
 		private static final Logger logger = Logger.getLogger(AddDocXFragment.class.getPackage().getName());
 
@@ -144,7 +144,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 			System.out.println("fragment=" + getFragment());
 			System.out.println("startElement=" + getFragment().getStartElement());
 			System.out.println("endElement=" + getFragment().getEndElement());
-
+			
 			System.out.println("fragment.getFlexoDocument()=" + getFragment().getFlexoDocument());
 			System.out.println("startElement.getFlexoDocument()=" + getFragment().getStartElement().getFlexoDocument());
 			System.out.println("endElement.getFlexoDocument()=" + getFragment().getEndElement().getFlexoDocument());
@@ -160,8 +160,8 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 				insertIndex = document.getElements().indexOf(location) - 1;
 				break;
 			case InsertAfterLastChild:
-				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> lastChild = location.getChildrenElements().size() > 0 ? location
-						.getChildrenElements().get(location.getChildrenElements().size() - 1) : null;
+				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> lastChild = location.getChildrenElements().size() > 0
+						? location.getChildrenElements().get(location.getChildrenElements().size() - 1) : null;
 				if (lastChild != null) {
 					insertIndex = document.getElements().indexOf(lastChild);
 				} else {
@@ -169,7 +169,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 				}
 				break;
 			case EndOfDocument:
-				insertIndex = document.getElements().size() - 1;
+				insertIndex = document.getElements().size();
 			default:
 				break;
 			}
@@ -188,15 +188,24 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 					}
 				}*/
 
-				// System.out.println("BEFORE addDocXFragment");
-				// System.out.println("contents=\n" + document.debugStructuredContents());
+				/*System.out.println("BEFORE addDocXFragment");
+				System.out.println("document=" + document);
+				System.out.println("contents=\n" + document.debugStructuredContents());
+				System.out.println("template=" + getFragment().getFlexoDocument());
+				System.out.println("contents=\n" + getFragment().getFlexoDocument().debugStructuredContents());*/
 
 				for (DocXElement element : getFragment().getElements()) {
 
 					DocXElement clonedElement = (DocXElement) element.cloneObject();
-					/*if (element instanceof DocXParagraph) {
-						System.out.println(">>> CLONED paragraph " + clonedElement + " p=" + ((DocXParagraph) clonedElement).getP());
-					}*/
+
+					/*	System.out.println(
+								"> Template element: " + element + " id=" + element.getIdentifier() + " of " + element.getFlexoDocument());
+						System.out.println("> Cloned element: " + clonedElement + " id=" + clonedElement.getIdentifier() + " of "
+								+ clonedElement.getFlexoDocument());
+					
+						if (element instanceof DocXParagraph) {
+							System.out.println(">>> CLONED paragraph " + clonedElement + " p=" + ((DocXParagraph) clonedElement).getP());
+						}*/
 
 					ContentAccessor parent = document.getWordprocessingMLPackage().getMainDocumentPart();
 					clonedElement.appendToWordprocessingMLPackage(parent, insertIndex);
@@ -210,8 +219,11 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 					endElement = clonedElement;
 				}
 
-				// System.out.println("AFTER addDocXFragment");
-				// System.out.println("contents=\n" + document.debugStructuredContents());
+				/*System.out.println("AFTER addDocXFragment");
+				System.out.println("document=" + document);
+				System.out.println("contents=\n" + document.debugStructuredContents());
+				System.out.println("template=" + getFragment().getFlexoDocument());
+				System.out.println("contents=\n" + getFragment().getFlexoDocument().debugStructuredContents());*/
 
 				return document.getFragment(startElement, endElement);
 			}
