@@ -40,10 +40,10 @@ package org.openflexo.technologyadapter.excel.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
@@ -51,6 +51,8 @@ import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
 public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWorkbook> {
+	
+	private static final Logger logger = Logger.getLogger(ExcelWorkbook.class.getPackage().getName());
 	
 	private Workbook workbook;
 	private ExcelWorkbookResource resource;
@@ -111,6 +113,11 @@ public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWork
 		this.excelSheets.add(newExcelSheet);
 		addToAccessibleExcelObjects(newExcelSheet);
 	}
+	
+	public ExcelSheet getExcelSheetByName(String name){
+		Sheet sheet = workbook.getSheet(name);
+		return getExcelSheetFromSheet(sheet);
+	}
 
 	public void removeFromExcelSheets(ExcelSheet deletedExcelSheet) {
 		this.excelSheets.remove(deletedExcelSheet);
@@ -130,6 +137,16 @@ public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWork
 	
 	public void removeFromAccessibleExcelObjects(ExcelObject excelObject){
 		getAccessibleExcelObjects().remove(excelObject);
+	}
+	
+	public ExcelSheet getExcelSheetFromSheet(Sheet sheet){
+		for(ExcelSheet excelSheet : getExcelSheets()){
+			if(excelSheet.getSheet().equals(sheet)){
+				return excelSheet;
+			}
+		}
+		logger.warning("No converted sheet found for " + sheet.getSheetName());
+		return null;
 	}
 
 	@Override
