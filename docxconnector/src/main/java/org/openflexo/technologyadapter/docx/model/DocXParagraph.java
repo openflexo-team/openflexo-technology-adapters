@@ -44,6 +44,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.model.DocXDocument.DocXDocumentImpl;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
@@ -76,7 +77,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
 
 		private final Map<R, DocXRun> runs = new HashMap<R, DocXRun>();
 
@@ -147,6 +148,15 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				return getP().getParaId();
 			}
 			return null;
+		}
+
+		@Override
+		public void setIdentifier(String identifier) {
+			if (getP() != null) {
+				String oldIdentifier = getIdentifier();
+				getP().setParaId(identifier);
+				((DocXDocumentImpl) getFlexoDocument()).reindexElement(this, oldIdentifier);
+			}
 		}
 
 		@Override

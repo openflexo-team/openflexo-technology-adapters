@@ -23,8 +23,10 @@ package org.openflexo.technologyadapter.docx.fml;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.doc.fml.FlexoDocumentFragmentRole;
+import org.openflexo.foundation.doc.fml.FragmentActorReference;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -62,7 +64,7 @@ public interface DocXFragmentRole extends FlexoDocumentFragmentRole<DocXFragment
 	@Setter(FRAGMENT_KEY)
 	public void setFragment(DocXFragment fragment);
 
-	public static abstract class DocXFragmentRoleImpl extends FlexoDocumentFragmentRoleImpl<DocXFragment>implements DocXFragmentRole {
+	public static abstract class DocXFragmentRoleImpl extends FlexoDocumentFragmentRoleImpl<DocXFragment> implements DocXFragmentRole {
 
 		@Override
 		public Type getType() {
@@ -80,9 +82,15 @@ public interface DocXFragmentRole extends FlexoDocumentFragmentRole<DocXFragment
 		}
 
 		@Override
-		public ActorReference<DocXFragment> makeActorReference(DocXFragment object, FlexoConceptInstance epi) {
-			// TODO Auto-generated method stub
-			return null;
+		public ActorReference<DocXFragment> makeActorReference(DocXFragment fragment, FlexoConceptInstance fci) {
+
+			VirtualModelInstanceModelFactory factory = fci.getFactory();
+			FragmentActorReference<DocXFragment> returned = factory.newInstance(FragmentActorReference.class);
+			returned.setFlexoRole(this);
+			returned.setFlexoConceptInstance(fci);
+			returned.setModellingElement(fragment);
+			return returned;
+
 		}
 	}
 }

@@ -57,6 +57,8 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.fml.FragmentActorReference;
+import org.openflexo.foundation.doc.fml.FragmentActorReference.ElementReference;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
@@ -182,8 +184,8 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	 * @throws ResourceLoadingCancelledException
 	 * @throws FlexoException
 	 */
-	private DocXDocumentResource getDocument(String documentName)
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
+			FlexoException {
 
 		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 			System.out.println("Resource " + r + " uri=" + r.getURI());
@@ -458,60 +460,31 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		assertEquals(13 + 5, generatedDocument.getElements().size());
 
-		System.out.println("Template fragment = " + fragmentRole.getFragment());
+		DocXFragment templatefragment = fragmentRole.getFragment();
+		DocXFragment generatedFragment = newVirtualModelInstance.getFlexoActor(fragmentRole);
+		FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) newVirtualModelInstance
+				.getActorReference(fragmentRole);
 
-		System.out.println("Generated fragment = " + newVirtualModelInstance.getFlexoActor(fragmentRole));
+		System.out.println("Template fragment = " + templatefragment);
+		System.out.println("Generated fragment = " + generatedFragment);
+		System.out.println("ActorReference = " + actorReference);
 
-		System.exit(-1);
+		// OK, generatedFragment is supposed to be generated from template fragment
+		// Perform some checks
+
+		assertEquals(templatefragment.getElements().size(), generatedFragment.getElements().size());
+		for (int i = 0; i < templatefragment.getElements().size(); i++) {
+			DocXParagraph p1 = (DocXParagraph) templatefragment.getElements().get(i);
+			DocXParagraph p2 = (DocXParagraph) generatedFragment.getElements().get(i);
+			assertEquals(p1.getRawText(), p2.getRawText());
+			assertFalse(p1.getIdentifier().equals(p2.getIdentifier()));
+			assertEquals(p2.getBaseIdentifier(), p1.getIdentifier());
+			ElementReference er = actorReference.getElementReferences().get(i);
+			assertEquals(p1.getIdentifier(), er.getTemplateElementId());
+			assertEquals(p2.getIdentifier(), er.getElementId());
+		}
 
 	}
-
-	/*@Test
-	@TestOrder(9)
-	public void testPopulateVirtualModelInstance() throws SaveResourceException {
-	
-		log("testPopulateVirtualModelInstance()");
-	
-		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) newVirtualModelInstance.getResource();
-	
-		assertFalse(diagram.isModified());
-		assertFalse(newVirtualModelInstance.isModified());
-	
-		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
-	
-		DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(newVirtualModelInstance, null, editor);
-		action.setDropScheme(dropScheme);
-		// action.setParent(diagram);
-		// action.setPaletteElement(paletteElement);
-		action.setDropLocation(new FGEPoint(100, 100));
-	
-		action.doAction();
-		assertTrue(action.hasActionExecutionSucceeded());
-	
-		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
-	
-		assertTrue(diagram.isModified());
-		assertTrue(newVirtualModelInstance.isModified());
-	
-		System.out.println("Unsaved resources=" + serviceManager.getResourceManager().getUnsavedResources());
-	
-		assertTrue(diagram.isModified());
-		assertTrue(newVirtualModelInstance.isModified());
-	
-		assertEquals(2, serviceManager.getResourceManager().getUnsavedResources().size());
-		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(newVirtualModelInstance.getResource()));
-		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(diagram.getResource()));
-	
-		newVirtualModelInstance.getResource().save(null);
-		assertTrue(((VirtualModelInstanceResource) newVirtualModelInstance.getResource()).getFlexoIODelegate().exists());
-		assertFalse(newVirtualModelInstance.isModified());
-	
-		diagram.getResource().save(null);
-		assertTrue(((DiagramResource) diagram.getResource()).getFlexoIODelegate().exists());
-		assertFalse(diagram.isModified());
-	
-		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());
-	}*/
 
 	/**
 	 */
@@ -566,5 +539,28 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		assertEquals(18, generatedDocument.getElements().size());
 
+		DocXFragment templatefragment = fragmentRole.getFragment();
+		DocXFragment generatedFragment = newVirtualModelInstance.getFlexoActor(fragmentRole);
+		FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) newVirtualModelInstance
+				.getActorReference(fragmentRole);
+
+		System.out.println("Template fragment = " + templatefragment);
+		System.out.println("Generated fragment = " + generatedFragment);
+		System.out.println("ActorReference = " + actorReference);
+
+		// OK, generatedFragment is supposed to be generated from template fragment
+		// Perform some checks
+
+		assertEquals(templatefragment.getElements().size(), generatedFragment.getElements().size());
+		for (int i = 0; i < templatefragment.getElements().size(); i++) {
+			DocXParagraph p1 = (DocXParagraph) templatefragment.getElements().get(i);
+			DocXParagraph p2 = (DocXParagraph) generatedFragment.getElements().get(i);
+			assertEquals(p1.getRawText(), p2.getRawText());
+			assertFalse(p1.getIdentifier().equals(p2.getIdentifier()));
+			assertEquals(p2.getBaseIdentifier(), p1.getIdentifier());
+			ElementReference er = actorReference.getElementReferences().get(i);
+			assertEquals(p1.getIdentifier(), er.getTemplateElementId());
+			assertEquals(p2.getIdentifier(), er.getElementId());
+		}
 	}
 }

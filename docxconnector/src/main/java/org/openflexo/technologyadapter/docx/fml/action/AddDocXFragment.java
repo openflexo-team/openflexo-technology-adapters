@@ -99,7 +99,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 		InsertAfter, InsertBefore, InsertAfterLastChild, EndOfDocument
 	}
 
-	public static abstract class AddDocXFragmentImpl extends DocXActionImpl<DocXFragment>implements AddDocXFragment {
+	public static abstract class AddDocXFragmentImpl extends DocXActionImpl<DocXFragment> implements AddDocXFragment {
 
 		private static final Logger logger = Logger.getLogger(AddDocXFragment.class.getPackage().getName());
 
@@ -160,8 +160,8 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 				insertIndex = document.getElements().indexOf(location) - 1;
 				break;
 			case InsertAfterLastChild:
-				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> lastChild = location.getChildrenElements().size() > 0
-						? location.getChildrenElements().get(location.getChildrenElements().size() - 1) : null;
+				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> lastChild = location.getChildrenElements().size() > 0 ? location
+						.getChildrenElements().get(location.getChildrenElements().size() - 1) : null;
 				if (lastChild != null) {
 					insertIndex = document.getElements().indexOf(lastChild);
 				} else {
@@ -196,7 +196,13 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 
 				for (DocXElement element : getFragment().getElements()) {
 
+					System.out.println("Id was " + element.getIdentifier());
+
 					DocXElement clonedElement = (DocXElement) element.cloneObject();
+
+					clonedElement.setBaseIdentifier(element.getIdentifier());
+
+					System.out.println("Id changed from " + element.getIdentifier() + " to " + clonedElement.getIdentifier());
 
 					/*	System.out.println(
 								"> Template element: " + element + " id=" + element.getIdentifier() + " of " + element.getFlexoDocument());

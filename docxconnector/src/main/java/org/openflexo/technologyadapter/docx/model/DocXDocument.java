@@ -91,10 +91,10 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 	public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
 			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-				.getLogger(DocXDocumentImpl.class.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXDocumentImpl.class
+				.getPackage().getName());
 
 		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
 
@@ -445,6 +445,11 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		@Override
 		public DocXElement getElementWithIdentifier(String identifier) {
 			return elementsForIdentifier.get(identifier);
+		}
+
+		protected void reindexElement(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, String oldIdentifier) {
+			elementsForIdentifier.remove(oldIdentifier);
+			elementsForIdentifier.put(anElement.getIdentifier(), (DocXElement) anElement);
 		}
 
 		@Override

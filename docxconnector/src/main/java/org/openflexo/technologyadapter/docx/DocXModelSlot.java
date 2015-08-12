@@ -24,7 +24,9 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.doc.fml.FlexoDocumentModelSlot;
+import org.openflexo.foundation.doc.fml.FragmentActorReference;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.View;
@@ -57,6 +59,7 @@ import org.openflexo.toolbox.StringUtils;
  */
 @DeclareFlexoRoles({ DocXParagraphRole.class, DocXFragmentRole.class })
 @DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class })
+@DeclareActorReferences({ FragmentActorReference.class })
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
 @XMLElement

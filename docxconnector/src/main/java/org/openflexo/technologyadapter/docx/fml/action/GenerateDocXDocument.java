@@ -53,6 +53,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDocument.DocXDocumentImpl;
+import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 @ModelEntity
@@ -71,7 +72,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 	@Setter(FILE_KEY)
 	public void setFile(File aFile);*/
 
-	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument>implements GenerateDocXDocument {
+	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument> implements GenerateDocXDocument {
 
 		private static final Logger logger = Logger.getLogger(GenerateDocXDocument.class.getPackage().getName());
 
@@ -90,8 +91,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				DocXDocumentResource templateResource = getModelSlot().getTemplateResource();
 				DocXDocument templateDocument = templateResource.getResourceData(null);
 
-				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
-						action);
+				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(action);
 
 				FlexoResource<DocXDocument> generatedResource = msInstance.getResource();
 
@@ -117,12 +117,16 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				for (P p : DocXDocumentImpl.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
 						P.class)) {
 					String oldId = p.getParaId();
-					p.setParaId(generatedDocument.getFactory().generateId());
-					System.out.println("Paragraph " + p + " change id from " + oldId + " to " + p.getParaId());
+					DocXElement templateElement = (DocXElement) templateDocument.getElementWithIdentifier(oldId);
+					DocXElement generatedElement = (DocXElement) generatedDocument.getElementWithIdentifier(oldId);
+					generatedElement.setIdentifier(generatedDocument.getFactory().generateId());
+					generatedElement.setBaseIdentifier(oldId);
+					// p.setParaId(generatedDocument.getFactory().generateId());
+					System.out.println("Paragraph " + p + " change id from " + oldId + " to " + generatedElement.getIdentifier());
 				}
 
-				System.out.println("Pour la resource " + generatedResource);
-				System.out.println("La resource data c'est: " + generatedResource.getResourceData(null));
+				// System.out.println("generatedResource = " + generatedResource);
+				// System.out.println("resource data = " + generatedResource.getResourceData(null));
 
 			}
 
