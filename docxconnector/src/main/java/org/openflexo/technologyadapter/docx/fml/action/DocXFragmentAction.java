@@ -38,26 +38,30 @@
 
 package org.openflexo.technologyadapter.docx.fml.action;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.RoleSpecificAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
-import org.openflexo.technologyadapter.docx.model.DocXObject;
+import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
+import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 /**
- * Abstract action for {@link DocXModelSlot}
+ * Abstract action applicable on a {@link DocXFragmentRole}
  * 
  * @author sylvain
  * 
- * @param <T>
- *            docx object type
  */
 
 @ModelEntity(isAbstract = true)
-@ImplementationClass(DocXAction.DocXActionImpl.class)
-public interface DocXAction<T extends DocXObject> extends TechnologySpecificAction<DocXModelSlot, T> {
+@ImplementationClass(DocXFragmentAction.DocXFragmentActionImpl.class)
+public interface DocXFragmentAction extends RoleSpecificAction<DocXFragmentRole, DocXModelSlot, DocXFragment>, DocXAction<DocXFragment> {
 
-	public static abstract class DocXActionImpl<T extends DocXObject> extends TechnologySpecificActionImpl<DocXModelSlot, T> implements
-			DocXAction<T> {
+	public static abstract class DocXFragmentActionImpl extends RoleSpecificActionImpl<DocXFragmentRole, DocXModelSlot, DocXFragment>
+			implements DocXFragmentAction {
+
+		@Override
+		public Class<DocXFragment> getAssignableType() {
+			return DocXFragment.class;
+		}
 	}
 }

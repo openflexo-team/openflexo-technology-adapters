@@ -196,13 +196,8 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 
 				for (DocXElement element : getFragment().getElements()) {
 
-					System.out.println("Id was " + element.getIdentifier());
-
 					DocXElement clonedElement = (DocXElement) element.cloneObject();
-
 					clonedElement.setBaseIdentifier(element.getIdentifier());
-
-					System.out.println("Id changed from " + element.getIdentifier() + " to " + clonedElement.getIdentifier());
 
 					/*	System.out.println(
 								"> Template element: " + element + " id=" + element.getIdentifier() + " of " + element.getFlexoDocument());

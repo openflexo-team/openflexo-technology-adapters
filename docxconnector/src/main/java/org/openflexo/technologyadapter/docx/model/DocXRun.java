@@ -67,7 +67,7 @@ public interface DocXRun extends FlexoRun<DocXDocument, DocXTechnologyAdapter> {
 	 */
 	public void updateFromR(R r, DocXFactory factory);
 
-	public static abstract class DocXRunImpl extends FlexoRunImpl<DocXDocument, DocXTechnologyAdapter>implements DocXRun {
+	public static abstract class DocXRunImpl extends FlexoRunImpl<DocXDocument, DocXTechnologyAdapter> implements DocXRun {
 
 		private Text text;
 
@@ -103,14 +103,6 @@ public interface DocXRun extends FlexoRun<DocXDocument, DocXTechnologyAdapter> {
 				}
 			}
 
-		}
-
-		@Override
-		public String getIdentifier() {
-			if (getParagraph() != null) {
-				return getParagraph().getIdentifier() + "." + getParagraph().getRuns().indexOf(this);
-			}
-			return null;
 		}
 
 		@Override

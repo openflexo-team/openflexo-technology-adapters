@@ -78,8 +78,10 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 	 */
 	public void updateFromWordprocessingMLPackage(WordprocessingMLPackage wpmlPackage, DocXFactory factory);
 
+	@Override
 	public String debugContents();
 
+	@Override
 	public String debugStructuredContents();
 
 	public DocXParagraph getParagraph(P p);

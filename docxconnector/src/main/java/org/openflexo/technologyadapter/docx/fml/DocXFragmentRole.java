@@ -92,5 +92,6 @@ public interface DocXFragmentRole extends FlexoDocumentFragmentRole<DocXFragment
 			return returned;
 
 		}
+
 	}
 }
