@@ -61,6 +61,7 @@ import org.openflexo.technologyadapter.owl.OWLModelSlot.OWLModelSlotImpl;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
+import org.openflexo.technologyadapter.owl.nature.OWLOntologyVirtualModelNature;
 
 @ModelEntity
 @Imports(@Import(ObjectPropertyStatementActorReference.class))
@@ -83,8 +84,8 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 
 	public void setObjectProperty(OWLObjectProperty p);
 
-	public static abstract class ObjectPropertyStatementRoleImpl extends StatementRoleImpl<ObjectPropertyStatement> implements
-			ObjectPropertyStatementRole {
+	public static abstract class ObjectPropertyStatementRoleImpl extends StatementRoleImpl<ObjectPropertyStatement>
+			implements ObjectPropertyStatementRole {
 
 		static final Logger logger = FlexoLogger.getLogger(ObjectPropertyStatementRole.class.getPackage().toString());
 
@@ -122,8 +123,8 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 
 		@Override
 		public OWLObjectProperty getObjectProperty() {
-			if (getOwningVirtualModel() != null) {
-				return (OWLObjectProperty) getOwningVirtualModel().getOntologyObjectProperty(_getObjectPropertyURI());
+			if (OWLOntologyVirtualModelNature.INSTANCE.hasNature(getOwningVirtualModel())) {
+				return OWLOntologyVirtualModelNature.getOWLObjectProperty(_getObjectPropertyURI(), getOwningVirtualModel());
 			}
 			return null;
 		}
@@ -146,8 +147,8 @@ public interface ObjectPropertyStatementRole extends StatementRole<ObjectPropert
 	}
 
 	@DefineValidationRule
-	public static class ObjectPropertyStatementPatternRoleMustDefineAValidProperty extends
-			ValidationRule<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole> {
+	public static class ObjectPropertyStatementPatternRoleMustDefineAValidProperty
+			extends ValidationRule<ObjectPropertyStatementPatternRoleMustDefineAValidProperty, ObjectPropertyStatementRole> {
 		public ObjectPropertyStatementPatternRoleMustDefineAValidProperty() {
 			super(ObjectPropertyStatementRole.class, "pattern_role_must_define_a_valid_object_property");
 		}

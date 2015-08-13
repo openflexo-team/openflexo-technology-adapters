@@ -67,6 +67,8 @@ import org.openflexo.technologyadapter.owl.model.OWLRestriction;
 import org.openflexo.technologyadapter.owl.model.OWLRestriction.RestrictionType;
 import org.openflexo.technologyadapter.owl.model.OWLStatement;
 import org.openflexo.technologyadapter.owl.model.SubClassStatement;
+import org.openflexo.technologyadapter.owl.nature.OWLOntologyVirtualModelNature;
+import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
 @ImplementationClass(AddRestrictionStatement.AddRestrictionStatementImpl.class)
@@ -111,7 +113,7 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 	@Setter(CARDINALITY_KEY)
 	public void setCardinality(DataBinding<Integer> cardinality);
 
-	public static abstract class AddRestrictionStatementImpl extends AddStatementImpl<OWLStatement> implements AddRestrictionStatement {
+	public static abstract class AddRestrictionStatementImpl extends AddStatementImpl<OWLStatement>implements AddRestrictionStatement {
 
 		private static final Logger logger = Logger.getLogger(AddRestrictionStatement.class.getPackage().getName());
 
@@ -142,8 +144,8 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		}
 
 		public OWLProperty getObjectProperty() {
-			if (getOwningVirtualModel() != null) {
-				return (OWLProperty) getOwningVirtualModel().getOntologyProperty(_getPropertyURI());
+			if (StringUtils.isNotEmpty(_getPropertyURI()) && OWLOntologyVirtualModelNature.INSTANCE.hasNature(getOwningVirtualModel())) {
+				return OWLOntologyVirtualModelNature.getOWLProperty(_getPropertyURI(), getOwningVirtualModel());
 			}
 			return null;
 		}
@@ -170,8 +172,8 @@ public interface AddRestrictionStatement extends AddStatement<OWLStatement> {
 		public Type getObjectType() {
 			if (getObjectProperty() instanceof IFlexoOntologyObjectProperty
 					&& ((IFlexoOntologyObjectProperty) getObjectProperty()).getRange() instanceof IFlexoOntologyClass) {
-				return IndividualOfClass.getIndividualOfClass((IFlexoOntologyClass) ((IFlexoOntologyObjectProperty) getObjectProperty())
-						.getRange());
+				return IndividualOfClass
+						.getIndividualOfClass((IFlexoOntologyClass) ((IFlexoOntologyObjectProperty) getObjectProperty()).getRange());
 			}
 			return IFlexoOntologyConcept.class;
 		}

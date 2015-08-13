@@ -74,6 +74,7 @@ import org.openflexo.technologyadapter.owl.model.DataPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
+import org.openflexo.technologyadapter.owl.nature.OWLOntologyVirtualModelNature;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
@@ -109,8 +110,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 	@Override
 	public void setProperty(IFlexoOntologyStructuralProperty aProperty);
 
-	public static abstract class AddDataPropertyStatementImpl extends AddStatementImpl<DataPropertyStatement> implements
-			AddDataPropertyStatement {
+	public static abstract class AddDataPropertyStatementImpl extends AddStatementImpl<DataPropertyStatement>
+			implements AddDataPropertyStatement {
 
 		private static final Logger logger = Logger.getLogger(AddDataPropertyStatement.class.getPackage().getName());
 
@@ -124,8 +125,10 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append((getSubject() != null ? getSubject().toString() : "null") + "."
-					+ (getDataProperty() != null ? getDataProperty().getName() : "null") + " = " + getValue().toString() + ";", context);
+			out.append(
+					(getSubject() != null ? getSubject().toString() : "null") + "."
+							+ (getDataProperty() != null ? getDataProperty().getName() : "null") + " = " + getValue().toString() + ";",
+					context);
 			return out.toString();
 		}
 
@@ -166,8 +169,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 
 		@Override
 		public OWLDataProperty getDataProperty() {
-			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
-				return (OWLDataProperty) getOwningVirtualModel().getOntologyDataProperty(dataPropertyURI);
+			if (StringUtils.isNotEmpty(dataPropertyURI) && OWLOntologyVirtualModelNature.INSTANCE.hasNature(getOwningVirtualModel())) {
+				return OWLOntologyVirtualModelNature.getOWLDataProperty(dataPropertyURI, getOwningVirtualModel());
 			} else {
 				if (getAssignedFlexoProperty() != null) {
 					return getAssignedFlexoProperty().getDataProperty();
@@ -293,8 +296,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 
 	}
 
-	public static class AddDataPropertyStatementActionMustDefineADataProperty extends
-			ValidationRule<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
+	public static class AddDataPropertyStatementActionMustDefineADataProperty
+			extends ValidationRule<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
 		public AddDataPropertyStatementActionMustDefineADataProperty() {
 			super(AddDataPropertyStatement.class, "add_data_property_statement_action_must_define_a_data_property");
 		}
@@ -313,8 +316,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			return null;
 		}
 
-		protected static class SetsFlexoRole extends
-				FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
+		protected static class SetsFlexoRole
+				extends FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
 
 			private final DataPropertyStatementRole flexoRole;
 

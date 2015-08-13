@@ -76,14 +76,15 @@ import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
+import org.openflexo.technologyadapter.owl.nature.OWLOntologyVirtualModelNature;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
 @ImplementationClass(AddObjectPropertyStatement.AddObjectPropertyStatementImpl.class)
 @XMLElement
 @FML("AddObjectPropertyStatement")
-public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyStatement>,
-		SetObjectPropertyValueAction<ObjectPropertyStatement> {
+public interface AddObjectPropertyStatement
+		extends AddStatement<ObjectPropertyStatement>, SetObjectPropertyValueAction<ObjectPropertyStatement> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String OBJECT_KEY = "object";
@@ -112,8 +113,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 	@Override
 	public void setProperty(IFlexoOntologyStructuralProperty aProperty);
 
-	public static abstract class AddObjectPropertyStatementImpl extends AddStatementImpl<ObjectPropertyStatement> implements
-			AddObjectPropertyStatement {
+	public static abstract class AddObjectPropertyStatementImpl extends AddStatementImpl<ObjectPropertyStatement>
+			implements AddObjectPropertyStatement {
 
 		private static final Logger logger = Logger.getLogger(AddObjectPropertyStatement.class.getPackage().getName());
 
@@ -145,15 +146,18 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 			if (getSubject() != null)
 				subjstr = getSubject().toString();
-			else subjstr = "<No Subject>";
+			else
+				subjstr = "<No Subject>";
 
 			if (getObject() != null)
 				objstr = getObject().toString();
-			else objstr = "<No Object>";
+			else
+				objstr = "<No Object>";
 
 			if (getObjectProperty() != null)
 				propstr = getObjectProperty().getName();
-			else propstr = "<No Property>";
+			else
+				propstr = "<No Property>";
 
 			out.append(subjstr + "." + propstr + " = " + objstr + ";", context);
 
@@ -185,8 +189,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 		@Override
 		public OWLObjectProperty getObjectProperty() {
-			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
-				return (OWLObjectProperty) getOwningVirtualModel().getOntologyObjectProperty(objectPropertyURI);
+			if (StringUtils.isNotEmpty(objectPropertyURI) && OWLOntologyVirtualModelNature.INSTANCE.hasNature(getOwningVirtualModel())) {
+				return OWLOntologyVirtualModelNature.getOWLObjectProperty(objectPropertyURI, getOwningVirtualModel());
 			} else {
 				if (getAssignedFlexoProperty() != null) {
 					return getAssignedFlexoProperty().getObjectProperty();
@@ -315,8 +319,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 	}
 
 	@DefineValidationRule
-	public static class AddObjectPropertyStatementActionMustDefineAnObjectProperty extends
-			ValidationRule<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
+	public static class AddObjectPropertyStatementActionMustDefineAnObjectProperty
+			extends ValidationRule<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
 		public AddObjectPropertyStatementActionMustDefineAnObjectProperty() {
 			super(AddObjectPropertyStatement.class, "add_object_property_statement_action_must_define_an_object_property");
 		}
@@ -335,8 +339,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			return null;
 		}
 
-		protected static class SetsFlexoRole extends
-				FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
+		protected static class SetsFlexoRole
+				extends FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
 
 			private final ObjectPropertyStatementRole flexoRole;
 
