@@ -94,7 +94,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	/**
-	 * Return the {@link TechnologyContextManager} for this technology shared by all {@link FlexoResourceCenter} declared in the scope of
+	 * Return the {@link FlexoOntologyTechnologyContextManager} for this technology shared by all {@link FlexoResourceCenter} declared in the scope of
 	 * {@link FlexoResourceCenterService}
 	 * 
 	 * @return

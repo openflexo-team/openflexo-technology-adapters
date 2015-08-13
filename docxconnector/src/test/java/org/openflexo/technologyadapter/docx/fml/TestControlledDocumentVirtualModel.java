@@ -66,7 +66,7 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.fml.action.CreateFlexoRole;
+import org.openflexo.foundation.fml.action.AbstractCreateFlexoRole;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
@@ -264,7 +264,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		// FlexoConcept flexoConcept = virtualModel.getFMLModelFactory().newInstance(FlexoConcept.class);
 		// virtualModel.addToFlexoConcepts(flexoConcept);
 
-		CreateFlexoRole createFragmentRole = CreateFlexoRole.actionType.makeNewAction(virtualModel, null, editor);
+		AbstractCreateFlexoRole createFragmentRole = AbstractCreateFlexoRole.actionType.makeNewAction(virtualModel, null, editor);
 		createFragmentRole.setRoleName("fragment");
 		createFragmentRole.setFlexoRoleClass(DocXFragmentRole.class);
 		createFragmentRole.doAction();

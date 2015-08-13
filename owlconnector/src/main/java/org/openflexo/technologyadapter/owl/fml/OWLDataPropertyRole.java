@@ -38,8 +38,8 @@
 
 package org.openflexo.technologyadapter.owl.fml;
 
-import org.openflexo.foundation.fml.DataPropertyRole;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.ontology.fml.DataPropertyRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;

@@ -15,7 +15,7 @@
 				clickAction="" doubleClickAction="" rightClickAction=""
 				enterPressedAction="" valueChangedAction="" valueTransform=""
 				valueValidator="" />
-			<Custom componentClassName="org.openflexo.components.widget.FIBClassSelector"
+			<Custom componentClassName="org.openflexo.ontology.components.widget.FIBClassSelector"
 				format="" icon="" tooltip="" localize="true" enable=""
 				manageDynamicModel="true" opaque="false" clickAction=""
 				doubleClickAction="" rightClickAction="" enterPressedAction=""
@@ -51,7 +51,7 @@
 				enterPressedAction="" valueChangedAction="" valueTransform=""
 				valueValidator="" />
 			<Table
-				iteratorClassName="org.openflexo.foundation.fml.editionaction.ObjectPropertyAssertion"
+				iteratorClassName="org.openflexo.foundation.ontology.fml.editionaction.ObjectPropertyAssertion"
 				visibleRowCount="4" rowHeight="18" autoSelectFirstRow="false"
 				createNewRowOnClick="false" boundToSelectionManager="false"
 				showFooter="true" selectionMode="MultipleIntervalSelection"
@@ -116,7 +116,7 @@
 				enterPressedAction="" valueChangedAction="" valueTransform=""
 				valueValidator="" />
 			<Table
-				iteratorClassName="org.openflexo.foundation.fml.editionaction.DataPropertyAssertion"
+				iteratorClassName="org.openflexo.foundation.ontology.fml.editionaction.DataPropertyAssertion"
 				visibleRowCount="4" rowHeight="18" autoSelectFirstRow="false"
 				createNewRowOnClick="false" boundToSelectionManager="false"
 				showFooter="true" selectionMode="MultipleIntervalSelection"

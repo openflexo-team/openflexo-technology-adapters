@@ -40,9 +40,9 @@ package org.openflexo.technologyadapter.xml.gui;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.components.widget.OntologyView;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.ontology.components.widget.OntologyView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 

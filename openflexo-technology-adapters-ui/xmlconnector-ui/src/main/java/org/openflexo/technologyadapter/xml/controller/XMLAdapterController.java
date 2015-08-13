@@ -63,10 +63,9 @@ import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
-import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
-public class XMLAdapterController extends TechnologyAdapterController<XMLTechnologyAdapter> {
+public class XMLAdapterController extends FlexoOntologyTechnologyAdapterController<XMLTechnologyAdapter> {
 
 	static final Logger logger = Logger.getLogger(XMLAdapterController.class.getPackage().getName());
 

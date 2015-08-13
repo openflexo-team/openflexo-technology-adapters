@@ -43,12 +43,9 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.components.widget.OntologyBrowserModel;
-import org.openflexo.components.widget.OntologyView;
 import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -72,12 +69,9 @@ import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
-import org.openflexo.view.controller.IFlexoOntologyTechnologyAdapterController;
-import org.openflexo.view.controller.TechnologyAdapterController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
-public class EMFAdapterController extends TechnologyAdapterController<EMFTechnologyAdapter> implements
-		IFlexoOntologyTechnologyAdapterController {
+public class EMFAdapterController extends FlexoOntologyTechnologyAdapterController<EMFTechnologyAdapter> {
 
 	static final Logger logger = Logger.getLogger(EMFAdapterController.class.getPackage().getName());
 

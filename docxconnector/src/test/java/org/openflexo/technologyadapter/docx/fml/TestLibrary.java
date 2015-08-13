@@ -76,7 +76,7 @@ import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviourParameter;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
-import org.openflexo.foundation.fml.action.CreateFlexoRole;
+import org.openflexo.foundation.fml.action.AbstractCreateFlexoRole;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.controlgraph.IterationAction;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
@@ -313,35 +313,35 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(createConceptAction.hasActionExecutionSucceeded());
 		bookConcept = createConceptAction.getNewFlexoConcept();
 
-		CreateFlexoRole createTitleRole = CreateFlexoRole.actionType.makeNewAction(bookConcept, null, editor);
+		AbstractCreateFlexoRole createTitleRole = AbstractCreateFlexoRole.actionType.makeNewAction(bookConcept, null, editor);
 		createTitleRole.setRoleName("title");
 		createTitleRole.setFlexoRoleClass(PrimitiveRole.class);
 		createTitleRole.setPrimitiveType(PrimitiveType.String);
 		createTitleRole.doAction();
 		assertTrue(createTitleRole.hasActionExecutionSucceeded());
 
-		CreateFlexoRole createAuthorRole = CreateFlexoRole.actionType.makeNewAction(bookConcept, null, editor);
+		AbstractCreateFlexoRole createAuthorRole = AbstractCreateFlexoRole.actionType.makeNewAction(bookConcept, null, editor);
 		createAuthorRole.setRoleName("author");
 		createAuthorRole.setFlexoRoleClass(PrimitiveRole.class);
 		createAuthorRole.setPrimitiveType(PrimitiveType.String);
 		createAuthorRole.doAction();
 		assertTrue(createAuthorRole.hasActionExecutionSucceeded());
 
-		CreateFlexoRole createEditionRole = CreateFlexoRole.actionType.makeNewAction(bookConcept, null, editor);
+		AbstractCreateFlexoRole createEditionRole = AbstractCreateFlexoRole.actionType.makeNewAction(bookConcept, null, editor);
 		createEditionRole.setRoleName("edition");
 		createEditionRole.setFlexoRoleClass(PrimitiveRole.class);
 		createEditionRole.setPrimitiveType(PrimitiveType.String);
 		createEditionRole.doAction();
 		assertTrue(createEditionRole.hasActionExecutionSucceeded());
 
-		CreateFlexoRole createTypeRole = CreateFlexoRole.actionType.makeNewAction(bookConcept, null, editor);
+		AbstractCreateFlexoRole createTypeRole = AbstractCreateFlexoRole.actionType.makeNewAction(bookConcept, null, editor);
 		createTypeRole.setRoleName("type");
 		createTypeRole.setFlexoRoleClass(PrimitiveRole.class);
 		createTypeRole.setPrimitiveType(PrimitiveType.String);
 		createTypeRole.doAction();
 		assertTrue(createTypeRole.hasActionExecutionSucceeded());
 
-		CreateFlexoRole createDescriptionRole = CreateFlexoRole.actionType.makeNewAction(bookConcept, null, editor);
+		AbstractCreateFlexoRole createDescriptionRole = AbstractCreateFlexoRole.actionType.makeNewAction(bookConcept, null, editor);
 		createDescriptionRole.setRoleName("description");
 		createDescriptionRole.setFlexoRoleClass(PrimitiveRole.class);
 		createDescriptionRole.setPrimitiveType(PrimitiveType.String);
@@ -501,7 +501,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(documentVirtualModel.getModelSlots().size() == 2);
 
 		// We create a role pointing to the first section (introduction section)
-		CreateFlexoRole createIntroductionSectionRole = CreateFlexoRole.actionType.makeNewAction(documentVirtualModel, null, editor);
+		AbstractCreateFlexoRole createIntroductionSectionRole = AbstractCreateFlexoRole.actionType.makeNewAction(documentVirtualModel, null, editor);
 		createIntroductionSectionRole.setRoleName("introductionSection");
 		createIntroductionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
 		createIntroductionSectionRole.doAction();
@@ -517,7 +517,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals(introductionFragmentRole.getFragment(), introductionFragment);
 
 		// We create a role pointing to the second section (books description section)
-		CreateFlexoRole createBooksDescriptionSectionRole = CreateFlexoRole.actionType.makeNewAction(documentVirtualModel, null, editor);
+		AbstractCreateFlexoRole createBooksDescriptionSectionRole = AbstractCreateFlexoRole.actionType.makeNewAction(documentVirtualModel, null, editor);
 		createBooksDescriptionSectionRole.setRoleName("booksDescriptionSection");
 		createBooksDescriptionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
 		createBooksDescriptionSectionRole.doAction();
@@ -533,7 +533,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals(booksDescriptionFragmentRole.getFragment(), booksDescriptionFragment);
 
 		// We create a role pointing to the third section (conclusion section)
-		CreateFlexoRole createConclusionSectionRole = CreateFlexoRole.actionType.makeNewAction(documentVirtualModel, null, editor);
+		AbstractCreateFlexoRole createConclusionSectionRole = AbstractCreateFlexoRole.actionType.makeNewAction(documentVirtualModel, null, editor);
 		createConclusionSectionRole.setRoleName("conclusionSection");
 		createConclusionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
 		createConclusionSectionRole.doAction();
@@ -576,7 +576,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		bookDescriptionSection = createConceptAction.getNewFlexoConcept();
 
 		// We create a role pointing to a book in the library virtual model
-		CreateFlexoRole createBookRole = CreateFlexoRole.actionType.makeNewAction(bookDescriptionSection, null, editor);
+		AbstractCreateFlexoRole createBookRole = AbstractCreateFlexoRole.actionType.makeNewAction(bookDescriptionSection, null, editor);
 		createBookRole.setRoleName("book");
 		createBookRole.setFlexoRoleClass(FlexoConceptInstanceRole.class);
 		createBookRole.setFlexoConceptInstanceType(bookConcept);
@@ -586,7 +586,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals(libraryModelSlot, createBookRole.getNewFlexoRole().getModelSlot());
 
 		// We create a role pointing to the right fragment
-		CreateFlexoRole createSectionRole = CreateFlexoRole.actionType.makeNewAction(bookDescriptionSection, null, editor);
+		AbstractCreateFlexoRole createSectionRole = AbstractCreateFlexoRole.actionType.makeNewAction(bookDescriptionSection, null, editor);
 		createSectionRole.setRoleName("section");
 		createSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
 		createSectionRole.doAction();
@@ -862,7 +862,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		// We add a property
 		// We check here that matching criterias were updated: an other criteria should appear
 		
-		CreateFlexoRole createRole = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		AbstractCreateFlexoRole createRole = AbstractCreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createRole.setRoleName("anOtherIntegerInA");
 		createRole.setFlexoRoleClass(PrimitiveRole.class);
 		createRole.setPrimitiveType(PrimitiveType.Integer);

@@ -74,7 +74,7 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
-import org.openflexo.foundation.fml.action.CreateFlexoRole;
+import org.openflexo.foundation.fml.action.AbstractCreateFlexoRole;
 import org.openflexo.foundation.fml.binding.FlexoConceptBindingModel;
 import org.openflexo.foundation.fml.binding.FlexoPropertyBindingVariable;
 import org.openflexo.foundation.fml.binding.ViewPointBindingModel;
@@ -306,38 +306,38 @@ public class TestOWLBindingModelManagement extends OpenflexoProjectAtRunTimeTest
 	@TestOrder(6)
 	public void testOWLIndividualRoleBindingModelManagement() throws SaveResourceException {
 
-		CreateFlexoRole createPR1 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		AbstractCreateFlexoRole createPR1 = AbstractCreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR1.setRoleName("aStringInA");
 		createPR1.setFlexoRoleClass(PrimitiveRole.class);
 		createPR1.setPrimitiveType(PrimitiveType.String);
 		createPR1.doAction();
 
-		CreateFlexoRole createPR2 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		AbstractCreateFlexoRole createPR2 = AbstractCreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR2.setRoleName("aBooleanInA");
 		createPR2.setFlexoRoleClass(PrimitiveRole.class);
 		createPR2.setPrimitiveType(PrimitiveType.Boolean);
 		createPR2.doAction();
 
-		CreateFlexoRole createPR3 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		AbstractCreateFlexoRole createPR3 = AbstractCreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR3.setRoleName("anIntegerInA");
 		createPR3.setFlexoRoleClass(PrimitiveRole.class);
 		createPR3.setPrimitiveType(PrimitiveType.Integer);
 		createPR3.doAction();
 
-		CreateFlexoRole createPR4 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		AbstractCreateFlexoRole createPR4 = AbstractCreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR4.setRoleName("anIndividual");
 		createPR4.setFlexoRoleClass(OWLIndividualRole.class);
 		createPR4.setIndividualType(basicConcept);
 		createPR4.doAction();
 
-		CreateFlexoRole createPR5 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		AbstractCreateFlexoRole createPR5 = AbstractCreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR5.setRoleName("anObjectProperty");
 		createPR5.setFlexoRoleClass(OWLObjectPropertyRole.class);
 		createPR5.doAction();
 		OWLObjectPropertyRole aRole = (OWLObjectPropertyRole) createPR5.getNewFlexoRole();
 		aRole.setParentProperty(hasObjectProperty);
 
-		CreateFlexoRole createPR6 = CreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
+		AbstractCreateFlexoRole createPR6 = AbstractCreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
 		createPR6.setRoleName("anObjectPropertyStatement");
 		createPR6.setFlexoRoleClass(ObjectPropertyStatementRole.class);
 		createPR6.doAction();
