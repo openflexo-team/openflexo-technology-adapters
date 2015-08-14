@@ -52,37 +52,37 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 
 	@Test
 	public void testChooseOption() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ChooseOption.fib");
+		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ChooseOption.fib");
 	}
 
 	@Test
 	public void testCreateConnectorInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib");
+		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib");
 	}
 
 	@Test
 	public void testCreateNewFlexoConceptWithConnector() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithConnector.fib");
+		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateNewFlexoConceptWithConnector.fib");
 	}
 
 	@Test
 	public void testCreateNewFlexoConceptWithShape() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithShape.fib");
+		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateNewFlexoConceptWithShape.fib");
 	}
 
 	@Test
 	public void testCreateShapeInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateShapeInExistingFlexoConcept.fib");
+		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateShapeInExistingFlexoConcept.fib");
 	}
 
 	@Test
 	public void testReplaceConnectorInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib");
+		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib");
 	}
 
 	@Test
 	public void testReplaceShapeInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib");
+		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib");
 	}
 
 }

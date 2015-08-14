@@ -1,8 +1,8 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2014-2015, Openflexo
  * 
- * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,25 +36,37 @@
  * 
  */
 
-package org.openflexo.technologyadapter.diagram.controller;
+package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.util.logging.Logger;
+import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
-import org.openflexo.technologyadapter.diagram.fml.DropScheme;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
-import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
-import org.openflexo.view.controller.FlexoController;
-import org.openflexo.view.controller.ParametersRetriever;
+/**
+ * Encodes a basic transformation which sets graphical representation of an existing {@link ShapeRole} with the
+ * {@link GraphicalRepresentation} addressed by action focused object
+ * 
+ * @author sylvain
+ *
+ */
+public class ShapeRoleCreationStrategy
+		extends GraphicalElementRoleCreationStrategy<DeclareShapeInFlexoConcept, ShapeRole, DiagramShape, ShapeGraphicalRepresentation> {
 
-public class DropSchemeParametersRetriever extends ParametersRetriever<DropScheme> {
-
-	private static final Logger logger = Logger.getLogger(ParametersRetriever.class.getPackage().getName());
-
-	protected DiagramPaletteElement paletteElement;
-
-	public DropSchemeParametersRetriever(DropSchemeAction action, FlexoController controller) {
-		super(action, controller);
-		paletteElement = action.getPaletteElement();
+	public ShapeRoleCreationStrategy(DeclareShapeInFlexoConcept transformationAction) {
+		super(transformationAction);
 	}
 
+	@Override
+	public Class<ShapeRole> getRoleType() {
+		return ShapeRole.class;
+	}
+
+	@Override
+	public ShapeRole createNewFlexoRole() {
+		ShapeRole returned = super.performStrategy();
+		// Forces GR to be displayed in view
+		returned.getGraphicalRepresentation().setAllowToLeaveBounds(false);
+		return returned;
+	}
 }

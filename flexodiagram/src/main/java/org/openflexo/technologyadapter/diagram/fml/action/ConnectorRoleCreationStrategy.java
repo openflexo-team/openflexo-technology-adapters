@@ -1,8 +1,8 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2014-2015, Openflexo
  * 
- * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,25 +36,36 @@
  * 
  */
 
-package org.openflexo.technologyadapter.diagram.controller;
+package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.util.logging.Logger;
+import org.openflexo.fge.ConnectorGraphicalRepresentation;
+import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 
-import org.openflexo.technologyadapter.diagram.fml.DropScheme;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
-import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
-import org.openflexo.view.controller.FlexoController;
-import org.openflexo.view.controller.ParametersRetriever;
+/**
+ * Encodes a basic transformation which sets graphical representation of an existing {@link ConnectorRole} with the
+ * {@link GraphicalRepresentation} addressed by action focused object
+ * 
+ * @author sylvain
+ *
+ */
+public class ConnectorRoleCreationStrategy extends
+		GraphicalElementRoleCreationStrategy<DeclareConnectorInFlexoConcept, ConnectorRole, DiagramConnector, ConnectorGraphicalRepresentation> {
 
-public class DropSchemeParametersRetriever extends ParametersRetriever<DropScheme> {
+	public ConnectorRoleCreationStrategy(DeclareConnectorInFlexoConcept transformationAction) {
+		super(transformationAction);
+	}
 
-	private static final Logger logger = Logger.getLogger(ParametersRetriever.class.getPackage().getName());
+	@Override
+	public Class<ConnectorRole> getRoleType() {
+		return ConnectorRole.class;
+	}
 
-	protected DiagramPaletteElement paletteElement;
-
-	public DropSchemeParametersRetriever(DropSchemeAction action, FlexoController controller) {
-		super(action, controller);
-		paletteElement = action.getPaletteElement();
+	@Override
+	public ConnectorRole createNewFlexoRole() {
+		ConnectorRole returned = super.performStrategy();
+		return returned;
 	}
 
 }

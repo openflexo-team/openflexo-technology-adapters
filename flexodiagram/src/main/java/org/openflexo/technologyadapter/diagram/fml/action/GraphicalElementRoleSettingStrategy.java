@@ -1,8 +1,8 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2014-2015, Openflexo
  * 
- * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * This file is part of Flexodiagram, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,25 +36,32 @@
  * 
  */
 
-package org.openflexo.technologyadapter.diagram.controller;
+package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.util.logging.Logger;
+import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.foundation.action.transformation.FlexoRoleSettingStrategy;
+import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
+import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 
-import org.openflexo.technologyadapter.diagram.fml.DropScheme;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
-import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
-import org.openflexo.view.controller.FlexoController;
-import org.openflexo.view.controller.ParametersRetriever;
+/**
+ * Encodes a basic transformation which sets graphical representation of an existing {@link GraphicalElementRole} with the
+ * {@link GraphicalRepresentation} addressed by action focused object
+ * 
+ * @author sylvain
+ *
+ */
+public class GraphicalElementRoleSettingStrategy<A extends DeclareDiagramElementInFlexoConcept<A, T>, R extends GraphicalElementRole<T, GR>, T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
+		extends FlexoRoleSettingStrategy<A, R, T, DiagramElement<?>> {
 
-public class DropSchemeParametersRetriever extends ParametersRetriever<DropScheme> {
-
-	private static final Logger logger = Logger.getLogger(ParametersRetriever.class.getPackage().getName());
-
-	protected DiagramPaletteElement paletteElement;
-
-	public DropSchemeParametersRetriever(DropSchemeAction action, FlexoController controller) {
-		super(action, controller);
-		paletteElement = action.getPaletteElement();
+	public GraphicalElementRoleSettingStrategy(A transformationAction) {
+		super(transformationAction);
 	}
 
+	@Override
+	public R performStrategy() {
+		if (getFlexoRole() != null) {
+			getFlexoRole().updateGraphicalRepresentation(getTransformationAction().getFocusedObject().getGraphicalRepresentation());
+		}
+		return getFlexoRole();
+	}
 }

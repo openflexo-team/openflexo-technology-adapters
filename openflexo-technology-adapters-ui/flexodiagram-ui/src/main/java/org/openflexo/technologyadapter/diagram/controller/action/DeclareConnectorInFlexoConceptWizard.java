@@ -111,7 +111,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareInFlexo
 		return new CreateNewFlexoConceptWithConnector();
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib")
+	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib")
 	public class ReplaceConnectorInExistingFlexoConcept extends WizardStep {
 
 		public ReplaceConnectorInExistingFlexoConcept() {
@@ -184,7 +184,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareInFlexo
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib")
+	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib")
 	public class CreateConnectorInExistingFlexoConcept extends WizardStep {
 
 		public CreateConnectorInExistingFlexoConcept() {
@@ -261,7 +261,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareInFlexo
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithConnector.fib")
+	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateNewFlexoConceptWithConnector.fib")
 	public class CreateNewFlexoConceptWithConnector extends WizardStep {
 
 		public DeclareConnectorInFlexoConcept getAction() {
@@ -391,13 +391,13 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareInFlexo
 		}
 
 		public ModelSlot<?> getModelSlot() {
-			return getAction().getModelSlot();
+			return getAction().getInformationSourceModelSlot();
 		}
 
 		public void setModelSlot(ModelSlot<?> modelSlot) {
 			if (modelSlot != getModelSlot()) {
 				ModelSlot<?> oldValue = getModelSlot();
-				getAction().setModelSlot(modelSlot);
+				getAction().setInformationSourceModelSlot(modelSlot);
 				getPropertyChangeSupport().firePropertyChange("modelSlot", oldValue, modelSlot);
 				getPropertyChangeSupport().firePropertyChange("concept", null, getConcept());
 				getPropertyChangeSupport().firePropertyChange("adressedFlexoMetaModel", null, getAdressedFlexoMetaModel());

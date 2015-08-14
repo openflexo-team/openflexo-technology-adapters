@@ -46,11 +46,11 @@ import org.openflexo.components.wizard.WizardStep;
 import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.localization.FlexoLocalization;
-import org.openflexo.technologyadapter.diagram.fml.action.DeclareInFlexoConcept;
-import org.openflexo.technologyadapter.diagram.fml.action.DeclareInFlexoConcept.DeclareInFlexoConceptChoices;
+import org.openflexo.technologyadapter.diagram.fml.action.DeclareDiagramElementInFlexoConcept;
+import org.openflexo.technologyadapter.diagram.fml.action.DeclareDiagramElementInFlexoConcept.DeclareInFlexoConceptChoices;
 import org.openflexo.view.controller.FlexoController;
 
-public abstract class AbstractDeclareInFlexoConceptWizard<A extends DeclareInFlexoConcept<A, ?>> extends FlexoWizard {
+public abstract class AbstractDeclareInFlexoConceptWizard<A extends DeclareDiagramElementInFlexoConcept<A, ?>> extends FlexoWizard {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(AbstractDeclareInFlexoConceptWizard.class.getPackage().getName());
@@ -76,7 +76,7 @@ public abstract class AbstractDeclareInFlexoConceptWizard<A extends DeclareInFle
 	 * @author sylvain
 	 *
 	 */
-	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ChooseOption.fib")
+	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ChooseOption.fib")
 	public class ChooseOption extends WizardStep {
 
 		public ApplicationContext getServiceManager() {

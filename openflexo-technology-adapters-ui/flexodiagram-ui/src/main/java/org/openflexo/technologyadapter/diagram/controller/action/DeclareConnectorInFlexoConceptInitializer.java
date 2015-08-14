@@ -48,6 +48,7 @@ import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.fib.controller.FIBController.Status;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
+import org.openflexo.foundation.action.transformation.AbstractDeclareInFlexoConcept.DeclareInFlexoConceptChoices;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
@@ -57,8 +58,8 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class DeclareConnectorInFlexoConceptInitializer extends
-		ActionInitializer<DeclareConnectorInFlexoConcept, DiagramConnector, DiagramElement<?>> {
+public class DeclareConnectorInFlexoConceptInitializer
+		extends ActionInitializer<DeclareConnectorInFlexoConcept, DiagramConnector, DiagramElement<?>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
@@ -75,8 +76,8 @@ public class DeclareConnectorInFlexoConceptInitializer extends
 
 				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
 					FMLControlledDiagramModuleView moduleView = (FMLControlledDiagramModuleView) getController().getCurrentModuleView();
-					action.setVirtualModelResource((VirtualModelResource) moduleView.getEditor().getVirtualModelInstance()
-							.getVirtualModel().getResource());
+					action.setVirtualModelResource(
+							(VirtualModelResource) moduleView.getEditor().getVirtualModelInstance().getVirtualModel().getResource());
 				}
 
 				Wizard wizard = new DeclareConnectorInFlexoConceptWizard(action, getController());
@@ -98,7 +99,12 @@ public class DeclareConnectorInFlexoConceptInitializer extends
 			@Override
 			public boolean run(EventObject e, DeclareConnectorInFlexoConcept action) {
 				getController().setCurrentEditedObjectAsModuleView(action.getFlexoConcept());
-				getController().getSelectionManager().setSelectedObject(action.getFlexoRole());
+				if (action.getPrimaryChoice() == DeclareInFlexoConceptChoices.CREATE_ELEMENT_IN_EXISTING_FLEXO_CONCEPT) {
+					getController().getSelectionManager().setSelectedObject(action.getFlexoRoleCreationStrategy().getNewFlexoRole());
+				}
+				if (action.getPrimaryChoice() == DeclareInFlexoConceptChoices.REPLACE_ELEMENT_IN_EXISTING_FLEXO_CONCEPT) {
+					getController().getSelectionManager().setSelectedObject(action.getFlexoRoleSettingStrategy().getFlexoRole());
+				}
 				return true;
 			}
 		};

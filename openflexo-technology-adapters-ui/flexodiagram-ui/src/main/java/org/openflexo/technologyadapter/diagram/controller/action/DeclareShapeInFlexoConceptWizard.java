@@ -110,7 +110,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 		return new CreateNewFlexoConceptWithShape();
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib")
+	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib")
 	public class ReplaceShapeInExistingFlexoConcept extends WizardStep {
 
 		public ReplaceShapeInExistingFlexoConcept() {
@@ -183,7 +183,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/CreateShapeInExistingFlexoConcept.fib")
+	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateShapeInExistingFlexoConcept.fib")
 	public class CreateShapeInExistingFlexoConcept extends WizardStep {
 
 		public CreateShapeInExistingFlexoConcept() {
@@ -259,7 +259,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithShape.fib")
+	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateNewFlexoConceptWithShape.fib")
 	public class CreateNewFlexoConceptWithShape extends WizardStep {
 
 		public DeclareShapeInFlexoConcept getAction() {
@@ -360,13 +360,13 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareInFlexoConc
 		}
 
 		public ModelSlot<?> getModelSlot() {
-			return getAction().getModelSlot();
+			return getAction().getInformationSourceModelSlot();
 		}
 
 		public void setModelSlot(ModelSlot<?> modelSlot) {
 			if (modelSlot != getModelSlot()) {
 				ModelSlot<?> oldValue = getModelSlot();
-				getAction().setModelSlot(modelSlot);
+				getAction().setInformationSourceModelSlot(modelSlot);
 				getPropertyChangeSupport().firePropertyChange("modelSlot", oldValue, modelSlot);
 				getPropertyChangeSupport().firePropertyChange("concept", null, getConcept());
 				getPropertyChangeSupport().firePropertyChange("adressedFlexoMetaModel", null, getAdressedFlexoMetaModel());
