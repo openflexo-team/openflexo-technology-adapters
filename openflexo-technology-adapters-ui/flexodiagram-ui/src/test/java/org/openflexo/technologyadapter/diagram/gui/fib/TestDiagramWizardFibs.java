@@ -51,8 +51,23 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 	}
 
 	@Test
+	public void testConfigureBlankFlexoConceptFromConnectorCreationStrategyStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep.fib");
+	}
+
+	@Test
 	public void testConfigureBlankFlexoConceptFromShapeCreationStrategyStep() {
 		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureBlankFlexoConceptFromShapeCreationStrategyStep.fib");
+	}
+
+	@Test
+	public void testConfigureMapConnectorToFlexoConceptlnstanceStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapConnectorToFlexoConceptlnstanceStep.fib");
+	}
+
+	@Test
+	public void testConfigureMapConnectorToIndividualStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapConnectorToIndividualStep.fib");
 	}
 
 	@Test
@@ -68,11 +83,6 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 	@Test
 	public void testCreateConnectorInExistingFlexoConcept() {
 		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib");
-	}
-
-	@Test
-	public void testCreateNewFlexoConceptWithConnector() {
-		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithConnector.fib");
 	}
 
 	@Test
