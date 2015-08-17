@@ -49,7 +49,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
@@ -104,8 +103,7 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (OSLCRequirementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "requirement";
-			}
-			else if (OSLCRequirementCollectionRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (OSLCRequirementCollectionRole.class.isAssignableFrom(patternRoleClass)) {
 				return "requirementCollection";
 			}
 			return null;
@@ -114,9 +112,9 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 		@Override
 		public String getURIForObject(
 				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance, Object o) {
-			if (o instanceof IFlexoOntologyObject) {
+			/*if (o instanceof IFlexoOntologyObject) {
 				return ((IFlexoOntologyObject) o).getURI();
-			}
+			}*/
 			return null;
 		}
 

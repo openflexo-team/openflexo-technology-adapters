@@ -49,7 +49,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
-import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
@@ -113,9 +112,9 @@ public interface OSLCCoreModelSlot extends FreeModelSlot<OSLCServiceProviderCata
 		@Override
 		public String getURIForObject(
 				FreeModelSlotInstance<OSLCServiceProviderCatalog, ? extends FreeModelSlot<OSLCServiceProviderCatalog>> msInstance, Object o) {
-			if (o instanceof IFlexoOntologyObject) {
+			/*if (o instanceof IFlexoOntologyObject) {
 				return ((IFlexoOntologyObject) o).getURI();
-			}
+			}*/
 			return null;
 		}
 
