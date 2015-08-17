@@ -32,7 +32,7 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
-				<dependency>
+		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ontology-ui</artifactId>
 			<scope>compile</scope>

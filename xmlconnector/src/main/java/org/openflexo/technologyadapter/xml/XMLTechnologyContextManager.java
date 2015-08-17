@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.xml;
 
+import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 
 public class XMLTechnologyContextManager extends FlexoOntologyTechnologyContextManager<XMLTechnologyAdapter> {
@@ -48,7 +49,7 @@ public class XMLTechnologyContextManager extends FlexoOntologyTechnologyContextM
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter() {
-		return (XMLTechnologyAdapter) super.getTechnologyAdapter();
+		return super.getTechnologyAdapter();
 	}
 
 }

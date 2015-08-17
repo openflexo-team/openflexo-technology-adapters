@@ -46,9 +46,12 @@ import javax.swing.ImageIcon;
 import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.ontology.components.widget.OntologyBrowserModel;
+import org.openflexo.ontology.controller.FlexoOntologyTechnologyAdapterController;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.fml.XMLIndividualRole;
 import org.openflexo.technologyadapter.xml.fml.editionaction.AddXMLIndividual;
@@ -213,4 +216,8 @@ public class XMLAdapterController extends FlexoOntologyTechnologyAdapterControll
 		return new EmptyPanel<TechnologyObject<XMLTechnologyAdapter>>(controller, perspective, object);
 	}
 
+	@Override
+	public OntologyBrowserModel<XMLTechnologyAdapter> makeOntologyBrowserModel(IFlexoOntology<XMLTechnologyAdapter> context) {
+		return new OntologyBrowserModel<XMLTechnologyAdapter>(context);
+	}
 }
