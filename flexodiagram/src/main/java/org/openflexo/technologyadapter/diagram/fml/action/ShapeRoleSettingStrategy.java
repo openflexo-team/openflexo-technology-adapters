@@ -38,30 +38,27 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import org.openflexo.fge.GraphicalRepresentation;
-import org.openflexo.foundation.action.transformation.FlexoRoleSettingStrategy;
-import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
-import org.openflexo.technologyadapter.diagram.model.DiagramElement;
+import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
+import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
 /**
- * Encodes a basic transformation which sets graphical representation of an existing {@link GraphicalElementRole} with the
- * {@link GraphicalRepresentation} addressed by action focused object
+ * Encodes a basic transformation which sets graphical representation of an existing {@link ShapeRole} with the
+ * {@link ShapeGraphicalRepresentation} addressed by action focused object
  * 
  * @author sylvain
  *
  */
-public abstract class GraphicalElementRoleSettingStrategy<A extends DeclareDiagramElementInFlexoConcept<A, T>, R extends GraphicalElementRole<T, GR>, T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
-		extends FlexoRoleSettingStrategy<A, R, T, DiagramElement<?>> {
+public class ShapeRoleSettingStrategy extends
+		GraphicalElementRoleSettingStrategy<DeclareShapeInFlexoConcept, ShapeRole, DiagramShape, ShapeGraphicalRepresentation> {
 
-	public GraphicalElementRoleSettingStrategy(A transformationAction) {
+	public ShapeRoleSettingStrategy(DeclareShapeInFlexoConcept transformationAction) {
 		super(transformationAction);
 	}
 
 	@Override
-	public R performStrategy() {
-		if (getFlexoRole() != null) {
-			getFlexoRole().updateGraphicalRepresentation(getTransformationAction().getFocusedObject().getGraphicalRepresentation());
-		}
-		return getFlexoRole();
+	public Class<ShapeRole> getRoleType() {
+		return ShapeRole.class;
 	}
+
 }

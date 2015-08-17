@@ -16,7 +16,7 @@
 		autoSelectFirstRow="true" name="flexoConceptDropdown" index="2"
 		localize="true"
 		constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-		list="data.action.virtualModel.flexoConcepts" format="object.name"
+		list="data.virtualModel.flexoConcepts" format="object.name"
 		showText="true" readOnly="false" iteratorClassName="org.openflexo.foundation.fml.FlexoConcept"
 		showIcon="false">
 	</DropDown>

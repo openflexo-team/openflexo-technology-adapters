@@ -51,38 +51,43 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 	}
 
 	@Test
-	public void testChooseOption() {
-		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ChooseOption.fib");
+	public void testConfigureBlankFlexoConceptFromShapeCreationStrategyStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureBlankFlexoConceptFromShapeCreationStrategyStep.fib");
+	}
+
+	@Test
+	public void testConfigureMapShapeToFlexoConceptlnstanceStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapShapeToFlexoConceptlnstanceStep.fib");
+	}
+
+	@Test
+	public void testConfigureMapShapeToIndividualStep() {
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapShapeToIndividualStep.fib");
 	}
 
 	@Test
 	public void testCreateConnectorInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib");
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib");
 	}
 
 	@Test
 	public void testCreateNewFlexoConceptWithConnector() {
-		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateNewFlexoConceptWithConnector.fib");
-	}
-
-	@Test
-	public void testCreateNewFlexoConceptWithShape() {
-		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateNewFlexoConceptWithShape.fib");
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateNewFlexoConceptWithConnector.fib");
 	}
 
 	@Test
 	public void testCreateShapeInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateShapeInExistingFlexoConcept.fib");
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/CreateShapeInExistingFlexoConcept.fib");
 	}
 
 	@Test
 	public void testReplaceConnectorInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib");
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib");
 	}
 
 	@Test
 	public void testReplaceShapeInExistingFlexoConcept() {
-		validateFIB("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib");
+		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib");
 	}
 
 }

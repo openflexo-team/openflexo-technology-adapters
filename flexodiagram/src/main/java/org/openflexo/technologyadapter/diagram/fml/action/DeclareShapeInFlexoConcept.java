@@ -41,14 +41,10 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.transformation.FlexoRoleCreationStrategy;
-import org.openflexo.foundation.action.transformation.FlexoRoleSettingStrategy;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 
@@ -95,12 +91,10 @@ public class DeclareShapeInFlexoConcept extends DeclareDiagramElementInFlexoConc
 	DeclareShapeInFlexoConcept(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		getAvailableFlexoConceptCreationStrategies().add(new MapShapeToIndividualStrategy(this));
-		getAvailableFlexoConceptCreationStrategies().add(new MapShapeToIndividualStrategy(this));
-		getAvailableFlexoConceptCreationStrategies().add(new MapShapeToIndividualStrategy(this));
-		getAvailableFlexoRoleCreationStrategies().add((FlexoRoleCreationStrategy) new ShapeRoleCreationStrategy(this));
-		getAvailableFlexoRoleSettingStrategies()
-				.add((FlexoRoleSettingStrategy) new GraphicalElementRoleSettingStrategy<DeclareShapeInFlexoConcept, ShapeRole, DiagramShape, ShapeGraphicalRepresentation>(
-						this));
+		getAvailableFlexoConceptCreationStrategies().add(new MapShapeToFlexoConceptlnstanceStrategy(this));
+		getAvailableFlexoConceptCreationStrategies().add(new BlankFlexoConceptFromShapeCreationStrategy(this));
+		getAvailableFlexoRoleCreationStrategies().add(new ShapeRoleCreationStrategy(this));
+		getAvailableFlexoRoleSettingStrategies().add(new ShapeRoleSettingStrategy(this));
 	}
 
 	@Override

@@ -106,8 +106,7 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 	 * @return
 	 */
 	public boolean isFlexoOntologyModelSlot() {
-		return (getTransformationAction() != null
-				&& getTransformationAction().getInformationSourceModelSlot() instanceof FlexoOntologyModelSlot);
+		return (getTransformationAction() != null && getTransformationAction().getInformationSourceModelSlot() instanceof FlexoOntologyModelSlot);
 	}
 
 	@Override

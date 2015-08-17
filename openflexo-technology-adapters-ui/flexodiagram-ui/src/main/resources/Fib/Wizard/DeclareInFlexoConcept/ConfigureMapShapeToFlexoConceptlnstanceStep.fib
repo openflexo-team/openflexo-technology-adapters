@@ -3,35 +3,16 @@
 	height="400" opaque="false" layout="twocols"
 	controllerClassName="org.openflexo.view.controller.FlexoFIBController"
 	border="empty" trackViewPortWidth="true" width="600"
-	dataClassName="org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptWizard$CreateNewFlexoConceptWithShape"
+	dataClassName="org.openflexo.technologyadapter.diagram.controller.action.DeclareShapeInFlexoConceptWizard$ConfigureMapShapeToFlexoConceptlnstanceStep"
 	trackViewPortHeight="true">
 	<LocalizedDictionary id="1" />
-	<Label id="2" manageDynamicModel="false" useScrollBar="false"
-		controllerClassName="org.openflexo.fib.controller.FIBController"
-		index="1" localize="true" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-		label="pattern" readOnly="false">
-		<LocalizedDictionary id="3" />
-	</Label>
-	<DropDown id="4" manageDynamicModel="true" useScrollBar="false"
-		data="data.patternChoice" showReset="false" staticList=""
-		autoSelectFirstRow="true" name="patternChoice"
-		controllerClassName="org.openflexo.fib.controller.FIBController"
-		index="2" localize="true"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-		format="object.name" showText="true" readOnly="false"
-		iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareShapeInFlexoConcept$NewFlexoConceptChoices"
-		showIcon="false">
-		<LocalizedDictionary id="6" />
-	</DropDown>
 	<Label id="7"
-		visible="((patternChoice.selectedIndex = 1) | (patternChoice.selectedIndex = 0))"
 		manageDynamicModel="false" useScrollBar="false"
 		controllerClassName="org.openflexo.fib.controller.FIBController"
 		index="3" localize="true" align="left"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 		label="model_slot" readOnly="false" />
-	<DropDown id="8" visible="(patternChoice.selectedIndex = 1)"
+	<DropDown id="8"
 		manageDynamicModel="false" useScrollBar="false" data="data.modelSlot"
 		showReset="false" autoSelectFirstRow="true" name="virtualModelModelSlotDD"
 		controllerClassName="org.openflexo.fib.controller.FIBController"
@@ -42,18 +23,7 @@
 		readOnly="false" iteratorClassName="org.openflexo.foundation.technologyadapter.ModelSlot"
 		showIcon="true">
 	</DropDown>
-	<DropDown id="11" visible="(patternChoice.selectedIndex = 0)"
-		manageDynamicModel="false" useScrollBar="false" data="data.modelSlot"
-		showReset="false" autoSelectFirstRow="true" name="ontologyModelSlotDD"
-		controllerClassName="org.openflexo.fib.controller.FIBController"
-		icon="controller.iconForObject(object)"
-		index="4" localize="true"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
-		list="data.action.typeAwareModelSlots" format="object.name" showText="true"
-		readOnly="false" iteratorClassName="org.openflexo.foundation.technologyadapter.ModelSlot"
-		showIcon="true">
-	</DropDown>
-	<Label id="14" visible="(patternChoice.selectedIndex = 1)"
+	<Label id="14" 
 		manageDynamicModel="false" useScrollBar="false"
 		controllerClassName="org.openflexo.fib.controller.FIBController"
 		index="5" localize="true" align="left"
@@ -61,16 +31,8 @@
 		label="virtualModel_concept" readOnly="false">
 		<LocalizedDictionary id="15" />
 	</Label>
-	<Label id="16" visible="(patternChoice.selectedIndex = 0)"
-		manageDynamicModel="false" useScrollBar="false"
-		controllerClassName="org.openflexo.fib.controller.FIBController"
-		index="5" localize="true" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-		label="ontologic_concept" readOnly="false">
-		<LocalizedDictionary id="17" />
-	</Label>
-	<Custom id="18" visible="(patternChoice.selectedIndex = 1)"
-		manageDynamicModel="true" useScrollBar="false" data="data.virtualModelConcept"
+	<Custom id="18" 
+		manageDynamicModel="true" useScrollBar="false" data="data.typeConcept"
 		componentClassName="org.openflexo.fml.controller.widget.FIBFlexoConceptSelector"
 		name="patternSelector" controllerClassName="org.openflexo.fib.controller.FIBController"
 		index="6" localize="true"
@@ -83,26 +45,6 @@
 			variable="component.selectableCondition" />
 		<Assignment id="26" mandatory="true" value="data.adressedVirtualModel"
 			variable="component.virtualModel" />
-	</Custom>
-	<Custom id="27" visible="(patternChoice.selectedIndex = 0)"
-		manageDynamicModel="true" useScrollBar="false" data="data.concept"
-		componentClassName="org.openflexo.ontology.components.widget.FIBClassSelector"
-		name="conceptSelector" controllerClassName="org.openflexo.fib.controller.FIBController"
-		index="6" localize="true"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-		readOnly="false">
-		<Assignment id="30" mandatory="true" variable="component.hierarchicalMode" />
-		<Assignment id="31" mandatory="true" variable="component.rootClass" />
-		<Assignment id="32" mandatory="true" variable="component.strictMode" />
-		<Assignment id="33" mandatory="true" variable="component.rootClassURI" />
-		<Assignment id="34" mandatory="true" variable="component.informationSpace" />
-		<Assignment id="35" mandatory="true"
-			variable="component.contextOntologyURI" />
-		<Assignment id="36" mandatory="true" variable="component.serviceManager" />
-		<Assignment id="37" mandatory="true"
-			variable="component.selectableCondition" />
-		<Assignment id="38" mandatory="true" value="data.adressedFlexoMetaModel"
-			variable="component.context" />
 	</Custom>
 	<Label id="39" manageDynamicModel="false" useScrollBar="false"
 		controllerClassName="org.openflexo.fib.controller.FIBController"
@@ -118,30 +60,16 @@
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 		readOnly="false" validateOnReturn="false">
 	</TextField>
-	<Label id="44" visible="(patternChoice.selectedIndex = 0)"
+	<Label id="46" 
 		manageDynamicModel="false" useScrollBar="false"
 		controllerClassName="org.openflexo.fib.controller.FIBController"
 		index="9" localize="true" align="left"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-		label="individual_flexo_role_name" readOnly="false">
+		label="flexo_concept_instance_role_name" readOnly="false">
 	</Label>
-	<Label id="46" visible="(patternChoice.selectedIndex = 1)"
+	<TextField id="50" passwd="false" 
 		manageDynamicModel="false" useScrollBar="false"
-		controllerClassName="org.openflexo.fib.controller.FIBController"
-		index="9" localize="true" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-		label="flexo_concept_role_name" readOnly="false">
-	</Label>
-	<TextField id="48" passwd="false" visible="(patternChoice.selectedIndex = 0)"
-		manageDynamicModel="false" useScrollBar="false" data="data.individualFlexoRoleName"
-		columns="7" name="individualFlexoRoleName" controllerClassName="org.openflexo.fib.controller.FIBController"
-		text="TextField" index="10" localize="true"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-		readOnly="false" validateOnReturn="false">
-	</TextField>
-	<TextField id="50" passwd="false" visible="(patternChoice.selectedIndex = 1)"
-		manageDynamicModel="false" useScrollBar="false"
-		data="data.virtualModelFlexoRoleName" columns="7"
+		data="data.flexoConceptInstanceRoleName" columns="7"
 		name="virtualModelFlexoRoleName" controllerClassName="org.openflexo.fib.controller.FIBController"
 		text="TextField" index="10" localize="true"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
@@ -161,7 +89,7 @@
 		constraints="twocols(expandHorizontally=true;expandVertically=true;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 		visibleRowCount="3" createNewRowOnClick="false" rowHeight="18"
 		textSelectionColor="255,255,255" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
-		iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareInFlexoConcept$DrawingObjectEntry"
+		iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareDiagramElementInFlexoConcept$DrawingObjectEntry"
 		backgroundSelectionColor="41,90,209" useScrollBar="true"
 		backgroundNonSelectionColor="255,255,255" data="data.action.drawingObjectEntries"
 		autoSelectFirstRow="false" name="drawingObjectEntriesTable"
@@ -182,7 +110,7 @@
 			resizable="true" showIcon="false" />
 		<LocalizedDictionary id="59" />
 	</Table>
-	<Panel id="60" darkLevel="0" vGap="0" useScrollBar="false"
+	<!--  <Panel id="60" darkLevel="0" vGap="0" useScrollBar="false"
 		borderLeft="2" protectContent="false" hGap="0" opaque="false" layout="flow"
 		controllerClassName="org.openflexo.fib.controller.FIBController"
 		borderRight="2" border="empty" flowAlignment="LEADING"
@@ -253,5 +181,5 @@
 			controllerClassName="org.openflexo.fib.controller.FIBController"
 			localize="true" align="left" constraints="flow(location=east)" label="top_level"
 			readOnly="false" />
-	</Panel>
+	</Panel>-->
 </Panel>

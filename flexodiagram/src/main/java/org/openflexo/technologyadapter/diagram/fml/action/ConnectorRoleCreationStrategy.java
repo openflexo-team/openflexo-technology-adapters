@@ -50,11 +50,19 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
  * @author sylvain
  *
  */
-public class ConnectorRoleCreationStrategy extends
+public class ConnectorRoleCreationStrategy
+		extends
 		GraphicalElementRoleCreationStrategy<DeclareConnectorInFlexoConcept, ConnectorRole, DiagramConnector, ConnectorGraphicalRepresentation> {
+
+	private static final String DEFAULT_ROLE_NAME = "connector";
 
 	public ConnectorRoleCreationStrategy(DeclareConnectorInFlexoConcept transformationAction) {
 		super(transformationAction);
+	}
+
+	@Override
+	public String getDefaultRoleName() {
+		return DEFAULT_ROLE_NAME;
 	}
 
 	@Override

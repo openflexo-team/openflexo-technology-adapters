@@ -41,14 +41,10 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.transformation.FlexoRoleCreationStrategy;
-import org.openflexo.foundation.action.transformation.FlexoRoleSettingStrategy;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -93,12 +89,10 @@ public class DeclareConnectorInFlexoConcept extends DeclareDiagramElementInFlexo
 	DeclareConnectorInFlexoConcept(DiagramConnector focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		getAvailableFlexoConceptCreationStrategies().add(new MapConnectorToIndividualStrategy(this));
-		getAvailableFlexoConceptCreationStrategies().add(new MapConnectorToIndividualStrategy(this));
-		getAvailableFlexoConceptCreationStrategies().add(new MapConnectorToIndividualStrategy(this));
-		getAvailableFlexoRoleCreationStrategies().add((FlexoRoleCreationStrategy) new ConnectorRoleCreationStrategy(this));
-		getAvailableFlexoRoleSettingStrategies()
-				.add((FlexoRoleSettingStrategy) new GraphicalElementRoleSettingStrategy<DeclareConnectorInFlexoConcept, ConnectorRole, DiagramConnector, ConnectorGraphicalRepresentation>(
-						this));
+		getAvailableFlexoConceptCreationStrategies().add(new MapConnectorToFlexoConceptlnstanceStrategy(this));
+		getAvailableFlexoConceptCreationStrategies().add(new BlankFlexoConceptFromConnectorCreationStrategy(this));
+		getAvailableFlexoRoleCreationStrategies().add(new ConnectorRoleCreationStrategy(this));
+		getAvailableFlexoRoleSettingStrategies().add(new ConnectorRoleSettingStrategy(this));
 	}
 
 	@Override

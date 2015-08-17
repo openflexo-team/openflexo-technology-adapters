@@ -50,11 +50,18 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author sylvain
  *
  */
-public class ShapeRoleCreationStrategy
-		extends GraphicalElementRoleCreationStrategy<DeclareShapeInFlexoConcept, ShapeRole, DiagramShape, ShapeGraphicalRepresentation> {
+public class ShapeRoleCreationStrategy extends
+		GraphicalElementRoleCreationStrategy<DeclareShapeInFlexoConcept, ShapeRole, DiagramShape, ShapeGraphicalRepresentation> {
+
+	private static final String DEFAULT_ROLE_NAME = "shape";
 
 	public ShapeRoleCreationStrategy(DeclareShapeInFlexoConcept transformationAction) {
 		super(transformationAction);
+	}
+
+	@Override
+	public String getDefaultRoleName() {
+		return DEFAULT_ROLE_NAME;
 	}
 
 	@Override
