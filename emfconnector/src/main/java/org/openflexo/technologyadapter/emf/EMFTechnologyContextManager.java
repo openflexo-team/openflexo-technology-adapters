@@ -50,6 +50,7 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.uml2.uml.resources.util.UMLResourcesUtil;
+import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
