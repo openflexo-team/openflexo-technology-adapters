@@ -73,16 +73,16 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 @DeclareEditionActions({ AddXMLType.class })
 @DeclareFetchRequests({})
 @ModelEntity
-@ImplementationClass(XMLMetaModelSlot.XSDModelSlotImpl.class)
+@ImplementationClass(XMLMetaModelSlot.XMLModelSlotImpl.class)
 @XMLElement
 @FML("XMLMetaModelSlot")
 public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 
-	public static abstract class XSDModelSlotImpl extends FreeModelSlotImpl<XMLMetaModel> implements XMLMetaModelSlot {
+	public static abstract class XMLModelSlotImpl extends FreeModelSlotImpl<XMLMetaModel> implements XMLMetaModelSlot {
 
 		static final Logger logger = Logger.getLogger(XMLMetaModelSlot.class.getPackage().getName());
 
-		public XSDModelSlotImpl() {
+		public XMLModelSlotImpl() {
 			super();
 		}
 

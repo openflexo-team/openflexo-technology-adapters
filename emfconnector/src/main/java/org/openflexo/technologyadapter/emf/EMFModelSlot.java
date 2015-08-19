@@ -44,13 +44,26 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviourParameters;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.annotations.DeclareInspectorEntries;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
+import org.openflexo.foundation.ontology.fml.ClassParameter;
+import org.openflexo.foundation.ontology.fml.IndividualParameter;
+import org.openflexo.foundation.ontology.fml.PropertyParameter;
+import org.openflexo.foundation.ontology.fml.inspector.ClassInspectorEntry;
+import org.openflexo.foundation.ontology.fml.inspector.DataPropertyInspectorEntry;
+import org.openflexo.foundation.ontology.fml.inspector.IndividualInspectorEntry;
+import org.openflexo.foundation.ontology.fml.inspector.ObjectPropertyInspectorEntry;
+import org.openflexo.foundation.ontology.fml.inspector.PropertyInspectorEntry;
+import org.openflexo.foundation.ontology.fml.rt.ConceptActorReference;
+import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyModelSlot;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
@@ -78,16 +91,21 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 @DeclareFlexoRoles({ EMFObjectIndividualRole.class, EMFClassClassRole.class, EMFEnumClassRole.class })
 @DeclareEditionActions({ AddEMFObjectIndividual.class })
 @DeclareFetchRequests({ SelectEMFObjectIndividual.class })
+@DeclareFlexoBehaviourParameters({ ClassParameter.class, IndividualParameter.class, PropertyParameter.class })
+@DeclareInspectorEntries({ ClassInspectorEntry.class, IndividualInspectorEntry.class, PropertyInspectorEntry.class,
+		DataPropertyInspectorEntry.class, ObjectPropertyInspectorEntry.class })
+@DeclareActorReferences({ ConceptActorReference.class })
 @ModelEntity
 @ImplementationClass(EMFModelSlot.EMFModelSlotImpl.class)
 @XMLElement
 @FML("EMFModelSlot")
-public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel> {
+public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaModel, EMFTechnologyAdapter> {
 
 	@Override
 	public EMFTechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public static abstract class EMFModelSlotImpl extends TypeAwareModelSlotImpl<EMFModel, EMFMetaModel> implements EMFModelSlot {
+	public static abstract class EMFModelSlotImpl extends FlexoOntologyModelSlotImpl<EMFModel, EMFMetaModel, EMFTechnologyAdapter>
+			implements EMFModelSlot {
 
 		private static final Logger logger = Logger.getLogger(EMFModelSlot.class.getPackage().getName());
 
@@ -156,8 +174,8 @@ public interface EMFModelSlot extends TypeAwareModelSlot<EMFModel, EMFMetaModel>
 		@Override
 		public EMFModelResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewEMFModel((FileSystemBasedResourceCenter) resourceCenter, relativePath,
-					filename, modelUri, (EMFMetaModelResource) metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewEMFModel((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
+					modelUri, (EMFMetaModelResource) metaModelResource);
 		}
 
 		@Override

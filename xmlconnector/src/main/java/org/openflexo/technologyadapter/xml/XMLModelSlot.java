@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml;
 
 import java.io.File;
@@ -111,7 +110,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 	// public static abstract class XMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<XMLURIProcessor> implements
 	// XMLModelSlot {
 	// TODO : check for multiple inheritance issues in PAMELA
-	public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel> implements XMLModelSlot {
+	public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel>implements XMLModelSlot {
 
 		private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
 
@@ -314,13 +313,13 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			XMLFileResource returned = null;
 
 			if (resourceCenter instanceof FileSystemBasedResourceCenter) {
-				File xmlFile = new File(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory(), relativePath
-						+ System.getProperty("file.separator") + filename);
+				File xmlFile = new File(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory(),
+						relativePath + System.getProperty("file.separator") + filename);
 
 				modelUri = xmlFile.toURI().toString();
 
-				XMLModelRepository modelRepository = resourceCenter
-						.getRepository(XMLModelRepository.class, getModelSlotTechnologyAdapter());
+				XMLModelRepository modelRepository = resourceCenter.getRepository(XMLModelRepository.class,
+						getModelSlotTechnologyAdapter());
 
 				return createEmptyXMLFileResource(xmlFile, modelRepository, (XSDMetaModelResource) metaModelResource);
 			}
@@ -331,8 +330,8 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		private XMLFileResource createEmptyXMLFileResource(File xmlFile, XMLModelRepository modelRepository,
 				XSDMetaModelResource metaModelResource) {
 
-			XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile, (XMLTechnologyContextManager) this
-					.getModelSlotTechnologyAdapter().getTechnologyContextManager());
+			XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile,
+					(XMLTechnologyContextManager) this.getModelSlotTechnologyAdapter().getTechnologyContextManager());
 
 			RepositoryFolder<XMLFileResource> folder;
 			try {

@@ -18,6 +18,8 @@
 			<classifier>tests</classifier>
 			<scope>test</scope>
 		</dependency>
+		<!-- Dependancy to flexo-ontology is really weak (only required by some role and editionaction): 
+		i think this is no more required unless XMLModelSlot is a FlexoOntologyModelSlot, please refactor this -->
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ontology</artifactId>
