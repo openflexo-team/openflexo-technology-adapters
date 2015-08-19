@@ -75,6 +75,10 @@ public class OWLOntologyVirtualModelNature extends FlexoOntologyVirtualModelNatu
 	@Override
 	public boolean hasNature(AbstractVirtualModel<?> virtualModel) {
 
+		if (virtualModel == null) {
+			return false;
+		}
+
 		// VirtualModel should have one and only one TypedDiagramModelSlot
 		if (virtualModel.getModelSlots(OWLModelSlot.class).size() > 0) {
 			return true;
