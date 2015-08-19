@@ -124,7 +124,8 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 	@Override
 	public OWLTechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public static abstract class OWLModelSlotImpl extends TypeAwareModelSlotImpl<OWLOntology, OWLOntology> implements OWLModelSlot {
+	public static abstract class OWLModelSlotImpl extends FlexoOntologyModelSlotImpl<OWLOntology, OWLOntology, OWLTechnologyAdapter>
+			implements OWLModelSlot {
 
 		private static final Logger logger = Logger.getLogger(OWLModelSlot.class.getPackage().getName());
 
@@ -220,8 +221,8 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		@Override
 		public OWLOntologyResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewOntology((FileSystemBasedResourceCenter) resourceCenter, relativePath,
-					filename, modelUri, (OWLOntologyResource) metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewOntology((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
+					modelUri, (OWLOntologyResource) metaModelResource);
 		}
 
 		/**
