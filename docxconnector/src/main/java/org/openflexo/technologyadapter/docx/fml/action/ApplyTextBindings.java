@@ -57,12 +57,11 @@ public interface ApplyTextBindings extends DocXFragmentAction {
 
 	public static abstract class ApplyTextBindingsImpl extends DocXFragmentActionImpl implements ApplyTextBindings {
 
+		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(ApplyTextBindings.class.getPackage().getName());
 
 		@Override
-		public DocXFragment execute(FlexoBehaviourAction action) throws FlexoException {
-
-			System.out.println("Prout, j'applique ApplyTextBindings");
+		public DocXFragment execute(FlexoBehaviourAction<?, ?, ?> action) throws FlexoException {
 
 			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) action.getFlexoConceptInstance()
 					.getActorReference(getFlexoRole());

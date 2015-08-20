@@ -117,7 +117,6 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
-import org.openflexo.technologyadapter.docx.model.DocXRun;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
@@ -633,8 +632,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		TextSelection<DocXDocument, DocXTechnologyAdapter> titleSelection = bookDescriptionFragment.makeTextSelection(titleParagraph, 0, 1);
 		assertEquals("Les misérables", titleSelection.getRawText());
 
-		DocXRun run1 = (DocXRun) titleParagraph.getRuns().get(0);
-		TextBinding titleBinding = sectionRole.makeTextBinding(run1, new DataBinding<String>("book.title"));
+		TextBinding titleBinding = sectionRole.makeTextBinding(titleSelection, new DataBinding<String>("book.title"));
 		assertTrue(titleBinding.getValue().isValid());
 
 		// System.out.println("BM=" + sectionRole.getBindingModel());
