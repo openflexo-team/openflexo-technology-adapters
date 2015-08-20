@@ -67,7 +67,7 @@ public interface DocXRun extends FlexoRun<DocXDocument, DocXTechnologyAdapter> {
 	 */
 	public void updateFromR(R r, DocXFactory factory);
 
-	public static abstract class DocXRunImpl extends FlexoRunImpl<DocXDocument, DocXTechnologyAdapter> implements DocXRun {
+	public static abstract class DocXRunImpl extends FlexoRunImpl<DocXDocument, DocXTechnologyAdapter>implements DocXRun {
 
 		private Text text;
 
@@ -78,8 +78,9 @@ public interface DocXRun extends FlexoRun<DocXDocument, DocXTechnologyAdapter> {
 		@Override
 		public void setR(R r) {
 			if ((r == null && getR() != null) || (r != null && !r.equals(getR()))) {
-				if (r != null && getResourceData() != null && getResourceData().getResource() != null) {
-					updateFromR(r, ((DocXDocumentResource) getResourceData().getResource()).getFactory());
+				if (r != null) {
+					updateFromR(r, (getResourceData() != null && getResourceData().getResource() != null
+							? ((DocXDocumentResource) getResourceData().getResource()).getFactory() : null));
 				}
 			}
 		}
@@ -139,6 +140,10 @@ public interface DocXRun extends FlexoRun<DocXDocument, DocXTechnologyAdapter> {
 			return copiedR;
 		}
 
+		@Override
+		public String toString() {
+			return "DocXRun\n" + (getR() != null ? DocXUtils.printContents(getR(), 2) : "null");
+		}
 	}
 
 }

@@ -52,8 +52,8 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
-import org.openflexo.technologyadapter.docx.model.DocXDocument.DocXDocumentImpl;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
+import org.openflexo.technologyadapter.docx.model.DocXUtils;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 @ModelEntity
@@ -72,7 +72,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 	@Setter(FILE_KEY)
 	public void setFile(File aFile);*/
 
-	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument> implements GenerateDocXDocument {
+	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument>implements GenerateDocXDocument {
 
 		private static final Logger logger = Logger.getLogger(GenerateDocXDocument.class.getPackage().getName());
 
@@ -91,7 +91,8 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				DocXDocumentResource templateResource = getModelSlot().getTemplateResource();
 				DocXDocument templateDocument = templateResource.getResourceData(null);
 
-				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(action);
+				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
+						action);
 
 				FlexoResource<DocXDocument> generatedResource = msInstance.getResource();
 
@@ -114,7 +115,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 
 				generatedDocument = generatedResource.getResourceData(null);
 
-				for (P p : DocXDocumentImpl.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
+				for (P p : DocXUtils.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
 						P.class)) {
 					String oldId = p.getParaId();
 					DocXElement templateElement = (DocXElement) templateDocument.getElementWithIdentifier(oldId);

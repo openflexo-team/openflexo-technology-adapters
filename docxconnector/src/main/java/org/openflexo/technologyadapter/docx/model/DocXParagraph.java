@@ -70,6 +70,14 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 
 	public P cloneP();
 
+	// TRICKY AREA
+	// We override here the PAMELA definition of this property by declaring CloningStrategy as IGNORE
+	// We do that because P is beeing cloned and the setting of new P value will cause creation of DocXRun
+	// We definitely want to avoid double instanciation of DocXRun in a cloned paragraph !!!!
+	@Override
+	@CloningStrategy(StrategyType.IGNORE)
+	public List<FlexoRun<DocXDocument, DocXTechnologyAdapter>> getRuns();
+
 	/**
 	 * This is the starting point for updating {@link DocXParagraph} with the paragraph provided from docx4j library<br>
 	 * Take care that the supplied p is the object we should update with, but that {@link #getP()} is unsafe in this context, because return
@@ -77,7 +85,10 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
+
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(DocXParagraphImpl.class.getPackage().getName());
 
 		private final Map<R, DocXRun> runs = new HashMap<R, DocXRun>();
 
@@ -120,12 +131,12 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 					if (run == null) {
 						// System.out.println("# Create new run for " + o);
 						run = factory.makeNewDocXRun((R) o);
-						insertRunAtIndex(run, currentIndex);
+						internallyInsertRunAtIndex(run, currentIndex);
 					} else {
 						// OK run was found
 						if (getRuns().indexOf(run) != currentIndex) {
 							// Paragraph was existing but is not at the right position
-							moveRunToIndex(run, currentIndex);
+							internallyMoveRunToIndex(run, currentIndex);
 						} else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
@@ -137,7 +148,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 
 			for (FlexoRun<DocXDocument, DocXTechnologyAdapter> run : runsToRemove) {
 				// System.out.println("# Remove run for " + e);
-				removeFromRuns(run);
+				internallyRemoveFromRuns(run);
 			}
 
 		}
@@ -206,13 +217,42 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 
 		}
 
+		/**
+		 * Insert run to this {@link DocXParagraph} at supplied index (public API).<br>
+		 * Element will be inserted to underlying {@link P} and {@link DocXParagraph} will be updated accordingly
+		 */
 		@Override
 		public void insertRunAtIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
+			System.out.println("Add run " + aRun.getText());
+			P p = getP();
+			if (aRun instanceof DocXRun) {
+				R r = ((DocXRun) aRun).getR();
+				p.getContent().add(index, r);
+				internallyInsertRunAtIndex(aRun, index);
+			} else {
+				logger.warning("Unexpected run: " + aRun);
+			}
+		}
+
+		/**
+		 * Internally used to update {@link DocXParagraph} object according to wrapped model in the context of run inserting (calling this
+		 * assume that added run is already present in underlying {@link P})
+		 * 
+		 * @param addedElement
+		 */
+		private void internallyInsertRunAtIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
+
 			performSuperAdder(RUNS_KEY, aRun, index);
 			internallyHandleRunAdding(aRun);
 		}
 
+		/**
+		 * Internally handle run adding
+		 * 
+		 * @param aRun
+		 */
 		private void internallyHandleRunAdding(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
+
 			if (aRun instanceof DocXRun) {
 				DocXRun run = (DocXRun) aRun;
 				if (run.getR() != null) {
@@ -221,28 +261,93 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 			}
 		}
 
+		/**
+		 * Move run in this {@link DocXParagraph} at supplied index (public API).<br>
+		 * Element will be moved inside underlying {@link P} and {@link DocXParagraph} will be updated accordingly
+		 */
 		@Override
 		public void moveRunToIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
+			internallyMoveRunToIndex(aRun, index);
+		}
+
+		/**
+		 * Internally used to update {@link DocXParagraph} object according to wrapped model in the context of run moving (calling this
+		 * assume that moved run has already been moved in underlying {@link P})
+		 * 
+		 * @param addedElement
+		 */
+		private void internallyMoveRunToIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
 			List<FlexoRun<DocXDocument, DocXTechnologyAdapter>> runs = getRuns();
 			runs.remove(aRun);
 			runs.add(index, aRun);
 		}
 
+		/**
+		 * Add run to this {@link DocXParagraph} (public API).<br>
+		 * Element will be added to underlying {@link P} and {@link DocXParagraph} will be updated accordingly
+		 */
 		@Override
 		public void addToRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
-			performSuperAdder(RUNS_KEY, aRun);
-			internallyHandleRunAdding(aRun);
+
+			/*if (isCreatedByCloning()) {
+				// internallyAddToRuns(aRun);
+				return;
+			}*/
+
+			P p = getP();
+			if (aRun instanceof DocXRun) {
+				R r = ((DocXRun) aRun).getR();
+				p.getContent().add(r);
+				internallyAddToRuns(aRun);
+			} else {
+				logger.warning("Unexpected run: " + aRun);
+			}
 		}
 
+		/**
+		 * Internally used to update {@link DocXParagraph} object according to wrapped model in the context of run adding (calling this
+		 * assume that added run is already present in underlying {@link P})
+		 * 
+		 * @param addedRun
+		 */
+		private void internallyAddToRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> addedRun) {
+			performSuperAdder(RUNS_KEY, addedRun);
+			internallyHandleRunAdding(addedRun);
+		}
+
+		/**
+		 * Remove run from this {@link DocXParagraph} (public API).<br>
+		 * Element will be removed from underlying {@link P} and {@link DocXParagraph} will be updated accordingly
+		 */
 		@Override
 		public void removeFromRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
+
+			P p = getP();
 			if (aRun instanceof DocXRun) {
-				DocXRun run = (DocXRun) aRun;
+				R r = ((DocXRun) aRun).getR();
+				System.out.println("OK, je dois virer " + r);
+				System.out.println("c'est bien dedans ? : " + p.getContent().contains(r));
+				p.getContent().remove(r);
+				internallyRemoveFromRuns(aRun);
+			} else {
+				logger.warning("Unexpected run: " + aRun);
+			}
+		}
+
+		/**
+		 * Internally used to update {@link DocXParagraph} object according to wrapped model in the context of run removing (calling this
+		 * assume that removed run has already been removed from underlying {@link P})
+		 * 
+		 * @param removedRun
+		 */
+		private void internallyRemoveFromRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> removedRun) {
+			if (removedRun instanceof DocXRun) {
+				DocXRun run = (DocXRun) removedRun;
 				if (run.getR() != null) {
 					runs.remove(run.getR());
 				}
 			}
-			performSuperRemover(RUNS_KEY, aRun);
+			performSuperRemover(RUNS_KEY, removedRun);
 		}
 
 	}

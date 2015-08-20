@@ -24,7 +24,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.docx4j.wml.ContentAccessor;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
@@ -99,7 +98,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 		InsertAfter, InsertBefore, InsertAfterLastChild, EndOfDocument
 	}
 
-	public static abstract class AddDocXFragmentImpl extends DocXActionImpl<DocXFragment> implements AddDocXFragment {
+	public static abstract class AddDocXFragmentImpl extends DocXActionImpl<DocXFragment>implements AddDocXFragment {
 
 		private static final Logger logger = Logger.getLogger(AddDocXFragment.class.getPackage().getName());
 
@@ -160,8 +159,8 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 				insertIndex = document.getElements().indexOf(location) - 1;
 				break;
 			case InsertAfterLastChild:
-				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> lastChild = location.getChildrenElements().size() > 0 ? location
-						.getChildrenElements().get(location.getChildrenElements().size() - 1) : null;
+				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> lastChild = location.getChildrenElements().size() > 0
+						? location.getChildrenElements().get(location.getChildrenElements().size() - 1) : null;
 				if (lastChild != null) {
 					insertIndex = document.getElements().indexOf(lastChild);
 				} else {
@@ -182,34 +181,15 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 				DocXElement startElement = null;
 				DocXElement endElement = null;
 
-				/*for (DocXElement element : getFragment().getElements()) {
-					if (element instanceof DocXParagraph) {
-						System.out.println("*** element " + element + " p=" + ((DocXParagraph) element).getP());
-					}
-				}*/
-
 				/*System.out.println("BEFORE addDocXFragment");
 				System.out.println("document=" + document);
-				System.out.println("contents=\n" + document.debugStructuredContents());
-				System.out.println("template=" + getFragment().getFlexoDocument());
-				System.out.println("contents=\n" + getFragment().getFlexoDocument().debugStructuredContents());*/
+				System.out.println("contents=\n" + document.debugStructuredContents());*/
 
 				for (DocXElement element : getFragment().getElements()) {
 
 					DocXElement clonedElement = (DocXElement) element.cloneObject();
 					clonedElement.setBaseIdentifier(element.getIdentifier());
 
-					/*	System.out.println(
-								"> Template element: " + element + " id=" + element.getIdentifier() + " of " + element.getFlexoDocument());
-						System.out.println("> Cloned element: " + clonedElement + " id=" + clonedElement.getIdentifier() + " of "
-								+ clonedElement.getFlexoDocument());
-					
-						if (element instanceof DocXParagraph) {
-							System.out.println(">>> CLONED paragraph " + clonedElement + " p=" + ((DocXParagraph) clonedElement).getP());
-						}*/
-
-					ContentAccessor parent = document.getWordprocessingMLPackage().getMainDocumentPart();
-					clonedElement.appendToWordprocessingMLPackage(parent, insertIndex);
 					document.insertElementAtIndex(clonedElement, insertIndex);
 
 					insertIndex++;
@@ -222,9 +202,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 
 				/*System.out.println("AFTER addDocXFragment");
 				System.out.println("document=" + document);
-				System.out.println("contents=\n" + document.debugStructuredContents());
-				System.out.println("template=" + getFragment().getFlexoDocument());
-				System.out.println("contents=\n" + getFragment().getFlexoDocument().debugStructuredContents());*/
+				System.out.println("contents=\n" + document.debugStructuredContents());*/
 
 				return document.getFragment(startElement, endElement);
 			}

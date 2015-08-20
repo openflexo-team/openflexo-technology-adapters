@@ -99,7 +99,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	}
 
 	@Override
-	protected DocXRun makeRun() {
+	public DocXRun makeRun() {
 		return newInstance(DocXRun.class);
 	}
 

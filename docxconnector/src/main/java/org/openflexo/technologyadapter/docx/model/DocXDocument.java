@@ -25,8 +25,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.xml.bind.JAXBElement;
-
 import org.docx4j.model.styles.Node;
 import org.docx4j.model.styles.StyleTree;
 import org.docx4j.model.styles.StyleTree.AugmentedStyle;
@@ -35,7 +33,6 @@ import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.P;
 import org.docx4j.wml.Style;
-import org.docx4j.wml.Text;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
@@ -49,7 +46,6 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
-import org.openflexo.toolbox.StringUtils;
 
 /**
  * Implementation of {@link FlexoDocument} for {@link DocXTechnologyAdapter}
@@ -93,10 +89,10 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 	public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
 			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXDocumentImpl.class
-				.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(DocXDocumentImpl.class.getPackage().getName());
 
 		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
 
@@ -154,12 +150,12 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 					if (paragraph == null) {
 						// System.out.println("# Create new paragraph for " + o);
 						paragraph = factory.makeNewDocXParagraph((P) o);
-						insertElementAtIndex(paragraph, currentIndex);
+						internallyInsertElementAtIndex(paragraph, currentIndex);
 					} else {
 						// OK paragraph was found
 						if (getElements().indexOf(paragraph) != currentIndex) {
 							// Paragraph was existing but is not at the right position
-							moveElementToIndex(paragraph, currentIndex);
+							internallyMoveElementToIndex(paragraph, currentIndex);
 						} else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
@@ -171,7 +167,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : elementsToRemove) {
 				// System.out.println("# Remove paragraph for " + e);
-				removeFromElements(e);
+				internallyRemoveFromElements(e);
 			}
 
 			updateStylesFromWmlPackage(wpmlPackage, factory);
@@ -293,79 +289,17 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 		@Override
 		public String debugContents() {
-			return printContents(getWordprocessingMLPackage().getMainDocumentPart(), 0);
+			return DocXUtils.printContents(getWordprocessingMLPackage().getMainDocumentPart(), 0);
 		}
 
 		@Override
 		public String debugStructuredContents() {
 			StringBuffer result = new StringBuffer();
 			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : getRootElements()) {
-				result.append(debugStructuredContents(e, 1));
+				result.append(DocXUtils.debugStructuredContents(e, 1));
 			}
 			return result.toString();
 		}
-
-		private String debugStructuredContents(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> element, int indent) {
-			StringBuffer result = new StringBuffer();
-			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + element
-					+ (element instanceof DocXParagraph ? ((DocXParagraph) element).getRawTextPreview() : "") + "\n");
-			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
-				result.append(debugStructuredContents(e, indent + 1));
-			}
-			return result.toString();
-		}
-
-		private String printContents(Object obj, int indent) {
-			StringBuffer result = new StringBuffer();
-			if (obj instanceof JAXBElement)
-				obj = ((JAXBElement<?>) obj).getValue();
-
-			String objectAsString = obj.toString();
-			if (obj instanceof Text) {
-				objectAsString = objectAsString + "[" + ((Text) obj).getValue() + "]";
-			}
-
-			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + "[" + obj.getClass().getSimpleName() + "] "
-					+ objectAsString + "\n");
-
-			if (obj instanceof ContentAccessor) {
-				indent++;
-				List<?> children = ((ContentAccessor) obj).getContent();
-				for (Object child : children) {
-					result.append(printContents(child, indent));
-				}
-
-			}
-			return result.toString();
-		}
-
-		public static <T> List<T> getAllElementsFromObject(Object obj, Class<T> toSearch) {
-			List<T> result = new ArrayList<T>();
-			if (obj instanceof JAXBElement)
-				obj = ((JAXBElement<?>) obj).getValue();
-
-			if (toSearch.isAssignableFrom(obj.getClass())) {
-				result.add((T) obj);
-			} else if (obj instanceof ContentAccessor) {
-				List<?> children = ((ContentAccessor) obj).getContent();
-				for (Object child : children) {
-					result.addAll(getAllElementsFromObject(child, toSearch));
-				}
-
-			}
-			return result;
-		}
-
-		/*private void replacePlaceholder(WordprocessingMLPackage template, String name, String placeholder) {
-			List<Object> texts = getAllElementFromObject(template.getMainDocumentPart(), Text.class);
-		
-			for (Object text : texts) {
-				Text textElement = (Text) text;
-				if (textElement.getValue().equals(placeholder)) {
-					textElement.setValue(name);
-				}
-			}
-		}*/
 
 		@Override
 		public DocXFactory getFactory() {
@@ -388,12 +322,33 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			}
 		}
 
+		/**
+		 * Insert element to this {@link FlexoDocument} at supplied index (public API).<br>
+		 * Element will be inserted to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
 		@Override
 		public void insertElementAtIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
-			performSuperAdder(ELEMENTS_KEY, anElement, index);
-			internallyHandleElementAdding(anElement);
+			ContentAccessor parent = getWordprocessingMLPackage().getMainDocumentPart();
+			((DocXElement) anElement).appendToWordprocessingMLPackage(parent, index);
+			internallyInsertElementAtIndex(anElement, index);
 		}
 
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of element inserting (calling
+		 * this assume that added element is already present in underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param addedElement
+		 */
+		private void internallyInsertElementAtIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> addedElement, int index) {
+			performSuperAdder(ELEMENTS_KEY, addedElement, index);
+			internallyHandleElementAdding(addedElement);
+		}
+
+		/**
+		 * Internally used to handle element adding in wrapping model
+		 * 
+		 * @param anElement
+		 */
 		private void internallyHandleElementAdding(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
 			if (anElement instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) anElement;
@@ -411,8 +366,23 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			notifyRootElementsChanged();
 		}
 
+		/**
+		 * Moved element to this {@link FlexoDocument} at supplied index (public API).<br>
+		 * Element will be moved inside underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
 		@Override
 		public void moveElementToIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
+			// TODO: implement moving in WordProcessingMLPackage
+			internallyMoveElementToIndex(anElement, index);
+		}
+
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of element moving (calling this
+		 * assume that moved element has already been moved in underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param addedElement
+		 */
+		private void internallyMoveElementToIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
 			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> elements = getElements();
 			elements.remove(anElement);
 			elements.add(index, anElement);
@@ -420,26 +390,60 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			notifyRootElementsChanged();
 		}
 
+		/**
+		 * Add element to this {@link FlexoDocument} (public API).<br>
+		 * Element will be added to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
 		@Override
 		public void addToElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
-			performSuperAdder(ELEMENTS_KEY, anElement);
-			internallyHandleElementAdding(anElement);
+			if (isCreatedByCloning()) {
+				internallyAddToElements(anElement);
+				return;
+			}
+			// TODO: implement adding in WordProcessingMLPackage
+			internallyAddToElements(anElement);
 		}
 
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of element adding (calling this
+		 * assume that added element is already present in underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param addedElement
+		 */
+		private void internallyAddToElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> addedElement) {
+			performSuperAdder(ELEMENTS_KEY, addedElement);
+			internallyHandleElementAdding(addedElement);
+		}
+
+		/**
+		 * Remove element from this {@link FlexoDocument} (public API).<br>
+		 * Element will be removed to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
 		@Override
 		public void removeFromElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
-			if (anElement instanceof DocXParagraph) {
-				DocXParagraph paragraph = (DocXParagraph) anElement;
+			// TODO: implement removing in WordProcessingMLPackage
+			internallyRemoveFromElements(anElement);
+		}
+
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of element removing (calling
+		 * this assume that removed element has already been removed from underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param removedElement
+		 */
+		private void internallyRemoveFromElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> removedElement) {
+			if (removedElement instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) removedElement;
 				if (paragraph.getP() != null) {
 					paragraphs.remove(paragraph.getP());
 				}
 			}
-			if (anElement.getIdentifier() != null) {
-				elementsForIdentifier.remove(anElement.getIdentifier());
+			if (removedElement.getIdentifier() != null) {
+				elementsForIdentifier.remove(removedElement.getIdentifier());
 			} else {
-				logger.warning("removeFromElements() called for element with null identifier: " + anElement);
+				logger.warning("removeFromElements() called for element with null identifier: " + removedElement);
 			}
-			performSuperRemover(ELEMENTS_KEY, anElement);
+			performSuperRemover(ELEMENTS_KEY, removedElement);
 			invalidateRootElements();
 			notifyRootElementsChanged();
 		}

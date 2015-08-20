@@ -110,9 +110,9 @@ import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
+import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.LocationSemantics;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ApplyTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
-import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.LocationSemantics;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
@@ -629,14 +629,43 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals(2, typeParagraph.getRuns().size());
 		assertEquals(10, descriptionParagraph.getRuns().size());
 
+		// Title
 		TextSelection<DocXDocument, DocXTechnologyAdapter> titleSelection = bookDescriptionFragment.makeTextSelection(titleParagraph, 0, 1);
 		assertEquals("Les misérables", titleSelection.getRawText());
-
-		TextBinding titleBinding = sectionRole.makeTextBinding(titleSelection, new DataBinding<String>("book.title"));
+		TextBinding<DocXDocument, DocXTechnologyAdapter> titleBinding = sectionRole.makeTextBinding(titleSelection,
+				new DataBinding<String>("book.title"));
 		assertTrue(titleBinding.getValue().isValid());
 
-		// System.out.println("BM=" + sectionRole.getBindingModel());
-		// System.out.println("BM=" + binding1.getBindingModel());
+		// Author
+		TextSelection<DocXDocument, DocXTechnologyAdapter> authorSelection = bookDescriptionFragment.makeTextSelection(authorParagraph, 1,
+				2, 1, -1);
+		assertEquals("Victor Hugo", authorSelection.getRawText());
+		TextBinding<DocXDocument, DocXTechnologyAdapter> authorBinding = sectionRole.makeTextBinding(authorSelection,
+				new DataBinding<String>("book.author"));
+		assertTrue(authorBinding.getValue().isValid());
+
+		// Edition
+		TextSelection<DocXDocument, DocXTechnologyAdapter> editionSelection = bookDescriptionFragment.makeTextSelection(editionParagraph, 2,
+				2);
+		assertEquals("Dunod", editionSelection.getRawText());
+		TextBinding<DocXDocument, DocXTechnologyAdapter> editionBinding = sectionRole.makeTextBinding(editionSelection,
+				new DataBinding<String>("book.edition"));
+		assertTrue(editionBinding.getValue().isValid());
+
+		// Type
+		TextSelection<DocXDocument, DocXTechnologyAdapter> typeSelection = bookDescriptionFragment.makeTextSelection(typeParagraph, 1, 2, 1,
+				-1);
+		assertEquals("Roman", typeSelection.getRawText());
+		TextBinding<DocXDocument, DocXTechnologyAdapter> typeBinding = sectionRole.makeTextBinding(typeSelection,
+				new DataBinding<String>("book.type"));
+		assertTrue(typeBinding.getValue().isValid());
+
+		// Description
+		TextSelection<DocXDocument, DocXTechnologyAdapter> descriptionSelection = bookDescriptionFragment
+				.makeTextSelection(descriptionParagraph, 0, 9);
+		TextBinding<DocXDocument, DocXTechnologyAdapter> descriptionBinding = sectionRole.makeTextBinding(descriptionSelection,
+				new DataBinding<String>("book.description"));
+		assertTrue(descriptionBinding.getValue().isValid());
 
 		CreateFlexoBehaviour createCreationScheme = CreateFlexoBehaviour.actionType.makeNewAction(bookDescriptionSection, null, editor);
 		createCreationScheme.setFlexoBehaviourClass(CreationScheme.class);
