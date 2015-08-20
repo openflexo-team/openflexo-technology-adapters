@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.docx.fml.action;
+package org.openflexo.technologyadapter.docx.fml.editionaction;
 
 import java.lang.reflect.Type;
 import java.util.logging.Logger;

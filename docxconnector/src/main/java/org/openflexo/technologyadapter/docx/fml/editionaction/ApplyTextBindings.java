@@ -36,32 +36,39 @@
  * 
  */
 
-package org.openflexo.technologyadapter.docx.fml.action;
+package org.openflexo.technologyadapter.docx.fml.editionaction;
 
-import org.openflexo.foundation.fml.editionaction.RoleSpecificAction;
+import java.util.logging.Logger;
+
+import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.doc.fml.FragmentActorReference;
+import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.technologyadapter.docx.DocXModelSlot;
-import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
-/**
- * Abstract action applicable on a {@link DocXFragmentRole}
- * 
- * @author sylvain
- * 
- */
+@ModelEntity
+@ImplementationClass(ApplyTextBindings.ApplyTextBindingsImpl.class)
+@XMLElement
+@FML("ApplyTextBindings")
+public interface ApplyTextBindings extends DocXFragmentAction {
 
-@ModelEntity(isAbstract = true)
-@ImplementationClass(DocXFragmentAction.DocXFragmentActionImpl.class)
-public interface DocXFragmentAction extends RoleSpecificAction<DocXFragmentRole, DocXModelSlot, DocXFragment>, DocXAction<DocXFragment> {
+	public static abstract class ApplyTextBindingsImpl extends DocXFragmentActionImpl implements ApplyTextBindings {
 
-	public static abstract class DocXFragmentActionImpl extends RoleSpecificActionImpl<DocXFragmentRole, DocXModelSlot, DocXFragment>
-			implements DocXFragmentAction {
+		@SuppressWarnings("unused")
+		private static final Logger logger = Logger.getLogger(ApplyTextBindings.class.getPackage().getName());
 
 		@Override
-		public Class<DocXFragment> getAssignableType() {
-			return DocXFragment.class;
+		public DocXFragment execute(FlexoBehaviourAction<?, ?, ?> action) throws FlexoException {
+
+			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) action.getFlexoConceptInstance()
+					.getActorReference(getFlexoRole());
+
+			actorReference.applyDataToDocument();
+
+			return actorReference.getModellingElement();
 		}
 	}
 }

@@ -36,39 +36,28 @@
  * 
  */
 
-package org.openflexo.technologyadapter.docx.fml.action;
+package org.openflexo.technologyadapter.docx.fml.editionaction;
 
-import java.util.logging.Logger;
-
-import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.doc.fml.FragmentActorReference;
-import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.docx.model.DocXFragment;
+import org.openflexo.technologyadapter.docx.DocXModelSlot;
+import org.openflexo.technologyadapter.docx.model.DocXObject;
 
-@ModelEntity
-@ImplementationClass(ApplyTextBindings.ApplyTextBindingsImpl.class)
-@XMLElement
-@FML("ApplyTextBindings")
-public interface ApplyTextBindings extends DocXFragmentAction {
+/**
+ * Abstract action for {@link DocXModelSlot}
+ * 
+ * @author sylvain
+ * 
+ * @param <T>
+ *            docx object type
+ */
 
-	public static abstract class ApplyTextBindingsImpl extends DocXFragmentActionImpl implements ApplyTextBindings {
+@ModelEntity(isAbstract = true)
+@ImplementationClass(DocXAction.DocXActionImpl.class)
+public interface DocXAction<T extends DocXObject> extends TechnologySpecificAction<DocXModelSlot, T> {
 
-		@SuppressWarnings("unused")
-		private static final Logger logger = Logger.getLogger(ApplyTextBindings.class.getPackage().getName());
-
-		@Override
-		public DocXFragment execute(FlexoBehaviourAction<?, ?, ?> action) throws FlexoException {
-
-			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) action.getFlexoConceptInstance()
-					.getActorReference(getFlexoRole());
-
-			actorReference.applyDataToDocument();
-
-			return actorReference.getModellingElement();
-		}
+	public static abstract class DocXActionImpl<T extends DocXObject> extends TechnologySpecificActionImpl<DocXModelSlot, T> implements
+			DocXAction<T> {
 	}
 }
