@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.docx.fml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -65,6 +66,7 @@ import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceParameter;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.PrimitiveRole.PrimitiveType;
 import org.openflexo.foundation.fml.TextFieldParameter;
 import org.openflexo.foundation.fml.ViewPoint;
@@ -88,6 +90,7 @@ import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlotInstanceConfiguration;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
@@ -113,6 +116,7 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.LocationSemantics;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ApplyTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
+import org.openflexo.technologyadapter.docx.fml.editionaction.ReinjectTextBindings;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
@@ -164,8 +168,13 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	public static DocXFragmentRole booksDescriptionFragmentRole;
 	public static DocXFragmentRole conclusionFragmentRole;
 	public static FlexoConcept bookDescriptionSection;
+	public static CreationScheme bookDescriptionSectionCreationScheme;
+	public static ActionScheme bookDescriptionSectionUpdateScheme;
+	public static ActionScheme bookDescriptionSectionReinjectScheme;
+
 	public static ActionScheme generateDocumentActionScheme;
 	public static ActionScheme updateDocumentActionScheme;
+	public static ActionScheme reinjectFromDocumentActionScheme;
 
 	/**
 	 * Initialize an environment with DocX technology adapter, perform some checks
@@ -550,6 +559,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		generateDocumentActionScheme = createGenerateDocument();
 		updateDocumentActionScheme = createUpdateDocument();
+		reinjectFromDocumentActionScheme = createReinjectFromDocument();
 
 		documentVirtualModel.getResource().save(null);
 
@@ -667,11 +677,12 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 				new DataBinding<String>("book.description"));
 		assertTrue(descriptionBinding.getValue().isValid());
 
+		// Create bookDescriptionSectionCreationScheme
 		CreateFlexoBehaviour createCreationScheme = CreateFlexoBehaviour.actionType.makeNewAction(bookDescriptionSection, null, editor);
 		createCreationScheme.setFlexoBehaviourClass(CreationScheme.class);
 		createCreationScheme.setFlexoBehaviourName("createBookDescriptionSection");
 		createCreationScheme.doAction();
-		CreationScheme bookDescriptionSectionCreationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
+		bookDescriptionSectionCreationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
 
 		CreateFlexoBehaviourParameter createParameter = CreateFlexoBehaviourParameter.actionType
 				.makeNewAction(bookDescriptionSectionCreationScheme, null, editor);
@@ -714,10 +725,46 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertTrue(bookDescriptionSection.getCreationSchemes().contains(bookDescriptionSectionCreationScheme));
 
+		// Create bookDescriptionSectionUpdateScheme
+		CreateFlexoBehaviour createUpdateScheme = CreateFlexoBehaviour.actionType.makeNewAction(bookDescriptionSection, null, editor);
+		createUpdateScheme.setFlexoBehaviourClass(ActionScheme.class);
+		createUpdateScheme.setFlexoBehaviourName("updateBookDescriptionSection");
+		createUpdateScheme.doAction();
+		bookDescriptionSectionUpdateScheme = (ActionScheme) createUpdateScheme.getNewFlexoBehaviour();
+
+		CreateEditionAction applyTextBindingsAction2 = CreateEditionAction.actionType
+				.makeNewAction(bookDescriptionSectionUpdateScheme.getControlGraph(), null, editor);
+		applyTextBindingsAction2.setFlexoRole(sectionRole);
+		applyTextBindingsAction2.setEditionActionClass(ApplyTextBindings.class);
+		applyTextBindingsAction2.doAction();
+		assertTrue(applyTextBindingsAction2.hasActionExecutionSucceeded());
+		ApplyTextBindings applyTextBindings2 = (ApplyTextBindings) applyTextBindingsAction.getNewEditionAction();
+		assertNotNull(applyTextBindings2);
+
+		assertTrue(bookDescriptionSection.getActionSchemes().contains(bookDescriptionSectionUpdateScheme));
+
+		// Create bookDescriptionSectionUpdateScheme
+		CreateFlexoBehaviour createReinjectScheme = CreateFlexoBehaviour.actionType.makeNewAction(bookDescriptionSection, null, editor);
+		createReinjectScheme.setFlexoBehaviourClass(ActionScheme.class);
+		createReinjectScheme.setFlexoBehaviourName("reinjectDataFromBookDescriptionSection");
+		createReinjectScheme.doAction();
+		bookDescriptionSectionReinjectScheme = (ActionScheme) createReinjectScheme.getNewFlexoBehaviour();
+
+		CreateEditionAction reinjectTextBindingsAction = CreateEditionAction.actionType
+				.makeNewAction(bookDescriptionSectionReinjectScheme.getControlGraph(), null, editor);
+		reinjectTextBindingsAction.setFlexoRole(sectionRole);
+		reinjectTextBindingsAction.setEditionActionClass(ReinjectTextBindings.class);
+		reinjectTextBindingsAction.doAction();
+		assertTrue(reinjectTextBindingsAction.hasActionExecutionSucceeded());
+		ReinjectTextBindings reinjectAction = (ReinjectTextBindings) reinjectTextBindingsAction.getNewEditionAction();
+		assertNotNull(reinjectAction);
+
+		assertTrue(bookDescriptionSection.getActionSchemes().contains(bookDescriptionSectionReinjectScheme));
+
 		return bookDescriptionSection;
 	}
 
-	public ActionScheme createGenerateDocument() {
+	private ActionScheme createGenerateDocument() {
 
 		// We create an ActionScheme allowing to generate docXDocument
 		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(documentVirtualModel, null, editor);
@@ -738,25 +785,23 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 	}
 
-	public ActionScheme createUpdateDocument() {
+	private ActionScheme createUpdateDocument() {
 
 		// We programmatically implement this code:
-		// ActionScheme testFetchRequestIteration(String aString, Boolean aBoolean) {
-		// ... for (item in SelectFlexoConceptInstance as FlexoConceptA where
-		// ......(selected.aBooleanInA = parameters.aBoolean; selected.aStringInA = parameters.aString)) {
-		// .........name = item.aStringInA;
-		// .........item.aStringInA = (name + "foo");
-		// ......}
-		// ...}
+		// ActionScheme updateDocument() {
+		// ..for (book : SelectFlexoConceptInstance from library as Book) {
+		// ....MatchFlexoConceptInstance as BookDescriptionSection match (book=book;section=;) using
+		// BookDescriptionSection:createBookDescriptionSection(book)
+		// ..}
 		// }
 
 		// We create an ActionScheme allowing to update docXDocument
-		CreateFlexoBehaviour createActionScheme2 = CreateFlexoBehaviour.actionType.makeNewAction(documentVirtualModel, null, editor);
-		createActionScheme2.setFlexoBehaviourName("updateDocument");
-		createActionScheme2.setFlexoBehaviourClass(ActionScheme.class);
-		createActionScheme2.doAction();
-		assertTrue(createActionScheme2.hasActionExecutionSucceeded());
-		ActionScheme updateDocumentActionScheme = (ActionScheme) createActionScheme2.getNewFlexoBehaviour();
+		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(documentVirtualModel, null, editor);
+		createActionScheme.setFlexoBehaviourName("updateDocument");
+		createActionScheme.setFlexoBehaviourClass(ActionScheme.class);
+		createActionScheme.doAction();
+		assertTrue(createActionScheme.hasActionExecutionSucceeded());
+		ActionScheme updateDocumentActionScheme = (ActionScheme) createActionScheme.getNewFlexoBehaviour();
 
 		CreateEditionAction createSelectFetchRequestIterationAction = CreateEditionAction.actionType
 				.makeNewAction(updateDocumentActionScheme.getControlGraph(), null, editor);
@@ -770,13 +815,6 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("library"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookConcept);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
-
-		/*FetchRequestCondition condition1 = selectFlexoConceptInstance.createCondition();
-		condition1.setCondition(new DataBinding<Boolean>("selected.aBooleanInA = parameters.aBoolean"));
-		
-		FetchRequestCondition condition2 = selectFlexoConceptInstance.createCondition();
-		condition2.setCondition(new DataBinding<Boolean>("selected.aStringInA = parameters.aString"));
-		 */
 
 		CreateEditionAction createMatchFlexoConceptInstanceAction = CreateEditionAction.actionType
 				.makeNewAction(fetchRequestIteration.getControlGraph(), null, editor);
@@ -812,154 +850,62 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		bookParam.setValue(new DataBinding<Object>("book"));
 		assertTrue(bookParam.getValue().isValid());
 
-		/*CreateFlexoBehaviour createCreationScheme = CreateFlexoBehaviour.actionType.makeNewAction(flexoConceptA, null, editor);
-		createCreationScheme.setFlexoBehaviourClass(CreationScheme.class);
-		createCreationScheme.setFlexoBehaviourName("creationScheme2");
-		createCreationScheme.doAction();
-		CreationScheme creationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
-		
-		CreateFlexoBehaviourParameter createStringParameter2 = CreateFlexoBehaviourParameter.actionType.makeNewAction(creationScheme, null,
-				editor);
-		createStringParameter2.setFlexoBehaviourParameterClass(TextFieldParameter.class);
-		createStringParameter2.setParameterName("aStringParameter");
-		createStringParameter2.doAction();
-		FlexoBehaviourParameter creationSchemeParam1 = createStringParameter2.getNewParameter();
-		assertNotNull(creationSchemeParam1);
-		assertTrue(creationScheme.getParameters().contains(creationSchemeParam1));
-		
-		CreateFlexoBehaviourParameter createBooleanParameter2 = CreateFlexoBehaviourParameter.actionType.makeNewAction(creationScheme,
+		CreateEditionAction createSelectFetchRequestIterationAction2 = CreateEditionAction.actionType
+				.makeNewAction(updateDocumentActionScheme.getControlGraph(), null, editor);
+		// createSelectFetchRequestIterationAction.actionChoice = CreateEditionActionChoice.ControlAction;
+		createSelectFetchRequestIterationAction2.setEditionActionClass(IterationAction.class);
+		createSelectFetchRequestIterationAction2.doAction();
+		IterationAction fetchRequestIteration2 = (IterationAction) createSelectFetchRequestIterationAction2.getNewEditionAction();
+		fetchRequestIteration2.setIteratorName("bookSection");
+
+		SelectFlexoConceptInstance selectFlexoConceptInstance2 = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
+		selectFlexoConceptInstance2.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
+		selectFlexoConceptInstance2.setFlexoConceptType(bookDescriptionSection);
+		fetchRequestIteration2.setIterationAction(selectFlexoConceptInstance2);
+
+		CreateEditionAction createUpdateAction = CreateEditionAction.actionType.makeNewAction(fetchRequestIteration2.getControlGraph(),
 				null, editor);
-		createBooleanParameter2.setFlexoBehaviourParameterClass(CheckboxParameter.class);
-		createBooleanParameter2.setParameterName("aBooleanParameter");
-		createBooleanParameter2.doAction();
-		FlexoBehaviourParameter creationSchemeParam2 = createBooleanParameter2.getNewParameter();
-		assertNotNull(creationSchemeParam2);
-		assertTrue(creationScheme.getParameters().contains(creationSchemeParam2));
-		
-		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
-				editor);
-		// createEditionAction1.actionChoice = CreateEditionActionChoice.BuiltInAction;
-		createEditionAction1.setEditionActionClass(ExpressionAction.class);
-		createEditionAction1.setAssignation(new DataBinding<Object>("aStringInA"));
-		createEditionAction1.doAction();
-		AssignationAction<?> action1 = (AssignationAction<?>) createEditionAction1.getNewEditionAction();
-		((ExpressionAction) action1.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aStringParameter"));
-		
-		assertTrue(action1.getAssignation().isValid());
-		assertTrue(((ExpressionAction) action1.getAssignableAction()).getExpression().isValid());
-		
-		CreateEditionAction createEditionAction2 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
-				editor);
-		// createEditionAction2.actionChoice = CreateEditionActionChoice.BuiltInAction;
-		createEditionAction2.setEditionActionClass(ExpressionAction.class);
-		createEditionAction2.setAssignation(new DataBinding<Object>("aBooleanInA"));
-		createEditionAction2.doAction();
-		AssignationAction<?> action2 = (AssignationAction<?>) createEditionAction2.getNewEditionAction();
-		((ExpressionAction) action2.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aBooleanParameter"));
-		
-		assertTrue(action2.getAssignation().isValid());
-		assertTrue(((ExpressionAction) action2.getAssignableAction()).getExpression().isValid());
-		
-		assertNotNull(actionScheme);
-		System.out.println("FML=" + actionScheme.getFMLRepresentation());
-		
-		matchFlexoConceptInstance.setCreationScheme(creationScheme);
-		
-		// We check here that matching criterias were updated
-		assertEquals(4, matchFlexoConceptInstance.getMatchingCriterias().size());
-		
-		MatchingCriteria criteria1 = matchFlexoConceptInstance.getMatchingCriteria(flexoConceptA.getAccessibleProperty("aStringInA"));
-		MatchingCriteria criteria2 = matchFlexoConceptInstance.getMatchingCriteria(flexoConceptA.getAccessibleProperty("aBooleanInA"));
-		MatchingCriteria criteria3 = matchFlexoConceptInstance.getMatchingCriteria(flexoConceptA.getAccessibleProperty("anIntegerInA"));
-		MatchingCriteria criteria4 = matchFlexoConceptInstance
-				.getMatchingCriteria(flexoConceptA.getAccessibleProperty("anOtherBooleanInA"));
-		
-		assertNotNull(criteria1);
-		assertNotNull(criteria2);
-		assertNotNull(criteria3);
-		assertNotNull(criteria4);
-		
-		criteria1.setValue(new DataBinding<Object>("item.aStringInA"));
-		
-		System.out.println("FML=" + actionScheme.getFMLRepresentation());
-		
-		assertTrue(criteria1.getValue().isValid());
-		
-		MatchingCriteria criteria1bis = matchFlexoConceptInstance.getMatchingCriteria(flexoConceptA.getAccessibleProperty("aStringInA"));
-		assertSame(criteria1, criteria1bis);
-		
-		// We add a property
-		// We check here that matching criterias were updated: an other criteria should appear
-		
-		AbstractCreateFlexoRole createRole = AbstractCreateFlexoRole.actionType.makeNewAction(flexoConceptA, null, editor);
-		createRole.setRoleName("anOtherIntegerInA");
-		createRole.setFlexoRoleClass(PrimitiveRole.class);
-		createRole.setPrimitiveType(PrimitiveType.Integer);
-		createRole.doAction();
-		FlexoRole newRole = createRole.getNewFlexoRole();
-		
-		assertEquals(5, matchFlexoConceptInstance.getMatchingCriterias().size());
-		assertNotNull(matchFlexoConceptInstance.getMatchingCriteria(newRole));
-		
-		// We remove the property
-		// We check here that matching criterias were updated: the criteria should disappear
-		flexoConceptA.removeFromFlexoProperties(newRole);
-		
-		assertEquals(4, matchFlexoConceptInstance.getMatchingCriterias().size());
-		
-		// We check here that create parameters were updated
-		
-		assertEquals(2, matchFlexoConceptInstance.getParameters().size());
-		
-		CreateFlexoConceptInstanceParameter createFCIParam1 = matchFlexoConceptInstance.getParameter(creationSchemeParam1);
-		CreateFlexoConceptInstanceParameter createFCIParam2 = matchFlexoConceptInstance.getParameter(creationSchemeParam2);
-		assertNotNull(createFCIParam1);
-		assertNotNull(createFCIParam2);
-		
-		createFCIParam1.setValue(new DataBinding<Object>("item.aStringInA"));
-		createFCIParam2.setValue(new DataBinding<Object>("true"));
-		assertTrue(createFCIParam1.getValue().isValid());
-		assertTrue(createFCIParam2.getValue().isValid());
-		
-		// WE change creation scheme, parameters should disappear
-		matchFlexoConceptInstance.setCreationScheme(null);
-		
-		assertEquals(0, matchFlexoConceptInstance.getParameters().size());
-		
-		// We set again the creation scheme, parameters should come back
-		matchFlexoConceptInstance.setCreationScheme(creationScheme);
-		assertEquals(2, matchFlexoConceptInstance.getParameters().size());
-		createFCIParam1 = matchFlexoConceptInstance.getParameter(creationSchemeParam1);
-		createFCIParam2 = matchFlexoConceptInstance.getParameter(creationSchemeParam2);
-		createFCIParam1.setValue(new DataBinding<Object>("item.aStringInA"));
-		createFCIParam2.setValue(new DataBinding<Object>("true"));
-		assertTrue(createFCIParam1.getValue().isValid());
-		assertTrue(createFCIParam2.getValue().isValid());
-		
-		// We try to add a parameter
-		CreateFlexoBehaviourParameter createBooleanParameter3 = CreateFlexoBehaviourParameter.actionType.makeNewAction(creationScheme,
-				null, editor);
-		createBooleanParameter3.setFlexoBehaviourParameterClass(CheckboxParameter.class);
-		createBooleanParameter3.setParameterName("anOtherBooleanParameter");
-		createBooleanParameter3.doAction();
-		FlexoBehaviourParameter creationSchemeParam3 = createBooleanParameter3.getNewParameter();
-		assertNotNull(creationSchemeParam3);
-		assertTrue(creationScheme.getParameters().contains(creationSchemeParam3));
-		assertEquals(3, matchFlexoConceptInstance.getParameters().size());
-		
-		// We remove it
-		creationScheme.removeFromParameters(creationSchemeParam3);
-		assertEquals(2, matchFlexoConceptInstance.getParameters().size());
-		
-		assertEquals(12, fetchRequestIteration.getBindingModel().getBindingVariablesCount());
-		
-		assertEquals(13, condition1.getBindingModel().getBindingVariablesCount());
-		
-		assertEquals(13, createFCIParam1.getBindingModel().getBindingVariablesCount());
-		
-		System.out.println("FML: " + actionScheme.getFMLRepresentation());*/
+		createUpdateAction.setEditionActionClass(ExpressionAction.class);
+		createUpdateAction.doAction();
+		ExpressionAction<?> updateExpression = (ExpressionAction<?>) createUpdateAction.getNewEditionAction();
+		updateExpression.setExpression(new DataBinding("bookSection.updateBookDescriptionSection()"));
+		assertTrue(updateExpression.getExpression().isValid());
 
 		return updateDocumentActionScheme;
+	}
+
+	private ActionScheme createReinjectFromDocument() {
+
+		// We create an ActionScheme allowing to update docXDocument
+		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(documentVirtualModel, null, editor);
+		createActionScheme.setFlexoBehaviourName("reinjectFromDocument");
+		createActionScheme.setFlexoBehaviourClass(ActionScheme.class);
+		createActionScheme.doAction();
+		assertTrue(createActionScheme.hasActionExecutionSucceeded());
+		ActionScheme reinjectDocumentActionScheme = (ActionScheme) createActionScheme.getNewFlexoBehaviour();
+
+		CreateEditionAction createSelectFetchRequestIterationAction = CreateEditionAction.actionType
+				.makeNewAction(reinjectDocumentActionScheme.getControlGraph(), null, editor);
+		// createSelectFetchRequestIterationAction.actionChoice = CreateEditionActionChoice.ControlAction;
+		createSelectFetchRequestIterationAction.setEditionActionClass(IterationAction.class);
+		createSelectFetchRequestIterationAction.doAction();
+		IterationAction fetchRequestIteration = (IterationAction) createSelectFetchRequestIterationAction.getNewEditionAction();
+		fetchRequestIteration.setIteratorName("bookSection");
+
+		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
+		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
+		selectFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
+		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
+
+		CreateEditionAction createReinjectAction = CreateEditionAction.actionType.makeNewAction(fetchRequestIteration.getControlGraph(),
+				null, editor);
+		createReinjectAction.setEditionActionClass(ExpressionAction.class);
+		createReinjectAction.doAction();
+		ExpressionAction<?> reinjectExpression = (ExpressionAction<?>) createReinjectAction.getNewEditionAction();
+		reinjectExpression.setExpression(new DataBinding("bookSection.reinjectDataFromBookDescriptionSection()"));
+		assertTrue(reinjectExpression.getExpression().isValid());
+
+		return reinjectDocumentActionScheme;
 	}
 
 	/**
@@ -980,6 +926,12 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()).exists());
 		assertTrue(((ViewResource) newView.getResource()).getFlexoIODelegate().exists());
 	}
+
+	public static final String LES_MISERABLES_DESCRIPTION = "Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles par les Éditions Lacroix, Verboeckhoven et Cie, et le 3 avril de la même année à Paris1). Dans ce roman, un des plus emblématiques de la littérature française, Victor Hugo décrit la vie de misérables dans Paris et la France provinciale du xixe siècle et s'attache plus particulièrement aux pas du bagnard Jean Valjean.";
+	public static final String GERMINAL_DESCRIPTION = "Germinal est un roman d'Émile Zola publié en 1885. Il s'agit du treizième roman de la série des Rougon-Macquart. Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord en feuilleton entre novembre 1884 et février 1885 dans le Gil Blas. Il connaît sa première édition en mars 1885. Depuis il a été publié dans plus d'une centaine de pays.";
+	public static final String LA_CHARTREUSE_DE_PARME_DESCRIPTION = "La Chartreuse de Parme est un roman publié par Stendhal. Cette œuvre majeure, qui lui valut la célébrité, fut publiée en deux volumes en mars 1839, puis refondue en 1841, soit peu avant la mort de Stendhal, à la suite d'un article fameux de Balzac et prenant de fait un tour plus « balzacien » : aujourd’hui, c’est le texte stendhalien d’origine que l’on lit encore.";
+	public static final String LE_ROUGE_ET_LE_NOIR_DESCRIPTION = "Le Rouge et le Noir, sous-titré Chronique du XIXe siècle, deuxième sous-titré Chronique de 1830 est un roman écrit par Stendhal, publié pour la première fois à Paris chez Levasseur en novembre 1830, bien que l'édition originale1 mentionne la date de 1831. C'est le deuxième roman de Stendhal, après Armance. Il est cité par William Somerset Maugham en 1954, dans son essai : Ten Novels and Their Authors parmi les dix plus grands romans.";
+	public static final String LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM = " Le roman est divisé en deux parties : la première partie retrace le parcours de Julien Sorel en province à Verrières puis à Besançon et plus précisément son entrée chez les Rênal, de même que son séjour dans un séminaire ; la seconde partie porte sur la vie du héros à Paris comme secrétaire du marquis de La Mole.";
 
 	/**
 	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
@@ -1017,8 +969,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createBook1.setParameterValue(authorParam, "Victor Hugo");
 		createBook1.setParameterValue(editionParam, "Dunod");
 		createBook1.setParameterValue(typeParam, "Roman");
-		createBook1.setParameterValue(descriptionParam,
-				"Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles par les Éditions Lacroix, Verboeckhoven et Cie, et le 3 avril de la même année à Paris1). Dans ce roman, un des plus emblématiques de la littérature française, Victor Hugo décrit la vie de misérables dans Paris et la France provinciale du xixe siècle et s'attache plus particulièrement aux pas du bagnard Jean Valjean.");
+		createBook1.setParameterValue(descriptionParam, LES_MISERABLES_DESCRIPTION);
 		assertNotNull(createBook1);
 		createBook1.doAction();
 		assertTrue(createBook1.hasActionExecutionSucceeded());
@@ -1033,8 +984,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createBook2.setParameterValue(authorParam, "Emile Zola");
 		createBook2.setParameterValue(editionParam, "Gil Blas");
 		createBook2.setParameterValue(typeParam, "Roman");
-		createBook2.setParameterValue(descriptionParam,
-				"Germinal est un roman d'Émile Zola publié en 1885. Il s'agit du treizième roman de la série des Rougon-Macquart. Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord en feuilleton entre novembre 1884 et février 1885 dans le Gil Blas. Il connaît sa première édition en mars 1885. Depuis il a été publié dans plus d'une centaine de pays.");
+		createBook2.setParameterValue(descriptionParam, GERMINAL_DESCRIPTION);
 		assertNotNull(createBook2);
 		createBook2.doAction();
 		assertTrue(createBook2.hasActionExecutionSucceeded());
@@ -1049,8 +999,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createBook3.setParameterValue(authorParam, "Stendhal");
 		createBook3.setParameterValue(editionParam, "J. Hetzel, 1846");
 		createBook3.setParameterValue(typeParam, "Roman");
-		createBook3.setParameterValue(descriptionParam,
-				"La Chartreuse de Parme est un roman publié par Stendhal. Cette œuvre majeure, qui lui valut la célébrité, fut publiée en deux volumes en mars 1839, puis refondue en 1841, soit peu avant la mort de Stendhal, à la suite d'un article fameux de Balzac et prenant de fait un tour plus « balzacien » : aujourd’hui, c’est le texte stendhalien d’origine que l’on lit encore.");
+		createBook3.setParameterValue(descriptionParam, LA_CHARTREUSE_DE_PARME_DESCRIPTION);
 		assertNotNull(createBook3);
 		createBook3.doAction();
 		assertTrue(createBook3.hasActionExecutionSucceeded());
@@ -1204,10 +1153,11 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * Try to update the document from data
 	 * 
 	 * @throws SaveResourceException
+	 * @throws FragmentConsistencyException
 	 */
 	@Test
 	@TestOrder(12)
-	public void testUpdateDocument() throws SaveResourceException {
+	public void testUpdateDocument() throws SaveResourceException, FragmentConsistencyException {
 
 		log("testUpdateDocument()");
 
@@ -1255,60 +1205,529 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		System.out.println("Template resource = " + docXModelSlot.getTemplateResource());
 		System.out.println("generatedDocument = " + generatedDocument.getResource());
 
+		// Here is the structuration of original fragment (bookDescriptionFragment):
+
+		// [Les ][misérables]
+		// [Author][: Victor Hugo]
+		// [Edition][: ][Dunod]
+		// [Type][: Roman]
+		// [Les Misérables est un roman de Victor Hugo paru en 1862...][Verboeckhoven][ et Cie...][...]....
+
+		// La chartreuse de Parme
+
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(14);
+		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(15);
+		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
+		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
+		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1);
+
+		// Here is the structuration of original fragment (bookDescriptionFragment):
+
+		// [Les ][misérables]
+		// [Author][: Victor Hugo]
+		// [Edition][: ][Dunod]
+		// [Type][: Roman]
+		// [Les Misérables est un roman de Victor Hugo paru en 1862...][Verboeckhoven][ et Cie...][...]....
+
+		// Now the fragment should be this:
+
+		// [La chartreuse de Parme]
+		// [Author][: ][Stendhal]
+		// [Edition][: ][J. Hetzel, 1846]
+		// [Type][: ][Roman]
+		// [La Chartreuse de Parme est ...]
+
+		/*StringBuffer sb = new StringBuffer();
+		for (DocXElement element : cpFragment.getElements()) {
+			if (element instanceof DocXParagraph) {
+				DocXParagraph para = (DocXParagraph) element;
+				for (FlexoRun run : para.getRuns()) {
+					sb.append("[" + run.getText() + "]");
+				}
+				sb.append("\n");
+			}
+		}
+		
+		System.out.println(sb.toString());*/
+
+		assertEquals(1, titleParagraph1.getRuns().size());
+		assertEquals("La chartreuse de Parme", titleParagraph1.getRuns().get(0).getText());
+
+		assertEquals(3, authorParagraph1.getRuns().size());
+		assertEquals("Author", authorParagraph1.getRuns().get(0).getText());
+		assertEquals(": ", authorParagraph1.getRuns().get(1).getText());
+		assertEquals("Stendhal", authorParagraph1.getRuns().get(2).getText());
+
+		assertEquals(3, editionParagraph1.getRuns().size());
+		assertEquals("Edition", editionParagraph1.getRuns().get(0).getText());
+		assertEquals(": ", editionParagraph1.getRuns().get(1).getText());
+		assertEquals("J. Hetzel, 1846", editionParagraph1.getRuns().get(2).getText());
+
+		assertEquals(3, typeParagraph1.getRuns().size());
+		assertEquals("Type", typeParagraph1.getRuns().get(0).getText());
+		assertEquals(": ", typeParagraph1.getRuns().get(1).getText());
+		assertEquals("Roman", typeParagraph1.getRuns().get(2).getText());
+
+		assertEquals(1, descriptionParagraph1.getRuns().size());
+		assertEquals(LA_CHARTREUSE_DE_PARME_DESCRIPTION, descriptionParagraph1.getRuns().get(0).getText());
+
+		// Germinal
+
+		DocXParagraph titleParagraph2 = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXParagraph authorParagraph2 = (DocXParagraph) generatedDocument.getElements().get(20);
+		DocXParagraph editionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(21);
+		DocXParagraph typeParagraph2 = (DocXParagraph) generatedDocument.getElements().get(22);
+		DocXParagraph descriptionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(23);
+		DocXFragment gFragment = generatedDocument.getFragment(titleParagraph2, descriptionParagraph2);
+
+		// [Germinal]
+		// [Author][: ][Emile Zola]
+		// [Edition][: ][Gil Blas]
+		// [Type][: ][Roman]
+		// [Germinal est un roman d'Émile Zola publié en 1885. ...]
+
+		assertEquals(1, titleParagraph2.getRuns().size());
+		assertEquals("Germinal", titleParagraph2.getRuns().get(0).getText());
+
+		assertEquals(3, authorParagraph2.getRuns().size());
+		assertEquals("Author", authorParagraph2.getRuns().get(0).getText());
+		assertEquals(": ", authorParagraph2.getRuns().get(1).getText());
+		assertEquals("Emile Zola", authorParagraph2.getRuns().get(2).getText());
+
+		assertEquals(3, editionParagraph2.getRuns().size());
+		assertEquals("Edition", editionParagraph2.getRuns().get(0).getText());
+		assertEquals(": ", editionParagraph2.getRuns().get(1).getText());
+		assertEquals("Gil Blas", editionParagraph2.getRuns().get(2).getText());
+
+		assertEquals(3, typeParagraph2.getRuns().size());
+		assertEquals("Type", typeParagraph2.getRuns().get(0).getText());
+		assertEquals(": ", typeParagraph2.getRuns().get(1).getText());
+		assertEquals("Roman", typeParagraph2.getRuns().get(2).getText());
+
+		assertEquals(1, descriptionParagraph2.getRuns().size());
+		assertEquals(GERMINAL_DESCRIPTION, descriptionParagraph2.getRuns().get(0).getText());
+
+		// Les misérables
+
+		DocXParagraph titleParagraph3 = (DocXParagraph) generatedDocument.getElements().get(24);
+		DocXParagraph authorParagraph3 = (DocXParagraph) generatedDocument.getElements().get(25);
+		DocXParagraph editionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(26);
+		DocXParagraph typeParagraph3 = (DocXParagraph) generatedDocument.getElements().get(27);
+		DocXParagraph descriptionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(28);
+		DocXFragment lmFragment = generatedDocument.getFragment(titleParagraph3, descriptionParagraph3);
+
+		// [Les misérables]
+		// [Author][: ][Victor Hugo]
+		// [Edition][: ][Dunod]
+		// [Type][: ][Roman]
+		// [Les Misérables est un roman de Victor Hugo paru en 1862...]
+
+		assertEquals(1, titleParagraph3.getRuns().size());
+		assertEquals("Les misérables", titleParagraph3.getRuns().get(0).getText());
+
+		assertEquals(3, authorParagraph3.getRuns().size());
+		assertEquals("Author", authorParagraph3.getRuns().get(0).getText());
+		assertEquals(": ", authorParagraph3.getRuns().get(1).getText());
+		assertEquals("Victor Hugo", authorParagraph3.getRuns().get(2).getText());
+
+		assertEquals(3, editionParagraph3.getRuns().size());
+		assertEquals("Edition", editionParagraph3.getRuns().get(0).getText());
+		assertEquals(": ", editionParagraph3.getRuns().get(1).getText());
+		assertEquals("Dunod", editionParagraph3.getRuns().get(2).getText());
+
+		assertEquals(3, typeParagraph3.getRuns().size());
+		assertEquals("Type", typeParagraph3.getRuns().get(0).getText());
+		assertEquals(": ", typeParagraph3.getRuns().get(1).getText());
+		assertEquals("Roman", typeParagraph3.getRuns().get(2).getText());
+
+		assertEquals(1, descriptionParagraph3.getRuns().size());
+		assertEquals(LES_MISERABLES_DESCRIPTION, descriptionParagraph3.getRuns().get(0).getText());
+
+		/*StringBuffer sb = new StringBuffer();
+		for (DocXElement element : lmFragment.getElements()) {
+			if (element instanceof DocXParagraph) {
+				DocXParagraph para = (DocXParagraph) element;
+				for (FlexoRun run : para.getRuns()) {
+					sb.append("[" + run.getText() + "]");
+				}
+				sb.append("\n");
+			}
+		}
+		
+		System.out.println(sb.toString());*/
+
 	}
 
 	/**
+	 * Reload project<br>
+	 * Check that the two {@link VirtualModelInstance} are correct and that generated document is correct
 	 */
-	/*@Test
+	@Test
 	@TestOrder(12)
 	public void testReloadProject() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-	
+
 		log("testReloadProject()");
-	
+
 		DocXDocument generatedDocumentBeforeReload = generatedDocument;
 		assertNotNull(generatedDocumentBeforeReload);
-	
+
 		instanciateTestServiceManager();
-	
+
 		System.out.println("Project dir = " + project.getDirectory());
-	
+
 		editor = reloadProject(project.getDirectory());
 		project = editor.getProject();
 		assertNotNull(editor);
 		assertNotNull(project);
-	
+
 		assertEquals(3, project.getAllResources().size());
 		// System.out.println("All resources=" + project.getAllResources());
 		assertNotNull(project.getResource(newView.getURI()));
-	
+
 		ViewResource newViewResource = project.getViewLibrary().getView(newView.getURI());
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
 		newViewResource.loadResourceData(null);
 		assertNotNull(newView = newViewResource.getView());
-	
-		assertEquals(1, newViewResource.getVirtualModelInstanceResources().size());
-		VirtualModelInstanceResource vmiResource = newViewResource.getVirtualModelInstanceResources().get(0);
-		assertNotNull(vmiResource);
-		assertNull(vmiResource.getLoadedResourceData());
-		vmiResource.loadResourceData(null);
-		assertNotNull(libraryVMI = vmiResource.getVirtualModelInstance());
-	
-		assertTrue(libraryVMI.getVirtualModel().hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE));
-	
-		assertTrue(libraryVMI.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
-	
+
+		// TAKE CARE TO RELOAD all static fields as they are still pointing on old references
+		assertNotNull(libraryVirtualModel = newView.getViewPoint().getVirtualModelNamed("LibraryVirtualModel"));
+		assertNotNull(documentVirtualModel = newView.getViewPoint().getVirtualModelNamed("DocumentVirtualModel"));
+		assertNotNull(bookConcept = libraryVirtualModel.getFlexoConcept("Book"));
+		assertNotNull(bookCreationScheme = bookConcept.getCreationSchemes().get(0));
+		assertNotNull(titleParam = bookCreationScheme.getParameter("aTitle"));
+		assertNotNull(authorParam = bookCreationScheme.getParameter("anAuthor"));
+		assertNotNull(editionParam = bookCreationScheme.getParameter("anEdition"));
+		assertNotNull(typeParam = bookCreationScheme.getParameter("aType"));
+		assertNotNull(descriptionParam = bookCreationScheme.getParameter("aDescription"));
+		assertNotNull(generateDocumentActionScheme = (ActionScheme) documentVirtualModel.getFlexoBehaviour("generateDocument"));
+		assertNotNull(updateDocumentActionScheme = (ActionScheme) documentVirtualModel.getFlexoBehaviour("updateDocument"));
+		assertNotNull(reinjectFromDocumentActionScheme = (ActionScheme) documentVirtualModel.getFlexoBehaviour("reinjectFromDocument"));
+		assertNotNull(bookDescriptionSection = documentVirtualModel.getFlexoConcept("BookDescriptionSection"));
+		assertNotNull(bookDescriptionSectionCreationScheme = (CreationScheme) bookDescriptionSection
+				.getFlexoBehaviour("createBookDescriptionSection"));
+		assertNotNull(bookDescriptionSectionUpdateScheme = (ActionScheme) bookDescriptionSection
+				.getFlexoBehaviour("updateBookDescriptionSection"));
+		assertNotNull(bookDescriptionSectionReinjectScheme = (ActionScheme) bookDescriptionSection
+				.getFlexoBehaviour("reinjectDataFromBookDescriptionSection"));
+
+		assertEquals(2, newViewResource.getVirtualModelInstanceResources().size());
+
+		assertEquals(1, newViewResource.getVirtualModelInstanceResources(libraryVirtualModel).size());
+		VirtualModelInstanceResource libraryVmiResource = newViewResource.getVirtualModelInstanceResources(libraryVirtualModel).get(0);
+		assertNotNull(libraryVmiResource);
+		assertNull(libraryVmiResource.getLoadedResourceData());
+		libraryVmiResource.loadResourceData(null);
+		assertNotNull(libraryVMI = libraryVmiResource.getVirtualModelInstance());
+		assertEquals(3, libraryVMI.getFlexoConceptInstances().size());
+
+		for (FlexoConceptInstance fci : libraryVMI.getFlexoConceptInstances()) {
+			System.out.println("fci = " + fci);
+		}
+
+		assertEquals(1, newViewResource.getVirtualModelInstanceResources(documentVirtualModel).size());
+		VirtualModelInstanceResource documentVmiResource = newViewResource.getVirtualModelInstanceResources(documentVirtualModel).get(0);
+		assertNotNull(documentVmiResource);
+		assertNull(documentVmiResource.getLoadedResourceData());
+		documentVmiResource.loadResourceData(null);
+		assertNotNull(documentVMI = documentVmiResource.getVirtualModelInstance());
+		assertEquals(3, documentVMI.getFlexoConceptInstances().size());
+
+		assertTrue(documentVMI.getVirtualModel().hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE));
+		assertTrue(documentVMI.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
+		// TODO: fix this
+		// Testing nature of documentVMI will cause resolution of model slot instances, and call to setResource
+
+		for (FlexoConceptInstance fci : documentVMI.getFlexoConceptInstances()) {
+			System.out.println("fci = " + fci);
+		}
+
 		ModelSlotInstance<DocXModelSlot, DocXDocument> msInstance = FMLControlledDocumentVirtualModelInstanceNature
-				.getModelSlotInstance(libraryVMI);
-	
+				.getModelSlotInstance(documentVMI);
+
 		assertNotNull(msInstance);
 		assertNotNull(msInstance.getAccessedResourceData());
-	
+
 		generatedDocument = msInstance.getAccessedResourceData();
-	
+
 		assertNotSame(generatedDocumentBeforeReload, generatedDocument);
+
+		assertEquals(29, generatedDocument.getElements().size());
+
+		assertFalse(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
+
+	}
+
+	/**
+	 * Try to add a new book to the library
+	 * 
+	 * @throws FragmentConsistencyException
+	 * @throws SaveResourceException
+	 */
+	@Test
+	@TestOrder(13)
+	public void testAddNewBook() throws FragmentConsistencyException, SaveResourceException {
+
+		assertFalse(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
+
+		// Creation of new book
+		CreationSchemeAction createNewBook = CreationSchemeAction.actionType.makeNewAction(libraryVMI, null, editor);
+		createNewBook.setCreationScheme(bookCreationScheme);
+		createNewBook.setParameterValue(titleParam, "Le rouge et le noir");
+		createNewBook.setParameterValue(authorParam, "Stendhal");
+		createNewBook.setParameterValue(editionParam, "Levasseur, 1830");
+		createNewBook.setParameterValue(typeParam, "Roman");
+		createNewBook.setParameterValue(descriptionParam, LE_ROUGE_ET_LE_NOIR_DESCRIPTION);
+		assertNotNull(createNewBook);
+		createNewBook.doAction();
+		assertTrue(createNewBook.hasActionExecutionSucceeded());
+		FlexoConceptInstance newBook = createNewBook.getFlexoConceptInstance();
+		assertNotNull(newBook);
+		assertEquals(bookConcept, newBook.getFlexoConcept());
+
+		for (FlexoConceptInstance fci : libraryVMI.getFlexoConceptInstances()) {
+			System.out.println("fci = " + fci);
+		}
+		assertEquals(4, libraryVMI.getFlexoConceptInstances().size());
+
+		assertTrue(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
+
+		System.out.println("Applying updateDocumentActionScheme: ");
+
+		System.out.println(updateDocumentActionScheme.getFMLRepresentation());
+
+		// Launch updateDocument actions
+		ActionSchemeActionType actionType = new ActionSchemeActionType(updateDocumentActionScheme, documentVMI);
+		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, editor);
+		assertNotNull(actionSchemeCreationAction);
+		actionSchemeCreationAction.doAction();
+		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
+
+		for (FlexoConceptInstance fci : documentVMI.getFlexoConceptInstances()) {
+			System.out.println("fci = " + fci);
+		}
+		assertEquals(4, documentVMI.getFlexoConceptInstances().size());
+
+		assertTrue(libraryVMI.isModified());
+		assertTrue(documentVMI.isModified());
+		assertTrue(generatedDocument.isModified());
+
+		libraryVMI.getResource().save(null);
+		documentVMI.getResource().save(null);
+		generatedDocument.getResource().save(null);
+
+		assertFalse(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
+
+		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
+
+		assertEquals(34, generatedDocument.getElements().size());
+
+		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(29);
+		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(30);
+		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(31);
+		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(32);
+		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(33);
+		DocXFragment lrnFragment = generatedDocument.getFragment(titleParagraph4, descriptionParagraph4);
+
+		/*StringBuffer sb = new StringBuffer();
+		for (DocXElement element : lrnFragment.getElements()) {
+			if (element instanceof DocXParagraph) {
+				DocXParagraph para = (DocXParagraph) element;
+				for (FlexoRun run : para.getRuns()) {
+					sb.append("[" + run.getText() + "]");
+				}
+				sb.append("\n");
+			}
+		}
+		
+		System.out.println(sb.toString());*/
+
+		// [Le rouge et le noir]
+		// [Author][: ][Stendhal]
+		// [Edition][: ][Levasseur, 1830]
+		// [Type][: ][Roman]
+		// [Le Rouge et le Noir, sous-titré Chronique du XIXe siècle ...]
+
+		assertEquals(1, titleParagraph4.getRuns().size());
+		assertEquals("Le rouge et le noir", titleParagraph4.getRuns().get(0).getText());
+
+		assertEquals(3, authorParagraph4.getRuns().size());
+		assertEquals("Author", authorParagraph4.getRuns().get(0).getText());
+		assertEquals(": ", authorParagraph4.getRuns().get(1).getText());
+		assertEquals("Stendhal", authorParagraph4.getRuns().get(2).getText());
+
+		assertEquals(3, editionParagraph4.getRuns().size());
+		assertEquals("Edition", editionParagraph4.getRuns().get(0).getText());
+		assertEquals(": ", editionParagraph4.getRuns().get(1).getText());
+		assertEquals("Levasseur, 1830", editionParagraph4.getRuns().get(2).getText());
+
+		assertEquals(3, typeParagraph4.getRuns().size());
+		assertEquals("Type", typeParagraph4.getRuns().get(0).getText());
+		assertEquals(": ", typeParagraph4.getRuns().get(1).getText());
+		assertEquals("Roman", typeParagraph4.getRuns().get(2).getText());
+
+		assertEquals(1, descriptionParagraph4.getRuns().size());
+		assertEquals(LE_ROUGE_ET_LE_NOIR_DESCRIPTION, descriptionParagraph4.getRuns().get(0).getText());
+
+	}
+
+	/**
+	 * Try to add a new book to the library
+	 * 
+	 * @throws FragmentConsistencyException
+	 * @throws SaveResourceException
+	 */
+	@Test
+	@TestOrder(14)
+	public void testModifySomeDataAndUpdateDocument() throws FragmentConsistencyException, SaveResourceException {
+
+		assertFalse(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
+
+		assertEquals(4, libraryVMI.getFlexoConceptInstances().size());
+		FlexoConceptInstance book1 = libraryVMI.getFlexoConceptInstances().get(0);
+		FlexoConceptInstance book2 = libraryVMI.getFlexoConceptInstances().get(1);
+		FlexoConceptInstance book3 = libraryVMI.getFlexoConceptInstances().get(2);
+		FlexoConceptInstance book4 = libraryVMI.getFlexoConceptInstances().get(3);
+
+		book4.setFlexoActor("Le Rouge et le Noir, Chronique du XIXe siècle",
+				(FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("title"));
+		book4.setFlexoActor("Stendhal aka Henri Beyle", (FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("author"));
+		book4.setFlexoActor("Levasseur", (FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("edition"));
+		book4.setFlexoActor("Roman historique", (FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("type"));
+		book4.setFlexoActor(LE_ROUGE_ET_LE_NOIR_DESCRIPTION + LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM,
+				(FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("description"));
+
+		assertTrue(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
+
+		System.out.println("Applying updateDocumentActionScheme: ");
+
+		System.out.println(updateDocumentActionScheme.getFMLRepresentation());
+
+		// Launch updateDocument actions
+		ActionSchemeActionType actionType = new ActionSchemeActionType(updateDocumentActionScheme, documentVMI);
+		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, editor);
+		assertNotNull(actionSchemeCreationAction);
+		actionSchemeCreationAction.doAction();
+		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
+
+		for (FlexoConceptInstance fci : documentVMI.getFlexoConceptInstances()) {
+			System.out.println("fci = " + fci);
+		}
+		assertEquals(4, documentVMI.getFlexoConceptInstances().size());
+
+		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
+
+		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(29);
+		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(30);
+		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(31);
+		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(32);
+		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(33);
+
+		assertEquals(1, titleParagraph4.getRuns().size());
+		assertEquals("Le Rouge et le Noir, Chronique du XIXe siècle", titleParagraph4.getRuns().get(0).getText());
+
+		assertEquals(3, authorParagraph4.getRuns().size());
+		assertEquals("Author", authorParagraph4.getRuns().get(0).getText());
+		assertEquals(": ", authorParagraph4.getRuns().get(1).getText());
+		assertEquals("Stendhal aka Henri Beyle", authorParagraph4.getRuns().get(2).getText());
+
+		assertEquals(3, editionParagraph4.getRuns().size());
+		assertEquals("Edition", editionParagraph4.getRuns().get(0).getText());
+		assertEquals(": ", editionParagraph4.getRuns().get(1).getText());
+		assertEquals("Levasseur", editionParagraph4.getRuns().get(2).getText());
+
+		assertEquals(3, typeParagraph4.getRuns().size());
+		assertEquals("Type", typeParagraph4.getRuns().get(0).getText());
+		assertEquals(": ", typeParagraph4.getRuns().get(1).getText());
+		assertEquals("Roman historique", typeParagraph4.getRuns().get(2).getText());
+
+		assertEquals(1, descriptionParagraph4.getRuns().size());
+		assertEquals(LE_ROUGE_ET_LE_NOIR_DESCRIPTION + LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM,
+				descriptionParagraph4.getRuns().get(0).getText());
+
+		assertTrue(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified()); // No reason for the documentVMI to be modified
+		assertTrue(generatedDocument.isModified());
+
+		libraryVMI.getResource().save(null);
+		generatedDocument.getResource().save(null);
+
+		assertFalse(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
+
+	}
+
+	/**
+	 * Try to modify generated document, and reinject it to the model<br>
+	 * Check that reinjection works
+	 * 
+	 * @throws FragmentConsistencyException
+	 * @throws SaveResourceException
+	 */
+	/*@Test
+	@TestOrder(15)
+	public void testModifyDocumentAndReinjectData() throws FragmentConsistencyException, SaveResourceException {
 	
-		assertEquals(18, generatedDocument.getElements().size());
+		// La chartreuse de Parme
+	
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(14);
+		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(15);
+		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
+		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
+		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1);
+	
+		// [La chartreuse de Parme]
+		// [Author][: ][Stendhal]
+		// [Edition][: ][J. Hetzel, 1846]
+		// [Type][: ][Roman]
+		// [La Chartreuse de Parme est ...]
+	
+		titleParagraph1.getRuns().get(0).setText("La Chartreuse de Parme"); // Added a maj
+		authorParagraph1.getRuns().get(2).setText("Stendhal (Henri Beyle)"); // Added original name of author
+		editionParagraph1.getRuns().get(2).setText("Éditions Rencontre, Lausanne, 1967"); // Change for a newer edition
+	
+		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
+	
+		System.out.println("Applying reinjectFromDocumentActionScheme: ");
+	
+		System.out.println(reinjectFromDocumentActionScheme.getFMLRepresentation());
+	
+		// Launch updateDocument actions
+		ActionSchemeActionType actionType = new ActionSchemeActionType(reinjectFromDocumentActionScheme, documentVMI);
+		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, editor);
+		assertNotNull(actionSchemeCreationAction);
+		actionSchemeCreationAction.doAction();
+		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
+	
+		for (FlexoConceptInstance fci : documentVMI.getFlexoConceptInstances()) {
+			System.out.println("fci = " + fci);
+		}
+		assertEquals(4, documentVMI.getFlexoConceptInstances().size());
+	
+		assertTrue(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
+	
+		libraryVMI.getResource().save(null);
+	
+		assertFalse(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
 	
 	}*/
 }
