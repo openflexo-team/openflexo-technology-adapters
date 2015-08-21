@@ -125,8 +125,23 @@ public interface DocXRun extends FlexoRun<DocXDocument, DocXTechnologyAdapter> {
 		@Override
 		public void setText(String someText) {
 			if (text != null) {
-				text.setValue(someText);
+				if ((someText == null && getText() != null) || (someText != null && !someText.equals(getText()))) {
+					String oldValue = getText();
+					text.setValue(someText);
+					getPropertyChangeSupport().firePropertyChange("text", oldValue, text);
+					if (getFlexoDocument() != null) {
+						getFlexoDocument().setIsModified();
+					}
+				}
 			}
+		}
+
+		@Override
+		public DocXDocument getFlexoDocument() {
+			if (getParagraph() != null) {
+				return getParagraph().getFlexoDocument();
+			}
+			return null;
 		}
 
 		@Override
