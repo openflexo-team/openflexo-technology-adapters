@@ -163,12 +163,12 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 
 			System.out.println("Writing docx file in : " + docxDir);
 
-			System.out.println("getDocument().getWordprocessingMLPackage().getMainDocumentPart()="
-					+ getDocument().getWordprocessingMLPackage().getMainDocumentPart());
+			//System.out.println("getDocument().getWordprocessingMLPackage().getMainDocumentPart()="
+			//		+ getDocument().getWordprocessingMLPackage().getMainDocumentPart());
 
-			for (Object o : getDocument().getWordprocessingMLPackage().getMainDocumentPart().getContent()) {
+			/*for (Object o : getDocument().getWordprocessingMLPackage().getMainDocumentPart().getContent()) {
 				System.out.println("% " + o);
-			}
+			}*/
 
 			// System.out.println(XmlUtils.marshaltoString(getDocument().getWordprocessingMLPackage().getMainDocumentPart()));
 
