@@ -255,7 +255,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * Create a brand new project
 	 */
 	@Test
-	@TestOrder(4)
+	@TestOrder(3)
 	public void testCreateProject() {
 		editor = createProject("TestProject");
 		project = editor.getProject();
@@ -268,7 +268,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * Creates a new empty ViewPoint in the project
 	 */
 	@Test
-	@TestOrder(5)
+	@TestOrder(4)
 	public void testCreateViewPoint() {
 
 		log("testCreateViewPoint()");
@@ -306,7 +306,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * </code>
 	 */
 	@Test
-	@TestOrder(6)
+	@TestOrder(5)
 	public void testCreateLibraryVirtualModel() throws SaveResourceException, FragmentConsistencyException {
 
 		log("testCreateLibraryVirtualModel()");
@@ -471,7 +471,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * @throws FragmentConsistencyException
 	 */
 	@Test
-	@TestOrder(7)
+	@TestOrder(6)
 	public void testCreateDocumentVirtualModel() throws SaveResourceException, FragmentConsistencyException {
 
 		log("testCreateDocumentVirtualModel()");
@@ -912,7 +912,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * Instantiate in project a View conform to the ViewPoint
 	 */
 	@Test
-	@TestOrder(8)
+	@TestOrder(7)
 	public void testCreateView() {
 		CreateView action = CreateView.actionType.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
 		action.setNewViewName("MyLibraryView");
@@ -930,6 +930,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	public static final String LES_MISERABLES_DESCRIPTION = "Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles par les Éditions Lacroix, Verboeckhoven et Cie, et le 3 avril de la même année à Paris1). Dans ce roman, un des plus emblématiques de la littérature française, Victor Hugo décrit la vie de misérables dans Paris et la France provinciale du xixe siècle et s'attache plus particulièrement aux pas du bagnard Jean Valjean.";
 	public static final String GERMINAL_DESCRIPTION = "Germinal est un roman d'Émile Zola publié en 1885. Il s'agit du treizième roman de la série des Rougon-Macquart. Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord en feuilleton entre novembre 1884 et février 1885 dans le Gil Blas. Il connaît sa première édition en mars 1885. Depuis il a été publié dans plus d'une centaine de pays.";
 	public static final String LA_CHARTREUSE_DE_PARME_DESCRIPTION = "La Chartreuse de Parme est un roman publié par Stendhal. Cette œuvre majeure, qui lui valut la célébrité, fut publiée en deux volumes en mars 1839, puis refondue en 1841, soit peu avant la mort de Stendhal, à la suite d'un article fameux de Balzac et prenant de fait un tour plus « balzacien » : aujourd’hui, c’est le texte stendhalien d’origine que l’on lit encore.";
+	public static final String LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM = " L’œuvre sera, jusqu’au début du XXe siècle, relativement inconnue en dehors de quelques cercles d’esthètes, de critiques littéraires, ou de personnalités visionnaires (Nietzsche), ce que Stendhal semblait appeler de ses vœux, dédicaçant son roman To the Happy Few.";
 	public static final String LE_ROUGE_ET_LE_NOIR_DESCRIPTION = "Le Rouge et le Noir, sous-titré Chronique du XIXe siècle, deuxième sous-titré Chronique de 1830 est un roman écrit par Stendhal, publié pour la première fois à Paris chez Levasseur en novembre 1830, bien que l'édition originale1 mentionne la date de 1831. C'est le deuxième roman de Stendhal, après Armance. Il est cité par William Somerset Maugham en 1954, dans son essai : Ten Novels and Their Authors parmi les dix plus grands romans.";
 	public static final String LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM = " Le roman est divisé en deux parties : la première partie retrace le parcours de Julien Sorel en province à Verrières puis à Besançon et plus précisément son entrée chez les Rênal, de même que son séjour dans un séminaire ; la seconde partie porte sur la vie du héros à Paris comme secrétaire du marquis de La Mole.";
 
@@ -939,7 +940,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * @throws SaveResourceException
 	 */
 	@Test
-	@TestOrder(9)
+	@TestOrder(8)
 	public void testInstantiateLibrary() throws SaveResourceException {
 
 		log("testInstantiateLibrary()");
@@ -1022,7 +1023,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
 	 */
 	@Test
-	@TestOrder(10)
+	@TestOrder(9)
 	public void testInstanciateDocumentVMI() {
 
 		log("testInstanciateDocumentVMI()");
@@ -1100,7 +1101,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * @throws SaveResourceException
 	 */
 	@Test
-	@TestOrder(11)
+	@TestOrder(10)
 	public void testGenerateDocument() throws SaveResourceException {
 
 		log("testGenerateDocument()");
@@ -1156,7 +1157,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * @throws FragmentConsistencyException
 	 */
 	@Test
-	@TestOrder(12)
+	@TestOrder(11)
 	public void testUpdateDocument() throws SaveResourceException, FragmentConsistencyException {
 
 		log("testUpdateDocument()");
@@ -1672,62 +1673,73 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	/**
-	 * Try to modify generated document, and reinject it to the model<br>
+	 * Try to modify generated document without modifiying the structure, and reinject it to the model<br>
 	 * Check that reinjection works
 	 * 
 	 * @throws FragmentConsistencyException
 	 * @throws SaveResourceException
 	 */
-	/*@Test
+	@Test
 	@TestOrder(15)
 	public void testModifyDocumentAndReinjectData() throws FragmentConsistencyException, SaveResourceException {
-	
+
 		// La chartreuse de Parme
-	
+
 		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(14);
 		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(15);
 		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
 		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
 		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1);
-	
+
 		// [La chartreuse de Parme]
 		// [Author][: ][Stendhal]
 		// [Edition][: ][J. Hetzel, 1846]
 		// [Type][: ][Roman]
 		// [La Chartreuse de Parme est ...]
-	
+
 		titleParagraph1.getRuns().get(0).setText("La Chartreuse de Parme"); // Added a maj
 		authorParagraph1.getRuns().get(2).setText("Stendhal (Henri Beyle)"); // Added original name of author
 		editionParagraph1.getRuns().get(2).setText("Éditions Rencontre, Lausanne, 1967"); // Change for a newer edition
-	
+		typeParagraph1.getRuns().get(2).setText("Roman historique"); // Change for another type
+		descriptionParagraph1.getRuns().get(0).setText(LA_CHARTREUSE_DE_PARME_DESCRIPTION + LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM);
+
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
-	
+
 		System.out.println("Applying reinjectFromDocumentActionScheme: ");
-	
+
 		System.out.println(reinjectFromDocumentActionScheme.getFMLRepresentation());
-	
+
 		// Launch updateDocument actions
 		ActionSchemeActionType actionType = new ActionSchemeActionType(reinjectFromDocumentActionScheme, documentVMI);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
 		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
-	
+
 		for (FlexoConceptInstance fci : documentVMI.getFlexoConceptInstances()) {
 			System.out.println("fci = " + fci);
 		}
 		assertEquals(4, documentVMI.getFlexoConceptInstances().size());
-	
+
+		assertEquals(4, libraryVMI.getFlexoConceptInstances().size());
+		FlexoConceptInstance book3 = libraryVMI.getFlexoConceptInstances().get(2);
+		assertEquals("La Chartreuse de Parme", book3.getFlexoActor("title"));
+		assertEquals("Stendhal (Henri Beyle)", book3.getFlexoActor("author"));
+		assertEquals("Éditions Rencontre, Lausanne, 1967", book3.getFlexoActor("edition"));
+		assertEquals("Roman historique", book3.getFlexoActor("type"));
+		assertEquals(LA_CHARTREUSE_DE_PARME_DESCRIPTION + LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM, book3.getFlexoActor("description"));
+
 		assertTrue(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
-		assertFalse(generatedDocument.isModified());
-	
+		assertTrue(generatedDocument.isModified());
+
+		generatedDocument.getResource().save(null);
 		libraryVMI.getResource().save(null);
-	
+
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
 		assertFalse(generatedDocument.isModified());
-	
-	}*/
+
+	}
 }
