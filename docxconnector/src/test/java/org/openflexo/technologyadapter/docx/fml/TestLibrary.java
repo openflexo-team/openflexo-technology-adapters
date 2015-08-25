@@ -121,6 +121,7 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.model.DocXRun;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
@@ -1725,6 +1726,96 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals(4, libraryVMI.getFlexoConceptInstances().size());
 		FlexoConceptInstance book3 = libraryVMI.getFlexoConceptInstances().get(2);
 		assertEquals("La Chartreuse de Parme", book3.getFlexoActor("title"));
+		assertEquals("Stendhal (Henri Beyle)", book3.getFlexoActor("author"));
+		assertEquals("Éditions Rencontre, Lausanne, 1967", book3.getFlexoActor("edition"));
+		assertEquals("Roman historique", book3.getFlexoActor("type"));
+		assertEquals(LA_CHARTREUSE_DE_PARME_DESCRIPTION + LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM, book3.getFlexoActor("description"));
+
+		assertTrue(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertTrue(generatedDocument.isModified());
+
+		generatedDocument.getResource().save(null);
+		libraryVMI.getResource().save(null);
+
+		assertFalse(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
+
+	}
+
+	/**
+	 * Try to modify generated document by modifiying the structure, and reinject it to the model<br>
+	 * Check that reinjection works
+	 * 
+	 * @throws FragmentConsistencyException
+	 * @throws SaveResourceException
+	 */
+	@Test
+	@TestOrder(16)
+	public void testModifyDocumentAndReinjectData2() throws FragmentConsistencyException, SaveResourceException {
+
+		// La chartreuse de Parme
+
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(14);
+		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(15);
+		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
+		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
+		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1);
+
+		// [La chartreuse de Parme]
+		// [Author][: ][Stendhal]
+		// [Edition][: ][J. Hetzel, 1846]
+		// [Type][: ][Roman]
+		// [La Chartreuse de Parme est ...]
+
+		DocXRun currentSingleRun = (DocXRun) titleParagraph1.getRuns().get(0);
+
+		DocXRun run1 = (DocXRun) currentSingleRun.cloneObject();
+		DocXRun run2 = (DocXRun) currentSingleRun.cloneObject();
+		DocXRun run3 = (DocXRun) currentSingleRun.cloneObject();
+		DocXRun run4 = (DocXRun) currentSingleRun.cloneObject();
+
+		run1.setText("La");
+		run2.setText(" chartreuse ");
+		run3.setText("de ");
+		run4.setText("Parme");
+
+		titleParagraph1.removeFromRuns(currentSingleRun);
+		titleParagraph1.addToRuns(run1);
+		titleParagraph1.addToRuns(run2);
+		titleParagraph1.addToRuns(run3);
+		titleParagraph1.addToRuns(run4);
+
+		/*titleParagraph1.getRuns().get(0).setText("La Chartreuse de Parme"); // Added a maj
+		authorParagraph1.getRuns().get(2).setText("Stendhal (Henri Beyle)"); // Added original name of author
+		editionParagraph1.getRuns().get(2).setText("Éditions Rencontre, Lausanne, 1967"); // Change for a newer edition
+		typeParagraph1.getRuns().get(2).setText("Roman historique"); // Change for another type
+		descriptionParagraph1.getRuns().get(0).setText(LA_CHARTREUSE_DE_PARME_DESCRIPTION + LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM);
+		*/
+
+		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
+
+		System.out.println("Applying reinjectFromDocumentActionScheme: ");
+
+		System.out.println(reinjectFromDocumentActionScheme.getFMLRepresentation());
+
+		// Launch updateDocument actions
+		ActionSchemeActionType actionType = new ActionSchemeActionType(reinjectFromDocumentActionScheme, documentVMI);
+		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, editor);
+		assertNotNull(actionSchemeCreationAction);
+		actionSchemeCreationAction.doAction();
+		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
+
+		for (FlexoConceptInstance fci : documentVMI.getFlexoConceptInstances()) {
+			System.out.println("fci = " + fci);
+		}
+		assertEquals(4, documentVMI.getFlexoConceptInstances().size());
+
+		assertEquals(4, libraryVMI.getFlexoConceptInstances().size());
+		FlexoConceptInstance book3 = libraryVMI.getFlexoConceptInstances().get(2);
+		assertEquals("La chartreuse de Parme", book3.getFlexoActor("title"));
 		assertEquals("Stendhal (Henri Beyle)", book3.getFlexoActor("author"));
 		assertEquals("Éditions Rencontre, Lausanne, 1967", book3.getFlexoActor("edition"));
 		assertEquals("Roman historique", book3.getFlexoActor("type"));
