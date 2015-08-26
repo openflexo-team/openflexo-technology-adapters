@@ -62,8 +62,6 @@ public interface ReinjectTextBindings extends DocXFragmentAction {
 		@Override
 		public DocXFragment execute(FlexoBehaviourAction action) throws FlexoException {
 
-			System.out.println("Prout, j'applique ReinjectTextBindings");
-
 			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) action.getFlexoConceptInstance()
 					.getActorReference(getFlexoRole());
 

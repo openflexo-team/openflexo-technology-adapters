@@ -48,6 +48,7 @@ import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.StringTokenizer;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -126,6 +127,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * Test the creation and some manipulations of a {@link VirtualModel} with {@link FMLControlledDocumentVirtualModelNature}<br>
@@ -673,9 +675,9 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		// Description
 		TextSelection<DocXDocument, DocXTechnologyAdapter> descriptionSelection = bookDescriptionFragment
-				.makeTextSelection(descriptionParagraph, 0, 9);
+				.makeTextSelection(descriptionParagraph);
 		TextBinding<DocXDocument, DocXTechnologyAdapter> descriptionBinding = sectionRole.makeTextBinding(descriptionSelection,
-				new DataBinding<String>("book.description"));
+				new DataBinding<String>("book.description"), true);
 		assertTrue(descriptionBinding.getValue().isValid());
 
 		// Create bookDescriptionSectionCreationScheme
@@ -929,11 +931,11 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	}
 
 	public static final String LES_MISERABLES_DESCRIPTION = "Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles par les Éditions Lacroix, Verboeckhoven et Cie, et le 3 avril de la même année à Paris1). Dans ce roman, un des plus emblématiques de la littérature française, Victor Hugo décrit la vie de misérables dans Paris et la France provinciale du xixe siècle et s'attache plus particulièrement aux pas du bagnard Jean Valjean.";
-	public static final String GERMINAL_DESCRIPTION = "Germinal est un roman d'Émile Zola publié en 1885. Il s'agit du treizième roman de la série des Rougon-Macquart. Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord en feuilleton entre novembre 1884 et février 1885 dans le Gil Blas. Il connaît sa première édition en mars 1885. Depuis il a été publié dans plus d'une centaine de pays.";
-	public static final String LA_CHARTREUSE_DE_PARME_DESCRIPTION = "La Chartreuse de Parme est un roman publié par Stendhal. Cette œuvre majeure, qui lui valut la célébrité, fut publiée en deux volumes en mars 1839, puis refondue en 1841, soit peu avant la mort de Stendhal, à la suite d'un article fameux de Balzac et prenant de fait un tour plus « balzacien » : aujourd’hui, c’est le texte stendhalien d’origine que l’on lit encore.";
-	public static final String LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM = " L’œuvre sera, jusqu’au début du XXe siècle, relativement inconnue en dehors de quelques cercles d’esthètes, de critiques littéraires, ou de personnalités visionnaires (Nietzsche), ce que Stendhal semblait appeler de ses vœux, dédicaçant son roman To the Happy Few.";
-	public static final String LE_ROUGE_ET_LE_NOIR_DESCRIPTION = "Le Rouge et le Noir, sous-titré Chronique du XIXe siècle, deuxième sous-titré Chronique de 1830 est un roman écrit par Stendhal, publié pour la première fois à Paris chez Levasseur en novembre 1830, bien que l'édition originale1 mentionne la date de 1831. C'est le deuxième roman de Stendhal, après Armance. Il est cité par William Somerset Maugham en 1954, dans son essai : Ten Novels and Their Authors parmi les dix plus grands romans.";
-	public static final String LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM = " Le roman est divisé en deux parties : la première partie retrace le parcours de Julien Sorel en province à Verrières puis à Besançon et plus précisément son entrée chez les Rênal, de même que son séjour dans un séminaire ; la seconde partie porte sur la vie du héros à Paris comme secrétaire du marquis de La Mole.";
+	public static final String GERMINAL_DESCRIPTION = "Germinal est un roman d'Émile Zola publié en 1885.\nIl s'agit du treizième roman de la série des Rougon-Macquart.\nÉcrit d'avril 1884 à janvier 1885, le roman paraît d'abord en feuilleton entre novembre 1884 et février 1885 dans le Gil Blas. Il connaît sa première édition en mars 1885. Depuis il a été publié dans plus d'une centaine de pays.";
+	public static final String LA_CHARTREUSE_DE_PARME_DESCRIPTION = "La Chartreuse de Parme est un roman publié par Stendhal.\nCette œuvre majeure, qui lui valut la célébrité, fut publiée en deux volumes en mars 1839, puis refondue en 1841, soit peu avant la mort de Stendhal, à la suite d'un article fameux de Balzac et prenant de fait un tour plus « balzacien » : aujourd’hui, c’est le texte stendhalien d’origine que l’on lit encore.";
+	public static final String LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM = "L’œuvre sera, jusqu’au début du XXe siècle, relativement inconnue en dehors de quelques cercles d’esthètes, de critiques littéraires, ou de personnalités visionnaires (Nietzsche), ce que Stendhal semblait appeler de ses vœux, dédicaçant son roman To the Happy Few.";
+	public static final String LE_ROUGE_ET_LE_NOIR_DESCRIPTION = "Le Rouge et le Noir, sous-titré Chronique du XIXe siècle, deuxième sous-titré Chronique de 1830 est un roman écrit par Stendhal, publié pour la première fois à Paris chez Levasseur en novembre 1830, bien que l'édition originale1 mentionne la date de 1831.\nC'est le deuxième roman de Stendhal, après Armance. Il est cité par William Somerset Maugham en 1954, dans son essai : Ten Novels and Their Authors parmi les dix plus grands romans.";
+	public static final String LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM = "Le roman est divisé en deux parties : la première partie retrace le parcours de Julien Sorel en province à Verrières puis à Besançon et plus précisément son entrée chez les Rênal, de même que son séjour dans un séminaire ; la seconde partie porte sur la vie du héros à Paris comme secrétaire du marquis de La Mole.";
 
 	/**
 	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
@@ -1200,7 +1202,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		generatedDocument.getResource().save(null);
 		assertFalse(generatedDocument.isModified());
 
-		assertEquals(29, generatedDocument.getElements().size());
+		assertEquals(32, generatedDocument.getElements().size());
 
 		assertEquals(3, documentVMI.getFlexoConceptInstances().size());
 
@@ -1222,15 +1224,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
 		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
 		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1);
-
-		// Here is the structuration of original fragment (bookDescriptionFragment):
-
-		// [Les ][misérables]
-		// [Author][: Victor Hugo]
-		// [Edition][: ][Dunod]
-		// [Type][: Roman]
-		// [Les Misérables est un roman de Victor Hugo paru en 1862...][Verboeckhoven][ et Cie...][...]....
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// Now the fragment should be this:
 
@@ -1238,7 +1233,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		// [Author][: ][Stendhal]
 		// [Edition][: ][J. Hetzel, 1846]
 		// [Type][: ][Roman]
-		// [La Chartreuse de Parme est ...]
+		// [La Chartreuse de Parme est un roman publié par Stendhal.]
+		// [Cette œuvre majeure, qui lui valut la célébrité...]
 
 		/*StringBuffer sb = new StringBuffer();
 		for (DocXElement element : cpFragment.getElements()) {
@@ -1272,22 +1268,31 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals("Roman", typeParagraph1.getRuns().get(2).getText());
 
 		assertEquals(1, descriptionParagraph1.getRuns().size());
-		assertEquals(LA_CHARTREUSE_DE_PARME_DESCRIPTION, descriptionParagraph1.getRuns().get(0).getText());
+		StringTokenizer st = new StringTokenizer(LA_CHARTREUSE_DE_PARME_DESCRIPTION, StringUtils.LINE_SEPARATOR);
+		String description1Line1 = st.nextToken();
+		String description1Line2 = st.nextToken();
+
+		assertEquals(description1Line1, descriptionParagraph1.getRuns().get(0).getText());
+		assertEquals(description1Line2, descriptionParagraph1bis.getRuns().get(0).getText());
 
 		// Germinal
 
-		DocXParagraph titleParagraph2 = (DocXParagraph) generatedDocument.getElements().get(19);
-		DocXParagraph authorParagraph2 = (DocXParagraph) generatedDocument.getElements().get(20);
-		DocXParagraph editionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(21);
-		DocXParagraph typeParagraph2 = (DocXParagraph) generatedDocument.getElements().get(22);
-		DocXParagraph descriptionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(23);
-		DocXFragment gFragment = generatedDocument.getFragment(titleParagraph2, descriptionParagraph2);
+		DocXParagraph titleParagraph2 = (DocXParagraph) generatedDocument.getElements().get(20);
+		DocXParagraph authorParagraph2 = (DocXParagraph) generatedDocument.getElements().get(21);
+		DocXParagraph editionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(22);
+		DocXParagraph typeParagraph2 = (DocXParagraph) generatedDocument.getElements().get(23);
+		DocXParagraph descriptionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(24);
+		DocXParagraph descriptionParagraph2bis = (DocXParagraph) generatedDocument.getElements().get(25);
+		DocXParagraph descriptionParagraph2ter = (DocXParagraph) generatedDocument.getElements().get(26);
+		DocXFragment gFragment = generatedDocument.getFragment(titleParagraph2, descriptionParagraph2ter);
 
 		// [Germinal]
 		// [Author][: ][Emile Zola]
 		// [Edition][: ][Gil Blas]
 		// [Type][: ][Roman]
-		// [Germinal est un roman d'Émile Zola publié en 1885. ...]
+		// [Germinal est un roman d'Émile Zola publié en 1885.]
+		// [Il s'agit du treizième roman de la série des Rougon-Macquart.]
+		// [Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord...]
 
 		assertEquals(1, titleParagraph2.getRuns().size());
 		assertEquals("Germinal", titleParagraph2.getRuns().get(0).getText());
@@ -1308,15 +1313,22 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals("Roman", typeParagraph2.getRuns().get(2).getText());
 
 		assertEquals(1, descriptionParagraph2.getRuns().size());
-		assertEquals(GERMINAL_DESCRIPTION, descriptionParagraph2.getRuns().get(0).getText());
+		StringTokenizer st2 = new StringTokenizer(GERMINAL_DESCRIPTION, StringUtils.LINE_SEPARATOR);
+		String description2Line1 = st2.nextToken();
+		String description2Line2 = st2.nextToken();
+		String description2Line3 = st2.nextToken();
+
+		assertEquals(description2Line1, descriptionParagraph2.getRuns().get(0).getText());
+		assertEquals(description2Line2, descriptionParagraph2bis.getRuns().get(0).getText());
+		assertEquals(description2Line3, descriptionParagraph2ter.getRuns().get(0).getText());
 
 		// Les misérables
 
-		DocXParagraph titleParagraph3 = (DocXParagraph) generatedDocument.getElements().get(24);
-		DocXParagraph authorParagraph3 = (DocXParagraph) generatedDocument.getElements().get(25);
-		DocXParagraph editionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(26);
-		DocXParagraph typeParagraph3 = (DocXParagraph) generatedDocument.getElements().get(27);
-		DocXParagraph descriptionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(28);
+		DocXParagraph titleParagraph3 = (DocXParagraph) generatedDocument.getElements().get(27);
+		DocXParagraph authorParagraph3 = (DocXParagraph) generatedDocument.getElements().get(28);
+		DocXParagraph editionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(29);
+		DocXParagraph typeParagraph3 = (DocXParagraph) generatedDocument.getElements().get(30);
+		DocXParagraph descriptionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(31);
 		DocXFragment lmFragment = generatedDocument.getFragment(titleParagraph3, descriptionParagraph3);
 
 		// [Les misérables]
@@ -1455,7 +1467,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotSame(generatedDocumentBeforeReload, generatedDocument);
 
-		assertEquals(29, generatedDocument.getElements().size());
+		assertEquals(32, generatedDocument.getElements().size());
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -1531,14 +1543,15 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		assertEquals(34, generatedDocument.getElements().size());
+		assertEquals(38, generatedDocument.getElements().size());
 
-		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(29);
-		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(30);
-		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(31);
-		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(32);
-		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(33);
-		DocXFragment lrnFragment = generatedDocument.getFragment(titleParagraph4, descriptionParagraph4);
+		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(32);
+		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(33);
+		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(34);
+		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(35);
+		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(36);
+		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(37);
+		DocXFragment lrnFragment = generatedDocument.getFragment(titleParagraph4, descriptionParagraph4bis);
 
 		/*StringBuffer sb = new StringBuffer();
 		for (DocXElement element : lrnFragment.getElements()) {
@@ -1551,13 +1564,16 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 			}
 		}
 		
-		System.out.println(sb.toString());*/
+		System.out.println(sb.toString());
+		
+		System.exit(-1);*/
 
 		// [Le rouge et le noir]
 		// [Author][: ][Stendhal]
 		// [Edition][: ][Levasseur, 1830]
 		// [Type][: ][Roman]
 		// [Le Rouge et le Noir, sous-titré Chronique du XIXe siècle ...]
+		// [C'est le deuxième roman de Stendhal, après Armance. Il ...]
 
 		assertEquals(1, titleParagraph4.getRuns().size());
 		assertEquals("Le rouge et le noir", titleParagraph4.getRuns().get(0).getText());
@@ -1578,7 +1594,11 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals("Roman", typeParagraph4.getRuns().get(2).getText());
 
 		assertEquals(1, descriptionParagraph4.getRuns().size());
-		assertEquals(LE_ROUGE_ET_LE_NOIR_DESCRIPTION, descriptionParagraph4.getRuns().get(0).getText());
+		StringTokenizer st = new StringTokenizer(LE_ROUGE_ET_LE_NOIR_DESCRIPTION, StringUtils.LINE_SEPARATOR);
+		String description4Line1 = st.nextToken();
+		String description4Line2 = st.nextToken();
+		assertEquals(description4Line1, descriptionParagraph4.getRuns().get(0).getText());
+		assertEquals(description4Line2, descriptionParagraph4bis.getRuns().get(0).getText());
 
 	}
 
@@ -1607,7 +1627,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		book4.setFlexoActor("Stendhal aka Henri Beyle", (FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("author"));
 		book4.setFlexoActor("Levasseur", (FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("edition"));
 		book4.setFlexoActor("Roman historique", (FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("type"));
-		book4.setFlexoActor(LE_ROUGE_ET_LE_NOIR_DESCRIPTION + LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM,
+		book4.setFlexoActor(LE_ROUGE_ET_LE_NOIR_DESCRIPTION + "\n" + LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM,
 				(FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("description"));
 
 		assertTrue(libraryVMI.isModified());
@@ -1632,11 +1652,13 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(29);
-		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(30);
-		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(31);
-		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(32);
-		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(33);
+		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(32);
+		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(33);
+		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(34);
+		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(35);
+		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(36);
+		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(37);
+		DocXParagraph descriptionParagraph4ter = (DocXParagraph) generatedDocument.getElements().get(38);
 
 		assertEquals(1, titleParagraph4.getRuns().size());
 		assertEquals("Le Rouge et le Noir, Chronique du XIXe siècle", titleParagraph4.getRuns().get(0).getText());
@@ -1657,14 +1679,22 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals("Roman historique", typeParagraph4.getRuns().get(2).getText());
 
 		assertEquals(1, descriptionParagraph4.getRuns().size());
-		assertEquals(LE_ROUGE_ET_LE_NOIR_DESCRIPTION + LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM,
-				descriptionParagraph4.getRuns().get(0).getText());
+		assertEquals(1, descriptionParagraph4bis.getRuns().size());
+		assertEquals(1, descriptionParagraph4ter.getRuns().size());
+		StringTokenizer st = new StringTokenizer(LE_ROUGE_ET_LE_NOIR_DESCRIPTION, StringUtils.LINE_SEPARATOR);
+		String description4Line1 = st.nextToken();
+		String description4Line2 = st.nextToken();
+		String description4Line3 = LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM;
+		assertEquals(description4Line1, descriptionParagraph4.getRuns().get(0).getText());
+		assertEquals(description4Line2, descriptionParagraph4bis.getRuns().get(0).getText());
+		assertEquals(description4Line3, descriptionParagraph4ter.getRuns().get(0).getText());
 
 		assertTrue(libraryVMI.isModified());
-		assertFalse(documentVMI.isModified()); // No reason for the documentVMI to be modified
+		assertTrue(documentVMI.isModified()); // DocumentVMI has been modified, because FragmentActorReference has been modified
 		assertTrue(generatedDocument.isModified());
 
 		libraryVMI.getResource().save(null);
+		documentVMI.getResource().save(null);
 		generatedDocument.getResource().save(null);
 
 		assertFalse(libraryVMI.isModified());
@@ -1691,7 +1721,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
 		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
 		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// [La chartreuse de Parme]
 		// [Author][: ][Stendhal]
@@ -1703,7 +1734,6 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		authorParagraph1.getRuns().get(2).setText("Stendhal (Henri Beyle)"); // Added original name of author
 		editionParagraph1.getRuns().get(2).setText("Éditions Rencontre, Lausanne, 1967"); // Change for a newer edition
 		typeParagraph1.getRuns().get(2).setText("Roman historique"); // Change for another type
-		descriptionParagraph1.getRuns().get(0).setText(LA_CHARTREUSE_DE_PARME_DESCRIPTION + LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM);
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
@@ -1729,7 +1759,6 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals("Stendhal (Henri Beyle)", book3.getFlexoActor("author"));
 		assertEquals("Éditions Rencontre, Lausanne, 1967", book3.getFlexoActor("edition"));
 		assertEquals("Roman historique", book3.getFlexoActor("type"));
-		assertEquals(LA_CHARTREUSE_DE_PARME_DESCRIPTION + LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM, book3.getFlexoActor("description"));
 
 		assertTrue(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -1746,7 +1775,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 	/**
 	 * Try to modify generated document by modifiying the structure, and reinject it to the model<br>
-	 * Check that reinjection works
+	 * We modify title and check that reinjection works
 	 * 
 	 * @throws FragmentConsistencyException
 	 * @throws SaveResourceException
@@ -1762,7 +1791,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
 		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
 		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// [La chartreuse de Parme]
 		// [Author][: ][Stendhal]
@@ -1788,12 +1818,103 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		titleParagraph1.addToRuns(run3);
 		titleParagraph1.addToRuns(run4);
 
+		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
+
+		System.out.println("Applying reinjectFromDocumentActionScheme: ");
+
+		System.out.println(reinjectFromDocumentActionScheme.getFMLRepresentation());
+
+		// Launch updateDocument actions
+		ActionSchemeActionType actionType = new ActionSchemeActionType(reinjectFromDocumentActionScheme, documentVMI);
+		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, editor);
+		assertNotNull(actionSchemeCreationAction);
+		actionSchemeCreationAction.doAction();
+		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
+
+		for (FlexoConceptInstance fci : documentVMI.getFlexoConceptInstances()) {
+			System.out.println("fci = " + fci);
+		}
+		assertEquals(4, documentVMI.getFlexoConceptInstances().size());
+
+		assertEquals(4, libraryVMI.getFlexoConceptInstances().size());
+		FlexoConceptInstance book3 = libraryVMI.getFlexoConceptInstances().get(2);
+		assertEquals("La chartreuse de Parme", book3.getFlexoActor("title"));
+		assertEquals("Stendhal (Henri Beyle)", book3.getFlexoActor("author"));
+		assertEquals("Éditions Rencontre, Lausanne, 1967", book3.getFlexoActor("edition"));
+		assertEquals("Roman historique", book3.getFlexoActor("type"));
+		assertEquals(LA_CHARTREUSE_DE_PARME_DESCRIPTION, book3.getFlexoActor("description"));
+
+		assertTrue(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertTrue(generatedDocument.isModified());
+
+		generatedDocument.getResource().save(null);
+		libraryVMI.getResource().save(null);
+
+		assertFalse(libraryVMI.isModified());
+		assertFalse(documentVMI.isModified());
+		assertFalse(generatedDocument.isModified());
+
+	}
+
+	/**
+	 * Try to modify generated document by modifiying the structure, and reinject it to the model<br>
+	 * We modify description and check that reinjection works
+	 * 
+	 * @throws FragmentConsistencyException
+	 * @throws SaveResourceException
+	 */
+	@Test
+	@TestOrder(17)
+	public void testModifyDocumentAndReinjectData3() throws FragmentConsistencyException, SaveResourceException {
+
+		// La chartreuse de Parme
+
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(14);
+		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(15);
+		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
+		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
+
+		// [La chartreuse de Parme]
+		// [Author][: ][Stendhal]
+		// [Edition][: ][J. Hetzel, 1846]
+		// [Type][: ][Roman]
+		// [La Chartreuse de Parme est ...]
+
+		DocXParagraph descriptionParagraph1ter = (DocXParagraph) descriptionParagraph1bis.cloneObject();
+		descriptionParagraph1ter.setBaseIdentifier(null);
+		descriptionParagraph1ter.getRuns().get(0).setText(LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM);
+
+		generatedDocument.insertElementAtIndex(descriptionParagraph1ter,
+				generatedDocument.getElements().indexOf(descriptionParagraph1bis) + 1);
+
+		/*DocXRun currentSingleRun = (DocXRun) titleParagraph1.getRuns().get(0);
+		
+		DocXRun run1 = (DocXRun) currentSingleRun.cloneObject();
+		DocXRun run2 = (DocXRun) currentSingleRun.cloneObject();
+		DocXRun run3 = (DocXRun) currentSingleRun.cloneObject();
+		DocXRun run4 = (DocXRun) currentSingleRun.cloneObject();
+		
+		run1.setText("La");
+		run2.setText(" chartreuse ");
+		run3.setText("de ");
+		run4.setText("Parme");
+		
+		titleParagraph1.removeFromRuns(currentSingleRun);
+		titleParagraph1.addToRuns(run1);
+		titleParagraph1.addToRuns(run2);
+		titleParagraph1.addToRuns(run3);
+		titleParagraph1.addToRuns(run4);*/
+
 		/*titleParagraph1.getRuns().get(0).setText("La Chartreuse de Parme"); // Added a maj
 		authorParagraph1.getRuns().get(2).setText("Stendhal (Henri Beyle)"); // Added original name of author
 		editionParagraph1.getRuns().get(2).setText("Éditions Rencontre, Lausanne, 1967"); // Change for a newer edition
 		typeParagraph1.getRuns().get(2).setText("Roman historique"); // Change for another type
 		descriptionParagraph1.getRuns().get(0).setText(LA_CHARTREUSE_DE_PARME_DESCRIPTION + LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM);
-		*/
+		 */
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
@@ -1819,13 +1940,15 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals("Stendhal (Henri Beyle)", book3.getFlexoActor("author"));
 		assertEquals("Éditions Rencontre, Lausanne, 1967", book3.getFlexoActor("edition"));
 		assertEquals("Roman historique", book3.getFlexoActor("type"));
-		assertEquals(LA_CHARTREUSE_DE_PARME_DESCRIPTION + LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM, book3.getFlexoActor("description"));
+		assertEquals(LA_CHARTREUSE_DE_PARME_DESCRIPTION + "\n" + LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM,
+				book3.getFlexoActor("description"));
 
 		assertTrue(libraryVMI.isModified());
-		assertFalse(documentVMI.isModified());
+		assertTrue(documentVMI.isModified()); // Modified because FragmentActorReference was modified (extra paragraph added)
 		assertTrue(generatedDocument.isModified());
 
 		generatedDocument.getResource().save(null);
+		documentVMI.getResource().save(null);
 		libraryVMI.getResource().save(null);
 
 		assertFalse(libraryVMI.isModified());
