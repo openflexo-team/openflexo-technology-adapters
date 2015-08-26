@@ -132,12 +132,14 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 						// System.out.println("# Create new run for " + o);
 						run = factory.makeNewDocXRun((R) o);
 						internallyInsertRunAtIndex(run, currentIndex);
-					} else {
+					}
+					else {
 						// OK run was found
 						if (getRuns().indexOf(run) != currentIndex) {
 							// Paragraph was existing but is not at the right position
 							internallyMoveRunToIndex(run, currentIndex);
-						} else {
+						}
+						else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						runsToRemove.remove(run);
@@ -229,7 +231,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				R r = ((DocXRun) aRun).getR();
 				p.getContent().add(index, r);
 				internallyInsertRunAtIndex(aRun, index);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}
@@ -299,7 +302,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				R r = ((DocXRun) aRun).getR();
 				p.getContent().add(r);
 				internallyAddToRuns(aRun);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}
@@ -325,11 +329,10 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 			P p = getP();
 			if (aRun instanceof DocXRun) {
 				R r = ((DocXRun) aRun).getR();
-				System.out.println("OK, je dois virer " + r);
-				System.out.println("c'est bien dedans ? : " + p.getContent().contains(r));
 				p.getContent().remove(r);
 				internallyRemoveFromRuns(aRun);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}

@@ -52,8 +52,8 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 public class DocXFragmentConverter extends Converter<DocXFragment> {
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXFragmentConverter.class
-			.getPackage().getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+			.getLogger(DocXFragmentConverter.class.getPackage().getName());
 
 	public DocXFragmentConverter() {
 		super(DocXFragment.class);
@@ -70,17 +70,17 @@ public class DocXFragmentConverter extends Converter<DocXFragment> {
 			String startElementId = value.substring(startSeparatorIndex + 1, endSeparatorIndex);
 			String endElementId = value.substring(endSeparatorIndex + 1);
 
-			System.out.println("documentURI: " + documentURI);
-			System.out.println("startElementId: " + startElementId);
-			System.out.println("endElementId: " + endElementId);
+			// System.out.println("documentURI: " + documentURI);
+			// System.out.println("startElementId: " + startElementId);
+			// System.out.println("endElementId: " + endElementId);
 
-			System.out.println("factory: " + factory);
+			// System.out.println("factory: " + factory);
 
 			if (factory instanceof FMLModelFactory) {
-				System.out.println("serviceManager: " + ((FMLModelFactory) factory).getServiceManager());
+				// System.out.println("serviceManager: " + ((FMLModelFactory) factory).getServiceManager());
 				FlexoResource<DocXDocument> documentResource = ((FMLModelFactory) factory).getServiceManager().getInformationSpace()
 						.getResource(documentURI, null, DocXDocument.class);
-				System.out.println("document=" + documentResource);
+				// System.out.println("document=" + documentResource);
 
 				if (documentResource != null) {
 					DocXDocument document;
@@ -100,8 +100,8 @@ public class DocXFragmentConverter extends Converter<DocXFragment> {
 							.getElementWithIdentifier(startElementId);
 					FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement = document.getElementWithIdentifier(endElementId);
 
-					System.out.println("startElement = " + startElement);
-					System.out.println("endElement = " + endElement);
+					// System.out.println("startElement = " + startElement);
+					// System.out.println("endElement = " + endElement);
 
 					try {
 						return document.getFragment(startElement, endElement);

@@ -25,6 +25,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
@@ -37,7 +38,6 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
@@ -82,10 +82,10 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 
 	@Getter(value = LOCATION_KEY)
 	@XMLAttribute
-	public DataBinding<DocXElement> getLocation();
+	public DataBinding<? extends FlexoDocumentElement<?, ?>> getLocation();
 
 	@Setter(LOCATION_KEY)
-	public void setLocation(DataBinding<DocXElement> element);
+	public void setLocation(DataBinding<? extends FlexoDocumentElement<?, ?>> element);
 
 	@Getter(value = LOCATION_SEMANTICS_KEY)
 	@XMLAttribute
@@ -95,12 +95,14 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 	public void setLocationSemantics(LocationSemantics element);
 
 	public static enum LocationSemantics {
-		InsertAfter, InsertBefore, InsertAfterLastChild, EndOfDocument
+		InsertAfter, InsertBefore, InsertAfterLastChild, InsertBeforeLastChild, EndOfDocument
 	}
 
 	public static abstract class AddDocXFragmentImpl extends DocXActionImpl<DocXFragment>implements AddDocXFragment {
 
 		private static final Logger logger = Logger.getLogger(AddDocXFragment.class.getPackage().getName());
+
+		private DataBinding<? extends FlexoDocumentElement<?, ?>> location;
 
 		public AddDocXFragmentImpl() {
 			super();
@@ -112,11 +114,32 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 		}
 
 		@Override
+		public DataBinding<? extends FlexoDocumentElement<?, ?>> getLocation() {
+			if (location == null) {
+				location = new DataBinding<DocXElement>(this, FlexoDocumentElement.class, BindingDefinitionType.GET);
+				location.setBindingName("location");
+			}
+			return location;
+		}
+
+		@Override
+		public void setLocation(DataBinding<? extends FlexoDocumentElement<?, ?>> location) {
+			if (location != null) {
+				location.setOwner(this);
+				location.setBindingName("location");
+				location.setDeclaredType(FlexoDocumentElement.class);
+				location.setBindingDefinitionType(BindingDefinitionType.GET);
+			}
+			this.location = location;
+			notifiedBindingChanged(this.location);
+		}
+
+		@Override
 		public DocXFragment execute(FlexoBehaviourAction<?, ?, ?> action) throws FlexoException {
 
-			System.out.println("execute  AddDocXFragment()");
+			System.out.println("execute  AddDocXFragment(), location=" + getLocation());
 
-			DocXElement location = null;
+			FlexoDocumentElement<?, ?> location = null;
 			if (getLocation() != null && getLocation().isSet() && getLocation().isValid()) {
 				try {
 					location = getLocation().getBindingValue(action);
@@ -131,6 +154,23 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 					e.printStackTrace();
 				}
 				if (location == null) {
+					/*System.out.println("getLocation()=" + getLocation());
+					System.out.println("getLocation().isSet()=" + getLocation().isSet());
+					System.out.println("getLocation().isValid()=" + getLocation().isValid());
+					DataBinding db = new DataBinding<DocXElement>("booksDescriptionSection", this, DocXFragment.class,
+							BindingDefinitionType.GET);
+					try {
+						System.out.println(db.getBindingValue(action));
+					} catch (TypeMismatchException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (NullReferenceException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (InvocationTargetException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}*/
 					throw new FlexoException("Could not retrieve location");
 				}
 			}
@@ -152,28 +192,35 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 			int insertIndex = -1;
 
 			switch (getLocationSemantics()) {
-			case InsertAfter:
-				insertIndex = document.getElements().indexOf(location);
-				break;
-			case InsertBefore:
-				insertIndex = document.getElements().indexOf(location) - 1;
-				break;
-			case InsertAfterLastChild:
-				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> lastChild = location.getChildrenElements().size() > 0
-						? location.getChildrenElements().get(location.getChildrenElements().size() - 1) : null;
-				if (lastChild != null) {
-					insertIndex = document.getElements().indexOf(lastChild);
-				} else {
-					insertIndex = -1;
-				}
-				break;
-			case EndOfDocument:
-				insertIndex = document.getElements().size();
-			default:
-				break;
+				case InsertAfter:
+					insertIndex = document.getElements().indexOf(location) + 1;
+					break;
+				case InsertBefore:
+					insertIndex = document.getElements().indexOf(location);
+					break;
+				case InsertAfterLastChild:
+					FlexoDocumentElement<?, ?> lastDeepChild = getLastDeepChild((DocXElement) location);
+					if (lastDeepChild != null) {
+						insertIndex = document.getElements().indexOf(lastDeepChild) + 1;
+					}
+					else {
+						insertIndex = -1;
+					}
+					break;
+				case InsertBeforeLastChild:
+					FlexoDocumentElement<?, ?> lastDeepChild2 = getLastDeepChild((DocXElement) location);
+					if (lastDeepChild2 != null) {
+						insertIndex = document.getElements().indexOf(lastDeepChild2);
+					}
+					else {
+						insertIndex = -1;
+					}
+					break;
+				case EndOfDocument:
+					insertIndex = document.getElements().size();
+				default:
+					break;
 			}
-
-			System.out.println("insertIndex=" + insertIndex);
 
 			if (insertIndex > -1) {
 
@@ -209,6 +256,18 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 
 			// Cannot add at index < 0 !
 			return null;
+		}
+
+		private DocXElement getLastDeepChild(DocXElement e) {
+			DocXElement lastChild = e.getChildrenElements().size() > 0
+					? (DocXElement) e.getChildrenElements().get(e.getChildrenElements().size() - 1) : null;
+			if (lastChild == null) {
+				return e;
+			}
+			else {
+				return getLastDeepChild(lastChild);
+			}
+
 		}
 
 		@Override

@@ -39,11 +39,19 @@
 package org.openflexo.technologyadapter.docx.fml.editionaction;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.docx4j.wml.P;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.doc.FlexoDocumentElement;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.FlexoBehaviour;
+import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.controlgraph.FMLControlGraph;
+import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -51,6 +59,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXUtils;
@@ -76,13 +85,44 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 
 		private static final Logger logger = Logger.getLogger(GenerateDocXDocument.class.getPackage().getName());
 
+		private void appendElementsToIgnore(FlexoConcept concept, List<DocXElement> elementsToIgnore) {
+			for (FlexoBehaviour behaviour : concept.getFlexoBehaviours()) {
+				// TODO handle deep action
+				for (FMLControlGraph cg : behaviour.getControlGraph().getFlattenedSequence()) {
+					if (cg instanceof AddDocXFragment) {
+						for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
+							elementsToIgnore.add(e);
+						}
+					}
+					else if (cg instanceof AssignationAction && ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
+						for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment()
+								.getElements()) {
+							elementsToIgnore.add(e);
+						}
+					}
+				}
+			}
+
+			if (concept instanceof AbstractVirtualModel) {
+				for (FlexoConcept child : ((AbstractVirtualModel<?>) concept).getFlexoConcepts()) {
+					appendElementsToIgnore(child, elementsToIgnore);
+				}
+			}
+		}
+
 		@Override
 		public Type getAssignableType() {
 			return DocXDocument.class;
 		}
 
 		@Override
-		public DocXDocument execute(FlexoBehaviourAction action) throws FlexoException {
+		public DocXDocument execute(FlexoBehaviourAction<?, ?, ?> action) throws FlexoException {
+
+			List<DocXElement> elementsToIgnore = new ArrayList<>();
+			appendElementsToIgnore(action.getFlexoConcept().getOwner(), elementsToIgnore);
+			appendElementsToIgnore(action.getFlexoConcept(), elementsToIgnore);
+
+			System.out.println("ToIgnore: " + elementsToIgnore);
 
 			DocXDocument generatedDocument = null;
 
@@ -124,6 +164,18 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 					generatedElement.setBaseIdentifier(oldId);
 					// p.setParaId(generatedDocument.getFactory().generateId());
 					System.out.println("Paragraph " + p + " change id from " + oldId + " to " + generatedElement.getIdentifier());
+				}
+
+				List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<>();
+				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> templateElement : templateDocument.getElements()) {
+					if (elementsToIgnore.contains(templateElement)) {
+						System.out.println("Ignoring: " + templateElement);
+						elementsToRemove.addAll(generatedDocument.getElementsWithBaseIdentifier(templateElement.getIdentifier()));
+					}
+				}
+
+				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> elementToRemove : elementsToRemove) {
+					generatedDocument.removeFromElements(elementToRemove);
 				}
 
 				// System.out.println("generatedResource = " + generatedResource);

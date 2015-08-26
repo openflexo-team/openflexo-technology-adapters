@@ -151,12 +151,14 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 						// System.out.println("# Create new paragraph for " + o);
 						paragraph = factory.makeNewDocXParagraph((P) o);
 						internallyInsertElementAtIndex(paragraph, currentIndex);
-					} else {
+					}
+					else {
 						// OK paragraph was found
 						if (getElements().indexOf(paragraph) != currentIndex) {
 							// Paragraph was existing but is not at the right position
 							internallyMoveElementToIndex(paragraph, currentIndex);
-						} else {
+						}
+						else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						elementsToRemove.remove(paragraph);
@@ -264,7 +266,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				DocXStyle docXStyle = styles.get(style);
 				if (docXStyle != null) {
 					stylesToRemove.remove(docXStyle);
-				} else {
+				}
+				else {
 					docXStyle = factory.makeNewDocXStyle(style, parentStyle);
 					addToStyles(docXStyle);
 				}
@@ -359,7 +362,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			if (anElement.getIdentifier() != null) {
 				// System.out.println("Register " + anElement + " for " + anElement.getIdentifier());
 				elementsForIdentifier.put(anElement.getIdentifier(), (DocXElement) anElement);
-			} else {
+			}
+			else {
 				logger.warning("internallyHandleElementAdding() called for element with null identifier: " + anElement);
 			}
 			invalidateRootElements();
@@ -421,7 +425,15 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		 */
 		@Override
 		public void removeFromElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
-			// TODO: implement removing in WordProcessingMLPackage
+			// Removing in WordProcessingMLPackage
+			if (anElement instanceof DocXParagraph) {
+				P toRemove = ((DocXParagraph) anElement).getP();
+				if (getWordprocessingMLPackage().getMainDocumentPart().getContent().contains(toRemove)) {
+					getWordprocessingMLPackage().getMainDocumentPart().getContent().remove(toRemove);
+				}
+			}
+
+			// Then internal
 			internallyRemoveFromElements(anElement);
 		}
 
@@ -440,7 +452,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			}
 			if (removedElement.getIdentifier() != null) {
 				elementsForIdentifier.remove(removedElement.getIdentifier());
-			} else {
+			}
+			else {
 				logger.warning("removeFromElements() called for element with null identifier: " + removedElement);
 			}
 			performSuperRemover(ELEMENTS_KEY, removedElement);
@@ -451,6 +464,17 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		@Override
 		public DocXElement getElementWithIdentifier(String identifier) {
 			return elementsForIdentifier.get(identifier);
+		}
+
+		@Override
+		public List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> getElementsWithBaseIdentifier(String baseIdentifier) {
+			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> returned = new ArrayList<>();
+			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
+				if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(baseIdentifier)) {
+					returned.add(e);
+				}
+			}
+			return returned;
 		}
 
 		protected void reindexElement(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, String oldIdentifier) {

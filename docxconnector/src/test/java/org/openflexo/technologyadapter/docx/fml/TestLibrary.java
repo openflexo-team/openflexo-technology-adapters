@@ -118,6 +118,7 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.Lo
 import org.openflexo.technologyadapter.docx.fml.editionaction.ApplyTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ReinjectTextBindings;
+import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
@@ -511,7 +512,9 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		CreateTechnologyRole createIntroductionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
 				editor);
 		createIntroductionSectionRole.setRoleName("introductionSection");
+		// createIntroductionSectionRole.setModelSlot(docXModelSlot);
 		createIntroductionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
+		assertEquals(docXModelSlot, createIntroductionSectionRole.getModelSlot());
 		createIntroductionSectionRole.doAction();
 		assertTrue(createIntroductionSectionRole.hasActionExecutionSucceeded());
 		introductionFragmentRole = (DocXFragmentRole) createIntroductionSectionRole.getNewFlexoRole();
@@ -528,7 +531,9 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		CreateTechnologyRole createBooksDescriptionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
 				editor);
 		createBooksDescriptionSectionRole.setRoleName("booksDescriptionSection");
+		// createBooksDescriptionSectionRole.setModelSlot(docXModelSlot);
 		createBooksDescriptionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
+		assertEquals(docXModelSlot, createBooksDescriptionSectionRole.getModelSlot());
 		createBooksDescriptionSectionRole.doAction();
 		assertTrue(createBooksDescriptionSectionRole.hasActionExecutionSucceeded());
 		booksDescriptionFragmentRole = (DocXFragmentRole) createBooksDescriptionSectionRole.getNewFlexoRole();
@@ -545,7 +550,9 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		CreateTechnologyRole createConclusionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
 				editor);
 		createConclusionSectionRole.setRoleName("conclusionSection");
+		// createConclusionSectionRole.setModelSlot(docXModelSlot);
 		createConclusionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
+		assertEquals(docXModelSlot, createConclusionSectionRole.getModelSlot());
 		createConclusionSectionRole.doAction();
 		assertTrue(createConclusionSectionRole.hasActionExecutionSucceeded());
 		conclusionFragmentRole = (DocXFragmentRole) createConclusionSectionRole.getNewFlexoRole();
@@ -599,7 +606,9 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		// We create a role pointing to the right fragment
 		CreateTechnologyRole createSectionRole = CreateTechnologyRole.actionType.makeNewAction(bookDescriptionSection, null, editor);
 		createSectionRole.setRoleName("section");
+		// createSectionRole.setModelSlot(docXModelSlot);
 		createSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
+		assertEquals(docXModelSlot, createSectionRole.getModelSlot());
 		createSectionRole.doAction();
 		assertTrue(createSectionRole.hasActionExecutionSucceeded());
 		DocXFragmentRole sectionRole = (DocXFragmentRole) createSectionRole.getNewFlexoRole();
@@ -714,7 +723,9 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(createFragmentAction.hasActionExecutionSucceeded());
 		AddDocXFragment createFragment = (AddDocXFragment) ((AssignationAction) createFragmentAction.getNewEditionAction())
 				.getAssignableAction();
-		createFragment.setLocationSemantics(LocationSemantics.EndOfDocument);
+		createFragment.setLocationSemantics(LocationSemantics.InsertBeforeLastChild);
+		createFragment.setLocation(new DataBinding<DocXParagraph>("booksDescriptionSection.startElement"));
+		assertTrue(createFragment.getLocation().isValid());
 
 		CreateEditionAction applyTextBindingsAction = CreateEditionAction.actionType
 				.makeNewAction(bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
@@ -783,6 +794,30 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		createGenerateDocXDocumentAction.setEditionActionClass(GenerateDocXDocument.class);
 		createGenerateDocXDocumentAction.doAction();
 		assertTrue(createGenerateDocXDocumentAction.hasActionExecutionSucceeded());
+
+		CreateEditionAction createSelectIntroductionSection = CreateEditionAction.actionType
+				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, editor);
+		createSelectIntroductionSection.setEditionActionClass(SelectGeneratedDocXFragment.class);
+		createSelectIntroductionSection.setAssignation(new DataBinding<Object>("introductionSection"));
+		createSelectIntroductionSection.doAction();
+		AssignationAction<?> action1 = (AssignationAction<?>) createSelectIntroductionSection.getNewEditionAction();
+		assertTrue(action1.getAssignation().isValid());
+
+		CreateEditionAction createSelectBooksDescriptionSection = CreateEditionAction.actionType
+				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, editor);
+		createSelectBooksDescriptionSection.setEditionActionClass(SelectGeneratedDocXFragment.class);
+		createSelectBooksDescriptionSection.setAssignation(new DataBinding<Object>("booksDescriptionSection"));
+		createSelectBooksDescriptionSection.doAction();
+		AssignationAction<?> action2 = (AssignationAction<?>) createSelectBooksDescriptionSection.getNewEditionAction();
+		assertTrue(action2.getAssignation().isValid());
+
+		CreateEditionAction createSelectConclusionSection = CreateEditionAction.actionType
+				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, editor);
+		createSelectConclusionSection.setEditionActionClass(SelectGeneratedDocXFragment.class);
+		createSelectConclusionSection.setAssignation(new DataBinding<Object>("conclusionSection"));
+		createSelectConclusionSection.doAction();
+		AssignationAction<?> action3 = (AssignationAction<?>) createSelectConclusionSection.getNewEditionAction();
+		assertTrue(action3.getAssignation().isValid());
 
 		return generateDocumentActionScheme;
 
@@ -1102,10 +1137,11 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * Try to generate the document in documentVMI
 	 * 
 	 * @throws SaveResourceException
+	 * @throws FragmentConsistencyException
 	 */
 	@Test
 	@TestOrder(10)
-	public void testGenerateDocument() throws SaveResourceException {
+	public void testGenerateDocument() throws SaveResourceException, FragmentConsistencyException {
 
 		log("testGenerateDocument()");
 
@@ -1149,7 +1185,19 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		generatedDocument.getResource().save(null);
 		assertFalse(generatedDocument.isModified());
 
-		assertEquals(14, generatedDocument.getElements().size());
+		assertEquals(9, generatedDocument.getElements().size());
+
+		DocXParagraph introTitle = (DocXParagraph) generatedDocument.getElements().get(2);
+		DocXParagraph introLastPar = (DocXParagraph) generatedDocument.getElements().get(3);
+		assertEquals(generatedDocument.getFragment(introTitle, introLastPar), documentVMI.getFlexoActor("introductionSection"));
+
+		DocXParagraph booksTitle = (DocXParagraph) generatedDocument.getElements().get(4);
+		DocXParagraph booksLastPar = (DocXParagraph) generatedDocument.getElements().get(5);
+		assertEquals(generatedDocument.getFragment(booksTitle, booksLastPar), documentVMI.getFlexoActor("booksDescriptionSection"));
+
+		DocXParagraph conclusionTitle = (DocXParagraph) generatedDocument.getElements().get(7);
+		DocXParagraph conclusionLastPar = (DocXParagraph) generatedDocument.getElements().get(8);
+		assertEquals(generatedDocument.getFragment(conclusionTitle, conclusionLastPar), documentVMI.getFlexoActor("conclusionSection"));
 
 	}
 
@@ -1165,6 +1213,10 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		log("testUpdateDocument()");
 
+		DocXParagraph booksTitle = (DocXParagraph) generatedDocument.getElements().get(4);
+		DocXParagraph booksLastPar = (DocXParagraph) generatedDocument.getElements().get(5);
+		assertEquals(generatedDocument.getFragment(booksTitle, booksLastPar), documentVMI.getFlexoActor("booksDescriptionSection"));
+
 		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) documentVMI.getResource();
 
 		assertFalse(templateResource.isModified());
@@ -1173,6 +1225,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
+
 		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
 
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
@@ -1202,7 +1255,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		generatedDocument.getResource().save(null);
 		assertFalse(generatedDocument.isModified());
 
-		assertEquals(32, generatedDocument.getElements().size());
+		assertEquals(27, generatedDocument.getElements().size());
 
 		assertEquals(3, documentVMI.getFlexoConceptInstances().size());
 
@@ -1217,14 +1270,97 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		// [Type][: Roman]
 		// [Les Misérables est un roman de Victor Hugo paru en 1862...][Verboeckhoven][ et Cie...][...]....
 
+		// Les misérables
+
+		DocXParagraph titleParagraph3 = (DocXParagraph) generatedDocument.getElements().get(6);
+		DocXParagraph authorParagraph3 = (DocXParagraph) generatedDocument.getElements().get(7);
+		DocXParagraph editionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(8);
+		DocXParagraph typeParagraph3 = (DocXParagraph) generatedDocument.getElements().get(9);
+		DocXParagraph descriptionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(10);
+		DocXFragment lmFragment = generatedDocument.getFragment(titleParagraph3, descriptionParagraph3);
+
+		// [Les misérables]
+		// [Author][: ][Victor Hugo]
+		// [Edition][: ][Dunod]
+		// [Type][: ][Roman]
+		// [Les Misérables est un roman de Victor Hugo paru en 1862...]
+
+		assertEquals(1, titleParagraph3.getRuns().size());
+		assertEquals("Les misérables", titleParagraph3.getRuns().get(0).getText());
+
+		assertEquals(3, authorParagraph3.getRuns().size());
+		assertEquals("Author", authorParagraph3.getRuns().get(0).getText());
+		assertEquals(": ", authorParagraph3.getRuns().get(1).getText());
+		assertEquals("Victor Hugo", authorParagraph3.getRuns().get(2).getText());
+
+		assertEquals(3, editionParagraph3.getRuns().size());
+		assertEquals("Edition", editionParagraph3.getRuns().get(0).getText());
+		assertEquals(": ", editionParagraph3.getRuns().get(1).getText());
+		assertEquals("Dunod", editionParagraph3.getRuns().get(2).getText());
+
+		assertEquals(3, typeParagraph3.getRuns().size());
+		assertEquals("Type", typeParagraph3.getRuns().get(0).getText());
+		assertEquals(": ", typeParagraph3.getRuns().get(1).getText());
+		assertEquals("Roman", typeParagraph3.getRuns().get(2).getText());
+
+		assertEquals(1, descriptionParagraph3.getRuns().size());
+		assertEquals(LES_MISERABLES_DESCRIPTION, descriptionParagraph3.getRuns().get(0).getText());
+
+		// Germinal
+
+		DocXParagraph titleParagraph2 = (DocXParagraph) generatedDocument.getElements().get(11);
+		DocXParagraph authorParagraph2 = (DocXParagraph) generatedDocument.getElements().get(12);
+		DocXParagraph editionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(13);
+		DocXParagraph typeParagraph2 = (DocXParagraph) generatedDocument.getElements().get(14);
+		DocXParagraph descriptionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(15);
+		DocXParagraph descriptionParagraph2bis = (DocXParagraph) generatedDocument.getElements().get(16);
+		DocXParagraph descriptionParagraph2ter = (DocXParagraph) generatedDocument.getElements().get(17);
+		DocXFragment gFragment = generatedDocument.getFragment(titleParagraph2, descriptionParagraph2ter);
+
+		// [Germinal]
+		// [Author][: ][Emile Zola]
+		// [Edition][: ][Gil Blas]
+		// [Type][: ][Roman]
+		// [Germinal est un roman d'Émile Zola publié en 1885.]
+		// [Il s'agit du treizième roman de la série des Rougon-Macquart.]
+		// [Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord...]
+
+		assertEquals(1, titleParagraph2.getRuns().size());
+		assertEquals("Germinal", titleParagraph2.getRuns().get(0).getText());
+
+		assertEquals(3, authorParagraph2.getRuns().size());
+		assertEquals("Author", authorParagraph2.getRuns().get(0).getText());
+		assertEquals(": ", authorParagraph2.getRuns().get(1).getText());
+		assertEquals("Emile Zola", authorParagraph2.getRuns().get(2).getText());
+
+		assertEquals(3, editionParagraph2.getRuns().size());
+		assertEquals("Edition", editionParagraph2.getRuns().get(0).getText());
+		assertEquals(": ", editionParagraph2.getRuns().get(1).getText());
+		assertEquals("Gil Blas", editionParagraph2.getRuns().get(2).getText());
+
+		assertEquals(3, typeParagraph2.getRuns().size());
+		assertEquals("Type", typeParagraph2.getRuns().get(0).getText());
+		assertEquals(": ", typeParagraph2.getRuns().get(1).getText());
+		assertEquals("Roman", typeParagraph2.getRuns().get(2).getText());
+
+		assertEquals(1, descriptionParagraph2.getRuns().size());
+		StringTokenizer st2 = new StringTokenizer(GERMINAL_DESCRIPTION, StringUtils.LINE_SEPARATOR);
+		String description2Line1 = st2.nextToken();
+		String description2Line2 = st2.nextToken();
+		String description2Line3 = st2.nextToken();
+
+		assertEquals(description2Line1, descriptionParagraph2.getRuns().get(0).getText());
+		assertEquals(description2Line2, descriptionParagraph2bis.getRuns().get(0).getText());
+		assertEquals(description2Line3, descriptionParagraph2ter.getRuns().get(0).getText());
+
 		// La chartreuse de Parme
 
-		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(14);
-		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(15);
-		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
-		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
-		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
+		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
+		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// Now the fragment should be this:
@@ -1275,89 +1411,6 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals(description1Line1, descriptionParagraph1.getRuns().get(0).getText());
 		assertEquals(description1Line2, descriptionParagraph1bis.getRuns().get(0).getText());
 
-		// Germinal
-
-		DocXParagraph titleParagraph2 = (DocXParagraph) generatedDocument.getElements().get(20);
-		DocXParagraph authorParagraph2 = (DocXParagraph) generatedDocument.getElements().get(21);
-		DocXParagraph editionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(22);
-		DocXParagraph typeParagraph2 = (DocXParagraph) generatedDocument.getElements().get(23);
-		DocXParagraph descriptionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(24);
-		DocXParagraph descriptionParagraph2bis = (DocXParagraph) generatedDocument.getElements().get(25);
-		DocXParagraph descriptionParagraph2ter = (DocXParagraph) generatedDocument.getElements().get(26);
-		DocXFragment gFragment = generatedDocument.getFragment(titleParagraph2, descriptionParagraph2ter);
-
-		// [Germinal]
-		// [Author][: ][Emile Zola]
-		// [Edition][: ][Gil Blas]
-		// [Type][: ][Roman]
-		// [Germinal est un roman d'Émile Zola publié en 1885.]
-		// [Il s'agit du treizième roman de la série des Rougon-Macquart.]
-		// [Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord...]
-
-		assertEquals(1, titleParagraph2.getRuns().size());
-		assertEquals("Germinal", titleParagraph2.getRuns().get(0).getText());
-
-		assertEquals(3, authorParagraph2.getRuns().size());
-		assertEquals("Author", authorParagraph2.getRuns().get(0).getText());
-		assertEquals(": ", authorParagraph2.getRuns().get(1).getText());
-		assertEquals("Emile Zola", authorParagraph2.getRuns().get(2).getText());
-
-		assertEquals(3, editionParagraph2.getRuns().size());
-		assertEquals("Edition", editionParagraph2.getRuns().get(0).getText());
-		assertEquals(": ", editionParagraph2.getRuns().get(1).getText());
-		assertEquals("Gil Blas", editionParagraph2.getRuns().get(2).getText());
-
-		assertEquals(3, typeParagraph2.getRuns().size());
-		assertEquals("Type", typeParagraph2.getRuns().get(0).getText());
-		assertEquals(": ", typeParagraph2.getRuns().get(1).getText());
-		assertEquals("Roman", typeParagraph2.getRuns().get(2).getText());
-
-		assertEquals(1, descriptionParagraph2.getRuns().size());
-		StringTokenizer st2 = new StringTokenizer(GERMINAL_DESCRIPTION, StringUtils.LINE_SEPARATOR);
-		String description2Line1 = st2.nextToken();
-		String description2Line2 = st2.nextToken();
-		String description2Line3 = st2.nextToken();
-
-		assertEquals(description2Line1, descriptionParagraph2.getRuns().get(0).getText());
-		assertEquals(description2Line2, descriptionParagraph2bis.getRuns().get(0).getText());
-		assertEquals(description2Line3, descriptionParagraph2ter.getRuns().get(0).getText());
-
-		// Les misérables
-
-		DocXParagraph titleParagraph3 = (DocXParagraph) generatedDocument.getElements().get(27);
-		DocXParagraph authorParagraph3 = (DocXParagraph) generatedDocument.getElements().get(28);
-		DocXParagraph editionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(29);
-		DocXParagraph typeParagraph3 = (DocXParagraph) generatedDocument.getElements().get(30);
-		DocXParagraph descriptionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(31);
-		DocXFragment lmFragment = generatedDocument.getFragment(titleParagraph3, descriptionParagraph3);
-
-		// [Les misérables]
-		// [Author][: ][Victor Hugo]
-		// [Edition][: ][Dunod]
-		// [Type][: ][Roman]
-		// [Les Misérables est un roman de Victor Hugo paru en 1862...]
-
-		assertEquals(1, titleParagraph3.getRuns().size());
-		assertEquals("Les misérables", titleParagraph3.getRuns().get(0).getText());
-
-		assertEquals(3, authorParagraph3.getRuns().size());
-		assertEquals("Author", authorParagraph3.getRuns().get(0).getText());
-		assertEquals(": ", authorParagraph3.getRuns().get(1).getText());
-		assertEquals("Victor Hugo", authorParagraph3.getRuns().get(2).getText());
-
-		assertEquals(3, editionParagraph3.getRuns().size());
-		assertEquals("Edition", editionParagraph3.getRuns().get(0).getText());
-		assertEquals(": ", editionParagraph3.getRuns().get(1).getText());
-		assertEquals("Dunod", editionParagraph3.getRuns().get(2).getText());
-
-		assertEquals(3, typeParagraph3.getRuns().size());
-		assertEquals("Type", typeParagraph3.getRuns().get(0).getText());
-		assertEquals(": ", typeParagraph3.getRuns().get(1).getText());
-		assertEquals("Roman", typeParagraph3.getRuns().get(2).getText());
-
-		assertEquals(1, descriptionParagraph3.getRuns().size());
-		assertEquals(LES_MISERABLES_DESCRIPTION, descriptionParagraph3.getRuns().get(0).getText());
-
 		/*StringBuffer sb = new StringBuffer();
 		for (DocXElement element : lmFragment.getElements()) {
 			if (element instanceof DocXParagraph) {
@@ -1370,6 +1423,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		}
 		
 		System.out.println(sb.toString());*/
+
+		assertEquals(27, generatedDocument.getElements().size());
 
 	}
 
@@ -1467,7 +1522,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotSame(generatedDocumentBeforeReload, generatedDocument);
 
-		assertEquals(32, generatedDocument.getElements().size());
+		assertEquals(27, generatedDocument.getElements().size());
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -1485,9 +1540,13 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(13)
 	public void testAddNewBook() throws FragmentConsistencyException, SaveResourceException {
 
+		log("testAddNewBook()");
+
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
 		assertFalse(generatedDocument.isModified());
+
+		System.out.println("AVANT LE ADD: Generated document:\n" + generatedDocument.debugStructuredContents());
 
 		// Creation of new book
 		CreationSchemeAction createNewBook = CreationSchemeAction.actionType.makeNewAction(libraryVMI, null, editor);
@@ -1543,14 +1602,18 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		assertEquals(38, generatedDocument.getElements().size());
+		assertEquals(33, generatedDocument.getElements().size());
 
-		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(32);
-		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(33);
-		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(34);
-		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(35);
-		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(36);
-		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(37);
+		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(24);
+		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(25);
+		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(26);
+		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(27);
+		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(28);
+		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(29);
+
+		System.out.println("titleParagraph4=" + titleParagraph4.getRawText());
+		System.out.println("descriptionParagraph4bis=" + descriptionParagraph4bis.getRawText());
+
 		DocXFragment lrnFragment = generatedDocument.getFragment(titleParagraph4, descriptionParagraph4bis);
 
 		/*StringBuffer sb = new StringBuffer();
@@ -1564,9 +1627,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 			}
 		}
 		
-		System.out.println(sb.toString());
-		
-		System.exit(-1);*/
+		System.out.println(sb.toString());*/
 
 		// [Le rouge et le noir]
 		// [Author][: ][Stendhal]
@@ -1612,6 +1673,8 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(14)
 	public void testModifySomeDataAndUpdateDocument() throws FragmentConsistencyException, SaveResourceException {
 
+		log("testModifySomeDataAndUpdateDocument()");
+
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
 		assertFalse(generatedDocument.isModified());
@@ -1652,13 +1715,13 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(32);
-		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(33);
-		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(34);
-		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(35);
-		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(36);
-		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(37);
-		DocXParagraph descriptionParagraph4ter = (DocXParagraph) generatedDocument.getElements().get(38);
+		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(24);
+		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(25);
+		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(26);
+		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(27);
+		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(28);
+		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(29);
+		DocXParagraph descriptionParagraph4ter = (DocXParagraph) generatedDocument.getElements().get(30);
 
 		assertEquals(1, titleParagraph4.getRuns().size());
 		assertEquals("Le Rouge et le Noir, Chronique du XIXe siècle", titleParagraph4.getRuns().get(0).getText());
@@ -1714,14 +1777,16 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(15)
 	public void testModifyDocumentAndReinjectData() throws FragmentConsistencyException, SaveResourceException {
 
+		log("testModifyDocumentAndReinjectData()");
+
 		// La chartreuse de Parme
 
-		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(14);
-		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(15);
-		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
-		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
-		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
+		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
+		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// [La chartreuse de Parme]
@@ -1761,10 +1826,11 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals("Roman historique", book3.getFlexoActor("type"));
 
 		assertTrue(libraryVMI.isModified());
-		assertFalse(documentVMI.isModified());
+		assertTrue(documentVMI.isModified()); // FragmentActorReference were modified
 		assertTrue(generatedDocument.isModified());
 
 		generatedDocument.getResource().save(null);
+		documentVMI.getResource().save(null);
 		libraryVMI.getResource().save(null);
 
 		assertFalse(libraryVMI.isModified());
@@ -1784,14 +1850,16 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(16)
 	public void testModifyDocumentAndReinjectData2() throws FragmentConsistencyException, SaveResourceException {
 
+		log("testModifyDocumentAndReinjectData2()");
+
 		// La chartreuse de Parme
 
-		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(14);
-		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(15);
-		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
-		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
-		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
+		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
+		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// [La chartreuse de Parme]
@@ -1868,14 +1936,16 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(17)
 	public void testModifyDocumentAndReinjectData3() throws FragmentConsistencyException, SaveResourceException {
 
+		log("testModifyDocumentAndReinjectData3()");
+
 		// La chartreuse de Parme
 
-		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(14);
-		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(15);
-		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(16);
-		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(17);
-		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
+		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
+		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
+		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// [La chartreuse de Parme]
