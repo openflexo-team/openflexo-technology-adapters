@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.docx.model;
 
 import java.util.logging.Logger;
 
+import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
@@ -76,6 +77,21 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	@Override
 	protected DocXDocument makeDocument() {
 		return newInstance(DocXDocument.class);
+	}
+
+	public DocXDocument makeNewDocXDocument() {
+		DocXDocument returned = makeDocument();
+		WordprocessingMLPackage wordMLPackage;
+		try {
+			wordMLPackage = WordprocessingMLPackage.createPackage();
+		} catch (InvalidFormatException e) {
+			e.printStackTrace();
+			return returned;
+		}
+		// wordMLPackage.getMainDocumentPart().addParagraphOfText("Hello Word!");
+		returned.updateFromWordprocessingMLPackage(wordMLPackage, this);
+
+		return returned;
 	}
 
 	public DocXDocument makeNewDocXDocument(WordprocessingMLPackage wpmlPackage) {
