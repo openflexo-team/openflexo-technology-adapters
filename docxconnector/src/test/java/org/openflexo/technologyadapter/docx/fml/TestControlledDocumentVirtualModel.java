@@ -89,8 +89,8 @@ import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
-import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.LocationSemantics;
+import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
@@ -184,8 +184,8 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	 * @throws ResourceLoadingCancelledException
 	 * @throws FlexoException
 	 */
-	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
-			FlexoException {
+	private DocXDocumentResource getDocument(String documentName)
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 			System.out.println("Resource " + r + " uri=" + r.getURI());
@@ -458,7 +458,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		generatedDocument.getResource().save(null);
 		assertFalse(generatedDocument.isModified());
 
-		assertEquals(13 + 5, generatedDocument.getElements().size());
+		assertEquals(13, generatedDocument.getElements().size());
 
 		DocXFragment templatefragment = fragmentRole.getFragment();
 		DocXFragment generatedFragment = newVirtualModelInstance.getFlexoActor(fragmentRole);
@@ -537,7 +537,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		assertNotSame(generatedDocumentBeforeReload, generatedDocument);
 
-		assertEquals(18, generatedDocument.getElements().size());
+		assertEquals(13, generatedDocument.getElements().size());
 
 		DocXFragment templatefragment = fragmentRole.getFragment();
 		DocXFragment generatedFragment = newVirtualModelInstance.getFlexoActor(fragmentRole);
