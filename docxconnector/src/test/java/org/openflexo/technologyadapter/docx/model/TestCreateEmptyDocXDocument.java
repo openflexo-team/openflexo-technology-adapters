@@ -89,19 +89,6 @@ public class TestCreateEmptyDocXDocument extends AbstractTestDocX {
 
 		assertNotNull(newDocument = newDocResource.getResourceData(null));
 
-		assertEquals(1, newDocument.getStyles().size());
-
-		DocXStyle docDefaultsStyle = (DocXStyle) newDocument.getStyles().get(0);
-		// DocXStyle normalStyle = (DocXStyle) newDocument.getStyles().get(1);
-
-		System.out.println("docDefaultsStyle=" + docDefaultsStyle + " of " + docDefaultsStyle.getClass());
-		// System.out.println("normalStyle=" + normalStyle + " of " + normalStyle.getClass());
-
-		assertEquals(0, newDocument.getStructuringStyles().size());
-		assertFalse(docDefaultsStyle.isLevelled());
-		// assertFalse(normalStyle.isLevelled());
-		// assertEquals(docDefaultsStyle, normalStyle.getParentStyle());
-
 		System.out.println(newDocument.debugStructuredContents());
 
 		assertEquals(0, newDocument.getRootElements().size());

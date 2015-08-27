@@ -89,6 +89,10 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			return returned;
 		}
 		// wordMLPackage.getMainDocumentPart().addParagraphOfText("Hello Word!");
+
+		// wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title", "Hello Word!");
+		// wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle", "This is a subtitle!");
+
 		returned.updateFromWordprocessingMLPackage(wordMLPackage, this);
 
 		return returned;

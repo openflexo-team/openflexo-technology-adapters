@@ -30,11 +30,16 @@ import javax.xml.bind.JAXBElement;
 
 import org.docx4j.TextUtils;
 import org.docx4j.XmlUtils;
+import org.docx4j.jaxb.Context;
 import org.docx4j.wml.ContentAccessor;
+import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
+import org.docx4j.wml.PPr;
+import org.docx4j.wml.PPrBase.PStyle;
 import org.docx4j.wml.R;
 import org.openflexo.foundation.doc.FlexoParagraph;
 import org.openflexo.foundation.doc.FlexoRun;
+import org.openflexo.foundation.doc.FlexoStyle;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -351,6 +356,40 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				}
 			}
 			performSuperRemover(RUNS_KEY, removedRun);
+		}
+
+		@Override
+		public FlexoStyle<DocXDocument, DocXTechnologyAdapter> getStyle() {
+			if (getP() != null && getP().getPPr() != null && getP().getPPr().getPStyle() != null) {
+				String styleName = getP().getPPr().getPStyle().getVal();
+				return getFlexoDocument().getStyleByIdentifier(styleName);
+			}
+			return null;
+		}
+
+		@Override
+		public void setStyle(FlexoStyle<DocXDocument, DocXTechnologyAdapter> style) {
+			if (getStyle() != style) {
+				if (getP() != null) {
+					PPr paragraphProperties = getP().getPPr();
+					if (paragraphProperties == null) {
+						ObjectFactory factory = Context.getWmlObjectFactory();
+						paragraphProperties = factory.createPPr();
+						getP().setPPr(paragraphProperties);
+					}
+					PStyle pStyle = paragraphProperties.getPStyle();
+					if (pStyle == null) {
+						ObjectFactory factory = Context.getWmlObjectFactory();
+						pStyle = factory.createPPrBasePStyle();
+						paragraphProperties.setPStyle(pStyle);
+					}
+					pStyle.setVal(style.getStyleId());
+					if (getFlexoDocument() != null) {
+						getFlexoDocument().invalidateRootElements();
+						getFlexoDocument().notifyRootElementsChanged();
+					}
+				}
+			}
 		}
 
 	}

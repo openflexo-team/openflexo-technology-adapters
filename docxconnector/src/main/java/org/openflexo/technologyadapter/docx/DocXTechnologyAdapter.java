@@ -281,6 +281,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 
 		if (createEmptyDocument) {
 			DocXDocument document = docXDocumentResource.getFactory().makeNewDocXDocument();
+			document.setResource(docXDocumentResource);
 			docXDocumentResource.setResourceData(document);
 			docXDocumentResource.setModified(true);
 		}
