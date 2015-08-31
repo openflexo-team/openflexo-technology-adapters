@@ -20,11 +20,17 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.xml.bind.JAXBElement;
 
 import org.docx4j.XmlUtils;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Tr;
+import org.openflexo.foundation.doc.FlexoTableCell;
 import org.openflexo.foundation.doc.FlexoTableRow;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -67,7 +73,12 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 	 */
 	public void updateFromTr(Tr tr, DocXFactory factory);
 
-	public static abstract class DocXTableRowImpl extends FlexoTableRowImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTableRow {
+	public static abstract class DocXTableRowImpl extends FlexoTableRowImpl<DocXDocument, DocXTechnologyAdapter> implements DocXTableRow {
+
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXTableRowImpl.class
+				.getPackage().getName());
+
+		private final Map<Tc, DocXTableCell> cells = new HashMap<Tc, DocXTableCell>();
 
 		public DocXTableRowImpl() {
 			super();
@@ -77,8 +88,10 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		public void setTr(Tr tr) {
 			if ((tr == null && getTr() != null) || (tr != null && !tr.equals(getTr()))) {
 				if (tr != null) {
-					updateFromTr(tr, (getResourceData() != null && getResourceData().getResource() != null
-							? ((DocXDocumentResource) getResourceData().getResource()).getFactory() : null));
+					updateFromTr(
+							tr,
+							(getResourceData() != null && getResourceData().getResource() != null ? ((DocXDocumentResource) getResourceData()
+									.getResource()).getFactory() : null));
 				}
 			}
 		}
@@ -93,13 +106,36 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 
 			performSuperSetter(TR_KEY, tr);
 
+			List<FlexoTableCell> cellsToRemove = new ArrayList<FlexoTableCell>(getTableCells());
+
+			int currentIndex = 0;
+
 			for (Object o : tr.getContent()) {
 				if (o instanceof JAXBElement) {
 					o = ((JAXBElement) o).getValue();
 				}
 				if (o instanceof Tc) {
-					System.out.println("Hop, une cellule: " + ((Tc) o).toString());
+					DocXTableCell cell = cells.get(o);
+					if (cell == null) {
+						cell = factory.makeNewDocXTableCell((Tc) o);
+						internallyInsertTableCellAtIndex(cell, currentIndex);
+					} else {
+						// OK row was found
+						if (getTableCells().indexOf(cell) != currentIndex) {
+							// Cell was existing but is not at the right position
+							internallyMoveTableCellToIndex(cell, currentIndex);
+						} else {
+							// System.out.println("# Found existing paragraph for " + o);
+						}
+						cellsToRemove.remove(cell);
+					}
+					currentIndex++;
 				}
+			}
+
+			for (FlexoTableCell<DocXDocument, DocXTechnologyAdapter> row : cellsToRemove) {
+				// System.out.println("# Remove row for " + e);
+				internallyRemoveFromTableCells(row);
 			}
 
 		}
@@ -110,6 +146,133 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 				return getTable().getFlexoDocument();
 			}
 			return null;
+		}
+
+		/**
+		 * Insert cell to this {@link DocXTableRow} at supplied index (public API).<br>
+		 * Element will be inserted to underlying {@link Tr} and {@link DocXTableRow} will be updated accordingly
+		 */
+		@Override
+		public void insertTableCellAtIndex(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
+			System.out.println("Add cell ");
+			Tr tr = getTr();
+			if (aTableCell instanceof DocXTableCell) {
+				Tc tc = ((DocXTableCell) aTableCell).getTc();
+				tr.getContent().add(index, tc);
+				internallyInsertTableCellAtIndex(aTableCell, index);
+			} else {
+				logger.warning("Unexpected cell: " + aTableCell);
+			}
+		}
+
+		/**
+		 * Internally used to update {@link DocXTableRow} object according to wrapped model in the context of cell inserting (calling this
+		 * assume that added cell is already present in underlying {@link Tr})
+		 * 
+		 * @param addedElement
+		 */
+		private void internallyInsertTableCellAtIndex(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
+
+			performSuperAdder(TABLE_CELLS_KEY, aTableCell, index);
+			internallyHandleTableCellAdding(aTableCell);
+		}
+
+		/**
+		 * Internally handle cell adding
+		 * 
+		 * @param aTableCell
+		 */
+		private void internallyHandleTableCellAdding(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell) {
+
+			if (aTableCell instanceof DocXTableCell) {
+				DocXTableCell cell = (DocXTableCell) aTableCell;
+				if (cell.getTc() != null) {
+					cells.put(cell.getTc(), cell);
+				}
+			}
+		}
+
+		/**
+		 * Move cell in this {@link DocXTableRow} at supplied index (public API).<br>
+		 * Element will be moved inside underlying {@link Tr} and {@link DocXTableRow} will be updated accordingly
+		 */
+		@Override
+		public void moveTableCellToIndex(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
+			// TODO: do it in Tr
+			internallyMoveTableCellToIndex(aTableCell, index);
+		}
+
+		/**
+		 * Internally used to update {@link DocXTableRow} object according to wrapped model in the context of cell moving (calling this
+		 * assume that moved cell has already been moved in underlying {@link Tr})
+		 * 
+		 * @param addedElement
+		 */
+		private void internallyMoveTableCellToIndex(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
+			List<FlexoTableCell<DocXDocument, DocXTechnologyAdapter>> cells = getTableCells();
+			cells.remove(aTableCell);
+			cells.add(index, aTableCell);
+		}
+
+		/**
+		 * Add cell to this {@link DocXTableRow} (public API).<br>
+		 * Element will be added to underlying {@link Tr} and {@link DocXTableRow} will be updated accordingly
+		 */
+		@Override
+		public void addToTableCells(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell) {
+
+			Tr tr = getTr();
+			if (aTableCell instanceof DocXTableCell) {
+				Tc tc = ((DocXTableCell) aTableCell).getTc();
+				tr.getContent().add(tc);
+				internallyAddToTableCells(aTableCell);
+			} else {
+				logger.warning("Unexpected cell: " + aTableCell);
+			}
+		}
+
+		/**
+		 * Internally used to update {@link DocXTableRow} object according to wrapped model in the context of cell adding (calling this
+		 * assume that added cell is already present in underlying {@link Tr})
+		 * 
+		 * @param addedTableCell
+		 */
+		private void internallyAddToTableCells(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> addedTableCell) {
+			performSuperAdder(TABLE_CELLS_KEY, addedTableCell);
+			internallyHandleTableCellAdding(addedTableCell);
+		}
+
+		/**
+		 * Remove cell from this {@link DocXTableRow} (public API).<br>
+		 * Element will be removed from underlying {@link Tr} and {@link DocXTableRow} will be updated accordingly
+		 */
+		@Override
+		public void removeFromTableCells(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell) {
+
+			Tr tr = getTr();
+			if (aTableCell instanceof DocXTableCell) {
+				Tc tc = ((DocXTableCell) aTableCell).getTc();
+				tr.getContent().remove(tc);
+				internallyRemoveFromTableCells(aTableCell);
+			} else {
+				logger.warning("Unexpected cell: " + aTableCell);
+			}
+		}
+
+		/**
+		 * Internally used to update {@link DocXTableRow} object according to wrapped model in the context of cell removing (calling this
+		 * assume that removed cell has already been removed from underlying {@link Tr})
+		 * 
+		 * @param removedTableCell
+		 */
+		private void internallyRemoveFromTableCells(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> removedTableCell) {
+			if (removedTableCell instanceof DocXTableCell) {
+				DocXTableCell cell = (DocXTableCell) removedTableCell;
+				if (cell.getTc() != null) {
+					cells.remove(cell.getTc());
+				}
+			}
+			performSuperRemover(TABLE_CELLS_KEY, removedTableCell);
 		}
 
 		@Override
@@ -125,7 +288,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 
 		@Override
 		public String toString() {
-			return "DocXTableRow\n" + (getTr() != null ? DocXUtils.printContents(getTr(), 2) : "null");
+			return "DocXTableCell\n" + (getTr() != null ? DocXUtils.printContents(getTr(), 2) : "null");
 		}
 	}
 

@@ -87,8 +87,8 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -243,18 +243,25 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		System.out.println("DocumentWithTable.docx:\n" + documentWithTable.debugStructuredContents());
 
-		/*System.out.println("Elements: " + documentWithTable.getElements().size());
-		
-		for (FlexoDocumentElement<?, ?> element : documentWithTable.getElements()) {
-			if (element instanceof DocXParagraph) {
-				DocXParagraph paragraph = (DocXParagraph) element;
-				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
-						+ (paragraph.getP().getPPr() != null ? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
-			} else {
-				System.out.println("* Element " + element);
-			}
-		}*/
+		assertEquals(7, documentWithTable.getElements().size());
 
+		DocXParagraph titleParagraph = (DocXParagraph) documentWithTable.getElements().get(0);
+		DocXParagraph sectionParagraph = (DocXParagraph) documentWithTable.getElements().get(2);
+		DocXParagraph p1 = (DocXParagraph) documentWithTable.getElements().get(3);
+		DocXParagraph p2 = (DocXParagraph) documentWithTable.getElements().get(4);
+		DocXTable table = (DocXTable) documentWithTable.getElements().get(5);
+		DocXParagraph p3 = (DocXParagraph) documentWithTable.getElements().get(6);
+
+		assertSameList(sectionParagraph.getChildrenElements(), p1, p2, table, p3);
+
+		assertEquals(3, table.getTableRows().size());
+		DocXTableRow header = (DocXTableRow) table.getTableRows().get(0);
+		DocXTableRow row1 = (DocXTableRow) table.getTableRows().get(1);
+		DocXTableRow row2 = (DocXTableRow) table.getTableRows().get(2);
+
+		assertEquals(4, header.getTableCells().size());
+		assertEquals(4, row1.getTableCells().size());
+		assertEquals(4, row2.getTableCells().size());
 	}
 
 	@Test

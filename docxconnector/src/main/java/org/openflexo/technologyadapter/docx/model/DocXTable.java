@@ -57,7 +57,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ModelEntity
 @ImplementationClass(DocXTable.DocXTableImpl.class)
 @XMLElement
-@Imports({ @Import(DocXTableRow.class) })
+@Imports({ @Import(DocXTableRow.class), @Import(DocXTableCell.class) })
 public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = Tbl.class)
@@ -87,10 +87,10 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 	 */
 	public void updateFromTbl(Tbl tbl, DocXFactory factory);
 
-	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTable {
+	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter> implements DocXTable {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-				.getLogger(DocXTableImpl.class.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXTableImpl.class.getPackage()
+				.getName());
 
 		private final Map<Tr, DocXTableRow> rows = new HashMap<Tr, DocXTableRow>();
 
@@ -134,14 +134,12 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 						// System.out.println("# Create new row for " + o);
 						row = factory.makeNewDocXTableRow((Tr) o);
 						internallyInsertTableRowAtIndex(row, currentIndex);
-					}
-					else {
+					} else {
 						// OK row was found
 						if (getTableRows().indexOf(row) != currentIndex) {
 							// Row was existing but is not at the right position
 							internallyMoveTableRowToIndex(row, currentIndex);
-						}
-						else {
+						} else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						rowsToRemove.remove(row);
@@ -231,7 +229,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 
 		/**
 		 * Insert row to this {@link DocXTable} at supplied index (public API).<br>
-		 * Element will be inserted to underlying {@link P} and {@link DocXTable} will be updated accordingly
+		 * Element will be inserted to underlying {@link Tbl} and {@link DocXTable} will be updated accordingly
 		 */
 		@Override
 		public void insertTableRowAtIndex(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow, int index) {
@@ -241,15 +239,14 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().add(index, tr);
 				internallyInsertTableRowAtIndex(aTableRow, index);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}
 
 		/**
 		 * Internally used to update {@link DocXTable} object according to wrapped model in the context of row inserting (calling this
-		 * assume that added row is already present in underlying {@link P})
+		 * assume that added row is already present in underlying {@link Tbl})
 		 * 
 		 * @param addedElement
 		 */
@@ -276,16 +273,17 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 
 		/**
 		 * Move row in this {@link DocXTable} at supplied index (public API).<br>
-		 * Element will be moved inside underlying {@link P} and {@link DocXTable} will be updated accordingly
+		 * Element will be moved inside underlying {@link Tbl} and {@link DocXTable} will be updated accordingly
 		 */
 		@Override
 		public void moveTableRowToIndex(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow, int index) {
+			// TODO: do it in Tbl
 			internallyMoveTableRowToIndex(aTableRow, index);
 		}
 
 		/**
 		 * Internally used to update {@link DocXTable} object according to wrapped model in the context of row moving (calling this assume
-		 * that moved row has already been moved in underlying {@link P})
+		 * that moved row has already been moved in underlying {@link Tbl})
 		 * 
 		 * @param addedElement
 		 */
@@ -297,7 +295,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 
 		/**
 		 * Add row to this {@link DocXTable} (public API).<br>
-		 * Element will be added to underlying {@link P} and {@link DocXTable} will be updated accordingly
+		 * Element will be added to underlying {@link Tbl} and {@link DocXTable} will be updated accordingly
 		 */
 		@Override
 		public void addToTableRows(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow) {
@@ -307,15 +305,14 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().add(tr);
 				internallyAddToTableRows(aTableRow);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}
 
 		/**
 		 * Internally used to update {@link DocXTable} object according to wrapped model in the context of row adding (calling this assume
-		 * that added row is already present in underlying {@link P})
+		 * that added row is already present in underlying {@link Tbl})
 		 * 
 		 * @param addedTableRow
 		 */
@@ -326,7 +323,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 
 		/**
 		 * Remove row from this {@link DocXTable} (public API).<br>
-		 * Element will be removed from underlying {@link P} and {@link DocXTable} will be updated accordingly
+		 * Element will be removed from underlying {@link Tbl} and {@link DocXTable} will be updated accordingly
 		 */
 		@Override
 		public void removeFromTableRows(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow) {
@@ -336,15 +333,14 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().remove(tr);
 				internallyRemoveFromTableRows(aTableRow);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}
 
 		/**
 		 * Internally used to update {@link DocXTable} object according to wrapped model in the context of row removing (calling this assume
-		 * that removed row has already been removed from underlying {@link P})
+		 * that removed row has already been removed from underlying {@link Tbl})
 		 * 
 		 * @param removedTableRow
 		 */

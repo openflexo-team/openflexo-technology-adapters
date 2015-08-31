@@ -46,6 +46,7 @@ import org.docx4j.wml.P;
 import org.docx4j.wml.R;
 import org.docx4j.wml.Style;
 import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Tc;
 import org.docx4j.wml.Tr;
 import org.openflexo.foundation.doc.DocumentFactory;
 import org.openflexo.model.ModelContextLibrary;
@@ -150,6 +151,17 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	public DocXTableRow makeNewDocXTableRow(Tr tr) {
 		DocXTableRow returned = makeTableRow();
 		returned.updateFromTr(tr, this);
+		return returned;
+	}
+
+	@Override
+	public DocXTableCell makeTableCell() {
+		return newInstance(DocXTableCell.class);
+	}
+
+	public DocXTableCell makeNewDocXTableCell(Tc tc) {
+		DocXTableCell returned = makeTableCell();
+		returned.updateFromTc(tc, this);
 		return returned;
 	}
 
