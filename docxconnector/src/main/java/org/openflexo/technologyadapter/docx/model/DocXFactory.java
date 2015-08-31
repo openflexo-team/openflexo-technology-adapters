@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.docx.model;
 
 import java.util.logging.Logger;
 
+import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.P;
@@ -129,6 +130,13 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	public DocXRun makeNewDocXRun(R r) {
 		DocXRun returned = makeRun();
 		returned.updateFromR(r, this);
+		return returned;
+	}
+
+	@Override
+	public DocXRun makeNewDocXRun(String text) {
+		DocXRun returned = makeNewDocXRun(Context.getWmlObjectFactory().createR());
+		returned.setText(text);
 		return returned;
 	}
 

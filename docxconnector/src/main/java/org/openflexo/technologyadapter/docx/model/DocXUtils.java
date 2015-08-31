@@ -41,13 +41,28 @@ import org.openflexo.toolbox.StringUtils;
 public class DocXUtils {
 
 	public static String debugStructuredContents(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> element, int indent) {
-		StringBuffer result = new StringBuffer();
-		result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + element
-				+ (element instanceof DocXParagraph ? ((DocXParagraph) element).getRawTextPreview() : "") + "\n");
-		for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
-			result.append(debugStructuredContents(e, indent + 1));
+		if (element instanceof DocXParagraph) {
+			StringBuffer result = new StringBuffer();
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + element
+					+ (element instanceof DocXParagraph ? ((DocXParagraph) element).getRawTextPreview() : "") + "\n");
+			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
+				result.append(debugStructuredContents(e, indent + 1));
+			}
+			return result.toString();
 		}
-		return result.toString();
+		if (element instanceof DocXTable) {
+			DocXTable table = (DocXTable) element;
+			StringBuffer result = new StringBuffer();
+			for (int i = 0; i < table.getTableRows().size(); i++) {
+				result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2));
+				for (int j = 0; j < table.getTableRows().get(i).getTableCells().size(); j++) {
+					result.append("[" + table.getTableRows().get(i).getTableCells().get(j).getRawText() + "] ");
+				}
+				result.append("\n");
+			}
+			return result.toString();
+		}
+		return StringUtils.buildWhiteSpaceIndentation(indent * 2) + " ???";
 	}
 
 	public static String printContents(Object obj, int indent) {
@@ -81,7 +96,8 @@ public class DocXUtils {
 
 		if (toSearch.isAssignableFrom(obj.getClass())) {
 			result.add((T) obj);
-		} else if (obj instanceof ContentAccessor) {
+		}
+		else if (obj instanceof ContentAccessor) {
 			List<?> children = ((ContentAccessor) obj).getContent();
 			for (Object child : children) {
 				result.addAll(getAllElementsFromObject(child, toSearch));

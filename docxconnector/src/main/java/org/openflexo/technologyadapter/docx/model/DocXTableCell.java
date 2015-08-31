@@ -302,6 +302,21 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		public String toString() {
 			return "DocXTableCell\n" + (getTc() != null ? DocXUtils.printContents(getTc(), 2) : "null");
 		}
+
+		/**
+		 * Return a string representation (plain text) of contents of the cell
+		 * 
+		 * @return
+		 */
+		@Override
+		public String getRawText() {
+			StringBuffer sb = new StringBuffer();
+			for (DocXParagraph paragraph : paragraphs.values()) {
+				sb.append(paragraph.getRawText());
+			}
+			return sb.toString();
+		}
+
 	}
 
 }

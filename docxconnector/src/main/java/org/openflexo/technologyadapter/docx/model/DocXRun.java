@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.docx.model;
 import javax.xml.bind.JAXBElement;
 
 import org.docx4j.XmlUtils;
+import org.docx4j.jaxb.Context;
 import org.docx4j.wml.R;
 import org.docx4j.wml.Text;
 import org.openflexo.foundation.doc.FlexoRun;
@@ -124,16 +125,24 @@ public interface DocXRun extends FlexoRun<DocXDocument, DocXTechnologyAdapter> {
 
 		@Override
 		public void setText(String someText) {
-			if (text != null) {
-				if ((someText == null && getText() != null) || (someText != null && !someText.equals(getText()))) {
-					String oldValue = getText();
+			if ((someText == null && getText() != null) || (someText != null && !someText.equals(getText()))) {
+				String oldValue = getText();
+				if (text != null) {
 					text.setValue(someText);
-					getPropertyChangeSupport().firePropertyChange("text", oldValue, text);
-					if (getFlexoDocument() != null) {
-						getFlexoDocument().setIsModified();
-					}
+				}
+				else {
+					text = Context.getWmlObjectFactory().createText();
+					text.setValue(someText);
+					text.setSpace("preserve");
+					getR().getContent().add(text);
+					text.setParent(getR());
+				}
+				getPropertyChangeSupport().firePropertyChange("text", oldValue, text);
+				if (getFlexoDocument() != null) {
+					getFlexoDocument().setIsModified();
 				}
 			}
+
 		}
 
 		@Override

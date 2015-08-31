@@ -87,10 +87,10 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 	 */
 	public void updateFromTbl(Tbl tbl, DocXFactory factory);
 
-	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter> implements DocXTable {
+	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTable {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXTableImpl.class.getPackage()
-				.getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(DocXTableImpl.class.getPackage().getName());
 
 		private final Map<Tr, DocXTableRow> rows = new HashMap<Tr, DocXTableRow>();
 
@@ -134,12 +134,14 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 						// System.out.println("# Create new row for " + o);
 						row = factory.makeNewDocXTableRow((Tr) o);
 						internallyInsertTableRowAtIndex(row, currentIndex);
-					} else {
+					}
+					else {
 						// OK row was found
 						if (getTableRows().indexOf(row) != currentIndex) {
 							// Row was existing but is not at the right position
 							internallyMoveTableRowToIndex(row, currentIndex);
-						} else {
+						}
+						else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						rowsToRemove.remove(row);
@@ -217,10 +219,10 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		@Override
 		public void appendToWordprocessingMLPackage(ContentAccessor parent, int index) {
 
-			/*System.out.println("appendToWordprocessingMLPackage for " + this);
+			System.out.println("appendToWordprocessingMLPackage for " + this);
 			System.out.println("parent: " + parent);
 			System.out.println("index: " + index);
-			System.out.println("p=" + getP());*/
+			System.out.println("tbl=" + getTbl());
 
 			parent.getContent().add(index, getTbl());
 			getFlexoDocument().setIsModified();
@@ -239,7 +241,8 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().add(index, tr);
 				internallyInsertTableRowAtIndex(aTableRow, index);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}
@@ -305,7 +308,8 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().add(tr);
 				internallyAddToTableRows(aTableRow);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}
@@ -333,7 +337,8 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().remove(tr);
 				internallyRemoveFromTableRows(aTableRow);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}

@@ -31,6 +31,7 @@ import javax.xml.bind.JAXBElement;
 import org.docx4j.model.styles.Node;
 import org.docx4j.model.styles.StyleTree;
 import org.docx4j.model.styles.StyleTree.AugmentedStyle;
+import org.docx4j.model.table.TblFactory;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
@@ -470,6 +471,10 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				P toAdd = ((DocXParagraph) anElement).getP();
 				getWordprocessingMLPackage().getMainDocumentPart().getContent().add(toAdd);
 			}
+			else if (anElement instanceof DocXTable) {
+				Tbl toAdd = ((DocXTable) anElement).getTbl();
+				getWordprocessingMLPackage().getMainDocumentPart().getContent().add(toAdd);
+			}
 			internallyAddToElements(anElement);
 		}
 
@@ -598,15 +603,17 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		@Override
 		public DocXParagraph addStyledParagraphOfText(FlexoStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
 
-			org.docx4j.wml.P p = getWordprocessingMLPackage().getMainDocumentPart().createParagraphOfText(text);
-			/*org.docx4j.wml.ObjectFactory factory = Context.getWmlObjectFactory();
-			org.docx4j.wml.PPr pPr = factory.createPPr();
-			p.setPPr(pPr);
-			org.docx4j.wml.PPrBase.PStyle pStyle = factory.createPPrBasePStyle();
-			pPr.setPStyle(pStyle);
-			pStyle.setVal(style.getStyleId());*/
+			P p = getWordprocessingMLPackage().getMainDocumentPart().createParagraphOfText(text);
 			DocXParagraph returned = getFactory().makeNewDocXParagraph(p);
 			returned.setStyle(style);
+			addToElements(returned);
+			return returned;
+		}
+
+		@Override
+		public DocXTable addTable(int rows, int cols) {
+			Tbl tbl = TblFactory.createTable(rows, cols, 100);
+			DocXTable returned = getFactory().makeNewDocXTable(tbl);
 			addToElements(returned);
 			return returned;
 		}
