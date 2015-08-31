@@ -45,6 +45,8 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
 import org.docx4j.wml.Style;
+import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Tr;
 import org.openflexo.foundation.doc.DocumentFactory;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -65,7 +67,7 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	private static final Logger logger = Logger.getLogger(DocXFactory.class.getPackage().getName());
 
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXRun.class, DocXFragment.class,
+		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXTable.class, DocXFragment.class,
 				DocXStyle.class), resource, editingContext);
 	}
 
@@ -126,6 +128,28 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	public DocXRun makeNewDocXRun(R r) {
 		DocXRun returned = makeRun();
 		returned.updateFromR(r, this);
+		return returned;
+	}
+
+	@Override
+	public DocXTable makeTable() {
+		return newInstance(DocXTable.class);
+	}
+
+	public DocXTable makeNewDocXTable(Tbl tbl) {
+		DocXTable returned = makeTable();
+		returned.updateFromTbl(tbl, this);
+		return returned;
+	}
+
+	@Override
+	public DocXTableRow makeTableRow() {
+		return newInstance(DocXTableRow.class);
+	}
+
+	public DocXTableRow makeNewDocXTableRow(Tr tr) {
+		DocXTableRow returned = makeTableRow();
+		returned.updateFromTr(tr, this);
 		return returned;
 	}
 

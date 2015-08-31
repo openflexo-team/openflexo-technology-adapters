@@ -26,6 +26,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.xml.bind.JAXBElement;
+
 import org.docx4j.model.styles.Node;
 import org.docx4j.model.styles.StyleTree;
 import org.docx4j.model.styles.StyleTree.AugmentedStyle;
@@ -36,6 +38,7 @@ import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.P;
 import org.docx4j.wml.Style;
+import org.docx4j.wml.Tbl;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
@@ -86,6 +89,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 	public DocXParagraph getParagraph(P p);
 
+	public DocXTable getTable(Tbl tbl);
+
 	@Override
 	public DocXFactory getFactory();
 
@@ -108,6 +113,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
 
 		private final Map<P, DocXParagraph> paragraphs = new HashMap<P, DocXParagraph>();
+		private final Map<Tbl, DocXTable> tables = new HashMap<Tbl, DocXTable>();
 		private final Map<String, DocXElement> elementsForIdentifier = new HashMap<String, DocXElement>();
 
 		@Override
@@ -156,6 +162,9 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 			MainDocumentPart mdp = wpmlPackage.getMainDocumentPart();
 			for (Object o : mdp.getContent()) {
+				if (o instanceof JAXBElement) {
+					o = ((JAXBElement) o).getValue();
+				}
 				if (o instanceof P) {
 					DocXParagraph paragraph = paragraphs.get(o);
 					if (paragraph == null) {
@@ -173,6 +182,27 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						elementsToRemove.remove(paragraph);
+					}
+					currentIndex++;
+				}
+				else if (o instanceof Tbl) {
+					System.out.println("Hop, une table");
+					DocXTable table = tables.get(o);
+					if (table == null) {
+						System.out.println("# Create new table for " + o);
+						table = factory.makeNewDocXTable((Tbl) o);
+						internallyInsertElementAtIndex(table, currentIndex);
+					}
+					else {
+						// OK table was found
+						if (getElements().indexOf(table) != currentIndex) {
+							// Paragraph was existing but is not at the right position
+							internallyMoveElementToIndex(table, currentIndex);
+						}
+						else {
+							// System.out.println("# Found existing table for " + o);
+						}
+						elementsToRemove.remove(table);
 					}
 					currentIndex++;
 				}
@@ -385,6 +415,12 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 					paragraphs.put(paragraph.getP(), paragraph);
 				}
 			}
+			if (anElement instanceof DocXTable) {
+				DocXTable table = (DocXTable) anElement;
+				if (table.getTbl() != null) {
+					tables.put(table.getTbl(), table);
+				}
+			}
 			if (anElement.getIdentifier() != null) {
 				// System.out.println("Register " + anElement + " for " + anElement.getIdentifier());
 				elementsForIdentifier.put(anElement.getIdentifier(), (DocXElement) anElement);
@@ -479,6 +515,12 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 					paragraphs.remove(paragraph.getP());
 				}
 			}
+			if (removedElement instanceof DocXTable) {
+				DocXTable table = (DocXTable) removedElement;
+				if (table.getTbl() != null) {
+					tables.remove(table.getTbl());
+				}
+			}
 			if (removedElement.getIdentifier() != null) {
 				elementsForIdentifier.remove(removedElement.getIdentifier());
 			}
@@ -514,6 +556,11 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		@Override
 		public DocXParagraph getParagraph(P p) {
 			return paragraphs.get(p);
+		}
+
+		@Override
+		public DocXTable getTable(Tbl tbl) {
+			return tables.get(tbl);
 		}
 
 		@Override

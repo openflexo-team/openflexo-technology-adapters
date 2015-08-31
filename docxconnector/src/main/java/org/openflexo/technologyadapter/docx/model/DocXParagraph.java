@@ -44,6 +44,8 @@ import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Import;
+import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
@@ -61,6 +63,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ModelEntity
 @ImplementationClass(DocXParagraph.DocXParagraphImpl.class)
 @XMLElement
+@Imports({ @Import(DocXRun.class) })
 public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = P.class)
