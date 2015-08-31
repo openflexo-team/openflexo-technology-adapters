@@ -87,8 +87,8 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -262,6 +262,51 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		assertEquals(4, header.getTableCells().size());
 		assertEquals(4, row1.getTableCells().size());
 		assertEquals(4, row2.getTableCells().size());
+
+		DocXTableCell cell11 = (DocXTableCell) header.getTableCells().get(0);
+		DocXTableCell cell12 = (DocXTableCell) header.getTableCells().get(1);
+		DocXTableCell cell13 = (DocXTableCell) header.getTableCells().get(2);
+		DocXTableCell cell14 = (DocXTableCell) header.getTableCells().get(3);
+
+		DocXTableCell cell21 = (DocXTableCell) row1.getTableCells().get(0);
+		DocXTableCell cell22 = (DocXTableCell) row1.getTableCells().get(1);
+		DocXTableCell cell23 = (DocXTableCell) row1.getTableCells().get(2);
+		DocXTableCell cell24 = (DocXTableCell) row1.getTableCells().get(3);
+
+		DocXTableCell cell31 = (DocXTableCell) row2.getTableCells().get(0);
+		DocXTableCell cell32 = (DocXTableCell) row2.getTableCells().get(1);
+		DocXTableCell cell33 = (DocXTableCell) row2.getTableCells().get(2);
+		DocXTableCell cell34 = (DocXTableCell) row2.getTableCells().get(3);
+
+		assertEquals(1, cell11.getParagraphs().size());
+		assertEquals(1, cell12.getParagraphs().size());
+		assertEquals(1, cell13.getParagraphs().size());
+		assertEquals(1, cell14.getParagraphs().size());
+
+		assertEquals(1, cell21.getParagraphs().size());
+		assertEquals(1, cell22.getParagraphs().size());
+		assertEquals(1, cell23.getParagraphs().size());
+		assertEquals(1, cell24.getParagraphs().size());
+
+		assertEquals(1, cell31.getParagraphs().size());
+		assertEquals(1, cell32.getParagraphs().size());
+		assertEquals(1, cell33.getParagraphs().size());
+		assertEquals(1, cell34.getParagraphs().size());
+
+		assertEquals("", ((DocXParagraph) cell11.getParagraphs().get(0)).getRawText());
+		assertEquals("Column1", ((DocXParagraph) cell12.getParagraphs().get(0)).getRawText());
+		assertEquals("Column2", ((DocXParagraph) cell13.getParagraphs().get(0)).getRawText());
+		assertEquals("Column3", ((DocXParagraph) cell14.getParagraphs().get(0)).getRawText());
+
+		assertEquals("Item1", ((DocXParagraph) cell21.getParagraphs().get(0)).getRawText());
+		assertEquals("First item", ((DocXParagraph) cell22.getParagraphs().get(0)).getRawText());
+		assertEquals("A description for the first item", ((DocXParagraph) cell23.getParagraphs().get(0)).getRawText());
+		assertEquals("Data1", ((DocXParagraph) cell24.getParagraphs().get(0)).getRawText());
+
+		assertEquals("Item2", ((DocXParagraph) cell31.getParagraphs().get(0)).getRawText());
+		assertEquals("Second item", ((DocXParagraph) cell32.getParagraphs().get(0)).getRawText());
+		assertEquals("A description for the second item", ((DocXParagraph) cell33.getParagraphs().get(0)).getRawText());
+		assertEquals("Data2", ((DocXParagraph) cell34.getParagraphs().get(0)).getRawText());
 	}
 
 	@Test

@@ -20,10 +20,19 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.xml.bind.JAXBElement;
 
 import org.docx4j.XmlUtils;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.wml.P;
 import org.docx4j.wml.Tc;
+import org.openflexo.foundation.doc.FlexoDocument;
+import org.openflexo.foundation.doc.FlexoParagraph;
 import org.openflexo.foundation.doc.FlexoTableCell;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -66,7 +75,12 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 	 */
 	public void updateFromTc(Tc tc, DocXFactory factory);
 
-	public static abstract class DocXTableCellImpl extends FlexoTableCellImpl<DocXDocument, DocXTechnologyAdapter> implements DocXTableCell {
+	public static abstract class DocXTableCellImpl extends FlexoTableCellImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTableCell {
+
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(DocXTableCellImpl.class.getPackage().getName());
+
+		private final Map<P, DocXParagraph> paragraphs = new HashMap<P, DocXParagraph>();
 
 		public DocXTableCellImpl() {
 			super();
@@ -76,10 +90,8 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		public void setTc(Tc tc) {
 			if ((tc == null && getTc() != null) || (tc != null && !tc.equals(getTc()))) {
 				if (tc != null) {
-					updateFromTc(
-							tc,
-							(getResourceData() != null && getResourceData().getResource() != null ? ((DocXDocumentResource) getResourceData()
-									.getResource()).getFactory() : null));
+					updateFromTc(tc, (getResourceData() != null && getResourceData().getResource() != null
+							? ((DocXDocumentResource) getResourceData().getResource()).getFactory() : null));
 				}
 			}
 		}
@@ -92,15 +104,179 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		@Override
 		public void updateFromTc(Tc tc, DocXFactory factory) {
 
-			performSuperSetter(TC_KEY, tc);
+			List<FlexoParagraph<DocXDocument, DocXTechnologyAdapter>> paragraphsToRemove = new ArrayList<FlexoParagraph<DocXDocument, DocXTechnologyAdapter>>(
+					getParagraphs());
+
+			int currentIndex = 0;
 
 			for (Object o : tc.getContent()) {
 				if (o instanceof JAXBElement) {
 					o = ((JAXBElement) o).getValue();
 				}
-				System.out.println("Hop, dans la cellule: " + o);
+				if (o instanceof P) {
+					DocXParagraph paragraph = paragraphs.get(o);
+					if (paragraph == null) {
+						// System.out.println("# Create new paragraph for " + o);
+						paragraph = factory.makeNewDocXParagraph((P) o);
+						internallyInsertParagraphAtIndex(paragraph, currentIndex);
+					}
+					else {
+						// OK paragraph was found
+						if (getParagraphs().indexOf(paragraph) != currentIndex) {
+							// Paragraph was existing but is not at the right position
+							internallyMoveParagraphToIndex(paragraph, currentIndex);
+						}
+						else {
+							// System.out.println("# Found existing paragraph for " + o);
+						}
+						paragraphsToRemove.remove(paragraph);
+					}
+					currentIndex++;
+				}
 			}
 
+			for (FlexoParagraph<DocXDocument, DocXTechnologyAdapter> p : paragraphsToRemove) {
+				internallyRemoveFromParagraphs(p);
+			}
+
+			performSuperSetter(TC_KEY, tc);
+
+		}
+
+		/**
+		 * Insert paragraph to this {@link FlexoDocument} at supplied index (public API).<br>
+		 * Paragraph will be inserted to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
+		@Override
+		public void insertParagraphAtIndex(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> aParagraph, int index) {
+
+			Tc tc = getTc();
+			if (aParagraph instanceof DocXParagraph) {
+				P p = ((DocXParagraph) aParagraph).getP();
+				tc.getContent().add(index, p);
+				internallyInsertParagraphAtIndex(aParagraph, index);
+			}
+			else {
+				logger.warning("Unexpected paragraph: " + aParagraph);
+			}
+		}
+
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of paragraph inserting (calling
+		 * this assume that added paragraph is already present in underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param addedParagraph
+		 */
+		private void internallyInsertParagraphAtIndex(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> addedParagraph, int index) {
+			performSuperAdder(PARAGRAPHS_KEY, addedParagraph, index);
+			internallyHandleParagraphAdding(addedParagraph);
+		}
+
+		/**
+		 * Internally used to handle paragraph adding in wrapping model
+		 * 
+		 * @param anParagraph
+		 */
+		private void internallyHandleParagraphAdding(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
+			if (anParagraph instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) anParagraph;
+				if (paragraph.getP() != null) {
+					paragraphs.put(paragraph.getP(), paragraph);
+				}
+			}
+		}
+
+		/**
+		 * Moved paragraph to this {@link FlexoDocument} at supplied index (public API).<br>
+		 * Paragraph will be moved inside underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
+		@Override
+		public void moveParagraphToIndex(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph, int index) {
+			// TODO: implement moving in Tc
+			internallyMoveParagraphToIndex(anParagraph, index);
+		}
+
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of paragraph moving (calling
+		 * this assume that moved paragraph has already been moved in underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param addedParagraph
+		 */
+		private void internallyMoveParagraphToIndex(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph, int index) {
+			List<FlexoParagraph<DocXDocument, DocXTechnologyAdapter>> paragraphs = getParagraphs();
+			paragraphs.remove(anParagraph);
+			paragraphs.add(index, anParagraph);
+		}
+
+		/**
+		 * Add paragraph to this {@link FlexoDocument} (public API).<br>
+		 * Paragraph will be added to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
+		@Override
+		public void addToParagraphs(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
+			if (isCreatedByCloning()) {
+				internallyAddToParagraphs(anParagraph);
+				return;
+			}
+			if (anParagraph instanceof DocXParagraph) {
+				P toAdd = ((DocXParagraph) anParagraph).getP();
+				getTc().getContent().add(toAdd);
+			}
+			internallyAddToParagraphs(anParagraph);
+		}
+
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of paragraph adding (calling
+		 * this assume that added paragraph is already present in underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param addedParagraph
+		 */
+		private void internallyAddToParagraphs(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> addedParagraph) {
+			performSuperAdder(PARAGRAPHS_KEY, addedParagraph);
+			internallyHandleParagraphAdding(addedParagraph);
+		}
+
+		/**
+		 * Remove paragraph from this {@link FlexoDocument} (public API).<br>
+		 * Paragraph will be removed to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
+		 */
+		@Override
+		public void removeFromParagraphs(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
+			if (anParagraph instanceof DocXParagraph) {
+				P toRemove = ((DocXParagraph) anParagraph).getP();
+				if (getTc().getContent().contains(toRemove)) {
+					getTc().getContent().remove(toRemove);
+				}
+			}
+
+			// Then internal
+			internallyRemoveFromParagraphs(anParagraph);
+		}
+
+		/**
+		 * Internally used to update {@link FlexoDocument} object according to wrapped model in the context of paragraph removing (calling
+		 * this assume that removed paragraph has already been removed from underlying {@link WordprocessingMLPackage})
+		 * 
+		 * @param removedParagraph
+		 */
+		private void internallyRemoveFromParagraphs(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> removedParagraph) {
+			if (removedParagraph instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) removedParagraph;
+				if (paragraph.getP() != null) {
+					paragraphs.remove(paragraph.getP());
+				}
+			}
+			performSuperRemover(PARAGRAPHS_KEY, removedParagraph);
+		}
+
+		@Override
+		public DocXParagraph getParagraphWithIdentifier(String identifier) {
+			for (DocXParagraph p : paragraphs.values()) {
+				if (p.getIdentifier().equals(identifier)) {
+					return p;
+				}
+			}
+			return null;
 		}
 
 		@Override

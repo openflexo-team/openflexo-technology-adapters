@@ -73,10 +73,10 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 	 */
 	public void updateFromTr(Tr tr, DocXFactory factory);
 
-	public static abstract class DocXTableRowImpl extends FlexoTableRowImpl<DocXDocument, DocXTechnologyAdapter> implements DocXTableRow {
+	public static abstract class DocXTableRowImpl extends FlexoTableRowImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTableRow {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXTableRowImpl.class
-				.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(DocXTableRowImpl.class.getPackage().getName());
 
 		private final Map<Tc, DocXTableCell> cells = new HashMap<Tc, DocXTableCell>();
 
@@ -88,10 +88,8 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		public void setTr(Tr tr) {
 			if ((tr == null && getTr() != null) || (tr != null && !tr.equals(getTr()))) {
 				if (tr != null) {
-					updateFromTr(
-							tr,
-							(getResourceData() != null && getResourceData().getResource() != null ? ((DocXDocumentResource) getResourceData()
-									.getResource()).getFactory() : null));
+					updateFromTr(tr, (getResourceData() != null && getResourceData().getResource() != null
+							? ((DocXDocumentResource) getResourceData().getResource()).getFactory() : null));
 				}
 			}
 		}
@@ -103,8 +101,6 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		 */
 		@Override
 		public void updateFromTr(Tr tr, DocXFactory factory) {
-
-			performSuperSetter(TR_KEY, tr);
 
 			List<FlexoTableCell> cellsToRemove = new ArrayList<FlexoTableCell>(getTableCells());
 
@@ -119,12 +115,14 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 					if (cell == null) {
 						cell = factory.makeNewDocXTableCell((Tc) o);
 						internallyInsertTableCellAtIndex(cell, currentIndex);
-					} else {
+					}
+					else {
 						// OK row was found
 						if (getTableCells().indexOf(cell) != currentIndex) {
 							// Cell was existing but is not at the right position
 							internallyMoveTableCellToIndex(cell, currentIndex);
-						} else {
+						}
+						else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						cellsToRemove.remove(cell);
@@ -137,6 +135,8 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 				// System.out.println("# Remove row for " + e);
 				internallyRemoveFromTableCells(row);
 			}
+
+			performSuperSetter(TR_KEY, tr);
 
 		}
 
@@ -160,7 +160,8 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 				Tc tc = ((DocXTableCell) aTableCell).getTc();
 				tr.getContent().add(index, tc);
 				internallyInsertTableCellAtIndex(aTableCell, index);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected cell: " + aTableCell);
 			}
 		}
@@ -226,7 +227,8 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 				Tc tc = ((DocXTableCell) aTableCell).getTc();
 				tr.getContent().add(tc);
 				internallyAddToTableCells(aTableCell);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected cell: " + aTableCell);
 			}
 		}
@@ -254,7 +256,8 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 				Tc tc = ((DocXTableCell) aTableCell).getTc();
 				tr.getContent().remove(tc);
 				internallyRemoveFromTableCells(aTableCell);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected cell: " + aTableCell);
 			}
 		}
