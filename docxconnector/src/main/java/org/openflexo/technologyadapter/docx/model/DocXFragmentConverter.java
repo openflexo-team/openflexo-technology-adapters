@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.docx.model;
 import java.io.FileNotFoundException;
 
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.foundation.fml.FMLModelFactory;
@@ -52,11 +53,18 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 public class DocXFragmentConverter extends Converter<DocXFragment> {
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-			.getLogger(DocXFragmentConverter.class.getPackage().getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXFragmentConverter.class
+			.getPackage().getName());
+
+	private FlexoServiceManager serviceManager;
 
 	public DocXFragmentConverter() {
 		super(DocXFragment.class);
+	}
+
+	public DocXFragmentConverter(FlexoServiceManager serviceManager) {
+		this();
+		this.serviceManager = serviceManager;
 	}
 
 	@Override
@@ -76,39 +84,41 @@ public class DocXFragmentConverter extends Converter<DocXFragment> {
 
 			// System.out.println("factory: " + factory);
 
+			FlexoResource<DocXDocument> documentResource = null;
+
+			if (serviceManager != null) {
+				documentResource = serviceManager.getInformationSpace().getResource(documentURI, null, DocXDocument.class);
+			}
 			if (factory instanceof FMLModelFactory) {
-				// System.out.println("serviceManager: " + ((FMLModelFactory) factory).getServiceManager());
-				FlexoResource<DocXDocument> documentResource = ((FMLModelFactory) factory).getServiceManager().getInformationSpace()
+				documentResource = ((FMLModelFactory) factory).getServiceManager().getInformationSpace()
 						.getResource(documentURI, null, DocXDocument.class);
-				// System.out.println("document=" + documentResource);
+			}
 
-				if (documentResource != null) {
-					DocXDocument document;
-					try {
-						document = documentResource.getResourceData(null);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-						return null;
-					} catch (ResourceLoadingCancelledException e) {
-						e.printStackTrace();
-						return null;
-					} catch (FlexoException e) {
-						e.printStackTrace();
-						return null;
-					}
-					FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement = document
-							.getElementWithIdentifier(startElementId);
-					FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement = document.getElementWithIdentifier(endElementId);
+			if (documentResource != null) {
+				DocXDocument document;
+				try {
+					document = documentResource.getResourceData(null);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+					return null;
+				} catch (ResourceLoadingCancelledException e) {
+					e.printStackTrace();
+					return null;
+				} catch (FlexoException e) {
+					e.printStackTrace();
+					return null;
+				}
+				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement = document.getElementWithIdentifier(startElementId);
+				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement = document.getElementWithIdentifier(endElementId);
 
-					// System.out.println("startElement = " + startElement);
-					// System.out.println("endElement = " + endElement);
+				// System.out.println("startElement = " + startElement);
+				// System.out.println("endElement = " + endElement);
 
-					try {
-						return document.getFragment(startElement, endElement);
-					} catch (FragmentConsistencyException e) {
-						e.printStackTrace();
-						return null;
-					}
+				try {
+					return document.getFragment(startElement, endElement);
+				} catch (FragmentConsistencyException e) {
+					e.printStackTrace();
+					return null;
 				}
 			}
 		}

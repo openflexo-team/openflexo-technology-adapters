@@ -46,20 +46,15 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
 public class TestDocXFragmentConverter extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestDocXFragmentConverter.class.getPackage().getName());
-
-	private static FlexoEditor editor;
-	private static DocXTechnologyAdapter technologicalAdapter;
 
 	@Test
 	@TestOrder(1)
@@ -79,7 +74,7 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 
 		assertEquals(13, document.getElements().size());
 
-		assertEquals(5, document.getStyles().size());
+		assertEquals(11, document.getStyles().size());
 
 	}
 

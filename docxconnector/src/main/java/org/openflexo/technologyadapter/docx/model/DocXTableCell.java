@@ -75,10 +75,10 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 	 */
 	public void updateFromTc(Tc tc, DocXFactory factory);
 
-	public static abstract class DocXTableCellImpl extends FlexoTableCellImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTableCell {
+	public static abstract class DocXTableCellImpl extends FlexoTableCellImpl<DocXDocument, DocXTechnologyAdapter> implements DocXTableCell {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-				.getLogger(DocXTableCellImpl.class.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXTableCellImpl.class
+				.getPackage().getName());
 
 		private final Map<P, DocXParagraph> paragraphs = new HashMap<P, DocXParagraph>();
 
@@ -90,8 +90,10 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		public void setTc(Tc tc) {
 			if ((tc == null && getTc() != null) || (tc != null && !tc.equals(getTc()))) {
 				if (tc != null) {
-					updateFromTc(tc, (getResourceData() != null && getResourceData().getResource() != null
-							? ((DocXDocumentResource) getResourceData().getResource()).getFactory() : null));
+					updateFromTc(
+							tc,
+							(getResourceData() != null && getResourceData().getResource() != null ? ((DocXDocumentResource) getResourceData()
+									.getResource()).getFactory() : null));
 				}
 			}
 		}
@@ -119,14 +121,12 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 						// System.out.println("# Create new paragraph for " + o);
 						paragraph = factory.makeNewDocXParagraph((P) o);
 						internallyInsertParagraphAtIndex(paragraph, currentIndex);
-					}
-					else {
+					} else {
 						// OK paragraph was found
 						if (getParagraphs().indexOf(paragraph) != currentIndex) {
 							// Paragraph was existing but is not at the right position
 							internallyMoveParagraphToIndex(paragraph, currentIndex);
-						}
-						else {
+						} else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						paragraphsToRemove.remove(paragraph);
@@ -155,8 +155,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 				P p = ((DocXParagraph) aParagraph).getP();
 				tc.getContent().add(index, p);
 				internallyInsertParagraphAtIndex(aParagraph, index);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected paragraph: " + aParagraph);
 			}
 		}
@@ -267,6 +266,16 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 				}
 			}
 			performSuperRemover(PARAGRAPHS_KEY, removedParagraph);
+		}
+
+		@Override
+		public List<FlexoParagraph<DocXDocument, DocXTechnologyAdapter>> getElements() {
+			return getParagraphs();
+		}
+
+		@Override
+		public DocXParagraph getElementWithIdentifier(String identifier) {
+			return getParagraphWithIdentifier(identifier);
 		}
 
 		@Override

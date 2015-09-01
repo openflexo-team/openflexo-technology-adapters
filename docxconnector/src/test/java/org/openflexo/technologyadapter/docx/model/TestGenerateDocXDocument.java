@@ -118,7 +118,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		assertEquals(13, templateDocument.getElements().size());
 
-		assertEquals(5, templateDocument.getStyles().size());
+		assertEquals(11, templateDocument.getStyles().size());
 
 	}
 
@@ -162,7 +162,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		assertEquals(13, generatedDocument.getElements().size());
 
-		assertEquals(5, generatedDocument.getStyles().size());
+		assertEquals(11, generatedDocument.getStyles().size());
 
 	}
 

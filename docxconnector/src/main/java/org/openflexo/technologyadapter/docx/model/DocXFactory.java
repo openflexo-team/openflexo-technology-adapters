@@ -122,6 +122,13 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		return returned;
 	}
 
+	public DocXParagraph makeNewDocXParagraph(String text) {
+		DocXParagraph returned = makeNewDocXParagraph(Context.getWmlObjectFactory().createP());
+		DocXRun run = makeNewDocXRun(text);
+		returned.addToRuns(run);
+		return returned;
+	}
+
 	@Override
 	public DocXRun makeRun() {
 		return newInstance(DocXRun.class);

@@ -43,7 +43,9 @@ import org.docx4j.wml.Tbl;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoParagraph;
 import org.openflexo.foundation.doc.FlexoStyle;
+import org.openflexo.foundation.doc.FlexoTable;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -106,10 +108,10 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 	public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
 			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
 
-	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
+	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter> implements DocXDocument {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-				.getLogger(DocXDocumentImpl.class.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXDocumentImpl.class
+				.getPackage().getName());
 
 		private final Map<Style, DocXStyle> styles = new HashMap<Style, DocXStyle>();
 
@@ -172,35 +174,30 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 						// System.out.println("# Create new paragraph for " + o);
 						paragraph = factory.makeNewDocXParagraph((P) o);
 						internallyInsertElementAtIndex(paragraph, currentIndex);
-					}
-					else {
+					} else {
 						// OK paragraph was found
 						if (getElements().indexOf(paragraph) != currentIndex) {
 							// Paragraph was existing but is not at the right position
 							internallyMoveElementToIndex(paragraph, currentIndex);
-						}
-						else {
+						} else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						elementsToRemove.remove(paragraph);
 					}
 					currentIndex++;
-				}
-				else if (o instanceof Tbl) {
+				} else if (o instanceof Tbl) {
 					System.out.println("Hop, une table");
 					DocXTable table = tables.get(o);
 					if (table == null) {
 						System.out.println("# Create new table for " + o);
 						table = factory.makeNewDocXTable((Tbl) o);
 						internallyInsertElementAtIndex(table, currentIndex);
-					}
-					else {
+					} else {
 						// OK table was found
 						if (getElements().indexOf(table) != currentIndex) {
 							// Paragraph was existing but is not at the right position
 							internallyMoveElementToIndex(table, currentIndex);
-						}
-						else {
+						} else {
 							// System.out.println("# Found existing table for " + o);
 						}
 						elementsToRemove.remove(table);
@@ -267,15 +264,13 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 					DocXStyle docXStyle = styles.get(style);
 					if (docXStyle != null) {
 						stylesToRemove.remove(docXStyle);
-					}
-					else {
+					} else {
 						if (style.getBasedOn() != null && StringUtils.isNotEmpty(style.getBasedOn().getVal())) {
 							// System.out.println("looking up: " + style.getBasedOn().getVal());
 							DocXStyle parentStyle = (DocXStyle) getStyleByIdentifier(style.getBasedOn().getVal());
 							// System.out.println("parentStyle: " + parentStyle);
 							docXStyle = factory.makeNewDocXStyle(style, parentStyle);
-						}
-						else {
+						} else {
 							docXStyle = factory.makeNewDocXStyle(style, null);
 						}
 						addToStyles(docXStyle);
@@ -323,8 +318,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				DocXStyle docXStyle = styles.get(style);
 				if (docXStyle != null) {
 					stylesToRemove.remove(docXStyle);
-				}
-				else {
+				} else {
 					docXStyle = factory.makeNewDocXStyle(style, parentStyle);
 					addToStyles(docXStyle);
 				}
@@ -425,8 +419,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			if (anElement.getIdentifier() != null) {
 				// System.out.println("Register " + anElement + " for " + anElement.getIdentifier());
 				elementsForIdentifier.put(anElement.getIdentifier(), (DocXElement) anElement);
-			}
-			else {
+			} else {
 				logger.warning("internallyHandleElementAdding() called for element with null identifier: " + anElement);
 			}
 			invalidateRootElements();
@@ -470,8 +463,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			if (anElement instanceof DocXParagraph) {
 				P toAdd = ((DocXParagraph) anElement).getP();
 				getWordprocessingMLPackage().getMainDocumentPart().getContent().add(toAdd);
-			}
-			else if (anElement instanceof DocXTable) {
+			} else if (anElement instanceof DocXTable) {
 				Tbl toAdd = ((DocXTable) anElement).getTbl();
 				getWordprocessingMLPackage().getMainDocumentPart().getContent().add(toAdd);
 			}
@@ -528,8 +520,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			}
 			if (removedElement.getIdentifier() != null) {
 				elementsForIdentifier.remove(removedElement.getIdentifier());
-			}
-			else {
+			} else {
 				logger.warning("removeFromElements() called for element with null identifier: " + removedElement);
 			}
 			performSuperRemover(ELEMENTS_KEY, removedElement);
@@ -539,7 +530,16 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 		@Override
 		public DocXElement getElementWithIdentifier(String identifier) {
-			return elementsForIdentifier.get(identifier);
+			DocXElement returned = elementsForIdentifier.get(identifier);
+			if (returned == null) {
+				for (DocXTable table : tables.values()) {
+					returned = (DocXElement) table.getElementWithIdentifier(identifier);
+					if (returned != null) {
+						return returned;
+					}
+				}
+			}
+			return returned;
 		}
 
 		@Override
@@ -591,8 +591,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 					updateStylesFromWmlPackage(getWordprocessingMLPackage(), getFactory());
 					returned = (DocXStyle) getStyleByIdentifier(styleId);
 					return returned;
-				}
-				else {
+				} else {
 					logger.warning("Not found style: " + styleId);
 					return null;
 				}
@@ -603,21 +602,45 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		@Override
 		public DocXParagraph addStyledParagraphOfText(FlexoStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
 
-			P p = getWordprocessingMLPackage().getMainDocumentPart().createParagraphOfText(text);
-			DocXParagraph returned = getFactory().makeNewDocXParagraph(p);
-			returned.setStyle(style);
+			DocXParagraph returned = makeStyledParagraph(style, text);
 			addToElements(returned);
 			return returned;
 		}
 
 		@Override
+		public FlexoParagraph<DocXDocument, DocXTechnologyAdapter> insertStyledParagraphOfTextAtIndex(
+				FlexoStyle<DocXDocument, DocXTechnologyAdapter> style, String text, int index) {
+			DocXParagraph returned = makeStyledParagraph(style, text);
+			insertElementAtIndex(returned, index);
+			return returned;
+		}
+
+		private DocXParagraph makeStyledParagraph(FlexoStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
+			P p = getWordprocessingMLPackage().getMainDocumentPart().createParagraphOfText(text);
+			DocXParagraph returned = getFactory().makeNewDocXParagraph(p);
+			returned.setStyle(style);
+			return returned;
+		}
+
+		@Override
 		public DocXTable addTable(int rows, int cols) {
-			Tbl tbl = TblFactory.createTable(rows, cols, 100);
-			DocXTable returned = getFactory().makeNewDocXTable(tbl);
+			DocXTable returned = makeTable(rows, cols);
 			addToElements(returned);
 			return returned;
 		}
 
+		@Override
+		public FlexoTable<DocXDocument, DocXTechnologyAdapter> insertTableAtIndex(int rows, int cols, int index) {
+			DocXTable returned = makeTable(rows, cols);
+			insertElementAtIndex(returned, index);
+			return returned;
+		}
+
+		private DocXTable makeTable(int rows, int cols) {
+			Tbl tbl = TblFactory.createTable(rows, cols, 100);
+			DocXTable returned = getFactory().makeNewDocXTable(tbl);
+			return returned;
+		}
 	}
 
 }

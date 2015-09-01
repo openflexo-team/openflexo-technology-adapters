@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.docx.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
@@ -49,7 +50,9 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
@@ -178,6 +181,55 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 		assertTrue(newDocResource.isModified());
 		newDocResource.save(null);
 		assertFalse(newDocResource.isModified());
+
+	}
+
+	@Test
+	@TestOrder(5)
+	public void testAddParagraphsInCells() throws SaveResourceException {
+		log("testAddParagraphsInCells");
+		getCell(3, 1).addToParagraphs(newDocResource.getFactory().makeNewDocXParagraph("item3-data1-line2"));
+
+		System.out.println(newDocument.debugStructuredContents());
+
+		assertEquals(2, getCell(3, 1).getParagraphs().size());
+
+		assertTrue(newDocResource.isModified());
+		newDocResource.save(null);
+		assertFalse(newDocResource.isModified());
+	}
+
+	@Test
+	@TestOrder(6)
+	public void testIdentifyParagraph() {
+		log("testIdentifyParagraph");
+
+		String identifier = getParagraph(2, 2).getIdentifier();
+		assertSame(getParagraph(2, 2), newDocument.getElementWithIdentifier(identifier));
+	}
+
+	@Test
+	@TestOrder(7)
+	public void testFragmentsInTable() throws FragmentConsistencyException {
+		log("testFragmentsInTable");
+
+		DocXParagraph paragraph = getParagraph(2, 2);
+		assertNotNull(paragraph);
+		assertEquals(getCell(2, 2), paragraph.getContainer());
+		assertEquals(newDocument, paragraph.getFlexoDocument());
+
+		DocXFragment fragment1 = newDocument.getFragment(paragraph, paragraph);
+		assertNotNull(fragment1);
+		assertEquals(paragraph, fragment1.getStartElement());
+		assertEquals(paragraph, fragment1.getEndElement());
+
+		DocXFragmentConverter fragmentConverter = new DocXFragmentConverter(serviceManager);
+
+		String serializedFragment = fragmentConverter.convertToString(fragment1);
+		DocXFragment fragment1bis = fragmentConverter.convertFromString(serializedFragment, newDocResource.getFactory());
+		assertNotNull(fragment1bis);
+		assertEquals(paragraph, fragment1bis.getStartElement());
+		assertEquals(paragraph, fragment1bis.getEndElement());
 
 	}
 

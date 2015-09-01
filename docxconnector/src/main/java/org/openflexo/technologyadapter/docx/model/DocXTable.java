@@ -33,6 +33,7 @@ import org.docx4j.wml.P;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Tr;
+import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoTable;
 import org.openflexo.foundation.doc.FlexoTableRow;
 import org.openflexo.model.annotations.CloningStrategy;
@@ -87,10 +88,10 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 	 */
 	public void updateFromTbl(Tbl tbl, DocXFactory factory);
 
-	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTable {
+	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter> implements DocXTable {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-				.getLogger(DocXTableImpl.class.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXTableImpl.class.getPackage()
+				.getName());
 
 		private final Map<Tr, DocXTableRow> rows = new HashMap<Tr, DocXTableRow>();
 
@@ -134,14 +135,12 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 						// System.out.println("# Create new row for " + o);
 						row = factory.makeNewDocXTableRow((Tr) o);
 						internallyInsertTableRowAtIndex(row, currentIndex);
-					}
-					else {
+					} else {
 						// OK row was found
 						if (getTableRows().indexOf(row) != currentIndex) {
 							// Row was existing but is not at the right position
 							internallyMoveTableRowToIndex(row, currentIndex);
-						}
-						else {
+						} else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						rowsToRemove.remove(row);
@@ -241,8 +240,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().add(index, tr);
 				internallyInsertTableRowAtIndex(aTableRow, index);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}
@@ -308,8 +306,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().add(tr);
 				internallyAddToTableRows(aTableRow);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}
@@ -337,8 +334,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().remove(tr);
 				internallyRemoveFromTableRows(aTableRow);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}
@@ -357,6 +353,22 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				}
 			}
 			performSuperRemover(TABLE_ROWS_KEY, removedTableRow);
+		}
+
+		/**
+		 * Return element identified by identifier, asserting that this element exists in the table (eg a paragraph in a cell), or null if
+		 * no such element exists
+		 */
+		@Override
+		public FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> getElementWithIdentifier(String identifier) {
+			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> returned;
+			for (FlexoTableRow<DocXDocument, DocXTechnologyAdapter> row : getTableRows()) {
+				returned = row.getElementWithIdentifier(identifier);
+				if (returned != null) {
+					return returned;
+				}
+			}
+			return null;
 		}
 
 	}
