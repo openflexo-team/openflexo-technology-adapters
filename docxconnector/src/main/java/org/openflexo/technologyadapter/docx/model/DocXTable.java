@@ -65,7 +65,8 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 	public static final String TBL_KEY = "tbl";
 
 	@Getter(value = TBL_KEY, ignoreType = true)
-	@CloningStrategy(value = StrategyType.CUSTOM_CLONE, factory = "cloneTbl()")
+	// We need to clone (reference) container first, in order to have container not null when executing setTbl()
+	@CloningStrategy(value = StrategyType.CUSTOM_CLONE, factory = "cloneTbl()", cloneAfterProperty = CONTAINER_KEY)
 	public Tbl getTbl();
 
 	@Setter(TBL_KEY)
@@ -88,10 +89,10 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 	 */
 	public void updateFromTbl(Tbl tbl, DocXFactory factory);
 
-	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter> implements DocXTable {
+	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTable {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXTableImpl.class.getPackage()
-				.getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(DocXTableImpl.class.getPackage().getName());
 
 		private final Map<Tr, DocXTableRow> rows = new HashMap<Tr, DocXTableRow>();
 
@@ -101,6 +102,15 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 
 		@Override
 		public void setTbl(Tbl tbl) {
+
+			// When called in cloning operation, container should NOT be null
+			// That's why we use cloneAfterProperty feature
+			// @CloningStrategy(value = StrategyType.CUSTOM_CLONE, factory = "cloneTbl()", cloneAfterProperty = CONTAINER_KEY)
+
+			System.out.println("setTbl with " + tbl);
+			System.out.println("getResourceData()=" + getResourceData());
+			System.out.println("getContainer()=" + getContainer());
+			// System.out.println("getResourceData().getResource()=" + getResourceData().getResource());
 
 			if ((tbl == null && getTbl() != null) || (tbl != null && !tbl.equals(getTbl()))) {
 				if (tbl != null && getResourceData() != null && getResourceData().getResource() != null) {
@@ -116,6 +126,8 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 */
 		@Override
 		public void updateFromTbl(Tbl tbl, DocXFactory factory) {
+
+			System.out.println("On fait l'update");
 
 			performSuperSetter(TBL_KEY, tbl);
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,
@@ -135,12 +147,14 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 						// System.out.println("# Create new row for " + o);
 						row = factory.makeNewDocXTableRow((Tr) o);
 						internallyInsertTableRowAtIndex(row, currentIndex);
-					} else {
+					}
+					else {
 						// OK row was found
 						if (getTableRows().indexOf(row) != currentIndex) {
 							// Row was existing but is not at the right position
 							internallyMoveTableRowToIndex(row, currentIndex);
-						} else {
+						}
+						else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						rowsToRemove.remove(row);
@@ -158,19 +172,19 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 
 		@Override
 		public String getIdentifier() {
-			/*if (getP() != null) {
-				return getP().getParaId();
-			}*/
-			// return null;
-			return "ProutLaTable";
+			DocXTableCell cell = (DocXTableCell) getCell(0, 0);
+			if (cell != null && cell.getParagraphs().size() > 0) {
+				return "Table" + cell.getParagraphs().get(0).getIdentifier();
+			}
+			return "Table" + getIndex();
 		}
 
 		@Override
 		public void setIdentifier(String identifier) {
-			/*if (getP() != null) {
-				String oldIdentifier = getIdentifier();
-				getP().setParaId(identifier);
-				((DocXDocumentImpl) getFlexoDocument()).reindexElement(this, oldIdentifier);
+			// nop because identifier is here computed
+			/*DocXTableCell cell = (DocXTableCell) getCell(0, 0);
+			if (cell != null && cell.getParagraphs().size() > 0) {
+				cell.getParagraphs().get(0).setIdentifier(identifier);
 			}*/
 		}
 
@@ -191,13 +205,13 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 					Tr row = (Tr) o;
 					for (Object o2 : row.getContent()) {
 						if (o2 instanceof JAXBElement) {
-							o2 = ((JAXBElement) o).getValue();
+							o2 = ((JAXBElement) o2).getValue();
 						}
 						if (o2 instanceof Tc) {
 							Tc cell = (Tc) o2;
 							for (Object o3 : cell.getContent()) {
 								if (o3 instanceof JAXBElement) {
-									o3 = ((JAXBElement) o).getValue();
+									o3 = ((JAXBElement) o3).getValue();
 								}
 								if (o3 instanceof P) {
 									P paragraph = (P) o3;
@@ -240,7 +254,8 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().add(index, tr);
 				internallyInsertTableRowAtIndex(aTableRow, index);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}
@@ -306,7 +321,8 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
 				tbl.getContent().add(tr);
 				internallyAddToTableRows(aTableRow);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}
@@ -332,9 +348,12 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 			Tbl tbl = getTbl();
 			if (aTableRow instanceof DocXTableRow) {
 				Tr tr = ((DocXTableRow) aTableRow).getTr();
-				tbl.getContent().remove(tr);
+				if (!DocXUtils.removeFromList(tr, tbl.getContent())) {
+					logger.warning("Tr item not present in Tbl. Please investigate...");
+				}
 				internallyRemoveFromTableRows(aTableRow);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected row: " + aTableRow);
 			}
 		}

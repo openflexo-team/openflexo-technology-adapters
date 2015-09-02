@@ -70,7 +70,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 	public static final String P_KEY = "p";
 
 	@Getter(value = P_KEY, ignoreType = true)
-	@CloningStrategy(value = StrategyType.CUSTOM_CLONE, factory = "cloneP()")
+	// We need to clone (reference) container first, in order to have container not null when executing setP()
+	@CloningStrategy(value = StrategyType.CUSTOM_CLONE, factory = "cloneP()", cloneAfterProperty = CONTAINER_KEY)
 	public P getP();
 
 	@Setter(P_KEY)
@@ -93,10 +94,10 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXParagraphImpl.class
-				.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(DocXParagraphImpl.class.getPackage().getName());
 
 		private final Map<R, DocXRun> runs = new HashMap<R, DocXRun>();
 
@@ -106,6 +107,15 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 
 		@Override
 		public void setP(P p) {
+
+			// When called in cloning operation, container should NOT be null
+			// That's why we use cloneAfterProperty feature
+			// @CloningStrategy(value = StrategyType.CUSTOM_CLONE, factory = "cloneP()", cloneAfterProperty = CONTAINER_KEY)
+
+			System.out.println("setP with " + p);
+			System.out.println("getResourceData()=" + getResourceData());
+			System.out.println("getContainer()=" + getContainer());
+			System.out.println("getResourceData().getResource()=" + getResourceData().getResource());
 
 			if ((p == null && getP() != null) || (p != null && !p.equals(getP()))) {
 				if (p != null && getResourceData() != null && getResourceData().getResource() != null) {
@@ -140,12 +150,14 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 						// System.out.println("# Create new run for " + o);
 						run = factory.makeNewDocXRun((R) o);
 						internallyInsertRunAtIndex(run, currentIndex);
-					} else {
+					}
+					else {
 						// OK run was found
 						if (getRuns().indexOf(run) != currentIndex) {
 							// Paragraph was existing but is not at the right position
 							internallyMoveRunToIndex(run, currentIndex);
-						} else {
+						}
+						else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						runsToRemove.remove(run);
@@ -237,7 +249,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				R r = ((DocXRun) aRun).getR();
 				p.getContent().add(index, r);
 				internallyInsertRunAtIndex(aRun, index);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}
@@ -308,7 +321,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				R r = ((DocXRun) aRun).getR();
 				p.getContent().add(r);
 				internallyAddToRuns(aRun);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}
@@ -334,9 +348,12 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 			P p = getP();
 			if (aRun instanceof DocXRun) {
 				R r = ((DocXRun) aRun).getR();
-				p.getContent().remove(r);
+				if (!DocXUtils.removeFromList(r, p.getContent())) {
+					logger.warning("R item not present in P. Please investigate...");
+				}
 				internallyRemoveFromRuns(aRun);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}

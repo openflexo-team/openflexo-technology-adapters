@@ -30,6 +30,8 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
+import org.openflexo.foundation.doc.FlexoTable;
+import org.openflexo.foundation.doc.FlexoTableCell;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -154,40 +156,11 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 					e.printStackTrace();
 				}
 				if (location == null) {
-					/*System.out.println("getLocation()=" + getLocation());
-					System.out.println("getLocation().isSet()=" + getLocation().isSet());
-					System.out.println("getLocation().isValid()=" + getLocation().isValid());
-					DataBinding db = new DataBinding<DocXElement>("booksDescriptionSection", this, DocXFragment.class,
-							BindingDefinitionType.GET);
-					try {
-						System.out.println(db.getBindingValue(action));
-					} catch (TypeMismatchException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (NullReferenceException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (InvocationTargetException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}*/
 					throw new FlexoException("Could not retrieve location");
 				}
 			}
 
 			DocXDocument document = (DocXDocument) getModelSlotInstance(action).getAccessedResourceData();
-
-			/*System.out.println("document=" + document);
-			System.out.println("location=" + location);
-			System.out.println("semantics=" + getLocationSemantics());
-			System.out.println("fragment=" + getFragment());
-			System.out.println("startElement=" + getFragment().getStartElement());
-			System.out.println("endElement=" + getFragment().getEndElement());
-			
-			System.out.println("fragment.getFlexoDocument()=" + getFragment().getFlexoDocument());
-			System.out.println("startElement.getFlexoDocument()=" + getFragment().getStartElement().getFlexoDocument());
-			System.out.println("endElement.getFlexoDocument()=" + getFragment().getEndElement().getFlexoDocument());
-			 */
 
 			int insertIndex = -1;
 
@@ -228,14 +201,30 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 				DocXElement startElement = null;
 				DocXElement endElement = null;
 
-				/*System.out.println("BEFORE addDocXFragment");
-				System.out.println("document=" + document);
-				System.out.println("contents=\n" + document.debugStructuredContents());*/
+				// System.out.println("BEFORE addDocXFragment");
+				// System.out.println("document=" + document);
+				// System.out.println("contents=\n" + document.debugStructuredContents());
 
 				for (DocXElement element : getFragment().getElements()) {
 
 					DocXElement clonedElement = (DocXElement) element.cloneObject();
 					clonedElement.setBaseIdentifier(element.getIdentifier());
+
+					if (clonedElement instanceof FlexoTable) {
+						FlexoTable<?, ?> templateTable = (FlexoTable<?, ?>) element;
+						FlexoTable<?, ?> clonedTable = (FlexoTable<?, ?>) clonedElement;
+						for (int row = 0; row < templateTable.getTableRows().size(); row++) {
+							for (int col = 0; col < templateTable.getTableRows().get(row).getTableCells().size(); col++) {
+								FlexoTableCell<?, ?> templateCell = templateTable.getCell(row, col);
+								FlexoTableCell<?, ?> clonedCell = clonedTable.getCell(row, col);
+								for (int i = 0; i < templateCell.getParagraphs().size(); i++) {
+									clonedCell.getParagraphs().get(i)
+											.setBaseIdentifier(templateCell.getParagraphs().get(i).getIdentifier());
+								}
+							}
+
+						}
+					}
 
 					document.insertElementAtIndex(clonedElement, insertIndex);
 
@@ -247,9 +236,9 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 					endElement = clonedElement;
 				}
 
-				/*System.out.println("AFTER addDocXFragment");
-				System.out.println("document=" + document);
-				System.out.println("contents=\n" + document.debugStructuredContents());*/
+				// System.out.println("AFTER addDocXFragment");
+				// System.out.println("document=" + document);
+				// System.out.println("contents=\n" + document.debugStructuredContents());
 
 				return document.getFragment(startElement, endElement);
 			}

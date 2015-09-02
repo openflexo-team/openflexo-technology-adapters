@@ -124,8 +124,9 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 			int endIndex = -1;
 
 			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> templateElement : getTemplateFragment().getElements()) {
+				// TODO: handle tables here !!!
 				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : document.getElements()) {
-					if (e.getBaseIdentifier().equals(templateElement.getIdentifier())) {
+					if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(templateElement.getIdentifier())) {
 						int index = document.getElements().indexOf(e);
 						if (startIndex == -1 || (index < startIndex)) {
 							startIndex = index;

@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.docx4j.wml.P;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
@@ -62,7 +61,6 @@ import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
-import org.openflexo.technologyadapter.docx.model.DocXUtils;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 @ModelEntity
@@ -122,7 +120,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 			appendElementsToIgnore(action.getFlexoConcept().getOwner(), elementsToIgnore);
 			appendElementsToIgnore(action.getFlexoConcept(), elementsToIgnore);
 
-			System.out.println("ToIgnore: " + elementsToIgnore);
+			// System.out.println("ToIgnore: " + elementsToIgnore);
 
 			DocXDocument generatedDocument = null;
 
@@ -155,7 +153,16 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 
 				generatedDocument = generatedResource.getResourceData(null);
 
-				for (P p : DocXUtils.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
+				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> generatedElement : generatedDocument.getElements()) {
+					String oldId = generatedElement.getIdentifier();
+					DocXElement templateElement = (DocXElement) templateDocument.getElementWithIdentifier(oldId);
+					generatedElement.setIdentifier(generatedDocument.getFactory().generateId());
+					generatedElement.setBaseIdentifier(oldId);
+					System.out.println(
+							"Element " + generatedElement + " change id from " + oldId + " to " + generatedElement.getIdentifier());
+				}
+
+				/*for (P p : DocXUtils.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
 						P.class)) {
 					String oldId = p.getParaId();
 					DocXElement templateElement = (DocXElement) templateDocument.getElementWithIdentifier(oldId);
@@ -164,12 +171,14 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 					generatedElement.setBaseIdentifier(oldId);
 					// p.setParaId(generatedDocument.getFactory().generateId());
 					System.out.println("Paragraph " + p + " change id from " + oldId + " to " + generatedElement.getIdentifier());
-				}
+				}*/
 
 				List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<>();
 				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> templateElement : templateDocument.getElements()) {
 					if (elementsToIgnore.contains(templateElement)) {
 						System.out.println("Ignoring: " + templateElement);
+						System.out.println(
+								"Ignoring elements: " + generatedDocument.getElementsWithBaseIdentifier(templateElement.getIdentifier()));
 						elementsToRemove.addAll(generatedDocument.getElementsWithBaseIdentifier(templateElement.getIdentifier()));
 					}
 				}

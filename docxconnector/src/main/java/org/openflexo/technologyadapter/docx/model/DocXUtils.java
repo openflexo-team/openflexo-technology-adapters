@@ -27,13 +27,14 @@ import javax.xml.bind.JAXBElement;
 
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.Text;
-import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
+import org.openflexo.foundation.doc.FlexoParagraph;
+import org.openflexo.foundation.doc.FlexoRun;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.toolbox.StringUtils;
 
 /**
- * Implementation of {@link FlexoDocument} for {@link DocXTechnologyAdapter}
+ * Utils used in the context of {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *
@@ -42,9 +43,14 @@ public class DocXUtils {
 
 	public static String debugStructuredContents(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> element, int indent) {
 		if (element instanceof DocXParagraph) {
+			DocXParagraph paragraph = (DocXParagraph) element;
 			StringBuffer result = new StringBuffer();
-			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > " + element
-					+ (element instanceof DocXParagraph ? ((DocXParagraph) element).getRawTextPreview() : "") + "\n");
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > [" + paragraph.getIdentifier() + "/"
+					+ paragraph.getIndex() + "] { ");
+			for (FlexoRun<DocXDocument, DocXTechnologyAdapter> run : paragraph.getRuns()) {
+				result.append("(" + run.getText() + ")");
+			}
+			result.append(" }\n");
 			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
 				result.append(debugStructuredContents(e, indent + 1));
 			}
@@ -54,15 +60,34 @@ public class DocXUtils {
 			DocXTable table = (DocXTable) element;
 			StringBuffer result = new StringBuffer();
 			for (int i = 0; i < table.getTableRows().size(); i++) {
-				result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2));
+				result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2)
+						+ (i == 0 ? " > [" + table.getIdentifier() + "/" + table.getIndex() + "]" : "           "));
 				for (int j = 0; j < table.getTableRows().get(i).getTableCells().size(); j++) {
-					result.append("[" + table.getTableRows().get(i).getTableCells().get(j).getRawText() + "] ");
+					result.append("[" + debugStructuredContents((DocXTableCell) table.getCell(i, j)) + "] ");
 				}
 				result.append("\n");
 			}
 			return result.toString();
 		}
 		return StringUtils.buildWhiteSpaceIndentation(indent * 2) + " ???";
+	}
+
+	public static String debugStructuredContents(DocXParagraph paragraph) {
+		StringBuffer result = new StringBuffer();
+		result.append("{ ");
+		for (FlexoRun<DocXDocument, DocXTechnologyAdapter> run : paragraph.getRuns()) {
+			result.append("(" + run.getText() + ")");
+		}
+		result.append(" }");
+		return result.toString();
+	}
+
+	public static String debugStructuredContents(DocXTableCell cell) {
+		StringBuffer result = new StringBuffer();
+		for (FlexoParagraph<DocXDocument, DocXTechnologyAdapter> paragraph : cell.getParagraphs()) {
+			result.append(debugStructuredContents((DocXParagraph) paragraph) + " ");
+		}
+		return result.toString();
 	}
 
 	public static String printContents(Object obj, int indent) {
@@ -117,5 +142,29 @@ public class DocXUtils {
 			}
 		}
 	}*/
+
+	/**
+	 * Handle removing of an item in a list where objects are possibly embedded as {@link JAXBElement}
+	 * 
+	 * @param o
+	 * @param list
+	 * @return
+	 */
+	public static boolean removeFromList(Object o, List<Object> list) {
+		if (list.contains(o)) {
+			list.remove(o);
+			return true;
+		}
+		for (Object o2 : list) {
+			if (o2 instanceof JAXBElement) {
+				Object value = ((JAXBElement) o2).getValue();
+				if (o.equals(value)) {
+					list.remove(o2);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 
 }
