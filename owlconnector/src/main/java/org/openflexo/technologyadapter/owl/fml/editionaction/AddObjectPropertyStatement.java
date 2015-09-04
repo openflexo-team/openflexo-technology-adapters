@@ -52,7 +52,7 @@ import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOu
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
@@ -83,8 +83,8 @@ import org.openflexo.toolbox.StringUtils;
 @ImplementationClass(AddObjectPropertyStatement.AddObjectPropertyStatementImpl.class)
 @XMLElement
 @FML("AddObjectPropertyStatement")
-public interface AddObjectPropertyStatement
-		extends AddStatement<ObjectPropertyStatement>, SetObjectPropertyValueAction<ObjectPropertyStatement> {
+public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyStatement>,
+		SetObjectPropertyValueAction<ObjectPropertyStatement> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String OBJECT_KEY = "object";
@@ -113,8 +113,8 @@ public interface AddObjectPropertyStatement
 	@Override
 	public void setProperty(IFlexoOntologyStructuralProperty aProperty);
 
-	public static abstract class AddObjectPropertyStatementImpl extends AddStatementImpl<ObjectPropertyStatement>
-			implements AddObjectPropertyStatement {
+	public static abstract class AddObjectPropertyStatementImpl extends AddStatementImpl<ObjectPropertyStatement> implements
+			AddObjectPropertyStatement {
 
 		private static final Logger logger = Logger.getLogger(AddObjectPropertyStatement.class.getPackage().getName());
 
@@ -234,9 +234,9 @@ public interface AddObjectPropertyStatement
 			this.objectPropertyURI = objectPropertyURI;
 		}
 
-		public OWLConcept<?> getPropertyObject(FlexoBehaviourAction action) {
+		public OWLConcept<?> getPropertyObject(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return (OWLConcept<?>) getObject().getBindingValue(action);
+				return (OWLConcept<?>) getObject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -300,10 +300,10 @@ public interface AddObjectPropertyStatement
 		}
 
 		@Override
-		public ObjectPropertyStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
+		public ObjectPropertyStatement execute(RunTimeEvaluationContext evaluationContext) {
 			OWLObjectProperty property = getObjectProperty();
-			OWLConcept<?> subject = getPropertySubject(action);
-			OWLConcept<?> object = getPropertyObject(action);
+			OWLConcept<?> subject = getPropertySubject(evaluationContext);
+			OWLConcept<?> object = getPropertyObject(evaluationContext);
 			if (property == null) {
 				return null;
 			}
@@ -319,8 +319,8 @@ public interface AddObjectPropertyStatement
 	}
 
 	@DefineValidationRule
-	public static class AddObjectPropertyStatementActionMustDefineAnObjectProperty
-			extends ValidationRule<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
+	public static class AddObjectPropertyStatementActionMustDefineAnObjectProperty extends
+			ValidationRule<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
 		public AddObjectPropertyStatementActionMustDefineAnObjectProperty() {
 			super(AddObjectPropertyStatement.class, "add_object_property_statement_action_must_define_an_object_property");
 		}
@@ -339,8 +339,8 @@ public interface AddObjectPropertyStatement
 			return null;
 		}
 
-		protected static class SetsFlexoRole
-				extends FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
+		protected static class SetsFlexoRole extends
+				FixProposal<AddObjectPropertyStatementActionMustDefineAnObjectProperty, AddObjectPropertyStatement> {
 
 			private final ObjectPropertyStatementRole flexoRole;
 

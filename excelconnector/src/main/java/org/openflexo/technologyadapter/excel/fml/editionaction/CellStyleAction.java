@@ -50,6 +50,7 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -189,9 +190,9 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 			this.subject = subject;
 		}
 
-		public ExcelCell getSubject(FlexoBehaviourAction action) {
+		public ExcelCell getSubject(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return getSubject().getBindingValue(action);
+				return getSubject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -378,9 +379,9 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 		// ACTION
 
 		@Override
-		public ExcelCell execute(FlexoBehaviourAction action) {
-			logger.info("Perform graphical action " + action);
-			ExcelCell excelCell = getSubject(action);
+		public ExcelCell execute(RunTimeEvaluationContext evaluationContext) {
+			logger.info("Perform graphical action " + evaluationContext);
+			ExcelCell excelCell = getSubject(evaluationContext);
 			Object value = null;
 			try {
 				if (isAlignmentStyle) {
@@ -388,7 +389,7 @@ public interface CellStyleAction extends ExcelAction<ExcelCell> {
 				} else if (isBorderStyle) {
 					value = getCellBorderStyle();
 				} else {
-					value = getValue().getBindingValue(action);
+					value = getValue().getBindingValue(evaluationContext);
 				}
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();

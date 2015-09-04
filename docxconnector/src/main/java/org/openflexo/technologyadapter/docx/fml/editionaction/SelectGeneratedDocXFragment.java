@@ -44,7 +44,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -103,18 +103,18 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 		}
 
 		@Override
-		public DocXFragment execute(FlexoBehaviourAction<?, ?, ?> action) throws FlexoException {
+		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			if (getModelSlotInstance(action) == null) {
+			if (getModelSlotInstance(evaluationContext) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;
 			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
+			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
 				logger.warning("Could not access model adressed by model slot instance. Abort.");
 				return null;
 			}
 
-			DocXDocument document = (DocXDocument) getModelSlotInstance(action).getAccessedResourceData();
+			DocXDocument document = (DocXDocument) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
 			/*System.out.println("document: " + document);
 			System.out.println("getAssignedFlexoProperty()=" + getAssignedFlexoProperty());

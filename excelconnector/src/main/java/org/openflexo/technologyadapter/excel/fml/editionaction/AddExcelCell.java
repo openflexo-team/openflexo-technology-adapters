@@ -50,7 +50,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -166,18 +166,18 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		}
 
 		@Override
-		public ExcelCell execute(FlexoBehaviourAction action) {
+		public ExcelCell execute(RunTimeEvaluationContext evaluationContext) {
 
 			ExcelCell excelCell = null;
 
-			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(action);
+			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 
 				try {
 					ExcelRow excelRow = null;
 					if (isRowIndex) {
-						Integer rowIndex = getRowIndex().getBindingValue(action);
-						ExcelSheet excelSheet = getSheet().getBindingValue(action);
+						Integer rowIndex = getRowIndex().getBindingValue(evaluationContext);
+						ExcelSheet excelSheet = getSheet().getBindingValue(evaluationContext);
 						if (excelSheet != null && rowIndex != null) {
 							excelRow = excelSheet.getRowAt(rowIndex);
 						} else if (excelSheet == null) {
@@ -187,15 +187,15 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 						}
 
 					} else {
-						excelRow = getRow().getBindingValue(action);
+						excelRow = getRow().getBindingValue(evaluationContext);
 					}
 
-					Integer columnIndex = getColumnIndex().getBindingValue(action);
+					Integer columnIndex = getColumnIndex().getBindingValue(evaluationContext);
 					// If this is possible, create the cell
 					if (columnIndex != null) {
 						if (excelRow != null) {
 							Cell cell = null;
-							String value = getValue().getBindingValue(action);
+							String value = getValue().getBindingValue(evaluationContext);
 							// If this cell exists, just get it
 							if (excelRow.getCellAt(columnIndex) != null) {
 								excelCell = excelRow.getCellAt(columnIndex);
@@ -236,8 +236,8 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 		}
 
 		@Override
-		public FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> getModelSlotInstance(RunTimeEvaluationContext evaluationContext) {
+			return (FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 		@Override

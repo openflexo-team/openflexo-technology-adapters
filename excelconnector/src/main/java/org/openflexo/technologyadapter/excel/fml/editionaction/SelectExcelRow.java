@@ -49,7 +49,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -94,23 +94,23 @@ public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelR
 		}
 
 		@Override
-		public List<ExcelRow> execute(FlexoBehaviourAction action) {
+		public List<ExcelRow> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(action) == null) {
+			if (getModelSlotInstance(evaluationContext) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;
 			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
+			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
 				logger.warning("Could not access model adressed by model slot instance. Abort.");
 				return null;
 			}
 
-			ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(action).getAccessedResourceData();
+			ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
 			List<ExcelRow> selectedExcelRows = new ArrayList<ExcelRow>();
 			ExcelSheet excelSheet;
 			try {
-				excelSheet = getExcelSheet().getBindingValue(action);
+				excelSheet = getExcelSheet().getBindingValue(evaluationContext);
 
 				if (excelSheet != null) {
 					selectedExcelRows.addAll(excelSheet.getExcelRows());
@@ -130,9 +130,10 @@ public interface SelectExcelRow extends FetchRequest<BasicExcelModelSlot, ExcelR
 				e.printStackTrace();
 			}
 
-			List<ExcelRow> returned = filterWithConditions(selectedExcelRows, action);
+			List<ExcelRow> returned = filterWithConditions(selectedExcelRows, evaluationContext);
 
 			return returned;
+
 		}
 
 		@Override

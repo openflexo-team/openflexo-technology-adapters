@@ -50,7 +50,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -84,14 +84,15 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 		}
 
 		@Override
-		public PowerpointShape execute(FlexoBehaviourAction action) {
+		public PowerpointShape execute(RunTimeEvaluationContext evaluationContext) {
+
 			PowerpointShape powerpointShape = null;
 
-			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(action);
+			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 
 				try {
-					PowerpointSlide powerpointSlide = getPowerpointSlide().getBindingValue(action);
+					PowerpointSlide powerpointSlide = getPowerpointSlide().getBindingValue(evaluationContext);
 					if (powerpointSlide != null) {
 
 						AutoShape shape = new AutoShape(ShapeTypes.Chevron);
@@ -121,6 +122,7 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 			}
 
 			return powerpointShape;
+
 		}
 
 		@Override
@@ -145,8 +147,8 @@ public interface AddPowerpointShape extends PowerpointAction<PowerpointShape> {
 
 		@Override
 		public FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> getModelSlotInstance(
-				FlexoBehaviourAction<?, ?, ?> action) {
-			return (FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot>) super.getModelSlotInstance(action);
+				RunTimeEvaluationContext evaluationContext) {
+			return (FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 	}

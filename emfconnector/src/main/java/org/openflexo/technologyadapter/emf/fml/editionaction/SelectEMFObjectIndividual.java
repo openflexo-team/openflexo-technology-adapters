@@ -47,8 +47,8 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.fml.editionaction.SelectIndividual;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -83,12 +83,12 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 		}
 
 		@Override
-		public List<EMFObjectIndividual> execute(FlexoBehaviourAction action) {
-			if (getModelSlotInstance(action) == null) {
+		public List<EMFObjectIndividual> execute(RunTimeEvaluationContext evaluationContext) {
+			if (getModelSlotInstance(evaluationContext) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;
 			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
+			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
 				logger.warning("Could not access model adressed by model slot instance. Abort.");
 				return null;
 			}
@@ -96,7 +96,7 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 			// System.out.println("Selecting EMFObjectIndividuals in " + getModelSlotInstance(action).getModel() + " with type=" +
 			// getType());
 			List<EMFObjectIndividual> selectedIndividuals = new ArrayList<EMFObjectIndividual>(0);
-			EMFModel emfModel = getModelSlotInstance(action).getAccessedResourceData();
+			EMFModel emfModel = getModelSlotInstance(evaluationContext).getAccessedResourceData();
 			Resource resource = emfModel.getEMFResource();
 			IFlexoOntologyClass flexoOntologyClass = getType();
 			List<EObject> selectedEMFIndividuals = new ArrayList<EObject>();
@@ -137,16 +137,19 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 				}
 			}
 
-			List<EMFObjectIndividual> returned = filterWithConditions(selectedIndividuals, action);
+			List<EMFObjectIndividual> returned = filterWithConditions(selectedIndividuals, evaluationContext);
 
-			// System.out.println("SelectEMFObjectIndividual, without filtering =" + selectedIndividuals + " after filtering=" + returned);
+			// System.out.println("SelectEMFObjectIndividual, without filtering =" + selectedIndividuals + " after filtering=" +
+			// returned);
 
 			return returned;
+
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) super.getModelSlotInstance(action);
+		public TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> getModelSlotInstance(
+				RunTimeEvaluationContext evaluationContext) {
+			return (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 	}

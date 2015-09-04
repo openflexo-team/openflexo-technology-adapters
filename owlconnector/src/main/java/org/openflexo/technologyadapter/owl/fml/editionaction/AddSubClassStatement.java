@@ -47,7 +47,7 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.model.annotations.Getter;
@@ -98,9 +98,9 @@ public interface AddSubClassStatement extends AddStatement<SubClassStatement> {
 			// TODO Auto-generated method stub
 		}
 
-		public OWLConcept<?> getPropertyFather(FlexoBehaviourAction action) {
+		public OWLConcept<?> getPropertyFather(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return (OWLConcept<?>) getFather().getBindingValue(action);
+				return (OWLConcept<?>) getFather().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -139,9 +139,9 @@ public interface AddSubClassStatement extends AddStatement<SubClassStatement> {
 		}
 
 		@Override
-		public SubClassStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
-			OWLConcept<?> subject = getPropertySubject(action);
-			OWLConcept<?> father = getPropertyFather(action);
+		public SubClassStatement execute(RunTimeEvaluationContext evaluationContext) {
+			OWLConcept<?> subject = getPropertySubject(evaluationContext);
+			OWLConcept<?> father = getPropertyFather(evaluationContext);
 			if (father instanceof OWLClass) {
 				if (subject instanceof OWLClass) {
 					return ((OWLClass) subject).addToSuperClasses((OWLClass) father);

@@ -52,7 +52,7 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.controlgraph.FMLControlGraph;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -79,7 +79,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 	@Setter(FILE_KEY)
 	public void setFile(File aFile);*/
 
-	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument>implements GenerateDocXDocument {
+	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument> implements GenerateDocXDocument {
 
 		private static final Logger logger = Logger.getLogger(GenerateDocXDocument.class.getPackage().getName());
 
@@ -91,10 +91,8 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 						for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
 							elementsToIgnore.add(e);
 						}
-					}
-					else if (cg instanceof AssignationAction && ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
-						for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment()
-								.getElements()) {
+					} else if (cg instanceof AssignationAction && ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
+						for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment().getElements()) {
 							elementsToIgnore.add(e);
 						}
 					}
@@ -114,11 +112,11 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 		}
 
 		@Override
-		public DocXDocument execute(FlexoBehaviourAction<?, ?, ?> action) throws FlexoException {
+		public DocXDocument execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
 			List<DocXElement> elementsToIgnore = new ArrayList<>();
-			appendElementsToIgnore(action.getFlexoConcept().getOwner(), elementsToIgnore);
-			appendElementsToIgnore(action.getFlexoConcept(), elementsToIgnore);
+			appendElementsToIgnore(evaluationContext.getFlexoConceptInstance().getFlexoConcept().getOwner(), elementsToIgnore);
+			appendElementsToIgnore(evaluationContext.getFlexoConceptInstance().getFlexoConcept(), elementsToIgnore);
 
 			// System.out.println("ToIgnore: " + elementsToIgnore);
 
@@ -129,8 +127,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				DocXDocumentResource templateResource = getModelSlot().getTemplateResource();
 				DocXDocument templateDocument = templateResource.getResourceData(null);
 
-				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
-						action);
+				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(evaluationContext);
 
 				FlexoResource<DocXDocument> generatedResource = msInstance.getResource();
 
@@ -158,8 +155,8 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 					DocXElement templateElement = (DocXElement) templateDocument.getElementWithIdentifier(oldId);
 					generatedElement.setIdentifier(generatedDocument.getFactory().generateId());
 					generatedElement.setBaseIdentifier(oldId);
-					System.out.println(
-							"Element " + generatedElement + " change id from " + oldId + " to " + generatedElement.getIdentifier());
+					System.out.println("Element " + generatedElement + " change id from " + oldId + " to "
+							+ generatedElement.getIdentifier());
 				}
 
 				/*for (P p : DocXUtils.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
@@ -177,8 +174,8 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> templateElement : templateDocument.getElements()) {
 					if (elementsToIgnore.contains(templateElement)) {
 						System.out.println("Ignoring: " + templateElement);
-						System.out.println(
-								"Ignoring elements: " + generatedDocument.getElementsWithBaseIdentifier(templateElement.getIdentifier()));
+						System.out.println("Ignoring elements: "
+								+ generatedDocument.getElementsWithBaseIdentifier(templateElement.getIdentifier()));
 						elementsToRemove.addAll(generatedDocument.getElementsWithBaseIdentifier(templateElement.getIdentifier()));
 					}
 				}

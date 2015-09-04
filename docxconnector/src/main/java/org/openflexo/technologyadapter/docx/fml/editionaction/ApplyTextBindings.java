@@ -43,7 +43,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.fml.FragmentActorReference;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -61,9 +61,9 @@ public interface ApplyTextBindings extends DocXFragmentAction {
 		private static final Logger logger = Logger.getLogger(ApplyTextBindings.class.getPackage().getName());
 
 		@Override
-		public DocXFragment execute(FlexoBehaviourAction<?, ?, ?> action) throws FlexoException {
+		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) action.getFlexoConceptInstance()
+			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) evaluationContext.getFlexoConceptInstance()
 					.getActorReference(getFlexoRole());
 
 			actorReference.applyDataToDocument();

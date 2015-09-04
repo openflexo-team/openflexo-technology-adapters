@@ -51,6 +51,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
@@ -269,9 +270,9 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 			this.subject = subject;
 		}
 
-		public DiagramElement<?> getSubject(FlexoBehaviourAction<?, ?, ?> action) {
+		public DiagramElement<?> getSubject(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return getSubject().getBindingValue(action);
+				return getSubject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -297,12 +298,12 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
-		public DiagramElement<?> execute(FlexoBehaviourAction<?, ?, ?> action) {
-			logger.info("Perform graphical action " + action);
-			DiagramElement<?> graphicalElement = getSubject(action);
+		public DiagramElement<?> execute(RunTimeEvaluationContext evaluationContext) {
+			logger.info("Perform graphical action " + evaluationContext);
+			DiagramElement<?> graphicalElement = getSubject(evaluationContext);
 			Object value = null;
 			try {
-				value = getValue().getBindingValue(action);
+				value = getValue().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {

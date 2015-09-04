@@ -32,7 +32,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoTable;
 import org.openflexo.foundation.doc.FlexoTableCell;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -137,14 +137,14 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 		}
 
 		@Override
-		public DocXFragment execute(FlexoBehaviourAction<?, ?, ?> action) throws FlexoException {
+		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
 			System.out.println("execute  AddDocXFragment(), location=" + getLocation());
 
 			FlexoDocumentElement<?, ?> location = null;
 			if (getLocation() != null && getLocation().isSet() && getLocation().isValid()) {
 				try {
-					location = getLocation().getBindingValue(action);
+					location = getLocation().getBindingValue(evaluationContext);
 				} catch (TypeMismatchException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -160,7 +160,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 				}
 			}
 
-			DocXDocument document = (DocXDocument) getModelSlotInstance(action).getAccessedResourceData();
+			DocXDocument document = (DocXDocument) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
 			int insertIndex = -1;
 

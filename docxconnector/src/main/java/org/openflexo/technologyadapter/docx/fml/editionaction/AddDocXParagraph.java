@@ -23,7 +23,7 @@ package org.openflexo.technologyadapter.docx.fml.editionaction;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -55,7 +55,7 @@ public interface AddDocXParagraph extends DocXAction<DocXParagraph> {
 		}
 
 		@Override
-		public DocXParagraph execute(FlexoBehaviourAction action) {
+		public DocXParagraph execute(RunTimeEvaluationContext evaluationContext) {
 			DocXParagraph result = null;
 			// TODO : Implement Action
 			return result;

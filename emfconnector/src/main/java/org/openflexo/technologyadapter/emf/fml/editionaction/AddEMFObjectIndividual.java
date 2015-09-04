@@ -48,8 +48,8 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.fml.editionaction.AddIndividual;
 import org.openflexo.foundation.ontology.fml.editionaction.DataPropertyAssertion;
@@ -122,10 +122,10 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 		}
 
 		@Override
-		public EMFObjectIndividual execute(FlexoBehaviourAction action) {
+		public EMFObjectIndividual execute(RunTimeEvaluationContext evaluationContext) {
 			EMFObjectIndividual result = null;
 			List<EMFObjectIndividual> container = null;
-			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(action);
+			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 				IFlexoOntologyClass aClass = getOntologyClass();
 				if (aClass instanceof EMFClassClass) {
@@ -134,7 +134,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 					EObject eObject = EcoreUtil.create(emfClassClass.getObject());
 					// put it in its container
 					try {
-						container = getContainer().getBindingValue(action);
+						container = getContainer().getBindingValue(evaluationContext);
 					} catch (TypeMismatchException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -160,7 +160,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 					}
 
 					for (DataPropertyAssertion dataPropertyAssertion : getDataAssertions()) {
-						if (dataPropertyAssertion.evaluateCondition(action)) {
+						if (dataPropertyAssertion.evaluateCondition(evaluationContext)) {
 							logger.info("DataPropertyAssertion=" + dataPropertyAssertion);
 							EMFAttributeDataProperty property = (EMFAttributeDataProperty) dataPropertyAssertion.getOntologyProperty();
 							logger.info("Property=" + property);
@@ -178,20 +178,20 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 							// a
 							// Long, producing a cast exception.
 							dataPropertyAssertion.getValue().setDeclaredType(dataPropertyAssertion.getType());
-							Object value = dataPropertyAssertion.getValue(action);
+							Object value = dataPropertyAssertion.getValue(evaluationContext);
 							logger.info("Value=" + value);
 							// Set Data Attribute in EMF
 							result.getObject().eSet(property.getObject(), value);
 						}
 					}
 					for (ObjectPropertyAssertion objectPropertyAssertion : getObjectAssertions()) {
-						if (objectPropertyAssertion.evaluateCondition(action)) {
+						if (objectPropertyAssertion.evaluateCondition(evaluationContext)) {
 							logger.info("ObjectPropertyAssertion=" + objectPropertyAssertion);
 							if (objectPropertyAssertion.getOntologyProperty() instanceof EMFAttributeObjectProperty) {
 								EMFAttributeObjectProperty property = (EMFAttributeObjectProperty) objectPropertyAssertion
 										.getOntologyProperty();
 								logger.info("Property=" + property);
-								Object value = objectPropertyAssertion.getValue(action);
+								Object value = objectPropertyAssertion.getValue(evaluationContext);
 								logger.info("Value=" + value);
 								// Set Data Attribute in EMF
 								if (value instanceof AEMFMetaModelObjectImpl) {
@@ -203,7 +203,7 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 								EMFReferenceObjectProperty property = (EMFReferenceObjectProperty) objectPropertyAssertion
 										.getOntologyProperty();
 								logger.info("Property=" + property);
-								Object value = objectPropertyAssertion.getValue(action);
+								Object value = objectPropertyAssertion.getValue(evaluationContext);
 								logger.info("Value=" + value);
 								// Set Data Attribute in EMF
 								if (value instanceof AEMFMetaModelObjectImpl) {

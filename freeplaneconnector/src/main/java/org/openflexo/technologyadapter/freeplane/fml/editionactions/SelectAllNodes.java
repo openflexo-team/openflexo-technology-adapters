@@ -47,7 +47,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -67,15 +67,15 @@ public interface SelectAllNodes extends FetchRequest<FreeplaneModelSlot, IFreepl
 		private static final Logger LOGGER = Logger.getLogger(SelectAllNodes.class.getPackage().getName());
 
 		@Override
-		public List<IFreeplaneNode> execute(final FlexoBehaviourAction action) {
-			if (getModelSlotInstance(action) == null) {
+		public List<IFreeplaneNode> execute(final RunTimeEvaluationContext evaluationContext) {
+			if (getModelSlotInstance(evaluationContext) == null) {
 				return Collections.emptyList();
 			}
-			if (getModelSlotInstance(action).getAccessedResourceData() == null) {
+			if (getModelSlotInstance(evaluationContext).getAccessedResourceData() == null) {
 				LOGGER.log(Level.SEVERE, "Action perform on null accessed resource data");
 				return Collections.emptyList();
 			}
-			final IFreeplaneMap map = (IFreeplaneMap) getModelSlotInstance(action).getAccessedResourceData();
+			final IFreeplaneMap map = (IFreeplaneMap) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 			final IFreeplaneNode root = map.getRoot();
 			final List<IFreeplaneNode> returned = new ArrayList<IFreeplaneNode>();
 			returned.add(root);

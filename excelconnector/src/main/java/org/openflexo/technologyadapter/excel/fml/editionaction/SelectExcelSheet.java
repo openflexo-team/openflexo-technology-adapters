@@ -45,7 +45,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -74,26 +74,27 @@ public interface SelectExcelSheet extends FetchRequest<BasicExcelModelSlot, Exce
 		}
 
 		@Override
-		public List<ExcelSheet> execute(FlexoBehaviourAction action) {
+		public List<ExcelSheet> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(action) == null) {
+			if (getModelSlotInstance(evaluationContext) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;
 			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
+			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
 				logger.warning("Could not access model adressed by model slot instance. Abort.");
 				return null;
 			}
 
-			ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(action).getAccessedResourceData();
+			ExcelWorkbook excelWorkbook = (ExcelWorkbook) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
 			List<ExcelSheet> selectedExcelSheets = new ArrayList<ExcelSheet>(0);
 
 			selectedExcelSheets.addAll(excelWorkbook.getExcelSheets());
 
-			List<ExcelSheet> returned = filterWithConditions(selectedExcelSheets, action);
+			List<ExcelSheet> returned = filterWithConditions(selectedExcelSheets, evaluationContext);
 
 			return returned;
+
 		}
 	}
 }

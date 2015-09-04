@@ -48,7 +48,7 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -109,11 +109,11 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 		}
 
 		@Override
-		public IFreeplaneNode execute(final FlexoBehaviourAction action) {
-			final FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
+		public IFreeplaneNode execute(final RunTimeEvaluationContext evaluationContext) {
+			final FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
-				final IFreeplaneNode bindedParent = getParent(action);
-				final String bindedNodeText = getBindedNodeText(action);
+				final IFreeplaneNode bindedParent = getParent(evaluationContext);
+				final String bindedNodeText = getBindedNodeText(evaluationContext);
 				NodeModel nodeModel = new NodeModel(bindedParent.getNodeModel().getMap());
 				nodeModel.setUserObject(bindedNodeText);
 				bindedParent.getNodeModel().insert(nodeModel);
@@ -134,10 +134,10 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 			return this.parent;
 		}
 
-		private IFreeplaneNode getParent(final FlexoBehaviourAction<?, ?, ?> action) {
-			final String errorMsg = "Error while getting binding value for action " + action;
+		private IFreeplaneNode getParent(final RunTimeEvaluationContext evaluationContext) {
+			final String errorMsg = "Error while getting binding value for action " + evaluationContext;
 			try {
-				return getParent().getBindingValue(action);
+				return getParent().getBindingValue(evaluationContext);
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, errorMsg, e);
 			}
@@ -175,10 +175,10 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 			this.nodeText = pNodeText;
 		}
 
-		private String getBindedNodeText(FlexoBehaviourAction<?, ?, ?> action) {
-			final String errorMsg = "Error while getting binding value for action " + action;
+		private String getBindedNodeText(RunTimeEvaluationContext evaluationContext) {
+			final String errorMsg = "Error while getting binding value for action " + evaluationContext;
 			try {
-				return getNodeText().getBindingValue(action);
+				return getNodeText().getBindingValue(evaluationContext);
 			} catch (final Exception e) {
 				LOGGER.log(Level.SEVERE, errorMsg, e);
 			}
@@ -187,8 +187,9 @@ public interface AddChildNodeAction extends FreePlaneAction<IFreeplaneNode> {
 
 		@SuppressWarnings("unchecked")
 		@Override
-		public FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> getModelSlotInstance(final FlexoBehaviourAction<?, ?, ?> action) {
-			return (FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> getModelSlotInstance(
+				final RunTimeEvaluationContext evaluationContext) {
+			return (FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 	}
 }

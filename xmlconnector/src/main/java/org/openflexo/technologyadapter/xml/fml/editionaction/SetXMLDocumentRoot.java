@@ -47,7 +47,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.Import;
@@ -119,16 +119,16 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 		}
 
 		@Override
-		public XMLIndividual execute(FlexoBehaviourAction action) {
+		public XMLIndividual execute(RunTimeEvaluationContext evaluationContext) {
 
-			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = (ModelSlotInstance<XMLModelSlot, XMLModel>) getModelSlotInstance(action);
+			ModelSlotInstance<XMLModelSlot, XMLModel> modelSlotInstance = (ModelSlotInstance<XMLModelSlot, XMLModel>) getModelSlotInstance(evaluationContext);
 			XMLModel model = modelSlotInstance.getAccessedResourceData();
 			XMLModelSlot modelSlot = modelSlotInstance.getModelSlot();
 
 			XMLIndividual rootIndiv = null;
 
 			try {
-				Object o = getParameter().getBindingValue(action);
+				Object o = getParameter().getBindingValue(evaluationContext);
 				if (o instanceof XMLIndividual) {
 					rootIndiv = (XMLIndividual) o;
 				} else {
@@ -150,6 +150,7 @@ public interface SetXMLDocumentRoot extends XMLAction<XMLModelSlot, XMLIndividua
 			}
 
 			return rootIndiv;
+
 		}
 
 		@Override

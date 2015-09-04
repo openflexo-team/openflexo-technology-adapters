@@ -46,7 +46,7 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -92,7 +92,7 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 		}
 
 		@Override
-		public OSLCResource execute(FlexoBehaviourAction action) {
+		public OSLCResource execute(RunTimeEvaluationContext evaluationContext) {
 
 			OSLCResource resource = null;
 
@@ -100,8 +100,9 @@ public interface AddOSLCResource extends OSLCCoreAction<OSLCResource> {
 		}
 
 		@Override
-		public FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot> getModelSlotInstance(
+				RunTimeEvaluationContext evaluationContext) {
+			return (FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCCoreModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 		@Override

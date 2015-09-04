@@ -1134,7 +1134,7 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 			e.printStackTrace();
 		}
 
-		System.exit(-1);
+		// System.exit(-1);
 	}
 
 	/**

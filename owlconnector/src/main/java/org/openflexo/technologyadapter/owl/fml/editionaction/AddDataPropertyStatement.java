@@ -52,7 +52,7 @@ import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOu
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
@@ -110,8 +110,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 	@Override
 	public void setProperty(IFlexoOntologyStructuralProperty aProperty);
 
-	public static abstract class AddDataPropertyStatementImpl extends AddStatementImpl<DataPropertyStatement>
-			implements AddDataPropertyStatement {
+	public static abstract class AddDataPropertyStatementImpl extends AddStatementImpl<DataPropertyStatement> implements
+			AddDataPropertyStatement {
 
 		private static final Logger logger = Logger.getLogger(AddDataPropertyStatement.class.getPackage().getName());
 
@@ -125,10 +125,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append(
-					(getSubject() != null ? getSubject().toString() : "null") + "."
-							+ (getDataProperty() != null ? getDataProperty().getName() : "null") + " = " + getValue().toString() + ";",
-					context);
+			out.append((getSubject() != null ? getSubject().toString() : "null") + "."
+					+ (getDataProperty() != null ? getDataProperty().getName() : "null") + " = " + getValue().toString() + ";", context);
 			return out.toString();
 		}
 
@@ -213,9 +211,9 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			this.dataPropertyURI = dataPropertyURI;
 		}
 
-		public Object getValue(FlexoBehaviourAction action) {
+		public Object getValue(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return getValue().getBindingValue(action);
+				return getValue().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -278,10 +276,10 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		}
 
 		@Override
-		public DataPropertyStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
+		public DataPropertyStatement execute(RunTimeEvaluationContext evaluationContext) {
 			OWLDataProperty property = getDataProperty();
-			OWLConcept<?> subject = getPropertySubject(action);
-			Object value = getValue(action);
+			OWLConcept<?> subject = getPropertySubject(evaluationContext);
+			Object value = getValue(evaluationContext);
 			if (property == null) {
 				return null;
 			}
@@ -296,8 +294,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 
 	}
 
-	public static class AddDataPropertyStatementActionMustDefineADataProperty
-			extends ValidationRule<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
+	public static class AddDataPropertyStatementActionMustDefineADataProperty extends
+			ValidationRule<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
 		public AddDataPropertyStatementActionMustDefineADataProperty() {
 			super(AddDataPropertyStatement.class, "add_data_property_statement_action_must_define_a_data_property");
 		}
@@ -316,8 +314,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			return null;
 		}
 
-		protected static class SetsFlexoRole
-				extends FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
+		protected static class SetsFlexoRole extends
+				FixProposal<AddDataPropertyStatementActionMustDefineADataProperty, AddDataPropertyStatement> {
 
 			private final DataPropertyStatementRole flexoRole;
 

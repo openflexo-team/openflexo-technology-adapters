@@ -47,8 +47,8 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.fml.editionaction.SetPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
@@ -90,9 +90,9 @@ public abstract interface AddStatement<S extends OWLStatement> extends Technolog
 			super();
 		}
 
-		public OWLConcept<?> getPropertySubject(FlexoBehaviourAction action) {
+		public OWLConcept<?> getPropertySubject(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return (OWLConcept<?>) getSubject().getBindingValue(action);
+				return (OWLConcept<?>) getSubject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -174,8 +174,9 @@ public abstract interface AddStatement<S extends OWLStatement> extends Technolog
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(action);
+		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(
+				RunTimeEvaluationContext evaluationContext) {
+			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 	}
