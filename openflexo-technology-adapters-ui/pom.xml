@@ -12,7 +12,7 @@
 	<scm>
 		<connection>scm:git:ssh://git@github.com:openflexo-team/openflexo-technology-adapters.git</connection>
 		<url>https://github.com/openflexo-team/openflexo-technology-adapters</url>
-	  <tag>1.7.2</tag>
+	  <tag>1.8.0</tag>
   </scm>
 	<modules>
 		<module>owlconnector-ui</module>
