@@ -22,56 +22,29 @@ package org.openflexo.technologyadapter.docx.fml;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.doc.fml.FlexoFragmentRole;
-import org.openflexo.foundation.doc.fml.FragmentActorReference;
+import org.openflexo.foundation.doc.fml.FlexoTableRole;
+import org.openflexo.foundation.doc.fml.TableActorReference;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
-import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
-import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
-import org.openflexo.technologyadapter.docx.model.DocXFragment;
+import org.openflexo.technologyadapter.docx.model.DocXTable;
 
 @ModelEntity
-@ImplementationClass(DocXFragmentRole.DocXFragmentRoleImpl.class)
+@ImplementationClass(DocXTableRole.DocXTableRoleImpl.class)
 @XMLElement
-public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDocument, DocXTechnologyAdapter> {
+public interface DocXTableRole extends FlexoTableRole<DocXTable, DocXDocument, DocXTechnologyAdapter> {
 
-	@PropertyIdentifier(type = DocXFragment.class)
-	public static final String FRAGMENT_KEY = "fragment";
-
-	/**
-	 * Return the represented fragment in the template resource<br>
-	 * Note that is not the fragment that is to be managed at run-time
-	 * 
-	 * @return
-	 */
-	@Override
-	@Getter(value = FRAGMENT_KEY, isStringConvertable = true)
-	@XMLAttribute
-	public DocXFragment getFragment();
-
-	/**
-	 * Sets the represented fragment in the template resource<br>
-	 * 
-	 * @param fragment
-	 */
-	@Override
-	@Setter(FRAGMENT_KEY)
-	public void setFragment(DocXFragment fragment);
-
-	public static abstract class DocXFragmentRoleImpl extends
-			FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter> implements DocXFragmentRole {
+	public static abstract class DocXTableRoleImpl extends FlexoTableRoleImpl<DocXTable, DocXDocument, DocXTechnologyAdapter> implements
+			DocXTableRole {
 
 		@Override
 		public Type getType() {
-			return DocXFragment.class;
+			return DocXTable.class;
 		}
 
 		@Override
@@ -85,13 +58,13 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 		}
 
 		@Override
-		public ActorReference<DocXFragment> makeActorReference(DocXFragment fragment, FlexoConceptInstance fci) {
+		public ActorReference<DocXTable> makeActorReference(DocXTable table, FlexoConceptInstance fci) {
 
 			VirtualModelInstanceModelFactory factory = fci.getFactory();
-			FragmentActorReference<DocXFragment> returned = factory.newInstance(FragmentActorReference.class);
+			TableActorReference<DocXTable> returned = factory.newInstance(TableActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);
-			returned.setModellingElement(fragment);
+			returned.setModellingElement(table);
 			return returned;
 
 		}

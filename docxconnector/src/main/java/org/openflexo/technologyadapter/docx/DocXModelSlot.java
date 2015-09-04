@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.doc.fml.FlexoDocumentModelSlot;
 import org.openflexo.foundation.doc.fml.FragmentActorReference;
+import org.openflexo.foundation.doc.fml.TableActorReference;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
@@ -41,6 +42,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
+import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXParagraph;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ApplyTextBindings;
@@ -60,10 +62,10 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-@DeclareFlexoRoles({ DocXParagraphRole.class, DocXFragmentRole.class })
+@DeclareFlexoRoles({ DocXParagraphRole.class, DocXTableRole.class, DocXFragmentRole.class })
 @DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class, ApplyTextBindings.class,
 		ReinjectTextBindings.class, SelectGeneratedDocXFragment.class })
-@DeclareActorReferences({ FragmentActorReference.class })
+@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class })
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
 @XMLElement
@@ -76,7 +78,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 	@Setter(TEMPLATE_RESOURCE_KEY)
 	public void setTemplateResource(DocXDocumentResource templateResource);
 
-	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument>implements DocXModelSlot {
+	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument> implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 
