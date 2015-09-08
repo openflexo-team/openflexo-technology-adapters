@@ -64,6 +64,8 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.TextSelection;
+import org.openflexo.foundation.doc.fml.ColumnTableBinding;
+import org.openflexo.foundation.doc.fml.FlexoTableRole.FlexoTableRoleImpl;
 import org.openflexo.foundation.doc.fml.TextBinding;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.CreationScheme;
@@ -664,13 +666,41 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertTrue(bookListingTableRole.getIteration().isValid());
 
-		// Title
-		// TextSelection<DocXDocument, DocXTechnologyAdapter> titleSelection = bookDescriptionFragment.makeTextSelection(titleParagraph, 0,
-		// 1);
-		// assertEquals("Les misérables", titleSelection.getRawText());
-		// TextBinding<DocXDocument, DocXTechnologyAdapter> titleBinding = sectionRole.makeTextBinding(titleSelection,
-		// new DataBinding<String>("book.title"));
-		// assertTrue(titleBinding.getValue().isValid());
+		// title column
+		ColumnTableBinding<DocXDocument, DocXTechnologyAdapter> titleBinding = bookListingTableRole.getFMLModelFactory()
+				.newInstance(ColumnTableBinding.class);
+		titleBinding.setColumnName("title");
+		titleBinding.setValue(new DataBinding<String>(FlexoTableRoleImpl.ITERATOR_NAME + ".title"));
+		titleBinding.setColumnIndex(0);
+		bookListingTableRole.addToColumnBindings(titleBinding);
+		assertTrue(titleBinding.getValue().isValid());
+
+		// title column
+		ColumnTableBinding<DocXDocument, DocXTechnologyAdapter> authorBinding = bookListingTableRole.getFMLModelFactory()
+				.newInstance(ColumnTableBinding.class);
+		authorBinding.setColumnName("author");
+		authorBinding.setValue(new DataBinding<String>(FlexoTableRoleImpl.ITERATOR_NAME + ".author"));
+		authorBinding.setColumnIndex(1);
+		bookListingTableRole.addToColumnBindings(authorBinding);
+		assertTrue(authorBinding.getValue().isValid());
+
+		// title column
+		ColumnTableBinding<DocXDocument, DocXTechnologyAdapter> editionBinding = bookListingTableRole.getFMLModelFactory()
+				.newInstance(ColumnTableBinding.class);
+		editionBinding.setColumnName("edition");
+		editionBinding.setValue(new DataBinding<String>(FlexoTableRoleImpl.ITERATOR_NAME + ".edition"));
+		editionBinding.setColumnIndex(2);
+		bookListingTableRole.addToColumnBindings(editionBinding);
+		assertTrue(editionBinding.getValue().isValid());
+
+		// title column
+		ColumnTableBinding<DocXDocument, DocXTechnologyAdapter> typeBinding = bookListingTableRole.getFMLModelFactory()
+				.newInstance(ColumnTableBinding.class);
+		typeBinding.setColumnName("type");
+		typeBinding.setValue(new DataBinding<String>(FlexoTableRoleImpl.ITERATOR_NAME + ".type"));
+		typeBinding.setColumnIndex(0);
+		bookListingTableRole.addToColumnBindings(typeBinding);
+		assertTrue(typeBinding.getValue().isValid());
 
 		// We create a role pointing to the third section (conclusion section)
 		CreateTechnologyRole createConclusionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
