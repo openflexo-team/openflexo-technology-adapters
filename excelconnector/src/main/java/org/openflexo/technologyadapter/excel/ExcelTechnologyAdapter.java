@@ -159,13 +159,15 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 		if (returned == null) {
 			if (workbook instanceof File) {
 				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File) workbook, getTechnologyContextManager());
-			} else if (workbook instanceof InJarResourceImpl) {
+			}
+			else if (workbook instanceof InJarResourceImpl) {
 				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((InJarResourceImpl) workbook,
 						getTechnologyContextManager());
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerExcelWorkbook(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve ExcelWorkbook resource for " + workbook);
 			}
 		}
@@ -176,7 +178,8 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	public boolean isValidWorkbook(Object candidateElement) {
 		if (candidateElement instanceof File && isValidWorkbookFile(((File) candidateElement))) {
 			return true;
-		} else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
+		}
+		else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
 			return true;
 		}
 		return false;
@@ -257,6 +260,11 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 		getTechnologyContextManager().registerResource(workbookResource);
 
 		return workbookResource;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "XLS";
 	}
 
 }

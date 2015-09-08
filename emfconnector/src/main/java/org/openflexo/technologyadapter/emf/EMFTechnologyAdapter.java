@@ -83,7 +83,7 @@ import org.openflexo.technologyadapter.emf.rm.XtextEMFMetaModelResource;
  * 
  */
 @DeclareModelSlots({ EMFModelSlot.class, /*,EMFMetaModelSlot.class*/
-UMLEMFModelSlot.class /* EMFUMLModelSlot.class */})
+		UMLEMFModelSlot.class /* EMFUMLModelSlot.class */ })
 @DeclareRepositoryType({ EMFMetaModelRepository.class, EMFModelRepository.class })
 public class EMFTechnologyAdapter extends TechnologyAdapter {
 
@@ -195,7 +195,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 					folder = mmRepo.getRepositoryFolder(candidateFile, true);
 					if (folder != null) {
 						mmRepo.registerResource(mmRes, folder);
-					} else
+					}
+					else
 						mmRepo.registerResource(mmRes);
 				} catch (IOException e1) {
 					e1.printStackTrace();
@@ -242,7 +243,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			File candidateFile = (File) contents;
 			if (tryToLookupMetaModel(resourceCenter, candidateFile) != null) {
 				// This is a meta-model, this one has just been registered
-			} else {
+			}
+			else {
 				tryToLookupModel(resourceCenter, candidateFile);
 			}
 		}
@@ -441,7 +443,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 * @param technologyContextManager
 	 * @return
 	 */
-	public EMFModelResource createNewEMFModel(FlexoProject project, String filename, String modelUri, EMFMetaModelResource metaModelResource) {
+	public EMFModelResource createNewEMFModel(FlexoProject project, String filename, String modelUri,
+			EMFMetaModelResource metaModelResource) {
 		File modelFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
 		return createNewEMFModel(modelFile, modelUri, metaModelResource);
 	}
@@ -480,8 +483,8 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		} catch (SaveResourceException e) {
 			e.printStackTrace();
 		}
-		System.out.println("Created empty model " + modelFile.getAbsolutePath() + " as " + modelUri + " conform to "
-				+ metaModelResource.getURI());
+		System.out.println(
+				"Created empty model " + modelFile.getAbsolutePath() + " as " + modelUri + " conform to " + metaModelResource.getURI());
 		return emfModelResource;
 	}
 
@@ -511,6 +514,11 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			return "." + metaModelResource.getModelFileExtension();
 		}
 		return null;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "EMF";
 	}
 
 }

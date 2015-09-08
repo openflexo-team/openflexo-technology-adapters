@@ -51,6 +51,7 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
+import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -59,7 +60,6 @@ import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.owl.fml.binding.OWLBindingFactory;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntology.OntologyNotFoundException;
@@ -94,8 +94,8 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	/**
-	 * Return the {@link FlexoOntologyTechnologyContextManager} for this technology shared by all {@link FlexoResourceCenter} declared in the scope of
-	 * {@link FlexoResourceCenterService}
+	 * Return the {@link FlexoOntologyTechnologyContextManager} for this technology shared by all {@link FlexoResourceCenter} declared in
+	 * the scope of {@link FlexoResourceCenterService}
 	 * 
 	 * @return
 	 */
@@ -120,8 +120,8 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		OWLOntologyLibrary ontologyLibrary = getOntologyLibrary();
 
 		OWLOntologyAsModelRepository ontModelRepository = resourceCenter.getRepository(OWLOntologyAsModelRepository.class, this);
-		OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter
-				.getRepository(OWLOntologyAsMetaModelRepository.class, this);
+		OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter.getRepository(OWLOntologyAsMetaModelRepository.class,
+				this);
 		if (ontModelRepository == null) {
 			ontModelRepository = createOntologyAsModelRepository(resourceCenter);
 		}
@@ -309,6 +309,11 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 
 	public String getExpectedOntologyExtension() {
 		return OWLOntologyResource.OWL_SUFFIX;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "OWL";
 	}
 
 }

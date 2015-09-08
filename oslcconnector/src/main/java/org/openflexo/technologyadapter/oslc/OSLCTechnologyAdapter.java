@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc;
 
 import java.io.File;
@@ -193,6 +192,11 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	public OSLCTechnologyContextManager getTechnologyContextManager() {
 		// TODO Auto-generated method stub
 		return (OSLCTechnologyContextManager) super.getTechnologyContextManager();
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "OSLC";
 	}
 
 }

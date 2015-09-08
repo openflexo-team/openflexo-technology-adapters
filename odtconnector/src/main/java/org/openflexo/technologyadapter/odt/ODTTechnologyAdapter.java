@@ -138,7 +138,8 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerODTDocumentResource(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve ODTDocumentResource resource for " + odtDocumentItem);
 			}
 		}
@@ -149,7 +150,8 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 	public boolean isValidODT(Object candidateElement) {
 		if (candidateElement instanceof File && isValidODTFile(((File) candidateElement))) {
 			return true;
-		} else if (candidateElement instanceof InJarResourceImpl && isValidODTInJar((InJarResourceImpl) candidateElement)) {
+		}
+		else if (candidateElement instanceof InJarResourceImpl && isValidODTInJar((InJarResourceImpl) candidateElement)) {
 			return true;
 		}
 		return false;
@@ -211,6 +213,11 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 			String modelUri) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "ODT";
 	}
 
 }

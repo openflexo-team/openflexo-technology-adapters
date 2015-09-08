@@ -221,10 +221,9 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 			// System.out.println("Found valid candidate for DiagramSpecification: " + ((File)candidateElement));
 			return true;
 		}
-		if (candidateElement instanceof InJarResourceImpl
-				&& ((InJarResourceImpl) candidateElement).getRelativePath().endsWith(".xml")
-				&& ((InJarResourceImpl) candidateElement).getRelativePath().endsWith(
-						FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath())
+		if (candidateElement instanceof InJarResourceImpl && ((InJarResourceImpl) candidateElement).getRelativePath().endsWith(".xml")
+				&& ((InJarResourceImpl) candidateElement).getRelativePath()
+						.endsWith(FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath())
 								+ DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX + "/"
 								+ FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath()) + ".xml")) {
 			// System.out.println("Found valid candidate for DiagramSpecification: " + ((InJarResourceImpl)candidateElement));
@@ -246,13 +245,15 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 			if (diagramSpecification instanceof File) {
 				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((File) diagramSpecification, folder,
 						getTechnologyAdapterService().getServiceManager());
-			} else if (diagramSpecification instanceof InJarResourceImpl) {
+			}
+			else if (diagramSpecification instanceof InJarResourceImpl) {
 				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((InJarResourceImpl) diagramSpecification,
 						getTechnologyAdapterService().getServiceManager());
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerDiagramSpecification(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve DiagramSpecificationResource for " + diagramSpecification);
 			}
 		}
@@ -270,7 +271,8 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 			returned = DiagramResourceImpl.retrieveDiagramResource(aDiagramFile, getTechnologyAdapterService().getServiceManager());
 			if (returned != null) {
 				getTechnologyContextManager().registerDiagram(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve DiagramResource for " + aDiagramFile);
 			}
 		}
@@ -322,7 +324,8 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 			File candidateFile = (File) contents;
 			if (tryToLookupDiagramSpecification(resourceCenter, candidateFile) != null) {
 				// This is a meta-model, this one has just been registered
-			} else {
+			}
+			else {
 				tryToLookupDiagram(resourceCenter, candidateFile);
 			}
 		}
@@ -412,6 +415,11 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "DIAGRAM";
 	}
 
 }

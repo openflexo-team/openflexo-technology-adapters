@@ -229,4 +229,9 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 		return slideshowResource;
 	}
 
+	@Override
+	public String getIdentifier() {
+		return "PPT";
+	}
+
 }
