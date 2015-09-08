@@ -22,11 +22,8 @@ package org.openflexo.technologyadapter.docx.fml;
 
 import java.lang.reflect.Type;
 
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.foundation.doc.fml.FlexoFragmentRole;
-import org.openflexo.foundation.doc.fml.FragmentActorReference;
-import org.openflexo.foundation.fml.rt.ActorReference;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -34,6 +31,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.exceptions.InvalidDataException;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
@@ -66,8 +64,8 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 	@Setter(FRAGMENT_KEY)
 	public void setFragment(DocXFragment fragment);
 
-	public static abstract class DocXFragmentRoleImpl extends
-			FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter> implements DocXFragmentRole {
+	public static abstract class DocXFragmentRoleImpl
+			extends FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter>implements DocXFragmentRole {
 
 		@Override
 		public Type getType() {
@@ -84,16 +82,26 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 			return RoleCloningStrategy.Clone;
 		}
 
-		@Override
+		/*@Override
 		public ActorReference<DocXFragment> makeActorReference(DocXFragment fragment, FlexoConceptInstance fci) {
-
+		
 			VirtualModelInstanceModelFactory factory = fci.getFactory();
 			FragmentActorReference<DocXFragment> returned = factory.newInstance(FragmentActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(fragment);
 			return returned;
+		
+		}*/
 
+		@Override
+		public String getTypeDescription() {
+			try {
+				return TypeUtils.simpleRepresentation(getType()) + "(" + getFMLModelFactory().getStringEncoder().toString(getFragment())
+						+ ")";
+			} catch (InvalidDataException e) {
+				return super.getTypeDescription();
+			}
 		}
 
 	}

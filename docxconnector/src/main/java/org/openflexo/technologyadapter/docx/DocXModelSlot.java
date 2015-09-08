@@ -47,8 +47,11 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXParagraph;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ApplyTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
+import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXTable;
+import org.openflexo.technologyadapter.docx.fml.editionaction.ReinjectFromDocXTable;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ReinjectTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXFragment;
+import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXTable;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.toolbox.StringUtils;
@@ -64,7 +67,8 @@ import org.openflexo.toolbox.StringUtils;
  */
 @DeclareFlexoRoles({ DocXParagraphRole.class, DocXTableRole.class, DocXFragmentRole.class })
 @DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class, ApplyTextBindings.class,
-		ReinjectTextBindings.class, SelectGeneratedDocXFragment.class })
+		ReinjectTextBindings.class, SelectGeneratedDocXFragment.class, GenerateDocXTable.class, ReinjectFromDocXTable.class,
+		SelectGeneratedDocXTable.class })
 @DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class })
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
@@ -78,7 +82,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 	@Setter(TEMPLATE_RESOURCE_KEY)
 	public void setTemplateResource(DocXDocumentResource templateResource);
 
-	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument> implements DocXModelSlot {
+	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument>implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 

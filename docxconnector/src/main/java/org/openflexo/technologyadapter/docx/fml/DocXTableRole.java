@@ -23,10 +23,6 @@ package org.openflexo.technologyadapter.docx.fml;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.doc.fml.FlexoTableRole;
-import org.openflexo.foundation.doc.fml.TableActorReference;
-import org.openflexo.foundation.fml.rt.ActorReference;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -39,8 +35,8 @@ import org.openflexo.technologyadapter.docx.model.DocXTable;
 @XMLElement
 public interface DocXTableRole extends FlexoTableRole<DocXTable, DocXDocument, DocXTechnologyAdapter> {
 
-	public static abstract class DocXTableRoleImpl extends FlexoTableRoleImpl<DocXTable, DocXDocument, DocXTechnologyAdapter> implements
-			DocXTableRole {
+	public static abstract class DocXTableRoleImpl extends FlexoTableRoleImpl<DocXTable, DocXDocument, DocXTechnologyAdapter>
+			implements DocXTableRole {
 
 		@Override
 		public Type getType() {
@@ -57,17 +53,17 @@ public interface DocXTableRole extends FlexoTableRole<DocXTable, DocXDocument, D
 			return RoleCloningStrategy.Clone;
 		}
 
-		@Override
+		/*@Override
 		public ActorReference<DocXTable> makeActorReference(DocXTable table, FlexoConceptInstance fci) {
-
+		
 			VirtualModelInstanceModelFactory factory = fci.getFactory();
 			TableActorReference<DocXTable> returned = factory.newInstance(TableActorReference.class);
 			returned.setFlexoRole(this);
 			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(table);
 			return returned;
-
-		}
+		
+		}*/
 
 	}
 }

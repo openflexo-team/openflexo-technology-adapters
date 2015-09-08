@@ -38,27 +38,37 @@
 
 package org.openflexo.technologyadapter.docx.fml.editionaction;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import java.util.logging.Logger;
+
+import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.doc.fml.TableActorReference;
+import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.technologyadapter.docx.DocXModelSlot;
-import org.openflexo.technologyadapter.docx.model.DocXObject;
+import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.docx.model.DocXTable;
 
-/**
- * Abstract action for {@link DocXModelSlot}
- * 
- * @author sylvain
- * 
- * @param <T>
- *            docx object type
- */
+@ModelEntity
+@ImplementationClass(ReinjectFromDocXTable.GenerateDocXTableImpl.class)
+@XMLElement
+@FML("ReinjectFromDocXTable")
+public interface ReinjectFromDocXTable extends DocXTableAction {
 
-@ModelEntity(isAbstract = true)
-@ImplementationClass(DocXAction.DocXActionImpl.class)
-public interface DocXAction<T extends DocXObject> extends TechnologySpecificAction<DocXModelSlot, T> {
+	public static abstract class GenerateDocXTableImpl extends DocXTableActionImpl implements ReinjectFromDocXTable {
 
-	public static abstract class DocXActionImpl<T extends DocXObject> extends TechnologySpecificActionImpl<DocXModelSlot, T>
-			implements DocXAction<T> {
+		@SuppressWarnings("unused")
+		private static final Logger logger = Logger.getLogger(ReinjectFromDocXTable.class.getPackage().getName());
 
+		@Override
+		public DocXTable execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+
+			TableActorReference<DocXTable> actorReference = (TableActorReference<DocXTable>) evaluationContext.getFlexoConceptInstance()
+					.getActorReference(getFlexoRole());
+
+			actorReference.reinjectDataFromDocument();
+
+			return actorReference.getModellingElement();
+		}
 	}
 }

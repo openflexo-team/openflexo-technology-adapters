@@ -49,6 +49,7 @@ import static org.junit.Assert.fail;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.junit.Test;
@@ -71,6 +72,7 @@ import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceParameter;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.GetSetProperty;
 import org.openflexo.foundation.fml.PrimitiveRole.PrimitiveType;
 import org.openflexo.foundation.fml.TextFieldParameter;
 import org.openflexo.foundation.fml.ViewPoint;
@@ -121,8 +123,10 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.LocationSemantics;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ApplyTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
+import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXTable;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ReinjectTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXFragment;
+import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXTable;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
@@ -136,6 +140,8 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.StringUtils;
+
+import junit.framework.AssertionFailedError;
 
 /**
  * Test the creation and some manipulations of a {@link VirtualModel} with {@link FMLControlledDocumentVirtualModelNature}<br>
@@ -177,6 +183,9 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 	public static VirtualModel documentVirtualModel;
 	public static FMLRTModelSlot libraryModelSlot;
 	public static DocXModelSlot docXModelSlot;
+
+	public static GetSetProperty<?> allBooksProperty;
+
 	public static DocXFragmentRole introductionFragmentRole;
 	public static DocXFragmentRole booksDescriptionFragmentRole;
 	public static DocXTableRole bookListingTableRole;
@@ -246,8 +255,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 	 * @throws ResourceLoadingCancelledException
 	 * @throws FlexoException
 	 */
-	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
-			FlexoException {
+	private DocXDocumentResource getDocument(String documentName)
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 			System.out.println("Resource " + r + " uri=" + r.getURI());
@@ -301,7 +310,7 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 	 * We create here a VirtualModel without model slot, but with Book FlexoConcept
 	 * 
 	 * <code>
-	 * VirtualModel LibraryVirtualModel uri="http://openflexo.org/test/TestLibraryViewPoint/LibraryVirtualModel" {
+	 * VirtualModel LibraryVirtualModel type=VirtualModel uri="http://openflexo.org/test/TestLibraryViewPoint/LibraryVirtualModel" {
 	 * 
 	 *   FlexoConcept Book {  
 	 *     FlexoRole title as String cardinality=ZeroOne;  
@@ -328,8 +337,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		log("testCreateLibraryVirtualModel()");
 
 		libraryVirtualModel = VirtualModelImpl.newVirtualModel("LibraryVirtualModel", viewPoint);
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) libraryVirtualModel.getResource()).getDirectory())
-				.exists());
+		assertTrue(
+				ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) libraryVirtualModel.getResource()).getDirectory()).exists());
 		assertTrue(((VirtualModelResource) libraryVirtualModel.getResource()).getFlexoIODelegate().exists());
 
 		CreateFlexoConcept createConceptAction = CreateFlexoConcept.actionType.makeNewAction(libraryVirtualModel, null, editor);
@@ -466,14 +475,21 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertTrue(bookConcept.getCreationSchemes().contains(bookCreationScheme));
 
-		CreateGetSetProperty createAllBooksRole = CreateGetSetProperty.actionType.makeNewAction(libraryVirtualModel, null, editor);
-		createAllBooksRole.setPropertyName("books");
+		CreateGetSetProperty createAllBooksProperty = CreateGetSetProperty.actionType.makeNewAction(libraryVirtualModel, null, editor);
+		createAllBooksProperty.setPropertyName("books");
+
 		SelectFlexoConceptInstance selectBooks = bookConcept.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectBooks.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("library"));
+		selectBooks.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
 		selectBooks.setFlexoConceptType(bookConcept);
-		createAllBooksRole.setGetControlGraph(selectBooks);
-		createAllBooksRole.doAction();
-		assertTrue(createAllBooksRole.hasActionExecutionSucceeded());
+		createAllBooksProperty.setGetControlGraph(bookConcept.getFMLModelFactory().newReturnStatement(selectBooks));
+
+		createAllBooksProperty.doAction();
+		assertTrue(createAllBooksProperty.hasActionExecutionSucceeded());
+
+		assertTrue(selectBooks.getVirtualModelInstance().isValid());
+
+		allBooksProperty = createAllBooksProperty.getNewFlexoProperty();
+		assertNotNull(allBooksProperty);
 
 		libraryVirtualModel.getResource().save(null);
 
@@ -494,6 +510,66 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 	 * We also define an {@link ActionScheme} on the {@link VirtualModel}, which generate the docx document from the template and then add a
 	 * fragment to the end of document
 	 * 
+	 * Following is the verbatim of DocumentVirtualModel
+	 * 
+	 * <code>
+	VirtualModel DocumentVirtualModel type=VirtualModel uri="http://openflexo.org/test/TestLibraryViewPoint2/DocumentVirtualModel" {
+	 
+	  ModelSlot library as FML::FMLRTModelSlot conformTo http://openflexo.org/test/TestLibraryViewPoint2/LibraryVirtualModel required=true readOnly=false;  
+	  ModelSlot document as DOCX::DocXModelSlot conformTo http://openflexo.org/test/TestResourceCenter/ExampleLibrary2.docx required=true readOnly=false;  
+	
+	  FlexoRole introductionSection as DOCX::DocXFragmentRole conformTo DocXFragment(http://openflexo.org/test/TestResourceCenter/ExampleLibrary2.docx:707AC6F7:3D899DD8);
+	  FlexoRole booksDescriptionSection as DOCX::DocXFragmentRole conformTo DocXFragment(http://openflexo.org/test/TestResourceCenter/ExampleLibrary2.docx:78BBD0DD:5052C24D);
+	  FlexoRole bookListingTable as DOCX::DocXTableRole conformTo DocXTable;
+	  FlexoRole conclusionSection as DOCX::DocXFragmentRole conformTo DocXFragment(http://openflexo.org/test/TestResourceCenter/ExampleLibrary2.docx:1A787643:2B774AAC);
+	
+	  FML::ActionScheme generateDocument() {  
+	    document.DOCX::GenerateDocXDocument()    
+	    introductionSection = document.DOCX::SelectGeneratedDocXFragment();    
+	    booksDescriptionSection = document.DOCX::SelectGeneratedDocXFragment();    
+	    conclusionSection = document.DOCX::SelectGeneratedDocXFragment();  
+	  }  
+	
+	  FML::ActionScheme updateDocument() {  
+	    for (book : FML::SelectFlexoConceptInstance from library as Book) {    
+	      FML::MatchFlexoConceptInstance as BookDescriptionSection match (book=book;section=;) using BookDescriptionSection:createBookDescriptionSection(book)    
+	    }    
+	    for (bookSection : FML::SelectFlexoConceptInstance from library as BookDescriptionSection) {    
+	      bookSection.updateBookDescriptionSection()    
+	    }    
+	    bookListingTable.DOCX::GenerateDocXTable()  
+	  }  
+	
+	  FML::ActionScheme reinjectFromDocument() {  
+	    for (bookSection : FML::SelectFlexoConceptInstance from library as BookDescriptionSection) {    
+	      bookSection.reinjectDataFromBookDescriptionSection()    
+	    }  
+	  }  
+	
+	  FlexoConcept BookDescriptionSection {  
+	
+	    FlexoRole book as FlexoConceptInstance conformTo Book;  
+	    FlexoRole section as DOCX::DocXFragmentRole conformTo DocXFragment(http://openflexo.org/test/TestResourceCenter/ExampleLibrary2.docx:2936B416:395C1CE1);  
+	
+	    FML::CreationScheme createBookDescriptionSection(FlexoConceptInstanceType<> aBook) {    
+	      book = parameters.aBook;      
+	      section = document.DOCX::AddDocXFragment();      
+	      section.DOCX::ApplyTextBindings()    
+	    }    
+	
+	    FML::ActionScheme updateBookDescriptionSection() {    
+	      section.DOCX::ApplyTextBindings()    
+	    }    
+	
+	    FML::ActionScheme reinjectDataFromBookDescriptionSection() {    
+	      section.DOCX::ReinjectTextBindings()    
+	    }    
+	
+	  }  
+	
+	}
+	</code>
+	 * 
 	 * @throws FragmentConsistencyException
 	 */
 	@Test
@@ -509,8 +585,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 
 		// Now we create the library model slot
 		CreateModelSlot createLibraryModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null, editor);
-		createLibraryModelSlot.setTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				FMLTechnologyAdapter.class));
+		createLibraryModelSlot
+				.setTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(FMLTechnologyAdapter.class));
 		createLibraryModelSlot.setModelSlotClass(FMLRTModelSlot.class);
 		createLibraryModelSlot.setModelSlotName("library");
 		createLibraryModelSlot.setVmRes((VirtualModelResource) libraryVirtualModel.getResource());
@@ -597,8 +673,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		// assertTrue(titleBinding.getValue().isValid());
 
 		// We create a role pointing to the third section (conclusion section)
-		CreateTechnologyRole createConclusionSectionRole = CreateTechnologyRole.actionType
-				.makeNewAction(documentVirtualModel, null, editor);
+		CreateTechnologyRole createConclusionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
+				editor);
 		createConclusionSectionRole.setRoleName("conclusionSection");
 		// createConclusionSectionRole.setModelSlot(docXModelSlot);
 		createConclusionSectionRole.setFlexoRoleClass(DocXFragmentRole.class);
@@ -729,8 +805,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(authorBinding.getValue().isValid());
 
 		// Edition
-		TextSelection<DocXDocument, DocXTechnologyAdapter> editionSelection = bookDescriptionFragment.makeTextSelection(editionParagraph,
-				0, 1);
+		TextSelection<DocXDocument, DocXTechnologyAdapter> editionSelection = bookDescriptionFragment.makeTextSelection(editionParagraph, 0,
+				1);
 		assertEquals("Editions Dunod", editionSelection.getRawText());
 		TextBinding<DocXDocument, DocXTechnologyAdapter> editionBinding = sectionRole.makeTextBinding(editionSelection,
 				new DataBinding<String>("book.edition"));
@@ -739,13 +815,13 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		// Type
 		TextSelection<DocXDocument, DocXTechnologyAdapter> typeSelection = bookDescriptionFragment.makeTextSelection(typeParagraph, 0, 0);
 		assertEquals("Roman", typeSelection.getRawText());
-		TextBinding<DocXDocument, DocXTechnologyAdapter> typeBinding = sectionRole.makeTextBinding(typeSelection, new DataBinding<String>(
-				"book.type"));
+		TextBinding<DocXDocument, DocXTechnologyAdapter> typeBinding = sectionRole.makeTextBinding(typeSelection,
+				new DataBinding<String>("book.type"));
 		assertTrue(typeBinding.getValue().isValid());
 
 		// Description
-		TextSelection<DocXDocument, DocXTechnologyAdapter> descriptionSelection = bookDescriptionFragment.makeTextSelection(
-				descriptionParagraph, descriptionParagraph2);
+		TextSelection<DocXDocument, DocXTechnologyAdapter> descriptionSelection = bookDescriptionFragment
+				.makeTextSelection(descriptionParagraph, descriptionParagraph2);
 		TextBinding<DocXDocument, DocXTechnologyAdapter> descriptionBinding = sectionRole.makeTextBinding(descriptionSelection,
 				new DataBinding<String>("book.description"), true);
 		assertTrue(descriptionBinding.getValue().isValid());
@@ -757,15 +833,15 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		createCreationScheme.doAction();
 		bookDescriptionSectionCreationScheme = (CreationScheme) createCreationScheme.getNewFlexoBehaviour();
 
-		CreateFlexoBehaviourParameter createParameter = CreateFlexoBehaviourParameter.actionType.makeNewAction(
-				bookDescriptionSectionCreationScheme, null, editor);
+		CreateFlexoBehaviourParameter createParameter = CreateFlexoBehaviourParameter.actionType
+				.makeNewAction(bookDescriptionSectionCreationScheme, null, editor);
 		createParameter.setFlexoBehaviourParameterClass(FlexoConceptInstanceParameter.class);
 		createParameter.setParameterName("aBook");
 		createParameter.doAction();
 		FlexoBehaviourParameter bookParam = createParameter.getNewParameter();
 
-		CreateEditionAction createEditionAction = CreateEditionAction.actionType.makeNewAction(
-				bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
+		CreateEditionAction createEditionAction = CreateEditionAction.actionType
+				.makeNewAction(bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
 		createEditionAction.setEditionActionClass(ExpressionAction.class);
 		createEditionAction.setAssignation(new DataBinding<Object>("book"));
 		createEditionAction.doAction();
@@ -775,8 +851,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(action.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action.getAssignableAction()).getExpression().isValid());
 
-		CreateEditionAction createFragmentAction = CreateEditionAction.actionType.makeNewAction(
-				bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
+		CreateEditionAction createFragmentAction = CreateEditionAction.actionType
+				.makeNewAction(bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
 		createFragmentAction.setModelSlot(docXModelSlot);
 		createFragmentAction.setEditionActionClass(AddDocXFragment.class);
 		createFragmentAction.setAssignation(new DataBinding<Object>(sectionRole.getRoleName()));
@@ -788,8 +864,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		createFragment.setLocation(new DataBinding<DocXParagraph>("booksDescriptionSection.startElement"));
 		assertTrue(createFragment.getLocation().isValid());
 
-		CreateEditionAction applyTextBindingsAction = CreateEditionAction.actionType.makeNewAction(
-				bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
+		CreateEditionAction applyTextBindingsAction = CreateEditionAction.actionType
+				.makeNewAction(bookDescriptionSectionCreationScheme.getControlGraph(), null, editor);
 		applyTextBindingsAction.setFlexoRole(sectionRole);
 		applyTextBindingsAction.setEditionActionClass(ApplyTextBindings.class);
 		applyTextBindingsAction.doAction();
@@ -807,8 +883,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		createUpdateScheme.doAction();
 		bookDescriptionSectionUpdateScheme = (ActionScheme) createUpdateScheme.getNewFlexoBehaviour();
 
-		CreateEditionAction applyTextBindingsAction2 = CreateEditionAction.actionType.makeNewAction(
-				bookDescriptionSectionUpdateScheme.getControlGraph(), null, editor);
+		CreateEditionAction applyTextBindingsAction2 = CreateEditionAction.actionType
+				.makeNewAction(bookDescriptionSectionUpdateScheme.getControlGraph(), null, editor);
 		applyTextBindingsAction2.setFlexoRole(sectionRole);
 		applyTextBindingsAction2.setEditionActionClass(ApplyTextBindings.class);
 		applyTextBindingsAction2.doAction();
@@ -825,8 +901,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		createReinjectScheme.doAction();
 		bookDescriptionSectionReinjectScheme = (ActionScheme) createReinjectScheme.getNewFlexoBehaviour();
 
-		CreateEditionAction reinjectTextBindingsAction = CreateEditionAction.actionType.makeNewAction(
-				bookDescriptionSectionReinjectScheme.getControlGraph(), null, editor);
+		CreateEditionAction reinjectTextBindingsAction = CreateEditionAction.actionType
+				.makeNewAction(bookDescriptionSectionReinjectScheme.getControlGraph(), null, editor);
 		reinjectTextBindingsAction.setFlexoRole(sectionRole);
 		reinjectTextBindingsAction.setEditionActionClass(ReinjectTextBindings.class);
 		reinjectTextBindingsAction.doAction();
@@ -849,36 +925,44 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(createActionScheme.hasActionExecutionSucceeded());
 		ActionScheme generateDocumentActionScheme = (ActionScheme) createActionScheme.getNewFlexoBehaviour();
 
-		CreateEditionAction createGenerateDocXDocumentAction = CreateEditionAction.actionType.makeNewAction(
-				generateDocumentActionScheme.getControlGraph(), null, editor);
+		CreateEditionAction createGenerateDocXDocumentAction = CreateEditionAction.actionType
+				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, editor);
 		createGenerateDocXDocumentAction.setModelSlot(docXModelSlot);
 		createGenerateDocXDocumentAction.setEditionActionClass(GenerateDocXDocument.class);
 		createGenerateDocXDocumentAction.doAction();
 		assertTrue(createGenerateDocXDocumentAction.hasActionExecutionSucceeded());
 
-		CreateEditionAction createSelectIntroductionSection = CreateEditionAction.actionType.makeNewAction(
-				generateDocumentActionScheme.getControlGraph(), null, editor);
+		CreateEditionAction createSelectIntroductionSection = CreateEditionAction.actionType
+				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, editor);
 		createSelectIntroductionSection.setEditionActionClass(SelectGeneratedDocXFragment.class);
 		createSelectIntroductionSection.setAssignation(new DataBinding<Object>("introductionSection"));
 		createSelectIntroductionSection.doAction();
 		AssignationAction<?> action1 = (AssignationAction<?>) createSelectIntroductionSection.getNewEditionAction();
 		assertTrue(action1.getAssignation().isValid());
 
-		CreateEditionAction createSelectBooksDescriptionSection = CreateEditionAction.actionType.makeNewAction(
-				generateDocumentActionScheme.getControlGraph(), null, editor);
+		CreateEditionAction createSelectBooksDescriptionSection = CreateEditionAction.actionType
+				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, editor);
 		createSelectBooksDescriptionSection.setEditionActionClass(SelectGeneratedDocXFragment.class);
 		createSelectBooksDescriptionSection.setAssignation(new DataBinding<Object>("booksDescriptionSection"));
 		createSelectBooksDescriptionSection.doAction();
 		AssignationAction<?> action2 = (AssignationAction<?>) createSelectBooksDescriptionSection.getNewEditionAction();
 		assertTrue(action2.getAssignation().isValid());
 
-		CreateEditionAction createSelectConclusionSection = CreateEditionAction.actionType.makeNewAction(
-				generateDocumentActionScheme.getControlGraph(), null, editor);
+		CreateEditionAction createSelectConclusionSection = CreateEditionAction.actionType
+				.makeNewAction(generateDocumentActionScheme.getControlGraph(), null, editor);
 		createSelectConclusionSection.setEditionActionClass(SelectGeneratedDocXFragment.class);
 		createSelectConclusionSection.setAssignation(new DataBinding<Object>("conclusionSection"));
 		createSelectConclusionSection.doAction();
 		AssignationAction<?> action3 = (AssignationAction<?>) createSelectConclusionSection.getNewEditionAction();
 		assertTrue(action3.getAssignation().isValid());
+
+		CreateEditionAction createSelectTable = CreateEditionAction.actionType.makeNewAction(generateDocumentActionScheme.getControlGraph(),
+				null, editor);
+		createSelectTable.setEditionActionClass(SelectGeneratedDocXTable.class);
+		createSelectTable.setAssignation(new DataBinding<Object>("bookListingTable"));
+		createSelectTable.doAction();
+		AssignationAction<?> action4 = (AssignationAction<?>) createSelectTable.getNewEditionAction();
+		assertTrue(action4.getAssignation().isValid());
 
 		return generateDocumentActionScheme;
 
@@ -902,8 +986,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(createActionScheme.hasActionExecutionSucceeded());
 		ActionScheme updateDocumentActionScheme = (ActionScheme) createActionScheme.getNewFlexoBehaviour();
 
-		CreateEditionAction createSelectFetchRequestIterationAction = CreateEditionAction.actionType.makeNewAction(
-				updateDocumentActionScheme.getControlGraph(), null, editor);
+		CreateEditionAction createSelectFetchRequestIterationAction = CreateEditionAction.actionType
+				.makeNewAction(updateDocumentActionScheme.getControlGraph(), null, editor);
 		// createSelectFetchRequestIterationAction.actionChoice = CreateEditionActionChoice.ControlAction;
 		createSelectFetchRequestIterationAction.setEditionActionClass(IterationAction.class);
 		createSelectFetchRequestIterationAction.doAction();
@@ -915,8 +999,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		selectFlexoConceptInstance.setFlexoConceptType(bookConcept);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
 
-		CreateEditionAction createMatchFlexoConceptInstanceAction = CreateEditionAction.actionType.makeNewAction(
-				fetchRequestIteration.getControlGraph(), null, editor);
+		CreateEditionAction createMatchFlexoConceptInstanceAction = CreateEditionAction.actionType
+				.makeNewAction(fetchRequestIteration.getControlGraph(), null, editor);
 		// createMatchFlexoConceptInstanceAction.actionChoice = CreateEditionActionChoice.BuiltInAction;
 		createMatchFlexoConceptInstanceAction.setEditionActionClass(MatchFlexoConceptInstance.class);
 		createMatchFlexoConceptInstanceAction.doAction();
@@ -931,8 +1015,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		assertEquals(2, matchFlexoConceptInstance.getMatchingCriterias().size());
 
 		MatchingCriteria bookCriteria = matchFlexoConceptInstance.getMatchingCriteria(bookDescriptionSection.getAccessibleProperty("book"));
-		MatchingCriteria sectionCriteria = matchFlexoConceptInstance.getMatchingCriteria(bookDescriptionSection
-				.getAccessibleProperty("section"));
+		MatchingCriteria sectionCriteria = matchFlexoConceptInstance
+				.getMatchingCriteria(bookDescriptionSection.getAccessibleProperty("section"));
 
 		assertNotNull(bookCriteria);
 		assertNotNull(sectionCriteria);
@@ -943,14 +1027,14 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		// We check here that creation parameters were updated
 		assertEquals(1, matchFlexoConceptInstance.getParameters().size());
 
-		CreateFlexoConceptInstanceParameter bookParam = matchFlexoConceptInstance.getParameter(bookDescriptionSection.getCreationSchemes()
-				.get(0).getParameters().get(0));
+		CreateFlexoConceptInstanceParameter bookParam = matchFlexoConceptInstance
+				.getParameter(bookDescriptionSection.getCreationSchemes().get(0).getParameters().get(0));
 		assertNotNull(bookParam);
 		bookParam.setValue(new DataBinding<Object>("book"));
 		assertTrue(bookParam.getValue().isValid());
 
-		CreateEditionAction createSelectFetchRequestIterationAction2 = CreateEditionAction.actionType.makeNewAction(
-				updateDocumentActionScheme.getControlGraph(), null, editor);
+		CreateEditionAction createSelectFetchRequestIterationAction2 = CreateEditionAction.actionType
+				.makeNewAction(updateDocumentActionScheme.getControlGraph(), null, editor);
 		// createSelectFetchRequestIterationAction.actionChoice = CreateEditionActionChoice.ControlAction;
 		createSelectFetchRequestIterationAction2.setEditionActionClass(IterationAction.class);
 		createSelectFetchRequestIterationAction2.doAction();
@@ -970,6 +1054,15 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		updateExpression.setExpression(new DataBinding("bookSection.updateBookDescriptionSection()"));
 		assertTrue(updateExpression.getExpression().isValid());
 
+		CreateEditionAction generateTableAction = CreateEditionAction.actionType.makeNewAction(updateDocumentActionScheme.getControlGraph(),
+				null, editor);
+		generateTableAction.setFlexoRole(bookListingTableRole);
+		generateTableAction.setEditionActionClass(GenerateDocXTable.class);
+		generateTableAction.doAction();
+		assertTrue(generateTableAction.hasActionExecutionSucceeded());
+		GenerateDocXTable generateTable = (GenerateDocXTable) generateTableAction.getNewEditionAction();
+		assertNotNull(generateTable);
+
 		return updateDocumentActionScheme;
 	}
 
@@ -983,8 +1076,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(createActionScheme.hasActionExecutionSucceeded());
 		ActionScheme reinjectDocumentActionScheme = (ActionScheme) createActionScheme.getNewFlexoBehaviour();
 
-		CreateEditionAction createSelectFetchRequestIterationAction = CreateEditionAction.actionType.makeNewAction(
-				reinjectDocumentActionScheme.getControlGraph(), null, editor);
+		CreateEditionAction createSelectFetchRequestIterationAction = CreateEditionAction.actionType
+				.makeNewAction(reinjectDocumentActionScheme.getControlGraph(), null, editor);
 		// createSelectFetchRequestIterationAction.actionChoice = CreateEditionActionChoice.ControlAction;
 		createSelectFetchRequestIterationAction.setEditionActionClass(IterationAction.class);
 		createSelectFetchRequestIterationAction.doAction();
@@ -1037,10 +1130,15 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
 	 * 
 	 * @throws SaveResourceException
+	 * @throws InvocationTargetException
+	 * @throws NullReferenceException
+	 * @throws TypeMismatchException
+	 * @throws AssertionFailedError
 	 */
 	@Test
 	@TestOrder(8)
-	public void testInstantiateLibrary() throws SaveResourceException {
+	public void testInstantiateLibrary()
+			throws SaveResourceException, AssertionFailedError, TypeMismatchException, NullReferenceException, InvocationTargetException {
 
 		log("testInstantiateLibrary()");
 
@@ -1118,23 +1216,9 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 
 		DataBinding booksAccess = new DataBinding("books", libraryVMI.getVirtualModel(), Object.class, BindingDefinitionType.GET);
 
-		System.out.println("booksAccess=" + booksAccess);
-		System.out.println("valid=" + booksAccess.isValid());
-		System.out.println("invalidBindingReason=" + booksAccess.invalidBindingReason());
-		try {
-			System.out.println("value=" + booksAccess.getBindingValue(libraryVMI));
-		} catch (TypeMismatchException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NullReferenceException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		assertTrue(booksAccess.isValid());
+		assertSameList((List) booksAccess.getBindingValue(libraryVMI), book1, book2, book3);
 
-		// System.exit(-1);
 	}
 
 	/**
@@ -1168,8 +1252,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 				.getModelSlotInstanceConfiguration(libraryModelSlot);
 		assertNotNull(libraryModelSlotInstanceConfiguration);
 		libraryModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.SelectExistingVirtualModel);
-		libraryModelSlotInstanceConfiguration.setAddressedVirtualModelInstanceResource((VirtualModelInstanceResource) libraryVMI
-				.getResource());
+		libraryModelSlotInstanceConfiguration
+				.setAddressedVirtualModelInstanceResource((VirtualModelInstanceResource) libraryVMI.getResource());
 		assertTrue(libraryModelSlotInstanceConfiguration.isValidConfiguration());
 
 		DocXModelSlotInstanceConfiguration docXModelSlotInstanceConfiguration = (DocXModelSlotInstanceConfiguration) action
@@ -1545,6 +1629,7 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(libraryVirtualModel = newView.getViewPoint().getVirtualModelNamed("LibraryVirtualModel"));
 		assertNotNull(documentVirtualModel = newView.getViewPoint().getVirtualModelNamed("DocumentVirtualModel"));
 		assertNotNull(bookConcept = libraryVirtualModel.getFlexoConcept("Book"));
+		assertNotNull(allBooksProperty = (GetSetProperty<?>) libraryVirtualModel.getAccessibleProperty("allBooks"));
 		assertNotNull(bookCreationScheme = bookConcept.getCreationSchemes().get(0));
 		assertNotNull(titleParam = bookCreationScheme.getParameter("aTitle"));
 		assertNotNull(authorParam = bookCreationScheme.getParameter("anAuthor"));
@@ -1562,8 +1647,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(bookDescriptionSectionReinjectScheme = (ActionScheme) bookDescriptionSection
 				.getFlexoBehaviour("reinjectDataFromBookDescriptionSection"));
 		assertNotNull(introductionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleProperty("introductionSection"));
-		assertNotNull(booksDescriptionFragmentRole = (DocXFragmentRole) documentVirtualModel
-				.getAccessibleProperty("booksDescriptionSection"));
+		assertNotNull(
+				booksDescriptionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleProperty("booksDescriptionSection"));
 		assertNotNull(bookListingTableRole = (DocXTableRole) documentVirtualModel.getAccessibleProperty("bookListingTable"));
 		assertNotNull(conclusionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleProperty("conclusionSection"));
 
@@ -1771,8 +1856,8 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		book4.setFlexoActor("Stendhal aka Henri Beyle", (FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("author"));
 		book4.setFlexoActor("Levasseur", (FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("edition"));
 		book4.setFlexoActor("Roman historique", (FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("type"));
-		book4.setFlexoActor(LE_ROUGE_ET_LE_NOIR_DESCRIPTION + "\n" + LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM, (FlexoRole<String>) book4
-				.getFlexoConcept().getAccessibleRole("description"));
+		book4.setFlexoActor(LE_ROUGE_ET_LE_NOIR_DESCRIPTION + "\n" + LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM,
+				(FlexoRole<String>) book4.getFlexoConcept().getAccessibleRole("description"));
 
 		assertTrue(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());

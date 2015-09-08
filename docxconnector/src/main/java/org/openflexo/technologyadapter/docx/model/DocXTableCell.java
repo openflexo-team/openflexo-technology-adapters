@@ -309,6 +309,14 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		}
 
 		@Override
+		public String getIdentifier() {
+			if (getParagraphs().size() > 0) {
+				return "Cell" + getParagraphs().get(0).getIdentifier();
+			}
+			return getRow().getIdentifier() + "Cell" + getIndex();
+		}
+
+		@Override
 		public String toString() {
 			return "DocXTableCell\n" + (getTc() != null ? DocXUtils.printContents(getTc(), 2) : "null");
 		}

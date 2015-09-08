@@ -295,6 +295,11 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 
 		fMLModelFactory.addConverter(new DocXFragmentConverter());
 		fMLModelFactory.addConverter(new DocXElementConverter());
-
 	}
+
+	@Override
+	public String getIdentifier() {
+		return "DOCX";
+	}
+
 }

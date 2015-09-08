@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.docx.fml.editionaction;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
@@ -52,58 +51,58 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
+import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
-import org.openflexo.technologyadapter.docx.model.DocXFragment;
+import org.openflexo.technologyadapter.docx.model.DocXTable;
+import org.openflexo.toolbox.StringUtils;
 
 /**
- * This {@link EditionAction} allows to lookup a fragment in a generated document matching a template fragment
+ * This {@link EditionAction} allows to lookup a table in a generated document matching a template table
  * 
  * @author sylvain
  *
  */
 @ModelEntity
-@ImplementationClass(SelectGeneratedDocXFragment.SelectGeneratedDocXFragmentImpl.class)
+@ImplementationClass(SelectGeneratedDocXTable.SelectGeneratedDocXTableImpl.class)
 @XMLElement
-@FML("SelectGeneratedDocXFragment")
-public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
+@FML("SelectGeneratedDocXTable")
+public interface SelectGeneratedDocXTable extends DocXTableAction {
 
-	@PropertyIdentifier(type = DocXFragment.class)
-	public static final String TEMPLATE_FRAGMENT_KEY = "templateFragment";
+	@PropertyIdentifier(type = String.class)
+	public static final String TABLE_ID_KEY = "tableId";
 
 	/**
-	 * Return the searched fragment in the template resource<br>
-	 * Note that is not the fragment that is to be managed at run-time
+	 * Return identifier of table in the template resource<br>
+	 * Note that is not the identifier of table that is to be managed at run-time
 	 * 
 	 * @return
 	 */
-	@Getter(value = TEMPLATE_FRAGMENT_KEY, isStringConvertable = true)
+	@Getter(TABLE_ID_KEY)
 	@XMLAttribute
-	public DocXFragment getTemplateFragment();
+	public String getTableId();
 
 	/**
-	 * Sets the searched fragment in the template resource<br>
+	 * Sets identifier of table in the template resource<br>
 	 * 
 	 * @param fragment
 	 */
-	@Setter(TEMPLATE_FRAGMENT_KEY)
-	public void setTemplateFragment(DocXFragment fragment);
+	@Setter(TABLE_ID_KEY)
+	public void setTableId(String identifier);
 
-	public static abstract class SelectGeneratedDocXFragmentImpl extends DocXFragmentActionImpl implements SelectGeneratedDocXFragment {
+	public static abstract class SelectGeneratedDocXTableImpl extends DocXTableActionImpl implements SelectGeneratedDocXTable {
 
-		private static final Logger logger = Logger.getLogger(SelectGeneratedDocXFragment.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(SelectGeneratedDocXTable.class.getPackage().getName());
 
 		@Override
-		public DocXFragment getTemplateFragment() {
-			if (getAssignedFlexoProperty() instanceof DocXFragmentRole) {
-				return ((DocXFragmentRole) getAssignedFlexoProperty()).getFragment();
+		public String getTableId() {
+			if (getAssignedFlexoProperty() instanceof DocXTableRole) {
+				return ((DocXTableRole) getAssignedFlexoProperty()).getTableId();
 			}
-			return (DocXFragment) performSuperGetter(TEMPLATE_FRAGMENT_KEY);
+			return (String) performSuperGetter(TABLE_ID_KEY);
 		}
 
 		@Override
-		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public DocXTable execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
 			if (getModelSlotInstance(evaluationContext) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
@@ -116,33 +115,11 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 
 			DocXDocument document = (DocXDocument) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
-			/*System.out.println("document: " + document);
-			System.out.println("getAssignedFlexoProperty()=" + getAssignedFlexoProperty());
-			System.out.println("getTemplateFragment()= " + getTemplateFragment());*/
-
-			int startIndex = -1;
-			int endIndex = -1;
-
-			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> templateElement : getTemplateFragment().getElements()) {
-				// TODO: handle tables here !!!
-				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : document.getElements()) {
-					if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(templateElement.getIdentifier())) {
-						int index = document.getElements().indexOf(e);
-						if (startIndex == -1 || (index < startIndex)) {
-							startIndex = index;
-						}
-						if (endIndex == -1 || (index > endIndex)) {
-							endIndex = index;
-						}
-					}
-				}
+			if (document != null && StringUtils.isNotEmpty(getTableId())) {
+				return (DocXTable) document.getElementWithIdentifier(getTableId());
 			}
 
-			if (startIndex > -1 && endIndex > -1) {
-				return document.getFragment(document.getElements().get(startIndex), document.getElements().get(endIndex));
-			}
-
-			logger.warning("Could not find fragment matching template fragment. Abort.");
+			logger.warning("Could not find table matching template table. Abort.");
 			return null;
 		}
 	}

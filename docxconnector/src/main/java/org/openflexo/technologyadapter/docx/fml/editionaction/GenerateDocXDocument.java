@@ -61,6 +61,9 @@ import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
+import org.openflexo.technologyadapter.docx.model.DocXTable;
+import org.openflexo.technologyadapter.docx.model.DocXTableCell;
+import org.openflexo.technologyadapter.docx.model.DocXTableRow;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 @ModelEntity
@@ -79,7 +82,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 	@Setter(FILE_KEY)
 	public void setFile(File aFile);*/
 
-	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument> implements GenerateDocXDocument {
+	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument>implements GenerateDocXDocument {
 
 		private static final Logger logger = Logger.getLogger(GenerateDocXDocument.class.getPackage().getName());
 
@@ -91,8 +94,10 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 						for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
 							elementsToIgnore.add(e);
 						}
-					} else if (cg instanceof AssignationAction && ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
-						for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment().getElements()) {
+					}
+					else if (cg instanceof AssignationAction && ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
+						for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment()
+								.getElements()) {
 							elementsToIgnore.add(e);
 						}
 					}
@@ -127,7 +132,8 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				DocXDocumentResource templateResource = getModelSlot().getTemplateResource();
 				DocXDocument templateDocument = templateResource.getResourceData(null);
 
-				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(evaluationContext);
+				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
+						evaluationContext);
 
 				FlexoResource<DocXDocument> generatedResource = msInstance.getResource();
 
@@ -155,8 +161,31 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 					DocXElement templateElement = (DocXElement) templateDocument.getElementWithIdentifier(oldId);
 					generatedElement.setIdentifier(generatedDocument.getFactory().generateId());
 					generatedElement.setBaseIdentifier(oldId);
-					System.out.println("Element " + generatedElement + " change id from " + oldId + " to "
-							+ generatedElement.getIdentifier());
+					System.out.println(
+							"Element " + generatedElement + " change id from " + oldId + " to " + generatedElement.getIdentifier());
+					if (generatedElement instanceof DocXTable) {
+						DocXTable generatedTable = (DocXTable) generatedElement;
+						DocXTable templateTable = (DocXTable) templateElement;
+						for (int row = 0; row < generatedTable.getTableRows().size(); row++) {
+							DocXTableRow r = (DocXTableRow) generatedTable.getTableRows().get(row);
+							for (int column = 0; column < r.getTableCells().size(); column++) {
+								DocXTableCell generatedCell = (DocXTableCell) generatedTable.getCell(row, column);
+								DocXTableCell templateCell = (DocXTableCell) templateTable.getCell(row, column);
+								for (int i = 0; i < templateCell.getParagraphs().size(); i++) {
+									if (!(column == 0 && row == 0)) {
+										// No need to generate new id for first cell, because it has already been done
+										// when changing id for the whole table !!!
+										String oldId2 = generatedCell.getParagraphs().get(i).getIdentifier();
+										generatedCell.getParagraphs().get(i).setIdentifier(generatedDocument.getFactory().generateId());
+										System.out.println("change id for cell row=" + row + " column=" + column + " from " + oldId2
+												+ " to " + generatedCell.getParagraphs().get(i).getIdentifier());
+									}
+									generatedCell.getParagraphs().get(i)
+											.setBaseIdentifier(templateCell.getParagraphs().get(i).getIdentifier());
+								}
+							}
+						}
+					}
 				}
 
 				/*for (P p : DocXUtils.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(),
@@ -174,8 +203,8 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> templateElement : templateDocument.getElements()) {
 					if (elementsToIgnore.contains(templateElement)) {
 						System.out.println("Ignoring: " + templateElement);
-						System.out.println("Ignoring elements: "
-								+ generatedDocument.getElementsWithBaseIdentifier(templateElement.getIdentifier()));
+						System.out.println(
+								"Ignoring elements: " + generatedDocument.getElementsWithBaseIdentifier(templateElement.getIdentifier()));
 						elementsToRemove.addAll(generatedDocument.getElementsWithBaseIdentifier(templateElement.getIdentifier()));
 					}
 				}

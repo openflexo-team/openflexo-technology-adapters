@@ -181,11 +181,10 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 
 		@Override
 		public void setIdentifier(String identifier) {
-			// nop because identifier is here computed
-			/*DocXTableCell cell = (DocXTableCell) getCell(0, 0);
+			DocXTableCell cell = (DocXTableCell) getCell(0, 0);
 			if (cell != null && cell.getParagraphs().size() > 0) {
 				cell.getParagraphs().get(0).setIdentifier(identifier);
-			}*/
+			}
 		}
 
 		@Override
@@ -390,6 +389,10 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 			return null;
 		}
 
+		@Override
+		public String toString() {
+			return DocXUtils.debugStructuredContents(this, 2);
+		}
 	}
 
 }

@@ -305,8 +305,16 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		}
 
 		@Override
+		public String getIdentifier() {
+			if (getTableCells().size() > 0 && getTableCells().get(0).getParagraphs().size() > 0) {
+				return "Row" + getTableCells().get(0).getParagraphs().get(0).getIdentifier();
+			}
+			return "Row" + getIndex();
+		}
+
+		@Override
 		public String toString() {
-			return "DocXTableCell\n" + (getTr() != null ? DocXUtils.printContents(getTr(), 2) : "null");
+			return "DocXTableRow\n" + (getTr() != null ? DocXUtils.printContents(getTr(), 2) : "null");
 		}
 	}
 

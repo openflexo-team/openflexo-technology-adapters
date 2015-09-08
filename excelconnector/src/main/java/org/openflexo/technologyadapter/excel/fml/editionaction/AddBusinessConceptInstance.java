@@ -57,8 +57,8 @@ import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptInst
 @FML("AddBusinessConceptInstance")
 public interface AddBusinessConceptInstance extends TechnologySpecificAction<SemanticsExcelModelSlot, BusinessConceptInstance> {
 
-	public static abstract class AddBusinessConceptInstanceImpl extends
-			TechnologySpecificActionImpl<SemanticsExcelModelSlot, BusinessConceptInstance> implements AddBusinessConceptInstance {
+	public static abstract class AddBusinessConceptInstanceImpl
+			extends TechnologySpecificActionImpl<SemanticsExcelModelSlot, BusinessConceptInstance>implements AddBusinessConceptInstance {
 
 		@Override
 		public Type getAssignableType() {

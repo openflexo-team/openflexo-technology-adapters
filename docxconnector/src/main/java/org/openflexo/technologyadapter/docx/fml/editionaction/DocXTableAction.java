@@ -38,27 +38,30 @@
 
 package org.openflexo.technologyadapter.docx.fml.editionaction;
 
-import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
+import org.openflexo.foundation.fml.editionaction.RoleSpecificAction;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
-import org.openflexo.technologyadapter.docx.model.DocXObject;
+import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
+import org.openflexo.technologyadapter.docx.model.DocXTable;
 
 /**
- * Abstract action for {@link DocXModelSlot}
+ * Abstract action applicable on a {@link DocXTableRole}
  * 
  * @author sylvain
  * 
- * @param <T>
- *            docx object type
  */
 
 @ModelEntity(isAbstract = true)
-@ImplementationClass(DocXAction.DocXActionImpl.class)
-public interface DocXAction<T extends DocXObject> extends TechnologySpecificAction<DocXModelSlot, T> {
+@ImplementationClass(DocXTableAction.DocXTableActionImpl.class)
+public interface DocXTableAction extends RoleSpecificAction<DocXTableRole, DocXModelSlot, DocXTable>, DocXAction<DocXTable> {
 
-	public static abstract class DocXActionImpl<T extends DocXObject> extends TechnologySpecificActionImpl<DocXModelSlot, T>
-			implements DocXAction<T> {
+	public static abstract class DocXTableActionImpl extends RoleSpecificActionImpl<DocXTableRole, DocXModelSlot, DocXTable>
+			implements DocXTableAction {
 
+		@Override
+		public Class<DocXTable> getAssignableType() {
+			return DocXTable.class;
+		}
 	}
 }
