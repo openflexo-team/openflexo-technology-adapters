@@ -69,7 +69,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 
 	// TRICKY AREA
 	// We override here the PAMELA definition of this property by declaring CloningStrategy as IGNORE
-	// We do that becauseTrP is beeing cloned and the setting of new Tr value will cause creation of DocXRun
+	// We do that becauseTrP is beeing cloned and the setting of new Tr value will cause creation of DocXTextRun
 	// We definitely want to avoid double instanciation of DocXTableCell in a cloned row !!!!
 	@Override
 	@CloningStrategy(StrategyType.IGNORE)

@@ -51,6 +51,8 @@ import org.openflexo.foundation.doc.FlexoTableRow;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Import;
+import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
@@ -68,6 +70,7 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(DocXDocument.DocXDocumentImpl.class)
 @XMLElement
+@Imports({ @Import(DocXTextRun.class), @Import(DocXDrawingRun.class) })
 public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = WordprocessingMLPackage.class)

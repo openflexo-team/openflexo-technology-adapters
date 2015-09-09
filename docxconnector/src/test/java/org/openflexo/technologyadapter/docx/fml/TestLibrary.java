@@ -123,7 +123,7 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
-import org.openflexo.technologyadapter.docx.model.DocXRun;
+import org.openflexo.technologyadapter.docx.model.DocXTextRun;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
@@ -629,7 +629,9 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph para = (DocXParagraph) element;
 				for (FlexoRun run : para.getRuns()) {
-					sb.append("[" + run.getText() + "]");
+					if (run instanceof DocXTextRun) {
+						sb.append("[" + ((DocXTextRun) run).getText() + "]");
+					}
 				}
 				sb.append("\n");
 			}
@@ -1286,25 +1288,25 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		// [Les Misérables est un roman de Victor Hugo paru en 1862...]
 
 		assertEquals(1, titleParagraph3.getRuns().size());
-		assertEquals("Les misérables", titleParagraph3.getRuns().get(0).getText());
+		assertEquals("Les misérables", ((DocXTextRun) titleParagraph3.getRuns().get(0)).getText());
 
 		assertEquals(3, authorParagraph3.getRuns().size());
-		assertEquals("Author", authorParagraph3.getRuns().get(0).getText());
-		assertEquals(": ", authorParagraph3.getRuns().get(1).getText());
-		assertEquals("Victor Hugo", authorParagraph3.getRuns().get(2).getText());
+		assertEquals("Author", ((DocXTextRun) authorParagraph3.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) authorParagraph3.getRuns().get(1)).getText());
+		assertEquals("Victor Hugo", ((DocXTextRun) authorParagraph3.getRuns().get(2)).getText());
 
 		assertEquals(3, editionParagraph3.getRuns().size());
-		assertEquals("Edition", editionParagraph3.getRuns().get(0).getText());
-		assertEquals(": ", editionParagraph3.getRuns().get(1).getText());
-		assertEquals("Dunod", editionParagraph3.getRuns().get(2).getText());
+		assertEquals("Edition", ((DocXTextRun) editionParagraph3.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) editionParagraph3.getRuns().get(1)).getText());
+		assertEquals("Dunod", ((DocXTextRun) editionParagraph3.getRuns().get(2)).getText());
 
 		assertEquals(3, typeParagraph3.getRuns().size());
-		assertEquals("Type", typeParagraph3.getRuns().get(0).getText());
-		assertEquals(": ", typeParagraph3.getRuns().get(1).getText());
-		assertEquals("Roman", typeParagraph3.getRuns().get(2).getText());
+		assertEquals("Type", ((DocXTextRun) typeParagraph3.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) typeParagraph3.getRuns().get(1)).getText());
+		assertEquals("Roman", ((DocXTextRun) typeParagraph3.getRuns().get(2)).getText());
 
 		assertEquals(1, descriptionParagraph3.getRuns().size());
-		assertEquals(LES_MISERABLES_DESCRIPTION, descriptionParagraph3.getRuns().get(0).getText());
+		assertEquals(LES_MISERABLES_DESCRIPTION, ((DocXTextRun) descriptionParagraph3.getRuns().get(0)).getText());
 
 		// Germinal
 
@@ -1326,22 +1328,22 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		// [Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord...]
 
 		assertEquals(1, titleParagraph2.getRuns().size());
-		assertEquals("Germinal", titleParagraph2.getRuns().get(0).getText());
+		assertEquals("Germinal", ((DocXTextRun) titleParagraph2.getRuns().get(0)).getText());
 
 		assertEquals(3, authorParagraph2.getRuns().size());
-		assertEquals("Author", authorParagraph2.getRuns().get(0).getText());
-		assertEquals(": ", authorParagraph2.getRuns().get(1).getText());
-		assertEquals("Emile Zola", authorParagraph2.getRuns().get(2).getText());
+		assertEquals("Author", ((DocXTextRun) authorParagraph2.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) authorParagraph2.getRuns().get(1)).getText());
+		assertEquals("Emile Zola", ((DocXTextRun) authorParagraph2.getRuns().get(2)).getText());
 
 		assertEquals(3, editionParagraph2.getRuns().size());
-		assertEquals("Edition", editionParagraph2.getRuns().get(0).getText());
-		assertEquals(": ", editionParagraph2.getRuns().get(1).getText());
-		assertEquals("Gil Blas", editionParagraph2.getRuns().get(2).getText());
+		assertEquals("Edition", ((DocXTextRun) editionParagraph2.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) editionParagraph2.getRuns().get(1)).getText());
+		assertEquals("Gil Blas", ((DocXTextRun) editionParagraph2.getRuns().get(2)).getText());
 
 		assertEquals(3, typeParagraph2.getRuns().size());
-		assertEquals("Type", typeParagraph2.getRuns().get(0).getText());
-		assertEquals(": ", typeParagraph2.getRuns().get(1).getText());
-		assertEquals("Roman", typeParagraph2.getRuns().get(2).getText());
+		assertEquals("Type", ((DocXTextRun) typeParagraph2.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) typeParagraph2.getRuns().get(1)).getText());
+		assertEquals("Roman", ((DocXTextRun) typeParagraph2.getRuns().get(2)).getText());
 
 		assertEquals(1, descriptionParagraph2.getRuns().size());
 		StringTokenizer st2 = new StringTokenizer(GERMINAL_DESCRIPTION, StringUtils.LINE_SEPARATOR);
@@ -1349,9 +1351,9 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		String description2Line2 = st2.nextToken();
 		String description2Line3 = st2.nextToken();
 
-		assertEquals(description2Line1, descriptionParagraph2.getRuns().get(0).getText());
-		assertEquals(description2Line2, descriptionParagraph2bis.getRuns().get(0).getText());
-		assertEquals(description2Line3, descriptionParagraph2ter.getRuns().get(0).getText());
+		assertEquals(description2Line1, ((DocXTextRun) descriptionParagraph2.getRuns().get(0)).getText());
+		assertEquals(description2Line2, ((DocXTextRun) descriptionParagraph2bis.getRuns().get(0)).getText());
+		assertEquals(description2Line3, ((DocXTextRun) descriptionParagraph2ter.getRuns().get(0)).getText());
 
 		// La chartreuse de Parme
 
@@ -1386,30 +1388,30 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		System.out.println(sb.toString());*/
 
 		assertEquals(1, titleParagraph1.getRuns().size());
-		assertEquals("La chartreuse de Parme", titleParagraph1.getRuns().get(0).getText());
+		assertEquals("La chartreuse de Parme", ((DocXTextRun) titleParagraph1.getRuns().get(0)).getText());
 
 		assertEquals(3, authorParagraph1.getRuns().size());
-		assertEquals("Author", authorParagraph1.getRuns().get(0).getText());
-		assertEquals(": ", authorParagraph1.getRuns().get(1).getText());
-		assertEquals("Stendhal", authorParagraph1.getRuns().get(2).getText());
+		assertEquals("Author", ((DocXTextRun) authorParagraph1.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) authorParagraph1.getRuns().get(1)).getText());
+		assertEquals("Stendhal", ((DocXTextRun) authorParagraph1.getRuns().get(2)).getText());
 
 		assertEquals(3, editionParagraph1.getRuns().size());
-		assertEquals("Edition", editionParagraph1.getRuns().get(0).getText());
-		assertEquals(": ", editionParagraph1.getRuns().get(1).getText());
-		assertEquals("J. Hetzel, 1846", editionParagraph1.getRuns().get(2).getText());
+		assertEquals("Edition", ((DocXTextRun) editionParagraph1.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) editionParagraph1.getRuns().get(1)).getText());
+		assertEquals("J. Hetzel, 1846", ((DocXTextRun) editionParagraph1.getRuns().get(2)).getText());
 
 		assertEquals(3, typeParagraph1.getRuns().size());
-		assertEquals("Type", typeParagraph1.getRuns().get(0).getText());
-		assertEquals(": ", typeParagraph1.getRuns().get(1).getText());
-		assertEquals("Roman", typeParagraph1.getRuns().get(2).getText());
+		assertEquals("Type", ((DocXTextRun) typeParagraph1.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) typeParagraph1.getRuns().get(1)).getText());
+		assertEquals("Roman", ((DocXTextRun) typeParagraph1.getRuns().get(2)).getText());
 
 		assertEquals(1, descriptionParagraph1.getRuns().size());
 		StringTokenizer st = new StringTokenizer(LA_CHARTREUSE_DE_PARME_DESCRIPTION, StringUtils.LINE_SEPARATOR);
 		String description1Line1 = st.nextToken();
 		String description1Line2 = st.nextToken();
 
-		assertEquals(description1Line1, descriptionParagraph1.getRuns().get(0).getText());
-		assertEquals(description1Line2, descriptionParagraph1bis.getRuns().get(0).getText());
+		assertEquals(description1Line1, ((DocXTextRun) descriptionParagraph1.getRuns().get(0)).getText());
+		assertEquals(description1Line2, ((DocXTextRun) descriptionParagraph1bis.getRuns().get(0)).getText());
 
 		/*StringBuffer sb = new StringBuffer();
 		for (DocXElement element : lmFragment.getElements()) {
@@ -1637,29 +1639,29 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		// [C'est le deuxième roman de Stendhal, après Armance. Il ...]
 
 		assertEquals(1, titleParagraph4.getRuns().size());
-		assertEquals("Le rouge et le noir", titleParagraph4.getRuns().get(0).getText());
+		assertEquals("Le rouge et le noir", ((DocXTextRun) titleParagraph4.getRuns().get(0)).getText());
 
 		assertEquals(3, authorParagraph4.getRuns().size());
-		assertEquals("Author", authorParagraph4.getRuns().get(0).getText());
-		assertEquals(": ", authorParagraph4.getRuns().get(1).getText());
-		assertEquals("Stendhal", authorParagraph4.getRuns().get(2).getText());
+		assertEquals("Author", ((DocXTextRun) authorParagraph4.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) authorParagraph4.getRuns().get(1)).getText());
+		assertEquals("Stendhal", ((DocXTextRun) authorParagraph4.getRuns().get(2)).getText());
 
 		assertEquals(3, editionParagraph4.getRuns().size());
-		assertEquals("Edition", editionParagraph4.getRuns().get(0).getText());
-		assertEquals(": ", editionParagraph4.getRuns().get(1).getText());
-		assertEquals("Levasseur, 1830", editionParagraph4.getRuns().get(2).getText());
+		assertEquals("Edition", ((DocXTextRun) editionParagraph4.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) editionParagraph4.getRuns().get(1)).getText());
+		assertEquals("Levasseur, 1830", ((DocXTextRun) editionParagraph4.getRuns().get(2)).getText());
 
 		assertEquals(3, typeParagraph4.getRuns().size());
-		assertEquals("Type", typeParagraph4.getRuns().get(0).getText());
-		assertEquals(": ", typeParagraph4.getRuns().get(1).getText());
-		assertEquals("Roman", typeParagraph4.getRuns().get(2).getText());
+		assertEquals("Type", ((DocXTextRun) typeParagraph4.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) typeParagraph4.getRuns().get(1)).getText());
+		assertEquals("Roman", ((DocXTextRun) typeParagraph4.getRuns().get(2)).getText());
 
 		assertEquals(1, descriptionParagraph4.getRuns().size());
 		StringTokenizer st = new StringTokenizer(LE_ROUGE_ET_LE_NOIR_DESCRIPTION, StringUtils.LINE_SEPARATOR);
 		String description4Line1 = st.nextToken();
 		String description4Line2 = st.nextToken();
-		assertEquals(description4Line1, descriptionParagraph4.getRuns().get(0).getText());
-		assertEquals(description4Line2, descriptionParagraph4bis.getRuns().get(0).getText());
+		assertEquals(description4Line1, ((DocXTextRun) descriptionParagraph4.getRuns().get(0)).getText());
+		assertEquals(description4Line2, ((DocXTextRun) descriptionParagraph4bis.getRuns().get(0)).getText());
 
 	}
 
@@ -1724,22 +1726,22 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		DocXParagraph descriptionParagraph4ter = (DocXParagraph) generatedDocument.getElements().get(30);
 
 		assertEquals(1, titleParagraph4.getRuns().size());
-		assertEquals("Le Rouge et le Noir, Chronique du XIXe siècle", titleParagraph4.getRuns().get(0).getText());
+		assertEquals("Le Rouge et le Noir, Chronique du XIXe siècle", ((DocXTextRun) titleParagraph4.getRuns().get(0)).getText());
 
 		assertEquals(3, authorParagraph4.getRuns().size());
-		assertEquals("Author", authorParagraph4.getRuns().get(0).getText());
-		assertEquals(": ", authorParagraph4.getRuns().get(1).getText());
-		assertEquals("Stendhal aka Henri Beyle", authorParagraph4.getRuns().get(2).getText());
+		assertEquals("Author", ((DocXTextRun) authorParagraph4.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) authorParagraph4.getRuns().get(1)).getText());
+		assertEquals("Stendhal aka Henri Beyle", ((DocXTextRun) authorParagraph4.getRuns().get(2)).getText());
 
 		assertEquals(3, editionParagraph4.getRuns().size());
-		assertEquals("Edition", editionParagraph4.getRuns().get(0).getText());
-		assertEquals(": ", editionParagraph4.getRuns().get(1).getText());
-		assertEquals("Levasseur", editionParagraph4.getRuns().get(2).getText());
+		assertEquals("Edition", ((DocXTextRun) editionParagraph4.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) editionParagraph4.getRuns().get(1)).getText());
+		assertEquals("Levasseur", ((DocXTextRun) editionParagraph4.getRuns().get(2)).getText());
 
 		assertEquals(3, typeParagraph4.getRuns().size());
-		assertEquals("Type", typeParagraph4.getRuns().get(0).getText());
-		assertEquals(": ", typeParagraph4.getRuns().get(1).getText());
-		assertEquals("Roman historique", typeParagraph4.getRuns().get(2).getText());
+		assertEquals("Type", ((DocXTextRun) typeParagraph4.getRuns().get(0)).getText());
+		assertEquals(": ", ((DocXTextRun) typeParagraph4.getRuns().get(1)).getText());
+		assertEquals("Roman historique", ((DocXTextRun) typeParagraph4.getRuns().get(2)).getText());
 
 		assertEquals(1, descriptionParagraph4.getRuns().size());
 		assertEquals(1, descriptionParagraph4bis.getRuns().size());
@@ -1748,9 +1750,9 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		String description4Line1 = st.nextToken();
 		String description4Line2 = st.nextToken();
 		String description4Line3 = LE_ROUGE_ET_LE_NOIR_DESCRIPTION_ADDENDUM;
-		assertEquals(description4Line1, descriptionParagraph4.getRuns().get(0).getText());
-		assertEquals(description4Line2, descriptionParagraph4bis.getRuns().get(0).getText());
-		assertEquals(description4Line3, descriptionParagraph4ter.getRuns().get(0).getText());
+		assertEquals(description4Line1, ((DocXTextRun) descriptionParagraph4.getRuns().get(0)).getText());
+		assertEquals(description4Line2, ((DocXTextRun) descriptionParagraph4bis.getRuns().get(0)).getText());
+		assertEquals(description4Line3, ((DocXTextRun) descriptionParagraph4ter.getRuns().get(0)).getText());
 
 		assertTrue(libraryVMI.isModified());
 		assertTrue(documentVMI.isModified()); // DocumentVMI has been modified, because FragmentActorReference has been modified
@@ -1795,10 +1797,10 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		// [Type][: ][Roman]
 		// [La Chartreuse de Parme est ...]
 
-		titleParagraph1.getRuns().get(0).setText("La Chartreuse de Parme"); // Added a maj
-		authorParagraph1.getRuns().get(2).setText("Stendhal (Henri Beyle)"); // Added original name of author
-		editionParagraph1.getRuns().get(2).setText("Éditions Rencontre, Lausanne, 1967"); // Change for a newer edition
-		typeParagraph1.getRuns().get(2).setText("Roman historique"); // Change for another type
+		((DocXTextRun) titleParagraph1.getRuns().get(0)).setText("La Chartreuse de Parme"); // Added a maj
+		((DocXTextRun) authorParagraph1.getRuns().get(2)).setText("Stendhal (Henri Beyle)"); // Added original name of author
+		((DocXTextRun) editionParagraph1.getRuns().get(2)).setText("Éditions Rencontre, Lausanne, 1967"); // Change for a newer edition
+		((DocXTextRun) typeParagraph1.getRuns().get(2)).setText("Roman historique"); // Change for another type
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
@@ -1868,12 +1870,12 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		// [Type][: ][Roman]
 		// [La Chartreuse de Parme est ...]
 
-		DocXRun currentSingleRun = (DocXRun) titleParagraph1.getRuns().get(0);
+		DocXTextRun currentSingleRun = (DocXTextRun) titleParagraph1.getRuns().get(0);
 
-		DocXRun run1 = (DocXRun) currentSingleRun.cloneObject();
-		DocXRun run2 = (DocXRun) currentSingleRun.cloneObject();
-		DocXRun run3 = (DocXRun) currentSingleRun.cloneObject();
-		DocXRun run4 = (DocXRun) currentSingleRun.cloneObject();
+		DocXTextRun run1 = (DocXTextRun) currentSingleRun.cloneObject();
+		DocXTextRun run2 = (DocXTextRun) currentSingleRun.cloneObject();
+		DocXTextRun run3 = (DocXTextRun) currentSingleRun.cloneObject();
+		DocXTextRun run4 = (DocXTextRun) currentSingleRun.cloneObject();
 
 		run1.setText("La");
 		run2.setText(" chartreuse ");
@@ -1956,17 +1958,17 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		DocXParagraph descriptionParagraph1ter = (DocXParagraph) descriptionParagraph1bis.cloneObject();
 		descriptionParagraph1ter.setBaseIdentifier(null);
-		descriptionParagraph1ter.getRuns().get(0).setText(LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM);
+		((DocXTextRun) descriptionParagraph1ter.getRuns().get(0)).setText(LA_CHARTREUSE_DE_PARME_DESCRIPTION_ADDENDUM);
 
 		generatedDocument.insertElementAtIndex(descriptionParagraph1ter,
 				generatedDocument.getElements().indexOf(descriptionParagraph1bis) + 1);
 
-		/*DocXRun currentSingleRun = (DocXRun) titleParagraph1.getRuns().get(0);
+		/*DocXTextRun currentSingleRun = (DocXTextRun) titleParagraph1.getRuns().get(0);
 		
-		DocXRun run1 = (DocXRun) currentSingleRun.cloneObject();
-		DocXRun run2 = (DocXRun) currentSingleRun.cloneObject();
-		DocXRun run3 = (DocXRun) currentSingleRun.cloneObject();
-		DocXRun run4 = (DocXRun) currentSingleRun.cloneObject();
+		DocXTextRun run1 = (DocXTextRun) currentSingleRun.cloneObject();
+		DocXTextRun run2 = (DocXTextRun) currentSingleRun.cloneObject();
+		DocXTextRun run3 = (DocXTextRun) currentSingleRun.cloneObject();
+		DocXTextRun run4 = (DocXTextRun) currentSingleRun.cloneObject();
 		
 		run1.setText("La");
 		run2.setText(" chartreuse ");

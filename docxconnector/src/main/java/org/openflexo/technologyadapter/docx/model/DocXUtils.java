@@ -48,7 +48,12 @@ public class DocXUtils {
 			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > [" + paragraph.getIdentifier() + "/"
 					+ paragraph.getIndex() + "] { ");
 			for (FlexoRun<DocXDocument, DocXTechnologyAdapter> run : paragraph.getRuns()) {
-				result.append("(" + run.getText() + ")");
+				if (run instanceof DocXTextRun) {
+					result.append("(" + ((DocXTextRun) run).getText() + ")");
+				}
+				if (run instanceof DocXDrawingRun) {
+					result.append("(DRAWING)");
+				}
 			}
 			result.append(" }\n");
 			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
@@ -76,7 +81,12 @@ public class DocXUtils {
 		StringBuffer result = new StringBuffer();
 		result.append("{ ");
 		for (FlexoRun<DocXDocument, DocXTechnologyAdapter> run : paragraph.getRuns()) {
-			result.append("(" + run.getText() + ")");
+			if (run instanceof DocXTextRun) {
+				result.append("(" + ((DocXTextRun) run).getText() + ")");
+			}
+			if (run instanceof DocXDrawingRun) {
+				result.append("(DRAWING)");
+			}
 		}
 		result.append(" }");
 		return result.toString();

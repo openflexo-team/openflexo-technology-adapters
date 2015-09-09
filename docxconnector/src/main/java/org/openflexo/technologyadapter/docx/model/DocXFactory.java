@@ -38,16 +38,21 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.io.File;
 import java.util.logging.Logger;
+
+import javax.xml.bind.JAXBElement;
 
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.wml.Drawing;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
 import org.docx4j.wml.Style;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
+import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 import org.openflexo.foundation.doc.DocumentFactory;
 import org.openflexo.model.ModelContextLibrary;
@@ -124,27 +129,63 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	public DocXParagraph makeNewDocXParagraph(String text) {
 		DocXParagraph returned = makeNewDocXParagraph(Context.getWmlObjectFactory().createP());
-		DocXRun run = makeNewDocXRun(text);
+		DocXTextRun run = makeTextRun(text);
 		returned.addToRuns(run);
 		return returned;
 	}
 
 	@Override
-	public DocXRun makeRun() {
-		return newInstance(DocXRun.class);
+	public DocXTextRun makeTextRun() {
+		return newInstance(DocXTextRun.class);
 	}
 
 	public DocXRun makeNewDocXRun(R r) {
-		DocXRun returned = makeRun();
+
+		for (Object o : r.getContent()) {
+			if (o instanceof JAXBElement) {
+				o = ((JAXBElement) o).getValue();
+			}
+			if (o instanceof Text) {
+				return makeNewDocXTextRun(r);
+			}
+			if (o instanceof Drawing) {
+				return makeNewDocXDrawingRun(r);
+			}
+		}
+
+		return null;
+	}
+
+	public DocXTextRun makeNewDocXTextRun(R r) {
+
+		DocXTextRun returned = makeTextRun();
 		returned.updateFromR(r, this);
 		return returned;
 	}
 
 	@Override
-	public DocXRun makeNewDocXRun(String text) {
-		DocXRun returned = makeNewDocXRun(Context.getWmlObjectFactory().createR());
+	public DocXTextRun makeTextRun(String text) {
+		DocXTextRun returned = makeNewDocXTextRun(Context.getWmlObjectFactory().createR());
 		returned.setText(text);
 		return returned;
+	}
+
+	@Override
+	public DocXDrawingRun makeDrawingRun() {
+		return newInstance(DocXDrawingRun.class);
+	}
+
+	public DocXDrawingRun makeNewDocXDrawingRun(R r) {
+
+		DocXDrawingRun returned = makeDrawingRun();
+		returned.updateFromR(r, this);
+		return returned;
+	}
+
+	@Override
+	public DocXDrawingRun makeDrawingRun(File imageFile) {
+		// TODO
+		return makeDrawingRun();
 	}
 
 	@Override

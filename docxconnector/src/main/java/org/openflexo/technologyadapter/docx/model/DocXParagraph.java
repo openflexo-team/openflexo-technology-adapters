@@ -63,7 +63,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ModelEntity
 @ImplementationClass(DocXParagraph.DocXParagraphImpl.class)
 @XMLElement
-@Imports({ @Import(DocXRun.class) })
+@Imports({ @Import(DocXTextRun.class) })
 public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = P.class)
@@ -81,8 +81,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 
 	// TRICKY AREA
 	// We override here the PAMELA definition of this property by declaring CloningStrategy as IGNORE
-	// We do that because P is beeing cloned and the setting of new P value will cause creation of DocXRun
-	// We definitely want to avoid double instanciation of DocXRun in a cloned paragraph !!!!
+	// We do that because P is beeing cloned and the setting of new P value will cause creation of DocXTextRun
+	// We definitely want to avoid double instanciation of DocXTextRun in a cloned paragraph !!!!
 	@Override
 	@CloningStrategy(StrategyType.IGNORE)
 	public List<FlexoRun<DocXDocument, DocXTechnologyAdapter>> getRuns();
@@ -207,7 +207,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 
 			if (getRuns().size() == 0) {
 				// Add run
-				DocXRun run = getFlexoDocument().getFactory().makeNewDocXRun(someText);
+				DocXTextRun run = getFlexoDocument().getFactory().makeTextRun(someText);
 				addToRuns(run);
 				return;
 			}
@@ -217,7 +217,9 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				removeFromRuns(getRuns().get(getRuns().size() - 1));
 			}
 
-			getRuns().get(0).setText(someText);
+			if (getRuns().get(0) instanceof DocXTextRun) {
+				((DocXTextRun) getRuns().get(0)).setText(someText);
+			}
 
 		}
 
@@ -257,10 +259,10 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 */
 		@Override
 		public void insertRunAtIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
-			System.out.println("Add run " + aRun.getText());
+			System.out.println("Add run " + aRun);
 			P p = getP();
-			if (aRun instanceof DocXRun) {
-				R r = ((DocXRun) aRun).getR();
+			if (aRun instanceof DocXTextRun) {
+				R r = ((DocXTextRun) aRun).getR();
 				p.getContent().add(index, r);
 				internallyInsertRunAtIndex(aRun, index);
 			}
@@ -288,8 +290,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 */
 		private void internallyHandleRunAdding(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
 
-			if (aRun instanceof DocXRun) {
-				DocXRun run = (DocXRun) aRun;
+			if (aRun instanceof DocXTextRun) {
+				DocXTextRun run = (DocXTextRun) aRun;
 				if (run.getR() != null) {
 					runs.put(run.getR(), run);
 				}
@@ -331,8 +333,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				}*/
 
 			P p = getP();
-			if (aRun instanceof DocXRun) {
-				R r = ((DocXRun) aRun).getR();
+			if (aRun instanceof DocXTextRun) {
+				R r = ((DocXTextRun) aRun).getR();
 				p.getContent().add(r);
 				internallyAddToRuns(aRun);
 			}
@@ -360,8 +362,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		public void removeFromRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
 
 			P p = getP();
-			if (aRun instanceof DocXRun) {
-				R r = ((DocXRun) aRun).getR();
+			if (aRun instanceof DocXTextRun) {
+				R r = ((DocXTextRun) aRun).getR();
 				if (!DocXUtils.removeFromList(r, p.getContent())) {
 					logger.warning("R item not present in P. Please investigate...");
 				}
@@ -379,8 +381,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * @param removedRun
 		 */
 		private void internallyRemoveFromRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> removedRun) {
-			if (removedRun instanceof DocXRun) {
-				DocXRun run = (DocXRun) removedRun;
+			if (removedRun instanceof DocXTextRun) {
+				DocXTextRun run = (DocXTextRun) removedRun;
 				if (run.getR() != null) {
 					runs.remove(run.getR());
 				}

@@ -128,7 +128,7 @@ public class TestTextSelection extends AbstractTestDocX {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph para = (DocXParagraph) element;
 				for (FlexoRun run : para.getRuns()) {
-					sb.append("[" + run.getText() + "]");
+					sb.append("[" + ((DocXTextRun) run).getText() + "]");
 				}
 				sb.append("\n");
 			}

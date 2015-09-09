@@ -41,18 +41,26 @@ package org.openflexo.technologyadapter.docx.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
+import org.docx4j.dml.wordprocessingDrawing.Inline;
+import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
+import org.docx4j.wml.Drawing;
+import org.docx4j.wml.ObjectFactory;
+import org.docx4j.wml.P;
+import org.docx4j.wml.R;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
@@ -65,14 +73,13 @@ import org.openflexo.test.TestOrder;
  *
  */
 @RunWith(OrderedRunner.class)
-public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
-	protected static final Logger logger = Logger.getLogger(TestCreateDocXDocumentWithTable.class.getPackage().getName());
+public class TestCreateDocXDocumentWithImage extends AbstractTestDocX {
+	protected static final Logger logger = Logger.getLogger(TestCreateDocXDocumentWithImage.class.getPackage().getName());
 
 	private static DocXTechnologyAdapter technologicalAdapter;
 
 	private static DocXDocument newDocument = null;
 	private static DocXDocumentResource newDocResource;
-	private static DocXTable table1;
 
 	@Test
 	@TestOrder(1)
@@ -152,93 +159,98 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(4)
-	public void testAddTable() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
-		log("testAddTable");
+	public void testAddImage() throws Exception {
+		log("testAddImage");
 
-		table1 = (DocXTable) newDocument.addTable(4, 3);
+		File imageFile = new File(resourceCenter.getDirectory(), "TestResourceCenter/Images/CarteDeVoeuxOF2015.png");
+		assertTrue(imageFile.exists());
+		byte[] bytes = convertImageToByteArray(imageFile);
+		addImageToPackage(newDocument.getWordprocessingMLPackage(), bytes);
 
-		System.out.println(newDocument.debugStructuredContents());
-
-		assertNotNull(table1);
-
-		getParagraph(0, 1).addToRuns(newDocResource.getFactory().makeTextRun("Column1"));
-		getParagraph(0, 2).addToRuns(newDocResource.getFactory().makeTextRun("Column2"));
-
-		getParagraph(1, 0).addToRuns(newDocResource.getFactory().makeTextRun("Item1"));
-		getParagraph(1, 1).addToRuns(newDocResource.getFactory().makeTextRun("item1-data1"));
-		getParagraph(1, 2).addToRuns(newDocResource.getFactory().makeTextRun("item1-data2"));
-
-		getParagraph(2, 0).addToRuns(newDocResource.getFactory().makeTextRun("Item2"));
-		getParagraph(2, 1).addToRuns(newDocResource.getFactory().makeTextRun("item2-data1"));
-		getParagraph(2, 2).addToRuns(newDocResource.getFactory().makeTextRun("item2-data2"));
-
-		getParagraph(3, 0).addToRuns(newDocResource.getFactory().makeTextRun("Item3"));
-		getParagraph(3, 1).addToRuns(newDocResource.getFactory().makeTextRun("item3-data1"));
-		getParagraph(3, 2).addToRuns(newDocResource.getFactory().makeTextRun("item3-data2"));
+		System.out.println(resourceCenter.getDirectory());
 
 		System.out.println(newDocument.debugStructuredContents());
 
-		assertTrue(newDocResource.isModified());
 		newDocResource.save(null);
-		assertFalse(newDocResource.isModified());
 
 	}
 
-	@Test
-	@TestOrder(5)
-	public void testAddParagraphsInCells() throws SaveResourceException {
-		log("testAddParagraphsInCells");
-		getCell(3, 1).addToParagraphs(newDocResource.getFactory().makeNewDocXParagraph("item3-data1-line2"));
+	/**
+	 * Docx4j contains a utility method to create an image part from an array of bytes and then adds it to the given package. In order to be
+	 * able to add this image to a paragraph, we have to convert it into an inline object. For this there is also a method, which takes a
+	 * filename hint, an alt-text, two ids and an indication on whether it should be embedded or linked to. One id is for the drawing object
+	 * non-visual properties of the document, and the second id is for the non visual drawing properties of the picture itself. Finally we
+	 * add this inline object to the paragraph and the paragraph to the main document of the package.
+	 *
+	 * @param wordMLPackage
+	 *            The package we want to add the image to
+	 * @param bytes
+	 *            The bytes of the image
+	 * @throws Exception
+	 *             Sadly the createImageInline method throws an Exception (and not a more specific exception type)
+	 */
+	private static void addImageToPackage(WordprocessingMLPackage wordMLPackage, byte[] bytes) throws Exception {
+		BinaryPartAbstractImage imagePart = BinaryPartAbstractImage.createImagePart(wordMLPackage, bytes);
 
-		System.out.println(newDocument.debugStructuredContents());
+		int docPrId = 1;
+		int cNvPrId = 2;
+		Inline inline = imagePart.createImageInline("Filename hint", "Alternative text", docPrId, cNvPrId, false);
 
-		assertEquals(2, getCell(3, 1).getParagraphs().size());
+		P paragraph = addInlineImageToParagraph(inline);
 
-		assertTrue(newDocResource.isModified());
-		newDocResource.save(null);
-		assertFalse(newDocResource.isModified());
+		DocXParagraph paragraphWithImage = newDocument.getFactory().makeNewDocXParagraph(paragraph);
+		newDocument.addToElements(paragraphWithImage);
+
+		// wordMLPackage.getMainDocumentPart().addObject(paragraph);
 	}
 
-	@Test
-	@TestOrder(6)
-	public void testIdentifyParagraph() {
-		log("testIdentifyParagraph");
-
-		String identifier = getParagraph(2, 2).getIdentifier();
-		assertSame(getParagraph(2, 2), newDocument.getElementWithIdentifier(identifier));
+	/**
+	 * We create an object factory and use it to create a paragraph and a run. Then we add the run to the paragraph. Next we create a
+	 * drawing and add it to the run. Finally we add the inline object to the drawing and return the paragraph.
+	 *
+	 * @param inline
+	 *            The inline object containing the image.
+	 * @return the paragraph containing the image
+	 */
+	private static P addInlineImageToParagraph(Inline inline) {
+		// Now add the in-line image to a paragraph
+		ObjectFactory factory = new ObjectFactory();
+		P paragraph = factory.createP();
+		R run = factory.createR();
+		paragraph.getContent().add(run);
+		Drawing drawing = factory.createDrawing();
+		run.getContent().add(drawing);
+		drawing.getAnchorOrInline().add(inline);
+		return paragraph;
 	}
 
-	@Test
-	@TestOrder(7)
-	public void testFragmentsInTable() throws FragmentConsistencyException {
-		log("testFragmentsInTable");
-
-		DocXParagraph paragraph = getParagraph(2, 2);
-		assertNotNull(paragraph);
-		assertEquals(getCell(2, 2), paragraph.getContainer());
-		assertEquals(newDocument, paragraph.getFlexoDocument());
-
-		DocXFragment fragment1 = newDocument.getFragment(paragraph, paragraph);
-		assertNotNull(fragment1);
-		assertEquals(paragraph, fragment1.getStartElement());
-		assertEquals(paragraph, fragment1.getEndElement());
-
-		DocXFragmentConverter fragmentConverter = new DocXFragmentConverter(serviceManager);
-
-		String serializedFragment = fragmentConverter.convertToString(fragment1);
-		DocXFragment fragment1bis = fragmentConverter.convertFromString(serializedFragment, newDocResource.getFactory());
-		assertNotNull(fragment1bis);
-		assertEquals(paragraph, fragment1bis.getStartElement());
-		assertEquals(paragraph, fragment1bis.getEndElement());
-
+	/**
+	 * Convert the image from the file into an array of bytes.
+	 *
+	 * @param file
+	 *            the image file to be converted
+	 * @return the byte array containing the bytes from the image
+	 * @throws FileNotFoundException
+	 * @throws IOException
+	 */
+	private static byte[] convertImageToByteArray(File file) throws FileNotFoundException, IOException {
+		InputStream is = new FileInputStream(file);
+		long length = file.length();
+		// You cannot create an array using a long, it needs to be an int.
+		if (length > Integer.MAX_VALUE) {
+			System.out.println("File too large!!");
+		}
+		byte[] bytes = new byte[(int) length];
+		int offset = 0;
+		int numRead = 0;
+		while (offset < bytes.length && (numRead = is.read(bytes, offset, bytes.length - offset)) >= 0) {
+			offset += numRead;
+		}
+		// Ensure all the bytes have been read
+		if (offset < bytes.length) {
+			System.out.println("Could not completely read file " + file.getName());
+		}
+		is.close();
+		return bytes;
 	}
-
-	private DocXTableCell getCell(int row, int col) {
-		return (DocXTableCell) table1.getTableRows().get(row).getTableCells().get(col);
-	}
-
-	private DocXParagraph getParagraph(int row, int col) {
-		return (DocXParagraph) getCell(row, col).getParagraphs().get(0);
-	}
-
 }

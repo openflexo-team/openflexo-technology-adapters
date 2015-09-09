@@ -228,11 +228,11 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		assertEquals(5, paragraph7.getRuns().size());
 
-		assertEquals("This is a paragraph with ", paragraph7.getRuns().get(0).getText());
-		assertEquals("a", paragraph7.getRuns().get(1).getText());
-		assertEquals(" ", paragraph7.getRuns().get(2).getText());
-		assertEquals("italic", paragraph7.getRuns().get(3).getText());
-		assertEquals(" word.", paragraph7.getRuns().get(4).getText());
+		assertEquals("This is a paragraph with ", ((DocXTextRun) paragraph7.getRuns().get(0)).getText());
+		assertEquals("a", ((DocXTextRun) paragraph7.getRuns().get(1)).getText());
+		assertEquals(" ", ((DocXTextRun) paragraph7.getRuns().get(2)).getText());
+		assertEquals("italic", ((DocXTextRun) paragraph7.getRuns().get(3)).getText());
+		assertEquals(" word.", ((DocXTextRun) paragraph7.getRuns().get(4)).getText());
 	}
 
 	@Test
