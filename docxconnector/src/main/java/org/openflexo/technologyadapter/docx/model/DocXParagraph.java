@@ -63,7 +63,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ModelEntity
 @ImplementationClass(DocXParagraph.DocXParagraphImpl.class)
 @XMLElement
-@Imports({ @Import(DocXTextRun.class) })
+@Imports({ @Import(DocXTextRun.class), @Import(DocXDrawingRun.class) })
 public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = P.class)
@@ -261,8 +261,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		public void insertRunAtIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
 			System.out.println("Add run " + aRun);
 			P p = getP();
-			if (aRun instanceof DocXTextRun) {
-				R r = ((DocXTextRun) aRun).getR();
+			if (aRun instanceof DocXRun) {
+				R r = ((DocXRun) aRun).getR();
 				p.getContent().add(index, r);
 				internallyInsertRunAtIndex(aRun, index);
 			}
@@ -290,8 +290,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 */
 		private void internallyHandleRunAdding(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
 
-			if (aRun instanceof DocXTextRun) {
-				DocXTextRun run = (DocXTextRun) aRun;
+			if (aRun instanceof DocXRun) {
+				DocXRun run = (DocXRun) aRun;
 				if (run.getR() != null) {
 					runs.put(run.getR(), run);
 				}
@@ -333,8 +333,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				}*/
 
 			P p = getP();
-			if (aRun instanceof DocXTextRun) {
-				R r = ((DocXTextRun) aRun).getR();
+			if (aRun instanceof DocXRun) {
+				R r = ((DocXRun) aRun).getR();
 				p.getContent().add(r);
 				internallyAddToRuns(aRun);
 			}
@@ -362,8 +362,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		public void removeFromRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
 
 			P p = getP();
-			if (aRun instanceof DocXTextRun) {
-				R r = ((DocXTextRun) aRun).getR();
+			if (aRun instanceof DocXRun) {
+				R r = ((DocXRun) aRun).getR();
 				if (!DocXUtils.removeFromList(r, p.getContent())) {
 					logger.warning("R item not present in P. Please investigate...");
 				}
@@ -381,8 +381,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * @param removedRun
 		 */
 		private void internallyRemoveFromRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> removedRun) {
-			if (removedRun instanceof DocXTextRun) {
-				DocXTextRun run = (DocXTextRun) removedRun;
+			if (removedRun instanceof DocXRun) {
+				DocXRun run = (DocXRun) removedRun;
 				if (run.getR() != null) {
 					runs.remove(run.getR());
 				}

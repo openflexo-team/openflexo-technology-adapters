@@ -43,9 +43,11 @@ import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBElement;
 
+import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.jaxb.Context;
 import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.wml.Drawing;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
@@ -185,7 +187,25 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	@Override
 	public DocXDrawingRun makeDrawingRun(File imageFile) {
 		// TODO
-		return makeDrawingRun();
+
+		byte[] imageData;
+		try {
+			imageData = convertImageToByteArray(imageFile);
+
+			R run = Context.getWmlObjectFactory().createR();
+			Drawing drawing = Context.getWmlObjectFactory().createDrawing();
+			run.getContent().add(drawing);
+
+			drawing.getAnchorOrInline().add(makeImageInline(imageData));
+
+			return makeNewDocXDrawingRun(run);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+
 	}
 
 	@Override
@@ -246,6 +266,27 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		DocXFragment returned = newInstance(DocXFragment.class);
 		returned.setFlexoDocument(document);
 		return returned;
+	}
+
+	/**
+	 * Docx4j contains a utility method to create an image part from an array of bytes and then adds it to the given package. In order to be
+	 * able to add this image to a paragraph, we have to convert it into an inline object. For this there is also a method, which takes a
+	 * filename hint, an alt-text, two ids and an indication on whether it should be embedded or linked to. One id is for the drawing object
+	 * non-visual properties of the document, and the second id is for the non visual drawing properties of the picture itself. Finally we
+	 * add this inline object to the paragraph and the paragraph to the main document of the package.
+	 *
+	 * @param bytes
+	 *            The bytes of the image
+	 * @throws Exception
+	 *             Sadly the createImageInline method throws an Exception (and not a more specific exception type)
+	 */
+	public Inline makeImageInline(byte[] bytes) throws Exception {
+		BinaryPartAbstractImage imagePart = BinaryPartAbstractImage
+				.createImagePart(getResource().getDocument().getWordprocessingMLPackage(), bytes);
+
+		int docPrId = 1;
+		int cNvPrId = 2;
+		return imagePart.createImageInline("Filename hint", "Alternative text", docPrId, cNvPrId, false);
 	}
 
 }
