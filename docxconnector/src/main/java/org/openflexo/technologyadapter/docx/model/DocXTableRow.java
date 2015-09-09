@@ -67,6 +67,14 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 
 	public Tr cloneTr();
 
+	// TRICKY AREA
+	// We override here the PAMELA definition of this property by declaring CloningStrategy as IGNORE
+	// We do that becauseTrP is beeing cloned and the setting of new Tr value will cause creation of DocXRun
+	// We definitely want to avoid double instanciation of DocXTableCell in a cloned row !!!!
+	@Override
+	@CloningStrategy(StrategyType.IGNORE)
+	public List<FlexoTableCell<DocXDocument, DocXTechnologyAdapter>> getTableCells();
+
 	/**
 	 * This is the starting point for updating {@link DocXTableRow} with the Tr provided from docx4j library<br>
 	 * Take care that the supplied tr is the object we should update with, but that {@link #getTr()} is unsafe in this context, because

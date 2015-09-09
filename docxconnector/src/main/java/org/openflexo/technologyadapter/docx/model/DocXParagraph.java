@@ -202,10 +202,24 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 			return sw.toString();
 		}
 
-		/*@Override
-		public ContentAccessor getParent() {
-			return getFlexoDocument().getWordprocessingMLPackage().getMainDocumentPart();
-		}*/
+		@Override
+		public void setRawText(String someText) {
+
+			if (getRuns().size() == 0) {
+				// Add run
+				DocXRun run = getFlexoDocument().getFactory().makeNewDocXRun(someText);
+				addToRuns(run);
+				return;
+			}
+
+			while (getRuns().size() > 1) {
+				// Remove extra runs
+				removeFromRuns(getRuns().get(getRuns().size() - 1));
+			}
+
+			getRuns().get(0).setText(someText);
+
+		}
 
 		@Override
 		public P cloneP() {
@@ -228,9 +242,9 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		public void appendToWordprocessingMLPackage(ContentAccessor parent, int index) {
 
 			/*System.out.println("appendToWordprocessingMLPackage for " + this);
-			System.out.println("parent: " + parent);
-			System.out.println("index: " + index);
-			System.out.println("p=" + getP());*/
+				System.out.println("parent: " + parent);
+				System.out.println("index: " + index);
+				System.out.println("p=" + getP());*/
 
 			parent.getContent().add(index, getP());
 			getFlexoDocument().setIsModified();
@@ -312,9 +326,9 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		public void addToRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
 
 			/*if (isCreatedByCloning()) {
-				// internallyAddToRuns(aRun);
-				return;
-			}*/
+					// internallyAddToRuns(aRun);
+					return;
+				}*/
 
 			P p = getP();
 			if (aRun instanceof DocXRun) {

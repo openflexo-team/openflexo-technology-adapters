@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import javax.xml.bind.JAXBElement;
 
@@ -333,6 +334,48 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 				sb.append(paragraph.getRawText());
 			}
 			return sb.toString();
+		}
+
+		@Override
+		public void setRawText(String someText) {
+
+			List<String> lines = new ArrayList<String>();
+
+			if (someText == null) {
+				someText = "null";
+			}
+
+			StringTokenizer st = new StringTokenizer(someText, "\n");
+			while (st.hasMoreElements()) {
+				lines.add(st.nextToken());
+			}
+
+			if (getParagraphs().size() == 0) {
+				for (int i = 0; i < lines.size(); i++) {
+					// Add paragraph
+					DocXParagraph paragraph = getFlexoDocument().getFactory().makeNewDocXParagraph(lines.get(i));
+					addToParagraphs(paragraph);
+				}
+
+				return;
+			}
+
+			while (getParagraphs().size() > lines.size()) {
+				// Remove extra paragraphs
+				removeFromParagraphs(getParagraphs().get(getParagraphs().size() - 1));
+			}
+
+			for (int i = 0; i < lines.size(); i++) {
+				if (i < getParagraphs().size()) {
+					getParagraphs().get(i).setRawText(lines.get(i));
+				}
+				else {
+					// Add paragraph
+					DocXParagraph paragraph = getFlexoDocument().getFactory().makeNewDocXParagraph(lines.get(i));
+					addToParagraphs(paragraph);
+				}
+			}
+
 		}
 
 	}

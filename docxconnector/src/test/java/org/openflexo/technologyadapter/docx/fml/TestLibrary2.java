@@ -698,7 +698,7 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 				.newInstance(ColumnTableBinding.class);
 		typeBinding.setColumnName("type");
 		typeBinding.setValue(new DataBinding<String>(FlexoTableRoleImpl.ITERATOR_NAME + ".type"));
-		typeBinding.setColumnIndex(0);
+		typeBinding.setColumnIndex(3);
 		bookListingTableRole.addToColumnBindings(typeBinding);
 		assertTrue(typeBinding.getValue().isValid());
 
@@ -1659,7 +1659,7 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(libraryVirtualModel = newView.getViewPoint().getVirtualModelNamed("LibraryVirtualModel"));
 		assertNotNull(documentVirtualModel = newView.getViewPoint().getVirtualModelNamed("DocumentVirtualModel"));
 		assertNotNull(bookConcept = libraryVirtualModel.getFlexoConcept("Book"));
-		assertNotNull(allBooksProperty = (GetSetProperty<?>) libraryVirtualModel.getAccessibleProperty("allBooks"));
+		assertNotNull(allBooksProperty = (GetSetProperty<?>) libraryVirtualModel.getAccessibleProperty("books"));
 		assertNotNull(bookCreationScheme = bookConcept.getCreationSchemes().get(0));
 		assertNotNull(titleParam = bookCreationScheme.getParameter("aTitle"));
 		assertNotNull(authorParam = bookCreationScheme.getParameter("anAuthor"));
@@ -1681,6 +1681,11 @@ public class TestLibrary2 extends OpenflexoProjectAtRunTimeTestCase {
 				booksDescriptionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleProperty("booksDescriptionSection"));
 		assertNotNull(bookListingTableRole = (DocXTableRole) documentVirtualModel.getAccessibleProperty("bookListingTable"));
 		assertNotNull(conclusionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleProperty("conclusionSection"));
+
+		assertEquals(documentVirtualModel, introductionFragmentRole.getFlexoConcept());
+		assertEquals(documentVirtualModel, booksDescriptionFragmentRole.getFlexoConcept());
+		assertEquals(documentVirtualModel, bookListingTableRole.getFlexoConcept());
+		assertEquals(documentVirtualModel, conclusionFragmentRole.getFlexoConcept());
 
 		assertEquals(2, newViewResource.getVirtualModelInstanceResources().size());
 
