@@ -59,7 +59,17 @@ public class BasicExcelModelConverter {
 	private static final Logger logger = Logger.getLogger(BasicExcelModelConverter.class.getPackage().getName());
 
 	/** Excel Objects. */
-	protected final Map<Object, ExcelObject> excelObjects = new HashMap<Object, ExcelObject>();
+	protected final Map<Object, ExcelObject> excelObjects = new HashMap<Object, ExcelObject>() {
+		@Override
+		public ExcelObject get(Object key) {
+			for (Object o : this.keySet()) {
+				if (o == key) {
+					return super.get(key);
+				}
+			}
+			return null;
+		};
+	};
 
 	/**
 	 * Constructor.
@@ -109,7 +119,8 @@ public class BasicExcelModelConverter {
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			excelSheet = (ExcelSheet) excelObjects.get(sheet);
 		}
 		return excelSheet;
@@ -128,7 +139,7 @@ public class BasicExcelModelConverter {
 				// System.out.println("Adding cell " + cell.getColumnIndex());
 				while (cell.getColumnIndex() > lastCell + 1) {
 					// Missing cell
-					// System.out.println("Adding a missing cell");
+					// System.out.println("A?dding a missing cell");
 					ExcelCell excelCell = new ExcelCell(cell, excelRow, technologyAdapter);
 					excelRow.addToExcelCells(excelCell);
 					lastCell++;
@@ -140,13 +151,16 @@ public class BasicExcelModelConverter {
 			// System.out.println("Created a row with " + excelRow.getExcelCells().size() + " cells");
 			/*int i = 0;
 			for (ExcelCell cell : excelRow.getExcelCells()) {
-				System.out.println("Index " + i + ": Cell with " + cell.getCell()
-						+ (cell.getCell() != null ? " index=" + cell.getCell().getColumnIndex() : "n/a"));
-				i++;
+			System.out.println("Index " + i + ": Cell with " + cell.getCell()
+					+ (cell.getCell() != null ? " index=" + cell.getCell().getColumnIndex() : "n/a"));
+			i++;
 
 			}*/
-		} else {
+		}
+		else {
 			excelRow = (ExcelRow) excelObjects.get(row);
+			System.out.println(" C'est égal? (" + row.getClass().getCanonicalName() + ")" + (excelRow.getRow().equals(row)) + " -- "
+					+ (excelRow.getRow() == row));
 		}
 
 		return excelRow;
@@ -160,7 +174,8 @@ public class BasicExcelModelConverter {
 		if (excelObjects.get(cell) == null) {
 			excelCell = new ExcelCell(cell, excelRow, technologyAdapter);
 			excelObjects.put(cell, excelCell);
-		} else {
+		}
+		else {
 			excelCell = (ExcelCell) excelObjects.get(cell);
 		}
 		return excelCell;
