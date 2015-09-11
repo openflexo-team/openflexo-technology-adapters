@@ -42,7 +42,7 @@
 		<Assignment id="31" mandatory="true" variable="component.rootClass" />
 		<Assignment id="32" mandatory="true" variable="component.strictMode" />
 		<Assignment id="33" mandatory="true" variable="component.rootClassURI" />
-		<Assignment id="34" mandatory="true" variable="component.informationSpace" />
+		<Assignment id="34" mandatory="true" variable="component.resourceManager" />
 		<Assignment id="35" mandatory="true"
 			variable="component.contextOntologyURI" />
 		<Assignment id="36" mandatory="true" variable="component.serviceManager" />
