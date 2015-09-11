@@ -85,7 +85,7 @@ public class TestSepelOntology extends OpenflexoTestCase {
 		instanciateTestServiceManager(true);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
-		List<ResourceRepository<?>> owlRepositories = serviceManager.getInformationSpace().getAllRepositories(owlAdapter);
+		List<ResourceRepository<?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlAdapter);
 		ontologyRepository = (ResourceRepository<OWLOntologyResource>) owlRepositories.get(0);
 		assertNotNull(ontologyRepository);
 	}

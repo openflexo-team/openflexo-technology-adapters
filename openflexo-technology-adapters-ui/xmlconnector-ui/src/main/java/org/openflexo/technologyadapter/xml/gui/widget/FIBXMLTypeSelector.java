@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.xml.gui.widget;
 import java.util.logging.Logger;
 
 import org.openflexo.components.widget.FIBFlexoObjectSelector;
-import org.openflexo.foundation.technologyadapter.InformationSpace;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -62,9 +61,8 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 public class FIBXMLTypeSelector extends FIBFlexoObjectSelector<XMLType> {
 	static final Logger logger = Logger.getLogger(FIBXMLTypeSelector.class.getPackage().getName());
 
-	public static final Resource FIB_FILE =  ResourceLocator.locateResource("Fib/widgets/FIBXMLTypeSelector.fib");
+	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/widgets/FIBXMLTypeSelector.fib");
 
-	private InformationSpace informationSpace;
 	private XMLMetaModel context;
 
 	public FIBXMLTypeSelector(XMLType editedObject) {
@@ -87,7 +85,6 @@ public class FIBXMLTypeSelector extends FIBFlexoObjectSelector<XMLType> {
 		return XMLType.class;
 	}
 
-
 	@Override
 	public String renderedString(XMLType editedObject) {
 		if (editedObject != null) {
@@ -103,7 +100,6 @@ public class FIBXMLTypeSelector extends FIBFlexoObjectSelector<XMLType> {
 		return null;
 	}
 
-
 	public XMLMetaModel getContext() {
 		return context;
 	}
@@ -112,8 +108,5 @@ public class FIBXMLTypeSelector extends FIBFlexoObjectSelector<XMLType> {
 	public void setContext(XMLMetaModel context) {
 		this.context = context;
 	}
-
-
-	
 
 }

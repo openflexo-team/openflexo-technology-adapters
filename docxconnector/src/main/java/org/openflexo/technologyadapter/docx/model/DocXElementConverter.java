@@ -51,8 +51,8 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 public class DocXElementConverter extends Converter<DocXElement> {
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXElementConverter.class
-			.getPackage().getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+			.getLogger(DocXElementConverter.class.getPackage().getName());
 
 	public DocXElementConverter() {
 		super(DocXElement.class);
@@ -74,7 +74,7 @@ public class DocXElementConverter extends Converter<DocXElement> {
 
 			if (factory instanceof FMLModelFactory) {
 				// System.out.println("serviceManager: " + ((FMLModelFactory) factory).getServiceManager());
-				FlexoResource<DocXDocument> documentResource = ((FMLModelFactory) factory).getServiceManager().getInformationSpace()
+				FlexoResource<DocXDocument> documentResource = ((FMLModelFactory) factory).getServiceManager().getResourceManager()
 						.getResource(documentURI, null, DocXDocument.class);
 				// System.out.println("document=" + documentResource);
 

@@ -238,7 +238,7 @@ public class TestCreateBasicDocXDocument extends AbstractTestDocX {
 			e.printStackTrace();
 		}
 
-		assertNotNull(newDocResource = (DocXDocumentResource) serviceManager.getInformationSpace()
+		assertNotNull(newDocResource = (DocXDocumentResource) serviceManager.getResourceManager()
 				.getResource("http://openflexo.org/test/TestResourceCenter/TestBasicDocument.docx", null));
 
 		newDocument = newDocResource.getDocument();

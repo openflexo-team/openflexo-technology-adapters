@@ -53,8 +53,8 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 public class DocXFragmentConverter extends Converter<DocXFragment> {
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXFragmentConverter.class
-			.getPackage().getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+			.getLogger(DocXFragmentConverter.class.getPackage().getName());
 
 	private FlexoServiceManager serviceManager;
 
@@ -87,11 +87,11 @@ public class DocXFragmentConverter extends Converter<DocXFragment> {
 			FlexoResource<DocXDocument> documentResource = null;
 
 			if (serviceManager != null) {
-				documentResource = serviceManager.getInformationSpace().getResource(documentURI, null, DocXDocument.class);
+				documentResource = serviceManager.getResourceManager().getResource(documentURI, null, DocXDocument.class);
 			}
 			if (factory instanceof FMLModelFactory) {
-				documentResource = ((FMLModelFactory) factory).getServiceManager().getInformationSpace()
-						.getResource(documentURI, null, DocXDocument.class);
+				documentResource = ((FMLModelFactory) factory).getServiceManager().getResourceManager().getResource(documentURI, null,
+						DocXDocument.class);
 			}
 
 			if (documentResource != null) {
