@@ -44,12 +44,10 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
@@ -124,8 +122,8 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 
 		System.out.println("ResourceCenter= " + resourceCenter);
-		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint",
-				resourceCenter.getDirectory(), serviceManager.getViewPointLibrary());
+		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint", resourceCenter.getDirectory(),
+				serviceManager.getViewPointLibrary(), resourceCenter);
 		// assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory().exists());
 		// assertTrue(((ViewPointResource) newViewPoint.getResource()).getFile().exists());
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
@@ -177,7 +175,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			try {
 				RepositoryFolder<FlexoResource<?>> modelFolder = project.createNewFolder("Models");
 				emfModelResource = technologicalAdapter.createNewEMFModel(new File(modelFolder.getFile(), "coucou.emf"), "myURI",
-						emfMetaModelResource);
+						emfMetaModelResource, resourceCenter);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -272,18 +270,18 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 					Double.valueOf(42.12), newVirtualModel.getFMLModelFactory());
 			assertNotNull(doubleParameter);
 			 */
-			
+
 			// TODO : this does not work yet
 
 			/*
 			EMFObjectIndividual boolParameter = createBoolParameter(emfModelResource, emfMetaModelResource, "BoolParameter Name", true,
 					newVirtualModel.getFMLModelFactory());
 			assertNotNull(boolParameter);
-
+			
 			EMFObjectIndividual stringParameter = createStringParameter(emfModelResource, emfMetaModelResource, "StringParameter Name",
 					"StringParameter Value", newVirtualModel.getFMLModelFactory());
 			assertNotNull(stringParameter);
-
+			
 			EMFObjectIndividual parameterSet = createParameterSet(emfModelResource, emfMetaModelResource, "ParameterSet Name",
 					Arrays.asList(intParameter, doubleParameter, boolParameter, stringParameter), newVirtualModel.getFMLModelFactory());
 			assertNotNull(parameterSet);
@@ -342,22 +340,22 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		return result;
 	}
 	/*
-
+	
 	protected EMFObjectIndividualAttributeDataPropertyValue addEMFObjectIndividualAttributeDataPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
 			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividualAttributeDataPropertyValue result = null;
-
+	
 		CreateEditionAction createEditionAction1 = CreateEditionAction.actionType.makeNewAction(creationScheme.getControlGraph(), null,
 				editor);
 		// createEditionAction1.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createEditionAction1.setEditionActionClass(AddEMFObjectIndividualAttributeDataPropertyValue.class);
 		createEditionAction1.setModelSlot(newModelSlot);
 		createEditionAction1.doAction();
-
+	
 		AddEMFObjectIndividualAttributeDataPropertyValue addAttribute = (AddEMFObjectIndividualAttributeDataPropertyValue) createEditionAction1
 				.getNewEditionAction();
-
+	
 		addAttribute.setModelSlot(newModelSlot);
 		// addAttribute.set .setObjectIndividual(objectIndividual);
 		addAttribute.setDataProperty(emfMetaModelResource.getResourceData(null).getDataProperty(propertyURI));
@@ -367,7 +365,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// addAttribute.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
-
+	
 	protected EMFObjectIndividualAttributeDataPropertyValue removeEMFObjectIndividualAttributeDataPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
 			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -383,7 +381,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// removeProperty.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
-
+	
 	protected EMFObjectIndividualAttributeObjectPropertyValue addEMFObjectIndividualAttributeObjectPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
 			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -399,14 +397,14 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// addPropValue.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
-
+	
 	protected EMFObjectIndividualAttributeObjectPropertyValue removeEMFObjectIndividualAttributeObjectPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
 			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividualAttributeObjectPropertyValue result = null;
 		RemoveEMFObjectIndividualAttributeObjectPropertyValue removePropVal = factory
 				.newInstance(RemoveEMFObjectIndividualAttributeObjectPropertyValue.class);
-
+	
 		removePropVal.setModelSlot(newModelSlot);
 		// addName.setObjectIndividual(objectIndividual);
 		// addName.setAttributeObjectProperty((EMFAttributeObjectProperty) emfMetaModelResource.getResourceData(null).getDataProperty(
@@ -416,7 +414,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// removePropVal.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
-
+	
 	protected EMFObjectIndividualReferenceObjectPropertyValue addEMFObjectIndividualReferenceObjectPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
 			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -432,14 +430,14 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// addRefPropVal.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
-
+	
 	protected EMFObjectIndividualReferenceObjectPropertyValue removeEMFObjectIndividualReferenceObjectPropertyValue(
 			EMFMetaModelResource emfMetaModelResource, EMFObjectIndividual objectIndividual, String propertyURI, Object value,
 			FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 		EMFObjectIndividualReferenceObjectPropertyValue result = null;
 		RemoveEMFObjectIndividualReferenceObjectPropertyValue removeRefPropVal = factory
 				.newInstance(RemoveEMFObjectIndividualReferenceObjectPropertyValue.class);
-
+	
 		removeRefPropVal.setModelSlot(newModelSlot);
 		// addName.setObjectIndividual(objectIndividual);
 		// addName.setReferenceObjectProperty((EMFReferenceObjectProperty) emfMetaModelResource.getResourceData(null).getObjectProperty(
@@ -449,7 +447,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		// removeRefPropVal.finalizePerformAction(creationSchemeCreationAction, result);
 		return result;
 	}
-
+	
 	protected EMFObjectIndividual createParameterSet(EMFModelResource emfModelResource, EMFMetaModelResource emfMetaModelResource,
 			String name, List<EMFObjectIndividual> ownedParameters, FMLModelFactory factory) throws FileNotFoundException,
 			ResourceLoadingCancelledException, FlexoException {
@@ -466,14 +464,14 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		}
 		return result;
 	}
-
+	
 	protected EMFObjectIndividual createIntParameter(EMFModelResource emfModelResource, EMFMetaModelResource emfMetaModelResource,
 			String name, Integer value, FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 		EMFObjectIndividual result = null;
 		// IntParameter object
 		result = addEMFObjectIndividual(emfModelResource, "http://www.thalesgroup.com/parameters/1.0/IntParameterValue", factory);
-
+	
 		if (result != null) {
 			result.addToPropertyValue(
 					emfMetaModelResource.getResourceData(null).getDataProperty(
@@ -481,7 +479,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			result.addToPropertyValue(
 					emfMetaModelResource.getResourceData(null).getDataProperty(
 							"http://www.thalesgroup.com/parameters/1.0/IntParameterValue/value"), value);
-
+	
 			// TODO : this does not work yet
 			// Name parameter
 			// addEMFObjectIndividualAttributeDataPropertyValue(emfMetaModelResource, result,
@@ -494,23 +492,23 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		}
 		return result;
 	}
-
+	
 	protected EMFObjectIndividual createDoubleParameter(EMFModelResource emfModelResource, EMFMetaModelResource emfMetaModelResource,
 			String name, Double value, FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 		EMFObjectIndividual result = null;
 		// DoubleParameter object
 		result = addEMFObjectIndividual(emfModelResource, "http://www.thalesgroup.com/parameters/1.0/DoubleParameterValue", factory);
-
+	
 		if (result != null) {
-
+	
 			result.addToPropertyValue(
 					emfMetaModelResource.getResourceData(null).getDataProperty(
 							"http://www.thalesgroup.com/parameters/1.0/GenericParameter/name"), name);
 			result.addToPropertyValue(
 					emfMetaModelResource.getResourceData(null).getDataProperty(
 							"http://www.thalesgroup.com/parameters/1.0/DoubleParameterValue/value"), value);
-
+	
 			// TODO : this does not work yet
 			//
 			// Name parameter
@@ -519,13 +517,13 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			// Value parameter.
 			// addEMFObjectIndividualAttributeDataPropertyValue(emfMetaModelResource, result,
 			// "http://www.thalesgroup.com/parameters/1.0/DoubleParameterValue/value", value, factory);
-
+	
 		} else {
 			logger.warning("Unable to create a individual of type: http://www.thalesgroup.com/parameters/1.0/IntParameterValue");
 		}
 		return result;
 	}
-
+	
 	protected EMFObjectIndividual createBoolParameter(EMFModelResource emfModelResource, EMFMetaModelResource emfMetaModelResource,
 			String name, Boolean value, FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
@@ -540,7 +538,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 				"http://www.thalesgroup.com/parameters/1.0/BoolParameterValue/value", value, factory);
 		return result;
 	}
-
+	
 	protected EMFObjectIndividual createStringParameter(EMFModelResource emfModelResource, EMFMetaModelResource emfMetaModelResource,
 			String name, String value, FMLModelFactory factory) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {

@@ -147,7 +147,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 
 	protected OWLOntologyResource tryToLookupOntology(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
 		if (isValidOntologyFile(candidateFile)) {
-			OWLOntologyResource ontRes = retrieveOntologyResource(candidateFile);
+			OWLOntologyResource ontRes = retrieveOntologyResource(candidateFile, resourceCenter);
 			OWLOntologyAsModelRepository ontModelRepository = resourceCenter.getRepository(OWLOntologyAsModelRepository.class, this);
 			OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter.getRepository(OWLOntologyAsMetaModelRepository.class,
 					this);
@@ -202,11 +202,12 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		}
 	}
 
-	public OWLOntologyResource retrieveOntologyResource(File owlFile) {
+	public OWLOntologyResource retrieveOntologyResource(File owlFile, FlexoResourceCenter<?> resourceCenter) {
 
 		// logger.info("Retrieving OWL MetaModelResource for " + aMetaModelFile.getAbsolutePath());
 
-		OWLOntologyResource ontologyResource = OWLOntologyResourceImpl.retrieveOWLOntologyResource(owlFile, getOntologyLibrary());
+		OWLOntologyResource ontologyResource = OWLOntologyResourceImpl.retrieveOWLOntologyResource(owlFile, getOntologyLibrary(),
+				resourceCenter);
 		logger.info("Found OWL ontology " + ontologyResource.getURI() + " file:" + owlFile.getAbsolutePath());
 		return ontologyResource;
 
@@ -220,7 +221,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		logger.info("-------------> Create ontology for " + project.getProjectName());
 
 		File owlFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-		OWLOntologyResource returned = OWLOntologyResourceImpl.makeOWLOntologyResource(modelUri, owlFile, getOntologyLibrary());
+		OWLOntologyResource returned = OWLOntologyResourceImpl.makeOWLOntologyResource(modelUri, owlFile, getOntologyLibrary(), project);
 		OWLOntology ontology = returned.getModel();
 		if (metaModel != null) {
 			try {

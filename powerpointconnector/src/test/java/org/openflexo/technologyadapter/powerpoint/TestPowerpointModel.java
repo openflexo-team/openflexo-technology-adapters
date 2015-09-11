@@ -55,8 +55,8 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -131,10 +131,10 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 
 		ViewPoint newViewPoint = ViewPointImpl.newViewPoint("TestPPTViewPoint",
 				"http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint", resourceCenterDirectory,
-				testApplicationContext.getViewPointLibrary());
+				testApplicationContext.getViewPointLibrary(), resourceCenter);
 
-		assertNotNull(testApplicationContext.getViewPointLibrary().getViewPoint(
-				"http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint"));
+		assertNotNull(
+				testApplicationContext.getViewPointLibrary().getViewPoint("http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint"));
 
 		VirtualModel newVirtualModel = null;
 		try {
@@ -189,7 +189,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 
 		File pptFile = new File(generationDir, "generated_File.ppt");
 		modelRes = PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(pptFile.getAbsolutePath(), pptFile,
-				powerpointAdapter.getTechnologyContextManager());
+				powerpointAdapter.getTechnologyContextManager(), resourceCenter);
 		modelRes.save(null);
 		assertTrue(pptFile.exists());
 

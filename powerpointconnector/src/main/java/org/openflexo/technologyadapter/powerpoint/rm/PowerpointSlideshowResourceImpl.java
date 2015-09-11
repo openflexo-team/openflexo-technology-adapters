@@ -51,6 +51,7 @@ import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -69,7 +70,7 @@ import org.openflexo.toolbox.IProgress;
  * @author vincent,sguerin
  * 
  */
-public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<PowerpointSlideshow> implements PowerpointSlideshowResource {
+public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<PowerpointSlideshow>implements PowerpointSlideshowResource {
 
 	private static final Logger logger = Logger.getLogger(PowerpointSlideshowResourceImpl.class.getPackage().getName());
 
@@ -84,10 +85,10 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	 * @return
 	 */
 	public static PowerpointSlideshowResource makePowerpointSlideshowResource(String modelURI, File powerpointFile,
-			PowerpointTechnologyContextManager technologyContextManager) {
+			PowerpointTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					PowerpointSlideshowResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, PowerpointSlideshowResource.class));
 			PowerpointSlideshowResourceImpl returned = (PowerpointSlideshowResourceImpl) factory
 					.newInstance(PowerpointSlideshowResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -100,6 +101,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 			fileIODelegate.setFile(powerpointFile);
 
 			returned.setURI(modelURI);
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerResource(returned);
 
@@ -120,10 +122,10 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 	 * 
 	 */
 	public static PowerpointSlideshowResource retrievePowerpointSlideshowResource(File modelFile,
-			PowerpointTechnologyContextManager technologyContextManager) {
+			PowerpointTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					PowerpointSlideshowResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, PowerpointSlideshowResource.class));
 			PowerpointSlideshowResourceImpl returned = (PowerpointSlideshowResourceImpl) factory
 					.newInstance(PowerpointSlideshowResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -136,6 +138,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 			fileIODelegate.setFile(modelFile);
 
 			returned.setURI(modelFile.toURI().toString());
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerResource(returned);
 
@@ -191,7 +194,8 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 				FileOutputStream fos = new FileOutputStream(delegate.getFile());
 				ssOpenned.write(fos);
 				fos.close();
-			} else {
+			}
+			else {
 				FileInputStream fis = new FileInputStream(delegate.getFile());
 				ssOpenned = new SlideShow(fis);
 				BasicPowerpointModelConverter converter = new BasicPowerpointModelConverter();

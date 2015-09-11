@@ -132,7 +132,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		System.out.println("Generating " + f);
 		FlexoResource<DocXDocument> generatedResource = DocXDocumentResourceImpl.makeDocXDocumentResource(f,
-				technologicalAdapter.getTechnologyContextManager());
+				technologicalAdapter.getTechnologyContextManager(), resourceCenter);
 
 		WordprocessingMLPackage generatedPackage = new WordprocessingMLPackage();
 

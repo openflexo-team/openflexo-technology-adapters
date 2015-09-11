@@ -245,7 +245,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		log("testCreateViewPoint()");
 
 		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
-				((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), serviceManager.getViewPointLibrary());
+				((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), serviceManager.getViewPointLibrary(), resourceCenter);
 		viewPointResource = (ViewPointResource) viewPoint.getResource();
 		assertTrue(ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()).exists());
 		assertTrue(viewPointResource.getFlexoIODelegate().exists());

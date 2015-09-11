@@ -244,11 +244,11 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		if (returned == null) {
 			if (diagramSpecification instanceof File) {
 				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((File) diagramSpecification, folder,
-						getTechnologyAdapterService().getServiceManager());
+						folder.getResourceRepository().getResourceCenter(), getTechnologyAdapterService().getServiceManager());
 			}
 			else if (diagramSpecification instanceof InJarResourceImpl) {
 				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((InJarResourceImpl) diagramSpecification,
-						getTechnologyAdapterService().getServiceManager());
+						folder.getResourceRepository().getResourceCenter(), getTechnologyAdapterService().getServiceManager());
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerDiagramSpecification(returned);
@@ -265,10 +265,11 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new diagram resource stored in supplied diagram file
 	 * 
 	 */
-	private DiagramResource retrieveDiagramResource(File aDiagramFile) {
+	private DiagramResource retrieveDiagramResource(File aDiagramFile, FlexoResourceCenter<?> resourceCenter) {
 		DiagramResource returned = getTechnologyContextManager().getDiagramResource(aDiagramFile);
 		if (returned == null) {
-			returned = DiagramResourceImpl.retrieveDiagramResource(aDiagramFile, getTechnologyAdapterService().getServiceManager());
+			returned = DiagramResourceImpl.retrieveDiagramResource(aDiagramFile, resourceCenter,
+					getTechnologyAdapterService().getServiceManager());
 			if (returned != null) {
 				getTechnologyContextManager().registerDiagram(returned);
 			}
@@ -292,7 +293,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		// if (dsRepository != null) {
 		// for (DiagramSpecificationResource dsRes : dsRepository.getAllResources()) {
 		if (isValidDiagramFile(candidateFile)) {
-			DiagramResource diagramResource = retrieveDiagramResource(candidateFile);
+			DiagramResource diagramResource = retrieveDiagramResource(candidateFile, resourceCenter);
 			if (diagramResource != null) {
 				RepositoryFolder<DiagramResource> folder;
 				try {
@@ -342,7 +343,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	public DiagramResource createNewDiagram(FlexoProject project, String filename, String diagramUri,
 			DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
 		File diagramFile = new File(getProjectSpecificDiagramsDirectory(project), filename);
-		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource);
+		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource, project);
 		DiagramRepository diagramRepository = project.getRepository(DiagramRepository.class, this);
 		diagramRepository.registerResource(returned);
 		return returned;
@@ -352,17 +353,18 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 			String diagramUri, DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
 		File diagramDirectory = new File(resourceCenter.getRootDirectory(), relativePath);
 		File diagramFile = new File(diagramDirectory, filename);
-		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource);
+		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource,
+				resourceCenter);
 		DiagramRepository diagramRepository = resourceCenter.getRepository(DiagramRepository.class, this);
 		diagramRepository.registerResource(returned);
 		return returned;
 	}
 
 	public DiagramResource createNewDiagram(String diagramName, String diagramlUri, File diagramFile,
-			DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
+			DiagramSpecificationResource diagramSpecificationResource, FlexoResourceCenter<?> resourceCenter) throws SaveResourceException {
 
 		DiagramResource diagramResource = DiagramResourceImpl.makeDiagramResource(diagramName, diagramlUri, diagramFile,
-				diagramSpecificationResource, getTechnologyAdapterService().getServiceManager());
+				diagramSpecificationResource, resourceCenter, getTechnologyAdapterService().getServiceManager());
 
 		diagramResource.save(null);
 

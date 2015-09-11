@@ -113,7 +113,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	protected DocXDocumentResource tryToLookupDocX(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
 		DocXTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidDocX(candidateElement)) {
-			DocXDocumentResource docXDocumentResource = retrieveDocXResource(candidateElement);
+			DocXDocumentResource docXDocumentResource = retrieveDocXResource(candidateElement, resourceCenter);
 			referenceResource(docXDocumentResource, resourceCenter);
 			/*DocXDocumentRepository docXDocumentRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
 			if (docXDocumentResource != null) {
@@ -160,12 +160,13 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public DocXDocumentResource retrieveDocXResource(Object docXDocumentItem) {
+	public DocXDocumentResource retrieveDocXResource(Object docXDocumentItem, FlexoResourceCenter<?> resourceCenter) {
 
 		DocXDocumentResource returned = null; // getTechnologyContextManager().getExcelWorkbookResource(workbook);
 		if (returned == null) {
 			if (docXDocumentItem instanceof File) {
-				returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((File) docXDocumentItem, getTechnologyContextManager());
+				returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((File) docXDocumentItem, getTechnologyContextManager(),
+						resourceCenter);
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerDocXDocumentResource(returned);
@@ -275,7 +276,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		File docXFile = new File(resourceCenter.getDirectory() + relativePath, filename);
 
 		DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeDocXDocumentResource(docXFile,
-				getTechnologyContextManager());
+				getTechnologyContextManager(), resourceCenter);
 
 		referenceResource(docXDocumentResource, resourceCenter);
 

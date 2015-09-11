@@ -49,6 +49,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -71,7 +72,7 @@ import com.hp.hpl.jena.rdf.model.RDFWriter;
  * @author sguerin
  * 
  */
-public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntology> implements OWLOntologyResource {
+public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntology>implements OWLOntologyResource {
 
 	private static final Logger logger = Logger.getLogger(OWLOntologyResourceImpl.class.getPackage().getName());
 
@@ -85,10 +86,11 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	 * @param ontologyLibrary
 	 * @return
 	 */
-	public static OWLOntologyResource makeOWLOntologyResource(String ontologyURI, File owlFile, OWLOntologyLibrary ontologyLibrary) {
+	public static OWLOntologyResource makeOWLOntologyResource(String ontologyURI, File owlFile, OWLOntologyLibrary ontologyLibrary,
+			FlexoResourceCenter<?> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					OWLOntologyResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, OWLOntologyResource.class));
 			OWLOntologyResourceImpl returned = (OWLOntologyResourceImpl) factory.newInstance(OWLOntologyResource.class);
 			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
 			returned.setOntologyLibrary(ontologyLibrary);
@@ -101,11 +103,12 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 			// Register the ontology
 			ontologyLibrary.registerResource(returned);
 
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(ontologyLibrary.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 
 			// Creates the ontology
-			returned.setResourceData(OWLOntology.createOWLEmptyOntology(ontologyURI, owlFile, ontologyLibrary,
-					ontologyLibrary.getTechnologyAdapter()));
+			returned.setResourceData(
+					OWLOntology.createOWLEmptyOntology(ontologyURI, owlFile, ontologyLibrary, ontologyLibrary.getTechnologyAdapter()));
 			return returned;
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
@@ -122,10 +125,11 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	 * @param ontologyLibrary
 	 * @return
 	 */
-	public static OWLOntologyResource retrieveOWLOntologyResource(File owlFile, OWLOntologyLibrary ontologyLibrary) {
+	public static OWLOntologyResource retrieveOWLOntologyResource(File owlFile, OWLOntologyLibrary ontologyLibrary,
+			FlexoResourceCenter<?> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					OWLOntologyResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, OWLOntologyResource.class));
 			OWLOntologyResourceImpl returned = (OWLOntologyResourceImpl) factory.newInstance(OWLOntologyResource.class);
 			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
 			returned.setOntologyLibrary(ontologyLibrary);
@@ -134,6 +138,7 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
 
 			returned.setURI(OWLOntology.findOntologyURI(owlFile));
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(ontologyLibrary.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			// Register the ontology
 			ontologyLibrary.registerOntology(returned);
@@ -156,7 +161,8 @@ public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntol
 	 * @throws FlexoException
 	 */
 	@Override
-	public OWLOntology loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public OWLOntology loadResourceData(IProgress progress)
+			throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 		OWLOntology returned = new OWLOntology(getURI(), getFile(), getOntologyLibrary(), getTechnologyAdapter());
 		returned.setResource(this);
 		resourceData = returned;

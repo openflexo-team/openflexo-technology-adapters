@@ -105,10 +105,10 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 	}
 
-	protected ODTDocumentResource tryToLookupODT(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
+	protected <I> ODTDocumentResource tryToLookupODT(FlexoResourceCenter<I> resourceCenter, I candidateElement) {
 		ODTTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidODT(candidateElement)) {
-			ODTDocumentResource wbRes = retrieveODTResource(candidateElement);
+			ODTDocumentResource wbRes = retrieveODTResource(candidateElement, resourceCenter);
 			ODTDocumentRepository wbRepository = resourceCenter.getRepository(ODTDocumentRepository.class, this);
 			if (wbRes != null) {
 				RepositoryFolder<ODTDocumentResource> folder;
@@ -129,12 +129,13 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public ODTDocumentResource retrieveODTResource(Object odtDocumentItem) {
+	public ODTDocumentResource retrieveODTResource(Object odtDocumentItem, FlexoResourceCenter<?> resourceCenter) {
 
 		ODTDocumentResource returned = null; // getTechnologyContextManager().getExcelWorkbookResource(workbook);
 		if (returned == null) {
 			if (odtDocumentItem instanceof File) {
-				returned = ODTDocumentResourceImpl.retrieveODTDocumentResource((File) odtDocumentItem, getTechnologyContextManager());
+				returned = ODTDocumentResourceImpl.retrieveODTDocumentResource((File) odtDocumentItem, getTechnologyContextManager(),
+						resourceCenter);
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerODTDocumentResource(returned);

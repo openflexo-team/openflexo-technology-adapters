@@ -49,6 +49,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -67,7 +68,7 @@ import org.openflexo.toolbox.IProgress;
  * @author sguerin
  * 
  */
-public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> implements EMFModelResource {
+public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>implements EMFModelResource {
 
 	private static final Logger logger = Logger.getLogger(EMFModelResourceImpl.class.getPackage().getName());
 
@@ -85,10 +86,10 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 * @return
 	 */
 	public static EMFModelResource makeEMFModelResource(String modelURI, File modelFile, EMFMetaModelResource emfMetaModelResource,
-			EMFTechnologyContextManager technologyContextManager) {
+			EMFTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					EMFModelResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, EMFModelResource.class));
 			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
@@ -100,6 +101,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 			// TODO: URI should be defined by the parameter,because its not manageable (FOR NOW)
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerModel(returned);
 			// Creates the EMF model from scratch
@@ -132,10 +134,10 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 * @return
 	 */
 	public static EMFModelResource retrieveEMFModelResource(File modelFile, EMFMetaModelResource emfMetaModelResource,
-			EMFTechnologyContextManager technologyContextManager) {
+			EMFTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					EMFModelResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, EMFModelResource.class));
 			EMFModelResourceImpl returned = (EMFModelResourceImpl) factory.newInstance(EMFModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
@@ -145,6 +147,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerModel(returned);
 			return returned;
@@ -265,7 +268,8 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 			if (mmResource == null) {
 				logger.warning("EMFModel has no meta-model !!!");
 				return null;
-			} else {
+			}
+			else {
 				if (!mmResource.isLoaded()) {
 					try {
 						mmResource.loadResourceData(null);

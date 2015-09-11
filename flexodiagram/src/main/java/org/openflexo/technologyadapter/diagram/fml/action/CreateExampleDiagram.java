@@ -104,14 +104,15 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 	}
 
 	@Override
-	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException,
-			InvalidFileNameException {
+	protected void doAction(Object context)
+			throws NotImplementedException, InvalidParameterException, SaveResourceException, InvalidFileNameException {
 		logger.info("Add example diagram");
 
 		String newDiagramURI = getFocusedObject().getURI() + "/" + newDiagramName;
-		File newDiagramFile = new File(ResourceLocator.retrieveResourceAsFile(getFocusedObject().getResource().getDirectory()), newDiagramName + DiagramResource.DIAGRAM_SUFFIX);
+		File newDiagramFile = new File(ResourceLocator.retrieveResourceAsFile(getFocusedObject().getResource().getDirectory()),
+				newDiagramName + DiagramResource.DIAGRAM_SUFFIX);
 		newDiagramResource = DiagramImpl.newDiagramResource(newDiagramName, newDiagramTitle, newDiagramURI, newDiagramFile,
-				getFocusedObject(), getServiceManager());
+				getFocusedObject(), getFocusedObject().getResource().getResourceCenter(), getServiceManager());
 		getFocusedObject().getResource().addToContents(newDiagramResource);
 		getFocusedObject().addToExampleDiagrams(newDiagramResource.getDiagram());
 		newDiagramResource.getDiagram().setDescription(description);

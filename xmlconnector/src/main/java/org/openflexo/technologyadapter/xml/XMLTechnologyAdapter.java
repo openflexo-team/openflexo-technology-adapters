@@ -242,6 +242,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 					mmRes = XSDMetaModelResourceImpl.makeXSDMetaModelResource(candidateFile, uri, xmlContextManager);
 					mmRes.initName(candidateFile.getName());
+					mmRes.setResourceCenter(resourceCenter);
 					mmRes.setServiceManager(getTechnologyAdapterService().getServiceManager());
 				}
 				else {
@@ -292,7 +293,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				return null;
 			}
 
-			mRes = XMLFileResourceImpl.makeXMLFileResource(candidateFile, xmlContextManager);
+			mRes = XMLFileResourceImpl.makeXMLFileResource(candidateFile, xmlContextManager, resourceCenter);
 
 			if (mRes != null) {
 

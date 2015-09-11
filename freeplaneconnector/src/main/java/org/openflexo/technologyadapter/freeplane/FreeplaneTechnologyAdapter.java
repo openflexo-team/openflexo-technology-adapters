@@ -137,7 +137,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 			return;
 		}
 		final FreeplaneResourceImpl freeplaneResourceFile = (FreeplaneResourceImpl) FreeplaneResourceImpl
-				.makeFreeplaneResource(candidateFile, this.getTechnologyContextManager());
+				.makeFreeplaneResource(candidateFile, this.getTechnologyContextManager(), resourceCenter);
 		final FreeplaneResourceRepository resourceRepository = resourceCenter.getRepository(FreeplaneResourceRepository.class, this);
 		if (freeplaneResourceFile != null) {
 			try {
@@ -203,7 +203,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	public IFreeplaneResource createNewFreeplaneModel(final FlexoProject project, final String filename, final String modelUri) {
 		final File file = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
 		final FreeplaneResourceImpl freeplaneResourceFile = (FreeplaneResourceImpl) FreeplaneResourceImpl.makeFreeplaneResource(modelUri,
-				file, this.getTechnologyContextManager());
+				file, this.getTechnologyContextManager(), project);
 		this.getTechnologyContextManager().registerResource(freeplaneResourceFile);
 		return freeplaneResourceFile;
 	}
@@ -225,7 +225,8 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 
 		File freeplaneFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
 		String modelUri = freeplaneFile.toURI().toString();
-		IFreeplaneResource returned = FreeplaneResourceImpl.makeFreeplaneResource(modelUri, freeplaneFile, getTechnologyContextManager());
+		IFreeplaneResource returned = FreeplaneResourceImpl.makeFreeplaneResource(modelUri, freeplaneFile, getTechnologyContextManager(),
+				project);
 
 		// Maybe noi initialized yet
 		FreeplaneBasicAdapter.getInstance();

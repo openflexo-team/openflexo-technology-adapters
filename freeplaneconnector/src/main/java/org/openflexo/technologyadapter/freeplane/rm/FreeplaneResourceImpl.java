@@ -46,6 +46,7 @@ import org.freeplane.features.mode.Controller;
 import org.freeplane.features.mode.mindmapmode.MModeController;
 import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -62,7 +63,7 @@ import org.openflexo.toolbox.IProgress;
  * @author eloubout
  * 
  */
-public abstract class FreeplaneResourceImpl extends FlexoResourceImpl<IFreeplaneMap> implements IFreeplaneResource {
+public abstract class FreeplaneResourceImpl extends FlexoResourceImpl<IFreeplaneMap>implements IFreeplaneResource {
 
 	private static final Logger LOGGER = Logger.getLogger(FreeplaneResourceImpl.class.getPackage().getName());
 	private static ModelFactory MODEL_FACTORY;
@@ -77,10 +78,10 @@ public abstract class FreeplaneResourceImpl extends FlexoResourceImpl<IFreeplane
 	}
 
 	public static IFreeplaneResource makeFreeplaneResource(final String modelURI, final File modelFile,
-			final FreeplaneTechnologyContextManager technologyContextManager) {
+			final FreeplaneTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
-			final ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					IFreeplaneResource.class));
+			final ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, IFreeplaneResource.class));
 			final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
 
 			returned.initName(modelFile.getName());
@@ -91,6 +92,7 @@ public abstract class FreeplaneResourceImpl extends FlexoResourceImpl<IFreeplane
 			fileIODelegate.setFile(modelFile);
 
 			returned.setURI(modelURI);
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
@@ -105,10 +107,10 @@ public abstract class FreeplaneResourceImpl extends FlexoResourceImpl<IFreeplane
 	}
 
 	public static IFreeplaneResource makeFreeplaneResource(final File modelFile,
-			final FreeplaneTechnologyContextManager technologyContextManager) {
+			final FreeplaneTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
-			final ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					IFreeplaneResource.class));
+			final ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, IFreeplaneResource.class));
 			final FreeplaneResourceImpl returned = (FreeplaneResourceImpl) factory.newInstance(IFreeplaneResource.class);
 			returned.initName(modelFile.getName());
 			// returned.setFile(modelFile);
@@ -118,6 +120,7 @@ public abstract class FreeplaneResourceImpl extends FlexoResourceImpl<IFreeplane
 			fileIODelegate.setFile(modelFile);
 
 			returned.setURI(modelFile.toURI().toString());
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);

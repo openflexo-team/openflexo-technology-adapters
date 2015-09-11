@@ -112,7 +112,7 @@ public class TestDiagramResource extends OpenflexoTestCase {
 		try {
 			File diagramFile = new File(repository.getDirectory(), "myDiagram.diagram");
 			diagramResource = DiagramResourceImpl.makeDiagramResource("exampleDiagram1", "http://myExampleDiagram", diagramFile,
-					applicationContext);
+					resourceCenter, applicationContext);
 
 			assertNotNull(diagramResource);
 
@@ -176,7 +176,8 @@ public class TestDiagramResource extends OpenflexoTestCase {
 
 		log("testReloadDiagram()");
 
-		DiagramResource reloadedResource = DiagramResourceImpl.retrieveDiagramResource(((FileFlexoIODelegate)(diagramResource.getFlexoIODelegate())).getFile(), applicationContext);
+		DiagramResource reloadedResource = DiagramResourceImpl.retrieveDiagramResource(
+				((FileFlexoIODelegate) (diagramResource.getFlexoIODelegate())).getFile(), resourceCenter, applicationContext);
 		assertNotNull(reloadedResource);
 		assertNotSame(diagramResource, reloadedResource);
 		assertEquals(diagramResource.getURI(), reloadedResource.getURI());

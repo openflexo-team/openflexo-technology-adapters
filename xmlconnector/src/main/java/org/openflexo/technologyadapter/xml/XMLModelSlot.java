@@ -155,10 +155,12 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 				XMLURIProcessor p = retrieveURIProcessorForType(((XMLIndividual) o).getType());
 				if (p != null) {
 					return p.getURIForObject(msInstance, (XMLObject) o);
-				} else {
+				}
+				else {
 					logger.warning("Unable to calculate URI as I have no XMLURIProcessor");
 				}
-			} else if (o instanceof XMLType) {
+			}
+			else if (o instanceof XMLType) {
 				return ((XMLType) o).getURI();
 			}
 
@@ -291,7 +293,8 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> mmRes = this.getMetaModelResource();
 			if (mmRes != null) {
 				return mmRes.getMetaModelData();
-			} else
+			}
+			else
 				return null;
 		}
 
@@ -331,14 +334,16 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 				XSDMetaModelResource metaModelResource) {
 
 			XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile,
-					(XMLTechnologyContextManager) this.getModelSlotTechnologyAdapter().getTechnologyContextManager());
+					(XMLTechnologyContextManager) this.getModelSlotTechnologyAdapter().getTechnologyContextManager(),
+					modelRepository.getResourceCenter());
 
 			RepositoryFolder<XMLFileResource> folder;
 			try {
 				folder = modelRepository.getRepositoryFolder(xmlFile, true);
 				if (folder != null) {
 					modelRepository.registerResource(returned, folder);
-				} else {
+				}
+				else {
 					modelRepository.registerResource(returned);
 				}
 			} catch (IOException e1) {

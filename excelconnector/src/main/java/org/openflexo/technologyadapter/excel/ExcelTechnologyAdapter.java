@@ -132,7 +132,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	protected ExcelWorkbookResource tryToLookupWorkbook(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
 		ExcelTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidWorkbook(candidateElement)) {
-			ExcelWorkbookResource wbRes = retrieveWorkbookResource(candidateElement);
+			ExcelWorkbookResource wbRes = retrieveWorkbookResource(candidateElement, resourceCenter);
 			ExcelWorkbookRepository wbRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class, this);
 			if (wbRes != null) {
 				RepositoryFolder<ExcelWorkbookResource> folder;
@@ -153,16 +153,17 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public ExcelWorkbookResource retrieveWorkbookResource(Object workbook) {
+	public ExcelWorkbookResource retrieveWorkbookResource(Object workbook, FlexoResourceCenter<?> resourceCenter) {
 
 		ExcelWorkbookResource returned = getTechnologyContextManager().getExcelWorkbookResource(workbook);
 		if (returned == null) {
 			if (workbook instanceof File) {
-				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File) workbook, getTechnologyContextManager());
+				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File) workbook, getTechnologyContextManager(),
+						resourceCenter);
 			}
 			else if (workbook instanceof InJarResourceImpl) {
 				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((InJarResourceImpl) workbook,
-						getTechnologyContextManager());
+						getTechnologyContextManager(), resourceCenter);
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerExcelWorkbook(returned);
@@ -255,7 +256,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 		modelUri = excelFile.toURI().toString();
 
 		ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(modelUri, excelFile,
-				getTechnologyContextManager());
+				getTechnologyContextManager(), project);
 
 		getTechnologyContextManager().registerResource(workbookResource);
 

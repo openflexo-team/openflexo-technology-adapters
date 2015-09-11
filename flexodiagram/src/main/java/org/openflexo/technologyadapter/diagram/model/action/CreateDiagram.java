@@ -118,41 +118,42 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 	@Override
 	protected void doAction(Object context) throws InvalidFileNameException, SaveResourceException, InvalidArgumentException {
 
-		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
-				DiagramTechnologyAdapter.class);
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 		diagramResource = diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(),
-				getDiagramSpecification() != null ? getDiagramSpecification().getResource() : null);
+				getDiagramSpecification() != null ? getDiagramSpecification().getResource() : null,
+				getFocusedObject().getResourceRepository().getResourceCenter());
 
 		getFocusedObject().addToResources(diagramResource);
 
 		diagramResource.save(null);
 
 		/*	newVirtualModelInstanceName = JavaUtils.getClassName(newVirtualModelInstanceName);
-
+		
 			if (StringUtils.isNotEmpty(newVirtualModelInstanceName) && StringUtils.isEmpty(newVirtualModelInstanceTitle)) {
 				newVirtualModelInstanceTitle = newVirtualModelInstanceName;
 			}
-
+		
 			if (StringUtils.isEmpty(newVirtualModelInstanceName)) {
 				throw new InvalidParameterException("virtual model instance name is undefined");
 			}
-
+		
 			int index = 1;
 			String baseName = newVirtualModelInstanceName;
 			while (!getFocusedObject().isValidVirtualModelName(newVirtualModelInstanceName)) {
 				newVirtualModelInstanceName = baseName + index;
 				index++;
 			}
-
+		
 			VirtualModelInstanceResource newVirtualModelInstanceResource = makeVirtualModelInstanceResource();
-
+		
 			newVirtualModelInstance = newVirtualModelInstanceResource.getVirtualModelInstance();
-
+		
 			logger.info("Added virtual model instance " + newVirtualModelInstance + " in view " + getFocusedObject());
-
+		
 			System.out.println("OK, we have created the file " + newVirtualModelInstanceResource.getFile().getAbsolutePath());
-
+		
 			for (ModelSlot ms : virtualModel.getModelSlots()) {
 				ModelSlotInstanceConfiguration<?, ?> configuration = getModelSlotInstanceConfiguration(ms);
 				if (configuration.isValidConfiguration()) {
@@ -162,19 +163,19 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 							+ configuration);
 				}
 			}
-
+		
 			if (creationSchemeAction != null) {
 				creationSchemeAction.initWithFlexoConceptInstance(newVirtualModelInstance);
 				creationSchemeAction.doAction();
 			}
-
+		
 			System.out.println("Now, we try to synchronize the new virtual model instance");
-
+		
 			if (newVirtualModelInstance.isSynchronizable()) {
 				System.out.println("Go for it");
 				newVirtualModelInstance.synchronize(null);
 			}
-
+		
 			System.out.println("Saving file again...");
 			newVirtualModelInstanceResource.save(null);*/
 	}
