@@ -94,13 +94,15 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocume
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
+import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelNature;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the creation and some manipulations of a {@link VirtualModel} with {@link FMLControlledDocumentVirtualModelNature}<br>
+ * Test the creation and some manipulations of a {@link VirtualModel} with {@link FMLControlledDocXVirtualModelNature}<br>
  * We basically test here the generation of a plain document from a template, and the adding of a fragment at the end of the document
  * 
  * @author sylvain
@@ -184,8 +186,8 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	 * @throws ResourceLoadingCancelledException
 	 * @throws FlexoException
 	 */
-	private DocXDocumentResource getDocument(String documentName)
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
+			FlexoException {
 
 		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 			System.out.println("Resource " + r + " uri=" + r.getURI());
@@ -320,8 +322,8 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		System.out.println(virtualModel.getFMLModelFactory().stringRepresentation(virtualModel));
 
-		assertTrue(virtualModel.hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE));
-		assertEquals(docXModelSlot, FMLControlledDocumentVirtualModelNature.getDocumentModelSlot(virtualModel));
+		assertTrue(virtualModel.hasNature(FMLControlledDocXVirtualModelNature.INSTANCE));
+		assertEquals(docXModelSlot, FMLControlledDocXVirtualModelNature.getDocumentModelSlot(virtualModel));
 
 	}
 
@@ -397,11 +399,11 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertNull(docXMSInstance.getAccessedResourceData());
 		assertNotNull(docXMSInstance.getResource());
 
-		// The VMI does not have the FMLControlledDocumentVirtualModelInstanceNature yet, because document still null
-		assertFalse(newVirtualModelInstance.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
+		// The VMI does not have the FMLControlledDocXVirtualModelInstanceNature yet, because document still null
+		assertFalse(newVirtualModelInstance.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
 
-		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
-		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
+		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
+		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
 
 		// assertFalse(generatedDocument.isModified());
 		assertFalse(newVirtualModelInstance.isModified());
@@ -442,11 +444,11 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		// Resource data is the generated document now, and is not null
 		assertNotNull(generatedDocument = docXMSInstance.getAccessedResourceData());
 
-		// The VMI has now the FMLControlledDocumentVirtualModelInstanceNature yet, because document not null anymore
-		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
+		// The VMI has now the FMLControlledDocXVirtualModelInstanceNature yet, because document not null anymore
+		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
 
-		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
-		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
+		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
+		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
 
 		newVirtualModelInstance.getResource().save(null);
 		newView.getResource().save(null);
@@ -524,11 +526,11 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		vmiResource.loadResourceData(null);
 		assertNotNull(newVirtualModelInstance = vmiResource.getVirtualModelInstance());
 
-		assertTrue(newVirtualModelInstance.getVirtualModel().hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE));
+		assertTrue(newVirtualModelInstance.getVirtualModel().hasNature(FMLControlledDocXVirtualModelNature.INSTANCE));
 
-		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
+		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
 
-		ModelSlotInstance<DocXModelSlot, DocXDocument> msInstance = FMLControlledDocumentVirtualModelInstanceNature
+		ModelSlotInstance<DocXModelSlot, DocXDocument> msInstance = FMLControlledDocXVirtualModelInstanceNature
 				.getModelSlotInstance(newVirtualModelInstance);
 
 		assertNotNull(msInstance);

@@ -1,6 +1,6 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2014-2015, Openflexo
  * 
  * This file is part of Flexodiagram, a component of the software infrastructure 
  * developed at Openflexo.
@@ -36,55 +36,39 @@
  * 
  */
 
-package org.openflexo.technologyadapter.docx.fml;
+package org.openflexo.technologyadapter.docx.nature;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPointNature;
+import org.openflexo.foundation.doc.nature.FMLControlledDocumentFlexoConceptNature;
+import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.technologyadapter.docx.DocXModelSlot;
 
 /**
- * Define the "controlled-document" nature of a {@link ViewPoint}<br>
+ * Define the "controlled-document" nature of a {@link FlexoConcept}<br>
+ * 
  * 
  * @author sylvain
  * 
  */
-public class FMLControlledDocumentViewPointNature implements ViewPointNature {
+public class FMLControlledDocXFlexoConceptNature extends FMLControlledDocumentFlexoConceptNature<DocXModelSlot> {
 
-	public static FMLControlledDocumentViewPointNature INSTANCE = new FMLControlledDocumentViewPointNature();
+	public static FMLControlledDocXFlexoConceptNature INSTANCE = new FMLControlledDocXFlexoConceptNature();
 
 	// Prevent external instantiation
-	private FMLControlledDocumentViewPointNature() {
+	private FMLControlledDocXFlexoConceptNature() {
 	}
 
 	/**
-	 * Return boolean indicating if supplied {@link VirtualModelInstance} might be interpreted as a FML-Controlled document
+	 * Return boolean indicating if supplied {@link VirtualModel} might be interpreted as a FML-Controlled document
 	 */
 	@Override
-	public boolean hasNature(ViewPoint viewPoint) {
-		for (VirtualModel vm : viewPoint.getVirtualModels()) {
-			if (vm.hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE)) {
-				return true;
-			}
-		}
-		return false;
+	public boolean hasNature(FlexoConcept concept) {
+
+		return hasNature(concept, FMLControlledDocXVirtualModelNature.INSTANCE);
 	}
 
-	public static List<VirtualModel> getControlledDocumentVirtualModels(ViewPoint viewPoint) {
-		return INSTANCE._getControlledDocumentVirtualModels(viewPoint);
-	}
-
-	private List<VirtualModel> _getControlledDocumentVirtualModels(ViewPoint viewPoint) {
-		List<VirtualModel> returned = new ArrayList<VirtualModel>();
-		for (VirtualModel vm : viewPoint.getVirtualModels()) {
-			if (vm.hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE)) {
-				returned.add(vm);
-			}
-		}
-		return returned;
+	public static DocXModelSlot getDocumentModelSlot(FlexoConcept concept) {
+		return INSTANCE._getDocumentModelSlot(concept, FMLControlledDocXVirtualModelNature.INSTANCE);
 	}
 
 }

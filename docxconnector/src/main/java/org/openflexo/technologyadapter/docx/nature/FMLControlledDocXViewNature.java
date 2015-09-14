@@ -36,11 +36,12 @@
  * 
  */
 
-package org.openflexo.technologyadapter.docx.fml;
+package org.openflexo.technologyadapter.docx.nature;
 
+import org.openflexo.foundation.doc.nature.FMLControlledDocumentViewNature;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.ViewNature;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.technologyadapter.docx.DocXModelSlot;
 
 /**
  * Define the "controlled-diagram" nature of a {@link View}<br>
@@ -48,12 +49,12 @@ import org.openflexo.foundation.fml.rt.VirtualModelInstance;
  * @author sylvain
  * 
  */
-public class FMLControlledDocumentViewNature implements ViewNature {
+public class FMLControlledDocXViewNature extends FMLControlledDocumentViewNature<DocXModelSlot> {
 
-	public static FMLControlledDocumentViewNature INSTANCE = new FMLControlledDocumentViewNature();
+	public static FMLControlledDocXViewNature INSTANCE = new FMLControlledDocXViewNature();
 
 	// Prevent external instantiation
-	private FMLControlledDocumentViewNature() {
+	private FMLControlledDocXViewNature() {
 	}
 
 	/**
@@ -61,6 +62,6 @@ public class FMLControlledDocumentViewNature implements ViewNature {
 	 */
 	@Override
 	public boolean hasNature(View view) {
-		return view.getViewPoint() != null && view.getViewPoint().hasNature(FMLControlledDocumentViewPointNature.INSTANCE);
+		return hasNature(view, FMLControlledDocXViewPointNature.INSTANCE);
 	}
 }

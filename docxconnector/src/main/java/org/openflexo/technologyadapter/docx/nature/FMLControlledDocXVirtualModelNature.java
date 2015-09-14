@@ -36,50 +36,34 @@
  * 
  */
 
-package org.openflexo.technologyadapter.docx.fml;
+package org.openflexo.technologyadapter.docx.nature;
 
+import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelNature;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModelNature;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
- * Define the "controlled-document" nature of a {@link VirtualModel}<br>
+ * Define the "controlled-document" nature of a {@link VirtualModel} in DocX context<br>
  * 
- * A {@link FMLControlledDocumentVirtualModelNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
+ * A {@link FMLControlledDocXVirtualModelNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
  * 
  * @author sylvain
  * 
  */
-public class FMLControlledDocumentVirtualModelNature implements VirtualModelNature {
+public class FMLControlledDocXVirtualModelNature extends FMLControlledDocumentVirtualModelNature<DocXModelSlot> {
 
-	public static FMLControlledDocumentVirtualModelNature INSTANCE = new FMLControlledDocumentVirtualModelNature();
+	public static FMLControlledDocXVirtualModelNature INSTANCE = new FMLControlledDocXVirtualModelNature();
 
 	// Prevent external instantiation
-	private FMLControlledDocumentVirtualModelNature() {
+	private FMLControlledDocXVirtualModelNature() {
 	}
 
-	/**
-	 * Return boolean indicating if supplied {@link VirtualModel} might be interpreted as a FML-Controlled document
-	 */
 	@Override
-	public boolean hasNature(AbstractVirtualModel<?> virtualModel) {
-
-		// VirtualModel should have one and only one TypedDocumentModelSlot
-		if (virtualModel.getModelSlots(DocXModelSlot.class).size() != 1) {
-			return false;
-		}
-
-		DocXModelSlot documentMS = virtualModel.getModelSlots(DocXModelSlot.class).get(0);
-
-		// The unique DocXModelSlot should define a template (a DocXDocument)
-		if (documentMS.getTemplateResource() == null) {
-			return false;
-		}
-
-		return true;
+	public Class<DocXModelSlot> getModelSlotClass() {
+		return DocXModelSlot.class;
 	}
 
 	public static boolean hasDocumentTemplate(AbstractVirtualModel<?> virtualModel, DocXDocumentResource templateResource) {
@@ -90,10 +74,4 @@ public class FMLControlledDocumentVirtualModelNature implements VirtualModelNatu
 		return INSTANCE._getDocumentModelSlot(virtualModel);
 	}
 
-	private DocXModelSlot _getDocumentModelSlot(AbstractVirtualModel<?> virtualModel) {
-		if (virtualModel != null && virtualModel.getModelSlots(DocXModelSlot.class).size() == 1) {
-			return virtualModel.getModelSlots(DocXModelSlot.class).get(0);
-		}
-		return null;
-	}
 }

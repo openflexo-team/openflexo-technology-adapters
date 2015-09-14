@@ -36,28 +36,34 @@
  * 
  */
 
-package org.openflexo.technologyadapter.docx.fml;
+package org.openflexo.technologyadapter.docx.nature;
 
+import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelInstanceNature;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 
 /**
  * Define the "controlled-document" nature of a {@link VirtualModelInstance}<br>
  * 
- * A {@link FMLControlledDocumentVirtualModelInstanceNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
+ * A {@link FMLControlledDocXVirtualModelInstanceNature} might be seen as an interpretation of a given {@link VirtualModelInstance}
  * 
  * @author sylvain
  * 
  */
-public class FMLControlledDocumentVirtualModelInstanceNature implements VirtualModelInstanceNature {
+public class FMLControlledDocXVirtualModelInstanceNature extends
+		FMLControlledDocumentVirtualModelInstanceNature<DocXModelSlot, DocXDocument> {
 
-	public static FMLControlledDocumentVirtualModelInstanceNature INSTANCE = new FMLControlledDocumentVirtualModelInstanceNature();
+	public static FMLControlledDocXVirtualModelInstanceNature INSTANCE = new FMLControlledDocXVirtualModelInstanceNature();
 
 	// Prevent external instantiation
-	private FMLControlledDocumentVirtualModelInstanceNature() {
+	private FMLControlledDocXVirtualModelInstanceNature() {
+	}
+
+	@Override
+	public Class<DocXModelSlot> getModelSlotClass() {
+		return DocXModelSlot.class;
 	}
 
 	/**
@@ -66,27 +72,7 @@ public class FMLControlledDocumentVirtualModelInstanceNature implements VirtualM
 	@Override
 	public boolean hasNature(VirtualModelInstance virtualModelInstance) {
 
-		System.out.println("virtualModelInstance=" + virtualModelInstance);
-		System.out.println("virtualModelInstance.getVirtualModel()=" + virtualModelInstance.getVirtualModel());
-
-		// The corresponding VirtualModel should have FMLControlledDiagramVirtualModelNature
-		if (!virtualModelInstance.getVirtualModel().hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE)) {
-			return false;
-		}
-
-		DocXModelSlot documentMS = virtualModelInstance.getVirtualModel().getModelSlots(DocXModelSlot.class).get(0);
-
-		ModelSlotInstance<DocXModelSlot, DocXDocument> msInstance = virtualModelInstance.getModelSlotInstance(documentMS);
-
-		if (msInstance == null) {
-			return false;
-		}
-
-		if (msInstance.getAccessedResourceData() == null) {
-			return false;
-		}
-
-		return true;
+		return hasNature(virtualModelInstance, FMLControlledDocXVirtualModelNature.INSTANCE);
 	}
 
 	public static ModelSlotInstance<DocXModelSlot, DocXDocument> getModelSlotInstance(VirtualModelInstance virtualModelInstance) {
@@ -97,16 +83,4 @@ public class FMLControlledDocumentVirtualModelInstanceNature implements VirtualM
 	public static DocXDocument getDocument(VirtualModelInstance virtualModelInstance) {
 		return INSTANCE._getDocument(virtualModelInstance);
 	}
-
-	private ModelSlotInstance<DocXModelSlot, DocXDocument> _getModelSlotInstance(VirtualModelInstance virtualModelInstance) {
-		DocXModelSlot documentMS = virtualModelInstance.getVirtualModel().getModelSlots(DocXModelSlot.class).get(0);
-
-		return virtualModelInstance.getModelSlotInstance(documentMS);
-
-	}
-
-	private DocXDocument _getDocument(VirtualModelInstance virtualModelInstance) {
-		return _getModelSlotInstance(virtualModelInstance).getAccessedResourceData();
-	}
-
 }
