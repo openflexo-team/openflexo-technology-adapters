@@ -137,8 +137,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			/*if (getAssignation().isSet()) {
 				out.append(getAssignation().toString() + " = (", context);
 			}*/
-			out.append(getClass().getSimpleName() + " conformTo ShapeSpecification from " + getModelSlot().getName() + " {"
-					+ StringUtils.LINE_SEPARATOR, context);
+			out.append((getModelSlot() != null ? getModelSlot().getName() + "." : "") + getTechnologyAdapterIdentifier() + "::"
+					+ getImplementedInterface().getSimpleName() + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
 			out.append("}", context);
 			/*if (getAssignation().isSet()) {
@@ -164,8 +164,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 						return getContainer().getBindingValue(evaluationContext);
 					} else {
 						// In case the toplevel is not specified set o the diagram top level.
-						return (DiagramContainerElement<?>) getModelSlotInstance(((FlexoBehaviourAction<?, ?, ?>) evaluationContext))
-								.getAccessedResourceData();
+						return (DiagramContainerElement<?>) getModelSlotInstance((evaluationContext)).getAccessedResourceData();
 					}
 
 				} catch (TypeMismatchException e) {
