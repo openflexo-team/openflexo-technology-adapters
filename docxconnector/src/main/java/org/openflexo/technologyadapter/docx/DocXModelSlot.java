@@ -83,7 +83,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 	public void setTemplateResource(DocXDocumentResource templateResource);
 
 	// Implem
-	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument>implements DocXModelSlot {
+	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument> implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 
@@ -123,6 +123,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 			DocXDocumentResource returned = (DocXDocumentResource) performSuperGetter(TEMPLATE_RESOURCE_KEY);
 			if (returned == null && StringUtils.isNotEmpty(templateDocumentURI) && getServiceManager().getResourceManager() != null) {
 				returned = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI, null);
+				System.out.println("templateResource = " + returned);
 			}
 			return returned;
 		}
@@ -130,7 +131,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		@Override
 		public TechnologyAdapterResource<DocXDocument, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
 
-			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getProject(), filename, false);
+			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getProject(), filename, true);
 		}
 
 		@Override
