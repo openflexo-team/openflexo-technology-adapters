@@ -74,7 +74,7 @@ import org.openflexo.xml.XMLRootElementReader;
  * @author xtof
  * 
  */
-public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel>implements XMLFileResource {
+public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> implements XMLFileResource {
 
 	protected static final Logger logger = Logger.getLogger(XMLFileResourceImpl.class.getPackage().getName());
 	protected static XMLRootElementReader REreader = new XMLRootElementReader();
@@ -93,8 +93,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel>imp
 	public static XMLFileResource makeXMLFileResource(File xmlFile, XMLTechnologyContextManager technologyContextManager,
 			FlexoResourceCenter<?> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, XMLFileResource.class));
+			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+					XMLFileResource.class));
 			XMLFileResourceImpl returned = (XMLFileResourceImpl) factory.newInstance(XMLFileResource.class);
 			returned.initName(xmlFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xmlFile, factory));
@@ -170,13 +170,13 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel>imp
 	/**
 	 * URI here is the full path to the file
 	 */
-	@Override
+	/*@Override
 	public String getURI() {
 		if (getFile() != null) {
 			return getFile().toURI().toString();
 		}
 		return "uri_not_found";
-	}
+	}*/
 
 	/**
 	 * Retrieves the target Namespace from the file when not loaded or from MetamModel when it is loaded and exists
@@ -191,8 +191,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel>imp
 			XMLRootElementInfo rootInfo;
 			rootInfo = REreader.readRootElement(this.getFile());
 			return rootInfo.getURI();
-		}
-		else {
+		} else {
 			return this.getModel().getMetaModel().getURI();
 		}
 
@@ -203,8 +202,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel>imp
 			XMLRootElementInfo rootInfo;
 			rootInfo = REreader.readRootElement(f);
 			return rootInfo.getURI();
-		}
-		else {
+		} else {
 			throw new IOException("File Not Found ");
 		}
 	}
@@ -318,8 +316,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel>imp
 	}
 
 	@Override
-	public synchronized XMLModel getResourceData(IProgress progress)
-			throws ResourceLoadingCancelledException, ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public synchronized XMLModel getResourceData(IProgress progress) throws ResourceLoadingCancelledException,
+			ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		if (isLoading()) {
 			logger.warning("trying to load a resource data from itself, please investigate");
