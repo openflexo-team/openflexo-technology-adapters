@@ -101,6 +101,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 			I item = it.next();
 			// if (item instanceof File) {
 			// System.out.println("searching " + item);
+			// }
 			// File candidateFile = (File) item;
 			DocXDocumentResource wbRes = tryToLookupDocX(resourceCenter, item);
 			// }

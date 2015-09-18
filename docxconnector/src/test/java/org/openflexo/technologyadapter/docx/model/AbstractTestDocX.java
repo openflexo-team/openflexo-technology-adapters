@@ -53,11 +53,20 @@ public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase
 	protected static final Logger logger = Logger.getLogger(AbstractTestDocX.class.getPackage().getName());
 
 	protected DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
+
+		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + "TestResourceCenter" + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 
 		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
+
+		if (documentResource == null) {
+			System.out.println("Cannot find: " + documentURI);
+			for (FlexoResource r : resourceCenter.getAllResources()) {
+				System.out.println(" > " + r.getURI());
+			}
+		}
+
 		assertNotNull(documentResource);
 
 		DocXDocument document = null;

@@ -239,7 +239,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 
-		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
+		/*for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 			System.out.println("Resource " + r + " uri=" + r.getURI());
 		}
 
@@ -247,7 +247,21 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		System.out.println("Searching " + documentURI);
 
 		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
+				DocXDocument.class);*/
+
+		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + "TestResourceCenter" + File.separator + documentName;
+		System.out.println("Searching " + documentURI);
+
+		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
+
+		if (documentResource == null) {
+			System.out.println("Cannot find: " + documentURI);
+			for (FlexoResource r : resourceCenter.getAllResources()) {
+				System.out.println(" > " + r.getURI());
+			}
+		}
+
 		assertNotNull(documentResource);
 
 		DocXDocument document = documentResource.getResourceData(null);

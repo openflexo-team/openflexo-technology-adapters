@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.docx.gui;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.junit.After;
@@ -76,6 +75,7 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 	private static DocXDocument structuredDocument;
 	private static DocXDocument documentWithTable;
 	private static DocXDocument documentWithImage;
+	private static DocXDocument exampleReport;
 
 	@BeforeClass
 	public static void setupClass() {
@@ -84,11 +84,18 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 	}
 
 	private DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
-		System.out.println("Searching " + documentURI);
+		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter/" + documentName;
 
 		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
+
+		if (documentResource == null) {
+			System.out.println("Cannot find: " + documentURI);
+			for (FlexoResource r : resourceCenter.getAllResources()) {
+				System.out.println(" > " + r.getURI());
+			}
+		}
+
 		assertNotNull(documentResource);
 
 		try {
@@ -155,6 +162,14 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		openDocXEditor(documentWithImage.getResource());
 	}
 
+	@Test
+	@TestOrder(6)
+	public void testOpenExampleReportEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		exampleReport = getDocument("ExampleReport.docx");
+		assertNotNull(exampleReport);
+		openDocXEditor(exampleReport.getResource());
+	}
+
 	public static void initGUI() {
 		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
 	}
@@ -175,8 +190,8 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		gcDelegate.tearDown();
 	}
 
-	private void openDocXEditor(FlexoResource<DocXDocument> docResource)
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	private void openDocXEditor(FlexoResource<DocXDocument> docResource) throws FileNotFoundException, ResourceLoadingCancelledException,
+			FlexoException {
 
 		/*DefaultLocalFileProvider p = new DefaultLocalFileProvider();
 		File f = ((FileFlexoIODelegate) docResource.getFlexoIODelegate()).getFile();
