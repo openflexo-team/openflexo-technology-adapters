@@ -89,12 +89,12 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
 
-		if (documentResource == null) {
+		/*if (documentResource == null) {
 			System.out.println("Cannot find: " + documentURI);
 			for (FlexoResource r : resourceCenter.getAllResources()) {
 				System.out.println(" > " + r.getURI());
 			}
-		}
+		}*/
 
 		assertNotNull(documentResource);
 
