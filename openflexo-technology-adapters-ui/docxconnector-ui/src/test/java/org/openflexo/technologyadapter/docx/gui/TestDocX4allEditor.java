@@ -48,11 +48,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.gui.widget.DocXEditor;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -67,7 +67,7 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
+public class TestDocX4allEditor extends AbstractTestDocX {
 
 	private static GraphicalContextDelegate gcDelegate;
 
@@ -83,18 +83,11 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		initGUI();
 	}
 
-	private DocXDocument getDocument(String documentName) {
+	/*private DocXDocument getDocument(String documentName) {
 		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter/" + documentName;
 
 		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
-
-		/*if (documentResource == null) {
-			System.out.println("Cannot find: " + documentURI);
-			for (FlexoResource r : resourceCenter.getAllResources()) {
-				System.out.println(" > " + r.getURI());
-			}
-		}*/
 
 		assertNotNull(documentResource);
 
@@ -116,7 +109,7 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		assertNotNull(document.getWordprocessingMLPackage());
 
 		return document;
-	}
+	}*/
 
 	@Test
 	@TestOrder(1)
