@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.docx.model;
+package org.openflexo.technologyadapter.docx;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -46,27 +46,30 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(AbstractTestDocX.class.getPackage().getName());
 
-	protected DocXDocument getDocument(String documentName) {
+	protected DocXDocumentResource getDocumentResource(String documentName) {
 
 		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + "TestResourceCenter" + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 
-		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
+		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
 
-		if (documentResource == null) {
-			System.out.println("Cannot find: " + documentURI);
-			for (FlexoResource r : resourceCenter.getAllResources()) {
-				System.out.println(" > " + r.getURI());
-			}
-		}
+		assertNotNull(documentResource);
 
+		return documentResource;
+
+	}
+
+	protected DocXDocument getDocument(String documentName) {
+
+		DocXDocumentResource documentResource = getDocumentResource(documentName);
 		assertNotNull(documentResource);
 
 		DocXDocument document = null;

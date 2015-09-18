@@ -53,6 +53,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
@@ -91,7 +92,7 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 		System.out.println("newDocResource=" + newDocResource);
 
 		assertNotNull(newDocResource);
-		assertEquals("http://openflexo.org/test/TestResourceCenter/TestDocumentWithTable.docx", newDocResource.getURI());
+		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestDocumentWithTable.docx", newDocResource.getURI());
 
 		assertNotNull(newDocument = newDocResource.getResourceData(null));
 

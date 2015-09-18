@@ -56,6 +56,7 @@ import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
@@ -98,7 +99,7 @@ public class TestCreateBasicDocXDocument extends AbstractTestDocX {
 		System.out.println("newDocResource=" + newDocResource);
 
 		assertNotNull(newDocResource);
-		assertEquals("http://openflexo.org/test/TestResourceCenter/TestBasicDocument.docx", newDocResource.getURI());
+		assertEquals("http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx", newDocResource.getURI());
 
 		assertNotNull(newDocument = newDocResource.getResourceData(null));
 
@@ -238,8 +239,8 @@ public class TestCreateBasicDocXDocument extends AbstractTestDocX {
 			e.printStackTrace();
 		}
 
-		assertNotNull(newDocResource = (DocXDocumentResource) serviceManager.getResourceManager()
-				.getResource("http://openflexo.org/test/TestResourceCenter/TestBasicDocument.docx", null));
+		assertNotNull(newDocResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(
+				"http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx", null));
 
 		newDocument = newDocResource.getDocument();
 		assertNotSame(documentBeforeReload, newDocument);

@@ -46,7 +46,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.StringTokenizer;
 
@@ -56,7 +55,6 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.FlexoRun;
 import org.openflexo.foundation.doc.TextSelection;
@@ -106,10 +104,10 @@ import org.openflexo.foundation.fml.rt.editionaction.MatchingCriteria;
 import org.openflexo.foundation.fml.rt.editionaction.SelectFlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
 import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -142,7 +140,7 @@ import org.openflexo.toolbox.StringUtils;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
+public class TestLibrary extends AbstractTestDocX {
 
 	private final String VIEWPOINT_NAME = "TestLibraryViewPoint";
 	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestLibraryViewPoint";
@@ -218,7 +216,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 
 		log("testLoadTemplate()");
 
-		templateResource = getDocument("ExampleLibrary.docx");
+		templateResource = getDocumentResource("ExampleLibrary.docx");
 
 		assertNotNull(templateDocument = templateResource.getResourceData(null));
 
@@ -236,18 +234,9 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 	 * @throws ResourceLoadingCancelledException
 	 * @throws FlexoException
 	 */
-	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
+	/*private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 
-		/*for (FlexoResource<?> r : resourceCenter.getAllResources()) {
-			System.out.println("Resource " + r + " uri=" + r.getURI());
-		}
-
-		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
-		System.out.println("Searching " + documentURI);
-
-		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
-				DocXDocument.class);*/
 
 		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + "TestResourceCenter" + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
@@ -269,7 +258,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(document.getWordprocessingMLPackage());
 
 		return documentResource;
-	}
+	}*/
 
 	/**
 	 * Create a brand new project
@@ -1117,7 +1106,7 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		docXModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource);
 		docXModelSlotInstanceConfiguration.setRelativePath("DocX");
 		docXModelSlotInstanceConfiguration.setFilename("GeneratedDocument.docx");
-		docXModelSlotInstanceConfiguration.setResourceUri("GeneratedDocument.docx");
+		// docXModelSlotInstanceConfiguration.setResourceUri("GeneratedDocument.docx");
 		assertTrue(docXModelSlotInstanceConfiguration.isValidConfiguration());
 
 		action.doAction();
@@ -1137,12 +1126,12 @@ public class TestLibrary extends OpenflexoProjectAtRunTimeTestCase {
 		FreeModelSlotInstance<DocXDocument, DocXModelSlot> docXMSInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) documentVMI
 				.getModelSlotInstances().get(1);
 		assertNotNull(docXMSInstance);
-		// Only resource was created, resource data remains null here
-		assertNull(docXMSInstance.getAccessedResourceData());
+		// document is blank but not null
+		assertNotNull(docXMSInstance.getAccessedResourceData());
 		assertNotNull(docXMSInstance.getResource());
 
-		// The VMI does not have the FMLControlledDocXVirtualModelInstanceNature yet, because document still null
-		assertFalse(documentVMI.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
+		// The VMI should have the FMLControlledDocXVirtualModelInstanceNature
+		assertTrue(documentVMI.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
 
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI));
 		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(documentVMI).getModelSlot());
