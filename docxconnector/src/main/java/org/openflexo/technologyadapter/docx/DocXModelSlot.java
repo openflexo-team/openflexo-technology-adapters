@@ -83,7 +83,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 	public void setTemplateResource(DocXDocumentResource templateResource);
 
 	// Implem
-	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument>implements DocXModelSlot {
+	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument> implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 
@@ -124,6 +124,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 			if (returned == null && StringUtils.isNotEmpty(templateDocumentURI) && getServiceManager().getResourceManager() != null) {
 				System.out.println("On cherche " + templateDocumentURI);
 				returned = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI, null);
+				System.out.println("templateResource = " + returned);
 			}
 			return returned;
 		}
