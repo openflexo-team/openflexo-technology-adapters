@@ -50,8 +50,8 @@ import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXViewNature;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelNature;
 
-public class CreateFMLControlledDocXVirtualModelInstance extends
-		CreateFMLControlledDocumentVirtualModelInstance<CreateFMLControlledDocXVirtualModelInstance> {
+public class CreateFMLControlledDocXVirtualModelInstance
+		extends CreateFMLControlledDocumentVirtualModelInstance<CreateFMLControlledDocXVirtualModelInstance> {
 
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDocXVirtualModelInstance.class.getPackage().getName());
 
@@ -77,4 +77,5 @@ public class CreateFMLControlledDocXVirtualModelInstance extends
 	public FMLControlledDocumentVirtualModelNature<?> getVirtualModelNature() {
 		return FMLControlledDocXVirtualModelNature.INSTANCE;
 	}
+
 }

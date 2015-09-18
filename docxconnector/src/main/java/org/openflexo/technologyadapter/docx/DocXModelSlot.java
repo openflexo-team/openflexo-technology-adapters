@@ -122,6 +122,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		public DocXDocumentResource getTemplateResource() {
 			DocXDocumentResource returned = (DocXDocumentResource) performSuperGetter(TEMPLATE_RESOURCE_KEY);
 			if (returned == null && StringUtils.isNotEmpty(templateDocumentURI) && getServiceManager().getResourceManager() != null) {
+				System.out.println("On cherche " + templateDocumentURI);
 				returned = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI, null);
 				System.out.println("templateResource = " + returned);
 			}

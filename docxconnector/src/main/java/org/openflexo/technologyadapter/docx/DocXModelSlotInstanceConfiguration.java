@@ -20,6 +20,9 @@
 
 package org.openflexo.technologyadapter.docx;
 
+import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -34,6 +37,11 @@ public class DocXModelSlotInstanceConfiguration extends FreeModelSlotInstanceCon
 	}
 
 	@Override
+	public boolean isValidConfiguration() {
+		return super.isValidConfiguration();
+	}
+
+	@Override
 	public void setOption(ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		// TODO : add specific options here
@@ -41,9 +49,16 @@ public class DocXModelSlotInstanceConfiguration extends FreeModelSlotInstanceCon
 
 	@Override
 	public String getResourceUri() {
-		if (getOption() == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource) {
+		String returned = super.getResourceUri();
+		if (returned == null && getOption() == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource) {
 			return getAction().getFocusedObject().getProject().getURI() + getRelativePath() + getFilename();
 		}
-		return super.getResourceUri();
+		return returned;
+	}
+
+	@Override
+	public FreeModelSlotInstance<DocXDocument, DocXModelSlot> createModelSlotInstance(VirtualModelInstance vmInstance, View view) {
+		// TODO Auto-generated method stub
+		return super.createModelSlotInstance(vmInstance, view);
 	}
 }

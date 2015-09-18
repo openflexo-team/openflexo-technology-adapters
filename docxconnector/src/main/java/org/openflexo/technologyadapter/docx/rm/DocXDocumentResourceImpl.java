@@ -229,15 +229,4 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 		return (FileFlexoIODelegate) getFlexoIODelegate();
 	}
 
-	/*@Override
-	public String getURI() {
-		if (getResourceCenter() != null) {
-			return getResourceCenter().getDefaultBaseURI() + File.separator + getName();
-		}
-		String returned = (String) performSuperGetter(URI);
-		if (returned == null && getFile() != null) {
-			return getFile().toURI().toString();
-		}
-		return returned;
-	}*/
 }

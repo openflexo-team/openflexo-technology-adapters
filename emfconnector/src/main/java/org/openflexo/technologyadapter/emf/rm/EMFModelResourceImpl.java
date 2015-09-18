@@ -116,15 +116,6 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	}
 
 	/**
-	 * URI here is the full path to the file
-	 */
-	/*@Override
-	public String getURI() {
-		// TODO FIX THIS When refactoring with clean IoDelegate support
-		return ((FileFlexoIODelegate) getFlexoIODelegate()).getFile().toURI().toString();
-	}*/
-
-	/**
 	 * Instanciates a new {@link EMFModelResource} asserting we are about to built a resource matching an existing file in the file system<br>
 	 * This method should not be used to explicitely build a new ontology
 	 * 

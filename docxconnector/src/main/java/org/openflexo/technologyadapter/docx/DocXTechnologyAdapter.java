@@ -148,8 +148,8 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		if (docXDocumentResource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
 			RepositoryFolder<DocXDocumentResource> folder;
 			try {
-				folder = docXDocumentRepository.getRepositoryFolder(
-						((FileFlexoIODelegate) docXDocumentResource.getFlexoIODelegate()).getFile(), true);
+				folder = docXDocumentRepository
+						.getRepositoryFolder(((FileFlexoIODelegate) docXDocumentResource.getFlexoIODelegate()).getFile(), true);
 				docXDocumentRepository.registerResource(docXDocumentResource, folder);
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -171,7 +171,8 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerDocXDocumentResource(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve DocXDocumentResource resource for " + docXDocumentItem);
 			}
 		}
@@ -182,7 +183,8 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	public boolean isValidDocX(Object candidateElement) {
 		if (candidateElement instanceof File && isValidDocXFile(((File) candidateElement))) {
 			return true;
-		} else if (candidateElement instanceof InJarResourceImpl && isValidDocXInJar((InJarResourceImpl) candidateElement)) {
+		}
+		else if (candidateElement instanceof InJarResourceImpl && isValidDocXInJar((InJarResourceImpl) candidateElement)) {
 			return true;
 		}
 		return false;

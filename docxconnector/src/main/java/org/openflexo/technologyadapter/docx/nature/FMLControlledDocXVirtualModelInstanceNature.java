@@ -52,8 +52,8 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
  * @author sylvain
  * 
  */
-public class FMLControlledDocXVirtualModelInstanceNature extends
-		FMLControlledDocumentVirtualModelInstanceNature<DocXModelSlot, DocXDocument> {
+public class FMLControlledDocXVirtualModelInstanceNature
+		extends FMLControlledDocumentVirtualModelInstanceNature<DocXModelSlot, DocXDocument> {
 
 	public static FMLControlledDocXVirtualModelInstanceNature INSTANCE = new FMLControlledDocXVirtualModelInstanceNature();
 
@@ -73,6 +73,11 @@ public class FMLControlledDocXVirtualModelInstanceNature extends
 	public boolean hasNature(VirtualModelInstance virtualModelInstance) {
 
 		return hasNature(virtualModelInstance, FMLControlledDocXVirtualModelNature.INSTANCE);
+	}
+
+	public static DocXModelSlot getModelSlot(VirtualModelInstance virtualModelInstance) {
+		return INSTANCE._getModelSlot(virtualModelInstance);
+
 	}
 
 	public static ModelSlotInstance<DocXModelSlot, DocXDocument> getModelSlotInstance(VirtualModelInstance virtualModelInstance) {
