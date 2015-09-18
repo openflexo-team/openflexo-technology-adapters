@@ -122,6 +122,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		public DocXDocumentResource getTemplateResource() {
 			DocXDocumentResource returned = (DocXDocumentResource) performSuperGetter(TEMPLATE_RESOURCE_KEY);
 			if (returned == null && StringUtils.isNotEmpty(templateDocumentURI) && getServiceManager().getResourceManager() != null) {
+				System.out.println("On cherche " + templateDocumentURI);
 				returned = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI, null);
 			}
 			return returned;
@@ -130,7 +131,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		@Override
 		public TechnologyAdapterResource<DocXDocument, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
 
-			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getProject(), filename, false);
+			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getProject(), filename, true);
 		}
 
 		@Override

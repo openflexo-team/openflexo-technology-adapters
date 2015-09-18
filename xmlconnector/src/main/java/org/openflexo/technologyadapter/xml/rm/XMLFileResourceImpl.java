@@ -168,17 +168,6 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel>imp
 	}
 
 	/**
-	 * URI here is the full path to the file
-	 */
-	@Override
-	public String getURI() {
-		if (getFile() != null) {
-			return getFile().toURI().toString();
-		}
-		return "uri_not_found";
-	}
-
-	/**
 	 * Retrieves the target Namespace from the file when not loaded or from MetamModel when it is loaded and exists
 	 * 
 	 * @throws IOException
