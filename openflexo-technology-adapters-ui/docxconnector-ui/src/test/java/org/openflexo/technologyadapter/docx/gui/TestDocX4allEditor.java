@@ -205,7 +205,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 		panel.add(toolbar, BorderLayout.NORTH);
 		panel.add(editorPanel, BorderLayout.CENTER);*/
 
-		DocXEditor editor = new DocXEditor(docResource.getResourceData(null));
+		DocXEditor editor = new DocXEditor(docResource.getResourceData(null), true);
 
 		gcDelegate.addTab(docResource.getName(), editor);
 

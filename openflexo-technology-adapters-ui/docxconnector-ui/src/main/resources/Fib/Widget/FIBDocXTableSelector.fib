@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Panel layout="border" darkLevel="0"
-	dataClassName="org.openflexo.technologyadapter.docx.gui.widget.FIBDocXFragmentSelector"
-	controllerClassName="org.openflexo.components.widget.FIBDocFragmentSelector$FragmentSelectorFIBController"
+	dataClassName="org.openflexo.technologyadapter.docx.gui.widget.FIBDocXTableSelector"
+	controllerClassName="org.openflexo.components.widget.FIBDocTableSelector$TableSelectorFIBController"
 	opaque="false" width="270" height="300">
 	<Browser root="data.document"
 		iteratorClassName="org.openflexo.technologyadapter.docx.model.DocXObject"
@@ -12,7 +12,7 @@
 		doubleClickAction="controller.doubleClick(DocumentBrowser.selected)"
 		rightClickAction="controller.rightClick(DocumentBrowser.selected,event)"
 		name="DocumentBrowser" index="0" constraints="border(location=west)"
-		selection="data.selectedDocumentElements" deepExploration="true">
+		selected="data.selectedValue" deepExploration="true">
 		<BrowserElement
 			dataClassName="org.openflexo.technologyadapter.docx.model.DocXDocument"
 			label="document.name" icon="controller.iconForObject(document)"
@@ -23,7 +23,7 @@
 		<BrowserElement
 			dataClassName="org.openflexo.technologyadapter.docx.model.DocXParagraph"
 			label="paragraph.rawTextPreview" icon="controller.iconForObject(paragraph)"
-			tooltip="" enabled="" visible="" isEditable="false" editableLabel=""
+			tooltip="" enabled="false" visible="" isEditable="false" editableLabel=""
 			filtered="false" defaultVisible="true" dynamicFont="" name="paragraph">
 			<Children data="paragraph.childrenElements" name="childrenElements" />
 		</BrowserElement>

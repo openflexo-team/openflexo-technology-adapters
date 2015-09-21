@@ -97,7 +97,7 @@ public class FMLControlledDocXDocumentModuleView extends JPanel implements Modul
 			logger.severe("Supplied VirtualModelInstance does not have the FMLControlledDocXVirtualModelInstanceNature");
 		}
 
-		docxEditor = new DocXEditor(getDocument());
+		docxEditor = new DocXEditor(getDocument(), true);
 		add(docxEditor, BorderLayout.CENTER);
 
 		browser = new FIBDocXDocumentBrowser(getDocument(), perspective.getController());

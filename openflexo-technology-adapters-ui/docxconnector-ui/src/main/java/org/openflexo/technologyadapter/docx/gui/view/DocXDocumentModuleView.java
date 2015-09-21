@@ -73,7 +73,7 @@ public class DocXDocumentModuleView extends JPanel implements ModuleView<DocXDoc
 		this.document = document;
 		this.perspective = perspective;
 
-		docxEditor = new DocXEditor(document);
+		docxEditor = new DocXEditor(document, true);
 		add(docxEditor, BorderLayout.CENTER);
 
 		browser = new FIBDocXDocumentBrowser(document, perspective.getController());

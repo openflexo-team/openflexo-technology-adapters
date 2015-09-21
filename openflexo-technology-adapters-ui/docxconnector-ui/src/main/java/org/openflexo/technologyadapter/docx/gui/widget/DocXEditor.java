@@ -78,7 +78,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 
 	private DocXDocument document;
 	private ToolBarStates _toolbarStates = new ToolBarStates();
-	private final JPanel toolbar;
+	private JPanel toolbar = null;
 	private WordMLTextPane editorView;
 	private final List<ApplyCancelListener> applyCancelListener = new ArrayList<ApplyCancelListener>();
 
@@ -102,16 +102,22 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 	}
 
 	public DocXEditor(DocXDocument document) {
+		this(document, false);
+	}
+
+	public DocXEditor(DocXDocument document, boolean showToolbar) {
 		super(new BorderLayout());
 
 		Thread.dumpStack();
 
 		Progress.progress("init_docx_editor");
 		this.document = document;
-		_toolbarStates = new ToolBarStates();
-		Progress.progress("init_toolbar");
-		toolbar = FxScriptUIHelper.getInstance().createToolBar(_toolbarStates);
-		add(toolbar, BorderLayout.NORTH);
+		if (showToolbar) {
+			_toolbarStates = new ToolBarStates();
+			Progress.progress("init_toolbar");
+			toolbar = FxScriptUIHelper.getInstance().createToolBar(_toolbarStates);
+			add(toolbar, BorderLayout.NORTH);
+		}
 
 		setEditedObject(document);
 
@@ -321,7 +327,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 					selectedElement.setSelected(false);
 				}
 				selectedElement = (DocumentElement) characterElement;
-				
+
 				System.out.println("Paf, on selectionne " + selectedElement);
 				selectedElement.setSelected(true);*/
 
@@ -371,7 +377,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 						System.out.println("Texte=" + ((Text) obj).getValue());
 					}
 				}
-			
+
 			}*/
 
 		}

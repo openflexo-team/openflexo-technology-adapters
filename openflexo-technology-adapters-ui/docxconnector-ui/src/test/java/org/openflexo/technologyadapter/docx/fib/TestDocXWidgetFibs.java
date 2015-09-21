@@ -64,4 +64,9 @@ public class TestDocXWidgetFibs extends GenericFIBTestCase {
 		validateFIB("Fib/Widget/FIBDocXFragmentSelector.fib");
 	}
 
+	@Test
+	public void testFIBDocXTableSelector() {
+		validateFIB("Fib/Widget/FIBDocXTableSelector.fib");
+	}
+
 }

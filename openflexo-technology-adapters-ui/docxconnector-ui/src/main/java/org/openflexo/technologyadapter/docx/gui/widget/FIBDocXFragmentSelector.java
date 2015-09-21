@@ -176,8 +176,6 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 
 		FragmentSelectorDetailsPanel returned = null;
 
-		System.out.println("******* Build FragmentSelectorDetailsPanel with serviceManager=" + getServiceManager());
-
 		if (getServiceManager() != null && getServiceManager().getTaskManager() != null) {
 			LoadDocXEditor task = new LoadDocXEditor(editedObject);
 			getServiceManager().getTaskManager().scheduleExecution(task);
