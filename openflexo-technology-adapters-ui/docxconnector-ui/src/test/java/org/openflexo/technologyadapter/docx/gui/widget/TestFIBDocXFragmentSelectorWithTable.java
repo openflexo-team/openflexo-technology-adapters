@@ -56,45 +56,17 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the structural and behavioural features of FIBDocXFragmentSelector
+ * Test the structural and behavioural features of FIBDocXFragmentSelector when a table is involved
  * 
  * @author sylvain
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
+public class TestFIBDocXFragmentSelectorWithTable extends AbstractTestDocX {
 
 	private static GraphicalContextDelegate gcDelegate;
 
 	private static FIBDocXFragmentSelector selector;
-
-	/*private static DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
-		System.out.println("Searching " + documentURI);
-
-		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
-				DocXDocument.class);
-		assertNotNull(documentResource);
-
-		try {
-			documentResource.loadResourceData(null);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ResourceLoadingCancelledException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FlexoException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		DocXDocument document = documentResource.getLoadedResourceData();
-		assertNotNull(document);
-		assertNotNull(document.getWordprocessingMLPackage());
-
-		return document;
-	}*/
 
 	@BeforeClass
 	public static void setupClass() {
@@ -106,7 +78,7 @@ public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 	@TestOrder(2)
 	public void test2InstanciateWidget() throws FragmentConsistencyException {
 
-		DocXDocument structuredDocument = getDocument("StructuredDocument.docx");
+		DocXDocument structuredDocument = getDocument("DocumentWithTable.docx");
 		assertNotNull(structuredDocument);
 
 		DocXParagraph section1Paragraph = (DocXParagraph) structuredDocument.getElements().get(1);
@@ -135,7 +107,7 @@ public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestFIBDocXFragmentSelector.class.getSimpleName());
+		gcDelegate = new GraphicalContextDelegate(TestFIBDocXFragmentSelectorWithTable.class.getSimpleName());
 	}
 
 	@AfterClass

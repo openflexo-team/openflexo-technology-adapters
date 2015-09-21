@@ -32,6 +32,7 @@ import org.openflexo.technologyadapter.docx.gui.DocXIconLibrary;
 import org.openflexo.technologyadapter.docx.gui.view.DocXDocumentModuleView;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.model.DocXTable;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -79,6 +80,8 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 			} else {
 				return DocXIconLibrary.PARAGRAPH_ICON;
 			}
+		} else if (object instanceof DocXTable) {
+			return DocXIconLibrary.TABLE_ICON;
 		}
 		return super.getIconForTechnologyObject(object);
 	}

@@ -62,11 +62,14 @@ import org.docx4all.ui.main.Constants;
 import org.docx4all.ui.main.ToolBarStates;
 import org.docx4all.util.DocUtil;
 import org.docx4all.xml.IObjectFactory;
+import org.docx4j.fonts.PhysicalFonts;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
+import org.openflexo.foundation.task.Progress;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.toolbox.ToolBox;
 
 @SuppressWarnings("serial")
 public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocument, DocXEditor> {
@@ -84,15 +87,35 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 
 	private IObjectFactory objectFactory;
 
+	// Font regex (optional)
+	// Set regex if you want to restrict to some defined subset of fonts
+	// Here we have to do this before calling createContent,
+	// since that discovers fonts
+	static {
+		String regex = null;
+		if (ToolBox.isMacOS()) {
+			regex = ".*(Courier New|Arial|Times New Roman|Comic Sans|Georgia|Impact|Lucida Console|Lucida Sans Unicode|Palatino Linotype|Tahoma|Trebuchet|Verdana|Symbol|Webdings|Wingdings|MS Sans Serif|MS Serif).*";
+		} else {
+			regex = ".*(calibri|cour|arial|times|comic|georgia|impact|LSANS|pala|tahoma|trebuc|verdana|symbol|webdings|wingding).*";
+		}
+		PhysicalFonts.setRegex(regex);
+	}
+
 	public DocXEditor(DocXDocument document) {
 		super(new BorderLayout());
+
+		Thread.dumpStack();
+
+		Progress.progress("init_docx_editor");
 		this.document = document;
 		_toolbarStates = new ToolBarStates();
+		Progress.progress("init_toolbar");
 		toolbar = FxScriptUIHelper.getInstance().createToolBar(_toolbarStates);
 		add(toolbar, BorderLayout.NORTH);
 
 		setEditedObject(document);
 
+		Progress.progress("doc_x_editor_finalization");
 		revalidate();
 	}
 

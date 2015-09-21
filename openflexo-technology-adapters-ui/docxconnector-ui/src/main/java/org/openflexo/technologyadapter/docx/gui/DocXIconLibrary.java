@@ -37,6 +37,7 @@ public class DocXIconLibrary {
 
 	public static final ImageIcon SECTION_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Section_16x16.png"));
 	public static final ImageIcon PARAGRAPH_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Paragraph_16x16.png"));
+	public static final ImageIcon TABLE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Table_16x16.png"));
 
 	/*public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
 		return null;

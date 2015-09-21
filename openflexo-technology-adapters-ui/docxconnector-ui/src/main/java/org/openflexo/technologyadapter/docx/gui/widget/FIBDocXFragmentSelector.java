@@ -54,6 +54,8 @@ import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocumentElement;
 import org.openflexo.foundation.doc.FlexoDocumentFragment;
 import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
+import org.openflexo.foundation.task.FlexoTask;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -117,10 +119,10 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 			}
 			docXEditor.getMLDocument().setSelectedElements(elts);
 
-			//System.out.println("in FIBDocXFragmentSelector selectedDocElements=" + getSelectedDocumentElements());
+			// System.out.println("in FIBDocXFragmentSelector selectedDocElements=" + getSelectedDocumentElements());
 
 			// setSelectedDocumentElements(elts);
-			//getPropertyChangeSupport().firePropertyChange("selectedDocumentElements", null, getSelectedDocumentElements());
+			// getPropertyChangeSupport().firePropertyChange("selectedDocumentElements", null, getSelectedDocumentElements());
 
 			if (fragment.getStartElement() instanceof DocXParagraph) {
 				DocumentElement startElement = docXEditor.getMLDocument().getElement(((DocXParagraph) fragment.getStartElement()).getP());
@@ -136,9 +138,43 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 		}
 	}
 
+	public class LoadDocXEditor extends FlexoTask {
+
+		private final DocXFragment fragment;
+		private FragmentSelectorDetailsPanel panel;
+
+		public LoadDocXEditor(DocXFragment fragment) {
+			super(FlexoLocalization.localizedForKey("opening_docx_editor"));
+			this.fragment = fragment;
+		}
+
+		@Override
+		public void performTask() throws InterruptedException {
+			setExpectedProgressSteps(10);
+			panel = FIBDocXFragmentSelector.super.makeCustomPanel(fragment);
+		}
+
+		public FragmentSelectorDetailsPanel getPanel() {
+			return panel;
+		}
+	}
+
 	@Override
-	protected FragmentSelectorDetailsPanel makeCustomPanel(DocXFragment editedObject) {
-		FragmentSelectorDetailsPanel returned = super.makeCustomPanel(editedObject);
+	protected FragmentSelectorDetailsPanel makeCustomPanel(final DocXFragment editedObject) {
+
+		FragmentSelectorDetailsPanel returned = null;
+
+		System.out.println("******* Build FragmentSelectorDetailsPanel with serviceManager=" + getServiceManager());
+
+		if (getServiceManager() != null && getServiceManager().getTaskManager() != null) {
+			LoadDocXEditor task = new LoadDocXEditor(editedObject);
+			getServiceManager().getTaskManager().scheduleExecution(task);
+			getServiceManager().getTaskManager().waitTask(task);
+			returned = task.getPanel();
+		} else {
+			returned = super.makeCustomPanel(editedObject);
+		}
+
 		FIBCustomWidget<?, ?> documentEditorWidget = returned.getDocEditorWidget();
 		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 		docXEditor.getEditorView().addCaretListener(new DocXEditorSelectionListener(docXEditor) {

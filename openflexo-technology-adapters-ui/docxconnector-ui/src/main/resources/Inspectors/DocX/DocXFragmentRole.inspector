@@ -2,7 +2,7 @@
 <Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
 	titleFont="SansSerif,0,12" darkLevel="0"
 	dataClassName="org.openflexo.technologyadapter.docx.fml.DocXFragmentRole"
-	controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
+	controllerClassName="org.openflexo.inspector.FIBInspectorController"
 	font="SansSerif,0,12" name="Inspector">
 	<TabPanel name="Tab" constraints="border(location=center)">
 		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
@@ -18,6 +18,8 @@
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)">
 				<Assignment variable="component.document"
 					value="data.document" />
+				<Assignment variable="component.flexoController"
+					value="controller.flexoController" />
 			</Custom>
 
 		</Tab>
