@@ -33,8 +33,8 @@ import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.P;
 import org.docx4j.wml.Tc;
 import org.openflexo.foundation.doc.FlexoDocument;
-import org.openflexo.foundation.doc.FlexoParagraph;
-import org.openflexo.foundation.doc.FlexoTableCell;
+import org.openflexo.foundation.doc.FlexoDocParagraph;
+import org.openflexo.foundation.doc.FlexoDocTableCell;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -47,7 +47,7 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
- * Implementation of {@link FlexoTableCell} for {@link DocXTechnologyAdapter}
+ * Implementation of {@link FlexoDocTableCell} for {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *
@@ -55,7 +55,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ModelEntity
 @ImplementationClass(DocXTableCell.DocXTableCellImpl.class)
 @XMLElement
-public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = Tc.class)
 	public static final String TC_KEY = "tc";
@@ -105,7 +105,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		@Override
 		public void updateFromTc(Tc tc, DocXFactory factory) {
 
-			List<FlexoParagraph<DocXDocument, DocXTechnologyAdapter>> paragraphsToRemove = new ArrayList<FlexoParagraph<DocXDocument, DocXTechnologyAdapter>>(
+			List<FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter>> paragraphsToRemove = new ArrayList<FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter>>(
 					getParagraphs());
 
 			int currentIndex = 0;
@@ -136,7 +136,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 				}
 			}
 
-			for (FlexoParagraph<DocXDocument, DocXTechnologyAdapter> p : paragraphsToRemove) {
+			for (FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> p : paragraphsToRemove) {
 				internallyRemoveFromParagraphs(p);
 			}
 
@@ -149,7 +149,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		 * Paragraph will be inserted to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
 		@Override
-		public void insertParagraphAtIndex(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> aParagraph, int index) {
+		public void insertParagraphAtIndex(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> aParagraph, int index) {
 
 			Tc tc = getTc();
 			if (aParagraph instanceof DocXParagraph) {
@@ -168,7 +168,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		 * 
 		 * @param addedParagraph
 		 */
-		private void internallyInsertParagraphAtIndex(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> addedParagraph, int index) {
+		private void internallyInsertParagraphAtIndex(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> addedParagraph, int index) {
 			performSuperAdder(PARAGRAPHS_KEY, addedParagraph, index);
 			internallyHandleParagraphAdding(addedParagraph);
 		}
@@ -178,7 +178,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		 * 
 		 * @param anParagraph
 		 */
-		private void internallyHandleParagraphAdding(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
+		private void internallyHandleParagraphAdding(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
 			if (anParagraph instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) anParagraph;
 				if (paragraph.getP() != null) {
@@ -192,7 +192,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		 * Paragraph will be moved inside underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
 		@Override
-		public void moveParagraphToIndex(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph, int index) {
+		public void moveParagraphToIndex(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph, int index) {
 			// TODO: implement moving in Tc
 			internallyMoveParagraphToIndex(anParagraph, index);
 		}
@@ -203,8 +203,8 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		 * 
 		 * @param addedParagraph
 		 */
-		private void internallyMoveParagraphToIndex(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph, int index) {
-			List<FlexoParagraph<DocXDocument, DocXTechnologyAdapter>> paragraphs = getParagraphs();
+		private void internallyMoveParagraphToIndex(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph, int index) {
+			List<FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter>> paragraphs = getParagraphs();
 			paragraphs.remove(anParagraph);
 			paragraphs.add(index, anParagraph);
 		}
@@ -214,7 +214,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		 * Paragraph will be added to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
 		@Override
-		public void addToParagraphs(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
+		public void addToParagraphs(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
 			if (isCreatedByCloning()) {
 				internallyAddToParagraphs(anParagraph);
 				return;
@@ -232,7 +232,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		 * 
 		 * @param addedParagraph
 		 */
-		private void internallyAddToParagraphs(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> addedParagraph) {
+		private void internallyAddToParagraphs(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> addedParagraph) {
 			performSuperAdder(PARAGRAPHS_KEY, addedParagraph);
 			internallyHandleParagraphAdding(addedParagraph);
 		}
@@ -242,7 +242,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		 * Paragraph will be removed to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
 		@Override
-		public void removeFromParagraphs(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
+		public void removeFromParagraphs(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> anParagraph) {
 			if (anParagraph instanceof DocXParagraph) {
 				P toRemove = ((DocXParagraph) anParagraph).getP();
 				if (!DocXUtils.removeFromList(toRemove, getTc().getContent())) {
@@ -260,7 +260,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		 * 
 		 * @param removedParagraph
 		 */
-		private void internallyRemoveFromParagraphs(FlexoParagraph<DocXDocument, DocXTechnologyAdapter> removedParagraph) {
+		private void internallyRemoveFromParagraphs(FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> removedParagraph) {
 			if (removedParagraph instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) removedParagraph;
 				if (paragraph.getP() != null) {
@@ -271,7 +271,7 @@ public interface DocXTableCell extends FlexoTableCell<DocXDocument, DocXTechnolo
 		}
 
 		@Override
-		public List<FlexoParagraph<DocXDocument, DocXTechnologyAdapter>> getElements() {
+		public List<FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter>> getElements() {
 			return getParagraphs();
 		}
 

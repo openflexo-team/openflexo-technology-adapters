@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.docx.fml.editionaction;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
+import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
@@ -123,9 +123,9 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 			int startIndex = -1;
 			int endIndex = -1;
 
-			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> templateElement : getTemplateFragment().getElements()) {
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> templateElement : getTemplateFragment().getElements()) {
 				// TODO: handle tables here !!!
-				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : document.getElements()) {
+				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : document.getElements()) {
 					if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(templateElement.getIdentifier())) {
 						int index = document.getElements().indexOf(e);
 						if (startIndex == -1 || (index < startIndex)) {

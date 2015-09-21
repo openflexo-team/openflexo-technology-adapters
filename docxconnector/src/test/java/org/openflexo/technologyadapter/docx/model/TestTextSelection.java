@@ -48,8 +48,8 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
-import org.openflexo.foundation.doc.FlexoRun;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -128,7 +128,7 @@ public class TestTextSelection extends AbstractTestDocX {
 		for (DocXElement element : fragment.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph para = (DocXParagraph) element;
-				for (FlexoRun run : para.getRuns()) {
+				for (FlexoDocRun run : para.getRuns()) {
 					sb.append("[" + ((DocXTextRun) run).getText() + "]");
 				}
 				sb.append("\n");

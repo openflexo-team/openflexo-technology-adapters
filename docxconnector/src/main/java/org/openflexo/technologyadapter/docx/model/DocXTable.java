@@ -33,9 +33,9 @@ import org.docx4j.wml.P;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Tr;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
-import org.openflexo.foundation.doc.FlexoTable;
-import org.openflexo.foundation.doc.FlexoTableRow;
+import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocTable;
+import org.openflexo.foundation.doc.FlexoDocTableRow;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -50,7 +50,7 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
- * Implementation of {@link FlexoTable} for {@link DocXTechnologyAdapter}
+ * Implementation of {@link FlexoDocTable} for {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *
@@ -59,7 +59,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ImplementationClass(DocXTable.DocXTableImpl.class)
 @XMLElement
 @Imports({ @Import(DocXTableRow.class), @Import(DocXTableCell.class) })
-public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXTable extends DocXElement, FlexoDocTable<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = Tbl.class)
 	public static final String TBL_KEY = "tbl";
@@ -80,7 +80,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 	// We definitely want to avoid double instanciation of DocXTableRow in a cloned paragraph !!!!
 	@Override
 	@CloningStrategy(StrategyType.IGNORE)
-	List<FlexoTableRow<DocXDocument, DocXTechnologyAdapter>> getTableRows();
+	List<FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter>> getTableRows();
 
 	/**
 	 * This is the starting point for updating {@link DocXTable} with the paragraph provided from docx4j library<br>
@@ -133,7 +133,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,
 			// if value of tbl given by getTbl() returns the new value
 
-			List<FlexoTableRow> rowsToRemove = new ArrayList<FlexoTableRow>(getTableRows());
+			List<FlexoDocTableRow> rowsToRemove = new ArrayList<FlexoDocTableRow>(getTableRows());
 
 			int currentIndex = 0;
 
@@ -163,7 +163,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 				}
 			}
 
-			for (FlexoTableRow<DocXDocument, DocXTechnologyAdapter> row : rowsToRemove) {
+			for (FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> row : rowsToRemove) {
 				// System.out.println("# Remove row for " + e);
 				internallyRemoveFromTableRows(row);
 			}
@@ -246,7 +246,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 * Element will be inserted to underlying {@link Tbl} and {@link DocXTable} will be updated accordingly
 		 */
 		@Override
-		public void insertTableRowAtIndex(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow, int index) {
+		public void insertTableRowAtIndex(FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow, int index) {
 			System.out.println("Add row ");
 			Tbl tbl = getTbl();
 			if (aTableRow instanceof DocXTableRow) {
@@ -265,7 +265,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 * 
 		 * @param addedElement
 		 */
-		private void internallyInsertTableRowAtIndex(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow, int index) {
+		private void internallyInsertTableRowAtIndex(FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow, int index) {
 
 			performSuperAdder(TABLE_ROWS_KEY, aTableRow, index);
 			internallyHandleTableRowAdding(aTableRow);
@@ -276,7 +276,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 * 
 		 * @param aTableRow
 		 */
-		private void internallyHandleTableRowAdding(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow) {
+		private void internallyHandleTableRowAdding(FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow) {
 
 			if (aTableRow instanceof DocXTableRow) {
 				DocXTableRow row = (DocXTableRow) aTableRow;
@@ -291,7 +291,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 * Element will be moved inside underlying {@link Tbl} and {@link DocXTable} will be updated accordingly
 		 */
 		@Override
-		public void moveTableRowToIndex(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow, int index) {
+		public void moveTableRowToIndex(FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow, int index) {
 			// TODO: do it in Tbl
 			internallyMoveTableRowToIndex(aTableRow, index);
 		}
@@ -302,8 +302,8 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 * 
 		 * @param addedElement
 		 */
-		private void internallyMoveTableRowToIndex(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow, int index) {
-			List<FlexoTableRow<DocXDocument, DocXTechnologyAdapter>> rows = getTableRows();
+		private void internallyMoveTableRowToIndex(FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow, int index) {
+			List<FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter>> rows = getTableRows();
 			rows.remove(aTableRow);
 			rows.add(index, aTableRow);
 		}
@@ -313,7 +313,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 * Element will be added to underlying {@link Tbl} and {@link DocXTable} will be updated accordingly
 		 */
 		@Override
-		public void addToTableRows(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow) {
+		public void addToTableRows(FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow) {
 
 			Tbl tbl = getTbl();
 			if (aTableRow instanceof DocXTableRow) {
@@ -332,7 +332,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 * 
 		 * @param addedTableRow
 		 */
-		private void internallyAddToTableRows(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> addedTableRow) {
+		private void internallyAddToTableRows(FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> addedTableRow) {
 			performSuperAdder(TABLE_ROWS_KEY, addedTableRow);
 			internallyHandleTableRowAdding(addedTableRow);
 		}
@@ -342,7 +342,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 * Element will be removed from underlying {@link Tbl} and {@link DocXTable} will be updated accordingly
 		 */
 		@Override
-		public void removeFromTableRows(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow) {
+		public void removeFromTableRows(FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> aTableRow) {
 
 			Tbl tbl = getTbl();
 			if (aTableRow instanceof DocXTableRow) {
@@ -363,7 +363,7 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 * 
 		 * @param removedTableRow
 		 */
-		private void internallyRemoveFromTableRows(FlexoTableRow<DocXDocument, DocXTechnologyAdapter> removedTableRow) {
+		private void internallyRemoveFromTableRows(FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> removedTableRow) {
 			if (removedTableRow instanceof DocXTableRow) {
 				DocXTableRow row = (DocXTableRow) removedTableRow;
 				if (row.getTr() != null) {
@@ -378,9 +378,9 @@ public interface DocXTable extends DocXElement, FlexoTable<DocXDocument, DocXTec
 		 * no such element exists
 		 */
 		@Override
-		public FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> getElementWithIdentifier(String identifier) {
-			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> returned;
-			for (FlexoTableRow<DocXDocument, DocXTechnologyAdapter> row : getTableRows()) {
+		public FlexoDocElement<DocXDocument, DocXTechnologyAdapter> getElementWithIdentifier(String identifier) {
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> returned;
+			for (FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> row : getTableRows()) {
 				returned = row.getElementWithIdentifier(identifier);
 				if (returned != null) {
 					return returned;

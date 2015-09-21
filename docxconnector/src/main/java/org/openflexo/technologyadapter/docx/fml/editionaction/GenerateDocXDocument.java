@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
+import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -144,7 +144,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 
 				generatedDocument = generatedResource.getResourceData(null);
 
-				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> generatedElement : generatedDocument.getElements()) {
+				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> generatedElement : generatedDocument.getElements()) {
 					String oldId = generatedElement.getIdentifier();
 					DocXElement templateElement = (DocXElement) templateDocument.getElementWithIdentifier(oldId);
 					generatedElement.setIdentifier(generatedDocument.getFactory().generateId());
@@ -187,8 +187,8 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 					System.out.println("Paragraph " + p + " change id from " + oldId + " to " + generatedElement.getIdentifier());
 				}*/
 
-				List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<>();
-				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> templateElement : templateDocument.getElements()) {
+				List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<>();
+				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> templateElement : templateDocument.getElements()) {
 					if (elementsToIgnore.contains(templateElement)) {
 						// System.out.println("Ignoring: " + templateElement);
 						// System.out.println("Ignoring elements: "
@@ -196,7 +196,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 						elementsToRemove.addAll(generatedDocument.getElementsWithBaseIdentifier(templateElement.getIdentifier()));
 					}
 				}
-				for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> elementToRemove : elementsToRemove) {
+				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> elementToRemove : elementsToRemove) {
 					generatedDocument.removeFromElements(elementToRemove);
 				}
 

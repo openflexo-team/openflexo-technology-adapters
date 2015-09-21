@@ -25,7 +25,7 @@ import javax.xml.bind.JAXBElement;
 import org.docx4j.jaxb.Context;
 import org.docx4j.wml.R;
 import org.docx4j.wml.Text;
-import org.openflexo.foundation.doc.FlexoRun;
+import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.doc.FlexoTextRun;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -33,7 +33,7 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 /**
- * Implementation of {@link FlexoRun} for {@link DocXTechnologyAdapter}
+ * Implementation of {@link FlexoDocRun} for {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *

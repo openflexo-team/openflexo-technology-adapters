@@ -124,7 +124,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		/*System.out.println("Elements: " + simpleDocument.getElements().size());
 		
-		for (FlexoDocumentElement<?, ?> element : simpleDocument.getElements()) {
+		for (FlexoDocElement<?, ?> element : simpleDocument.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
@@ -154,7 +154,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		/*System.out.println("Elements: " + structuredDocument.getElements().size());
 		
 		
-		for (FlexoDocumentElement<?, ?> element : structuredDocument.getElements()) {
+		for (FlexoDocElement<?, ?> element : structuredDocument.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
@@ -320,7 +320,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		/*System.out.println("Elements: " + documentWithImage.getElements().size());
 		
-		for (FlexoDocumentElement<?, ?> element : documentWithImage.getElements()) {
+		for (FlexoDocElement<?, ?> element : documentWithImage.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "

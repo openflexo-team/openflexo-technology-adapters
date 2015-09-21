@@ -22,14 +22,14 @@ package org.openflexo.technologyadapter.docx.model;
 
 import java.util.List;
 
-import org.openflexo.foundation.doc.FlexoDocumentFragment;
+import org.openflexo.foundation.doc.FlexoDocFragment;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 /**
- * Implementation of {@link FlexoDocumentFragment} for {@link DocXTechnologyAdapter}
+ * Implementation of {@link FlexoDocFragment} for {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *
@@ -37,7 +37,7 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 @ModelEntity
 @ImplementationClass(DocXFragment.DocXFragmentImpl.class)
 @XMLElement
-public interface DocXFragment extends DocXObject, FlexoDocumentFragment<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXFragment extends DocXObject, FlexoDocFragment<DocXDocument, DocXTechnologyAdapter> {
 
 	@Override
 	public List<DocXElement> getElements();

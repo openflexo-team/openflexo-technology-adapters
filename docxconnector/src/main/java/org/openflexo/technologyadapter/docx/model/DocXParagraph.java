@@ -37,9 +37,9 @@ import org.docx4j.wml.P;
 import org.docx4j.wml.PPr;
 import org.docx4j.wml.PPrBase.PStyle;
 import org.docx4j.wml.R;
-import org.openflexo.foundation.doc.FlexoParagraph;
-import org.openflexo.foundation.doc.FlexoRun;
-import org.openflexo.foundation.doc.FlexoStyle;
+import org.openflexo.foundation.doc.FlexoDocParagraph;
+import org.openflexo.foundation.doc.FlexoDocRun;
+import org.openflexo.foundation.doc.FlexoDocStyle;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -55,7 +55,7 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument.DocXDocumentImpl;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
- * Implementation of {@link FlexoParagraph} for {@link DocXTechnologyAdapter}
+ * Implementation of {@link FlexoDocParagraph} for {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *
@@ -64,7 +64,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ImplementationClass(DocXParagraph.DocXParagraphImpl.class)
 @XMLElement
 @Imports({ @Import(DocXTextRun.class), @Import(DocXDrawingRun.class) })
-public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = P.class)
 	public static final String P_KEY = "p";
@@ -85,7 +85,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 	// We definitely want to avoid double instanciation of DocXTextRun in a cloned paragraph !!!!
 	@Override
 	@CloningStrategy(StrategyType.IGNORE)
-	public List<FlexoRun<DocXDocument, DocXTechnologyAdapter>> getRuns();
+	public List<FlexoDocRun<DocXDocument, DocXTechnologyAdapter>> getRuns();
 
 	/**
 	 * This is the starting point for updating {@link DocXParagraph} with the paragraph provided from docx4j library<br>
@@ -136,7 +136,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,
 			// if value of P given by getP() returns the new value
 
-			List<FlexoRun> runsToRemove = new ArrayList<FlexoRun>(getRuns());
+			List<FlexoDocRun> runsToRemove = new ArrayList<FlexoDocRun>(getRuns());
 
 			int currentIndex = 0;
 
@@ -166,7 +166,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 				}
 			}
 
-			for (FlexoRun<DocXDocument, DocXTechnologyAdapter> run : runsToRemove) {
+			for (FlexoDocRun<DocXDocument, DocXTechnologyAdapter> run : runsToRemove) {
 				// System.out.println("# Remove run for " + e);
 				internallyRemoveFromRuns(run);
 			}
@@ -258,7 +258,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * Element will be inserted to underlying {@link P} and {@link DocXParagraph} will be updated accordingly
 		 */
 		@Override
-		public void insertRunAtIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
+		public void insertRunAtIndex(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
 			System.out.println("Add run " + aRun);
 			P p = getP();
 			if (aRun instanceof DocXRun) {
@@ -277,7 +277,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * 
 		 * @param addedElement
 		 */
-		private void internallyInsertRunAtIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
+		private void internallyInsertRunAtIndex(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
 
 			performSuperAdder(RUNS_KEY, aRun, index);
 			internallyHandleRunAdding(aRun);
@@ -288,7 +288,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * 
 		 * @param aRun
 		 */
-		private void internallyHandleRunAdding(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
+		private void internallyHandleRunAdding(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> aRun) {
 
 			if (aRun instanceof DocXRun) {
 				DocXRun run = (DocXRun) aRun;
@@ -303,7 +303,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * Element will be moved inside underlying {@link P} and {@link DocXParagraph} will be updated accordingly
 		 */
 		@Override
-		public void moveRunToIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
+		public void moveRunToIndex(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
 			// TODO: do it in P !
 			internallyMoveRunToIndex(aRun, index);
 		}
@@ -314,8 +314,8 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * 
 		 * @param addedElement
 		 */
-		private void internallyMoveRunToIndex(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
-			List<FlexoRun<DocXDocument, DocXTechnologyAdapter>> runs = getRuns();
+		private void internallyMoveRunToIndex(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> aRun, int index) {
+			List<FlexoDocRun<DocXDocument, DocXTechnologyAdapter>> runs = getRuns();
 			runs.remove(aRun);
 			runs.add(index, aRun);
 		}
@@ -325,7 +325,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * Element will be added to underlying {@link P} and {@link DocXParagraph} will be updated accordingly
 		 */
 		@Override
-		public void addToRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
+		public void addToRuns(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> aRun) {
 
 			/*if (isCreatedByCloning()) {
 					// internallyAddToRuns(aRun);
@@ -349,7 +349,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * 
 		 * @param addedRun
 		 */
-		private void internallyAddToRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> addedRun) {
+		private void internallyAddToRuns(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> addedRun) {
 			performSuperAdder(RUNS_KEY, addedRun);
 			internallyHandleRunAdding(addedRun);
 		}
@@ -359,7 +359,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * Element will be removed from underlying {@link P} and {@link DocXParagraph} will be updated accordingly
 		 */
 		@Override
-		public void removeFromRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> aRun) {
+		public void removeFromRuns(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> aRun) {
 
 			P p = getP();
 			if (aRun instanceof DocXRun) {
@@ -380,7 +380,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		 * 
 		 * @param removedRun
 		 */
-		private void internallyRemoveFromRuns(FlexoRun<DocXDocument, DocXTechnologyAdapter> removedRun) {
+		private void internallyRemoveFromRuns(FlexoDocRun<DocXDocument, DocXTechnologyAdapter> removedRun) {
 			if (removedRun instanceof DocXRun) {
 				DocXRun run = (DocXRun) removedRun;
 				if (run.getR() != null) {
@@ -391,7 +391,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		}
 
 		@Override
-		public FlexoStyle<DocXDocument, DocXTechnologyAdapter> getStyle() {
+		public FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> getStyle() {
 			if (getP() != null && getP().getPPr() != null && getP().getPPr().getPStyle() != null) {
 				String styleName = getP().getPPr().getPStyle().getVal();
 				return getFlexoDocument().getStyleByIdentifier(styleName);
@@ -400,7 +400,7 @@ public interface DocXParagraph extends DocXElement, FlexoParagraph<DocXDocument,
 		}
 
 		@Override
-		public void setStyle(FlexoStyle<DocXDocument, DocXTechnologyAdapter> style) {
+		public void setStyle(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style) {
 			if (getStyle() != style) {
 				if (getP() != null) {
 					PPr paragraphProperties = getP().getPPr();

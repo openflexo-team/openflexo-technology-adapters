@@ -29,9 +29,9 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
-import org.openflexo.foundation.doc.FlexoTable;
-import org.openflexo.foundation.doc.FlexoTableCell;
+import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocTable;
+import org.openflexo.foundation.doc.FlexoDocTableCell;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -84,10 +84,10 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 
 	@Getter(value = LOCATION_KEY)
 	@XMLAttribute
-	public DataBinding<? extends FlexoDocumentElement<?, ?>> getLocation();
+	public DataBinding<? extends FlexoDocElement<?, ?>> getLocation();
 
 	@Setter(LOCATION_KEY)
-	public void setLocation(DataBinding<? extends FlexoDocumentElement<?, ?>> element);
+	public void setLocation(DataBinding<? extends FlexoDocElement<?, ?>> element);
 
 	@Getter(value = LOCATION_SEMANTICS_KEY)
 	@XMLAttribute
@@ -104,7 +104,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 
 		private static final Logger logger = Logger.getLogger(AddDocXFragment.class.getPackage().getName());
 
-		private DataBinding<? extends FlexoDocumentElement<?, ?>> location;
+		private DataBinding<? extends FlexoDocElement<?, ?>> location;
 
 		public AddDocXFragmentImpl() {
 			super();
@@ -116,20 +116,20 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 		}
 
 		@Override
-		public DataBinding<? extends FlexoDocumentElement<?, ?>> getLocation() {
+		public DataBinding<? extends FlexoDocElement<?, ?>> getLocation() {
 			if (location == null) {
-				location = new DataBinding<DocXElement>(this, FlexoDocumentElement.class, BindingDefinitionType.GET);
+				location = new DataBinding<DocXElement>(this, FlexoDocElement.class, BindingDefinitionType.GET);
 				location.setBindingName("location");
 			}
 			return location;
 		}
 
 		@Override
-		public void setLocation(DataBinding<? extends FlexoDocumentElement<?, ?>> location) {
+		public void setLocation(DataBinding<? extends FlexoDocElement<?, ?>> location) {
 			if (location != null) {
 				location.setOwner(this);
 				location.setBindingName("location");
-				location.setDeclaredType(FlexoDocumentElement.class);
+				location.setDeclaredType(FlexoDocElement.class);
 				location.setBindingDefinitionType(BindingDefinitionType.GET);
 			}
 			this.location = location;
@@ -141,7 +141,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 
 			System.out.println("execute  AddDocXFragment(), location=" + getLocation());
 
-			FlexoDocumentElement<?, ?> location = null;
+			FlexoDocElement<?, ?> location = null;
 			if (getLocation() != null && getLocation().isSet() && getLocation().isValid()) {
 				try {
 					location = getLocation().getBindingValue(evaluationContext);
@@ -172,7 +172,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 					insertIndex = document.getElements().indexOf(location);
 					break;
 				case InsertAfterLastChild:
-					FlexoDocumentElement<?, ?> lastDeepChild = getLastDeepChild((DocXElement) location);
+					FlexoDocElement<?, ?> lastDeepChild = getLastDeepChild((DocXElement) location);
 					if (lastDeepChild != null) {
 						insertIndex = document.getElements().indexOf(lastDeepChild) + 1;
 					}
@@ -181,7 +181,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 					}
 					break;
 				case InsertBeforeLastChild:
-					FlexoDocumentElement<?, ?> lastDeepChild2 = getLastDeepChild((DocXElement) location);
+					FlexoDocElement<?, ?> lastDeepChild2 = getLastDeepChild((DocXElement) location);
 					if (lastDeepChild2 != null) {
 						insertIndex = document.getElements().indexOf(lastDeepChild2);
 					}
@@ -210,13 +210,13 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 					DocXElement clonedElement = (DocXElement) element.cloneObject();
 					clonedElement.setBaseIdentifier(element.getIdentifier());
 
-					if (clonedElement instanceof FlexoTable) {
-						FlexoTable<?, ?> templateTable = (FlexoTable<?, ?>) element;
-						FlexoTable<?, ?> clonedTable = (FlexoTable<?, ?>) clonedElement;
+					if (clonedElement instanceof FlexoDocTable) {
+						FlexoDocTable<?, ?> templateTable = (FlexoDocTable<?, ?>) element;
+						FlexoDocTable<?, ?> clonedTable = (FlexoDocTable<?, ?>) clonedElement;
 						for (int row = 0; row < templateTable.getTableRows().size(); row++) {
 							for (int col = 0; col < templateTable.getTableRows().get(row).getTableCells().size(); col++) {
-								FlexoTableCell<?, ?> templateCell = templateTable.getCell(row, col);
-								FlexoTableCell<?, ?> clonedCell = clonedTable.getCell(row, col);
+								FlexoDocTableCell<?, ?> templateCell = templateTable.getCell(row, col);
+								FlexoDocTableCell<?, ?> clonedCell = clonedTable.getCell(row, col);
 								for (int i = 0; i < templateCell.getParagraphs().size(); i++) {
 									clonedCell.getParagraphs().get(i)
 											.setBaseIdentifier(templateCell.getParagraphs().get(i).getIdentifier());

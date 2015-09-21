@@ -62,7 +62,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.doc.fml.ColumnTableBinding;
 import org.openflexo.foundation.doc.fml.FlexoTableRole.FlexoTableRoleImpl;
@@ -735,6 +735,8 @@ public class TestLibrary2 extends AbstractTestDocX {
 
 		System.out.println("FML:");
 		System.out.println(documentVirtualModel.getFMLRepresentation());
+
+		System.exit(-1);
 
 		assertTrue(documentVirtualModel.hasNature(FMLControlledDocXVirtualModelNature.INSTANCE));
 		assertEquals(docXModelSlot, FMLControlledDocXVirtualModelNature.getDocumentModelSlot(documentVirtualModel));
@@ -1611,7 +1613,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		for (DocXElement element : lmFragment.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph para = (DocXParagraph) element;
-				for (FlexoRun run : para.getRuns()) {
+				for (FlexoDocRun run : para.getRuns()) {
 					sb.append("[" + run.getText() + "]");
 				}
 				sb.append("\n");
@@ -1828,7 +1830,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		for (DocXElement element : lrnFragment.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph para = (DocXParagraph) element;
-				for (FlexoRun run : para.getRuns()) {
+				for (FlexoDocRun run : para.getRuns()) {
 					sb.append("[" + run.getText() + "]");
 				}
 				sb.append("\n");

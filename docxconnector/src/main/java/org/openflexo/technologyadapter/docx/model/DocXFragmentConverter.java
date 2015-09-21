@@ -42,8 +42,8 @@ import java.io.FileNotFoundException;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
-import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -108,8 +108,8 @@ public class DocXFragmentConverter extends Converter<DocXFragment> {
 					e.printStackTrace();
 					return null;
 				}
-				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement = document.getElementWithIdentifier(startElementId);
-				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement = document.getElementWithIdentifier(endElementId);
+				FlexoDocElement<DocXDocument, DocXTechnologyAdapter> startElement = document.getElementWithIdentifier(startElementId);
+				FlexoDocElement<DocXDocument, DocXTechnologyAdapter> endElement = document.getElementWithIdentifier(endElementId);
 
 				// System.out.println("startElement = " + startElement);
 				// System.out.println("endElement = " + endElement);

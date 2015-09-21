@@ -41,13 +41,13 @@ import org.docx4j.wml.P;
 import org.docx4j.wml.Style;
 import org.docx4j.wml.Tbl;
 import org.openflexo.foundation.doc.FlexoDocument;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
-import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
-import org.openflexo.foundation.doc.FlexoParagraph;
-import org.openflexo.foundation.doc.FlexoStyle;
-import org.openflexo.foundation.doc.FlexoTable;
-import org.openflexo.foundation.doc.FlexoTableCell;
-import org.openflexo.foundation.doc.FlexoTableRow;
+import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoDocParagraph;
+import org.openflexo.foundation.doc.FlexoDocStyle;
+import org.openflexo.foundation.doc.FlexoDocTable;
+import org.openflexo.foundation.doc.FlexoDocTableCell;
+import org.openflexo.foundation.doc.FlexoDocTableRow;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -107,8 +107,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 	// public DocXStyle getStyleByIdentifier(String styleId);
 
 	@Override
-	public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
-			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
+	public DocXFragment getFragment(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> startElement,
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException;
 
 	public static abstract class DocXDocumentImpl extends FlexoDocumentImpl<DocXDocument, DocXTechnologyAdapter>implements DocXDocument {
 
@@ -147,16 +147,16 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 			// System.out.println("updateFromWordprocessingMLPackage with " + wpmlPackage);
 
-			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>(
+			List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> elementsToRemove = new ArrayList<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>(
 					getElements());
 
-			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> oldRoots = new ArrayList<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>(
+			List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> oldRoots = new ArrayList<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>(
 					getRootElements());
 
 			// This map stores old document hierarchy
-			Map<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>, List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>> oldChildren = new HashMap<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>, List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>>();
-			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
-				oldChildren.put(e, new ArrayList<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>>(e.getChildrenElements()));
+			Map<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>, List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>> oldChildren = new HashMap<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>, List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>>();
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
+				oldChildren.put(e, new ArrayList<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>>(e.getChildrenElements()));
 				e.invalidateChildrenElements();
 			}
 
@@ -213,7 +213,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 				}
 			}
 
-			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : elementsToRemove) {
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : elementsToRemove) {
 				// System.out.println("# Remove paragraph for " + e);
 				internallyRemoveFromElements(e);
 			}
@@ -238,8 +238,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			}
 
 			// Then we iterate on all elements to see if some structural modifications need to be fired
-			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
-				List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> oldChild = oldChildren.get(e);
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
+				List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> oldChild = oldChildren.get(e);
 				if (oldChild == null || !oldChild.equals(e.getChildrenElements())) {
 					if (e.getChildrenElements().size() > 0) {
 						if (e instanceof DocXParagraph) {
@@ -307,7 +307,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			/*for (DocXParagraph p : getElements(DocXParagraph.class)) {
 				if (p.getP() != null && p.getP().getPPr() != null && p.getP().getPPr().getPStyle() != null) {
 					String styleName = p.getP().getPPr().getPStyle().getVal();
-					FlexoStyle<DocXDocument, DocXTechnologyAdapter> paragraphStyle = getStyleByIdentifier(styleName);
+					FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> paragraphStyle = getStyleByIdentifier(styleName);
 					if (paragraphStyle != null) {
 						p.setStyle(paragraphStyle);
 					}
@@ -340,13 +340,13 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		}
 
 		@Override
-		public void addToStyles(FlexoStyle<DocXDocument, DocXTechnologyAdapter> aStyle) {
+		public void addToStyles(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> aStyle) {
 			performSuperAdder(STYLES_KEY, aStyle);
 			styles.put(((DocXStyle) aStyle).getStyle(), (DocXStyle) aStyle);
 		}
 
 		@Override
-		public void removeFromStyles(FlexoStyle<DocXDocument, DocXTechnologyAdapter> aStyle) {
+		public void removeFromStyles(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> aStyle) {
 			performSuperRemover(STYLES_KEY, aStyle);
 			styles.remove(((DocXStyle) aStyle).getStyle());
 		}
@@ -359,7 +359,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		@Override
 		public String debugStructuredContents() {
 			StringBuffer result = new StringBuffer();
-			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : getRootElements()) {
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : getRootElements()) {
 				result.append(DocXUtils.debugStructuredContents(e, 1));
 			}
 			return result.toString();
@@ -391,7 +391,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		 * Element will be inserted to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
 		@Override
-		public void insertElementAtIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
+		public void insertElementAtIndex(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
 			ContentAccessor parent = getWordprocessingMLPackage().getMainDocumentPart();
 			((DocXElement) anElement).appendToWordprocessingMLPackage(parent, index);
 			internallyInsertElementAtIndex(anElement, index);
@@ -403,7 +403,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		 * 
 		 * @param addedElement
 		 */
-		private void internallyInsertElementAtIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> addedElement, int index) {
+		private void internallyInsertElementAtIndex(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> addedElement, int index) {
 			performSuperAdder(ELEMENTS_KEY, addedElement, index);
 			internallyHandleElementAdding(addedElement);
 		}
@@ -413,7 +413,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		 * 
 		 * @param anElement
 		 */
-		private void internallyHandleElementAdding(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
+		private void internallyHandleElementAdding(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement) {
 			if (anElement instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) anElement;
 				if (paragraph.getP() != null) {
@@ -442,7 +442,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		 * Element will be moved inside underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
 		@Override
-		public void moveElementToIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
+		public void moveElementToIndex(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
 			// TODO: implement moving in WordProcessingMLPackage
 			internallyMoveElementToIndex(anElement, index);
 		}
@@ -453,8 +453,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		 * 
 		 * @param addedElement
 		 */
-		private void internallyMoveElementToIndex(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
-			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> elements = getElements();
+		private void internallyMoveElementToIndex(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement, int index) {
+			List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> elements = getElements();
 			elements.remove(anElement);
 			elements.add(index, anElement);
 			invalidateRootElements();
@@ -466,7 +466,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		 * Element will be added to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
 		@Override
-		public void addToElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
+		public void addToElements(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement) {
 			if (isCreatedByCloning()) {
 				internallyAddToElements(anElement);
 				return;
@@ -488,7 +488,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		 * 
 		 * @param addedElement
 		 */
-		private void internallyAddToElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> addedElement) {
+		private void internallyAddToElements(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> addedElement) {
 			performSuperAdder(ELEMENTS_KEY, addedElement);
 			internallyHandleElementAdding(addedElement);
 		}
@@ -498,7 +498,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		 * Element will be removed to underlying {@link WordprocessingMLPackage} and {@link FlexoDocument} will be updated accordingly
 		 */
 		@Override
-		public void removeFromElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement) {
+		public void removeFromElements(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement) {
 
 			// Removing in WordProcessingMLPackage
 			if (anElement instanceof DocXParagraph) {
@@ -524,7 +524,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		 * 
 		 * @param removedElement
 		 */
-		private void internallyRemoveFromElements(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> removedElement) {
+		private void internallyRemoveFromElements(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> removedElement) {
 			if (removedElement instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) removedElement;
 				if (paragraph.getP() != null) {
@@ -563,17 +563,17 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		}
 
 		@Override
-		public List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> getElementsWithBaseIdentifier(String baseIdentifier) {
-			List<FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter>> returned = new ArrayList<>();
-			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
+		public List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> getElementsWithBaseIdentifier(String baseIdentifier) {
+			List<FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> returned = new ArrayList<>();
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : getElements()) {
 				if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(baseIdentifier)) {
 					returned.add(e);
 				}
 			}
 			for (DocXTable table : tables.values()) {
-				for (FlexoTableRow<DocXDocument, DocXTechnologyAdapter> row : table.getTableRows()) {
-					for (FlexoTableCell<DocXDocument, DocXTechnologyAdapter> cell : row.getTableCells()) {
-						for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : cell.getElements()) {
+				for (FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> row : table.getTableRows()) {
+					for (FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> cell : row.getTableCells()) {
+						for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : cell.getElements()) {
 							if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(baseIdentifier)) {
 								returned.add(e);
 							}
@@ -584,7 +584,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 			return returned;
 		}
 
-		protected void reindexElement(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> anElement, String oldIdentifier) {
+		protected void reindexElement(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> anElement, String oldIdentifier) {
 			elementsForIdentifier.remove(oldIdentifier);
 			elementsForIdentifier.put(anElement.getIdentifier(), (DocXElement) anElement);
 		}
@@ -600,8 +600,8 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		}
 
 		@Override
-		public DocXFragment getFragment(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement,
-				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException {
+		public DocXFragment getFragment(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> startElement,
+				FlexoDocElement<DocXDocument, DocXTechnologyAdapter> endElement) throws FragmentConsistencyException {
 			return (DocXFragment) super.getFragment(startElement, endElement);
 		}
 
@@ -632,7 +632,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		}
 
 		@Override
-		public DocXParagraph addStyledParagraphOfText(FlexoStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
+		public DocXParagraph addStyledParagraphOfText(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
 
 			DocXParagraph returned = makeStyledParagraph(style, text);
 			addToElements(returned);
@@ -640,14 +640,14 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		}
 
 		@Override
-		public FlexoParagraph<DocXDocument, DocXTechnologyAdapter> insertStyledParagraphOfTextAtIndex(
-				FlexoStyle<DocXDocument, DocXTechnologyAdapter> style, String text, int index) {
+		public FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> insertStyledParagraphOfTextAtIndex(
+				FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style, String text, int index) {
 			DocXParagraph returned = makeStyledParagraph(style, text);
 			insertElementAtIndex(returned, index);
 			return returned;
 		}
 
-		private DocXParagraph makeStyledParagraph(FlexoStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
+		private DocXParagraph makeStyledParagraph(FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> style, String text) {
 			P p = getWordprocessingMLPackage().getMainDocumentPart().createParagraphOfText(text);
 			DocXParagraph returned = getFactory().makeNewDocXParagraph(p);
 			returned.setStyle(style);
@@ -662,7 +662,7 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 		}
 
 		@Override
-		public FlexoTable<DocXDocument, DocXTechnologyAdapter> insertTableAtIndex(int rows, int cols, int index) {
+		public FlexoDocTable<DocXDocument, DocXTechnologyAdapter> insertTableAtIndex(int rows, int cols, int index) {
 			DocXTable returned = makeTable(rows, cols);
 			insertElementAtIndex(returned, index);
 			return returned;

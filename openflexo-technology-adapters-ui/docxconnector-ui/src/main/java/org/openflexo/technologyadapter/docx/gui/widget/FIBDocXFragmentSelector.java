@@ -51,9 +51,9 @@ import org.docx4j.wml.P;
 import org.openflexo.components.widget.FIBDocumentFragmentSelector;
 import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.foundation.doc.FlexoDocument;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
-import org.openflexo.foundation.doc.FlexoDocumentFragment;
-import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocFragment;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.Resource;
@@ -67,7 +67,7 @@ import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
 
 /**
- * Widget allowing to select an {@link FlexoDocumentFragment} inside a {@link FlexoDocument}<br>
+ * Widget allowing to select an {@link FlexoDocFragment} inside a {@link FlexoDocument}<br>
  * 
  * @author sguerin
  * 
@@ -112,7 +112,7 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 
 			List<DocumentElement> elts = new ArrayList<DocumentElement>();
 
-			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : fragment.getElements()) {
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : fragment.getElements()) {
 				if (e instanceof DocXParagraph) {
 					DocumentElement docElement = docXEditor.getMLDocument().getElement(((DocXParagraph) e).getP());
 					elts.add(docElement);
@@ -218,8 +218,8 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 				// System.out.println("start=" + startDocXObject + " of " + (startDocXObject != null ? startDocXObject.getClass() : null));
 				// System.out.println("end=" + endDocXObject + " of " + (endDocXObject != null ? endDocXObject.getClass() : null));
 
-				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> startElement = null;
-				FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> endElement = null;
+				FlexoDocElement<DocXDocument, DocXTechnologyAdapter> startElement = null;
+				FlexoDocElement<DocXDocument, DocXTechnologyAdapter> endElement = null;
 
 				if (startDocXObject instanceof P) {
 					startElement = getDocument().getParagraph((P) startDocXObject);

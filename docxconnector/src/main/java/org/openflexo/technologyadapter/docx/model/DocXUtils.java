@@ -27,9 +27,9 @@ import javax.xml.bind.JAXBElement;
 
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.Text;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
-import org.openflexo.foundation.doc.FlexoParagraph;
-import org.openflexo.foundation.doc.FlexoRun;
+import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocParagraph;
+import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.toolbox.StringUtils;
 
@@ -41,13 +41,13 @@ import org.openflexo.toolbox.StringUtils;
  */
 public class DocXUtils {
 
-	public static String debugStructuredContents(FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> element, int indent) {
+	public static String debugStructuredContents(FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element, int indent) {
 		if (element instanceof DocXParagraph) {
 			DocXParagraph paragraph = (DocXParagraph) element;
 			StringBuffer result = new StringBuffer();
 			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > [" + paragraph.getIdentifier() + "/"
 					+ paragraph.getIndex() + "] { ");
-			for (FlexoRun<DocXDocument, DocXTechnologyAdapter> run : paragraph.getRuns()) {
+			for (FlexoDocRun<DocXDocument, DocXTechnologyAdapter> run : paragraph.getRuns()) {
 				if (run instanceof DocXTextRun) {
 					result.append("(" + ((DocXTextRun) run).getText() + ")");
 				}
@@ -56,7 +56,7 @@ public class DocXUtils {
 				}
 			}
 			result.append(" }\n");
-			for (FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
 				result.append(debugStructuredContents(e, indent + 1));
 			}
 			return result.toString();
@@ -80,7 +80,7 @@ public class DocXUtils {
 	public static String debugStructuredContents(DocXParagraph paragraph) {
 		StringBuffer result = new StringBuffer();
 		result.append("{ ");
-		for (FlexoRun<DocXDocument, DocXTechnologyAdapter> run : paragraph.getRuns()) {
+		for (FlexoDocRun<DocXDocument, DocXTechnologyAdapter> run : paragraph.getRuns()) {
 			if (run instanceof DocXTextRun) {
 				result.append("(" + ((DocXTextRun) run).getText() + ")");
 			}
@@ -94,7 +94,7 @@ public class DocXUtils {
 
 	public static String debugStructuredContents(DocXTableCell cell) {
 		StringBuffer result = new StringBuffer();
-		for (FlexoParagraph<DocXDocument, DocXTechnologyAdapter> paragraph : cell.getParagraphs()) {
+		for (FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> paragraph : cell.getParagraphs()) {
 			result.append(debugStructuredContents((DocXParagraph) paragraph) + " ");
 		}
 		return result.toString();

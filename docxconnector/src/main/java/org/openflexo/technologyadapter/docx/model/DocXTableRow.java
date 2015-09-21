@@ -30,9 +30,9 @@ import javax.xml.bind.JAXBElement;
 import org.docx4j.XmlUtils;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Tr;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
-import org.openflexo.foundation.doc.FlexoTableCell;
-import org.openflexo.foundation.doc.FlexoTableRow;
+import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocTableCell;
+import org.openflexo.foundation.doc.FlexoDocTableRow;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -45,7 +45,7 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
- * Implementation of {@link FlexoTableRow} for {@link DocXTechnologyAdapter}
+ * Implementation of {@link FlexoDocTableRow} for {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *
@@ -53,7 +53,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ModelEntity
 @ImplementationClass(DocXTableRow.DocXTableRowImpl.class)
 @XMLElement
-public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXTableRow extends FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = Tr.class)
 	public static final String TR_KEY = "tr";
@@ -73,7 +73,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 	// We definitely want to avoid double instanciation of DocXTableCell in a cloned row !!!!
 	@Override
 	@CloningStrategy(StrategyType.IGNORE)
-	public List<FlexoTableCell<DocXDocument, DocXTechnologyAdapter>> getTableCells();
+	public List<FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter>> getTableCells();
 
 	/**
 	 * This is the starting point for updating {@link DocXTableRow} with the Tr provided from docx4j library<br>
@@ -111,7 +111,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		@Override
 		public void updateFromTr(Tr tr, DocXFactory factory) {
 
-			List<FlexoTableCell> cellsToRemove = new ArrayList<FlexoTableCell>(getTableCells());
+			List<FlexoDocTableCell> cellsToRemove = new ArrayList<FlexoDocTableCell>(getTableCells());
 
 			int currentIndex = 0;
 
@@ -140,7 +140,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 				}
 			}
 
-			for (FlexoTableCell<DocXDocument, DocXTechnologyAdapter> row : cellsToRemove) {
+			for (FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> row : cellsToRemove) {
 				// System.out.println("# Remove row for " + e);
 				internallyRemoveFromTableCells(row);
 			}
@@ -162,7 +162,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		 * Element will be inserted to underlying {@link Tr} and {@link DocXTableRow} will be updated accordingly
 		 */
 		@Override
-		public void insertTableCellAtIndex(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
+		public void insertTableCellAtIndex(FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
 			System.out.println("Add cell ");
 			Tr tr = getTr();
 			if (aTableCell instanceof DocXTableCell) {
@@ -181,7 +181,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		 * 
 		 * @param addedElement
 		 */
-		private void internallyInsertTableCellAtIndex(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
+		private void internallyInsertTableCellAtIndex(FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
 
 			performSuperAdder(TABLE_CELLS_KEY, aTableCell, index);
 			internallyHandleTableCellAdding(aTableCell);
@@ -192,7 +192,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		 * 
 		 * @param aTableCell
 		 */
-		private void internallyHandleTableCellAdding(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell) {
+		private void internallyHandleTableCellAdding(FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell) {
 
 			if (aTableCell instanceof DocXTableCell) {
 				DocXTableCell cell = (DocXTableCell) aTableCell;
@@ -207,7 +207,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		 * Element will be moved inside underlying {@link Tr} and {@link DocXTableRow} will be updated accordingly
 		 */
 		@Override
-		public void moveTableCellToIndex(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
+		public void moveTableCellToIndex(FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
 			// TODO: do it in Tr
 			internallyMoveTableCellToIndex(aTableCell, index);
 		}
@@ -218,8 +218,8 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		 * 
 		 * @param addedElement
 		 */
-		private void internallyMoveTableCellToIndex(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
-			List<FlexoTableCell<DocXDocument, DocXTechnologyAdapter>> cells = getTableCells();
+		private void internallyMoveTableCellToIndex(FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell, int index) {
+			List<FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter>> cells = getTableCells();
 			cells.remove(aTableCell);
 			cells.add(index, aTableCell);
 		}
@@ -229,7 +229,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		 * Element will be added to underlying {@link Tr} and {@link DocXTableRow} will be updated accordingly
 		 */
 		@Override
-		public void addToTableCells(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell) {
+		public void addToTableCells(FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell) {
 
 			Tr tr = getTr();
 			if (aTableCell instanceof DocXTableCell) {
@@ -248,7 +248,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		 * 
 		 * @param addedTableCell
 		 */
-		private void internallyAddToTableCells(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> addedTableCell) {
+		private void internallyAddToTableCells(FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> addedTableCell) {
 			performSuperAdder(TABLE_CELLS_KEY, addedTableCell);
 			internallyHandleTableCellAdding(addedTableCell);
 		}
@@ -258,7 +258,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		 * Element will be removed from underlying {@link Tr} and {@link DocXTableRow} will be updated accordingly
 		 */
 		@Override
-		public void removeFromTableCells(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell) {
+		public void removeFromTableCells(FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> aTableCell) {
 
 			Tr tr = getTr();
 			if (aTableCell instanceof DocXTableCell) {
@@ -279,7 +279,7 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		 * 
 		 * @param removedTableCell
 		 */
-		private void internallyRemoveFromTableCells(FlexoTableCell<DocXDocument, DocXTechnologyAdapter> removedTableCell) {
+		private void internallyRemoveFromTableCells(FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> removedTableCell) {
 			if (removedTableCell instanceof DocXTableCell) {
 				DocXTableCell cell = (DocXTableCell) removedTableCell;
 				if (cell.getTc() != null) {
@@ -290,8 +290,8 @@ public interface DocXTableRow extends FlexoTableRow<DocXDocument, DocXTechnology
 		}
 
 		@Override
-		public FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> getElementWithIdentifier(String identifier) {
-			FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> returned;
+		public FlexoDocElement<DocXDocument, DocXTechnologyAdapter> getElementWithIdentifier(String identifier) {
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> returned;
 			for (DocXTableCell cell : cells.values()) {
 				returned = cell.getElementWithIdentifier(identifier);
 				if (returned != null) {

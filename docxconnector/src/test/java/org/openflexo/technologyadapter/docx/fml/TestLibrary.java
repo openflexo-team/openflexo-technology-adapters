@@ -55,8 +55,8 @@ import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
-import org.openflexo.foundation.doc.FlexoRun;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.doc.fml.TextBinding;
 import org.openflexo.foundation.fml.ActionScheme;
@@ -634,7 +634,7 @@ public class TestLibrary extends AbstractTestDocX {
 		for (DocXElement element : bookDescriptionFragment.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph para = (DocXParagraph) element;
-				for (FlexoRun run : para.getRuns()) {
+				for (FlexoDocRun run : para.getRuns()) {
 					if (run instanceof DocXTextRun) {
 						sb.append("[" + ((DocXTextRun) run).getText() + "]");
 					}
@@ -1384,7 +1384,7 @@ public class TestLibrary extends AbstractTestDocX {
 		for (DocXElement element : cpFragment.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph para = (DocXParagraph) element;
-				for (FlexoRun run : para.getRuns()) {
+				for (FlexoDocRun run : para.getRuns()) {
 					sb.append("[" + run.getText() + "]");
 				}
 				sb.append("\n");
@@ -1423,7 +1423,7 @@ public class TestLibrary extends AbstractTestDocX {
 		for (DocXElement element : lmFragment.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph para = (DocXParagraph) element;
-				for (FlexoRun run : para.getRuns()) {
+				for (FlexoDocRun run : para.getRuns()) {
 					sb.append("[" + run.getText() + "]");
 				}
 				sb.append("\n");
@@ -1628,7 +1628,7 @@ public class TestLibrary extends AbstractTestDocX {
 		for (DocXElement element : lrnFragment.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph para = (DocXParagraph) element;
-				for (FlexoRun run : para.getRuns()) {
+				for (FlexoDocRun run : para.getRuns()) {
 					sb.append("[" + run.getText() + "]");
 				}
 				sb.append("\n");

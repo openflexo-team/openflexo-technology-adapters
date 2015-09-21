@@ -22,7 +22,7 @@ package org.openflexo.technologyadapter.docx.model;
 
 import org.docx4j.XmlUtils;
 import org.docx4j.wml.R;
-import org.openflexo.foundation.doc.FlexoRun;
+import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -35,14 +35,14 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
- * Implementation of {@link FlexoRun} for {@link DocXTechnologyAdapter}
+ * Implementation of {@link FlexoDocRun} for {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *
  */
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DocXRun.DocXRunImpl.class)
-public interface DocXRun extends FlexoRun<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXRun extends FlexoDocRun<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = R.class)
 	public static final String R_KEY = "r";
