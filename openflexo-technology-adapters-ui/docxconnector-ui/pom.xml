@@ -14,11 +14,15 @@
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>docxconnector</artifactId>
-			<version>1.8.0-SYLVAIN-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-documentation-ui</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>

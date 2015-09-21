@@ -48,6 +48,45 @@
 				<classifier>resources</classifier>
 				<type>zip</type>
 			</dependency>
+
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>flexo-ontology-ui</artifactId>
+				<version>${flexocore.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>flexo-ontology-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>tests</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>flexo-ontology-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>resources</classifier>
+				<type>zip</type>
+			</dependency>
+		
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>flexo-documentation-ui</artifactId>
+				<version>${flexocore.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>flexo-documentation-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>tests</classifier>
+			</dependency>
+			<dependency>
+				<groupId>org.openflexo</groupId>
+				<artifactId>flexo-documentation-ui</artifactId>
+				<version>${flexocore.version}</version>
+				<classifier>resources</classifier>
+				<type>zip</type>
+			</dependency>
+		
 		
 			<dependency>
 				<groupId>org.openflexo</groupId>

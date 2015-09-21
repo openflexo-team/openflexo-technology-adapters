@@ -48,7 +48,7 @@ import javax.swing.event.CaretEvent;
 
 import org.docx4all.swing.text.DocumentElement;
 import org.docx4j.wml.P;
-import org.openflexo.components.widget.FIBDocumentFragmentSelector;
+import org.openflexo.components.widget.FIBDocFragmentSelector;
 import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocElement;
@@ -73,7 +73,7 @@ import org.openflexo.technologyadapter.docx.model.DocXTable;
  * 
  */
 @SuppressWarnings("serial")
-public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFragment, DocXDocument, DocXTechnologyAdapter> {
+public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment, DocXDocument, DocXTechnologyAdapter> {
 	static final Logger logger = Logger.getLogger(FIBDocXFragmentSelector.class.getPackage().getName());
 
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/Widget/FIBDocXFragmentSelector.fib");
