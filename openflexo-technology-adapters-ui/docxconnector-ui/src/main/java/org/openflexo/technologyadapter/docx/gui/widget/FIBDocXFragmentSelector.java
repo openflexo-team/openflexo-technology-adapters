@@ -64,6 +64,7 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.model.DocXTable;
 
 /**
  * Widget allowing to select an {@link FlexoDocumentFragment} inside a {@link FlexoDocument}<br>
@@ -116,6 +117,10 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 					DocumentElement docElement = docXEditor.getMLDocument().getElement(((DocXParagraph) e).getP());
 					elts.add(docElement);
 				}
+				if (e instanceof DocXTable) {
+					DocumentElement docElement = docXEditor.getMLDocument().getElement(((DocXTable) e).getTbl());
+					elts.add(docElement);
+				}
 			}
 			docXEditor.getMLDocument().setSelectedElements(elts);
 
@@ -130,7 +135,14 @@ public class FIBDocXFragmentSelector extends FIBDocumentFragmentSelector<DocXFra
 					docXEditor.getEditorView().scrollToElement(startElement);
 				}
 			}
+			if (fragment.getStartElement() instanceof DocXTable) {
+				DocumentElement startElement = docXEditor.getMLDocument().getElement(((DocXTable) fragment.getStartElement()).getTbl());
+				if (startElement != null) {
+					docXEditor.getEditorView().scrollToElement(startElement, false);
+				}
+			}
 
+			// docXEditor.getEditorView().revalidate();
 			docXEditor.getEditorView().repaint();
 
 		} catch (Exception e) {
