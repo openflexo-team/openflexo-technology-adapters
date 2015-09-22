@@ -58,7 +58,7 @@
 		<dependency>
 			<groupId>org.docx4all</groupId>
 			<artifactId>docx4all</artifactId>
-			<version>1.3-SNAPSHOT</version>
+			<version>1.3-SYLVAIN-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 </project>

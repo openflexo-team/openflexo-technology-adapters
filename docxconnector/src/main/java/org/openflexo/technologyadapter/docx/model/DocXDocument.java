@@ -40,7 +40,6 @@ import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.P;
 import org.docx4j.wml.Style;
 import org.docx4j.wml.Tbl;
-import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.FlexoDocParagraph;
@@ -48,6 +47,7 @@ import org.openflexo.foundation.doc.FlexoDocStyle;
 import org.openflexo.foundation.doc.FlexoDocTable;
 import org.openflexo.foundation.doc.FlexoDocTableCell;
 import org.openflexo.foundation.doc.FlexoDocTableRow;
+import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -591,7 +591,17 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 		@Override
 		public DocXParagraph getParagraph(P p) {
-			return paragraphs.get(p);
+			DocXParagraph returned = paragraphs.get(p);
+			if (returned == null) {
+				// maybe in tables
+				for (DocXTable t : tables.values()) {
+					returned = t.getParagraph(p);
+					if (returned != null) {
+						break;
+					}
+				}
+			}
+			return returned;
 		}
 
 		@Override

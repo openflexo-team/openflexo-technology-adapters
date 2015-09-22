@@ -89,6 +89,8 @@ public interface DocXTable extends DocXElement, FlexoDocTable<DocXDocument, DocX
 	 */
 	public void updateFromTbl(Tbl tbl, DocXFactory factory);
 
+	public DocXParagraph getParagraph(P p);
+
 	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTable {
 
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
@@ -393,6 +395,19 @@ public interface DocXTable extends DocXElement, FlexoDocTable<DocXDocument, DocX
 		public String toString() {
 			return DocXUtils.debugStructuredContents(this, 2);
 		}
+
+		@Override
+		public DocXParagraph getParagraph(P p) {
+			for (FlexoDocTableRow<DocXDocument, DocXTechnologyAdapter> c : getTableRows()) {
+				DocXTableRow row = (DocXTableRow) c;
+				DocXParagraph returned = row.getParagraph(p);
+				if (returned != null) {
+					return returned;
+				}
+			}
+			return null;
+		}
+
 	}
 
 }

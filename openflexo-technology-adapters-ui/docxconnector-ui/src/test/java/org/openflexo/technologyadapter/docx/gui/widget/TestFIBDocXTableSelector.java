@@ -77,7 +77,7 @@ public class TestFIBDocXTableSelector extends AbstractTestDocX {
 	@TestOrder(2)
 	public void test2InstanciateWidget() throws FragmentConsistencyException {
 
-		DocXDocument structuredDocument = getDocument("DocumentWithTable.docx");
+		DocXDocument structuredDocument = getDocument("DocumentWithManyTables.docx");
 		assertNotNull(structuredDocument);
 
 		DocXTable table = (DocXTable) structuredDocument.getElements().get(5);
