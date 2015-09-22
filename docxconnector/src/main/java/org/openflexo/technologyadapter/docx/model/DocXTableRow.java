@@ -28,6 +28,7 @@ import java.util.Map;
 import javax.xml.bind.JAXBElement;
 
 import org.docx4j.XmlUtils;
+import org.docx4j.wml.P;
 import org.docx4j.wml.Tc;
 import org.docx4j.wml.Tr;
 import org.openflexo.foundation.doc.FlexoDocElement;
@@ -81,6 +82,14 @@ public interface DocXTableRow extends FlexoDocTableRow<DocXDocument, DocXTechnol
 	 * return former value
 	 */
 	public void updateFromTr(Tr tr, DocXFactory factory);
+
+	/**
+	 * Search and return in all rows the {@link DocXParagraph} matching supplied {@link P}
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public DocXParagraph getParagraph(P p);
 
 	public static abstract class DocXTableRowImpl extends FlexoTableRowImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTableRow {
 
@@ -324,6 +333,19 @@ public interface DocXTableRow extends FlexoDocTableRow<DocXDocument, DocXTechnol
 		public String toString() {
 			return "DocXTableRow\n" + (getTr() != null ? DocXUtils.printContents(getTr(), 2) : "null");
 		}
+
+		@Override
+		public DocXParagraph getParagraph(P p) {
+			for (FlexoDocTableCell<DocXDocument, DocXTechnologyAdapter> c : getTableCells()) {
+				DocXTableCell cell = (DocXTableCell) c;
+				DocXParagraph returned = cell.getParagraph(p);
+				if (returned != null) {
+					return returned;
+				}
+			}
+			return null;
+		}
+
 	}
 
 }

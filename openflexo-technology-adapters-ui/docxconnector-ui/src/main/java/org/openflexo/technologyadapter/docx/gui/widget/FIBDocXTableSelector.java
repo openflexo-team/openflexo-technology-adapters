@@ -90,9 +90,12 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 	@Override
 	protected void selectTableInDocumentEditor(DocXTable table, FIBCustomWidget<?, ?> documentEditorWidget) {
 
+		System.out.println("Quelqu'un m'appelle ?");
+
 		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 
 		if (table == null) {
+			System.out.println("on a plus rien");
 			docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
 			return;
 		}
@@ -101,6 +104,7 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 
 			DocumentElement tableElement = docXEditor.getMLDocument().getElement(table.getTbl());
 
+			System.out.println("on selectionne " + tableElement);
 			docXEditor.getMLDocument().setSelectedElements(Collections.singletonList(tableElement));
 
 			docXEditor.getEditorView().scrollToElement(tableElement, false);
@@ -143,7 +147,8 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 			getServiceManager().getTaskManager().scheduleExecution(task);
 			getServiceManager().getTaskManager().waitTask(task);
 			returned = task.getPanel();
-		} else {
+		}
+		else {
 			returned = super.makeCustomPanel(editedObject);
 		}
 
@@ -161,8 +166,8 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 
 				int startLocation = getEditor().getEditorView().getSelectionStart();
 
-				DocumentElement startParagraphMLElement = (DocumentElement) getEditor().getMLDocument().getParagraphMLElement(
-						startLocation, false);
+				DocumentElement startParagraphMLElement = (DocumentElement) getEditor().getMLDocument().getParagraphMLElement(startLocation,
+						false);
 
 				Object startDocXObject = startParagraphMLElement.getElementML().getDocxObject();
 
@@ -172,15 +177,19 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 
 				if (startDocXObject instanceof P) {
 					startElement = getDocument().getParagraph((P) startDocXObject);
+					System.out.println("startElement=" + startElement);
 					if (startElement.getContainer() instanceof DocXTableCell) {
+						System.out.println("OK, c'est une table, on cherche laquelle c'est");
 						startElement = (DocXTable) ((DocXTableCell) startElement.getContainer()).getRow().getTable();
+						System.out.println("C'est: " + startElement);
 					}
 				}
 
 				isSelecting = true;
 				if (startElement instanceof DocXTable) {
 					setEditedObject((DocXTable) startElement);
-				} else {
+				}
+				else {
 					setEditedObject(null);
 				}
 				isSelecting = false;
@@ -188,6 +197,20 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 			}
 		});
 		return returned;
+	}
+
+	/*@Override
+	public void setSelectedValue(DocXTable selectedValue) {
+		// TODO Auto-generated method stub
+		System.out.println("******* setSelectedValue with " + selectedValue);
+		super.setSelectedValue(selectedValue);
+	}*/
+
+	@Override
+	public void setSelectedObject(Object selectedObject) {
+		// TODO Auto-generated method stub
+		System.out.println("******* setSelectedObject with " + selectedObject);
+		super.setSelectedObject(selectedObject);
 	}
 
 	private boolean isSelecting = false;

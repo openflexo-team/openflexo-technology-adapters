@@ -32,9 +32,9 @@ import org.docx4j.XmlUtils;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.P;
 import org.docx4j.wml.Tc;
-import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocParagraph;
 import org.openflexo.foundation.doc.FlexoDocTableCell;
+import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Getter;
@@ -75,6 +75,14 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 	 * return former value
 	 */
 	public void updateFromTc(Tc tc, DocXFactory factory);
+
+	/**
+	 * Search and return in all rows the {@link DocXParagraph} matching supplied {@link P}
+	 * 
+	 * @param p
+	 * @return
+	 */
+	public DocXParagraph getParagraph(P p);
 
 	public static abstract class DocXTableCellImpl extends FlexoTableCellImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTableCell {
 
@@ -376,6 +384,11 @@ public interface DocXTableCell extends FlexoDocTableCell<DocXDocument, DocXTechn
 				}
 			}
 
+		}
+
+		@Override
+		public DocXParagraph getParagraph(P p) {
+			return paragraphs.get(p);
 		}
 
 	}
