@@ -56,8 +56,13 @@ import org.openflexo.technologyadapter.docx.model.DocXTable;
 @ImplementationClass(DocXTableAction.DocXTableActionImpl.class)
 public interface DocXTableAction extends RoleSpecificAction<DocXTableRole, DocXModelSlot, DocXTable>, DocXAction<DocXTable> {
 
-	public static abstract class DocXTableActionImpl extends RoleSpecificActionImpl<DocXTableRole, DocXModelSlot, DocXTable>
-			implements DocXTableAction {
+	public static abstract class DocXTableActionImpl extends RoleSpecificActionImpl<DocXTableRole, DocXModelSlot, DocXTable> implements
+			DocXTableAction {
+
+		@Override
+		public Class<DocXTableRole> getRoleClass() {
+			return DocXTableRole.class;
+		}
 
 		@Override
 		public Class<DocXTable> getAssignableType() {

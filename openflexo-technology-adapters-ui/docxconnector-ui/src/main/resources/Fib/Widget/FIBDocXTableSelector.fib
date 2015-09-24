@@ -6,7 +6,7 @@
 	<Browser root="data.document"
 		iteratorClassName="org.openflexo.technologyadapter.docx.model.DocXObject"
 		visibleRowCount="5" rowHeight="18" boundToSelectionManager="true"
-		selectionMode="MultipleIntervalSelection" showFooter="true"
+		selectionMode="SingleSelection" showFooter="true"
 		rootVisible="true" showRootsHandle="true" localize="true"
 		manageDynamicModel="true" clickAction="controller.singleClick(DocumentBrowser.selected)"
 		doubleClickAction="controller.doubleClick(DocumentBrowser.selected)"

@@ -40,20 +40,20 @@
 package org.openflexo.technologyadapter.docx.gui.widget;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 
 import org.docx4all.swing.text.DocumentElement;
 import org.docx4j.wml.P;
 import org.openflexo.components.widget.FIBDocFragmentSelector;
 import org.openflexo.fib.view.widget.FIBCustomWidget;
-import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.doc.FlexoDocFragment;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.Resource;
@@ -61,7 +61,6 @@ import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.gui.widget.DocXEditor.DocXEditorSelectionListener;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
-import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
@@ -93,61 +92,80 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 	}
 
 	@Override
-	protected void selectFragmentInDocumentEditor(DocXFragment fragment, FIBCustomWidget<?, ?> documentEditorWidget) {
+	protected void selectFragmentInDocumentEditor(final DocXFragment fragment, FIBCustomWidget<?, ?> documentEditorWidget) {
 		super.selectFragmentInDocumentEditor(fragment, documentEditorWidget);
+
+		System.out.println("****************** selectFragmentInDocumentEditor with " + fragment + " and " + documentEditorWidget);
 
 		// System.out.println("customPanel" + getCustomPanel());
 		// System.out.println("docEditorWidget=" + getCustomPanel().getDocEditorWidget());
 
-		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
-
-		if (fragment == null) {
-			docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
-			return;
-		}
+		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 
 		try {
 
-			List<DocXElement> fragmentElements = fragment.getElements();
+			// List<DocXElement> fragmentElements = fragment.getElements();
 
-			List<DocumentElement> elts = new ArrayList<DocumentElement>();
+			final List<DocumentElement> elts = new ArrayList<DocumentElement>();
 
-			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : fragment.getElements()) {
-				if (e instanceof DocXParagraph) {
-					DocumentElement docElement = docXEditor.getMLDocument().getElement(((DocXParagraph) e).getP());
-					elts.add(docElement);
-				}
-				if (e instanceof DocXTable) {
-					DocumentElement docElement = docXEditor.getMLDocument().getElement(((DocXTable) e).getTbl());
-					elts.add(docElement);
+			if (fragment != null) {
+
+				// System.out.println("start=" + fragment.getStartElement().getIndex());
+				// System.out.println("end=" + fragment.getEndElement().getIndex());
+
+				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : fragment.getElements()) {
+					if (e instanceof DocXParagraph) {
+						DocumentElement docElement = docXEditor.getMLDocument().getElement(((DocXParagraph) e).getP());
+						elts.add(docElement);
+					}
+					if (e instanceof DocXTable) {
+						DocumentElement docElement = docXEditor.getMLDocument().getElement(((DocXTable) e).getTbl());
+						elts.add(docElement);
+					}
 				}
 			}
+
+			// Thread.dumpStack();
 			docXEditor.getMLDocument().setSelectedElements(elts);
 
-			// System.out.println("in FIBDocXFragmentSelector selectedDocElements=" + getSelectedDocumentElements());
+			if (fragment != null) {
 
-			// setSelectedDocumentElements(elts);
-			// getPropertyChangeSupport().firePropertyChange("selectedDocumentElements", null, getSelectedDocumentElements());
-
-			if (fragment.getStartElement() instanceof DocXParagraph) {
-				DocumentElement startElement = docXEditor.getMLDocument().getElement(((DocXParagraph) fragment.getStartElement()).getP());
-				if (startElement != null) {
-					docXEditor.getEditorView().scrollToElement(startElement);
+				if (fragment.getStartElement() instanceof DocXParagraph) {
+					final DocumentElement startElement = docXEditor.getMLDocument().getElement(
+							((DocXParagraph) fragment.getStartElement()).getP());
+					if (startElement != null) {
+						scrollTo(startElement, docXEditor);
+					}
+				}
+				if (fragment.getStartElement() instanceof DocXTable) {
+					DocumentElement startElement = docXEditor.getMLDocument().getElement(((DocXTable) fragment.getStartElement()).getTbl());
+					if (startElement != null) {
+						docXEditor.getEditorView().scrollToElement(startElement, false);
+					}
 				}
 			}
-			if (fragment.getStartElement() instanceof DocXTable) {
-				DocumentElement startElement = docXEditor.getMLDocument().getElement(((DocXTable) fragment.getStartElement()).getTbl());
-				if (startElement != null) {
-					docXEditor.getEditorView().scrollToElement(startElement, false);
-				}
-			}
-
-			// docXEditor.getEditorView().revalidate();
-			docXEditor.getEditorView().repaint();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		docXEditor.getEditorView().revalidate();
+		docXEditor.getEditorView().repaint();
+
+	}
+
+	private void scrollTo(final DocumentElement startElement, final DocXEditor docXEditor) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// System.out.println("Hop, on scrolle a " + startElement);
+				if (!docXEditor.getEditorView().scrollToElement(startElement, false)) {
+					scrollTo(startElement, docXEditor);
+				}
+				docXEditor.getEditorView().revalidate();
+				docXEditor.getEditorView().repaint();
+			}
+		});
 	}
 
 	public class LoadDocXEditor extends FlexoTask {
@@ -242,13 +260,16 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 				// System.out.println("fragment=" + newFragment);
 
 				isSelecting = true;
-
 				setEditedObject(newFragment);
-
 				isSelecting = false;
 
 			}
 		});
+
+		if (editedObject != null) {
+			selectFragmentInDocumentEditor(editedObject, documentEditorWidget);
+		}
+
 		return returned;
 	}
 

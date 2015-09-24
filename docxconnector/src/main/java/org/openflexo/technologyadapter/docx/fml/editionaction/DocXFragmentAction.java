@@ -60,6 +60,11 @@ public interface DocXFragmentAction extends RoleSpecificAction<DocXFragmentRole,
 			implements DocXFragmentAction {
 
 		@Override
+		public Class<DocXFragmentRole> getRoleClass() {
+			return DocXFragmentRole.class;
+		}
+
+		@Override
 		public Class<DocXFragment> getAssignableType() {
 			return DocXFragment.class;
 		}

@@ -75,4 +75,8 @@ public class TestDocXInspectors extends GenericFIBInspectorTestCase {
 		validateFIB("Inspectors/DocX/DocXModelSlot.inspector");
 	}
 
+	@Test
+	public void testDocXTableRoleInspector() {
+		validateFIB("Inspectors/DocX/DocXTableRole.inspector");
+	}
 }

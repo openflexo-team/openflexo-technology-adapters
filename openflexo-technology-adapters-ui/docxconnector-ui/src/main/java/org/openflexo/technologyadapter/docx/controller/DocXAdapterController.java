@@ -28,6 +28,9 @@ import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
+import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
+import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 import org.openflexo.technologyadapter.docx.gui.DocXIconLibrary;
 import org.openflexo.technologyadapter.docx.gui.view.DocXDocumentModuleView;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -108,7 +111,15 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 
 	@Override
 	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> roleClass) {
-		// TODO Auto-generated method stub
+		if (DocXParagraphRole.class.isAssignableFrom(roleClass)) {
+			return DocXIconLibrary.PARAGRAPH_ICON;
+		}
+		if (DocXTableRole.class.isAssignableFrom(roleClass)) {
+			return DocXIconLibrary.TABLE_ICON;
+		}
+		if (DocXFragmentRole.class.isAssignableFrom(roleClass)) {
+			return DocXIconLibrary.DOCX_TECHNOLOGY_ICON;
+		}
 		return null;
 	}
 

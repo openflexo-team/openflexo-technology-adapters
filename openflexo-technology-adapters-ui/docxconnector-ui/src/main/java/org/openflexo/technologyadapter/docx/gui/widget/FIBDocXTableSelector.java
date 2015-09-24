@@ -42,6 +42,7 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 import java.util.Collections;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 
 import org.docx4all.swing.text.DocumentElement;
@@ -88,26 +89,32 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 	}
 
 	@Override
-	protected void selectTableInDocumentEditor(DocXTable table, FIBCustomWidget<?, ?> documentEditorWidget) {
+	protected void selectTableInDocumentEditor(final DocXTable table, FIBCustomWidget<?, ?> documentEditorWidget) {
 
-		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
+		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 
-		if (table == null) {
-			docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
-			docXEditor.getEditorView().repaint();
-			return;
-		}
+		SwingUtilities.invokeLater(new Runnable() {
 
-		try {
+			@Override
+			public void run() {
+				if (table == null) {
+					docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
+					docXEditor.getEditorView().repaint();
+					return;
+				}
 
-			DocumentElement tableElement = docXEditor.getMLDocument().getElement(table.getTbl());
-			docXEditor.getMLDocument().setSelectedElements(Collections.singletonList(tableElement));
-			docXEditor.getEditorView().scrollToElement(tableElement, false);
-			docXEditor.getEditorView().repaint();
+				try {
+					DocumentElement tableElement = docXEditor.getMLDocument().getElement(table.getTbl());
+					docXEditor.getMLDocument().setSelectedElements(Collections.singletonList(tableElement));
+					docXEditor.getEditorView().scrollToElement(tableElement, false);
+					docXEditor.getEditorView().repaint();
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
 	}
 
 	public class LoadDocXEditor extends FlexoTask {
