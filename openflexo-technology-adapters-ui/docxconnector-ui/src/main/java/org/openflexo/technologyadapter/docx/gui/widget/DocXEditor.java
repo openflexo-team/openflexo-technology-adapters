@@ -95,7 +95,8 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		String regex = null;
 		if (ToolBox.isMacOS()) {
 			regex = ".*(Courier New|Arial|Times New Roman|Comic Sans|Georgia|Impact|Lucida Console|Lucida Sans Unicode|Palatino Linotype|Tahoma|Trebuchet|Verdana|Symbol|Webdings|Wingdings|MS Sans Serif|MS Serif).*";
-		} else {
+		}
+		else {
 			regex = ".*(calibri|cour|arial|times|comic|georgia|impact|LSANS|pala|tahoma|trebuc|verdana|symbol|webdings|wingding).*";
 		}
 		PhysicalFonts.setRegex(regex);
@@ -107,8 +108,6 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 
 	public DocXEditor(DocXDocument document, boolean showToolbar) {
 		super(new BorderLayout());
-
-		Thread.dumpStack();
 
 		Progress.progress("init_docx_editor");
 		this.document = document;
@@ -327,7 +326,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 					selectedElement.setSelected(false);
 				}
 				selectedElement = (DocumentElement) characterElement;
-
+				
 				System.out.println("Paf, on selectionne " + selectedElement);
 				selectedElement.setSelected(true);*/
 
@@ -377,7 +376,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 						System.out.println("Texte=" + ((Text) obj).getValue());
 					}
 				}
-
+			
 			}*/
 
 		}
