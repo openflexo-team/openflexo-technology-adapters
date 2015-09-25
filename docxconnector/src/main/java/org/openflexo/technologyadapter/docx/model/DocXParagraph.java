@@ -94,10 +94,10 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-				.getLogger(DocXParagraphImpl.class.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXParagraphImpl.class
+				.getPackage().getName());
 
 		private final Map<R, DocXRun> runs = new HashMap<R, DocXRun>();
 
@@ -150,14 +150,12 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 						// System.out.println("# Create new run for " + o);
 						run = factory.makeNewDocXRun((R) o);
 						internallyInsertRunAtIndex(run, currentIndex);
-					}
-					else {
+					} else {
 						// OK run was found
 						if (getRuns().indexOf(run) != currentIndex) {
 							// Paragraph was existing but is not at the right position
 							internallyMoveRunToIndex(run, currentIndex);
-						}
-						else {
+						} else {
 							// System.out.println("# Found existing paragraph for " + o);
 						}
 						runsToRemove.remove(run);
@@ -265,8 +263,7 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 				R r = ((DocXRun) aRun).getR();
 				p.getContent().add(index, r);
 				internallyInsertRunAtIndex(aRun, index);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}
@@ -337,8 +334,7 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 				R r = ((DocXRun) aRun).getR();
 				p.getContent().add(r);
 				internallyAddToRuns(aRun);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}
@@ -368,8 +364,7 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 					logger.warning("R item not present in P. Please investigate...");
 				}
 				internallyRemoveFromRuns(aRun);
-			}
-			else {
+			} else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}
@@ -392,7 +387,7 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 
 		@Override
 		public FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> getStyle() {
-			if (getP() != null && getP().getPPr() != null && getP().getPPr().getPStyle() != null) {
+			if (getP() != null && getP().getPPr() != null && getP().getPPr().getPStyle() != null && getFlexoDocument() != null) {
 				String styleName = getP().getPPr().getPStyle().getVal();
 				return getFlexoDocument().getStyleByIdentifier(styleName);
 			}

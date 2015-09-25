@@ -58,7 +58,10 @@
 					componentClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXFragmentEditor"
 					name="DocXEditor" controllerClassName="org.openflexo.fib.controller.FIBController"
 					index="6" localize="true" constraints="border(location=center)"
-					readOnly="false" />
+					readOnly="false">
+					<Assignment id="120" mandatory="true" variable="component.startIndex" value="data.fragment.startElement.index"/>		
+					<Assignment id="121" mandatory="true" variable="component.endIndex" value="data.fragment.endElement.index"/>		
+				</Custom>
 			</Panel>
 			<Label id="110" manageDynamicModel="false" useScrollBar="false"
 				controllerClassName="org.openflexo.fib.controller.FIBController"

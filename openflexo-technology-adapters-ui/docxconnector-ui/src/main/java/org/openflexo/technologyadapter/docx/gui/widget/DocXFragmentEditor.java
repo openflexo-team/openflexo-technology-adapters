@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import java.util.logging.Logger;
 
-import org.docx4all.swing.text.WordMLDocument;
+import org.docx4all.swing.text.WordMLDocumentFragment;
 import org.docx4all.swing.text.WordMLEditorKit;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 
@@ -49,13 +49,51 @@ public class DocXFragmentEditor extends DocXEditor {
 
 	private static final Logger logger = Logger.getLogger(DocXFragmentEditor.class.getPackage().getName());
 
+	private long startIndex;
+	private long endIndex;
+
 	public DocXFragmentEditor(DocXDocument document) {
 		super(document, false);
 	}
 
+	public long getStartIndex() {
+		return startIndex;
+	}
+
+	@CustomComponentParameter(name = "startIndex", type = CustomComponentParameter.Type.OPTIONAL)
+	public void setStartIndex(long startIndex) {
+
+		System.out.println("startIndex = " + startIndex);
+
+		if (startIndex != this.startIndex) {
+			long oldValue = this.startIndex;
+			this.startIndex = startIndex;
+			// getPropertyChangeSupport().firePropertyChange("startIndex", oldValue, startIndex);
+		}
+	}
+
+	public long getEndIndex() {
+		return endIndex;
+	}
+
+	@CustomComponentParameter(name = "endIndex", type = CustomComponentParameter.Type.OPTIONAL)
+	public void setEndIndex(long endIndex) {
+
+		System.out.println("endIndex = " + endIndex);
+
+		if (endIndex != this.endIndex) {
+			long oldValue = this.endIndex;
+			this.endIndex = endIndex;
+			// getPropertyChangeSupport().firePropertyChange("endIndex", oldValue, endIndex);
+		}
+	}
+
+	@CustomComponentParameter(name = "serviceManager", type = CustomComponentParameter.Type.OPTIONAL)
 	@Override
-	protected WordMLDocument openDocument(WordMLEditorKit editorKit) {
-		return editorKit.openDocumentFragment(document.getWordprocessingMLPackage(), getObjectFactory(), 3, 6);
+	protected WordMLDocumentFragment openDocument(WordMLEditorKit editorKit) {
+		Thread.dumpStack();
+		return editorKit.openDocumentFragment(document.getWordprocessingMLPackage(), getObjectFactory(), 6, 10 /*(int) getStartIndex(),
+																												(int) getEndIndex()*/);
 	}
 
 }
