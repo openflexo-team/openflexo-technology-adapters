@@ -56,7 +56,9 @@ public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 
 	protected DocXDocumentResource getDocumentResource(String documentName) {
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI()
+				+ (resourceCenter.getDefaultBaseURI().endsWith(File.separator) ? "" : File.separator) + "TestResourceCenter"
+				+ File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 
 		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
