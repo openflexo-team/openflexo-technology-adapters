@@ -34,6 +34,7 @@ import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 import org.openflexo.technologyadapter.docx.gui.DocXIconLibrary;
 import org.openflexo.technologyadapter.docx.gui.view.DocXDocumentModuleView;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
 import org.openflexo.view.ModuleView;
@@ -80,11 +81,16 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 			DocXParagraph paragraph = (DocXParagraph) object;
 			if (paragraph.getStyle() != null && paragraph.getStyle().isLevelled()) {
 				return DocXIconLibrary.SECTION_ICON;
-			} else {
+			}
+			else {
 				return DocXIconLibrary.PARAGRAPH_ICON;
 			}
-		} else if (object instanceof DocXTable) {
+		}
+		else if (object instanceof DocXTable) {
 			return DocXIconLibrary.TABLE_ICON;
+		}
+		else if (object instanceof DocXFragment) {
+			return DocXIconLibrary.FRAGMENT_ICON;
 		}
 		return super.getIconForTechnologyObject(object);
 	}
@@ -96,6 +102,9 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 		}
 		if (DocXParagraph.class.isAssignableFrom(objectClass)) {
 			return DocXIconLibrary.SECTION_ICON;
+		}
+		if (DocXFragment.class.isAssignableFrom(objectClass)) {
+			return DocXIconLibrary.FRAGMENT_ICON;
 		}
 		return null;
 	}
@@ -118,7 +127,7 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 			return DocXIconLibrary.TABLE_ICON;
 		}
 		if (DocXFragmentRole.class.isAssignableFrom(roleClass)) {
-			return DocXIconLibrary.DOCX_TECHNOLOGY_ICON;
+			return DocXIconLibrary.FRAGMENT_ICON;
 		}
 		return null;
 	}

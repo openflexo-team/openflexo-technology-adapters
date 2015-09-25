@@ -76,7 +76,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 
 	private static final Logger logger = Logger.getLogger(DocXEditor.class.getPackage().getName());
 
-	private DocXDocument document;
+	protected DocXDocument document;
 	private ToolBarStates _toolbarStates = new ToolBarStates();
 	private JPanel toolbar = null;
 	private WordMLTextPane editorView;
@@ -182,7 +182,7 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		// final WordMLDocument doc = null;
 
 		try {
-			WordMLDocument doc = editorKit.openDocument(document.getWordprocessingMLPackage(), objectFactory);
+			WordMLDocument doc = openDocument(editorKit);
 
 			editorView.setTransferHandler(new TransferHandler(doc));
 
@@ -202,6 +202,10 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 		}
 
 		return editorView;
+	}
+
+	protected WordMLDocument openDocument(WordMLEditorKit editorKit) {
+		return editorKit.openDocument(document.getWordprocessingMLPackage(), objectFactory);
 	}
 
 	@Override

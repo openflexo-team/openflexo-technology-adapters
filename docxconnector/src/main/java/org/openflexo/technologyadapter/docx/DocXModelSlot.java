@@ -83,7 +83,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 	public void setTemplateResource(DocXDocumentResource templateResource);
 
 	// Implem
-	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument> implements DocXModelSlot {
+	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument>implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 
@@ -118,15 +118,29 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 			return (DocXTechnologyAdapter) super.getModelSlotTechnologyAdapter();
 		}
 
+		private DocXDocumentResource templateResource;
+
 		@Override
 		public DocXDocumentResource getTemplateResource() {
-			DocXDocumentResource returned = (DocXDocumentResource) performSuperGetter(TEMPLATE_RESOURCE_KEY);
-			if (returned == null && StringUtils.isNotEmpty(templateDocumentURI) && getServiceManager().getResourceManager() != null) {
-				System.out.println("On cherche " + templateDocumentURI);
-				returned = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI, null);
-				System.out.println("templateResource = " + returned);
+			if (templateResource == null && StringUtils.isNotEmpty(templateDocumentURI)
+					&& getServiceManager().getResourceManager() != null) {
+				// System.out.println("Looking up " + templateDocumentURI);
+				templateResource = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI, null);
+				// System.out.println("templateResource = " + returned);
+				// for (FlexoResource r : getServiceManager().getResourceManager().getRegisteredResources()) {
+				// System.out.println("> " + r.getURI());
+				// }
 			}
-			return returned;
+			return templateResource;
+		}
+
+		@Override
+		public void setTemplateResource(DocXDocumentResource templateResource) {
+			if (templateResource != this.templateResource) {
+				DocXDocumentResource oldValue = this.templateResource;
+				this.templateResource = templateResource;
+				getPropertyChangeSupport().firePropertyChange("templateResource", oldValue, templateResource);
+			}
 		}
 
 		@Override
