@@ -25,6 +25,7 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.fib.utils.InspectorGroup;
+import org.openflexo.foundation.doc.fml.TextBinding;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
@@ -81,16 +82,15 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 			DocXParagraph paragraph = (DocXParagraph) object;
 			if (paragraph.getStyle() != null && paragraph.getStyle().isLevelled()) {
 				return DocXIconLibrary.SECTION_ICON;
-			}
-			else {
+			} else {
 				return DocXIconLibrary.PARAGRAPH_ICON;
 			}
-		}
-		else if (object instanceof DocXTable) {
+		} else if (object instanceof DocXTable) {
 			return DocXIconLibrary.TABLE_ICON;
-		}
-		else if (object instanceof DocXFragment) {
+		} else if (object instanceof DocXFragment) {
 			return DocXIconLibrary.FRAGMENT_ICON;
+		} else if (object instanceof TextBinding) {
+			return DocXIconLibrary.TEXT_BINDING_ICON;
 		}
 		return super.getIconForTechnologyObject(object);
 	}
@@ -105,6 +105,9 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 		}
 		if (DocXFragment.class.isAssignableFrom(objectClass)) {
 			return DocXIconLibrary.FRAGMENT_ICON;
+		}
+		if (TextBinding.class.isAssignableFrom(objectClass)) {
+			return DocXIconLibrary.TEXT_BINDING_ICON;
 		}
 		return null;
 	}
