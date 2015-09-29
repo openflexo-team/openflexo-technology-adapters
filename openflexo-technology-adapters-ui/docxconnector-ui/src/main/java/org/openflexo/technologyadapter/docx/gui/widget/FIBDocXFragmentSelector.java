@@ -79,7 +79,31 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 
 	public FIBDocXFragmentSelector(DocXFragment editedObject) {
 		super(editedObject);
+		// fireEditedObjectChanged();
+		// editedObject = null;
+		// setSelectedObject(editedObject);
 	}
+
+	@Override
+	protected SelectorDetailsPanel createCustomPanel(DocXFragment editedObject) {
+		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!   on cree le SelectorDetailsPanel avec " + editedObject);
+		return super.createCustomPanel(editedObject);
+	}
+
+	/*@Override
+	public void updateCustomPanel(DocXFragment editedObject) {
+		// logger.info("updateCustomPanel with " + editedObject + " _selectorPanel=" + _selectorPanel);
+		setSelectedObject(editedObject);
+		if (_selectorPanel != null) {
+			_selectorPanel.update();
+		}
+	}*/
+
+	/*@Override
+	public void setEditedObject(DocXFragment object) {
+		super.setEditedObject(object);
+		fireEditedObjectChanged();
+	}*/
 
 	@Override
 	public Resource getFIBResource() {
@@ -131,8 +155,8 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 			if (fragment != null) {
 
 				if (fragment.getStartElement() instanceof DocXParagraph) {
-					final DocumentElement startElement = docXEditor.getMLDocument().getElement(
-							((DocXParagraph) fragment.getStartElement()).getP());
+					final DocumentElement startElement = docXEditor.getMLDocument()
+							.getElement(((DocXParagraph) fragment.getStartElement()).getP());
 					if (startElement != null) {
 						scrollTo(startElement, docXEditor);
 					}
@@ -199,7 +223,8 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 			getServiceManager().getTaskManager().scheduleExecution(task);
 			getServiceManager().getTaskManager().waitTask(task);
 			returned = task.getPanel();
-		} else {
+		}
+		else {
 			returned = super.makeCustomPanel(editedObject);
 		}
 
@@ -223,8 +248,8 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 					endLocation = endLocation - 1;
 				}
 
-				DocumentElement startParagraphMLElement = (DocumentElement) getEditor().getMLDocument().getParagraphMLElement(
-						startLocation, false);
+				DocumentElement startParagraphMLElement = (DocumentElement) getEditor().getMLDocument().getParagraphMLElement(startLocation,
+						false);
 				DocumentElement endParagraphMLElement = (DocumentElement) getEditor().getMLDocument().getParagraphMLElement(endLocation,
 						false);
 

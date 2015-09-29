@@ -120,6 +120,7 @@ public class TestDocXFragmentRoleInspector extends OpenflexoFIBInspectorTestCase
 
 		System.out.println("TextBindings=" + role.getTextBindings());
 
+		System.out.println(role.getFragment().getFlexoDocument().debugStructuredContents());
 	}
 
 	@Test

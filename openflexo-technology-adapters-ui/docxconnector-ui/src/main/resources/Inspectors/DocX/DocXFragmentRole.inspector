@@ -55,7 +55,7 @@
 				<Custom id="115" manageDynamicModel="true" useScrollBar="false"
 					data="($org.openflexo.technologyadapter.docx.model.DocXDocument)data.fragment.flexoDocument"
 					dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXDocument"
-					componentClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXFragmentEditor"
+					componentClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXEditor"
 					name="DocXEditor" controllerClassName="org.openflexo.fib.controller.FIBController"
 					index="6" localize="true" constraints="border(location=center)"
 					readOnly="false">

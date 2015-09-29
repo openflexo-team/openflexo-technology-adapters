@@ -221,7 +221,8 @@ public class DocXEditor extends JPanel implements FIBCustomComponent<DocXDocumen
 	@Override
 	public void setEditedObject(DocXDocument document) {
 		this.document = document;
-		if (document != null) {
+		// Avoid to recreate editorView all the time
+		if (document != null && (editorView == null || editorView.getDocument() != document)) {
 			editorView = createEditorView(document, _toolbarStates, getObjectFactory());
 			JPanel editorPanel = FxScriptUIHelper.getInstance().createEditorPanel(editorView);
 			add(editorPanel, BorderLayout.CENTER);
