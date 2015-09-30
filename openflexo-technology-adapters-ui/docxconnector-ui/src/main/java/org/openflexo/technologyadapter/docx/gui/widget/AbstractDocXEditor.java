@@ -47,6 +47,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.Element;
@@ -65,9 +66,14 @@ import org.docx4all.xml.IObjectFactory;
 import org.docx4j.fonts.PhysicalFonts;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCustom;
+import org.openflexo.fib.model.FIBCustom.FIBCustomComponent.CustomComponentParameter;
+import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.model.DocXRun;
+import org.openflexo.technologyadapter.docx.model.DocXTable;
 import org.openflexo.toolbox.ToolBox;
 
 @SuppressWarnings("serial")
@@ -265,6 +271,99 @@ public abstract class AbstractDocXEditor extends JPanel {
 
 	public void delete() {
 		// TODO
+	}
+
+	private TextSelection textSelection;
+
+	public TextSelection getTextSelection() {
+		return textSelection;
+	}
+
+	@CustomComponentParameter(name = "textSelection", type = CustomComponentParameter.Type.OPTIONAL)
+	public void setTextSelection(TextSelection textSelection) {
+		if ((textSelection == null && this.textSelection != null) || (textSelection != null && !textSelection.equals(this.textSelection))) {
+			this.textSelection = textSelection;
+			System.out.println("On change pour la selection " + textSelection);
+
+			WordMLDocument wordMLDocument = editorView.getDocument();
+
+			Object startDocXObject = null;
+			Object endDocXObject = null;
+
+			if (textSelection.getStartElement() instanceof DocXParagraph) {
+				if (textSelection.getStartRunIndex() > -1) {
+					startDocXObject = ((DocXRun) ((DocXParagraph) textSelection.getStartElement()).getRuns()
+							.get(textSelection.getStartRunIndex())).getR();
+				}
+				else {
+					startDocXObject = ((DocXParagraph) textSelection.getStartElement()).getP();
+				}
+			}
+			else if (textSelection.getStartElement() instanceof DocXTable) {
+				startDocXObject = ((DocXTable) textSelection.getStartElement()).getTbl();
+			}
+
+			if (textSelection.getEndElement() instanceof DocXParagraph) {
+				if (textSelection.getEndRunIndex() > -1) {
+					endDocXObject = ((DocXRun) ((DocXParagraph) textSelection.getEndElement()).getRuns()
+							.get(textSelection.getEndRunIndex())).getR();
+				}
+				else {
+					endDocXObject = ((DocXParagraph) textSelection.getEndElement()).getP();
+				}
+			}
+			else if (textSelection.getEndElement() instanceof DocXTable) {
+				endDocXObject = ((DocXTable) textSelection.getEndElement()).getTbl();
+			}
+
+			System.out.println("startDocXObject=" + startDocXObject);
+			System.out.println("endDocXObject=" + endDocXObject);
+
+			if (startDocXObject == null || endDocXObject == null) {
+				System.out.println("cannot proceed");
+				return;
+			}
+
+			DocumentElement startElement = wordMLDocument.getElement(startDocXObject);
+			DocumentElement endElement = wordMLDocument.getElement(endDocXObject);
+
+			if (startElement == null || endElement == null) {
+				System.out.println("cannot proceed");
+				return;
+			}
+
+			System.out.println("startElement=" + startElement);
+			System.out.println("endElement=" + endElement);
+
+			System.out.println("startOffset=" + startElement.getStartOffset() + "-" + startElement.getEndOffset());
+			System.out.println("endOffset=" + endElement.getStartOffset() + "-" + endElement.getEndOffset());
+
+			int startOffset = startElement.getStartOffset()
+					+ (textSelection.getStartCharacterIndex() > -1 ? textSelection.getStartCharacterIndex() : 0);
+			int endOffset = endElement.getEndOffset()
+					- (textSelection.getEndCharacterIndex() > -1 ? textSelection.getEndCharacterIndex() : 0);
+
+			editorView.requestFocus();
+			editorView.select(startOffset, endOffset);
+			scrollTo(startElement);
+
+			// editorView.selectAll();
+
+			// editorView.modelToView(pos)
+
+		}
+	}
+
+	protected void scrollTo(final DocumentElement startElement) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// System.out.println("Hop, on scrolle a " + startElement);
+				if (!getEditorView().scrollToElement(startElement, false)) {
+					scrollTo(startElement);
+				}
+			}
+		});
 	}
 
 	public static class DocXEditorSelectionListener implements CaretListener {

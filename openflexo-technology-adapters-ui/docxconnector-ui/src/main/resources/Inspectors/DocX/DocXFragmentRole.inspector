@@ -58,6 +58,8 @@
 					name="DocXFragmentEditor" controllerClassName="org.openflexo.fib.controller.FIBController"
 					index="6" localize="true" constraints="border(location=center)"
 					readOnly="false">
+				<Assignment id="120" mandatory="true"
+					variable="component.textSelection" value="TextBindingsTable.selected.textSelection" />
 				</Custom>
 			</Panel>
 			<Label id="110" manageDynamicModel="false" useScrollBar="false"
@@ -67,18 +69,20 @@
 				label="text_bindings" readOnly="false" />
 
 			<Table iteratorClassName="org.openflexo.foundation.doc.fml.TextBinding"
-				visibleRowCount="5" rowHeight="18" autoSelectFirstRow="false"
+				visibleRowCount="8" rowHeight="18" autoSelectFirstRow="false"
 				createNewRowOnClick="false" boundToSelectionManager="false"
-				showFooter="true" selectionMode="MultipleIntervalSelection"
+				showFooter="true" selectionMode="SingleSelection"
 				localize="true" manageDynamicModel="true" name="TextBindingsTable"
 				index="0" data="data.textBindings"
-				constraints="twocols(expandHorizontally=true;expandVertically=true;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)">
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)">
 				<IconColumn data="controller.iconForObject(iterator)"
 					format="" title="icon" columnWidth="30" resizable="false"
 					displayTitle="false" color="" bgColor="" tooltip=""
 					valueChangedAction="" name="icon" />
 				<TextFieldColumn data="iterator.name" title="name"
-					columnWidth="100" resizable="true" displayTitle="true" name="title" />
+					columnWidth="80" resizable="true" displayTitle="true" name="title" />
+				<LabelColumn data="iterator.textSelection.toString" title="selection"
+					columnWidth="150" resizable="true" displayTitle="true" name="selection" />
 				<CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
 					customRendering="false" disableTerminateEditOnFocusLost="false"
 					data="iterator.value" title="value" columnWidth="300" resizable="true"
