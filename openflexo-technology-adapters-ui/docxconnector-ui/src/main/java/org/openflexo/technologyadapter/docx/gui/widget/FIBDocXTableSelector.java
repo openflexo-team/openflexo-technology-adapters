@@ -56,7 +56,7 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.gui.widget.DocXEditor.DocXEditorSelectionListener;
+import org.openflexo.technologyadapter.docx.gui.widget.AbstractDocXEditor.DocXEditorSelectionListener;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
@@ -148,7 +148,8 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 			getServiceManager().getTaskManager().scheduleExecution(task);
 			getServiceManager().getTaskManager().waitTask(task);
 			returned = task.getPanel();
-		} else {
+		}
+		else {
 			returned = super.makeCustomPanel(editedObject);
 		}
 
@@ -166,8 +167,8 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 
 				int startLocation = getEditor().getEditorView().getSelectionStart();
 
-				DocumentElement startParagraphMLElement = (DocumentElement) getEditor().getMLDocument().getParagraphMLElement(
-						startLocation, false);
+				DocumentElement startParagraphMLElement = (DocumentElement) getEditor().getMLDocument().getParagraphMLElement(startLocation,
+						false);
 
 				Object startDocXObject = startParagraphMLElement.getElementML().getDocxObject();
 
@@ -185,7 +186,8 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 				isSelecting = true;
 				if (startElement instanceof DocXTable) {
 					setEditedObject((DocXTable) startElement);
-				} else {
+				}
+				else {
 					setEditedObject(null);
 				}
 				isSelecting = false;
@@ -199,7 +201,8 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 	public void setSelectedObject(Object selectedObject) {
 		if (selectedObject instanceof DocXTable) {
 			super.setSelectedObject(selectedObject);
-		} else {
+		}
+		else {
 			super.setSelectedObject(null);
 		}
 	}

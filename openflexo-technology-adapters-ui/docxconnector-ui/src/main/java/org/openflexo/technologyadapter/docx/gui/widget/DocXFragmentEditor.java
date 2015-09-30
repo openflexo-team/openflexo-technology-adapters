@@ -38,62 +38,143 @@
 
 package org.openflexo.technologyadapter.docx.gui.widget;
 
+import java.awt.BorderLayout;
 import java.util.logging.Logger;
 
+import javax.swing.JPanel;
+
+import org.docx4all.script.FxScriptUIHelper;
 import org.docx4all.swing.text.WordMLDocumentFragment;
 import org.docx4all.swing.text.WordMLEditorKit;
+import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 @SuppressWarnings("serial")
-public class DocXFragmentEditor extends DocXEditor {
+public class DocXFragmentEditor extends AbstractDocXEditor implements FIBCustomComponent<DocXFragment, DocXFragmentEditor> {
 
 	private static final Logger logger = Logger.getLogger(DocXFragmentEditor.class.getPackage().getName());
 
-	private long startIndex;
-	private long endIndex;
+	// private long startIndex;
+	// private long endIndex;
 
-	public DocXFragmentEditor(DocXDocument document) {
-		super(document, false);
+	private DocXFragment fragment;
+
+	public DocXFragmentEditor(DocXFragment fragment) {
+		this(fragment, false);
+	}
+
+	public DocXFragmentEditor(DocXFragment fragment, boolean showToolbar) {
+		super(fragment != null ? fragment.getFlexoDocument() : null, showToolbar);
+		setEditedObject(fragment);
 	}
 
 	public long getStartIndex() {
-		return startIndex;
-	}
-
-	@CustomComponentParameter(name = "startIndex", type = CustomComponentParameter.Type.OPTIONAL)
-	public void setStartIndex(long startIndex) {
-
-		System.out.println("startIndex = " + startIndex);
-
-		if (startIndex != this.startIndex) {
-			long oldValue = this.startIndex;
-			this.startIndex = startIndex;
-			// getPropertyChangeSupport().firePropertyChange("startIndex", oldValue, startIndex);
+		if (getEditedObject() != null) {
+			return getEditedObject().getStartElement().getIndex();
 		}
+		return -1;
 	}
+
+	/*@CustomComponentParameter(name = "startIndex", type = CustomComponentParameter.Type.OPTIONAL)
+	public void setStartIndex(long startIndex) {
+	
+		if (startIndex != this.startIndex) {
+			this.startIndex = startIndex;
+			if (getWordMLDocument() != null) {
+				getWordMLDocument().setStartIndex((int) startIndex);
+			}
+			editorView = null;
+			installEditorView();
+		}
+	}*/
 
 	public long getEndIndex() {
-		return endIndex;
+		if (getEditedObject() != null) {
+			return getEditedObject().getEndElement().getIndex();
+		}
+		return -1;
 	}
 
-	@CustomComponentParameter(name = "endIndex", type = CustomComponentParameter.Type.OPTIONAL)
+	/*@CustomComponentParameter(name = "endIndex", type = CustomComponentParameter.Type.OPTIONAL)
 	public void setEndIndex(long endIndex) {
-
-		System.out.println("endIndex = " + endIndex);
-
+	
 		if (endIndex != this.endIndex) {
-			long oldValue = this.endIndex;
 			this.endIndex = endIndex;
-			// getPropertyChangeSupport().firePropertyChange("endIndex", oldValue, endIndex);
+			if (getWordMLDocument() != null) {
+				getWordMLDocument().setEndIndex((int) endIndex);
+			}
+			editorView = null;
+			installEditorView();
 		}
+	}*/
+
+	@Override
+	public WordMLDocumentFragment getWordMLDocument() {
+		return (WordMLDocumentFragment) super.getWordMLDocument();
 	}
 
 	@CustomComponentParameter(name = "serviceManager", type = CustomComponentParameter.Type.OPTIONAL)
 	@Override
 	protected WordMLDocumentFragment openDocument(WordMLEditorKit editorKit) {
-		Thread.dumpStack();
-		return editorKit.openDocumentFragment(document.getWordprocessingMLPackage(), getObjectFactory(), 6, 10 /*(int) getStartIndex(),
-																												(int) getEndIndex()*/);
+
+		return editorKit.openDocumentFragment(document.getWordprocessingMLPackage(), getObjectFactory(), (int) getStartIndex(),
+				(int) getEndIndex());
+	}
+
+	@Override
+	public DocXFragmentEditor getJComponent() {
+		return this;
+	}
+
+	@Override
+	public DocXFragment getEditedObject() {
+		return fragment;
+	}
+
+	private JPanel editorPanel;
+
+	@Override
+	public void setDocXDocument(DocXDocument document) {
+
+		this.document = document;
+	}
+
+	@Override
+	public void setEditedObject(DocXFragment fragment) {
+		if ((fragment == null && this.fragment != null) || (fragment != null && !fragment.equals(this.fragment))) {
+			this.fragment = fragment;
+			if (fragment != null) {
+				setDocXDocument(fragment.getFlexoDocument());
+			}
+
+			if (editorPanel != null) {
+				remove(editorPanel);
+			}
+
+			editorView = createEditorView(document, getToolbarStates(), getObjectFactory());
+			editorPanel = FxScriptUIHelper.getInstance().createEditorPanel(editorView);
+			add(editorPanel, BorderLayout.CENTER);
+			revalidate();
+			repaint();
+		}
+	}
+
+	private DocXFragment revertValue;
+
+	@Override
+	public DocXFragment getRevertValue() {
+		return revertValue;
+	}
+
+	@Override
+	public void setRevertValue(DocXFragment revertValue) {
+		this.revertValue = revertValue;
+	}
+
+	@Override
+	public Class<DocXFragment> getRepresentedType() {
+		return DocXFragment.class;
 	}
 
 }
