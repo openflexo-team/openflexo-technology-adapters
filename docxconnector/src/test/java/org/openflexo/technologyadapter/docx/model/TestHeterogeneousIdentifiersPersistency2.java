@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.docx.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -74,8 +75,8 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -100,31 +101,55 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 		}
 	}
 
+	private static DocXDocument step0;
 	private static DocXDocument step1;
 	private static DocXDocument step2;
+	private static DocXDocument step3;
+	private static DocXDocument step4;
 
 	@Test
 	@TestOrder(4)
-	public void testStep1() {
+	public void testStep0() {
 
-		step1 = getDocument("HeterogeneousDocumentEdition2/Step1-MSWord.docx");
+		step0 = getDocument("HeterogeneousDocumentEdition2" + File.separator + "Step1-MSWord.docx");
 
-		System.out.println("Step1-MSWord.docx:\n" + step1.debugStructuredContents());
+		System.out.println("Step1-MSWord.docx:\n" + step0.debugStructuredContents());
 
-		assertEquals(13, step1.getElements().size());
+		assertEquals(13, step0.getElements().size());
 
 		// DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
 
 	}
 
-	// Same document after a SaveAs in Microsoft Word
+	// After modification of document.xml + rezip
 	@Test
 	@TestOrder(5)
+	public void testStep1() {
+
+		step1 = getDocument("HeterogeneousDocumentEdition2" + File.separator + "Step1-alter-MSWord.docx");
+
+		System.out.println("Step1-MSWord.docx:\n" + step1.debugStructuredContents());
+
+		assertEquals(13, step1.getElements().size());
+
+		assertEquals(step1.getElements().size(), step0.getElements().size());
+
+		for (int i = 0; i < step0.getElements().size(); i++) {
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element1 = step0.getElements().get(i);
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element2 = step1.getElements().get(i);
+			assertEquals(element1.getIdentifier(), element2.getIdentifier());
+		}
+
+	}
+
+	// Same document after a SaveAs in Microsoft Word
+	@Test
+	@TestOrder(6)
 	public void testStep2() {
 
-		step2 = getDocument("HeterogeneousDocumentEdition2/Step2-LibreOffice.docx");
+		step2 = getDocument("HeterogeneousDocumentEdition2" + File.separator + "Step2-alter-MSWord.docx");
 
-		System.out.println("Step2-LibreOffice.docx:\n" + step2.debugStructuredContents());
+		System.out.println("Step2-alter-MSWord.docx:\n" + step2.debugStructuredContents());
 
 		assertEquals(13, step2.getElements().size());
 		assertEquals(step1.getElements().size(), step2.getElements().size());
@@ -137,4 +162,48 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 
 	}
 
+	// Same document after a SaveAs in LibreOffice
+	@Test
+	@TestOrder(7)
+	public void testStep3() {
+
+		step3 = getDocument("HeterogeneousDocumentEdition2" + File.separator + "Step2-alter-LibreOffice.docx");
+
+		System.out.println("Step2-alter-LibreOffice.docx:\n" + step3.debugStructuredContents());
+
+		assertEquals(13, step3.getElements().size());
+		assertEquals(step1.getElements().size(), step3.getElements().size());
+
+		for (int i = 0; i < step1.getElements().size(); i++) {
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element1 = step1.getElements().get(i);
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element2 = step2.getElements().get(i);
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element3 = step3.getElements().get(i);
+			System.out.println("Step2-alter-LibreOffice.docx " + i + "  " + element1.getIdentifier() + " -- " + element2.getIdentifier()
+					+ " -- " + element3.getIdentifier() + " -- ");
+			assertEquals(element1.getIdentifier(), element2.getIdentifier());
+			assertEquals(element1.getIdentifier(), element3.getIdentifier());
+			assertEquals(element2.getIdentifier(), element3.getIdentifier());
+		}
+
+	}
+
+	// Same document after small modif + a SaveAs in Microsoft Word
+	@Test
+	@TestOrder(8)
+	public void testStep4() {
+
+		step4 = getDocument("HeterogeneousDocumentEdition2" + File.separator + "Step3-alter-MSWord.docx");
+
+		System.out.println("Step2-alter-MSWord.docx:\n" + step4.debugStructuredContents());
+
+		assertEquals(13, step4.getElements().size());
+		assertEquals(step1.getElements().size(), step4.getElements().size());
+
+		for (int i = 0; i < step1.getElements().size(); i++) {
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element1 = step1.getElements().get(i);
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element2 = step4.getElements().get(i);
+			assertEquals(element1.getIdentifier(), element2.getIdentifier());
+		}
+
+	}
 }

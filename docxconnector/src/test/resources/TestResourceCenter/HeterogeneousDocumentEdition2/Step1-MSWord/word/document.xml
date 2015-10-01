@@ -15,8 +15,7 @@
 	xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
 	xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
 	xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
-	xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
-	mc:Ignorable="w14 wp14">
+	xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape">
 	<w:body>
 		<w:p w14:paraId="78FBD72D" w14:textId="77777777" w:rsidR="00DE4D2D"
 			w:rsidRPr="00127E90" w:rsidRDefault="00127E90" w:rsidP="00084A74">
