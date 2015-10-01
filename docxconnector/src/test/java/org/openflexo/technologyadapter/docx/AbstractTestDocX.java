@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
@@ -60,6 +61,13 @@ public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase
 
 		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
+
+		if (documentResource == null) {
+			logger.warning("Cannot find document resource " + documentURI);
+			for (FlexoResource<?> r : serviceManager.getResourceManager().getRegisteredResources()) {
+				System.out.println("> " + r.getURI());
+			}
+		}
 
 		assertNotNull(documentResource);
 

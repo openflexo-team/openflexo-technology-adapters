@@ -60,8 +60,8 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
-public class TestIdentifiersPersistency2 extends AbstractTestDocX {
-	protected static final Logger logger = Logger.getLogger(TestIdentifiersPersistency2.class.getPackage().getName());
+public class TestHeterogeneousIdentifiersPersistency1 extends AbstractTestDocX {
+	protected static final Logger logger = Logger.getLogger(TestHeterogeneousIdentifiersPersistency1.class.getPackage().getName());
 
 	private static FlexoEditor editor;
 

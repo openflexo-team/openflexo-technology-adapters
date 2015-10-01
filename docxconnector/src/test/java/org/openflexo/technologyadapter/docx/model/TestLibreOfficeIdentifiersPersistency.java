@@ -60,8 +60,8 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
-public class TestIdentifiersPersistency extends AbstractTestDocX {
-	protected static final Logger logger = Logger.getLogger(TestIdentifiersPersistency.class.getPackage().getName());
+public class TestLibreOfficeIdentifiersPersistency extends AbstractTestDocX {
+	protected static final Logger logger = Logger.getLogger(TestLibreOfficeIdentifiersPersistency.class.getPackage().getName());
 
 	private static FlexoEditor editor;
 
@@ -82,6 +82,7 @@ public class TestIdentifiersPersistency extends AbstractTestDocX {
 			assertNotNull(docXRepository);
 			Collection<DocXDocumentResource> documents = docXRepository.getAllResources();
 			for (DocXDocumentResource docResource : documents) {
+				System.out.println("> Found " + docResource);
 				try {
 					docResource.loadResourceData(null);
 				} catch (FileNotFoundException e) {
@@ -102,20 +103,16 @@ public class TestIdentifiersPersistency extends AbstractTestDocX {
 
 	private static DocXDocument step1;
 	private static DocXDocument step2;
-	private static DocXDocument step3;
-	private static DocXDocument step4;
-	private static DocXDocument step5;
-	private static DocXDocument step6;
 
 	@Test
 	@TestOrder(4)
 	public void testStep1() {
 
-		step1 = getDocument("MSWordDocumentEdition/Step1.docx");
+		step1 = getDocument("LibreOfficeDocumentEdition/Step1.docx");
 
 		System.out.println("Step1.docx:\n" + step1.debugStructuredContents());
 
-		assertEquals(13, step1.getElements().size());
+		assertEquals(12, step1.getElements().size());
 
 		// DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
 
@@ -126,11 +123,11 @@ public class TestIdentifiersPersistency extends AbstractTestDocX {
 	@TestOrder(5)
 	public void testStep2() {
 
-		step2 = getDocument("MSWordDocumentEdition/Step2.docx");
+		step2 = getDocument("LibreOfficeDocumentEdition/Step2.docx");
 
 		System.out.println("Step2.docx:\n" + step2.debugStructuredContents());
 
-		assertEquals(13, step2.getElements().size());
+		assertEquals(12, step2.getElements().size());
 		assertEquals(step1.getElements().size(), step2.getElements().size());
 
 		for (int i = 0; i < step1.getElements().size(); i++) {
@@ -140,86 +137,5 @@ public class TestIdentifiersPersistency extends AbstractTestDocX {
 		}
 
 	}
-
-	// Same document after text added to an existing paragraph and a SaveAs in Microsoft Word
-	@Test
-	@TestOrder(6)
-	public void testStep3() {
-
-		step3 = getDocument("MSWordDocumentEdition/Step3.docx");
-
-		System.out.println("Step3.docx:\n" + step3.debugStructuredContents());
-
-		assertEquals(13, step3.getElements().size());
-		assertEquals(step1.getElements().size(), step3.getElements().size());
-
-		for (int i = 0; i < step1.getElements().size(); i++) {
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element1 = step1.getElements().get(i);
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element3 = step3.getElements().get(i);
-			assertEquals(element1.getIdentifier(), element3.getIdentifier());
-		}
-
-	}
-
-	// Same document after paragraph insertion and SaveAs in Microsoft Word
-	@Test
-	@TestOrder(7)
-	public void testStep4() {
-
-		step4 = getDocument("MSWordDocumentEdition/Step4.docx");
-
-		System.out.println("Step4.docx:\n" + step4.debugStructuredContents());
-
-		assertEquals(16, step4.getElements().size());
-
-		for (int i = 0; i < step1.getElements().size(); i++) {
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element1 = step1.getElements().get(i);
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element4 = step4.getElementWithIdentifier(element1.getIdentifier());
-			assertNotNull(element4);
-		}
-
-	}
-
-	// Same document after paragraph style changing and SaveAs in Microsoft Word
-	@Test
-	@TestOrder(8)
-	public void testStep5() {
-
-		step5 = getDocument("MSWordDocumentEdition/Step5.docx");
-
-		System.out.println("Step5.docx:\n" + step5.debugStructuredContents());
-
-		assertEquals(16, step5.getElements().size());
-		assertEquals(step4.getElements().size(), step5.getElements().size());
-
-		for (int i = 0; i < step4.getElements().size(); i++) {
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element4 = step4.getElements().get(i);
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element5 = step5.getElements().get(i);
-			assertEquals(element4.getIdentifier(), element5.getIdentifier());
-		}
-
-	}
-
-	// This test does not work, it appears that Microsoft Word identifier management do not track contents moving in the document
-
-	// Same document after some paragraph moving and SaveAs in Microsoft Word
-	/*@Test
-	@TestOrder(9)
-	public void testStep6() {
-	
-		step6 = getDocument("MSWordDocumentEdition/Step6.docx");
-	
-		System.out.println("Step6.docx:\n" + step6.debugStructuredContents());
-	
-		assertEquals(16, step6.getElements().size());
-		assertEquals(step5.getElements().size(), step6.getElements().size());
-	
-		for (int i = 0; i < step4.getElements().size(); i++) {
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element5 = step5.getElements().get(i);
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element6 = step6.getElementWithIdentifier(element5.getIdentifier());
-			assertNotNull(element6);
-		}
-	
-	}*/
 
 }
