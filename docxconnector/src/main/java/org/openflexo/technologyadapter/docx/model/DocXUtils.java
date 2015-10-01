@@ -177,4 +177,29 @@ public class DocXUtils {
 		return false;
 	}
 
+	/**
+	 * Handle removing of an item in a list where objects are possibly embedded as {@link JAXBElement}
+	 * 
+	 * @param o
+	 * @param list
+	 * @return
+	 */
+	public static int indexOf(Object o, ContentAccessor container) {
+		List<Object> list = container.getContent();
+		if (list.contains(o)) {
+			return list.indexOf(o);
+		}
+		int i = 0;
+		for (Object o2 : list) {
+			if (o2 instanceof JAXBElement) {
+				Object value = ((JAXBElement) o2).getValue();
+				if (o.equals(value)) {
+					return i;
+				}
+			}
+			i++;
+		}
+		return -1;
+	}
+
 }

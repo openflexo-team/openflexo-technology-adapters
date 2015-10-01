@@ -94,10 +94,12 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 	 */
 	public void updateFromP(P p, DocXFactory factory);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter> implements DocXParagraph {
+	public DocXRun getRun(R r);
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXParagraphImpl.class
-				.getPackage().getName());
+	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
+
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(DocXParagraphImpl.class.getPackage().getName());
 
 		private final Map<R, DocXRun> runs = new HashMap<R, DocXRun>();
 
@@ -140,6 +142,7 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 
 			int currentIndex = 0;
 
+			// System.out.println(DocXUtils.printContents(p, 0));
 			for (Object o : p.getContent()) {
 				if (o instanceof JAXBElement) {
 					o = ((JAXBElement) o).getValue();
@@ -149,18 +152,25 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 					if (run == null) {
 						// System.out.println("# Create new run for " + o);
 						run = factory.makeNewDocXRun((R) o);
+						// System.out.println("run=" + run);
 						internallyInsertRunAtIndex(run, currentIndex);
-					} else {
+					}
+					else {
 						// OK run was found
 						if (getRuns().indexOf(run) != currentIndex) {
 							// Paragraph was existing but is not at the right position
 							internallyMoveRunToIndex(run, currentIndex);
-						} else {
-							// System.out.println("# Found existing paragraph for " + o);
+							// System.out.println("# Move existing run to " + currentIndex + " for " + o);
+						}
+						else {
+							// System.out.println("# Found existing run for " + o);
 						}
 						runsToRemove.remove(run);
 					}
-					currentIndex++;
+					// If run is null, do not increment currentIndex !!!
+					if (run != null) {
+						currentIndex++;
+					}
 				}
 			}
 
@@ -263,7 +273,8 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 				R r = ((DocXRun) aRun).getR();
 				p.getContent().add(index, r);
 				internallyInsertRunAtIndex(aRun, index);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}
@@ -334,7 +345,8 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 				R r = ((DocXRun) aRun).getR();
 				p.getContent().add(r);
 				internallyAddToRuns(aRun);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}
@@ -364,7 +376,8 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 					logger.warning("R item not present in P. Please investigate...");
 				}
 				internallyRemoveFromRuns(aRun);
-			} else {
+			}
+			else {
 				logger.warning("Unexpected run: " + aRun);
 			}
 		}
@@ -417,6 +430,11 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 					}
 				}
 			}
+		}
+
+		@Override
+		public DocXRun getRun(R r) {
+			return runs.get(r);
 		}
 
 	}

@@ -114,6 +114,15 @@ public class DocXFragmentConverter extends Converter<DocXFragment> {
 				// System.out.println("startElement = " + startElement);
 				// System.out.println("endElement = " + endElement);
 
+				if (startElement == null) {
+					logger.warning("Could not find FlexoDocElement identified by " + startElementId);
+					return null;
+				}
+				if (endElement == null) {
+					logger.warning("Could not find FlexoDocElement identified by " + endElementId);
+					return null;
+				}
+
 				try {
 					return document.getFragment(startElement, endElement);
 				} catch (FragmentConsistencyException e) {

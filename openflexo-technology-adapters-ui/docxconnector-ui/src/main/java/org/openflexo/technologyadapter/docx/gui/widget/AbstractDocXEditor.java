@@ -51,6 +51,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.Element;
+import javax.xml.bind.JAXBElement;
 
 import org.docx4all.datatransfer.TransferHandler;
 import org.docx4all.script.FxScriptUIHelper;
@@ -62,14 +63,22 @@ import org.docx4all.swing.text.WordMLEditorKit;
 import org.docx4all.ui.main.Constants;
 import org.docx4all.ui.main.ToolBarStates;
 import org.docx4all.util.DocUtil;
+import org.docx4all.xml.ElementML;
 import org.docx4all.xml.IObjectFactory;
 import org.docx4j.fonts.PhysicalFonts;
+import org.docx4j.wml.P;
+import org.docx4j.wml.R;
+import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Text;
 import org.openflexo.fib.controller.FIBController;
 import org.openflexo.fib.model.FIBCustom;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent.CustomComponentParameter;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.TextSelection;
+import org.openflexo.foundation.doc.TextSelection.TextMarker;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.model.DocXRun;
@@ -169,6 +178,67 @@ public abstract class AbstractDocXEditor extends JPanel {
 		this.objectFactory = objectFactory;
 	}
 
+	protected TextMarker retrieveTextMarker(int pos) {
+
+		WordMLDocument doc = editorView.getDocument();
+
+		TextMarker returned = new TextMarker();
+
+		// System.out.println("pos=" + pos);
+		Element characterElement = doc.getCharacterElement(pos);
+		Element paragraphElement = doc.getParagraphElement(pos);
+		// System.out.println("characterElement=" + characterElement);
+		// System.out.println("paragraphElement=" + paragraphElement);
+		if (characterElement instanceof DocumentElement) {
+			ElementML elementML = ((DocumentElement) characterElement).getElementML();
+			// System.out.println("elementML=" + elementML);
+			Object docXObject = elementML.getDocxObject();
+			// System.out.println("docXObject=" + docXObject);
+			if (docXObject instanceof JAXBElement) {
+				docXObject = ((JAXBElement) docXObject).getValue();
+			}
+			// System.out.println("startDocXObject=" + docXObject);
+			if (docXObject instanceof P) {
+				returned.documentElement = getDocXDocument().getParagraph((P) docXObject);
+			}
+			else if (docXObject instanceof Tbl) {
+				returned.documentElement = getDocXDocument().getTable((Tbl) docXObject);
+			}
+			else if (docXObject instanceof Text) {
+				// System.out.println("Text= " + docXObject);
+				R run = (R) ((Text) docXObject).getParent();
+				// System.out.println("run=" + run);
+				P p = (P) run.getParent();
+				returned.documentElement = getDocXDocument().getParagraph(p);
+
+				DocXRun docXRun = ((DocXParagraph) returned.documentElement).getRun(run);
+				int runIndex = docXRun.getIndex();
+				// System.out.println("runIndex=" + runIndex);
+				int characterIndex = pos - paragraphElement.getStartOffset();
+				// System.out.println("characterIndex=" + characterIndex);
+
+				returned.runIndex = runIndex;
+				returned.characterIndex = characterIndex;
+				if (characterIndex == 0) {
+					returned.firstChar = true;
+				}
+				if (pos == paragraphElement.getEndOffset() - 1) {
+					returned.lastChar = true;
+				}
+				if (runIndex == 0) {
+					returned.firstRun = true;
+				}
+				if (runIndex == ((DocXParagraph) returned.documentElement).getRuns().size() - 1) {
+					returned.lastRun = true;
+				}
+			}
+			// System.out.println("returned.documentElement=" + returned.documentElement);
+		}
+
+		return returned;
+
+	}
+
 	protected WordMLTextPane createEditorView(DocXDocument document, ToolBarStates _toolbarStates, IObjectFactory objectFactory) {
 
 		// Clipboard clipboard = getContext().getClipboard();
@@ -184,6 +254,23 @@ public abstract class AbstractDocXEditor extends JPanel {
 		editorView = new WordMLTextPane();
 		editorView.addFocusListener(_toolbarStates);
 		editorView.addCaretListener(_toolbarStates);
+		editorView.addCaretListener(new DocXEditorSelectionListener(this) {
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				super.caretUpdate(e);
+				// System.out.println("caretUpdate dot=" + e.getDot() + " mark=" + e.getMark());
+				try {
+					TextMarker startMarker = retrieveTextMarker(editorView.getSelectionStart());
+					TextMarker endMarker = retrieveTextMarker(editorView.getSelectionEnd() - 1);
+					// System.out.println("startMarker=" + startMarker);
+					// System.out.println("endMarker=" + endMarker);
+					getEditor().textSelection = getEditor().getDocXDocument().getFactory().makeTextSelection(startMarker, endMarker);
+				} catch (FragmentConsistencyException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 
 		WordMLEditorKit editorKit = (WordMLEditorKit) editorView.getEditorKit();
 		editorKit.addInputAttributeListener(_toolbarStates);
@@ -273,22 +360,37 @@ public abstract class AbstractDocXEditor extends JPanel {
 		// TODO
 	}
 
-	private TextSelection textSelection;
+	private TextSelection<DocXDocument, DocXTechnologyAdapter> textSelection;
 
-	public TextSelection getTextSelection() {
+	public TextSelection<DocXDocument, DocXTechnologyAdapter> getTextSelection() {
 		return textSelection;
 	}
 
-	@CustomComponentParameter(name = "textSelection", type = CustomComponentParameter.Type.OPTIONAL)
-	public void setTextSelection(TextSelection textSelection) {
-		if ((textSelection == null && this.textSelection != null) || (textSelection != null && !textSelection.equals(this.textSelection))) {
-			this.textSelection = textSelection;
+	/*public void setTextSelection(TextSelection<DocXDocument,DocXTechnologyAdapter> textSelection) {
+		this.textSelection = textSelection;
+	}*/
+
+	private TextSelection<DocXDocument, DocXTechnologyAdapter> highlightedTextSelection;
+
+	public TextSelection<DocXDocument, DocXTechnologyAdapter> getHighlightedTextSelection() {
+		return highlightedTextSelection;
+	}
+
+	@CustomComponentParameter(name = "highlightedTextSelection", type = CustomComponentParameter.Type.OPTIONAL)
+	public void setHighlightedTextSelection(TextSelection<DocXDocument, DocXTechnologyAdapter> textSelection) {
+		if ((textSelection == null && this.highlightedTextSelection != null)
+				|| (textSelection != null && !textSelection.equals(this.highlightedTextSelection))) {
+			this.highlightedTextSelection = textSelection;
 			System.out.println("On change pour la selection " + textSelection);
 
 			WordMLDocument wordMLDocument = editorView.getDocument();
 
 			Object startDocXObject = null;
 			Object endDocXObject = null;
+
+			if (textSelection == null) {
+				return;
+			}
 
 			if (textSelection.getStartElement() instanceof DocXParagraph) {
 				if (textSelection.getStartRunIndex() > -1) {

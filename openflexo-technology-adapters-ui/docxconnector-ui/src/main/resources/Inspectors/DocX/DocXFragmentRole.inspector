@@ -2,7 +2,7 @@
 <Inspector xmlns:p="http://www.openflexo.org/pamela/" id="0"
 	p:modelEntity="org.openflexo.fib.utils.FIBInspector" darkLevel="0"
 	useScrollBar="false" protectContent="false" name="Inspector" layout="border"
-	controllerClassName="org.openflexo.inspector.FIBInspectorController"
+	controllerClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXInspectorFIBController"
 	border="empty" trackViewPortWidth="true" font="SansSerif,0,12"
 	dataClassName="org.openflexo.technologyadapter.docx.fml.DocXFragmentRole"
 	titleFont="SansSerif,0,12" trackViewPortHeight="true">
@@ -59,7 +59,7 @@
 					index="6" localize="true" constraints="border(location=center)"
 					readOnly="false">
 				<Assignment id="120" mandatory="true"
-					variable="component.textSelection" value="TextBindingsTable.selected.textSelection" />
+					variable="component.highlightedTextSelection" value="TextBindingsTable.selected.textSelection" />
 				</Custom>
 			</Panel>
 			<Label id="110" manageDynamicModel="false" useScrollBar="false"
@@ -92,13 +92,13 @@
 				</CustomColumn>
 				<CheckBoxColumn data="iterator.isMultiline" title="multiline"
 					columnWidth="100" resizable="false" displayTitle="true" name="displayTitle" />
-				<AddAction method="data.createLabelColumn()" name="new_label_column" />
-				<RemoveAction method="data.deleteColumn(selected)"
-					name="delete_column" />
-				<CustomAction method="data.moveToTop(selected)" name="move_to_top" />
-				<CustomAction method="data.moveUp(selected)" name="move_up" />
-				<CustomAction method="data.moveDown(selected)" name="move_down" />
-				<CustomAction method="data.moveToBottom(selected)"
+				<AddAction method="controller.createTextBinding(data,DocXFragmentEditor.textSelection)" name="new_text_binding" />
+				<RemoveAction method="controller.deleteTextBinding(selected)"
+					name="delete_text_binding" />
+				<CustomAction method="controller.moveToTop(selected)" name="move_to_top" />
+				<CustomAction method="controller.moveUp(selected)" name="move_up" />
+				<CustomAction method="controller.moveDown(selected)" name="move_down" />
+				<CustomAction method="controller.moveToBottom(selected)"
 					name="move_to_bottom" />
 			</Table>
 
