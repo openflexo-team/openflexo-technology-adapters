@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.docx.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -74,8 +75,8 @@ public class TestLibreOfficeIdentifiersPersistency extends AbstractTestDocX {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -108,7 +109,7 @@ public class TestLibreOfficeIdentifiersPersistency extends AbstractTestDocX {
 	@TestOrder(4)
 	public void testStep1() {
 
-		step1 = getDocument("LibreOfficeDocumentEdition/Step1.docx");
+		step1 = getDocument("LibreOfficeDocumentEdition" + File.separator + "Step1.docx");
 
 		System.out.println("Step1.docx:\n" + step1.debugStructuredContents());
 
@@ -123,7 +124,7 @@ public class TestLibreOfficeIdentifiersPersistency extends AbstractTestDocX {
 	@TestOrder(5)
 	public void testStep2() {
 
-		step2 = getDocument("LibreOfficeDocumentEdition/Step2.docx");
+		step2 = getDocument("LibreOfficeDocumentEdition" + File.separator + "Step2.docx");
 
 		System.out.println("Step2.docx:\n" + step2.debugStructuredContents());
 
