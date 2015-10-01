@@ -123,16 +123,18 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 			int startIndex = -1;
 			int endIndex = -1;
 
-			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> templateElement : getTemplateFragment().getElements()) {
-				// TODO: handle tables here !!!
-				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : document.getElements()) {
-					if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(templateElement.getIdentifier())) {
-						int index = document.getElements().indexOf(e);
-						if (startIndex == -1 || (index < startIndex)) {
-							startIndex = index;
-						}
-						if (endIndex == -1 || (index > endIndex)) {
-							endIndex = index;
+			if (getTemplateFragment() != null) {
+				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> templateElement : getTemplateFragment().getElements()) {
+					// TODO: handle tables here !!!
+					for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : document.getElements()) {
+						if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(templateElement.getIdentifier())) {
+							int index = document.getElements().indexOf(e);
+							if (startIndex == -1 || (index < startIndex)) {
+								startIndex = index;
+							}
+							if (endIndex == -1 || (index > endIndex)) {
+								endIndex = index;
+							}
 						}
 					}
 				}
