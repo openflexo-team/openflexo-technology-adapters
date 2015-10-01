@@ -22,18 +22,25 @@ package org.openflexo.technologyadapter.docx.fml;
 
 import java.lang.reflect.Type;
 
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.fml.FlexoTableRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXFactory;
+import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
 
 @ModelEntity
 @ImplementationClass(DocXTableRole.DocXTableRoleImpl.class)
 @XMLElement
 public interface DocXTableRole extends FlexoTableRole<DocXTable, DocXDocument, DocXTechnologyAdapter> {
+
+	public static final String TABLE_FRAGMENT_KEY = "tableFragment";
+
+	public DocXFragment getTableFragment();
 
 	public static abstract class DocXTableRoleImpl extends FlexoTableRoleImpl<DocXTable, DocXDocument, DocXTechnologyAdapter>
 			implements DocXTableRole {
@@ -51,6 +58,22 @@ public interface DocXTableRole extends FlexoTableRole<DocXTable, DocXDocument, D
 		@Override
 		public RoleCloningStrategy defaultCloningStrategy() {
 			return RoleCloningStrategy.Clone;
+		}
+
+		@Override
+		public DocXFragment getTableFragment() {
+			try {
+				return (DocXFragment) ((DocXFactory) getDocument().getFactory()).makeFragment(getTable(), getTable());
+			} catch (FragmentConsistencyException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		@Override
+		public void setTable(DocXTable table) {
+			super.setTable(table);
+			getPropertyChangeSupport().firePropertyChange(TABLE_FRAGMENT_KEY, null, getTableFragment());
 		}
 
 		/*@Override

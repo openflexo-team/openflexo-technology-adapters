@@ -43,10 +43,13 @@ import java.util.logging.Logger;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.TextSelection;
+import org.openflexo.foundation.doc.fml.ColumnTableBinding;
 import org.openflexo.foundation.doc.fml.TextBinding;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
+import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
+import org.openflexo.technologyadapter.docx.fml.action.CreateColumnTableBinding;
 import org.openflexo.technologyadapter.docx.fml.action.CreateTextBinding;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.FlexoFIBController;
@@ -86,7 +89,6 @@ public class DocXInspectorFIBController extends FlexoFIBController {
 	}
 
 	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> boolean deleteTextBinding(TextBinding<D, TA> textBinding) {
-		System.out.println("deleteTextBinding " + textBinding);
 		textBinding.getFragmentRole().removeFromTextBindings(textBinding);
 		return textBinding.delete();
 	}
@@ -105,6 +107,23 @@ public class DocXInspectorFIBController extends FlexoFIBController {
 
 	public void moveToBottom(TextBinding<?, ?> textBinding) {
 		System.out.println("moveToTop " + textBinding);
+	}
+
+	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> ColumnTableBinding<D, TA> createColumnTableBinding(
+			DocXTableRole tableRole) {
+		System.out.println("createColumnTableBinding for " + tableRole);
+
+		CreateColumnTableBinding createColumnTableBinding = CreateColumnTableBinding.actionType.makeNewAction(tableRole, null, getEditor());
+		createColumnTableBinding.setIndex(tableRole.getColumnBindings().size());
+		createColumnTableBinding.setName("column" + (tableRole.getColumnBindings().size() > 0 ? tableRole.getColumnBindings().size() : ""));
+		createColumnTableBinding.doAction();
+		return (ColumnTableBinding<D, TA>) createColumnTableBinding.getNewColumnTableBinding();
+	}
+
+	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> boolean deleteColumnTableBinding(
+			ColumnTableBinding<D, TA> columnTableBinding) {
+		columnTableBinding.getTableRole().removeFromColumnBindings(columnTableBinding);
+		return columnTableBinding.delete();
 	}
 
 	/*public Resource fibForFlexoBehaviour(FlexoBehaviour flexoBehaviour) {

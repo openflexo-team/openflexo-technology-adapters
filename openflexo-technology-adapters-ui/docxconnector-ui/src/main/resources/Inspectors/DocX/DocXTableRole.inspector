@@ -2,7 +2,7 @@
 <Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
 	titleFont="SansSerif,0,12" darkLevel="0"
 	dataClassName="org.openflexo.technologyadapter.docx.fml.DocXTableRole"
-	controllerClassName="org.openflexo.inspector.FIBInspectorController"
+	controllerClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXInspectorFIBController"
 	font="SansSerif,0,12" name="Inspector">
 	<TabPanel name="Tab" constraints="border(location=center)">
 		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
@@ -12,15 +12,99 @@
 			<Label label="table" index="3"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
-			<Custom componentClassName="org.openflexo.technologyadapter.docx.gui.widget.FIBDocXTableSelector"
-				localize="true" manageDynamicModel="true" index="4"
-				data="data.table"
+			<Custom
+				componentClassName="org.openflexo.technologyadapter.docx.gui.widget.FIBDocXTableSelector"
+				localize="true" manageDynamicModel="true" index="4" data="data.table"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)">
-				<Assignment variable="component.document"
-					value="data.document" />
-				<Assignment variable="component.flexoController"
-					value="controller.flexoController" />
+				<Assignment variable="component.document" value="data.document" />
+				<Assignment variable="component.flexoController" value="controller.flexoController" />
 			</Custom>
+
+			<Label label="preview" index="5"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Panel index="6" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+				useScrollBar="true" protectContent="false" height="60" layout="border"
+				controllerClassName="org.openflexo.fib.controller.FIBController"
+				border="empty" trackViewPortWidth="true" width="60"
+				constraints="twocols(expandHorizontally=true;expandVertically=true;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
+				titleFont="SansSerif,0,11" trackViewPortHeight="true"
+				horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">
+				<Custom
+					componentClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXFragmentEditor"
+					dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXFragment"
+					localize="true" manageDynamicModel="true" name="DocXEditor" data="data.tableFragment"
+					constraints="border(location=center)">
+					<!-- <Assignment variable="component.resourceManager" value="data.serviceManager.resourceManager" 
+						/> <Assignment variable="component.technologyAdapter" value="data.modelSlotTechnologyAdapter" 
+						/> <Assignment variable="component.resourceDataClass" value="data.type" /> -->
+				</Custom>
+			</Panel>
+
+			<Label label="start_iteration_index" index="7"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Number index="8" minValue="1" maxValue="100" increment="1"
+				numberType="IntegerType" columns="3" data="data.startIterationIndex"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true" />
+
+			<Label label="end_iteration_index" index="9"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Number index="10" minValue="1" maxValue="100" increment="1"
+				numberType="IntegerType" columns="3" data="data.endIterationIndex"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true" />
+
+			<Label index="11" label="data_orientation"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<DropDown index="12" data="data.dataOrientation"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true"
+				iteratorClassName="org.openflexo.foundation.doc.fml.FlexoTableRole$DataOrientation"
+				autoSelectFirstRow="false" />
+
+			<Label index="13" label="iteration"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Custom index="14" componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.iteration"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+
+			<Label label="columns" index="15"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Table iteratorClassName="org.openflexo.foundation.doc.fml.ColumnTableBinding"
+				visibleRowCount="10" rowHeight="18" autoSelectFirstRow="false"
+				createNewRowOnClick="false" boundToSelectionManager="false"
+				showFooter="true" selectionMode="MultipleIntervalSelection"
+				localize="true" manageDynamicModel="true" name="ColumnsTable" index="16"
+				data="data.columnBindings"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<IconColumn data="controller.iconForObject(iterator)"
+					format="" title="icon" columnWidth="30" resizable="false"
+					displayTitle="false" color="" bgColor="" tooltip=""
+					valueChangedAction="" name="icon" />
+				<NumberColumn numberType="IntegerType" data="iterator.columnIndex"
+					title="index" columnWidth="50" resizable="false"
+					displayTitle="true" />
+				<TextFieldColumn data="iterator.columnName" title="name"
+					columnWidth="80" resizable="true" displayTitle="true" name="title" />
+				<CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+					customRendering="false" disableTerminateEditOnFocusLost="false"
+					data="iterator.value" title="value" columnWidth="300" resizable="true"
+					displayTitle="true" name="visibleValue">
+					<ColumnAssignment variable="component.bindable"
+						value="iterator" />
+				</CustomColumn>
+				<AddAction method="controller.createColumnTableBinding(data)" name="new_column" />
+				<RemoveAction method="controller.deleteColumnTableBinding(selected)"
+					name="delete_column" />
+			</Table>
 
 		</Tab>
 	</TabPanel>
