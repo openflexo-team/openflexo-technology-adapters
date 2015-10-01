@@ -75,15 +75,15 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 
 	/*@PropertyIdentifier(type = File.class)
 	public static final String FILE_KEY = "file";
-
+	
 	@Getter(value = FILE_KEY)
 	@XMLAttribute
 	public File getFile();
-
+	
 	@Setter(FILE_KEY)
 	public void setFile(File aFile);*/
 
-	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument> implements GenerateDocXDocument {
+	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument>implements GenerateDocXDocument {
 
 		private static final Logger logger = Logger.getLogger(GenerateDocXDocument.class.getPackage().getName());
 
@@ -95,9 +95,13 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 						for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
 							elementsToIgnore.add(e);
 						}
-					} else if (cg instanceof AssignationAction && ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
-						for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment().getElements()) {
-							elementsToIgnore.add(e);
+					}
+					else if (cg instanceof AssignationAction && ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
+						if (((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment() != null) {
+							for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment()
+									.getElements()) {
+								elementsToIgnore.add(e);
+							}
 						}
 					}
 				}
@@ -131,7 +135,8 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				DocXDocumentResource templateResource = getModelSlot().getTemplateResource();
 				DocXDocument templateDocument = templateResource.getResourceData(null);
 
-				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(evaluationContext);
+				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
+						evaluationContext);
 
 				FlexoResource<DocXDocument> generatedResource = msInstance.getResource();
 
