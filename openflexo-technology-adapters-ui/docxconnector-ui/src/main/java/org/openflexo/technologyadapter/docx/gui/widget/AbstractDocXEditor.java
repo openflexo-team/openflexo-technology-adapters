@@ -277,24 +277,18 @@ public abstract class AbstractDocXEditor extends JPanel {
 
 		// final WordMLDocument doc = null;
 
-		try {
-			wordMLDocument = openDocument(editorKit);
+		wordMLDocument = openDocument(editorKit);
 
-			editorView.setTransferHandler(new TransferHandler(wordMLDocument));
+		editorView.setTransferHandler(new TransferHandler(wordMLDocument));
 
-			wordMLDocument.putProperty(WordMLDocument.FILE_PATH_PROPERTY, document.getResource().getURI());
-			wordMLDocument.addDocumentListener(_toolbarStates);
-			wordMLDocument.setDocumentFilter(new WordMLDocumentFilter());
-			editorView.setDocument(wordMLDocument);
-			editorView.putClientProperty(Constants.LOCAL_VIEWS_SYNCHRONIZED_FLAG, Boolean.TRUE);
+		wordMLDocument.putProperty(WordMLDocument.FILE_PATH_PROPERTY, document.getResource().getURI());
+		wordMLDocument.addDocumentListener(_toolbarStates);
+		wordMLDocument.setDocumentFilter(new WordMLDocumentFilter());
+		editorView.setDocument(wordMLDocument);
+		editorView.putClientProperty(Constants.LOCAL_VIEWS_SYNCHRONIZED_FLAG, Boolean.TRUE);
 
-			if (DocUtil.isSharedDocument(wordMLDocument)) {
-				editorKit.initPlutextClient(editorView);
-			}
-
-		} catch (Exception exc) {
-			exc.printStackTrace();
-			// doc = null;
+		if (DocUtil.isSharedDocument(wordMLDocument)) {
+			editorKit.initPlutextClient(editorView);
 		}
 
 		return editorView;
