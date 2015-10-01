@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VirtualModel id="0" useSpecificDescriptions="false" userID="FLX" isAbstract="false" flexoID="1" name="DocumentVirtualModel">
+  <FlexoConcept id="1" useSpecificDescriptions="false" userID="FLX" isAbstract="false" flexoID="13" name="BookDescriptionSection">
+    <Inspector id="2" flexoID="3" useSpecificDescriptions="false" userID="FLX" inspectorTitle="BookDescriptionSection" />
+    <FlexoConceptInstanceRole id="3" flexoID="5" useSpecificDescriptions="false" userID="FLX" name="book" flexoConceptTypeURI="http://openflexo.org/test/TestLibraryViewPoint2/LibraryVirtualModel#Book" cloningStrategy="Reference" cardinality="ZeroOne">
+      <FMLRTModelSlot idref="4" />
+    </FlexoConceptInstanceRole>
+    <DocXFragmentRole id="5" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Clone" flexoID="11" name="section" cardinality="ZeroOne" fragment="http://openflexo.org/test/TestResourceCenter/TestResourceCenter/ExampleLibrary2.docx:2936B416:395C1CE1">
+      <TextBinding id="6" flexoID="6" useSpecificDescriptions="false" userID="FLX" value="book.title" isMultiline="false">
+        <TextSelection id="7" startCharId="-1" useSpecificDescriptions="false" userID="FLX" endElementId="2936B416" endRunId="1" flexoID="-1" startElementId="2936B416" endCharId="-1" startRunId="0" />
+      </TextBinding>
+      <TextBinding id="8" flexoID="7" useSpecificDescriptions="false" userID="FLX" value="book.author" isMultiline="false">
+        <TextSelection id="9" startCharId="-1" useSpecificDescriptions="false" userID="FLX" endElementId="1479220D" endRunId="0" flexoID="-1" startElementId="1479220D" endCharId="-1" startRunId="0" />
+      </TextBinding>
+      <TextBinding id="10" flexoID="8" useSpecificDescriptions="false" userID="FLX" value="book.edition" isMultiline="false">
+        <TextSelection id="11" startCharId="-1" useSpecificDescriptions="false" userID="FLX" endElementId="6904732B" endRunId="1" flexoID="-1" startElementId="6904732B" endCharId="-1" startRunId="0" />
+      </TextBinding>
+      <TextBinding id="12" flexoID="9" useSpecificDescriptions="false" userID="FLX" value="book.type" isMultiline="false">
+        <TextSelection id="13" startCharId="-1" useSpecificDescriptions="false" userID="FLX" endElementId="3952EAA0" endRunId="0" flexoID="-1" startElementId="3952EAA0" endCharId="-1" startRunId="0" />
+      </TextBinding>
+      <TextBinding id="14" flexoID="10" useSpecificDescriptions="false" userID="FLX" value="book.description" isMultiline="true">
+        <TextSelection id="15" startCharId="-1" useSpecificDescriptions="false" userID="FLX" endElementId="395C1CE1" endRunId="-1" flexoID="-1" startElementId="289CEE3E" endCharId="-1" startRunId="-1" />
+      </TextBinding>
+      <DocXModelSlot idref="16" />
+    </DocXFragmentRole>
+    <CreationScheme id="17" userID="FLX" useSpecificDescriptions="false" width="800" label="createBookDescriptionSection" definePopupDefaultSize="false" height="600" flexoID="2" skipConfirmationPanel="false" name="createBookDescriptionSection">
+      <BehaviourControlGraph_Sequence id="18" flexoID="14" userID="FLX" useSpecificDescriptions="false">
+        <ControlGraph1_AssignationAction id="19" userID="FLX" useSpecificDescriptions="false" flexoID="15" ownerContext="controlGraph1" assign="book" name="action">
+          <AssignableAction_ExpressionAction id="20" expression="parameters.aBook" flexoID="16" userID="FLX" useSpecificDescriptions="false" />
+        </ControlGraph1_AssignationAction>
+        <ControlGraph2_Sequence id="21" flexoID="17" ownerContext="controlGraph2" userID="FLX" useSpecificDescriptions="false">
+          <ControlGraph1_AssignationAction id="22" userID="FLX" useSpecificDescriptions="false" flexoID="18" ownerContext="controlGraph1" assign="section">
+            <AssignableAction_AddDocXFragment id="23" locationSemantics="InsertBeforeLastChild" location="booksDescriptionSection.startElement" useSpecificDescriptions="false" userID="FLX" flexoID="19" fragment="http://openflexo.org/test/TestResourceCenter/TestResourceCenter/ExampleLibrary2.docx:2936B416:395C1CE1">
+              <DocXModelSlot idref="16" />
+            </AssignableAction_AddDocXFragment>
+          </ControlGraph1_AssignationAction>
+          <ControlGraph2_ApplyTextBindings id="24" flexoID="20" ownerContext="controlGraph2" useSpecificDescriptions="false" userID="FLX">
+            <DocXModelSlot idref="16" />
+            <AccessedDocXFragmentRole idref="5" />
+          </ControlGraph2_ApplyTextBindings>
+        </ControlGraph2_Sequence>
+      </BehaviourControlGraph_Sequence>
+      <FlexoConceptInstanceParameter id="25" userID="FLX" useSpecificDescriptions="false" label="aBook" flexoID="21" isRequired="false" name="aBook" />
+    </CreationScheme>
+    <ActionScheme id="26" userID="FLX" useSpecificDescriptions="false" width="800" label="updateBookDescriptionSection" definePopupDefaultSize="false" height="600" flexoID="23" skipConfirmationPanel="false" name="updateBookDescriptionSection">
+      <BehaviourControlGraph_ApplyTextBindings id="27" flexoID="22" useSpecificDescriptions="false" userID="FLX">
+        <DocXModelSlot idref="16" />
+        <AccessedDocXFragmentRole idref="5" />
+      </BehaviourControlGraph_ApplyTextBindings>
+    </ActionScheme>
+    <ActionScheme id="28" userID="FLX" useSpecificDescriptions="false" width="800" label="reinjectDataFromBookDescriptionSection" definePopupDefaultSize="false" height="600" flexoID="25" skipConfirmationPanel="false" name="reinjectDataFromBookDescriptionSection">
+      <BehaviourControlGraph_ReinjectTextBindings id="29" flexoID="24" useSpecificDescriptions="false" userID="FLX">
+        <DocXModelSlot idref="16" />
+        <AccessedDocXFragmentRole idref="5" />
+      </BehaviourControlGraph_ReinjectTextBindings>
+    </ActionScheme>
+  </FlexoConcept>
+  <Inspector id="30" flexoID="8" useSpecificDescriptions="false" userID="FLX" inspectorTitle="DocumentVirtualModel" />
+  <DocXFragmentRole id="31" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Clone" flexoID="9" name="introductionSection" cardinality="ZeroOne" fragment="http://openflexo.org/test/TestResourceCenter/TestResourceCenter/ExampleLibrary2.docx:707AC6F7:3D899DD8">
+    <DocXModelSlot idref="16" />
+  </DocXFragmentRole>
+  <DocXFragmentRole id="32" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Clone" flexoID="10" name="booksDescriptionSection" cardinality="ZeroOne" fragment="http://openflexo.org/test/TestResourceCenter/TestResourceCenter/ExampleLibrary2.docx:78BBD0DD:5052C24D">
+    <DocXModelSlot idref="16" />
+  </DocXFragmentRole>
+  <DocXTableRole id="33" useSpecificDescriptions="false" userID="FLX" cloningStrategy="Clone" iteration="library.books" endIterationIndex="2" startIterationIndex="1" flexoID="11" tableId="Table0367EC52" name="bookListingTable" cardinality="ZeroOne">
+    <DocXModelSlot idref="16" />
+    <ColumnTableBinding id="34" flexoID="12" useSpecificDescriptions="false" userID="FLX" value="iterator.title" columnName="title" columnIndex="0" />
+    <ColumnTableBinding id="35" flexoID="13" useSpecificDescriptions="false" userID="FLX" value="iterator.author" columnName="author" columnIndex="1" />
+    <ColumnTableBinding id="36" flexoID="14" useSpecificDescriptions="false" userID="FLX" value="iterator.edition" columnName="edition" columnIndex="2" />
+    <ColumnTableBinding id="37" flexoID="15" useSpecificDescriptions="false" userID="FLX" value="iterator.type" columnName="type" columnIndex="3" />
+  </DocXTableRole>
+  <DocXFragmentRole id="38" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Clone" flexoID="16" name="conclusionSection" cardinality="ZeroOne" fragment="http://openflexo.org/test/TestResourceCenter/TestResourceCenter/ExampleLibrary2.docx:1A787643:2B774AAC">
+    <DocXModelSlot idref="16" />
+  </DocXFragmentRole>
+  <ModelSlot_FMLRTModelSlot id="4" useSpecificDescriptions="false" userID="FLX" cloningStrategy="Reference" flexoID="4" isRequired="true" name="library" isReadOnly="false" virtualModelURI="http://openflexo.org/test/TestLibraryViewPoint2/LibraryVirtualModel" cardinality="ZeroOne">
+    <FMLRTModelSlot idref="4" />
+  </ModelSlot_FMLRTModelSlot>
+  <ModelSlot_DocXModelSlot id="16" useSpecificDescriptions="false" userID="FLX" cloningStrategy="Reference" templateDocumentURI="http://openflexo.org/test/TestResourceCenter/TestResourceCenter/ExampleLibrary2.docx" flexoID="12" isRequired="true" name="document" isReadOnly="false" cardinality="ZeroOne">
+    <DocXModelSlot idref="16" />
+  </ModelSlot_DocXModelSlot>
+  <ActionScheme id="39" userID="FLX" useSpecificDescriptions="false" width="800" label="generateDocument" definePopupDefaultSize="false" height="600" flexoID="30" skipConfirmationPanel="false" name="generateDocument">
+    <BehaviourControlGraph_Sequence id="40" flexoID="17" userID="FLX" useSpecificDescriptions="false">
+      <ControlGraph1_GenerateDocXDocument id="41" flexoID="18" ownerContext="controlGraph1" userID="FLX" useSpecificDescriptions="false">
+        <DocXModelSlot idref="16" />
+      </ControlGraph1_GenerateDocXDocument>
+      <ControlGraph2_Sequence id="42" flexoID="19" ownerContext="controlGraph2" userID="FLX" useSpecificDescriptions="false">
+        <ControlGraph1_AssignationAction id="43" userID="FLX" useSpecificDescriptions="false" flexoID="20" ownerContext="controlGraph1" assign="introductionSection">
+          <AssignableAction_SelectGeneratedDocXFragment id="44" userID="FLX" useSpecificDescriptions="false" templateFragment="http://openflexo.org/test/TestResourceCenter/TestResourceCenter/ExampleLibrary2.docx:707AC6F7:3D899DD8" flexoID="21">
+            <DocXModelSlot idref="16" />
+          </AssignableAction_SelectGeneratedDocXFragment>
+        </ControlGraph1_AssignationAction>
+        <ControlGraph2_Sequence id="45" flexoID="22" ownerContext="controlGraph2" userID="FLX" useSpecificDescriptions="false">
+          <ControlGraph1_AssignationAction id="46" userID="FLX" useSpecificDescriptions="false" flexoID="23" ownerContext="controlGraph1" assign="booksDescriptionSection">
+            <AssignableAction_SelectGeneratedDocXFragment id="47" userID="FLX" useSpecificDescriptions="false" templateFragment="http://openflexo.org/test/TestResourceCenter/TestResourceCenter/ExampleLibrary2.docx:78BBD0DD:5052C24D" flexoID="24">
+              <DocXModelSlot idref="16" />
+            </AssignableAction_SelectGeneratedDocXFragment>
+          </ControlGraph1_AssignationAction>
+          <ControlGraph2_Sequence id="48" flexoID="25" ownerContext="controlGraph2" userID="FLX" useSpecificDescriptions="false">
+            <ControlGraph1_AssignationAction id="49" userID="FLX" useSpecificDescriptions="false" flexoID="26" ownerContext="controlGraph1" assign="conclusionSection">
+              <AssignableAction_SelectGeneratedDocXFragment id="50" userID="FLX" useSpecificDescriptions="false" templateFragment="http://openflexo.org/test/TestResourceCenter/TestResourceCenter/ExampleLibrary2.docx:1A787643:2B774AAC" flexoID="27">
+                <DocXModelSlot idref="16" />
+              </AssignableAction_SelectGeneratedDocXFragment>
+            </ControlGraph1_AssignationAction>
+            <ControlGraph2_AssignationAction id="51" userID="FLX" useSpecificDescriptions="false" flexoID="28" ownerContext="controlGraph2" assign="bookListingTable">
+              <AssignableAction_SelectGeneratedDocXTable id="52" flexoID="29" tableId="Table0367EC52" useSpecificDescriptions="false" userID="FLX">
+                <DocXModelSlot idref="16" />
+              </AssignableAction_SelectGeneratedDocXTable>
+            </ControlGraph2_AssignationAction>
+          </ControlGraph2_Sequence>
+        </ControlGraph2_Sequence>
+      </ControlGraph2_Sequence>
+    </BehaviourControlGraph_Sequence>
+  </ActionScheme>
+  <ActionScheme id="53" userID="FLX" useSpecificDescriptions="false" width="800" label="updateDocument" definePopupDefaultSize="false" height="600" flexoID="42" skipConfirmationPanel="false" name="updateDocument">
+    <BehaviourControlGraph_Sequence id="54" flexoID="31" userID="FLX" useSpecificDescriptions="false">
+      <ControlGraph1_IterationAction id="55" iteratorName="book" useSpecificDescriptions="false" userID="FLX" flexoID="35" ownerContext="controlGraph1">
+        <ControlGraph_MatchFlexoConceptInstance id="56" userID="FLX" useSpecificDescriptions="false" virtualModelInstance="virtualModelInstance" flexoID="34" creationSchemeURI="http://openflexo.org/test/TestLibraryViewPoint2/DocumentVirtualModel#BookDescriptionSection.createBookDescriptionSection" ownerContext="controlGraph">
+          <MatchingCriteria id="57" flexoID="32" useSpecificDescriptions="false" userID="FLX" value="book" patternRoleName="book" />
+          <MatchingCriteria id="58" flexoID="33" useSpecificDescriptions="false" userID="FLX" patternRoleName="section" />
+          <CreateFlexoConceptInstanceParameter id="59" flexoID="26" userID="FLX" useSpecificDescriptions="false" value="book" paramName="aBook" />
+        </ControlGraph_MatchFlexoConceptInstance>
+        <Iteration_SelectFlexoConceptInstance id="60" useSpecificDescriptions="false" userID="FLX" virtualModelInstance="library" flexoID="36" ownerContext="iterationControlGraph" flexoConceptTypeURI="http://openflexo.org/test/TestLibraryViewPoint2/LibraryVirtualModel#Book">
+          <FMLRTModelSlot idref="4" />
+        </Iteration_SelectFlexoConceptInstance>
+      </ControlGraph1_IterationAction>
+      <ControlGraph2_Sequence id="61" flexoID="37" ownerContext="controlGraph2" userID="FLX" useSpecificDescriptions="false">
+        <ControlGraph1_IterationAction id="62" iteratorName="bookSection" useSpecificDescriptions="false" userID="FLX" flexoID="39" ownerContext="controlGraph1">
+          <ControlGraph_ExpressionAction id="63" expression="bookSection.updateBookDescriptionSection()" flexoID="38" ownerContext="controlGraph" userID="FLX" useSpecificDescriptions="false" />
+          <Iteration_SelectFlexoConceptInstance id="64" useSpecificDescriptions="false" userID="FLX" virtualModelInstance="virtualModelInstance" flexoID="40" ownerContext="iterationControlGraph" flexoConceptTypeURI="http://openflexo.org/test/TestLibraryViewPoint2/DocumentVirtualModel#BookDescriptionSection">
+            <FMLRTModelSlot idref="4" />
+          </Iteration_SelectFlexoConceptInstance>
+        </ControlGraph1_IterationAction>
+        <ControlGraph2_GenerateDocXTable id="65" flexoID="41" ownerContext="controlGraph2" useSpecificDescriptions="false" userID="FLX">
+          <DocXModelSlot idref="16" />
+          <AccessedDocXTableRole idref="33" />
+        </ControlGraph2_GenerateDocXTable>
+      </ControlGraph2_Sequence>
+    </BehaviourControlGraph_Sequence>
+  </ActionScheme>
+  <ActionScheme id="66" userID="FLX" useSpecificDescriptions="false" width="800" label="reinjectFromDocument" definePopupDefaultSize="false" height="600" flexoID="46" skipConfirmationPanel="false" name="reinjectFromDocument">
+    <BehaviourControlGraph_IterationAction id="67" iteratorName="bookSection" useSpecificDescriptions="false" userID="FLX" flexoID="44">
+      <ControlGraph_ExpressionAction id="68" expression="bookSection.reinjectDataFromBookDescriptionSection()" flexoID="43" ownerContext="controlGraph" userID="FLX" useSpecificDescriptions="false" />
+      <Iteration_SelectFlexoConceptInstance id="69" useSpecificDescriptions="false" userID="FLX" virtualModelInstance="virtualModelInstance" flexoID="45" ownerContext="iterationControlGraph" flexoConceptTypeURI="http://openflexo.org/test/TestLibraryViewPoint2/DocumentVirtualModel#BookDescriptionSection">
+        <FMLRTModelSlot idref="4" />
+      </Iteration_SelectFlexoConceptInstance>
+    </BehaviourControlGraph_IterationAction>
+  </ActionScheme>
+</VirtualModel>
