@@ -79,4 +79,19 @@ public class TestDocXInspectors extends GenericFIBInspectorTestCase {
 	public void testDocXTableRoleInspector() {
 		validateFIB("Inspectors/DocX/DocXTableRole.inspector");
 	}
+
+	@Test
+	public void testAddDocXFragmentInspector() {
+		validateFIB("Inspectors/DocX/EditionAction/AddDocXFragment.inspector");
+	}
+
+	@Test
+	public void testSelectGeneratedDocXFragmentInspector() {
+		validateFIB("Inspectors/DocX/EditionAction/SelectGeneratedDocXFragment.inspector");
+	}
+
+	@Test
+	public void testSelectGeneratedDocXTableInspector() {
+		validateFIB("Inspectors/DocX/EditionAction/SelectGeneratedDocXTable.inspector");
+	}
 }

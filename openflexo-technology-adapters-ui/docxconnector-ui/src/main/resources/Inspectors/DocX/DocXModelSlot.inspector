@@ -2,7 +2,7 @@
 <Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
 	titleFont="SansSerif,0,12" darkLevel="0"
 	dataClassName="org.openflexo.technologyadapter.docx.DocXModelSlot"
-	controllerClassName="org.openflexo.inspector.FIBInspectorController"
+	controllerClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXInspectorFIBController"
 	font="SansSerif,0,12" name="Inspector">
 	<TabPanel name="Tab" constraints="border(location=center)">
 		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
