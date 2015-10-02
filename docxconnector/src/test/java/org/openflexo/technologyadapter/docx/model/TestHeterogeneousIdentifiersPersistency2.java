@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.docx.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.logging.Logger;
@@ -111,7 +110,7 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 	@TestOrder(4)
 	public void testStep0() {
 
-		step0 = getDocument("HeterogeneousDocumentEdition2" + File.separator + "Step1-MSWord.docx");
+		step0 = getDocument("HeterogeneousDocumentEdition2/Step1-MSWord.docx");
 
 		System.out.println("Step1-MSWord.docx:\n" + step0.debugStructuredContents());
 
@@ -126,7 +125,7 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 	@TestOrder(5)
 	public void testStep1() {
 
-		step1 = getDocument("HeterogeneousDocumentEdition2" + File.separator + "Step1-alter-MSWord.docx");
+		step1 = getDocument("HeterogeneousDocumentEdition2/Step1-alter-MSWord.docx");
 
 		System.out.println("Step1-MSWord.docx:\n" + step1.debugStructuredContents());
 
@@ -147,7 +146,7 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 	@TestOrder(6)
 	public void testStep2() {
 
-		step2 = getDocument("HeterogeneousDocumentEdition2" + File.separator + "Step2-alter-MSWord.docx");
+		step2 = getDocument("HeterogeneousDocumentEdition2/Step2-alter-MSWord.docx");
 
 		System.out.println("Step2-alter-MSWord.docx:\n" + step2.debugStructuredContents());
 
@@ -167,7 +166,7 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 	@TestOrder(7)
 	public void testStep3() {
 
-		step3 = getDocument("HeterogeneousDocumentEdition2" + File.separator + "Step2-alter-LibreOffice.docx");
+		step3 = getDocument("HeterogeneousDocumentEdition2/Step2-alter-LibreOffice.docx");
 
 		System.out.println("Step2-alter-LibreOffice.docx:\n" + step3.debugStructuredContents());
 
@@ -192,7 +191,7 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 	@TestOrder(8)
 	public void testStep4() {
 
-		step4 = getDocument("HeterogeneousDocumentEdition2" + File.separator + "Step3-alter-MSWord.docx");
+		step4 = getDocument("HeterogeneousDocumentEdition2/Step3-alter-MSWord.docx");
 
 		System.out.println("Step2-alter-MSWord.docx:\n" + step4.debugStructuredContents());
 
