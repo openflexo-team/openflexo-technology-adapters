@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.docx;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
@@ -56,7 +55,7 @@ public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase
 
 	protected DocXDocumentResource getDocumentResource(String documentName) {
 
-		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + "TestResourceCenter" + File.separator + documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + documentName;
 		System.out.println("Searching " + documentURI);
 
 		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
