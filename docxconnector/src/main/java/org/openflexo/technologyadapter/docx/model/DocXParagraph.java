@@ -114,10 +114,10 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 			// That's why we use cloneAfterProperty feature
 			// @CloningStrategy(value = StrategyType.CUSTOM_CLONE, factory = "cloneP()", cloneAfterProperty = CONTAINER_KEY)
 
-			System.out.println("setP with " + p);
+			/*System.out.println("setP with " + p);
 			System.out.println("getResourceData()=" + getResourceData());
 			System.out.println("getContainer()=" + getContainer());
-			System.out.println("getResourceData().getResource()=" + getResourceData().getResource());
+			System.out.println("getResourceData().getResource()=" + getResourceData().getResource());*/
 
 			if ((p == null && getP() != null) || (p != null && !p.equals(getP()))) {
 				if (p != null && getResourceData() != null && getResourceData().getResource() != null) {
