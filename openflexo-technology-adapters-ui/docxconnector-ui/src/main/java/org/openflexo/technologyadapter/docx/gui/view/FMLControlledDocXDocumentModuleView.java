@@ -42,12 +42,14 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import org.docx4all.swing.text.DocumentElement;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionSource;
@@ -59,6 +61,9 @@ import org.openflexo.technologyadapter.docx.controller.DocXAdapterController;
 import org.openflexo.technologyadapter.docx.gui.widget.DocXEditor;
 import org.openflexo.technologyadapter.docx.gui.widget.FIBDocXDocumentBrowser;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXObject;
+import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.model.DocXTable;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
@@ -101,7 +106,13 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 		docxEditor = new DocXEditor(getDocument(), true);
 		add(docxEditor, BorderLayout.CENTER);
 
-		browser = new FIBDocXDocumentBrowser(getDocument(), perspective.getController());
+		browser = new FIBDocXDocumentBrowser(getDocument(), perspective.getController()) {
+			@Override
+			public void setSelectedDocumentElement(DocXObject selected) {
+				super.setSelectedDocumentElement(selected);
+				selectElementInDocumentEditor(selected);
+			}
+		};
 		add(browser, BorderLayout.EAST);
 
 		topPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -200,4 +211,55 @@ public class FMLControlledDocXDocumentModuleView extends JPanel
 	public FlexoEditor getEditor() {
 		return perspective.getController().getEditor();
 	}
+
+	protected void selectElementInDocumentEditor(DocXObject element) {
+
+		System.out.println("****************** selectElementInDocumentEditor with " + element);
+
+		try {
+
+			// List<DocXElement> fragmentElements = fragment.getElements();
+
+			final List<DocumentElement> elts = new ArrayList<DocumentElement>();
+
+			DocumentElement docElement = null;
+
+			if (element instanceof DocXParagraph) {
+				docElement = docxEditor.getMLDocument().getElement(((DocXParagraph) element).getP());
+				elts.add(docElement);
+			}
+			if (element instanceof DocXTable) {
+				docElement = docxEditor.getMLDocument().getElement(((DocXTable) element).getTbl());
+				elts.add(docElement);
+			}
+
+			// Thread.dumpStack();
+			docxEditor.getMLDocument().setSelectedElements(elts);
+
+			if (docElement != null) {
+				scrollTo(docElement);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		docxEditor.getEditorView().revalidate();
+		docxEditor.getEditorView().repaint();
+
+	}
+
+	private void scrollTo(final DocumentElement docElement) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if (!docxEditor.getEditorView().scrollToElement(docElement, false)) {
+					scrollTo(docElement);
+				}
+				docxEditor.getEditorView().revalidate();
+				docxEditor.getEditorView().repaint();
+			}
+		});
+	}
+
 }

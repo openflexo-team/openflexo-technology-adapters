@@ -40,11 +40,14 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import java.util.logging.Logger;
 
+import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXObject;
 import org.openflexo.view.FIBBrowserView;
 import org.openflexo.view.controller.FlexoController;
+import org.openflexo.view.controller.FlexoFIBController;
 
 /**
  * Browser allowing to browse a DocXDocument<br>
@@ -60,6 +63,45 @@ public class FIBDocXDocumentBrowser extends FIBBrowserView<DocXDocument> {
 
 	public FIBDocXDocumentBrowser(DocXDocument document, FlexoController controller) {
 		super(document, controller, FIB_FILE);
+		if (getFIBController() instanceof DocXDocumentBrowserFIBController) {
+			((DocXDocumentBrowserFIBController) getFIBController()).setBrowser(this);
+		}
+	}
+
+	private DocXObject selectedElement;
+
+	public DocXObject getSelectedDocumentElement() {
+		return selectedElement;
+	}
+
+	public void setSelectedDocumentElement(DocXObject selected) {
+		selectedElement = selected;
+	}
+
+	public static class DocXDocumentBrowserFIBController extends FlexoFIBController {
+		private FIBDocXDocumentBrowser browser;
+
+		public DocXDocumentBrowserFIBController(FIBComponent component) {
+			super(component);
+		}
+
+		private void setBrowser(FIBDocXDocumentBrowser browser) {
+			this.browser = browser;
+		}
+
+		public DocXObject getSelectedDocumentElement() {
+			if (browser != null) {
+				return browser.getSelectedDocumentElement();
+			}
+			return null;
+		}
+
+		public void setSelectedDocumentElement(DocXObject selected) {
+			if (browser != null) {
+				browser.setSelectedDocumentElement(selected);
+			}
+		}
+
 	}
 
 }
