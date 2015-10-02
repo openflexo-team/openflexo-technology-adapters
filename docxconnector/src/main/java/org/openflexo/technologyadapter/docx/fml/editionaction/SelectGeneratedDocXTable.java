@@ -38,9 +38,16 @@
 
 package org.openflexo.technologyadapter.docx.fml.editionaction;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
@@ -51,10 +58,11 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
-import org.openflexo.toolbox.StringUtils;
 
 /**
  * This {@link EditionAction} allows to lookup a table in a generated document matching a template table
@@ -70,6 +78,9 @@ public interface SelectGeneratedDocXTable extends DocXTableAction {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String TABLE_ID_KEY = "tableId";
+
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String DOCUMENT_FRAGMENT_KEY = "documentFragment";
 
 	/**
 	 * Return identifier of table in the template resource<br>
@@ -89,9 +100,30 @@ public interface SelectGeneratedDocXTable extends DocXTableAction {
 	@Setter(TABLE_ID_KEY)
 	public void setTableId(String identifier);
 
+	/**
+	 * Return the fragment in the document resource (not in the template) where to restrict search<br>
+	 * Note that this fragment might be null, in this case, lookup fragment in the whole document
+	 * 
+	 * @return
+	 */
+	@Getter(value = DOCUMENT_FRAGMENT_KEY)
+	@XMLAttribute
+	public DataBinding<DocXFragment> getDocumentFragment();
+
+	/**
+	 * Sets the fragment in the document resource (not in the template) where to restrict search<br>
+	 * Note that if this fragment is null, the fragment will be searched in the whole document
+	 * 
+	 * @param fragment
+	 */
+	@Setter(DOCUMENT_FRAGMENT_KEY)
+	public void setDocumentFragment(DataBinding<DocXFragment> fragment);
+
 	public static abstract class SelectGeneratedDocXTableImpl extends DocXTableActionImpl implements SelectGeneratedDocXTable {
 
 		private static final Logger logger = Logger.getLogger(SelectGeneratedDocXTable.class.getPackage().getName());
+
+		private DataBinding<DocXFragment> documentFragment;
 
 		@Override
 		public String getTableId() {
@@ -99,6 +131,27 @@ public interface SelectGeneratedDocXTable extends DocXTableAction {
 				return ((DocXTableRole) getAssignedFlexoProperty()).getTableId();
 			}
 			return (String) performSuperGetter(TABLE_ID_KEY);
+		}
+
+		@Override
+		public DataBinding<DocXFragment> getDocumentFragment() {
+			if (documentFragment == null) {
+				documentFragment = new DataBinding<DocXFragment>(this, DocXFragment.class, BindingDefinitionType.GET);
+				documentFragment.setBindingName("documentFragment");
+			}
+			return documentFragment;
+		}
+
+		@Override
+		public void setDocumentFragment(DataBinding<DocXFragment> documentFragment) {
+			if (documentFragment != null) {
+				documentFragment.setOwner(this);
+				documentFragment.setBindingName("documentFragment");
+				documentFragment.setDeclaredType(DocXFragment.class);
+				documentFragment.setBindingDefinitionType(BindingDefinitionType.GET);
+			}
+			this.documentFragment = documentFragment;
+			notifiedBindingChanged(this.documentFragment);
 		}
 
 		@Override
@@ -115,11 +168,36 @@ public interface SelectGeneratedDocXTable extends DocXTableAction {
 
 			DocXDocument document = (DocXDocument) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
-			if (document != null && StringUtils.isNotEmpty(getTableId())) {
-				return (DocXTable) document.getElementWithIdentifier(getTableId());
+			List<? extends FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> searchArea = document.getElements();
+			if (getDocumentFragment() != null && getDocumentFragment().isSet() && getDocumentFragment().isValid()) {
+				DocXFragment searchAreaFragment = null;
+				try {
+					searchAreaFragment = getDocumentFragment().getBindingValue(evaluationContext);
+				} catch (TypeMismatchException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (NullReferenceException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				} catch (InvocationTargetException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if (searchAreaFragment != null) {
+					// System.out.println("Restrict search to " + searchAreaFragment);
+					searchArea = searchAreaFragment.getElements();
+				}
 			}
 
-			logger.warning("Could not find table matching template table. Abort.");
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : searchArea) {
+				if (e instanceof DocXTable && e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(getTableId())) {
+					// Found table !!!!!!!
+					return (DocXTable) e;
+				}
+			}
+
+			logger.warning("Could not find table matching template table " + getTableId() + ". Abort.");
+
 			return null;
 		}
 	}

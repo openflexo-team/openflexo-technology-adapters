@@ -38,8 +38,14 @@
 
 package org.openflexo.technologyadapter.docx.fml.editionaction;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -72,6 +78,9 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 	@PropertyIdentifier(type = DocXFragment.class)
 	public static final String TEMPLATE_FRAGMENT_KEY = "templateFragment";
 
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String DOCUMENT_FRAGMENT_KEY = "documentFragment";
+
 	/**
 	 * Return the searched fragment in the template resource<br>
 	 * Note that is not the fragment that is to be managed at run-time
@@ -90,9 +99,30 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 	@Setter(TEMPLATE_FRAGMENT_KEY)
 	public void setTemplateFragment(DocXFragment fragment);
 
+	/**
+	 * Return the fragment in the document resource (not in the template) where to restrict search<br>
+	 * Note that this fragment might be null, in this case, lookup fragment in the whole document
+	 * 
+	 * @return
+	 */
+	@Getter(value = DOCUMENT_FRAGMENT_KEY)
+	@XMLAttribute
+	public DataBinding<DocXFragment> getDocumentFragment();
+
+	/**
+	 * Sets the fragment in the document resource (not in the template) where to restrict search<br>
+	 * Note that if this fragment is null, the fragment will be searched in the whole document
+	 * 
+	 * @param fragment
+	 */
+	@Setter(DOCUMENT_FRAGMENT_KEY)
+	public void setDocumentFragment(DataBinding<DocXFragment> fragment);
+
 	public static abstract class SelectGeneratedDocXFragmentImpl extends DocXFragmentActionImpl implements SelectGeneratedDocXFragment {
 
 		private static final Logger logger = Logger.getLogger(SelectGeneratedDocXFragment.class.getPackage().getName());
+
+		private DataBinding<DocXFragment> documentFragment;
 
 		@Override
 		public DocXFragment getTemplateFragment() {
@@ -100,6 +130,27 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 				return ((DocXFragmentRole) getAssignedFlexoProperty()).getFragment();
 			}
 			return (DocXFragment) performSuperGetter(TEMPLATE_FRAGMENT_KEY);
+		}
+
+		@Override
+		public DataBinding<DocXFragment> getDocumentFragment() {
+			if (documentFragment == null) {
+				documentFragment = new DataBinding<DocXFragment>(this, DocXFragment.class, BindingDefinitionType.GET);
+				documentFragment.setBindingName("documentFragment");
+			}
+			return documentFragment;
+		}
+
+		@Override
+		public void setDocumentFragment(DataBinding<DocXFragment> documentFragment) {
+			if (documentFragment != null) {
+				documentFragment.setOwner(this);
+				documentFragment.setBindingName("documentFragment");
+				documentFragment.setDeclaredType(DocXFragment.class);
+				documentFragment.setBindingDefinitionType(BindingDefinitionType.GET);
+			}
+			this.documentFragment = documentFragment;
+			notifiedBindingChanged(this.documentFragment);
 		}
 
 		@Override
@@ -126,7 +177,27 @@ public interface SelectGeneratedDocXFragment extends DocXFragmentAction {
 			if (getTemplateFragment() != null) {
 				for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> templateElement : getTemplateFragment().getElements()) {
 					// TODO: handle tables here !!!
-					for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : document.getElements()) {
+					List<? extends FlexoDocElement<DocXDocument, DocXTechnologyAdapter>> searchArea = document.getElements();
+					if (getDocumentFragment() != null && getDocumentFragment().isSet() && getDocumentFragment().isValid()) {
+						DocXFragment searchAreaFragment = null;
+						try {
+							searchAreaFragment = getDocumentFragment().getBindingValue(evaluationContext);
+						} catch (TypeMismatchException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (NullReferenceException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						} catch (InvocationTargetException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						if (searchAreaFragment != null) {
+							System.out.println("Restrict search to " + searchAreaFragment);
+							searchArea = searchAreaFragment.getElements();
+						}
+					}
+					for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : searchArea) {
 						if (e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(templateElement.getIdentifier())) {
 							int index = document.getElements().indexOf(e);
 							if (startIndex == -1 || (index < startIndex)) {
