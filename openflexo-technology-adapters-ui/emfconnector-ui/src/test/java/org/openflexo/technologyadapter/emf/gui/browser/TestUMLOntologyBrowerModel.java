@@ -81,7 +81,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	private static GraphicalContextDelegate gcDelegate;
 
-	static String umlModelResourceRelativeURI = "/TestResourceCenter/EMF/Model/uml/test1.uml";
+	static String umlModelResourceRelativeURI = "TestResourceCenter/EMF/Model/uml/test1.uml";
 
 	@BeforeClass
 	public static void setupClass() {
@@ -105,11 +105,12 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
 			assertNotNull(modelRepository);
 
-			System.out.println("Loading file:/" + ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().getAbsolutePath()
+			System.out.println("Loading :"
+					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
 					+ umlModelResourceRelativeURI);
 
-			umlModelResource = modelRepository.getResource("file:/"
-					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().getAbsolutePath().replace(File.separator, "/")
+			umlModelResource = modelRepository.getResource(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI()
+					.toString().replace(File.separator, "/")
 					+ umlModelResourceRelativeURI);
 
 			assertNotNull(umlModelResource);

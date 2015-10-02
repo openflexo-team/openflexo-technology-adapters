@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.emf.gui.browser;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -83,7 +84,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	private static GraphicalContextDelegate gcDelegate;
 
-	static String archimateModelResourceRelativeURI = "/TestResourceCenter/EMF/Model/archimate/test1.archimate";
+	static String archimateModelResourceRelativeURI = "TestResourceCenter/EMF/Model/archimate/test1.archimate";
 
 	@BeforeClass
 	public static void setupClass() {
@@ -131,11 +132,12 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
 			assertNotNull(modelRepository);
 
-			System.out.println("Loading " + ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().getAbsolutePath()
+			System.out.println("Loading "
+					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
 					+ archimateModelResourceRelativeURI);
 
-			archimateModelResource = modelRepository.getResource("file:/"
-					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().getAbsolutePath()
+			archimateModelResource = modelRepository.getResource(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory()
+					.toURI().toString().replace(File.separator, "/")
 					+ archimateModelResourceRelativeURI);
 
 			assertNotNull(archimateModelResource);

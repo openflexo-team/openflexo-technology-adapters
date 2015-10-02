@@ -81,7 +81,7 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	private static GraphicalContextDelegate gcDelegate;
 
-	static String ecoreModelResourceRelativeURI = "/TestResourceCenter/EMF/Ecore/example.ecore";
+	static String ecoreModelResourceRelativeURI = "TestResourceCenter/EMF/Ecore/example.ecore";
 
 	@BeforeClass
 	public static void setupClass() {
@@ -104,13 +104,14 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
 			assertNotNull(modelRepository);
+			;
 
-			System.out.println("Loading file:/"
-					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().getAbsolutePath().replace(File.separator, "/")
+			System.out.println("Loading : "
+					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
 					+ ecoreModelResourceRelativeURI);
 
-			ecoreModelResource = modelRepository.getResource("file:/"
-					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().getAbsolutePath().replace(File.separator, "/")
+			ecoreModelResource = modelRepository.getResource(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI()
+					.toString().replace(File.separator, "/")
 					+ ecoreModelResourceRelativeURI);
 
 			assertNotNull(ecoreModelResource);
