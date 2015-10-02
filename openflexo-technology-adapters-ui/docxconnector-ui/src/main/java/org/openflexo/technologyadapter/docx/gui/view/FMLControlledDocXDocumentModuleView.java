@@ -46,6 +46,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject;
@@ -73,8 +74,8 @@ import org.openflexo.view.listener.FlexoActionButton;
  *
  */
 @SuppressWarnings("serial")
-public class FMLControlledDocXDocumentModuleView extends JPanel implements ModuleView<VirtualModelInstance>, FlexoActionSource,
-		PropertyChangeListener {
+public class FMLControlledDocXDocumentModuleView extends JPanel
+		implements ModuleView<VirtualModelInstance>, FlexoActionSource, PropertyChangeListener {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FMLControlledDocXDocumentModuleView.class.getPackage().getName());
@@ -164,15 +165,18 @@ public class FMLControlledDocXDocumentModuleView extends JPanel implements Modul
 	@Override
 	public void show(final FlexoController controller, FlexoPerspective perspective) {
 
-		/*SwingUtilities.invokeLater(new Runnable() {
+		perspective.setTopRightView(null);
+		perspective.setBottomRightView(null);
+
+		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				// Force right view to be visible
-				controller.getControllerModel().setRightViewVisible(true);
+				controller.getControllerModel().setRightViewVisible(false);
 			}
 		});
 
-		controller.getControllerModel().setRightViewVisible(true);*/
+		controller.getControllerModel().setRightViewVisible(false);
 	}
 
 	@Override
