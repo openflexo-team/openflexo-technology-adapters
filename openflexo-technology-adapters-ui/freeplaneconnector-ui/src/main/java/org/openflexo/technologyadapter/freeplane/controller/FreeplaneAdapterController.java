@@ -138,7 +138,7 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(final Class<? extends FlexoRole<?>> arg0) {
+	public ImageIcon getIconForFlexoRole(final Class<? extends FlexoRole<?>> arg0) {
 		return FreeplaneIconLibrary.FREEPLANE_TECHNOLOGY_ICON;
 	}
 

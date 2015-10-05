@@ -323,7 +323,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (DiagramRole.class.isAssignableFrom(patternRoleClass)) {
 			return DiagramIconLibrary.DIAGRAM_ICON;
 		} else if (ShapeRole.class.isAssignableFrom(patternRoleClass)) {

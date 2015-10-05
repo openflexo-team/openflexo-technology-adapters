@@ -190,7 +190,8 @@ public class OWLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (OWLObject.class.isAssignableFrom(objectClass)) {
 			return OWLIconLibrary.iconForObject((Class<? extends OWLObject>) objectClass);
-		} else if (OWLStatement.class.isAssignableFrom(objectClass)) {
+		}
+		else if (OWLStatement.class.isAssignableFrom(objectClass)) {
 			return OWLIconLibrary.ONTOLOGY_STATEMENT_ICON;
 		}
 		return null;
@@ -203,22 +204,29 @@ public class OWLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (OWLClassRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLClass.class);
-		} else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLIndividual.class);
-		} else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLDataProperty.class);
-		} else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLObjectProperty.class);
-		} else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(OWLProperty.class);
-		} else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(DataPropertyStatement.class);
-		} else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(ObjectPropertyStatement.class);
-		} else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(SubClassStatement.class);
 		}
 		return null;
@@ -246,7 +254,8 @@ public class OWLAdapterController extends FlexoOntologyTechnologyAdapterControll
 		}
 		if (AddSubClassStatement.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(SubClassStatement.class), IconLibrary.DUPLICATE);
-		} else if (AddOWLClass.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (AddOWLClass.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OWLClass.class), IconLibrary.DUPLICATE);
 		}
 		return super.getIconForEditionAction(editionActionClass);
@@ -283,7 +292,8 @@ public class OWLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	public OntologyBrowserModel makeOntologyBrowserModel(IFlexoOntology context) {
 		if (context instanceof OWLOntology) {
 			return new OWLOntologyBrowserModel((OWLOntology) context);
-		} else {
+		}
+		else {
 			logger.warning("Unexpected " + context);
 			return null;
 		}

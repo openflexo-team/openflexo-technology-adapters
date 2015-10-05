@@ -166,7 +166,7 @@ public class OSLCAdapterController extends TechnologyAdapterController<OSLCTechn
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> arg0) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> arg0) {
 		if (OSLCResourceRole.class.isAssignableFrom(arg0)) {
 			return getIconForTechnologyObject(OSLCResource.class);
 		}

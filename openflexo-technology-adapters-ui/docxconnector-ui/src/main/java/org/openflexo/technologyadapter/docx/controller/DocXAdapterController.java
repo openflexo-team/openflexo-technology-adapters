@@ -138,7 +138,7 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> roleClass) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> roleClass) {
 		if (DocXParagraphRole.class.isAssignableFrom(roleClass)) {
 			return DocXIconLibrary.PARAGRAPH_ICON;
 		}
