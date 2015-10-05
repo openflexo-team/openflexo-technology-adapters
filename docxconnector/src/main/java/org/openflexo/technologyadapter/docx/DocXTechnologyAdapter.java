@@ -29,6 +29,7 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -42,6 +43,7 @@ import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElementConverter;
 import org.openflexo.technologyadapter.docx.model.DocXFragmentConverter;
+import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceImpl;
@@ -57,6 +59,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceImpl;
 
 @DeclareModelSlots({ DocXModelSlot.class })
 @DeclareRepositoryType({ DocXDocumentRepository.class })
+@DeclareVirtualModelInstanceNatures({ FMLControlledDocXVirtualModelInstanceNature.class })
 public class DocXTechnologyAdapter extends TechnologyAdapter {
 
 	public static String DOCX_FILE_EXTENSION = ".docx";

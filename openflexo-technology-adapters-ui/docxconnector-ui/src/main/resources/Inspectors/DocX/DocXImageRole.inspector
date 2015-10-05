@@ -9,7 +9,7 @@
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<Label label="image" index="3"
+			<Label label="template_image" index="3"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
 			<Custom
@@ -20,10 +20,28 @@
 				<Assignment variable="component.flexoController" value="controller.flexoController" />
 			</Custom>
 
-			<Label label="preview" index="5"
+			<Label index="9" label="object_to_represent"
 				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
-			<Panel index="6" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+			<Custom index="10" componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+				localize="true" manageDynamicModel="true" data="data.representedObject"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+
+			<Label index="11" label="nature"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<DropDown index="12" data="data.nature" list="data.availableNatures"
+				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				localize="true"
+				iteratorClassName="java.lang.Class"
+				autoSelectFirstRow="true" />
+
+			<Label label="preview" index="13"
+				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Panel index="14" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
 				useScrollBar="true" protectContent="false" height="60" layout="border"
 				controllerClassName="org.openflexo.fib.controller.FIBController"
 				border="empty" trackViewPortWidth="true" width="60"
@@ -37,7 +55,8 @@
 					constraints="border(location=center)">
 				</Custom>
 			</Panel>
-			
+
+
 		</Tab>
 	</TabPanel>
 	<LocalizedDictionary>

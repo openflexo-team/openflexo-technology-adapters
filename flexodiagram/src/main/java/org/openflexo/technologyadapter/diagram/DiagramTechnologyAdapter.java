@@ -50,6 +50,7 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
+import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -61,6 +62,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.InJarResourceImpl;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -81,6 +83,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceIm
  */
 @DeclareModelSlots({ TypedDiagramModelSlot.class, FreeDiagramModelSlot.class })
 @DeclareTechnologySpecificTypes({ DiagramType.class })
+@DeclareVirtualModelInstanceNatures({ FMLControlledDiagramVirtualModelInstanceNature.class })
 public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	private static final Logger logger = Logger.getLogger(DiagramTechnologyAdapter.class.getPackage().getName());

@@ -9,7 +9,7 @@
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<Label label="table" index="3"
+			<Label label="template_table" index="3"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
 			<Custom

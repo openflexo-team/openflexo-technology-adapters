@@ -24,7 +24,7 @@
 				controllerClassName="org.openflexo.fib.controller.FIBController"
 				index="3" localize="true" align="left"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-				label="fragment" readOnly="false" />
+				label="template_fragment" readOnly="false" />
 			<Custom id="10" manageDynamicModel="true" useScrollBar="false"
 				data="data.fragment" dataClassForComponent="org.openflexo.technologyadapter.docx.model.DocXFragment"
 				componentClassName="org.openflexo.technologyadapter.docx.gui.widget.FIBDocXFragmentSelector"
