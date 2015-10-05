@@ -22,10 +22,15 @@ package org.openflexo.technologyadapter.docx.model;
 
 import javax.xml.bind.JAXBElement;
 
+import org.docx4j.dml.Graphic;
+import org.docx4j.dml.GraphicData;
+import org.docx4j.dml.picture.CTPictureNonVisual;
+import org.docx4j.dml.picture.Pic;
+import org.docx4j.dml.wordprocessingDrawing.Inline;
 import org.docx4j.wml.Drawing;
 import org.docx4j.wml.R;
-import org.openflexo.foundation.doc.FlexoDrawingRun;
 import org.openflexo.foundation.doc.FlexoDocRun;
+import org.openflexo.foundation.doc.FlexoDrawingRun;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -45,6 +50,7 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 	public static abstract class DocXDrawingRunImpl extends DocXRunImpl implements DocXDrawingRun {
 
 		private Drawing drawing;
+		private String imageName;
 
 		/**
 		 * This is the starting point for updating {@link DocXDrawingRun} with the paragraph provided from docx4j library<br>
@@ -62,11 +68,37 @@ public interface DocXDrawingRun extends FlexoDrawingRun<DocXDocument, DocXTechno
 				}
 				if (o instanceof Drawing) {
 					drawing = (Drawing) o;
+					for (Object o2 : drawing.getAnchorOrInline()) {
+						if (o2 instanceof JAXBElement) {
+							o2 = ((JAXBElement) o2).getValue();
+						}
+						if (o2 instanceof Inline) {
+							Inline inline = (Inline) o2;
+							if (inline.getDocPr() != null) {
+								imageName = inline.getDocPr().getName();
+								Graphic graphic = inline.getGraphic();
+								if (graphic != null && graphic.getGraphicData() != null && graphic.getGraphicData().getPic() != null
+										&& graphic.getGraphicData().getPic().getNvPicPr() != null) {
+									GraphicData graphicData = graphic.getGraphicData();
+									Pic pic = graphicData.getPic();
+									CTPictureNonVisual nvPicPr = pic.getNvPicPr();
+									imageName = imageName + " (" + nvPicPr.getCNvPr().getName() + ")";
+								}
+							}
+						}
+					}
 				}
 			}
 
 		}
 
+		@Override
+		public String getImageName() {
+			if (imageName != null) {
+				return imageName;
+			}
+			return "IMAGE";
+		}
 	}
 
 }

@@ -96,7 +96,7 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 
 	public DocXRun getRun(R r);
 
-	public static abstract class DocXParagraphImpl extends FlexoParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoDocParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
 
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(DocXParagraphImpl.class.getPackage().getName());

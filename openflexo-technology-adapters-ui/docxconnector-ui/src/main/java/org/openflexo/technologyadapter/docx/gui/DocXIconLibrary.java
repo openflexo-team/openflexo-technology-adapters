@@ -39,6 +39,7 @@ public class DocXIconLibrary {
 	public static final ImageIcon PARAGRAPH_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Paragraph_16x16.png"));
 	public static final ImageIcon TABLE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Table_16x16.png"));
 	public static final ImageIcon FRAGMENT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Fragment_16x16.png"));
+	public static final ImageIcon IMAGE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Image_16x16.png"));
 	public static final ImageIcon TEXT_BINDING_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/TextBinding_16x16.png"));
 	public static final ImageIcon COLUMN_BINDING_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/TextBinding_16x16.png"));

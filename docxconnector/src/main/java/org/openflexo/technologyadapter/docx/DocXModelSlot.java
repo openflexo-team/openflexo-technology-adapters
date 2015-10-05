@@ -25,6 +25,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.doc.fml.FlexoDocumentModelSlot;
 import org.openflexo.foundation.doc.fml.FragmentActorReference;
+import org.openflexo.foundation.doc.fml.ImageActorReference;
+import org.openflexo.foundation.doc.fml.ParagraphActorReference;
 import org.openflexo.foundation.doc.fml.TableActorReference;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
@@ -41,6 +43,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
+import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
 import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
@@ -65,11 +68,12 @@ import org.openflexo.toolbox.StringUtils;
  * @author sylvain
  * 
  */
-@DeclareFlexoRoles({ DocXParagraphRole.class, DocXTableRole.class, DocXFragmentRole.class })
+@DeclareFlexoRoles({ DocXParagraphRole.class, DocXTableRole.class, DocXFragmentRole.class, DocXImageRole.class })
 @DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class, ApplyTextBindings.class,
 		ReinjectTextBindings.class, SelectGeneratedDocXFragment.class, GenerateDocXTable.class, ReinjectFromDocXTable.class,
 		SelectGeneratedDocXTable.class })
-@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class })
+@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class,
+		ImageActorReference.class })
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
 @XMLElement

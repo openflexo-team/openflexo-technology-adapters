@@ -22,25 +22,25 @@ package org.openflexo.technologyadapter.docx.fml;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.doc.fml.FlexoParagraphRole;
+import org.openflexo.foundation.doc.fml.FlexoImageRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
-import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.model.DocXDrawingRun;
 
 @ModelEntity
-@ImplementationClass(DocXParagraphRole.DocXParagraphRoleImpl.class)
+@ImplementationClass(DocXImageRole.DocXImageRoleImpl.class)
 @XMLElement
-public interface DocXParagraphRole extends FlexoParagraphRole<DocXParagraph, DocXDocument, DocXTechnologyAdapter> {
+public interface DocXImageRole extends FlexoImageRole<DocXDrawingRun, DocXDocument, DocXTechnologyAdapter> {
 
-	public static abstract class DocXParagraphRoleImpl extends FlexoParagraphRoleImpl<DocXParagraph, DocXDocument, DocXTechnologyAdapter>
-			implements DocXParagraphRole {
+	public static abstract class DocXImageRoleImpl extends FlexoImageRoleImpl<DocXDrawingRun, DocXDocument, DocXTechnologyAdapter>
+			implements DocXImageRole {
 
 		@Override
 		public Type getType() {
-			return DocXParagraph.class;
+			return DocXDrawingRun.class;
 		}
 
 		@Override

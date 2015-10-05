@@ -31,11 +31,13 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
+import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
 import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 import org.openflexo.technologyadapter.docx.gui.DocXIconLibrary;
 import org.openflexo.technologyadapter.docx.gui.view.DocXDocumentModuleView;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXDrawingRun;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
@@ -91,6 +93,9 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 		else if (object instanceof DocXTable) {
 			return DocXIconLibrary.TABLE_ICON;
 		}
+		else if (object instanceof DocXDrawingRun) {
+			return DocXIconLibrary.IMAGE_ICON;
+		}
 		else if (object instanceof DocXFragment) {
 			return DocXIconLibrary.FRAGMENT_ICON;
 		}
@@ -142,6 +147,9 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 		}
 		if (DocXFragmentRole.class.isAssignableFrom(roleClass)) {
 			return DocXIconLibrary.FRAGMENT_ICON;
+		}
+		if (DocXImageRole.class.isAssignableFrom(roleClass)) {
+			return DocXIconLibrary.IMAGE_ICON;
 		}
 		return null;
 	}

@@ -1,8 +1,8 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2014-2015, Openflexo
  * 
- * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * This file is part of Excelconnector, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,42 +36,38 @@
  * 
  */
 
-package org.openflexo.technologyadapter.docx.fib;
+package org.openflexo.technologyadapter.docx.fml.editionaction;
 
-import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
-import org.openflexo.rm.FileResourceImpl;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.foundation.fml.editionaction.RoleSpecificAction;
+import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.technologyadapter.docx.DocXModelSlot;
+import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
+import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
-public class TestDocXWidgetFibs extends GenericFIBTestCase {
+/**
+ * Abstract action applicable on a {@link DocXParagraphRole}
+ * 
+ * @author sylvain
+ * 
+ */
 
-	/*
-	 * Use this method to print all
-	 * Then copy-paste 
-	 */
-	public static void main(String[] args) {
-		System.out.println(
-				generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Widget")).getFile(), "Fib/Widget/"));
+@ModelEntity(isAbstract = true)
+@ImplementationClass(DocXParagraphAction.DocXParagraphActionImpl.class)
+public interface DocXParagraphAction
+		extends RoleSpecificAction<DocXParagraphRole, DocXModelSlot, DocXParagraph>, DocXAction<DocXParagraph> {
+
+	public static abstract class DocXParagraphActionImpl extends RoleSpecificActionImpl<DocXParagraphRole, DocXModelSlot, DocXParagraph>
+			implements DocXParagraphAction {
+
+		@Override
+		public Class<DocXParagraphRole> getRoleClass() {
+			return DocXParagraphRole.class;
+		}
+
+		@Override
+		public Class<DocXParagraph> getAssignableType() {
+			return DocXParagraph.class;
+		}
 	}
-
-	@Test
-	public void testFIBDocXDocumentBrowser() {
-		validateFIB("Fib/Widget/FIBDocXDocumentBrowser.fib");
-	}
-
-	@Test
-	public void testFIBDocXFragmentSelector() {
-		validateFIB("Fib/Widget/FIBDocXFragmentSelector.fib");
-	}
-
-	@Test
-	public void testFIBDocXImageSelector() {
-		validateFIB("Fib/Widget/FIBDocXImageSelector.fib");
-	}
-
-	@Test
-	public void testFIBDocXTableSelector() {
-		validateFIB("Fib/Widget/FIBDocXTableSelector.fib");
-	}
-
 }
