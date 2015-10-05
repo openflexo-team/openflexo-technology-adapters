@@ -167,9 +167,9 @@ public class XMLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	 * @return
 	 */
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> flexoRoleClass) {
 
-		if (XMLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+		if (XMLIndividualRole.class.isAssignableFrom(flexoRoleClass)) {
 			return getIconForTechnologyObject(XMLIndividualRole.class);
 		}
 		return null;
@@ -210,7 +210,8 @@ public class XMLAdapterController extends FlexoOntologyTechnologyAdapterControll
 			FlexoPerspective perspective) {
 		if (object instanceof XMLModel) {
 			return new XMLModelView((XMLModel) object, controller, perspective);
-		} else if (object instanceof XMLMetaModel) {
+		}
+		else if (object instanceof XMLMetaModel) {
 			return new XMLMetaModelView((XMLMetaModel) object, controller, perspective);
 		}
 		return new EmptyPanel<TechnologyObject<XMLTechnologyAdapter>>(controller, perspective, object);
