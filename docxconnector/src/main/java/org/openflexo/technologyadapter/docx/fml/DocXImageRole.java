@@ -22,6 +22,7 @@ package org.openflexo.technologyadapter.docx.fml;
 
 import java.lang.reflect.Type;
 
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.fml.FlexoImageRole;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -29,11 +30,17 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDrawingRun;
+import org.openflexo.technologyadapter.docx.model.DocXFactory;
+import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 @ModelEntity
 @ImplementationClass(DocXImageRole.DocXImageRoleImpl.class)
 @XMLElement
 public interface DocXImageRole extends FlexoImageRole<DocXDrawingRun, DocXDocument, DocXTechnologyAdapter> {
+
+	public static final String IMAGE_FRAGMENT_KEY = "imageFragment";
+
+	public DocXFragment getImageFragment();
 
 	public static abstract class DocXImageRoleImpl extends FlexoImageRoleImpl<DocXDrawingRun, DocXDocument, DocXTechnologyAdapter>
 			implements DocXImageRole {
@@ -51,6 +58,31 @@ public interface DocXImageRole extends FlexoImageRole<DocXDrawingRun, DocXDocume
 		@Override
 		public RoleCloningStrategy defaultCloningStrategy() {
 			return RoleCloningStrategy.Clone;
+		}
+
+		private DocXFragment imageFragment;
+
+		@Override
+		public DocXFragment getImageFragment() {
+			return imageFragment;
+		}
+
+		@Override
+		public void setDrawingRun(DocXDrawingRun run) {
+			super.setDrawingRun(run);
+			if (run != null) {
+				try {
+					imageFragment = (DocXFragment) ((DocXFactory) getDocument().getFactory()).makeFragment(run.getParagraph(),
+							run.getParagraph());
+				} catch (FragmentConsistencyException e) {
+					e.printStackTrace();
+					imageFragment = null;
+				}
+			}
+			else {
+				imageFragment = null;
+			}
+			getPropertyChangeSupport().firePropertyChange(IMAGE_FRAGMENT_KEY, null, getImageFragment());
 		}
 
 	}

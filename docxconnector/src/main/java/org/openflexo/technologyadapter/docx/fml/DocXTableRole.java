@@ -60,19 +60,27 @@ public interface DocXTableRole extends FlexoTableRole<DocXTable, DocXDocument, D
 			return RoleCloningStrategy.Clone;
 		}
 
+		private DocXFragment tableFragment;
+
 		@Override
 		public DocXFragment getTableFragment() {
-			try {
-				return (DocXFragment) ((DocXFactory) getDocument().getFactory()).makeFragment(getTable(), getTable());
-			} catch (FragmentConsistencyException e) {
-				e.printStackTrace();
-				return null;
-			}
+			return tableFragment;
 		}
 
 		@Override
 		public void setTable(DocXTable table) {
 			super.setTable(table);
+			if (table != null) {
+				try {
+					tableFragment = (DocXFragment) ((DocXFactory) getDocument().getFactory()).makeFragment(table, table);
+				} catch (FragmentConsistencyException e) {
+					e.printStackTrace();
+					tableFragment = null;
+				}
+			}
+			else {
+				tableFragment = null;
+			}
 			getPropertyChangeSupport().firePropertyChange(TABLE_FRAGMENT_KEY, null, getTableFragment());
 		}
 
