@@ -64,6 +64,7 @@ import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
@@ -323,6 +324,9 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		} catch (FlexoException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} catch (ReturnException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return result;
 	}
@@ -334,7 +338,12 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		removeObject.setModelSlot(newModelSlot);
 		// removeObject.setEMFModelResource(emfModelResource);
 		// removeObject.setObjectIndividual(objectIndividual);
-		removeObject.execute(creationSchemeCreationAction);
+		try {
+			removeObject.execute(creationSchemeCreationAction);
+		} catch (ReturnException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		result = objectIndividual;
 		// removeObject.finalizePerformAction(creationSchemeCreationAction, null);
 		return result;
