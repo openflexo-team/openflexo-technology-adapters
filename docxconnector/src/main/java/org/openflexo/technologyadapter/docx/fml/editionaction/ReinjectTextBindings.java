@@ -50,20 +50,20 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 @ModelEntity
-@ImplementationClass(ReinjectTextBindings.ApplyTextBindingsImpl.class)
+@ImplementationClass(ReinjectTextBindings.ReinjectTextBindingsImpl.class)
 @XMLElement
 @FML("ApplyTextBindings")
 public interface ReinjectTextBindings extends DocXFragmentAction {
 
-	public static abstract class ApplyTextBindingsImpl extends DocXFragmentActionImpl implements ReinjectTextBindings {
+	public static abstract class ReinjectTextBindingsImpl extends DocXFragmentActionImpl implements ReinjectTextBindings {
 
 		private static final Logger logger = Logger.getLogger(ReinjectTextBindings.class.getPackage().getName());
 
 		@Override
 		public DocXFragment execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) evaluationContext.getFlexoConceptInstance()
-					.getActorReference(getFlexoRole());
+			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) evaluationContext
+					.getFlexoConceptInstance().getActorReference(getFlexoRole());
 
 			actorReference.reinjectDataFromDocument();
 

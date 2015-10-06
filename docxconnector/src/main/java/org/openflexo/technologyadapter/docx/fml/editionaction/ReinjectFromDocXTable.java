@@ -50,12 +50,12 @@ import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
 
 @ModelEntity
-@ImplementationClass(ReinjectFromDocXTable.GenerateDocXTableImpl.class)
+@ImplementationClass(ReinjectFromDocXTable.ReinjectFromDocXTableImpl.class)
 @XMLElement
 @FML("ReinjectFromDocXTable")
 public interface ReinjectFromDocXTable extends DocXTableAction {
 
-	public static abstract class GenerateDocXTableImpl extends DocXTableActionImpl implements ReinjectFromDocXTable {
+	public static abstract class ReinjectFromDocXTableImpl extends DocXTableActionImpl implements ReinjectFromDocXTable {
 
 		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(ReinjectFromDocXTable.class.getPackage().getName());
