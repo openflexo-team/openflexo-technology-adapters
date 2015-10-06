@@ -50,10 +50,12 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXParagraph;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ApplyTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
+import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXImage;
 import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXTable;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ReinjectFromDocXTable;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ReinjectTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXFragment;
+import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXImage;
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXTable;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
@@ -71,7 +73,7 @@ import org.openflexo.toolbox.StringUtils;
 @DeclareFlexoRoles({ DocXParagraphRole.class, DocXTableRole.class, DocXFragmentRole.class, DocXImageRole.class })
 @DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class, ApplyTextBindings.class,
 		ReinjectTextBindings.class, SelectGeneratedDocXFragment.class, GenerateDocXTable.class, ReinjectFromDocXTable.class,
-		SelectGeneratedDocXTable.class })
+		SelectGeneratedDocXTable.class, GenerateDocXImage.class, SelectGeneratedDocXImage.class })
 @DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class,
 		ImageActorReference.class })
 @ModelEntity

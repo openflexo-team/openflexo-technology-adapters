@@ -71,6 +71,11 @@ public class TestDocXInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
+	public void testDocXImageRoleInspector() {
+		validateFIB("Inspectors/DocX/DocXImageRole.inspector");
+	}
+
+	@Test
 	public void testDocXModelSlotInspector() {
 		validateFIB("Inspectors/DocX/DocXModelSlot.inspector");
 	}
@@ -94,4 +99,10 @@ public class TestDocXInspectors extends GenericFIBInspectorTestCase {
 	public void testSelectGeneratedDocXTableInspector() {
 		validateFIB("Inspectors/DocX/EditionAction/SelectGeneratedDocXTable.inspector");
 	}
+
+	@Test
+	public void testSelectGeneratedDocXTImageInspector() {
+		validateFIB("Inspectors/DocX/EditionAction/SelectGeneratedDocXTImage.inspector");
+	}
+
 }

@@ -77,7 +77,7 @@ import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 public interface SelectGeneratedDocXParagraph extends DocXParagraphAction {
 
 	@PropertyIdentifier(type = String.class)
-	public static final String PARAGRAPH_ID_KEY = "paragraphId";
+	public static final String PARAGRAPH_ID_KEY = "paragraphIdentifier";
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String DOCUMENT_FRAGMENT_KEY = "documentFragment";

@@ -48,6 +48,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
+import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
@@ -59,31 +60,35 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.fml.DocXParagraphRole;
+import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXDrawingRun;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 
 /**
- * This {@link EditionAction} allows to lookup a paragraph in a generated document matching a template paragraph
+ * This {@link EditionAction} allows to lookup a drawing run in a generated document matching a template drawing run
  * 
  * @author sylvain
  *
  */
 @ModelEntity
-@ImplementationClass(SelectGeneratedDocXImage.SelectGeneratedDocXParagraphImpl.class)
+@ImplementationClass(SelectGeneratedDocXImage.SelectGeneratedDocXImageImpl.class)
 @XMLElement
 @FML("SelectGeneratedDocXParagraph")
-public interface SelectGeneratedDocXImage extends DocXParagraphAction {
+public interface SelectGeneratedDocXImage extends DocXImageAction {
 
 	@PropertyIdentifier(type = String.class)
-	public static final String PARAGRAPH_ID_KEY = "paragraphId";
+	public static final String PARAGRAPH_ID_KEY = "paragraphIdentifier";
+
+	@PropertyIdentifier(type = Integer.class)
+	public static final String RUN_INDEX_KEY = "runIndex";
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String DOCUMENT_FRAGMENT_KEY = "documentFragment";
 
 	/**
-	 * Return identifier of paragraph in the template resource<br>
+	 * Return identifier of paragraph where is located the searched DrawingRun, in the template resource<br>
 	 * Note that is not the identifier of paragraph that is to be managed at run-time
 	 * 
 	 * @return
@@ -93,12 +98,29 @@ public interface SelectGeneratedDocXImage extends DocXParagraphAction {
 	public String getParagraphIdentifier();
 
 	/**
-	 * Sets identifier of paragraph in the template resource<br>
+	 * Sets identifier of paragraph where is located the searched DrawingRun, in the template resource<br>
 	 * 
 	 * @param identifier
 	 */
 	@Setter(PARAGRAPH_ID_KEY)
 	public void setParagraphIdentifier(String identifier);
+
+	/**
+	 * Return index of DrawingRun in its paragraph, in the template resource<br>
+	 * 
+	 * @return
+	 */
+	@Getter(value = RUN_INDEX_KEY, defaultValue = "-1")
+	@XMLAttribute
+	public int getRunIndex();
+
+	/**
+	 * Sets index of DrawingRun in its paragraph, in the template resource<br>
+	 * 
+	 * @param identifier
+	 */
+	@Setter(RUN_INDEX_KEY)
+	public void setRunIndex(int index);
 
 	/**
 	 * Return the fragment in the document resource (not in the template) where to restrict search<br>
@@ -119,7 +141,7 @@ public interface SelectGeneratedDocXImage extends DocXParagraphAction {
 	@Setter(DOCUMENT_FRAGMENT_KEY)
 	public void setDocumentFragment(DataBinding<DocXFragment> fragment);
 
-	public static abstract class SelectGeneratedDocXParagraphImpl extends DocXParagraphActionImpl implements SelectGeneratedDocXImage {
+	public static abstract class SelectGeneratedDocXImageImpl extends DocXImageActionImpl implements SelectGeneratedDocXImage {
 
 		private static final Logger logger = Logger.getLogger(SelectGeneratedDocXImage.class.getPackage().getName());
 
@@ -127,10 +149,18 @@ public interface SelectGeneratedDocXImage extends DocXParagraphAction {
 
 		@Override
 		public String getParagraphIdentifier() {
-			if (getAssignedFlexoProperty() instanceof DocXParagraphRole) {
-				return ((DocXParagraphRole) getAssignedFlexoProperty()).getParagraphId();
+			if (getAssignedFlexoProperty() instanceof DocXImageRole) {
+				return ((DocXImageRole) getAssignedFlexoProperty()).getParagraphId();
 			}
 			return (String) performSuperGetter(PARAGRAPH_ID_KEY);
+		}
+
+		@Override
+		public int getRunIndex() {
+			if (getAssignedFlexoProperty() instanceof DocXImageRole) {
+				return ((DocXImageRole) getAssignedFlexoProperty()).getRunIndex();
+			}
+			return (Integer) performSuperGetter(RUN_INDEX_KEY);
 		}
 
 		@Override
@@ -155,7 +185,7 @@ public interface SelectGeneratedDocXImage extends DocXParagraphAction {
 		}
 
 		@Override
-		public DocXParagraph execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
+		public DocXDrawingRun execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
 			if (getModelSlotInstance(evaluationContext) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
@@ -192,11 +222,17 @@ public interface SelectGeneratedDocXImage extends DocXParagraphAction {
 			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : searchArea) {
 				if (e instanceof DocXParagraph && e.getBaseIdentifier() != null && e.getBaseIdentifier().equals(getParagraphIdentifier())) {
 					// Found paragraph !!!!!!!
-					return (DocXParagraph) e;
+					DocXParagraph paragraph = (DocXParagraph) e;
+					if (getRunIndex() > -1 && getRunIndex() < paragraph.getRuns().size()) {
+						FlexoDocRun<?, ?> run = paragraph.getRuns().get(getRunIndex());
+						if (run instanceof DocXDrawingRun) {
+							return (DocXDrawingRun) run;
+						}
+					}
 				}
 			}
 
-			logger.warning("Could not find paragraph matching template paragraph " + getParagraphIdentifier() + ". Abort.");
+			logger.warning("Could not find image matching template paragraph " + getParagraphIdentifier() + ". Abort.");
 
 			return null;
 		}
