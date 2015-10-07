@@ -32,7 +32,7 @@
 			<Label index="11" label="nature"
 				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
-			<DropDown index="12" data="data.nature" list="data.availableNatures"
+			<DropDown index="12" data="data.nature" list="data.availableNatures" format="object.simpleName"
 				constraints="twocols(expandHorizontally=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 				localize="true"
 				iteratorClassName="java.lang.Class"
