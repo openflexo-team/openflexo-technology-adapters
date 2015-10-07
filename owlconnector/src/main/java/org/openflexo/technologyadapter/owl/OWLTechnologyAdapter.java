@@ -208,7 +208,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 
 		OWLOntologyResource ontologyResource = OWLOntologyResourceImpl.retrieveOWLOntologyResource(owlFile, getOntologyLibrary(),
 				resourceCenter);
-		logger.info("Found OWL ontology " + ontologyResource.getURI() + " file:" + owlFile.getAbsolutePath());
+		logger.fine("Found OWL ontology " + ontologyResource.getURI() + " file:" + owlFile.getAbsolutePath());
 		return ontologyResource;
 
 	}
