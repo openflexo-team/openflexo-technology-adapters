@@ -58,7 +58,6 @@ import org.docx4j.wml.Tc;
 import org.docx4j.wml.Text;
 import org.docx4j.wml.Tr;
 import org.openflexo.foundation.doc.DocumentFactory;
-import org.openflexo.foundation.doc.FlexoDrawingRun;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
@@ -188,7 +187,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	@Override
 	public DocXDrawingRun makeDrawingRun(File imageFile) {
-		// TODO
 
 		byte[] imageData;
 		try {
@@ -212,7 +210,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	@Override
 	public DocXDrawingRun makeDrawingRun(BufferedImage image) {
-		// TODO
 
 		byte[] imageData;
 		try {
@@ -230,33 +227,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			return null;
-		}
-
-	}
-
-	@Override
-	public void updateDrawingRun(FlexoDrawingRun<DocXDocument, DocXTechnologyAdapter> drawingRun, BufferedImage image) {
-		// TODO
-
-		if (image == null) {
-			return;
-		}
-
-		byte[] imageData;
-		try {
-			imageData = convertImageToByteArray(image);
-
-			R run = Context.getWmlObjectFactory().createR();
-			Drawing drawing = Context.getWmlObjectFactory().createDrawing();
-			run.getContent().add(drawing);
-
-			drawing.getAnchorOrInline().add(makeImageInline(imageData));
-
-			((DocXDrawingRun) drawingRun).setR(run);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 	}
