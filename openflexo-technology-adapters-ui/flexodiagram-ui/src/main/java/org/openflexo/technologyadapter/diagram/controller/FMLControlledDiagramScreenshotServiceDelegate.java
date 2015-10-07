@@ -2,7 +2,9 @@ package org.openflexo.technologyadapter.diagram.controller;
 
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.nature.ScreenshotService.ScreenshotServiceDelegate;
@@ -30,12 +32,21 @@ public class FMLControlledDiagramScreenshotServiceDelegate
 
 		FMLControlledDiagramEditor editor = new FMLControlledDiagramEditor(virtualModelInstance, true, null, null);
 
-		JFrame frame = new JFrame("screenshot");
+		JFrame frame = new JFrame("view");
 		frame.getContentPane().add(editor.getDrawingView());
 		frame.validate();
 		frame.pack();
-		frame.setVisible(true);
+		// frame.setVisible(true);
 
-		return null;
+		BufferedImage returned = editor.getDrawingView().getScreenshot();
+
+		JFrame frame2 = new JFrame("screenshot");
+		JLabel imageLabel = new JLabel(new ImageIcon(returned));
+		frame2.getContentPane().add(imageLabel);
+		frame2.validate();
+		frame2.pack();
+		frame2.setVisible(true);
+
+		return returned;
 	}
 }
