@@ -143,7 +143,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 
 		System.out.println("2-isModified=" + getVirtualModelInstance().isModified());
 
-		applyEditionActions();
+		executeControlGraph();
 
 		System.out.println("3-isModified=" + getVirtualModelInstance().isModified());
 	}
