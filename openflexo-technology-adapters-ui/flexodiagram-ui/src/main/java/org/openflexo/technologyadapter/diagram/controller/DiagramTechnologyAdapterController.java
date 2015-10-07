@@ -132,6 +132,14 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	}
 
 	@Override
+	public void initialize() {
+		super.initialize();
+
+		getServiceManager().getScreenshotService()
+				.registerDelegate(new FMLControlledDiagramScreenshotServiceDelegate());
+	}
+
+	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
 		swingToolFactory = new SwingToolFactory(controller.getFlexoFrame());
@@ -302,15 +310,20 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
 		if (Diagram.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.DIAGRAM_ICON;
-		} else if (DiagramShape.class.isAssignableFrom(objectClass)) {
+		}
+		else if (DiagramShape.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.SHAPE_ICON;
-		} else if (DiagramConnector.class.isAssignableFrom(objectClass)) {
+		}
+		else if (DiagramConnector.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.CONNECTOR_ICON;
-		} else if (DiagramSpecification.class.isAssignableFrom(objectClass)) {
+		}
+		else if (DiagramSpecification.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.DIAGRAM_SPECIFICATION_ICON;
-		} else if (DiagramPalette.class.isAssignableFrom(objectClass)) {
+		}
+		else if (DiagramPalette.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.DIAGRAM_PALETTE_ICON;
-		} else if (FMLDiagramPaletteElementBinding.class.isAssignableFrom(objectClass)) {
+		}
+		else if (FMLDiagramPaletteElementBinding.class.isAssignableFrom(objectClass)) {
 			return DiagramIconLibrary.FML_PALETTE_ELEMENT_BINDING_ICON_16X16;
 		}
 		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, IconLibrary.QUESTION);
@@ -326,11 +339,14 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (DiagramRole.class.isAssignableFrom(patternRoleClass)) {
 			return DiagramIconLibrary.DIAGRAM_ICON;
-		} else if (ShapeRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (ShapeRole.class.isAssignableFrom(patternRoleClass)) {
 			return DiagramIconLibrary.SHAPE_ICON;
-		} else if (ConnectorRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (ConnectorRole.class.isAssignableFrom(patternRoleClass)) {
 			return DiagramIconLibrary.CONNECTOR_ICON;
-		} else if (FlexoConceptInstanceRole.class.isAssignableFrom(patternRoleClass)) {
+		}
+		else if (FlexoConceptInstanceRole.class.isAssignableFrom(patternRoleClass)) {
 			return FMLRTIconLibrary.FLEXO_CONCEPT_INSTANCE_ICON;
 		}
 		return null;
@@ -340,13 +356,17 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
 		if (AddDiagram.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, IconLibrary.DUPLICATE);
-		} else if (AddShape.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (AddShape.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DiagramIconLibrary.SHAPE_ICON, IconLibrary.DUPLICATE);
-		} else if (AddConnector.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (AddConnector.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DiagramIconLibrary.CONNECTOR_ICON, IconLibrary.DUPLICATE);
-		} else if (GraphicalAction.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (GraphicalAction.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DiagramIconLibrary.GRAPHICAL_ACTION_ICON);
-		} else if (DeleteAction.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (DeleteAction.class.isAssignableFrom(editionActionClass)) {
 			return FMLRTIconLibrary.DELETE_ICON;
 		}
 		return super.getIconForEditionAction(editionActionClass);
@@ -356,9 +376,11 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 	public ImageIcon getIconForFlexoBehaviour(Class<? extends FlexoBehaviour> flexoBehaviourClass) {
 		if (DropScheme.class.isAssignableFrom(flexoBehaviourClass)) {
 			return DiagramIconLibrary.DROP_SCHEME_ICON;
-		} else if (LinkScheme.class.isAssignableFrom(flexoBehaviourClass)) {
+		}
+		else if (LinkScheme.class.isAssignableFrom(flexoBehaviourClass)) {
 			return DiagramIconLibrary.LINK_SCHEME_ICON;
-		} else if (DiagramNavigationScheme.class.isAssignableFrom(flexoBehaviourClass)) {
+		}
+		else if (DiagramNavigationScheme.class.isAssignableFrom(flexoBehaviourClass)) {
 			return DiagramIconLibrary.NAVIGATION_SCHEME_ICON;
 		}
 		return super.getIconForFlexoBehaviour(flexoBehaviourClass);
