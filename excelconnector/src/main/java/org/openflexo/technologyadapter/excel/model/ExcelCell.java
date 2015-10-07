@@ -467,6 +467,19 @@ public class ExcelCell extends ExcelObject {
 		}
 	}
 
+	public void setCellValueAsString(String cellValueAsString) {
+		if ((cellValueAsString == null && getCellValueAsString() != null)
+				|| (cellValueAsString != null && !cellValueAsString.equals(getCellValueAsString()))) {
+			String oldValue = getCellValueAsString();
+			System.out.println(
+					"*********** Setting new cell value: " + cellValueAsString + " at row=" + getRowIndex() + " col=" + getColumnIndex());
+			cell.setCellValue(cellValueAsString);
+			getExcelSheet().getEvaluator().clearAllCachedResultValues();
+			getPropertyChangeSupport().firePropertyChange("cellValueAsString", oldValue, cellValueAsString);
+			getExcelSheet().getWorkbook().setIsModified();
+		}
+	}
+
 	private void setCellFormula(String formula) {
 		if (formula.startsWith("=")) {
 			formula = formula.substring(formula.indexOf("=") + 1);
@@ -551,13 +564,9 @@ public class ExcelCell extends ExcelObject {
 	 */
 	@Override
 	public String toString() {
-		return "["
-				+ getCellIdentifier()
-				+ "]/"
-				+ getCellType().name()
-				+ "/"
-				+ (isMerged() ? "MergedWith:" + "[" + getTopLeftMergedCell().getCellIdentifier() + ":"
-						+ getBottomRightMergedCell().getCellIdentifier() + "]" + "/" : "") + getDisplayValue();
+		return "[" + getCellIdentifier() + "]/" + getCellType().name() + "/" + (isMerged() ? "MergedWith:" + "["
+				+ getTopLeftMergedCell().getCellIdentifier() + ":" + getBottomRightMergedCell().getCellIdentifier() + "]" + "/" : "")
+				+ getDisplayValue();
 	}
 
 	public boolean hasTopBorder() {
