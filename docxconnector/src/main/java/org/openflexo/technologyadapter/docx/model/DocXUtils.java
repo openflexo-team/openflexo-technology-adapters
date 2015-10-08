@@ -66,9 +66,10 @@ public class DocXUtils {
 			StringBuffer result = new StringBuffer();
 			for (int i = 0; i < table.getTableRows().size(); i++) {
 				result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2)
-						+ (i == 0 ? " > [" + table.getIdentifier() + "/" + table.getIndex() + "]" : "           "));
+						+ (i == 0 ? " > [" + table.getIdentifier() + "/" + table.getIndex() + "]" : "           ") + "/"
+						+ table.getTableRows().get(i).getIdentifier() + "/");
 				for (int j = 0; j < table.getTableRows().get(i).getTableCells().size(); j++) {
-					result.append("[" + debugStructuredContents((DocXTableCell) table.getCell(i, j)) + "] ");
+					result.append("[ " + " " + debugStructuredContents((DocXTableCell) table.getCell(i, j)) + "] ");
 				}
 				result.append("\n");
 			}
