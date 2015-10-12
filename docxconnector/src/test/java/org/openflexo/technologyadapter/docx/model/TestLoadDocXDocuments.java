@@ -135,7 +135,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 			}
 		}*/
 
-		assertEquals(11, simpleDocument.getElements().size());
+		assertEquals(12, simpleDocument.getElements().size());
 
 		DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
 
@@ -317,6 +317,31 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		DocXDocument documentWithImage = getDocument("DocumentWithImage.docx");
 
 		System.out.println("DocumentWithImage.docx:\n" + documentWithImage.debugStructuredContents());
+
+		/*System.out.println("Elements: " + documentWithImage.getElements().size());
+		
+		for (FlexoDocElement<?, ?> element : documentWithImage.getElements()) {
+			if (element instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) element;
+				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
+						+ (paragraph.getP().getPPr() != null ? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
+			} else {
+				System.out.println("* Element " + element);
+			}
+		}*/
+
+	}
+
+	@Test
+	@TestOrder(8)
+	public void testExampleReportLoading() {
+
+		DocXDocument exampleReport = getDocument("ExampleReport.docx");
+
+		System.out.println("ExampleReport.docx:\n" + exampleReport.debugStructuredContents());
+
+		assertEquals(exampleReport.getElements().size(),
+				exampleReport.getWordprocessingMLPackage().getMainDocumentPart().getContent().size());
 
 		/*System.out.println("Elements: " + documentWithImage.getElements().size());
 		

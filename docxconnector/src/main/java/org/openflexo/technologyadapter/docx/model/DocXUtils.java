@@ -75,6 +75,28 @@ public class DocXUtils {
 			}
 			return result.toString();
 		}
+		if (element instanceof DocXSdtBlock) {
+			DocXSdtBlock sdtBlock = (DocXSdtBlock) element;
+			StringBuffer result = new StringBuffer();
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > [DocXSdtBlock" + sdtBlock.getIdentifier() + "/"
+					+ sdtBlock.getIndex() + "] { ");
+			result.append(" }\n");
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
+				result.append(debugStructuredContents(e, indent + 1));
+			}
+			return result.toString();
+		}
+		if (element instanceof DocXUnmappedElement) {
+			DocXUnmappedElement unmapped = (DocXUnmappedElement) element;
+			StringBuffer result = new StringBuffer();
+			result.append(StringUtils.buildWhiteSpaceIndentation(indent * 2) + " > [DocXUnmappedElement/" + unmapped.getDocXObject() + "/"
+					+ unmapped.getIndex() + "] { ");
+			result.append(" }\n");
+			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : element.getChildrenElements()) {
+				result.append(debugStructuredContents(e, indent + 1));
+			}
+			return result.toString();
+		}
 		return StringUtils.buildWhiteSpaceIndentation(indent * 2) + " ???";
 	}
 

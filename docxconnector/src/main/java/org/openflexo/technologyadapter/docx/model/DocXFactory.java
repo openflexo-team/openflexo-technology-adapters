@@ -52,6 +52,7 @@ import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
 import org.docx4j.wml.Drawing;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
+import org.docx4j.wml.SdtBlock;
 import org.docx4j.wml.Style;
 import org.docx4j.wml.Tbl;
 import org.docx4j.wml.Tc;
@@ -77,8 +78,8 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	private static final Logger logger = Logger.getLogger(DocXFactory.class.getPackage().getName());
 
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXTable.class, DocXFragment.class,
-				DocXStyle.class), resource, editingContext);
+		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXFragment.class, DocXStyle.class), resource,
+				editingContext);
 	}
 
 	@Override
@@ -264,8 +265,41 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		return returned;
 	}
 
+	/**
+	 * Build new empty DocXSdtBlock
+	 * 
+	 * @return
+	 */
+	@Override
+	public DocXSdtBlock makeSdtBlock() {
+		return newInstance(DocXSdtBlock.class);
+	}
+
+	public DocXSdtBlock makeNewSdtBlock(SdtBlock sdtBlock) {
+		DocXSdtBlock returned = makeSdtBlock();
+		returned.updateFromSdtBlock(sdtBlock, this);
+		return returned;
+	}
+
+	/**
+	 * Build new empty DocXUnmappedElement
+	 * 
+	 * @return
+	 */
+	@Override
+	public DocXUnmappedElement<?> makeUnmappedElement() {
+		return newInstance(DocXUnmappedElement.class);
+	}
+
+	public <T> DocXUnmappedElement<T> makeNewUnmappedElement(T docXObject) {
+		DocXUnmappedElement<T> returned = (DocXUnmappedElement<T>) makeUnmappedElement();
+		returned.updateFromDocXObject(docXObject, this);
+		return returned;
+	}
+
 	private final java.util.Random RANDOM = new java.util.Random();
 
+	@Override
 	public String generateId() {
 		return java.math.BigInteger.valueOf(Math.abs(RANDOM.nextInt())).toString(16).toUpperCase();
 	}

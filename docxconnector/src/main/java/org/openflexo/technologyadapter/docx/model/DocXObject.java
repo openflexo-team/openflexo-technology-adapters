@@ -25,12 +25,17 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 /**
- * Implementation of {@link FlexoDocObject} for {@link DocXTechnologyAdapter}
+ * Represents a {@link FlexoDocObject} for {@link DocXTechnologyAdapter}<br>
+ * Wrap an object defined in docx4j library, supplied as type parameter of this interface.
+ * 
+ * @param DO
+ *            type of object as defined in docx4j library, which this class wraps
  * 
  * @author sylvain
- *
  */
 @ModelEntity(isAbstract = true)
-public interface DocXObject extends FlexoDocObject<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXObject<DO> extends FlexoDocObject<DocXDocument, DocXTechnologyAdapter> {
+
+	public DO getDocXObject();
 
 }

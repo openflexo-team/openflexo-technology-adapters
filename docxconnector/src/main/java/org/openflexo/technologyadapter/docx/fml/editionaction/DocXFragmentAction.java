@@ -54,7 +54,7 @@ import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DocXFragmentAction.DocXFragmentActionImpl.class)
-public interface DocXFragmentAction extends RoleSpecificAction<DocXFragmentRole, DocXModelSlot, DocXFragment>, DocXAction<DocXFragment> {
+public interface DocXFragmentAction extends RoleSpecificAction<DocXFragmentRole, DocXModelSlot, DocXFragment> {
 
 	public static abstract class DocXFragmentActionImpl extends RoleSpecificActionImpl<DocXFragmentRole, DocXModelSlot, DocXFragment>
 			implements DocXFragmentAction {

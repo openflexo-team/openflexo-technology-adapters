@@ -189,7 +189,7 @@ public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 
 		System.out.println("Step5.docx:\n" + step5.debugStructuredContents());
 
-		assertEquals(16, step5.getElements().size());
+		assertEquals(17, step5.getElements().size());
 		assertEquals(step4.getElements().size(), step5.getElements().size());
 
 		for (int i = 0; i < step4.getElements().size(); i++) {

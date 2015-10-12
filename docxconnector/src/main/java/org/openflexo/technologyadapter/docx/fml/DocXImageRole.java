@@ -62,27 +62,33 @@ public interface DocXImageRole extends FlexoImageRole<DocXDrawingRun, DocXDocume
 
 		private DocXFragment imageFragment;
 
+		private DocXFragment makeImageFragment() {
+			if (getDrawingRun() != null) {
+				try {
+					return (DocXFragment) ((DocXFactory) getDocument().getFactory()).makeFragment(getDrawingRun().getParagraph(),
+							getDrawingRun().getParagraph());
+				} catch (FragmentConsistencyException e) {
+					e.printStackTrace();
+					return null;
+				}
+			}
+			return null;
+		}
+
 		@Override
 		public DocXFragment getImageFragment() {
+			if (imageFragment == null && getDrawingRun() != null) {
+				imageFragment = makeImageFragment();
+			}
 			return imageFragment;
 		}
 
 		@Override
 		public void setDrawingRun(DocXDrawingRun run) {
 			super.setDrawingRun(run);
-			if (run != null) {
-				try {
-					imageFragment = (DocXFragment) ((DocXFactory) getDocument().getFactory()).makeFragment(run.getParagraph(),
-							run.getParagraph());
-				} catch (FragmentConsistencyException e) {
-					e.printStackTrace();
-					imageFragment = null;
-				}
-			}
-			else {
-				imageFragment = null;
-			}
-			getPropertyChangeSupport().firePropertyChange(IMAGE_FRAGMENT_KEY, null, getImageFragment());
+			imageFragment = makeImageFragment();
+			getPropertyChangeSupport().firePropertyChange(IMAGE_FRAGMENT_KEY, getImageFragment() == null ? false : null,
+					getImageFragment());
 		}
 
 	}

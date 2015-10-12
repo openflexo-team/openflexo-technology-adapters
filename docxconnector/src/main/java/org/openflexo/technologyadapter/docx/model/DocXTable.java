@@ -59,7 +59,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ImplementationClass(DocXTable.DocXTableImpl.class)
 @XMLElement
 @Imports({ @Import(DocXTableRow.class), @Import(DocXTableCell.class) })
-public interface DocXTable extends DocXElement, FlexoDocTable<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = Tbl.class)
 	public static final String TBL_KEY = "tbl";
@@ -103,6 +103,11 @@ public interface DocXTable extends DocXElement, FlexoDocTable<DocXDocument, DocX
 		}
 
 		@Override
+		public Tbl getDocXObject() {
+			return getTbl();
+		}
+
+		@Override
 		public void setTbl(Tbl tbl) {
 
 			// When called in cloning operation, container should NOT be null
@@ -128,8 +133,6 @@ public interface DocXTable extends DocXElement, FlexoDocTable<DocXDocument, DocX
 		 */
 		@Override
 		public void updateFromTbl(Tbl tbl, DocXFactory factory) {
-
-			System.out.println("On fait l'update");
 
 			performSuperSetter(TBL_KEY, tbl);
 			// Take care at the previous line, since there is a risk for the notification not to be triggered,

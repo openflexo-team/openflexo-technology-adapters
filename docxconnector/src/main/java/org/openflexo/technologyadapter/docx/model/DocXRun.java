@@ -42,7 +42,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
  */
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DocXRun.DocXRunImpl.class)
-public interface DocXRun extends FlexoDocRun<DocXDocument, DocXTechnologyAdapter>, DocXObject {
+public interface DocXRun extends FlexoDocRun<DocXDocument, DocXTechnologyAdapter>, DocXObject<R> {
 
 	@PropertyIdentifier(type = R.class)
 	public static final String R_KEY = "r";
@@ -68,6 +68,11 @@ public interface DocXRun extends FlexoDocRun<DocXDocument, DocXTechnologyAdapter
 
 		public DocXRunImpl() {
 			super();
+		}
+
+		@Override
+		public R getDocXObject() {
+			return getR();
 		}
 
 		@Override

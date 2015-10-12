@@ -55,9 +55,9 @@ import org.openflexo.technologyadapter.docx.model.DocXObject;
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(DocXAction.DocXActionImpl.class)
-public interface DocXAction<T extends DocXObject> extends TechnologySpecificAction<DocXModelSlot, T> {
+public interface DocXAction<T extends DocXObject<?>> extends TechnologySpecificAction<DocXModelSlot, T> {
 
-	public static abstract class DocXActionImpl<T extends DocXObject> extends TechnologySpecificActionImpl<DocXModelSlot, T>
+	public static abstract class DocXActionImpl<T extends DocXObject<?>> extends TechnologySpecificActionImpl<DocXModelSlot, T>
 			implements DocXAction<T> {
 
 	}

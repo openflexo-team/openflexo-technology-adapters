@@ -74,8 +74,8 @@ public class TestMSWordIdentifiersPersistency2 extends AbstractTestDocX {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -112,7 +112,7 @@ public class TestMSWordIdentifiersPersistency2 extends AbstractTestDocX {
 
 		System.out.println("ActivityReport1.docx:\n" + step1.debugStructuredContents());
 
-		assertEquals(112, step1.getElements().size());
+		assertEquals(113, step1.getElements().size());
 
 		// DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
 
@@ -127,7 +127,7 @@ public class TestMSWordIdentifiersPersistency2 extends AbstractTestDocX {
 
 		System.out.println("ActivityReport2.docx:\n" + step2.debugStructuredContents());
 
-		assertEquals(112, step2.getElements().size());
+		assertEquals(113, step2.getElements().size());
 		assertEquals(step1.getElements().size(), step2.getElements().size());
 
 		for (int i = 0; i < step1.getElements().size(); i++) {

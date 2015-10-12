@@ -32,6 +32,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.doc.FlexoDocTable;
 import org.openflexo.foundation.doc.FlexoDocTableCell;
+import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -40,6 +41,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
@@ -55,7 +57,7 @@ import org.openflexo.technologyadapter.docx.model.DocXFragment;
 @ModelEntity
 @ImplementationClass(AddDocXFragment.AddDocXFragmentImpl.class)
 @XMLElement
-public interface AddDocXFragment extends DocXAction<DocXFragment> {
+public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot, DocXFragment> {
 
 	@PropertyIdentifier(type = DocXFragment.class)
 	public static final String FRAGMENT_KEY = "fragment";
@@ -100,7 +102,8 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 		InsertAfter, InsertBefore, InsertAfterLastChild, InsertBeforeLastChild, EndOfDocument
 	}
 
-	public static abstract class AddDocXFragmentImpl extends DocXActionImpl<DocXFragment>implements AddDocXFragment {
+	public static abstract class AddDocXFragmentImpl extends TechnologySpecificActionImpl<DocXModelSlot, DocXFragment>
+			implements AddDocXFragment {
 
 		private static final Logger logger = Logger.getLogger(AddDocXFragment.class.getPackage().getName());
 
@@ -118,7 +121,7 @@ public interface AddDocXFragment extends DocXAction<DocXFragment> {
 		@Override
 		public DataBinding<? extends FlexoDocElement<?, ?>> getLocation() {
 			if (location == null) {
-				location = new DataBinding<DocXElement>(this, FlexoDocElement.class, BindingDefinitionType.GET);
+				location = new DataBinding<FlexoDocElement<?, ?>>(this, FlexoDocElement.class, BindingDefinitionType.GET);
 				location.setBindingName("location");
 			}
 			return location;

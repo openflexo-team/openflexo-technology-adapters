@@ -64,7 +64,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ImplementationClass(DocXParagraph.DocXParagraphImpl.class)
 @XMLElement
 @Imports({ @Import(DocXTextRun.class), @Import(DocXDrawingRun.class) })
-public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = P.class)
 	public static final String P_KEY = "p";
@@ -96,7 +96,8 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 
 	public DocXRun getRun(R r);
 
-	public static abstract class DocXParagraphImpl extends FlexoDocParagraphImpl<DocXDocument, DocXTechnologyAdapter>implements DocXParagraph {
+	public static abstract class DocXParagraphImpl extends FlexoDocParagraphImpl<DocXDocument, DocXTechnologyAdapter>
+			implements DocXParagraph {
 
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(DocXParagraphImpl.class.getPackage().getName());
@@ -105,6 +106,11 @@ public interface DocXParagraph extends DocXElement, FlexoDocParagraph<DocXDocume
 
 		public DocXParagraphImpl() {
 			super();
+		}
+
+		@Override
+		public P getDocXObject() {
+			return getP();
 		}
 
 		@Override

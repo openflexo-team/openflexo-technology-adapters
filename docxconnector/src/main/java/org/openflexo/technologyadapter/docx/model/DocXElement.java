@@ -32,7 +32,7 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
  *
  */
 @ModelEntity(isAbstract = true)
-public interface DocXElement extends DocXObject, FlexoDocElement<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXElement<DO> extends DocXObject<DO>, FlexoDocElement<DocXDocument, DocXTechnologyAdapter> {
 
 	// public ContentAccessor getParent();
 

@@ -199,6 +199,8 @@ public class TestDocXImageRoleInspector extends OpenflexoFIBInspectorTestCase {
 		assertTrue(createImageRole.hasActionExecutionSucceeded());
 		role = (DocXImageRole) createImageRole.getNewFlexoRole();
 
+		assertNotNull(role);
+
 		System.out.println(viewPoint.getFMLRepresentation());
 
 	}

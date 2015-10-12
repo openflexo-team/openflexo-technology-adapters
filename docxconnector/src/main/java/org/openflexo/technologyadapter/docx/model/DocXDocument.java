@@ -38,6 +38,7 @@ import org.docx4j.openpackaging.parts.WordprocessingML.MainDocumentPart;
 import org.docx4j.openpackaging.parts.WordprocessingML.StyleDefinitionsPart;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.P;
+import org.docx4j.wml.SdtBlock;
 import org.docx4j.wml.Style;
 import org.docx4j.wml.Tbl;
 import org.openflexo.foundation.doc.FlexoDocElement;
@@ -51,6 +52,8 @@ import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
+import org.openflexo.model.annotations.Import;
+import org.openflexo.model.annotations.Imports;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
@@ -68,7 +71,8 @@ import org.openflexo.toolbox.StringUtils;
 @ModelEntity
 @ImplementationClass(DocXDocument.DocXDocumentImpl.class)
 @XMLElement
-public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, DocXTechnologyAdapter> {
+@Imports({ @Import(DocXParagraph.class), @Import(DocXTable.class), @Import(DocXSdtBlock.class), @Import(DocXUnmappedElement.class) })
+public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, FlexoDocument<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = WordprocessingMLPackage.class)
 	public static final String WORD_PROCESSING_ML_PACKAGE_KEY = "wordprocessingMLPackage";
@@ -119,7 +123,14 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 
 		private final Map<P, DocXParagraph> paragraphs = new HashMap<P, DocXParagraph>();
 		private final Map<Tbl, DocXTable> tables = new HashMap<Tbl, DocXTable>();
-		private final Map<String, DocXElement> elementsForIdentifier = new HashMap<String, DocXElement>();
+		private final Map<SdtBlock, DocXSdtBlock> sdtBlocks = new HashMap<SdtBlock, DocXSdtBlock>();
+		private final Map<Object, DocXUnmappedElement<?>> unmappedElements = new HashMap<Object, DocXUnmappedElement<?>>();
+		private final Map<String, DocXElement<?>> elementsForIdentifier = new HashMap<String, DocXElement<?>>();
+
+		@Override
+		public WordprocessingMLPackage getDocXObject() {
+			return getWordprocessingMLPackage();
+		}
 
 		@Override
 		public DocXDocument getFlexoDocument() {
@@ -188,13 +199,11 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 						}
 						elementsToRemove.remove(paragraph);
 					}
-					currentIndex++;
 				}
 				else if (o instanceof Tbl) {
-					System.out.println("Hop, une table");
 					DocXTable table = tables.get(o);
 					if (table == null) {
-						System.out.println("# Create new table for " + o);
+						// System.out.println("# Create new table for " + o);
 						table = factory.makeNewDocXTable((Tbl) o);
 						internallyInsertElementAtIndex(table, currentIndex);
 					}
@@ -209,8 +218,46 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 						}
 						elementsToRemove.remove(table);
 					}
-					currentIndex++;
 				}
+				else if (o instanceof SdtBlock) {
+					DocXSdtBlock sdtBlockElement = sdtBlocks.get(o);
+					if (sdtBlockElement == null) {
+						System.out.println("# Create new SdtBlock for " + o);
+						sdtBlockElement = factory.makeNewSdtBlock((SdtBlock) o);
+						internallyInsertElementAtIndex(sdtBlockElement, currentIndex);
+					}
+					else {
+						// OK sdtBlock was found
+						if (getElements().indexOf(sdtBlockElement) != currentIndex) {
+							// SdtBlock was existing but is not at the right position
+							internallyMoveElementToIndex(sdtBlockElement, currentIndex);
+						}
+						else {
+							// System.out.println("# Found existing table for " + o);
+						}
+						elementsToRemove.remove(sdtBlockElement);
+					}
+				}
+				else {
+					DocXUnmappedElement<?> unmappedElement = unmappedElements.get(o);
+					if (unmappedElement == null) {
+						System.out.println("# Create new DocXUnmappedElement for " + o);
+						unmappedElement = factory.makeNewUnmappedElement(o);
+						internallyInsertElementAtIndex(unmappedElement, currentIndex);
+					}
+					else {
+						// OK element was found
+						if (getElements().indexOf(unmappedElement) != currentIndex) {
+							// Paragraph was existing but is not at the right position
+							internallyMoveElementToIndex(unmappedElement, currentIndex);
+						}
+						else {
+							// System.out.println("# Found existing table for " + o);
+						}
+						elementsToRemove.remove(unmappedElement);
+					}
+				}
+				currentIndex++;
 			}
 
 			for (FlexoDocElement<DocXDocument, DocXTechnologyAdapter> e : elementsToRemove) {
@@ -426,9 +473,21 @@ public interface DocXDocument extends DocXObject, FlexoDocument<DocXDocument, Do
 					tables.put(table.getTbl(), table);
 				}
 			}
+			if (anElement instanceof DocXSdtBlock) {
+				DocXSdtBlock docXSdtBlock = (DocXSdtBlock) anElement;
+				if (docXSdtBlock.getSdtBlock() != null) {
+					sdtBlocks.put(docXSdtBlock.getSdtBlock(), docXSdtBlock);
+				}
+			}
+			if (anElement instanceof DocXUnmappedElement) {
+				DocXUnmappedElement<?> unmappedElement = (DocXUnmappedElement<?>) anElement;
+				if (unmappedElement.getDocXObject() != null) {
+					unmappedElements.put(unmappedElement.getDocXObject(), unmappedElement);
+				}
+			}
 			if (anElement.getIdentifier() != null) {
 				// System.out.println("Register " + anElement + " for " + anElement.getIdentifier());
-				elementsForIdentifier.put(anElement.getIdentifier(), (DocXElement) anElement);
+				elementsForIdentifier.put(anElement.getIdentifier(), (DocXElement<?>) anElement);
 			}
 			else {
 				logger.warning("internallyHandleElementAdding() called for element with null identifier: " + anElement);
