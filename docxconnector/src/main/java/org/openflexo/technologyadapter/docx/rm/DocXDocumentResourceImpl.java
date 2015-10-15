@@ -101,12 +101,16 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 	@Override
 	protected DocXDocument performLoad() throws IOException, Exception {
 
+		System.out.println(">>>>> Load " + getFile());
+
 		try {
 			WordprocessingMLPackage wpmlPackage = WordprocessingMLPackage.load(getFile());
 			DocXDocument returned = getFactory().makeNewDocXDocument(wpmlPackage);
+			System.out.println("<<<<< Loaded " + getFile());
 			return returned;
 		} catch (Docx4JException e) {
 			e.printStackTrace();
+			System.out.println("<<<<< Exception while loading " + getFile());
 			throw new FlexoException(e);
 		}
 	}
