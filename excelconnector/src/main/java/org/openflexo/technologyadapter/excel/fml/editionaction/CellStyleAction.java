@@ -51,6 +51,7 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -236,7 +237,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 			this.subject = subject;
 		}
 
-		public ExcelCell getSubject(RunTimeEvaluationContext evaluationContext) {
+		public ExcelStyleObject getSubject(RunTimeEvaluationContext evaluationContext) {
 			try {
 				return getSubject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
@@ -507,7 +508,7 @@ public interface CellStyleAction extends ExcelAction<ExcelStyleObject> {
 		// ACTION
 
 		@Override
-		public ExcelCell execute(RunTimeEvaluationContext evaluationContext) {
+		public ExcelStyleObject execute(RunTimeEvaluationContext evaluationContext) {
 			logger.info("Perform graphical action " + evaluationContext);
 			ExcelStyleObject excelCellStyleObject = getSubject(evaluationContext);
 			Object value = null;
