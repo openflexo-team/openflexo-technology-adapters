@@ -85,13 +85,13 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager();
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 	}
 
 	/*@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
-
+	
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
 			assertNotNull(docXRepository);
