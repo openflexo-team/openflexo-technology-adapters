@@ -92,7 +92,7 @@ public abstract class AbstractDocXEditor extends JPanel {
 
 	protected DocXDocument document;
 	private ToolBarStates _toolbarStates = new ToolBarStates();
-	private JPanel toolbar = null;
+	private final JPanel toolbar = null;
 	protected WordMLTextPane editorView;
 	private final List<ApplyCancelListener> applyCancelListener = new ArrayList<ApplyCancelListener>();
 
@@ -109,8 +109,7 @@ public abstract class AbstractDocXEditor extends JPanel {
 		String regex = null;
 		if (ToolBox.isMacOS()) {
 			regex = ".*(Courier New|Arial|Times New Roman|Comic Sans|Georgia|Impact|Lucida Console|Lucida Sans Unicode|Palatino Linotype|Tahoma|Trebuchet|Verdana|Symbol|Webdings|Wingdings|MS Sans Serif|MS Serif).*";
-		}
-		else {
+		} else {
 			regex = ".*(calibri|cour|arial|times|comic|georgia|impact|LSANS|pala|tahoma|trebuc|verdana|symbol|webdings|wingding).*";
 		}
 		PhysicalFonts.setRegex(regex);
@@ -128,8 +127,8 @@ public abstract class AbstractDocXEditor extends JPanel {
 		if (showToolbar) {
 			_toolbarStates = new ToolBarStates();
 			Progress.progress("init_toolbar");
-			toolbar = FxScriptUIHelper.getInstance().createToolBar(_toolbarStates);
-			add(toolbar, BorderLayout.NORTH);
+			// toolbar = FxScriptUIHelper.getInstance().createToolBar(_toolbarStates);
+			// add(toolbar, BorderLayout.NORTH);
 		}
 
 		setDocXDocument(document);
@@ -200,11 +199,9 @@ public abstract class AbstractDocXEditor extends JPanel {
 			// System.out.println("startDocXObject=" + docXObject);
 			if (docXObject instanceof P) {
 				returned.documentElement = getDocXDocument().getParagraph((P) docXObject);
-			}
-			else if (docXObject instanceof Tbl) {
+			} else if (docXObject instanceof Tbl) {
 				returned.documentElement = getDocXDocument().getTable((Tbl) docXObject);
-			}
-			else if (docXObject instanceof Text) {
+			} else if (docXObject instanceof Text) {
 				// System.out.println("Text= " + docXObject);
 				R run = (R) ((Text) docXObject).getParent();
 				// System.out.println("run=" + run);
@@ -388,14 +385,12 @@ public abstract class AbstractDocXEditor extends JPanel {
 
 			if (textSelection.getStartElement() instanceof DocXParagraph) {
 				if (textSelection.getStartRunIndex() > -1) {
-					startDocXObject = ((DocXRun) ((DocXParagraph) textSelection.getStartElement()).getRuns()
-							.get(textSelection.getStartRunIndex())).getR();
-				}
-				else {
+					startDocXObject = ((DocXRun) ((DocXParagraph) textSelection.getStartElement()).getRuns().get(
+							textSelection.getStartRunIndex())).getR();
+				} else {
 					startDocXObject = ((DocXParagraph) textSelection.getStartElement()).getP();
 				}
-			}
-			else if (textSelection.getStartElement() instanceof DocXTable) {
+			} else if (textSelection.getStartElement() instanceof DocXTable) {
 				startDocXObject = ((DocXTable) textSelection.getStartElement()).getTbl();
 			}
 
@@ -403,12 +398,10 @@ public abstract class AbstractDocXEditor extends JPanel {
 				if (textSelection.getEndRunIndex() > -1) {
 					endDocXObject = ((DocXRun) ((DocXParagraph) textSelection.getEndElement()).getRuns()
 							.get(textSelection.getEndRunIndex())).getR();
-				}
-				else {
+				} else {
 					endDocXObject = ((DocXParagraph) textSelection.getEndElement()).getP();
 				}
-			}
-			else if (textSelection.getEndElement() instanceof DocXTable) {
+			} else if (textSelection.getEndElement() instanceof DocXTable) {
 				endDocXObject = ((DocXTable) textSelection.getEndElement()).getTbl();
 			}
 
