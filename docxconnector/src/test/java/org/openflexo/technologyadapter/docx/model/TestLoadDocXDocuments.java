@@ -50,9 +50,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
@@ -66,9 +64,6 @@ import org.openflexo.test.TestOrder;
 public class TestLoadDocXDocuments extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestLoadDocXDocuments.class.getPackage().getName());
 
-	private static FlexoEditor editor;
-	private static FlexoProject project;
-
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
@@ -78,18 +73,18 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 	@Test
 	@TestOrder(2)
 	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
-		System.out.println("Created project " + project.getProjectDirectory());
-		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+		_editor = createProject("TestProject");
+		_project = _editor.getProject();
+		System.out.println("Created project " + _project.getProjectDirectory());
+		assertTrue(_project.getProjectDirectory().exists());
+		assertTrue(_project.getProjectDataResource().getFlexoIODelegate().exists());
 	}
 
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -340,8 +335,8 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		System.out.println("ExampleReport.docx:\n" + exampleReport.debugStructuredContents());
 
-		assertEquals(exampleReport.getElements().size(),
-				exampleReport.getWordprocessingMLPackage().getMainDocumentPart().getContent().size());
+		assertEquals(exampleReport.getElements().size(), exampleReport.getWordprocessingMLPackage().getMainDocumentPart().getContent()
+				.size());
 
 		/*System.out.println("Elements: " + documentWithImage.getElements().size());
 		

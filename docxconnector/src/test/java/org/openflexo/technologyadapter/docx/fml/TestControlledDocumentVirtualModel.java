@@ -48,12 +48,11 @@ import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.fml.FragmentActorReference;
 import org.openflexo.foundation.doc.fml.FragmentActorReference.ElementReference;
@@ -114,8 +113,6 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository repository;
-	public static FlexoEditor editor;
-	public static FlexoProject project;
 	public static View newView;
 	public static VirtualModelInstance newVirtualModelInstance;
 
@@ -130,6 +127,30 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	public static VirtualModel virtualModel;
 	public static ActionScheme actionScheme;
 
+	@AfterClass
+	public static void tearDownClass() {
+
+		technologicalAdapter = null;
+		repository = null;
+		newView = null;
+		newVirtualModelInstance = null;
+
+		templateResource = null;
+		templateDocument = null;
+		generatedDocument = null;
+
+		viewPoint = null;
+		viewPointResource = null;
+		docXModelSlot = null;
+		fragmentRole = null;
+		virtualModel = null;
+		actionScheme = null;
+
+		deleteProject();
+		deleteTestResourceCenters();
+		unloadServiceManager();
+	}
+
 	/**
 	 * Initialize an environment with DocX technology adapter, perform some checks
 	 */
@@ -143,7 +164,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 		repository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
-		editor = new FlexoTestEditor(null, serviceManager);
+		_editor = new FlexoTestEditor(null, serviceManager);
 
 		assertNotNull(serviceManager);
 		assertNotNull(technologicalAdapter);
@@ -207,20 +228,20 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	}*/
 
 	/**
-	 * Create a brand new project
+	 * Create a brand new _project
 	 */
 	@Test
 	@TestOrder(4)
 	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
-		System.out.println("Created project " + project.getProjectDirectory());
-		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+		_editor = createProject("TestProject");
+		_project = _editor.getProject();
+		System.out.println("Created _project " + _project.getProjectDirectory());
+		assertTrue(_project.getProjectDirectory().exists());
+		assertTrue(_project.getProjectDataResource().getFlexoIODelegate().exists());
 	}
 
 	/**
-	 * Creates a new empty ViewPoint in the project
+	 * Creates a new empty ViewPoint in the _project
 	 */
 	@Test
 	@TestOrder(5)
@@ -228,8 +249,8 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		log("testCreateViewPoint()");
 
-		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, project.getDirectory(), serviceManager.getViewPointLibrary(),
-				resourceCenter);
+		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, _project.getDirectory(),
+				serviceManager.getViewPointLibrary(), resourceCenter);
 		viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
@@ -266,7 +287,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		// FlexoConcept flexoConcept = virtualModel.getFMLModelFactory().newInstance(FlexoConcept.class);
 		// virtualModel.addToFlexoConcepts(flexoConcept);
 
-		CreateTechnologyRole createFragmentRole = CreateTechnologyRole.actionType.makeNewAction(virtualModel, null, editor);
+		CreateTechnologyRole createFragmentRole = CreateTechnologyRole.actionType.makeNewAction(virtualModel, null, _editor);
 		createFragmentRole.setRoleName("fragment");
 		createFragmentRole.setFlexoRoleClass(DocXFragmentRole.class);
 		createFragmentRole.doAction();
@@ -286,7 +307,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		assertEquals(fragmentRole.getFragment(), fragment);
 
-		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(virtualModel, null, editor);
+		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(virtualModel, null, _editor);
 		createActionScheme.setFlexoBehaviourName("generate");
 		createActionScheme.setFlexoBehaviourClass(ActionScheme.class);
 		createActionScheme.doAction();
@@ -294,7 +315,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		actionScheme = (ActionScheme) createActionScheme.getNewFlexoBehaviour();
 
 		CreateEditionAction createGenerateDocXDocumentAction = CreateEditionAction.actionType.makeNewAction(actionScheme.getControlGraph(),
-				null, editor);
+				null, _editor);
 		// createAddShape.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createGenerateDocXDocumentAction.setModelSlot(docXModelSlot);
 		createGenerateDocXDocumentAction.setEditionActionClass(GenerateDocXDocument.class);
@@ -302,7 +323,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		assertTrue(createGenerateDocXDocumentAction.hasActionExecutionSucceeded());
 
 		CreateEditionAction createFragmentAction = CreateEditionAction.actionType.makeNewAction(actionScheme.getControlGraph(), null,
-				editor);
+				_editor);
 		// createAddShape.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createFragmentAction.setModelSlot(docXModelSlot);
 		createFragmentAction.setEditionActionClass(AddDocXFragment.class);
@@ -327,12 +348,12 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	}
 
 	/**
-	 * Instantiate in project a View conform to the ViewPoint
+	 * Instantiate in _project a View conform to the ViewPoint
 	 */
 	@Test
 	@TestOrder(7)
 	public void testCreateView() {
-		CreateView action = CreateView.actionType.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
+		CreateView action = CreateView.actionType.makeNewAction(_project.getViewLibrary().getRootFolder(), null, _editor);
 		action.setNewViewName("MyView");
 		action.setNewViewTitle("Test creation of a new view");
 		action.setViewpointResource((ViewPointResource) viewPoint.getResource());
@@ -346,7 +367,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	}
 
 	/**
-	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
+	 * Instantiate in _project a VirtualModelInstance conform to the VirtualModel
 	 */
 	@Test
 	@TestOrder(8)
@@ -362,7 +383,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		assertTrue(virtualModel.getModelSlots().contains(ms));
 
-		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
+		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, _editor);
 		action.setNewVirtualModelInstanceName("MyVirtualModelInstance");
 		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance for document generation");
 		action.setVirtualModel(virtualModel);
@@ -428,7 +449,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
 
 		ActionSchemeActionType actionType = new ActionSchemeActionType(actionScheme, newVirtualModelInstance);
-		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(newVirtualModelInstance, null, editor);
+		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(newVirtualModelInstance, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
 		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
@@ -501,18 +522,18 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		instanciateTestServiceManager();
 
-		System.out.println("Project dir = " + project.getDirectory());
+		System.out.println("Project dir = " + _project.getDirectory());
 
-		editor = reloadProject(project.getDirectory());
-		project = editor.getProject();
-		assertNotNull(editor);
-		assertNotNull(project);
+		_editor = reloadProject(_project.getDirectory());
+		_project = _editor.getProject();
+		assertNotNull(_editor);
+		assertNotNull(_project);
 
-		assertEquals(3, project.getAllResources().size());
-		// System.out.println("All resources=" + project.getAllResources());
-		assertNotNull(project.getResource(newView.getURI()));
+		assertEquals(3, _project.getAllResources().size());
+		// System.out.println("All resources=" + _project.getAllResources());
+		assertNotNull(_project.getResource(newView.getURI()));
 
-		ViewResource newViewResource = project.getViewLibrary().getView(newView.getURI());
+		ViewResource newViewResource = _project.getViewLibrary().getView(newView.getURI());
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
 		newViewResource.loadResourceData(null);

@@ -49,6 +49,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
@@ -77,6 +78,18 @@ public class TestCreateBasicDocXDocument extends AbstractTestDocX {
 
 	private static DocXDocumentResource newDocResource = null;
 	private static DocXDocument newDocument = null;
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		technologicalAdapter = null;
+		newDocResource = null;
+		newDocument = null;
+
+		deleteProject();
+		deleteTestResourceCenters();
+		unloadServiceManager();
+	}
 
 	@Test
 	@TestOrder(1)

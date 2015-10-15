@@ -41,21 +41,14 @@ package org.openflexo.technologyadapter.docx.model;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -63,7 +56,27 @@ import org.openflexo.test.TestOrder;
 public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestMSWordIdentifiersPersistency.class.getPackage().getName());
 
-	private static FlexoEditor editor;
+	private static DocXDocument step1;
+	private static DocXDocument step2;
+	private static DocXDocument step3;
+	private static DocXDocument step4;
+	private static DocXDocument step5;
+	private static DocXDocument step6;
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		step1 = null;
+		step2 = null;
+		step3 = null;
+		step4 = null;
+		step5 = null;
+		step6 = null;
+
+		deleteProject();
+		deleteTestResourceCenters();
+		unloadServiceManager();
+	}
 
 	@Test
 	@TestOrder(1)
@@ -71,7 +84,7 @@ public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 		instanciateTestServiceManager();
 	}
 
-	@Test
+	/*@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
 		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
@@ -98,14 +111,7 @@ public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 				System.out.println("URI of document: " + docResource.getURI());
 			}
 		}
-	}
-
-	private static DocXDocument step1;
-	private static DocXDocument step2;
-	private static DocXDocument step3;
-	private static DocXDocument step4;
-	private static DocXDocument step5;
-	private static DocXDocument step6;
+	}*/
 
 	@Test
 	@TestOrder(4)

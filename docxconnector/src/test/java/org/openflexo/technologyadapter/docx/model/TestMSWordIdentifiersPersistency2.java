@@ -38,24 +38,11 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.doc.FlexoDocElement;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
-import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -63,80 +50,78 @@ import org.openflexo.test.TestOrder;
 public class TestMSWordIdentifiersPersistency2 extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestMSWordIdentifiersPersistency2.class.getPackage().getName());
 
-	private static FlexoEditor editor;
-
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager();
 	}
+	/*
+		@Test
+		@TestOrder(3)
+		public void testDocXLoading() {
+			DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+					DocXTechnologyAdapter.class);
 
-	@Test
-	@TestOrder(3)
-	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				DocXTechnologyAdapter.class);
-
-		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
-			assertNotNull(docXRepository);
-			Collection<DocXDocumentResource> documents = docXRepository.getAllResources();
-			for (DocXDocumentResource docResource : documents) {
-				System.out.println("> Found " + docResource);
-				try {
-					docResource.loadResourceData(null);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (FlexoException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
+				DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
+				assertNotNull(docXRepository);
+				Collection<DocXDocumentResource> documents = docXRepository.getAllResources();
+				for (DocXDocumentResource docResource : documents) {
+					System.out.println("> Found " + docResource);
+					try {
+						docResource.loadResourceData(null);
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ResourceLoadingCancelledException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (FlexoException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					assertNotNull(docResource.getLoadedResourceData());
+					System.out.println("URI of document: " + docResource.getURI());
 				}
-				assertNotNull(docResource.getLoadedResourceData());
-				System.out.println("URI of document: " + docResource.getURI());
 			}
 		}
-	}
 
-	private static DocXDocument step1;
-	private static DocXDocument step2;
+		private static DocXDocument step1;
+		private static DocXDocument step2;
 
-	@Test
-	@TestOrder(4)
-	public void testStep1() {
+		@Test
+		@TestOrder(4)
+		public void testStep1() {
 
-		step1 = getDocument("TestActivityReport/ActivityReport1.docx");
+			step1 = getDocument("TestActivityReport/ActivityReport1.docx");
 
-		System.out.println("ActivityReport1.docx:\n" + step1.debugStructuredContents());
+			System.out.println("ActivityReport1.docx:\n" + step1.debugStructuredContents());
 
-		assertEquals(113, step1.getElements().size());
+			assertEquals(113, step1.getElements().size());
 
-		// DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
+			// DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
 
-	}
-
-	// Same document after a SaveAs in Microsoft Word
-	@Test
-	@TestOrder(5)
-	public void testStep2() {
-
-		step2 = getDocument("TestActivityReport/ActivityReport2.docx");
-
-		System.out.println("ActivityReport2.docx:\n" + step2.debugStructuredContents());
-
-		assertEquals(113, step2.getElements().size());
-		assertEquals(step1.getElements().size(), step2.getElements().size());
-
-		for (int i = 0; i < step1.getElements().size(); i++) {
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element1 = step1.getElements().get(i);
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element2 = step2.getElements().get(i);
-			// This doesn't work: LibreOffice does not persist paraId !!!!
-			// assertEquals(element1.getIdentifier(), element2.getIdentifier());
 		}
 
-	}
+		// Same document after a SaveAs in Microsoft Word
+		@Test
+		@TestOrder(5)
+		public void testStep2() {
+
+			step2 = getDocument("TestActivityReport/ActivityReport2.docx");
+
+			System.out.println("ActivityReport2.docx:\n" + step2.debugStructuredContents());
+
+			assertEquals(113, step2.getElements().size());
+			assertEquals(step1.getElements().size(), step2.getElements().size());
+
+			for (int i = 0; i < step1.getElements().size(); i++) {
+				FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element1 = step1.getElements().get(i);
+				FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element2 = step2.getElements().get(i);
+				// This doesn't work: LibreOffice does not persist paraId !!!!
+				// assertEquals(element1.getIdentifier(), element2.getIdentifier());
+			}
+
+		}*/
 
 }

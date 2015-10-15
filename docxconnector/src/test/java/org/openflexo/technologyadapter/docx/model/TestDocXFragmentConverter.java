@@ -44,6 +44,7 @@ import static org.junit.Assert.assertNotSame;
 
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
@@ -57,13 +58,25 @@ import org.openflexo.test.TestOrder;
 public class TestDocXFragmentConverter extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestDocXFragmentConverter.class.getPackage().getName());
 
+	private static DocXDocument document;
+	private static DocXFragment initialFragment;
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		document = null;
+		initialFragment = null;
+
+		deleteProject();
+		deleteTestResourceCenters();
+		unloadServiceManager();
+	}
+
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager();
 	}
-
-	private static DocXDocument document;
 
 	@Test
 	@TestOrder(2)
@@ -78,8 +91,6 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 		assertEquals(11, document.getStyles().size());
 
 	}
-
-	private static DocXFragment initialFragment;
 
 	@Test
 	@TestOrder(3)

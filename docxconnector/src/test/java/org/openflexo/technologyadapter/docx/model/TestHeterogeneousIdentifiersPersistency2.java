@@ -39,23 +39,15 @@
 package org.openflexo.technologyadapter.docx.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocElement;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -63,7 +55,25 @@ import org.openflexo.test.TestOrder;
 public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestHeterogeneousIdentifiersPersistency2.class.getPackage().getName());
 
-	private static FlexoEditor editor;
+	private static DocXDocument step0;
+	private static DocXDocument step1;
+	private static DocXDocument step2;
+	private static DocXDocument step3;
+	private static DocXDocument step4;
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		step0 = null;
+		step1 = null;
+		step2 = null;
+		step3 = null;
+		step4 = null;
+
+		deleteProject();
+		deleteTestResourceCenters();
+		unloadServiceManager();
+	}
 
 	@Test
 	@TestOrder(1)
@@ -71,11 +81,11 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 		instanciateTestServiceManager();
 	}
 
-	@Test
+	/*@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -98,13 +108,7 @@ public class TestHeterogeneousIdentifiersPersistency2 extends AbstractTestDocX {
 				System.out.println("URI of document: " + docResource.getURI());
 			}
 		}
-	}
-
-	private static DocXDocument step0;
-	private static DocXDocument step1;
-	private static DocXDocument step2;
-	private static DocXDocument step3;
-	private static DocXDocument step4;
+	}*/
 
 	@Test
 	@TestOrder(4)

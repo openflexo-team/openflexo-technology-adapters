@@ -39,24 +39,17 @@
 package org.openflexo.technologyadapter.docx.model;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
-import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.doc.TextSelection;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.StringUtils;
@@ -65,17 +58,41 @@ import org.openflexo.toolbox.StringUtils;
 public class TestTextSelection extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestTextSelection.class.getPackage().getName());
 
+	public static DocXDocument libraryDocument;
+	public static DocXFragment fragment;
+	public static DocXParagraph titleParagraph;
+	public static DocXParagraph authorParagraph;
+	public static DocXParagraph editionParagraph;
+	public static DocXParagraph typeParagraph;
+	public static DocXParagraph descriptionParagraph;
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		libraryDocument = null;
+		fragment = null;
+		titleParagraph = null;
+		authorParagraph = null;
+		editionParagraph = null;
+		typeParagraph = null;
+		descriptionParagraph = null;
+
+		deleteProject();
+		deleteTestResourceCenters();
+		unloadServiceManager();
+	}
+
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager();
 	}
 
-	@Test
+	/*@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -98,15 +115,7 @@ public class TestTextSelection extends AbstractTestDocX {
 				System.out.println("URI of document: " + docResource.getURI());
 			}
 		}
-	}
-
-	public static DocXDocument libraryDocument;
-	public static DocXFragment fragment;
-	public static DocXParagraph titleParagraph;
-	public static DocXParagraph authorParagraph;
-	public static DocXParagraph editionParagraph;
-	public static DocXParagraph typeParagraph;
-	public static DocXParagraph descriptionParagraph;
+	}*/
 
 	@Test
 	@TestOrder(4)
