@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters-ui</artifactId>
-		<version>1.8.0-SNAPSHOT</version>
+		<version>1.8.0-SYLVAIN-SNAPSHOT</version>
 	</parent>
 	<artifactId>docxconnector-ui</artifactId>
 	<description>Technology Adapter graphical interface for .docx documents</description>
@@ -14,11 +14,19 @@
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>docxconnector</artifactId>
-			<version>1.8.0-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
 			<artifactId>flexo-ui</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.docx4all</groupId>
+			<artifactId>docx4all</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.openflexo</groupId>
+			<artifactId>flexo-documentation-ui</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.openflexo</groupId>
@@ -51,10 +59,5 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-			<groupId>org.docx4all</groupId>
-			<artifactId>docx4all</artifactId>
-			<version>3.2.0</version>
-		</dependency>
 	</dependencies>
 </project>

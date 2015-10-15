@@ -81,8 +81,8 @@ import org.openflexo.toolbox.ChainedCollection;
 @ModelEntity
 @ImplementationClass(DiagramSpecification.DiagramSpecificationImpl.class)
 @XMLElement(xmlTag = "DiagramSpecification")
-public interface DiagramSpecification extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification>,
-		ResourceData<DiagramSpecification> {
+public interface DiagramSpecification
+		extends TechnologyObject<DiagramTechnologyAdapter>, FlexoMetaModel<DiagramSpecification>, ResourceData<DiagramSpecification> {
 
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
@@ -182,7 +182,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 			// File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName +
 			// DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX);
 			DiagramSpecificationResource dsRes = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(baseName, folder, uri,
-					serviceManager);
+					folder.getResourceRepository().getResourceCenter(), serviceManager);
 			DiagramSpecification diagramSpecification = dsRes.getFactory().newInstance(DiagramSpecification.class);
 			dsRes.setResourceData(diagramSpecification);
 			diagramSpecification.setResource(dsRes);
@@ -401,10 +401,10 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		_allFlexoConceptWithDropScheme = null;
 		_allFlexoConceptWithLinkScheme = null;
 		}
-
+		
 		private Vector<FlexoConcept> _allFlexoConceptWithDropScheme;
 		private Vector<FlexoConcept> _allFlexoConceptWithLinkScheme;
-
+		
 		public Vector<FlexoConcept> getAllFlexoConceptWithDropScheme() {
 		if (_allFlexoConceptWithDropScheme == null) {
 		_allFlexoConceptWithDropScheme = new Vector<FlexoConcept>();
@@ -416,7 +416,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 		return _allFlexoConceptWithDropScheme;
 		}
-
+		
 		public Vector<FlexoConcept> getAllFlexoConceptWithLinkScheme() {
 		if (_allFlexoConceptWithLinkScheme == null) {
 		_allFlexoConceptWithLinkScheme = new Vector<FlexoConcept>();
@@ -428,21 +428,21 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 		return _allFlexoConceptWithLinkScheme;
 		}
-
+		
 		@Override
 		public void addToFlexoConcepts(FlexoConcept pattern) {
 		_allFlexoConceptWithDropScheme = null;
 		_allFlexoConceptWithLinkScheme = null;
 		super.addToFlexoConcepts(pattern);
 		}
-
+		
 		@Override
 		public void removeFromFlexoConcepts(FlexoConcept pattern) {
 		_allFlexoConceptWithDropScheme = null;
 		_allFlexoConceptWithLinkScheme = null;
 		super.removeFromFlexoConcepts(pattern);
 		}
-
+		
 		public Vector<LinkScheme> getAllConnectors() {
 		Vector<LinkScheme> returned = new Vector<LinkScheme>();
 		for (FlexoConcept ep : getFlexoConcepts()) {
@@ -452,7 +452,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 		return returned;
 		}
-
+		
 		public Vector<LinkScheme> getConnectorsMatching(FlexoConcept fromConcept, FlexoConcept toConcept) {
 		Vector<LinkScheme> returned = new Vector<LinkScheme>();
 		for (FlexoConcept ep : getFlexoConcepts()) {
@@ -464,7 +464,7 @@ public interface DiagramSpecification extends TechnologyObject<DiagramTechnology
 		}
 		return returned;
 		}
-
+		
 		@Override
 		public boolean handleVariable(BindingVariable variable) {
 		if (variable.getVariableName().equals(DiagramFlexoBehaviour.TOP_LEVEL)) {

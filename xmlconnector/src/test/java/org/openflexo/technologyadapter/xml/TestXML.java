@@ -69,12 +69,11 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
-	protected static final Logger         logger = Logger.getLogger(TestXML.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(TestXML.class.getPackage().getName());
 
-	private static XMLTechnologyAdapter   xmlAdapter;
-	private static XMLModelRepository     modelRepository;
-	private static String                 baseUrl;
-
+	private static XMLTechnologyAdapter xmlAdapter;
+	private static XMLModelRepository modelRepository;
+	private static String baseUrl;
 
 	/**
 	 * Instanciate test ResourceCenter
@@ -102,7 +101,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = (XMLFileResource) modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_0.xml");
+		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_0.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -125,7 +124,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = (XMLFileResource) modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_1.xml");
+		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_1.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -148,7 +147,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = (XMLFileResource) modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_2.xml");
+		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_2.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -170,7 +169,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = (XMLFileResource) modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_3.xml");
+		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_3.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -197,30 +196,30 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		File xmlFile = new File(fileURI);
 
 		XMLFileResource modelRes = XMLFileResourceImpl.makeXMLFileResource(xmlFile,
-				(XMLTechnologyContextManager) xmlAdapter.getTechnologyContextManager());
+				(XMLTechnologyContextManager) xmlAdapter.getTechnologyContextManager(), modelRepository.getResourceCenter());
 
 		XMLModel aModel = modelRes.getModel();
 		aModel.setNamespace("http://montest.com", "tst");
-		
-		// creating an empty MetaModel for this file and 
+
+		// creating an empty MetaModel for this file and
 		XMLMetaModel aMetamodel = XMLMetaModelImpl.createEmptyMetaModel("http://montest.com");
 		Object blobType = aMetamodel.createNewType("http://montest.com#Blob", "Blob", false);
 		aModel.setMetaModel(aMetamodel);
-		
-		
+
 		XMLType aType = aMetamodel.createNewType("http://zutalors.com", "Blib", false);
-		
+
 		// TODO Manage several namespaces in same file!!
 		// aType = new XMLType("http://zutalors.com", "Blib", "pt:Blib", aModel);
-		//aModel.addType(aType);
-		
-		XMLIndividual rootIndividual = (XMLIndividual) aModel.addNewIndividual(aModel.getMetaModel().getTypeFromURI("http://montest.com#Blob"));
+		// aModel.addType(aType);
+
+		XMLIndividual rootIndividual = (XMLIndividual) aModel
+				.addNewIndividual(aModel.getMetaModel().getTypeFromURI("http://montest.com#Blob"));
 		aModel.setRoot(rootIndividual);
-		
-		XMLIndividual anIndividual = (XMLIndividual) aModel.addNewIndividual(aType); 
+
+		XMLIndividual anIndividual = (XMLIndividual) aModel.addNewIndividual(aType);
 		anIndividual.addPropertyValue("name", "Mon velo court");
 		rootIndividual.addChild(anIndividual);
-		
+
 		anIndividual = (XMLIndividual) aModel.addNewIndividual(aType);
 		anIndividual.addPropertyValue("name", "Pan");
 		anIndividual.addPropertyValue("ID", "17");

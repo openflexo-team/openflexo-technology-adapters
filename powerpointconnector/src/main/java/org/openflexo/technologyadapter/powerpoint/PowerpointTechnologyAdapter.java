@@ -128,7 +128,7 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	protected PowerpointSlideshowResource tryToLookupSlideshow(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
 		PowerpointTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidSlideshowFile(candidateFile)) {
-			PowerpointSlideshowResource ssRes = retrieveSlideshowResource(candidateFile);
+			PowerpointSlideshowResource ssRes = retrieveSlideshowResource(candidateFile, resourceCenter);
 			PowerpointSlideShowRepository ssRepository = resourceCenter.getRepository(PowerpointSlideShowRepository.class, this);
 			if (ssRes != null) {
 				RepositoryFolder<PowerpointSlideshowResource> folder;
@@ -149,12 +149,13 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public PowerpointSlideshowResource retrieveSlideshowResource(File slideshowFile) {
+	public PowerpointSlideshowResource retrieveSlideshowResource(File slideshowFile, FlexoResourceCenter<?> resourceCenter) {
 		PowerpointSlideshowResource ssResource = null;
 
 		// TODO: try to look-up already found file
 
-		ssResource = PowerpointSlideshowResourceImpl.retrievePowerpointSlideshowResource(slideshowFile, getTechnologyContextManager());
+		ssResource = PowerpointSlideshowResourceImpl.retrievePowerpointSlideshowResource(slideshowFile, getTechnologyContextManager(),
+				resourceCenter);
 
 		return ssResource;
 	}
@@ -222,11 +223,16 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 		modelUri = pptFile.toURI().toString();
 
 		PowerpointSlideshowResource slideshowResource = PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(modelUri, pptFile,
-				getTechnologyContextManager());
+				getTechnologyContextManager(), project);
 
 		getTechnologyContextManager().registerResource(slideshowResource);
 
 		return slideshowResource;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "PPT";
 	}
 
 }

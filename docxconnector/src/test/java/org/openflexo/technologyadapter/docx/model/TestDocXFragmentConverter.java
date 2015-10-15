@@ -44,13 +44,13 @@ import static org.junit.Assert.assertNotSame;
 
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
-import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -58,16 +58,25 @@ import org.openflexo.test.TestOrder;
 public class TestDocXFragmentConverter extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestDocXFragmentConverter.class.getPackage().getName());
 
-	private static FlexoEditor editor;
-	private static DocXTechnologyAdapter technologicalAdapter;
+	private static DocXDocument document;
+	private static DocXFragment initialFragment;
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		document = null;
+		initialFragment = null;
+
+		deleteProject();
+		deleteTestResourceCenters();
+		unloadServiceManager();
+	}
 
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager();
 	}
-
-	private static DocXDocument document;
 
 	@Test
 	@TestOrder(2)
@@ -79,11 +88,9 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 
 		assertEquals(13, document.getElements().size());
 
-		assertEquals(5, document.getStyles().size());
+		assertEquals(11, document.getStyles().size());
 
 	}
-
-	private static DocXFragment initialFragment;
 
 	@Test
 	@TestOrder(3)
@@ -101,7 +108,7 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 
 		System.out.println("fragment: " + converter.convertToString(initialFragment));
 
-		assertEquals("http://openflexo.org/test/TestResourceCenter/StructuredDocument.docx:6DC2CAFC:3146A934",
+		assertEquals("http://openflexo.org/test/TestResourceCenter/TestResourceCenter/StructuredDocument.docx:6DC2CAFC:3146A934",
 				converter.convertToString(initialFragment));
 	}
 
@@ -113,7 +120,7 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 
 		DocXFragmentConverter converter = new DocXFragmentConverter();
 
-		String stringValue = "http://openflexo.org/test/TestResourceCenter/StructuredDocument.docx:6DC2CAFC:3146A934";
+		String stringValue = "http://openflexo.org/test/TestResourceCenter/TestResourceCenter/StructuredDocument.docx:6DC2CAFC:3146A934";
 		DocXFragment fragment = converter.convertFromString(stringValue, factory);
 
 		System.out.println("fragment=" + fragment);

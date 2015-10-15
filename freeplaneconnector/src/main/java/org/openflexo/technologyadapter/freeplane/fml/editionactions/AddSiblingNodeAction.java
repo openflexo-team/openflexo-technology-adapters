@@ -51,7 +51,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -147,13 +147,13 @@ public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 		}
 
 		@Override
-		public IFreeplaneNode execute(FlexoBehaviourAction action) {
-			final FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(action);
+		public IFreeplaneNode execute(RunTimeEvaluationContext evaluationContext) {
+			final FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
-				final IFreeplaneNode bindedTarget = getTargetNode(action);
+				final IFreeplaneNode bindedTarget = getTargetNode(evaluationContext);
 				final NodeModel freeplaneParent = bindedTarget.getNodeModel().getParentNode();
 				int nodeIndex = freeplaneParent.getIndex(bindedTarget.getNodeModel());
-				if (!isAbove(action)) {
+				if (!isAbove(evaluationContext)) {
 					nodeIndex++;
 				}
 				final NodeModel newNode = new NodeModel(bindedTarget.getNodeModel().getMap());
@@ -166,10 +166,10 @@ public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 			return null;
 		}
 
-		private IFreeplaneNode getTargetNode(FlexoBehaviourAction<?, ?, ?> action) {
-			final String errorMsg = "Error while getting binding value for action " + action;
+		private IFreeplaneNode getTargetNode(RunTimeEvaluationContext evaluationContext) {
+			final String errorMsg = "Error while getting binding value for action " + evaluationContext;
 			try {
-				return getTargetNode().getBindingValue(action);
+				return getTargetNode().getBindingValue(evaluationContext);
 			} catch (final TypeMismatchException e) {
 				LOGGER.log(Level.SEVERE, errorMsg, e);
 			} catch (final NullReferenceException e) {
@@ -180,10 +180,10 @@ public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 			return null;
 		}
 
-		private boolean isAbove(FlexoBehaviourAction<?, ?, ?> action) {
-			final String errorMsg = "Error while getting binding value for action " + action;
+		private boolean isAbove(RunTimeEvaluationContext evaluationContext) {
+			final String errorMsg = "Error while getting binding value for action " + evaluationContext;
 			try {
-				return isAbove().getBindingValue(action);
+				return isAbove().getBindingValue(evaluationContext);
 			} catch (final TypeMismatchException e) {
 				LOGGER.log(Level.SEVERE, errorMsg, e);
 			} catch (final NullReferenceException e) {
@@ -195,8 +195,9 @@ public interface AddSiblingNodeAction extends FreePlaneAction<IFreeplaneNode> {
 		}
 
 		@Override
-		public FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> getModelSlotInstance(final FlexoBehaviourAction<?, ?, ?> action) {
-			return (FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot> getModelSlotInstance(
+				final RunTimeEvaluationContext evaluationContext) {
+			return (FreeModelSlotInstance<IFreeplaneMap, FreeplaneModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 		@Override

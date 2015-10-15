@@ -50,6 +50,7 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
+import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -61,6 +62,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactor
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.InJarResourceImpl;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -81,6 +83,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceIm
  */
 @DeclareModelSlots({ TypedDiagramModelSlot.class, FreeDiagramModelSlot.class })
 @DeclareTechnologySpecificTypes({ DiagramType.class })
+@DeclareVirtualModelInstanceNatures({ FMLControlledDiagramVirtualModelInstanceNature.class })
 public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	private static final Logger logger = Logger.getLogger(DiagramTechnologyAdapter.class.getPackage().getName());
@@ -221,10 +224,9 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 			// System.out.println("Found valid candidate for DiagramSpecification: " + ((File)candidateElement));
 			return true;
 		}
-		if (candidateElement instanceof InJarResourceImpl
-				&& ((InJarResourceImpl) candidateElement).getRelativePath().endsWith(".xml")
-				&& ((InJarResourceImpl) candidateElement).getRelativePath().endsWith(
-						FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath())
+		if (candidateElement instanceof InJarResourceImpl && ((InJarResourceImpl) candidateElement).getRelativePath().endsWith(".xml")
+				&& ((InJarResourceImpl) candidateElement).getRelativePath()
+						.endsWith(FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath())
 								+ DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX + "/"
 								+ FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath()) + ".xml")) {
 			// System.out.println("Found valid candidate for DiagramSpecification: " + ((InJarResourceImpl)candidateElement));
@@ -245,14 +247,16 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		if (returned == null) {
 			if (diagramSpecification instanceof File) {
 				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((File) diagramSpecification, folder,
-						getTechnologyAdapterService().getServiceManager());
-			} else if (diagramSpecification instanceof InJarResourceImpl) {
+						folder.getResourceRepository().getResourceCenter(), getTechnologyAdapterService().getServiceManager());
+			}
+			else if (diagramSpecification instanceof InJarResourceImpl) {
 				returned = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource((InJarResourceImpl) diagramSpecification,
-						getTechnologyAdapterService().getServiceManager());
+						folder.getResourceRepository().getResourceCenter(), getTechnologyAdapterService().getServiceManager());
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerDiagramSpecification(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve DiagramSpecificationResource for " + diagramSpecification);
 			}
 		}
@@ -264,13 +268,15 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new diagram resource stored in supplied diagram file
 	 * 
 	 */
-	private DiagramResource retrieveDiagramResource(File aDiagramFile) {
+	private DiagramResource retrieveDiagramResource(File aDiagramFile, FlexoResourceCenter<?> resourceCenter) {
 		DiagramResource returned = getTechnologyContextManager().getDiagramResource(aDiagramFile);
 		if (returned == null) {
-			returned = DiagramResourceImpl.retrieveDiagramResource(aDiagramFile, getTechnologyAdapterService().getServiceManager());
+			returned = DiagramResourceImpl.retrieveDiagramResource(aDiagramFile, resourceCenter,
+					getTechnologyAdapterService().getServiceManager());
 			if (returned != null) {
 				getTechnologyContextManager().registerDiagram(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve DiagramResource for " + aDiagramFile);
 			}
 		}
@@ -290,7 +296,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		// if (dsRepository != null) {
 		// for (DiagramSpecificationResource dsRes : dsRepository.getAllResources()) {
 		if (isValidDiagramFile(candidateFile)) {
-			DiagramResource diagramResource = retrieveDiagramResource(candidateFile);
+			DiagramResource diagramResource = retrieveDiagramResource(candidateFile, resourceCenter);
 			if (diagramResource != null) {
 				RepositoryFolder<DiagramResource> folder;
 				try {
@@ -322,7 +328,8 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 			File candidateFile = (File) contents;
 			if (tryToLookupDiagramSpecification(resourceCenter, candidateFile) != null) {
 				// This is a meta-model, this one has just been registered
-			} else {
+			}
+			else {
 				tryToLookupDiagram(resourceCenter, candidateFile);
 			}
 		}
@@ -339,7 +346,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	public DiagramResource createNewDiagram(FlexoProject project, String filename, String diagramUri,
 			DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
 		File diagramFile = new File(getProjectSpecificDiagramsDirectory(project), filename);
-		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource);
+		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource, project);
 		DiagramRepository diagramRepository = project.getRepository(DiagramRepository.class, this);
 		diagramRepository.registerResource(returned);
 		return returned;
@@ -349,17 +356,18 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 			String diagramUri, DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
 		File diagramDirectory = new File(resourceCenter.getRootDirectory(), relativePath);
 		File diagramFile = new File(diagramDirectory, filename);
-		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource);
+		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource,
+				resourceCenter);
 		DiagramRepository diagramRepository = resourceCenter.getRepository(DiagramRepository.class, this);
 		diagramRepository.registerResource(returned);
 		return returned;
 	}
 
 	public DiagramResource createNewDiagram(String diagramName, String diagramlUri, File diagramFile,
-			DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
+			DiagramSpecificationResource diagramSpecificationResource, FlexoResourceCenter<?> resourceCenter) throws SaveResourceException {
 
 		DiagramResource diagramResource = DiagramResourceImpl.makeDiagramResource(diagramName, diagramlUri, diagramFile,
-				diagramSpecificationResource, getTechnologyAdapterService().getServiceManager());
+				diagramSpecificationResource, resourceCenter, getTechnologyAdapterService().getServiceManager());
 
 		diagramResource.save(null);
 
@@ -412,6 +420,11 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		} catch (ModelDefinitionException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "DIAGRAM";
 	}
 
 }

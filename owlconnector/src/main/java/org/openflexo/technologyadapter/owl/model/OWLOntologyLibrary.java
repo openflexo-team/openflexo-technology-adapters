@@ -53,11 +53,11 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.converter.OntologyObjectConverter;
 import org.openflexo.foundation.ontology.OntologyUtils;
+import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.toolbox.StringUtils;
@@ -88,7 +88,7 @@ import com.hp.hpl.jena.util.iterator.ExtendedIterator;
  * @author sylvain
  * 
  */
-public class OWLOntologyLibrary extends TechnologyContextManager<OWLTechnologyAdapter> implements ModelMaker,
+public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OWLTechnologyAdapter> implements ModelMaker,
 		RemovalListener<OWLOntology, Set<OWLOntology>> {
 
 	private static final Logger logger = Logger.getLogger(OWLOntologyLibrary.class.getPackage().getName());

@@ -29,6 +29,7 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -39,8 +40,10 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.rm.InJarResourceImpl;
+import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElementConverter;
 import org.openflexo.technologyadapter.docx.model.DocXFragmentConverter;
+import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceImpl;
@@ -56,9 +59,10 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceImpl;
 
 @DeclareModelSlots({ DocXModelSlot.class })
 @DeclareRepositoryType({ DocXDocumentRepository.class })
+@DeclareVirtualModelInstanceNatures({ FMLControlledDocXVirtualModelInstanceNature.class })
 public class DocXTechnologyAdapter extends TechnologyAdapter {
 
-	private static String DOCX_FILE_EXTENSION = ".docx";
+	public static String DOCX_FILE_EXTENSION = ".docx";
 
 	protected static final Logger logger = Logger.getLogger(DocXTechnologyAdapter.class.getPackage().getName());
 
@@ -100,6 +104,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 			I item = it.next();
 			// if (item instanceof File) {
 			// System.out.println("searching " + item);
+			// }
 			// File candidateFile = (File) item;
 			DocXDocumentResource wbRes = tryToLookupDocX(resourceCenter, item);
 			// }
@@ -112,7 +117,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	protected DocXDocumentResource tryToLookupDocX(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
 		DocXTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidDocX(candidateElement)) {
-			DocXDocumentResource docXDocumentResource = retrieveDocXResource(candidateElement);
+			DocXDocumentResource docXDocumentResource = retrieveDocXResource(candidateElement, resourceCenter);
 			referenceResource(docXDocumentResource, resourceCenter);
 			/*DocXDocumentRepository docXDocumentRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
 			if (docXDocumentResource != null) {
@@ -146,8 +151,8 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		if (docXDocumentResource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
 			RepositoryFolder<DocXDocumentResource> folder;
 			try {
-				folder = docXDocumentRepository.getRepositoryFolder(
-						((FileFlexoIODelegate) docXDocumentResource.getFlexoIODelegate()).getFile(), true);
+				folder = docXDocumentRepository
+						.getRepositoryFolder(((FileFlexoIODelegate) docXDocumentResource.getFlexoIODelegate()).getFile(), true);
 				docXDocumentRepository.registerResource(docXDocumentResource, folder);
 			} catch (IOException e1) {
 				e1.printStackTrace();
@@ -159,16 +164,18 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public DocXDocumentResource retrieveDocXResource(Object docXDocumentItem) {
+	public DocXDocumentResource retrieveDocXResource(Object docXDocumentItem, FlexoResourceCenter<?> resourceCenter) {
 
 		DocXDocumentResource returned = null; // getTechnologyContextManager().getExcelWorkbookResource(workbook);
 		if (returned == null) {
 			if (docXDocumentItem instanceof File) {
-				returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((File) docXDocumentItem, getTechnologyContextManager());
+				returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((File) docXDocumentItem, getTechnologyContextManager(),
+						resourceCenter);
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerDocXDocumentResource(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve DocXDocumentResource resource for " + docXDocumentItem);
 			}
 		}
@@ -179,7 +186,8 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	public boolean isValidDocX(Object candidateElement) {
 		if (candidateElement instanceof File && isValidDocXFile(((File) candidateElement))) {
 			return true;
-		} else if (candidateElement instanceof InJarResourceImpl && isValidDocXInJar((InJarResourceImpl) candidateElement)) {
+		}
+		else if (candidateElement instanceof InJarResourceImpl && isValidDocXInJar((InJarResourceImpl) candidateElement)) {
 			return true;
 		}
 		return false;
@@ -272,9 +280,16 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		File docXFile = new File(resourceCenter.getDirectory() + relativePath, filename);
 
 		DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeDocXDocumentResource(docXFile,
-				getTechnologyContextManager());
+				getTechnologyContextManager(), resourceCenter);
 
 		referenceResource(docXDocumentResource, resourceCenter);
+
+		if (createEmptyDocument) {
+			DocXDocument document = docXDocumentResource.getFactory().makeNewDocXDocument();
+			document.setResource(docXDocumentResource);
+			docXDocumentResource.setResourceData(document);
+			docXDocumentResource.setModified(true);
+		}
 
 		return docXDocumentResource;
 	}
@@ -285,6 +300,11 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 
 		fMLModelFactory.addConverter(new DocXFragmentConverter());
 		fMLModelFactory.addConverter(new DocXElementConverter());
-
 	}
+
+	@Override
+	public String getIdentifier() {
+		return "DOCX";
+	}
+
 }

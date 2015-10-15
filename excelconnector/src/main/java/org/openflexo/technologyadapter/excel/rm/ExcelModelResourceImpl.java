@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
@@ -77,10 +78,10 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 	 * @return
 	 */
 	public static ExcelModelResource makeExcelModelResource(String modelURI, File modelFile, ExcelMetaModelResource excelMetaModelResource,
-			ExcelTechnologyContextManager technologyContextManager) {
+			ExcelTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					ExcelModelResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, ExcelModelResource.class));
 			ExcelModelResourceImpl returned = (ExcelModelResourceImpl) factory.newInstance(ExcelModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
@@ -93,6 +94,7 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 
 			returned.setURI(modelURI);
 			returned.setMetaModelResource(excelMetaModelResource);
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerResource(returned);
 			// Creates the Excel model from scratch
@@ -115,10 +117,10 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 	 * @return
 	 */
 	public static ExcelModelResource retrieveExcelModelResource(File modelFile, ExcelMetaModelResource excelMetaModelResource,
-			ExcelTechnologyContextManager technologyContextManager) {
+			ExcelTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					ExcelModelResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, ExcelModelResource.class));
 			ExcelModelResourceImpl returned = (ExcelModelResourceImpl) factory.newInstance(ExcelModelResource.class);
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
@@ -131,6 +133,7 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(excelMetaModelResource);
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerResource(returned);
 			return returned;

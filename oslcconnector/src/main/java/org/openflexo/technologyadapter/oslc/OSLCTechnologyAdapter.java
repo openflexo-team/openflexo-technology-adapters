@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.oslc;
 
 import java.io.File;
@@ -106,16 +105,16 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 			if (item instanceof File) {
 				// System.out.println("searching " + item);
 				File candidateFile = (File) item;
-				tryToLookupOSLCResources(resourceCenter, candidateFile);
+				tryToLookupOSLCResources((FlexoResourceCenter<File>) resourceCenter, candidateFile);
 			}
 		}
 		// Call it to update the current repositories
 		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 	}
 
-	protected OSLCResourceResource tryToLookupOSLCResources(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
+	protected OSLCResourceResource tryToLookupOSLCResources(FlexoResourceCenter<File> resourceCenter, File candidateFile) {
 		if (isValidOSLCFile(candidateFile)) {
-			OSLCResourceResource oslcRes = retrieveOSLCResource(candidateFile);
+			OSLCResourceResource oslcRes = retrieveOSLCResource(candidateFile, resourceCenter);
 			OSLCRepository oslcRepository = resourceCenter.getRepository(OSLCRepository.class, this);
 			if (oslcRes != null) {
 				RepositoryFolder<OSLCResourceResource> folder;
@@ -136,13 +135,16 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public OSLCResourceResource retrieveOSLCResource(File cdlFile) {
+	public <I> OSLCResourceResource retrieveOSLCResource(I cdlFile, FlexoResourceCenter<I> resourceCenter) {
 		OSLCResourceResource oslcResource = null;
 
 		// TODO: try to look-up already found file
-		oslcResource = OSLCResourceResourceImpl.retrieveOSLCResource(cdlFile, getTechnologyContextManager());
+		if (cdlFile instanceof File) {
+			oslcResource = OSLCResourceResourceImpl.retrieveOSLCResource((File) cdlFile, getTechnologyContextManager(), resourceCenter);
 
-		return oslcResource;
+			return oslcResource;
+		}
+		return null;
 	}
 
 	/**
@@ -177,7 +179,7 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
 			File candidateFile = (File) contents;
-			tryToLookupOSLCResources(resourceCenter, candidateFile);
+			tryToLookupOSLCResources((FlexoResourceCenter<File>) resourceCenter, candidateFile);
 		}
 		// Call it to update the current repositories
 		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
@@ -193,6 +195,11 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	public OSLCTechnologyContextManager getTechnologyContextManager() {
 		// TODO Auto-generated method stub
 		return (OSLCTechnologyContextManager) super.getTechnologyContextManager();
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "OSLC";
 	}
 
 }

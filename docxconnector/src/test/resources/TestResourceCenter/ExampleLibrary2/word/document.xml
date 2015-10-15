@@ -1,0 +1,1625 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<w:document
+	xmlns:wpc="http://schemas.microsoft.com/office/word/2010/wordprocessingCanvas"
+	xmlns:mo="http://schemas.microsoft.com/office/mac/office/2008/main"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:mv="urn:schemas-microsoft-com:mac:vml" xmlns:o="urn:schemas-microsoft-com:office:office"
+	xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"
+	xmlns:m="http://schemas.openxmlformats.org/officeDocument/2006/math"
+	xmlns:v="urn:schemas-microsoft-com:vml"
+	xmlns:wp14="http://schemas.microsoft.com/office/word/2010/wordprocessingDrawing"
+	xmlns:wp="http://schemas.openxmlformats.org/drawingml/2006/wordprocessingDrawing"
+	xmlns:w10="urn:schemas-microsoft-com:office:word"
+	xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main"
+	xmlns:w14="http://schemas.microsoft.com/office/word/2010/wordml"
+	xmlns:wpg="http://schemas.microsoft.com/office/word/2010/wordprocessingGroup"
+	xmlns:wpi="http://schemas.microsoft.com/office/word/2010/wordprocessingInk"
+	xmlns:wne="http://schemas.microsoft.com/office/word/2006/wordml"
+	xmlns:wps="http://schemas.microsoft.com/office/word/2010/wordprocessingShape"
+	mc:Ignorable="w14 wp14">
+	<w:body>
+		<w:p w14:paraId="78FBD72D" w14:textId="3375B83C" w:rsidR="00DE4D2D"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00084A74">
+			<w:pPr>
+				<w:pStyle w:val="Titre" />
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Ma bibliothèque</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="7BEBA4B8" w14:textId="31027368" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C" w:rsidP="00553727">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Description de ce document.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="2C78CAA2" w14:textId="246727B2" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00553727">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Mise à jour le 22 août 2015</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="1AFEA773" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00553727">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="1A1B1B5C" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00553727">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="1CF55D49" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00553727">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:sectPr w:rsidR="00984D8C" w:rsidRPr="00984D8C"
+					w:rsidSect="00C83790">
+					<w:pgSz w:w="11900" w:h="16840" />
+					<w:pgMar w:top="1417" w:right="1417" w:bottom="1417"
+						w:left="1417" w:header="708" w:footer="708" w:gutter="0" />
+					<w:cols w:space="708" />
+					<w:docGrid w:linePitch="360" />
+				</w:sectPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="698A3EE0" w14:textId="2C4C086A" w:rsidR="00553727"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00553727" w:rsidP="00553727">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="707AC6F7" w14:textId="246A98EE" w:rsidR="00084A74"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00CA3B1A" w:rsidP="00084A74">
+			<w:pPr>
+				<w:pStyle w:val="Titre1" />
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">Introduction </w:t>
+			</w:r>
+			<w:r w:rsidR="00984D8C" w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">à la </w:t>
+			</w:r>
+			<w:r w:rsidR="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">notion de </w:t>
+			</w:r>
+			<w:r w:rsidR="00984D8C" w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>bibliothèque</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="7599C3E8" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="28799DF5" w14:textId="12254C1F" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:i />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:i />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>(Source wikipédia)</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="5CAD7C05" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="18A9E522" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">Une </w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:b />
+					<w:bCs />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>bibliothèque</w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> (du </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId7" w:tooltip="Grec ancien"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>grec ancien</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> </w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:i />
+					<w:iCs />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>βιβλιοθήκη</w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> : </w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:i />
+					<w:iCs />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>biblio</w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">, « livre » ; </w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:i />
+					<w:iCs />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>thêkê</w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">, « place ») est le lieu où est conservée et lue une collection organisée de </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId8" w:tooltip="Livre (document)"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>livres</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">. Il existe des bibliothèques privées (y compris de riches bibliothèques ouvertes au public) et des </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId9" w:tooltip="Bibliothèque publique"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>bibliothèques publiques</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">. Les bibliothèques proposent souvent d'autres </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId10" w:tooltip="Document" w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>documents</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> (journaux, périodiques, enregistrements sonores, enregistrements vidéo, cartes et plans, partitions, etc.) ainsi que des accès à </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId11" w:tooltip="Internet" w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>internet</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> et sont parfois appelées </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId12" w:tooltip="Médiathèque"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>médiathèques</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> ou </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId13" w:tooltip="Informathèque"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>informathèques</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="48C818DA" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">La majorité des bibliothèques (municipales, universitaires, etc.) autorisent le </w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:i />
+					<w:iCs />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>prêt</w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> de leurs documents, ou de certains d'entre eux gratuitement ; d'autres (par exemple la </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId14" w:tooltip="Bibliothèque publique d'information"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Bibliothèque publique d'information</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">) leur </w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:i />
+					<w:iCs />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>consultation sur place</w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> seulement. Elles peuvent alors être divisées en </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId15" w:tooltip="Salle de lecture"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>salles de lectures</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">, ouvertes au public, et en </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId16" w:tooltip="Magasin (archives et bibliothèques)"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>magasins</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>, fermés, pour le stockage de livres moins consultés. D'autres
+					espaces, ouverts ou non au public, peuvent s'ajouter.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="43112AF5" w14:textId="54D1753A" w:rsidR="00CA3B1A"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="007338D5">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">En 2010, avec plus de 144,5 millions de documents, dont 21,8 millions de livres, la plus grande bibliothèque du monde est la </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId17" w:tooltip="Bibliothèque du Congrès"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>bibliothèque du Congrès</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> à </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId18" w:tooltip="Washington (district de Columbia)"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Washington</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">. Néanmoins, la collection cumulée de livres des deux </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId19" w:tooltip="Bibliothèque nationale russe"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>bibliothèques nationales russes</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> atteint 32,5 millions de volumes et la collection de la </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId20" w:tooltip="British Library"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>British Library</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> 150 millions d'articles</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="26FD93C5" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="007338D5">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="691AA309" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="007338D5">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="53B2C367" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="007338D5">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:sectPr w:rsidR="00984D8C" w:rsidRPr="00984D8C"
+					w:rsidSect="00C83790">
+					<w:pgSz w:w="11900" w:h="16840" />
+					<w:pgMar w:top="1417" w:right="1417" w:bottom="1417"
+						w:left="1417" w:header="708" w:footer="708" w:gutter="0" />
+					<w:cols w:space="708" />
+					<w:docGrid w:linePitch="360" />
+				</w:sectPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="028B1534" w14:textId="662C7C8B" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="007338D5">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="6DC2CAFC" w14:textId="5A857A04" w:rsidR="00084A74"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00084A74">
+			<w:pPr>
+				<w:pStyle w:val="Titre1" />
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Personnel</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="7508C350" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="1105AA44" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:i />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:i />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>(Source wikipédia)</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="2161BC82" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="7ED5EAEE" w14:textId="6557BE59" w:rsidR="00127E90"
+			w:rsidRDefault="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Traditionnellement, les personnes chargées de gérer la
+					bibliothèque et d'assurer les services au public sont appelées
+					« bibliothécaires ». Toutefois, le titre de bibliothécaire est
+					réservé dans de nombreux pays au personnel d'encadrement justifiant
+					de diplômes universitaires de second cycle en sciences de
+					l'information. En France, le terme de bibliothécaire reste employé
+					de manière générique pour désigner toutes les personnes assurant
+					les activités de bibliothèque, quels que soient leur statut réel et
+					leur profession.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="00E1FD37" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="3DA8C6EC" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:sectPr w:rsidR="00984D8C" w:rsidSect="00C83790">
+					<w:pgSz w:w="11900" w:h="16840" />
+					<w:pgMar w:top="1417" w:right="1417" w:bottom="1417"
+						w:left="1417" w:header="708" w:footer="708" w:gutter="0" />
+					<w:cols w:space="708" />
+					<w:docGrid w:linePitch="360" />
+				</w:sectPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="3D899DD8" w14:textId="63794068" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="78BBD0DD" w14:textId="58489CBB" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:pStyle w:val="Titre1" />
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Ma collection</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="04CC971C" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C" w:rsidP="00984D8C" />
+		<w:p w14:paraId="37CDCECF" w14:textId="6D83B988" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:r>
+				<w:t>Voici tous les livres qui sont dans ma bibliothèque:</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="71718A8B" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C" w:rsidP="00984D8C" />
+		<w:p w14:paraId="2BDCE551" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:bookmarkStart w:id="0" w:name="_GoBack" />
+			<w:bookmarkEnd w:id="0" />
+		</w:p>
+		<w:p w14:paraId="2936B416" w14:textId="13FBD8C9" w:rsidR="00F8372A"
+			w:rsidRPr="00984D8C" w:rsidRDefault="007338D5" w:rsidP="007338D5">
+			<w:pPr>
+				<w:pStyle w:val="Titre2" />
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">Les </w:t>
+			</w:r>
+			<w:r w:rsidR="00984D8C" w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>misérables</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="0BFF1745" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:tbl>
+			<w:tblPr>
+				<w:tblStyle w:val="Grille" />
+				<w:tblW w:w="0" w:type="auto" />
+				<w:tblLook w:val="04A0" w:firstRow="1" w:lastRow="0"
+					w:firstColumn="1" w:lastColumn="0" w:noHBand="0" w:noVBand="1" />
+			</w:tblPr>
+			<w:tblGrid>
+				<w:gridCol w:w="1242" />
+				<w:gridCol w:w="7964" />
+			</w:tblGrid>
+			<w:tr w:rsidR="00984D8C" w:rsidRPr="00984D8C" w14:paraId="061C0632"
+				w14:textId="77777777" w:rsidTr="00984D8C">
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:w="1242" w:type="dxa" />
+					</w:tcPr>
+					<w:p w14:paraId="4A82BC28" w14:textId="10B3462C" w:rsidR="00984D8C"
+						w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+						<w:pPr>
+							<w:rPr>
+								<w:b />
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+						</w:pPr>
+						<w:r w:rsidRPr="00984D8C">
+							<w:rPr>
+								<w:b />
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+							<w:t>Author</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:w="7964" w:type="dxa" />
+					</w:tcPr>
+					<w:p w14:paraId="1479220D" w14:textId="4897C30D" w:rsidR="00984D8C"
+						w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+						</w:pPr>
+						<w:r w:rsidRPr="00984D8C">
+							<w:rPr>
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+							<w:t>Victor Hugo</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+			</w:tr>
+			<w:tr w:rsidR="00984D8C" w:rsidRPr="00984D8C" w14:paraId="6AC324E4"
+				w14:textId="77777777" w:rsidTr="00984D8C">
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:w="1242" w:type="dxa" />
+					</w:tcPr>
+					<w:p w14:paraId="7C266BDA" w14:textId="29203A87" w:rsidR="00984D8C"
+						w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+						<w:pPr>
+							<w:rPr>
+								<w:b />
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+						</w:pPr>
+						<w:r w:rsidRPr="00984D8C">
+							<w:rPr>
+								<w:b />
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+							<w:t>Edition</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:w="7964" w:type="dxa" />
+					</w:tcPr>
+					<w:p w14:paraId="6904732B" w14:textId="547224DC" w:rsidR="00984D8C"
+						w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+						</w:pPr>
+						<w:r w:rsidRPr="00984D8C">
+							<w:rPr>
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+							<w:t>Dunod</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+			</w:tr>
+			<w:tr w:rsidR="00984D8C" w:rsidRPr="00984D8C" w14:paraId="3CFFD9C9"
+				w14:textId="77777777" w:rsidTr="00984D8C">
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:w="1242" w:type="dxa" />
+					</w:tcPr>
+					<w:p w14:paraId="5B6B2AB9" w14:textId="39FCECC4" w:rsidR="00984D8C"
+						w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+						<w:pPr>
+							<w:rPr>
+								<w:b />
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+						</w:pPr>
+						<w:r w:rsidRPr="00984D8C">
+							<w:rPr>
+								<w:b />
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+							<w:t>Type</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+				<w:tc>
+					<w:tcPr>
+						<w:tcW w:w="7964" w:type="dxa" />
+					</w:tcPr>
+					<w:p w14:paraId="3952EAA0" w14:textId="3713FF75" w:rsidR="00984D8C"
+						w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+						<w:pPr>
+							<w:rPr>
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+						</w:pPr>
+						<w:r w:rsidRPr="00984D8C">
+							<w:rPr>
+								<w:lang w:val="fr-FR" />
+							</w:rPr>
+							<w:t>Roman</w:t>
+						</w:r>
+					</w:p>
+				</w:tc>
+			</w:tr>
+		</w:tbl>
+		<w:p w14:paraId="05FCD490" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="289CEE3E" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="008028C9" w:rsidP="008028C9">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Les Misérables est un roman de Victor Hugo paru en 1862 (la
+					première partie est publiée le 30 mars à Bruxelles par les Éditions
+					Lacroix, Verboeckhoven et Cie, et le 3 avril de la même année à
+					Paris1).</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="395C1CE1" w14:textId="276C8921" w:rsidR="008028C9"
+			w:rsidRDefault="008028C9" w:rsidP="008028C9">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Dans ce roman, un des plus emblématiques de la littérature
+					française, Victor Hugo décrit la vie de misérables dans Paris et la
+					France provinciale du xixe siècle et s'attache plus
+					particulièrement aux pas du bagnard Jean Valjean.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="096F50C5" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C" w:rsidP="008028C9">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="0E7A4C44" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="008028C9">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="631A77B5" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRDefault="00984D8C" w:rsidP="008028C9">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:sectPr w:rsidR="00984D8C" w:rsidSect="00C83790">
+					<w:pgSz w:w="11900" w:h="16840" />
+					<w:pgMar w:top="1417" w:right="1417" w:bottom="1417"
+						w:left="1417" w:header="708" w:footer="708" w:gutter="0" />
+					<w:cols w:space="708" />
+					<w:docGrid w:linePitch="360" />
+				</w:sectPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="5052C24D" w14:textId="0EE43037" w:rsidR="008028C9"
+			w:rsidRPr="00984D8C" w:rsidRDefault="008028C9" w:rsidP="008028C9">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="1A787643" w14:textId="12658E70" w:rsidR="00CA3B1A"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00CA3B1A">
+			<w:pPr>
+				<w:pStyle w:val="Titre1" />
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Bibliothèques imaginaires</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="1FFF60B0" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+		</w:p>
+		<w:p w14:paraId="463CBE04" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Des bibliothèques, réelles ou non, apparaissent dans de
+					nombreuses œuvres de fiction</w:t>
+			</w:r>
+			<w:hyperlink r:id="rId21" w:anchor="cite_note-33"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:vertAlign w:val="superscript" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>33</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">. De nombreux écrivains ont développé le thème d'une bibliothèque idéale, donc imaginaire. Le poète et nouvelliste argentin </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId22" w:tooltip="Jorge Luis Borges"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Jorge Luis Borges</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> en est l'un des exemples les plus illustres. Toutefois certaines bibliothèques imaginaires sont constituées de livres réellement écrits, tandis que d’autres, qualifiées de </w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:i />
+					<w:iCs />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Biblia abiblia</w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> par </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId23" w:tooltip="Max Beerbohm"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Max Beerbohm</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:hyperlink r:id="rId24" w:anchor="cite_note-34"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:vertAlign w:val="superscript" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>34</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>, renferment des ouvrages n’ayant jamais existé</w:t>
+			</w:r>
+			<w:hyperlink r:id="rId25" w:anchor="cite_note-35"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:vertAlign w:val="superscript" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>35</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="235271F4" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="0" />
+					<w:numId w:val="7" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">Dans les premières, on peut citer : </w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="2CEA5098" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="1" />
+					<w:numId w:val="7" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">la </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId26" w:tooltip="Bibliothèque de Don Quichotte"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Bibliothèque de Don Quichotte</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> qui contient, entre une centaine d'autres ouvrages, la </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId27" w:tooltip="La Galatea"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:i />
+						<w:iCs />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Galatée</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> de </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId28" w:tooltip="Miguel de Cervantes"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Cervantes</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="34229E7A" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="1" />
+					<w:numId w:val="7" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">la </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId29" w:tooltip="La Bibliothèque de Babel"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>bibliothèque de Babel</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> (</w:t>
+			</w:r>
+			<w:hyperlink r:id="rId30" w:tooltip="Jorge Luis Borges"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Borges</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>) ;</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="2F267E32" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="1" />
+					<w:numId w:val="7" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">la </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId31" w:tooltip="Bibliothèque du Docteur Faustroll"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>bibliothèque du docteur Faustroll</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> (</w:t>
+			</w:r>
+			<w:hyperlink r:id="rId32" w:tooltip="Alfred Jarry"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Jarry</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>) ;</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="72C40FC4" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="1" />
+					<w:numId w:val="7" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">la bibliothèque du monastère bénédictin, dans </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId33" w:tooltip="Le Nom de la rose"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:i />
+						<w:iCs />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Le Nom de la rose</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> (</w:t>
+			</w:r>
+			<w:hyperlink r:id="rId34" w:tooltip="Umberto Eco"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Umberto Eco</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>), inspirée de Borges</w:t>
+			</w:r>
+			<w:hyperlink r:id="rId35" w:anchor="cite_note-36"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:vertAlign w:val="superscript" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>36</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="669DB69B" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="0" />
+					<w:numId w:val="7" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">Dans les secondes : </w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="4B73416F" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="1" />
+					<w:numId w:val="7" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">la bibliothèque de l’abbaye de Saint-Victor, dans le </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId36" w:tooltip="Pantagruel"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:i />
+						<w:iCs />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Pantagruel</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> de </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId37" w:tooltip="François Rabelais"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Rabelais</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t> ;</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="1FA21319" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="1" />
+					<w:numId w:val="7" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>la bibliothèque du comte de Fortsas, qui a fait l’objet d’une
+					véritable mystification en juillet 1840, avec l’annonce d’une vente
+					aux enchères et l’édition d’un catalogue</w:t>
+			</w:r>
+			<w:hyperlink r:id="rId38" w:anchor="cite_note-37"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:vertAlign w:val="superscript" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>37</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t> ;</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="27C35C68" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="1" />
+					<w:numId w:val="7" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>la bibliothèque de M. Ed. Guénoud, dont des livres « seront
+					vendus le 1</w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:vertAlign w:val="superscript" />
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>er</w:t>
+			</w:r>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> avril prochain à la salle des Bons-Enfants »</w:t>
+			</w:r>
+			<w:hyperlink r:id="rId39" w:anchor="cite_note-38"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:vertAlign w:val="superscript" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>38</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="0CBCCFB6" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="1" />
+					<w:numId w:val="7" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">la bibliothèque de </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId40" w:tooltip="Jean-Benoît Puech"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Benjamin Jordane</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:hyperlink r:id="rId41" w:anchor="cite_note-39"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:vertAlign w:val="superscript" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>39</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="427928FF" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>On peut citer également les bibliothèques disparues, mais
+					utilisées dans les œuvres de fiction:</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="3D269B19" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:numPr>
+					<w:ilvl w:val="0" />
+					<w:numId w:val="8" />
+				</w:numPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve">La </w:t>
+			</w:r>
+			<w:hyperlink r:id="rId42" w:tooltip="La Bibliothèque perdue"
+				w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>bibliothèque perdue</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t xml:space="preserve"> (</w:t>
+			</w:r>
+			<w:hyperlink r:id="rId43" w:tooltip="Don Rosa" w:history="1">
+				<w:r w:rsidRPr="00984D8C">
+					<w:rPr>
+						<w:rStyle w:val="Lienhypertexte" />
+						<w:lang w:val="fr-FR" />
+					</w:rPr>
+					<w:t>Don Rosa</w:t>
+				</w:r>
+			</w:hyperlink>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>)</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="0D18ED78" w14:textId="77777777" w:rsidR="00984D8C"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00984D8C" w:rsidP="00984D8C">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>Plus rares sont les peintres qui en font le sujet de leur
+					peinture.</w:t>
+			</w:r>
+		</w:p>
+		<w:p w14:paraId="2B774AAC" w14:textId="522A9256" w:rsidR="00CA3B1A"
+			w:rsidRPr="00984D8C" w:rsidRDefault="00F8372A">
+			<w:pPr>
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+			</w:pPr>
+			<w:r w:rsidRPr="00984D8C">
+				<w:rPr>
+					<w:lang w:val="fr-FR" />
+				</w:rPr>
+				<w:t>.</w:t>
+			</w:r>
+		</w:p>
+		<w:sectPr w:rsidR="00CA3B1A" w:rsidRPr="00984D8C" w:rsidSect="00C83790">
+			<w:pgSz w:w="11900" w:h="16840" />
+			<w:pgMar w:top="1417" w:right="1417" w:bottom="1417" w:left="1417"
+				w:header="708" w:footer="708" w:gutter="0" />
+			<w:cols w:space="708" />
+			<w:docGrid w:linePitch="360" />
+		</w:sectPr>
+	</w:body>
+</w:document>

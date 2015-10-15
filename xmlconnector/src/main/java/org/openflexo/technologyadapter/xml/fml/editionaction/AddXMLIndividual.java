@@ -44,10 +44,10 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignableAction;
-import org.openflexo.foundation.fml.editionaction.DataPropertyAssertion;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.DuplicateURIException;
+import org.openflexo.foundation.ontology.fml.editionaction.DataPropertyAssertion;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.Getter;
@@ -180,13 +180,13 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 		}
 
 		@Override
-		public XMLIndividual execute(FlexoBehaviourAction action) {
+		public XMLIndividual execute(RunTimeEvaluationContext evaluationContext) {
 
 			XMLIndividual newIndividual = null;
 			try {
 
 				if (getXMLType() != null) {
-					ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel> modelSlotInstance = (ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel>) getModelSlotInstance(action);
+					ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel> modelSlotInstance = (ModelSlotInstance<? extends ModelSlot<XMLModel>, XMLModel>) getModelSlotInstance(evaluationContext);
 					XMLModel model = modelSlotInstance.getAccessedResourceData();
 					XMLModelSlot modelSlot = (XMLModelSlot) modelSlotInstance.getModelSlot();
 
@@ -194,9 +194,9 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 					modelSlotInstance.getResourceData().setIsModified();
 
 					for (XMLDataPropertyAssertion dataPropertyAssertion : getDataAssertions()) {
-						if (dataPropertyAssertion.evaluateCondition(action)) {
+						if (dataPropertyAssertion.evaluateCondition(evaluationContext)) {
 							XMLDataProperty property = dataPropertyAssertion.getDataProperty();
-							Object value = dataPropertyAssertion.getValue(action);
+							Object value = dataPropertyAssertion.getValue(evaluationContext);
 							newIndividual.addPropertyValue(property, value);
 						}
 					}
@@ -227,6 +227,7 @@ public interface AddXMLIndividual extends AssignableAction<XMLIndividual>, XMLAc
 				e.printStackTrace();
 				return null;
 			}
+
 		}
 
 	}

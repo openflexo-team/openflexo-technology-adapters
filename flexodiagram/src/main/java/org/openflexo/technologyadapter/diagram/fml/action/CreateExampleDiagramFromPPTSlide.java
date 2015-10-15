@@ -55,7 +55,8 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
-public class CreateExampleDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide<CreateExampleDiagramFromPPTSlide, DiagramSpecification> {
+public class CreateExampleDiagramFromPPTSlide
+		extends AbstractCreateDiagramFromPPTSlide<CreateExampleDiagramFromPPTSlide, DiagramSpecification> {
 
 	private static final Logger logger = Logger.getLogger(CreateExampleDiagramFromPPTSlide.class.getPackage().getName());
 
@@ -92,25 +93,26 @@ public class CreateExampleDiagramFromPPTSlide extends AbstractCreateDiagramFromP
 	}
 
 	@Override
-	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException,
-			InvalidFileNameException {
+	protected void doAction(Object context)
+			throws NotImplementedException, InvalidParameterException, SaveResourceException, InvalidFileNameException {
 		logger.info("Add diagram from ppt slide");
 		String newDiagramURI = getFocusedObject().getURI() + "/" + getDiagramName();
-		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
-				DiagramTechnologyAdapter.class);
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), newDiagramURI, getDiagramFile(), getFocusedObject().getResource()));
+		setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), newDiagramURI, getDiagramFile(), getFocusedObject().getResource(),
+				getFocusedObject().getResource().getResourceCenter()));
 		getFocusedObject().getResource().addToContents(getDiagramResource());
 		getFocusedObject().addToExampleDiagrams(getDiagramResource().getDiagram());
 		getDiagramResource().save(null);
-		if (getSlide() != null){
-		super.convertSlideToDiagram(getSlide());
+		if (getSlide() != null) {
+			super.convertSlideToDiagram(getSlide());
 		}
 		else {
 			System.out.println("Error: no Slide");
 		}
 	}
-	
+
 	@Override
 	public File getDiagramFile() {
 		if (super.getDiagramFile() == null) {
@@ -125,6 +127,7 @@ public class CreateExampleDiagramFromPPTSlide extends AbstractCreateDiagramFromP
 	}
 
 	public File getDefaultDiagramFile() {
-		return new File(ResourceLocator.retrieveResourceAsFile(getFocusedObject().getResource().getDirectory()), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
+		return new File(ResourceLocator.retrieveResourceAsFile(getFocusedObject().getResource().getDirectory()),
+				getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
 	}
 }

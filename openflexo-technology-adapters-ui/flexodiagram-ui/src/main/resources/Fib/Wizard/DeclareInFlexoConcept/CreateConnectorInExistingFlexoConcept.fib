@@ -16,7 +16,7 @@
 		autoSelectFirstRow="true" name="flexoConceptDropdown" index="2"
 		localize="true"
 		constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-		list="data.action.virtualModel.flexoConcepts" format="object.name"
+		list="data.virtualModel.flexoConcepts" format="object.name"
 		showText="true" readOnly="false" iteratorClassName="org.openflexo.foundation.fml.FlexoConcept"
 		showIcon="false">
 	</DropDown>
@@ -25,7 +25,7 @@
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 		label="flexo_role" readOnly="false">
 	</Label>
-	<TextField index="20" data="data.connectorRoleName"
+	<TextField index="20" data="data.newConnectorRoleName"
 		constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 		localize="true" columns="7" />
 	<Label manageDynamicModel="false" useScrollBar="false" localize="true"

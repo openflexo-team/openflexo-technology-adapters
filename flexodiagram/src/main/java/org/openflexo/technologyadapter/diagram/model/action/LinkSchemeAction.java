@@ -132,7 +132,7 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 
 		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 
-		applyEditionActions();
+		executeControlGraph();
 
 	}
 

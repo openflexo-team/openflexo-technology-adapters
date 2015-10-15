@@ -41,9 +41,9 @@ package org.openflexo.technologyadapter.emf.gui;
 
 import java.util.logging.Logger;
 
-import org.openflexo.components.widget.OntologyBrowserModel;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
+import org.openflexo.ontology.components.widget.OntologyBrowserModel;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFEnumIndividual;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;

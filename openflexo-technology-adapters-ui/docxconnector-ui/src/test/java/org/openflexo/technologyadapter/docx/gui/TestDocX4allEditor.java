@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.docx.gui;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
 import org.junit.After;
@@ -49,11 +48,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.gui.widget.DocXEditor;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -68,7 +67,7 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
+public class TestDocX4allEditor extends AbstractTestDocX {
 
 	private static GraphicalContextDelegate gcDelegate;
 
@@ -76,6 +75,7 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 	private static DocXDocument structuredDocument;
 	private static DocXDocument documentWithTable;
 	private static DocXDocument documentWithImage;
+	private static DocXDocument exampleReport;
 
 	@BeforeClass
 	public static void setupClass() {
@@ -83,12 +83,12 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		initGUI();
 	}
 
-	private DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
-		System.out.println("Searching " + documentURI);
+	/*private DocXDocument getDocument(String documentName) {
+		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter/" + documentName;
 
-		FlexoResource<DocXDocument> documentResource = serviceManager.getInformationSpace().getResource(documentURI, null,
+		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
+
 		assertNotNull(documentResource);
 
 		try {
@@ -109,7 +109,7 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		assertNotNull(document.getWordprocessingMLPackage());
 
 		return document;
-	}
+	}*/
 
 	@Test
 	@TestOrder(1)
@@ -155,6 +155,14 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		openDocXEditor(documentWithImage.getResource());
 	}
 
+	@Test
+	@TestOrder(6)
+	public void testOpenExampleReportEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		exampleReport = getDocument("ExampleReport.docx");
+		assertNotNull(exampleReport);
+		openDocXEditor(exampleReport.getResource());
+	}
+
 	public static void initGUI() {
 		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
 	}
@@ -175,8 +183,8 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		gcDelegate.tearDown();
 	}
 
-	private void openDocXEditor(FlexoResource<DocXDocument> docResource)
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	private void openDocXEditor(FlexoResource<DocXDocument> docResource) throws FileNotFoundException, ResourceLoadingCancelledException,
+			FlexoException {
 
 		/*DefaultLocalFileProvider p = new DefaultLocalFileProvider();
 		File f = ((FileFlexoIODelegate) docResource.getFlexoIODelegate()).getFile();
@@ -197,7 +205,7 @@ public class TestDocX4allEditor extends OpenflexoTestCaseWithGUI {
 		panel.add(toolbar, BorderLayout.NORTH);
 		panel.add(editorPanel, BorderLayout.CENTER);*/
 
-		DocXEditor editor = new DocXEditor(docResource.getResourceData(null));
+		DocXEditor editor = new DocXEditor(docResource.getResourceData(null), true);
 
 		gcDelegate.addTab(docResource.getName(), editor);
 

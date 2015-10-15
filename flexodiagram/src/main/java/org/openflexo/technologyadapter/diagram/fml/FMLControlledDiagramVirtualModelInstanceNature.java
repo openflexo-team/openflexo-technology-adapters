@@ -38,9 +38,12 @@
 
 package org.openflexo.technologyadapter.diagram.fml;
 
+import java.awt.image.BufferedImage;
+
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
+import org.openflexo.foundation.nature.ScreenshotableNature;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -53,7 +56,8 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  * @author sylvain
  * 
  */
-public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualModelInstanceNature {
+public class FMLControlledDiagramVirtualModelInstanceNature
+		implements VirtualModelInstanceNature, ScreenshotableNature<VirtualModelInstance> {
 
 	public static FMLControlledDiagramVirtualModelInstanceNature INSTANCE = new FMLControlledDiagramVirtualModelInstanceNature();
 
@@ -111,4 +115,9 @@ public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualMo
 		return _getModelSlotInstance(virtualModelInstance).getAccessedResourceData();
 	}
 
+	@Override
+	public BufferedImage getScreenshot(VirtualModelInstance object) {
+		System.out.println("Please perform the screenshot here !!!!!!!!!");
+		return null;
+	}
 }

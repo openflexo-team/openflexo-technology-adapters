@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -74,15 +74,14 @@ public interface AddOSLCRequirementCollection extends OSLCRmAction<OSLCRequireme
 		}
 
 		@Override
-		public OSLCRequirementCollection execute(FlexoBehaviourAction action) {
+		public OSLCRequirementCollection execute(RunTimeEvaluationContext evaluationContext) {
 
 			OSLCRequirementCollection cdlActivity = null;
 
-			FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCRMModelSlot> modelSlotInstance = getModelSlotInstance(action);
+			FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCRMModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 
-			}
-			else {
+			} else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}
@@ -91,8 +90,9 @@ public interface AddOSLCRequirementCollection extends OSLCRmAction<OSLCRequireme
 		}
 
 		@Override
-		public FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCRMModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCRMModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCRMModelSlot> getModelSlotInstance(
+				RunTimeEvaluationContext evaluationContext) {
+			return (FreeModelSlotInstance<OSLCServiceProviderCatalog, OSLCRMModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 	}

@@ -52,8 +52,8 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
+import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.action.CreateVirtualModel;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
@@ -97,13 +97,13 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	public void testCreateViewPoint() throws SaveResourceException {
 		instanciateTestServiceManager();
 		System.out.println("ResourceCenter= " + resourceCenter);
-		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint",
-				resourceCenter.getDirectory(), serviceManager.getViewPointLibrary());
+		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint", resourceCenter.getDirectory(),
+				serviceManager.getViewPointLibrary(), resourceCenter);
 		assertNotNull(newViewPoint);
 		assertNotNull(newViewPoint.getResource());
-		//assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory().exists());
-		//assertTrue(((ViewPointResource) newViewPoint.getResource()).getFile().exists());
-		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory()!=null);
+		// assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory().exists());
+		// assertTrue(((ViewPointResource) newViewPoint.getResource()).getFile().exists());
+		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getFlexoIODelegate().exists());
 		CreateVirtualModel action = CreateVirtualModel.actionType.makeNewAction(newViewPoint, null, editor);
 		action.setNewVirtualModelName("TestVirtualModel");
@@ -125,8 +125,8 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 		assertTrue(action.hasActionExecutionSucceeded());
 		newVirtualModel = action.getNewVirtualModel();
 		// newVirtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
-		//assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getDirectory().exists());
-		//assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getFile().exists());
+		// assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getDirectory().exists());
+		// assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getFile().exists());
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) newVirtualModel.getResource()).getDirectory()).exists());
 		assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getFlexoIODelegate().exists());
 
@@ -154,7 +154,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 		System.out.println("Created project " + project.getProjectDirectory());
 		assertTrue(project.getProjectDirectory().exists());
 		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
-		
+
 	}
 
 	/**
@@ -178,9 +178,9 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//assertTrue(((ViewResource) newView.getResource()).getDirectory().exists());
-		//assertTrue(((ViewResource) newView.getResource()).getFile().exists());
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory())!=null);
+		// assertTrue(((ViewResource) newView.getResource()).getDirectory().exists());
+		// assertTrue(((ViewResource) newView.getResource()).getFile().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()) != null);
 		assertTrue(((ViewResource) newView.getResource()).getFlexoIODelegate().exists());
 	}
 
@@ -215,9 +215,9 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 		newVirtualModelInstance = action.getNewVirtualModelInstance();
 		assertNotNull(newVirtualModelInstance);
 		assertNotNull(newVirtualModelInstance.getResource());
-		//assertTrue(((ViewResource) newView.getResource()).getDirectory().exists());
-		//assertTrue(((ViewResource) newView.getResource()).getFile().exists());
-		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory())!=null);
+		// assertTrue(((ViewResource) newView.getResource()).getDirectory().exists());
+		// assertTrue(((ViewResource) newView.getResource()).getFile().exists());
+		assertTrue(ResourceLocator.retrieveResourceAsFile(((ViewResource) newView.getResource()).getDirectory()) != null);
 		assertTrue(((ViewResource) newView.getResource()).getFlexoIODelegate().exists());
 
 		assertEquals(1, newVirtualModelInstance.getModelSlotInstances().size());

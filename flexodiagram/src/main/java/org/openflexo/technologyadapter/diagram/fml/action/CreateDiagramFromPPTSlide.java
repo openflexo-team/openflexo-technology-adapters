@@ -95,22 +95,24 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 	}
 
 	@Override
-	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException,
-			InvalidFileNameException {
+	protected void doAction(Object context)
+			throws NotImplementedException, InvalidParameterException, SaveResourceException, InvalidFileNameException {
 		logger.info("Add diagram from ppt slide");
 
 		if (getDiagram() == null) {
-			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
-					DiagramTechnologyAdapter.class);
+			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-			setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), null));
+			setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), null,
+					getFocusedObject().getResourceRepository().getResourceCenter()));
 			getFocusedObject().addToResources(getDiagramResource());
 			getDiagramResource().save(null);
 		}
 
 		if (getSlide() != null) {
 			convertSlideToDiagram(getSlide());
-		} else {
+		}
+		else {
 			System.out.println("Error: no Slide");
 		}
 	}

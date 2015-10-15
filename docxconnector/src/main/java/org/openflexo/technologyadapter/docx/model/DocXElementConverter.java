@@ -41,7 +41,7 @@ package org.openflexo.technologyadapter.docx.model;
 import java.io.FileNotFoundException;
 
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
+import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -51,8 +51,8 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 public class DocXElementConverter extends Converter<DocXElement> {
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXElementConverter.class
-			.getPackage().getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+			.getLogger(DocXElementConverter.class.getPackage().getName());
 
 	public DocXElementConverter() {
 		super(DocXElement.class);
@@ -74,7 +74,7 @@ public class DocXElementConverter extends Converter<DocXElement> {
 
 			if (factory instanceof FMLModelFactory) {
 				// System.out.println("serviceManager: " + ((FMLModelFactory) factory).getServiceManager());
-				FlexoResource<DocXDocument> documentResource = ((FMLModelFactory) factory).getServiceManager().getInformationSpace()
+				FlexoResource<DocXDocument> documentResource = ((FMLModelFactory) factory).getServiceManager().getResourceManager()
 						.getResource(documentURI, null, DocXDocument.class);
 				// System.out.println("document=" + documentResource);
 
@@ -92,7 +92,7 @@ public class DocXElementConverter extends Converter<DocXElement> {
 						e.printStackTrace();
 						return null;
 					}
-					FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> element = document.getElementWithIdentifier(elementId);
+					FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element = document.getElementWithIdentifier(elementId);
 					System.out.println("element = " + element);
 					return (DocXElement) element;
 

@@ -52,12 +52,12 @@ import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOu
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.editionaction.SetDataPropertyValueAction;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyDataProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.IndividualOfClass;
+import org.openflexo.foundation.ontology.fml.editionaction.SetDataPropertyValueAction;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -74,6 +74,7 @@ import org.openflexo.technologyadapter.owl.model.DataPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
+import org.openflexo.technologyadapter.owl.nature.OWLOntologyVirtualModelNature;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
@@ -166,8 +167,8 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 
 		@Override
 		public OWLDataProperty getDataProperty() {
-			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(dataPropertyURI)) {
-				return (OWLDataProperty) getOwningVirtualModel().getOntologyDataProperty(dataPropertyURI);
+			if (StringUtils.isNotEmpty(dataPropertyURI) && OWLOntologyVirtualModelNature.INSTANCE.hasNature(getOwningVirtualModel())) {
+				return OWLOntologyVirtualModelNature.getOWLDataProperty(dataPropertyURI, getOwningVirtualModel());
 			} else {
 				if (getAssignedFlexoProperty() != null) {
 					return getAssignedFlexoProperty().getDataProperty();
@@ -210,9 +211,9 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 			this.dataPropertyURI = dataPropertyURI;
 		}
 
-		public Object getValue(FlexoBehaviourAction action) {
+		public Object getValue(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return getValue().getBindingValue(action);
+				return getValue().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -275,10 +276,10 @@ public interface AddDataPropertyStatement extends AddStatement<DataPropertyState
 		}
 
 		@Override
-		public DataPropertyStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
+		public DataPropertyStatement execute(RunTimeEvaluationContext evaluationContext) {
 			OWLDataProperty property = getDataProperty();
-			OWLConcept<?> subject = getPropertySubject(action);
-			Object value = getValue(action);
+			OWLConcept<?> subject = getPropertySubject(evaluationContext);
+			Object value = getValue(evaluationContext);
 			if (property == null) {
 				return null;
 			}

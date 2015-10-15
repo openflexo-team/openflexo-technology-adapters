@@ -62,7 +62,7 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.fml.action.CreateFlexoRole;
+import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -221,7 +221,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		log("testCreateViewPoint()");
 
 		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI,
-				((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), serviceManager.getViewPointLibrary());
+				((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), serviceManager.getViewPointLibrary(), resourceCenter);
 		viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
@@ -252,7 +252,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		FlexoConcept flexoConcept = virtualModel.getFMLModelFactory().newInstance(FlexoConcept.class);
 		virtualModel.addToFlexoConcepts(flexoConcept);
 
-		CreateFlexoRole createShapeRole = CreateFlexoRole.actionType.makeNewAction(flexoConcept, null, editor);
+		CreateTechnologyRole createShapeRole = CreateTechnologyRole.actionType.makeNewAction(flexoConcept, null, editor);
 		createShapeRole.setRoleName("shape");
 		createShapeRole.setFlexoRoleClass(ShapeRole.class);
 		createShapeRole.doAction();
@@ -313,8 +313,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		newDirectory.mkdirs();
 
 		try {
-			File dsDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory())
-					.getName());
+			File dsDir = new File(newDirectory,
+					ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()).getName());
 			dsDir.mkdirs();
 			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), dsDir);
 			File vpDir = new File(newDirectory, ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()).getName());
@@ -342,8 +342,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		assertTrue(FMLControlledDiagramVirtualModelNature.INSTANCE.hasNature(retrievedVMResource.getVirtualModel()));
 
-		TypedDiagramModelSlot retrievedDiagramMS = FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(retrievedVMResource
-				.getVirtualModel());
+		TypedDiagramModelSlot retrievedDiagramMS = FMLControlledDiagramVirtualModelNature
+				.getTypedDiagramModelSlot(retrievedVMResource.getVirtualModel());
 		assertNotNull(retrievedDiagramMS);
 		assertEquals(1, retrievedDiagramMS.getPaletteElementBindings().size());
 

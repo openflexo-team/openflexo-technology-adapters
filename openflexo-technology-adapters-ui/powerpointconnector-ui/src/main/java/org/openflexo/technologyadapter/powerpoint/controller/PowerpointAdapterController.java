@@ -120,7 +120,7 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (PowerpointSlideRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(PowerpointSlide.class);
 		}

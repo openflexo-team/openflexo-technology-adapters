@@ -44,7 +44,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.DeleteAction;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -69,10 +69,10 @@ public interface RemoveEMFObjectIndividual extends DeleteAction<EMFObjectIndivid
 		/**
 		 * Follow the link.
 		 * 
-		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#execute(org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction)
+		 * @see org.openflexo.foundation.fml.editionaction.DeleteAction#execute(RunTimeEvaluationContext)
 		 */
 		@Override
-		public EMFObjectIndividual execute(FlexoBehaviourAction action) {
+		public EMFObjectIndividual execute(RunTimeEvaluationContext evaluationContext) {
 			// ModelSlotInstance<EMFModel, EMFMetaModel> modelSlotInstance = getModelSlotInstance(action);
 			// EObject object = objectIndividual.getObject();
 			// EObject container = object.eContainer();

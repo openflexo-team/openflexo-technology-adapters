@@ -81,11 +81,6 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
-
-import org.eclipse.uml2.uml.profile.*;
-import org.eclipse.uml2.uml.NamedElement;
-import org.eclipse.uml2.uml.Profile;
-
 /**
  * Test Class for EMF Model Edition.
  * 
@@ -123,7 +118,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("ResourceCenter= " + resourceCenter);
 		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestUMLViewPoint",
-				resourceCenter.getDirectory(), serviceManager.getViewPointLibrary());
+				resourceCenter.getDirectory(), serviceManager.getViewPointLibrary(), resourceCenter);
 		// assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory().exists());
 		// assertTrue(((ViewPointResource) newViewPoint.getResource()).getFile().exists());
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
@@ -139,7 +134,8 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 		EMFMetaModelRepository emfMetaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
 
-		umlMetaModelResource = technologicalAdapter.getTechnologyContextManager().getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
+		umlMetaModelResource = technologicalAdapter.getTechnologyContextManager()
+				.getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
 
 		assertNotNull(umlMetaModelResource);
 
@@ -173,7 +169,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			try {
 				RepositoryFolder<FlexoResource<?>> modelFolder = project.createNewFolder("Models");
 				umlModelResource = technologicalAdapter.createNewEMFModel(new File(modelFolder.getFile(), "coucou.uml"), "myURI",
-						umlMetaModelResource);
+						umlMetaModelResource, resourceCenter);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -245,12 +241,9 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		System.out.println("Saved: " + ((VirtualModelResource) newVirtualModel.getResource()).getFlexoIODelegate().toString());
 
 		/**
-		NamedElement e = null;
-		Profile profile = null;
-		profile.getAllProfileApplications();
-		e.getApplicableStereotypes();
+		 * NamedElement e = null; Profile profile = null; profile.getAllProfileApplications(); e.getApplicableStereotypes();
 		 **/
-		
+
 	}
 
 	@Test
@@ -266,9 +259,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			creationSchemeCreationAction.setCreationScheme(creationScheme);
 			assertNotNull(creationSchemeCreationAction);
 
-
 			/* TODO some stuff TO DO HERE */
-
 
 			umlModelResource.save(null);
 

@@ -48,6 +48,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.CannotRenameException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -67,7 +68,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
  * @author sylvain
  * 
  */
-public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGraphicalRepresentation> implements Diagram {
+public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGraphicalRepresentation>implements Diagram {
 
 	private static final Logger logger = Logger.getLogger(DiagramImpl.class.getPackage().getName());
 
@@ -76,11 +77,11 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	private File expectedScreenshotImageFile = null;
 
 	public static DiagramResource newDiagramResource(String diagramName, String diagramTitle, String uri, File diagramFile,
-			DiagramSpecification diagramSpecification, FlexoServiceManager serviceManager) throws InvalidFileNameException,
-			SaveResourceException {
+			DiagramSpecification diagramSpecification, FlexoResourceCenter<?> resourceCenter, FlexoServiceManager serviceManager)
+					throws InvalidFileNameException, SaveResourceException {
 
 		DiagramResource newDiagramResource = DiagramResourceImpl.makeDiagramResource(diagramName, uri, diagramFile,
-				diagramSpecification.getResource(), serviceManager);
+				diagramSpecification.getResource(), resourceCenter, serviceManager);
 
 		Diagram newDiagram = newDiagramResource.getFactory().makeNewDiagram(diagramSpecification);
 		newDiagramResource.setResourceData(newDiagram);

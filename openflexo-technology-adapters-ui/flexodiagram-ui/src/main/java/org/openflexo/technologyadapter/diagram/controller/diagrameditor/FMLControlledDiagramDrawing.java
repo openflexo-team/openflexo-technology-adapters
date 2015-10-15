@@ -66,8 +66,10 @@ import org.openflexo.foundation.fml.rt.VirtualModelInstance.ObjectLookupResult;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
+import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
+import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -138,6 +140,10 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 	@Override
 	public Diagram getDiagram() {
 		return FMLControlledDiagramVirtualModelInstanceNature.getDiagram(getVirtualModelInstance());
+	}
+
+	public TypedDiagramModelSlot getDiagramModelSlot() {
+		return FMLControlledDiagramVirtualModelNature.getTypedDiagramModelSlot(getVirtualModelInstance().getVirtualModel());
 	}
 
 	@Override
@@ -222,6 +228,27 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 	public List<FMLControlledDiagramElement<?, ?>> getFMLControlledDiagramElements(FlexoConceptInstance flexoConceptInstance) {
 		return diagramElementsForFlexoConceptInstances.get(flexoConceptInstance);
 	}
+
+	/*@Override
+	protected DrawingGraphicalRepresentation retrieveGraphicalRepresentation(Diagram diagram, DiagramFactory factory) {
+		DrawingGraphicalRepresentation returned = null;
+		if (diagram.getGraphicalRepresentation() != null) {
+			diagram.getGraphicalRepresentation().setFactory(factory);
+			returned = diagram.getGraphicalRepresentation();
+		} else {
+			returned = factory.makeDrawingGraphicalRepresentation();
+			diagram.setGraphicalRepresentation(returned);
+
+			System.out.println("He he , je vais pouvoir faire un set de la GR: " + getDiagramModelSlot());
+			getDiagramModelSlot().setGraphicalRepresentation(returned);
+
+		}
+		returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext()));
+		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
+			returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext(), true));
+		}
+		return returned;
+	}*/
 
 	@Override
 	public void init() {

@@ -49,7 +49,7 @@ public class XMLTechnologyContextManager extends TechnologyContextManager<XMLTec
 
 	@Override
 	public XMLTechnologyAdapter getTechnologyAdapter() {
-		return (XMLTechnologyAdapter) super.getTechnologyAdapter();
+		return super.getTechnologyAdapter();
 	}
 
 }

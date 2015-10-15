@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml;
 
 import java.io.File;
@@ -111,7 +110,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 	// public static abstract class XMLModelSlotImpl extends AbstractXMLModelSlot.AbstractXMLModelSlotImpl<XMLURIProcessor> implements
 	// XMLModelSlot {
 	// TODO : check for multiple inheritance issues in PAMELA
-	public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel> implements XMLModelSlot {
+	public static abstract class XMLModelSlotImpl extends TypeAwareModelSlotImpl<XMLModel, XMLMetaModel>implements XMLModelSlot {
 
 		private static final Logger logger = Logger.getLogger(XMLModelSlot.class.getPackage().getName());
 
@@ -156,10 +155,12 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 				XMLURIProcessor p = retrieveURIProcessorForType(((XMLIndividual) o).getType());
 				if (p != null) {
 					return p.getURIForObject(msInstance, (XMLObject) o);
-				} else {
+				}
+				else {
 					logger.warning("Unable to calculate URI as I have no XMLURIProcessor");
 				}
-			} else if (o instanceof XMLType) {
+			}
+			else if (o instanceof XMLType) {
 				return ((XMLType) o).getURI();
 			}
 
@@ -292,7 +293,8 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> mmRes = this.getMetaModelResource();
 			if (mmRes != null) {
 				return mmRes.getMetaModelData();
-			} else
+			}
+			else
 				return null;
 		}
 
@@ -314,13 +316,13 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 			XMLFileResource returned = null;
 
 			if (resourceCenter instanceof FileSystemBasedResourceCenter) {
-				File xmlFile = new File(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory(), relativePath
-						+ System.getProperty("file.separator") + filename);
+				File xmlFile = new File(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory(),
+						relativePath + System.getProperty("file.separator") + filename);
 
 				modelUri = xmlFile.toURI().toString();
 
-				XMLModelRepository modelRepository = resourceCenter
-						.getRepository(XMLModelRepository.class, getModelSlotTechnologyAdapter());
+				XMLModelRepository modelRepository = resourceCenter.getRepository(XMLModelRepository.class,
+						getModelSlotTechnologyAdapter());
 
 				return createEmptyXMLFileResource(xmlFile, modelRepository, (XSDMetaModelResource) metaModelResource);
 			}
@@ -331,15 +333,17 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		private XMLFileResource createEmptyXMLFileResource(File xmlFile, XMLModelRepository modelRepository,
 				XSDMetaModelResource metaModelResource) {
 
-			XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile, (XMLTechnologyContextManager) this
-					.getModelSlotTechnologyAdapter().getTechnologyContextManager());
+			XMLFileResource returned = XMLFileResourceImpl.makeXMLFileResource(xmlFile,
+					(XMLTechnologyContextManager) this.getModelSlotTechnologyAdapter().getTechnologyContextManager(),
+					modelRepository.getResourceCenter());
 
 			RepositoryFolder<XMLFileResource> folder;
 			try {
 				folder = modelRepository.getRepositoryFolder(xmlFile, true);
 				if (folder != null) {
 					modelRepository.registerResource(returned, folder);
-				} else {
+				}
+				else {
 					modelRepository.registerResource(returned);
 				}
 			} catch (IOException e1) {

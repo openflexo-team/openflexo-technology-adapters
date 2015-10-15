@@ -105,10 +105,10 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 	}
 
-	protected ODTDocumentResource tryToLookupODT(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
+	protected <I> ODTDocumentResource tryToLookupODT(FlexoResourceCenter<I> resourceCenter, I candidateElement) {
 		ODTTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidODT(candidateElement)) {
-			ODTDocumentResource wbRes = retrieveODTResource(candidateElement);
+			ODTDocumentResource wbRes = retrieveODTResource(candidateElement, resourceCenter);
 			ODTDocumentRepository wbRepository = resourceCenter.getRepository(ODTDocumentRepository.class, this);
 			if (wbRes != null) {
 				RepositoryFolder<ODTDocumentResource> folder;
@@ -129,16 +129,18 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public ODTDocumentResource retrieveODTResource(Object odtDocumentItem) {
+	public ODTDocumentResource retrieveODTResource(Object odtDocumentItem, FlexoResourceCenter<?> resourceCenter) {
 
 		ODTDocumentResource returned = null; // getTechnologyContextManager().getExcelWorkbookResource(workbook);
 		if (returned == null) {
 			if (odtDocumentItem instanceof File) {
-				returned = ODTDocumentResourceImpl.retrieveODTDocumentResource((File) odtDocumentItem, getTechnologyContextManager());
+				returned = ODTDocumentResourceImpl.retrieveODTDocumentResource((File) odtDocumentItem, getTechnologyContextManager(),
+						resourceCenter);
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerODTDocumentResource(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve ODTDocumentResource resource for " + odtDocumentItem);
 			}
 		}
@@ -149,7 +151,8 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 	public boolean isValidODT(Object candidateElement) {
 		if (candidateElement instanceof File && isValidODTFile(((File) candidateElement))) {
 			return true;
-		} else if (candidateElement instanceof InJarResourceImpl && isValidODTInJar((InJarResourceImpl) candidateElement)) {
+		}
+		else if (candidateElement instanceof InJarResourceImpl && isValidODTInJar((InJarResourceImpl) candidateElement)) {
 			return true;
 		}
 		return false;
@@ -211,6 +214,11 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 			String modelUri) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "ODT";
 	}
 
 }

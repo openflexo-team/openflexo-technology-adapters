@@ -38,11 +38,26 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.logging.Logger;
 
+import javax.xml.bind.JAXBElement;
+
+import org.docx4j.dml.wordprocessingDrawing.Inline;
+import org.docx4j.jaxb.Context;
+import org.docx4j.openpackaging.exceptions.InvalidFormatException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
+import org.docx4j.openpackaging.parts.WordprocessingML.BinaryPartAbstractImage;
+import org.docx4j.wml.Drawing;
 import org.docx4j.wml.P;
+import org.docx4j.wml.R;
+import org.docx4j.wml.SdtBlock;
 import org.docx4j.wml.Style;
+import org.docx4j.wml.Tbl;
+import org.docx4j.wml.Tc;
+import org.docx4j.wml.Text;
+import org.docx4j.wml.Tr;
 import org.openflexo.foundation.doc.DocumentFactory;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -63,8 +78,8 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	private static final Logger logger = Logger.getLogger(DocXFactory.class.getPackage().getName());
 
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXParagraph.class, DocXFragment.class, DocXStyle.class),
-				resource, editingContext);
+		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXFragment.class, DocXStyle.class), resource,
+				editingContext);
 	}
 
 	@Override
@@ -75,6 +90,25 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 	@Override
 	protected DocXDocument makeDocument() {
 		return newInstance(DocXDocument.class);
+	}
+
+	public DocXDocument makeNewDocXDocument() {
+		DocXDocument returned = makeDocument();
+		WordprocessingMLPackage wordMLPackage;
+		try {
+			wordMLPackage = WordprocessingMLPackage.createPackage();
+		} catch (InvalidFormatException e) {
+			e.printStackTrace();
+			return returned;
+		}
+		// wordMLPackage.getMainDocumentPart().addParagraphOfText("Hello Word!");
+
+		// wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Title", "Hello Word!");
+		// wordMLPackage.getMainDocumentPart().addStyledParagraphOfText("Subtitle", "This is a subtitle!");
+
+		returned.updateFromWordprocessingMLPackage(wordMLPackage, this);
+
+		return returned;
 	}
 
 	public DocXDocument makeNewDocXDocument(WordprocessingMLPackage wpmlPackage) {
@@ -92,16 +126,180 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		DocXParagraph returned = makeParagraph();
 		returned.updateFromP(p, this);
 		if (StringUtils.isEmpty(returned.getIdentifier())) {
-			/*java.math.BigInteger id = java.math.BigInteger.valueOf(Math.abs(RANDOM.nextInt()));
-			String newId = "Prout-" + id;
-			p.setParaId(newId);*/
 			p.setParaId(generateId());
 		}
 		return returned;
 	}
 
+	public DocXParagraph makeNewDocXParagraph(String text) {
+		DocXParagraph returned = makeNewDocXParagraph(Context.getWmlObjectFactory().createP());
+		DocXTextRun run = makeTextRun(text);
+		returned.addToRuns(run);
+		return returned;
+	}
+
+	@Override
+	public DocXTextRun makeTextRun() {
+		return newInstance(DocXTextRun.class);
+	}
+
+	public DocXRun makeNewDocXRun(R r) {
+
+		for (Object o : r.getContent()) {
+			if (o instanceof JAXBElement) {
+				o = ((JAXBElement) o).getValue();
+			}
+			if (o instanceof Text) {
+				return makeNewDocXTextRun(r);
+			}
+			if (o instanceof Drawing) {
+				return makeNewDocXDrawingRun(r);
+			}
+		}
+
+		return null;
+	}
+
+	public DocXTextRun makeNewDocXTextRun(R r) {
+
+		DocXTextRun returned = makeTextRun();
+		returned.updateFromR(r, this);
+		return returned;
+	}
+
+	@Override
+	public DocXTextRun makeTextRun(String text) {
+		DocXTextRun returned = makeNewDocXTextRun(Context.getWmlObjectFactory().createR());
+		returned.setText(text);
+		return returned;
+	}
+
+	@Override
+	public DocXDrawingRun makeDrawingRun() {
+		return newInstance(DocXDrawingRun.class);
+	}
+
+	public DocXDrawingRun makeNewDocXDrawingRun(R r) {
+
+		DocXDrawingRun returned = makeDrawingRun();
+		returned.updateFromR(r, this);
+		return returned;
+	}
+
+	@Override
+	public DocXDrawingRun makeDrawingRun(File imageFile) {
+
+		byte[] imageData;
+		try {
+			imageData = convertImageToByteArray(imageFile);
+
+			R run = Context.getWmlObjectFactory().createR();
+			Drawing drawing = Context.getWmlObjectFactory().createDrawing();
+			run.getContent().add(drawing);
+
+			drawing.getAnchorOrInline().add(makeImageInline(imageData));
+
+			return makeNewDocXDrawingRun(run);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
+	@Override
+	public DocXDrawingRun makeDrawingRun(BufferedImage image) {
+
+		byte[] imageData;
+		try {
+			imageData = convertImageToByteArray(image);
+
+			R run = Context.getWmlObjectFactory().createR();
+			Drawing drawing = Context.getWmlObjectFactory().createDrawing();
+			run.getContent().add(drawing);
+
+			drawing.getAnchorOrInline().add(makeImageInline(imageData));
+
+			return makeNewDocXDrawingRun(run);
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+
+	}
+
+	@Override
+	public DocXTable makeTable() {
+		return newInstance(DocXTable.class);
+	}
+
+	public DocXTable makeNewDocXTable(Tbl tbl) {
+		DocXTable returned = makeTable();
+		returned.updateFromTbl(tbl, this);
+		return returned;
+	}
+
+	@Override
+	public DocXTableRow makeTableRow() {
+		return newInstance(DocXTableRow.class);
+	}
+
+	public DocXTableRow makeNewDocXTableRow(Tr tr) {
+		DocXTableRow returned = makeTableRow();
+		returned.updateFromTr(tr, this);
+		return returned;
+	}
+
+	@Override
+	public DocXTableCell makeTableCell() {
+		return newInstance(DocXTableCell.class);
+	}
+
+	public DocXTableCell makeNewDocXTableCell(Tc tc) {
+		DocXTableCell returned = makeTableCell();
+		returned.updateFromTc(tc, this);
+		return returned;
+	}
+
+	/**
+	 * Build new empty DocXSdtBlock
+	 * 
+	 * @return
+	 */
+	@Override
+	public DocXSdtBlock makeSdtBlock() {
+		return newInstance(DocXSdtBlock.class);
+	}
+
+	public DocXSdtBlock makeNewSdtBlock(SdtBlock sdtBlock) {
+		DocXSdtBlock returned = makeSdtBlock();
+		returned.updateFromSdtBlock(sdtBlock, this);
+		return returned;
+	}
+
+	/**
+	 * Build new empty DocXUnmappedElement
+	 * 
+	 * @return
+	 */
+	@Override
+	public DocXUnmappedElement<?> makeUnmappedElement() {
+		return newInstance(DocXUnmappedElement.class);
+	}
+
+	public <T> DocXUnmappedElement<T> makeNewUnmappedElement(T docXObject) {
+		DocXUnmappedElement<T> returned = (DocXUnmappedElement<T>) makeUnmappedElement();
+		returned.updateFromDocXObject(docXObject, this);
+		return returned;
+	}
+
 	private final java.util.Random RANDOM = new java.util.Random();
 
+	@Override
 	public String generateId() {
 		return java.math.BigInteger.valueOf(Math.abs(RANDOM.nextInt())).toString(16).toUpperCase();
 	}
@@ -125,6 +323,27 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 		DocXFragment returned = newInstance(DocXFragment.class);
 		returned.setFlexoDocument(document);
 		return returned;
+	}
+
+	/**
+	 * Docx4j contains a utility method to create an image part from an array of bytes and then adds it to the given package. In order to be
+	 * able to add this image to a paragraph, we have to convert it into an inline object. For this there is also a method, which takes a
+	 * filename hint, an alt-text, two ids and an indication on whether it should be embedded or linked to. One id is for the drawing object
+	 * non-visual properties of the document, and the second id is for the non visual drawing properties of the picture itself. Finally we
+	 * add this inline object to the paragraph and the paragraph to the main document of the package.
+	 *
+	 * @param bytes
+	 *            The bytes of the image
+	 * @throws Exception
+	 *             Sadly the createImageInline method throws an Exception (and not a more specific exception type)
+	 */
+	public Inline makeImageInline(byte[] bytes) throws Exception {
+		BinaryPartAbstractImage imagePart = BinaryPartAbstractImage
+				.createImagePart(getResource().getDocument().getWordprocessingMLPackage(), bytes);
+
+		int docPrId = 1;
+		int cNvPrId = 2;
+		return imagePart.createImageInline("Filename hint", "Alternative text", docPrId, cNvPrId, false);
 	}
 
 }

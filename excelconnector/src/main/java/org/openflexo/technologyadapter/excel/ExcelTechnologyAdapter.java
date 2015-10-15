@@ -132,7 +132,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	protected ExcelWorkbookResource tryToLookupWorkbook(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
 		ExcelTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidWorkbook(candidateElement)) {
-			ExcelWorkbookResource wbRes = retrieveWorkbookResource(candidateElement);
+			ExcelWorkbookResource wbRes = retrieveWorkbookResource(candidateElement, resourceCenter);
 			ExcelWorkbookRepository wbRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class, this);
 			if (wbRes != null) {
 				RepositoryFolder<ExcelWorkbookResource> folder;
@@ -153,19 +153,22 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public ExcelWorkbookResource retrieveWorkbookResource(Object workbook) {
+	public ExcelWorkbookResource retrieveWorkbookResource(Object workbook, FlexoResourceCenter<?> resourceCenter) {
 
 		ExcelWorkbookResource returned = getTechnologyContextManager().getExcelWorkbookResource(workbook);
 		if (returned == null) {
 			if (workbook instanceof File) {
-				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File) workbook, getTechnologyContextManager());
-			} else if (workbook instanceof InJarResourceImpl) {
+				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File) workbook, getTechnologyContextManager(),
+						resourceCenter);
+			}
+			else if (workbook instanceof InJarResourceImpl) {
 				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((InJarResourceImpl) workbook,
-						getTechnologyContextManager());
+						getTechnologyContextManager(), resourceCenter);
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerExcelWorkbook(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve ExcelWorkbook resource for " + workbook);
 			}
 		}
@@ -176,7 +179,8 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	public boolean isValidWorkbook(Object candidateElement) {
 		if (candidateElement instanceof File && isValidWorkbookFile(((File) candidateElement))) {
 			return true;
-		} else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
+		}
+		else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
 			return true;
 		}
 		return false;
@@ -252,11 +256,16 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 		modelUri = excelFile.toURI().toString();
 
 		ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(modelUri, excelFile,
-				getTechnologyContextManager());
+				getTechnologyContextManager(), project);
 
 		getTechnologyContextManager().registerResource(workbookResource);
 
 		return workbookResource;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "XLS";
 	}
 
 }

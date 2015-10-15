@@ -58,8 +58,8 @@ import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.ParametersRetriever;
 
-public class LinkSchemeActionInitializer extends
-		ActionInitializer<LinkSchemeAction, VirtualModelInstanceObject, VirtualModelInstanceObject> {
+public class LinkSchemeActionInitializer
+		extends ActionInitializer<LinkSchemeAction, VirtualModelInstanceObject, VirtualModelInstanceObject> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
@@ -72,7 +72,7 @@ public class LinkSchemeActionInitializer extends
 		return new FlexoActionInitializer<LinkSchemeAction>() {
 			@Override
 			public boolean run(EventObject e, LinkSchemeAction action) {
-				ParametersRetriever<LinkScheme> parameterRetriever = new ParametersRetriever<LinkScheme>(action);
+				ParametersRetriever<LinkScheme> parameterRetriever = new ParametersRetriever<LinkScheme>(action, getController());
 				if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
 					return true;
 				}

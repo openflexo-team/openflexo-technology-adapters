@@ -80,7 +80,7 @@ public class ODTAdapterController extends TechnologyAdapterController<ODTTechnol
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> arg0) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> arg0) {
 		// TODO Auto-generated method stub
 		return null;
 	}

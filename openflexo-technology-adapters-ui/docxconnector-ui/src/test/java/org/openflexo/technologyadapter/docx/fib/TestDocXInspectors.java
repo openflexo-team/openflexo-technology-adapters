@@ -66,8 +66,43 @@ public class TestDocXInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
+	public void testDocXFragmentRoleInspector() {
+		validateFIB("Inspectors/DocX/DocXFragmentRole.inspector");
+	}
+
+	@Test
+	public void testDocXImageRoleInspector() {
+		validateFIB("Inspectors/DocX/DocXImageRole.inspector");
+	}
+
+	@Test
 	public void testDocXModelSlotInspector() {
 		validateFIB("Inspectors/DocX/DocXModelSlot.inspector");
+	}
+
+	@Test
+	public void testDocXTableRoleInspector() {
+		validateFIB("Inspectors/DocX/DocXTableRole.inspector");
+	}
+
+	@Test
+	public void testAddDocXFragmentInspector() {
+		validateFIB("Inspectors/DocX/EditionAction/AddDocXFragment.inspector");
+	}
+
+	@Test
+	public void testSelectGeneratedDocXFragmentInspector() {
+		validateFIB("Inspectors/DocX/EditionAction/SelectGeneratedDocXFragment.inspector");
+	}
+
+	@Test
+	public void testSelectGeneratedDocXTableInspector() {
+		validateFIB("Inspectors/DocX/EditionAction/SelectGeneratedDocXTable.inspector");
+	}
+
+	@Test
+	public void testSelectGeneratedDocXTImageInspector() {
+		validateFIB("Inspectors/DocX/EditionAction/SelectGeneratedDocXTImage.inspector");
 	}
 
 }

@@ -52,6 +52,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -89,7 +90,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	 * @param technologyContextManager
 	 * @return
 	 */
-	public static XMLFileResource makeXMLFileResource(File xmlFile, XMLTechnologyContextManager technologyContextManager) {
+	public static XMLFileResource makeXMLFileResource(File xmlFile, XMLTechnologyContextManager technologyContextManager,
+			FlexoResourceCenter<?> resourceCenter) {
 		try {
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
 					XMLFileResource.class));
@@ -98,6 +100,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xmlFile, factory));
 
 			returned.setURI(xmlFile.toURI().toString());
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
@@ -162,17 +165,6 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			}
 		}
 
-	}
-
-	/**
-	 * URI here is the full path to the file
-	 */
-	@Override
-	public String getURI() {
-		if (getFile() != null) {
-			return getFile().toURI().toString();
-		}
-		return "uri_not_found";
 	}
 
 	/**

@@ -44,10 +44,10 @@ import java.util.logging.Logger;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.editionaction.AddClass;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.ontology.DuplicateURIException;
+import org.openflexo.foundation.ontology.fml.editionaction.AddClass;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -82,11 +82,12 @@ public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass>, OWLAction
 		}
 
 		@Override
-		public OWLClass execute(FlexoBehaviourAction action) {
+		public OWLClass execute(RunTimeEvaluationContext evaluationContext) {
+
 			OWLClass father = getOntologyClass();
 			String newClassName = null;
 			try {
-				newClassName = getClassName().getBindingValue(action);
+				newClassName = getClassName().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e1) {
 				e1.printStackTrace();
 			} catch (NullReferenceException e1) {
@@ -97,17 +98,19 @@ public interface AddOWLClass extends AddClass<OWLModelSlot, OWLClass>, OWLAction
 			OWLClass newClass = null;
 			try {
 				logger.info("Adding class " + newClassName + " as " + father);
-				newClass = getModelSlotInstance(action).getAccessedResourceData().createOntologyClass(newClassName, father);
+				newClass = getModelSlotInstance(evaluationContext).getAccessedResourceData().createOntologyClass(newClassName, father);
 				logger.info("Added class " + newClass.getName() + " as " + father);
 			} catch (DuplicateURIException e) {
 				e.printStackTrace();
 			}
 			return newClass;
+
 		}
 
 		@Override
-		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(action);
+		public TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot> getModelSlotInstance(
+				RunTimeEvaluationContext evaluationContext) {
+			return (TypeAwareModelSlotInstance<OWLOntology, OWLOntology, OWLModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 	}

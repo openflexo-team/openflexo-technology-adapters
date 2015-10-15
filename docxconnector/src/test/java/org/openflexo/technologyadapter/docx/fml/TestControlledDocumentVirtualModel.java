@@ -46,17 +46,16 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
-import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
+import org.openflexo.foundation.doc.fml.FragmentActorReference;
+import org.openflexo.foundation.doc.fml.FragmentActorReference.ElementReference;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
@@ -64,7 +63,7 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.fml.action.CreateFlexoRole;
+import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
@@ -79,45 +78,41 @@ import org.openflexo.foundation.fml.rt.action.CreateView;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
 import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.fml.action.AddDocXFragment;
-import org.openflexo.technologyadapter.docx.fml.action.AddDocXFragment.LocationSemantics;
-import org.openflexo.technologyadapter.docx.fml.action.GenerateDocXDocument;
+import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
+import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.LocationSemantics;
+import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
+import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelNature;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the creation of a VirtualModel whose instances have {@link FMLControlledDocumentVirtualModelNature}
+ * Test the creation and some manipulations of a {@link VirtualModel} with {@link FMLControlledDocXVirtualModelNature}<br>
+ * We basically test here the generation of a plain document from a template, and the adding of a fragment at the end of the document
  * 
  * @author sylvain
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTimeTestCase {
-
-	/*private final String DIAGRAM_SPECIFICATION_NAME = "myDiagramSpecification";
-	private final String DIAGRAM_SPECIFICATION_URI = "http://myDiagramSpecification";
-	private final String PALETTE_NAME = "myDiagramSpecificationPalette";
-	private final String PALETTE_ELEMENT_NAME = "myPaletteElement";*/
+public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 	private final String VIEWPOINT_NAME = "TestViewPointControlledDocument";
 	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestViewPointControlledDocument";
 
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository repository;
-	public static FlexoEditor editor;
-	public static FlexoProject project;
 	public static View newView;
 	public static VirtualModelInstance newVirtualModelInstance;
 
@@ -128,11 +123,36 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	public static ViewPoint viewPoint;
 	public static ViewPointResource viewPointResource;
 	public static DocXModelSlot docXModelSlot;
+	public static DocXFragmentRole fragmentRole;
 	public static VirtualModel virtualModel;
 	public static ActionScheme actionScheme;
 
+	@AfterClass
+	public static void tearDownClass() {
+
+		technologicalAdapter = null;
+		repository = null;
+		newView = null;
+		newVirtualModelInstance = null;
+
+		templateResource = null;
+		templateDocument = null;
+		generatedDocument = null;
+
+		viewPoint = null;
+		viewPointResource = null;
+		docXModelSlot = null;
+		fragmentRole = null;
+		virtualModel = null;
+		actionScheme = null;
+
+		deleteProject();
+		deleteTestResourceCenters();
+		unloadServiceManager();
+	}
+
 	/**
-	 * Initialize
+	 * Initialize an environment with DocX technology adapter, perform some checks
 	 */
 	@Test
 	@TestOrder(1)
@@ -144,7 +164,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 		repository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
-		editor = new FlexoTestEditor(null, serviceManager);
+		_editor = new FlexoTestEditor(null, serviceManager);
 
 		assertNotNull(serviceManager);
 		assertNotNull(technologicalAdapter);
@@ -155,7 +175,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	}
 
 	/**
-	 * Test Create diagram specification resource
+	 * Test docx template loading
 	 * 
 	 * @throws FlexoException
 	 * @throws ResourceLoadingCancelledException
@@ -167,7 +187,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		log("testLoadTemplate()");
 
-		templateResource = getDocument("StructuredDocument.docx");
+		templateResource = getDocumentResource("StructuredDocument.docx");
 
 		assertNotNull(templateDocument = templateResource.getResourceData(null));
 
@@ -175,6 +195,17 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 	}
 
+	/**
+	 * Internal method used to retrieve in test resource center a docx resource identified by document name<br>
+	 * Also assume this resource will be loaded
+	 * 
+	 * @param documentName
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws ResourceLoadingCancelledException
+	 * @throws FlexoException
+	 */
+	/*@Override
 	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 
@@ -185,7 +216,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 
-		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getInformationSpace().getResource(documentURI, null,
+		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
 		assertNotNull(documentResource);
 
@@ -194,20 +225,23 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertNotNull(document.getWordprocessingMLPackage());
 
 		return documentResource;
-	}
+	}*/
 
+	/**
+	 * Create a brand new _project
+	 */
 	@Test
 	@TestOrder(4)
 	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
-		System.out.println("Created project " + project.getProjectDirectory());
-		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+		_editor = createProject("TestProject");
+		_project = _editor.getProject();
+		System.out.println("Created _project " + _project.getProjectDirectory());
+		assertTrue(_project.getProjectDirectory().exists());
+		assertTrue(_project.getProjectDataResource().getFlexoIODelegate().exists());
 	}
 
 	/**
-	 * Test the VP creation, in the project
+	 * Creates a new empty ViewPoint in the _project
 	 */
 	@Test
 	@TestOrder(5)
@@ -215,7 +249,8 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		log("testCreateViewPoint()");
 
-		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, project.getDirectory(), serviceManager.getViewPointLibrary());
+		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, _project.getDirectory(),
+				serviceManager.getViewPointLibrary(), resourceCenter);
 		viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
@@ -223,7 +258,11 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	}
 
 	/**
-	 * Test the VirtualModel creation
+	 * Test the VirtualModel creation<br>
+	 * We create here a VirtualModel with a unique {@link DocXModelSlot}, configured with template docx Then we define a fragment role on
+	 * the {@link VirtualModel}<br>
+	 * We also define an {@link ActionScheme} on the {@link VirtualModel}, which generate the docx document from the template and then add a
+	 * fragment to the end of document
 	 * 
 	 * @throws FragmentConsistencyException
 	 */
@@ -248,13 +287,13 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		// FlexoConcept flexoConcept = virtualModel.getFMLModelFactory().newInstance(FlexoConcept.class);
 		// virtualModel.addToFlexoConcepts(flexoConcept);
 
-		CreateFlexoRole createFragmentRole = CreateFlexoRole.actionType.makeNewAction(virtualModel, null, editor);
+		CreateTechnologyRole createFragmentRole = CreateTechnologyRole.actionType.makeNewAction(virtualModel, null, _editor);
 		createFragmentRole.setRoleName("fragment");
 		createFragmentRole.setFlexoRoleClass(DocXFragmentRole.class);
 		createFragmentRole.doAction();
 		assertTrue(createFragmentRole.hasActionExecutionSucceeded());
 
-		DocXFragmentRole fragmentRole = (DocXFragmentRole) createFragmentRole.getNewFlexoRole();
+		fragmentRole = (DocXFragmentRole) createFragmentRole.getNewFlexoRole();
 		// FMLModelFactory factory = virtualModel.getFMLModelFactory();
 
 		DocXParagraph startParagraph = (DocXParagraph) templateDocument.getElements().get(7);
@@ -268,7 +307,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		assertEquals(fragmentRole.getFragment(), fragment);
 
-		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(virtualModel, null, editor);
+		CreateFlexoBehaviour createActionScheme = CreateFlexoBehaviour.actionType.makeNewAction(virtualModel, null, _editor);
 		createActionScheme.setFlexoBehaviourName("generate");
 		createActionScheme.setFlexoBehaviourClass(ActionScheme.class);
 		createActionScheme.doAction();
@@ -276,7 +315,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		actionScheme = (ActionScheme) createActionScheme.getNewFlexoBehaviour();
 
 		CreateEditionAction createGenerateDocXDocumentAction = CreateEditionAction.actionType.makeNewAction(actionScheme.getControlGraph(),
-				null, editor);
+				null, _editor);
 		// createAddShape.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createGenerateDocXDocumentAction.setModelSlot(docXModelSlot);
 		createGenerateDocXDocumentAction.setEditionActionClass(GenerateDocXDocument.class);
@@ -284,7 +323,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertTrue(createGenerateDocXDocumentAction.hasActionExecutionSucceeded());
 
 		CreateEditionAction createFragmentAction = CreateEditionAction.actionType.makeNewAction(actionScheme.getControlGraph(), null,
-				editor);
+				_editor);
 		// createAddShape.actionChoice = CreateEditionActionChoice.ModelSlotSpecificAction;
 		createFragmentAction.setModelSlot(docXModelSlot);
 		createFragmentAction.setEditionActionClass(AddDocXFragment.class);
@@ -303,18 +342,18 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		System.out.println(virtualModel.getFMLModelFactory().stringRepresentation(virtualModel));
 
-		assertTrue(virtualModel.hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE));
-		assertEquals(docXModelSlot, FMLControlledDocumentVirtualModelNature.getDocumentModelSlot(virtualModel));
+		assertTrue(virtualModel.hasNature(FMLControlledDocXVirtualModelNature.INSTANCE));
+		assertEquals(docXModelSlot, FMLControlledDocXVirtualModelNature.getDocumentModelSlot(virtualModel));
 
 	}
 
 	/**
-	 * Instantiate in project a View conform to the ViewPoint
+	 * Instantiate in _project a View conform to the ViewPoint
 	 */
 	@Test
 	@TestOrder(7)
 	public void testCreateView() {
-		CreateView action = CreateView.actionType.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
+		CreateView action = CreateView.actionType.makeNewAction(_project.getViewLibrary().getRootFolder(), null, _editor);
 		action.setNewViewName("MyView");
 		action.setNewViewTitle("Test creation of a new view");
 		action.setViewpointResource((ViewPointResource) viewPoint.getResource());
@@ -328,7 +367,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 	}
 
 	/**
-	 * Instantiate in project a VirtualModelInstance conform to the VirtualModel
+	 * Instantiate in _project a VirtualModelInstance conform to the VirtualModel
 	 */
 	@Test
 	@TestOrder(8)
@@ -344,7 +383,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		assertTrue(virtualModel.getModelSlots().contains(ms));
 
-		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
+		CreateBasicVirtualModelInstance action = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, _editor);
 		action.setNewVirtualModelInstanceName("MyVirtualModelInstance");
 		action.setNewVirtualModelInstanceTitle("Test creation of a new VirtualModelInstance for document generation");
 		action.setVirtualModel(virtualModel);
@@ -355,7 +394,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		docXModelSlotInstanceConfiguration.setOption(DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource);
 		docXModelSlotInstanceConfiguration.setRelativePath("DocX");
 		docXModelSlotInstanceConfiguration.setFilename("GeneratedDocument.docx");
-		docXModelSlotInstanceConfiguration.setResourceUri("GeneratedDocument.docx");
+		// docXModelSlotInstanceConfiguration.setResourceUri("GeneratedDocument.docx");
 
 		assertTrue(docXModelSlotInstanceConfiguration.isValidConfiguration());
 
@@ -376,15 +415,15 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		FreeModelSlotInstance<DocXDocument, DocXModelSlot> docXMSInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) newVirtualModelInstance
 				.getModelSlotInstances().get(0);
 		assertNotNull(docXMSInstance);
-		// Only resource was created, resource data remains null here
-		assertNull(docXMSInstance.getAccessedResourceData());
+
+		assertNotNull(docXMSInstance.getAccessedResourceData());
 		assertNotNull(docXMSInstance.getResource());
 
-		// The VMI does not have the FMLControlledDocumentVirtualModelInstanceNature yet, because document still null
-		assertFalse(newVirtualModelInstance.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
+		// The VMI should have the FMLControlledDocXVirtualModelInstanceNature
+		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
 
-		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
-		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
+		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
+		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
 
 		// assertFalse(generatedDocument.isModified());
 		assertFalse(newVirtualModelInstance.isModified());
@@ -410,7 +449,7 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
 
 		ActionSchemeActionType actionType = new ActionSchemeActionType(actionScheme, newVirtualModelInstance);
-		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(newVirtualModelInstance, null, editor);
+		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(newVirtualModelInstance, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
 		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
@@ -425,11 +464,11 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		// Resource data is the generated document now, and is not null
 		assertNotNull(generatedDocument = docXMSInstance.getAccessedResourceData());
 
-		// The VMI has now the FMLControlledDocumentVirtualModelInstanceNature yet, because document not null anymore
-		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
+		// The VMI has now the FMLControlledDocXVirtualModelInstanceNature yet, because document not null anymore
+		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
 
-		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
-		assertNotNull(FMLControlledDocumentVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
+		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance));
+		assertNotNull(FMLControlledDocXVirtualModelInstanceNature.getModelSlotInstance(newVirtualModelInstance).getModelSlot());
 
 		newVirtualModelInstance.getResource().save(null);
 		newView.getResource().save(null);
@@ -442,56 +481,33 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		generatedDocument.getResource().save(null);
 		assertFalse(generatedDocument.isModified());
 
-		assertEquals(13 + 5, generatedDocument.getElements().size());
+		assertEquals(13, generatedDocument.getElements().size());
+
+		DocXFragment templatefragment = fragmentRole.getFragment();
+		DocXFragment generatedFragment = newVirtualModelInstance.getFlexoActor(fragmentRole);
+		FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) newVirtualModelInstance
+				.getActorReference(fragmentRole);
+
+		System.out.println("Template fragment = " + templatefragment);
+		System.out.println("Generated fragment = " + generatedFragment);
+		System.out.println("ActorReference = " + actorReference);
+
+		// OK, generatedFragment is supposed to be generated from template fragment
+		// Perform some checks
+
+		assertEquals(templatefragment.getElements().size(), generatedFragment.getElements().size());
+		for (int i = 0; i < templatefragment.getElements().size(); i++) {
+			DocXParagraph p1 = (DocXParagraph) templatefragment.getElements().get(i);
+			DocXParagraph p2 = (DocXParagraph) generatedFragment.getElements().get(i);
+			assertEquals(p1.getRawText(), p2.getRawText());
+			assertFalse(p1.getIdentifier().equals(p2.getIdentifier()));
+			assertEquals(p2.getBaseIdentifier(), p1.getIdentifier());
+			ElementReference er = actorReference.getElementReferences().get(i);
+			assertEquals(p1.getIdentifier(), er.getTemplateElementId());
+			assertEquals(p2.getIdentifier(), er.getElementId());
+		}
 
 	}
-
-	/*@Test
-	@TestOrder(9)
-	public void testPopulateVirtualModelInstance() throws SaveResourceException {
-	
-		log("testPopulateVirtualModelInstance()");
-	
-		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) newVirtualModelInstance.getResource();
-	
-		assertFalse(diagram.isModified());
-		assertFalse(newVirtualModelInstance.isModified());
-	
-		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
-	
-		DropSchemeAction action = DropSchemeAction.actionType.makeNewAction(newVirtualModelInstance, null, editor);
-		action.setDropScheme(dropScheme);
-		// action.setParent(diagram);
-		// action.setPaletteElement(paletteElement);
-		action.setDropLocation(new FGEPoint(100, 100));
-	
-		action.doAction();
-		assertTrue(action.hasActionExecutionSucceeded());
-	
-		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
-	
-		assertTrue(diagram.isModified());
-		assertTrue(newVirtualModelInstance.isModified());
-	
-		System.out.println("Unsaved resources=" + serviceManager.getResourceManager().getUnsavedResources());
-	
-		assertTrue(diagram.isModified());
-		assertTrue(newVirtualModelInstance.isModified());
-	
-		assertEquals(2, serviceManager.getResourceManager().getUnsavedResources().size());
-		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(newVirtualModelInstance.getResource()));
-		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(diagram.getResource()));
-	
-		newVirtualModelInstance.getResource().save(null);
-		assertTrue(((VirtualModelInstanceResource) newVirtualModelInstance.getResource()).getFlexoIODelegate().exists());
-		assertFalse(newVirtualModelInstance.isModified());
-	
-		diagram.getResource().save(null);
-		assertTrue(((DiagramResource) diagram.getResource()).getFlexoIODelegate().exists());
-		assertFalse(diagram.isModified());
-	
-		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());
-	}*/
 
 	/**
 	 */
@@ -505,16 +521,19 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		assertNotNull(generatedDocumentBeforeReload);
 
 		instanciateTestServiceManager();
-		editor = reloadProject(project.getDirectory());
-		project = editor.getProject();
-		assertNotNull(editor);
-		assertNotNull(project);
 
-		assertEquals(3, project.getAllResources().size());
-		// System.out.println("All resources=" + project.getAllResources());
-		assertNotNull(project.getResource(newView.getURI()));
+		System.out.println("Project dir = " + _project.getDirectory());
 
-		ViewResource newViewResource = project.getViewLibrary().getView(newView.getURI());
+		_editor = reloadProject(_project.getDirectory());
+		_project = _editor.getProject();
+		assertNotNull(_editor);
+		assertNotNull(_project);
+
+		assertEquals(3, _project.getAllResources().size());
+		// System.out.println("All resources=" + _project.getAllResources());
+		assertNotNull(_project.getResource(newView.getURI()));
+
+		ViewResource newViewResource = _project.getViewLibrary().getView(newView.getURI());
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
 		newViewResource.loadResourceData(null);
@@ -527,11 +546,11 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 		vmiResource.loadResourceData(null);
 		assertNotNull(newVirtualModelInstance = vmiResource.getVirtualModelInstance());
 
-		assertTrue(newVirtualModelInstance.getVirtualModel().hasNature(FMLControlledDocumentVirtualModelNature.INSTANCE));
+		assertTrue(newVirtualModelInstance.getVirtualModel().hasNature(FMLControlledDocXVirtualModelNature.INSTANCE));
 
-		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocumentVirtualModelInstanceNature.INSTANCE));
+		assertTrue(newVirtualModelInstance.hasNature(FMLControlledDocXVirtualModelInstanceNature.INSTANCE));
 
-		ModelSlotInstance<DocXModelSlot, DocXDocument> msInstance = FMLControlledDocumentVirtualModelInstanceNature
+		ModelSlotInstance<DocXModelSlot, DocXDocument> msInstance = FMLControlledDocXVirtualModelInstanceNature
 				.getModelSlotInstance(newVirtualModelInstance);
 
 		assertNotNull(msInstance);
@@ -541,7 +560,30 @@ public class TestControlledDocumentVirtualModel extends OpenflexoProjectAtRunTim
 
 		assertNotSame(generatedDocumentBeforeReload, generatedDocument);
 
-		assertEquals(18, generatedDocument.getElements().size());
+		assertEquals(13, generatedDocument.getElements().size());
 
+		DocXFragment templatefragment = fragmentRole.getFragment();
+		DocXFragment generatedFragment = newVirtualModelInstance.getFlexoActor(fragmentRole);
+		FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) newVirtualModelInstance
+				.getActorReference(fragmentRole);
+
+		System.out.println("Template fragment = " + templatefragment);
+		System.out.println("Generated fragment = " + generatedFragment);
+		System.out.println("ActorReference = " + actorReference);
+
+		// OK, generatedFragment is supposed to be generated from template fragment
+		// Perform some checks
+
+		assertEquals(templatefragment.getElements().size(), generatedFragment.getElements().size());
+		for (int i = 0; i < templatefragment.getElements().size(); i++) {
+			DocXParagraph p1 = (DocXParagraph) templatefragment.getElements().get(i);
+			DocXParagraph p2 = (DocXParagraph) generatedFragment.getElements().get(i);
+			assertEquals(p1.getRawText(), p2.getRawText());
+			assertFalse(p1.getIdentifier().equals(p2.getIdentifier()));
+			assertEquals(p2.getBaseIdentifier(), p1.getIdentifier());
+			ElementReference er = actorReference.getElementReferences().get(i);
+			assertEquals(p1.getIdentifier(), er.getTemplateElementId());
+			assertEquals(p2.getIdentifier(), er.getElementId());
+		}
 	}
 }

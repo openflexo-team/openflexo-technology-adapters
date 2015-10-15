@@ -51,7 +51,7 @@ import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -123,22 +123,21 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 		}
 
 		@Override
-		public OSLCRequirement execute(FlexoBehaviourAction action) {
+		public OSLCRequirement execute(RunTimeEvaluationContext evaluationContext) {
 
 			OSLCRequirement oslcRequirement = null;
 
-			ModelSlotInstance<OSLCRMModelSlot, ?> msi = getModelSlotInstance(action);
+			ModelSlotInstance<OSLCRMModelSlot, ?> msi = getModelSlotInstance(evaluationContext);
 			if (msi.getResourceData() != null) {
 
 				try {
 					OSLCResourceResource resource = getResource(msi);
 					CreationFactory creationFactory = null;
-					String title = getTitle().getBindingValue(action);
-					String desc = getReqDescription().getBindingValue(action);
-					if (getCreationFactory().getBindingValue(action) != null) {
-						creationFactory = getCreationFactory().getBindingValue(action);
-					}
-					else {
+					String title = getTitle().getBindingValue(evaluationContext);
+					String desc = getReqDescription().getBindingValue(evaluationContext);
+					if (getCreationFactory().getBindingValue(evaluationContext) != null) {
+						creationFactory = getCreationFactory().getBindingValue(evaluationContext);
+					} else {
 						creationFactory = getDefaultRequirementCreationFactory(resource);
 					}
 					OSLCRMModelConverter converter = resource.getConverter().getConverter(OSLCRMModelConverter.class);
@@ -153,8 +152,7 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			}
-			else {
+			} else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}
@@ -163,9 +161,9 @@ public interface AddOSLCRequirement extends TechnologySpecificAction<OSLCRMModel
 		}
 
 		@Override
-		public ModelSlotInstance<OSLCRMModelSlot, ?> getModelSlotInstance(FlexoBehaviourAction<?, ?, ?> action) {
+		public ModelSlotInstance<OSLCRMModelSlot, ?> getModelSlotInstance(RunTimeEvaluationContext evaluationContext) {
 			// TODO Auto-generated method stub
-			return super.getModelSlotInstance(action);
+			return super.getModelSlotInstance(evaluationContext);
 		}
 
 		@Override

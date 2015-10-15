@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewPoint id="0" useSpecificDescriptions="false" userID="FLX" modelVersion="1.0" version="0.1" isAbstract="false" flexoID="2" name="TestLibraryViewPoint2" uri="http://openflexo.org/test/TestLibraryViewPoint2">
+  <Inspector id="1" flexoID="1" useSpecificDescriptions="false" userID="FLX" inspectorTitle="TestLibraryViewPoint2" />
+</ViewPoint>

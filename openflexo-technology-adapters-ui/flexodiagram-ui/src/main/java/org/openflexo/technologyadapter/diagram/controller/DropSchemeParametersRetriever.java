@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.model.action.DropSchemeAction;
+import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.ParametersRetriever;
 
 public class DropSchemeParametersRetriever extends ParametersRetriever<DropScheme> {
@@ -51,8 +52,8 @@ public class DropSchemeParametersRetriever extends ParametersRetriever<DropSchem
 
 	protected DiagramPaletteElement paletteElement;
 
-	public DropSchemeParametersRetriever(DropSchemeAction action) {
-		super(action);
+	public DropSchemeParametersRetriever(DropSchemeAction action, FlexoController controller) {
+		super(action, controller);
 		paletteElement = action.getPaletteElement();
 	}
 

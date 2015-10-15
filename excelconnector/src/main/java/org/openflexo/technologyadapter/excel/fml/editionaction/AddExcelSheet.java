@@ -50,7 +50,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -118,17 +118,17 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 		}
 
 		@Override
-		public ExcelSheet execute(FlexoBehaviourAction action) {
+		public ExcelSheet execute(RunTimeEvaluationContext evaluationContext) {
 
 			ExcelSheet result = null;
 
-			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(action);
+			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 				Workbook wb = modelSlotInstance.getAccessedResourceData().getWorkbook();
 				Sheet sheet = null;
 				try {
 					if (wb != null) {
-						String name = getSheetName().getBindingValue(action);
+						String name = getSheetName().getBindingValue(evaluationContext);
 						if (name != null) {
 							// Create or retrieve this sheet
 							sheet = retrieveOrCreateSheet(wb, name);
@@ -160,6 +160,7 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 			}
 
 			return result;
+
 		}
 
 		// Create an Excel Sheet or get the existing one.
@@ -186,8 +187,8 @@ public interface AddExcelSheet extends ExcelAction<ExcelSheet> {
 		}
 
 		@Override
-		public FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> getModelSlotInstance(RunTimeEvaluationContext evaluationContext) {
+			return (FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 
 		@Override

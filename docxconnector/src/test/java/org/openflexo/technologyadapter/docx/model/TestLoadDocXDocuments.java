@@ -50,11 +50,10 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
@@ -65,9 +64,6 @@ import org.openflexo.test.TestOrder;
 public class TestLoadDocXDocuments extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestLoadDocXDocuments.class.getPackage().getName());
 
-	private static FlexoEditor editor;
-	private static FlexoProject project;
-
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
@@ -77,11 +73,11 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 	@Test
 	@TestOrder(2)
 	public void testCreateProject() {
-		editor = createProject("TestProject");
-		project = editor.getProject();
-		System.out.println("Created project " + project.getProjectDirectory());
-		assertTrue(project.getProjectDirectory().exists());
-		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+		_editor = createProject("TestProject");
+		_project = _editor.getProject();
+		System.out.println("Created project " + _project.getProjectDirectory());
+		assertTrue(_project.getProjectDirectory().exists());
+		assertTrue(_project.getProjectDataResource().getFlexoIODelegate().exists());
 	}
 
 	@Test
@@ -123,7 +119,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		/*System.out.println("Elements: " + simpleDocument.getElements().size());
 		
-		for (FlexoDocumentElement<?, ?> element : simpleDocument.getElements()) {
+		for (FlexoDocElement<?, ?> element : simpleDocument.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
@@ -134,7 +130,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 			}
 		}*/
 
-		assertEquals(11, simpleDocument.getElements().size());
+		assertEquals(12, simpleDocument.getElements().size());
 
 		DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
 
@@ -153,7 +149,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		/*System.out.println("Elements: " + structuredDocument.getElements().size());
 		
 		
-		for (FlexoDocumentElement<?, ?> element : structuredDocument.getElements()) {
+		for (FlexoDocElement<?, ?> element : structuredDocument.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
@@ -166,7 +162,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		// System.out.println("structure:\n" + structuredDocument.debugStructuredContents());
 		// System.out.println("Used styles: " + structuredDocument.getStyles());
 
-		assertEquals(5, structuredDocument.getStyles().size());
+		assertEquals(11, structuredDocument.getStyles().size());
 		DocXStyle docDefaults = (DocXStyle) structuredDocument.getStyleByName("DocDefaults");
 		assertNotNull(docDefaults);
 		assertNull(docDefaults.getParentStyle());
@@ -225,6 +221,14 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 		assertSameList(subSection1Paragraph.getChildrenElements(), paragraph2);
 		assertSameList(subSection2Paragraph.getChildrenElements(), paragraph3);
 		assertSameList(section2Paragraph.getChildrenElements(), paragraph4, paragraph5, paragraph6, paragraph7, paragraph8);
+
+		assertEquals(5, paragraph7.getRuns().size());
+
+		assertEquals("This is a paragraph with ", ((DocXTextRun) paragraph7.getRuns().get(0)).getText());
+		assertEquals("a", ((DocXTextRun) paragraph7.getRuns().get(1)).getText());
+		assertEquals(" ", ((DocXTextRun) paragraph7.getRuns().get(2)).getText());
+		assertEquals("italic", ((DocXTextRun) paragraph7.getRuns().get(3)).getText());
+		assertEquals(" word.", ((DocXTextRun) paragraph7.getRuns().get(4)).getText());
 	}
 
 	@Test
@@ -235,18 +239,70 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		System.out.println("DocumentWithTable.docx:\n" + documentWithTable.debugStructuredContents());
 
-		/*System.out.println("Elements: " + documentWithTable.getElements().size());
-		
-		for (FlexoDocumentElement<?, ?> element : documentWithTable.getElements()) {
-			if (element instanceof DocXParagraph) {
-				DocXParagraph paragraph = (DocXParagraph) element;
-				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
-						+ (paragraph.getP().getPPr() != null ? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
-			} else {
-				System.out.println("* Element " + element);
-			}
-		}*/
+		assertEquals(7, documentWithTable.getElements().size());
 
+		DocXParagraph titleParagraph = (DocXParagraph) documentWithTable.getElements().get(0);
+		DocXParagraph sectionParagraph = (DocXParagraph) documentWithTable.getElements().get(2);
+		DocXParagraph p1 = (DocXParagraph) documentWithTable.getElements().get(3);
+		DocXParagraph p2 = (DocXParagraph) documentWithTable.getElements().get(4);
+		DocXTable table = (DocXTable) documentWithTable.getElements().get(5);
+		DocXParagraph p3 = (DocXParagraph) documentWithTable.getElements().get(6);
+
+		assertSameList(sectionParagraph.getChildrenElements(), p1, p2, table, p3);
+
+		assertEquals(3, table.getTableRows().size());
+		DocXTableRow header = (DocXTableRow) table.getTableRows().get(0);
+		DocXTableRow row1 = (DocXTableRow) table.getTableRows().get(1);
+		DocXTableRow row2 = (DocXTableRow) table.getTableRows().get(2);
+
+		assertEquals(4, header.getTableCells().size());
+		assertEquals(4, row1.getTableCells().size());
+		assertEquals(4, row2.getTableCells().size());
+
+		DocXTableCell cell11 = (DocXTableCell) header.getTableCells().get(0);
+		DocXTableCell cell12 = (DocXTableCell) header.getTableCells().get(1);
+		DocXTableCell cell13 = (DocXTableCell) header.getTableCells().get(2);
+		DocXTableCell cell14 = (DocXTableCell) header.getTableCells().get(3);
+
+		DocXTableCell cell21 = (DocXTableCell) row1.getTableCells().get(0);
+		DocXTableCell cell22 = (DocXTableCell) row1.getTableCells().get(1);
+		DocXTableCell cell23 = (DocXTableCell) row1.getTableCells().get(2);
+		DocXTableCell cell24 = (DocXTableCell) row1.getTableCells().get(3);
+
+		DocXTableCell cell31 = (DocXTableCell) row2.getTableCells().get(0);
+		DocXTableCell cell32 = (DocXTableCell) row2.getTableCells().get(1);
+		DocXTableCell cell33 = (DocXTableCell) row2.getTableCells().get(2);
+		DocXTableCell cell34 = (DocXTableCell) row2.getTableCells().get(3);
+
+		assertEquals(1, cell11.getParagraphs().size());
+		assertEquals(1, cell12.getParagraphs().size());
+		assertEquals(1, cell13.getParagraphs().size());
+		assertEquals(1, cell14.getParagraphs().size());
+
+		assertEquals(1, cell21.getParagraphs().size());
+		assertEquals(1, cell22.getParagraphs().size());
+		assertEquals(1, cell23.getParagraphs().size());
+		assertEquals(1, cell24.getParagraphs().size());
+
+		assertEquals(1, cell31.getParagraphs().size());
+		assertEquals(1, cell32.getParagraphs().size());
+		assertEquals(1, cell33.getParagraphs().size());
+		assertEquals(1, cell34.getParagraphs().size());
+
+		assertEquals("", ((DocXParagraph) cell11.getParagraphs().get(0)).getRawText());
+		assertEquals("Column1", ((DocXParagraph) cell12.getParagraphs().get(0)).getRawText());
+		assertEquals("Column2", ((DocXParagraph) cell13.getParagraphs().get(0)).getRawText());
+		assertEquals("Column3", ((DocXParagraph) cell14.getParagraphs().get(0)).getRawText());
+
+		assertEquals("Item1", ((DocXParagraph) cell21.getParagraphs().get(0)).getRawText());
+		assertEquals("First item", ((DocXParagraph) cell22.getParagraphs().get(0)).getRawText());
+		assertEquals("A description for the first item", ((DocXParagraph) cell23.getParagraphs().get(0)).getRawText());
+		assertEquals("Data1", ((DocXParagraph) cell24.getParagraphs().get(0)).getRawText());
+
+		assertEquals("Item2", ((DocXParagraph) cell31.getParagraphs().get(0)).getRawText());
+		assertEquals("Second item", ((DocXParagraph) cell32.getParagraphs().get(0)).getRawText());
+		assertEquals("A description for the second item", ((DocXParagraph) cell33.getParagraphs().get(0)).getRawText());
+		assertEquals("Data2", ((DocXParagraph) cell34.getParagraphs().get(0)).getRawText());
 	}
 
 	@Test
@@ -259,7 +315,32 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		/*System.out.println("Elements: " + documentWithImage.getElements().size());
 		
-		for (FlexoDocumentElement<?, ?> element : documentWithImage.getElements()) {
+		for (FlexoDocElement<?, ?> element : documentWithImage.getElements()) {
+			if (element instanceof DocXParagraph) {
+				DocXParagraph paragraph = (DocXParagraph) element;
+				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "
+						+ (paragraph.getP().getPPr() != null ? "[" + paragraph.getP().getPPr().getPStyle().getVal() + "]" : "[no style]"));
+			} else {
+				System.out.println("* Element " + element);
+			}
+		}*/
+
+	}
+
+	@Test
+	@TestOrder(8)
+	public void testExampleReportLoading() {
+
+		DocXDocument exampleReport = getDocument("ExampleReport.docx");
+
+		System.out.println("ExampleReport.docx:\n" + exampleReport.debugStructuredContents());
+
+		assertEquals(exampleReport.getElements().size(), exampleReport.getWordprocessingMLPackage().getMainDocumentPart().getContent()
+				.size());
+
+		/*System.out.println("Elements: " + documentWithImage.getElements().size());
+		
+		for (FlexoDocElement<?, ?> element : documentWithImage.getElements()) {
 			if (element instanceof DocXParagraph) {
 				DocXParagraph paragraph = (DocXParagraph) element;
 				System.out.println("* Paragraph " + paragraph.getP().getParaId() + " " + paragraph.getP() + " "

@@ -60,6 +60,7 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.annotations.FMLProperty;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
@@ -136,8 +137,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			/*if (getAssignation().isSet()) {
 				out.append(getAssignation().toString() + " = (", context);
 			}*/
-			out.append(getClass().getSimpleName() + " conformTo ShapeSpecification from " + getModelSlot().getName() + " {"
-					+ StringUtils.LINE_SEPARATOR, context);
+			out.append((getModelSlot() != null ? getModelSlot().getName() + "." : "") + getTechnologyAdapterIdentifier() + "::"
+					+ getImplementedInterface().getSimpleName() + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
 			out.append("}", context);
 			/*if (getAssignation().isSet()) {
@@ -146,21 +147,24 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			return out.toString();
 		}
 
-		public DiagramContainerElement<?> getContainer(FlexoBehaviourAction action) {
-			if (getAssignedFlexoProperty() != null && !getAssignedFlexoProperty().getParentShapeAsDefinedInAction()) {
-				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
-				return action.getFlexoConceptInstance().getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
+		public DiagramContainerElement<?> getContainer(RunTimeEvaluationContext evaluationContext) {
+			if (evaluationContext instanceof FlexoBehaviourAction && getAssignedFlexoProperty() != null
+					&& !getAssignedFlexoProperty().getParentShapeAsDefinedInAction()) {
+				FlexoObject returned = ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
+						getAssignedFlexoProperty().getParentShapeRole());
+				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
+						getAssignedFlexoProperty().getParentShapeRole());
 			} else {
 				BindingModel bm = getContainer().getOwner().getBindingModel();
 				for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
 					BindingVariable bv = bm.getBindingVariableAt(i);
 				}
 				try {
-					if (getContainer().getBindingValue(action) != null) {
-						return getContainer().getBindingValue(action);
+					if (getContainer().getBindingValue(evaluationContext) != null) {
+						return getContainer().getBindingValue(evaluationContext);
 					} else {
 						// In case the toplevel is not specified set o the diagram top level.
-						return (DiagramContainerElement<?>) getModelSlotInstance(action).getAccessedResourceData();
+						return (DiagramContainerElement<?>) getModelSlotInstance((evaluationContext)).getAccessedResourceData();
 					}
 
 				} catch (TypeMismatchException e) {
@@ -230,8 +234,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		}*/
 
 		@Override
-		public DiagramShape execute(FlexoBehaviourAction action) {
-			DiagramContainerElement<?> container = getContainer(action);
+		public DiagramShape execute(RunTimeEvaluationContext evaluationContext) {
+			DiagramContainerElement<?> container = getContainer(evaluationContext);
 			Diagram diagram = container.getDiagram();
 
 			DiagramFactory factory = diagram.getDiagramFactory();
@@ -274,13 +278,15 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 
 			if (container == null) {
 				logger.warning("When adding shape, cannot find container for action " + getAssignedFlexoProperty() + " container="
-						+ getContainer(action) + " container=" + getContainer());
+						+ getContainer(evaluationContext) + " container=" + getContainer());
 				return null;
 			}
 
 			container.addToShapes(newShape);
 
-			action.hasPerformedAction(this, newShape);
+			if (evaluationContext instanceof FlexoBehaviourAction) {
+				((FlexoBehaviourAction<?, ?, ?>) evaluationContext).hasPerformedAction(this, newShape);
+			}
 
 			if (logger.isLoggable(Level.FINE)) {
 				logger.fine("Added shape " + newShape + " under " + container);

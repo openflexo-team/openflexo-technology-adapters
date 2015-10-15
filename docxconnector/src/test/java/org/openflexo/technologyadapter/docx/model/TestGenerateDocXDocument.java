@@ -40,26 +40,22 @@ package org.openflexo.technologyadapter.docx.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.docx4j.wml.P;
+import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
-import org.openflexo.technologyadapter.docx.model.DocXDocument.DocXDocumentImpl;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceImpl;
 import org.openflexo.test.OrderedRunner;
@@ -69,24 +65,41 @@ import org.openflexo.test.TestOrder;
 public class TestGenerateDocXDocument extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestGenerateDocXDocument.class.getPackage().getName());
 
-	private static FlexoEditor editor;
 	private static DocXTechnologyAdapter technologicalAdapter;
+	private static DocXDocument templateDocument;
+	private static DocXDocument generatedDocument;
+
+	@AfterClass
+	public static void tearDownClass() {
+
+		technologicalAdapter = null;
+		templateDocument = null;
+		generatedDocument = null;
+
+		deleteProject();
+		deleteTestResourceCenters();
+		unloadServiceManager();
+	}
 
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
 		instanciateTestServiceManager();
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 	}
 
-	@Test
+	/*@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
-
+	
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
 			assertNotNull(docXRepository);
 			Collection<DocXDocumentResource> documents = docXRepository.getAllResources();
+			System.out.println("Trying to load:");
+			for (DocXDocumentResource docResource : documents) {
+				System.out.println("> " + docResource);
+			}
 			for (DocXDocumentResource docResource : documents) {
 				try {
 					docResource.loadResourceData(null);
@@ -104,10 +117,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 				System.out.println("URI of document: " + docResource.getURI());
 			}
 		}
-	}
-
-	private static DocXDocument templateDocument;
-	private static DocXDocument generatedDocument;
+	}*/
 
 	@Test
 	@TestOrder(4)
@@ -119,7 +129,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		assertEquals(13, templateDocument.getElements().size());
 
-		assertEquals(5, templateDocument.getStyles().size());
+		assertEquals(11, templateDocument.getStyles().size());
 
 	}
 
@@ -133,7 +143,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		System.out.println("Generating " + f);
 		FlexoResource<DocXDocument> generatedResource = DocXDocumentResourceImpl.makeDocXDocumentResource(f,
-				technologicalAdapter.getTechnologyContextManager());
+				technologicalAdapter.getTechnologyContextManager(), resourceCenter);
 
 		WordprocessingMLPackage generatedPackage = new WordprocessingMLPackage();
 
@@ -148,7 +158,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		generatedDocument = generatedResource.getResourceData(null);
 
-		for (P p : DocXDocumentImpl.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
+		for (P p : DocXUtils.getAllElementsFromObject(generatedDocument.getWordprocessingMLPackage().getMainDocumentPart(), P.class)) {
 			String oldId = p.getParaId();
 			p.setParaId(generatedDocument.getFactory().generateId());
 			System.out.println("Paragraph " + p + " change id from " + oldId + " to " + p.getParaId());
@@ -163,7 +173,7 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 		assertEquals(13, generatedDocument.getElements().size());
 
-		assertEquals(5, generatedDocument.getStyles().size());
+		assertEquals(11, generatedDocument.getStyles().size());
 
 	}
 

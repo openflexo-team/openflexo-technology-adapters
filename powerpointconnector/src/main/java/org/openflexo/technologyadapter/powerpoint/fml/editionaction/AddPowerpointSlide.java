@@ -49,7 +49,7 @@ import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -80,18 +80,18 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 		}
 
 		@Override
-		public PowerpointSlide execute(FlexoBehaviourAction action) {
+		public PowerpointSlide execute(RunTimeEvaluationContext evaluationContext) {
 
 			PowerpointSlide result = null;
 
-			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(action);
+			FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 				try {
 					SlideShow ss = modelSlotInstance.getAccessedResourceData().getSlideShow();
 					Slide slide = null;
 					if (ss != null) {
 						slide = ss.createSlide();
-						Integer slideIndex = getSlideIndex().getBindingValue(action);
+						Integer slideIndex = getSlideIndex().getBindingValue(evaluationContext);
 						if (slideIndex != null) {
 							slide.setSlideNumber(slideIndex);
 						}
@@ -143,8 +143,9 @@ public interface AddPowerpointSlide extends PowerpointAction<PowerpointSlide> {
 		}
 
 		@Override
-		public FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> getModelSlotInstance(FlexoBehaviourAction action) {
-			return (FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot>) super.getModelSlotInstance(action);
+		public FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot> getModelSlotInstance(
+				RunTimeEvaluationContext evaluationContext) {
+			return (FreeModelSlotInstance<PowerpointSlideshow, BasicPowerpointModelSlot>) super.getModelSlotInstance(evaluationContext);
 		}
 	}
 

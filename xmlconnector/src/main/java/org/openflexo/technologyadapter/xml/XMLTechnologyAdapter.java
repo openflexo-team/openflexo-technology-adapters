@@ -242,8 +242,10 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 					mmRes = XSDMetaModelResourceImpl.makeXSDMetaModelResource(candidateFile, uri, xmlContextManager);
 					mmRes.initName(candidateFile.getName());
+					mmRes.setResourceCenter(resourceCenter);
 					mmRes.setServiceManager(getTechnologyAdapterService().getServiceManager());
-				} else {
+				}
+				else {
 					logger.warning("Found another file with an already existing URI: " + uri);
 					return null;
 				}
@@ -258,7 +260,8 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 						folder = mmRepository.getRepositoryFolder(candidateFile, true);
 						if (folder != null) {
 							mmRepository.registerResource(mmRes, folder);
-						} else {
+						}
+						else {
 							mmRepository.registerResource(mmRes);
 						}
 					} catch (IOException e1) {
@@ -290,7 +293,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				return null;
 			}
 
-			mRes = XMLFileResourceImpl.makeXMLFileResource(candidateFile, xmlContextManager);
+			mRes = XMLFileResourceImpl.makeXMLFileResource(candidateFile, xmlContextManager, resourceCenter);
 
 			if (mRes != null) {
 
@@ -300,7 +303,8 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 					folder = modelRepository.getRepositoryFolder(candidateFile, true);
 					if (folder != null) {
 						modelRepository.registerResource((XMLFileResource) mRes, folder);
-					} else {
+					}
+					else {
 						modelRepository.registerResource((XMLFileResource) mRes);
 					}
 				} catch (IOException e1) {
@@ -348,14 +352,16 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 							privateMetamodels.put(mmURI, mm);
 							logger.info("Added a MetaModel for Resource in TA private MetaModels: " + mm.getURI());
 
-						} else {
+						}
+						else {
 							logger.info("Found a MetaModel for Resource in TA private MetaModels: " + mm.getURI());
 						}
 
 						mRes.getModel().setMetaModel(mm);
 					}
 
-				} else {
+				}
+				else {
 					// This Model has no MetaModel URI, we create a private one for the model
 
 					XMLMetaModel mm = XMLMetaModelImpl.getModelFactory().newInstance(XMLMetaModel.class);
@@ -381,7 +387,8 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 			File candidateFile = (File) contents;
 			if (tryToLookupMetaModel(resourceCenter, candidateFile) != null) {
 				// This is a meta-model, this one has just been registered
-			} else {
+			}
+			else {
 
 				XMLModelRepository modelRepository = resourceCenter.getRepository(XMLModelRepository.class, this);
 				// Check if it's not yet registered
@@ -434,6 +441,11 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public XMLBindingFactory getTechnologyAdapterBindingFactory() {
 		return BINDING_FACTORY;
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "XML";
 	}
 
 }

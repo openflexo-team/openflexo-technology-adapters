@@ -49,6 +49,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -85,7 +86,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 * @return
 	 */
 	public static EMFModelResource makeEMFModelResource(String modelURI, File modelFile, EMFMetaModelResource emfMetaModelResource,
-			EMFTechnologyContextManager technologyContextManager) {
+			EMFTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
 					EMFModelResource.class));
@@ -100,6 +101,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 			// TODO: URI should be defined by the parameter,because its not manageable (FOR NOW)
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerModel(returned);
 			// Creates the EMF model from scratch
@@ -114,17 +116,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	}
 
 	/**
-	 * URI here is the full path to the file
-	 */
-	@Override
-	public String getURI() {
-		// TODO FIX THIS When refactoring with clean IoDelegate support
-		return ((FileFlexoIODelegate) getFlexoIODelegate()).getFile().toURI().toString();
-	}
-
-	/**
-	 * Instanciates a new {@link OWLOntologyResource} asserting we are about to built a resource matching an existing file in the file
-	 * system<br>
+	 * Instanciates a new {@link EMFModelResource} asserting we are about to built a resource matching an existing file in the file system<br>
 	 * This method should not be used to explicitely build a new ontology
 	 * 
 	 * @param owlFile
@@ -132,7 +124,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 	 * @return
 	 */
 	public static EMFModelResource retrieveEMFModelResource(File modelFile, EMFMetaModelResource emfMetaModelResource,
-			EMFTechnologyContextManager technologyContextManager) {
+			EMFTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
 			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
 					EMFModelResource.class));
@@ -145,6 +137,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel> i
 
 			returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(emfMetaModelResource);
+			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			technologyContextManager.registerModel(returned);
 			return returned;

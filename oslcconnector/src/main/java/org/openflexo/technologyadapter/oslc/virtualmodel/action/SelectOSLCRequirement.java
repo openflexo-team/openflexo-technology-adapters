@@ -46,7 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.FetchRequest;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -77,22 +77,22 @@ public interface SelectOSLCRequirement extends FetchRequest<OSLCCoreModelSlot, O
 		}
 
 		@Override
-		public List<OSLCRequirement> execute(FlexoBehaviourAction action) {
+		public List<OSLCRequirement> execute(RunTimeEvaluationContext evaluationContext) {
 
-			if (getModelSlotInstance(action) == null) {
+			if (getModelSlotInstance(evaluationContext) == null) {
 				logger.warning("Could not access model slot instance. Abort.");
 				return null;
 			}
-			if (getModelSlotInstance(action).getResourceData() == null) {
+			if (getModelSlotInstance(evaluationContext).getResourceData() == null) {
 				logger.warning("Could not access model adressed by model slot instance. Abort.");
 				return null;
 			}
 
-			OSLCResource cdlUnit = (OSLCResource) getModelSlotInstance(action).getAccessedResourceData();
+			OSLCResource cdlUnit = (OSLCResource) getModelSlotInstance(evaluationContext).getAccessedResourceData();
 
 			List<OSLCRequirement> selectedOSLCRequirements = new ArrayList<OSLCRequirement>();
 
-			List<OSLCRequirement> returned = filterWithConditions(selectedOSLCRequirements, action);
+			List<OSLCRequirement> returned = filterWithConditions(selectedOSLCRequirements, evaluationContext);
 
 			return returned;
 		}

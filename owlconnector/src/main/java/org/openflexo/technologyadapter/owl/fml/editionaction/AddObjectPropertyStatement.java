@@ -52,13 +52,13 @@ import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOu
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.foundation.fml.editionaction.SetObjectPropertyValueAction;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
 import org.openflexo.foundation.ontology.IndividualOfClass;
+import org.openflexo.foundation.ontology.fml.editionaction.SetObjectPropertyValueAction;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -76,6 +76,7 @@ import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
+import org.openflexo.technologyadapter.owl.nature.OWLOntologyVirtualModelNature;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
@@ -145,15 +146,18 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 			if (getSubject() != null)
 				subjstr = getSubject().toString();
-			else subjstr = "<No Subject>";
+			else
+				subjstr = "<No Subject>";
 
 			if (getObject() != null)
 				objstr = getObject().toString();
-			else objstr = "<No Object>";
+			else
+				objstr = "<No Object>";
 
 			if (getObjectProperty() != null)
 				propstr = getObjectProperty().getName();
-			else propstr = "<No Property>";
+			else
+				propstr = "<No Property>";
 
 			out.append(subjstr + "." + propstr + " = " + objstr + ";", context);
 
@@ -185,8 +189,8 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 
 		@Override
 		public OWLObjectProperty getObjectProperty() {
-			if (getOwningVirtualModel() != null && StringUtils.isNotEmpty(objectPropertyURI)) {
-				return (OWLObjectProperty) getOwningVirtualModel().getOntologyObjectProperty(objectPropertyURI);
+			if (StringUtils.isNotEmpty(objectPropertyURI) && OWLOntologyVirtualModelNature.INSTANCE.hasNature(getOwningVirtualModel())) {
+				return OWLOntologyVirtualModelNature.getOWLObjectProperty(objectPropertyURI, getOwningVirtualModel());
 			} else {
 				if (getAssignedFlexoProperty() != null) {
 					return getAssignedFlexoProperty().getObjectProperty();
@@ -230,9 +234,9 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 			this.objectPropertyURI = objectPropertyURI;
 		}
 
-		public OWLConcept<?> getPropertyObject(FlexoBehaviourAction action) {
+		public OWLConcept<?> getPropertyObject(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return (OWLConcept<?>) getObject().getBindingValue(action);
+				return (OWLConcept<?>) getObject().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -296,10 +300,10 @@ public interface AddObjectPropertyStatement extends AddStatement<ObjectPropertyS
 		}
 
 		@Override
-		public ObjectPropertyStatement execute(FlexoBehaviourAction<?, ?, ?> action) {
+		public ObjectPropertyStatement execute(RunTimeEvaluationContext evaluationContext) {
 			OWLObjectProperty property = getObjectProperty();
-			OWLConcept<?> subject = getPropertySubject(action);
-			OWLConcept<?> object = getPropertyObject(action);
+			OWLConcept<?> subject = getPropertySubject(evaluationContext);
+			OWLConcept<?> object = getPropertyObject(evaluationContext);
 			if (property == null) {
 				return null;
 			}

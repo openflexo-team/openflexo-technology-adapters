@@ -58,7 +58,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellStyleFe
  * @author vincent, sylvain
  * 
  */
-public class ExcelCell extends ExcelObject implements ExcelStyleObject{
+public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 
 	static final Logger logger = Logger.getLogger(ExcelCell.class.getPackage().getName());
 
@@ -92,7 +92,8 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject{
 	public int getColumnIndex() {
 		if (cell != null) {
 			return cell.getColumnIndex();
-		} else {
+		}
+		else {
 			return getExcelRow().getExcelCells().indexOf(this);
 		}
 	}
@@ -100,7 +101,8 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject{
 	public int getRowIndex() {
 		if (cell != null) {
 			return cell.getRowIndex();
-		} else {
+		}
+		else {
 			return getExcelRow().getRowIndex();
 		}
 	}
@@ -137,7 +139,8 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject{
 				}
 			}
 			return returned;
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -364,13 +367,15 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject{
 				}
 				return cell.getNumericCellValue();
 			case String:
-				if(cell.getStringCellValue().contains("\n")){
-					logger.warning("Excel Cell "+ this.getCellIdentifier() + " contains line return." );
+				if (cell.getStringCellValue().contains("\n")) {
+					logger.warning("Excel Cell " + this.getCellIdentifier() + " contains line return.");
 				}
 				return cell.getStringCellValue();
 			case StringFormula:
 				return cell.getStringCellValue();
 			case Empty:
+				System.out.println("EMPTY Cell at ind: " + this.getColumnIndex() + " ROW: " + this.getRowIndex() + " SHEET: "
+						+ this.getExcelSheet().getName());
 				return null;
 			case Error:
 				return cell.getErrorCellValue();
@@ -412,6 +417,19 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject{
 		}
 	}
 
+	public void setCellValueAsString(String cellValueAsString) {
+		if ((cellValueAsString == null && getCellValueAsString() != null)
+				|| (cellValueAsString != null && !cellValueAsString.equals(getCellValueAsString()))) {
+			String oldValue = getCellValueAsString();
+			System.out.println(
+					"*********** Setting new cell value: " + cellValueAsString + " at row=" + getRowIndex() + " col=" + getColumnIndex());
+			cell.setCellValue(cellValueAsString);
+			getExcelSheet().getEvaluator().clearAllCachedResultValues();
+			getPropertyChangeSupport().firePropertyChange("cellValueAsString", oldValue, cellValueAsString);
+			getExcelSheet().getWorkbook().setIsModified();
+		}
+	}
+
 	private void setCellFormula(String formula) {
 		if (formula.startsWith("=")) {
 			formula = formula.substring(formula.indexOf("=") + 1);
@@ -448,7 +466,8 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject{
 			cell.setCellValue(true);
 			getExcelSheet().getEvaluator().clearAllCachedResultValues();
 			return;
-		} else if (value.equalsIgnoreCase("false")) {
+		}
+		else if (value.equalsIgnoreCase("false")) {
 			cell.setCellValue(false);
 			getExcelSheet().getEvaluator().clearAllCachedResultValues();
 			return;
@@ -495,13 +514,9 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject{
 	 */
 	@Override
 	public String toString() {
-		return "["
-				+ getCellIdentifier()
-				+ "]/"
-				+ getCellType().name()
-				+ "/"
-				+ (isMerged() ? "MergedWith:" + "[" + getTopLeftMergedCell().getCellIdentifier() + ":"
-						+ getBottomRightMergedCell().getCellIdentifier() + "]" + "/" : "") + getDisplayValue();
+		return "[" + getCellIdentifier() + "]/" + getCellType().name() + "/" + (isMerged() ? "MergedWith:" + "["
+				+ getTopLeftMergedCell().getCellIdentifier() + ":" + getBottomRightMergedCell().getCellIdentifier() + "]" + "/" : "")
+				+ getDisplayValue();
 	}
 
 	public boolean hasTopBorder() {
@@ -570,7 +585,7 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject{
 		}
 		return;
 	}
-	
+
 	@Override
 	public String getUri() {
 		return getExcelRow().getUri() + "/" + getName();

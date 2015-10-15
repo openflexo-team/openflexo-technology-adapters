@@ -50,8 +50,8 @@ public class TestDocXWidgetFibs extends GenericFIBTestCase {
 	 * Then copy-paste 
 	 */
 	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Widget")).getFile(),
-				"Fib/Widget/"));
+		System.out.println(
+				generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Widget")).getFile(), "Fib/Widget/"));
 	}
 
 	@Test
@@ -62,6 +62,16 @@ public class TestDocXWidgetFibs extends GenericFIBTestCase {
 	@Test
 	public void testFIBDocXFragmentSelector() {
 		validateFIB("Fib/Widget/FIBDocXFragmentSelector.fib");
+	}
+
+	@Test
+	public void testFIBDocXImageSelector() {
+		validateFIB("Fib/Widget/FIBDocXImageSelector.fib");
+	}
+
+	@Test
+	public void testFIBDocXTableSelector() {
+		validateFIB("Fib/Widget/FIBDocXTableSelector.fib");
 	}
 
 }

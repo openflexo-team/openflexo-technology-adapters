@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.csv;
 
 import java.util.logging.Logger;
@@ -95,6 +94,11 @@ public class CSVTechnologyAdapter extends TechnologyAdapter {
 	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "CSV";
 	}
 
 }

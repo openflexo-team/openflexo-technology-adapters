@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
@@ -57,6 +58,9 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -101,8 +105,20 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 @FML("TypedDiagramModelSlot")
 public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, DiagramSpecification>, DiagramModelSlot {
 
+	@PropertyIdentifier(type = DrawingGraphicalRepresentation.class)
+	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
+
 	@PropertyIdentifier(type = List.class)
 	public static final String PALETTE_ELEMENTS_BINDING_KEY = "paletteElementBindings";
+
+	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
+	@CloningStrategy(StrategyType.CLONE)
+	@Embedded
+	@XMLElement
+	public DrawingGraphicalRepresentation getGraphicalRepresentation();
+
+	@Setter(GRAPHICAL_REPRESENTATION_KEY)
+	public void setGraphicalRepresentation(DrawingGraphicalRepresentation graphicalRepresentation);
 
 	@Getter(
 			value = PALETTE_ELEMENTS_BINDING_KEY,

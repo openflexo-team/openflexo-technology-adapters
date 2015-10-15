@@ -21,7 +21,7 @@
 package org.openflexo.technologyadapter.docx.model;
 
 import org.docx4j.wml.Style;
-import org.openflexo.foundation.doc.FlexoStyle;
+import org.openflexo.foundation.doc.FlexoDocStyle;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -32,7 +32,7 @@ import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 /**
- * Implementation of {@link FlexoStyle} for {@link DocXTechnologyAdapter}
+ * Implementation of {@link FlexoDocStyle} for {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *
@@ -40,7 +40,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ModelEntity
 @ImplementationClass(DocXStyle.DocXStyleImpl.class)
 @XMLElement
-public interface DocXStyle extends DocXObject, FlexoStyle<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXStyle extends DocXObject<Style>, FlexoDocStyle<DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = DocXStyle.class)
 	public static final String PARENT_STYLE_KEY = "parentStyle";
@@ -71,6 +71,11 @@ public interface DocXStyle extends DocXObject, FlexoStyle<DocXDocument, DocXTech
 
 		public DocXStyleImpl() {
 			super();
+		}
+
+		@Override
+		public Style getDocXObject() {
+			return getStyle();
 		}
 
 		@Override

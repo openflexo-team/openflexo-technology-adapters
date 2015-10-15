@@ -73,7 +73,7 @@ public class DocXDocumentModuleView extends JPanel implements ModuleView<DocXDoc
 		this.document = document;
 		this.perspective = perspective;
 
-		docxEditor = new DocXEditor(document);
+		docxEditor = new DocXEditor(document, true);
 		add(docxEditor, BorderLayout.CENTER);
 
 		browser = new FIBDocXDocumentBrowser(document, perspective.getController());
@@ -127,22 +127,6 @@ public class DocXDocumentModuleView extends JPanel implements ModuleView<DocXDoc
 	@Override
 	public void show(final FlexoController controller, FlexoPerspective perspective) {
 
-		// perspective.setTopRightView(browser);
-		// controller.getControllerModel().setRightViewVisible(true);
-
-		// Sets palette view of editor to be the top right view
-		// perspective.setTopRightView(getEditor().getPaletteView());
-		// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
-
-		/*SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// Force right view to be visible
-				controller.getControllerModel().setRightViewVisible(true);
-			}
-		});
-
-		controller.getControllerModel().setRightViewVisible(true);*/
 	}
 
 	@Override

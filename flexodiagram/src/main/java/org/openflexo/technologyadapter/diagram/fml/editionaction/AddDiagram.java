@@ -49,6 +49,7 @@ import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.Getter;
@@ -226,7 +227,7 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 		}
 
 		@Override
-		public Diagram execute(FlexoBehaviourAction action) {
+		public Diagram execute(RunTimeEvaluationContext evaluationContext) {
 			// TODO: reimplement this
 			logger.warning("AddDiagram not implemented yet");
 			/*Diagram initialDiagram = (Diagram) action.retrieveVirtualModelInstance();

@@ -22,9 +22,8 @@ package org.openflexo.technologyadapter.docx.fml;
 
 import java.lang.reflect.Type;
 
-import org.openflexo.foundation.doc.fml.FlexoDocumentFragmentRole;
-import org.openflexo.foundation.fml.rt.ActorReference;
-import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.connie.type.TypeUtils;
+import org.openflexo.foundation.doc.fml.FlexoFragmentRole;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -32,24 +31,41 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.exceptions.InvalidDataException;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 @ModelEntity
 @ImplementationClass(DocXFragmentRole.DocXFragmentRoleImpl.class)
 @XMLElement
-public interface DocXFragmentRole extends FlexoDocumentFragmentRole<DocXFragment> {
+public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDocument, DocXTechnologyAdapter> {
 
 	@PropertyIdentifier(type = DocXFragment.class)
 	public static final String FRAGMENT_KEY = "fragment";
 
+	/**
+	 * Return the represented fragment in the template resource<br>
+	 * Note that is not the fragment that is to be managed at run-time
+	 * 
+	 * @return
+	 */
+	@Override
 	@Getter(value = FRAGMENT_KEY, isStringConvertable = true)
 	@XMLAttribute
 	public DocXFragment getFragment();
 
+	/**
+	 * Sets the represented fragment in the template resource<br>
+	 * 
+	 * @param fragment
+	 */
+	@Override
 	@Setter(FRAGMENT_KEY)
 	public void setFragment(DocXFragment fragment);
 
-	public static abstract class DocXFragmentRoleImpl extends FlexoDocumentFragmentRoleImpl<DocXFragment> implements DocXFragmentRole {
+	public static abstract class DocXFragmentRoleImpl
+			extends FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter>implements DocXFragmentRole {
 
 		@Override
 		public Type getType() {
@@ -66,10 +82,27 @@ public interface DocXFragmentRole extends FlexoDocumentFragmentRole<DocXFragment
 			return RoleCloningStrategy.Clone;
 		}
 
+		/*@Override
+		public ActorReference<DocXFragment> makeActorReference(DocXFragment fragment, FlexoConceptInstance fci) {
+		
+			VirtualModelInstanceModelFactory factory = fci.getFactory();
+			FragmentActorReference<DocXFragment> returned = factory.newInstance(FragmentActorReference.class);
+			returned.setFlexoRole(this);
+			returned.setFlexoConceptInstance(fci);
+			returned.setModellingElement(fragment);
+			return returned;
+		
+		}*/
+
 		@Override
-		public ActorReference<DocXFragment> makeActorReference(DocXFragment object, FlexoConceptInstance epi) {
-			// TODO Auto-generated method stub
-			return null;
+		public String getTypeDescription() {
+			try {
+				return TypeUtils.simpleRepresentation(getType()) + "(" + getFMLModelFactory().getStringEncoder().toString(getFragment())
+						+ ")";
+			} catch (InvalidDataException e) {
+				return super.getTypeDescription();
+			}
 		}
+
 	}
 }

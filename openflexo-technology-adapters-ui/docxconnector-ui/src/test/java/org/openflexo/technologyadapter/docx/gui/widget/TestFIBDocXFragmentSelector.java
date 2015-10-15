@@ -40,21 +40,15 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
-import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.doc.FlexoDocumentFragment.FragmentConsistencyException;
-import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
+import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
@@ -62,23 +56,23 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 /**
- * Test the structural and behavioural features of FIBOWLPropertySelector
+ * Test the structural and behavioural features of FIBDocXFragmentSelector
  * 
  * @author sylvain
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestFIBDocXFragmentSelector extends OpenflexoTestCaseWithGUI {
+public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 
 	private static GraphicalContextDelegate gcDelegate;
 
 	private static FIBDocXFragmentSelector selector;
 
-	private static DocXDocument getDocument(String documentName) {
-		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
+	/*private static DocXDocument getDocument(String documentName) {
+		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 
-		FlexoResource<DocXDocument> documentResource = serviceManager.getInformationSpace().getResource(documentURI, null,
+		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
 		assertNotNull(documentResource);
 
@@ -100,7 +94,7 @@ public class TestFIBDocXFragmentSelector extends OpenflexoTestCaseWithGUI {
 		assertNotNull(document.getWordprocessingMLPackage());
 
 		return document;
-	}
+	}*/
 
 	@BeforeClass
 	public static void setupClass() {
@@ -131,6 +125,7 @@ public class TestFIBDocXFragmentSelector extends OpenflexoTestCaseWithGUI {
 		DocXFragment fragment = (DocXFragment) structuredDocument.getFactory().makeFragment(section1Paragraph, paragraph3);
 
 		selector = new FIBDocXFragmentSelector(fragment);
+		selector.setServiceManager(serviceManager);
 		selector.setDocument(structuredDocument);
 		selector.getCustomPanel();
 

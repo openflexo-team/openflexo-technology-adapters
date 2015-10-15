@@ -41,8 +41,8 @@ package org.openflexo.technologyadapter.owl.gui;
 
 import java.util.logging.Logger;
 
-import org.openflexo.components.widget.FIBIndividualSelector;
 import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.ontology.components.widget.FIBIndividualSelector;
 import org.openflexo.technologyadapter.owl.model.OWLIndividual;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 

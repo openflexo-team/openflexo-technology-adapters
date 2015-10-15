@@ -57,6 +57,7 @@ import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.model.annotations.DefineValidationRule;
 import org.openflexo.model.annotations.Getter;
@@ -161,13 +162,16 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			return null;
 		}
 
-		public DiagramShape getFromShape(FlexoBehaviourAction action) {
-			if (getAssignedFlexoProperty() != null && !getAssignedFlexoProperty().getStartShapeAsDefinedInAction()) {
-				FlexoObject returned = action.getFlexoConceptInstance().getFlexoActor(getAssignedFlexoProperty().getStartShapeRole());
-				return action.getFlexoConceptInstance().getFlexoActor(getAssignedFlexoProperty().getStartShapeRole());
+		public DiagramShape getFromShape(RunTimeEvaluationContext evaluationContext) {
+			if (evaluationContext instanceof FlexoBehaviourAction && getAssignedFlexoProperty() != null
+					&& !getAssignedFlexoProperty().getStartShapeAsDefinedInAction()) {
+				FlexoObject returned = ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
+						getAssignedFlexoProperty().getStartShapeRole());
+				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
+						getAssignedFlexoProperty().getStartShapeRole());
 			} else {
 				try {
-					return getFromShape().getBindingValue(action);
+					return getFromShape().getBindingValue(evaluationContext);
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
@@ -179,12 +183,14 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			}
 		}
 
-		public DiagramShape getToShape(FlexoBehaviourAction action) {
-			if (getAssignedFlexoProperty() != null && !getAssignedFlexoProperty().getEndShapeAsDefinedInAction()) {
-				return action.getFlexoConceptInstance().getFlexoActor(getAssignedFlexoProperty().getEndShapeRole());
+		public DiagramShape getToShape(RunTimeEvaluationContext evaluationContext) {
+			if (evaluationContext instanceof FlexoBehaviourAction && getAssignedFlexoProperty() != null
+					&& !getAssignedFlexoProperty().getEndShapeAsDefinedInAction()) {
+				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
+						getAssignedFlexoProperty().getEndShapeRole());
 			} else {
 				try {
-					return getToShape().getBindingValue(action);
+					return getToShape().getBindingValue(evaluationContext);
 				} catch (TypeMismatchException e) {
 					e.printStackTrace();
 				} catch (NullReferenceException e) {
@@ -275,10 +281,10 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		}*/
 
 		@Override
-		public DiagramConnector execute(FlexoBehaviourAction action) {
+		public DiagramConnector execute(RunTimeEvaluationContext evaluationContext) {
 
-			DiagramShape fromShape = getFromShape(action);
-			DiagramShape toShape = getToShape(action);
+			DiagramShape fromShape = getFromShape(evaluationContext);
+			DiagramShape toShape = getToShape(evaluationContext);
 
 			// NPE Protection
 			if (fromShape != null && toShape != null) {
@@ -314,7 +320,9 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 				parent.addToConnectors(newConnector);
 
-				action.hasPerformedAction(this, newConnector);
+				if (evaluationContext instanceof FlexoBehaviourAction) {
+					((FlexoBehaviourAction<?, ?, ?>) evaluationContext).hasPerformedAction(this, newConnector);
+				}
 
 				// Register reference
 				// newConnector.registerFlexoConceptReference(action.getFlexoConceptInstance());

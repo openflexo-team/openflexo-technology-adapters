@@ -24,7 +24,7 @@ import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.editionaction.TechnologySpecificAction;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -58,7 +58,7 @@ public interface AddODTParagraph extends TechnologySpecificAction<ODTModelSlot, 
 		}
 
 		@Override
-		public ODTParagraph execute(FlexoBehaviourAction action) {
+		public ODTParagraph execute(RunTimeEvaluationContext evaluationContext) {
 			ODTParagraph result = null;
 			// TODO : Implement Action
 			return result;

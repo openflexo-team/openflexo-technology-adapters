@@ -132,7 +132,7 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	}
 
 	@Override
-	public ImageIcon getIconForPatternRole(Class<? extends FlexoRole<?>> patternRoleClass) {
+	public ImageIcon getIconForFlexoRole(Class<? extends FlexoRole<?>> patternRoleClass) {
 		if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
 			return getIconForTechnologyObject(ExcelSheet.class);
 		}

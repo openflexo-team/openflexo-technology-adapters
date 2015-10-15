@@ -21,18 +21,18 @@
 package org.openflexo.technologyadapter.docx.model;
 
 import org.docx4j.wml.ContentAccessor;
-import org.openflexo.foundation.doc.FlexoDocumentElement;
+import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 /**
- * Implementation of {@link FlexoDocumentElement} for {@link DocXTechnologyAdapter}
+ * Implementation of {@link FlexoDocElement} for {@link DocXTechnologyAdapter}
  * 
  * @author sylvain
  *
  */
 @ModelEntity(isAbstract = true)
-public interface DocXElement extends DocXObject, FlexoDocumentElement<DocXDocument, DocXTechnologyAdapter> {
+public interface DocXElement<DO> extends DocXObject<DO>, FlexoDocElement<DocXDocument, DocXTechnologyAdapter> {
 
 	// public ContentAccessor getParent();
 
