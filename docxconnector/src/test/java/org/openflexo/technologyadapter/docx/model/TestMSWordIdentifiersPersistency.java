@@ -74,8 +74,8 @@ public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-				.getTechnologyAdapter(DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
+				DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -190,12 +190,11 @@ public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 		System.out.println("Step5.docx:\n" + step5.debugStructuredContents());
 
 		assertEquals(17, step5.getElements().size());
-		assertEquals(step4.getElements().size(), step5.getElements().size());
 
 		for (int i = 0; i < step4.getElements().size(); i++) {
 			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element4 = step4.getElements().get(i);
-			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element5 = step5.getElements().get(i);
-			assertEquals(element4.getIdentifier(), element5.getIdentifier());
+			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element5 = step5.getElementWithIdentifier(element4.getIdentifier());
+			assertNotNull(element5);
 		}
 
 	}
@@ -206,20 +205,20 @@ public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 	/*@Test
 	@TestOrder(9)
 	public void testStep6() {
-	
+
 		step6 = getDocument("MSWordDocumentEdition/Step6.docx");
-	
+
 		System.out.println("Step6.docx:\n" + step6.debugStructuredContents());
-	
+
 		assertEquals(16, step6.getElements().size());
 		assertEquals(step5.getElements().size(), step6.getElements().size());
-	
+
 		for (int i = 0; i < step4.getElements().size(); i++) {
 			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element5 = step5.getElements().get(i);
 			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element6 = step6.getElementWithIdentifier(element5.getIdentifier());
 			assertNotNull(element6);
 		}
-	
+
 	}*/
 
 }
