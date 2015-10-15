@@ -56,47 +56,49 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
+/**
+ * This test is really important and should be generalized in all technology adapters<br>
+ * 
+ * We test here that we can load and unload a service manager handling all basic services plus the loading of all resources of a given type
+ * (here docx).<br>
+ * This is an excellent test to detect memory leaks on FlexoServiceManager
+ * 
+ * @author sylvain
+ *
+ */
 @RunWith(OrderedRunner.class)
 public class TestDocXResourceUnloading extends AbstractTestDocX {
 	protected static final Logger logger = Logger.getLogger(TestDocXResourceUnloading.class.getPackage().getName());
 
 	@Test
 	@TestOrder(1)
-	public void testInitializeServiceManager() throws Exception {
+	public void performTest() throws Exception {
+
+		debugMemory();
+
 		int i = 0;
-		while (true) {
+
+		// 10 iterations are generally enough to exceed memory limit
+		// if FlexoServiceManager is not freed after each iteration
+		while (i < 10) {
 			log("Iteration " + i);
 			instanciateTestServiceManager();
 			testDocXLoading();
+			log("After docx loading:");
+			debugMemory();
 			unloadServiceManager();
-
-			int mb = 1024 * 1024;
-
-			// Getting the runtime reference from system
-			Runtime runtime = Runtime.getRuntime();
-
-			System.out.println("##### Heap utilization statistics [MB] #####");
-
-			// Print used memory
-			System.out.println("Used Memory:" + (runtime.totalMemory() - runtime.freeMemory()) / mb);
-
-			// Print free memory
-			System.out.println("Free Memory:" + runtime.freeMemory() / mb);
-
-			// Print total available memory
-			System.out.println("Total Memory:" + runtime.totalMemory() / mb);
-
-			// Print Maximum available memory
-			System.out.println("Max Memory:" + runtime.maxMemory() / mb);
+			log("After service manager unload:");
+			debugMemory();
 
 			i++;
 
 		}
+
 	}
 
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
