@@ -42,7 +42,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.FileNotFoundException;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -85,12 +84,12 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 
 	/*private DocXDocument getDocument(String documentName) {
 		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter/" + documentName;
-
+	
 		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
-
+	
 		assertNotNull(documentResource);
-
+	
 		try {
 			documentResource.loadResourceData(null);
 		} catch (FileNotFoundException e) {
@@ -103,11 +102,11 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	
 		DocXDocument document = documentResource.getLoadedResourceData();
 		assertNotNull(document);
 		assertNotNull(document.getWordprocessingMLPackage());
-
+	
 		return document;
 	}*/
 
@@ -177,14 +176,8 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 		gcDelegate.setUp();
 	}
 
-	@Override
-	@After
-	public void tearDown() throws Exception {
-		gcDelegate.tearDown();
-	}
-
-	private void openDocXEditor(FlexoResource<DocXDocument> docResource) throws FileNotFoundException, ResourceLoadingCancelledException,
-			FlexoException {
+	private void openDocXEditor(FlexoResource<DocXDocument> docResource)
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		/*DefaultLocalFileProvider p = new DefaultLocalFileProvider();
 		File f = ((FileFlexoIODelegate) docResource.getFlexoIODelegate()).getFile();
