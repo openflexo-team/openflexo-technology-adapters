@@ -40,12 +40,12 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
@@ -112,9 +112,9 @@ public class TestFIBDocXTableSelector extends AbstractTestDocX {
 		gcDelegate.setUp();
 	}
 
-	@Override
-	@After
-	public void tearDown() throws Exception {
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		OpenflexoTestCaseWithGUI.tearDownClass();
 		gcDelegate.tearDown();
 	}
 

@@ -47,6 +47,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -174,6 +175,12 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	@Before
 	public void setUp() {
 		gcDelegate.setUp();
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		OpenflexoTestCaseWithGUI.tearDownClass();
+		gcDelegate.tearDown();
 	}
 
 	private void openDocXEditor(FlexoResource<DocXDocument> docResource)

@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 
 import org.docx4all.swing.text.DocumentElement;
@@ -172,7 +173,14 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 	}
 
 	private void scrollTo(final DocumentElement startElement, final DocXEditor docXEditor) {
-		docXEditor.getEditorView().scrollToElement(startElement, false);
+		if (!docXEditor.getEditorView().scrollToElement(startElement, false)) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					scrollTo(startElement, docXEditor);
+				}
+			});
+		}
 	}
 
 	public class LoadDocXEditor extends FlexoTask {

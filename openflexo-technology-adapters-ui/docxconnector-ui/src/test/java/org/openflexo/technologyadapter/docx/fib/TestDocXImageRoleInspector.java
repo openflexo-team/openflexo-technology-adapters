@@ -45,12 +45,12 @@ import static org.junit.Assert.assertTrue;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.swing.FIBJPanel;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.fib.utils.OpenflexoFIBInspectorTestCase;
@@ -228,9 +228,9 @@ public class TestDocXImageRoleInspector extends OpenflexoFIBInspectorTestCase {
 		gcDelegate.setUp();
 	}
 
-	@Override
-	@After
-	public void tearDown() throws Exception {
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		OpenflexoTestCaseWithGUI.tearDownClass();
 		gcDelegate.tearDown();
 	}
 

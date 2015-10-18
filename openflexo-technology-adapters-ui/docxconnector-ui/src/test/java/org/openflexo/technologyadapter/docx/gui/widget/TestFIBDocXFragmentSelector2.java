@@ -40,12 +40,12 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
@@ -71,11 +71,11 @@ public class TestFIBDocXFragmentSelector2 extends AbstractTestDocX {
 	/*private static DocXDocument getDocument(String documentName) {
 		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
-
+	
 		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
 		assertNotNull(documentResource);
-
+	
 		try {
 			documentResource.loadResourceData(null);
 		} catch (FileNotFoundException e) {
@@ -88,11 +88,11 @@ public class TestFIBDocXFragmentSelector2 extends AbstractTestDocX {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	
 		DocXDocument document = documentResource.getLoadedResourceData();
 		assertNotNull(document);
 		assertNotNull(document.getWordprocessingMLPackage());
-
+	
 		return document;
 	}*/
 
@@ -147,9 +147,9 @@ public class TestFIBDocXFragmentSelector2 extends AbstractTestDocX {
 		gcDelegate.setUp();
 	}
 
-	@Override
-	@After
-	public void tearDown() throws Exception {
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		OpenflexoTestCaseWithGUI.tearDownClass();
 		gcDelegate.tearDown();
 	}
 
