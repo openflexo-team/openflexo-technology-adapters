@@ -84,12 +84,6 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 		// setSelectedObject(editedObject);
 	}
 
-	@Override
-	protected SelectorDetailsPanel createCustomPanel(DocXFragment editedObject) {
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!   on cree le SelectorDetailsPanel avec " + editedObject);
-		return super.createCustomPanel(editedObject);
-	}
-
 	/*@Override
 	public void updateCustomPanel(DocXFragment editedObject) {
 		// logger.info("updateCustomPanel with " + editedObject + " _selectorPanel=" + _selectorPanel);
