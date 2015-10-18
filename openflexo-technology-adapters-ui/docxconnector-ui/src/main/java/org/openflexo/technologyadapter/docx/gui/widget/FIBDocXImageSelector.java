@@ -42,7 +42,6 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 import java.util.Collections;
 import java.util.logging.Logger;
 
-import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 
 import org.docx4all.swing.WordMLTextPane;
@@ -94,27 +93,21 @@ public class FIBDocXImageSelector extends FIBDocImageSelector<DocXDrawingRun, Do
 
 		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 
-		SwingUtilities.invokeLater(new Runnable() {
+		if (drawingRun == null) {
+			docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
+			docXEditor.getEditorView().repaint();
+			return;
+		}
 
-			@Override
-			public void run() {
-				if (drawingRun == null) {
-					docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
-					docXEditor.getEditorView().repaint();
-					return;
-				}
+		try {
+			DocumentElement tableElement = docXEditor.getMLDocument().getElement(drawingRun.getR());
+			docXEditor.getMLDocument().setSelectedElements(Collections.singletonList(tableElement));
+			docXEditor.getEditorView().scrollToElement(tableElement, false);
+			docXEditor.getEditorView().repaint();
 
-				try {
-					DocumentElement tableElement = docXEditor.getMLDocument().getElement(drawingRun.getR());
-					docXEditor.getMLDocument().setSelectedElements(Collections.singletonList(tableElement));
-					docXEditor.getEditorView().scrollToElement(tableElement, false);
-					docXEditor.getEditorView().repaint();
-
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
