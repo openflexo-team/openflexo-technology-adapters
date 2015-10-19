@@ -45,16 +45,9 @@ import static org.junit.Assert.assertTrue;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.swing.FIBJPanel;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
-import org.openflexo.fib.utils.OpenflexoFIBInspectorTestCase;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
@@ -65,10 +58,9 @@ import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.docx.AbstractTestDocXInspector;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
@@ -85,20 +77,15 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestDocXImageRoleInspector extends OpenflexoFIBInspectorTestCase {
+public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 	protected static final Logger logger = Logger.getLogger(TestDocXImageRoleInspector.class.getPackage().getName());
 
 	private final String VIEWPOINT_NAME = "TestDocXImageRoleInspectorViewPoint";
 	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestDocXImageRoleInspectorViewPoint";
 
-	private static GraphicalContextDelegate gcDelegate;
-
-	private static Resource fibResource;
-
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository repository;
-	public static FlexoEditor editor;
 	public static ViewPoint viewPoint;
 	public static ViewPointResource viewPointResource;
 
@@ -107,33 +94,6 @@ public class TestDocXImageRoleInspector extends OpenflexoFIBInspectorTestCase {
 	public static DocXDocument templateDocument;
 
 	public static DocXDocumentResource templateResource;
-
-	@BeforeClass
-	public static void setupClass() {
-		instanciateTestServiceManager();
-		initGUI();
-	}
-
-	protected DocXDocumentResource getDocumentResource(String documentName) {
-
-		String documentURI = resourceCenter.getDefaultBaseURI() + "/" + "TestResourceCenter" + "/" + documentName;
-		System.out.println("Searching " + documentURI);
-
-		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
-				DocXDocument.class);
-
-		if (documentResource == null) {
-			logger.warning("Cannot find document resource " + documentURI);
-			for (FlexoResource<?> r : serviceManager.getResourceManager().getRegisteredResources()) {
-				System.out.println("> " + r.getURI());
-			}
-		}
-
-		assertNotNull(documentResource);
-
-		return documentResource;
-
-	}
 
 	@Test
 	@TestOrder(1)
@@ -212,26 +172,6 @@ public class TestDocXImageRoleInspector extends OpenflexoFIBInspectorTestCase {
 		FIBJPanel<DocXImageRole> widget = instanciateFIB(fibResource, role, DocXImageRole.class);
 
 		gcDelegate.addTab("DocXImageRole", widget.getController());
-	}
-
-	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestDocXImageRoleInspector.class.getSimpleName());
-	}
-
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		OpenflexoTestCaseWithGUI.tearDownClass();
-		gcDelegate.tearDown();
 	}
 
 }

@@ -41,22 +41,15 @@ package org.openflexo.technologyadapter.docx.fib;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.swing.FIBJPanel;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
-import org.openflexo.fib.utils.OpenflexoFIBInspectorTestCase;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPointLibrary;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.docx.AbstractTestDocXInspector;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -68,19 +61,9 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestDocXTableRoleInspector extends OpenflexoFIBInspectorTestCase {
+public class TestDocXTableRoleInspector extends AbstractTestDocXInspector {
 
-	private static GraphicalContextDelegate gcDelegate;
-
-	private static Resource fibResource;
-
-	static FlexoEditor editor;
-
-	@BeforeClass
-	public static void setupClass() {
-		instanciateTestServiceManager();
-		initGUI();
-	}
+	private static DocXTableRole role;
 
 	@Test
 	@TestOrder(1)
@@ -96,8 +79,6 @@ public class TestDocXTableRoleInspector extends OpenflexoFIBInspectorTestCase {
 
 		validateFIB(fibResource);
 	}
-
-	private static DocXTableRole role;
 
 	@Test
 	@TestOrder(3)
@@ -128,26 +109,6 @@ public class TestDocXTableRoleInspector extends OpenflexoFIBInspectorTestCase {
 		FIBJPanel<DocXTableRole> widget = instanciateFIB(fibResource, role, DocXTableRole.class);
 
 		gcDelegate.addTab("DocXTableRole", widget.getController());
-	}
-
-	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestDocXTableRoleInspector.class.getSimpleName());
-	}
-
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		OpenflexoTestCaseWithGUI.tearDownClass();
-		gcDelegate.tearDown();
 	}
 
 }
