@@ -174,8 +174,12 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName()) {
 			@Override
 			public boolean handleException(Exception e) {
-				System.out.println("Handle exception ? isDisposed=" + isDisposed() + " exception=" + e);
-				for (StackTraceElement el : e.getStackTrace()) {
+				System.out.println(
+						"Handle exception ? isDisposed=" + isDisposed() + " exception=" + e + " stacktrace=" + e.getStackTrace().length);
+				if (e instanceof NullPointerException) {
+					return false;
+				}
+				/*for (StackTraceElement el : e.getStackTrace()) {
 					System.out.println(el.toString());
 				}
 				if (isDisposed() && e instanceof NullPointerException) {
@@ -188,7 +192,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 						logger.info(el.toString());
 					}
 					return false;
-				}
+				}*/
 				return super.handleException(e);
 			}
 		};
