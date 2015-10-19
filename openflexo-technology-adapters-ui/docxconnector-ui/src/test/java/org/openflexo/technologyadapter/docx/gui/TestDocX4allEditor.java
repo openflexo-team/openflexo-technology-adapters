@@ -42,13 +42,8 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.FileNotFoundException;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.OpenflexoTestCaseWithGUI;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -69,19 +64,11 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestDocX4allEditor extends AbstractTestDocX {
 
-	private static GraphicalContextDelegate gcDelegate;
-
 	private static DocXDocument simpleDocument;
 	private static DocXDocument structuredDocument;
 	private static DocXDocument documentWithTable;
 	private static DocXDocument documentWithImage;
 	private static DocXDocument exampleReport;
-
-	@BeforeClass
-	public static void setupClass() {
-		instanciateTestServiceManager();
-		initGUI();
-	}
 
 	/*private DocXDocument getDocument(String documentName) {
 		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter/" + documentName;
@@ -170,52 +157,8 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 		openDocXEditor(exampleReport.getResource());
 	}
 
-	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName()) {
-			@Override
-			public boolean handleException(Exception e) {
-				System.out.println(
-						"Handle exception ? isDisposed=" + isDisposed() + " exception=" + e + " stacktrace=" + e.getStackTrace().length);
-				if (e instanceof NullPointerException) {
-					return false;
-				}
-				/*for (StackTraceElement el : e.getStackTrace()) {
-					System.out.println(el.toString());
-				}
-				if (isDisposed() && e instanceof NullPointerException) {
-					System.out.println("Ignore special case for NullPointerException happening after frame disposing");
-					for (StackTraceElement el : e.getStackTrace()) {
-						System.out.println(el.toString());
-					}
-					logger.info("Ignore special case for NullPointerException happening after frame disposing");
-					for (StackTraceElement el : e.getStackTrace()) {
-						logger.info(el.toString());
-					}
-					return false;
-				}*/
-				return super.handleException(e);
-			}
-		};
-	}
-
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		OpenflexoTestCaseWithGUI.tearDownClass();
-		gcDelegate.tearDown();
-	}
-
-	private void openDocXEditor(FlexoResource<DocXDocument> docResource)
-			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	private void openDocXEditor(FlexoResource<DocXDocument> docResource) throws FileNotFoundException, ResourceLoadingCancelledException,
+			FlexoException {
 
 		/*DefaultLocalFileProvider p = new DefaultLocalFileProvider();
 		File f = ((FileFlexoIODelegate) docResource.getFlexoIODelegate()).getFile();

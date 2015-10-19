@@ -40,13 +40,8 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.OpenflexoTestCaseWithGUI;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -63,8 +58,6 @@ import org.openflexo.test.TestOrder;
  */
 @RunWith(OrderedRunner.class)
 public class TestFIBDocXFragmentSelector2 extends AbstractTestDocX {
-
-	private static GraphicalContextDelegate gcDelegate;
 
 	private static FIBDocXFragmentSelector selector;
 
@@ -96,12 +89,6 @@ public class TestFIBDocXFragmentSelector2 extends AbstractTestDocX {
 		return document;
 	}*/
 
-	@BeforeClass
-	public static void setupClass() {
-		instanciateTestServiceManager(true);
-		initGUI();
-	}
-
 	@Test
 	@TestOrder(2)
 	public void test2InstanciateWidget() throws FragmentConsistencyException {
@@ -131,26 +118,6 @@ public class TestFIBDocXFragmentSelector2 extends AbstractTestDocX {
 		assertNotNull(selector.getSelectorPanel().getController());
 
 		gcDelegate.addTab("FIBDocXFragmentSelector", selector.getSelectorPanel().getController());
-	}
-
-	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestFIBDocXFragmentSelector2.class.getSimpleName());
-	}
-
-	@AfterClass
-	public static void waitGUI() {
-		gcDelegate.waitGUI();
-	}
-
-	@Before
-	public void setUp() {
-		gcDelegate.setUp();
-	}
-
-	@AfterClass
-	public static void tearDownClass() throws Exception {
-		OpenflexoTestCaseWithGUI.tearDownClass();
-		gcDelegate.tearDown();
 	}
 
 }
