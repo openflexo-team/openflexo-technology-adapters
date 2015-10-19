@@ -175,6 +175,9 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 			@Override
 			public boolean handleException(Exception e) {
 				System.out.println("Handle exception ? isDisposed=" + isDisposed() + " exception=" + e);
+				for (StackTraceElement el : e.getStackTrace()) {
+					System.out.println(el.toString());
+				}
 				if (isDisposed() && e instanceof NullPointerException) {
 					System.out.println("Ignore special case for NullPointerException happening after frame disposing");
 					for (StackTraceElement el : e.getStackTrace()) {
