@@ -164,7 +164,23 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
+		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName()) {
+			@Override
+			public boolean handleException(Exception e) {
+				if (isDisposed() && e instanceof NullPointerException) {
+					System.out.println("Ignore special case for NullPointerException happening after frame disposing");
+					for (StackTraceElement el : e.getStackTrace()) {
+						System.out.println(el.toString());
+					}
+					logger.info("Ignore special case for NullPointerException happening after frame disposing");
+					for (StackTraceElement el : e.getStackTrace()) {
+						logger.info(el.toString());
+					}
+					return false;
+				}
+				return super.handleException(e);
+			}
+		};
 	}
 
 	@AfterClass
