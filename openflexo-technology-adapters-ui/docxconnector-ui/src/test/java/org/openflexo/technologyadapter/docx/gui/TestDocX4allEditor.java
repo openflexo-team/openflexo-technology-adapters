@@ -115,6 +115,8 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	@TestOrder(1)
 	public void testInitRetrieveDocuments() {
 
+		log("testInitRetrieveDocuments");
+
 		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 		assertNotNull(docXTA);
 
@@ -126,6 +128,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	@Test
 	@TestOrder(2)
 	public void testOpenSimpleDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		log("testOpenSimpleDocumentEditor");
 		simpleDocument = getDocument("SimpleDocument.docx");
 		assertNotNull(simpleDocument);
 		openDocXEditor(simpleDocument.getResource());
@@ -134,6 +137,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	@Test
 	@TestOrder(3)
 	public void testOpenStructuredDocumentEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		log("testOpenStructuredDocumentEditor");
 		structuredDocument = getDocument("StructuredDocument.docx");
 		assertNotNull(structuredDocument);
 		openDocXEditor(structuredDocument.getResource());
@@ -142,6 +146,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	@Test
 	@TestOrder(4)
 	public void testOpenDocumentWithTableEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		log("testOpenDocumentWithTableEditor");
 		documentWithTable = getDocument("DocumentWithTable.docx");
 		assertNotNull(documentWithTable);
 		openDocXEditor(documentWithTable.getResource());
@@ -150,6 +155,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	@Test
 	@TestOrder(5)
 	public void testOpenDocumentWithImageEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		log("testOpenDocumentWithImageEditor");
 		documentWithImage = getDocument("DocumentWithImage.docx");
 		assertNotNull(documentWithImage);
 		openDocXEditor(documentWithImage.getResource());
@@ -158,6 +164,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	@Test
 	@TestOrder(6)
 	public void testOpenExampleReportEditor() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		log("testOpenExampleReportEditor");
 		exampleReport = getDocument("ExampleReport.docx");
 		assertNotNull(exampleReport);
 		openDocXEditor(exampleReport.getResource());
@@ -167,6 +174,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName()) {
 			@Override
 			public boolean handleException(Exception e) {
+				System.out.println("Handle exception ? isDisposed=" + isDisposed() + " exception=" + e);
 				if (isDisposed() && e instanceof NullPointerException) {
 					System.out.println("Ignore special case for NullPointerException happening after frame disposing");
 					for (StackTraceElement el : e.getStackTrace()) {
