@@ -48,7 +48,7 @@ import javax.swing.event.CaretEvent;
 import org.docx4all.swing.text.DocumentElement;
 import org.docx4j.wml.P;
 import org.openflexo.components.widget.FIBDocTableSelector;
-import org.openflexo.fib.view.widget.FIBCustomWidget;
+import org.openflexo.fib.swing.view.widget.FIBCustomWidget;
 import org.openflexo.foundation.doc.FlexoDocFragment;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.task.FlexoTask;

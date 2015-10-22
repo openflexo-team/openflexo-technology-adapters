@@ -51,7 +51,7 @@ import org.docx4j.wml.Drawing;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
 import org.openflexo.components.widget.FIBDocImageSelector;
-import org.openflexo.fib.view.widget.FIBCustomWidget;
+import org.openflexo.fib.swing.view.widget.FIBCustomWidget;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.localization.FlexoLocalization;

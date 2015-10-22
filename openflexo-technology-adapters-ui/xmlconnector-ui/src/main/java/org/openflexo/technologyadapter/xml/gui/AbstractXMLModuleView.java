@@ -50,7 +50,7 @@ import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBContainer;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent.CustomComponentParameter;
-import org.openflexo.fib.view.widget.FIBBrowserWidget;
+import org.openflexo.fib.swing.view.widget.FIBBrowserWidget;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
