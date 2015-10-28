@@ -1,32 +1,64 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<project name="Maven" xmlns="http://maven.apache.org/DECORATION/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
-   
-  <bannerLeft>
-	<name>Technology Adapters</name>
-	<src>${ta.logo}</src>
-	<href>https://openflexo.org/tiki/TechnologyAdapters</href>
-  </bannerLeft> 
-  <bannerRight>
-    <name>Openflexo</name>
-    <src>${organization.logo}</src>
-    <href>http://openflexo.org/</href>
-  </bannerRight>
-  <skin>
-    <groupId>org.openflexo</groupId>
-    <artifactId>openflexo-skin</artifactId>
-    <version>1.2-SNAPSHOT</version>
-  </skin>
+<project name="Maven" xmlns="http://maven.apache.org/DECORATION/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
 
-  <body>
-    <links>
-      <item name="Maven 2" href="http://maven.apache.org/maven2/"/>
-    </links>
+	<bannerLeft>
+		<name>Technology Adapters</name>
+		<src>${ta.logo}</src>
+		<href>https://openflexo.org/tiki/TechnologyAdapters</href>
+	</bannerLeft>
+	<bannerRight>
+		<name>Openflexo</name>
+		<src>${organization.logo}</src>
+		<href>http://openflexo.org/</href>
+	</bannerRight>
+	<skin>
+		<groupId>org.openflexo</groupId>
+		<artifactId>openflexo-skin</artifactId>
+		<version>1.3-SNAPSHOT</version>
+	</skin>
 
-    <menu ref="parent" />
-    <menu ref="modules" />
-    <menu ref="reports" />
-<!--    <menu ref="plugins" /> -->
-  </body>
+	<custom>
+		<openflexo-skin>
+			<sideMenus>true</sideMenus>
+			<displayBreadCrumbs>true</displayBreadCrumbs>
+			<localMenu>/inc/html/developersMenu.html</localMenu>
+			<includeVersionLinks>true</includeVersionLinks>
+		</openflexo-skin>
+	</custom>
+
+	<body>
+
+		<menu name="Technology-Adapters">
+			<item name="Home" href="index.html" />
+			<item name="Model layer" href="ModelLayer.html">
+				<item name="Diagram" href="flexodiagram/index.html" />
+				<item name="OWL" href="owlconnector/index.html" />
+				<item name="EMF" href="emfconnector/index.html" />
+				<item name="XML/XSD" href="xmlconnector/index.html" />
+				<item name="FreePlane" href="freeplaneconnector/index.html" />
+				<item name="Word" href="docxconnector/index.html" />
+				<item name="Excel" href="excelconnector/index.html" />
+				<item name="PowerPoint" href="powerpointconnector/index.html" />
+				<item name="OSLC" href="oslcconnector/index.html" />
+			</item>
+			<item name="UI layer" href="openflexo-technology-adapters-ui/index.html">
+				<item name="Diagram-UI" href="openflexo-technology-adapters-ui/flexodiagram-ui/index.html" />
+				<item name="OWL-UI" href="openflexo-technology-adapters-ui/owlconnector-ui/index.html" />
+				<item name="EMF-UI" href="openflexo-technology-adapters-ui/emfconnector-ui/index.html" />
+				<item name="XML/XSD-UI" href="openflexo-technology-adapters-ui/xmlconnector-ui/index.html" />
+				<item name="FreePlane-UI" href="openflexo-technology-adapters-ui/freeplaneconnector-ui/index.html" />
+				<item name="Word-UI" href="openflexo-technology-adapters-ui/docxconnector-ui/index.html" />
+				<item name="Excel-UI" href="openflexo-technology-adapters-ui/excelconnector-ui/index.html" />
+				<item name="PowerPoint-UI" href="openflexo-technology-adapters-ui/powerpointconnector-ui/index.html" />
+				<item name="OSLC-UI" href="openflexo-technology-adapters-ui/oslcconnector-ui/index.html" />
+			</item>
+			<item name="FAQ" href="faq.html" />
+		</menu>
+
+		<menu ref="modules" />
+		<menu ref="reports" />
+	</body>
 </project>
