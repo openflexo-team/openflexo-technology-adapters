@@ -55,7 +55,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
+import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.ResourceRepository;
@@ -86,7 +86,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWithGUI {
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static OWLOntologyResource ontologyResource;
 	private static FIBOWLOntologyBrowser browser;
@@ -591,7 +591,7 @@ public class TestFIBOWLOntologyBrowserOnSKOSOntology extends OpenflexoTestCaseWi
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestFIBOWLOntologyBrowserOnSKOSOntology.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestFIBOWLOntologyBrowserOnSKOSOntology.class.getSimpleName());
 	}
 
 	@AfterClass

@@ -51,7 +51,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
+import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.ontology.components.widget.OntologyBrowserModel;
@@ -79,7 +79,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	static EMFModelResource umlModelResource = null;
 	static EMFModel umlModel = null;
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	static String umlModelResourceRelativeURI = "TestResourceCenter/EMF/Model/uml/test1.uml";
 
@@ -369,7 +369,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestUMLOntologyBrowerModel.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestUMLOntologyBrowerModel.class.getSimpleName());
 	}
 
 	@AfterClass

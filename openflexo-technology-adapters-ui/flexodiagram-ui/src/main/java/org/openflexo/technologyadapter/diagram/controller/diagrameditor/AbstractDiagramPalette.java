@@ -48,8 +48,9 @@ import org.openflexo.fge.control.DrawingPalette;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.controller.FIBDialog;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.swing.utils.JFIBDialog;
+import org.openflexo.fib.swing.view.SwingViewFactory;
 import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
@@ -111,7 +112,8 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 					|| shapeGR.getShapeSpecification().getShapeType() == ShapeType.CIRCLE) {
 				shapeGR.setWidth(40);
 				shapeGR.setHeight(40);
-			} else {
+			}
+			else {
 				shapeGR.setWidth(50);
 				shapeGR.setHeight(40);
 			}
@@ -135,8 +137,8 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 
 		if (isImage) {
 			FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
-			FIBDialog dialog = FIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
-					new FlexoFIBController(fibComponent, getEditor().getFlexoController()));
+			JFIBDialog dialog = JFIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
+					new FlexoFIBController(fibComponent, SwingViewFactory.INSTANCE, getEditor().getFlexoController()));
 		}
 
 		AddShape action = AddShape.actionType.makeNewAction(container, null, editor.getFlexoController().getEditor());

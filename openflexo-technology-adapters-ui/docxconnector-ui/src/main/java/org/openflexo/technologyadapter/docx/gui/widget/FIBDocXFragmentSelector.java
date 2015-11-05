@@ -49,7 +49,7 @@ import javax.swing.event.CaretEvent;
 import org.docx4all.swing.text.DocumentElement;
 import org.docx4j.wml.P;
 import org.openflexo.components.widget.FIBDocFragmentSelector;
-import org.openflexo.fib.swing.view.widget.FIBCustomWidget;
+import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.foundation.doc.FlexoDocFragment;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
@@ -124,7 +124,7 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 		// System.out.println("customPanel" + getCustomPanel());
 		// System.out.println("docEditorWidget=" + getCustomPanel().getDocEditorWidget());
 
-		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
+		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
 
 		try {
 
@@ -229,7 +229,7 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 		}
 
 		FIBCustomWidget<?, ?> documentEditorWidget = returned.getDocEditorWidget();
-		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
+		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
 		docXEditor.getEditorView().addCaretListener(new DocXEditorSelectionListener(docXEditor) {
 			@Override
 			public void caretUpdate(CaretEvent e) {

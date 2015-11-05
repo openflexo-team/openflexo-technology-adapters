@@ -52,7 +52,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fib.swing.utils.FIBJPanel;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
+import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.fib.utils.OpenflexoFIBInspectorTestCase;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
@@ -92,7 +92,7 @@ public class TestDocXImageRoleInspector extends OpenflexoFIBInspectorTestCase {
 	private final String VIEWPOINT_NAME = "TestDocXImageRoleInspectorViewPoint";
 	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestDocXImageRoleInspectorViewPoint";
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static Resource fibResource;
 
@@ -215,7 +215,7 @@ public class TestDocXImageRoleInspector extends OpenflexoFIBInspectorTestCase {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestDocXImageRoleInspector.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestDocXImageRoleInspector.class.getSimpleName());
 	}
 
 	@AfterClass

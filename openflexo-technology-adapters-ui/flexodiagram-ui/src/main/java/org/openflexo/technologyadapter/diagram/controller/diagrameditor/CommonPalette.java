@@ -117,7 +117,8 @@ public class CommonPalette extends AbstractDiagramPalette {
 			gr.setY(py * GRID_HEIGHT + 10);
 			gr.setWidth(30);
 			gr.setHeight(30);
-		} else {
+		}
+		else {
 			gr.setX(px * GRID_WIDTH + 10);
 			gr.setY(py * GRID_HEIGHT + 10);
 			gr.setWidth(40);
@@ -176,24 +177,24 @@ public class CommonPalette extends AbstractDiagramPalette {
 				/*if (getEditor() == null) {
 					return false;
 				}
-
+				
 				DiagramContainerElement<?> container = (DiagramContainerElement<?>) target.getDrawable();
-
+				
 				logger.info("dragging " + this + " in " + container);
-
+				
 				// getController().addNewShape(new Shape(getGraphicalRepresentation().getShapeType(), dropLocation,
 				// getController().getDrawing()),container);
-
+				
 				CompoundEdit edit = getEditor().getUndoManager().startRecording("Dragging new Element");
-
+				
 				ShapeGraphicalRepresentation shapeGR = getEditor().getFactory().makeShapeGraphicalRepresentation(
 						getGraphicalRepresentation());
-
+				
 				shapeGR.setIsReadOnly(false);
 				shapeGR.setIsFocusable(true);
 				shapeGR.setIsSelectable(true);
 				shapeGR.setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
-
+				
 				if (shapeGR.getShapeSpecification().getShapeType() == ShapeType.SQUARE
 						|| shapeGR.getShapeSpecification().getShapeType() == ShapeType.CIRCLE) {
 					shapeGR.setWidth(40);
@@ -214,44 +215,44 @@ public class CommonPalette extends AbstractDiagramPalette {
 				if (applyCurrentShadowStyle) {
 					shapeGR.setShadowStyle(getEditor().getInspectedShadowStyle().cloneStyle());
 				}
-
+				
 				shapeGR.setX(dropLocation.x);
 				shapeGR.setY(dropLocation.y);
 				// shapeGR.setAllowToLeaveBounds(true);
-
+				
 				System.out.println("OK, create AddShape");
 				System.out.println("location=" + shapeGR.getLocation());
 				System.out.println("size=" + shapeGR.getSize());
-
+				
 				if (isImage) {
 					FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
 					FIBDialog dialog = FIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
 							new FlexoFIBController(fibComponent, getEditor().getFlexoController()));
 				}
-
+				
 				AddShape action = AddShape.actionType.makeNewAction(container, null, getEditor().getFlexoController().getEditor());
 				action.setGraphicalRepresentation(shapeGR);
 				action.setNewShapeName(shapeGR.getText());
 				if (action.getNewShapeName() == null) {
 					action.setNewShapeName(FlexoLocalization.localizedForKey("shape"));
 				}
-
+				
 				// action.nameSetToNull = true;
 				// action.setNewShapeName(FlexoLocalization.localizedForKey("unnamed"));
-
+				
 				action.doAction();
-
+				
 				DiagramShape newShape = action.getNewShape();
-
+				
 				System.out.println("Apres la creation:");
 				System.out.println("location=" + newShape.getGraphicalRepresentation().getLocation());
 				System.out.println("size=" + newShape.getGraphicalRepresentation().getSize());
-
+				
 				getEditor().getUndoManager().stopRecording(edit);
-
+				
 				getEditor().setCurrentTool(EditorTool.SelectionTool);
 				getEditor().setSelectedObject(getEditor().getDrawing().getDrawingTreeNode(newShape));
-
+				
 				return action.hasActionExecutionSucceeded();*/
 			}
 

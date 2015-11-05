@@ -48,7 +48,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fib.swing.utils.FIBJPanel;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
+import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.fib.utils.OpenflexoFIBInspectorTestCase;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.fml.FlexoConcept;
@@ -70,7 +70,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestDocXFragmentRoleInspector extends OpenflexoFIBInspectorTestCase {
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static Resource fibResource;
 
@@ -133,7 +133,7 @@ public class TestDocXFragmentRoleInspector extends OpenflexoFIBInspectorTestCase
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestDocXFragmentRoleInspector.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestDocXFragmentRoleInspector.class.getSimpleName());
 	}
 
 	@AfterClass

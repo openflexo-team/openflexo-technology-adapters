@@ -59,8 +59,8 @@ import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 
 // TODO: this should inherit from FIBJPanel
-public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomComponent<FlexoConcept, JPanel>,
-		FIBSelectable<GraphicalElementRole<?, ?>> {
+public class FlexoConceptPreviewComponent extends JPanel
+		implements FIBCustomComponent<FlexoConcept>, FIBSelectable<GraphicalElementRole<?, ?>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(FlexoConceptPreviewComponent.class.getPackage().getName());
@@ -131,11 +131,6 @@ public class FlexoConceptPreviewComponent extends JPanel implements FIBCustomCom
 		if (previewController != null) {
 			previewController.setSelectionManager(selectionManager);
 		}
-	}
-
-	@Override
-	public JPanel getJComponent() {
-		return this;
 	}
 
 	@Override

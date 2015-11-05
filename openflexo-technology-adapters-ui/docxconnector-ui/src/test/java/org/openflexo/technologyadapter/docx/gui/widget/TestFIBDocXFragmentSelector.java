@@ -46,7 +46,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
+import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -64,7 +64,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static FIBDocXFragmentSelector selector;
 
@@ -135,7 +135,7 @@ public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestFIBDocXFragmentSelector.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestFIBDocXFragmentSelector.class.getSimpleName());
 	}
 
 	@AfterClass

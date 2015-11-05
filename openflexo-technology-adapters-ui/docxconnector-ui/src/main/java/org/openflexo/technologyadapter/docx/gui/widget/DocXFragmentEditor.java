@@ -51,7 +51,7 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 
 @SuppressWarnings("serial")
-public class DocXFragmentEditor extends AbstractDocXEditor implements FIBCustomComponent<DocXFragment, DocXFragmentEditor> {
+public class DocXFragmentEditor extends AbstractDocXEditor implements FIBCustomComponent<DocXFragment> {
 
 	private static final Logger logger = Logger.getLogger(DocXFragmentEditor.class.getPackage().getName());
 
@@ -120,11 +120,6 @@ public class DocXFragmentEditor extends AbstractDocXEditor implements FIBCustomC
 
 		return editorKit.openDocumentFragment(document.getWordprocessingMLPackage(), getObjectFactory(), (int) getStartIndex(),
 				(int) getEndIndex());
-	}
-
-	@Override
-	public DocXFragmentEditor getJComponent() {
-		return this;
 	}
 
 	@Override

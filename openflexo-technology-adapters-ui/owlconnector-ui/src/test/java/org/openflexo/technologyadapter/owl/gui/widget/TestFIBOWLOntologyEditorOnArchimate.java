@@ -54,7 +54,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
+import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.ResourceRepository;
@@ -77,7 +77,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGUI {
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static OWLOntologyResource ontologyResource;
 	private static FIBOWLOntologyEditor editor;
@@ -261,7 +261,7 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestFIBOWLOntologyEditorOnArchimate.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestFIBOWLOntologyEditorOnArchimate.class.getSimpleName());
 	}
 
 	@AfterClass

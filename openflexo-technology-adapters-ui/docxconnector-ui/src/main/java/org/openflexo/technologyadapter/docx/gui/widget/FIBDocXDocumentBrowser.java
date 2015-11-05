@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -81,8 +82,8 @@ public class FIBDocXDocumentBrowser extends FIBBrowserView<DocXDocument> {
 	public static class DocXDocumentBrowserFIBController extends FlexoFIBController {
 		private FIBDocXDocumentBrowser browser;
 
-		public DocXDocumentBrowserFIBController(FIBComponent component) {
-			super(component);
+		public DocXDocumentBrowserFIBController(FIBComponent component, GinaViewFactory<?> viewFactory) {
+			super(component, viewFactory);
 		}
 
 		private void setBrowser(FIBDocXDocumentBrowser browser) {

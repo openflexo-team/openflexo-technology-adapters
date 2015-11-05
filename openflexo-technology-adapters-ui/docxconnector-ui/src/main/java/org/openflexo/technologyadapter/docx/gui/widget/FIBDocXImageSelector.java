@@ -51,7 +51,7 @@ import org.docx4j.wml.Drawing;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
 import org.openflexo.components.widget.FIBDocImageSelector;
-import org.openflexo.fib.swing.view.widget.FIBCustomWidget;
+import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.localization.FlexoLocalization;
@@ -92,7 +92,7 @@ public class FIBDocXImageSelector extends FIBDocImageSelector<DocXDrawingRun, Do
 	@Override
 	protected void selectImageInDocumentEditor(final DocXDrawingRun drawingRun, FIBCustomWidget<?, ?> documentEditorWidget) {
 
-		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
+		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
 
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -155,7 +155,7 @@ public class FIBDocXImageSelector extends FIBDocImageSelector<DocXDrawingRun, Do
 		}
 
 		FIBCustomWidget<?, ?> documentEditorWidget = returned.getDocEditorWidget();
-		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
+		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
 		WordMLTextPane pane = docXEditor.getEditorView();
 		docXEditor.getEditorView().addCaretListener(new DocXEditorSelectionListener(docXEditor) {
 			@Override

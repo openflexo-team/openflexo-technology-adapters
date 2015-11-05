@@ -69,8 +69,9 @@ import org.openflexo.fge.swing.control.tools.JDianaStyles;
 import org.openflexo.fge.swing.control.tools.JDianaToolSelector;
 import org.openflexo.fge.swing.view.JDrawingView;
 import org.openflexo.fib.FIBLibrary;
-import org.openflexo.fib.controller.FIBDialog;
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.swing.utils.JFIBDialog;
+import org.openflexo.fib.swing.view.SwingViewFactory;
 import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.selection.SelectionManagingDianaEditor;
@@ -94,7 +95,8 @@ import org.openflexo.view.controller.FlexoFIBController;
  * @author sylvain
  * 
  */
-public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram> implements PropertyChangeListener /* GraphicalFlexoObserver*/{
+public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram>
+		implements PropertyChangeListener /* GraphicalFlexoObserver*/ {
 
 	private static final Logger logger = Logger.getLogger(DiagramEditor.class.getPackage().getName());
 
@@ -124,8 +126,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 	}
 
 	public DiagramEditor(Drawing<Diagram> diagramDrawing, boolean readOnly, FlexoController controller, SwingToolFactory swingToolFactory) {
-		super(diagramDrawing, controller != null ? controller.getSelectionManager() : null, ((DiagramResource) diagramDrawing.getModel()
-				.getResource()).getFactory(), swingToolFactory);
+		super(diagramDrawing, controller != null ? controller.getSelectionManager() : null,
+				((DiagramResource) diagramDrawing.getModel().getResource()).getFactory(), swingToolFactory);
 
 		flexoController = controller;
 		this.swingToolFactory = swingToolFactory;
@@ -179,7 +181,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 				if (action.getNewShapeName() == null) {
 					action.setNewShapeName(FlexoLocalization.localizedForKey("shape"));
 				}
-
+				
 				action.doAction();*/
 
 				handleNewShapeCreation(graphicalRepresentation, parentNode, graphicalRepresentation.getLocation(), true, true, true, true,
@@ -241,8 +243,8 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 
 		if (isImage) {
 			FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
-			FIBDialog dialog = FIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
-					new FlexoFIBController(fibComponent, getFlexoController()));
+			JFIBDialog dialog = JFIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
+					new FlexoFIBController(fibComponent, SwingViewFactory.INSTANCE, getFlexoController()));
 		}
 
 		AddShape action = AddShape.actionType.makeNewAction(container, null, getFlexoController().getEditor());

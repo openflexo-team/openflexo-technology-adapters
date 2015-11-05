@@ -168,8 +168,8 @@ public interface FMLControlledDiagramElement<E extends DiagramElement<GR>, GR ex
 					// Now that we have access to the diagram element, GR could be retrieved
 					// But we also need to notify the parent that this diagram element is now to be managed
 					if (diagramElement.getParent() != null) {
-						diagramElement.getParent().getPropertyChangeSupport()
-								.firePropertyChange(DiagramContainerElement.SHAPES, null, diagramElement.getParent().getShapes());
+						diagramElement.getParent().getPropertyChangeSupport().firePropertyChange(DiagramContainerElement.SHAPES, null,
+								diagramElement.getParent().getShapes());
 					}
 				}
 

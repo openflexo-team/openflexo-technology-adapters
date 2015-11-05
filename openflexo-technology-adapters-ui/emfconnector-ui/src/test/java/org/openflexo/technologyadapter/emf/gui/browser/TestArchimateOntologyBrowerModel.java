@@ -50,7 +50,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
+import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.ontology.components.widget.OntologyBrowserModel;
@@ -82,7 +82,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	private static String ARCHIMATE_URI = "http://www.bolton.ac.uk/archimate";
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	static String archimateModelResourceRelativeURI = "TestResourceCenter/EMF/Model/archimate/test1.archimate";
 
@@ -369,7 +369,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestArchimateOntologyBrowerModel.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestArchimateOntologyBrowerModel.class.getSimpleName());
 	}
 
 	@AfterClass

@@ -50,7 +50,7 @@ import org.openflexo.fib.model.FIBBrowser;
 import org.openflexo.fib.model.FIBComponent;
 import org.openflexo.fib.model.FIBContainer;
 import org.openflexo.fib.model.FIBCustom.FIBCustomComponent.CustomComponentParameter;
-import org.openflexo.fib.swing.view.widget.FIBBrowserWidget;
+import org.openflexo.fib.swing.view.widget.JFIBBrowserWidget;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
@@ -113,12 +113,12 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 	 * 
 	 * @return
 	 */
-	protected FIBBrowserWidget retrieveFIBBrowserWidget() {
+	protected JFIBBrowserWidget retrieveFIBBrowserWidget() {
 		if (getFIBComponent() instanceof FIBContainer) {
 			List<FIBComponent> listComponent = ((FIBContainer) getFIBComponent()).getAllSubComponents();
 			for (FIBComponent c : listComponent) {
 				if (c instanceof FIBBrowser) {
-					return (FIBBrowserWidget) getFIBController().viewForComponent(c);
+					return (JFIBBrowserWidget) getFIBController().viewForComponent(c);
 				}
 			}
 		}
@@ -137,7 +137,7 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 	 */
 	protected Vector<XMLObject> getAllSelectableValues() {
 		Vector<XMLObject> returned = new Vector<XMLObject>();
-		FIBBrowserWidget browserWidget = retrieveFIBBrowserWidget();
+		JFIBBrowserWidget browserWidget = retrieveFIBBrowserWidget();
 		if (browserWidget == null) {
 			return null;
 		}

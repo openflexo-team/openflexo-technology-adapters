@@ -44,7 +44,7 @@ import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 
 @SuppressWarnings("serial")
-public class DocXEditor extends AbstractDocXEditor implements FIBCustomComponent<DocXDocument, DocXEditor> {
+public class DocXEditor extends AbstractDocXEditor implements FIBCustomComponent<DocXDocument> {
 
 	private static final Logger logger = Logger.getLogger(DocXEditor.class.getPackage().getName());
 
@@ -54,11 +54,6 @@ public class DocXEditor extends AbstractDocXEditor implements FIBCustomComponent
 
 	public DocXEditor(DocXDocument document, boolean showToolbar) {
 		super(document, showToolbar);
-	}
-
-	@Override
-	public DocXEditor getJComponent() {
-		return this;
 	}
 
 	@Override

@@ -48,7 +48,7 @@ import javax.swing.event.CaretEvent;
 import org.docx4all.swing.text.DocumentElement;
 import org.docx4j.wml.P;
 import org.openflexo.components.widget.FIBDocTableSelector;
-import org.openflexo.fib.swing.view.widget.FIBCustomWidget;
+import org.openflexo.fib.view.widget.FIBCustomWidget;
 import org.openflexo.foundation.doc.FlexoDocFragment;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.task.FlexoTask;
@@ -91,7 +91,7 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 	@Override
 	protected void selectTableInDocumentEditor(final DocXTable table, FIBCustomWidget<?, ?> documentEditorWidget) {
 
-		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
+		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
 
 		SwingUtilities.invokeLater(new Runnable() {
 
@@ -154,7 +154,7 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 		}
 
 		FIBCustomWidget<?, ?> documentEditorWidget = returned.getDocEditorWidget();
-		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
+		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
 		docXEditor.getEditorView().addCaretListener(new DocXEditorSelectionListener(docXEditor) {
 			@Override
 			public void caretUpdate(CaretEvent e) {

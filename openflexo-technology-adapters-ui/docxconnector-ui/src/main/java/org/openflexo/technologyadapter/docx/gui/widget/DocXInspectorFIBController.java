@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 import java.util.logging.Logger;
 
 import org.openflexo.fib.model.FIBComponent;
+import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.doc.fml.ColumnTableBinding;
@@ -64,12 +65,12 @@ public class DocXInspectorFIBController extends FlexoFIBController {
 
 	protected static final Logger logger = FlexoLogger.getLogger(DocXInspectorFIBController.class.getPackage().getName());
 
-	public DocXInspectorFIBController(FIBComponent component) {
-		super(component);
+	public DocXInspectorFIBController(FIBComponent component, GinaViewFactory<?> viewFactory) {
+		super(component, viewFactory);
 	}
 
-	public DocXInspectorFIBController(FIBComponent component, FlexoController controller) {
-		super(component, controller);
+	public DocXInspectorFIBController(FIBComponent component, GinaViewFactory<?> viewFactory, FlexoController controller) {
+		super(component, viewFactory, controller);
 	}
 
 	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> TextBinding<D, TA> createTextBinding(

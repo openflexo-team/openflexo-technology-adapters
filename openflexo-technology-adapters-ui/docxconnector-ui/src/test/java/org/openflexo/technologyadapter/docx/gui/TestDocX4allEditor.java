@@ -48,7 +48,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.fib.testutils.GraphicalContextDelegate;
+import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -69,7 +69,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestDocX4allEditor extends AbstractTestDocX {
 
-	private static GraphicalContextDelegate gcDelegate;
+	private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static DocXDocument simpleDocument;
 	private static DocXDocument structuredDocument;
@@ -164,7 +164,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
 	}
 
 	@AfterClass
