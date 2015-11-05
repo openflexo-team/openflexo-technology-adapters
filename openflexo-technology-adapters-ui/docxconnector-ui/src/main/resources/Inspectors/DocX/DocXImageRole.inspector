@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
+<Panel className="org.openflexo.gina.utils.FIBInspector" layout="border"
 	titleFont="SansSerif,0,12" darkLevel="0"
 	dataClassName="org.openflexo.technologyadapter.docx.fml.DocXImageRole"
 	controllerClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXInspectorFIBController"
@@ -23,7 +23,7 @@
 			<Label index="9" label="object_to_represent"
 				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
-			<Custom index="10" componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+			<Custom index="10" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" data="data.representedObject"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
 				<Assignment variable="component.bindable" value="data" />
@@ -43,7 +43,7 @@
 				localize="true" />
 			<Panel index="14" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
 				useScrollBar="true" protectContent="false" height="60" layout="border"
-				controllerClassName="org.openflexo.fib.controller.FIBController"
+				controllerClassName="org.openflexo.gina.controller.FIBController"
 				border="empty" trackViewPortWidth="true" width="60"
 				constraints="twocols(expandHorizontally=true;expandVertically=true;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
 				titleFont="SansSerif,0,11" trackViewPortHeight="true"

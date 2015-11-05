@@ -40,13 +40,13 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.doc.fml.ColumnTableBinding;
 import org.openflexo.foundation.doc.fml.TextBinding;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;

@@ -46,7 +46,7 @@ import javax.swing.JPanel;
 import org.docx4all.script.FxScriptUIHelper;
 import org.docx4all.swing.text.WordMLDocumentFragment;
 import org.docx4all.swing.text.WordMLEditorKit;
-import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
+import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 

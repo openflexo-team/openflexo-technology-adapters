@@ -40,8 +40,8 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.view.GinaViewFactory;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;

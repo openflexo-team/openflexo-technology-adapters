@@ -40,7 +40,7 @@
 package org.openflexo.technologyadapter.xml.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.fib.utils.GenericFIBTestCase;
+import org.openflexo.gina.utils.GenericFIBTestCase;
 
 public class TestWidgets extends GenericFIBTestCase {
 

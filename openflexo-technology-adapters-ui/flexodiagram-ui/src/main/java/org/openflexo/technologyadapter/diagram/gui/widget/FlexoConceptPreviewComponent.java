@@ -48,12 +48,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.openflexo.fge.Drawing.DrawingTreeNode;
-import org.openflexo.fib.controller.FIBController;
-import org.openflexo.fib.controller.FIBSelectable;
-import org.openflexo.fib.model.FIBCustom;
-import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.gina.controller.FIBController;
+import org.openflexo.gina.controller.FIBSelectable;
+import org.openflexo.gina.model.widget.FIBCustom;
+import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.selection.SelectionManager;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;

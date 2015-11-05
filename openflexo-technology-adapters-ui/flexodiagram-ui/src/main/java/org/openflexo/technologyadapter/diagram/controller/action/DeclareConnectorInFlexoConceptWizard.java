@@ -42,10 +42,10 @@ import java.awt.Image;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.localization.FlexoLocalization;

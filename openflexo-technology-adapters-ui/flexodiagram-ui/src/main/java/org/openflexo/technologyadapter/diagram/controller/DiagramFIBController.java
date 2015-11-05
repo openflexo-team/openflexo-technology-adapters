@@ -42,11 +42,11 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.fib.model.FIBComponent;
-import org.openflexo.fib.model.FIBTab;
-import org.openflexo.fib.utils.FIBInspector;
-import org.openflexo.fib.view.GinaViewFactory;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.container.FIBTab;
+import org.openflexo.gina.utils.FIBInspector;
+import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagram;

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
+<Panel className="org.openflexo.gina.utils.FIBInspector" layout="border"
 	titleFont="SansSerif,0,12" darkLevel="0"
 	dataClassName="org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXImage"
 	controllerClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXInspectorFIBController"
@@ -12,7 +12,7 @@
 			<Label index="13" label="restrict_to_fragment"
 				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
-			<Custom index="14" componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+			<Custom index="14" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" data="data.documentFragment"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
 				<Assignment variable="component.bindable" value="data" />

@@ -7,41 +7,41 @@
 	titleFont="Lucida Grande,0,13" trackViewPortHeight="true">
 	<LocalizedDictionary id="1" />
 	<Label id="2" manageDynamicModel="false" useScrollBar="false"
-		controllerClassName="org.openflexo.fib.controller.FIBController"
+		controllerClassName="org.openflexo.gina.controller.FIBController"
 		localize="true" align="left"
 		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 		label="name" readOnly="false"/>
 	<TextField id="3" passwd="false" manageDynamicModel="false"
 		useScrollBar="false" data="data.diagramName" columns="7" name="DiagramName"
-		controllerClassName="org.openflexo.fib.controller.FIBController" text="TextField"
+		controllerClassName="org.openflexo.gina.controller.FIBController" text="TextField"
 		localize="true"
 		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 		readOnly="false" validateOnReturn="false" enable="data.selectedSlideShow != null"/>
 	<Label id="4" manageDynamicModel="false" useScrollBar="false"
-		controllerClassName="org.openflexo.fib.controller.FIBController"
+		controllerClassName="org.openflexo.gina.controller.FIBController"
 		localize="true" align="left"
 		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 		label="title" readOnly="false"/>
 	<TextField id="5" passwd="false" manageDynamicModel="false"
 		useScrollBar="false" data="data.diagramTitle" columns="7" name="DiagramTitle"
-		controllerClassName="org.openflexo.fib.controller.FIBController" text="TextField"
+		controllerClassName="org.openflexo.gina.controller.FIBController" text="TextField"
 		localize="true"
 		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 		readOnly="false" validateOnReturn="false" enable="data.selectedSlideShow != null"/>
 	<Label id="6" manageDynamicModel="false" useScrollBar="false"
-		controllerClassName="org.openflexo.fib.controller.FIBController"
+		controllerClassName="org.openflexo.gina.controller.FIBController"
 		localize="true" align="left"
 		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 		label="select_a_powerpoint_file" readOnly="false" />
 	<File id="7" manageDynamicModel="true" useScrollBar="false" data="data.file"
-		mode="OpenMode" name="PPTFile" controllerClassName="org.openflexo.fib.controller.FIBController"
+		mode="OpenMode" name="PPTFile" controllerClassName="org.openflexo.gina.controller.FIBController"
 		localize="true"
 		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=false;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 		readOnly="false" isDirectory="false" filter=".ppt" />
 	<Table id="8" showFooter="false" visible="(data.selectedSlideShow != null)"
 		manageDynamicModel="true" enable="(data.currentSlides.size &gt; 0)"
 		selectionMode="SingleSelection" boundToSelectionManager="false"
-		controllerClassName="org.openflexo.fib.controller.FIBController"
+		controllerClassName="org.openflexo.gina.controller.FIBController"
 		localize="true"
 		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=true;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 		visibleRowCount="4" createNewRowOnClick="false" rowHeight="70"
@@ -59,7 +59,7 @@
 	<Image id="11" manageDynamicModel="true" useScrollBar="false"
 		data="data.getOverview(SelectedSlideTable.selected).getImage()"
 		sizeAdjustment="FitToAvailableSizeRespectRatio"
-		controllerClassName="org.openflexo.fib.controller.FIBController"
+		controllerClassName="org.openflexo.gina.controller.FIBController"
 		imageHeight="32" localize="true" align="center"
 		constraints="twocols(anchor=center;expandHorizontally=true;expandVertically=true;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 		readOnly="false" imageWidth="32" />

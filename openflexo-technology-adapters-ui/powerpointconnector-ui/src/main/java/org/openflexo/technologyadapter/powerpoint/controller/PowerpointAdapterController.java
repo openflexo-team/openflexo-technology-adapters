@@ -40,9 +40,9 @@ package org.openflexo.technologyadapter.powerpoint.controller;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.fml.PowerpointShapeRole;
 import org.openflexo.technologyadapter.powerpoint.fml.PowerpointSlideRole;

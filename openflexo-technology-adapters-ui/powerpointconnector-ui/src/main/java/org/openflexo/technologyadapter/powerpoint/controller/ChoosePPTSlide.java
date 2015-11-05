@@ -55,7 +55,7 @@ import org.apache.poi.hslf.model.Slide;
 import org.apache.poi.hslf.usermodel.SlideShow;
 import org.openflexo.ApplicationContext;
 import org.openflexo.components.wizard.WizardStep;
-import org.openflexo.fib.annotation.FIBPanel;
+import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.controller.FlexoController;

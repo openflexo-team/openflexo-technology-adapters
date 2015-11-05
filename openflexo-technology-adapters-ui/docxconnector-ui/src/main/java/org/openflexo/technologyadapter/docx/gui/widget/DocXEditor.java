@@ -40,7 +40,7 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import java.util.logging.Logger;
 
-import org.openflexo.fib.model.FIBCustom.FIBCustomComponent;
+import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 
 @SuppressWarnings("serial")

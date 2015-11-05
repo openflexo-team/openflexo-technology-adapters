@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
+<Panel className="org.openflexo.gina.utils.FIBInspector" layout="border"
 	titleFont="SansSerif,0,12" darkLevel="0"
 	dataClassName="org.openflexo.technologyadapter.docx.fml.DocXTableRole"
 	controllerClassName="org.openflexo.technologyadapter.docx.gui.widget.DocXInspectorFIBController"
@@ -25,7 +25,7 @@
 				localize="true" />
 			<Panel index="6" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
 				useScrollBar="true" protectContent="false" height="60" layout="border"
-				controllerClassName="org.openflexo.fib.controller.FIBController"
+				controllerClassName="org.openflexo.gina.controller.FIBController"
 				border="empty" trackViewPortWidth="true" width="60"
 				constraints="twocols(expandHorizontally=true;expandVertically=true;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=right)"
 				titleFont="SansSerif,0,11" trackViewPortHeight="true"
@@ -69,7 +69,7 @@
 			<Label index="13" label="iteration"
 				constraints="twocols(expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
-			<Custom index="14" componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+			<Custom index="14" componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" manageDynamicModel="true" data="data.iteration"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
 				<Assignment variable="component.bindable" value="data" />
@@ -94,7 +94,7 @@
 					displayTitle="true" />
 				<TextFieldColumn data="iterator.columnName" title="name"
 					columnWidth="80" resizable="true" displayTitle="true" name="title" />
-				<CustomColumn componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 					customRendering="false" disableTerminateEditOnFocusLost="false"
 					data="iterator.value" title="value" columnWidth="300" resizable="true"
 					displayTitle="true" name="visibleValue">

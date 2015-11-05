@@ -43,10 +43,10 @@ import java.util.logging.Logger;
 
 import org.eclipse.lyo.oslc4j.core.model.CreationFactory;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.fib.annotation.FIBPanel;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
+import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;

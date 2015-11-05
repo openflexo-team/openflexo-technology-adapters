@@ -43,8 +43,8 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.fib.model.FIBCustom.FIBCustomComponent.CustomComponentParameter;
 import org.openflexo.foundation.ontology.IFlexoOntology;
+import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent.CustomComponentParameter;
 import org.openflexo.ontology.components.widget.FIBOntologyEditor;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;

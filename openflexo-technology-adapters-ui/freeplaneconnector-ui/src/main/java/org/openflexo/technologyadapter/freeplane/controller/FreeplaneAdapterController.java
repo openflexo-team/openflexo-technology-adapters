@@ -41,9 +41,9 @@ package org.openflexo.technologyadapter.freeplane.controller;
 import javax.swing.ImageIcon;
 
 import org.freeplane.main.application.FreeplaneBasicAdapter;
-import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.AddChildNodeInitializer;
 import org.openflexo.technologyadapter.freeplane.controller.acitoninit.DeleteNodeInitializer;

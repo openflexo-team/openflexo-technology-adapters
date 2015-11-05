@@ -42,9 +42,9 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
-import org.openflexo.fib.utils.InspectorGroup;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.gui.CSVIconLibrary;
 import org.openflexo.view.ModuleView;
