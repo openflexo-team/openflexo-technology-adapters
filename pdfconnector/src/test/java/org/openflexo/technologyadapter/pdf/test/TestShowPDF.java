@@ -2,7 +2,9 @@ package org.openflexo.technologyadapter.pdf.test;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,15 +18,19 @@ import javax.swing.JPanel;
 import org.apache.pdfbox.contentstream.PDContentStream;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSBase;
+import org.apache.pdfbox.cos.COSDictionary;
 import org.apache.pdfbox.cos.COSName;
+import org.apache.pdfbox.cos.COSStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDResources;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
+import org.apache.pdfbox.pdmodel.documentinterchange.markedcontent.PDPropertyList;
 import org.apache.pdfbox.pdmodel.graphics.PDXObject;
 import org.apache.pdfbox.pdmodel.graphics.form.PDFormXObject;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAnnotation;
 import org.apache.pdfbox.pdmodel.interactive.annotation.PDAppearanceStream;
+import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.text.PDFTextStripperByArea;
 import org.apache.pdfbox.text.TextPosition;
 import org.junit.Test;
@@ -51,32 +57,42 @@ public class TestShowPDF {
 		loadAndDisplayDocument("EH200052_MAXITAB Regular_5kg.pdf", getDocument("EH200052_MAXITAB Regular_5kg.pdf"));
 	}
 
-	@Test
+	/*@Test
 	public void showFile2() throws IOException {
 		loadAndDisplayDocument("EH201895_MAXITAB Regular_5kg.pdf", getDocument("EH201895_MAXITAB Regular_5kg.pdf"));
 	}
-
+	
 	@Test
 	public void showFile3() throws IOException {
 		loadAndDisplayDocument("EH201976_MAXITAB Regular_1-2kg.pdf", getDocument("EH201976_MAXITAB Regular_1-2kg.pdf"));
-	}
+	}*/
 
-	@Test
+	/*@Test
 	public void showFile4() throws IOException {
 		loadAndDisplayDocument("EH202050-Action5-200g-5kg.pdf", getDocument("EH202050-Action5-200g-5kg.pdf"));
-	}
+	}*/
 
-	@Test
+	/*@Test
 	public void showFile5() throws IOException {
 		loadAndDisplayDocument("EH202051-Action5-200g-5kg.pdf", getDocument("EH202051-Action5-200g-5kg.pdf"));
-	}
+	}*/
+
+	/*@Test
+	public void showFile6() throws IOException {
+		loadAndDisplayDocument("EH200142_SHOCK_3L.pdf", getDocument("EH200142_SHOCK_3L.pdf"));
+	}*/
+
+	/*@Test
+	public void showFile7() throws IOException {
+		loadAndDisplayDocument("EtiqManchon-Easyclic_1-66kg.pdf", getDocument("EtiqManchon-Easyclic_1-66kg.pdf"));
+	}*/
 
 	@Test
 	public void waitUser() throws IOException {
 		while (true) {
-			System.out.println("hop");
+			// System.out.println("waiting");
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -109,18 +125,56 @@ public class TestShowPDF {
 			public PagePanel(PDDocument document, PDPage page) throws IOException {
 				super();
 
+				// PDResources resources = page.getResources();
+				/*Map pageImages = resources.getImages();
+				if (pageImages != null) { 
+				    Iterator imageIter = pageImages.keySet().iterator();
+				    while (imageIter.hasNext()) {
+				        String key = (String) imageIter.next();
+				        PDXObjectImage image = (PDXObjectImage) pageImages.get(key);
+				        image.write2file("C:\\Users\\Pradyut\\Documents\\image" + i);
+				        i ++;
+				    }
+				}*/
+
+				MyPDFRenderer pdfRenderer = new MyPDFRenderer(document);
+				BufferedImage originalImage = pdfRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
+				Image image = originalImage.getScaledInstance((int) page.getMediaBox().getWidth(), (int) page.getMediaBox().getHeight(),
+						Image.SCALE_SMOOTH);
+
+				add(new JLabel(new ImageIcon(image)));
+
+				PDRectangle cropBox = page.getCropBox();
+				System.out.println("cropBox=" + cropBox);
+
 				PDResources resources = page.getResources();
 				System.out.println("xobjects =" + resources.getXObjectNames());
 
 				formObjects = new ArrayList<>();
 				textBoxes = new ArrayList<>();
 
+				for (COSName n : resources.getPropertiesNames()) {
+					System.out.println("prop=" + resources.getProperties(n).getCOSObject());
+
+					PDPropertyList propList = resources.getProperties(n);
+					COSDictionary dict = propList.getCOSObject();
+
+					for (COSName key : dict.keySet()) {
+						COSBase value = dict.getDictionaryObject(key);
+						System.out.println("key: " + key + " value=" + dict.getDictionaryObject(key));
+						if (value instanceof COSStream) {
+							// System.out.println(((COSStream) value).getString());
+						}
+
+					}
+				}
+
 				for (COSName n : resources.getXObjectNames()) {
 					// System.out.println("for " + n);
 					PDXObject obj;
 					obj = resources.getXObject(n);
-					// System.out.println("obj=" + obj);
-					if (obj instanceof PDImageXObject) {
+					System.out.println("obj=" + obj);
+					/*if (obj instanceof PDImageXObject) {
 						PDImageXObject image = (PDImageXObject) obj;
 						add(new JLabel(new ImageIcon(image.getImage())));
 					}
@@ -135,7 +189,7 @@ public class TestShowPDF {
 							PDXObject obj2 = formResources.getXObject(n2);
 							// System.out.println("n2=" + n2 + " obj2=" + obj2);
 						}
-					}
+					}*/
 				}
 
 				int width = 612;
@@ -168,28 +222,35 @@ public class TestShowPDF {
 
 					@Override
 					protected void processTextPosition(TextPosition text) {
-						// System.out.println("* " + text + " on " + text.getX() + " " + text.getY());
+						System.out.println("* " + text + " on (" + text.getX() + "," + text.getY() + ") width=" + text.getWidth()
+								+ " height=" + text.getHeight() + " font:" + text.getFontSize() + " " + text.getFontSizeInPt() + " matrix="
+								+ text.getTextMatrix() + " dir=" + text.getDir() + " font=" + text.getFont());
 						super.processTextPosition(text);
 						if (currentString == null) {
 							currentString = new StringBuffer();
 						}
 						currentString.append(text.toString());
+
+						int width = (int) text.getWidth();
+						int height = (int) text.getHeight();
+						if (text.getDir() == 0) {
+							height = Math.max((int) text.getHeight(), (int) text.getFontSizeInPt());
+						}
 						if (box == null) {
-							box = new Rectangle((int) text.getX(), (int) text.getY(), (int) text.getWidth(), (int) text.getHeight());
+							box = new Rectangle((int) text.getX(), (int) text.getY(), width, height);
 						}
 						else {
-							box = box.union(
-									new Rectangle((int) text.getX(), (int) text.getY(), (int) text.getWidth(), (int) text.getHeight()));
+							box = box.union(new Rectangle((int) text.getX(), (int) text.getY(), width, height));
 						}
 						fontSize = text.getFontSize();
 						dir = text.getDir();
-						textBoxes.add(new TextBox(currentString.toString(), box, text.getDir()));
 					}
 
 					@Override
 					protected void processOperator(Operator operator, List<COSBase> operands) throws IOException {
 						if (currentString != null && box != null) {
-							System.out.println("> [" + currentString + "] box=" + box + " font=" + fontSize + " dir=" + dir);
+							// System.out.println("> [" + currentString + "] box=" + box + " font=" + fontSize + " dir=" + dir);
+							textBoxes.add(new TextBox(currentString.toString(), box, dir));
 						}
 						reset();
 						super.processOperator(operator, operands);
@@ -225,6 +286,8 @@ public class TestShowPDF {
 				}
 				j++;
 				// }
+
+				System.out.println("on s'arrete");
 			}
 
 			public class TextBox {
@@ -237,6 +300,7 @@ public class TestShowPDF {
 					this.text = text;
 					this.box = box;
 					this.dir = dir;
+					System.out.println("Box for [" + text + "] box=" + box + " dir=" + dir);
 				}
 
 			}
@@ -253,13 +317,13 @@ public class TestShowPDF {
 				}
 
 				for (TextBox tb : textBoxes) {
-					System.out.println("box: " + tb.box);
 					g.setColor(Color.WHITE);
 					g.setFont(g.getFont().deriveFont((float) (tb.box.height * 1.5)));
-					// g.drawRect(tb.box.x, tb.box.y, tb.box.width, tb.box.height);
 					if (tb.dir == 0) {
-						g.drawString(tb.text, tb.box.x, tb.box.y + tb.box.height);
+						// g.drawString(tb.text, tb.box.x, tb.box.y + tb.box.height / 2);
 					}
+					g.setColor(Color.RED);
+					g.drawRect(tb.box.x + 5, tb.box.y - tb.box.height / 2, tb.box.width, tb.box.height);
 				}
 
 			}
