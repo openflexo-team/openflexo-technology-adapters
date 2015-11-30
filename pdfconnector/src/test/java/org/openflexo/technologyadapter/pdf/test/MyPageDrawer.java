@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.pdfbox.contentstream.PDContentStream;
 import org.apache.pdfbox.contentstream.operator.Operator;
 import org.apache.pdfbox.cos.COSBase;
+import org.apache.pdfbox.cos.COSName;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.common.PDStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
@@ -72,19 +73,19 @@ public class MyPageDrawer extends PageDrawer {
 		// PDStream
 	}
 
-	@Override
+	/*@Override
 	public void processOperator(String operation, List<COSBase> arguments) throws IOException {
 		super.processOperator(operation, arguments);
 		// System.out.println("operation: " + operation + " with " + arguments);
-	}
+	}*/
 
 	private boolean ignore = false;
 
-	/*@Override
+	@Override
 	protected void processOperator(Operator operator, List<COSBase> operands) throws IOException {
 		if ((operator.getName().equals("BMC") || operator.getName().equals("BDC")) && operands.size() >= 2
 				&& operands.get(0) instanceof COSName && ((COSName) operands.get(0)).getName().equals("PlacedPDF")
-				&& operands.get(1) instanceof COSName && ((COSName) operands.get(1)).getName().equals("MC5")) {
+				&& operands.get(1) instanceof COSName && ((COSName) operands.get(1)).getName().equals("MC0")) {
 			System.out.println("> on commence un truc");
 			ignore = true;
 		}
@@ -99,12 +100,12 @@ public class MyPageDrawer extends PageDrawer {
 		else {
 			System.out.println("IGNORE processOperator: " + operator + " with " + operands);
 		}
-	}*/
+	}
 
-	@Override
+	/*@Override
 	protected void processOperator(Operator operator, List<COSBase> operands) throws IOException {
 		super.processOperator(operator, operands);
-	}
+	}*/
 
 	@Override
 	protected void showText(byte[] string) throws IOException {
