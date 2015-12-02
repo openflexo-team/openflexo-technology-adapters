@@ -67,7 +67,8 @@ public class FMLControlledDocXVirtualModelNature extends FMLControlledDocumentVi
 	}
 
 	public static boolean hasDocumentTemplate(AbstractVirtualModel<?> virtualModel, DocXDocumentResource templateResource) {
-		return (getDocumentModelSlot(virtualModel).getTemplateResource().equals(templateResource));
+		return (getDocumentModelSlot(virtualModel).getTemplateResource() != null
+				&& getDocumentModelSlot(virtualModel).getTemplateResource().equals(templateResource));
 	}
 
 	public static DocXModelSlot getDocumentModelSlot(AbstractVirtualModel<?> virtualModel) {
