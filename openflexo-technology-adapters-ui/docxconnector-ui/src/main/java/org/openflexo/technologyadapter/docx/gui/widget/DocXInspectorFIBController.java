@@ -74,7 +74,10 @@ public class DocXInspectorFIBController extends FlexoFIBController {
 
 	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> TextBinding<D, TA> createTextBinding(
 			DocXFragmentRole fragmentRole, TextSelection<D, TA> textSelection) {
-		System.out.println("createTextBinding with " + textSelection);
+
+		if (textSelection == null) {
+			return null;
+		}
 
 		CreateTextBinding createTextBinding = CreateTextBinding.actionType.makeNewAction(fragmentRole, null, getEditor());
 		createTextBinding.setName("binding" + (fragmentRole.getTextBindings().size() > 0 ? fragmentRole.getTextBindings().size() : ""));
