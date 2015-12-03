@@ -42,12 +42,17 @@ public interface DocXFragment extends FlexoDocFragment<DocXDocument, DocXTechnol
 	@Override
 	public List<DocXElement<?>> getElements();
 
-	public static abstract class DocXFragmentImpl extends FlexoDocumentFragmentImpl<DocXDocument, DocXTechnologyAdapter>
-			implements DocXFragment {
+	public static abstract class DocXFragmentImpl extends FlexoDocumentFragmentImpl<DocXDocument, DocXTechnologyAdapter> implements
+			DocXFragment {
 
 		@Override
 		public List<DocXElement<?>> getElements() {
 			return (List<DocXElement<?>>) super.getElements();
+		}
+
+		@Override
+		public String toString() {
+			return getStringRepresentation();
 		}
 
 	}
