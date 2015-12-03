@@ -207,8 +207,10 @@ public abstract class AbstractDocXEditor extends JPanel {
 				// System.out.println("Text= " + docXObject);
 				R run = (R) ((Text) docXObject).getParent();
 				// System.out.println("run=" + run);
-				P p = (P) run.getParent();
-				returned.documentElement = getDocXDocument().getParagraph(p);
+				if (run.getParent() instanceof P) {
+					P p = (P) run.getParent();
+					returned.documentElement = getDocXDocument().getParagraph(p);
+				}
 
 				DocXRun docXRun = ((DocXParagraph) returned.documentElement).getRun(run);
 				int runIndex = docXRun.getIndex();
