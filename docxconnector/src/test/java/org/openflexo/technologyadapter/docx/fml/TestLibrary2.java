@@ -94,6 +94,7 @@ import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlotInstanceConfiguration;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -526,7 +527,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		createAllBooksProperty.setPropertyName("books");
 
 		SelectFlexoConceptInstance selectBooks = bookConcept.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectBooks.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
+		selectBooks.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
 		selectBooks.setFlexoConceptType(bookConcept);
 		createAllBooksProperty.setGetControlGraph(bookConcept.getFMLModelFactory().newReturnStatement(selectBooks));
 
@@ -1070,7 +1071,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		fetchRequestIteration.setIteratorName("book");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("library"));
+		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("library"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookConcept);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
 
@@ -1117,7 +1118,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		fetchRequestIteration2.setIteratorName("bookSection");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance2 = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance2.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
+		selectFlexoConceptInstance2.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
 		selectFlexoConceptInstance2.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration2.setIterationAction(selectFlexoConceptInstance2);
 
@@ -1160,7 +1161,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 		fetchRequestIteration.setIteratorName("bookSection");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
+		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
 

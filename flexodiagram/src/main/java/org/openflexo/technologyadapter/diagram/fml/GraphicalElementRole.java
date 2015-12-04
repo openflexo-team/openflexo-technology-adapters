@@ -51,9 +51,9 @@ import org.openflexo.connie.binding.BindingDefinition;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
-import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelFactory;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Adder;
@@ -76,8 +76,8 @@ import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationM
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(GraphicalElementRole.GraphicalElementRoleImpl.class)
-public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
-		extends FlexoRole<T>, Bindable {
+public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends FlexoRole<T>,
+		Bindable {
 
 	public static GraphicalFeature<String, GraphicalRepresentation> LABEL_FEATURE = new HackClassInit();
 
@@ -200,8 +200,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 	public GraphicalElementAction deleteAction(GraphicalElementAction anAction);
 
-	public static abstract class GraphicalElementRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
-			extends FlexoRoleImpl<T>implements GraphicalElementRole<T, GR> {
+	public static abstract class GraphicalElementRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
+			FlexoRoleImpl<T> implements GraphicalElementRole<T, GR> {
 
 		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(GraphicalElementRole.class.getPackage().getName());
@@ -243,8 +243,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
 					// logger.info("[COMMON:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
-					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory()
-							.newInstance(GraphicalElementSpecification.class);
+					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
+							GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
 					newGraphicalElementSpecification.setReadOnly(false);
@@ -550,8 +550,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		private <T2> void registerGRSpecification(GraphicalElementSpecification<T2, GR> aSpec) {
-			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(
-					aSpec.getFeatureName());
+			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(aSpec
+					.getFeatureName());
 			if (existingSpec == null) {
 				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
 			} else {
@@ -585,11 +585,11 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		@Override
-		public ModelObjectActorReference<T> makeActorReference(T object, FlexoConceptInstance epi) {
-			VirtualModelInstanceModelFactory factory = epi.getFactory();
+		public ModelObjectActorReference<T> makeActorReference(T object, FlexoConceptInstance fci) {
+			AbstractVirtualModelInstanceModelFactory<?> factory = fci.getFactory();
 			ModelObjectActorReference<T> returned = factory.newInstance(ModelObjectActorReference.class);
 			returned.setFlexoRole(this);
-			returned.setFlexoConceptInstance(epi);
+			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);
 			return returned;
 		}

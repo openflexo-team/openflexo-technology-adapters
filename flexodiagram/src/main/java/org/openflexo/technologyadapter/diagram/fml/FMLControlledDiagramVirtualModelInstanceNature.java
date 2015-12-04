@@ -56,8 +56,8 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  * @author sylvain
  * 
  */
-public class FMLControlledDiagramVirtualModelInstanceNature
-		implements VirtualModelInstanceNature, ScreenshotableNature<VirtualModelInstance> {
+public class FMLControlledDiagramVirtualModelInstanceNature implements VirtualModelInstanceNature,
+		ScreenshotableNature<VirtualModelInstance> {
 
 	public static FMLControlledDiagramVirtualModelInstanceNature INSTANCE = new FMLControlledDiagramVirtualModelInstanceNature();
 

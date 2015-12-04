@@ -77,6 +77,7 @@ import org.openflexo.fge.graphics.FGEGraphics;
 import org.openflexo.fge.swing.paint.FGEPaintManager;
 import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramShape.DropAndLinkScheme;
@@ -530,8 +531,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	private FMLControlledDiagramShape createNewShape(FGEPoint dropLocation, /*DiagramContainerElement<?> container*/
 			FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole, DropScheme dropScheme) {
 
-		DropSchemeAction dropSchemeAction = DropSchemeAction.actionType.makeNewAction(getNode().getDrawable().getFlexoConceptInstance()
-				.getVirtualModelInstance(), null, controller.getFlexoController().getEditor());
+		DropSchemeAction dropSchemeAction = DropSchemeAction.actionType.makeNewAction((VirtualModelInstance) getNode().getDrawable()
+				.getFlexoConceptInstance().getVirtualModelInstance(), null, controller.getFlexoController().getEditor());
 		dropSchemeAction.setDropScheme(dropScheme);
 		// dropSchemeAction.setParent(container);
 		dropSchemeAction.setParentInformations(parentFlexoConceptInstance, parentShapeRole);
