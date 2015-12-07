@@ -74,7 +74,7 @@ import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.CreateView;
+import org.openflexo.foundation.fml.rt.action.CreateViewInFolder;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
 import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
@@ -208,22 +208,22 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	/*@Override
 	private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
-
+	
 		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
 			System.out.println("Resource " + r + " uri=" + r.getURI());
 		}
-
+	
 		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
-
+	
 		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
 		assertNotNull(documentResource);
-
+	
 		DocXDocument document = documentResource.getResourceData(null);
 		assertNotNull(document);
 		assertNotNull(document.getWordprocessingMLPackage());
-
+	
 		return documentResource;
 	}*/
 
@@ -249,8 +249,8 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		log("testCreateViewPoint()");
 
-		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, _project.getDirectory(),
-				serviceManager.getViewPointLibrary(), resourceCenter);
+		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, _project.getDirectory(), serviceManager.getViewPointLibrary(),
+				resourceCenter);
 		viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
@@ -353,7 +353,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	@Test
 	@TestOrder(7)
 	public void testCreateView() {
-		CreateView action = CreateView.actionType.makeNewAction(_project.getViewLibrary().getRootFolder(), null, _editor);
+		CreateViewInFolder action = CreateViewInFolder.actionType.makeNewAction(_project.getViewLibrary().getRootFolder(), null, _editor);
 		action.setNewViewName("MyView");
 		action.setNewViewTitle("Test creation of a new view");
 		action.setViewpointResource((ViewPointResource) viewPoint.getResource());

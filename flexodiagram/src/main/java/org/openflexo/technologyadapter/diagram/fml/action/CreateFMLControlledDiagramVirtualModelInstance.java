@@ -49,11 +49,10 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewNature;
-import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 
-public class CreateFMLControlledDiagramVirtualModelInstance extends
-		CreateVirtualModelInstance<CreateFMLControlledDiagramVirtualModelInstance> {
+public class CreateFMLControlledDiagramVirtualModelInstance
+		extends CreateVirtualModelInstance<CreateFMLControlledDiagramVirtualModelInstance> {
 
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledDiagramVirtualModelInstance.class.getPackage().getName());
 
@@ -94,12 +93,13 @@ public class CreateFMLControlledDiagramVirtualModelInstance extends
 		System.out.println("Creating FMLControlledDiagramVirtualModelInstance");
 		return super.doAction();
 	}
-	
+
 	@Override
-	public boolean isVisible(VirtualModel virtualModel){
-		if(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)){
+	public boolean isVisible(VirtualModel virtualModel) {
+		if (virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE)) {
 			return true;
-		}else{
+		}
+		else {
 			return false;
 		}
 	}

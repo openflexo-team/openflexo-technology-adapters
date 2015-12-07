@@ -55,7 +55,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -100,7 +100,7 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		 * Instantiate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public FreeplaneModelSlotInstanceConfiguration createConfiguration(final CreateVirtualModelInstance action) {
+		public FreeplaneModelSlotInstanceConfiguration createConfiguration(final AbstractCreateVirtualModelInstance action) {
 			return new FreeplaneModelSlotInstanceConfiguration(this, action);
 		}
 

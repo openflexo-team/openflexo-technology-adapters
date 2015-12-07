@@ -45,7 +45,7 @@ import org.apache.poi.hslf.model.AutoShape;
 import org.apache.poi.hslf.model.Slide;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Implementation;
@@ -96,7 +96,7 @@ public interface PowerpointModelSlot extends ModelSlot<PowerpointSlideshow> {
 
 		@Override
 		public ModelSlotInstanceConfiguration<? extends ModelSlot<PowerpointSlideshow>, PowerpointSlideshow> createConfiguration(
-				CreateVirtualModelInstance action) {
+				AbstractCreateVirtualModelInstance action) {
 			// TODO Auto-generated method stub
 			return null;
 		}

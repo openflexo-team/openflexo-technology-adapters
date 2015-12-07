@@ -20,13 +20,13 @@
 
 package org.openflexo.technologyadapter.odt;
 
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.odt.model.ODTDocument;
 
 public class ODTModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<ODTDocument, ODTModelSlot> {
 
-	protected ODTModelSlotInstanceConfiguration(ODTModelSlot ms, CreateVirtualModelInstance action) {
+	protected ODTModelSlotInstanceConfiguration(ODTModelSlot ms, AbstractCreateVirtualModelInstance action) {
 		super(ms, action);
 	}
 

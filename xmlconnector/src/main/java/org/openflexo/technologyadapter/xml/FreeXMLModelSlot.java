@@ -49,7 +49,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
@@ -218,7 +218,7 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLMo
 		}
 
 		@Override
-		public ModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+		public ModelSlotInstanceConfiguration createConfiguration(AbstractCreateVirtualModelInstance action) {
 			return new FreeXMLModelSlotInstanceConfiguration(this, action);
 		}
 

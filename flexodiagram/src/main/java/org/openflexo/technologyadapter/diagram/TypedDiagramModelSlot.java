@@ -51,7 +51,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -206,7 +206,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public TypedDiagramModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+		public TypedDiagramModelSlotInstanceConfiguration createConfiguration(AbstractCreateVirtualModelInstance action) {
 			return new TypedDiagramModelSlotInstanceConfiguration(this, action);
 		}
 

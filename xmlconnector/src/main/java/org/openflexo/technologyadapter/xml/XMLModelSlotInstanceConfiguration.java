@@ -38,7 +38,7 @@
 
 package org.openflexo.technologyadapter.xml;
 
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -46,13 +46,12 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLModel, XMLMetaModel, XMLModelSlot> {
 
-	protected XMLModelSlotInstanceConfiguration(XMLModelSlot ms, CreateVirtualModelInstance action) {
+	protected XMLModelSlotInstanceConfiguration(XMLModelSlot ms, AbstractCreateVirtualModelInstance<?, ?, ?, ?> action) {
 		super(ms, action);
-		setModelUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myXMLFile");
+		setModelUri(getAction().getProject().getURI() + "/Models/myXMLFile");
 		setRelativePath("/");
-		setFilename("myXMLFile"
-				+ ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter()).getExpectedModelExtension(getModelSlot()
-						.getMetaModelResource()));
+		setFilename("myXMLFile" + ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter())
+				.getExpectedModelExtension(getModelSlot().getMetaModelResource()));
 	}
 
 	/*@Override
@@ -83,8 +82,8 @@ public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		String expectedSuffix = ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter()).getExpectedModelExtension(getModelSlot()
-				.getMetaModelResource());
+		String expectedSuffix = ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter())
+				.getExpectedModelExtension(getModelSlot().getMetaModelResource());
 		if (!getFilename().endsWith(expectedSuffix)) {
 			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_right_suffix" + " : " + expectedSuffix));
 			return false;

@@ -46,7 +46,7 @@ import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -120,7 +120,7 @@ public interface UMLEMFModelSlot extends EMFModelSlot{
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public UMLEMFModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+		public UMLEMFModelSlotInstanceConfiguration createConfiguration(AbstractCreateVirtualModelInstance action) {
 			return new UMLEMFModelSlotInstanceConfiguration(this, action);
 		}
 

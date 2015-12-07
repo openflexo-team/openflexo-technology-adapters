@@ -48,7 +48,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -111,7 +111,7 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 		}
 
 		@Override
-		public FreeDiagramModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+		public FreeDiagramModelSlotInstanceConfiguration createConfiguration(AbstractCreateVirtualModelInstance action) {
 			return new FreeDiagramModelSlotInstanceConfiguration(this, action);
 		}
 

@@ -48,7 +48,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
@@ -95,7 +95,7 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public OSLCRMModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+		public OSLCRMModelSlotInstanceConfiguration createConfiguration(AbstractCreateVirtualModelInstance action) {
 			return new OSLCRMModelSlotInstanceConfiguration(this, action);
 		}
 

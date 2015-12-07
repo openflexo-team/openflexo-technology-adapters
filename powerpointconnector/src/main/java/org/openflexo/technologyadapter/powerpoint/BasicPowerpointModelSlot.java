@@ -48,7 +48,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
@@ -116,7 +116,7 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 
 		@Override
 		public ModelSlotInstanceConfiguration<BasicPowerpointModelSlot, PowerpointSlideshow> createConfiguration(
-				CreateVirtualModelInstance action) {
+				AbstractCreateVirtualModelInstance action) {
 			return new BasicPowerpointModelSlotInstanceConfiguration(this, action);
 		}
 

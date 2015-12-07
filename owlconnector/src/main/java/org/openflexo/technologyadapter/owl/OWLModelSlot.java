@@ -54,7 +54,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.DeclareInspectorEntries;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.fml.ClassParameter;
 import org.openflexo.foundation.ontology.fml.IndividualParameter;
 import org.openflexo.foundation.ontology.fml.PropertyParameter;
@@ -157,7 +157,7 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public OWLModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+		public OWLModelSlotInstanceConfiguration createConfiguration(AbstractCreateVirtualModelInstance action) {
 			return new OWLModelSlotInstanceConfiguration(this, action);
 		}
 

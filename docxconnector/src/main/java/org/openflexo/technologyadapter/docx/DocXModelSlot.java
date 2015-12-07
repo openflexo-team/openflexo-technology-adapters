@@ -33,7 +33,7 @@ import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
@@ -102,7 +102,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public DocXModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+		public DocXModelSlotInstanceConfiguration createConfiguration(AbstractCreateVirtualModelInstance action) {
 			return new DocXModelSlotInstanceConfiguration(this, action);
 		}
 

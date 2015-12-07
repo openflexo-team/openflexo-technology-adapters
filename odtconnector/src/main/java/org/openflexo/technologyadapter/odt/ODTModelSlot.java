@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -65,7 +65,7 @@ public interface ODTModelSlot extends FreeModelSlot<ODTDocument> {
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public ODTModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
+		public ODTModelSlotInstanceConfiguration createConfiguration(AbstractCreateVirtualModelInstance action) {
 			return new ODTModelSlotInstanceConfiguration(this, action);
 		}
 
