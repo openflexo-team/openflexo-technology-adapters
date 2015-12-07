@@ -86,7 +86,7 @@ public class ExportFMLControlledDiagramToImageAction extends
 			if (object instanceof VirtualModelInstance) {
 				return ((VirtualModelInstance) object).hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
 			} else {
-				if (object != null && (VirtualModelInstance) object.getVirtualModelInstance() instanceof VirtualModelInstance) {
+				if (object != null && object.getVirtualModelInstance() instanceof VirtualModelInstance) {
 					VirtualModelInstance vmi = (VirtualModelInstance) object.getVirtualModelInstance();
 					if (vmi != null)
 						return vmi.hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
