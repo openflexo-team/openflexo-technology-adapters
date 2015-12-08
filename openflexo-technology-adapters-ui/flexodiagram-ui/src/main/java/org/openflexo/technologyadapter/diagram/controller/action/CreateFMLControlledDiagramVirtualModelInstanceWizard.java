@@ -41,6 +41,9 @@ package org.openflexo.technologyadapter.diagram.controller.action;
 import java.awt.Image;
 import java.util.logging.Logger;
 
+import org.openflexo.fib.annotation.FIBPanel;
+import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.localization.FlexoLocalization;
@@ -49,8 +52,8 @@ import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.action.AbstractCreateVirtualModelInstanceWizard;
 
-public class CreateFMLControlledDiagramVirtualModelInstanceWizard extends
-		AbstractCreateVirtualModelInstanceWizard<CreateFMLControlledDiagramVirtualModelInstance> {
+public class CreateFMLControlledDiagramVirtualModelInstanceWizard
+		extends AbstractCreateVirtualModelInstanceWizard<CreateFMLControlledDiagramVirtualModelInstance> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger
@@ -59,6 +62,32 @@ public class CreateFMLControlledDiagramVirtualModelInstanceWizard extends
 	public CreateFMLControlledDiagramVirtualModelInstanceWizard(CreateFMLControlledDiagramVirtualModelInstance action,
 			FlexoController controller) {
 		super(action, controller);
+	}
+
+	/*@Override
+	protected AbstractCreateVirtualModelInstanceWizard<CreateBasicVirtualModelInstance>.AbstractChooseVirtualModel<?> makeChooseVirtualModel() {
+		return new ChooseVirtualModel();
+	}*/
+
+	@Override
+	protected AbstractCreateVirtualModelInstanceWizard<CreateFMLControlledDiagramVirtualModelInstance>.AbstractChooseVirtualModel<?> makeChooseVirtualModel() {
+		return new ChooseVirtualModel();
+	}
+
+	/**
+	 * This step is used to set {@link VirtualModel} to be used, as well as name and title of the {@link VirtualModelInstance}
+	 * 
+	 * @author sylvain
+	 * 
+	 */
+	@FIBPanel("Fib/Wizard/ChooseFMLControlledDiagramVirtualModel.fib")
+	public class ChooseVirtualModel extends AbstractChooseVirtualModel<VirtualModel> {
+
+		@Override
+		public String getTitle() {
+			return FlexoLocalization.localizedForKey("choose_fml_controlled_diagram_virtual_model");
+		}
+
 	}
 
 	@Override

@@ -46,8 +46,13 @@ import org.openflexo.rm.ResourceLocator;
 public class TestDiagramWizardFibs extends GenericFIBTestCase {
 
 	public static void main(String[] args) {
-		System.out.println(generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Wizard")).getFile(),
-				"Fib/Wizard/"));
+		System.out.println(
+				generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Wizard")).getFile(), "Fib/Wizard/"));
+	}
+
+	@Test
+	public void testChooseFMLControlledDiagramVirtualModel() {
+		validateFIB("Fib/Wizard/ChooseFMLControlledDiagramVirtualModel.fib");
 	}
 
 	@Test
