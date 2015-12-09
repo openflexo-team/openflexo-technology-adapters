@@ -92,8 +92,10 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 	@Setter(VALUE_KEY)
 	public void setValue(String value);
 
-	public abstract class FMLDiagramPaletteElementBindingParameterImpl extends FlexoConceptObjectImpl implements
-			FMLDiagramPaletteElementBindingParameter {
+	public boolean isEditable();
+
+	public abstract class FMLDiagramPaletteElementBindingParameterImpl extends FlexoConceptObjectImpl
+			implements FMLDiagramPaletteElementBindingParameter {
 
 		private FlexoBehaviourParameter _parameter;
 		// private FMLDiagramPaletteElementBinding elementBinding;
@@ -146,6 +148,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 			this.value = value;
 		}
 
+		@Override
 		public boolean isEditable() {
 			if (getParameter() != null) {
 				return !(getParameter() instanceof URIParameter) /*&& !getParameter().getUsePaletteLabelAsDefaultValue()*/;
@@ -163,7 +166,7 @@ public interface FMLDiagramPaletteElementBindingParameter extends VirtualModelOb
 		/*public void setElementBinding(FMLDiagramPaletteElementBinding elementBinding) {
 			this.elementBinding = elementBinding;
 		}
-
+		
 		public FMLDiagramPaletteElementBinding getElementBinding() {
 			return elementBinding;
 		}*/
