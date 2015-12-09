@@ -52,8 +52,8 @@ import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.action.AbstractCreateVirtualModelInstanceWizard;
 
-public class CreateFMLControlledDiagramVirtualModelInstanceWizard
-		extends AbstractCreateVirtualModelInstanceWizard<CreateFMLControlledDiagramVirtualModelInstance> {
+public class CreateFMLControlledDiagramVirtualModelInstanceWizard extends
+		AbstractCreateVirtualModelInstanceWizard<CreateFMLControlledDiagramVirtualModelInstance> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger
@@ -70,8 +70,13 @@ public class CreateFMLControlledDiagramVirtualModelInstanceWizard
 	}*/
 
 	@Override
-	protected AbstractCreateVirtualModelInstanceWizard<CreateFMLControlledDiagramVirtualModelInstance>.AbstractChooseVirtualModel<?> makeChooseVirtualModel() {
+	protected ChooseVirtualModel makeChooseVirtualModel() {
 		return new ChooseVirtualModel();
+	}
+
+	@Override
+	protected ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel makeChooseAndConfigureCreationScheme() {
+		return new ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel();
 	}
 
 	/**
@@ -88,6 +93,11 @@ public class CreateFMLControlledDiagramVirtualModelInstanceWizard
 			return FlexoLocalization.localizedForKey("choose_fml_controlled_diagram_virtual_model");
 		}
 
+	}
+
+	@FIBPanel("Fib/Wizard/ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel.fib")
+	public class ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel extends
+			AbstractChooseAndConfigureCreationScheme<VirtualModel> {
 	}
 
 	@Override
