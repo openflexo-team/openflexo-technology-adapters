@@ -110,8 +110,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 		federatedShapes = new HashMap<DiagramShape, FMLControlledDiagramShape>();
 		federatedConnectors = new HashMap<DiagramConnector, FMLControlledDiagramConnector>();
 		try {
-			MODEL_FACTORY = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FMLControlledDiagramShape.class,
-					FMLControlledDiagramConnector.class));
+			MODEL_FACTORY = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FMLControlledDiagramShape.class, FMLControlledDiagramConnector.class));
 			MODEL_FACTORY.setEditingContext(vmInstance.getServiceManager().getEditingContext());
 		} catch (ModelDefinitionException e) {
 			// TODO Auto-generated catch block
@@ -180,7 +180,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				returned.setDiagramElement(shape);
 				registerNewFMLControlledDiagramElement(returned);
 				// shape.setName(returned.getLabel());
-			} else {
+			}
+			else {
 				// TODO: perfs issue: when not found it will be costly !!!
 			}
 		}
@@ -200,7 +201,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				returned.setRole((ConnectorRole) r.property);
 				returned.setDiagramElement(connector);
 				registerNewFMLControlledDiagramElement(returned);
-			} else {
+			}
+			else {
 				// TODO: perfs issue: when not found it will be costly !!!
 			}
 		}
@@ -208,8 +210,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 	}
 
 	private void registerNewFMLControlledDiagramElement(FMLControlledDiagramElement<?, ?> fmlControlledDiagramElement) {
-		List<FMLControlledDiagramElement<?, ?>> list = diagramElementsForFlexoConceptInstances.get(fmlControlledDiagramElement
-				.getFlexoConceptInstance());
+		List<FMLControlledDiagramElement<?, ?>> list = diagramElementsForFlexoConceptInstances
+				.get(fmlControlledDiagramElement.getFlexoConceptInstance());
 		if (list == null) {
 			list = new ArrayList<FMLControlledDiagramElement<?, ?>>();
 			diagramElementsForFlexoConceptInstances.put(fmlControlledDiagramElement.getFlexoConceptInstance(), list);
@@ -238,10 +240,10 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 		} else {
 			returned = factory.makeDrawingGraphicalRepresentation();
 			diagram.setGraphicalRepresentation(returned);
-
+	
 			System.out.println("He he , je vais pouvoir faire un set de la GR: " + getDiagramModelSlot());
 			getDiagramModelSlot().setGraphicalRepresentation(returned);
-
+	
 		}
 		returned.addToMouseClickControls(new DiagramEditor.ShowContextualMenuControl(factory.getEditingContext()));
 		if (ToolBox.getPLATFORM() != ToolBox.MACOS) {
@@ -357,7 +359,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 					if (fmlShape != null) {
 						// In this case, the shape is federated in a certain FlexoConceptInstance : we will address this concept instead
 						drawShape(fmlControlledShapeBinding, fmlShape, diagram);
-					} else {
+					}
+					else {
 						// Otherwise, this is a normal shape, we just display the shape
 						drawShape(shapeBinding, shape, diagram);
 					}
@@ -369,9 +372,10 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 					if (fmlConnector != null) {
 						// In this case, the connector is federated in a certain FlexoConceptInstance : we will address this concept instead
 						drawConnector(fmlControlledConnectorBinding, fmlConnector,
-								fmlStartShape != null ? fmlStartShape : connector.getStartShape(), fmlEndShape != null ? fmlEndShape
-										: connector.getEndShape(), diagram);
-					} else {
+								fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
+								fmlEndShape != null ? fmlEndShape : connector.getEndShape(), diagram);
+					}
+					else {
 						// Otherwise, this is a normal connector, we just display the connector
 						drawConnector(connectorBinding, connector, fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
 								fmlEndShape != null ? fmlEndShape : connector.getEndShape(), diagram);
@@ -388,7 +392,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 					if (fmlShape != null) {
 						// In this case, the shape is federated in a certain FlexoConceptInstance : we will address this concept instead
 						drawShape(fmlControlledShapeBinding, fmlShape, aShape);
-					} else {
+					}
+					else {
 						// Otherwise, this is a normal shape, we just display the shape
 						drawShape(shapeBinding, shape, aShape);
 					}
@@ -400,9 +405,10 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 					if (fmlConnector != null) {
 						// In this case, the connector is federated in a certain FlexoConceptInstance : we will address this concept instead
 						drawConnector(fmlControlledConnectorBinding, fmlConnector,
-								fmlStartShape != null ? fmlStartShape : connector.getStartShape(), fmlEndShape != null ? fmlEndShape
-										: connector.getEndShape(), aShape);
-					} else {
+								fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
+								fmlEndShape != null ? fmlEndShape : connector.getEndShape(), aShape);
+					}
+					else {
 						// Otherwise, this is a normal connector, we just display the connector
 						drawConnector(connectorBinding, connector, fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
 								fmlEndShape != null ? fmlEndShape : connector.getEndShape(), aShape);
@@ -420,7 +426,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 						if (fmlShape != null) {
 							// In this case, the shape is federated in a certain FlexoConceptInstance : we will address this concept instead
 							drawShape(fmlControlledShapeBinding, fmlShape, aShape);
-						} else {
+						}
+						else {
 							// Otherwise, this is a normal shape, we just display the shape
 							drawShape(shapeBinding, shape, aShape);
 						}
@@ -433,9 +440,10 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 							// In this case, the connector is federated in a certain FlexoConceptInstance : we will address this concept
 							// instead
 							drawConnector(fmlControlledConnectorBinding, fmlConnector,
-									fmlStartShape != null ? fmlStartShape : connector.getStartShape(), fmlEndShape != null ? fmlEndShape
-											: connector.getEndShape(), aShape);
-						} else {
+									fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
+									fmlEndShape != null ? fmlEndShape : connector.getEndShape(), aShape);
+						}
+						else {
 							// Otherwise, this is a normal connector, we just display the connector
 							drawConnector(connectorBinding, connector, fmlStartShape != null ? fmlStartShape : connector.getStartShape(),
 									fmlEndShape != null ? fmlEndShape : connector.getEndShape(), aShape);
@@ -447,8 +455,8 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 
 		// TODO: move this to FME !!!
 		fmlControlledShapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.label"), true);
-		fmlControlledConnectorBinding
-				.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.label"), true);
+		fmlControlledConnectorBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.label"),
+				true);
 
 		shapeBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
 		connectorBinding.setDynamicPropertyValue(GraphicalRepresentation.TEXT, new DataBinding<String>("drawable.name"), true);
@@ -465,14 +473,14 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				}
 			}
 		}
-
+	
 		return returned;
 	}*/
 
 	/*@Override
 	protected ConnectorGraphicalRepresentation retrieveGraphicalRepresentation(DiagramConnector connector, DiagramFactory factory) {
 		ConnectorGraphicalRepresentation returned = super.retrieveGraphicalRepresentation(connector, factory);
-
+	
 		boolean doubleClickUsed = false;
 		if (connector != null) {
 			ConnectorRole patternRole = connector.getPatternRole(vmInstance);
@@ -484,11 +492,11 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 				}
 			}
 		}
-
+	
 		if (!doubleClickUsed) {
 			returned.addToMouseClickControls(new MouseClickControlImpl<DiagramEditor>("reset_layout", MouseButton.LEFT, 2,
 					new MouseClickControlActionImpl<DiagramEditor>() {
-
+	
 						@Override
 						public boolean handleClick(org.openflexo.fge.Drawing.DrawingTreeNode<?, ?> node, DiagramEditor controller,
 								MouseControlContext context) {
@@ -499,7 +507,7 @@ public class FMLControlledDiagramDrawing extends AbstractDiagramDrawing implemen
 						}
 					}, false, false, false, false, factory.getEditingContext()));
 		}
-
+	
 		return returned;
 	}*/
 
