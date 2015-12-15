@@ -237,8 +237,8 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 		public boolean isValidTarget(FlexoConcept actualFromTarget, FlexoConcept actualToTarget) {
 			// TODO: improved this so that we can take into account adressed models restrictions. See also
 			// LinkScheme.isValidTarget on branch 1.5.1
-			return getFromTargetFlexoConcept().isAssignableFrom(actualFromTarget)
-					&& getToTargetFlexoConcept().isAssignableFrom(actualToTarget);
+			return getFromTargetFlexoConcept() != null && getFromTargetFlexoConcept().isAssignableFrom(actualFromTarget)
+					&& getToTargetFlexoConcept() != null && getToTargetFlexoConcept().isAssignableFrom(actualToTarget);
 		}
 
 		/*private void appendFromTargetBindingVariable(BindingModel bindingModel) {

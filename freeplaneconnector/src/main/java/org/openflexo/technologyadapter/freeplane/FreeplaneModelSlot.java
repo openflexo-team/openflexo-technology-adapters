@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.freeplane;
 
 import java.io.UnsupportedEncodingException;
@@ -47,15 +46,16 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -100,8 +100,9 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		 * Instantiate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public FreeplaneModelSlotInstanceConfiguration createConfiguration(final AbstractCreateVirtualModelInstance action) {
-			return new FreeplaneModelSlotInstanceConfiguration(this, action);
+		public FreeplaneModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+				FlexoProject project) {
+			return new FreeplaneModelSlotInstanceConfiguration(this, virtualModelInstance, project);
 		}
 
 		@Override

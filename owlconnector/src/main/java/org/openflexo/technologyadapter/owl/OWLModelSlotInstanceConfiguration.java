@@ -40,9 +40,10 @@ package org.openflexo.technologyadapter.owl;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.localization.FlexoLocalization;
@@ -54,10 +55,11 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 
 	private static final Logger logger = Logger.getLogger(TypeAwareModelSlotInstanceConfiguration.class.getPackage().getName());
 
-	protected OWLModelSlotInstanceConfiguration(OWLModelSlot ms, AbstractCreateVirtualModelInstance<?, ?, ?, ?> action) {
-		super(ms, action);
+	protected OWLModelSlotInstanceConfiguration(OWLModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+			FlexoProject project) {
+		super(ms, virtualModelInstance, project);
 		// options.add(DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel);
-		setModelUri(getAction().getProject().getURI() + "/Models/myOntology");
+		setModelUri(virtualModelInstance.getProject().getURI() + "/Models/myOntology");
 		setRelativePath("/");
 		setFilename("myOntology" + getModelSlot().getModelSlotTechnologyAdapter().getExpectedOntologyExtension());
 	}
@@ -70,13 +72,11 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 			if (modelResource != null) {
 				msInstance.setAccessedResourceData(getModelResource().getModel());
 				msInstance.setModelURI(getModelResource().getURI());
-			}
-			else {
+			} else {
 				logger.warning("Could not create SharedEmptyModel for model slot " + getModelSlot());
 			}
 			return msInstance;
-		}
-		else {
+		} else {
 			return super.configureModelSlotInstance(msInstance, view);
 		}
 	}
@@ -107,8 +107,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 			return getResourceCenter() != null && getResourceCenter() instanceof FileSystemBasedResourceCenter
 					&& StringUtils.isNotEmpty(getModelUri()) && StringUtils.isNotEmpty(getRelativePath())
 					&& StringUtils.isNotEmpty(getFilename());
-		}
-		else {
+		} else {
 			return super.isValidConfiguration();
 		}
 	}

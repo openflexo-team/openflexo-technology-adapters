@@ -41,7 +41,8 @@ package org.openflexo.technologyadapter.diagram;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
@@ -58,9 +59,10 @@ public class FreeDiagramModelSlotInstanceConfiguration extends FreeModelSlotInst
 	protected FlexoResourceCenter<?> resourceCenter;
 	protected DiagramResource diagramResource;
 
-	protected FreeDiagramModelSlotInstanceConfiguration(FreeDiagramModelSlot ms, AbstractCreateVirtualModelInstance<?, ?, ?, ?> action) {
-		super(ms, action);
-		setResourceUri(getAction().getProject().getURI() + "/Diagrams/myDiagram");
+	protected FreeDiagramModelSlotInstanceConfiguration(FreeDiagramModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+			FlexoProject project) {
+		super(ms, virtualModelInstance, project);
+		setResourceUri(project.getURI() + "/Diagrams/myDiagram");
 		setRelativePath("/");
 		setFilename("myDiagram.diagram");
 	}

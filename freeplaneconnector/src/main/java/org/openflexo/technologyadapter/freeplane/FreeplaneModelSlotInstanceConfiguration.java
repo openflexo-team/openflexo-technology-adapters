@@ -36,17 +36,18 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.freeplane;
 
-import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
 public class FreeplaneModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<IFreeplaneMap, FreeplaneModelSlot> {
 
-    public FreeplaneModelSlotInstanceConfiguration(final FreeplaneModelSlot ms, final AbstractCreateVirtualModelInstance action) {
-        super(ms, action);
-    }
+	public FreeplaneModelSlotInstanceConfiguration(final FreeplaneModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+			FlexoProject project) {
+		super(ms, virtualModelInstance, project);
+	}
 
 }

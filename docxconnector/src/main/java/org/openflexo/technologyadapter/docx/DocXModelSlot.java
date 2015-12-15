@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.docx;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.doc.fml.FlexoDocumentModelSlot;
 import org.openflexo.foundation.doc.fml.FragmentActorReference;
 import org.openflexo.foundation.doc.fml.ImageActorReference;
@@ -32,8 +33,8 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
@@ -74,8 +75,7 @@ import org.openflexo.toolbox.StringUtils;
 @DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class, ApplyTextBindings.class,
 		ReinjectTextBindings.class, SelectGeneratedDocXFragment.class, GenerateDocXTable.class, ReinjectFromDocXTable.class,
 		SelectGeneratedDocXTable.class, GenerateDocXImage.class, SelectGeneratedDocXImage.class })
-@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class,
-		ImageActorReference.class })
+@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class, ImageActorReference.class })
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
 @XMLElement
@@ -89,7 +89,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 	public void setTemplateResource(DocXDocumentResource templateResource);
 
 	// Implem
-	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument>implements DocXModelSlot {
+	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument> implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 
@@ -102,8 +102,9 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public DocXModelSlotInstanceConfiguration createConfiguration(AbstractCreateVirtualModelInstance action) {
-			return new DocXModelSlotInstanceConfiguration(this, action);
+		public DocXModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+				FlexoProject project) {
+			return new DocXModelSlotInstanceConfiguration(this, virtualModelInstance, project);
 		}
 
 		@Override
@@ -128,8 +129,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 
 		@Override
 		public DocXDocumentResource getTemplateResource() {
-			if (templateResource == null && StringUtils.isNotEmpty(templateDocumentURI)
-					&& getServiceManager().getResourceManager() != null) {
+			if (templateResource == null && StringUtils.isNotEmpty(templateDocumentURI) && getServiceManager().getResourceManager() != null) {
 				// System.out.println("Looking up " + templateDocumentURI);
 				templateResource = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI, null);
 				// System.out.println("templateResource = " + returned);

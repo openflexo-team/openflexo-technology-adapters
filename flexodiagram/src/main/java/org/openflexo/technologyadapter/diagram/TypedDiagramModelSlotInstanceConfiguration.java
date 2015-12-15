@@ -38,7 +38,8 @@
 
 package org.openflexo.technologyadapter.diagram;
 
-import org.openflexo.foundation.fml.rt.action.AbstractCreateVirtualModelInstance;
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.localization.FlexoLocalization;
@@ -54,23 +55,22 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
  * @author sylvain
  * 
  */
-public class TypedDiagramModelSlotInstanceConfiguration
-		extends TypeAwareModelSlotInstanceConfiguration<Diagram, DiagramSpecification, TypedDiagramModelSlot> {
+public class TypedDiagramModelSlotInstanceConfiguration extends
+		TypeAwareModelSlotInstanceConfiguration<Diagram, DiagramSpecification, TypedDiagramModelSlot> {
 
-	protected TypedDiagramModelSlotInstanceConfiguration(TypedDiagramModelSlot ms, AbstractCreateVirtualModelInstance<?, ?, ?, ?> action) {
-		super(ms, action);
+	protected TypedDiagramModelSlotInstanceConfiguration(TypedDiagramModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+			FlexoProject project) {
+		super(ms, virtualModelInstance, project);
 	}
 
 	@Override
-	public void setOption(
-			org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
+	public void setOption(org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
-			modelUri = getAction().getProject().getURI() + "/Diagrams/myDiagram";
+			modelUri = getVirtualModelInstance().getProject().getURI() + "/Diagrams/myDiagram";
 			relativePath = "/Diagram/";
 			filename = "myDiagram" + DiagramResource.DIAGRAM_SUFFIX;
-		}
-		else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
+		} else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
 			modelUri = "ResourceCenter/Models/";
 			relativePath = "/Diagram/";
 			filename = "myDiagram" + DiagramResource.DIAGRAM_SUFFIX;
