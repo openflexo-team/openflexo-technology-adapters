@@ -55,8 +55,8 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
  * @author sylvain
  * 
  */
-public class TypedDiagramModelSlotInstanceConfiguration extends
-		TypeAwareModelSlotInstanceConfiguration<Diagram, DiagramSpecification, TypedDiagramModelSlot> {
+public class TypedDiagramModelSlotInstanceConfiguration
+		extends TypeAwareModelSlotInstanceConfiguration<Diagram, DiagramSpecification, TypedDiagramModelSlot> {
 
 	protected TypedDiagramModelSlotInstanceConfiguration(TypedDiagramModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
 			FlexoProject project) {
@@ -64,13 +64,15 @@ public class TypedDiagramModelSlotInstanceConfiguration extends
 	}
 
 	@Override
-	public void setOption(org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
+	public void setOption(
+			org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
-			modelUri = getVirtualModelInstance().getProject().getURI() + "/Diagrams/myDiagram";
+			modelUri = getProject().getURI() + "/Diagrams/myDiagram";
 			relativePath = "/Diagram/";
 			filename = "myDiagram" + DiagramResource.DIAGRAM_SUFFIX;
-		} else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
+		}
+		else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
 			modelUri = "ResourceCenter/Models/";
 			relativePath = "/Diagram/";
 			filename = "myDiagram" + DiagramResource.DIAGRAM_SUFFIX;
