@@ -27,6 +27,7 @@
 		<module>docxconnector-ui</module>
 		<module>odtconnector-ui</module>
 		<module>freeplaneconnector-ui</module>
+		<module>pdfconnector-ui</module>
 	</modules>
 	<dependencyManagement>
 		<dependencies>
