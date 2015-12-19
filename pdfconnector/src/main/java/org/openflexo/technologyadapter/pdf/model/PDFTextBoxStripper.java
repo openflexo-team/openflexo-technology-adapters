@@ -63,9 +63,13 @@ public class PDFTextBoxStripper extends PDFTextStripperByArea {
 
 		int width = (int) text.getWidth();
 		int height = (int) text.getHeight();
-		if (text.getDir() == 0) {
-			height = Math.max((int) text.getHeight(), (int) text.getFontSizeInPt());
+		if (text.getDir() == 0 || text.getDir() == 180) {
+			height = Math.max((int) text.getHeight(), (int) (text.getFontSizeInPt()));
 		}
+		else if (text.getDir() == 90 || text.getDir() == 270) {
+			width = Math.max((int) text.getWidth(), (int) (text.getFontSizeInPt()));
+		}
+
 		if (box == null) {
 			box = new Rectangle((int) text.getX(), (int) text.getY(), width, height);
 		}

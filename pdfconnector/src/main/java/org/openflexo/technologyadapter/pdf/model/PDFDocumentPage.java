@@ -27,7 +27,6 @@ import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
-import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.rendering.ImageType;
 import org.apache.pdfbox.rendering.PDFRenderer;
 import org.openflexo.foundation.InnerResourceData;
@@ -89,8 +88,8 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 	public static abstract class PDFPageImpl extends FlexoObjectImpl implements PDFDocumentPage {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-				.getLogger(PDFPageImpl.class.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(PDFPageImpl.class.getPackage()
+				.getName());
 
 		private Image renderingImage;
 		private List<TextBox> boxes;
@@ -119,8 +118,8 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 				PDFRenderer pdfRenderer = new PDFRenderer(pdDocument);
 				BufferedImage originalImage;
 				originalImage = pdfRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
-				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(),
-						(int) pdPage.getMediaBox().getHeight(), Image.SCALE_SMOOTH);
+				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(), (int) pdPage.getMediaBox()
+						.getHeight(), Image.SCALE_SMOOTH);
 
 				PDFTextBoxStripper stripper = new PDFTextBoxStripper(pdDocument, pdPage);
 				boxes = stripper.extractTextBoxes();
@@ -168,6 +167,10 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 			return null;
 		}
 
+		@Override
+		public PDFDocument getResourceData() {
+			return getPDFDocument();
+		}
 	}
 
 }
