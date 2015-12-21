@@ -64,7 +64,7 @@ public class PDFPagePanel extends JPanel {
 		@Override
 		public void addToSelectedObjects(DrawingTreeNode<?, ?> anObject) {
 			super.addToSelectedObjects(anObject);
-			System.out.println("Tiens j'ai selectionne " + anObject.getDrawable());
+			// System.out.println("Tiens j'ai selectionne " + anObject.getDrawable());
 			if (anObject.getDrawable() instanceof FlexoObject) {
 				for (SelectionListener l : panel.selectionListeners) {
 					l.fireObjectSelected((FlexoObject) anObject.getDrawable());
@@ -75,7 +75,7 @@ public class PDFPagePanel extends JPanel {
 		@Override
 		public void removeFromSelectedObjects(DrawingTreeNode<?, ?> anObject) {
 			super.removeFromSelectedObjects(anObject);
-			System.out.println("Tiens j'ai deselectionne " + anObject.getDrawable());
+			// System.out.println("Tiens j'ai deselectionne " + anObject.getDrawable());
 			if (anObject.getDrawable() instanceof FlexoObject) {
 				for (SelectionListener l : panel.selectionListeners) {
 					l.fireObjectDeselected((FlexoObject) anObject.getDrawable());
@@ -86,7 +86,7 @@ public class PDFPagePanel extends JPanel {
 		@Override
 		public void clearSelection() {
 			super.clearSelection();
-			System.out.println("clear de la selection");
+			// System.out.println("clear de la selection");
 			for (SelectionListener l : panel.selectionListeners) {
 				l.fireResetSelection();
 			}

@@ -14,7 +14,7 @@ public class TextBox extends DefaultFlexoObject {
 		this.text = text;
 		this.box = box;
 		this.dir = dir;
-		System.out.println("Box for [" + text + "] box=" + box + " dir=" + dir);
+		// System.out.println("Box for [" + text + "] box=" + box + " dir=" + dir);
 	}
 
 	public String getText() {

@@ -88,8 +88,8 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 	public static abstract class PDFPageImpl extends FlexoObjectImpl implements PDFDocumentPage {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(PDFPageImpl.class.getPackage()
-				.getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(PDFPageImpl.class.getPackage().getName());
 
 		private Image renderingImage;
 		private List<TextBox> boxes;
@@ -118,14 +118,14 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 				PDFRenderer pdfRenderer = new PDFRenderer(pdDocument);
 				BufferedImage originalImage;
 				originalImage = pdfRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
-				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(), (int) pdPage.getMediaBox()
-						.getHeight(), Image.SCALE_SMOOTH);
+				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(),
+						(int) pdPage.getMediaBox().getHeight(), Image.SCALE_SMOOTH);
 
 				PDFTextBoxStripper stripper = new PDFTextBoxStripper(pdDocument, pdPage);
 				boxes = stripper.extractTextBoxes();
-				for (TextBox b : boxes) {
+				/*for (TextBox b : boxes) {
 					System.out.println("> " + b);
-				}
+				}*/
 
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
