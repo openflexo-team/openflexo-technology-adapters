@@ -86,13 +86,16 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 	public List<TextBox> getTextBoxes();
 
+	public List<ImageBox> getImageBoxes();
+
 	public static abstract class PDFPageImpl extends FlexoObjectImpl implements PDFDocumentPage {
 
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(PDFPageImpl.class.getPackage().getName());
 
 		private Image renderingImage;
-		private List<TextBox> boxes;
+		private List<TextBox> textBoxes;
+		private List<ImageBox> imageBoxes;
 
 		@Override
 		public void setPDPage(PDPage page) {
@@ -121,12 +124,17 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(),
 						(int) pdPage.getMediaBox().getHeight(), Image.SCALE_SMOOTH);
 
-				PDFTextBoxStripper stripper = new PDFTextBoxStripper(pdDocument, pdPage);
-				boxes = stripper.extractTextBoxes();
-				/*for (TextBox b : boxes) {
-					System.out.println("> " + b);
-				}*/
+				PDFTextBoxStripper textBoxStripper = new PDFTextBoxStripper(pdDocument, pdPage);
+				textBoxes = textBoxStripper.extractTextBoxes();
 
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			try {
+				PDFImageBoxStripper imageBoxStripper = new PDFImageBoxStripper(pdDocument, pdPage);
+				imageBoxes = imageBoxStripper.extractImageBoxes();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -138,7 +146,12 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 		@Override
 		public List<TextBox> getTextBoxes() {
-			return boxes;
+			return textBoxes;
+		}
+
+		@Override
+		public List<ImageBox> getImageBoxes() {
+			return imageBoxes;
 		}
 
 		@Override

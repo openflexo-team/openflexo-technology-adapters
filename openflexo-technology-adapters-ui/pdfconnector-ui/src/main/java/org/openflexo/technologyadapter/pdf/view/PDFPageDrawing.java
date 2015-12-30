@@ -55,6 +55,7 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.impl.DrawingImpl;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.technologyadapter.pdf.model.ImageBox;
 import org.openflexo.technologyadapter.pdf.model.PDFDocumentPage;
 import org.openflexo.technologyadapter.pdf.model.TextBox;
 
@@ -82,6 +83,7 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 	private DrawingGraphicalRepresentation drawingRepresentation;
 	private ShapeGraphicalRepresentation renderingPageRepresentation;
 	private ShapeGraphicalRepresentation textBoxRepresentation;
+	private ShapeGraphicalRepresentation imageBoxRepresentation;
 
 	public PDFPageDrawing(PDFDocumentPage page) {
 		super(page, FACTORY, PersistenceMode.UniqueGraphicalRepresentations);
@@ -118,10 +120,16 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 		// textBoxRepresentation.setFocusedBackground(bg);
 		textBoxRepresentation.setShadowStyle(getFactory().makeNoneShadowStyle());
 
+		imageBoxRepresentation = getFactory().makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
+		imageBoxRepresentation.setBackground(getFactory().makeEmptyBackground());
+		imageBoxRepresentation.setForeground(getFactory().makeForegroundStyle(Color.yellow, 0.3f));
+		imageBoxRepresentation.setSelectedForeground(getFactory().makeForegroundStyle(Color.BLUE, 0.5f));
+		imageBoxRepresentation.setShadowStyle(getFactory().makeNoneShadowStyle());
+
 		/*MouseDragControl moveControl = nodeRepresentation.getMouseDragControl("Move");
 		nodeRepresentation.removeFromMouseDragControls(moveControl);
 		nodeRepresentation.addToMouseDragControls(new MouseDragControlImpl("dragNode", MouseButton.LEFT, new MoveAction() {
-
+		
 			@Override
 			public boolean handleMouseReleased(org.openflexo.fge.Drawing.DrawingTreeNode<?, ?> node,
 					DianaInteractiveViewer<?, ?, ?> editor, MouseControlContext context, boolean isSignificativeDrag) {
@@ -152,6 +160,13 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 			}
 		});
 
+		final ShapeGRBinding<ImageBox> imageBoxBinding = bindShape(ImageBox.class, "imageBox", new ShapeGRProvider<ImageBox>() {
+			@Override
+			public ShapeGraphicalRepresentation provideGR(ImageBox drawable, FGEModelFactory factory) {
+				return imageBoxRepresentation;
+			}
+		});
+
 		drawingBinding.addToWalkers(new GRStructureVisitor<PDFDocumentPage>() {
 
 			@Override
@@ -163,9 +178,14 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 		renderingPageBinding.addToWalkers(new GRStructureVisitor<PDFDocumentPage>() {
 			@Override
 			public void visit(PDFDocumentPage page) {
+				System.out.println("on visite la page");
 				for (TextBox tb : page.getTextBoxes()) {
-					// System.out.println("On dessine un TextBox pour " + tb + " box=" + tb.getBox());
+					System.out.println("On dessine une text box pour " + tb);
 					drawShape(textBoxBinding, tb, renderingPageBinding, page);
+				}
+				for (ImageBox ib : page.getImageBoxes()) {
+					System.out.println("On dessine une image box pour " + ib);
+					drawShape(imageBoxBinding, ib, renderingPageBinding, page);
 				}
 			}
 		});
@@ -175,6 +195,11 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 		textBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.WIDTH, new DataBinding<Double>("drawable.width"), false);
 		textBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.HEIGHT, new DataBinding<Double>("drawable.height"), false);
 		// textBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.TEXT, new DataBinding<String>("drawable.text"), false);
+
+		imageBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.X, new DataBinding<Double>("drawable.x"), false);
+		imageBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.Y, new DataBinding<Double>("drawable.y"), false);
+		imageBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.WIDTH, new DataBinding<Double>("drawable.width"), false);
+		imageBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.HEIGHT, new DataBinding<Double>("drawable.height"), false);
 
 	}
 }
