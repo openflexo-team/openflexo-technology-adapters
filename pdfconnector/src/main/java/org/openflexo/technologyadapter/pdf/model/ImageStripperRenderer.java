@@ -107,11 +107,11 @@ public class ImageStripperRenderer extends PDFRenderer {
 					&& operands.get(0) instanceof COSName && ((COSName) operands.get(0)).getName().equals("PlacedPDF")
 					&& operands.get(1) instanceof COSName
 					&& ((COSName) operands.get(1)).getName().equals(/*"MC0"*/propertyName.getName())) {
-				System.out.println("> on commence un truc");
+				// System.out.println("> on commence un truc");
 				ignore = true;
 			}
 			if (ignore && operator.getName().equals("EMC")) {
-				System.out.println("< on finit un truc");
+				// System.out.println("< on finit un truc");
 				ignore = false;
 			}
 			if (ignore) {

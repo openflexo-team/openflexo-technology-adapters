@@ -20,6 +20,7 @@
 
 package org.openflexo.technologyadapter.pdf.model;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,7 +31,9 @@ import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.resource.CannotRenameException;
 import org.openflexo.foundation.resource.ResourceData;
+import org.openflexo.foundation.task.Progress;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -121,6 +124,17 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 			}
 		}
 
+		@Override
+		public boolean delete(Object... context) {
+			try {
+				getPDDocument().close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			performSuperDelete(context);
+			return true;
+		}
+
 		/**
 		 * This is the starting point for updating {@link PDFDocument} with the document provided from pdfbox library<br>
 		 * Take care that the supplied pdDocument is the object we should update with, but that {@link #getPDDocument()} is unsafe in this
@@ -129,9 +143,13 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 		@Override
 		public void updateFromPDDocument(PDDocument pdDocument, PDFFactory factory) {
 
-			System.out.println("updateFromPDDocument with " + pdDocument);
+			// System.out.println("updateFromPDDocument with " + pdDocument);
 
+			int i = 0;
 			for (PDPage page : pdDocument.getPages()) {
+				i++;
+				Progress.progress(FlexoLocalization.localizedForKey("processing_page") + " " + i);
+				System.out.println("************* >> HERE in PDFDocument with thread: " + Thread.currentThread());
 				PDFDocumentPage pdfPage = pageMap.get(page);
 				if (pdfPage == null) {
 					pdfPage = factory.makeNewPDFPage(pdDocument, page);

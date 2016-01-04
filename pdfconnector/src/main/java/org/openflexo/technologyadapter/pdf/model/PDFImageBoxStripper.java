@@ -34,7 +34,7 @@ public class PDFImageBoxStripper {
 		PDResources resources = page.getResources();
 
 		for (COSName name : resources.getPropertiesNames()) {
-			System.out.println("Property: " + name.getName());
+			// System.out.println("Property: " + name.getName());
 
 			ImageStripperRenderer imageRenderer = new ImageStripperRenderer(document, name);
 			BufferedImage originalImage = imageRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
@@ -48,7 +48,7 @@ public class PDFImageBoxStripper {
 			newFrame.show();*/
 
 			Rectangle cropRectangle = cropImage(originalImage);
-			System.out.println("Cropping image " + originalImage.getWidth() + "x" + originalImage.getHeight() + " to " + cropRectangle);
+			// System.out.println("Cropping image " + originalImage.getWidth() + "x" + originalImage.getHeight() + " to " + cropRectangle);
 
 			if (cropRectangle != null) {
 				Image croppedImage = originalImage.getSubimage(cropRectangle.x, cropRectangle.y, cropRectangle.width, cropRectangle.height);
@@ -96,7 +96,7 @@ public class PDFImageBoxStripper {
 				flag = true;
 		} while (!flag);
 
-		System.out.println("upperBorder=" + upperBorder);
+		// System.out.println("upperBorder=" + upperBorder);
 
 		// lower border
 		flag = false;
@@ -114,7 +114,7 @@ public class PDFImageBoxStripper {
 				flag = true;
 		} while (!flag);
 
-		System.out.println("lowerBorder=" + lowerBorder);
+		// System.out.println("lowerBorder=" + lowerBorder);
 
 		if (upperBorder < lowerBorder) {
 			// OK, some non empty contents were found
@@ -135,7 +135,7 @@ public class PDFImageBoxStripper {
 					flag = true;
 			} while (!flag);
 
-			System.out.println("leftBorder=" + leftBorder);
+			// System.out.println("leftBorder=" + leftBorder);
 
 			// right border
 			flag = false;
@@ -153,7 +153,7 @@ public class PDFImageBoxStripper {
 					flag = true;
 			} while (!flag);
 
-			System.out.println("rightBorder=" + rightBorder);
+			// System.out.println("rightBorder=" + rightBorder);
 
 			return new Rectangle(leftBorder, upperBorder, rightBorder - leftBorder, lowerBorder - upperBorder);
 

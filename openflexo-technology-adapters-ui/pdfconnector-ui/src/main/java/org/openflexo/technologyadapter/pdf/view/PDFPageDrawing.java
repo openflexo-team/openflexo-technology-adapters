@@ -178,13 +178,13 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 		renderingPageBinding.addToWalkers(new GRStructureVisitor<PDFDocumentPage>() {
 			@Override
 			public void visit(PDFDocumentPage page) {
-				System.out.println("on visite la page");
+				// System.out.println("on visite la page");
 				for (TextBox tb : page.getTextBoxes()) {
-					System.out.println("On dessine une text box pour " + tb);
+					// System.out.println("On dessine une text box pour " + tb);
 					drawShape(textBoxBinding, tb, renderingPageBinding, page);
 				}
 				for (ImageBox ib : page.getImageBoxes()) {
-					System.out.println("On dessine une image box pour " + ib);
+					// System.out.println("On dessine une image box pour " + ib);
 					drawShape(imageBoxBinding, ib, renderingPageBinding, page);
 				}
 			}

@@ -40,6 +40,10 @@ public class PDFPagePanel extends JPanel {
 		add(dc.scaleSelector.getComponent(), BorderLayout.NORTH);
 	}
 
+	public PDFDocumentPage getDocumentPage() {
+		return documentPage;
+	}
+
 	public void addToSelectionListeners(SelectionListener listener) {
 		selectionListeners.add(listener);
 	}
