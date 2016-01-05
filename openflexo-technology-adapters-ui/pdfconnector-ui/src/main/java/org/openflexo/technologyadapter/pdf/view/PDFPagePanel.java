@@ -23,6 +23,7 @@ public class PDFPagePanel extends JPanel {
 	private PDFDocumentPage documentPage;
 
 	private final PDFPageDrawing drawing;
+	private final PDFPageDrawingController controller;
 
 	private List<SelectionListener> selectionListeners;
 
@@ -33,11 +34,15 @@ public class PDFPagePanel extends JPanel {
 		selectionListeners = new ArrayList<SelectionListener>();
 
 		drawing = new PDFPageDrawing(documentPage);
-		final PDFPageDrawingController dc = new PDFPageDrawingController(drawing, this);
+		controller = new PDFPageDrawingController(drawing, this);
 		// dc.disablePaintingCache();
-		dc.getDrawingView().setName(documentPage.getPDFDocument().getName());
-		add(new JScrollPane(dc.getDrawingView()), BorderLayout.CENTER);
-		add(dc.scaleSelector.getComponent(), BorderLayout.NORTH);
+		controller.getDrawingView().setName(documentPage.getPDFDocument().getName());
+		add(new JScrollPane(controller.getDrawingView()), BorderLayout.CENTER);
+		add(controller.scaleSelector.getComponent(), BorderLayout.NORTH);
+	}
+
+	public PDFPageDrawingController getController() {
+		return controller;
 	}
 
 	public PDFDocumentPage getDocumentPage() {
