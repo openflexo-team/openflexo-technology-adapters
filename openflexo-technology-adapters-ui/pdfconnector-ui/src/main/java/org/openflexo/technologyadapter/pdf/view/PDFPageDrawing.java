@@ -83,6 +83,7 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 	private DrawingGraphicalRepresentation drawingRepresentation;
 	private ShapeGraphicalRepresentation renderingPageRepresentation;
 	private ShapeGraphicalRepresentation textBoxRepresentation;
+	// private ShapeGraphicalRepresentation debugTextBoxRepresentation;
 	private ShapeGraphicalRepresentation imageBoxRepresentation;
 
 	public PDFPageDrawing(PDFDocumentPage page) {
@@ -120,9 +121,14 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 		// textBoxRepresentation.setFocusedBackground(bg);
 		textBoxRepresentation.setShadowStyle(getFactory().makeNoneShadowStyle());
 
+		/*debugTextBoxRepresentation = getFactory().makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
+		debugTextBoxRepresentation.setBackground(getFactory().makeColoredBackground(Color.blue));
+		debugTextBoxRepresentation.setForeground(getFactory().makeForegroundStyle(Color.yellow, 3f));
+		debugTextBoxRepresentation.setShadowStyle(getFactory().makeNoneShadowStyle());*/
+
 		imageBoxRepresentation = getFactory().makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
 		imageBoxRepresentation.setBackground(getFactory().makeEmptyBackground());
-		imageBoxRepresentation.setForeground(getFactory().makeForegroundStyle(Color.yellow, 0.3f));
+		imageBoxRepresentation.setForeground(getFactory().makeForegroundStyle(Color.green, 0.3f));
 		imageBoxRepresentation.setSelectedForeground(getFactory().makeForegroundStyle(Color.BLUE, 0.5f));
 		imageBoxRepresentation.setShadowStyle(getFactory().makeNoneShadowStyle());
 
@@ -159,6 +165,12 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 				return textBoxRepresentation;
 			}
 		});
+		/*final ShapeGRBinding<TextBox> debugTextBoxBinding = bindShape(TextBox.class, "debugTextBox", new ShapeGRProvider<TextBox>() {
+			@Override
+			public ShapeGraphicalRepresentation provideGR(TextBox drawable, FGEModelFactory factory) {
+				return debugTextBoxRepresentation;
+			}
+		});*/
 
 		final ShapeGRBinding<ImageBox> imageBoxBinding = bindShape(ImageBox.class, "imageBox", new ShapeGRProvider<ImageBox>() {
 			@Override
@@ -183,6 +195,10 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 					// System.out.println("On dessine une text box pour " + tb);
 					drawShape(textBoxBinding, tb, renderingPageBinding, page);
 				}
+				/*for (TextBox tb : page.getAVirer()) {
+					System.out.println("On dessine une DEBUG text box pour " + tb);
+					drawShape(debugTextBoxBinding, tb, renderingPageBinding, page);
+				}*/
 				for (ImageBox ib : page.getImageBoxes()) {
 					// System.out.println("On dessine une image box pour " + ib);
 					drawShape(imageBoxBinding, ib, renderingPageBinding, page);
@@ -195,6 +211,13 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 		textBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.WIDTH, new DataBinding<Double>("drawable.width"), false);
 		textBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.HEIGHT, new DataBinding<Double>("drawable.height"), false);
 		// textBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.TEXT, new DataBinding<String>("drawable.text"), false);
+
+		// debugTextBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.X, new DataBinding<Double>("drawable.x"), false);
+		// debugTextBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.Y, new DataBinding<Double>("drawable.y"), false);
+		// debugTextBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.WIDTH, new DataBinding<Double>("drawable.width"),
+		// false);
+		// debugTextBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.HEIGHT, new DataBinding<Double>("drawable.height"),
+		// false);
 
 		imageBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.X, new DataBinding<Double>("drawable.x"), false);
 		imageBoxBinding.setDynamicPropertyValue(ShapeGraphicalRepresentation.Y, new DataBinding<Double>("drawable.y"), false);

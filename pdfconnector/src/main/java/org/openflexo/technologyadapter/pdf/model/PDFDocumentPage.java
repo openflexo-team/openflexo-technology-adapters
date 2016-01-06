@@ -90,6 +90,14 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 	public List<ImageBox> getImageBoxes();
 
+	public TextBox getClosestBox(TextBox textBox);
+
+	public double getWidth();
+
+	public double getHeight();
+
+	// public List<TextBox> getAVirer();
+
 	public static abstract class PDFPageImpl extends FlexoObjectImpl implements PDFDocumentPage {
 
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
@@ -188,6 +196,41 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		@Override
 		public PDFDocument getResourceData() {
 			return getPDFDocument();
+		}
+
+		/*private List<TextBox> aVirer = new ArrayList<>();
+		
+		@Override
+		public List<TextBox> getAVirer() {
+			return aVirer;
+		}*/
+
+		@Override
+		public TextBox getClosestBox(TextBox textBox) {
+			// aVirer.add(textBox);
+			// getPropertyChangeSupport().firePropertyChange("AVirer", null, textBox);
+			TextBox returned = null;
+			double minDist = Double.POSITIVE_INFINITY;
+			for (TextBox tb : getTextBoxes()) {
+				double d = textBox.distanceFrom(tb);
+				if (d < minDist) {
+					returned = tb;
+					minDist = d;
+				}
+			}
+			return returned;
+		}
+
+		@Override
+		public double getWidth() {
+			// System.out.println("width is " + getPDPage().getCropBox().getWidth());
+			return getPDPage().getCropBox().getWidth();
+		}
+
+		@Override
+		public double getHeight() {
+			// System.out.println("width is " + getPDPage().getCropBox().getHeight());
+			return getPDPage().getCropBox().getHeight();
 		}
 	}
 

@@ -61,6 +61,9 @@ public class PDFTextBoxStripper extends PDFTextStripperByArea {
 		}
 		currentString.append(text.toString());
 
+		dir = text.getDir();
+		fontSize = text.getFontSizeInPt();
+
 		int width = (int) text.getWidth();
 		int height = (int) text.getHeight();
 		if (text.getDir() == 0 || text.getDir() == 180) {
@@ -70,14 +73,29 @@ public class PDFTextBoxStripper extends PDFTextStripperByArea {
 			width = Math.max((int) text.getWidth(), (int) (text.getFontSizeInPt()));
 		}
 
+		int x = (int) text.getX();
+		int y = (int) text.getY();
+
+		if (dir == 90 || dir == 270) {
+			x = (int) (text.getX() - width);
+			width = (int) (width * 1.1);
+		}
+		if (dir == 0 || dir == 180) {
+			y = (int) (text.getY() - height);
+			height = (int) (height * 1.1);
+		}
+		Rectangle r = new Rectangle(x, y, width, height);
+
 		if (box == null) {
-			box = new Rectangle((int) text.getX(), (int) text.getY(), width, height);
+			box = r;
 		}
 		else {
-			box = box.union(new Rectangle((int) text.getX(), (int) text.getY(), width, height));
+			box = box.union(r);
 		}
-		fontSize = text.getFontSizeInPt();
-		dir = text.getDir();
+
+		/*if (dir != 0) {
+			System.out.println("> text=" + text.toString() + " dir=" + dir);
+		}*/
 
 		// Does not work !!!
 		// http://stackoverflow.com/questions/4361242/extract-rotation-scale-values-from-2d-transformation-matrix
