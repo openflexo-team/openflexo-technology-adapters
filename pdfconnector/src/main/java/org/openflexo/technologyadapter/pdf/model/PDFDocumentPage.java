@@ -21,8 +21,10 @@
 package org.openflexo.technologyadapter.pdf.model;
 
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -92,6 +94,18 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 	public TextBox getClosestBox(TextBox textBox);
 
+	/**
+	 * Return a list of all boxes matching supplied box, that are totally or partially contained in bounding box
+	 * <ul>
+	 * <li>areaRatio > 0 means that matching boxes must have at least one point located in bounding box</li>
+	 * <li>areaRatio = 1 means that matching boxes must be totally contained in bounding box</li>
+	 * 
+	 * @param boundingBox
+	 * @param areaRatio
+	 * @return
+	 */
+	public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio);
+
 	public double getWidth();
 
 	public double getHeight();
@@ -100,8 +114,8 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 	public static abstract class PDFPageImpl extends FlexoObjectImpl implements PDFDocumentPage {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-				.getLogger(PDFPageImpl.class.getPackage().getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(PDFPageImpl.class.getPackage()
+				.getName());
 
 		private Image renderingImage;
 		private List<TextBox> textBoxes;
@@ -132,8 +146,8 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 				PDFRenderer pdfRenderer = new PDFRenderer(pdDocument);
 				BufferedImage originalImage;
 				originalImage = pdfRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
-				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(),
-						(int) pdPage.getMediaBox().getHeight(), Image.SCALE_SMOOTH);
+				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(), (int) pdPage.getMediaBox()
+						.getHeight(), Image.SCALE_SMOOTH);
 
 				Progress.progress(FlexoLocalization.localizedForKey("extract_text"));
 				PDFTextBoxStripper textBoxStripper = new PDFTextBoxStripper(pdDocument, pdPage);
@@ -216,6 +230,33 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 				if (d < minDist) {
 					returned = tb;
 					minDist = d;
+				}
+			}
+			return returned;
+		}
+
+		/**
+		 * Return a list of all boxes matching supplied box, that are totally or partially contained in bounding box
+		 * <ul>
+		 * <li>areaRatio > 0 means that matching boxes must have at least one point located in bounding box</li>
+		 * <li>areaRatio = 1 means that matching boxes must be totally contained in bounding box</li>
+		 * 
+		 * @param boundingBox
+		 * @param areaRatio
+		 * @return
+		 */
+		@Override
+		public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio) {
+			List<TextBox> returned = new ArrayList<TextBox>();
+			for (TextBox tb : getTextBoxes()) {
+				Rectangle r = boundingBox.getBox().intersection(tb.getBox());
+				if (r.getWidth() > 0 && r.getHeight() > 0) {
+					// compute the ratio
+					double ratio = (r.getWidth() * r.getHeight()) / (tb.getBox().getWidth() * tb.getBox().getHeight());
+					if (ratio > areaRatio) {
+						returned.add(tb);
+					}
+					// System.out.println("ratio=" + ratio);
 				}
 			}
 			return returned;
