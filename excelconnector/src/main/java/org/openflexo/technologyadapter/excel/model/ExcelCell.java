@@ -39,12 +39,14 @@
 package org.openflexo.technologyadapter.excel.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.util.CellRangeAddress;
@@ -330,6 +332,33 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 		}
 	}
 
+	public void setCellType(CellType cellType) {
+		createCellWhenNonExistant();
+		switch (cellType) {
+			case Blank:
+				cell.setCellType(Cell.CELL_TYPE_BLANK);
+				break;
+			case Boolean:
+				cell.setCellType(Cell.CELL_TYPE_BOOLEAN);
+				break;
+			case Error:
+				cell.setCellType(Cell.CELL_TYPE_ERROR);
+				break;
+			case Numeric:
+				cell.setCellType(Cell.CELL_TYPE_NUMERIC);
+				break;
+			case NumericFormula:
+			case StringFormula:
+				cell.setCellType(Cell.CELL_TYPE_FORMULA);
+				break;
+			case String:
+				cell.setCellType(Cell.CELL_TYPE_STRING);
+				break;
+			default:
+				break;
+		}
+	}
+
 	private static final DataFormatter FORMATTER = new DataFormatter();
 
 	/**
@@ -421,8 +450,9 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 		if ((cellValueAsString == null && getCellValueAsString() != null)
 				|| (cellValueAsString != null && !cellValueAsString.equals(getCellValueAsString()))) {
 			String oldValue = getCellValueAsString();
-			System.out.println(
-					"*********** Setting new cell value: " + cellValueAsString + " at row=" + getRowIndex() + " col=" + getColumnIndex());
+			createCellWhenNonExistant();
+			// System.out.println(
+			// "*********** Setting new cell value: " + cellValueAsString + " at row=" + getRowIndex() + " col=" + getColumnIndex());
 			cell.setCellValue(cellValueAsString);
 			getExcelSheet().getEvaluator().clearAllCachedResultValues();
 			getPropertyChangeSupport().firePropertyChange("cellValueAsString", oldValue, cellValueAsString);
@@ -457,6 +487,11 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 
 		createCellWhenNonExistant();
 
+		if (value == null) {
+			cell.setCellValue((String) null);
+			return;
+		}
+
 		if (value.startsWith("=")) {
 			setCellFormula(value);
 			setCellValue(evaluateFormula().formatAsString());
@@ -482,6 +517,29 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 			getExcelSheet().getEvaluator().clearAllCachedResultValues();
 			return;
 		}
+	}
+
+	public void setCellStringValue(String value) {
+		setCellValueAsString(value);
+	}
+
+	public void setCellNumericValue(Number value) {
+		createCellWhenNonExistant();
+		cell.setCellValue(value.doubleValue());
+	}
+
+	public void setCellBooleanValue(boolean value) {
+		createCellWhenNonExistant();
+		cell.setCellValue(value);
+	}
+
+	public void setCellDateValue(Date value) {
+		createCellWhenNonExistant();
+		CellStyle cellStyle = getExcelSheet().getWorkbook().getWorkbook().createCellStyle();
+		CreationHelper createHelper = getExcelSheet().getWorkbook().getWorkbook().getCreationHelper();
+		cellStyle.setDataFormat(createHelper.createDataFormat().getFormat("m/d/yy h:mm"));
+		cell.setCellStyle(cellStyle);
+		cell.setCellValue(value);
 	}
 
 	/**

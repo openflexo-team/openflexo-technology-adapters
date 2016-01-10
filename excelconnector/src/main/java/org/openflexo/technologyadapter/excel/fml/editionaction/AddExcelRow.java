@@ -98,7 +98,7 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 	@Setter(ROW_INDEX_KEY)
 	public void setRowIndex(DataBinding<Integer> rowIndex);
 
-	public static abstract class AddExcelRowImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelRow> implements AddExcelRow {
+	public static abstract class AddExcelRowImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelRow>implements AddExcelRow {
 
 		private static final Logger logger = Logger.getLogger(AddExcelRow.class.getPackage().getName());
 
@@ -133,10 +133,12 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 						if (rowIndex != null) {
 							if (excelSheet.getRowAt(rowIndex) != null) {
 								excelRow = excelSheet.getRowAt(rowIndex);
-							} else {
+							}
+							else {
 								Row row = excelSheet.getSheet().createRow(rowIndex);
-								excelRow = modelSlotInstance.getAccessedResourceData().getConverter()
-										.convertExcelRowToRow(row, excelSheet, null);
+								excelRow = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelRowToRow(row, excelSheet,
+										null);
+								excelSheet.addToExcelRows(excelRow);
 							}
 							if (getExcelCells().getBindingValue(evaluationContext) != null) {
 								excelRow.getExcelCells().addAll(getExcelCells().getBindingValue(evaluationContext));
@@ -144,10 +146,12 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 							modelSlotInstance.getResourceData().setIsModified();
 							excelSheet.getWorkbook().getResource().setModified(true);
 
-						} else {
+						}
+						else {
 							logger.warning("Create a row requires a rowindex");
 						}
-					} else {
+					}
+					else {
 						logger.warning("Create a row requires a sheet");
 					}
 
@@ -162,7 +166,8 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 					e.printStackTrace();
 				}
 
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}
