@@ -51,6 +51,7 @@ import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -85,6 +86,7 @@ import org.openflexo.technologyadapter.emf.rm.XtextEMFMetaModelResource;
 @DeclareModelSlots({ EMFModelSlot.class, /*,EMFMetaModelSlot.class*/
 		UMLEMFModelSlot.class /* EMFUMLModelSlot.class */ })
 @DeclareRepositoryType({ EMFMetaModelRepository.class, EMFModelRepository.class })
+@DeclareResourceTypes({ EMFModelResource.class, EMFMetaModelResource.class })
 public class EMFTechnologyAdapter extends TechnologyAdapter {
 
 	protected static final Logger logger = Logger.getLogger(EMFTechnologyAdapter.class.getPackage().getName());

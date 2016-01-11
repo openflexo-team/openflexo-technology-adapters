@@ -49,6 +49,7 @@ import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -83,6 +84,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceIm
  */
 @DeclareModelSlots({ TypedDiagramModelSlot.class, FreeDiagramModelSlot.class })
 @DeclareTechnologySpecificTypes({ DiagramType.class })
+@DeclareResourceTypes({ DiagramResource.class, DiagramSpecificationResource.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledDiagramVirtualModelInstanceNature.class })
 public class DiagramTechnologyAdapter extends TechnologyAdapter {
 

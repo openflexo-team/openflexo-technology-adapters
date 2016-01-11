@@ -28,6 +28,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
@@ -52,6 +53,7 @@ import org.openflexo.technologyadapter.odt.rm.ODTDocumentResourceImpl;
 
 @DeclareModelSlots({ ODTModelSlot.class })
 @DeclareRepositoryType({ ODTDocumentRepository.class })
+@DeclareResourceTypes({ ODTDocumentResource.class })
 public class ODTTechnologyAdapter extends TechnologyAdapter {
 
 	private static String ODT_FILE_EXTENSION = ".odt";

@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -66,6 +67,7 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
  */
 @DeclareModelSlots({ BasicPowerpointModelSlot.class })
 @DeclareRepositoryType({ PowerpointSlideShowRepository.class })
+@DeclareResourceTypes({ PowerpointSlideshowResource.class })
 public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 
 	protected static final Logger logger = Logger.getLogger(PowerpointTechnologyAdapter.class.getPackage().getName());

@@ -47,6 +47,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -77,6 +78,7 @@ import org.openflexo.xml.XMLRootElementReader;
 
 @DeclareModelSlots({ FreeXMLModelSlot.class, XMLModelSlot.class, XMLMetaModelSlot.class })
 @DeclareRepositoryType({ XMLModelRepository.class, XSDMetaModelRepository.class })
+@DeclareResourceTypes({ XMLFileResource.class, XSDMetaModelResource.class })
 public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 	private static final String TAName = "XML technology adapter";

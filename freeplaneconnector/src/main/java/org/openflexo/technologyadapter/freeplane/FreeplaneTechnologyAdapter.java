@@ -52,6 +52,7 @@ import org.freeplane.main.application.FreeplaneBasicAdapter;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -72,6 +73,7 @@ import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 
 @DeclareModelSlots({ FreeplaneModelSlot.class })
 @DeclareRepositoryType({ FreeplaneResourceRepository.class })
+@DeclareResourceTypes({ IFreeplaneResource.class })
 public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 
 	public static final String FREEPLANE_FILE_EXTENSION = ".mm";

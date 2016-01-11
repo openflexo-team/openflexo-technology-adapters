@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -69,6 +70,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceImpl;
  */
 @DeclareModelSlots({ BasicExcelModelSlot.class, SemanticsExcelModelSlot.class })
 @DeclareRepositoryType({ ExcelWorkbookRepository.class, ExcelMetaModelRepository.class, ExcelModelRepository.class })
+@DeclareResourceTypes({ ExcelWorkbookResource.class })
 public class ExcelTechnologyAdapter extends TechnologyAdapter {
 
 	protected static final Logger logger = Logger.getLogger(ExcelTechnologyAdapter.class.getPackage().getName());
