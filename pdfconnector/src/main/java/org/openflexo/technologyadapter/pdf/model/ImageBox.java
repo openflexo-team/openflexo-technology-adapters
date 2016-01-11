@@ -66,7 +66,6 @@ public class ImageBox extends DefaultFlexoObject {
 	
 	public void setAltTitleText(String value){
 		this.altTitleText = value;
-		System.out.println ("XTOF: Setting Alt Text to : " + value);
 	}
 	
 	public String getAltTitleText(){
