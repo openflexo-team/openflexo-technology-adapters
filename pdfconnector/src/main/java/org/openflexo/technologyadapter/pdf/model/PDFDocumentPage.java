@@ -189,7 +189,12 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 		@Override
 		public int getPageNumber() {
-			return getPDFDocument().getPages().indexOf(this) + 1;
+			PDFDocument doc = getPDFDocument();
+			if (doc != null)
+				if (doc.getPages() != null){
+					return getPDFDocument().getPages().indexOf(this) + 1;
+				}
+			return 0;
 		}
 
 		@Override
@@ -214,7 +219,7 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		}
 
 		/*private List<TextBox> aVirer = new ArrayList<>();
-		
+
 		@Override
 		public List<TextBox> getAVirer() {
 			return aVirer;
@@ -235,7 +240,7 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 			}
 			return returned;
 		}
-		
+
 		@Override
 		public ImageBox getClosestImageBox(AbstractBox aBox) {
 			// aVirer.add(textBox);

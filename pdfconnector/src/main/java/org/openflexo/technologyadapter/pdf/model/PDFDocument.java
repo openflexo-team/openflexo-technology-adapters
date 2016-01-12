@@ -126,12 +126,14 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 
 		@Override
 		public boolean delete(Object... context) {
+
+			performSuperDelete(context);
+
 			try {
 				getPDDocument().close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			performSuperDelete(context);
 			return true;
 		}
 
@@ -206,7 +208,10 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 
 		@Override
 		public void setName(String name) {
-			if (requireChange(getName(), name)) {
+			
+			// WARN prevent renaming Resource to null when rename ResourceData
+
+			if (name != null && requireChange(getName(), name)) {
 				String oldValue = getName();
 				if (getResource() != null) {
 					try {
@@ -221,7 +226,7 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 				}
 			}
 		}
-		
+
 		public void finalize(){
 			logger.warning("PDFDocument has been garbage collected");
 		}
