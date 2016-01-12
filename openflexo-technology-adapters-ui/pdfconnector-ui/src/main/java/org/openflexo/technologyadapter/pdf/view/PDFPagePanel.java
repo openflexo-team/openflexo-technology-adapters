@@ -17,6 +17,7 @@ import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.selection.SelectionListener;
 import org.openflexo.technologyadapter.pdf.model.PDFDocumentPage;
+import org.openflexo.technologyadapter.pdf.model.PDFDocument.PDFDocumentImpl;
 
 public class PDFPagePanel extends JPanel {
 
@@ -27,6 +28,10 @@ public class PDFPagePanel extends JPanel {
 
 	private List<SelectionListener> selectionListeners;
 
+
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+			.getLogger(PDFPagePanel.class.getPackage().getName());
+	
 	public PDFPagePanel(PDFDocumentPage documentPage) {
 		super(new BorderLayout());
 		this.documentPage = documentPage;
@@ -57,6 +62,21 @@ public class PDFPagePanel extends JPanel {
 		selectionListeners.remove(listener);
 	}
 
+	public void delete() {
+		// TODO : check everything is ok with this
+		remove (controller.scaleSelector.getComponent());
+		selectionListeners.clear();
+		drawing.delete();
+		// TODO: documentPage delete or destroy?
+		documentPage.destroy();
+	}
+	
+
+	public void finalize(){
+		logger.warning("PDFPagePanel has been garbage collected");
+	}
+
+	
 	public static class PDFPageDrawingController extends JDianaInteractiveEditor<PDFDocumentPage> {
 		private final PDFPagePanel panel;
 		private final JPopupMenu contextualMenu;
@@ -100,6 +120,7 @@ public class PDFPagePanel extends JPanel {
 				l.fireResetSelection();
 			}
 		}
+		
 
 		/*@Override
 		public void selectDrawing() {
