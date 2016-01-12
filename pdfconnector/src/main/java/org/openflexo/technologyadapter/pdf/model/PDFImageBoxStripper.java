@@ -86,15 +86,16 @@ public class PDFImageBoxStripper {
 
 		Iterable<COSName> xobjectNames = resources.getXObjectNames();
 
+		// TODO Find a way to identify resources, boxes and limits of elements in metadata
+		
 		for (COSName name : xobjectNames){
 			PDXObject localXObject = resources.getXObject(name);
 			System.out.println("XTOF: found some XObjects : " + name.getName() + " .. " + localXObject.getClass().getCanonicalName());
 
 			if (localXObject instanceof PDImageXObject){
 				md = ((PDImageXObject) localXObject).getMetadata();
-				// rect = ((PDImageXObject)localXObject ).get);
 				
-				System.out.println("\t XTOF: its some image:" + name.getName() + " ..   : " + md.toString() + " BBox: " + rect.toString());
+				System.out.println("\t XTOF: its some image:" + name.getName() + " ..   : " + md.toString() );
 			}
 			else if (localXObject instanceof PDTransparencyGroup){
 				
@@ -133,8 +134,7 @@ public class PDFImageBoxStripper {
 
 		PDResources resources = page.getResources();
 		
-		listEmbeddedXObjects(resources);
-
+		// TODO: figure out howthis can be useful
 		// listEmbeddedXObjects(resources); No need for now.
 
 		for (COSName name : resources.getPropertiesNames()) {
