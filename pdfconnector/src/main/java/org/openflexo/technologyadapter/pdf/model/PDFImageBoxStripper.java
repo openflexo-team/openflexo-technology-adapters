@@ -24,10 +24,7 @@ import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,12 +37,11 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDResources;
 import org.apache.pdfbox.pdmodel.common.PDMetadata;
-import org.apache.pdfbox.pdmodel.documentinterchange.markedcontent.PDPropertyList;
+import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.graphics.PDXObject;
 import org.apache.pdfbox.pdmodel.graphics.form.PDTransparencyGroup;
 import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 import org.apache.pdfbox.rendering.ImageType;
-import org.apache.xmpbox.xml.DomXmpParser;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.Namespace;
@@ -65,6 +61,7 @@ public class PDFImageBoxStripper {
 	private XPathFactory xpathFactory;
 	
 	private List<ImageBox> imageBoxes;
+
 	
 	// List of static field for Metadata field processing
 
@@ -85,6 +82,7 @@ public class PDFImageBoxStripper {
 
 	private void listEmbeddedXObjects( PDResources resources) throws IOException{
 		PDMetadata md = null;
+		PDRectangle rect = null;
 
 		Iterable<COSName> xobjectNames = resources.getXObjectNames();
 
@@ -94,13 +92,18 @@ public class PDFImageBoxStripper {
 
 			if (localXObject instanceof PDImageXObject){
 				md = ((PDImageXObject) localXObject).getMetadata();
-
-				System.out.println("\t XTOF: its some image:" + name.getName() + " ..   : " + md.toString());
+				// rect = ((PDImageXObject)localXObject ).get);
+				
+				System.out.println("\t XTOF: its some image:" + name.getName() + " ..   : " + md.toString() + " BBox: " + rect.toString());
 			}
 			else if (localXObject instanceof PDTransparencyGroup){
+				
 				listEmbeddedXObjects(((PDTransparencyGroup)localXObject ).getResources());
+				
+				rect = ((PDTransparencyGroup)localXObject ).getBBox();
 				md =((PDTransparencyGroup)localXObject ).getStream().getMetadata();
-				System.out.println("\t XTOF: its some TransparencyGroup:" + name.getName() );
+				
+				System.out.println("\t XTOF: its some TransparencyGroup:" + name.getName() + " BBox :" + rect.toString() );
 			}
 
 		}
@@ -116,7 +119,7 @@ public class PDFImageBoxStripper {
 			List<Element> lstAlt = metadataExpr.get(altTitlefilter).evaluate(doc);
 			for (Element el : lstAlt){
 				//System.out.println ("\t\t XTOF: " + el.getChild("Alt",Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")).getChildText("li",Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")));
-				imgBox.setAltTitleText(el.getChild("Alt",Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")).getChildText("li",Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")));
+				imgBox.setAltTitleText(el.getChild("Alt",Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")).getChildText("li",Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")).trim());
 			}
 			
 		} catch (Exception e) {
@@ -129,7 +132,8 @@ public class PDFImageBoxStripper {
 		imageBoxes = new ArrayList<ImageBox>();
 
 		PDResources resources = page.getResources();
-
+		
+		listEmbeddedXObjects(resources);
 
 		// listEmbeddedXObjects(resources); No need for now.
 
@@ -169,7 +173,9 @@ public class PDFImageBoxStripper {
 				cropRectangle.height = (int) (cropRectangle.height * page.getMediaBox().getHeight() / originalImage.getHeight());
 
 				ImageBox imageBox = new ImageBox(image, cropRectangle);
-
+				
+				System.out.println("\t XTOF: its some IMAGE CROPPED:" + name.getName() + " BBox :" + cropRectangle.toString() );
+				
 				// set AltTitle Metadata
 
 				COSDictionary cd =  resources.getProperties(name).getCOSObject();

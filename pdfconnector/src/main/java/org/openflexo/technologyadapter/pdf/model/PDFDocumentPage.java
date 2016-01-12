@@ -92,7 +92,8 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 	public List<ImageBox> getImageBoxes();
 
-	public TextBox getClosestBox(TextBox textBox);
+	public TextBox getClosestTextBox(AbstractBox aBox);
+	public ImageBox getClosestImageBox(AbstractBox aBox);
 
 	/**
 	 * Return a list of all boxes matching supplied box, that are totally or partially contained in bounding box
@@ -220,13 +221,29 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		}*/
 
 		@Override
-		public TextBox getClosestBox(TextBox textBox) {
+		public TextBox getClosestTextBox(AbstractBox aBox) {
 			// aVirer.add(textBox);
 			// getPropertyChangeSupport().firePropertyChange("AVirer", null, textBox);
 			TextBox returned = null;
 			double minDist = Double.POSITIVE_INFINITY;
 			for (TextBox tb : getTextBoxes()) {
-				double d = textBox.distanceFrom(tb);
+				double d = aBox.distanceFrom(tb);
+				if (d < minDist) {
+					returned = tb;
+					minDist = d;
+				}
+			}
+			return returned;
+		}
+		
+		@Override
+		public ImageBox getClosestImageBox(AbstractBox aBox) {
+			// aVirer.add(textBox);
+			// getPropertyChangeSupport().firePropertyChange("AVirer", null, textBox);
+			ImageBox returned = null;
+			double minDist = Double.POSITIVE_INFINITY;
+			for (ImageBox tb : getImageBoxes()) {
+				double d = aBox.distanceFrom(tb);
 				if (d < minDist) {
 					returned = tb;
 					minDist = d;

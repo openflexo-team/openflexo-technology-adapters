@@ -25,45 +25,21 @@ import java.awt.Rectangle;
 
 import org.openflexo.foundation.DefaultFlexoObject;
 
-public class ImageBox extends DefaultFlexoObject {
+public class ImageBox extends AbstractBox {
 	private final Image image;
-	private final Rectangle box;
 	private String altTitleText;
 
 	public ImageBox(Image image, Rectangle box) {
-		super();
+		super(box);
 		this.image = image;
-		this.box = box;
 	}
+	
+
 
 	public Image getImage() {
 		return image;
 	}
 
-	public Rectangle getBox() {
-		return box;
-	}
-
-	public double getX() {
-		// System.out.println("x=" + box.getX());
-		return box.getX();
-	}
-
-	public double getY() {
-		// System.out.println("y=" + box.getY());
-		return box.getY();
-	}
-
-	public double getWidth() {
-		// System.out.println("width=" + box.getWidth());
-		return box.getWidth();
-	}
-
-	public double getHeight() {
-		// System.out.println("height=" + box.getHeight());
-		return box.getHeight();
-	}
-	
 	public void setAltTitleText(String value){
 		this.altTitleText = value;
 	}
@@ -74,7 +50,7 @@ public class ImageBox extends DefaultFlexoObject {
 
 	@Override
 	public String toString() {
-		return "ImageBox for box=" + box;
+		return "ImageBox for box=" + getBox();
 	}
 
 }
