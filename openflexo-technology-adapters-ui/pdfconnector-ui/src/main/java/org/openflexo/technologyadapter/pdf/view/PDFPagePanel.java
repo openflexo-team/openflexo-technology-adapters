@@ -64,11 +64,13 @@ public class PDFPagePanel extends JPanel {
 
 	public void delete() {
 		// TODO : check everything is ok with this
+		logger.warning("DELETING PDFPagePanel ");
 		remove (controller.scaleSelector.getComponent());
 		selectionListeners.clear();
 		drawing.delete();
 		// TODO: documentPage delete or destroy?
 		documentPage.destroy();
+		documentPage = null;
 	}
 	
 
