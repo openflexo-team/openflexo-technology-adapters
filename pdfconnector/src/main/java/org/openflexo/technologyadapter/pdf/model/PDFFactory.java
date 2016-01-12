@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.pdf.model;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -103,6 +104,13 @@ public class PDFFactory extends ModelFactory implements PamelaResourceModelFacto
 	public PDFDocument makeNewPDFDocument(PDDocument document) {
 		PDFDocument returned = makeDocument();
 		returned.updateFromPDDocument(document, this);
+		// TODO : this might be dangerous! We do this to avoid  Performance issue for ArchWater
+		try {
+			document.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block ==> check if its dangerous
+			e.printStackTrace();
+		}
 		return returned;
 	}
 
