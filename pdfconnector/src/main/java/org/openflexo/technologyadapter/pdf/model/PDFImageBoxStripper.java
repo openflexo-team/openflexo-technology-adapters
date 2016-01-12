@@ -174,7 +174,7 @@ public class PDFImageBoxStripper {
 
 				ImageBox imageBox = new ImageBox(image, cropRectangle);
 				
-				System.out.println("\t XTOF: its some IMAGE CROPPED:" + name.getName() + " BBox :" + cropRectangle.toString() );
+				//System.out.println("\t XTOF: its some IMAGE CROPPED:" + name.getName() + " BBox :" + cropRectangle.toString() );
 				
 				// set AltTitle Metadata
 
