@@ -127,13 +127,14 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 		@Override
 		public boolean delete(Object... context) {
 
-			performSuperDelete(context);
-
 			try {
 				getPDDocument().close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+			
+			performSuperDelete(context);
+
 			return true;
 		}
 
