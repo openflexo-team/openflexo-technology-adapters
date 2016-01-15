@@ -14,6 +14,8 @@ import org.openflexo.fge.swing.JDianaInteractiveEditor;
 import org.openflexo.fge.swing.SwingViewFactory;
 import org.openflexo.fge.swing.control.SwingToolFactory;
 import org.openflexo.fge.swing.control.tools.JDianaScaleSelector;
+import org.openflexo.fge.swing.view.JDrawingView;
+import org.openflexo.fge.view.DrawingView;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.selection.SelectionListener;
 import org.openflexo.technologyadapter.pdf.model.PDFDocumentPage;
@@ -65,12 +67,13 @@ public class PDFPagePanel extends JPanel {
 	public void delete() {
 		// TODO : check everything is ok with this
 		logger.warning("DELETING PDFPagePanel ");
-		remove (controller.scaleSelector.getComponent());
+		this.removeAll();
 		selectionListeners.clear();
-		drawing.delete();
 		// TODO: documentPage delete or destroy?
+		documentPage.delete(this);
 		documentPage.destroy();
 		documentPage = null;
+		controller.delete(); // controllers delete drawingView & drawing
 	}
 	
 

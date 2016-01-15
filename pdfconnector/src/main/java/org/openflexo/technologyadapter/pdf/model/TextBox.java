@@ -1,9 +1,6 @@
 package org.openflexo.technologyadapter.pdf.model;
 
-import java.awt.Point;
 import java.awt.Rectangle;
-
-import org.openflexo.foundation.DefaultFlexoObject;
 
 public class TextBox extends AbstractBox {
 	private final String text;

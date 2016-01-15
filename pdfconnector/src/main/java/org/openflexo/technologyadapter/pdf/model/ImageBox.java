@@ -23,8 +23,6 @@ package org.openflexo.technologyadapter.pdf.model;
 import java.awt.Image;
 import java.awt.Rectangle;
 
-import org.openflexo.foundation.DefaultFlexoObject;
-
 public class ImageBox extends AbstractBox {
 	private final Image image;
 	private String altTitleText;
@@ -34,8 +32,6 @@ public class ImageBox extends AbstractBox {
 		this.image = image;
 	}
 	
-
-
 	public Image getImage() {
 		return image;
 	}

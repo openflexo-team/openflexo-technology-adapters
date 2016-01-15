@@ -23,6 +23,8 @@ package org.openflexo.technologyadapter.pdf.model;
 import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -295,6 +297,43 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 			// System.out.println("width is " + getPDPage().getCropBox().getHeight());
 			return getPDPage().getCropBox().getHeight();
 		}
+		
+
+		@Override
+		public boolean delete(Object... context) {
+
+			PropertyChangeSupport pcSupport = this.getPropertyChangeSupport();
+			
+			for (PropertyChangeListener cl: pcSupport.getPropertyChangeListeners()){
+				pcSupport.removePropertyChangeListener(cl);
+			}
+		
+			for (ImageBox i:imageBoxes) {
+				i.delete(context);
+			}
+			imageBoxes.clear();
+			imageBoxes = null;
+			for (TextBox t:textBoxes) {
+				t.delete(context);
+			}
+			textBoxes.clear();
+			textBoxes = null;
+			renderingImage = null;
+			
+			this.performSuperDelete(context);
+			
+			return true;
+		}
+
+		@Override
+		protected void finalize() throws Throwable {
+			System.out.println("************************************** PDFPageImp has been cleaned / GC.. ********************");
+			// TODO Auto-generated method stub
+			super.finalize();
+		}
+		
+		
+
 	}
 
 }

@@ -90,6 +90,16 @@ public class PDFPageDrawing extends DrawingImpl<PDFDocumentPage> {
 		super(page, FACTORY, PersistenceMode.UniqueGraphicalRepresentations);
 		setEditable(false);
 	}
+	
+
+	@Override
+	public void delete() {
+		drawingRepresentation = null;
+		renderingPageRepresentation=null;
+		renderingPageRepresentation = null;
+		super.delete();
+	}
+
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override

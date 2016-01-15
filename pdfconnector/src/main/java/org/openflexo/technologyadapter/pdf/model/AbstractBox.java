@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.openflexo.foundation.DefaultFlexoObject;
+import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.technologyadapter.pdf.PDFTechnologyAdapter;
 
 public abstract class AbstractBox extends DefaultFlexoObject {
 	private final Rectangle box;
