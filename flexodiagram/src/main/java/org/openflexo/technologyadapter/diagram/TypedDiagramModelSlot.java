@@ -77,8 +77,8 @@ import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBindi
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
-import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
+import org.openflexo.technologyadapter.diagram.fml.editionaction.CreateDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -97,7 +97,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
  */
 @DeclareFlexoRoles({ ShapeRole.class, ConnectorRole.class, DiagramRole.class })
 @DeclareFlexoBehaviours({ DropScheme.class, LinkScheme.class, DiagramNavigationScheme.class })
-@DeclareEditionActions({ AddDiagram.class, AddShape.class, AddConnector.class, GraphicalAction.class })
+@DeclareEditionActions({ CreateDiagram.class, AddShape.class, AddConnector.class, GraphicalAction.class })
 @DeclareFetchRequests({})
 @ModelEntity
 @ImplementationClass(TypedDiagramModelSlot.TypedDiagramModelSlotImpl.class)
