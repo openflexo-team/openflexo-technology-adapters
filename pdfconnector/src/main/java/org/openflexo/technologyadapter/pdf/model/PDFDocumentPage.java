@@ -107,7 +107,7 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 	 * @param areaRatio
 	 * @return
 	 */
-	public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio);
+	public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio, int HTolerance,int VTolerance);
 
 	public double getWidth();
 
@@ -270,11 +270,16 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		 * @return
 		 */
 		@Override
-		public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio) {
-			List<TextBox> returned = new ArrayList<TextBox>();
+		public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio, int HTolerance, int VTolerance) {
+			List<TextBox> returned = new ArrayList<TextBox>(); 
+			Rectangle bBox = boundingBox.getBox();
+			if (bBox.x > HTolerance && bBox.y > VTolerance){
+				bBox.setLocation(bBox.x -HTolerance, bBox.y-VTolerance);
+				bBox.setSize(bBox.width + 2*HTolerance, bBox.height+2*VTolerance);
+			}
 			for (TextBox tb : getTextBoxes()) {
-				Rectangle r = boundingBox.getBox().intersection(tb.getBox());
-				if (r.getWidth() > 0 && r.getHeight() > 0) {
+				Rectangle r =bBox.intersection(tb.getBox());
+				if (r.getWidth() > 0 && r.getHeight() > 0 ) { // Box have an intersection
 					// compute the ratio
 					double ratio = (r.getWidth() * r.getHeight()) / (tb.getBox().getWidth() * tb.getBox().getHeight());
 					if (ratio > areaRatio) {
