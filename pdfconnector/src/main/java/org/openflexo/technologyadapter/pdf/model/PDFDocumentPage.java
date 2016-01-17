@@ -272,7 +272,7 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		@Override
 		public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio, int HTolerance, int VTolerance) {
 			List<TextBox> returned = new ArrayList<TextBox>(); 
-			Rectangle bBox = boundingBox.getBox();
+			Rectangle bBox = new Rectangle(boundingBox.getBox());
 			if (bBox.x > HTolerance && bBox.y > VTolerance){
 				bBox.setLocation(bBox.x -HTolerance, bBox.y-VTolerance);
 				bBox.setSize(bBox.width + 2*HTolerance, bBox.height+2*VTolerance);
