@@ -4,13 +4,11 @@ import java.awt.Point;
 import java.awt.Rectangle;
 
 import org.openflexo.foundation.DefaultFlexoObject;
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.technologyadapter.pdf.PDFTechnologyAdapter;
 
 public abstract class AbstractBox extends DefaultFlexoObject {
 	private final Rectangle box;
 
-	public AbstractBox( Rectangle box) {
+	public AbstractBox(Rectangle box) {
 		super();
 		this.box = box;
 		// System.out.println("Box for [" + text + "] box=" + box + " dir=" + dir);
@@ -21,40 +19,24 @@ public abstract class AbstractBox extends DefaultFlexoObject {
 	}
 
 	public double getX() {
-		/*if (dir == 90 || dir == 270) {
-			return box.getX() - box.getWidth();
-		}*/
 		return box.getX();
 	}
 
 	public double getY() {
-		/*if (dir == 0 || dir == 180) {
-			return box.getY() - box.getHeight();
-		}*/
 		return box.getY();
 	}
 
 	public double getWidth() {
-		/*if (dir == 90 || dir == 270) {
-			return box.getWidth() * 1.1;
-		}
-		else {*/
 		return box.getWidth();
-		// }
 	}
 
 	public double getHeight() {
-		/*if (dir == 0 || dir == 180) {
-			return box.getHeight() * 1.1;
-		}
-		else {*/
 		return box.getHeight();
-		// }
 	}
 
 	@Override
 	public String toString() {
-		return "Box  box=" + box ;
+		return "Box  box=" + box;
 	}
 
 	public void normalizeFrom(PDFDocumentPage from, PDFDocumentPage to) {
@@ -65,6 +47,10 @@ public abstract class AbstractBox extends DefaultFlexoObject {
 	}
 
 	public double distanceFrom(AbstractBox opposite) {
+		return distanceFrom(opposite.getBox());
+	}
+
+	public double distanceFrom(Rectangle opposite) {
 		Point p11 = new Point((int) getX(), (int) getY());
 		Point p12 = new Point((int) (getX() + getWidth()), (int) getY());
 		Point p13 = new Point((int) getX(), (int) (getY() + getHeight()));

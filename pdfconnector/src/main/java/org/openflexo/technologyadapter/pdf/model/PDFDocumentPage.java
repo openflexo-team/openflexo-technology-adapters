@@ -94,8 +94,9 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 	public List<ImageBox> getImageBoxes();
 
-	public TextBox getClosestTextBox(AbstractBox aBox);
-	public ImageBox getClosestImageBox(AbstractBox aBox);
+	public TextBox getClosestTextBox(Rectangle aBox);
+
+	public ImageBox getClosestImageBox(Rectangle aBox);
 
 	/**
 	 * Return a list of all boxes matching supplied box, that are totally or partially contained in bounding box
@@ -107,7 +108,7 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 	 * @param areaRatio
 	 * @return
 	 */
-	public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio, int HTolerance,int VTolerance);
+	public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio, int HTolerance, int VTolerance);
 
 	public double getWidth();
 
@@ -117,8 +118,8 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 	public static abstract class PDFPageImpl extends FlexoObjectImpl implements PDFDocumentPage {
 
-		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(PDFPageImpl.class.getPackage()
-				.getName());
+		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+				.getLogger(PDFPageImpl.class.getPackage().getName());
 
 		private Image renderingImage;
 		private List<TextBox> textBoxes;
@@ -146,11 +147,11 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 			Progress.progress(FlexoLocalization.localizedForKey("processing_renderer"));
 			try {
-				PDFRenderer pdfRenderer = new PDFRenderer(pdDocument);
+				PDFRenderer pdfRenderer = new FlexoPDFRenderer(pdDocument);
 				BufferedImage originalImage;
 				originalImage = pdfRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
-				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(), (int) pdPage.getMediaBox()
-						.getHeight(), Image.SCALE_SMOOTH);
+				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(),
+						(int) pdPage.getMediaBox().getHeight(), Image.SCALE_SMOOTH);
 
 				Progress.progress(FlexoLocalization.localizedForKey("extract_text"));
 				PDFTextBoxStripper textBoxStripper = new PDFTextBoxStripper(pdDocument, pdPage);
@@ -193,7 +194,7 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		public int getPageNumber() {
 			PDFDocument doc = getPDFDocument();
 			if (doc != null)
-				if (doc.getPages() != null){
+				if (doc.getPages() != null) {
 					return getPDFDocument().getPages().indexOf(this) + 1;
 				}
 			return 0;
@@ -221,20 +222,20 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		}
 
 		/*private List<TextBox> aVirer = new ArrayList<>();
-
+		
 		@Override
 		public List<TextBox> getAVirer() {
 			return aVirer;
 		}*/
 
 		@Override
-		public TextBox getClosestTextBox(AbstractBox aBox) {
+		public TextBox getClosestTextBox(Rectangle aBox) {
 			// aVirer.add(textBox);
 			// getPropertyChangeSupport().firePropertyChange("AVirer", null, textBox);
 			TextBox returned = null;
 			double minDist = Double.POSITIVE_INFINITY;
 			for (TextBox tb : getTextBoxes()) {
-				double d = aBox.distanceFrom(tb);
+				double d = tb.distanceFrom(aBox);
 				if (d < minDist) {
 					returned = tb;
 					minDist = d;
@@ -244,13 +245,13 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		}
 
 		@Override
-		public ImageBox getClosestImageBox(AbstractBox aBox) {
+		public ImageBox getClosestImageBox(Rectangle aBox) {
 			// aVirer.add(textBox);
 			// getPropertyChangeSupport().firePropertyChange("AVirer", null, textBox);
 			ImageBox returned = null;
 			double minDist = Double.POSITIVE_INFINITY;
 			for (ImageBox tb : getImageBoxes()) {
-				double d = aBox.distanceFrom(tb);
+				double d = tb.distanceFrom(aBox);
 				if (d < minDist) {
 					returned = tb;
 					minDist = d;
@@ -271,15 +272,15 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		 */
 		@Override
 		public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio, int HTolerance, int VTolerance) {
-			List<TextBox> returned = new ArrayList<TextBox>(); 
+			List<TextBox> returned = new ArrayList<TextBox>();
 			Rectangle bBox = new Rectangle(boundingBox.getBox());
-			if (bBox.x > HTolerance && bBox.y > VTolerance){
-				bBox.setLocation(bBox.x -HTolerance, bBox.y-VTolerance);
-				bBox.setSize(bBox.width + 2*HTolerance, bBox.height+2*VTolerance);
+			if (bBox.x > HTolerance && bBox.y > VTolerance) {
+				bBox.setLocation(bBox.x - HTolerance, bBox.y - VTolerance);
+				bBox.setSize(bBox.width + 2 * HTolerance, bBox.height + 2 * VTolerance);
 			}
 			for (TextBox tb : getTextBoxes()) {
-				Rectangle r =bBox.intersection(tb.getBox());
-				if (r.getWidth() > 0 && r.getHeight() > 0 ) { // Box have an intersection
+				Rectangle r = bBox.intersection(tb.getBox());
+				if (r.getWidth() > 0 && r.getHeight() > 0) { // Box have an intersection
 					// compute the ratio
 					double ratio = (r.getWidth() * r.getHeight()) / (tb.getBox().getWidth() * tb.getBox().getHeight());
 					if (ratio > areaRatio) {
@@ -302,31 +303,30 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 			// System.out.println("width is " + getPDPage().getCropBox().getHeight());
 			return getPDPage().getCropBox().getHeight();
 		}
-		
 
 		@Override
 		public boolean delete(Object... context) {
 
 			PropertyChangeSupport pcSupport = this.getPropertyChangeSupport();
-			
-			for (PropertyChangeListener cl: pcSupport.getPropertyChangeListeners()){
+
+			for (PropertyChangeListener cl : pcSupport.getPropertyChangeListeners()) {
 				pcSupport.removePropertyChangeListener(cl);
 			}
-		
-			for (ImageBox i:imageBoxes) {
+
+			for (ImageBox i : imageBoxes) {
 				i.delete(context);
 			}
 			imageBoxes.clear();
 			imageBoxes = null;
-			for (TextBox t:textBoxes) {
+			for (TextBox t : textBoxes) {
 				t.delete(context);
 			}
 			textBoxes.clear();
 			textBoxes = null;
 			renderingImage = null;
-			
+
 			this.performSuperDelete(context);
-			
+
 			return true;
 		}
 
@@ -336,8 +336,6 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 			// TODO Auto-generated method stub
 			super.finalize();
 		}
-		
-		
 
 	}
 
