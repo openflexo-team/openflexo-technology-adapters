@@ -46,20 +46,47 @@ public abstract class AbstractBox extends DefaultFlexoObject {
 		box.height = (int) (box.height * (to.getHeight() / from.getHeight()));
 	}
 
+	public void normalizeFrom(PDFDocumentPage from, double fromHMargin, double fromVMargin, PDFDocumentPage to, double toHMargin,
+			double toVMargin) {
+		/*System.out.println("********** NORMALIZE");
+		System.out.println("********** From=" + from.getWidth() / 2.83 + "x" + from.getHeight() / 2.83 + " fromHMargin=" + fromHMargin
+				+ " fromVMargin=" + fromVMargin);
+		System.out.println("**********   To=" + to.getWidth() / 2.83 + "x" + to.getHeight() / 2.83 + " toHMargin=" + toHMargin
+				+ " toVMargin=" + toVMargin);
+		System.out.println("Was: " + this);*/
+		box.x = (int) ((box.x - fromHMargin * 2.83 / 2) * ((to.getWidth() - toHMargin * 2.83) / (from.getWidth() - fromHMargin * 2.83))
+				+ toHMargin * 2.83 / 2);
+		box.width = (int) (box.width * ((to.getWidth() - toHMargin * 2.83) / (from.getWidth() - fromHMargin * 2.83)));
+		box.y = (int) ((box.y - fromVMargin * 2.83 / 2) * ((to.getHeight() - toVMargin * 2.83) / (from.getHeight() - fromVMargin * 2.83))
+				+ toVMargin * 2.83 / 2);
+		box.height = (int) (box.height * ((to.getHeight() - toVMargin * 2.83) / (from.getHeight() - fromVMargin * 2.83)));
+		// System.out.println("Now: " + this);
+	}
+
 	public double distanceFrom(AbstractBox opposite) {
 		return distanceFrom(opposite.getBox());
 	}
 
+	/**
+	 * Compute the distance between two rectangles<br>
+	 * Half of the computed distance is obtained from the computation of distance between rectangle centers.<br>
+	 * The other half of the computation is obtained from the computation of distance between each corners, one to one.
+	 * 
+	 * @param opposite
+	 * @return
+	 */
 	public double distanceFrom(Rectangle opposite) {
 		Point p11 = new Point((int) getX(), (int) getY());
 		Point p12 = new Point((int) (getX() + getWidth()), (int) getY());
 		Point p13 = new Point((int) getX(), (int) (getY() + getHeight()));
 		Point p14 = new Point((int) (getX() + getWidth()), (int) (getY() + getHeight()));
+		Point p1Center = new Point((int) (getX() + getWidth() / 2), (int) (getY() + getHeight() / 2));
 		Point p21 = new Point((int) opposite.getX(), (int) opposite.getY());
 		Point p22 = new Point((int) (opposite.getX() + opposite.getWidth()), (int) opposite.getY());
 		Point p23 = new Point((int) opposite.getX(), (int) (opposite.getY() + opposite.getHeight()));
 		Point p24 = new Point((int) (opposite.getX() + opposite.getWidth()), (int) (opposite.getY() + opposite.getHeight()));
-		return dist(p11, p21) + dist(p12, p22) + dist(p13, p23) + dist(p14, p24);
+		Point p2Center = new Point((int) (opposite.getX() + opposite.getWidth() / 2), (int) (opposite.getY() + opposite.getHeight() / 2));
+		return dist(p1Center, p2Center) + (dist(p11, p21) + dist(p12, p22) + dist(p13, p23) + dist(p14, p24)) / 4;
 	}
 
 	public double dist(Point p1, Point p2) {
