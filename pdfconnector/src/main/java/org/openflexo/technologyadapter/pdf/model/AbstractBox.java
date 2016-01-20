@@ -63,6 +63,12 @@ public abstract class AbstractBox extends DefaultFlexoObject {
 		// System.out.println("Now: " + this);
 	}
 
+	public void extendsTo(float HTolerance, float VTolerance) {
+		box.setLocation((int) (box.x - HTolerance * box.width), (int) (box.y - VTolerance * box.height));
+		box.setSize((int) (box.width + 2 * HTolerance * box.width), (int) (box.height + 2 * VTolerance * box.height));
+
+	}
+
 	public double distanceFrom(AbstractBox opposite) {
 		return distanceFrom(opposite.getBox());
 	}
@@ -92,4 +98,5 @@ public abstract class AbstractBox extends DefaultFlexoObject {
 	public double dist(Point p1, Point p2) {
 		return Math.sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
 	}
+
 }
