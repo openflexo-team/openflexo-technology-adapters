@@ -27,6 +27,7 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
@@ -94,9 +95,9 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 	public List<ImageBox> getImageBoxes();
 
-	public TextBox getClosestTextBox(Rectangle aBox);
+	public TextBox getClosestTextBox(Rectangle aBox, Collection<TextBox> ignoredBoxes);
 
-	public ImageBox getClosestImageBox(Rectangle aBox);
+	public ImageBox getClosestImageBox(Rectangle aBox, Collection<ImageBox> ignoredBoxes);
 
 	/**
 	 * Return a list of all boxes matching supplied box, that are totally or partially contained in bounding box
@@ -108,7 +109,10 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 	 * @param areaRatio
 	 * @return
 	 */
-	public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio, int HTolerance, int VTolerance);
+	public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio, float HTolerance, float VTolerance,
+			List<TextBox> ignoredBoxes);
+
+	public double getContainmentRatio(TextBox tb, TextBox boundingBox);
 
 	public double getWidth();
 
@@ -229,32 +233,36 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		}*/
 
 		@Override
-		public TextBox getClosestTextBox(Rectangle aBox) {
+		public TextBox getClosestTextBox(Rectangle aBox, Collection<TextBox> ignoredBoxes) {
 			// aVirer.add(textBox);
 			// getPropertyChangeSupport().firePropertyChange("AVirer", null, textBox);
 			TextBox returned = null;
 			double minDist = Double.POSITIVE_INFINITY;
 			for (TextBox tb : getTextBoxes()) {
-				double d = tb.distanceFrom(aBox);
-				if (d < minDist) {
-					returned = tb;
-					minDist = d;
+				if (ignoredBoxes == null || !ignoredBoxes.contains(tb)) {
+					double d = tb.distanceFrom(aBox);
+					if (d < minDist) {
+						returned = tb;
+						minDist = d;
+					}
 				}
 			}
 			return returned;
 		}
 
 		@Override
-		public ImageBox getClosestImageBox(Rectangle aBox) {
+		public ImageBox getClosestImageBox(Rectangle aBox, Collection<ImageBox> ignoredBoxes) {
 			// aVirer.add(textBox);
 			// getPropertyChangeSupport().firePropertyChange("AVirer", null, textBox);
 			ImageBox returned = null;
 			double minDist = Double.POSITIVE_INFINITY;
 			for (ImageBox tb : getImageBoxes()) {
-				double d = tb.distanceFrom(aBox);
-				if (d < minDist) {
-					returned = tb;
-					minDist = d;
+				if (ignoredBoxes == null || !ignoredBoxes.contains(tb)) {
+					double d = tb.distanceFrom(aBox);
+					if (d < minDist) {
+						returned = tb;
+						minDist = d;
+					}
 				}
 			}
 			return returned;
@@ -271,25 +279,39 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 		 * @return
 		 */
 		@Override
-		public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio, int HTolerance, int VTolerance) {
+		public List<TextBox> getMatchingBoxes(TextBox boundingBox, float areaRatio, float HTolerance, float VTolerance,
+				List<TextBox> ignoredBoxes) {
 			List<TextBox> returned = new ArrayList<TextBox>();
 			Rectangle bBox = new Rectangle(boundingBox.getBox());
 			if (bBox.x > HTolerance && bBox.y > VTolerance) {
-				bBox.setLocation(bBox.x - HTolerance, bBox.y - VTolerance);
-				bBox.setSize(bBox.width + 2 * HTolerance, bBox.height + 2 * VTolerance);
+				bBox.setLocation((int) (bBox.x - HTolerance * bBox.width), (int) (bBox.y - VTolerance * bBox.height));
+				bBox.setSize((int) (bBox.width + 2 * HTolerance * bBox.width), (int) (bBox.height + 2 * VTolerance * bBox.height));
 			}
 			for (TextBox tb : getTextBoxes()) {
-				Rectangle r = bBox.intersection(tb.getBox());
-				if (r.getWidth() > 0 && r.getHeight() > 0) { // Box have an intersection
-					// compute the ratio
-					double ratio = (r.getWidth() * r.getHeight()) / (tb.getBox().getWidth() * tb.getBox().getHeight());
-					if (ratio > areaRatio) {
-						returned.add(tb);
+				if (ignoredBoxes == null || !ignoredBoxes.contains(tb)) {
+					Rectangle r = bBox.intersection(tb.getBox());
+					if (r.getWidth() > 0 && r.getHeight() > 0) { // Box have an intersection
+						// compute the ratio
+						double ratio = (r.getWidth() * r.getHeight()) / (tb.getBox().getWidth() * tb.getBox().getHeight());
+						if (ratio > areaRatio) {
+							returned.add(tb);
+						}
+						// System.out.println("ratio=" + ratio);
 					}
-					// System.out.println("ratio=" + ratio);
 				}
 			}
 			return returned;
+		}
+
+		@Override
+		public double getContainmentRatio(TextBox tb, TextBox boundingBox) {
+			Rectangle bBox = new Rectangle(boundingBox.getBox());
+			Rectangle r = bBox.intersection(tb.getBox());
+			if (r.getWidth() > 0 && r.getHeight() > 0) { // Box have an intersection
+				// compute the ratio
+				return (r.getWidth() * r.getHeight()) / (tb.getBox().getWidth() * tb.getBox().getHeight());
+			}
+			return 0;
 		}
 
 		@Override
