@@ -40,6 +40,64 @@ public class TextBox extends AbstractBox {
 	 * @return
 	 */
 	public static List<List<TextBox>> arrangeAsRows(List<TextBox> textBoxes) {
+		List<Row> rows = _arrangeAsRows(textBoxes);
+		List<List<TextBox>> returned = new ArrayList<>();
+
+		for (Row row : rows) {
+			returned.add(row.boxes);
+		}
+
+		return returned;
+	}
+
+	/**
+	 * Use topological informations found in supplied TextBox list to arrange unordered text as a list of items, each item composed of one
+	 * or more row, based on indentation informations
+	 * 
+	 * @param textBoxes
+	 * @return
+	 */
+	public static List<List<List<TextBox>>> arrangeAsItems(List<TextBox> textBoxes) {
+		List<Row> rows = _arrangeAsRows(textBoxes);
+
+		List<List<List<TextBox>>> items = new ArrayList<>();
+
+		int i = 0;
+		double startX = -1;
+		List<List<TextBox>> currentItem = null;
+		for (Row row : rows) {
+			// System.out.println("row: " + i + " start at " + row.boxes.get(0).getX() + " text=" + getSelectedText(row.boxes));
+			if (startX < 0) {
+				currentItem = new ArrayList<>();
+				currentItem.add(row.boxes);
+				items.add(currentItem);
+				startX = row.boxes.get(0).getX();
+			}
+			else {
+				if (row.boxes.get(0).getX() > startX + 1.0) {
+					currentItem.add(row.boxes);
+				}
+				else {
+					currentItem = new ArrayList<>();
+					currentItem.add(row.boxes);
+					items.add(currentItem);
+				}
+			}
+			i++;
+		}
+
+		return items;
+	}
+
+	/**
+	 * Use topological informations found in supplied TextBox list to arrange unordered text as a list of rows, each row composed of a list
+	 * of TextBox in left-to right order<br>
+	 * Returned rows are ordered from top to bottom
+	 * 
+	 * @param textBoxes
+	 * @return
+	 */
+	private static List<Row> _arrangeAsRows(List<TextBox> textBoxes) {
 		List<Row> rows = new ArrayList<>();
 
 		for (TextBox tb : textBoxes) {
@@ -76,7 +134,14 @@ public class TextBox extends AbstractBox {
 			}
 		}
 
-		List<List<TextBox>> returned = new ArrayList<>();
+		Collections.sort(rows, new Comparator<Row>() {
+			@Override
+			public int compare(Row o1, Row o2) {
+				double center1 = o1.bottom - o1.top;
+				double center2 = o2.bottom - o2.top;
+				return center2 < center1 ? 1 : (center2 > center1 ? -1 : 0);
+			}
+		});
 
 		for (Row row : rows) {
 			Collections.sort(row.boxes, new Comparator<TextBox>() {
@@ -88,10 +153,9 @@ public class TextBox extends AbstractBox {
 				}
 
 			});
-			returned.add(row.boxes);
 		}
 
-		return returned;
+		return rows;
 	}
 
 	private static class Row {
