@@ -132,6 +132,7 @@ public class BasicExcelModelConverter {
 	public ExcelRow convertExcelRowToRow(Row row, ExcelSheet excelSheet, ExcelTechnologyAdapter technologyAdapter) {
 		ExcelRow excelRow;
 		if (excelObjects.get(row) == null) {
+			// System.out.println("Build row " + row.getRowNum() + " for sheet " + excelSheet.getName());
 			excelRow = new ExcelRow(row, excelSheet, technologyAdapter);
 			excelObjects.put(row, excelRow);
 			int lastCell = -1;
