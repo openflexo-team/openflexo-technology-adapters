@@ -96,7 +96,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	 * @param ontologyLibrary
 	 * @return
 	 */
-	public static ExcelWorkbookResource makeExcelWorkbookResource(String modelURI, File excelFile,
+	public static ExcelWorkbookResource makeExcelWorkbookResource(/*String modelURI,*/ File excelFile,
 			ExcelTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
 		try {
 			ModelFactory factory = new ModelFactory(
@@ -106,7 +106,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 			returned.setTechnologyContextManager(technologyContextManager);
 			returned.initName(excelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(excelFile, factory));
-			returned.setURI(modelURI);
+			// returned.setURI(modelURI);
 			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			// technologyContextManager.registerResource(returned);
@@ -149,7 +149,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 				returned.setTechnologyContextManager(technologyContextManager);
 				returned.initName(modelFile.getName());
 				returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-				returned.setURI(modelFile.toURI().toString());
+				// returned.setURI(modelFile.toURI().toString());
 				returned.setResourceCenter(resourceCenter);
 				returned.setServiceManager(
 						technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());

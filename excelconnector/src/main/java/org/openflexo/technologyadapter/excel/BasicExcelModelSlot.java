@@ -94,7 +94,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 @XMLElement
 public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
-	public static abstract class BasicExcelModelSlotImpl extends FreeModelSlotImpl<ExcelWorkbook> implements BasicExcelModelSlot {
+	public static abstract class BasicExcelModelSlotImpl extends FreeModelSlotImpl<ExcelWorkbook>implements BasicExcelModelSlot {
 
 		private static final Logger logger = Logger.getLogger(BasicExcelModelSlot.class.getPackage().getName());
 
@@ -118,9 +118,11 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (ExcelCellRole.class.isAssignableFrom(patternRoleClass)) {
 				return "cell";
-			} else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
 				return "row";
-			} else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
 				return "sheet";
 			}
 			return null;
@@ -167,7 +169,8 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 				ExcelObject o = uriCache.get(builtURI);
 				if (o != null) {
 					return o;
-				} else {
+				}
+				else {
 					TechnologyAdapterResource<ExcelWorkbook, ?> resource = msInstance.getResource();
 					if (!resource.isLoaded()) {
 						resource.loadResourceData(null);
@@ -196,7 +199,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
 		@Override
 		public ExcelWorkbookResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getModelSlotTechnologyAdapter().createNewWorkbook(view.getProject(), filename, modelUri);
+			return getModelSlotTechnologyAdapter().createNewWorkbook(view.getProject(), filename/*, modelUri*/);
 		}
 
 		@Override

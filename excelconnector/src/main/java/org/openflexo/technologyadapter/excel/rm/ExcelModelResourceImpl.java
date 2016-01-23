@@ -77,8 +77,9 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 	 * @param ontologyLibrary
 	 * @return
 	 */
-	public static ExcelModelResource makeExcelModelResource(String modelURI, File modelFile, ExcelMetaModelResource excelMetaModelResource,
-			ExcelTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
+	public static ExcelModelResource makeExcelModelResource(/*String modelURI,*/ File modelFile,
+			ExcelMetaModelResource excelMetaModelResource, ExcelTechnologyContextManager technologyContextManager,
+			FlexoResourceCenter<?> resourceCenter) {
 		try {
 			ModelFactory factory = new ModelFactory(
 					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, ExcelModelResource.class));
@@ -92,7 +93,7 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 			returned.setFlexoIODelegate(fileIODelegate);
 			fileIODelegate.setFile(modelFile);
 
-			returned.setURI(modelURI);
+			// returned.setURI(modelURI);
 			returned.setMetaModelResource(excelMetaModelResource);
 			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
@@ -131,7 +132,7 @@ public abstract class ExcelModelResourceImpl implements ExcelModelResource {
 			returned.setFlexoIODelegate(fileIODelegate);
 			fileIODelegate.setFile(modelFile);
 
-			returned.setURI(modelFile.toURI().toString());
+			// returned.setURI(modelFile.toURI().toString());
 			returned.setMetaModelResource(excelMetaModelResource);
 			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());

@@ -194,7 +194,8 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	 * @return
 	 */
 	public boolean isValidWorkbookFile(File candidateFile) {
-		return candidateFile.getName().endsWith(".xlsx") || candidateFile.getName().endsWith(".xls");
+		return (candidateFile.getName().endsWith(".xlsx") || candidateFile.getName().endsWith(".xls"))
+				&& !(candidateFile.getName().startsWith("~"));
 	}
 
 	public boolean isValidWorkbookInJar(InJarResourceImpl candidateInJar) {
@@ -249,13 +250,13 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	 * @param technologyContextManager
 	 * @return
 	 */
-	public ExcelWorkbookResource createNewWorkbook(FlexoProject project, String excelFilename, String modelUri) {
+	public ExcelWorkbookResource createNewWorkbook(FlexoProject project, String excelFilename/*, String modelUri*/) {
 
 		File excelFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), excelFilename);
 
-		modelUri = excelFile.toURI().toString();
+		// modelUri = excelFile.toURI().toString();
 
-		ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(modelUri, excelFile,
+		ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(/*modelUri,*/ excelFile,
 				getTechnologyContextManager(), project);
 
 		getTechnologyContextManager().registerResource(workbookResource);
