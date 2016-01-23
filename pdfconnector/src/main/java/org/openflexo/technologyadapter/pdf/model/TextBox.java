@@ -137,8 +137,8 @@ public class TextBox extends AbstractBox {
 		Collections.sort(rows, new Comparator<Row>() {
 			@Override
 			public int compare(Row o1, Row o2) {
-				double center1 = o1.bottom - o1.top;
-				double center2 = o2.bottom - o2.top;
+				double center1 = o1.top;
+				double center2 = o2.top;
 				return center2 < center1 ? 1 : (center2 > center1 ? -1 : 0);
 			}
 		});
