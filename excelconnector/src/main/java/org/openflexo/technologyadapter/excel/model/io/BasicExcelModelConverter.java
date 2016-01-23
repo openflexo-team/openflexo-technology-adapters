@@ -137,11 +137,12 @@ public class BasicExcelModelConverter {
 			excelObjects.put(row, excelRow);
 			int lastCell = -1;
 			for (Cell cell : row) {
-				// System.out.println("Adding cell " + cell.getColumnIndex());
+				// System.out.println("Adding cell " + cell.getColumnIndex() + " value=" + cell.getStringCellValue());
 				while (cell.getColumnIndex() > lastCell + 1) {
 					// Missing cell
-					// System.out.println("A?dding a missing cell");
-					ExcelCell excelCell = new ExcelCell(cell, excelRow, technologyAdapter);
+					// System.out.println("Adding a missing cell");
+					// This cell is not bound to any excel cell !
+					ExcelCell excelCell = new ExcelCell(null, excelRow, technologyAdapter);
 					excelRow.addToExcelCells(excelCell);
 					lastCell++;
 				}
@@ -150,18 +151,18 @@ public class BasicExcelModelConverter {
 				lastCell = excelCell.getColumnIndex();
 			}
 			// System.out.println("Created a row with " + excelRow.getExcelCells().size() + " cells");
-			/*int i = 0;
+			int i = 0;
 			for (ExcelCell cell : excelRow.getExcelCells()) {
-			System.out.println("Index " + i + ": Cell with " + cell.getCell()
-					+ (cell.getCell() != null ? " index=" + cell.getCell().getColumnIndex() : "n/a"));
-			i++;
+				// System.out.println("Index " + i + ": Cell with " + cell.getCell()
+				// + (cell.getCell() != null ? " index=" + cell.getCell().getColumnIndex() : "n/a"));
+				i++;
 
-			}*/
+			}
 		}
 		else {
 			excelRow = (ExcelRow) excelObjects.get(row);
-			System.out.println(" C'est égal? (" + row.getClass().getCanonicalName() + ")" + (excelRow.getRow().equals(row)) + " -- "
-					+ (excelRow.getRow() == row));
+			// System.out.println(" C'est égal? (" + row.getClass().getCanonicalName() + ")" + (excelRow.getRow().equals(row)) + " -- "
+			// + (excelRow.getRow() == row));
 		}
 
 		return excelRow;
