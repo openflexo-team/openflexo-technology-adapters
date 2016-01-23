@@ -396,15 +396,15 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 				}
 				return cell.getNumericCellValue();
 			case String:
-				if (cell.getStringCellValue().contains("\n")) {
+				/*if (cell.getStringCellValue().contains("\n")) {
 					logger.warning("Excel Cell " + this.getCellIdentifier() + " contains line return.");
-				}
+				}*/
 				return cell.getStringCellValue();
 			case StringFormula:
 				return cell.getStringCellValue();
 			case Empty:
-				System.out.println("EMPTY Cell at ind: " + this.getColumnIndex() + " ROW: " + this.getRowIndex() + " SHEET: "
-						+ this.getExcelSheet().getName());
+				// System.out.println("EMPTY Cell at ind: " + this.getColumnIndex() + " ROW: " + this.getRowIndex() + " SHEET: "
+				// + this.getExcelSheet().getName());
 				return null;
 			case Error:
 				return cell.getErrorCellValue();
