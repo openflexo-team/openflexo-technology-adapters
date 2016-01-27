@@ -89,8 +89,11 @@ public class TestShowPDF {
 
 	@Test
 	public void waitUser() throws IOException {
-		while (true) {
+		// wmall workaround so that tests won't go forever
+		int i = 0;
+		while (true && i < 10) {
 			// System.out.println("waiting");
+			i++;
 			try {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
