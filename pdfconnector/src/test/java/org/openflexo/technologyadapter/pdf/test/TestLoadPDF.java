@@ -255,9 +255,11 @@ public class TestLoadPDF {
 					}
 				}
 			}
-
-			while (true) {
+			// waits 10 seconds and stops
+			int t = 0;
+			while (t<10) {
 				System.out.println("hop");
+				t++;
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
