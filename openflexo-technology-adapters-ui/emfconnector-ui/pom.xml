@@ -72,6 +72,12 @@
 			<groupId>org.openflexo</groupId>
 			<artifactId>fml-technologyadapter-ui</artifactId>
 		</dependency>
+        <dependency>
+            <groupId>org.openflexo</groupId>
+            <artifactId>gina-swing</artifactId>
+            <classifier>tests</classifier>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 </project>
 
