@@ -319,4 +319,10 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		return "OWL";
 	}
 
+	@Override
+	public <T> FlexoResource<?> tryToLookUp(FlexoResourceCenter<?> rc, T toMatch) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

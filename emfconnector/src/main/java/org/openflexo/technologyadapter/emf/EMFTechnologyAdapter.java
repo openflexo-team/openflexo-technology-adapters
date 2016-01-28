@@ -528,4 +528,10 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		return "EMF";
 	}
 
+	@Override
+	public <T> FlexoResource<?> tryToLookUp(FlexoResourceCenter<?> rc, T toMatch) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

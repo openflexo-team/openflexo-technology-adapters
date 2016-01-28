@@ -450,4 +450,10 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return "XML";
 	}
 
+	@Override
+	public <T> FlexoResource<?> tryToLookUp(FlexoResourceCenter<?> rc, T toMatch) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -51,6 +51,7 @@ import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -94,12 +95,15 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
 			returned.initName(powerpointFile.getName());
+			
+			
+			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeNewInstance(returned);
+			returned.setFlexoIODelegate(delegate);	
+			
+			//Correct this by passing file in argument in the factory new instance?
+			((FileFlexoIODelegate) delegate).setFile(powerpointFile);
 
-			// returned.setFile(powerpointFile);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(powerpointFile);
-
+			
 			returned.setURI(modelURI);
 			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
@@ -133,10 +137,11 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 			returned.initName(modelFile.getName());
 
 			// returned.setFile(modelFile);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(modelFile);
-
+			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeNewInstance(returned);
+			returned.setFlexoIODelegate(delegate);	
+			
+			((FileFlexoIODelegate) delegate).setFile(modelFile);
+			
 			returned.setURI(modelFile.toURI().toString());
 			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());

@@ -192,7 +192,6 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 				powerpointAdapter.getTechnologyContextManager(), resourceCenter);
 		modelRes.save(null);
 		assertTrue(pptFile.exists());
-
 		modelRes.delete();
 		pptFile.delete();
 	}
