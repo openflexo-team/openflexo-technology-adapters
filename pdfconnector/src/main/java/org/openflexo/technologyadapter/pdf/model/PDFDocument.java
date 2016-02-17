@@ -132,7 +132,7 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			
+
 			performSuperDelete(context);
 
 			return true;
@@ -152,7 +152,7 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 			for (PDPage page : pdDocument.getPages()) {
 				i++;
 				Progress.progress(FlexoLocalization.localizedForKey("processing_page") + " " + i);
-				System.out.println("************* >> HERE in PDFDocument with thread: " + Thread.currentThread());
+				// System.out.println("************* >> HERE in PDFDocument with thread: " + Thread.currentThread());
 				PDFDocumentPage pdfPage = pageMap.get(page);
 				if (pdfPage == null) {
 					pdfPage = factory.makeNewPDFPage(pdDocument, page);
@@ -209,7 +209,7 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 
 		@Override
 		public void setName(String name) {
-			
+
 			// WARN prevent renaming Resource to null when rename ResourceData
 
 			if (name != null && requireChange(getName(), name)) {
@@ -228,7 +228,8 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 			}
 		}
 
-		public void finalize(){
+		@Override
+		public void finalize() {
 			logger.warning("PDFDocument has been garbage collected");
 		}
 

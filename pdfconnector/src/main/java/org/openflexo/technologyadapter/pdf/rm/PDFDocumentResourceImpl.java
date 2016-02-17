@@ -103,7 +103,6 @@ public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocu
 	protected PDFDocument performLoad() throws IOException, Exception {
 
 		Progress.progress(FlexoLocalization.localizedForKey("loading") + " " + getFile().getName());
-		System.out.println("************* >> HERE in PDFDocumentResource with thread: " + Thread.currentThread());
 		PDDocument document = PDDocument.load(getFile());
 		PDFDocument returned = getFactory().makeNewPDFDocument(document);
 		return returned;
