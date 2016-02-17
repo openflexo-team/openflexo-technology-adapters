@@ -27,13 +27,13 @@ public class TestTextBox {
 	@Test
 	public void testRowArrangement1() {
 		TextBox[] l = { a, b, c, d, e, f, g };
-		assertEquals("A B C\nD E F G", TextBox.getSelectedText(Arrays.asList(l)));
+		assertEquals("A B C\nD E F G", TextBox.getSelectedText(Arrays.asList(l), false));
 	}
 
 	@Test
 	public void testRowArrangement2() {
 		TextBox[] l = { a, c, f, g, b, e, d };
-		assertEquals("A B C\nD E F G", TextBox.getSelectedText(Arrays.asList(l)));
+		assertEquals("A B C\nD E F G", TextBox.getSelectedText(Arrays.asList(l), false));
 	}
 
 }

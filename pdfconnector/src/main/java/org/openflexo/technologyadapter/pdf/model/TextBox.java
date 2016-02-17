@@ -40,7 +40,25 @@ public class TextBox extends AbstractBox {
 	 * @return
 	 */
 	public static List<List<TextBox>> arrangeAsRows(List<TextBox> textBoxes) {
-		List<Row> rows = _arrangeAsRows(textBoxes);
+		List<Row> rows = _arrangeAsRows(textBoxes, 0.3);
+		List<List<TextBox>> returned = new ArrayList<>();
+
+		for (Row row : rows) {
+			returned.add(row.boxes);
+		}
+
+		return returned;
+	}
+
+	/**
+	 * Use topological informations found in supplied TextBox list to arrange unordered text as a list of rows, each row composed of a list
+	 * of TextBox in left-to right order
+	 * 
+	 * @param textBoxes
+	 * @return
+	 */
+	public static List<List<TextBox>> arrangeAsSingleRow(List<TextBox> textBoxes) {
+		List<Row> rows = _arrangeAsSingleRow(textBoxes);
 		List<List<TextBox>> returned = new ArrayList<>();
 
 		for (Row row : rows) {
@@ -58,7 +76,7 @@ public class TextBox extends AbstractBox {
 	 * @return
 	 */
 	public static List<List<List<TextBox>>> arrangeAsItems(List<TextBox> textBoxes) {
-		List<Row> rows = _arrangeAsRows(textBoxes);
+		List<Row> rows = _arrangeAsRows(textBoxes, 0.3);
 
 		List<List<List<TextBox>>> items = new ArrayList<>();
 
@@ -90,6 +108,42 @@ public class TextBox extends AbstractBox {
 	}
 
 	/**
+	 * Use topological informations found in supplied TextBox list to arrange unordered text as a single row composed of a list of TextBox
+	 * in left-to right order
+	 * 
+	 * @param textBoxes
+	 * @return
+	 */
+	private static List<Row> _arrangeAsSingleRow(List<TextBox> textBoxes) {
+		List<Row> rows = new ArrayList<>();
+		Row newRow = null;
+
+		for (TextBox tb : textBoxes) {
+			if (newRow == null) {
+				newRow = new Row(tb);
+				rows.add(newRow);
+			}
+			else {
+				newRow.add(tb);
+			}
+		}
+
+		if (newRow != null) {
+			Collections.sort(newRow.boxes, new Comparator<TextBox>() {
+				@Override
+				public int compare(TextBox o1, TextBox o2) {
+					double center1 = o1.getX() + o1.getWidth() / 2;
+					double center2 = o2.getX() + o2.getWidth() / 2;
+					return center2 < center1 ? 1 : (center2 > center1 ? -1 : 0);
+				}
+
+			});
+		}
+
+		return rows;
+	}
+
+	/**
 	 * Use topological informations found in supplied TextBox list to arrange unordered text as a list of rows, each row composed of a list
 	 * of TextBox in left-to right order<br>
 	 * Returned rows are ordered from top to bottom
@@ -97,7 +151,7 @@ public class TextBox extends AbstractBox {
 	 * @param textBoxes
 	 * @return
 	 */
-	private static List<Row> _arrangeAsRows(List<TextBox> textBoxes) {
+	private static List<Row> _arrangeAsRows(List<TextBox> textBoxes, double rowDetectionThreshold) {
 		List<Row> rows = new ArrayList<>();
 
 		for (TextBox tb : textBoxes) {
@@ -106,25 +160,26 @@ public class TextBox extends AbstractBox {
 				rows.add(newRow);
 			}
 			else {
-				double bestRatio = 0;
+				double bestRatio = Double.NEGATIVE_INFINITY;
 				Row bestRow = null;
 				Rectangle box = tb.getBox();
 				for (Row row : rows) {
 					// System.out.println("Par rapport a la row: " + row.bottom + "-" + row.top);
 					Rectangle rowRect = new Rectangle(box.x, (int) row.top, (int) box.getWidth(), (int) (row.bottom - row.top));
 					Rectangle intersect = rowRect.intersection(box);
-					double containmentRatio = 0;
+					/*double containmentRatio = 0;
 					if (intersect.getHeight() > 0) {
 						containmentRatio = intersect.getHeight() / box.getHeight();
-					}
+					}*/
+					double containmentRatio = intersect.getHeight() / box.getHeight();
 					// System.out.println("Le tb " + tb + " est dedans a : " + containmentRatio);
 					if (containmentRatio >= bestRatio) {
 						bestRow = row;
 						bestRatio = containmentRatio;
 					}
 				}
-				if (bestRatio >= 0.3) {
-					// OK, this box is more than 50% in this row, complete it
+				if (bestRatio > rowDetectionThreshold) {
+					// OK, this box is more than row detection threshold of this row, complete it
 					bestRow.add(tb);
 				}
 				else {
@@ -186,9 +241,16 @@ public class TextBox extends AbstractBox {
 	 * @param textBoxes
 	 * @return
 	 */
-	public static String getSelectedText(List<TextBox> textBoxes) {
+	public static String getSelectedText(List<TextBox> textBoxes, boolean interpretAsSingleRow) {
 
-		List<List<TextBox>> rows = TextBox.arrangeAsRows(textBoxes);
+		List<List<TextBox>> rows;
+
+		if (interpretAsSingleRow) {
+			rows = TextBox.arrangeAsSingleRow(textBoxes);
+		}
+		else {
+			rows = TextBox.arrangeAsRows(textBoxes);
+		}
 
 		StringBuffer returned = new StringBuffer();
 
