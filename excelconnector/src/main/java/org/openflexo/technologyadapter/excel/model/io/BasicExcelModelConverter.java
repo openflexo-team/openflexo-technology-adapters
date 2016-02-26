@@ -59,17 +59,17 @@ public class BasicExcelModelConverter {
 	private static final Logger logger = Logger.getLogger(BasicExcelModelConverter.class.getPackage().getName());
 
 	/** Excel Objects. */
-	protected final Map<Object, ExcelObject> excelObjects = new HashMap<Object, ExcelObject>() {
-		@Override
-		public ExcelObject get(Object key) {
-			for (Object o : this.keySet()) {
-				if (o == key) {
-					return super.get(key);
-				}
-			}
-			return null;
-		};
-	};
+	protected final Map<Object, ExcelObject> excelObjects = new HashMap<Object, ExcelObject>()/* {
+																								@Override
+																								public ExcelObject get(Object key) {
+																								for (Object o : this.keySet()) {
+																								if (o == key) {
+																								return super.get(key);
+																								}
+																								}
+																								return null;
+																								};
+																								}*/;
 
 	/**
 	 * Constructor.
