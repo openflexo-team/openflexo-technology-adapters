@@ -1,8 +1,6 @@
 package org.openflexo.jgitTests;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -18,16 +16,24 @@ import java.util.Set;
 import org.apache.commons.io.FileUtils;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
+import org.eclipse.jgit.api.errors.AbortedByHookException;
+import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.api.errors.InvalidRefNameException;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.NoFilepatternException;
+import org.eclipse.jgit.api.errors.NoHeadException;
+import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
+import org.eclipse.jgit.api.errors.TransportException;
+import org.eclipse.jgit.api.errors.UnmergedPathsException;
+import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.dircache.DirCache;
 import org.eclipse.jgit.dircache.DirCacheEntry;
 import org.eclipse.jgit.errors.AmbiguousObjectException;
 import org.eclipse.jgit.errors.CorruptObjectException;
 import org.eclipse.jgit.errors.IncorrectObjectTypeException;
+import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.errors.NoWorkTreeException;
 import org.eclipse.jgit.errors.RevisionSyntaxException;
 import org.eclipse.jgit.lib.Constants;
@@ -35,6 +41,7 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevFlag;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
@@ -380,11 +387,32 @@ public class RepositoryTest {
 	}
 
 	@Test
-	public void checkoutBranch()
-			throws RefAlreadyExistsException, RefNotFoundException, InvalidRefNameException, GitAPIException {
-
+	public void commitFlag() throws NoHeadException, NoMessageException, UnmergedPathsException, ConcurrentRefUpdateException, WrongRepositoryStateException, AbortedByHookException, GitAPIException, MissingObjectException, IncorrectObjectTypeException, IOException{
+		Git git = new Git(gitRepository);
+		RevWalk walk = new RevWalk(gitRepository);
+		RevCommit commit = git.commit().setMessage("a commit").call();
+		ObjectId commitId = commit.getId();
+		RevFlag flag = walk.newFlag("aFlag");
+		commit.add(flag);
+		assertTrue(commit.has(flag));
+		git.close();
+		
+		RevCommit commitToRetrieve = walk.parseCommit(commitId);
+		// Flag does not persist...
+		assertFalse(commitToRetrieve.has(flag));
+		walk.close();
 	}
-
+	
+	@Test
+	public void cloneLocalRepo() throws InvalidRemoteException, TransportException, GitAPIException{
+		File whereToClone = new File("/Users/kvermeul/ProjetS5/cloneGitTest");
+		whereToClone.mkdirs();
+		Repository newRepo = Git.cloneRepository().setDirectory(whereToClone).setURI("/Users/kvermeul/ProjetS5/gitTest").call().getRepository();
+		Git git  = new Git(gitRepository);
+		git.status();
+		git.close();
+	}
+	
 	private void iterateOnTheWorkTree(FileTreeIterator fileTree, String path,List<ObjectId> list) throws CorruptObjectException {
 		while(!fileTree.eof()){
 			

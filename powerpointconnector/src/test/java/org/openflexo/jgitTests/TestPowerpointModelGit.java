@@ -7,41 +7,47 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Logger;
 
 import org.eclipse.jgit.api.Git;
-import org.eclipse.jgit.api.ResetCommand.ResetType;
 import org.eclipse.jgit.api.errors.AbortedByHookException;
 import org.eclipse.jgit.api.errors.CheckoutConflictException;
 import org.eclipse.jgit.api.errors.ConcurrentRefUpdateException;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.api.errors.InvalidRefNameException;
+import org.eclipse.jgit.api.errors.InvalidRemoteException;
 import org.eclipse.jgit.api.errors.NoHeadException;
 import org.eclipse.jgit.api.errors.NoMessageException;
 import org.eclipse.jgit.api.errors.RefAlreadyExistsException;
 import org.eclipse.jgit.api.errors.RefNotFoundException;
+import org.eclipse.jgit.api.errors.TransportException;
 import org.eclipse.jgit.api.errors.UnmergedPathsException;
 import org.eclipse.jgit.api.errors.WrongRepositoryStateException;
 import org.eclipse.jgit.errors.CorruptObjectException;
+import org.eclipse.jgit.errors.IncorrectObjectTypeException;
 import org.eclipse.jgit.errors.MissingObjectException;
 import org.eclipse.jgit.errors.NoWorkTreeException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.Repository;
-import org.eclipse.jgit.revwalk.RevCommit;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
@@ -52,15 +58,21 @@ import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
+import org.openflexo.foundation.fml.rm.AbstractVirtualModelResource;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
+import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoIOGitDelegate;
+import org.openflexo.foundation.resource.FlexoIOGitDelegate.FlexoIOGitDelegateImpl;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.GitResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.gitUtils.GitFile;
 import org.openflexo.gitUtils.GitIODelegateFactory;
+import org.openflexo.gitUtils.SerializationArtefactKind;
+import org.openflexo.gitUtils.Workspace;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideShowRepository;
@@ -80,23 +92,28 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 	private static PowerpointSlideShowRepository modelRepository;
 
 	private static GitResourceCenter gitResourceCenter;
-	private static Repository emptyGitRepository;
-	
+	private static GitResourceCenter emptyGitResourceCenter;
+	private static List<GitResourceCenter> gitResourceCenters = new ArrayList<>();
+	private static Workspace workspace = new Workspace();
+
 	/**
 	 * Instantiate test resource center
-	 * @throws GitAPIException 
-	 * @throws AbortedByHookException 
-	 * @throws WrongRepositoryStateException 
-	 * @throws ConcurrentRefUpdateException 
-	 * @throws UnmergedPathsException 
-	 * @throws NoMessageException 
-	 * @throws NoHeadException 
-	 * @throws IOException 
-	 * @throws IllegalStateException 
+	 * 
+	 * @throws GitAPIException
+	 * @throws AbortedByHookException
+	 * @throws WrongRepositoryStateException
+	 * @throws ConcurrentRefUpdateException
+	 * @throws UnmergedPathsException
+	 * @throws NoMessageException
+	 * @throws NoHeadException
+	 * @throws IOException
+	 * @throws IllegalStateException
 	 */
 	@Test
 	@TestOrder(1)
-	public void test0InstantiateResourceCenter() throws NoHeadException, NoMessageException, UnmergedPathsException, ConcurrentRefUpdateException, WrongRepositoryStateException, AbortedByHookException, GitAPIException, IllegalStateException, IOException {
+	public void test0InstantiateResourceCenter()
+			throws NoHeadException, NoMessageException, UnmergedPathsException, ConcurrentRefUpdateException,
+			WrongRepositoryStateException, AbortedByHookException, GitAPIException, IllegalStateException, IOException {
 
 		log("test0InstantiateResourceCenter()");
 		testApplicationContext = instanciateTestServiceManager(false);
@@ -106,11 +123,22 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		assertNotNull(powerpointAdapter);
 		for (FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
 			if (rc.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter) != null) {
-				modelRepository = (PowerpointSlideShowRepository) rc.getRepository(PowerpointSlideShowRepository.class,
-						powerpointAdapter);
+				if (!((GitResourceCenter) rc).getAllResources().isEmpty()) {
+					modelRepository = (PowerpointSlideShowRepository) rc
+							.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter);
+				}
 			}
 			if (rc instanceof GitResourceCenter) {
-				gitResourceCenter = (GitResourceCenter) rc;
+				// Put the resource center with some resources in the field
+				// gitResourceCenter
+				if (!((GitResourceCenter) rc).getAllResources().isEmpty()) {
+					gitResourceCenter = (GitResourceCenter) rc;
+				}
+				// And put the empty one in the emptyGitResourceCenter
+				else {
+					emptyGitResourceCenter = (GitResourceCenter) rc;
+				}
+				gitResourceCenters.add((GitResourceCenter) rc);
 			}
 		}
 
@@ -144,7 +172,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 	 */
 
 	/**
-	 * Instanciate powerpoint viewpoint
+	 * Instanciate viewpoint
 	 * 
 	 * @throws IOException
 	 */
@@ -162,10 +190,25 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 				testApplicationContext.getViewPointLibrary(), gitResourceCenter);
 		assertNotNull(testApplicationContext.getViewPointLibrary()
 				.getViewPoint("http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint"));
-
+		gitResourceCenter.registerResource(newViewPoint.getViewPointResource());
+		// Serialize the viewpoint resource in the git repo
+		SerializationArtefactKind directory = SerializationArtefactKind.DIRECTORY;
+		directory.setDirectorySuffix(ViewPointResource.VIEWPOINT_SUFFIX);
+		directory.setCoreFileSuffix(ViewPointResource.CORE_FILE_SUFFIX);
+		FlexoIOGitDelegate vpDelegate= (FlexoIOGitDelegate) (newViewPoint.getViewPointResource()).getFlexoIODelegate();
+		if(vpDelegate instanceof FlexoIOGitDelegateImpl){
+			int a = 1;
+		}
+		vpDelegate.createAndSaveIO((newViewPoint.getViewPointResource()), directory);
 		VirtualModel newVirtualModel = null;
 		try {
-			newVirtualModel = VirtualModelImpl.newVirtualModel("TestPPTVirtualModel", newViewPoint);
+			newVirtualModel = VirtualModelImpl.newGitVirtualModel("TestPPTVirtualModel", newViewPoint);
+			SerializationArtefactKind vmDirectory = SerializationArtefactKind.DIRECTORY;
+			vmDirectory.setDirectorySuffix("");
+			vmDirectory.setCoreFileSuffix(AbstractVirtualModelResource.CORE_FILE_SUFFIX);
+			vmDirectory.setPath(vpDelegate.getDirectory().getAbsolutePath());
+			FlexoIODelegate<?> vmDelegate = newVirtualModel.getResource().getFlexoIODelegate();
+			((FlexoIOGitDelegate)vmDelegate).createAndSaveIO(newVirtualModel.getResource(), vmDirectory);
 			FlexoConcept newFlexoConcept = newVirtualModel.getFMLModelFactory().newFlexoConcept();
 			newVirtualModel.addToFlexoConcepts(newFlexoConcept);
 			if (powerpointAdapter.getAvailableModelSlotTypes() != null) {
@@ -176,8 +219,8 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 					newVirtualModel.addToModelSlots(modelSlot);
 				}
 			}
-			newViewPoint.getResource().save(null);
-			newVirtualModel.getResource().save(null);
+			//newViewPoint.getResource().save(null);
+			//newVirtualModel.getResource().save(null);
 		} catch (SaveResourceException e) {
 			fail(e.getMessage());
 		}
@@ -207,22 +250,13 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		Repository gitRepository = gitResourceCenter.getGitRepository();
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 		for (FlexoResource<?> flexoResource : ressources) {
-			flexoResource
-					.setFlexoIODelegate(gitResourceCenter.getDelegateFactory().makeNewInstance(flexoResource));
-			FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) flexoResource.getFlexoIODelegate();
-			gitDelegate.createAndSaveIO(flexoResource);
-			System.out.println("Ressource " + flexoResource.getName() + " saved first time");
-			LinkedList<ObjectId> listIds = (LinkedList<ObjectId>) gitDelegate.getGitObjectIds();
-
-			FileTreeIterator fileTree = new FileTreeIterator(gitRepository);
-
-			for (ObjectId objectId : listIds) {
-				while (!fileTree.getEntryObjectId().equals(objectId)) {
-					fileTree.next(1);
-				}
-				assertEquals(fileTree.getEntryObjectId(), objectId);
-				// System.out.println("Resource name : "+
-				// flexoResource.getName() + " id : "+ objectId.getName());
+			if (flexoResource instanceof PowerpointSlideshowResource) {
+				flexoResource.setFlexoIODelegate(gitResourceCenter.getDelegateFactory()
+						.makeIODelegateNewInstance(flexoResource, SerializationArtefactKind.FILE));
+				FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) flexoResource.getFlexoIODelegate();
+				gitDelegate.createAndSaveIO(flexoResource, SerializationArtefactKind.FILE);
+				System.out.println("Ressource " + flexoResource.getName() + " saved");
+				assertTrue(gitDelegate.getGitCommitIds().size() == 1);
 			}
 
 		}
@@ -234,29 +268,37 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		Repository gitRepository = gitResourceCenter.getGitRepository();
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 
-		FlexoResource<?> resource = (FlexoResource<?>) ressources.toArray()[0];
+		FlexoResource<?> resource = null;
+
+		for (FlexoResource<?> flexoResource : ressources) {
+			if (flexoResource.getName().equals("TestPPT1.ppt")) {
+				resource = flexoResource;
+			}
+		}
 		System.out.println("Ressource chosen : " + resource.getName());
 		FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) resource.getFlexoIODelegate();
-		LinkedList<ObjectId> listIds = (LinkedList<ObjectId>) gitDelegate.getGitObjectIds();
-		FileTreeIterator fileTree = new FileTreeIterator(gitRepository);
-		for (ObjectId objectId : listIds) {
-			System.out.println("Add Id : " + objectId.getName());
-			// Git put the same id if the content is the same so we need to
-			// check the name of the entry
-			while (!fileTree.getEntryObjectId().equals(objectId)
-					|| !fileTree.getEntryFile().getName().contains(resource.getName())) {
-				fileTree.next(1);
-			}
-			System.out.println("Current Entry file retrieved: " + fileTree.getEntryFile().getName() + " "
-					+ fileTree.getEntryObjectId().getName());
-			FileOutputStream stream = new FileOutputStream(fileTree.getEntryFile());
-			System.out.println("Writing in the file : " + fileTree.getEntryFile().getName());
-			stream.write(6777);
-		}
-		System.out.println("Saving modified resource : " + resource.getName());
+		BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(gitDelegate.getFile()));
+		stream.write("balbaaba".getBytes());
+		stream.flush();
 		gitDelegate.save(resource);
-		assertFalse(listIds.getFirst().equals(listIds.getLast()));
+		assertTrue(resource.getVersion().equals(new FlexoVersion("0.2RC0")));
+		FileTreeIterator iter = new FileTreeIterator(gitRepository);
+		File versionFile = null;
+		while (!iter.eof()) {
+			if (iter.getEntryFile().getName().equals(gitDelegate.getFile().getName() + ".version")) {
+				versionFile = iter.getEntryFile();
+				break;
+			} else {
+				iter.next(1);
+			}
+		}
 
+		BufferedReader reader = new BufferedReader(new FileReader(versionFile));
+		int numberVersion = 0;
+		while (reader.readLine() != null) {
+			numberVersion++;
+		}
+		assertTrue(numberVersion == 2);
 	}
 
 	@Test
@@ -268,24 +310,26 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 
-		FlexoResource<?> resource = (FlexoResource<?>) ressources.toArray()[1];
+		FlexoResource<?> resource = null;
+
+		for (FlexoResource<?> flexoResource : ressources) {
+			if (flexoResource.getName().equals("TestPPT1.ppt")) {
+				resource = flexoResource;
+			}
+		}
 		File fileToLoadResource = null;
 		FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) resource.getFlexoIODelegate();
-		LinkedList<ObjectId> listIds = (LinkedList<ObjectId>) gitDelegate.getGitObjectIds();
 		FileTreeIterator fileTree = new FileTreeIterator(gitResourceCenter.getGitRepository());
-		for (ObjectId objectId : listIds) {
-			// Git put the same id if the content is the same so we need to
-			// check the name of the entry
-			while (!fileTree.getEntryObjectId().equals(objectId)
-					|| !fileTree.getEntryFile().getName().contains(resource.getName())) {
-				fileTree.next(1);
-			}
-			fileToLoadResource = fileTree.getEntryFile();
+		// Git put the same id if the content is the same so we need to
+		// check the name of the entry
+		while (!fileTree.getEntryFile().getName() .equals(gitDelegate.getFile().getName())) {
+			fileTree.next(1);
 		}
+		fileToLoadResource = fileTree.getEntryFile();
 
 		PowerpointSlideshowResource loadResource = adapter.retrieveSlideshowResource(fileToLoadResource,
 				gitResourceCenter);
-		assertNotNull(resource);
+		assertNotNull(loadResource);
 	}
 
 	@Test
@@ -296,21 +340,14 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 
 		PowerpointSlideshowResource modelRes;
 
-		modelRes = createPowerpointResource("generated_File.ppt");
-		FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) modelRes.getFlexoIODelegate();
-		LinkedList<ObjectId> listIds = (LinkedList<ObjectId>) gitDelegate.getGitObjectIds();
+		modelRes = createPowerpointResource("generated_File.ppt", gitResourceCenter);
 		FileTreeIterator fileTree = new FileTreeIterator(gitResourceCenter.getGitRepository());
-		for (ObjectId objectId : listIds) {
-			// Git put the same id if the content is the same so we need to
-			// check the name of the entry
-			while (!fileTree.getEntryObjectId().equals(objectId)
-					|| !fileTree.getEntryFile().getName().contains(modelRes.getName())) {
-				fileTree.next(1);
-			}
-			System.out.println("New Entry file retrieved: " + fileTree.getEntryFile().getName() + " "
-					+ fileTree.getEntryObjectId().getName());
-			assertEquals(fileTree.getEntryObjectId(), objectId);
+		FlexoIOGitDelegate delegate = (FlexoIOGitDelegate) modelRes.getFlexoIODelegate();
+		while (!fileTree.getEntryFile().getName().equals(delegate.getFile().getName())) {
+			fileTree.next(1);
 		}
+		System.out.println("New Entry file retrieved: " + fileTree.getEntryFile().getName() + " "
+				+ fileTree.getEntryObjectId().getName());
 		// Ask sylvain why perform super delete provokes an exception
 
 		System.out.println("Version of model Res : " + modelRes.getVersion().toString());
@@ -336,28 +373,24 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		}
 
 		FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) resourceToVersion.getFlexoIODelegate();
-		LinkedList<ObjectId> listIds = (LinkedList<ObjectId>) gitDelegate.getGitObjectIds();
 		FileTreeIterator fileTree = new FileTreeIterator(gitResourceCenter.getGitRepository());
-		for (ObjectId objectId : listIds) {
-			// Git put the same id if the content is the same so we need to
-			// check the name of the entry
-			while (!fileTree.getEntryObjectId().equals(objectId)
-					|| !fileTree.getEntryFile().getName().contains(resourceToVersion.getName())) {
-				fileTree.next(1);
-			}
-			fileToVersion = fileTree.getEntryFile();
-			assertNotNull(fileToVersion);
+
+		while (!fileTree.getEntryFile().getName().equals(gitDelegate.getFile().getName())) {
+			fileTree.next(1);
 		}
+		fileToVersion = fileTree.getEntryFile();
+		assertNotNull(fileToVersion);
+
 		FileOutputStream stream = new FileOutputStream(fileToVersion);
 		stream.write(6777);
-
+		stream.close();
 		resourceToVersion.getFlexoIODelegate().save(resourceToVersion);
 		System.out.println(resourceToVersion.getVersion().toString());
 		assertTrue(resourceToVersion.getVersion().isGreaterThan(firstVersion));
 
 		FileOutputStream stream2 = new FileOutputStream(fileToVersion);
 		stream2.write(123456);
-
+		stream2.close();
 		resourceToVersion.getFlexoIODelegate().save(resourceToVersion);
 		System.out.println(resourceToVersion.getVersion().toString());
 		assertTrue(resourceToVersion.getVersion().isGreaterThan(firstVersion));
@@ -365,18 +398,19 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 
 	@Test
 	@TestOrder(9)
-	public void matchDifferentsResourceVersion() throws RefAlreadyExistsException, RefNotFoundException, InvalidRefNameException, CheckoutConflictException, GitAPIException, MissingObjectException, IOException {
+	public void matchDifferentsResourceVersion() throws RefAlreadyExistsException, RefNotFoundException,
+			InvalidRefNameException, CheckoutConflictException, GitAPIException, MissingObjectException, IOException {
 		List<FlexoResource<?>> resources = new ArrayList<>();
 
 		// Prepare
-		Git git = new Git(gitResourceCenter.getGitRepository());
 		// Create 3 powerpoint resources
 		for (int i = 0; i < 3; i++) {
-			resources.add(createPowerpointResource("NewPPTGenerated" + i+".ppt"));
-			File file = new File(gitResourceCenter.getGitRepository().getWorkTree(), "NewPPTGenerated" + i+".ppt");
+			resources.add(createPowerpointResource("NewPPTGenerated" + i + ".ppt", gitResourceCenter));
+			File file = new File(gitResourceCenter.getGitRepository().getWorkTree(), "NewPPTGenerated" + i + ".ppt");
 			PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file)));
-			writer.println("Some content in the ppt" + i + " version 0.1");
+			writer.println("Some content in the ppt" + "NewPPTGenerated" + i + " version 0.1");
 			writer.flush();
+			writer.close();
 		}
 		// Save the first version
 		for (FlexoResource<?> flexoResource : resources) {
@@ -389,6 +423,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 			PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file)));
 			writer.println("Some second content in the ppt" + flexoResource.getName() + " version 0.2");
 			writer.flush();
+			writer.close();
 			((FlexoIOGitDelegate) flexoResource.getFlexoIODelegate()).save(flexoResource);
 		}
 
@@ -398,50 +433,251 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 			PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file)));
 			writer.println("Some third content in the ppt" + flexoResource.getName() + " version 0.3");
 			writer.flush();
+			writer.close();
 			((FlexoIOGitDelegate) flexoResource.getFlexoIODelegate()).save(flexoResource);
 		}
-		Map<FlexoResource<?>,FlexoVersion> versionsToMatch = new HashMap<>();
-		for(int i=0;i<resources.size();i++){
+		Map<FlexoResource<?>, FlexoVersion> versionsToMatch = new HashMap<>();
+		for (int i = 0; i < resources.size(); i++) {
 			FlexoVersion version = null;
-			version = new FlexoVersion("0."+(i+2)+"RC0");
+			version = new FlexoVersion("0." + (i + 2) + "RC0");
 			versionsToMatch.put(resources.get(i), version);
 		}
-		// Synchronize Working Tree with the versions of the files we want to checkout
+		// Synchronize Working Tree with the versions of the files we want to
+		// checkout
 		gitResourceCenter.checkoutSeveralVersions(versionsToMatch, "AnotherWorkspace");
-		
+
 		FileTreeIterator iter = new FileTreeIterator(gitResourceCenter.getGitRepository());
 		List<ObjectId> listOfIds = new LinkedList<>();
 		iterateOnTheWorkTree(iter, "NewPPTGenerated", listOfIds);
-		int i=1;
+		int i = 1;
 		for (ObjectId objectId : listOfIds) {
 			ObjectLoader loader = gitResourceCenter.getGitRepository().open(objectId);
-			String str = new String(loader.getBytes(),StandardCharsets.UTF_8);
+			String str = new String(loader.getBytes(), StandardCharsets.UTF_8);
 			// Check that it is the good version of the file in the working tree
-			assertTrue(str.contains("version 0."+i));
+			assertTrue(str.contains("version 0." + i));
 			i++;
 			loader.copyTo(System.out);
+		}
+		for (FlexoResource<?> resource : gitResourceCenter.getAllResources()) {
+			if (resource.getVersion() != null) {
+				System.out.println(
+						"Version after checkout " + resource.getName() + " " + resource.getVersion().toString());
+			}
 		}
 	}
 
 	@Test
 	@TestOrder(10)
-	public void reloadEnvironmentFromGitRepository() throws NoHeadException, GitAPIException, IOException{
+	public void reloadEnvironmentFromGitRepository() throws NoHeadException, GitAPIException, IOException {
 		Repository repositoryToLoad = gitResourceCenter.getGitRepository();
-		gitResourceCenter.setGitRepository(emptyGitRepository);
 		gitResourceCenter.getAllResources().clear();
-		assertEquals(gitResourceCenter.getAllResources().size(),0);
+		assertEquals(gitResourceCenter.getAllResources().size(), 0);
 		gitResourceCenter.loadFlexoEnvironment(repositoryToLoad);
 		Collection<FlexoResource<?>> resources = gitResourceCenter.getAllResources();
-		//Check
+		// Check
 		for (FlexoResource<?> flexoResource : resources) {
-			System.out.println("Resource instantiated : "+ flexoResource.getName());
-			System.out.println("Version : "+ flexoResource.getVersion().toString());
-			//Check that we have the good number of versions in the io delegate
-			assertTrue(((FlexoIOGitDelegate)flexoResource.getFlexoIODelegate()).getGitCommitIds().keySet().size()==flexoResource.getVersion().minor);
+			System.out.println("Resource instantiated : " + flexoResource.getName());
+			System.out.println("Version : " + flexoResource.getVersion().toString());
+			// Check that we have the good number of versions in the io delegate
+			assertTrue(((FlexoIOGitDelegate) flexoResource.getFlexoIODelegate()).getGitCommitIds().keySet()
+					.size() == flexoResource.getVersion().minor);
+		}
+		// Check that the versions are registred in the resources we have
+		// instanciated
+		Map<FlexoResource<?>, FlexoVersion> versionsToMatch = new HashMap<>();
+		for (FlexoResource<?> flexoResource : resources) {
+			if (flexoResource.getName().contains("NewPPTGenerated") && !flexoResource.getName().contains("version")) {
+				versionsToMatch.put(flexoResource, new FlexoVersion("0.3RC0"));
+			}
+		}
+		// Synchronize Working Tree with the versions of the files we want to
+		// checkout
+		gitResourceCenter.checkoutSeveralVersions(versionsToMatch, "AnotherWorkspace");
+
+		FileTreeIterator iter = new FileTreeIterator(gitResourceCenter.getGitRepository());
+		List<ObjectId> listOfIds = new LinkedList<>();
+		iterateOnTheWorkTree(iter, "NewPPTGenerated", listOfIds);
+		for (ObjectId objectId : listOfIds) {
+			ObjectLoader loader = gitResourceCenter.getGitRepository().open(objectId);
+			String str = new String(loader.getBytes(), StandardCharsets.UTF_8);
+			// Check that it is the good version of the file in the working tree
+			assertTrue(str.contains("version 0.2"));
+			loader.copyTo(System.out);
 		}
 	}
+
+	@Test
+	@TestOrder(11)
+	public void createWorkspaceWithOneRepo()
+			throws RefAlreadyExistsException, RefNotFoundException, InvalidRefNameException, CheckoutConflictException,
+			MissingObjectException, IncorrectObjectTypeException, GitAPIException, IOException {
+		Workspace workspace = new Workspace();
+		workspace.setGitResourceCenterList(gitResourceCenters);
+
+		Map<String, FlexoVersion> resourcesToWorkOn = new HashMap<>();
+		resourcesToWorkOn.put("NewPPTGenerated0.ppt", new FlexoVersion("0.2RC0"));
+		resourcesToWorkOn.put("NewPPTGenerated1.ppt", new FlexoVersion("0.3RC0"));
+		resourcesToWorkOn.put("NewPPTGenerated2.ppt", new FlexoVersion("0.4RC0"));
+
+		workspace.checkoutResources(resourcesToWorkOn);
+
+		// Check
+		assertTrue(workspace.getResourcesOnWorking().size() == 3);
+		// Check that git repository has synchronized his working tree
+		FileTreeIterator iter = new FileTreeIterator(gitResourceCenter.getGitRepository());
+		List<ObjectId> listOfIds = new LinkedList<>();
+		iterateOnTheWorkTree(iter, "NewPPTGenerated", listOfIds);
+		for (ObjectId objectId : listOfIds) {
+			ObjectLoader loader = gitResourceCenter.getGitRepository().open(objectId);
+			String str = new String(loader.getBytes(), StandardCharsets.UTF_8);
+			// Check that it is the good version of the file in the working tree
+			if (str.contains("NewPPTGenerated0")) {
+				assertTrue(str.contains("version 0.1"));
+			} else if (str.contains("NewPPTGenerated1")) {
+				assertTrue(str.contains("version 0.2"));
+			} else if (str.contains("NewPPTGenerated2")) {
+				assertTrue(str.contains("version 0.3"));
+			}
+			loader.copyTo(System.out);
+		}
+
+	}
+
+	@Test
+	@TestOrder(12)
+	public void workspaceWithTwoRepos()
+			throws InvalidRemoteException, TransportException, GitAPIException, IOException {
+		// Prepare
+		File source = new File(gitResourceCenter.getGitRepository().getWorkTree(), "NewPPTGenerated2.ppt");
+		File target = new File(emptyGitResourceCenter.getGitRepository().getWorkTree(), "NewPPTGenerated2.ppt");
+		Files.copy(source.toPath(), target.toPath());
+		FlexoResource<?> resource = gitResourceCenter.retrieveResource("file:" + source.getAbsolutePath(), null);
+		resource.setResourceCenter(emptyGitResourceCenter);
+		emptyGitResourceCenter.registerResource(resource);
+		Collection<FlexoResource<?>> resources = emptyGitResourceCenter.getAllResources();
+		for (FlexoResource<?> flexoResource : resources) {
+			System.out.println("URI RESOURCE " + flexoResource.getURI());
+		}
+		assertTrue(resource != null);
+		System.out.println("VERSION FOUND" + resource.getVersion().toString());
+		// Create some content
+		createPowerpointResource("NewPPTGenerated4.ppt", emptyGitResourceCenter);
+		// Update some existing content
+		for (FlexoResource<?> flexoResource : emptyGitResourceCenter.getAllResources()) {
+			if (flexoResource.getName().equals("NewPPTGenerated2.ppt")) {
+				File file = new File(emptyGitResourceCenter.getGitRepository().getWorkTree(), flexoResource.getName());
+				PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file)));
+				writer.println("Some fourth content in the ppt" + flexoResource.getName() + " version 0.4");
+				writer.flush();
+				writer.close();
+				
+				FlexoIOGitDelegate gitDelegatePPT2= (FlexoIOGitDelegate) flexoResource.getFlexoIODelegate();
+				gitDelegatePPT2.setFile(target);
+				gitDelegatePPT2.save(flexoResource);
+			}
+		}
+		Workspace aWorkspace = new Workspace();
+		aWorkspace.setGitResourceCenterList(gitResourceCenters);
+
+		Map<String, FlexoVersion> resourcesToWorkOn = new HashMap<>();
+		resourcesToWorkOn.put("NewPPTGenerated2.ppt", new FlexoVersion("0.5RC0"));
+		resourcesToWorkOn.put("NewPPTGenerated1.ppt", new FlexoVersion("0.4RC0"));
+		resourcesToWorkOn.put("NewPPTGenerated4.ppt", new FlexoVersion("0.1"));
+		aWorkspace.checkoutResources(resourcesToWorkOn);
+		// Check
+		assertTrue(aWorkspace.getResourcesOnWorking().size() == 3);
+		// Check if the version of the resource is the good one
+		for (FlexoResource<?> flexoResource : workspace.getResourcesOnWorking().keySet()) {
+			if (flexoResource.getName().equals("NewPPTGenerated1.ppt")) {
+				assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.4RC0")));
+			} else if (flexoResource.getName().equals("NewPPTGenerated2.ppt")) {
+				assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.5RC0")));
+			} else if (flexoResource.getName().equals("NewPPTGenerated4.ppt")) {
+				assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.1")));
+			}
+		}
+
+		// Check if the repos are synchronized with the workspace
+		FileTreeIterator iter = new FileTreeIterator(gitResourceCenter.getGitRepository());
+		List<ObjectId> listOfIds = new LinkedList<>();
+		iterateOnTheWorkTree(iter, "NewPPTGenerated", listOfIds);
+		for (ObjectId objectId : listOfIds) {
+			ObjectLoader loader = gitResourceCenter.getGitRepository().open(objectId);
+			String str = new String(loader.getBytes(), StandardCharsets.UTF_8);
+			// Check that it is the good version of the file in the working tree
+			if (str.contains("NewPPTGenerated0")) {
+				assertTrue(str.contains("version 0.1"));
+			} else if (str.contains("NewPPTGenerated1")) {
+				// Check that the repository has changed
+				assertTrue(str.contains("version 0.3"));
+			} else if (str.contains("NewPPTGenerated2")) {
+				assertTrue(str.contains("version 0.3"));
+			}
+			loader.copyTo(System.out);
+		}
+
+		FileTreeIterator iter2 = new FileTreeIterator(emptyGitResourceCenter.getGitRepository());
+		List<ObjectId> listOfIds2 = new LinkedList<>();
+		iterateOnTheWorkTree(iter2, "NewPPTGenerated", listOfIds2);
+		for (ObjectId objectId : listOfIds2) {
+			ObjectLoader loader = emptyGitResourceCenter.getGitRepository().open(objectId);
+			String str = new String(loader.getBytes(), StandardCharsets.UTF_8);
+			// Check that it is the good version of the file in the working tree
+			if (str.contains("NewPPTGenerated4")) {
+				assertTrue(str.isEmpty());
+			} else if (str.contains("NewPPTGenerated2")) {
+				assertTrue(str.contains("version 0.4"));
+			}
+			loader.copyTo(System.out);
+		}
+
+		// For the next test
+		workspace = aWorkspace;
+	}
+
+	@Test
+	@TestOrder(13)
+	public void saveWorkspace() throws NoWorkTreeException, GitAPIException {
+		workspace.commitWorkspace(workspace.getResourcesOnWorking());
+		for (GitResourceCenter resourceCenter : workspace.getGitResourceCenterList()) {
+			Git git = new Git(resourceCenter.getGitRepository());
+			Set<String> uncommittedchange = git.status().call().getUncommittedChanges();
+			for (String string : uncommittedchange) {
+				assertTrue(!string.contains("NewPPTGenerated"));
+			}
+			git.close();
+		}
+
+	}
+
+	@Ignore
+	@Test
+	@TestOrder(14)
+	public void initializeResourceCenter() throws IOException {
+		Repository repositoryToLoad = gitResourceCenter.getGitRepository();
+		gitResourceCenter.getAllResources().clear();
+		assertEquals(gitResourceCenter.getAllResources().size(), 0);
+		gitResourceCenter.initializeResources(repositoryToLoad);
+
+	}
+
 	
-	public PowerpointSlideshowResource createPowerpointResource(String name) {
+	@Test
+	@TestOrder(15)
+	public void putVersionsInCache(){
+		gitResourceCenter.putVersionInCache("NewPPTGenerated1.ppt", new FlexoVersion("0.3RC0"));
+		assertTrue(gitResourceCenter.getCache().size()==1);
+		List<GitFile> cache = gitResourceCenter.getCache();
+		assertTrue(cache.get(0).getVersion().equals(new FlexoVersion("0.3RC0")));
+		assertTrue(cache.get(0).getFileInRepository().getName().equals("NewPPTGenerated1.ppt"));
+		
+		gitResourceCenter.putVersionInCache("NewPPTGenerated1.ppt", new FlexoVersion("0.4RC0"));
+		assertTrue(gitResourceCenter.getCache().size()==2);
+		assertTrue(cache.get(1).getVersion().equals(new FlexoVersion("0.4RC0")));
+		assertTrue(cache.get(1).getFileInRepository().getName().equals("NewPPTGenerated1.ppt"));
+	}
+	
+	public PowerpointSlideshowResource createPowerpointResource(String name, GitResourceCenter gitResourceCenter) {
 		logger.info("creating powerpoint resource...");
 		assertNotNull(modelRepository);
 
@@ -450,29 +686,29 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		File pptFile = new File(gitResourceCenter.getGitRepository().getWorkTree(), name);
 		modelRes = PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(pptFile.getAbsolutePath(), pptFile,
 				powerpointAdapter.getTechnologyContextManager(), gitResourceCenter);
-		((FlexoIOGitDelegate) modelRes.getFlexoIODelegate()).createAndSaveIO(modelRes);
-
+		((FlexoIOGitDelegate) modelRes.getFlexoIODelegate()).createAndSaveIO(modelRes, SerializationArtefactKind.FILE);
 		// Register the new resource in the gitResourceCenter
 		gitResourceCenter.registerResource(modelRes);
 		return modelRes;
 	}
 
-	private void iterateOnTheWorkTree(FileTreeIterator fileTree, String path,List<ObjectId> list) throws CorruptObjectException {
-		while(!fileTree.eof()){
-			
-			if (!fileTree.getEntryFile().getName().contains(path)) {
+	private void iterateOnTheWorkTree(FileTreeIterator fileTree, String path, List<ObjectId> list)
+			throws CorruptObjectException {
+		while (!fileTree.eof()) {
+
+			if (!fileTree.getEntryFile().getName().contains(path)
+					|| fileTree.getEntryFile().getName().endsWith(".version")) {
 				System.out.println(fileTree.getEntryPathString());
 				fileTree.next(1);
-			}
-			else {
+			} else {
 				System.out.println(fileTree.getEntryPathString());
 				list.add(fileTree.getEntryObjectId());
 				fileTree.next(1);
 			}
 		}
-		
+
 	}
-	
+
 	/**
 	 * Load powerpoint viewpoint
 	 * 

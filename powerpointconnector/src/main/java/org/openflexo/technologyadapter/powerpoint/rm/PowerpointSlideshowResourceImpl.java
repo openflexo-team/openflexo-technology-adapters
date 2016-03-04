@@ -57,6 +57,7 @@ import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.gitUtils.SerializationArtefactKind;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -97,7 +98,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 			returned.initName(powerpointFile.getName());
 			
 			
-			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeNewInstance(returned);
+			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeIODelegateNewInstance(returned,SerializationArtefactKind.FILE);
 			returned.setFlexoIODelegate(delegate);	
 			
 			//Correct this by passing file in argument in the factory new instance?
@@ -137,7 +138,7 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 			returned.initName(modelFile.getName());
 
 			// returned.setFile(modelFile);
-			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeNewInstance(returned);
+			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeIODelegateNewInstance(returned,SerializationArtefactKind.FILE);
 			returned.setFlexoIODelegate(delegate);	
 			
 			((FileFlexoIODelegate) delegate).setFile(modelFile);
