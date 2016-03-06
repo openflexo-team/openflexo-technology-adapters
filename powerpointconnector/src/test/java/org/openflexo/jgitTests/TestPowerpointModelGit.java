@@ -58,11 +58,8 @@ import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
-import org.openflexo.foundation.fml.rm.AbstractVirtualModelResource;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
-import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoIOGitDelegate;
-import org.openflexo.foundation.resource.FlexoIOGitDelegate.FlexoIOGitDelegateImpl;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.GitResourceCenter;
@@ -71,6 +68,7 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gitUtils.GitFile;
 import org.openflexo.gitUtils.GitIODelegateFactory;
+import org.openflexo.gitUtils.SerializationArtefactFile;
 import org.openflexo.gitUtils.SerializationArtefactKind;
 import org.openflexo.gitUtils.Workspace;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -175,10 +173,11 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 	 * Instanciate viewpoint
 	 * 
 	 * @throws IOException
+	 * @throws SaveResourceException 
 	 */
 	@Test
 	@TestOrder(2)
-	public void testCreatePowerpointViewpoint() throws IOException {
+	public void testCreatePowerpointViewpoint() throws IOException, SaveResourceException {
 		logger.info("testCreatePowerpointViewpoint()");
 
 		/*
@@ -192,23 +191,11 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 				.getViewPoint("http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint"));
 		gitResourceCenter.registerResource(newViewPoint.getViewPointResource());
 		// Serialize the viewpoint resource in the git repo
-		SerializationArtefactKind directory = SerializationArtefactKind.DIRECTORY;
-		directory.setDirectorySuffix(ViewPointResource.VIEWPOINT_SUFFIX);
-		directory.setCoreFileSuffix(ViewPointResource.CORE_FILE_SUFFIX);
-		FlexoIOGitDelegate vpDelegate= (FlexoIOGitDelegate) (newViewPoint.getViewPointResource()).getFlexoIODelegate();
-		if(vpDelegate instanceof FlexoIOGitDelegateImpl){
-			int a = 1;
-		}
-		vpDelegate.createAndSaveIO((newViewPoint.getViewPointResource()), directory);
+		newViewPoint.getViewPointResource().save(null);
 		VirtualModel newVirtualModel = null;
 		try {
 			newVirtualModel = VirtualModelImpl.newGitVirtualModel("TestPPTVirtualModel", newViewPoint);
-			SerializationArtefactKind vmDirectory = SerializationArtefactKind.DIRECTORY;
-			vmDirectory.setDirectorySuffix("");
-			vmDirectory.setCoreFileSuffix(AbstractVirtualModelResource.CORE_FILE_SUFFIX);
-			vmDirectory.setPath(vpDelegate.getDirectory().getAbsolutePath());
-			FlexoIODelegate<?> vmDelegate = newVirtualModel.getResource().getFlexoIODelegate();
-			((FlexoIOGitDelegate)vmDelegate).createAndSaveIO(newVirtualModel.getResource(), vmDirectory);
+			newVirtualModel.getResource().save(null);
 			FlexoConcept newFlexoConcept = newVirtualModel.getFMLModelFactory().newFlexoConcept();
 			newVirtualModel.addToFlexoConcepts(newFlexoConcept);
 			if (powerpointAdapter.getAvailableModelSlotTypes() != null) {
@@ -246,15 +233,17 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 
 	@Test
 	@TestOrder(4)
-	public void retrieveFileInGitRepository() throws NoWorkTreeException, IOException, ModelDefinitionException {
+	public void retrieveFileInGitRepository() throws NoWorkTreeException, IOException, ModelDefinitionException, SaveResourceException {
 		Repository gitRepository = gitResourceCenter.getGitRepository();
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 		for (FlexoResource<?> flexoResource : ressources) {
 			if (flexoResource instanceof PowerpointSlideshowResource) {
 				flexoResource.setFlexoIODelegate(gitResourceCenter.getDelegateFactory()
-						.makeIODelegateNewInstance(flexoResource, SerializationArtefactKind.FILE));
+						.makeIODelegateNewInstance(flexoResource, new SerializationArtefactFile()));
+				
+				flexoResource.save(null);
+				
 				FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) flexoResource.getFlexoIODelegate();
-				gitDelegate.createAndSaveIO(flexoResource, SerializationArtefactKind.FILE);
 				System.out.println("Ressource " + flexoResource.getName() + " saved");
 				assertTrue(gitDelegate.getGitCommitIds().size() == 1);
 			}
@@ -264,7 +253,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 
 	@Test
 	@TestOrder(5)
-	public void testSaveSeveralVersions() throws IOException {
+	public void testSaveSeveralVersions() throws IOException, SaveResourceException {
 		Repository gitRepository = gitResourceCenter.getGitRepository();
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 
@@ -280,7 +269,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(gitDelegate.getFile()));
 		stream.write("balbaaba".getBytes());
 		stream.flush();
-		gitDelegate.save(resource);
+		resource.save(null);
 		assertTrue(resource.getVersion().equals(new FlexoVersion("0.2RC0")));
 		FileTreeIterator iter = new FileTreeIterator(gitRepository);
 		File versionFile = null;
@@ -360,7 +349,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 
 	@Test
 	@TestOrder(8)
-	public void testVersionning() throws IOException {
+	public void testVersionning() throws IOException, SaveResourceException {
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 		FlexoResource<?> resourceToVersion = null;
 		File fileToVersion = null;
@@ -384,14 +373,14 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		FileOutputStream stream = new FileOutputStream(fileToVersion);
 		stream.write(6777);
 		stream.close();
-		resourceToVersion.getFlexoIODelegate().save(resourceToVersion);
+		resourceToVersion.save(null);
 		System.out.println(resourceToVersion.getVersion().toString());
 		assertTrue(resourceToVersion.getVersion().isGreaterThan(firstVersion));
 
 		FileOutputStream stream2 = new FileOutputStream(fileToVersion);
 		stream2.write(123456);
 		stream2.close();
-		resourceToVersion.getFlexoIODelegate().save(resourceToVersion);
+		resourceToVersion.save(null);
 		System.out.println(resourceToVersion.getVersion().toString());
 		assertTrue(resourceToVersion.getVersion().isGreaterThan(firstVersion));
 	}
@@ -399,7 +388,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 	@Test
 	@TestOrder(9)
 	public void matchDifferentsResourceVersion() throws RefAlreadyExistsException, RefNotFoundException,
-			InvalidRefNameException, CheckoutConflictException, GitAPIException, MissingObjectException, IOException {
+			InvalidRefNameException, CheckoutConflictException, GitAPIException, MissingObjectException, IOException, SaveResourceException {
 		List<FlexoResource<?>> resources = new ArrayList<>();
 
 		// Prepare
@@ -414,7 +403,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		}
 		// Save the first version
 		for (FlexoResource<?> flexoResource : resources) {
-			((FlexoIOGitDelegate) flexoResource.getFlexoIODelegate()).save(flexoResource);
+			flexoResource.save(null);
 		}
 
 		// Write a second Version
@@ -424,7 +413,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 			writer.println("Some second content in the ppt" + flexoResource.getName() + " version 0.2");
 			writer.flush();
 			writer.close();
-			((FlexoIOGitDelegate) flexoResource.getFlexoIODelegate()).save(flexoResource);
+			flexoResource.save(null);
 		}
 
 		// Write a third Version
@@ -434,7 +423,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 			writer.println("Some third content in the ppt" + flexoResource.getName() + " version 0.3");
 			writer.flush();
 			writer.close();
-			((FlexoIOGitDelegate) flexoResource.getFlexoIODelegate()).save(flexoResource);
+			flexoResource.save(null);
 		}
 		Map<FlexoResource<?>, FlexoVersion> versionsToMatch = new HashMap<>();
 		for (int i = 0; i < resources.size(); i++) {
@@ -546,7 +535,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 	@Test
 	@TestOrder(12)
 	public void workspaceWithTwoRepos()
-			throws InvalidRemoteException, TransportException, GitAPIException, IOException {
+			throws InvalidRemoteException, TransportException, GitAPIException, IOException, SaveResourceException {
 		// Prepare
 		File source = new File(gitResourceCenter.getGitRepository().getWorkTree(), "NewPPTGenerated2.ppt");
 		File target = new File(emptyGitResourceCenter.getGitRepository().getWorkTree(), "NewPPTGenerated2.ppt");
@@ -567,13 +556,16 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 			if (flexoResource.getName().equals("NewPPTGenerated2.ppt")) {
 				File file = new File(emptyGitResourceCenter.getGitRepository().getWorkTree(), flexoResource.getName());
 				PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file)));
-				writer.println("Some fourth content in the ppt" + flexoResource.getName() + " version 0.4");
+				writer.append("\n" + flexoResource.getName() + " version 0.4");
 				writer.flush();
 				writer.close();
 				
 				FlexoIOGitDelegate gitDelegatePPT2= (FlexoIOGitDelegate) flexoResource.getFlexoIODelegate();
+				SerializationArtefactFile fileSerialization = new SerializationArtefactFile();
+				fileSerialization.setAbsolutePath(file.getAbsolutePath());
+				gitDelegatePPT2.setSerializationArtefactKind(fileSerialization);
 				gitDelegatePPT2.setFile(target);
-				gitDelegatePPT2.save(flexoResource);
+				flexoResource.save(null);
 			}
 		}
 		Workspace aWorkspace = new Workspace();
@@ -677,7 +669,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		assertTrue(cache.get(1).getFileInRepository().getName().equals("NewPPTGenerated1.ppt"));
 	}
 	
-	public PowerpointSlideshowResource createPowerpointResource(String name, GitResourceCenter gitResourceCenter) {
+	public PowerpointSlideshowResource createPowerpointResource(String name, GitResourceCenter gitResourceCenter) throws SaveResourceException {
 		logger.info("creating powerpoint resource...");
 		assertNotNull(modelRepository);
 
@@ -686,7 +678,7 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		File pptFile = new File(gitResourceCenter.getGitRepository().getWorkTree(), name);
 		modelRes = PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(pptFile.getAbsolutePath(), pptFile,
 				powerpointAdapter.getTechnologyContextManager(), gitResourceCenter);
-		((FlexoIOGitDelegate) modelRes.getFlexoIODelegate()).createAndSaveIO(modelRes, SerializationArtefactKind.FILE);
+		modelRes.save(null);
 		// Register the new resource in the gitResourceCenter
 		gitResourceCenter.registerResource(modelRes);
 		return modelRes;

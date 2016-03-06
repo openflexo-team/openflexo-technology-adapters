@@ -34,10 +34,14 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
+import org.openflexo.foundation.resource.FlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoIOGitDelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.gitUtils.SerializationArtefactFile;
+import org.openflexo.gitUtils.SerializationArtefactKind;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -74,6 +78,38 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 		return null;
 	}
 
+	
+	public static DocXDocumentResource makeGitDocXDocumentResource(File modelFile, DocXTechnologyContextManager technologyContextManager,
+			FlexoResourceCenter<?> resourceCenter) {
+		try {
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, FlexoIOGitDelegate.class));
+			DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
+			returned.initName(modelFile.getName());
+			
+			SerializationArtefactFile sa = new SerializationArtefactFile();
+			sa.setAbsolutePath(modelFile.getAbsolutePath());
+			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeIODelegateNewInstance(returned,sa);
+			returned.setFlexoIODelegate(delegate);	
+			((FileFlexoIODelegate)returned.getFlexoIODelegate()).setFile(modelFile);
+
+			DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
+			returned.setFactory(docXFactory);
+
+			returned.setURI(modelFile.toURI().toString());
+			returned.setResourceCenter(resourceCenter);
+			returned.setServiceManager(technologyContextManager.getServiceManager());
+			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+			returned.setTechnologyContextManager(technologyContextManager);
+			technologyContextManager.registerResource(returned);
+
+			return returned;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
 	public static DocXDocumentResource retrieveDocXDocumentResource(File modelFile, DocXTechnologyContextManager technologyContextManager,
 			FlexoResourceCenter<?> resourceCenter) {
 		try {
@@ -81,12 +117,20 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 					ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, FileFlexoIODelegate.class));
 			DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
 			returned.initName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+			SerializationArtefactFile sa = new SerializationArtefactFile();
+			sa.setAbsolutePath(modelFile.getAbsolutePath());
+			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeIODelegateNewInstance(returned,sa);
+			returned.setFlexoIODelegate(delegate);
+			
+			((FileFlexoIODelegate) delegate).setFile(modelFile);
 			DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
 			returned.setFactory(docXFactory);
 
-			// returned.setURI(modelFile.toURI().toString());
+			returned.setURI(modelFile.toURI().toString());
 			returned.setResourceCenter(resourceCenter);
+			
+			resourceCenter.retrieveVersionsAndFillIODelegate(returned);
+			
 			returned.setServiceManager(technologyContextManager.getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);

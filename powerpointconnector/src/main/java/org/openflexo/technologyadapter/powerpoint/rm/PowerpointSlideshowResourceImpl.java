@@ -52,11 +52,13 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoIODelegate;
+import org.openflexo.foundation.resource.FlexoIOGitDelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.gitUtils.SerializationArtefactFile;
 import org.openflexo.gitUtils.SerializationArtefactKind;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -97,8 +99,9 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 			returned.setTechnologyContextManager(technologyContextManager);
 			returned.initName(powerpointFile.getName());
 			
-			
-			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeIODelegateNewInstance(returned,SerializationArtefactKind.FILE);
+			SerializationArtefactFile saf = new SerializationArtefactFile();
+			saf.setAbsolutePath(powerpointFile.getAbsolutePath());
+			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeIODelegateNewInstance(returned,saf);
 			returned.setFlexoIODelegate(delegate);	
 			
 			//Correct this by passing file in argument in the factory new instance?
@@ -138,7 +141,10 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 			returned.initName(modelFile.getName());
 
 			// returned.setFile(modelFile);
-			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeIODelegateNewInstance(returned,SerializationArtefactKind.FILE);
+			
+			SerializationArtefactFile saf = new SerializationArtefactFile();
+			saf.setAbsolutePath(modelFile.getAbsolutePath());
+			FlexoIODelegate<?> delegate = resourceCenter.getDelegateFactory().makeIODelegateNewInstance(returned,saf);
 			returned.setFlexoIODelegate(delegate);	
 			
 			((FileFlexoIODelegate) delegate).setFile(modelFile);
@@ -247,6 +253,15 @@ public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<
 			throw new SaveResourcePermissionDeniedException(getFlexoIODelegate());
 		}
 		if (resourceData != null) {
+			/*
+			 * hack to bind the Git IO delegate only
+			 */
+			if(getFlexoIODelegate() instanceof FlexoIOGitDelegate){
+				FlexoIOGitDelegate gitDelegate  = (FlexoIOGitDelegate) getFlexoIODelegate();
+				gitDelegate.save(this);
+			}
+			
+			////////////////////////////////////////
 			FileWritingLock lock = getFlexoIODelegate().willWriteOnDisk();
 			writeToFile(resourceData.getSlideShow());
 			getFlexoIODelegate().hasWrittenOnDisk(lock);
