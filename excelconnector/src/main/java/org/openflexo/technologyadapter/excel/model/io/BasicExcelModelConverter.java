@@ -142,7 +142,7 @@ public class BasicExcelModelConverter {
 					// Missing cell
 					// System.out.println("Adding a missing cell");
 					// This cell is not bound to any excel cell !
-					ExcelCell excelCell = new ExcelCell(null, excelRow, technologyAdapter);
+					ExcelCell excelCell = new ExcelCell(null/*row.createCell(lastCell + 1)*/, excelRow, technologyAdapter);
 					excelRow.addToExcelCells(excelCell);
 					lastCell++;
 				}

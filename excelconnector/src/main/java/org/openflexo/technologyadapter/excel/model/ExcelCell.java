@@ -451,8 +451,8 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 				|| (cellValueAsString != null && !cellValueAsString.equals(getCellValueAsString()))) {
 			String oldValue = getCellValueAsString();
 			createCellWhenNonExistant();
-			// System.out.println(
-			// "*********** Setting new cell value: " + cellValueAsString + " at row=" + getRowIndex() + " col=" + getColumnIndex());
+			//System.out.println(
+			//		"*********** Setting new cell value: " + cellValueAsString + " at row=" + getRowIndex() + " col=" + getColumnIndex());
 			cell.setCellValue(cellValueAsString);
 			getExcelSheet().getEvaluator().clearAllCachedResultValues();
 			getPropertyChangeSupport().firePropertyChange("cellValueAsString", oldValue, cellValueAsString);

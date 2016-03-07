@@ -53,7 +53,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelStyleManager.CellStyleFe
  * @author vincent, sylvain
  * 
  */
-public class ExcelRow extends ExcelObject implements ExcelStyleObject{
+public class ExcelRow extends ExcelObject implements ExcelStyleObject {
 
 	private static final Logger logger = Logger.getLogger(ExcelRow.class.getPackage().getName());
 
@@ -122,7 +122,8 @@ public class ExcelRow extends ExcelObject implements ExcelStyleObject{
 		}
 		// Append missing cells
 		while (getExcelCells().size() <= columnIndex) {
-			addToExcelCells(new ExcelCell(null, this, getTechnologyAdapter()));
+			// No need to create the cell now, but the ExcelCell should be instantiated
+			addToExcelCells(new ExcelCell(/*row.createCell(getExcelCells().size())*/null, this, getTechnologyAdapter()));
 		}
 		return getExcelCells().get(columnIndex);
 	}
@@ -133,16 +134,17 @@ public class ExcelRow extends ExcelObject implements ExcelStyleObject{
 		}
 		// Append missing cells
 		while (getExcelCells().size() <= column.getColNumber()) {
-			addToExcelCells(new ExcelCell(null, this, getTechnologyAdapter()));
+			// No need to create the cell now, but the ExcelCell should be instantiated
+			addToExcelCells(new ExcelCell(/*row.createCell(getExcelCells().size())*/null, this, getTechnologyAdapter()));
 		}
 		return getExcelCells().get(column.getColNumber());
 	}
-	
+
 	public void setRowStyle(CellStyle style) {
 		if (getRow() != null) {
 			getRow().setRowStyle(style);
 			// Ensure that this is really done for all the cells
-			for(ExcelCell cell: getExcelCells()){
+			for (ExcelCell cell : getExcelCells()) {
 				cell.setCellStyle(style);
 			}
 		}
@@ -154,7 +156,7 @@ public class ExcelRow extends ExcelObject implements ExcelStyleObject{
 		}
 		return null;
 	}
-	
+
 	@Override
 	public void setStyle(CellStyleFeature cellStyle, Object value) {
 		if (getRow() != null && cellStyle != null) {
@@ -167,7 +169,6 @@ public class ExcelRow extends ExcelObject implements ExcelStyleObject{
 		}
 		return;
 	}
-	
 
 	@Override
 	public String getUri() {
@@ -178,7 +179,7 @@ public class ExcelRow extends ExcelObject implements ExcelStyleObject{
 	public String toString() {
 		return getName();
 	}
-	
+
 	@Override
 	public boolean delete(Object... context) {
 		try {
