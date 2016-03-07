@@ -234,12 +234,12 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 	@Test
 	@TestOrder(4)
 	public void retrieveFileInGitRepository() throws NoWorkTreeException, IOException, ModelDefinitionException, SaveResourceException {
-		Repository gitRepository = gitResourceCenter.getGitRepository();
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 		for (FlexoResource<?> flexoResource : ressources) {
 			if (flexoResource instanceof PowerpointSlideshowResource) {
-				flexoResource.setFlexoIODelegate(gitResourceCenter.getDelegateFactory()
-						.makeIODelegateNewInstance(flexoResource, new SerializationArtefactFile()));
+				
+//				flexoResource.setFlexoIODelegate(gitResourceCenter.getDelegateFactory()
+//						.makeIODelegateNewInstance(flexoResource, new SerializationArtefactFile()));
 				
 				flexoResource.save(null);
 				
@@ -272,57 +272,21 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		resource.save(null);
 		assertTrue(resource.getVersion().equals(new FlexoVersion("0.2RC0")));
 		FileTreeIterator iter = new FileTreeIterator(gitRepository);
-		File versionFile = null;
-		while (!iter.eof()) {
-			if (iter.getEntryFile().getName().equals(gitDelegate.getFile().getName() + ".version")) {
-				versionFile = iter.getEntryFile();
-				break;
-			} else {
-				iter.next(1);
-			}
-		}
-
+		File versionFile = new File(((FlexoIOGitDelegate)resource.getFlexoIODelegate()).getFile().getAbsolutePath()+".version");
+		stream.close();
 		BufferedReader reader = new BufferedReader(new FileReader(versionFile));
 		int numberVersion = 0;
 		while (reader.readLine() != null) {
 			numberVersion++;
 		}
 		assertTrue(numberVersion == 2);
+		reader.close();
 	}
+
+	
 
 	@Test
 	@TestOrder(6)
-	public void retrieveFlexoResourceFromGit() throws CorruptObjectException {
-
-		PowerpointTechnologyAdapter adapter = gitResourceCenter.getTechnologyAdapterService()
-				.getTechnologyAdapter(PowerpointTechnologyAdapter.class);
-
-		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
-
-		FlexoResource<?> resource = null;
-
-		for (FlexoResource<?> flexoResource : ressources) {
-			if (flexoResource.getName().equals("TestPPT1.ppt")) {
-				resource = flexoResource;
-			}
-		}
-		File fileToLoadResource = null;
-		FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) resource.getFlexoIODelegate();
-		FileTreeIterator fileTree = new FileTreeIterator(gitResourceCenter.getGitRepository());
-		// Git put the same id if the content is the same so we need to
-		// check the name of the entry
-		while (!fileTree.getEntryFile().getName() .equals(gitDelegate.getFile().getName())) {
-			fileTree.next(1);
-		}
-		fileToLoadResource = fileTree.getEntryFile();
-
-		PowerpointSlideshowResource loadResource = adapter.retrieveSlideshowResource(fileToLoadResource,
-				gitResourceCenter);
-		assertNotNull(loadResource);
-	}
-
-	@Test
-	@TestOrder(7)
 	public void testCreateNewPowerpoint() throws Exception {
 		logger.info("testCreateNewFile()");
 		assertNotNull(modelRepository);
@@ -345,6 +309,38 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		// modelRes.delete();
 		// pptFile.delete();
 
+	}
+	
+	
+	@Test
+	@TestOrder(7)
+	public void retrieveFlexoResourceFromGit() throws CorruptObjectException {
+
+		PowerpointTechnologyAdapter adapter = gitResourceCenter.getTechnologyAdapterService()
+				.getTechnologyAdapter(PowerpointTechnologyAdapter.class);
+
+		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
+
+		FlexoResource<?> resource = null;
+
+		for (FlexoResource<?> flexoResource : ressources) {
+			if (flexoResource.getName().equals("generated_File.ppt")) {
+				resource = flexoResource;
+			}
+		}
+		File fileToLoadResource = null;
+		FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) resource.getFlexoIODelegate();
+		FileTreeIterator fileTree = new FileTreeIterator(gitResourceCenter.getGitRepository());
+		// Git put the same id if the content is the same so we need to
+		// check the name of the entry
+		while (!fileTree.getEntryFile().getName() .equals(gitDelegate.getFile().getName())) {
+			fileTree.next(1);
+		}
+		fileToLoadResource = fileTree.getEntryFile();
+
+		PowerpointSlideshowResource loadResource = adapter.retrieveSlideshowResource(fileToLoadResource,
+				gitResourceCenter);
+		assertNotNull(loadResource);
 	}
 
 	@Test
@@ -541,7 +537,14 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		File target = new File(emptyGitResourceCenter.getGitRepository().getWorkTree(), "NewPPTGenerated2.ppt");
 		Files.copy(source.toPath(), target.toPath());
 		FlexoResource<?> resource = gitResourceCenter.retrieveResource("file:" + source.getAbsolutePath(), null);
-		resource.setResourceCenter(emptyGitResourceCenter);
+		if(resource != null){
+			resource.setResourceCenter(emptyGitResourceCenter);			
+		}
+		//Same hack as for the DocX Resource.... Why the retrieve resource method register something???
+		emptyGitResourceCenter.getAllResources().clear();
+		////////////////////
+		assertTrue(emptyGitResourceCenter.getAllResources().size()==0);
+
 		emptyGitResourceCenter.registerResource(resource);
 		Collection<FlexoResource<?>> resources = emptyGitResourceCenter.getAllResources();
 		for (FlexoResource<?> flexoResource : resources) {
@@ -563,8 +566,13 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 				FlexoIOGitDelegate gitDelegatePPT2= (FlexoIOGitDelegate) flexoResource.getFlexoIODelegate();
 				SerializationArtefactFile fileSerialization = new SerializationArtefactFile();
 				fileSerialization.setAbsolutePath(file.getAbsolutePath());
+				// Must decide how to determine that the resource has been copied without a version file...
+				gitDelegatePPT2.setResourceVersionFile(null);
+				//////////////////////////////////////////////
 				gitDelegatePPT2.setSerializationArtefactKind(fileSerialization);
 				gitDelegatePPT2.setFile(target);
+				// THERE IS A BUG WITH THE CONTENT OF THE PPT, it cannot READ the entire HEADER, I ASSUME IT COMES FROM THE RANDOM BYTES
+				// USED TO MODIFY THE CONTENT WHEREAS A TRUE PPT CONTENT IS EXPECTED....
 				flexoResource.save(null);
 			}
 		}
