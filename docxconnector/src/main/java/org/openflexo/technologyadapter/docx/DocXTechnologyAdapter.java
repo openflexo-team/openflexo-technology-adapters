@@ -296,6 +296,33 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		return docXDocumentResource;
 	}
 
+	
+	public DocXDocumentResource createNewGitDocXDocumentResource(FileSystemBasedResourceCenter resourceCenter, String asbolutePath,
+			 boolean createEmptyDocument) {
+
+//		if (!relativePath.startsWith(File.separator)) {
+//			relativePath = File.separator + relativePath;
+//		}
+//
+//		File docXFile = new File(resourceCenter.getDirectory() + relativePath, filename);
+
+		File docXFile = new File(asbolutePath);
+		
+		DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeGitDocXDocumentResource(docXFile,
+				getTechnologyContextManager(), resourceCenter);
+
+		referenceResource(docXDocumentResource, resourceCenter);
+
+		if (createEmptyDocument) {
+			DocXDocument document = docXDocumentResource.getFactory().makeNewDocXDocument();
+			document.setResource(docXDocumentResource);
+			docXDocumentResource.setResourceData(document);
+			docXDocumentResource.setModified(true);
+		}
+
+		return docXDocumentResource;
+	} 
+	
 	@Override
 	public void initFMLModelFactory(FMLModelFactory fMLModelFactory) {
 		super.initFMLModelFactory(fMLModelFactory);

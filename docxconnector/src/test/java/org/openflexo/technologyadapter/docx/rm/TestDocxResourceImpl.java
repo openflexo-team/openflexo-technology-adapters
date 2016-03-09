@@ -68,6 +68,7 @@ import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gitUtils.GitFile;
 import org.openflexo.gitUtils.GitIODelegateFactory;
+import org.openflexo.gitUtils.GitVersion;
 import org.openflexo.gitUtils.SerializationArtefactFile;
 import org.openflexo.gitUtils.Workspace;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -76,6 +77,14 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FlexoVersion;
 
+
+/**
+ * Note that there are a lot of thread.sleep before and after the save. 
+ * Otherwise, the saveResourceData does not have time to save the resource, it does not have the write permission.
+ * @author kvermeul
+ *
+ */
+
 @RunWith(OrderedRunner.class)
 public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 
@@ -83,9 +92,8 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 
 	private static FlexoServiceManager testApplicationContext;
 	private static DocXTechnologyAdapter docXAdapter;
-	//private static PowerpointSlideShowRepository modelRepository;
+	// private static PowerpointSlideShowRepository modelRepository;
 	private static DocXDocumentRepository modelRepository;
-
 
 	private static GitResourceCenter gitResourceCenter;
 	private static GitResourceCenter emptyGitResourceCenter;
@@ -120,8 +128,8 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 		for (FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
 			if (rc.getRepository(DocXDocumentRepository.class, docXAdapter) != null) {
 				if (!((GitResourceCenter) rc).getAllResources().isEmpty()) {
-					modelRepository = (DocXDocumentRepository) rc
-							.getRepository(DocXDocumentRepository.class, docXAdapter);
+					modelRepository = (DocXDocumentRepository) rc.getRepository(DocXDocumentRepository.class,
+							docXAdapter);
 				}
 			}
 			if (rc instanceof GitResourceCenter) {
@@ -171,7 +179,7 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 	 * Instanciate viewpoint
 	 * 
 	 * @throws IOException
-	 * @throws SaveResourceException 
+	 * @throws SaveResourceException
 	 */
 	@Test
 	@TestOrder(2)
@@ -204,8 +212,8 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 					newVirtualModel.addToModelSlots(modelSlot);
 				}
 			}
-			//newViewPoint.getResource().save(null);
-			//newVirtualModel.getResource().save(null);
+			// newViewPoint.getResource().save(null);
+			// newVirtualModel.getResource().save(null);
 		} catch (SaveResourceException e) {
 			fail(e.getMessage());
 		}
@@ -231,25 +239,23 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 
 	@Test
 	@TestOrder(4)
-	public void retrieveFileInGitRepository() throws NoWorkTreeException, IOException, ModelDefinitionException, SaveResourceException {
+	public void retrieveFileInGitRepository()
+			throws NoWorkTreeException, IOException, ModelDefinitionException, SaveResourceException {
 		Repository gitRepository = gitResourceCenter.getGitRepository();
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 		for (FlexoResource<?> flexoResource : ressources) {
 			if (flexoResource instanceof DocXDocumentResource) {
-				
+
 				flexoResource.save(null);
-				
+
 				FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) flexoResource.getFlexoIODelegate();
 				System.out.println("Ressource " + flexoResource.getName() + " saved");
-				if(gitDelegate.getGitCommitIds().size() != 1){
+				if (gitDelegate.getGitCommitIds().size() != 1) {
 					System.out.println("Please");
 					flexoResource.save(null);
 				}
-				
 
 				assertTrue(gitDelegate.getGitCommitIds().size() == 1);
-
-				
 
 			}
 
@@ -258,7 +264,7 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 
 	@Test
 	@TestOrder(5)
-	public void testSaveSeveralVersions() throws IOException, SaveResourceException {
+	public void testSaveSeveralVersions() throws IOException, SaveResourceException, InterruptedException {
 		Repository gitRepository = gitResourceCenter.getGitRepository();
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 
@@ -271,25 +277,23 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 		}
 		System.out.println("Ressource chosen : " + resource.getName());
 		FlexoIOGitDelegate gitDelegate = (FlexoIOGitDelegate) resource.getFlexoIODelegate();
-		SerializationArtefactFile saf= (SerializationArtefactFile) gitDelegate.getSerializationArtefactKind();
-		System.out.println("Absolute PATH for versionning: "+saf.getAbsolutePath());
+		SerializationArtefactFile saf = (SerializationArtefactFile) gitDelegate.getSerializationArtefactKind();
+		System.out.println("Absolute PATH for versionning: " + saf.getAbsolutePath());
 		BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(gitDelegate.getFile()));
 		stream.write("balbaaba".getBytes());
 		stream.flush();
 		stream.close();
 		FlexoVersion versionBeforeSaving = resource.getVersion();
-		
+		Thread.sleep(1500);
 		resource.save(null);
-		assertTrue(resource.getVersion().minor==versionBeforeSaving.minor+1);
-		assertTrue(resource.getVersion().major==versionBeforeSaving.major);
-		assertTrue(resource.getVersion().patch==versionBeforeSaving.patch);
-		assertTrue(resource.getVersion().rc==versionBeforeSaving.rc);
+		Thread.sleep(1500);
+		assertTrue(resource.getVersion().minor == versionBeforeSaving.minor + 1);
+		assertTrue(resource.getVersion().major == versionBeforeSaving.major);
+		assertTrue(resource.getVersion().patch == versionBeforeSaving.patch);
+		assertTrue(resource.getVersion().rc == versionBeforeSaving.rc);
 
-		
-		
-		
-		File versionFile = new File(((FlexoIOGitDelegate) resource.getFlexoIODelegate()).getFile().getAbsolutePath()+".version");
-		
+		File versionFile = new File(
+				((FlexoIOGitDelegate) resource.getFlexoIODelegate()).getFile().getAbsolutePath() + ".version");
 
 		BufferedReader reader = new BufferedReader(new FileReader(versionFile));
 		int numberVersion = 0;
@@ -299,8 +303,6 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 		reader.close();
 		assertTrue(numberVersion == 2);
 	}
-
-	
 
 	@Test
 	@TestOrder(6)
@@ -327,8 +329,7 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 		// pptFile.delete();
 
 	}
-	
-	
+
 	@Test
 	@TestOrder(7)
 	public void retrieveFlexoResourceFromGit() throws CorruptObjectException {
@@ -351,24 +352,20 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 		// Git put the same id if the content is the same so we need to
 		// check the name of the entry
 		while (!fileTree.eof()) {
-			if(fileTree.getEntryFile().getName().equals(resource.getName()+".version")){
+			if (fileTree.getEntryFile().getName().equals(resource.getName() + ".version")) {
 				fileToLoadResource = fileTree.getEntryFile();
 				break;
 			}
 			fileTree.next(1);
 		}
 
-		DocXDocumentResource loadResource = adapter.retrieveDocXResource(fileToLoadResource,
-				gitResourceCenter);
+		DocXDocumentResource loadResource = adapter.retrieveDocXResource(fileToLoadResource, gitResourceCenter);
 		assertNotNull(loadResource);
 	}
-	
-	
-	
 
 	@Test
 	@TestOrder(8)
-	public void testVersionning() throws IOException, SaveResourceException {
+	public void testVersionning() throws IOException, SaveResourceException, InterruptedException {
 		Collection<FlexoResource<?>> ressources = gitResourceCenter.getAllResources();
 		FlexoResource<?> resourceToVersion = null;
 		File fileToVersion = null;
@@ -391,38 +388,46 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 
 		FileOutputStream stream = new FileOutputStream(fileToVersion);
 		stream.write(6777);
+		stream.flush();
 		stream.close();
+		Thread.sleep(1500);
 		resourceToVersion.save(null);
+		Thread.sleep(1500);
 		System.out.println(resourceToVersion.getVersion().toString());
 		assertTrue(resourceToVersion.getVersion().isGreaterThan(firstVersion));
 
 		FileOutputStream stream2 = new FileOutputStream(fileToVersion);
 		stream2.write(123456);
 		stream2.close();
+		Thread.sleep(1500);
 		resourceToVersion.save(null);
+		Thread.sleep(1500);
 		System.out.println(resourceToVersion.getVersion().toString());
 		assertTrue(resourceToVersion.getVersion().isGreaterThan(firstVersion));
 	}
 
 	@Test
 	@TestOrder(9)
-	public void matchDifferentsResourceVersion() throws RefAlreadyExistsException, RefNotFoundException,
-			InvalidRefNameException, CheckoutConflictException, GitAPIException, MissingObjectException, IOException, SaveResourceException {
+	public void matchDifferentsResourceVersion()
+			throws RefAlreadyExistsException, RefNotFoundException, InvalidRefNameException, CheckoutConflictException,
+			GitAPIException, MissingObjectException, IOException, SaveResourceException, InterruptedException {
 		List<FlexoResource<?>> resources = new ArrayList<>();
 
 		// Prepare
-		// Create 3 powerpoint resources
+		// Create 3 docx resources
 		for (int i = 0; i < 3; i++) {
-			resources.add(createDocXResource("NewDocX" + i + ".docx", gitResourceCenter));
+			FlexoResource<?> flexoResource = createDocXResource("NewDocX" + i + ".docx", gitResourceCenter);
+			// Save the first version
+			Thread.sleep(2000);
+			flexoResource.save(null);
+			assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.2RC0")));
+			Thread.sleep(1500);
+			resources.add(flexoResource);
 			File file = new File(gitResourceCenter.getGitRepository().getWorkTree(), "NewDocX" + i + ".docx");
 			PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file)));
 			writer.println("Some content in the ppt" + "NewDocX" + i + " version 0.1");
 			writer.flush();
 			writer.close();
-		}
-		// Save the first version
-		for (FlexoResource<?> flexoResource : resources) {
-			flexoResource.save(null);
 		}
 
 		// Write a second Version
@@ -432,7 +437,11 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 			writer.println("Some second content in the ppt" + flexoResource.getName() + " version 0.2");
 			writer.flush();
 			writer.close();
+			Thread.sleep(1500);
 			flexoResource.save(null);
+			assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.3RC0")));
+			Thread.sleep(1500);
+
 		}
 
 		// Write a third Version
@@ -442,8 +451,12 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 			writer.println("Some third content in the ppt" + flexoResource.getName() + " version 0.3");
 			writer.flush();
 			writer.close();
+			Thread.sleep(1500);
 			flexoResource.save(null);
+			assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.4RC0")));
+			Thread.sleep(1500);
 		}
+
 		Map<FlexoResource<?>, FlexoVersion> versionsToMatch = new HashMap<>();
 		for (int i = 0; i < resources.size(); i++) {
 			FlexoVersion version = null;
@@ -452,25 +465,24 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 		}
 		// Synchronize Working Tree with the versions of the files we want to
 		// checkout
-		gitResourceCenter.checkoutSeveralVersions(versionsToMatch, "AnotherWorkspace");
+		Map<FlexoResource<?>, GitVersion> returned = gitResourceCenter.checkoutPick(versionsToMatch,
+				"AnotherWorkspace");
 
-		FileTreeIterator iter = new FileTreeIterator(gitResourceCenter.getGitRepository());
-		List<ObjectId> listOfIds = new LinkedList<>();
-		iterateOnTheWorkTree(iter, "NewDocX", listOfIds);
-		int i = 1;
-		for (ObjectId objectId : listOfIds) {
-			ObjectLoader loader = gitResourceCenter.getGitRepository().open(objectId);
-			String str = new String(loader.getBytes(), StandardCharsets.UTF_8);
-			// Check that it is the good version of the file in the working tree
-			assertTrue(str.contains("version 0." + i));
-			i++;
-			loader.copyTo(System.out);
-		}
-		for (FlexoResource<?> resource : gitResourceCenter.getAllResources()) {
-			if (resource.getVersion() != null) {
-				System.out.println(
-						"Version after checkout " + resource.getName() + " " + resource.getVersion().toString());
+		for (FlexoResource<?> flexoResource : returned.keySet()) {
+			if (flexoResource.getName().equals("NewDocX0.docx")) {
+				assertTrue(returned.get(flexoResource).getFlexoVersion().equals(new FlexoVersion("0.2RC0")));
+				assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.2RC0")));
+
+			} else if (flexoResource.getName().equals("NewDocX1.docx")) {
+				assertTrue(returned.get(flexoResource).getFlexoVersion().equals(new FlexoVersion("0.3RC0")));
+				assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.3RC0")));
+
+			} else if (flexoResource.getName().equals("NewDocX2.docx")) {
+				assertTrue(returned.get(flexoResource).getFlexoVersion().equals(new FlexoVersion("0.4RC0")));
+				assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.4RC0")));
+
 			}
+
 		}
 	}
 
@@ -483,52 +495,55 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 		workspace.setGitResourceCenterList(gitResourceCenters);
 
 		Map<String, FlexoVersion> resourcesToWorkOn = new HashMap<>();
-		resourcesToWorkOn.put("NewDocX0.docx", new FlexoVersion("0.2RC0"));
-		resourcesToWorkOn.put("NewDocX1.docx", new FlexoVersion("0.3RC0"));
-		resourcesToWorkOn.put("NewDocX2.docx", new FlexoVersion("0.4RC0"));
+		resourcesToWorkOn.put("NewDocX0.docx", new FlexoVersion("0.4RC0"));
+		resourcesToWorkOn.put("NewDocX1.docx", new FlexoVersion("0.2RC0"));
+		resourcesToWorkOn.put("NewDocX2.docx", new FlexoVersion("0.3RC0"));
 
 		workspace.checkoutResources(resourcesToWorkOn);
-
+		Map<FlexoResource<?>,GitVersion> returned= workspace.getResourcesOnWorking();
 		// Check
-		assertTrue(workspace.getResourcesOnWorking().size() == 3);
+		assertTrue(returned.size() == 3);
 		// Check that git repository has synchronized his working tree
-		FileTreeIterator iter = new FileTreeIterator(gitResourceCenter.getGitRepository());
-		List<ObjectId> listOfIds = new LinkedList<>();
-		iterateOnTheWorkTree(iter, "NewDocX", listOfIds);
-		for (ObjectId objectId : listOfIds) {
-			ObjectLoader loader = gitResourceCenter.getGitRepository().open(objectId);
-			String str = new String(loader.getBytes(), StandardCharsets.UTF_8);
-			// Check that it is the good version of the file in the working tree
-			if (str.contains("NewDocX0")) {
-				assertTrue(str.contains("version 0.1"));
-			} else if (str.contains("NewDocX1")) {
-				assertTrue(str.contains("version 0.2"));
-			} else if (str.contains("NewDocX2")) {
-				assertTrue(str.contains("version 0.3"));
-			}
-			loader.copyTo(System.out);
-		}
+		
+		for (FlexoResource<?> flexoResource : returned.keySet()) {
+			if (flexoResource.getName().equals("NewDocX0.docx")) {
+				assertTrue(returned.get(flexoResource).getFlexoVersion().equals(new FlexoVersion("0.4RC0")));
+				assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.4RC0")));
 
+			} else if (flexoResource.getName().equals("NewDocX1.docx")) {
+				assertTrue(returned.get(flexoResource).getFlexoVersion().equals(new FlexoVersion("0.2RC0")));
+				assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.2RC0")));
+
+			} else if (flexoResource.getName().equals("NewDocX2.docx")) {
+				assertTrue(returned.get(flexoResource).getFlexoVersion().equals(new FlexoVersion("0.3RC0")));
+				assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.3RC0")));
+
+			}
+
+		}
+		
 	}
 
 	@Test
 	@TestOrder(12)
 	public void workspaceWithTwoRepos()
-			throws InvalidRemoteException, TransportException, GitAPIException, IOException, SaveResourceException {
+			throws InvalidRemoteException, TransportException, GitAPIException, IOException, SaveResourceException, InterruptedException {
 		// Prepare
 		File source = new File(gitResourceCenter.getGitRepository().getWorkTree(), "NewDocX2.docx");
 		File target = new File(emptyGitResourceCenter.getGitRepository().getWorkTree(), "NewDocX2.docx");
 		Files.copy(source.toPath(), target.toPath());
-		assertTrue(emptyGitResourceCenter.getAllResources().size()==0);
+		assertTrue(emptyGitResourceCenter.getAllResources().size() == 0);
 		FlexoResource<?> resource = gitResourceCenter.retrieveResource(source.toURI().toString(), null);
-		// Can't understand why a retrieve resource register the resource in the empty resource center?????
+		// Can't understand why a retrieve resource register the resource in the
+		// empty resource center?????
 		emptyGitResourceCenter.getAllResources().clear();
-		if(resource!=null){
-			resource.setResourceCenter(emptyGitResourceCenter);			
+		if (resource != null) {
+			resource.setResourceCenter(emptyGitResourceCenter);
 		}
-		assertTrue(emptyGitResourceCenter.getAllResources().size()==0);
+		assertTrue(emptyGitResourceCenter.getAllResources().size() == 0);
 
 		emptyGitResourceCenter.registerResource(resource);
+		assertTrue(emptyGitResourceCenter.getAllResources().size() == 1);
 		Collection<FlexoResource<?>> resources = emptyGitResourceCenter.getAllResources();
 		for (FlexoResource<?> flexoResource : resources) {
 			System.out.println("URI RESOURCE " + flexoResource.getURI());
@@ -537,24 +552,32 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 		System.out.println("VERSION FOUND" + resource.getVersion().toString());
 		// Create some content
 		createDocXResource("NewDocX4.docx", emptyGitResourceCenter);
+		assertTrue(emptyGitResourceCenter.getAllResources().size() == 2);
+
 		// Update some existing content
-		for (FlexoResource<?> flexoResource : emptyGitResourceCenter.getAllResources()) {
-			if (flexoResource.getName().equals("NewDocX2.docx")) {
+		// Cant understand why there are 3 resources in the repo, whereas just above there are only twos...
+		for (FlexoResource<?> flexoResource : resources) {
+			if (flexoResource.getName().equals("NewDocX2.docx")&&flexoResource.getVersion()!=null) {
 				File file = new File(emptyGitResourceCenter.getGitRepository().getWorkTree(), flexoResource.getName());
 				PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(file)));
 				writer.append("\n" + flexoResource.getName() + " version 0.4");
 				writer.flush();
 				writer.close();
-				
-				FlexoIOGitDelegate gitDelegatePPT2= (FlexoIOGitDelegate) flexoResource.getFlexoIODelegate();
+
+				FlexoIOGitDelegate gitDelegatePPT2 = (FlexoIOGitDelegate) flexoResource.getFlexoIODelegate();
 				SerializationArtefactFile fileSerialization = new SerializationArtefactFile();
 				fileSerialization.setAbsolutePath(file.getAbsolutePath());
-				// Must decide how to determine that the resource has been copied without a version file...
+				// Must decide how to determine that the resource has been
+				// copied without a version file...
 				gitDelegatePPT2.setResourceVersionFile(null);
 				//////////////////////////////////////////////
 				gitDelegatePPT2.setSerializationArtefactKind(fileSerialization);
 				gitDelegatePPT2.setFile(target);
+				Thread.sleep(1500);
 				flexoResource.save(null);
+				assertTrue(flexoResource.getVersion().equals(new FlexoVersion("0.5RC0")));
+				Thread.sleep(1500);
+
 			}
 		}
 		Workspace aWorkspace = new Workspace();
@@ -642,31 +665,35 @@ public class TestDocxResourceImpl extends OpenFlexoTestCaseWithGit {
 
 	}
 
-	
 	@Test
 	@TestOrder(15)
-	public void putVersionsInCache(){
+	public void putVersionsInCache() {
 		gitResourceCenter.putVersionInCache("NewDocX1.docx", new FlexoVersion("0.3RC0"));
-		assertTrue(gitResourceCenter.getCache().size()==1);
+		assertTrue(gitResourceCenter.getCache().size() == 1);
 		List<GitFile> cache = gitResourceCenter.getCache();
 		assertTrue(cache.get(0).getVersion().equals(new FlexoVersion("0.3RC0")));
 		assertTrue(cache.get(0).getFileInRepository().getName().equals("NewDocX1.docx"));
-		
+		File cachedFile = new File(gitResourceCenter.getGitRepository().getWorkTree().getAbsolutePath()+"/.cache/NewDocX1.docx0.3RC0.docx");
+		assertTrue(cachedFile.exists());
+
 		gitResourceCenter.putVersionInCache("NewDocX1.docx", new FlexoVersion("0.4RC0"));
-		assertTrue(gitResourceCenter.getCache().size()==2);
+		assertTrue(gitResourceCenter.getCache().size() == 2);
 		assertTrue(cache.get(1).getVersion().equals(new FlexoVersion("0.4RC0")));
 		assertTrue(cache.get(1).getFileInRepository().getName().equals("NewDocX1.docx"));
+		File secondCachedFile = new File(gitResourceCenter.getGitRepository().getWorkTree().getAbsolutePath()+"/.cache/NewDocX1.docx0.4RC0.docx");
+		assertTrue(secondCachedFile.exists());
+
 	}
-	
-	public DocXDocumentResource createDocXResource(String name, GitResourceCenter gitResourceCenter) throws SaveResourceException {
+
+	public DocXDocumentResource createDocXResource(String name, GitResourceCenter gitResourceCenter)
+			throws SaveResourceException {
 		logger.info("creating docx resource...");
 		assertNotNull(modelRepository);
 
 		DocXDocumentResource modelRes;
 
 		File docXFile = new File(gitResourceCenter.getGitRepository().getWorkTree(), name);
-		modelRes = DocXDocumentResourceImpl.makeGitDocXDocumentResource( docXFile,
-				docXAdapter.getTechnologyContextManager(), gitResourceCenter);
+		modelRes = docXAdapter.createNewGitDocXDocumentResource(gitResourceCenter, docXFile.getAbsolutePath(), true);
 		modelRes.save(null);
 		// Register the new resource in the gitResourceCenter
 		gitResourceCenter.registerResource(modelRes);
