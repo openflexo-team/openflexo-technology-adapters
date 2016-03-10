@@ -40,13 +40,8 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -63,15 +58,9 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBDocXTableSelector extends AbstractTestDocX {
 
-	private static SwingGraphicalContextDelegate gcDelegate;
+	//private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static FIBDocXTableSelector selector;
-
-	@BeforeClass
-	public static void setupClass() {
-		instanciateTestServiceManager(true);
-		initGUI();
-	}
 
 	@Test
 	@TestOrder(2)
@@ -98,7 +87,7 @@ public class TestFIBDocXTableSelector extends AbstractTestDocX {
 		gcDelegate.addTab("FIBDocXTableSelector", selector.getSelectorPanel().getController());
 	}
 
-	public static void initGUI() {
+	/*public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(TestFIBDocXTableSelector.class.getSimpleName());
 	}
 
@@ -116,6 +105,6 @@ public class TestFIBDocXTableSelector extends AbstractTestDocX {
 	@After
 	public void tearDown() throws Exception {
 		gcDelegate.tearDown();
-	}
+	}*/
 
 }

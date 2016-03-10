@@ -40,9 +40,10 @@ package org.openflexo.technologyadapter.owl;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.localization.FlexoLocalization;
@@ -54,10 +55,11 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 
 	private static final Logger logger = Logger.getLogger(TypeAwareModelSlotInstanceConfiguration.class.getPackage().getName());
 
-	protected OWLModelSlotInstanceConfiguration(OWLModelSlot ms, CreateVirtualModelInstance action) {
-		super(ms, action);
+	protected OWLModelSlotInstanceConfiguration(OWLModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+			FlexoProject project) {
+		super(ms, virtualModelInstance, project);
 		// options.add(DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel);
-		setModelUri(getAction().getFocusedObject().getProject().getURI() + "/Models/myOntology");
+		setModelUri(virtualModelInstance.getProject().getURI() + "/Models/myOntology");
 		setRelativePath("/");
 		setFilename("myOntology" + getModelSlot().getModelSlotTechnologyAdapter().getExpectedOntologyExtension());
 	}

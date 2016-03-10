@@ -23,10 +23,11 @@ package org.openflexo.technologyadapter.odt;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -65,8 +66,9 @@ public interface ODTModelSlot extends FreeModelSlot<ODTDocument> {
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public ODTModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new ODTModelSlotInstanceConfiguration(this, action);
+		public ODTModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+				FlexoProject project) {
+			return new ODTModelSlotInstanceConfiguration(this, virtualModelInstance, project);
 		}
 
 		@Override

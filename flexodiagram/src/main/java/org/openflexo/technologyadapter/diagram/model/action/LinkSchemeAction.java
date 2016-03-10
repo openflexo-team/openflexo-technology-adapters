@@ -50,9 +50,9 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.InvalidParametersException;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.binding.LinkSchemeBindingModel;
@@ -167,7 +167,7 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 	}
 
 	@Override
-	public VirtualModelInstance retrieveVirtualModelInstance() {
+	public AbstractVirtualModelInstance<?, ?> retrieveVirtualModelInstance() {
 		return getFocusedObject().getVirtualModelInstance();
 	}
 

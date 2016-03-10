@@ -41,14 +41,15 @@ package org.openflexo.technologyadapter.oslc;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
@@ -97,8 +98,9 @@ public interface OSLCCoreModelSlot extends FreeModelSlot<OSLCServiceProviderCata
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public OSLCCoreModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new OSLCCoreModelSlotInstanceConfiguration(this, action);
+		public OSLCCoreModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+				FlexoProject project) {
+			return new OSLCCoreModelSlotInstanceConfiguration(this, virtualModelInstance, project);
 		}
 
 		@Override

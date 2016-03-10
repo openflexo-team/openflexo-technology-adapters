@@ -40,13 +40,8 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -64,18 +59,18 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 
-	private static SwingGraphicalContextDelegate gcDelegate;
+	//private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static FIBDocXFragmentSelector selector;
 
 	/*private static DocXDocument getDocument(String documentName) {
 		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter" + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
-
+	
 		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
 		assertNotNull(documentResource);
-
+	
 		try {
 			documentResource.loadResourceData(null);
 		} catch (FileNotFoundException e) {
@@ -88,19 +83,13 @@ public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	
 		DocXDocument document = documentResource.getLoadedResourceData();
 		assertNotNull(document);
 		assertNotNull(document.getWordprocessingMLPackage());
-
+	
 		return document;
 	}*/
-
-	@BeforeClass
-	public static void setupClass() {
-		instanciateTestServiceManager(true);
-		initGUI();
-	}
 
 	@Test
 	@TestOrder(2)
@@ -134,7 +123,7 @@ public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 		gcDelegate.addTab("FIBDocXFragmentSelector", selector.getSelectorPanel().getController());
 	}
 
-	public static void initGUI() {
+	/*public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(TestFIBDocXFragmentSelector.class.getSimpleName());
 	}
 
@@ -152,6 +141,6 @@ public class TestFIBDocXFragmentSelector extends AbstractTestDocX {
 	@After
 	public void tearDown() throws Exception {
 		gcDelegate.tearDown();
-	}
+	}*/
 
 }

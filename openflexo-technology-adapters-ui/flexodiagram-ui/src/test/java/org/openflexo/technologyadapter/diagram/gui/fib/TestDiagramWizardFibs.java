@@ -51,6 +51,16 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 	}
 
 	@Test
+	public void testChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel() {
+		validateFIB("Fib/Wizard/ChooseAndConfigureCreationSchemeForFMLControlledDiagramVirtualModel.fib");
+	}
+
+	@Test
+	public void testChooseFMLControlledDiagramVirtualModel() {
+		validateFIB("Fib/Wizard/ChooseFMLControlledDiagramVirtualModel.fib");
+	}
+
+	@Test
 	public void testConfigureBlankFlexoConceptFromConnectorCreationStrategyStep() {
 		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep.fib");
 	}

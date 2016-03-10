@@ -53,8 +53,8 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviourParameters;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.DeclareInspectorEntries;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.fml.ClassParameter;
 import org.openflexo.foundation.ontology.fml.IndividualParameter;
 import org.openflexo.foundation.ontology.fml.PropertyParameter;
@@ -157,8 +157,9 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public OWLModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new OWLModelSlotInstanceConfiguration(this, action);
+		public OWLModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+				FlexoProject project) {
+			return new OWLModelSlotInstanceConfiguration(this, virtualModelInstance, project);
 		}
 
 		@Override
@@ -221,8 +222,8 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		@Override
 		public OWLOntologyResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewOntology((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
-					modelUri, (OWLOntologyResource) metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewOntology((FileSystemBasedResourceCenter) resourceCenter, relativePath,
+					filename, modelUri, (OWLOntologyResource) metaModelResource);
 		}
 
 		/**

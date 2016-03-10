@@ -124,7 +124,7 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 			ExcelRow excelRow = null;
 
 			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
-			if (modelSlotInstance.getResourceData() != null) {
+			if (modelSlotInstance != null && modelSlotInstance.getResourceData() != null) {
 
 				try {
 					ExcelSheet excelSheet = getExcelSheet().getBindingValue(evaluationContext);
@@ -153,6 +153,11 @@ public interface AddExcelRow extends ExcelAction<ExcelRow> {
 					}
 					else {
 						logger.warning("Create a row requires a sheet");
+						System.out.println("Alors ca marche pas, donc.");
+						System.out.println("j'essaie d'evaluer: " + getExcelSheet());
+						System.out.println("valid=" + getExcelSheet().isValid());
+						System.out.println("reason:" + getExcelSheet().invalidBindingReason());
+						System.out.println("evaluationContext=" + evaluationContext);
 					}
 
 				} catch (TypeMismatchException e) {

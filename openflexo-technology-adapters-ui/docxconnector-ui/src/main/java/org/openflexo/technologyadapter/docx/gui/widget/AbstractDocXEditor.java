@@ -47,7 +47,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.text.Element;
@@ -109,7 +108,8 @@ public abstract class AbstractDocXEditor extends JPanel {
 		String regex = null;
 		if (ToolBox.isMacOS()) {
 			regex = ".*(Courier New|Arial|Times New Roman|Comic Sans|Georgia|Impact|Lucida Console|Lucida Sans Unicode|Palatino Linotype|Tahoma|Trebuchet|Verdana|Symbol|Webdings|Wingdings|MS Sans Serif|MS Serif).*";
-		} else {
+		}
+		else {
 			regex = ".*(calibri|cour|arial|times|comic|georgia|impact|LSANS|pala|tahoma|trebuc|verdana|symbol|webdings|wingding).*";
 		}
 		PhysicalFonts.setRegex(regex);
@@ -199,14 +199,18 @@ public abstract class AbstractDocXEditor extends JPanel {
 			// System.out.println("startDocXObject=" + docXObject);
 			if (docXObject instanceof P) {
 				returned.documentElement = getDocXDocument().getParagraph((P) docXObject);
-			} else if (docXObject instanceof Tbl) {
+			}
+			else if (docXObject instanceof Tbl) {
 				returned.documentElement = getDocXDocument().getTable((Tbl) docXObject);
-			} else if (docXObject instanceof Text) {
+			}
+			else if (docXObject instanceof Text) {
 				// System.out.println("Text= " + docXObject);
 				R run = (R) ((Text) docXObject).getParent();
 				// System.out.println("run=" + run);
-				P p = (P) run.getParent();
-				returned.documentElement = getDocXDocument().getParagraph(p);
+				if (run.getParent() instanceof P) {
+					P p = (P) run.getParent();
+					returned.documentElement = getDocXDocument().getParagraph(p);
+				}
 
 				DocXRun docXRun = ((DocXParagraph) returned.documentElement).getRun(run);
 				int runIndex = docXRun.getIndex();
@@ -385,12 +389,14 @@ public abstract class AbstractDocXEditor extends JPanel {
 
 			if (textSelection.getStartElement() instanceof DocXParagraph) {
 				if (textSelection.getStartRunIndex() > -1) {
-					startDocXObject = ((DocXRun) ((DocXParagraph) textSelection.getStartElement()).getRuns().get(
-							textSelection.getStartRunIndex())).getR();
-				} else {
+					startDocXObject = ((DocXRun) ((DocXParagraph) textSelection.getStartElement()).getRuns()
+							.get(textSelection.getStartRunIndex())).getR();
+				}
+				else {
 					startDocXObject = ((DocXParagraph) textSelection.getStartElement()).getP();
 				}
-			} else if (textSelection.getStartElement() instanceof DocXTable) {
+			}
+			else if (textSelection.getStartElement() instanceof DocXTable) {
 				startDocXObject = ((DocXTable) textSelection.getStartElement()).getTbl();
 			}
 
@@ -398,10 +404,12 @@ public abstract class AbstractDocXEditor extends JPanel {
 				if (textSelection.getEndRunIndex() > -1) {
 					endDocXObject = ((DocXRun) ((DocXParagraph) textSelection.getEndElement()).getRuns()
 							.get(textSelection.getEndRunIndex())).getR();
-				} else {
+				}
+				else {
 					endDocXObject = ((DocXParagraph) textSelection.getEndElement()).getP();
 				}
-			} else if (textSelection.getEndElement() instanceof DocXTable) {
+			}
+			else if (textSelection.getEndElement() instanceof DocXTable) {
 				endDocXObject = ((DocXTable) textSelection.getEndElement()).getTbl();
 			}
 
@@ -444,7 +452,8 @@ public abstract class AbstractDocXEditor extends JPanel {
 	}
 
 	protected void scrollTo(final DocumentElement startElement) {
-		SwingUtilities.invokeLater(new Runnable() {
+		getEditorView().scrollToElement(startElement, false);
+		/*SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				// System.out.println("Hop, on scrolle a " + startElement);
@@ -452,7 +461,7 @@ public abstract class AbstractDocXEditor extends JPanel {
 					scrollTo(startElement);
 				}
 			}
-		});
+		});*/
 	}
 
 	public static class DocXEditorSelectionListener implements CaretListener {

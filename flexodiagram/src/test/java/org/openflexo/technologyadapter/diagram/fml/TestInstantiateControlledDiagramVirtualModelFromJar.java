@@ -65,7 +65,7 @@ import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.CreateView;
+import org.openflexo.foundation.fml.rt.action.CreateViewInFolder;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
 import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
@@ -122,8 +122,8 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 	@TestOrder(1)
 	public void testLoadViewPoint() {
 		instanciateTestServiceManager();
-		JarResourceCenter
-				.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
+		JarResourceCenter.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(),
+				"testdiagram_vp-1.1");
 
 		for (FlexoResourceCenter rc : getFlexoServiceManager().getResourceCenterService().getResourceCenters()) {
 			if (rc instanceof JarResourceCenter) {
@@ -145,10 +145,10 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		dropScheme = (DropScheme) flexoConcept.getFlexoBehaviours().get(0);
 		assertNotNull(dropScheme);
 
-		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				DiagramTechnologyAdapter.class);
-		DiagramSpecificationRepository repository = (DiagramSpecificationRepository) jarResourceCenter.getRepository(
-				DiagramSpecificationRepository.class, diagramTA);
+		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		DiagramSpecificationRepository repository = (DiagramSpecificationRepository) jarResourceCenter
+				.getRepository(DiagramSpecificationRepository.class, diagramTA);
 		DiagramSpecificationResource diagramSpecificationResource = repository
 				.getResource("http://openflexo.org/test/TestDiagramSpecification2");
 		assertNotNull(diagramSpecificationResource);
@@ -176,7 +176,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 	@Test
 	@TestOrder(3)
 	public void testCreateView() {
-		CreateView action = CreateView.actionType.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
+		CreateViewInFolder action = CreateViewInFolder.actionType.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
 		action.setNewViewName("MyView");
 		action.setNewViewTitle("Test creation of a new view");
 		action.setViewpointResource((ViewPointResource) viewPoint.getResource());
@@ -314,8 +314,8 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		log("testReloadProject()");
 
 		instanciateTestServiceManager();
-		JarResourceCenter
-				.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
+		JarResourceCenter.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(),
+				"testdiagram_vp-1.1");
 
 		editor = reloadProject(project.getDirectory());
 		project = editor.getProject();

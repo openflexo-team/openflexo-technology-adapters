@@ -48,7 +48,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -69,7 +68,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestDocX4allEditor extends AbstractTestDocX {
 
-	private static SwingGraphicalContextDelegate gcDelegate;
+	//private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static DocXDocument simpleDocument;
 	private static DocXDocument structuredDocument;
@@ -163,7 +162,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 		openDocXEditor(exampleReport.getResource());
 	}
 
-	public static void initGUI() {
+	/*public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
 	}
 
@@ -181,7 +180,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	@After
 	public void tearDown() throws Exception {
 		gcDelegate.tearDown();
-	}
+	}*/
 
 	private void openDocXEditor(FlexoResource<DocXDocument> docResource) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {

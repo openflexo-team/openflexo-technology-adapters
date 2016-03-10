@@ -20,45 +20,31 @@
 
 package org.openflexo.technologyadapter.pdf;
 
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.VirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 
 public class PDFModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<PDFDocument, PDFModelSlot> {
 
-	protected PDFModelSlotInstanceConfiguration(PDFModelSlot ms, CreateVirtualModelInstance action) {
-		super(ms, action);
-		/*setResourceUri(getAction().getFocusedObject().getProject().getURI() + "/DocX/MyDocument");
+	protected PDFModelSlotInstanceConfiguration(PDFModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+			FlexoProject project) {
+		super(ms, virtualModelInstance, project);
+		setResourceUri(project.getURI() + "/Models/myPDF");
 		setRelativePath("/");
-		setFilename("MyDocument.docx");*/
+		setFilename("myPDF.pdf");
 	}
 
 	@Override
-	public boolean isValidConfiguration() {
-		return super.isValidConfiguration();
-	}
-
-	@Override
-	public void setOption(ModelSlotInstanceConfigurationOption option) {
-		super.setOption(option);
-		// TODO : add specific options here
-	}
-
-	@Override
-	public String getResourceUri() {
-		String returned = super.getResourceUri();
-		if (returned == null && getOption() == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource) {
-			return getAction().getFocusedObject().getProject().getURI() + getRelativePath() + getFilename();
+	protected boolean checkValidFileName() {
+		if (!super.checkValidFileName()) {
+			return false;
 		}
-		return returned;
-	}
-
-	@Override
-	public FreeModelSlotInstance<PDFDocument, PDFModelSlot> createModelSlotInstance(VirtualModelInstance vmInstance, View view) {
-		// TODO Auto-generated method stub
-		return super.createModelSlotInstance(vmInstance, view);
+		if (!getFilename().endsWith(".pdf")) {
+			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.pdf_suffix"));
+			return false;
+		}
+		return true;
 	}
 }

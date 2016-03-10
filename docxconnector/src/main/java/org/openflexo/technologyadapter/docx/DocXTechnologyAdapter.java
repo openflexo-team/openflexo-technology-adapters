@@ -29,6 +29,7 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
@@ -59,6 +60,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceImpl;
 
 @DeclareModelSlots({ DocXModelSlot.class })
 @DeclareRepositoryType({ DocXDocumentRepository.class })
+@DeclareResourceTypes({ DocXDocumentResource.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledDocXVirtualModelInstanceNature.class })
 public class DocXTechnologyAdapter extends TechnologyAdapter {
 

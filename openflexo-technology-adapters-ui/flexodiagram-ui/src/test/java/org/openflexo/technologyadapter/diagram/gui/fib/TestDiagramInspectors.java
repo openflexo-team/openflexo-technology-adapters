@@ -75,8 +75,8 @@ public class TestDiagramInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
-	public void testAddDiagramInspector() {
-		validateFIB("Inspectors/Diagram/EditionAction/AddDiagram.inspector");
+	public void testCreateDiagramInspector() {
+		validateFIB("Inspectors/Diagram/EditionAction/CreateDiagram.inspector");
 	}
 
 	@Test

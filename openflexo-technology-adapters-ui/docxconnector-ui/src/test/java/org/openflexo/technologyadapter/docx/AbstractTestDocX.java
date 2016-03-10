@@ -43,15 +43,22 @@ import static org.junit.Assert.assertNotNull;
 import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.replay.utils.GraphicalContextDelegate;
+import org.openflexo.technologyadapter.docx.gui.TestDocX4allEditor;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 	protected static final Logger logger = Logger.getLogger(AbstractTestDocX.class.getPackage().getName());
+
+	protected static GraphicalContextDelegate gcDelegate;
 
 	protected DocXDocumentResource getDocumentResource(String documentName) {
 
@@ -96,6 +103,49 @@ public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 		assertNotNull(document.getWordprocessingMLPackage());
 
 		return document;
+	}
+
+	@BeforeClass
+	public static void setupClass() {
+		instanciateTestServiceManager();
+		initGUI();
+	}
+
+	public static void initGUI() {
+		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
+
+		// TODO: please check this: suspiscion of missing code after merge
+
+		/* {
+		@Override
+		public boolean handleException(Exception e) {
+			// System.out.println(
+			// "Handle exception ? isDisposed=" + isDisposed() + " exception=" + e + " stacktrace=" + e.getStackTrace().length);
+			if (e instanceof NullPointerException && ((NullPointerException) e).getStackTrace().length == 0) {
+				// Handle unexpected exception occured in docx4all editor
+				// We suspect issues with fonts
+				// Temporary ignore those exceptions
+				return false;
+			}
+			return super.handleException(e);
+		}
+		}*/
+	}
+
+	@AfterClass
+	public static void waitGUI() {
+		gcDelegate.waitGUI();
+	}
+
+	@Before
+	public void setUp() {
+		gcDelegate.setUp();
+	}
+
+	@AfterClass
+	public static void tearDownClass() throws Exception {
+		OpenflexoTestCaseWithGUI.tearDownClass();
+		gcDelegate.tearDown();
 	}
 
 }

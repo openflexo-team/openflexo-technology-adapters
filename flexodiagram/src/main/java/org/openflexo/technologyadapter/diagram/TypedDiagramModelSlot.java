@@ -50,8 +50,8 @@ import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -77,8 +77,8 @@ import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBindi
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
-import org.openflexo.technologyadapter.diagram.fml.editionaction.AddDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
+import org.openflexo.technologyadapter.diagram.fml.editionaction.CreateDiagram;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.GraphicalAction;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -97,7 +97,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
  */
 @DeclareFlexoRoles({ ShapeRole.class, ConnectorRole.class, DiagramRole.class })
 @DeclareFlexoBehaviours({ DropScheme.class, LinkScheme.class, DiagramNavigationScheme.class })
-@DeclareEditionActions({ AddDiagram.class, AddShape.class, AddConnector.class, GraphicalAction.class })
+@DeclareEditionActions({ CreateDiagram.class, AddShape.class, AddConnector.class, GraphicalAction.class })
 @DeclareFetchRequests({})
 @ModelEntity
 @ImplementationClass(TypedDiagramModelSlot.TypedDiagramModelSlotImpl.class)
@@ -206,8 +206,9 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public TypedDiagramModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new TypedDiagramModelSlotInstanceConfiguration(this, action);
+		public TypedDiagramModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+				FlexoProject project) {
+			return new TypedDiagramModelSlotInstanceConfiguration(this, virtualModelInstance, project);
 		}
 
 		@Override

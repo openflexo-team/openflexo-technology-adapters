@@ -84,6 +84,7 @@ import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlotInstanceConfiguration;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
@@ -91,10 +92,11 @@ import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.fml.rt.VirtualModelInstanceModelSlot;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ActionSchemeActionType;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.CreateView;
+import org.openflexo.foundation.fml.rt.action.CreateViewInFolder;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.editionaction.CreateFlexoConceptInstanceParameter;
@@ -105,6 +107,7 @@ import org.openflexo.foundation.fml.rt.rm.ViewResource;
 import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
@@ -278,27 +281,27 @@ public class TestLibrary extends AbstractTestDocX {
 	 */
 	/*private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
-
-
+	
+	
 		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + "TestResourceCenter" + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
-
+	
 		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
-
+	
 		if (documentResource == null) {
 			System.out.println("Cannot find: " + documentURI);
 			for (FlexoResource r : resourceCenter.getAllResources()) {
 				System.out.println(" > " + r.getURI());
 			}
 		}
-
+	
 		assertNotNull(documentResource);
-
+	
 		DocXDocument document = documentResource.getResourceData(null);
 		assertNotNull(document);
 		assertNotNull(document.getWordprocessingMLPackage());
-
+	
 		return documentResource;
 	}*/
 
@@ -537,7 +540,7 @@ public class TestLibrary extends AbstractTestDocX {
 		CreateModelSlot createLibraryModelSlot = CreateModelSlot.actionType.makeNewAction(documentVirtualModel, null, _editor);
 		createLibraryModelSlot.setTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				FMLTechnologyAdapter.class));
-		createLibraryModelSlot.setModelSlotClass(FMLRTModelSlot.class);
+		createLibraryModelSlot.setModelSlotClass((Class<? extends ModelSlot<?>>) VirtualModelInstanceModelSlot.class);
 		createLibraryModelSlot.setModelSlotName("library");
 		createLibraryModelSlot.setVmRes((VirtualModelResource) libraryVirtualModel.getResource());
 		createLibraryModelSlot.doAction();
@@ -900,7 +903,7 @@ public class TestLibrary extends AbstractTestDocX {
 		fetchRequestIteration.setIteratorName("book");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("library"));
+		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("library"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookConcept);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
 
@@ -947,7 +950,7 @@ public class TestLibrary extends AbstractTestDocX {
 		fetchRequestIteration2.setIteratorName("bookSection");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance2 = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance2.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
+		selectFlexoConceptInstance2.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
 		selectFlexoConceptInstance2.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration2.setIterationAction(selectFlexoConceptInstance2);
 
@@ -981,7 +984,7 @@ public class TestLibrary extends AbstractTestDocX {
 		fetchRequestIteration.setIteratorName("bookSection");
 
 		SelectFlexoConceptInstance selectFlexoConceptInstance = fetchRequestIteration.getFMLModelFactory().newSelectFlexoConceptInstance();
-		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<VirtualModelInstance>("virtualModelInstance"));
+		selectFlexoConceptInstance.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
 		selectFlexoConceptInstance.setFlexoConceptType(bookDescriptionSection);
 		fetchRequestIteration.setIterationAction(selectFlexoConceptInstance);
 
@@ -1002,7 +1005,7 @@ public class TestLibrary extends AbstractTestDocX {
 	@Test
 	@TestOrder(7)
 	public void testCreateView() {
-		CreateView action = CreateView.actionType.makeNewAction(_project.getViewLibrary().getRootFolder(), null, _editor);
+		CreateViewInFolder action = CreateViewInFolder.actionType.makeNewAction(_project.getViewLibrary().getRootFolder(), null, _editor);
 		action.setNewViewName("MyLibraryView");
 		action.setNewViewTitle("Test creation of a new view");
 		action.setViewpointResource((ViewPointResource) viewPoint.getResource());

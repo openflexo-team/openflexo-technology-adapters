@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
+	titleFont="SansSerif,0,12" darkLevel="0"
+	dataClassName="org.openflexo.technologyadapter.diagram.fml.editionaction.CreateDiagram"
+	controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
+	font="SansSerif,0,12" name="Inspector">
+	<TabPanel name="Tab" constraints="border(location=center)">
+		<Tab title="Basic" layout="twocols" titleFont="SansSerif,0,11"
+			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
+			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
+			<Label label="diagram_type" index="4"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;location=left)"
+				name="DSLabel" localize="true" />
+			<Custom componentClassName="org.openflexo.components.widget.FIBMetaModelSelector"
+				localize="true" manageDynamicModel="true" name="DSSelector" index="5"
+				data="data.diagramSpecificationResource"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=5;location=right)">
+				<Assignment variable="component.resourceManager"
+					value="data.serviceManager.resourceManager" />
+				<Assignment variable="component.technologyAdapter" value="data.modelSlotTechnologyAdapter" />
+			</Custom>
+			<Label label="diagram_name" align="right" index="6" data=""
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+				localize="true" index="7" data="data.diagramName"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+			<Label label="diagram_uri" align="right" index="6" data=""
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+				localize="true" index="7" data="data.diagramURI"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+			<Label label="resource_center" align="right" index="10"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+				localize="true" index="11" data="data.resourceCenter"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
+				<Assignment variable="component.bindable" value="data" />
+			</Custom>
+			<Label label="relative_path" align="right" index="12"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+				localize="true" />
+			<TextField index="13" data="data.relativePath"
+				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+				name="RelativePathTextField" localize="true" columns="7"/>
+		</Tab>
+	</TabPanel>
+	<LocalizedDictionary>
+		<Localized key="Advanced" lang="French" value="Avancé" />
+		<Localized key="Basic" lang="French" value="Basique" />
+	</LocalizedDictionary>
+	<Parameter name="title" value="Create diagram action" />
+</Panel>

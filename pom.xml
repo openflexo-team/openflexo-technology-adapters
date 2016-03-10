@@ -24,6 +24,7 @@
 		<flexocore.version>1.8.0-SYLVAIN-SNAPSHOT</flexocore.version>
 		<poi.version>3.12-beta1</poi.version>
 		<ta.logo>https://media.openflexo.org/images/ta_logo64x64.png</ta.logo>
+	    <sitedeploy.dir>/home/www/sites/openflexo-ta</sitedeploy.dir>
 	</properties>
 	<scm>
 		<connection>scm:git:ssh://git@github.com/openflexo-team/openflexo-technology-adapters.git</connection>
@@ -365,5 +366,61 @@
 			</plugins>
 		</pluginManagement>
 	</build>
+	
+   <!-- ************
+   Specific profiles used to differentiate between snapshot release and release-candidates and official-releases
+   -->
+    <profiles>
+        <profile>
+            <id>snapshot-profile</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <!-- ************
+   		Places where to upload files for component Maven site
+   		-->
+            <distributionManagement>
+                <site>
+                    <id>openflexo-ta.website</id>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>RC-profile</id>
+            <activation>
+                <property>
+                    <name>performRC</name>
+                </property>
+            </activation>
+            <!-- ************
+   		Places where to upload files for component Maven site
+		   -->
+            <distributionManagement>
+                <site>
+                    <id>openflexo-ta.website</id>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>release-profile</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                </property>
+            </activation>
+            <!-- ************
+   		Places where to upload files for component Maven site
+		   -->
+            <distributionManagement>
+                <site>
+                    <id>openflexo-ta.website</id>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/${project.version}/</url>
+                </site>
+            </distributionManagement>
+        </profile>
+    </profiles>
+	
 </project>
 

@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
+import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
@@ -50,8 +51,9 @@ import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOu
 import org.openflexo.foundation.fml.FlexoProperty;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -64,19 +66,27 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
+import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
 @ModelEntity
-@ImplementationClass(AddDiagram.AddDiagramImpl.class)
+@ImplementationClass(CreateDiagram.CreateDiagramImpl.class)
 @XMLElement
 @FML("AddDiagram")
-public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
+public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 
 	@PropertyIdentifier(type = DataBinding.class)
 	public static final String DIAGRAM_NAME_KEY = "diagramName";
+	@PropertyIdentifier(type = DataBinding.class)
+	public static final String DIAGRAM_URI_KEY = "diagramURI";
 	@PropertyIdentifier(type = String.class)
 	public static final String DIAGRAM_SPECIFICATION_URI_KEY = "diagramSpecificationURI";
+	@PropertyIdentifier(type = FlexoResourceCenter.class)
+	public static final String RESOURCE_CENTER_KEY = "resourceCenter";
+	@PropertyIdentifier(type = String.class)
+	public static final String RELATIVE_PATH_KEY = "relativePath";
 
 	@Getter(value = DIAGRAM_NAME_KEY)
 	@XMLAttribute
@@ -85,12 +95,33 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 	@Setter(DIAGRAM_NAME_KEY)
 	public void setDiagramName(DataBinding<String> diagramName);
 
+	@Getter(value = DIAGRAM_URI_KEY)
+	@XMLAttribute
+	public DataBinding<String> getDiagramURI();
+
+	@Setter(DIAGRAM_URI_KEY)
+	public void setDiagramURI(DataBinding<String> diagramURI);
+
 	@Getter(value = DIAGRAM_SPECIFICATION_URI_KEY)
 	@XMLAttribute
 	public String getDiagramSpecificationURI();
 
 	@Setter(DIAGRAM_SPECIFICATION_URI_KEY)
 	public void setDiagramSpecificationURI(String diagramSpecificationURI);
+
+	@Getter(value = RESOURCE_CENTER_KEY)
+	@XMLAttribute
+	public DataBinding<FlexoResourceCenter<?>> getResourceCenter();
+
+	@Setter(RESOURCE_CENTER_KEY)
+	public void setResourceCenter(DataBinding<FlexoResourceCenter<?>> resourceCenter);
+
+	@Getter(value = RELATIVE_PATH_KEY)
+	@XMLAttribute
+	public String getRelativePath();
+
+	@Setter(RELATIVE_PATH_KEY)
+	public void setRelativePath(String relativePath);
 
 	public DiagramSpecification getDiagramSpecification();
 
@@ -100,9 +131,9 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 
 	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource);
 
-	public static abstract class AddDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram> implements AddDiagram {
+	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram> implements CreateDiagram {
 
-		private static final Logger logger = Logger.getLogger(AddDiagram.class.getPackage().getName());
+		private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
 		private DiagramSpecificationResource diagramSpecificationResource;
 		private String diagramSpecificationURI;
@@ -118,8 +149,9 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 			/*if (getAssignation().isSet()) {
 				out.append(getAssignation().toString() + " = (", context);
 			}*/
-			out.append(getClass().getSimpleName() + " conformTo " + getDiagramSpecification().getURI() + " from "
-					+ getModelSlot().getName() + " {" + StringUtils.LINE_SEPARATOR, context);
+			out.append(getClass().getSimpleName()
+					+ (getDiagramSpecification() != null ? " conformTo " + getDiagramSpecification().getURI() : "")
+					+ (getModelSlot() != null ? " from " + getModelSlot().getName() : "") + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append("}", context);
 			/*if (getAssignation().isSet()) {
 				out.append(")", context);
@@ -139,9 +171,37 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 			return null;
 		}
 
-		public String getDiagramName(FlexoBehaviourAction action) {
+		public String getDiagramName(RunTimeEvaluationContext evaluationContext) {
 			try {
-				return getDiagramName().getBindingValue(action);
+				return getDiagramName().getBindingValue(evaluationContext);
+			} catch (TypeMismatchException e) {
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				e.printStackTrace();
+			}
+			return null;
+		}
+
+		public String getDiagramURI(RunTimeEvaluationContext evaluationContext) {
+			if (getDiagramURI() != null && getDiagramURI().isSet() && getDiagramURI().isValid()) {
+				try {
+					return getDiagramURI().getBindingValue(evaluationContext);
+				} catch (TypeMismatchException e) {
+					e.printStackTrace();
+				} catch (NullReferenceException e) {
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					e.printStackTrace();
+				}
+			}
+			return null;
+		}
+
+		public FlexoResourceCenter<?> getResourceCenter(RunTimeEvaluationContext evaluationContext) {
+			try {
+				return getResourceCenter().getBindingValue(evaluationContext);
 			} catch (TypeMismatchException e) {
 				e.printStackTrace();
 			} catch (NullReferenceException e) {
@@ -172,6 +232,29 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 				diagramName.setBindingName("diagramName");
 			}
 			this.diagramName = diagramName;
+		}
+
+		private DataBinding<FlexoResourceCenter<?>> resourceCenter;
+
+		@Override
+		public DataBinding<FlexoResourceCenter<?>> getResourceCenter() {
+			if (resourceCenter == null) {
+				resourceCenter = new DataBinding<FlexoResourceCenter<?>>(this, FlexoResourceCenter.class,
+						DataBinding.BindingDefinitionType.GET);
+				resourceCenter.setBindingName("resourceCenter");
+			}
+			return resourceCenter;
+		}
+
+		@Override
+		public void setResourceCenter(DataBinding<FlexoResourceCenter<?>> resourceCenter) {
+			if (resourceCenter != null) {
+				resourceCenter.setOwner(this);
+				resourceCenter.setDeclaredType(FlexoResourceCenter.class);
+				resourceCenter.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				resourceCenter.setBindingName("resourceCenter");
+			}
+			this.resourceCenter = resourceCenter;
 		}
 
 		@Override
@@ -223,13 +306,49 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 
 		@Override
 		public Type getAssignableType() {
-			return View.class;
+			return Diagram.class;
 		}
 
 		@Override
 		public Diagram execute(RunTimeEvaluationContext evaluationContext) {
+
 			// TODO: reimplement this
 			logger.warning("AddDiagram not implemented yet");
+
+			System.out.println("DiagSpec = " + getDiagramSpecification());
+			System.out.println("name=" + getDiagramName(evaluationContext));
+			System.out.println("uri=" + getDiagramURI(evaluationContext));
+			System.out.println("rc=" + getResourceCenter(evaluationContext));
+
+			FlexoResourceCenter<?> resourceCenter = getResourceCenter(evaluationContext);
+
+			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
+					DiagramTechnologyAdapter.class);
+
+			File newFile = null;
+			if (resourceCenter instanceof FileSystemBasedResourceCenter) {
+				String relativePath = getRelativePath();
+				if (!relativePath.endsWith(File.separator)) {
+					relativePath = relativePath + File.separator;
+				}
+				relativePath = relativePath + JavaUtils.getClassName(getDiagramName(evaluationContext));
+				if (!relativePath.endsWith(DiagramResource.DIAGRAM_SUFFIX)) {
+					relativePath = relativePath + DiagramResource.DIAGRAM_SUFFIX;
+				}
+				newFile = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), relativePath);
+
+				DiagramResource newDiagramResource;
+				try {
+					newDiagramResource = diagramTA.createNewDiagram(getDiagramName(evaluationContext), getDiagramURI(evaluationContext),
+							newFile, getDiagramSpecificationResource(), resourceCenter);
+					return newDiagramResource.getDiagram();
+				} catch (SaveResourceException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+
 			/*Diagram initialDiagram = (Diagram) action.retrieveVirtualModelInstance();
 			ViewResource viewResource = initialDiagram.getView().getResource();
 			org.openflexo.technologyadapter.diagram.model.action.CreateDiagram addDiagramAction = org.openflexo.technologyadapter.diagram.model.action.CreateDiagram.actionType
@@ -270,8 +389,10 @@ public interface AddDiagram extends DiagramAction<DiagramModelSlot, Diagram> {
 
 			// return newDiagram;
 			// }
+
+			logger.warning("Cannot create Diagram !");
+
 			return null;
 		}
-
 	}
 }

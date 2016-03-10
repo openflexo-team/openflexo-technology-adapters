@@ -42,8 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -66,7 +66,8 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<DiagramShape, ShapeGraphicalRepresentation> {
 
 	/**
-	 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting shape
+	 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting
+	 * shape
 	 * 
 	 * @return a list of {@link LinkScheme}
 	 */
@@ -125,7 +126,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 			}
 
 			List<DropAndLinkScheme> availableDropAndLinkSchemeFromThisShape = new ArrayList<DropAndLinkScheme>();
-			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
+			AbstractVirtualModel<?> virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
 				for (DropScheme ds : c.getFlexoBehaviours(DropScheme.class)) {
@@ -146,8 +147,8 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 		}
 
 		/**
-		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting
-		 * shape
+		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of
+		 * starting shape
 		 * 
 		 * @return a list of {@link LinkScheme}
 		 */
@@ -161,7 +162,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 			}
 
 			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<LinkScheme>();
-			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
+			AbstractVirtualModel<?> virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
 				for (LinkScheme ls : c.getFlexoBehaviours(LinkScheme.class)) {
@@ -178,8 +179,8 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 		}
 
 		/**
-		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of starting
-		 * shape, and where toTarget is compatible with supplied targetFlexoConcept
+		 * Build and return a new list of available LinkScheme where this {@link FMLControlledDiagramShape} may plays the property of
+		 * starting shape, and where toTarget is compatible with supplied targetFlexoConcept
 		 * 
 		 * @return a list of {@link LinkScheme}
 		 */
@@ -193,7 +194,7 @@ public interface FMLControlledDiagramShape extends FMLControlledDiagramElement<D
 			}
 
 			List<LinkScheme> availableLinkSchemeFromThisShape = new ArrayList<LinkScheme>();
-			VirtualModel virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
+			AbstractVirtualModel<?> virtualModel = getFlexoConceptInstance().getVirtualModelInstance().getVirtualModel();
 
 			for (FlexoConcept c : virtualModel.getFlexoConcepts()) {
 				for (LinkScheme ls : c.getFlexoBehaviours(LinkScheme.class)) {

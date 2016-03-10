@@ -62,8 +62,8 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class CreateFMLControlledDiagramVirtualModelInstanceInitializer extends
-		ActionInitializer<CreateFMLControlledDiagramVirtualModelInstance, View, FlexoObject> {
+public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
+		extends ActionInitializer<CreateFMLControlledDiagramVirtualModelInstance, View, FlexoObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
@@ -83,10 +83,15 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer extends
 			@Override
 			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModelInstance action) {
 
-				if (action.skipChoosePopup) {
+				if (action.skipChoosePopup()) {
 					return true;
 				}
 				else {
+					if (action.getFocusedObject() != null && action.getFocusedObject().getViewPoint() != null) {
+						// @Brutal
+						// TODO: Instead of doing this, it would be better to handle resources in wizard FIB
+						action.getFocusedObject().getViewPoint().loadVirtualModelsWhenUnloaded();
+					}
 					Wizard wizard = new CreateFMLControlledDiagramVirtualModelInstanceWizard(action, getController());
 					WizardDialog dialog = new WizardDialog(wizard, getController());
 					dialog.showDialog();
@@ -124,7 +129,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer extends
 							step = step - 1;
 						}
 					}
-
+				
 					return instanciateAndShowDialog(action, CommonFIB.CREATE_VIRTUAL_MODEL_INSTANCE_DIALOG_FIB);
 				}*/
 

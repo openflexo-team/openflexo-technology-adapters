@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
@@ -50,8 +51,8 @@ import org.openflexo.technologyadapter.diagram.fml.action.GraphicalElementRoleSe
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.action.AbstractDeclareInFlexoConceptWizard;
 
-public abstract class AbstractDeclareDiagramElementInFlexoConceptWizard<A extends DeclareDiagramElementInFlexoConcept<A, ?>> extends
-		AbstractDeclareInFlexoConceptWizard<A> {
+public abstract class AbstractDeclareDiagramElementInFlexoConceptWizard<A extends DeclareDiagramElementInFlexoConcept<A, ?>>
+		extends AbstractDeclareInFlexoConceptWizard<A> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(AbstractDeclareDiagramElementInFlexoConceptWizard.class.getPackage().getName());
@@ -84,7 +85,7 @@ public abstract class AbstractDeclareDiagramElementInFlexoConceptWizard<A extend
 			return getAction().getAdressedFlexoMetaModel();
 		}
 
-		public VirtualModel getAdressedVirtualModel() {
+		public AbstractVirtualModel<?> getAdressedVirtualModel() {
 			return getAction().getAdressedVirtualModel();
 		}
 

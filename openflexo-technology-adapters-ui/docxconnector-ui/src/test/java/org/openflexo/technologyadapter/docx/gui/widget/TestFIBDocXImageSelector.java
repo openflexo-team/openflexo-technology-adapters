@@ -40,10 +40,6 @@ package org.openflexo.technologyadapter.docx.gui.widget;
 
 import static org.junit.Assert.assertNotNull;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
@@ -64,15 +60,9 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestFIBDocXImageSelector extends AbstractTestDocX {
 
-	private static SwingGraphicalContextDelegate gcDelegate;
+	//private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static FIBDocXImageSelector selector;
-
-	@BeforeClass
-	public static void setupClass() {
-		instanciateTestServiceManager(true);
-		initGUI();
-	}
 
 	@Test
 	@TestOrder(2)
@@ -99,7 +89,7 @@ public class TestFIBDocXImageSelector extends AbstractTestDocX {
 		gcDelegate.addTab("FIBDocXImageSelector", selector.getSelectorPanel().getController());
 	}
 
-	public static void initGUI() {
+	/*public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(TestFIBDocXImageSelector.class.getSimpleName());
 	}
 
@@ -117,6 +107,6 @@ public class TestFIBDocXImageSelector extends AbstractTestDocX {
 	@After
 	public void tearDown() throws Exception {
 		gcDelegate.tearDown();
-	}
+	}*/
 
 }

@@ -22,7 +22,7 @@
 					manageDynamicModel="true" enable="true" selectionMode="MultipleIntervalSelection"
 					index="-1" localize="true"
 					constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=1;gridY=0;index=-1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)"
-					visibleRowCount="3" createNewRowOnClick="false" rowHeight="18"
+					visibleRowCount="6" createNewRowOnClick="false" rowHeight="18"
 					textSelectionColor="255,255,255"
 					iteratorClassName="org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding"
 					backgroundSelectionColor="41,90,209" useScrollBar="false"
@@ -54,7 +54,7 @@
 					visible="true" enable="(FMLPaletteElementBindingTable.selected != null)"
 					selectionMode="MultipleIntervalSelection" index="-1" localize="true"
 					constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=1;gridY=1;index=-1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)"
-					visibleRowCount="3" createNewRowOnClick="false" rowHeight="18"
+					visibleRowCount="6" createNewRowOnClick="false" rowHeight="18"
 					textSelectionColor="255,255,255"
 					iteratorClassName="org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBindingParameter"
 					backgroundSelectionColor="41,90,209" useScrollBar="false"
@@ -74,6 +74,13 @@
 						displayTitle="true" />
 				</Table>
 			</Panel>
+			<Label name="ModelSlotLabel">
+				<Parameter name="hidden" value="true" />
+			</Label>
+			<DropDown name="ModelSlotDD">
+				<Parameter name="hidden" value="true" />
+			</DropDown>
+			
 		</Tab>
 		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="3" font="SansSerif,0,11" useScrollBar="true"

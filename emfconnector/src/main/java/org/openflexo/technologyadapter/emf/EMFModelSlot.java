@@ -51,8 +51,8 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviourParameters;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.DeclareInspectorEntries;
 import org.openflexo.foundation.fml.annotations.FML;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
 import org.openflexo.foundation.ontology.fml.ClassParameter;
 import org.openflexo.foundation.ontology.fml.IndividualParameter;
@@ -118,8 +118,9 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 		 * Instanciate a new model slot instance configuration for this model slot
 		 */
 		@Override
-		public EMFModelSlotInstanceConfiguration createConfiguration(CreateVirtualModelInstance action) {
-			return new EMFModelSlotInstanceConfiguration(this, action);
+		public EMFModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+				FlexoProject project) {
+			return new EMFModelSlotInstanceConfiguration(this, virtualModelInstance, project);
 		}
 
 		@Override
@@ -174,8 +175,8 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 		@Override
 		public EMFModelResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewEMFModel((FileSystemBasedResourceCenter) resourceCenter, relativePath, filename,
-					modelUri, (EMFMetaModelResource) metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewEMFModel((FileSystemBasedResourceCenter) resourceCenter, relativePath,
+					filename, modelUri, (EMFMetaModelResource) metaModelResource);
 		}
 
 		@Override

@@ -84,12 +84,6 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 		// setSelectedObject(editedObject);
 	}
 
-	@Override
-	protected SelectorDetailsPanel createCustomPanel(DocXFragment editedObject) {
-		System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!   on cree le SelectorDetailsPanel avec " + editedObject);
-		return super.createCustomPanel(editedObject);
-	}
-
 	/*@Override
 	public void updateCustomPanel(DocXFragment editedObject) {
 		// logger.info("updateCustomPanel with " + editedObject + " _selectorPanel=" + _selectorPanel);
@@ -179,17 +173,14 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 	}
 
 	private void scrollTo(final DocumentElement startElement, final DocXEditor docXEditor) {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// System.out.println("Hop, on scrolle a " + startElement);
-				if (!docXEditor.getEditorView().scrollToElement(startElement, false)) {
+		if (!docXEditor.getEditorView().scrollToElement(startElement, false)) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
 					scrollTo(startElement, docXEditor);
 				}
-				docXEditor.getEditorView().revalidate();
-				docXEditor.getEditorView().repaint();
-			}
-		});
+			});
+		}
 	}
 
 	public class LoadDocXEditor extends FlexoTask {

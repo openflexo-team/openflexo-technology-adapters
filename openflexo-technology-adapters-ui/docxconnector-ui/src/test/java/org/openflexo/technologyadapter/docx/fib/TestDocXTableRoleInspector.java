@@ -41,22 +41,15 @@ package org.openflexo.technologyadapter.docx.fib;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
-import org.openflexo.fib.utils.OpenflexoFIBInspectorTestCase;
-import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPointLibrary;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.gina.swing.utils.FIBJPanel;
-import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.docx.AbstractTestDocXInspector;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -68,19 +61,13 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestDocXTableRoleInspector extends OpenflexoFIBInspectorTestCase {
+public class TestDocXTableRoleInspector extends AbstractTestDocXInspector {
 
-	private static SwingGraphicalContextDelegate gcDelegate;
-
+	/*private static SwingGraphicalContextDelegate gcDelegate;
+	
 	private static Resource fibResource;
-
-	static FlexoEditor editor;
-
-	@BeforeClass
-	public static void setupClass() {
-		instanciateTestServiceManager();
-		initGUI();
-	}
+	
+	static FlexoEditor editor;*/
 
 	@Test
 	@TestOrder(1)
@@ -130,24 +117,24 @@ public class TestDocXTableRoleInspector extends OpenflexoFIBInspectorTestCase {
 		gcDelegate.addTab("DocXTableRole", widget.getController());
 	}
 
-	public static void initGUI() {
+	/*public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(TestDocXTableRoleInspector.class.getSimpleName());
 	}
-
+	
 	@AfterClass
 	public static void waitGUI() {
 		gcDelegate.waitGUI();
 	}
-
+	
 	@Before
 	public void setUp() {
 		gcDelegate.setUp();
 	}
-
+	
 	@Override
 	@After
 	public void tearDown() throws Exception {
 		gcDelegate.tearDown();
-	}
+	}*/
 
 }

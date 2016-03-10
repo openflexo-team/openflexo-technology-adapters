@@ -64,8 +64,7 @@ import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
-import org.openflexo.foundation.fml.rt.action.CreateView;
-import org.openflexo.foundation.fml.rt.action.CreateVirtualModelInstance;
+import org.openflexo.foundation.fml.rt.action.CreateViewInFolder;
 import org.openflexo.foundation.fml.rt.action.CreationSchemeAction;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.resource.FlexoResource;
@@ -191,7 +190,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(5)
 	public void testCreateVMI() {
 
-		CreateView viewAction = CreateView.actionType.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
+		CreateViewInFolder viewAction = CreateViewInFolder.actionType.makeNewAction(project.getViewLibrary().getRootFolder(), null, editor);
 		viewAction.setNewViewName("MyView");
 		viewAction.setNewViewTitle("Test creation of a new view");
 		viewAction.setViewpointResource((ViewPointResource) newViewPoint.getResource());
@@ -199,7 +198,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(viewAction.hasActionExecutionSucceeded());
 		newView = viewAction.getNewView();
 
-		CreateVirtualModelInstance<?> vmiAction = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
+		CreateBasicVirtualModelInstance vmiAction = CreateBasicVirtualModelInstance.actionType.makeNewAction(newView, null, editor);
 		vmiAction.setNewVirtualModelInstanceName("MyVMI");
 		vmiAction.setVirtualModel(newVirtualModel);
 		vmiAction.setNewVirtualModelInstanceTitle("My Virtual Model Instance");

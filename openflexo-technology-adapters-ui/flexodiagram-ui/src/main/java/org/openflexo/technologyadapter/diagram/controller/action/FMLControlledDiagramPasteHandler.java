@@ -43,10 +43,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.fml.rt.controller.VirtualModelInstancePasteHandler;
-import org.openflexo.fml.rt.controller.VirtualModelInstancePasteHandler.HeterogeneousPastingContext;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoClipboard;
 import org.openflexo.foundation.action.PasteAction.PastingContext;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
@@ -81,20 +81,20 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 	}
 
 	public class FMLControlledDiagramPastingContext extends HeterogeneousPastingContext {
-		public FMLControlledDiagramPastingContext(VirtualModelInstance holder, Event event) {
+		public FMLControlledDiagramPastingContext(AbstractVirtualModelInstance<?, ?> holder, Event event) {
 			super(holder, event);
 		}
 
 		public Diagram getDiagram() {
-			return FMLControlledDiagramVirtualModelInstanceNature.getDiagram(getPastingPointHolder());
+			return FMLControlledDiagramVirtualModelInstanceNature.getDiagram((VirtualModelInstance) getPastingPointHolder());
 		}
 	}
 
 	@Override
-	public PastingContext<VirtualModelInstance> retrievePastingContext(FlexoObject focusedObject, List<FlexoObject> globalSelection,
-			FlexoClipboard clipboard, Event event) {
+	public PastingContext<AbstractVirtualModelInstance<?, ?>> retrievePastingContext(FlexoObject focusedObject,
+			List<FlexoObject> globalSelection, FlexoClipboard clipboard, Event event) {
 
-		PastingContext<VirtualModelInstance> returned = null;
+		PastingContext<AbstractVirtualModelInstance<?, ?>> returned = null;
 
 		// System.out.println("retrievePastingContext() in FMLControlledDiagramPasteHander, focusedObject=" + focusedObject);
 
@@ -133,7 +133,7 @@ public class FMLControlledDiagramPasteHandler extends VirtualModelInstancePasteH
 	}
 
 	@Override
-	public void prepareClipboardForPasting(FlexoClipboard clipboard, PastingContext<VirtualModelInstance> pastingContext) {
+	public void prepareClipboardForPasting(FlexoClipboard clipboard, PastingContext<AbstractVirtualModelInstance<?, ?>> pastingContext) {
 
 		System.out.println("Preparing clipboard for pasting in FMLControlledDiagramPasteHander");
 
