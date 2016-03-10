@@ -121,7 +121,8 @@ public class DiagramPalettePalette extends DrawingPalette {
 			gr.setY(py * GRID_HEIGHT + 10);
 			gr.setWidth(30);
 			gr.setHeight(30);
-		} else {
+		}
+		else {
 			gr.setX(px * GRID_WIDTH + 10);
 			gr.setY(py * GRID_HEIGHT + 10);
 			gr.setWidth(40);
@@ -169,7 +170,8 @@ public class DiagramPalettePalette extends DrawingPalette {
 						|| shapeGR.getShapeSpecification().getShapeType() == ShapeType.CIRCLE) {
 					shapeGR.setWidth(40);
 					shapeGR.setHeight(40);
-				} else {
+				}
+				else {
 					shapeGR.setWidth(50);
 					shapeGR.setHeight(40);
 				}
