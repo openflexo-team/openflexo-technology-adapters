@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel className="org.openflexo.fib.utils.FIBInspector" layout="border"
+<Panel className="org.openflexo.gina.utils.FIBInspector" layout="border"
 	titleFont="SansSerif,0,12" darkLevel="0"
 	dataClassName="org.openflexo.technologyadapter.diagram.fml.editionaction.CreateDiagram"
 	controllerClassName="org.openflexo.fml.controller.FMLFIBInspectorController"
@@ -23,7 +23,7 @@
 			<Label label="diagram_name" align="right" index="6" data=""
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
-			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" index="7" data="data.diagramName"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
 				<Assignment variable="component.bindable" value="data" />
@@ -31,7 +31,7 @@
 			<Label label="diagram_uri" align="right" index="6" data=""
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
-			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" index="7" data="data.diagramURI"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
 				<Assignment variable="component.bindable" value="data" />
@@ -39,7 +39,7 @@
 			<Label label="resource_center" align="right" index="10"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 				localize="true" />
-			<Custom componentClassName="org.openflexo.fib.swing.utils.BindingSelector"
+			<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 				localize="true" index="11" data="data.resourceCenter"
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=7;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
 				<Assignment variable="component.bindable" value="data" />
