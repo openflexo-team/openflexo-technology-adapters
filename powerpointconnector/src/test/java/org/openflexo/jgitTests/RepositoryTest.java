@@ -101,6 +101,7 @@ public class RepositoryTest {
 		// Verify
 		Status status = git.status().call();
 		// Has been commited
+		System.out.println("uncommited changes = " + status.getUncommittedChanges());
 		assertEquals(status.getUncommittedChanges().size(), 0);
 	}
 
