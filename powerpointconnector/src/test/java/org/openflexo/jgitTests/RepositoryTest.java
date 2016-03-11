@@ -36,7 +36,11 @@ import org.eclipse.jgit.treewalk.filter.PathFilter;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.openflexo.test.OrderedRunner;
+import org.openflexo.test.TestOrder;
 
+@RunWith(OrderedRunner.class)
 public class RepositoryTest {
 
 	private static Repository gitRepository;
@@ -69,6 +73,7 @@ public class RepositoryTest {
 	}
 
 	@Test
+	@TestOrder(1)
 	public void addFiletoIndexInRepository() throws NoFilepatternException, GitAPIException, IOException {
 		// Prepare
 		File fileToAdd = new File(gitRepository.getDirectory().getParent(), "fileToAdd.txt");
@@ -87,6 +92,7 @@ public class RepositoryTest {
 	}
 
 	@Test
+	@TestOrder(2)
 	public void commitFileInRepository() throws IOException, NoFilepatternException, GitAPIException {
 		// Prepare
 		File fileToAdd = new File(gitRepository.getDirectory().getParent(), "fileToCommit.txt");
@@ -106,6 +112,7 @@ public class RepositoryTest {
 	}
 
 	@Test
+	@TestOrder(3)
 	public void createBranch() throws RefAlreadyExistsException, RefNotFoundException, GitAPIException, GitAPIException, IOException {
 		git.branchCreate().setName("MyGitBranch").call();
 		System.out.println("Current Branch :" + gitRepository.getBranch());
@@ -116,6 +123,7 @@ public class RepositoryTest {
 	}
 
 	@Test
+	@TestOrder(4)
 	public void listObjectsOfACommit() throws IOException, NoFilepatternException, GitAPIException {
 		File fileToAdd = new File(gitRepository.getDirectory().getParent(), "fileToCommit.txt");
 		fileToAdd.createNewFile();
@@ -157,6 +165,7 @@ public class RepositoryTest {
 	}
 
 	@Test
+	@TestOrder(5)
 	public void showUncommitedFiles() throws IOException, NoWorkTreeException, GitAPIException {
 
 		// Prepare
@@ -192,6 +201,7 @@ public class RepositoryTest {
 	}
 
 	@Test
+	@TestOrder(6)
 	public void getSha1ObjectId() throws IOException, NoFilepatternException, GitAPIException {
 		File fileToAdd = new File(gitRepository.getDirectory().getParent(), "fileToCommit.txt");
 		fileToAdd.createNewFile();
@@ -207,6 +217,7 @@ public class RepositoryTest {
 	}
 
 	@Test
+	@TestOrder(7)
 	public void sameIdBetweenAddAndCommit() throws IOException, NoFilepatternException, GitAPIException {
 		// Prepare
 		File fileToCompare = new File(gitRepository.getDirectory().getParent(), "fileToCompare.txt");
@@ -243,6 +254,7 @@ public class RepositoryTest {
 	}
 
 	@Test
+	@TestOrder(8)
 	public void loadExistingFile() throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException,
 			NoFilepatternException, GitAPIException, ClassNotFoundException {
 		File fileToRetrieve = new File(gitRepository.getDirectory().getParent(), "fileToRetrieve.txt");
