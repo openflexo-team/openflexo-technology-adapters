@@ -28,7 +28,6 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.ObjectLoader;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
-import org.eclipse.jgit.revwalk.RevTree;
 import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.storage.file.FileRepositoryBuilder;
 import org.eclipse.jgit.treewalk.FileTreeIterator;
@@ -46,18 +45,23 @@ public class RepositoryTest {
 
 	@BeforeClass
 	public static void initializeRepositoryGit() throws IOException, IllegalStateException, GitAPIException {
-		File dir = new File("C:\\Projet S5\\GitTest");
+
+		File tempFile = File.createTempFile("Temp", "");
+		File dir = new File(tempFile.getParentFile(), tempFile.getName() + "TestGitRepository");
+		tempFile.delete();
+
+		System.out.println("Working with dir=" + dir);
+
 		File gitDir = new File(dir.getAbsolutePath(), ".git");
 		Git.init().setDirectory(dir).call();
-		
-		
-		//Our GitRepository is of type file
+
+		// Our GitRepository is of type file
 		gitRepository = FileRepositoryBuilder.create(gitDir);
 		System.out.println("Created a new repository at " + gitRepository.getDirectory());
-		//Where files are checked
-		System.out.println("Working tree : "+ gitRepository.getWorkTree());
-		//Where index is checked
-		System.out.println("Index File : "+gitRepository.getIndexFile());
+		// Where files are checked
+		System.out.println("Working tree : " + gitRepository.getWorkTree());
+		// Where index is checked
+		System.out.println("Index File : " + gitRepository.getIndexFile());
 		git = new Git(gitRepository);
 
 		System.out.println("New Git command created");
@@ -66,43 +70,42 @@ public class RepositoryTest {
 
 	@Test
 	public void addFiletoIndexInRepository() throws NoFilepatternException, GitAPIException, IOException {
-		//Prepare
+		// Prepare
 		File fileToAdd = new File(gitRepository.getDirectory().getParent(), "fileToAdd.txt");
 		fileToAdd.createNewFile();
 		// run the add-call
-		
-		//Execute
+
+		// Execute
 		git.add().addFilepattern("fileToAdd.txt").call();
 		System.out.println("Added file " + fileToAdd + " to repository at " + gitRepository.getDirectory());
-		
-		System.out.println("Cache Entry : "+DirCache.read(gitRepository).getEntry("fileToAdd.txt").getPathString());
-		//Verify 
-		
-		//Check if the file has been added to the index
-		assertEquals(fileToAdd.getName(),DirCache.read(gitRepository).getEntry("fileToAdd.txt").getPathString());
+
+		System.out.println("Cache Entry : " + DirCache.read(gitRepository).getEntry("fileToAdd.txt").getPathString());
+		// Verify
+
+		// Check if the file has been added to the index
+		assertEquals(fileToAdd.getName(), DirCache.read(gitRepository).getEntry("fileToAdd.txt").getPathString());
 	}
 
 	@Test
 	public void commitFileInRepository() throws IOException, NoFilepatternException, GitAPIException {
-		//Prepare
+		// Prepare
 		File fileToAdd = new File(gitRepository.getDirectory().getParent(), "fileToCommit.txt");
 		fileToAdd.createNewFile();
 		// run the add-call
 		git.add().addFilepattern("fileToCommit.txt").call();
-		//Execute
+		// Execute
 		git.commit().setMessage("Added fileToCommit").call();
-		
+
 		System.out.println("Committed file " + fileToAdd + " to repository at " + gitRepository.getDirectory());
-		
-		//Verify
+
+		// Verify
 		Status status = git.status().call();
-		//Has been commited
-		assertEquals(status.getUncommittedChanges().size(),0);
+		// Has been commited
+		assertEquals(status.getUncommittedChanges().size(), 0);
 	}
 
 	@Test
-	public void createBranch()
-			throws RefAlreadyExistsException, RefNotFoundException, GitAPIException, GitAPIException, IOException {
+	public void createBranch() throws RefAlreadyExistsException, RefNotFoundException, GitAPIException, GitAPIException, IOException {
 		git.branchCreate().setName("MyGitBranch").call();
 		System.out.println("Current Branch :" + gitRepository.getBranch());
 		git.checkout().setName("MyGitBranch").call();
@@ -140,23 +143,22 @@ public class RepositoryTest {
 		treeWalk.setFilter(PathFilter.create("fileToCommit.txt"));
 		if (!treeWalk.next()) {
 			System.out.println("Couldn't find file");
-		}
-		else{
+		} else {
 			System.out.println("Found : " + treeWalk.getPathString());
 		}
 		ObjectId objectId = treeWalk.getObjectId(0);
 
 		System.out.println("Object Id : " + objectId.getName());
 		ObjectLoader loader = gitRepository.open(objectId);
-		
+
 		loader.copyTo(System.out);
-		
+
 	}
 
 	@Test
 	public void showUncommitedFiles() throws IOException, NoWorkTreeException, GitAPIException {
-		
-		//Prepare
+
+		// Prepare
 		Status status = git.status().call();
 
 		System.out.println("Before modification clean : " + status.isClean());
@@ -165,22 +167,21 @@ public class RepositoryTest {
 		file.createNewFile();
 		git.add().addFilepattern("fileModified.txt").call();
 		git.commit().setMessage("Added fileModified").call();
-		
-		
-		//Execute
-	
+
+		// Execute
+
 		FileUtils.write(file, new Date().toString());
-		
-		//refresh git Status
+
+		// refresh git Status
 		status = git.status().call();
-		
+
 		System.out.println("After modification clean : " + status.isClean());
-		//Verify
+		// Verify
 		Set<String> modified = status.getModified();
 		for (String modify : modified) {
 			System.out.println("Modification fileModified: " + modify);
 		}
-		
+
 		Set<String> uncommittedChanges = status.getUncommittedChanges();
 		for (String uncommitted : uncommittedChanges) {
 			System.out.println("Uncommitted: " + uncommitted);
@@ -203,19 +204,19 @@ public class RepositoryTest {
 		System.out.println("Committed file " + fileToAdd + " to repository at " + gitRepository.getDirectory());
 
 	}
-	
-	@Test 
-	public void sameIdBetweenAddAndCommit() throws IOException, NoFilepatternException, GitAPIException{
-		//Prepare
+
+	@Test
+	public void sameIdBetweenAddAndCommit() throws IOException, NoFilepatternException, GitAPIException {
+		// Prepare
 		File fileToCompare = new File(gitRepository.getDirectory().getParent(), "fileToCompare.txt");
 		fileToCompare.createNewFile();
 		// run the add-call
 		DirCache addedInCache = git.add().addFilepattern("fileToCompare.txt").call();
-		
+
 		ObjectId idFileToRetrieve = addedInCache.getEntry("fileToCompare.txt").getObjectId();
-		
+
 		RevCommit commit = git.commit().setMessage("Added fileToCompare").call();
-		
+
 		RevWalk walkInLastCommit = new RevWalk(gitRepository);
 
 		// Get the commit object from the commit Id
@@ -227,54 +228,52 @@ public class RepositoryTest {
 		treeWalk.setFilter(PathFilter.create("fileToCompare.txt"));
 		if (!treeWalk.next()) {
 			System.out.println("Couldn't find file");
-		}
-		else{
+		} else {
 			System.out.println("Found : " + treeWalk.getPathString());
 		}
 		ObjectId objectId = treeWalk.getObjectId(0);
 
 		System.out.println("Object Id : " + objectId.getName());
-		
-		
-		//Verify
-		//Check that the id after add and after commit is the same for git
-		assertEquals(objectId,idFileToRetrieve);
-		
+
+		// Verify
+		// Check that the id after add and after commit is the same for git
+		assertEquals(objectId, idFileToRetrieve);
+
 	}
-	
+
 	@Test
-	public void loadExistingFile() throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException, NoFilepatternException, GitAPIException, ClassNotFoundException{
+	public void loadExistingFile() throws RevisionSyntaxException, AmbiguousObjectException, IncorrectObjectTypeException, IOException,
+			NoFilepatternException, GitAPIException, ClassNotFoundException {
 		File fileToRetrieve = new File(gitRepository.getDirectory().getParent(), "fileToRetrieve.txt");
 		fileToRetrieve.createNewFile();
-		
+
 		PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(fileToRetrieve)));
 		writer.println("aaaa");
 		writer.flush();
-		
+
 		// run the add-call
 		DirCache addedInCache = git.add().addFilepattern("fileToRetrieve.txt").call();
 		ObjectId idFileToRetrieve = addedInCache.getEntry("fileToRetrieve.txt").getObjectId();
-		
+
 		ObjectId commitId = git.commit().setMessage("Commit FileToRetrieve").call().getId();
-		
+
 		FileTreeIterator fileTree = new FileTreeIterator(gitRepository);
-		while(!fileTree.getEntryObjectId().equals(idFileToRetrieve)){
+		while (!fileTree.getEntryObjectId().equals(idFileToRetrieve)) {
 			fileTree.next(1);
 		}
 		System.out.println("File retrieved :" + fileTree.getEntryFile().getName());
-		assertEquals(fileTree.getEntryFile().getName(),"fileToRetrieve.txt");
+		assertEquals(fileTree.getEntryFile().getName(), "fileToRetrieve.txt");
 	}
-	
-	
+
 	@AfterClass
 	public static void deleteGitRepository() throws IOException {
 		gitRepository.close();
-		
-		//Clean up the git folder
+
+		// Clean up the git folder
 		File directoryToDelete = gitRepository.getDirectory().getParentFile();
-		if(directoryToDelete.isDirectory()){
+		if (directoryToDelete.isDirectory()) {
 			FileUtils.cleanDirectory(directoryToDelete);
 		}
 	}
-	
+
 }
