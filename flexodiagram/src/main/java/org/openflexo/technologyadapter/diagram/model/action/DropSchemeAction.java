@@ -130,22 +130,22 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException, FlexoException {
 		logger.info("Drop palette element");
 
-		logger.info("project=" + getProject());
+		// logger.info("project=" + getProject());
 		// getFlexoConcept().getViewPoint().getViewpointOntology().loadWhenUnloaded();
 
 		System.out.println("1-isModified=" + getVirtualModelInstance().isModified());
 
 		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
 
-		logger.info("flexoConceptInstance=" + flexoConceptInstance);
-		logger.info("epi project=" + flexoConceptInstance.getProject());
-		logger.info("epi resource data =" + flexoConceptInstance.getResourceData());
+		// logger.info("flexoConceptInstance=" + flexoConceptInstance);
+		// logger.info("epi project=" + flexoConceptInstance.getProject());
+		// logger.info("epi resource data =" + flexoConceptInstance.getResourceData());
 
-		System.out.println("2-isModified=" + getVirtualModelInstance().isModified());
+		// System.out.println("2-isModified=" + getVirtualModelInstance().isModified());
 
 		executeControlGraph();
 
-		System.out.println("3-isModified=" + getVirtualModelInstance().isModified());
+		// System.out.println("3-isModified=" + getVirtualModelInstance().isModified());
 	}
 
 	public void setParentInformations(FlexoConceptInstance parentConceptInstance, ShapeRole parentShapeRole) {
@@ -289,11 +289,11 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 				ShapeGraphicalRepresentation gr = newShape.getGraphicalRepresentation();
 				// if (action.getPatternRole().getIsPrimaryRepresentationRole()) {
 				// Declare shape as new shape only if it is the primary representation property of the EP
-
+	
 				_primaryShape = newShape;
 				gr.setX(dropLocation.getX());
 				gr.setY(dropLocation.getY());
-
+	
 				// Temporary comment this portion of code if child shapes are declared inside this shape
 				if (!action.getFlexoRole().containsShapes()
 						&& action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
@@ -332,7 +332,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 			} else {
 				logger.warning("Inconsistant data: shape has not been created");
 			}
-
+	
 		}
 		return assignedObject;
 	}*/
