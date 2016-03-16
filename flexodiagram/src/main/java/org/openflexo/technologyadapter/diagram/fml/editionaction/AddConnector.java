@@ -49,7 +49,7 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
@@ -165,10 +165,10 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		public DiagramShape getFromShape(RunTimeEvaluationContext evaluationContext) {
 			if (evaluationContext instanceof FlexoBehaviourAction && getAssignedFlexoProperty() != null
 					&& !getAssignedFlexoProperty().getStartShapeAsDefinedInAction()) {
-				FlexoObject returned = ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
-						getAssignedFlexoProperty().getStartShapeRole());
-				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
-						getAssignedFlexoProperty().getStartShapeRole());
+				FlexoObject returned = ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
+						.getFlexoActor(getAssignedFlexoProperty().getStartShapeRole());
+				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
+						.getFlexoActor(getAssignedFlexoProperty().getStartShapeRole());
 			} else {
 				try {
 					return getFromShape().getBindingValue(evaluationContext);
@@ -186,8 +186,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		public DiagramShape getToShape(RunTimeEvaluationContext evaluationContext) {
 			if (evaluationContext instanceof FlexoBehaviourAction && getAssignedFlexoProperty() != null
 					&& !getAssignedFlexoProperty().getEndShapeAsDefinedInAction()) {
-				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
-						getAssignedFlexoProperty().getEndShapeRole());
+				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
+						.getFlexoActor(getAssignedFlexoProperty().getEndShapeRole());
 			} else {
 				try {
 					return getToShape().getBindingValue(evaluationContext);
@@ -283,27 +283,51 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		@Override
 		public DiagramConnector execute(RunTimeEvaluationContext evaluationContext) {
 
+			System.out.println("Creating diagram connector");
+
 			DiagramShape fromShape = getFromShape(evaluationContext);
 			DiagramShape toShape = getToShape(evaluationContext);
 
+			System.out.println("From shape = " + fromShape);
+			System.out.println("To shape = " + toShape);
+
 			// NPE Protection
 			if (fromShape != null && toShape != null) {
+
 				Diagram diagram = fromShape.getDiagram();
 				DiagramFactory factory = diagram.getDiagramFactory();
+
 				DiagramConnector newConnector = factory.newInstance(DiagramConnector.class);
 				newConnector.setStartShape(fromShape);
 				newConnector.setEndShape(toShape);
+
+				// If no GR is defined for this shape, create a default one
+				if (getAssignedFlexoProperty().getGraphicalRepresentation() == null) {
+					getAssignedFlexoProperty()
+							.setGraphicalRepresentation(getFMLModelFactory().makeConnectorGraphicalRepresentation(ConnectorType.LINE));
+				}
+
+				ConnectorGraphicalRepresentation grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
+
+				ConnectorGraphicalRepresentation newGR = factory.makeConnectorGraphicalRepresentation();
+				newGR.setsWith(grToUse);
+				newConnector.setGraphicalRepresentation(newGR);
+
+				// Handle default ShapeSpecification when not set
+				if (newGR.getConnectorSpecification() == null) {
+					newGR.setConnectorSpecification(factory.makeConnector(ConnectorType.LINE));
+				}
+				// Handle default Foreground when not set
+				if (newGR.getForeground() == null) {
+					newGR.setForeground(factory.makeDefaultForegroundStyle());
+				}
+
 				DiagramContainerElement<?> parent = DiagramElementImpl.getFirstCommonAncestor(fromShape, toShape);
 				if (parent == null) {
 					throw new IllegalArgumentException("No common ancestor");
 				}
 
-				GraphicalRepresentation grToUse = null;
-
-				// If an overriden graphical representation is defined, use it
-				/*if (action.getOverridingGraphicalRepresentation(getPatternRole()) != null) {
-				// grToUse = action.getOverridingGraphicalRepresentation(getPatternRole());
-				// } else*/
+				System.out.println("Parent = " + parent);
 
 				ConnectorRole fr = getAssignedFlexoProperty();
 				if (fr != null) {
@@ -314,9 +338,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 					logger.warning("INVESTIGATE your ViewPoint, No FlexoRole defined for action " + this.getName());
 				}
 
-				ConnectorGraphicalRepresentation newGR = factory.makeConnectorGraphicalRepresentation();
-				newGR.setsWith(grToUse);
-				newConnector.setGraphicalRepresentation(newGR);
+				System.out.println("Et hop, on ajoute le connecteur");
 
 				parent.addToConnectors(newConnector);
 
@@ -343,7 +365,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 
 				return newConnector;
 			} else {
-				logger.warning("AddConnector Failed due to null source or target shape");
+				logger.warning("AddConnector failed due to null source or target shape");
 				return null;
 			}
 		}
@@ -351,7 +373,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 		/*@Override
 		public void finalizePerformAction(FlexoBehaviourAction action, DiagramConnector newConnector) {
 			super.finalizePerformAction(action, newConnector);
-
+		
 			// Well, not easy to understand here
 			// The new connector has well be added to the diagram, and the drawing (which listen to the diagram) has well received the event
 			// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
@@ -365,8 +387,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	}
 
 	@DefineValidationRule
-	public static class AddConnectorActionMustAdressAValidConnectorRole extends
-			ValidationRule<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> {
+	public static class AddConnectorActionMustAdressAValidConnectorRole
+			extends ValidationRule<AddConnectorActionMustAdressAValidConnectorRole, AddConnector> {
 		public AddConnectorActionMustAdressAValidConnectorRole() {
 			super(AddConnector.class, "add_connector_action_must_address_a_valid_connector_pattern_role");
 		}
@@ -407,8 +429,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	}
 
 	@DefineValidationRule
-	public static class AddConnectorActionMustHaveAValidStartingShape extends
-			ValidationRule<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
+	public static class AddConnectorActionMustHaveAValidStartingShape
+			extends ValidationRule<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
 		public AddConnectorActionMustHaveAValidStartingShape() {
 			super(AddConnector.class, "add_connector_action_must_have_a_valid_starting_shape");
 		}
@@ -456,8 +478,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			}
 		}
 
-		protected static class SetsStartingShapeToStartTargetShape extends
-				FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
+		protected static class SetsStartingShapeToStartTargetShape
+				extends FixProposal<AddConnectorActionMustHaveAValidStartingShape, AddConnector> {
 
 			private final FlexoConcept target;
 			private final ShapeRole patternRole;
@@ -486,8 +508,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	}
 
 	@DefineValidationRule
-	public static class AddConnectorActionMustHaveAValidEndingShape extends
-			ValidationRule<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
+	public static class AddConnectorActionMustHaveAValidEndingShape
+			extends ValidationRule<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
 		public AddConnectorActionMustHaveAValidEndingShape() {
 			super(AddConnector.class, "add_connector_action_must_have_a_valid_ending_shape");
 		}
@@ -535,8 +557,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			}
 		}
 
-		protected static class SetsEndingShapeToToTargetShape extends
-				FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
+		protected static class SetsEndingShapeToToTargetShape
+				extends FixProposal<AddConnectorActionMustHaveAValidEndingShape, AddConnector> {
 
 			private final FlexoConcept target;
 			private final ShapeRole patternRole;

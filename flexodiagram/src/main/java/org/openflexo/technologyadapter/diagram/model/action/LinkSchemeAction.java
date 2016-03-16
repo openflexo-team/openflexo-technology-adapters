@@ -126,13 +126,19 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 
 	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParametersException, FlexoException {
-		logger.info("Link palette connector");
+		logger.info("Execute LinkSchemeAction");
 
 		// getFlexoConcept().getViewPoint().getViewpointOntology().loadWhenUnloaded();
 
+		//System.out.println("First i create the FCI with concept " + getFlexoConcept());
 		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
+		//System.out.println("Done. Created " + flexoConceptInstance);
+
+		//System.out.println("Executing " + getLinkScheme().getFMLRepresentation());
 
 		executeControlGraph();
+
+		//System.out.println("new connector = " + getNewConnector());
 
 	}
 

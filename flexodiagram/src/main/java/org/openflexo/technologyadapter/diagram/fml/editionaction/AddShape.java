@@ -150,10 +150,10 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		public DiagramContainerElement<?> getContainer(RunTimeEvaluationContext evaluationContext) {
 			if (evaluationContext instanceof FlexoBehaviourAction && getAssignedFlexoProperty() != null
 					&& !getAssignedFlexoProperty().getParentShapeAsDefinedInAction()) {
-				FlexoObject returned = ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
-						getAssignedFlexoProperty().getParentShapeRole());
-				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
-						getAssignedFlexoProperty().getParentShapeRole());
+				FlexoObject returned = ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
+						.getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
+				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
+						.getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
 			} else {
 				BindingModel bm = getContainer().getOwner().getBindingModel();
 				for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
@@ -241,14 +241,12 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			DiagramFactory factory = diagram.getDiagramFactory();
 			DiagramShape newShape = factory.newInstance(DiagramShape.class);
 
-			ShapeGraphicalRepresentation grToUse = null;
-
-			// If an overriden graphical representation is defined, use it
-			/*if (action.getOverridingGraphicalRepresentation(getPatternRole()) != null) {
-				grToUse = action.getOverridingGraphicalRepresentation(getPatternRole());
-			} else*/if (getAssignedFlexoProperty().getGraphicalRepresentation() != null) {
-				grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
+			// If no GR is defined for this shape, create a default one
+			if (getAssignedFlexoProperty().getGraphicalRepresentation() == null) {
+				getAssignedFlexoProperty().setGraphicalRepresentation(factory.makeShapeGraphicalRepresentation(ShapeType.RECTANGLE));
 			}
+
+			ShapeGraphicalRepresentation grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
 
 			ShapeGraphicalRepresentation newGR = factory.makeShapeGraphicalRepresentation();
 			newGR.setsWith(grToUse);
@@ -306,7 +304,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		/*@Override
 		public void finalizePerformAction(FlexoBehaviourAction action, DiagramShape newShape) {
 			super.finalizePerformAction(action, newShape);
-
+		
 			// Well, not easy to understand here
 			// The new shape has well be added to the diagram, and the drawing (which listen to the diagram) has well received the event
 			// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
@@ -450,8 +448,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			@Override
 			protected void fixAction() {
 				AddShape action = getValidable();
-				action.setContainer(new DataBinding<DiagramContainerElement<?>>(DropSchemeBindingModel.TARGET + "."
-						+ patternRole.getRoleName()));
+				action.setContainer(
+						new DataBinding<DiagramContainerElement<?>>(DropSchemeBindingModel.TARGET + "." + patternRole.getRoleName()));
 			}
 		}
 
