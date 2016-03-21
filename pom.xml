@@ -34,6 +34,7 @@
 	<modules>
 		<module>openflexo-technology-adapters-ui</module>
 		<module>flexodiagram</module>
+		<module>ginaconnector</module>
 		<module>owlconnector</module>
 		<module>emfconnector</module>
 		<module>csvconnector</module>

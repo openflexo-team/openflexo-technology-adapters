@@ -19,6 +19,7 @@
 		<module>owlconnector-ui</module>
 		<module>emfconnector-ui</module>
 		<module>flexodiagram-ui</module>
+		<module>ginaconnector-ui</module>
 		<module>csvconnector-ui</module>
 		<module>excelconnector-ui</module>
 		<module>powerpointconnector-ui</module>
