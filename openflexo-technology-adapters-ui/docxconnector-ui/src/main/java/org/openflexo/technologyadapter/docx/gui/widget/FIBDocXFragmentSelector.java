@@ -110,7 +110,7 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 	}
 
 	@Override
-	protected void selectFragmentInDocumentEditor(final DocXFragment fragment, FIBCustomWidget<?, ?> documentEditorWidget) {
+	protected void selectFragmentInDocumentEditor(final DocXFragment fragment, FIBCustomWidget<?, ?, ?> documentEditorWidget) {
 		super.selectFragmentInDocumentEditor(fragment, documentEditorWidget);
 
 		System.out.println("****************** selectFragmentInDocumentEditor with " + fragment + " and " + documentEditorWidget);
@@ -219,7 +219,7 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 			returned = super.makeCustomPanel(editedObject);
 		}
 
-		FIBCustomWidget<?, ?> documentEditorWidget = returned.getDocEditorWidget();
+		FIBCustomWidget<?, ?, ?> documentEditorWidget = returned.getDocEditorWidget();
 		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
 		docXEditor.getEditorView().addCaretListener(new DocXEditorSelectionListener(docXEditor) {
 			@Override
