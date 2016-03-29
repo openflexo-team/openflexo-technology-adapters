@@ -44,7 +44,6 @@ import java.util.logging.Logger;
 import org.openflexo.connie.BindingVariable;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation.ShapeBorder;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
@@ -61,7 +60,6 @@ import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
-import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
 import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
@@ -225,7 +223,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 				gr.setY(dropLocation.getY());
 
 				// Temporary comment this portion of code if child shapes are declared inside this shape
-				if (!action.getAssignedFlexoProperty().containsShapes()
+				/*if (!action.getAssignedFlexoProperty().containsShapes()
 						&& action.getContainer().toString().equals(DiagramBehaviourBindingModel.TOP_LEVEL)) {
 					ShapeBorder border = gr.getBorder();
 					ShapeBorder newBorder = gr.getFactory().makeShapeBorder(border);
@@ -259,7 +257,7 @@ public class DropSchemeAction extends DiagramFlexoBehaviourAction<DropSchemeActi
 							gr.setAbsoluteTextY(gr.getAbsoluteTextY() - deltaY);
 						}
 					}
-				}
+				}*/
 				/*} else if (action.getPatternRole().getParentShapeAsDefinedInAction()) {
 					Object graphicalRepresentation = action.getFlexoConcept().getPrimaryRepresentationRole().getGraphicalRepresentation();
 					if (graphicalRepresentation instanceof ShapeGraphicalRepresentation) {

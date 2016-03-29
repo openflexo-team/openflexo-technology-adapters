@@ -267,9 +267,9 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				newGR.setBackground(factory.makeDefaultBackgroundStyle());
 			}
 			// Handle default Border when not set
-			if (newGR.getBorder() == null) {
+			/*if (newGR.getBorder() == null) {
 				newGR.setBorder(factory.makeShapeBorder());
-			}
+			}*/
 
 			// Register reference
 			// newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());
