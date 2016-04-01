@@ -118,8 +118,8 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
-public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreateDiagramFromPPTSlide<A, T>, T extends FlexoObject> extends
-		FlexoAction<A, T, FMLObject> {
+public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreateDiagramFromPPTSlide<A, T>, T extends FlexoObject>
+		extends FlexoAction<A, T, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
@@ -761,16 +761,15 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		// Connectors which are closed to the shape are considered as linked to this shape.
 		Rectangle2D connectorBorder = null;
 		if (poiConnector instanceof Line) {
-			connectorBorder = new Rectangle2D.Double(poiConnector.getOutline().getBounds().getX() - arrowStartWidth, poiConnector
-					.getOutline().getBounds().getY()
-					- arrowStartWidth, poiConnector.getOutline().getBounds().getWidth() + arrowEndWidth, poiConnector.getOutline()
-					.getBounds().getHeight()
-					+ arrowEndWidth);
+			connectorBorder = new Rectangle2D.Double(poiConnector.getOutline().getBounds().getX() - arrowStartWidth,
+					poiConnector.getOutline().getBounds().getY() - arrowStartWidth,
+					poiConnector.getOutline().getBounds().getWidth() + arrowEndWidth,
+					poiConnector.getOutline().getBounds().getHeight() + arrowEndWidth);
 		}
 		else {
-			connectorBorder = new Rectangle2D.Double(poiConnector.getAnchor2D().getX() - arrowStartWidth, poiConnector.getAnchor2D().getY()
-					- arrowStartWidth, poiConnector.getAnchor2D().getWidth() + arrowEndWidth, poiConnector.getAnchor2D().getHeight()
-					+ arrowEndWidth);
+			connectorBorder = new Rectangle2D.Double(poiConnector.getAnchor2D().getX() - arrowStartWidth,
+					poiConnector.getAnchor2D().getY() - arrowStartWidth, poiConnector.getAnchor2D().getWidth() + arrowEndWidth,
+					poiConnector.getAnchor2D().getHeight() + arrowEndWidth);
 		}
 
 		// Find the closest source and target shape
@@ -891,7 +890,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			((ShapeGraphicalRepresentation) gr).setY(shape.getLogicalAnchor2D().getY());
 			((ShapeGraphicalRepresentation) gr).setWidth(shape.getLogicalAnchor2D().getWidth());
 			((ShapeGraphicalRepresentation) gr).setHeight(shape.getLogicalAnchor2D().getHeight());
-			((ShapeGraphicalRepresentation) gr).setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
+			// ((ShapeGraphicalRepresentation) gr).setBorder(getDiagramFactory().makeShapeBorder(0, 0, 0, 0));
 			((ShapeGraphicalRepresentation) gr).setShadowStyle(getDiagramFactory().makeDefaultShadowStyle());
 			((ShapeGraphicalRepresentation) gr).setForeground(getDiagramFactory().makeNoneForegroundStyle());
 			((ShapeGraphicalRepresentation) gr).setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
@@ -920,15 +919,15 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 					((ConnectorGraphicalRepresentation) gr).getConnectorSpecification().setStartSymbol(StartSymbolType.ARROW);
 				}
 				if (shape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) != 0) {
-					((ConnectorGraphicalRepresentation) gr).getConnectorSpecification().setStartSymbolSize(
-							shape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) * 10);
+					((ConnectorGraphicalRepresentation) gr).getConnectorSpecification()
+							.setStartSymbolSize(shape.getEscherProperty(EscherProperties.LINESTYLE__LINESTARTARROWWIDTH) * 10);
 				}
 				if (shape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWHEAD) != 0) {
 					((ConnectorGraphicalRepresentation) gr).getConnectorSpecification().setEndSymbol(EndSymbolType.ARROW);
 				}
 				if (shape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) != 0) {
-					((ConnectorGraphicalRepresentation) gr).getConnectorSpecification().setEndSymbolSize(
-							shape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) * 10);
+					((ConnectorGraphicalRepresentation) gr).getConnectorSpecification()
+							.setEndSymbolSize(shape.getEscherProperty(EscherProperties.LINESTYLE__LINEENDARROWWIDTH) * 10);
 				}
 			}
 		}
@@ -1119,7 +1118,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			// Set by default
 			gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
 		}
-
+	
 		try {
 			switch (textShape.getHorizontalAlignment()) {
 				case TextShape.AlignLeft:
@@ -1143,7 +1142,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			gr.setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
 			gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
 		}
-
+	
 		gr.setLineWrap(true);
 	}*/
 
@@ -1203,9 +1202,9 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	/*private void setDefaultGraphicalProperties(GraphicalRepresentation returned, SimpleShape shape) {
-
+	
 	if (returned instanceof ShapeGraphicalRepresentation) {
-
+	
 	}
 	returned.setX(shape.getLogicalAnchor2D().getX());
 	returned.setY(shape.getLogicalAnchor2D().getY());
@@ -1246,7 +1245,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		newBulletShape.getGraphicalRepresentation().setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 		newBulletShape.getGraphicalRepresentation().setHeight(rtr.getBulletSize() * 0.1);
 		newBulletShape.getGraphicalRepresentation().setWidth(rtr.getBulletSize() * 0.1);
-
+	
 		// Create Text
 		DiagramShape newTextShape = getDiagramFactory().makeNewShape(rtr.getRawText(), getDiagram());
 		newTextShape.getGraphicalRepresentation().setX(
@@ -1259,7 +1258,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		newTextShape.getGraphicalRepresentation().setShadowStyle(getDiagramFactory().makeNoneShadowStyle());
 		newTextShape.getGraphicalRepresentation().setHeight(rtr.getFontSize());
 		newTextShape.getGraphicalRepresentation().setWidth(rtr.getLength());
-
+	
 		String fontName = rtr.getFontName();
 		int fontSize = rtr.getFontSize();
 		Color color = rtr.getFontColor();
@@ -1267,12 +1266,12 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		Font f = new Font(fontName, fontStyle, fontSize);
 		TextStyle textStyle = getDiagramFactory().makeTextStyle(color, f);
 		newTextShape.getGraphicalRepresentation().setTextStyle(textStyle);
-
+	
 		getDiagram().addToShapes(newTextShape);
 		getDiagram().addToShapes(newBulletShape);
 		return null;
 	}
-
+	
 	private boolean hasBullets(TextRun textRun) {
 		boolean hasBullets = false;
 		RichTextRun[] rts = textRun.getRichTextRuns();

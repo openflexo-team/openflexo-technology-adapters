@@ -121,7 +121,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 	@Override
 	public ShapeRole getAssignedFlexoProperty();
 
-	public static abstract class AddShapeImpl extends AddDiagramElementActionImpl<DiagramShape> implements AddShape {
+	public static abstract class AddShapeImpl extends AddDiagramElementActionImpl<DiagramShape>implements AddShape {
 
 		private static final Logger logger = Logger.getLogger(AddShape.class.getPackage().getName());
 
@@ -154,7 +154,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 						.getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
 				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
 						.getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
-			} else {
+			}
+			else {
 				BindingModel bm = getContainer().getOwner().getBindingModel();
 				for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
 					BindingVariable bv = bm.getBindingVariableAt(i);
@@ -162,7 +163,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				try {
 					if (getContainer().getBindingValue(evaluationContext) != null) {
 						return getContainer().getBindingValue(evaluationContext);
-					} else {
+					}
+					else {
 						// In case the toplevel is not specified set o the diagram top level.
 						return (DiagramContainerElement<?>) getModelSlotInstance((evaluationContext)).getAccessedResourceData();
 					}
@@ -183,7 +185,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			FlexoRole superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof ShapeRole) {
 				return (ShapeRole) superFlexoRole;
-			} else if (superFlexoRole != null) {
+			}
+			else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -267,9 +270,9 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				newGR.setBackground(factory.makeDefaultBackgroundStyle());
 			}
 			// Handle default Border when not set
-			if (newGR.getBorder() == null) {
+			/*if (newGR.getBorder() == null) {
 				newGR.setBorder(factory.makeShapeBorder());
-			}
+			}*/
 
 			// Register reference
 			// newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());
@@ -382,7 +385,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				String details;
 				if (action.getContainer().isSet()) {
 					details = "Invalid container: " + action.getContainer() + " reason: " + action.getContainer().invalidBindingReason();
-				} else {
+				}
+				else {
 					details = "Container not set";
 				}
 
