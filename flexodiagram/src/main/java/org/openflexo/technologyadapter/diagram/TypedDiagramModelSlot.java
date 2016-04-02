@@ -44,7 +44,10 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.DrawingGraphicalRepresentation;
+import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
+import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviours;
@@ -144,8 +147,8 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 	public DiagramSpecification getDiagramSpecification();
 
-	public static abstract class TypedDiagramModelSlotImpl extends TypeAwareModelSlotImpl<Diagram, DiagramSpecification> implements
-			TypedDiagramModelSlot {
+	public static abstract class TypedDiagramModelSlotImpl extends TypeAwareModelSlotImpl<Diagram, DiagramSpecification>
+			implements TypedDiagramModelSlot {
 
 		private static final Logger logger = Logger.getLogger(TypedDiagramModelSlot.class.getPackage().getName());
 
@@ -295,22 +298,39 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			return null;
 		}
 
+		/**
+		 * Overrides super implementation by providing default graphical representations
+		 */
+		@Override
+		public <PR extends FlexoRole<?>> PR makeFlexoRole(Class<PR> flexoRoleClass) {
+			PR returned = super.makeFlexoRole(flexoRoleClass);
+			if (ShapeRole.class.isAssignableFrom(flexoRoleClass)) {
+				ShapeRole shapeRole = (ShapeRole) returned;
+				shapeRole.setGraphicalRepresentation(getFMLModelFactory().makeShapeGraphicalRepresentation(ShapeType.RECTANGLE));
+			}
+			if (ConnectorRole.class.isAssignableFrom(flexoRoleClass)) {
+				ConnectorRole connectorRole = (ConnectorRole) returned;
+				connectorRole.setGraphicalRepresentation(getFMLModelFactory().makeConnectorGraphicalRepresentation(ConnectorType.LINE));
+			}
+			return returned;
+		}
+
 		// TODO
 		/*	@Override
 			public List<FMLDiagramPaletteElementBinding> getPaletteElementBindings() {
 				return paletteElementBindings;
 			}
-
+		
 			@Override
 			public void setPaletteElementBindings(List<FMLDiagramPaletteElementBinding> paletteElementBindings) {
 				this.paletteElementBindings = paletteElementBindings;
 			}
-
+		
 			@Override
 			public void addToPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
 				paletteElementBindings.add(paletteElementBinding);
 			}
-
+		
 			@Override
 			public void removeFromPaletteElementBindings(FMLDiagramPaletteElementBinding paletteElementBinding) {
 				paletteElementBindings.remove(paletteElementBinding);

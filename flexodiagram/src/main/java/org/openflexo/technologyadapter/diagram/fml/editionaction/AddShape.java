@@ -121,7 +121,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 	@Override
 	public ShapeRole getAssignedFlexoProperty();
 
-	public static abstract class AddShapeImpl extends AddDiagramElementActionImpl<DiagramShape> implements AddShape {
+	public static abstract class AddShapeImpl extends AddDiagramElementActionImpl<DiagramShape>implements AddShape {
 
 		private static final Logger logger = Logger.getLogger(AddShape.class.getPackage().getName());
 
@@ -150,11 +150,12 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		public DiagramContainerElement<?> getContainer(RunTimeEvaluationContext evaluationContext) {
 			if (evaluationContext instanceof FlexoBehaviourAction && getAssignedFlexoProperty() != null
 					&& !getAssignedFlexoProperty().getParentShapeAsDefinedInAction()) {
-				FlexoObject returned = ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
-						getAssignedFlexoProperty().getParentShapeRole());
-				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance().getFlexoActor(
-						getAssignedFlexoProperty().getParentShapeRole());
-			} else {
+				FlexoObject returned = ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
+						.getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
+				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
+						.getFlexoActor(getAssignedFlexoProperty().getParentShapeRole());
+			}
+			else {
 				BindingModel bm = getContainer().getOwner().getBindingModel();
 				for (int i = 0; i < bm.getBindingVariablesCount(); i++) {
 					BindingVariable bv = bm.getBindingVariableAt(i);
@@ -162,7 +163,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				try {
 					if (getContainer().getBindingValue(evaluationContext) != null) {
 						return getContainer().getBindingValue(evaluationContext);
-					} else {
+					}
+					else {
 						// In case the toplevel is not specified set o the diagram top level.
 						return (DiagramContainerElement<?>) getModelSlotInstance((evaluationContext)).getAccessedResourceData();
 					}
@@ -183,7 +185,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			FlexoRole superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof ShapeRole) {
 				return (ShapeRole) superFlexoRole;
-			} else if (superFlexoRole != null) {
+			}
+			else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -241,14 +244,12 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			DiagramFactory factory = diagram.getDiagramFactory();
 			DiagramShape newShape = factory.newInstance(DiagramShape.class);
 
-			ShapeGraphicalRepresentation grToUse = null;
-
-			// If an overriden graphical representation is defined, use it
-			/*if (action.getOverridingGraphicalRepresentation(getPatternRole()) != null) {
-				grToUse = action.getOverridingGraphicalRepresentation(getPatternRole());
-			} else*/if (getAssignedFlexoProperty().getGraphicalRepresentation() != null) {
-				grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
+			// If no GR is defined for this shape, create a default one
+			if (getAssignedFlexoProperty().getGraphicalRepresentation() == null) {
+				getAssignedFlexoProperty().setGraphicalRepresentation(factory.makeShapeGraphicalRepresentation(ShapeType.RECTANGLE));
 			}
+
+			ShapeGraphicalRepresentation grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
 
 			ShapeGraphicalRepresentation newGR = factory.makeShapeGraphicalRepresentation();
 			newGR.setsWith(grToUse);
@@ -269,9 +270,9 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				newGR.setBackground(factory.makeDefaultBackgroundStyle());
 			}
 			// Handle default Border when not set
-			if (newGR.getBorder() == null) {
+			/*if (newGR.getBorder() == null) {
 				newGR.setBorder(factory.makeShapeBorder());
-			}
+			}*/
 
 			// Register reference
 			// newShape.registerFlexoConceptReference(action.getFlexoConceptInstance());
@@ -306,7 +307,7 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 		/*@Override
 		public void finalizePerformAction(FlexoBehaviourAction action, DiagramShape newShape) {
 			super.finalizePerformAction(action, newShape);
-
+		
 			// Well, not easy to understand here
 			// The new shape has well be added to the diagram, and the drawing (which listen to the diagram) has well received the event
 			// The drawing is now up-to-date... but there is something wrong if we are in FML-controlled mode.
@@ -384,7 +385,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 				String details;
 				if (action.getContainer().isSet()) {
 					details = "Invalid container: " + action.getContainer() + " reason: " + action.getContainer().invalidBindingReason();
-				} else {
+				}
+				else {
 					details = "Container not set";
 				}
 
@@ -450,8 +452,8 @@ public interface AddShape extends AddDiagramElementAction<DiagramShape> {
 			@Override
 			protected void fixAction() {
 				AddShape action = getValidable();
-				action.setContainer(new DataBinding<DiagramContainerElement<?>>(DropSchemeBindingModel.TARGET + "."
-						+ patternRole.getRoleName()));
+				action.setContainer(
+						new DataBinding<DiagramContainerElement<?>>(DropSchemeBindingModel.TARGET + "." + patternRole.getRoleName()));
 			}
 		}
 
