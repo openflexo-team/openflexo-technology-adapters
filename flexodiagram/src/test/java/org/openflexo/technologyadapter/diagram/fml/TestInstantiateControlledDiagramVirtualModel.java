@@ -268,14 +268,12 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertTrue(diagram.isModified());
 		assertTrue(newVirtualModelInstance.isModified());
 
-		System.out.println("Unsaved resources=" + serviceManager.getResourceManager().getUnsavedResources());
-
 		assertTrue(diagram.isModified());
 		assertTrue(newVirtualModelInstance.isModified());
 
-		System.out.println("Unsaved resources=" + serviceManager.getResourceManager().getUnsavedResources());
-
-		assertEquals(2, serviceManager.getResourceManager().getUnsavedResources().size());
+		assertEquals(3, serviceManager.getResourceManager().getUnsavedResources().size());
+		// The VirtualModel has changed, because a default GR has been added of a FlexoConcept !
+		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(virtualModel.getResource()));
 		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(newVirtualModelInstance.getResource()));
 		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(diagram.getResource()));
 
@@ -286,6 +284,10 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		diagram.getResource().save(null);
 		assertTrue(((DiagramResource) diagram.getResource()).getFlexoIODelegate().exists());
 		assertFalse(diagram.isModified());
+
+		assertEquals(1, serviceManager.getResourceManager().getUnsavedResources().size());
+
+		virtualModel.getResource().save(null);
 
 		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());
 	}
