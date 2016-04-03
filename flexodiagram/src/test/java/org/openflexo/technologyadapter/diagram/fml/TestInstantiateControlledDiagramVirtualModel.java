@@ -245,6 +245,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	public void testPopulateVirtualModelInstance() throws SaveResourceException {
 
 		log("testPopulateVirtualModelInstance()");
+		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());
 
 		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) newVirtualModelInstance.getResource();
 
@@ -271,6 +272,8 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 
 		assertTrue(diagram.isModified());
 		assertTrue(newVirtualModelInstance.isModified());
+
+		System.out.println("Unsaved resources=" + serviceManager.getResourceManager().getUnsavedResources());
 
 		assertEquals(2, serviceManager.getResourceManager().getUnsavedResources().size());
 		assertTrue(serviceManager.getResourceManager().getUnsavedResources().contains(newVirtualModelInstance.getResource()));
