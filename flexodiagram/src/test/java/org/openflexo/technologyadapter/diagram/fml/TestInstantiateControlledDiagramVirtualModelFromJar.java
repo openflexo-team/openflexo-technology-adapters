@@ -73,6 +73,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.JarResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -301,9 +302,14 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 
 		assertEquals(1, serviceManager.getResourceManager().getUnsavedResources().size());
 
-		virtualModel.getResource().save(null);
+		try {
+			virtualModel.getResource().save(null);
+			fail();
+		} catch (SaveResourcePermissionDeniedException e) {
+			// Normal we are in a Jar
+			System.out.println("Permission denied, as expected");
+		}
 
-		assertEquals(0, serviceManager.getResourceManager().getUnsavedResources().size());
 	}
 
 	/**
