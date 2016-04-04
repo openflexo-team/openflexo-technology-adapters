@@ -58,18 +58,12 @@ public class BasicExcelModelConverter {
 
 	private static final Logger logger = Logger.getLogger(BasicExcelModelConverter.class.getPackage().getName());
 
-	/** Excel Objects. */
-	protected final Map<Object, ExcelObject> excelObjects = new HashMap<Object, ExcelObject>()/* {
-																								@Override
-																								public ExcelObject get(Object key) {
-																								for (Object o : this.keySet()) {
-																								if (o == key) {
-																								return super.get(key);
-																								}
-																								}
-																								return null;
-																								};
-																								}*/;
+	/**
+	 * Excel Objects. We have to build here a map for each sheet because equals() method of HSSFRow does not check sheet<br>
+	 * (two rows at same index in multiple sheet respond to equals())
+	 */
+	protected final Map<ExcelSheet, Map<Object, ExcelObject>> excelObjectsForSheet = new HashMap<>();
+	protected final Map<Object, ExcelObject> excelObjects = new HashMap<>();
 
 	/**
 	 * Constructor.
@@ -99,6 +93,7 @@ public class BasicExcelModelConverter {
 		if (excelObjects.get(sheet) == null) {
 			excelSheet = new ExcelSheet(sheet, workbook, technologyAdapter);
 			excelObjects.put(sheet, excelSheet);
+			excelObjectsForSheet.put(excelSheet, new HashMap<Object, ExcelObject>());
 			int lastRow = -1;
 			for (Row row : sheet) {
 				while (row.getRowNum() > lastRow + 1) {
@@ -131,10 +126,11 @@ public class BasicExcelModelConverter {
 	 */
 	public ExcelRow convertExcelRowToRow(Row row, ExcelSheet excelSheet, ExcelTechnologyAdapter technologyAdapter) {
 		ExcelRow excelRow;
-		if (excelObjects.get(row) == null) {
+		Map<Object, ExcelObject> map = excelObjectsForSheet.get(excelSheet);
+		if (map.get(row) == null) {
 			// System.out.println("Build row " + row.getRowNum() + " for sheet " + excelSheet.getName());
 			excelRow = new ExcelRow(row, excelSheet, technologyAdapter);
-			excelObjects.put(row, excelRow);
+			map.put(row, excelRow);
 			int lastCell = -1;
 			for (Cell cell : row) {
 				// System.out.println("Adding cell " + cell.getColumnIndex() + " value=" + cell.getStringCellValue());
@@ -160,7 +156,7 @@ public class BasicExcelModelConverter {
 			}
 		}
 		else {
-			excelRow = (ExcelRow) excelObjects.get(row);
+			excelRow = (ExcelRow) map.get(row);
 			// System.out.println(" C'est égal? (" + row.getClass().getCanonicalName() + ")" + (excelRow.getRow().equals(row)) + " -- "
 			// + (excelRow.getRow() == row));
 		}
@@ -173,12 +169,13 @@ public class BasicExcelModelConverter {
 	 */
 	public ExcelCell convertExcelCellToCell(Cell cell, ExcelRow excelRow, ExcelTechnologyAdapter technologyAdapter) {
 		ExcelCell excelCell = null;
-		if (excelObjects.get(cell) == null) {
+		Map<Object, ExcelObject> map = excelObjectsForSheet.get(excelRow.getExcelSheet());
+		if (map.get(cell) == null) {
 			excelCell = new ExcelCell(cell, excelRow, technologyAdapter);
-			excelObjects.put(cell, excelCell);
+			map.put(cell, excelCell);
 		}
 		else {
-			excelCell = (ExcelCell) excelObjects.get(cell);
+			excelCell = (ExcelCell) map.get(cell);
 		}
 		return excelCell;
 	}
@@ -188,8 +185,8 @@ public class BasicExcelModelConverter {
 	 * 
 	 * @return the individuals value
 	 */
-	public Map<Object, ExcelObject> getExcelObjects() {
+	/*public Map<Object, ExcelObject> getExcelObjects() {
 		return excelObjects;
-	}
+	}*/
 
 }

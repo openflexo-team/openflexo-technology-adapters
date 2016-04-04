@@ -82,8 +82,8 @@ public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(3)
 	public void testLoadExcelWorkbook() {
-		ExcelTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				ExcelTechnologyAdapter.class);
+		ExcelTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(ExcelTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			ExcelWorkbookRepository excelWorkbookRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class,
@@ -92,6 +92,7 @@ public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 			Collection<ExcelWorkbookResource> workbooks = excelWorkbookRepository.getAllResources();
 			for (ExcelWorkbookResource excelWorkbook : workbooks) {
 				if (excelWorkbook.getName().contains("exemple")) {
+					System.out.println("Testing on " + excelWorkbook);
 					try {
 						ExcelWorkbook excelModel = excelWorkbook.loadResourceData(null);
 						assertNotNull(excelWorkbook.getLoadedResourceData());
@@ -101,13 +102,16 @@ public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 						List<ExcelSheet> sheets = excelModel.getExcelSheets();
 
 						for (ExcelSheet refSheet : sheets) {
+							// System.out.println("refSheet=" + refSheet);
 							for (ExcelRow refRow : refSheet.getExcelRows()) {
-
+								// System.out.println("refRow=" + refRow);
 								for (ExcelSheet sheet : sheets) {
 									for (ExcelRow row : sheet.getExcelRows()) {
 										if (sheet != refSheet) {
 											assertNotNull(row.getRow());
 											assertNotNull(row.getCellAt(0));
+											// System.out.println("row.getRow()=" + row.getRow() + " index=" + row.getRowIndex());
+											// System.out.println("refRow.getRow()=" + refRow.getRow() + " index=" + row.getRowIndex());
 											assertFalse(row.getRow() == refRow.getRow());
 											assertNotSame(row.getRow(), refRow.getRow());
 											// Row do have the same hashcode
