@@ -6,19 +6,19 @@
       <FMLRTModelSlot idref="4" />
     </FlexoConceptInstanceRole>
     <DocXFragmentRole id="5" userID="FLX" useSpecificDescriptions="false" cloningStrategy="Clone" flexoID="11" name="section" cardinality="ZeroOne" fragment="http://openflexo.org/test/TestResourceCenter/TestResourceCenter/ExampleLibrary.docx:2936B416:395C1CE1">
-      <TextBinding id="6" flexoID="6" useSpecificDescriptions="false" userID="FLX" value="book.title" isMultiline="false">
+      <TextBinding id="6" name="TitleBinding" flexoID="6" useSpecificDescriptions="false" userID="FLX" value="book.title" isMultiline="false">
         <TextSelection id="7" startCharId="-1" useSpecificDescriptions="false" userID="FLX" endElementId="2936B416" endRunId="1" flexoID="-1" startElementId="2936B416" endCharId="-1" startRunId="0" />
       </TextBinding>
-      <TextBinding id="8" flexoID="7" useSpecificDescriptions="false" userID="FLX" value="book.author" isMultiline="false">
+      <TextBinding id="8" name="AuthorBinding" flexoID="7" useSpecificDescriptions="false" userID="FLX" value="book.author" isMultiline="false">
         <TextSelection id="9" startCharId="2" useSpecificDescriptions="false" userID="FLX" endElementId="32A77C92" endRunId="1" flexoID="-1" startElementId="32A77C92" endCharId="-1" startRunId="1" />
       </TextBinding>
-      <TextBinding id="10" flexoID="8" useSpecificDescriptions="false" userID="FLX" value="book.edition" isMultiline="false">
+      <TextBinding id="10" name="BookBinding"  flexoID="8" useSpecificDescriptions="false" userID="FLX" value="book.edition" isMultiline="false">
         <TextSelection id="11" startCharId="-1" useSpecificDescriptions="false" userID="FLX" endElementId="4229CE51" endRunId="2" flexoID="-1" startElementId="4229CE51" endCharId="-1" startRunId="2" />
       </TextBinding>
-      <TextBinding id="12" flexoID="9" useSpecificDescriptions="false" userID="FLX" value="book.type" isMultiline="false">
+      <TextBinding id="12" name="TypeBinding"  flexoID="9" useSpecificDescriptions="false" userID="FLX" value="book.type" isMultiline="false">
         <TextSelection id="13" startCharId="2" useSpecificDescriptions="false" userID="FLX" endElementId="57259789" endRunId="1" flexoID="-1" startElementId="57259789" endCharId="-1" startRunId="1" />
       </TextBinding>
-      <TextBinding id="14" flexoID="10" useSpecificDescriptions="false" userID="FLX" value="book.description" isMultiline="true">
+      <TextBinding id="14" name="DescriptionBinding"  flexoID="10" useSpecificDescriptions="false" userID="FLX" value="book.description" isMultiline="true">
         <TextSelection id="15" startCharId="-1" useSpecificDescriptions="false" userID="FLX" endElementId="395C1CE1" endRunId="-1" flexoID="-1" startElementId="395C1CE1" endCharId="-1" startRunId="-1" />
       </TextBinding>
       <DocXModelSlot idref="16" />
