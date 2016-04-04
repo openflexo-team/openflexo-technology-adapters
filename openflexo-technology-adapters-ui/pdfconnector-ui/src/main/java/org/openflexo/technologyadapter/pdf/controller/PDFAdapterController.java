@@ -201,7 +201,7 @@ public class PDFAdapterController extends TechnologyAdapterController<PDFTechnol
 
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
-		docXInspectorGroup = controller.loadInspectorGroup("PDF", getFMLTechnologyAdapterInspectorGroup());
+		// docXInspectorGroup = controller.loadInspectorGroup("PDF", getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup docXInspectorGroup;

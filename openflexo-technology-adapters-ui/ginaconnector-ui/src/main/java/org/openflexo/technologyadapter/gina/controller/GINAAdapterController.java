@@ -49,7 +49,7 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		ginaInspectorGroup = controller.loadInspectorGroup("Gina", getFMLTechnologyAdapterInspectorGroup());
+		// ginaInspectorGroup = controller.loadInspectorGroup("Gina", getFMLTechnologyAdapterInspectorGroup());
 		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/Excel"));
 	}
 
