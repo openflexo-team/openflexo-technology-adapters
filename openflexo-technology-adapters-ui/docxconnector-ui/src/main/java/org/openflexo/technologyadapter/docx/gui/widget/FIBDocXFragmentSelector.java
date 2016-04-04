@@ -118,7 +118,7 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 		// System.out.println("customPanel" + getCustomPanel());
 		// System.out.println("docEditorWidget=" + getCustomPanel().getDocEditorWidget());
 
-		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
+		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 
 		try {
 
@@ -220,7 +220,7 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 		}
 
 		FIBCustomWidget<?, ?, ?> documentEditorWidget = returned.getDocEditorWidget();
-		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
+		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 		docXEditor.getEditorView().addCaretListener(new DocXEditorSelectionListener(docXEditor) {
 			@Override
 			public void caretUpdate(CaretEvent e) {

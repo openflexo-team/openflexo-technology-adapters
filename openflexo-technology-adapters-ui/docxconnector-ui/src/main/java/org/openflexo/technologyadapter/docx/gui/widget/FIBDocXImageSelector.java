@@ -91,7 +91,7 @@ public class FIBDocXImageSelector extends FIBDocImageSelector<DocXDrawingRun, Do
 	@Override
 	protected void selectImageInDocumentEditor(final DocXDrawingRun drawingRun, FIBCustomWidget<?, ?, ?> documentEditorWidget) {
 
-		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
+		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 
 		if (drawingRun == null) {
 			docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
@@ -148,7 +148,7 @@ public class FIBDocXImageSelector extends FIBDocImageSelector<DocXDrawingRun, Do
 		}
 
 		FIBCustomWidget<?, ?, ?> documentEditorWidget = returned.getDocEditorWidget();
-		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
+		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 		WordMLTextPane pane = docXEditor.getEditorView();
 		docXEditor.getEditorView().addCaretListener(new DocXEditorSelectionListener(docXEditor) {
 			@Override

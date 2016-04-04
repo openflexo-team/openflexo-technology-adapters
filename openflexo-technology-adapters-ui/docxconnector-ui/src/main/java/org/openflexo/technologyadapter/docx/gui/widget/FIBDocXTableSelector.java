@@ -90,7 +90,7 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 	@Override
 	protected void selectTableInDocumentEditor(final DocXTable table, FIBCustomWidget<?, ?, ?> documentEditorWidget) {
 
-		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
+		final DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 
 		if (table == null) {
 			docXEditor.getMLDocument().setSelectedElements(Collections.EMPTY_LIST);
@@ -147,7 +147,7 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 		}
 
 		FIBCustomWidget<?, ?, ?> documentEditorWidget = returned.getDocEditorWidget();
-		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getTechnologyComponent();
+		DocXEditor docXEditor = (DocXEditor) documentEditorWidget.getCustomComponent();
 		docXEditor.getEditorView().addCaretListener(new DocXEditorSelectionListener(docXEditor) {
 			@Override
 			public void caretUpdate(CaretEvent e) {
