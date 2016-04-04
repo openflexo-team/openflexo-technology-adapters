@@ -47,10 +47,10 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openflexo.OpenflexoTestCaseWithGUI;
+import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.replay.utils.GraphicalContextDelegate;
 import org.openflexo.technologyadapter.docx.gui.TestDocX4allEditor;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
@@ -58,7 +58,7 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 	protected static final Logger logger = Logger.getLogger(AbstractTestDocX.class.getPackage().getName());
 
-	protected static GraphicalContextDelegate gcDelegate;
+	protected static SwingGraphicalContextDelegate gcDelegate;
 
 	protected DocXDocumentResource getDocumentResource(String documentName) {
 
@@ -112,7 +112,7 @@ public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
 
 		// TODO: please check this: suspiscion of missing code after merge
 
