@@ -47,12 +47,12 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
+import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.fib.utils.OpenflexoFIBInspectorTestCase;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.replay.utils.GraphicalContextDelegate;
 import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.docx.gui.TestDocX4allEditor;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
@@ -68,7 +68,7 @@ import org.openflexo.test.OrderedRunner;
 @RunWith(OrderedRunner.class)
 public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTestCase {
 
-	protected static GraphicalContextDelegate gcDelegate;
+	protected static SwingGraphicalContextDelegate gcDelegate;
 	protected static Resource fibResource;
 	protected static FlexoEditor editor;
 
@@ -124,7 +124,7 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 	}
 
 	public static void initGUI() {
-		gcDelegate = new GraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
+		gcDelegate = new SwingGraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
 
 		// TODO: please check this: suspiscion of missing code after merge
 

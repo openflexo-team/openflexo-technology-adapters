@@ -92,7 +92,7 @@
 				</CustomColumn>
 				<CheckBoxColumn data="iterator.isMultiline" title="multiline"
 					columnWidth="100" resizable="false" displayTitle="true" name="displayTitle" />
-				<AddAction method="controller.createTextBinding(data,DocXFragmentEditor.textSelection)" name="new_text_binding" />
+				<AddAction method="controller.createTextBinding(data,DocXFragmentEditor.component.textSelection)" name="new_text_binding" />
 				<RemoveAction method="controller.deleteTextBinding(selected)"
 					name="delete_text_binding" />
 				<CustomAction method="controller.moveToTop(selected)" name="move_to_top" />
