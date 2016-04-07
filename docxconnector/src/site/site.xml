@@ -19,6 +19,12 @@
  </custom>
    
   <body>
+  
+  	<menu name=""
+			img="https://developers.openflexo.org/images/components/ta/word_ta/Word128x128.png">
+	</menu>
+
+  
     <menu name="DocX connector">
       <item name="Home" 		href="index.html" />
       <item name="Javadoc"    	href="./apidocs/index.html" />
