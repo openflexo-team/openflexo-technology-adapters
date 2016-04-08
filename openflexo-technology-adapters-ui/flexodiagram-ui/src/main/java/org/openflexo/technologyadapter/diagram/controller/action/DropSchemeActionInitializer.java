@@ -76,6 +76,7 @@ public class DropSchemeActionInitializer extends ActionInitializer<DropSchemeAct
 		return new FlexoActionInitializer<DropSchemeAction>() {
 			@Override
 			public boolean run(EventObject e, DropSchemeAction action) {
+				getController().willExecute(action);
 				DropSchemeParametersRetriever parameterRetriever = new DropSchemeParametersRetriever(action, getController());
 				if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
 					return true;

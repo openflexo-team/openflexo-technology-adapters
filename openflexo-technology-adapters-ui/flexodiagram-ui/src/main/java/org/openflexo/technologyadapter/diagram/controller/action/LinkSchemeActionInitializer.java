@@ -72,6 +72,7 @@ public class LinkSchemeActionInitializer
 		return new FlexoActionInitializer<LinkSchemeAction>() {
 			@Override
 			public boolean run(EventObject e, LinkSchemeAction action) {
+				getController().willExecute(action);
 				ParametersRetriever<LinkScheme> parameterRetriever = new ParametersRetriever<LinkScheme>(action, getController());
 				if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
 					return true;
