@@ -242,7 +242,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		// shapeGR.setAllowToLeaveBounds(true);
 
 		if (isImage) {
-			FIBComponent fibComponent = FIBLibrary.instance().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
+			FIBComponent fibComponent = getFIBLibrary().retrieveFIBComponent(DiagramCst.IMPORT_IMAGE_FILE_DIALOG_FIB);
 			JFIBDialog dialog = JFIBDialog.instanciateAndShowDialog(fibComponent, shapeGR, FlexoFrame.getActiveFrame(), true,
 					new FlexoFIBController(fibComponent, SwingViewFactory.INSTANCE, getFlexoController()));
 		}
@@ -445,4 +445,10 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		return null;
 	}
 
+	public FIBLibrary getFIBLibrary() {
+		if (getFlexoController() != null) {
+			return getFlexoController().getApplicationFIBLibraryService().getApplicationFIBLibrary();
+		}
+		return null;
+	}
 }
