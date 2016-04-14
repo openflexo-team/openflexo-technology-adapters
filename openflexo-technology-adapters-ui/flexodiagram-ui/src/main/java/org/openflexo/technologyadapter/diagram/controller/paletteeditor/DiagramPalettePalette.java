@@ -191,8 +191,8 @@ public class DiagramPalettePalette extends DrawingPalette {
 				shapeGR.setX(dropLocation.x);
 				shapeGR.setY(dropLocation.y);
 
-				CreateDiagramPaletteElement action = CreateDiagramPaletteElement.actionType.makeNewAction(container, null, editor
-						.getFlexoController().getEditor());
+				CreateDiagramPaletteElement action = CreateDiagramPaletteElement.actionType.makeNewAction(container, null,
+						editor.getFlexoController().getEditor());
 				action.setGraphicalRepresentation(shapeGR);
 
 				action.doAction();
