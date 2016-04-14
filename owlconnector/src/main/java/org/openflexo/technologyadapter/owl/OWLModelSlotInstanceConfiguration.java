@@ -59,7 +59,9 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 			FlexoProject project) {
 		super(ms, virtualModelInstance, project);
 		// options.add(DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel);
-		setModelUri(virtualModelInstance.getProject().getURI() + "/Models/myOntology");
+		if (virtualModelInstance != null) {
+			setModelUri(virtualModelInstance.getProject().getURI() + "/Models/myOntology");
+		}
 		setRelativePath("/");
 		setFilename("myOntology" + getModelSlot().getModelSlotTechnologyAdapter().getExpectedOntologyExtension());
 	}
@@ -72,11 +74,13 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 			if (modelResource != null) {
 				msInstance.setAccessedResourceData(getModelResource().getModel());
 				msInstance.setModelURI(getModelResource().getURI());
-			} else {
+			}
+			else {
 				logger.warning("Could not create SharedEmptyModel for model slot " + getModelSlot());
 			}
 			return msInstance;
-		} else {
+		}
+		else {
 			return super.configureModelSlotInstance(msInstance, view);
 		}
 	}
@@ -107,7 +111,8 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 			return getResourceCenter() != null && getResourceCenter() instanceof FileSystemBasedResourceCenter
 					&& StringUtils.isNotEmpty(getModelUri()) && StringUtils.isNotEmpty(getRelativePath())
 					&& StringUtils.isNotEmpty(getFilename());
-		} else {
+		}
+		else {
 			return super.isValidConfiguration();
 		}
 	}
