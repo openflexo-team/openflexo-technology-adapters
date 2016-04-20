@@ -19,6 +19,12 @@
  </custom>
    
   <body>
+  
+    <menu name=""
+			img="https://developers.openflexo.org/images/components/ta/owl_ta/OWL200x38.png">
+	</menu>
+  
+  
     <menu name="OWL connector">
       <item name="Home" 		href="index.html" />
       <item name="Javadoc"    	href="./apidocs/index.html" />

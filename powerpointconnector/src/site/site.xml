@@ -19,6 +19,11 @@
  </custom>
    
   <body>
+  
+    <menu name=""
+			img="https://developers.openflexo.org/images/components/ta/ppt_ta/PowerPoint128x128.png">
+	</menu>
+
     <menu name="PowerPoint connector">
       <item name="Home" 		href="index.html" />
       <item name="Javadoc"    	href="./apidocs/index.html" />

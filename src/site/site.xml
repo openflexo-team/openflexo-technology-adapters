@@ -31,6 +31,10 @@
 
 	<body>
 
+		<menu name=""
+			img="https://developers.openflexo.org/images/components/ta/TechnologyAdapters.png">
+		</menu>
+
 		<menu name="Technology-Adapters">
 			<item name="Home" href="index.html" />
 			<item name="Model layer" href="ModelLayer.html">
