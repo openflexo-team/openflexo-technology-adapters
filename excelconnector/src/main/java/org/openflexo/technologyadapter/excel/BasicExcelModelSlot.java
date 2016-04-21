@@ -52,6 +52,7 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
+import org.openflexo.foundation.fml.annotations.DeclareFlexoBehaviourParameters;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
@@ -64,9 +65,13 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.fml.ExcelActorReference;
+import org.openflexo.technologyadapter.excel.fml.ExcelCellParameter;
 import org.openflexo.technologyadapter.excel.fml.ExcelCellRole;
+import org.openflexo.technologyadapter.excel.fml.ExcelColumnParameter;
 import org.openflexo.technologyadapter.excel.fml.ExcelColumnRole;
+import org.openflexo.technologyadapter.excel.fml.ExcelRowParameter;
 import org.openflexo.technologyadapter.excel.fml.ExcelRowRole;
+import org.openflexo.technologyadapter.excel.fml.ExcelSheetParameter;
 import org.openflexo.technologyadapter.excel.fml.ExcelSheetRole;
 import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelCell;
 import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelRow;
@@ -90,12 +95,13 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 @DeclareFlexoRoles({ ExcelSheetRole.class, ExcelColumnRole.class, ExcelRowRole.class, ExcelCellRole.class })
 @DeclareEditionActions({ AddExcelCell.class, AddExcelRow.class, AddExcelSheet.class, CellStyleAction.class })
 @DeclareFetchRequests({ SelectExcelSheet.class, SelectExcelRow.class, SelectExcelCell.class })
+@DeclareFlexoBehaviourParameters({ ExcelSheetParameter.class, ExcelCellParameter.class, ExcelRowParameter.class, ExcelColumnParameter.class })
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlot.BasicExcelModelSlotImpl.class)
 @XMLElement
 public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
-	public static abstract class BasicExcelModelSlotImpl extends FreeModelSlotImpl<ExcelWorkbook>implements BasicExcelModelSlot {
+	public static abstract class BasicExcelModelSlotImpl extends FreeModelSlotImpl<ExcelWorkbook> implements BasicExcelModelSlot {
 
 		private static final Logger logger = Logger.getLogger(BasicExcelModelSlot.class.getPackage().getName());
 

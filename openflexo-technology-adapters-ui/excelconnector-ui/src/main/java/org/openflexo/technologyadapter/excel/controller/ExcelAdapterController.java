@@ -40,9 +40,14 @@ package org.openflexo.technologyadapter.excel.controller;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
+import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBModelFactory;
+import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
@@ -155,17 +160,23 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
 		if (AddExcelSheet.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelSheet.class), IconLibrary.DUPLICATE);
-		} else if (AddExcelCell.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (AddExcelCell.class.isAssignableFrom(editionActionClass)) {
 			return ExcelIconLibrary.ADD_EXCEL_CELL_ICON;
-		} else if (AddExcelRow.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (AddExcelRow.class.isAssignableFrom(editionActionClass)) {
 			return ExcelIconLibrary.ADD_EXCEL_ROW_ICON;
-		} else if (CellStyleAction.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (CellStyleAction.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(ExcelIconLibrary.EXCEL_GRAPHICAL_ACTION_ICON, IconLibrary.DUPLICATE);
-		} else if (SelectExcelSheet.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (SelectExcelSheet.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelSheet.class), IconLibrary.IMPORT);
-		} else if (SelectExcelRow.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (SelectExcelRow.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelRow.class), IconLibrary.IMPORT);
-		} else if (SelectExcelCell.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (SelectExcelCell.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(ExcelCell.class), IconLibrary.IMPORT);
 		}
 		return super.getIconForEditionAction(editionActionClass);
@@ -194,6 +205,21 @@ public class ExcelAdapterController extends TechnologyAdapterController<ExcelTec
 			return new ExcelWorkbookView((ExcelWorkbook) object, controller, perspective);
 		}
 		return new EmptyPanel<TechnologyObject<ExcelTechnologyAdapter>>(controller, perspective, object);
+	}
+
+	/**
+	 * Factory method used to instanciate a technology-specific FIBWidget for a given {@link FlexoBehaviourParameter}<br>
+	 * Provides a hook to specialize this method in a given technology
+	 * 
+	 * @param parameter
+	 * @param panel
+	 * @param index
+	 * @return
+	 */
+	@Override
+	public FIBComponent makeWidget(final FlexoBehaviourParameter parameter, FIBPanel panel, int index,
+			FlexoBehaviourAction<?, ?, ?> action, FIBModelFactory fibModelFactory) {
+		return super.makeWidget(parameter, panel, index, action, fibModelFactory);
 	}
 
 }
