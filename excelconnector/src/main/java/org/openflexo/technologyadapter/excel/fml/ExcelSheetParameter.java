@@ -38,11 +38,15 @@
 
 package org.openflexo.technologyadapter.excel.fml;
 
+import java.lang.reflect.Type;
+import java.util.List;
+
 import org.openflexo.foundation.fml.InnerModelSlotParameter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
+import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 
 @ModelEntity
 @ImplementationClass(ExcelSheetParameter.ExcelSheetParameterImpl.class)
@@ -59,6 +63,17 @@ public interface ExcelSheetParameter extends InnerModelSlotParameter<BasicExcelM
 		@Override
 		public WidgetType getWidget() {
 			return WidgetType.TECHNOLOGY_OBJECT;
+		}
+
+		@Override
+		public Type getType() {
+			return ExcelSheet.class;
+		};
+
+		@SuppressWarnings("rawtypes")
+		@Override
+		public List<BasicExcelModelSlot> getAccessibleModelSlots() {
+			return getOwningVirtualModel().getModelSlots(BasicExcelModelSlot.class);
 		}
 	}
 }
