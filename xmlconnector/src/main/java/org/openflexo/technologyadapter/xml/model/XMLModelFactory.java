@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.model;
 
 import java.io.IOException;
@@ -76,13 +75,22 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 		if (mm != null) {
 			tt = mm.getTypeFromURI(typeURI);
 		}
-		// Create the type if it does not exist and that we can!!
 
+		// Try to match as local uri
+		if (container instanceof XMLIndividual) {
+			XMLType parentType = ((XMLIndividual) container).getType();
+			if (tt == null && !typeURI.startsWith(parentType.getFullyQualifiedName())) {
+				tt = mm.getTypeFromURI(parentType.getFullyQualifiedName() + "#" + typeURI);
+			}
+		}
+
+		// Create the type if it does not exist and that we can!!
 		if (!mm.isReadOnly() && tt == null) {
 			if (container instanceof XMLIndividual) {
 				XMLType parentType = ((XMLIndividual) container).getType();
-				tt = mm.createNewType(mm.getURI() + "/" + parentType.getName() + "#" + objectName, objectName, false);
-			} else {
+				tt = mm.createNewType((parentType.getFullyQualifiedName() + "#" + objectName), objectName, false);
+			}
+			else {
 				tt = mm.createNewType(mm.getURI() + "#" + objectName, objectName, false);
 			}
 		}
@@ -101,7 +109,8 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 				throw new IOException(e.getMessage());
 			}
 			return this.model;
-		} else {
+		}
+		else {
 			LOGGER.warning("Context is not set for parsing, aborting");
 		}
 		return null;
@@ -119,7 +128,8 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 			}
 			return this.model;
 
-		} else {
+		}
+		else {
 			LOGGER.warning("Context is not set for parsing, aborting");
 		}
 		return null;
@@ -178,14 +188,17 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 
 					if (prop != null) {
 						((XMLIndividual) object).addPropertyValue(prop, value);
-					} else {
+					}
+					else {
 						LOGGER.warning("UNABLE to create a new property named " + name);
 					}
-				} else {
-					LOGGER.warning("TRYING to give a value to a non existant property: " + name + " -- "
-							+ name.equals(XMLCst.CDATA_ATTR_NAME));
 				}
-			} else {
+				else {
+					LOGGER.warning(
+							"TRYING to give a value to a non existant property: " + name + " -- " + name.equals(XMLCst.CDATA_ATTR_NAME));
+				}
+			}
+			else {
 				((XMLIndividual) object).addPropertyValue(prop, value);
 
 			}
@@ -206,7 +219,8 @@ public class XMLModelFactory extends SaxBasedObjectGraphFactory {
 		XMLProperty prop = ((XMLIndividual) currentContainer).getType().getPropertyByName(localName);
 		if (prop != null) {
 			return prop.getType();
-		} else
+		}
+		else
 			return null;
 	}
 }

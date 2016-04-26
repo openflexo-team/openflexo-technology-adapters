@@ -63,6 +63,7 @@ import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
+import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.model.XMLModelFactory;
 import org.openflexo.technologyadapter.xml.model.XMLModelImpl;
@@ -74,7 +75,7 @@ import org.openflexo.xml.XMLRootElementReader;
  * @author xtof
  * 
  */
-public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> implements XMLFileResource {
+public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel>implements XMLFileResource {
 
 	protected static final Logger logger = Logger.getLogger(XMLFileResourceImpl.class.getPackage().getName());
 	protected static XMLRootElementReader REreader = new XMLRootElementReader();
@@ -93,8 +94,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	public static XMLFileResource makeXMLFileResource(File xmlFile, XMLTechnologyContextManager technologyContextManager,
 			FlexoResourceCenter<?> resourceCenter) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					XMLFileResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, XMLFileResource.class));
 			XMLFileResourceImpl returned = (XMLFileResourceImpl) factory.newInstance(XMLFileResource.class);
 			returned.initName(xmlFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xmlFile, factory));
@@ -180,7 +181,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			XMLRootElementInfo rootInfo;
 			rootInfo = REreader.readRootElement(this.getFile());
 			return rootInfo.getURI();
-		} else {
+		}
+		else {
 			return this.getModel().getMetaModel().getURI();
 		}
 
@@ -191,7 +193,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			XMLRootElementInfo rootInfo;
 			rootInfo = REreader.readRootElement(f);
 			return rootInfo.getURI();
-		} else {
+		}
+		else {
 			throw new IOException("File Not Found ");
 		}
 	}
@@ -231,11 +234,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 
 			try {
 
-				FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = ((XMLFileResource) resourceData.getResource())
-						.getMetaModelResource();
-				if (resourceData.getMetaModel() == null && mmRes != null) {
-					resourceData.setMetaModel(mmRes.getMetaModelData());
-				}
+				FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = getMetaModelResource();
 
 				XMLModelFactory factory = getTechnologyAdapter().getXMLModelFactory();
 
@@ -244,6 +243,10 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 				factory.deserialize(new FileInputStream(this.getFile()));
 
 				factory.resetContext();
+
+				if (mmRes != null) {
+					resourceData.setMetaModel(mmRes.getMetaModelData());
+				}
 
 				isLoaded = true;
 
@@ -266,10 +269,24 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	@Override
 	public XMLModel getModelData() {
 
-		if (resourceData == null) {
+		try {
+			return getResourceData(null);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ResourceLoadingCancelledException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FlexoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+
+		/*if (resourceData == null) {
 			resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
 			resourceData.setResource(this);
-		}
+		}*/
 		// TODO : check lifecycle for Resource.... should it be loaded on getModelData?
 		/*
 		if (!isLoaded()) {
@@ -284,15 +301,26 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 			}
 		}
 		 */
-		return resourceData;
+		// return resourceData;
 	}
 
 	@Override
 	public void attachMetamodel() {
-		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = this.getMetaModelResource();
+
+		FlexoMetaModelResource<XMLModel, XMLMetaModel, XMLTechnologyAdapter> mmRes = getMetaModelResource();
 		if (mmRes != null) {
 			resourceData.setMetaModel(mmRes.getMetaModelData());
 		}
+		else {
+			// Create default meta-model, on the fly
+
+			XMLMetaModel mm = XMLMetaModelImpl.getModelFactory().newInstance(XMLMetaModel.class);
+			mm.setURI(getURI() + "/Metamodel");
+			mm.setReadOnly(false);
+
+			resourceData.setMetaModel(mm);
+		}
+
 		if (resourceData.getMetaModel() == null) {
 			logger.warning("Setting a null Metamodel for Model " + this.getURI());
 		}
@@ -305,8 +333,8 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel> im
 	}
 
 	@Override
-	public synchronized XMLModel getResourceData(IProgress progress) throws ResourceLoadingCancelledException,
-			ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
+	public synchronized XMLModel getResourceData(IProgress progress)
+			throws ResourceLoadingCancelledException, ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
 		if (isLoading()) {
 			logger.warning("trying to load a resource data from itself, please investigate");
