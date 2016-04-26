@@ -162,7 +162,7 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel>imp
 			getFlexoIODelegate().hasWrittenOnDisk(lock);
 			notifyResourceStatusChanged();
 			if (logger.isLoggable(Level.INFO)) {
-				logger.info("Succeeding to save Resource " + getURI() + " : " + getFile().getName());
+				logger.info("Succeeding to save Resource " + getURI() + " : " + getFile());
 			}
 		}
 

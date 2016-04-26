@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.model;
 
 import java.lang.reflect.Type;
@@ -108,7 +107,8 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 	public String getName() {
 		if (xmlResource != null) {
 			return xmlResource.getName();
-		} else
+		}
+		else
 			return "";
 	}
 
@@ -169,7 +169,7 @@ public abstract class XMLModelImpl extends FlexoObjectImpl implements XMLModel {
 	}
 
 	@Override
-	public Object addNewIndividual(Type aType) {
+	public XMLIndividual addNewIndividual(Type aType) {
 		XMLIndividual anIndividual = getModelFactory().newInstance(XMLIndividual.class, this, aType);
 		// XMLIndividual anIndividual = new XMLIndividual(this, (XMLType) aType);
 		this.addIndividual(anIndividual);
