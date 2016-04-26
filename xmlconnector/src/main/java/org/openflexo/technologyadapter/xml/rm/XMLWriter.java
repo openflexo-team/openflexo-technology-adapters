@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.rm;
 
 import java.io.IOException;
@@ -57,7 +56,7 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLObjectProperty;
 import org.openflexo.technologyadapter.xml.metamodel.XMLProperty;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
-
+import org.openflexo.toolbox.StringUtils;
 
 /**
  * This SaxHandler is used to serialize any XML file, either conformant or not to an XSD file The behavior of the Handler depends on the
@@ -94,7 +93,7 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 			myWriter = xmlOutputFactory.createXMLStreamWriter(outputStr);
 
 			XMLModel model = ((XMLModel) taRes.getResourceData(null));
-			if ( model.getNamespace().size() == 2){
+			if (model.getNamespace().size() == 2) {
 				NSPrefix = model.getNamespace().get(XMLModel.NSPREFIX_INDEX);
 				NSURI = model.getNamespace().get(XMLModel.NSURI_INDEX);
 			}
@@ -127,11 +126,11 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 		}
 	}
 
-	private void writeRootElement(XMLIndividual rootIndiv, String nSURI, String nSPrefix) throws XMLStreamException, IOException,
-	ResourceLoadingCancelledException, FlexoException {
+	private void writeRootElement(XMLIndividual rootIndiv, String nSURI, String nSPrefix)
+			throws XMLStreamException, IOException, ResourceLoadingCancelledException, FlexoException {
 
 		myWriter.writeStartElement(nSURI, rootIndiv.getName());
-		if (nSURI != null && !nSURI.isEmpty()){
+		if (nSURI != null && !nSURI.isEmpty()) {
 			myWriter.writeNamespace(nSPrefix, nSURI);
 		}
 		// Attributes
@@ -161,6 +160,12 @@ public class XMLWriter<R extends TechnologyAdapterResource<RD, ?>, RD extends Re
 
 		// Attributes
 		writeAttributes(indiv);
+
+		// Text
+		if (StringUtils.isNotEmpty(indiv.getText())) {
+			myWriter.writeCharacters(indiv.getText());
+		}
+
 		// children node
 		for (Object i : indiv.getChildren()) {
 			writeElement(i, ((XMLIndividual) i).getName());

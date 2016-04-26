@@ -81,6 +81,9 @@ public interface XMLIndividual extends XMLObject {
 	public static final String CHILD = "children";
 	public static final String PARENT = "parent";
 	public static final String PROPERTIES_VALUES = "propertiesValues";
+
+	public static final String TEXT = "text";
+
 	/**
 	 * Property used to host XML's PCDATA textual content
 	 */
@@ -137,6 +140,12 @@ public interface XMLIndividual extends XMLObject {
 
 	@Remover(value = PROPERTIES_VALUES)
 	public void deletePropertyValues(XMLProperty attr);
+
+	@Getter(TEXT)
+	public String getText();
+
+	@Setter(TEXT)
+	public void setText(String value);
 
 	@Getter(CONTENT)
 	public String getContentDATA();
