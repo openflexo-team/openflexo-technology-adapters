@@ -364,12 +364,13 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 
 				}
 				else {
-					// This Model has no MetaModel URI, we create a private one for the model
-
-					XMLMetaModel mm = XMLMetaModelImpl.getModelFactory().newInstance(XMLMetaModel.class);
-					mm.setURI(mRes.getURI() + "/Metamodel");
-					mm.setReadOnly(false);
-					mRes.getModel().setMetaModel(mm);
+					// This not done here anymore, as it causes huge impacts when ResourceCenter are loaded.
+					// This now should be done using explicit call to attachMetaModel()
+					//
+					// XMLMetaModel mm = XMLMetaModelImpl.getModelFactory().newInstance(XMLMetaModel.class);
+					// mm.setURI(mRes.getURI() + "/Metamodel");
+					// mm.setReadOnly(false);
+					// mRes.getModel().setMetaModel(mm);
 				}
 			}
 		}
