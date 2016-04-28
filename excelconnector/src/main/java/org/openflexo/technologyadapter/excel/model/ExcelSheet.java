@@ -172,6 +172,10 @@ public class ExcelSheet extends ExcelObject {
 		getCellFromName(name).setCellValue(value);
 	}
 
+	public void setCellValue(ExcelCell cell, String value) {
+		cell.setCellValue(value);
+	}
+
 	@Override
 	public String getUri() {
 		return getWorkbook().getUri() + "/" + getName();
