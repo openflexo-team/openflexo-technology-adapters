@@ -51,9 +51,9 @@ import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 
 public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWorkbook> {
-	
+
 	private static final Logger logger = Logger.getLogger(ExcelWorkbook.class.getPackage().getName());
-	
+
 	private Workbook workbook;
 	private ExcelWorkbookResource resource;
 	private List<ExcelSheet> excelSheets;
@@ -113,35 +113,63 @@ public class ExcelWorkbook extends ExcelObject implements ResourceData<ExcelWork
 		this.excelSheets.add(newExcelSheet);
 		addToAccessibleExcelObjects(newExcelSheet);
 	}
-	
-	public ExcelSheet getExcelSheetByName(String name){
+
+	/**
+	 * Get an Excel Sheet within a workbook using its name.
+	 * 
+	 * @param name
+	 * @return
+	 */
+	public ExcelSheet getExcelSheetByName(String name) {
 		Sheet sheet = workbook.getSheet(name);
 		return getExcelSheetFromSheet(sheet);
 	}
 
+	/**
+	 * Get an Excel Sheet using its position in a workbook in the list of sheets
+	 * 
+	 * @param place
+	 * @return
+	 */
+	public ExcelSheet getExcelSheetAtPosition(int position) {
+		Sheet sheet = workbook.getSheetAt(position);
+		return getExcelSheetFromSheet(sheet);
+	}
+
+	/**
+	 * Remove an excel sheet from a workbook
+	 * 
+	 * @param deletedExcelSheet
+	 */
 	public void removeFromExcelSheets(ExcelSheet deletedExcelSheet) {
 		this.excelSheets.remove(deletedExcelSheet);
 		removeFromAccessibleExcelObjects(deletedExcelSheet);
 	}
 
 	public List<ExcelObject> getAccessibleExcelObjects() {
-		if(accessibleExcelObjects==null){
+		if (accessibleExcelObjects == null) {
 			accessibleExcelObjects = new ArrayList<ExcelObject>();
 		}
 		return accessibleExcelObjects;
 	}
-	
-	public void addToAccessibleExcelObjects(ExcelObject excelObject){
+
+	public void addToAccessibleExcelObjects(ExcelObject excelObject) {
 		getAccessibleExcelObjects().add(excelObject);
 	}
-	
-	public void removeFromAccessibleExcelObjects(ExcelObject excelObject){
+
+	public void removeFromAccessibleExcelObjects(ExcelObject excelObject) {
 		getAccessibleExcelObjects().remove(excelObject);
 	}
-	
-	public ExcelSheet getExcelSheetFromSheet(Sheet sheet){
-		for(ExcelSheet excelSheet : getExcelSheets()){
-			if(excelSheet.getSheet().equals(sheet)){
+
+	/**
+	 * Get an ExcelSheet(Technology adapter abstraction) from a Sheet(Poi abstraction).
+	 * 
+	 * @param sheet
+	 * @return
+	 */
+	public ExcelSheet getExcelSheetFromSheet(Sheet sheet) {
+		for (ExcelSheet excelSheet : getExcelSheets()) {
+			if (excelSheet.getSheet().equals(sheet)) {
 				return excelSheet;
 			}
 		}
