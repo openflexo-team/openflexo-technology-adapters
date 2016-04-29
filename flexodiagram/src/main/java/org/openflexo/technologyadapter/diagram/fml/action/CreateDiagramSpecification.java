@@ -113,7 +113,6 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 	public boolean isNewDiagramSpecificationNameValid() {
 		if (StringUtils.isEmpty(newDiagramSpecificationName)) {
-			errorMessage = "please_supply_valid_diagram_specification_name";
 			return false;
 		}
 		return true;
@@ -121,27 +120,21 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 
 	public boolean isNewDiagramSpecificationUriValid() {
 		if (StringUtils.isEmpty(newDiagramSpecificationURI)) {
-			errorMessage = "please_supply_valid_diagram_specification_uri";
 			return false;
 		}
 		try {
 			new URL(newDiagramSpecificationURI);
 		} catch (MalformedURLException e) {
-			errorMessage = "malformed_uri";
 			return false;
 		}
 		if (getFocusedObject().getResourceRepository() == null) {
-			errorMessage = "could_not_access_registered_resources";
 			return false;
 		}
 		if (getFocusedObject().getResourceRepository().getResource(newDiagramSpecificationURI) != null) {
-			errorMessage = "already_existing_diagram_specification_uri";
 			return false;
 		}
 		return true;
 	}
-
-	public String errorMessage;
 
 	@Override
 	public boolean isValid() {
@@ -163,7 +156,12 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 	}
 
 	public void setNewDiagramSpecificationName(String newDiagramSpecificationName) {
-		this.newDiagramSpecificationName = newDiagramSpecificationName;
+		if ((newDiagramSpecificationName == null && this.newDiagramSpecificationName != null)
+				|| (newDiagramSpecificationName != null && !newDiagramSpecificationName.equals(this.newDiagramSpecificationName))) {
+			String oldValue = this.newDiagramSpecificationName;
+			this.newDiagramSpecificationName = newDiagramSpecificationName;
+			getPropertyChangeSupport().firePropertyChange("newDiagramSpecificationName", oldValue, newDiagramSpecificationName);
+		}
 	}
 
 	public String getNewDiagramSpecificationURI() {
@@ -171,7 +169,12 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 	}
 
 	public void setNewDiagramSpecificationURI(String newDiagramSpecificationURI) {
-		this.newDiagramSpecificationURI = newDiagramSpecificationURI;
+		if ((newDiagramSpecificationURI == null && this.newDiagramSpecificationURI != null)
+				|| (newDiagramSpecificationURI != null && !newDiagramSpecificationURI.equals(this.newDiagramSpecificationURI))) {
+			String oldValue = this.newDiagramSpecificationURI;
+			this.newDiagramSpecificationURI = newDiagramSpecificationURI;
+			getPropertyChangeSupport().firePropertyChange("newDiagramSpecificationURI", oldValue, newDiagramSpecificationURI);
+		}
 	}
 
 	public String getNewDiagramSpecificationDescription() {
@@ -179,7 +182,13 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 	}
 
 	public void setNewDiagramSpecificationDescription(String newDiagramSpecificationDescription) {
-		this.newDiagramSpecificationDescription = newDiagramSpecificationDescription;
+		if ((newDiagramSpecificationDescription == null && this.newDiagramSpecificationDescription != null)
+				|| (newDiagramSpecificationDescription != null
+						&& !newDiagramSpecificationDescription.equals(this.newDiagramSpecificationDescription))) {
+			String oldValue = this.newDiagramSpecificationDescription;
+			this.newDiagramSpecificationDescription = newDiagramSpecificationDescription;
+			getPropertyChangeSupport().firePropertyChange("newDiagramSpecificationDescription", oldValue,
+					newDiagramSpecificationDescription);
+		}
 	}
-
 }
