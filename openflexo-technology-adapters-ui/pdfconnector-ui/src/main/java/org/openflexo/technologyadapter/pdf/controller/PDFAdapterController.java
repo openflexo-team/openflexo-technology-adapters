@@ -71,44 +71,17 @@ public class PDFAdapterController extends TechnologyAdapterController<PDFTechnol
 
 	@Override
 	public ImageIcon getIconForTechnologyObject(TechnologyObject<?> object) {
-		/*if (object instanceof PDFParagraph) {
-			PDFParagraph paragraph = (PDFParagraph) object;
-			if (paragraph.getStyle() != null && paragraph.getStyle().isLevelled()) {
-				return PDFIconLibrary.SECTION_ICON;
-			} else {
-				return PDFIconLibrary.PARAGRAPH_ICON;
-			}
-		} else if (object instanceof PDFTable) {
-			return PDFIconLibrary.TABLE_ICON;
-		} else if (object instanceof PDFDrawingRun) {
-			return PDFIconLibrary.IMAGE_ICON;
-		} else if (object instanceof PDFFragment) {
-			return PDFIconLibrary.FRAGMENT_ICON;
-		} else if (object instanceof TextBinding) {
-			return PDFIconLibrary.TEXT_BINDING_ICON;
-		} else if (object instanceof ColumnTableBinding) {
-			return PDFIconLibrary.COLUMN_BINDING_ICON;
-		}*/
+		if (object instanceof PDFDocument) {
+			return PDFIconLibrary.PDF_FILE_ICON;
+		}
 		return super.getIconForTechnologyObject(object);
 	}
 
 	@Override
 	public ImageIcon getIconForTechnologyObject(Class<? extends TechnologyObject<?>> objectClass) {
-		/*if (PDFDocument.class.isAssignableFrom(objectClass)) {
-			return PDFIconLibrary.DOCX_FILE_ICON;
+		if (PDFDocument.class.isAssignableFrom(objectClass)) {
+			return PDFIconLibrary.PDF_FILE_ICON;
 		}
-		if (PDFParagraph.class.isAssignableFrom(objectClass)) {
-			return PDFIconLibrary.SECTION_ICON;
-		}
-		if (PDFFragment.class.isAssignableFrom(objectClass)) {
-			return PDFIconLibrary.FRAGMENT_ICON;
-		}
-		if (TextBinding.class.isAssignableFrom(objectClass)) {
-			return PDFIconLibrary.TEXT_BINDING_ICON;
-		}
-		if (ColumnTableBinding.class.isAssignableFrom(objectClass)) {
-			return PDFIconLibrary.COLUMN_BINDING_ICON;
-		}*/
 		return null;
 	}
 
