@@ -176,7 +176,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 
 		XMLModelRepository mRepository = resourceCenter.getRepository(XMLModelRepository.class, this);
 		if (mRepository == null) {

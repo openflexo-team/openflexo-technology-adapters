@@ -79,7 +79,7 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 		// TODO Auto-generated method stub
 		GINAResourceRepository currentRepository = resourceCenter.getRepository(GINAResourceRepository.class, this);
 		if (currentRepository == null) {

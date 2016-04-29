@@ -92,7 +92,7 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 		OSLCRepository oslcRepository = resourceCenter.getRepository(OSLCRepository.class, this);
 		if (oslcRepository == null) {
 			oslcRepository = createOSLCRepository(resourceCenter);

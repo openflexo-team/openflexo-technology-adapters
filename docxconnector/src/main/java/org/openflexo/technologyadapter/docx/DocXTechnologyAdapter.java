@@ -93,7 +93,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 
 		DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
 		if (docXRepository == null) {

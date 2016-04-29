@@ -86,7 +86,7 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 
 		PDFDocumentRepository pdfRepository = resourceCenter.getRepository(PDFDocumentRepository.class, this);
 		if (pdfRepository == null) {

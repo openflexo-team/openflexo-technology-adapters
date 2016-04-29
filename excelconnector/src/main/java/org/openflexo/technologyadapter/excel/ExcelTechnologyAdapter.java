@@ -108,7 +108,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 */
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 
 		ExcelWorkbookRepository wbRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class, this);
 		if (wbRepository == null) {

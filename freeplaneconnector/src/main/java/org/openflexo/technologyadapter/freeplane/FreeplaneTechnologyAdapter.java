@@ -112,7 +112,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void initializeResourceCenter(final FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(final FlexoResourceCenter<I> resourceCenter) {
 		// TODO Auto-generated method stub
 		FreeplaneResourceRepository currentRepository = resourceCenter.getRepository(FreeplaneResourceRepository.class, this);
 		if (currentRepository == null) {

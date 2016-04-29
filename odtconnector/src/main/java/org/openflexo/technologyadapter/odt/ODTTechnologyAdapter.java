@@ -85,7 +85,7 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 
 		ODTDocumentRepository odtRepository = resourceCenter.getRepository(ODTDocumentRepository.class, this);
 		if (odtRepository == null) {

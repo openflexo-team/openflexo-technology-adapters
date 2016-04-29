@@ -105,7 +105,7 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 */
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 
 		PowerpointSlideShowRepository ssRepository = resourceCenter.getRepository(PowerpointSlideShowRepository.class, this);
 		if (ssRepository == null) {

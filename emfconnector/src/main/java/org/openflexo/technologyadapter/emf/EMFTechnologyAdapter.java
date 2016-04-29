@@ -138,7 +138,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 */
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 
 		EMFTechnologyContextManager technologyContextManager = (EMFTechnologyContextManager) getTechnologyAdapterService()
 				.getTechnologyContextManager(this);

@@ -129,7 +129,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 */
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 
 		DiagramTechnologyContextManager technologyContextManager = (DiagramTechnologyContextManager) getTechnologyAdapterService()
 				.getTechnologyContextManager(this);

@@ -117,7 +117,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 */
 	@Override
-	public <I> void initializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
+	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 
 		OWLOntologyLibrary ontologyLibrary = getOntologyLibrary();
 
