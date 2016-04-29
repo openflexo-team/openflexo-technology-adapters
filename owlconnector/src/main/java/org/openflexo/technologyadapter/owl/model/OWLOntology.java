@@ -37,7 +37,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.model;
 
 import java.io.File;
@@ -229,10 +228,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	}
 
 	public static void main(String[] args) {
-		System.out
-				.println("Hop1: "
-						+ findOntologyURI(new File(
-								"/Users/sylvain/GIT/openflexo/flexodesktop/model/flexofoundation/src/test/resources/TestProjects/1.6/Test1.6.prj/Models/myModel.owl")));
+		System.out.println("Hop1: " + findOntologyURI(new File(
+				"/Users/sylvain/GIT/openflexo/flexodesktop/model/flexofoundation/src/test/resources/TestProjects/1.6/Test1.6.prj/Models/myModel.owl")));
 		System.out.println("Hop2: " + findOntologyURI(new File("/Users/sylvain/Library/OpenFlexo/FlexoResourceCenter/owl-xml_cpmf.owl")));
 		System.out.println("Hop3: "
 				+ findOntologyURI(new File("/Users/sylvain/Library/OpenFlexo/FlexoResourceCenter/Ontologies/www.omg.org/UML2.owl")));
@@ -350,7 +347,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		Iterator it = document.getDescendants(new ElementFilter(name));
 		if (it.hasNext()) {
 			return (Element) it.next();
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -359,7 +357,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		Iterator it = from.getDescendants(new ElementFilter(name));
 		if (it.hasNext()) {
 			return (Element) it.next();
-		} else {
+		}
+		else {
 			return null;
 		}
 	}
@@ -383,7 +382,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		String newURI;
 		if (getURI().indexOf("#") > -1) {
 			newURI = getURI().substring(0, getURI().indexOf("#")) + aName;
-		} else {
+		}
+		else {
 			newURI = aName;
 		}
 		logger.warning("Rename ontology " + getURI() + " to " + newURI + " not implemented yet");
@@ -432,17 +432,20 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			if (!importedOntologies.contains(getOntologyLibrary().getRDFSOntology())) {
 				importedOntologies.add(getOntologyLibrary().getRDFSOntology());
 			}
-		} else if (getURI().equals(RDFURIDefinitions.RDF_ONTOLOGY_URI)) {
+		}
+		else if (getURI().equals(RDFURIDefinitions.RDF_ONTOLOGY_URI)) {
 			// RDF ontology should at least import RDFS ontology
 			if (!importedOntologies.contains(getOntologyLibrary().getRDFSOntology())) {
 				importedOntologies.add(getOntologyLibrary().getRDFSOntology());
 			}
-		} else if (getURI().equals(RDFSURIDefinitions.RDFS_ONTOLOGY_URI)) {
+		}
+		else if (getURI().equals(RDFSURIDefinitions.RDFS_ONTOLOGY_URI)) {
 			// RDFS ontology has no requirement
 			if (!importedOntologies.contains(getOntologyLibrary().getRDFOntology())) {
 				importedOntologies.add(getOntologyLibrary().getRDFOntology());
 			}
-		} else {
+		}
+		else {
 			// All other ontologies should at least import OWL ontology
 			if (!importedOntologies.contains(getOntologyLibrary().getOWLOntology())) {
 				importedOntologies.add(getOntologyLibrary().getOWLOntology());
@@ -489,7 +492,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	public boolean importOntology(String ontologyURI) throws OntologyNotFoundException {
 		if (_library.getOntology(ontologyURI) == null) {
 			throw new OntologyNotFoundException();
-		} else {
+		}
+		else {
 			return importOntology(_library.getOntology(ontologyURI));
 		}
 	}
@@ -516,7 +520,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 		if (_library.getOntology(anOntology.getOntologyURI()) == null) {
 			throw new OntologyNotFoundException();
-		} else if (_library.getOntology(anOntology.getOntologyURI()) != anOntology) {
+		}
+		else if (_library.getOntology(anOntology.getOntologyURI()) != anOntology) {
 			throw new OntologyNotFoundException();
 		}
 
@@ -613,18 +618,23 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			if (getOntologyObject(ontProperty.getURI()) == null) {
 				if (ontProperty.canAs(ObjectProperty.class)) {
 					makeNewObjectProperty(ontProperty.as(ObjectProperty.class));
-				} else if (ontProperty.canAs(DatatypeProperty.class)) {
+				}
+				else if (ontProperty.canAs(DatatypeProperty.class)) {
 					makeNewDataProperty(ontProperty.as(DatatypeProperty.class));
-				} else if (ontProperty.canAs(AnnotationProperty.class)) {
+				}
+				else if (ontProperty.canAs(AnnotationProperty.class)) {
 					AnnotationProperty ap = ontProperty.as(AnnotationProperty.class);
 					if (ap.getRange() != null && ap.getRange().getURI().equals(RDFSURIDefinitions.RDFS_LITERAL_URI)) {
 						makeNewDataProperty(ontProperty);
-					} else if (ap.getRange() != null && ap.getRange().getURI().equals(RDFSURIDefinitions.RDFS_RESOURCE_URI)) {
+					}
+					else if (ap.getRange() != null && ap.getRange().getURI().equals(RDFSURIDefinitions.RDFS_RESOURCE_URI)) {
 						makeNewObjectProperty(ontProperty);
-					} else {
+					}
+					else {
 						OWLObjectProperty p = makeNewObjectProperty(ontProperty);
 					}
-				} else {
+				}
+				else {
 					// default behaviour: create object property
 					makeNewObjectProperty(ontProperty);
 				}
@@ -696,7 +706,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 					importedOntologies.add(getOntologyLibrary().getOWLOntology());
 				}
 				THING_CONCEPT = makeThingConcept();
-			} else {
+			}
+			else {
 				logger.warning("Could not find OWL ontology");
 			}
 		}
@@ -847,7 +858,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			setChanged();
 			notifyObservers(new OntologyClassInserted(aClass));
 			return aClass;
-		} else {
+		}
+		else {
 			logger.warning("Unexpected null URI for " + ontClass);
 			return null;
 		}
@@ -893,10 +905,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		if (classes.get(oldURI) == object) {
 			classes.remove(oldURI);
 			classes.put(newURI, object);
-		} else if (classes.get(oldURI) == null) {
+		}
+		else if (classes.get(oldURI) == null) {
 			logger.warning("Inconsistent data in Ontology: rename invoked for non previously-existant ontology class");
 			classes.put(newURI, object);
-		} else {
+		}
+		else {
 			logger.severe("Inconsistent data in Ontology: rename invoked while found an other class than the one renamed");
 		}
 		needsReordering = true;
@@ -915,7 +929,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			setChanged();
 			notifyObservers(new OntologyIndividualInserted(anIndividual));
 			return anIndividual;
-		} else {
+		}
+		else {
 			logger.warning("Unexpected null URI for " + individual);
 			return null;
 		}
@@ -947,10 +962,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		if (individuals.get(oldURI) == object) {
 			individuals.remove(oldURI);
 			individuals.put(newURI, object);
-		} else if (individuals.get(oldURI) == null) {
+		}
+		else if (individuals.get(oldURI) == null) {
 			logger.warning("Inconsistent data in Ontology: rename invoked for non previously-existant ontology individual");
 			individuals.put(newURI, object);
-		} else {
+		}
+		else {
 			logger.severe("Inconsistent data in Ontology: rename invoked while found an other individual than the one renamed");
 		}
 		needsReordering = true;
@@ -969,7 +986,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			setChanged();
 			notifyObservers(new OntologyDataPropertyInserted(property));
 			return property;
-		} else {
+		}
+		else {
 			logger.warning("Unexpected null URI for " + ontProperty);
 			return null;
 		}
@@ -1001,10 +1019,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		if (dataProperties.get(oldURI) == object) {
 			dataProperties.remove(oldURI);
 			dataProperties.put(newURI, object);
-		} else if (dataProperties.get(oldURI) == null) {
+		}
+		else if (dataProperties.get(oldURI) == null) {
 			logger.warning("Inconsistent data in Ontology: rename invoked for non previously-existant ontology data property");
 			dataProperties.put(newURI, object);
-		} else {
+		}
+		else {
 			logger.severe("Inconsistent data in Ontology: rename invoked while found an other data property than the one renamed");
 		}
 		needsReordering = true;
@@ -1023,7 +1043,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			setChanged();
 			notifyObservers(new OntologyObjectPropertyInserted(property));
 			return property;
-		} else {
+		}
+		else {
 			logger.warning("Unexpected null URI for " + ontProperty);
 			return null;
 		}
@@ -1055,10 +1076,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		if (objectProperties.get(oldURI) == object) {
 			objectProperties.remove(oldURI);
 			objectProperties.put(newURI, object);
-		} else if (objectProperties.get(oldURI) == null) {
+		}
+		else if (objectProperties.get(oldURI) == null) {
 			logger.warning("Inconsistent data in Ontology: rename invoked for non previously-existant ontology object property");
 			objectProperties.put(newURI, object);
-		} else {
+		}
+		else {
 			logger.severe("Inconsistent data in Ontology: rename invoked while found an other object property than the one renamed");
 		}
 		needsReordering = true;
@@ -1069,13 +1092,17 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	protected void renameObject(OWLConcept<?> object, String oldURI, String newURI) {
 		if (object instanceof OWLIndividual) {
 			renameIndividual((OWLIndividual) object, oldURI, newURI);
-		} else if (object instanceof OWLClass) {
+		}
+		else if (object instanceof OWLClass) {
 			renameClass((OWLClass) object, oldURI, newURI);
-		} else if (object instanceof OWLDataProperty) {
+		}
+		else if (object instanceof OWLDataProperty) {
 			renameDataProperty((OWLDataProperty) object, oldURI, newURI);
-		} else if (object instanceof OWLObjectProperty) {
+		}
+		else if (object instanceof OWLObjectProperty) {
 			renameObjectProperty((OWLObjectProperty) object, oldURI, newURI);
-		} else {
+		}
+		else {
 			logger.warning("Unexpected object " + object);
 		}
 	}
@@ -1091,13 +1118,17 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		// Not found, may be we have to create this new concept
 		if (resource.canAs(OntClass.class)) {
 			return retrieveOntologyClass(resource.as(OntClass.class));
-		} else if (resource.canAs(Individual.class)) {
+		}
+		else if (resource.canAs(Individual.class)) {
 			return retrieveOntologyIndividual(resource.as(Individual.class));
-		} else if (resource.canAs(ObjectProperty.class)) {
+		}
+		else if (resource.canAs(ObjectProperty.class)) {
 			return retrieveOntologyObjectProperty(resource.as(ObjectProperty.class));
-		} else if (resource.canAs(DatatypeProperty.class)) {
+		}
+		else if (resource.canAs(DatatypeProperty.class)) {
 			return retrieveOntologyDataProperty(resource.as(DatatypeProperty.class));
-		} else {
+		}
+		else {
 			logger.warning("Unexpected resource: " + resource);
 			return null;
 		}
@@ -1106,9 +1137,11 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 	protected OWLProperty retrieveOntologyProperty(OntProperty property) {
 		if (property.canAs(ObjectProperty.class)) {
 			return retrieveOntologyObjectProperty(property.as(ObjectProperty.class));
-		} else if (property.canAs(DatatypeProperty.class)) {
+		}
+		else if (property.canAs(DatatypeProperty.class)) {
 			return retrieveOntologyDataProperty(property.as(DatatypeProperty.class));
-		} else {
+		}
+		else {
 			logger.warning("Unexpected property: " + property);
 			return null;
 		}
@@ -1186,11 +1219,14 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 		else if (resource.canAs(ComplementClass.class)) {
 			returned = new OWLComplementClass(resource.asComplementClass(), getOntology(), getTechnologyAdapter());
-		} else if (resource.canAs(UnionClass.class)) {
+		}
+		else if (resource.canAs(UnionClass.class)) {
 			returned = new OWLUnionClass(resource.asUnionClass(), getOntology(), getTechnologyAdapter());
-		} else if (resource.canAs(IntersectionClass.class)) {
+		}
+		else if (resource.canAs(IntersectionClass.class)) {
 			returned = new OWLIntersectionClass(resource.asIntersectionClass(), getOntology(), getTechnologyAdapter());
-		} else {
+		}
+		else {
 			// logger.warning("Unexpected class: " + resource);
 			return null;
 		}
@@ -1216,22 +1252,30 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 
 		if (restriction.isSomeValuesFromRestriction()) {
 			returned = new SomeValuesFromRestrictionClass(restriction.asSomeValuesFromRestriction(), getOntology(), getTechnologyAdapter());
-		} else if (restriction.isAllValuesFromRestriction()) {
+		}
+		else if (restriction.isAllValuesFromRestriction()) {
 			returned = new AllValuesFromRestrictionClass(restriction.asAllValuesFromRestriction(), getOntology(), getTechnologyAdapter());
-		} else if (restriction.isHasValueRestriction()) {
+		}
+		else if (restriction.isHasValueRestriction()) {
 			returned = new HasValueRestrictionClass(restriction.asHasValueRestriction(), getOntology(), getTechnologyAdapter());
-		} else if (restriction.isCardinalityRestriction()) {
+		}
+		else if (restriction.isCardinalityRestriction()) {
 			returned = new CardinalityRestrictionClass(restriction.asCardinalityRestriction(), getOntology(), getTechnologyAdapter());
-		} else if (restriction.isMinCardinalityRestriction()) {
+		}
+		else if (restriction.isMinCardinalityRestriction()) {
 			returned = new MinCardinalityRestrictionClass(restriction.asMinCardinalityRestriction(), getOntology(), getTechnologyAdapter());
-		} else if (restriction.isMaxCardinalityRestriction()) {
+		}
+		else if (restriction.isMaxCardinalityRestriction()) {
 			returned = new MaxCardinalityRestrictionClass(restriction.asMaxCardinalityRestriction(), getOntology(), getTechnologyAdapter());
-		} else if (restriction.getProperty(ON_CLASS) != null || restriction.getProperty(ON_DATA_RANGE) != null) {
+		}
+		else if (restriction.getProperty(ON_CLASS) != null || restriction.getProperty(ON_DATA_RANGE) != null) {
 			if (restriction.getProperty(QUALIFIED_CARDINALITY) != null) {
 				returned = new CardinalityRestrictionClass(restriction, getOntology(), getTechnologyAdapter());
-			} else if (restriction.getProperty(MIN_QUALIFIED_CARDINALITY) != null) {
+			}
+			else if (restriction.getProperty(MIN_QUALIFIED_CARDINALITY) != null) {
 				returned = new MinCardinalityRestrictionClass(restriction, getOntology(), getTechnologyAdapter());
-			} else if (restriction.getProperty(MAX_QUALIFIED_CARDINALITY) != null) {
+			}
+			else if (restriction.getProperty(MAX_QUALIFIED_CARDINALITY) != null) {
 				returned = new MaxCardinalityRestrictionClass(restriction, getOntology(), getTechnologyAdapter());
 			}
 		}
@@ -1239,7 +1283,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		if (returned != null) {
 			_classes.put(restriction, returned);
 			return returned;
-		} else {
+		}
+		else {
 			logger.warning("Unexpected restriction: " + restriction);
 			return null;
 		}
@@ -1321,7 +1366,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			if (c.redefinesOriginalDefinition()) {
 				if (c instanceof OWLClass && ((OWLClass) c).isRootConcept()) {
 					list.remove(c);
-				} else {
+				}
+				else {
 					list.remove(c.getOriginalDefinition());
 				}
 			}
@@ -1405,7 +1451,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			load();
 			isLoading = false;
 			return true;
-		} else {
+		}
+		else {
 			// logger.info("Skip loading"+getURI());
 			return false;
 		}
@@ -1492,10 +1539,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 					if (classInImportedOntolgy != c) {
 						if (c.getOriginalDefinition() == classInImportedOntolgy) {
 							// Fine, this is done
-						} else if (c.getOriginalDefinition() == null) {
+						}
+						else if (c.getOriginalDefinition() == null) {
 							// We have to set the redefinition
 							c.setOriginalDefinition(classInImportedOntolgy);
-						} else if (!c.isRootConcept()) {
+						}
+						else if (!c.isRootConcept()) {
 							logger.warning("Inconsistent data while trying to bind original definition for OWLClass " + c
 									+ " classInImportedOntolgy=" + classInImportedOntolgy + " while actual original definition is "
 									+ c.getOriginalDefinition());
@@ -1509,10 +1558,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 					if (individualInImportedOntology != i) {
 						if (i.getOriginalDefinition() == individualInImportedOntology) {
 							// Fine, this is done
-						} else if (i.getOriginalDefinition() == null) {
+						}
+						else if (i.getOriginalDefinition() == null) {
 							// We have to set the redefinition
 							i.setOriginalDefinition(individualInImportedOntology);
-						} else {
+						}
+						else {
 							logger.warning("Inconsistent data while trying to bind original definition for OWLIndividual " + i
 									+ " individualInImportedOntology=" + individualInImportedOntology
 									+ " while actual original definition is " + i.getOriginalDefinition());
@@ -1526,10 +1577,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 					if (objectPropertyInImportedOntology != p) {
 						if (p.getOriginalDefinition() == objectPropertyInImportedOntology) {
 							// Fine, this is done
-						} else if (p.getOriginalDefinition() == null) {
+						}
+						else if (p.getOriginalDefinition() == null) {
 							// We have to set the redefinition
 							p.setOriginalDefinition(objectPropertyInImportedOntology);
-						} else {
+						}
+						else {
 							logger.warning("Inconsistent data while trying to bind original definition for OWLObjectProperty " + p
 									+ " objectPropertyInImportedOntology=" + objectPropertyInImportedOntology
 									+ " while actual original definition is " + p.getOriginalDefinition());
@@ -1543,10 +1596,12 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 					if (dataPropertyInImportedOntology != p) {
 						if (p.getOriginalDefinition() == dataPropertyInImportedOntology) {
 							// Fine, this is done
-						} else if (p.getOriginalDefinition() == null) {
+						}
+						else if (p.getOriginalDefinition() == null) {
 							// We have to set the redefinition
 							p.setOriginalDefinition(dataPropertyInImportedOntology);
-						} else {
+						}
+						else {
 							logger.warning("Inconsistent data while trying to bind original definition for OWLDataProperty " + p
 									+ " dataPropertyInImportedOntology=" + dataPropertyInImportedOntology
 									+ " while actual original definition is " + p.getOriginalDefinition());
@@ -1756,7 +1811,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 				OWLIndividual returned = makeNewIndividual(individual);
 				returned.init();
 				return returned;
-			} else {
+			}
+			else {
 				throw new DuplicateURIException(uri);
 			}
 		}
@@ -1797,7 +1853,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 				OWLClass returned = makeNewClass(aClass);
 				returned.init();
 				return returned;
-			} else {
+			}
+			else {
 				throw new DuplicateURIException(uri);
 			}
 		}
@@ -1854,33 +1911,33 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		Property ON_CLASS = ResourceFactory.createProperty(OWL + "onClass");
 
 		switch (type) {
-		case Some:
-			restriction = ontModel.createSomeValuesFromRestriction(null, property.getOntProperty(), objectClass.getOntResource());
-			break;
-		case Only:
-			restriction = ontModel.createAllValuesFromRestriction(null, property.getOntProperty(), objectClass.getOntResource());
-			break;
-		case Exact:
-			Property QUALIFIED_CARDINALITY = ResourceFactory.createProperty(OWL + "qualifiedCardinality");
-			restriction = ontModel.createRestriction(property.getOntProperty());
-			restriction.addProperty(ON_CLASS, objectClass.getOntResource());
-			restriction.addLiteral(QUALIFIED_CARDINALITY, cardinality);
-			break;
-		case Min:
-			Property MIN_QUALIFIED_CARDINALITY = ResourceFactory.createProperty(OWL + "minQualifiedCardinality");
-			restriction = ontModel.createRestriction(property.getOntProperty());
-			restriction.addProperty(ON_CLASS, objectClass.getOntResource());
-			restriction.addLiteral(MIN_QUALIFIED_CARDINALITY, cardinality);
-			break;
-		case Max:
-			Property MAX_QUALIFIED_CARDINALITY = ResourceFactory.createProperty(OWL + "maxQualifiedCardinality");
-			restriction = ontModel.createRestriction(property.getOntProperty());
-			restriction.addProperty(ON_CLASS, objectClass.getOntResource());
-			restriction.addLiteral(MAX_QUALIFIED_CARDINALITY, cardinality);
-			break;
+			case Some:
+				restriction = ontModel.createSomeValuesFromRestriction(null, property.getOntProperty(), objectClass.getOntResource());
+				break;
+			case Only:
+				restriction = ontModel.createAllValuesFromRestriction(null, property.getOntProperty(), objectClass.getOntResource());
+				break;
+			case Exact:
+				Property QUALIFIED_CARDINALITY = ResourceFactory.createProperty(OWL + "qualifiedCardinality");
+				restriction = ontModel.createRestriction(property.getOntProperty());
+				restriction.addProperty(ON_CLASS, objectClass.getOntResource());
+				restriction.addLiteral(QUALIFIED_CARDINALITY, cardinality);
+				break;
+			case Min:
+				Property MIN_QUALIFIED_CARDINALITY = ResourceFactory.createProperty(OWL + "minQualifiedCardinality");
+				restriction = ontModel.createRestriction(property.getOntProperty());
+				restriction.addProperty(ON_CLASS, objectClass.getOntResource());
+				restriction.addLiteral(MIN_QUALIFIED_CARDINALITY, cardinality);
+				break;
+			case Max:
+				Property MAX_QUALIFIED_CARDINALITY = ResourceFactory.createProperty(OWL + "maxQualifiedCardinality");
+				restriction = ontModel.createRestriction(property.getOntProperty());
+				restriction.addProperty(ON_CLASS, objectClass.getOntResource());
+				restriction.addLiteral(MAX_QUALIFIED_CARDINALITY, cardinality);
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 
 		if (restriction != null) {
@@ -2004,7 +2061,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 						return returned;
 					}
 				}
-			} else {
+			}
+			else {
 				if (o != null && o != this /*&& !o.getURI().equals(RDFS_ONTOLOGY_URI)*/) {
 					returned = o.getClass(classURI);
 					if (returned != null) {
@@ -2179,8 +2237,8 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 		String uri = findOntologyURI(f);
 		System.out.println("uri: " + uri);
 		System.out.println("uri: " + findOntologyName(f));
-		FlexoResourceCenter resourceCenter = DirectoryResourceCenter.instanciateNewDirectoryResourceCenter(new File(
-				"/Users/sylvain/Library/OpenFlexo/FlexoResourceCenter"));
+		FlexoResourceCenter resourceCenter = DirectoryResourceCenter
+				.instanciateNewDirectoryResourceCenter(new File("/Users/sylvain/Library/OpenFlexo/FlexoResourceCenter"), null);
 		// resourceCenter.retrieveBaseOntologyLibrary();
 		// ImportedOntology o = ImportedOntology.createNewImportedOntology(uri, f, resourceCenter.retrieveBaseOntologyLibrary());
 		// o.load();
@@ -2319,7 +2377,7 @@ public class OWLOntology extends OWLObject implements IFlexoOntology<OWLTechnolo
 			logger.info("***************** setChanged() in OWLOntology");
 		}
 	}
-
+	
 	@Override
 	public synchronized void setIsModified() {
 		super.setIsModified();
