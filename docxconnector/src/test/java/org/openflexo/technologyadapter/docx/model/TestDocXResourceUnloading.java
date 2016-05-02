@@ -82,7 +82,7 @@ public class TestDocXResourceUnloading extends AbstractTestDocX {
 		// if FlexoServiceManager is not freed after each iteration
 		while (i < 10) {
 			log("Iteration " + i);
-			instanciateTestServiceManager();
+			instanciateTestServiceManager(DocXTechnologyAdapter.class);
 			testDocXLoading();
 			log("After docx loading:");
 			debugMemory();

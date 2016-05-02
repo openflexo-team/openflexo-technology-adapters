@@ -72,7 +72,7 @@ public class TestLibreOfficeIdentifiersPersistency extends AbstractTestDocX {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 	}
 
 	/*@Test
@@ -80,7 +80,7 @@ public class TestLibreOfficeIdentifiersPersistency extends AbstractTestDocX {
 	public void testDocXLoading() {
 		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				DocXTechnologyAdapter.class);
-
+	
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
 			assertNotNull(docXRepository);

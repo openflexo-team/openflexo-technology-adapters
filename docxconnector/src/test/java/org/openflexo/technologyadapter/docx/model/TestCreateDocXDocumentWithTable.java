@@ -92,7 +92,7 @@ public class TestCreateDocXDocumentWithTable extends AbstractTestDocX {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 	}
 
 	@Test

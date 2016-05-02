@@ -51,6 +51,7 @@ import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyExceptio
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -75,7 +76,7 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 	}
 
 	@Test

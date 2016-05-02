@@ -67,7 +67,7 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 	}
 
 	@Test
@@ -83,8 +83,8 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 	@Test
 	@TestOrder(3)
 	public void testDocXLoading() {
-		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				DocXTechnologyAdapter.class);
+		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -335,8 +335,8 @@ public class TestLoadDocXDocuments extends AbstractTestDocX {
 
 		System.out.println("ExampleReport.docx:\n" + exampleReport.debugStructuredContents());
 
-		assertEquals(exampleReport.getElements().size(), exampleReport.getWordprocessingMLPackage().getMainDocumentPart().getContent()
-				.size());
+		assertEquals(exampleReport.getElements().size(),
+				exampleReport.getWordprocessingMLPackage().getMainDocumentPart().getContent().size());
 
 		/*System.out.println("Elements: " + documentWithImage.getElements().size());
 		

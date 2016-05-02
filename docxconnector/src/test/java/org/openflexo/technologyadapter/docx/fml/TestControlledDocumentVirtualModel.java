@@ -160,7 +160,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		log("testInitialize()");
 
-		serviceManager = instanciateTestServiceManager();
+		serviceManager = instanciateTestServiceManager(DocXTechnologyAdapter.class);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 		repository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
@@ -520,7 +520,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		DocXDocument generatedDocumentBeforeReload = generatedDocument;
 		assertNotNull(generatedDocumentBeforeReload);
 
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 
 		System.out.println("Project dir = " + _project.getDirectory());
 

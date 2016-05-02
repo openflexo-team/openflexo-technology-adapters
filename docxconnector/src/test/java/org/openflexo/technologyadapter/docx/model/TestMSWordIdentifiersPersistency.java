@@ -81,7 +81,7 @@ public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 	}
 
 	/*@Test
@@ -89,7 +89,7 @@ public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 	public void testDocXLoading() {
 		DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				DocXTechnologyAdapter.class);
-
+	
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
 			assertNotNull(docXRepository);
@@ -211,20 +211,20 @@ public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 	/*@Test
 	@TestOrder(9)
 	public void testStep6() {
-
+	
 		step6 = getDocument("MSWordDocumentEdition/Step6.docx");
-
+	
 		System.out.println("Step6.docx:\n" + step6.debugStructuredContents());
-
+	
 		assertEquals(16, step6.getElements().size());
 		assertEquals(step5.getElements().size(), step6.getElements().size());
-
+	
 		for (int i = 0; i < step4.getElements().size(); i++) {
 			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element5 = step5.getElements().get(i);
 			FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element6 = step6.getElementWithIdentifier(element5.getIdentifier());
 			assertNotNull(element6);
 		}
-
+	
 	}*/
 
 }

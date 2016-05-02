@@ -94,7 +94,7 @@ public class TestCreateBasicDocXDocument extends AbstractTestDocX {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 	}
 
 	@Test
@@ -232,7 +232,7 @@ public class TestCreateBasicDocXDocument extends AbstractTestDocX {
 		DocXDocumentResource documentResourceBeforeReload = newDocResource;
 		assertNotNull(documentBeforeReload);
 
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 
 		File directory = ((FileFlexoIODelegate) newDocResource.getFlexoIODelegate()).getFile().getParentFile();
 
@@ -252,8 +252,8 @@ public class TestCreateBasicDocXDocument extends AbstractTestDocX {
 			e.printStackTrace();
 		}
 
-		assertNotNull(newDocResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(
-				"http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx", null));
+		assertNotNull(newDocResource = (DocXDocumentResource) serviceManager.getResourceManager()
+				.getResource("http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx", null));
 
 		newDocument = newDocResource.getDocument();
 		assertNotSame(documentBeforeReload, newDocument);
