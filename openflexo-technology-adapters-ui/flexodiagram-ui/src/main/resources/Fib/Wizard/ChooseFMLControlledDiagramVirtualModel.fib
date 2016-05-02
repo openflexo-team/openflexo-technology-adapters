@@ -136,15 +136,30 @@
 	<Label id="70" manageDynamicModel="false" useScrollBar="false"
 		controllerClassName="org.openflexo.gina.controller.FIBController"
 		index="3" localize="true" align="left"
-		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=10;insetsLeft=10;insetsRight=10;insetsTop=5;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=3;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=5;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 		label="virtual_model_title" readOnly="false" />
 	<TextField id="71" passwd="false" manageDynamicModel="false"
 		useScrollBar="false" data="data.newVirtualModelInstanceTitle" columns="7"
 		name="VirtualModelTitleTextField" controllerClassName="org.openflexo.gina.controller.FIBController"
 		text="TextField" index="3" localize="true"
-		constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=4;insetsBottom=10;insetsLeft=0;insetsRight=20;insetsTop=5;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+		constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=4;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=5;padX=0;padY=0;weightX=1.0;weightY=0.0)"
 		readOnly="false" validateOnReturn="false" />
-	<SplitPanel id="72" useScrollBar="false"
+		
+	<Label label="virtual_model" index="5"
+		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=10;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		localize="true" />
+	<Custom index="6"
+		data="data.virtualModelResource" componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FIBFMLControlledVirtualModelSelector"
+		name="VirtualModelSelector" controllerClassName="org.openflexo.gina.controller.FIBController"
+		localize="true"
+		constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=2;insetsBottom=10;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+		readOnly="false">
+		<Assignment mandatory="true" value="data.serviceManager.viewPointLibrary" variable="component.viewPointLibrary" />
+		<Assignment mandatory="true" value="data.action.containerViewpointResource" variable="component.viewPoint" />
+	</Custom>
+	
+		
+	<!--  <SplitPanel id="72" useScrollBar="false"
 		controllerClassName="org.openflexo.gina.controller.FIBController"
 		index="3"
 		constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=10;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)">
@@ -231,5 +246,5 @@
 				<Leaf id="93" weight="0.800000011920929" name="details" />
 			</ColSplit>
 		</RowSplit>
-	</SplitPanel>
+	</SplitPanel>-->
 </Panel>
