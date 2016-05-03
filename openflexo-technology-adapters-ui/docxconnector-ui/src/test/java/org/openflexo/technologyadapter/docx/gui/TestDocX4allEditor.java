@@ -42,9 +42,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.io.FileNotFoundException;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,7 +65,7 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestDocX4allEditor extends AbstractTestDocX {
 
-	//private static SwingGraphicalContextDelegate gcDelegate;
+	// private static SwingGraphicalContextDelegate gcDelegate;
 
 	private static DocXDocument simpleDocument;
 	private static DocXDocument structuredDocument;
@@ -78,18 +75,18 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 
 	@BeforeClass
 	public static void setupClass() {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 		initGUI();
 	}
 
 	/*private DocXDocument getDocument(String documentName) {
 		String documentURI = resourceCenter.getDefaultBaseURI() + "TestResourceCenter/" + documentName;
-
+	
 		FlexoResource<DocXDocument> documentResource = serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
-
+	
 		assertNotNull(documentResource);
-
+	
 		try {
 			documentResource.loadResourceData(null);
 		} catch (FileNotFoundException e) {
@@ -102,11 +99,11 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	
 		DocXDocument document = documentResource.getLoadedResourceData();
 		assertNotNull(document);
 		assertNotNull(document.getWordprocessingMLPackage());
-
+	
 		return document;
 	}*/
 
@@ -165,25 +162,25 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 	/*public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(TestDocX4allEditor.class.getSimpleName());
 	}
-
+	
 	@AfterClass
 	public static void waitGUI() {
 		gcDelegate.waitGUI();
 	}
-
+	
 	@Before
 	public void setUp() {
 		gcDelegate.setUp();
 	}
-
+	
 	@Override
 	@After
 	public void tearDown() throws Exception {
 		gcDelegate.tearDown();
 	}*/
 
-	private void openDocXEditor(FlexoResource<DocXDocument> docResource) throws FileNotFoundException, ResourceLoadingCancelledException,
-			FlexoException {
+	private void openDocXEditor(FlexoResource<DocXDocument> docResource)
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		/*DefaultLocalFileProvider p = new DefaultLocalFileProvider();
 		File f = ((FileFlexoIODelegate) docResource.getFlexoIODelegate()).getFile();

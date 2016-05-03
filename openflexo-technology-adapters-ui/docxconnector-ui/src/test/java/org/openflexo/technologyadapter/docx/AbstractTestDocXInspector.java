@@ -119,7 +119,7 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 
 	@BeforeClass
 	public static void setupClass() {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 		initGUI();
 	}
 

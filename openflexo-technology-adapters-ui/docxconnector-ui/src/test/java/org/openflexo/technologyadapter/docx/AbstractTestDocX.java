@@ -107,7 +107,7 @@ public abstract class AbstractTestDocX extends OpenflexoTestCaseWithGUI {
 
 	@BeforeClass
 	public static void setupClass() {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DocXTechnologyAdapter.class);
 		initGUI();
 	}
 
