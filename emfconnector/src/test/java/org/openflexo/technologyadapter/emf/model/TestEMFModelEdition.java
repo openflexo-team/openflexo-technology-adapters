@@ -117,7 +117,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void testCreateViewPoint() {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 

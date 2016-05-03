@@ -74,15 +74,13 @@ public class TestEMFBindingModels extends OpenflexoTestCase {
 	static EMFMetaModelResource emfMetaModelResource = null;
 	static EMFObjectIndividual individual = null;
 
-
 	@Test
 	@TestOrder(1)
-	public void testInitializeServiceManager()  {
+	public void testInitializeServiceManager() {
 
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				EMFTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 
 		assertNotNull(technologicalAdapter);
 		assertNotNull(technologicalAdapter.getTechnologyContextManager());
@@ -90,12 +88,12 @@ public class TestEMFBindingModels extends OpenflexoTestCase {
 		bindingFactory = new EMFBindingFactory();
 	}
 
-
 	@Test
 	@TestOrder(2)
 	public void testEMFMetaModelBindingModel() {
 
-		EMFMetaModelResource metaModelResource = technologicalAdapter.getTechnologyContextManager().getMetaModelResourceByURI(cityOne_MM_URI);
+		EMFMetaModelResource metaModelResource = technologicalAdapter.getTechnologyContextManager()
+				.getMetaModelResourceByURI(cityOne_MM_URI);
 
 		assertNotNull(metaModelResource);
 
@@ -103,21 +101,20 @@ public class TestEMFBindingModels extends OpenflexoTestCase {
 
 		assertNotNull(metaModel);
 
-	// TODO Write tests
-		
-		
+		// TODO Write tests
+
 	}
 
 	/*
 	@Test
 	@TestOrder(3)
 	public void testEMFModelBindingModel() {
-
+	
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			/*
 		EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
 		assertNotNull(metaModelRepository);
-
+	
 		EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
 		Collection<EMFModelResource> modelResources = modelRepository.getAllResources();
 		for (EMFModelResource modelResource : modelResources) {
@@ -125,16 +122,16 @@ public class TestEMFBindingModels extends OpenflexoTestCase {
 			EMFModel model = modelResource.getModel();
 			assertNotNull(model);
 			assertNotNull(model.getMetaModel());
-
-
+	
+	
 		}
 		}
 	}
-
+	
 	@Test
 	@TestOrder(4)
 	public void testEMFIndividualBindingModel() {
-
+	
 	}
 	 */
 }

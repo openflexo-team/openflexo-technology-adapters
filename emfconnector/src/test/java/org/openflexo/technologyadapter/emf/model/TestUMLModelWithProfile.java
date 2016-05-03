@@ -84,7 +84,7 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 	public void testInitializeServiceManager() throws Exception {
 		log("test0InstantiateResourceCenter()");
 
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 		assertNotNull(technologicalAdapter);

@@ -70,38 +70,32 @@ public class TestLoadEMFMetaModel extends OpenflexoTestCase {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
-		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				EMFTechnologyAdapter.class);
+		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 	}
 
 	@Test
 	@TestOrder(2)
 	public void testConvertAllEMFMetaModel() {
 
-
 		Collection<EMFMetaModelResource> metaModelResources = technologicalAdapter.getTechnologyContextManager().getAllMetaModelResources();
 
-		
-			for (EMFMetaModelResource mmResource : metaModelResources) {
-				
-				System.out.println("\t Loading and Converting " + mmResource.getURI());
-				long startTime = System.currentTimeMillis();
+		for (EMFMetaModelResource mmResource : metaModelResources) {
 
-				EMFMetaModel metamodel = mmResource.getMetaModelData();
+			System.out.println("\t Loading and Converting " + mmResource.getURI());
+			long startTime = System.currentTimeMillis();
 
-				assertNotNull(metamodel);
-				assertNull(metamodel.getRootConcept());
-				
-				long endTime = System.currentTimeMillis();
+			EMFMetaModel metamodel = mmResource.getMetaModelData();
 
-				System.out.println("\t\t MetaModel Conversion  took " + (endTime - startTime) + " milliseconds");
+			assertNotNull(metamodel);
+			assertNull(metamodel.getRootConcept());
+
+			long endTime = System.currentTimeMillis();
+
+			System.out.println("\t\t MetaModel Conversion  took " + (endTime - startTime) + " milliseconds");
 
 		}
 	}
-
-	
-
 
 }
