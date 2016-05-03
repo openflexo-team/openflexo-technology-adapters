@@ -76,7 +76,7 @@ public class TestCompareExcelSheet extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(ExcelTechnologyAdapter.class);
 	}
 
 	@Test

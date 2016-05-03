@@ -65,13 +65,13 @@ public class TestLoadExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase {
 
 	private static FlexoEditor editor;
 	private static FlexoProject project;
-	
+
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(ExcelTechnologyAdapter.class);
 	}
-	
+
 	@Test
 	@TestOrder(2)
 	public void testCreateProject() {
@@ -81,15 +81,16 @@ public class TestLoadExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(project.getProjectDirectory().exists());
 		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
 	}
-	
+
 	@Test
 	@TestOrder(3)
 	public void testLoadExcelWorkbook() {
-		ExcelTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				ExcelTechnologyAdapter.class);
+		ExcelTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(ExcelTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			ExcelWorkbookRepository excelWorkbookRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class, technologicalAdapter);
+			ExcelWorkbookRepository excelWorkbookRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class,
+					technologicalAdapter);
 			assertNotNull(excelWorkbookRepository);
 			Collection<ExcelWorkbookResource> workbooks = excelWorkbookRepository.getAllResources();
 			for (ExcelWorkbookResource excelWorkbook : workbooks) {

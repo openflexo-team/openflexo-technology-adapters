@@ -76,7 +76,7 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(ExcelTechnologyAdapter.class);
 	}
 
 	@Test
@@ -89,8 +89,8 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 			assertTrue(project.getProjectDirectory().exists());
 			assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
 			baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
-			ExcelTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-					ExcelTechnologyAdapter.class);
+			ExcelTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+					.getTechnologyAdapter(ExcelTechnologyAdapter.class);
 			for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 				ExcelWorkbookRepository excelWorkbookRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class,
 						technologicalAdapter);

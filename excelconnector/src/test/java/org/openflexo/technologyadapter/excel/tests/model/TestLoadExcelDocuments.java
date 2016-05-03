@@ -67,7 +67,7 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(ExcelTechnologyAdapter.class);
 	}
 
 	@Test
