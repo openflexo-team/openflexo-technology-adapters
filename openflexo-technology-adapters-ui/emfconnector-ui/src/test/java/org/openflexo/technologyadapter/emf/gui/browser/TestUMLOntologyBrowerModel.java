@@ -85,9 +85,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@BeforeClass
 	public static void setupClass() {
-		instanciateTestServiceManager(true);
-
-		instanciateTestServiceManager(true);
+		instanciateTestServiceManager(true, EMFTechnologyAdapter.class);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 
@@ -109,9 +107,9 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
 					+ umlModelResourceRelativeURI);
 
-			umlModelResource = modelRepository.getResource(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI()
-					.toString().replace(File.separator, "/")
-					+ umlModelResourceRelativeURI);
+			umlModelResource = modelRepository.getResource(
+					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
+							+ umlModelResourceRelativeURI);
 
 			assertNotNull(umlModelResource);
 

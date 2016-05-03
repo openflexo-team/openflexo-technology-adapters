@@ -85,9 +85,7 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@BeforeClass
 	public static void setupClass() {
-		instanciateTestServiceManager(true);
-
-		instanciateTestServiceManager(true);
+		instanciateTestServiceManager(true, EMFTechnologyAdapter.class);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 
@@ -110,9 +108,9 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
 					+ ecoreModelResourceRelativeURI);
 
-			ecoreModelResource = modelRepository.getResource(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI()
-					.toString().replace(File.separator, "/")
-					+ ecoreModelResourceRelativeURI);
+			ecoreModelResource = modelRepository.getResource(
+					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
+							+ ecoreModelResourceRelativeURI);
 
 			assertNotNull(ecoreModelResource);
 

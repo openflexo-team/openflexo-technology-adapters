@@ -88,9 +88,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 	@BeforeClass
 	public static void setupClass() {
-		instanciateTestServiceManager(true);
-
-		instanciateTestServiceManager(true);
+		instanciateTestServiceManager(true, EMFTechnologyAdapter.class);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 
@@ -101,8 +99,8 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	@TestOrder(1)
 	public void TestLoadArchimateEMFMetaModel() {
 
-		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				EMFTechnologyAdapter.class);
+		EMFTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(EMFTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
@@ -136,9 +134,9 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
 					+ archimateModelResourceRelativeURI);
 
-			archimateModelResource = modelRepository.getResource(((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory()
-					.toURI().toString().replace(File.separator, "/")
-					+ archimateModelResourceRelativeURI);
+			archimateModelResource = modelRepository.getResource(
+					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
+							+ archimateModelResourceRelativeURI);
 
 			assertNotNull(archimateModelResource);
 
