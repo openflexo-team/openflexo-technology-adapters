@@ -83,7 +83,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() throws IOException {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(XMLTechnologyAdapter.class);
 
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
@@ -212,15 +212,14 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		// aType = new XMLType("http://zutalors.com", "Blib", "pt:Blib", aModel);
 		// aModel.addType(aType);
 
-		XMLIndividual rootIndividual = (XMLIndividual) aModel
-				.addNewIndividual(aModel.getMetaModel().getTypeFromURI("http://montest.com#Blob"));
+		XMLIndividual rootIndividual = aModel.addNewIndividual(aModel.getMetaModel().getTypeFromURI("http://montest.com#Blob"));
 		aModel.setRoot(rootIndividual);
 
-		XMLIndividual anIndividual = (XMLIndividual) aModel.addNewIndividual(aType);
+		XMLIndividual anIndividual = aModel.addNewIndividual(aType);
 		anIndividual.addPropertyValue("name", "Mon velo court");
 		rootIndividual.addChild(anIndividual);
 
-		anIndividual = (XMLIndividual) aModel.addNewIndividual(aType);
+		anIndividual = aModel.addNewIndividual(aType);
 		anIndividual.addPropertyValue("name", "Pan");
 		anIndividual.addPropertyValue("ID", "17");
 		rootIndividual.addChild(anIndividual);

@@ -58,12 +58,12 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 
-	protected static final Logger         logger  = Logger.getLogger(TestXSD.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(TestXSD.class.getPackage().getName());
 
-	private static XMLTechnologyAdapter   xmlAdapter;
+	private static XMLTechnologyAdapter xmlAdapter;
 	private static XSDMetaModelRepository mmRepository;
-	private static XMLModelRepository  modelRepository;
-	private static String                 baseUrl = null;
+	private static XMLModelRepository modelRepository;
+	private static String baseUrl = null;
 
 	/**
 	 * Instanciate test ResourceCenter
@@ -72,7 +72,7 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() {
 
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(XMLTechnologyAdapter.class);
 
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
@@ -96,7 +96,7 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 		log("test1LibraryMetaModelPresentAndLoaded()");
 		XSDMetaModelResource libraryRes = mmRepository.getResource("http://www.example.org/Library");
 		assertNotNull(libraryRes);
-		
+
 		assertFalse(libraryRes.isLoaded());
 		assertNotNull(libraryRes.getMetaModelData());
 		assertTrue(libraryRes.isLoaded());

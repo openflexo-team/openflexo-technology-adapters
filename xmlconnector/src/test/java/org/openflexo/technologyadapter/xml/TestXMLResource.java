@@ -59,12 +59,11 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestXMLResource extends OpenflexoTestCase {
 
-	protected static final Logger         logger = Logger.getLogger(TestXMLResource.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(TestXMLResource.class.getPackage().getName());
 
-	private static XMLTechnologyAdapter   xmlAdapter;
-	private static XMLModelRepository     modelRepository;
-	private static String                 baseUrl;
-
+	private static XMLTechnologyAdapter xmlAdapter;
+	private static XMLModelRepository modelRepository;
+	private static String baseUrl;
 
 	/**
 	 * Instanciate test ResourceCenter
@@ -74,7 +73,7 @@ public class TestXMLResource extends OpenflexoTestCase {
 	@Test
 	@TestOrder(1)
 	public void test0LoadTestResourceCenter() throws IOException {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(XMLTechnologyAdapter.class);
 
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
@@ -93,18 +92,15 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRepository);
 
 		XMLResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_0.xml");
-		
+
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
-		assertFalse(modelRes.isLoaded());
-		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
 		// Helpers.dumpTypes(modelRes.getModel().getMetaModel());
 
 		assertNotNull(modelRes.getModel().getMetaModel().getTypeFromURI(modelRes.getModel().getURI() + "/Metamodel#Library"));
-
 
 		Helpers.dumpIndividual(modelRes.getModelData().getRoot(), "");
 
@@ -123,8 +119,6 @@ public class TestXMLResource extends OpenflexoTestCase {
 
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
-		assertFalse(modelRes.isLoaded());
-		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
 		// Helpers.dumpTypes(modelRes.getModel().getMetaModel());
@@ -147,8 +141,6 @@ public class TestXMLResource extends OpenflexoTestCase {
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
-		assertFalse(modelRes.isLoaded());
-		assertNotNull(modelRes.loadResourceData(null));
 		assertTrue(modelRes.isLoaded());
 
 		// Helpers.dumpTypes(modelRes.getModel().getMetaModel());
@@ -158,6 +150,5 @@ public class TestXMLResource extends OpenflexoTestCase {
 		Helpers.dumpIndividual(modelRes.getModelData().getRoot(), "");
 
 	}
-
 
 }
