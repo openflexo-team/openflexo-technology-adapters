@@ -87,7 +87,7 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 	public void test0InstantiateResourceCenter() {
 
 		log("test0InstantiateResourceCenter()");
-		testApplicationContext = instanciateTestServiceManager();
+		testApplicationContext = instanciateTestServiceManager(PowerpointTechnologyAdapter.class);
 		assertNotNull(testApplicationContext);
 		resourceCenterDirectory = resourceCenter.getDirectory();
 		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class);

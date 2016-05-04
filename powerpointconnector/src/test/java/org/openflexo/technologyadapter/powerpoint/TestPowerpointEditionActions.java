@@ -89,7 +89,7 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 		modelRepository = (PowerpointSlideShowRepository) resourceCenter.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter);
 		File pptFile = new File("src/test/resources/GenPowerpoint/generated_File2.ppt");
 		modelRes = PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(pptFile.getAbsolutePath(),pptFile, powerpointAdapter.getTechnologyContextManager());
-
+	
 		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint",
 				"http://openflexo.org/test/TestViewPoint",
 				resourceCenterDirectory,
@@ -113,7 +113,7 @@ public class TestPowerpointEditionActions extends OpenflexoProjectAtRunTimeTestC
 	public void test0InstantiateResourceCenter() {
 
 		log("test0InstantiateResourceCenter()");
-		testApplicationContext = instanciateTestServiceManager();
+		testApplicationContext = instanciateTestServiceManager(PowerpointTechnologyAdapter.class);
 		assertNotNull(testApplicationContext);
 		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		assertNotNull(powerpointAdapter);
