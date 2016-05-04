@@ -69,7 +69,7 @@ public class TestLoadODTDocuments extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(ODTTechnologyAdapter.class);
 	}
 
 	@Test
@@ -85,8 +85,8 @@ public class TestLoadODTDocuments extends OpenflexoProjectAtRunTimeTestCase {
 	@Test
 	@TestOrder(3)
 	public void testODTLoading() {
-		ODTTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				ODTTechnologyAdapter.class);
+		ODTTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(ODTTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			ODTDocumentRepository odtRepository = resourceCenter.getRepository(ODTDocumentRepository.class, technologicalAdapter);
