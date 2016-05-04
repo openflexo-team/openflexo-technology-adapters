@@ -83,7 +83,7 @@ public class TestFIBOWLOntologyEditor extends OpenflexoTestCaseWithGUI {
 	@BeforeClass
 	public static void setupClass() {
 		Resource rsc = ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true);
+		instanciateTestServiceManager(true, OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 		List<ResourceRepository<?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlAdapter);

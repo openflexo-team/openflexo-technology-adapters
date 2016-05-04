@@ -88,7 +88,7 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 	@BeforeClass
 	public static void setupClass() {
 		ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true);
+		instanciateTestServiceManager(true, OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 		initGUI();

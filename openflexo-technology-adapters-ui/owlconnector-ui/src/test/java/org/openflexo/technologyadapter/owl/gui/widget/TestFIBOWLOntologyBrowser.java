@@ -79,7 +79,7 @@ public class TestFIBOWLOntologyBrowser extends OpenflexoTestCaseWithGUI {
 	@BeforeClass
 	public static void setupClass() {
 		Resource rsc = ResourceLocator.locateResource("/org.openflexo.owlconnector/TestResourceCenter");
-		instanciateTestServiceManager(true);
+		instanciateTestServiceManager(true, OWLTechnologyAdapter.class);
 		initGUI();
 	}
 
