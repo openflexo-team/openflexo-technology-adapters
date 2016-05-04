@@ -95,7 +95,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	@Test
 	@TestOrder(1)
 	public void testCreateViewPoint() throws SaveResourceException {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 		System.out.println("ResourceCenter= " + resourceCenter);
 		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestViewPoint", resourceCenter.getDirectory(),
 				serviceManager.getViewPointLibrary(), resourceCenter);

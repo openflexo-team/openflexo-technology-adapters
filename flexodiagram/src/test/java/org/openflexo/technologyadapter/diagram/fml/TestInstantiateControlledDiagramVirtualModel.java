@@ -117,7 +117,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 	@Test
 	@TestOrder(1)
 	public void testLoadViewPoint() {
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
 		assertNotNull(vpLib);
 		viewPoint = vpLib.getViewPoint("http://openflexo.org/test/TestControlledDiagramViewPoint");
@@ -305,7 +305,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 
 		log("testReloadProject()");
 
-		instanciateTestServiceManager();
+		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 		editor = reloadProject(project.getDirectory());
 		project = editor.getProject();
 		assertNotNull(editor);

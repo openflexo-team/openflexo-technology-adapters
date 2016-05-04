@@ -88,7 +88,7 @@ public class TestDiagramResource extends OpenflexoTestCase {
 
 		log("testInitialize()");
 
-		applicationContext = instanciateTestServiceManager();
+		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);

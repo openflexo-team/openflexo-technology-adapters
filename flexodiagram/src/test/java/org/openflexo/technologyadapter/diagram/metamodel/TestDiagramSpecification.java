@@ -110,7 +110,7 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 
 		log("testInitialize()");
 
-		applicationContext = instanciateTestServiceManager();
+		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
@@ -230,24 +230,22 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 
 		log("testReloadDiagramSpecification()");
 
-		applicationContext = instanciateTestServiceManager();
+		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
 		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
 
-		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource
-				.getDirectory()).getName());
+		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),
+				ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()).getName());
 		newDirectory.mkdirs();
 
 		try {
-			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), newDirectory);
+			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()),
+					newDirectory);
 			// We wait here for the thread monitoring ResourceCenters to detect new files
-			Thread.sleep(3000);
+			((FileSystemBasedResourceCenter) resourceCenter).performDirectoryWatchingNow();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

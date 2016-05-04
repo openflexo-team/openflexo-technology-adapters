@@ -127,7 +127,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		log("testInitialize()");
 
-		applicationContext = instanciateTestServiceManager();
+		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
@@ -303,7 +303,7 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 
 		log("testReloadDiagramSpecification()");
 
-		applicationContext = instanciateTestServiceManager();
+		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
@@ -321,11 +321,8 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 			vpDir.mkdirs();
 			FileUtils.copyContentDirToDir(ResourceLocator.retrieveResourceAsFile(viewPointResource.getDirectory()), vpDir);
 			// We wait here for the thread monitoring ResourceCenters to detect new files
-			Thread.sleep(3000);
+			((FileSystemBasedResourceCenter) resourceCenter).performDirectoryWatchingNow();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
