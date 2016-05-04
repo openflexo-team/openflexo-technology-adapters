@@ -176,19 +176,33 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
+	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
+		boolean returned = false;
 		if (contents instanceof File) {
 			File candidateFile = (File) contents;
-			tryToLookupOSLCResources((FlexoResourceCenter<File>) resourceCenter, candidateFile);
+			returned = (tryToLookupOSLCResources((FlexoResourceCenter<File>) resourceCenter, candidateFile) != null);
 		}
 		// Call it to update the current repositories
 		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		return returned;
 	}
 
 	@Override
-	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
+	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
+		return false;
+	}
 
+	@Override
+	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override

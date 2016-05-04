@@ -385,11 +385,12 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
+	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
 			File candidateFile = (File) contents;
 			if (tryToLookupMetaModel(resourceCenter, candidateFile) != null) {
 				// This is a meta-model, this one has just been registered
+				return true;
 			}
 			else {
 
@@ -399,16 +400,30 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				for (XMLFileResource r : modelRepository.getAllResources()) {
 					found = found || getFileFlexoIODelegate(r).getFile().equals(candidateFile);
 				}
-				if (!found)
-					tryToLookupModel(resourceCenter, candidateFile);
+				if (!found) {
+					return (tryToLookupModel(resourceCenter, candidateFile) != null);
+				}
 			}
 		}
+		return false;
 	}
 
 	@Override
-	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
+	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
+		return false;
+	}
 
+	@Override
+	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	private FileFlexoIODelegate getFileFlexoIODelegate(FlexoResource resource) {

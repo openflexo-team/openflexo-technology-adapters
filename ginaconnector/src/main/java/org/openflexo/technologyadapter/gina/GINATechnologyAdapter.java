@@ -100,12 +100,12 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 * @param candidateFile
 	 */
-	private <I> void initializeGINAFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
+	private <I> GINAFIBComponentResource initializeGINAFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
 		if (!this.isValidGINFile(candidateFile)) {
-			return;
+			return null;
 		}
-		final GINAFIBComponentResourceImpl ginaconnectorResourceFile = (GINAFIBComponentResourceImpl) GINAFIBComponentResourceImpl.retrieveGINResource(candidateFile,
-				this.getTechnologyContextManager());
+		final GINAFIBComponentResourceImpl ginaconnectorResourceFile = (GINAFIBComponentResourceImpl) GINAFIBComponentResourceImpl
+				.retrieveGINResource(candidateFile, this.getTechnologyContextManager());
 		final GINAResourceRepository resourceRepository = resourceCenter.getRepository(GINAResourceRepository.class, this);
 		if (ginaconnectorResourceFile != null) {
 			try {
@@ -116,8 +116,9 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 				final String msg = "Error during getting GIN resource folder";
 				LOGGER.log(Level.SEVERE, msg, e);
 			}
+			return ginaconnectorResourceFile;
 		}
-
+		return null;
 	}
 
 	/**
@@ -136,23 +137,37 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
+	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		if (contents instanceof File) {
-			this.initializeGINAFile(resourceCenter, (File) contents);
+			return (initializeGINAFile(resourceCenter, (File) contents) != null);
 		}
+		return false;
 	}
 
 	@Override
-	public <I> void contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
+	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	public GINAFIBComponentResource createNewGINModel(FlexoProject project, String filename, String modelUri) {
 		// TODO Auto-generated method stub
 		final File file = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-		final GINAFIBComponentResourceImpl ginaconnectorResourceFile = (GINAFIBComponentResourceImpl) GINAFIBComponentResourceImpl.makeGINResource(modelUri, file,
-				this.getTechnologyContextManager());
+		final GINAFIBComponentResourceImpl ginaconnectorResourceFile = (GINAFIBComponentResourceImpl) GINAFIBComponentResourceImpl
+				.makeGINResource(modelUri, file, this.getTechnologyContextManager());
 		this.getTechnologyContextManager().registerResource(ginaconnectorResourceFile);
 		return ginaconnectorResourceFile;
 	}

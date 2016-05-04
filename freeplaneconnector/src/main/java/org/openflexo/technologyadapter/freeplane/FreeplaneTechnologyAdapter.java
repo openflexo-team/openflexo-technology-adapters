@@ -134,9 +134,9 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 * @param candidateFile
 	 */
-	private <I> void initializeFreeplaneFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
+	private <I> IFreeplaneResource initializeFreeplaneFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
 		if (!this.isValidFreeplaneFile(candidateFile)) {
-			return;
+			return null;
 		}
 		final FreeplaneResourceImpl freeplaneResourceFile = (FreeplaneResourceImpl) FreeplaneResourceImpl
 				.makeFreeplaneResource(candidateFile, this.getTechnologyContextManager(), resourceCenter);
@@ -150,7 +150,9 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 				final String msg = "Error during getting Freeplane resource folder";
 				LOGGER.log(Level.SEVERE, msg, e);
 			}
+			return freeplaneResourceFile;
 		}
+		return null;
 	}
 
 	/**
@@ -177,10 +179,11 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	 * @see org.openflexo.foundation.technologyadapter.TechnologyAdapter#contentsAdded(org.openflexo.foundation.resource.FlexoResourceCenter, java.lang.Object)
 	 */
 	@Override
-	public <I> void contentsAdded(final FlexoResourceCenter<I> resourceCenter, final I contents) {
+	public <I> boolean contentsAdded(final FlexoResourceCenter<I> resourceCenter, final I contents) {
 		if (contents instanceof File) {
-			this.initializeFreeplaneFile(resourceCenter, (File) contents);
+			return (initializeFreeplaneFile(resourceCenter, (File) contents) != null);
 		}
+		return false;
 	}
 
 	/**
@@ -190,8 +193,21 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	 * @param contents
 	 */
 	@Override
-	public <I> void contentsDeleted(final FlexoResourceCenter<I> resourceCenter, final I contents) {
+	public <I> boolean contentsDeleted(final FlexoResourceCenter<I> resourceCenter, final I contents) {
 		// Noting particular to implement
+		return false;
+	}
+
+	@Override
+	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	/**
