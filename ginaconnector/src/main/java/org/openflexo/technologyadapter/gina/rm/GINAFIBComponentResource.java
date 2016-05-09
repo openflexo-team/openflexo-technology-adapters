@@ -29,8 +29,8 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.GINATechnologyContextManager;
-import org.openflexo.technologyadapter.gina.fml.model.GINAFIBComponent;
-import org.openflexo.technologyadapter.gina.fml.model.GINAFactory;
+import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
+import org.openflexo.technologyadapter.gina.model.GINAFactory;
 
 @ModelEntity
 @ImplementationClass(GINAFIBComponentResourceImpl.class)

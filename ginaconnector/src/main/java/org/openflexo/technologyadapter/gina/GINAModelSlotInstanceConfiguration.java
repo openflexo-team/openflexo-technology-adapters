@@ -23,7 +23,7 @@ package org.openflexo.technologyadapter.gina;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.technologyadapter.gina.fml.model.GINAFIBComponent;
+import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
 public class GINAModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<GINAFIBComponent, GINAModelSlot> {
 

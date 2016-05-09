@@ -32,7 +32,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.gina.fml.FIBComponentRole;
-import org.openflexo.technologyadapter.gina.fml.model.GINAFIBComponent;
+import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
 /**
  * Implementation of the ModelSlot class for the GIN technology adapter<br>

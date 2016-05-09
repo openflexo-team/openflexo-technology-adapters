@@ -1,8 +1,8 @@
 /**
  * 
- * Copyright (c) 2014-2015, Openflexo
+ * Copyright (c) 2014, Openflexo
  * 
- * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
+ * This file is part of Fml-rt-technologyadapter-ui, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,43 +36,23 @@
  * 
  */
 
-package org.openflexo.technologyadapter.powerpoint.fib;
+package org.openflexo.technologyadapter.gina.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.gina.utils.GenericFIBInspectorTestCase;
+import org.openflexo.gina.utils.GenericFIBTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
-public class TestPPTInspectors extends GenericFIBInspectorTestCase {
-
-	/*
-	 * Use this method to print all
-	 * Then copy-paste 
-	 */
+public class TestGinaWizardFibs extends GenericFIBTestCase {
 
 	public static void main(String[] args) {
-		System.out.println(generateInspectorTestCaseClass(
-				((FileResourceImpl) ResourceLocator.locateResource("Inspectors/PowerPoint")).getFile(), "Inspectors/PowerPoint/"));
+		System.out.println(
+				generateFIBTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Fib/Wizard")).getFile(), "Fib/Wizard/"));
 	}
 
 	@Test
-	public void testAddPowerpointShapeInspector() {
-		validateFIB("Inspectors/PowerPoint/EditionAction/AddPowerpointShape.inspector");
-	}
-
-	@Test
-	public void testAddPowerpointSlideInspector() {
-		validateFIB("Inspectors/PowerPoint/EditionAction/AddPowerpointSlide.inspector");
-	}
-
-	@Test
-	public void testSelectPowerpointShapeInspector() {
-		validateFIB("Inspectors/PowerPoint/EditionAction/SelectPowerpointShape.inspector");
-	}
-
-	@Test
-	public void testSelectPowerpointSlideInspector() {
-		validateFIB("Inspectors/PowerPoint/EditionAction/SelectPowerpointSlide.inspector");
+	public void testDescribeNewComponent() {
+		validateFIB("Fib/Wizard/DescribeNewComponent.fib");
 	}
 
 }

@@ -33,7 +33,7 @@ import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.fml.FIBComponentRole.FIBComponentRoleImpl;
-import org.openflexo.technologyadapter.gina.fml.model.GINAFIBComponent;
+import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
 @ModelEntity
 @ImplementationClass(FIBComponentRoleImpl.class)

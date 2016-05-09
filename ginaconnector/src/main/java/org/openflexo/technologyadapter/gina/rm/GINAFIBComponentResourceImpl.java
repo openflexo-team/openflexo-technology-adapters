@@ -24,49 +24,38 @@ import java.io.File;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.resource.CannotRenameException;
+import org.openflexo.foundation.IOFlexoException;
+import org.openflexo.foundation.InconsistentDataException;
+import org.openflexo.foundation.InvalidModelDefinitionException;
+import org.openflexo.foundation.InvalidXMLException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
+import org.openflexo.foundation.resource.FlexoFileNotFoundException;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.GINATechnologyContextManager;
-import org.openflexo.technologyadapter.gina.fml.model.GINAFIBComponent;
-import org.openflexo.technologyadapter.gina.fml.model.GINAFactory;
+import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
+import org.openflexo.technologyadapter.gina.model.GINAFactory;
+import org.openflexo.toolbox.IProgress;
 
 public abstract class GINAFIBComponentResourceImpl extends PamelaResourceImpl<GINAFIBComponent, GINAFactory>
 		implements GINAFIBComponentResource {
 
 	private static final Logger LOGGER = Logger.getLogger(GINAFIBComponentResourceImpl.class.getPackage().getName());
 
-	/*	private static ModelFactory MODEL_FACTORY;
-	
-		static {
-			try {
-				MODEL_FACTORY = new ModelFactory(GINAFIBComponent.class);
-			} catch (final ModelDefinitionException e) {
-				final String msg = "Error while initializing GIN model resource";
-				LOGGER.log(Level.SEVERE, msg, e);
-			}
-		}*/
-
-	public static GINAFIBComponentResource makeGINResource(String modelURI, File modelFile,
+	public static GINAFIBComponentResource makeComponentResource(File componentFile,
 			GINATechnologyContextManager technologyContextManager) {
 		try {
 			ModelFactory factory = new ModelFactory(
 					ModelContextLibrary.getCompoundModelContext(GINAFIBComponentResource.class, FileFlexoIODelegate.class));
 			GINAFIBComponentResourceImpl returned = (GINAFIBComponentResourceImpl) factory.newInstance(GINAFIBComponentResource.class);
-			try {
-				returned.setName(modelFile.getName());
-			} catch (CannotRenameException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-
-			returned.setURI(modelURI);
+			returned.initName(componentFile.getName());
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(componentFile, factory));
+			GINAFactory ginaFactory = new GINAFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
+			returned.setFactory(ginaFactory);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
@@ -80,19 +69,16 @@ public abstract class GINAFIBComponentResourceImpl extends PamelaResourceImpl<GI
 		return null;
 	}
 
-	public static GINAFIBComponentResource retrieveGINResource(File modelFile, GINATechnologyContextManager technologyContextManager) {
+	public static GINAFIBComponentResource retrieveComponentResource(File componentFile,
+			GINATechnologyContextManager technologyContextManager) {
 		try {
 			ModelFactory factory = new ModelFactory(
 					ModelContextLibrary.getCompoundModelContext(GINAFIBComponentResource.class, FileFlexoIODelegate.class));
 			GINAFIBComponentResourceImpl returned = (GINAFIBComponentResourceImpl) factory.newInstance(GINAFIBComponentResource.class);
-			try {
-				returned.setName(modelFile.getName());
-			} catch (CannotRenameException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			returned.setURI(modelFile.toURI().toString());
+			returned.initName(componentFile.getName());
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(componentFile, factory));
+			GINAFactory ginaFactory = new GINAFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
+			returned.setFactory(ginaFactory);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
 			returned.setTechnologyContextManager(technologyContextManager);
@@ -111,6 +97,16 @@ public abstract class GINAFIBComponentResourceImpl extends PamelaResourceImpl<GI
 			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
 		}
 		return null;
+	}
+
+	@Override
+	public GINAFIBComponent loadResourceData(IProgress progress) throws FlexoFileNotFoundException, IOFlexoException, InvalidXMLException,
+			InconsistentDataException, InvalidModelDefinitionException {
+		System.out.println("Hop, je charge mon composant FIB");
+		GINAFIBComponent returned = super.loadResourceData(progress);
+		System.out.println("J'obtiens: " + returned);
+		System.out.println("Resource=" + returned.getResource());
+		return returned;
 	}
 
 	/*@Override
@@ -182,4 +178,5 @@ public abstract class GINAFIBComponentResourceImpl extends PamelaResourceImpl<GI
 	public Class<GINAFIBComponent> getResourceDataClass() {
 		return GINAFIBComponent.class;
 	}
+
 }

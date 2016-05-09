@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.gina.fml.model;
+package org.openflexo.technologyadapter.gina.model;
 
 import java.util.logging.Logger;
 
@@ -70,7 +70,7 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 	private FlexoUndoManager undoManager = null;
 
 	public GINAFactory(GINAFIBComponentResource resource, EditingContext editingContext) throws ModelDefinitionException {
-		super();
+		super(GINAFIBComponent.class);
 
 		if (resource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
 			addConverter(new RelativePathFileConverter(((FileFlexoIODelegate) resource.getFlexoIODelegate()).getFile()));
@@ -90,6 +90,12 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 
 	public FIBComponent makeNewFIBComponent() {
 		return newFIBPanel();
+	}
+
+	public GINAFIBComponent makeNewGINAFIBComponent() {
+		GINAFIBComponent returned = newInstance(GINAFIBComponent.class);
+		returned.setComponent(makeNewFIBComponent());
+		return returned;
 	}
 
 	@Override

@@ -23,7 +23,7 @@ package org.openflexo.technologyadapter.gina.rm;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
-import org.openflexo.technologyadapter.gina.fml.model.GINAFIBComponent;
+import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
 public class GINAResourceRepository
 		extends TechnologyAdapterFileResourceRepository<GINAFIBComponentResource, GINATechnologyAdapter, GINAFIBComponent> {

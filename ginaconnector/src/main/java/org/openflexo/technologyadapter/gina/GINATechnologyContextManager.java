@@ -22,11 +22,19 @@ package org.openflexo.technologyadapter.gina;
 
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.gina.FIBLibrary;
+import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 
 public class GINATechnologyContextManager extends TechnologyContextManager<GINATechnologyAdapter> {
 
-    public GINATechnologyContextManager(GINATechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
-        super(adapter, resourceCenterService);
-    }
+	private FIBLibrary fibLibrary;
 
+	public GINATechnologyContextManager(GINATechnologyAdapter adapter, FlexoResourceCenterService resourceCenterService) {
+		super(adapter, resourceCenterService);
+		fibLibrary = FIBLibraryImpl.createInstance();
+	}
+
+	public FIBLibrary getFIBLibrary() {
+		return fibLibrary;
+	}
 }

@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -49,7 +48,8 @@ import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
 @DeclareRepositoryType({ GINAResourceRepository.class })
 public class GINATechnologyAdapter extends TechnologyAdapter {
 
-	private static String GINA_FILE_EXTENSION = ".fib";
+	public static String GINA_COMPONENT_EXTENSION = ".fib";
+	public static String GINA_INSPECTOR_EXTENSION = ".inspector";
 
 	private static final Logger LOGGER = Logger.getLogger(GINATechnologyAdapter.class.getPackage().getName());
 
@@ -80,10 +80,9 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 
 	@Override
 	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
-		// TODO Auto-generated method stub
 		GINAResourceRepository currentRepository = resourceCenter.getRepository(GINAResourceRepository.class, this);
 		if (currentRepository == null) {
-			currentRepository = this.createNewGINRepository(resourceCenter);
+			currentRepository = createNewGINAResourceRepository(resourceCenter);
 		}
 
 		for (final I item : resourceCenter) {
@@ -91,6 +90,9 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 				this.initializeGINAFile(resourceCenter, (File) item);
 			}
 		}
+
+		// Call it to update the current repositories
+		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
 
 	}
 
@@ -101,11 +103,11 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	 * @param candidateFile
 	 */
 	private <I> GINAFIBComponentResource initializeGINAFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
-		if (!this.isValidGINFile(candidateFile)) {
+		if (!isValidGINAComponent(candidateFile)) {
 			return null;
 		}
 		final GINAFIBComponentResourceImpl ginaconnectorResourceFile = (GINAFIBComponentResourceImpl) GINAFIBComponentResourceImpl
-				.retrieveGINResource(candidateFile, this.getTechnologyContextManager());
+				.retrieveComponentResource(candidateFile, this.getTechnologyContextManager());
 		final GINAResourceRepository resourceRepository = resourceCenter.getRepository(GINAResourceRepository.class, this);
 		if (ginaconnectorResourceFile != null) {
 			try {
@@ -126,8 +128,8 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	 * @param candidateFile
 	 * @return true if extension of file match <code>GINA_FILE_EXTENSION</code>
 	 */
-	public boolean isValidGINFile(final File candidateFile) {
-		return candidateFile.getName().endsWith(GINA_FILE_EXTENSION);
+	public boolean isValidGINAComponent(final File candidateFile) {
+		return candidateFile.getName().endsWith(GINA_COMPONENT_EXTENSION) || candidateFile.getName().endsWith(GINA_INSPECTOR_EXTENSION);
 	}
 
 	@Override
@@ -163,24 +165,19 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 		return false;
 	}
 
-	public GINAFIBComponentResource createNewGINModel(FlexoProject project, String filename, String modelUri) {
-		// TODO Auto-generated method stub
-		final File file = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-		final GINAFIBComponentResourceImpl ginaconnectorResourceFile = (GINAFIBComponentResourceImpl) GINAFIBComponentResourceImpl
-				.makeGINResource(modelUri, file, this.getTechnologyContextManager());
-		this.getTechnologyContextManager().registerResource(ginaconnectorResourceFile);
-		return ginaconnectorResourceFile;
-	}
-
 	/**
 	 * Create a new GINAResourceRepository and register it in the given resource center.
 	 * 
 	 * @param resourceCenter
 	 * @return the repository
 	 */
-	private GINAResourceRepository createNewGINRepository(final FlexoResourceCenter<?> resourceCenter) {
+	private GINAResourceRepository createNewGINAResourceRepository(final FlexoResourceCenter<?> resourceCenter) {
 		final GINAResourceRepository repo = new GINAResourceRepository(this, resourceCenter);
 		resourceCenter.registerRepository(repo, GINAResourceRepository.class, this);
+
+		System.out.println("******** Created GINAResourceRepository " + repo + " for " + resourceCenter);
+		System.out.println("getAllRepositories()=" + getAllRepositories());
+
 		return repo;
 	}
 

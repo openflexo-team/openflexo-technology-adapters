@@ -20,9 +20,16 @@
 
 package org.openflexo.technologyadapter.gina.view;
 
+import java.awt.BorderLayout;
+import java.io.File;
+
 import javax.swing.JPanel;
 
-import org.openflexo.technologyadapter.gina.fml.model.GINAFIBComponent;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.gina.swing.editor.FIBEditor;
+import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
+import org.openflexo.technologyadapter.gina.controller.GINAAdapterController;
+import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
@@ -48,9 +55,33 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 	 * @param perspective
 	 */
 	public GINAModuleView(GINAFIBComponent representedObject, FlexoController controller, FlexoPerspective perspective) {
+		super(new BorderLayout());
 		this.controller = controller;
 		this.representedObject = representedObject;
 		this.perspective = perspective;
+
+		System.out.println("OK, j'ai l'editeur: " + getFIBEditor());
+
+		File f = ((FileFlexoIODelegate) representedObject.getResource().getFlexoIODelegate()).getFile();
+
+		System.out.println("J'essaie d'ouvrir le fichier: " + f);
+
+		getFIBEditor().openFIBComponent(representedObject.getComponent(), representedObject.getResource(), controller.getFlexoFrame());
+
+		add(getFIBEditor().getMainPanel(), BorderLayout.CENTER);
+	}
+
+	public GINAAdapterController getAdapterController() {
+		GINATechnologyAdapter ta = controller.getApplicationContext().getTechnologyAdapterService()
+				.getTechnologyAdapter(GINATechnologyAdapter.class);
+		return controller.getApplicationContext().getTechnologyAdapterControllerService().getTechnologyAdapterController(ta);
+	}
+
+	public FIBEditor getFIBEditor() {
+		if (getAdapterController() != null) {
+			return getAdapterController().getFIBEditor();
+		}
+		return null;
 	}
 
 	@Override
@@ -63,6 +94,28 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 		// controller.getControllerModel().setRightViewVisible(true);
 		// }
 		// });
+
+		// Sets palette view of editor to be the top right view
+		flexoPerspective.setTopRightView(getFIBEditor().getPalettes());
+		flexoPerspective.setBottomLeftView(getFIBEditor().getActiveEditorController().getEditorBrowser());
+		// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
+
+		// getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getEditor());
+		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());
+		// getDiagramTechnologyAdapterController(controller).getScaleSelector().attachToEditor(getEditor());
+
+		// perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
+
+		/*SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				// Force right view to be visible
+				controller.getControllerModel().setRightViewVisible(true);
+			}
+		});*/
+
+		controller.getControllerModel().setRightViewVisible(true);
+
 	}
 
 	/**

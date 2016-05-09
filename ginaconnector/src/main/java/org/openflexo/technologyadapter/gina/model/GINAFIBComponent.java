@@ -36,10 +36,11 @@
  * 
  */
 
-package org.openflexo.technologyadapter.gina.fml.model;
+package org.openflexo.technologyadapter.gina.model;
 
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.model.FIBComponent;
@@ -47,9 +48,9 @@ import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
-import org.openflexo.model.annotations.XMLAttribute;
+import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
-import org.openflexo.technologyadapter.gina.fml.model.GINAFIBComponent.GINAFIBComponentImpl;
+import org.openflexo.technologyadapter.gina.model.GINAFIBComponent.GINAFIBComponentImpl;
 import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
 
 /**
@@ -61,19 +62,28 @@ import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
  */
 @ModelEntity
 @ImplementationClass(GINAFIBComponentImpl.class)
+@XMLElement
 public interface GINAFIBComponent
 		extends FlexoObject, TechnologyObject<GINATechnologyAdapter>, ResourceData<GINAFIBComponent>, BindingEvaluationContext {
 
-	public static final String RESOURCE_KEY = "resource";
+	// public static final String RESOURCE_KEY = "resource";
+	public static final String COMPONENT_KEY = "component";
 	public static final String TECHNOLOGY_ADAPTER_KEY = "technologyAdapter";
 
+	@Getter(COMPONENT_KEY)
+	@XMLElement
+	public FIBComponent getComponent();
+
+	@Setter(COMPONENT_KEY)
+	public void setComponent(FIBComponent aComponent);
+
 	@Override
-	@Getter(value = RESOURCE_KEY)
-	@XMLAttribute
+	// @Getter(value = RESOURCE_KEY)
 	public GINAFIBComponentResource getResource();
 
-	@Setter(value = RESOURCE_KEY)
-	public void setResource(GINAFIBComponentResource aResource);
+	// @Setter(value = RESOURCE_KEY)
+	@Override
+	public void setResource(FlexoResource<GINAFIBComponent> aResource);
 
 	@Override
 	@Getter(value = TECHNOLOGY_ADAPTER_KEY, ignoreType = true)
@@ -84,17 +94,18 @@ public interface GINAFIBComponent
 
 	public abstract static class GINAFIBComponentImpl extends FlexoObjectImpl implements GINAFIBComponent {
 
-		private GINATechnologyAdapter technologyAdapter;
-
 		@Override
 		public GINATechnologyAdapter getTechnologyAdapter() {
-			return technologyAdapter;
+			if (getResource() != null) {
+				return getResource().getTechnologyAdapter();
+			}
+			return null;
 		}
 
 		@Override
-		public void setTechnologyAdapter(GINATechnologyAdapter technologyAdapter) {
-			this.technologyAdapter = technologyAdapter;
+		public void setResource(FlexoResource<GINAFIBComponent> aResource) {
+			System.out.println("******* setResource with " + aResource);
+			performSuperSetter(FLEXO_RESOURCE, aResource);
 		}
-
 	}
 }
