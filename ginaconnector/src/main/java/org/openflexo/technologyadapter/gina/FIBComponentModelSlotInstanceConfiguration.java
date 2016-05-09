@@ -25,9 +25,9 @@ import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
-public class GINAModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<GINAFIBComponent, GINAModelSlot> {
+public class FIBComponentModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<GINAFIBComponent, FIBComponentModelSlot> {
 
-	protected GINAModelSlotInstanceConfiguration(GINAModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
+	protected FIBComponentModelSlotInstanceConfiguration(FIBComponentModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
 			FlexoProject project) {
 		super(ms, virtualModelInstance, project);
 	}

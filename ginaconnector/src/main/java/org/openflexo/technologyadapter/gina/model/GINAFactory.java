@@ -45,8 +45,8 @@ import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
-import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.model.FIBModelFactory;
+import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -88,13 +88,10 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 		return resource;
 	}
 
-	public FIBComponent makeNewFIBComponent() {
-		return newFIBPanel();
-	}
-
 	public GINAFIBComponent makeNewGINAFIBComponent() {
 		GINAFIBComponent returned = newInstance(GINAFIBComponent.class);
-		returned.setComponent(makeNewFIBComponent());
+		FIBPanel panel = newFIBPanel();
+		returned.setComponent(panel);
 		return returned;
 	}
 

@@ -52,6 +52,8 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	private FIBEditor editor;
 	private FIBLibraryBrowser libraryBrowser;
 	private FIBEditorPalettes palette;
+	private InspectorGroup ginaInspectorGroup;
+
 	// private FIBInspectors inspectors;
 
 	public GINAAdapterController() {
@@ -102,11 +104,12 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		// ginaInspectorGroup = controller.loadInspectorGroup("Gina", getFMLTechnologyAdapterInspectorGroup());
+		System.out.println(">>>>>>>>>>>> Hop, on charge les inspecteurs de GINA");
+		System.out.println("getFMLTechnologyAdapterInspectorGroup()=" + getFMLTechnologyAdapterInspectorGroup());
+		ginaInspectorGroup = controller.loadInspectorGroup("Gina", getFMLTechnologyAdapterInspectorGroup());
+
 		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/Excel"));
 	}
-
-	private InspectorGroup ginaInspectorGroup;
 
 	/**
 	 * Return inspector group for this technology

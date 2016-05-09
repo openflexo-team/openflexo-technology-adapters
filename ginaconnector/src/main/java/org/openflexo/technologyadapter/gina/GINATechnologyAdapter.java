@@ -44,7 +44,7 @@ import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
  * 
  */
 
-@DeclareModelSlots({ GINAModelSlot.class })
+@DeclareModelSlots({ FIBComponentModelSlot.class })
 @DeclareRepositoryType({ GINAResourceRepository.class })
 public class GINATechnologyAdapter extends TechnologyAdapter {
 

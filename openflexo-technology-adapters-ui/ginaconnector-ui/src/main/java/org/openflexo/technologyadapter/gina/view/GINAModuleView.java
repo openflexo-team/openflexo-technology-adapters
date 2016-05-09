@@ -27,6 +27,7 @@ import javax.swing.JPanel;
 
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.gina.swing.editor.FIBEditor;
+import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.GINAAdapterController;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
@@ -44,6 +45,8 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 	private final GINAFIBComponent representedObject;
 
 	private final FlexoPerspective perspective;
+
+	private FIBEditorController editorController;
 
 	/**
 	 * Initialize needed attribute. All are final.
@@ -66,9 +69,10 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 
 		System.out.println("J'essaie d'ouvrir le fichier: " + f);
 
-		getFIBEditor().openFIBComponent(representedObject.getComponent(), representedObject.getResource(), controller.getFlexoFrame());
+		editorController = getFIBEditor().openFIBComponent(representedObject.getComponent(), representedObject.getResource(),
+				controller.getFlexoFrame());
 
-		add(getFIBEditor().getMainPanel(), BorderLayout.CENTER);
+		add(editorController.getEditorPanel(), BorderLayout.CENTER);
 	}
 
 	public GINAAdapterController getAdapterController() {
@@ -97,8 +101,9 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 
 		// Sets palette view of editor to be the top right view
 		flexoPerspective.setTopRightView(getFIBEditor().getPalettes());
-		flexoPerspective.setBottomLeftView(getFIBEditor().getActiveEditorController().getEditorBrowser());
-		// perspective.setHeader(((FreeDiagramModuleView) moduleView).getEditor().getS());
+		flexoPerspective.setBottomLeftView(editorController.getEditorBrowser());
+
+		getFIBEditor().activate(editorController);
 
 		// getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getEditor());
 		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());
