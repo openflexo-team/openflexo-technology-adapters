@@ -126,13 +126,11 @@ public class CreateGINAFIBComponent extends FlexoAction<CreateGINAFIBComponent, 
 
 		componentResource = GINAFIBComponentResourceImpl.makeComponentResource(componentFile, ginaTA.getTechnologyContextManager());
 
-		System.out.println("componentResource = " + componentResource);
-
 		getFocusedObject().addToResources(componentResource);
 
 		GINAFIBComponent component = componentResource.getFactory().makeNewGINAFIBComponent();
 		componentResource.setResourceData(component);
-
+		component.setResource(componentResource);
 		componentResource.save(null);
 
 	}
