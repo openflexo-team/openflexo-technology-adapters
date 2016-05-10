@@ -27,12 +27,14 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
+import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
 import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResourceImpl;
 import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
@@ -46,6 +48,7 @@ import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
 
 @DeclareModelSlots({ FIBComponentModelSlot.class })
 @DeclareRepositoryType({ GINAResourceRepository.class })
+@DeclareVirtualModelInstanceNatures({ FMLControlledFIBVirtualModelInstanceNature.class })
 public class GINATechnologyAdapter extends TechnologyAdapter {
 
 	public static String GINA_COMPONENT_EXTENSION = ".fib";
