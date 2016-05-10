@@ -25,22 +25,27 @@ import java.io.File;
 
 import javax.swing.JPanel;
 
+import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.fml.binding.FlexoConceptBindingFactory;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.GINAAdapterController;
+import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelNature;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
-public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponent> {
+public class FMLControlledFIBVirtualModelModuleView extends JPanel implements ModuleView<VirtualModel> {
 
 	private final FlexoController controller;
-	private final GINAFIBComponent representedObject;
+	private final VirtualModel representedObject;
 	private final FlexoPerspective perspective;
 	private FIBEditorController editorController;
+	private GINAFIBComponent component;
 
 	/**
 	 * Initialize needed attribute. All are final.
@@ -51,15 +56,25 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 	 *            GINModel object that will be represented
 	 * @param perspective
 	 */
-	public GINAModuleView(GINAFIBComponent representedObject, FlexoController controller, FlexoPerspective perspective) {
+	public FMLControlledFIBVirtualModelModuleView(VirtualModel representedObject, FlexoController controller,
+			FlexoPerspective perspective) {
 		super(new BorderLayout());
 		this.controller = controller;
 		this.representedObject = representedObject;
 		this.perspective = perspective;
+		component = FMLControlledFIBVirtualModelNature.getFIBComponent(representedObject);
+
+		FIBVariable<?> returned = component.getComponent().getVariable("data");
+		if (returned == null) {
+			returned = component.getComponent().getModelFactory().newFIBVariable(component.getComponent(), "data");
+		}
+		returned.setType(representedObject.getInstanceType());
+
+		component.getComponent().setBindingFactory(new FlexoConceptBindingFactory(representedObject.getViewPoint()));
 
 		File f = ((FileFlexoIODelegate) representedObject.getResource().getFlexoIODelegate()).getFile();
 
-		editorController = getFIBEditor().openFIBComponent(representedObject.getComponent(), representedObject.getResource(),
+		editorController = getFIBEditor().openFIBComponent(component.getComponent(), representedObject.getResource(),
 				controller.getFlexoFrame());
 
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);
@@ -146,8 +161,12 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 	}
 
 	@Override
-	public GINAFIBComponent getRepresentedObject() {
+	public VirtualModel getRepresentedObject() {
 		return representedObject;
+	}
+
+	public GINAFIBComponent getGINAFIBComponent() {
+		return component;
 	}
 
 	@Override

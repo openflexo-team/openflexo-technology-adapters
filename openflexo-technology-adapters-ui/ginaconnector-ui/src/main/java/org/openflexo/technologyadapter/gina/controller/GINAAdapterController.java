@@ -54,6 +54,8 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	private FIBEditorPalettes palette;
 	private InspectorGroup ginaInspectorGroup;
 
+	private FMLControlledFIBNaturePerspective fmlControlledFIBNaturePerspective;
+
 	// private FIBInspectors inspectors;
 
 	public GINAAdapterController() {
@@ -187,4 +189,15 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	public boolean hasModuleViewForObject(TechnologyObject<GINATechnologyAdapter> obj, FlexoController controller) {
 		return obj instanceof GINAFIBComponent;
 	}
+
+	@Override
+	public void installFMLNatureSpecificPerspectives(FlexoController controller) {
+		super.installFMLNatureSpecificPerspectives(controller);
+		controller.addToPerspectives(fmlControlledFIBNaturePerspective = new FMLControlledFIBNaturePerspective(controller));
+	}
+
+	public FMLControlledFIBNaturePerspective getFmlControlledFIBNaturePerspective() {
+		return fmlControlledFIBNaturePerspective;
+	}
+
 }

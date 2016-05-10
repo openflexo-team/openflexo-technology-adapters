@@ -38,11 +38,16 @@
 
 package org.openflexo.technologyadapter.gina.fml;
 
+import java.io.FileNotFoundException;
+
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.VirtualModelNature;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
+import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
 /**
  * Define the "FML-controlled FIBComponent" nature of a {@link VirtualModel}<br>
@@ -83,6 +88,25 @@ public class FMLControlledFIBVirtualModelNature implements VirtualModelNature {
 
 	public static FIBComponentModelSlot getFIBComponentModelSlot(AbstractVirtualModel<?> virtualModel) {
 		return INSTANCE._getFIBComponentModelSlot(virtualModel);
+	}
+
+	public static GINAFIBComponent getFIBComponent(AbstractVirtualModel<?> virtualModel) {
+		FIBComponentModelSlot modelSlot = getFIBComponentModelSlot(virtualModel);
+		if (modelSlot != null && modelSlot.getTemplateResource() != null) {
+			try {
+				return modelSlot.getTemplateResource().getResourceData(null);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ResourceLoadingCancelledException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FlexoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return null;
 	}
 
 	private FIBComponentModelSlot _getFIBComponentModelSlot(AbstractVirtualModel<?> virtualModel) {
