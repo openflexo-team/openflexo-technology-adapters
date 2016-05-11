@@ -9,7 +9,7 @@
 			darkLevel="0" index="0" font="SansSerif,0,11" useScrollBar="true"
 			horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
 			verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" name="BasicTab">
-			<Label label="template" index="12"
+			<Label label="initial_component" index="12"
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=12;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
 				name="MetaModelLabel" localize="true" />
 			<Custom componentClassName="org.openflexo.components.widget.FIBResourceSelector"
@@ -21,6 +21,31 @@
 				<Assignment variable="component.technologyAdapter" value="data.modelSlotTechnologyAdapter" />
 				<Assignment variable="component.resourceDataClass" value="data.type" />
 			</Custom>
+			<Label index="14" label="assignments"
+				constraints="twocols(expandHorizontally=true;location=left)"
+				localize="true" />
+			<Table index="15"
+				iteratorClassName="org.openflexo.technologyadapter.gina.FIBComponentModelSlot$VariableAssignment"
+				visibleRowCount="5" rowHeight="20" autoSelectFirstRow="false"
+				createNewRowOnClick="false" boundToSelectionManager="false"
+				showFooter="true" selectionMode="MultipleIntervalSelection"
+				localize="true" manageDynamicModel="true" name="AssignmentsTable"
+				data="data.assignments"
+				constraints="twocols(expandHorizontally=true;expandVertically=true;location=right)">
+				<TextFieldColumn data="iterator.variable" title="variable"
+					columnWidth="80" resizable="false" displayTitle="true" />
+				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+					customRendering="false" disableTerminateEditOnFocusLost="false"
+					data="iterator.value" title="Value" columnWidth="120" resizable="true"
+					displayTitle="true">
+					<ColumnAssignment variable="component.bindable"
+						value="data" />
+				</CustomColumn>
+				<AddAction method="data.createAssignment()" name="new_assignment" />
+				<RemoveAction method="data.deleteAssignment(selected)"
+					name="delete_assignment" />
+			</Table>
+
 		</Tab>
 		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true"

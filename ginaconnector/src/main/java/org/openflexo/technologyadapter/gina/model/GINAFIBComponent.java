@@ -39,16 +39,25 @@
 package org.openflexo.technologyadapter.gina.model;
 
 import org.openflexo.connie.BindingEvaluationContext;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.binding.FlexoConceptBindingFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBVariable;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.Embedded;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
+import org.openflexo.technologyadapter.gina.FIBComponentModelSlot.VariableAssignment;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent.GINAFIBComponentImpl;
 import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
@@ -72,6 +81,8 @@ public interface GINAFIBComponent
 
 	@Getter(COMPONENT_KEY)
 	@XMLElement
+	@Embedded
+	@CloningStrategy(StrategyType.CLONE)
 	public FIBComponent getComponent();
 
 	@Setter(COMPONENT_KEY)
@@ -92,6 +103,15 @@ public interface GINAFIBComponent
 	@Setter(value = TECHNOLOGY_ADAPTER_KEY)
 	public void setTechnologyAdapter(GINATechnologyAdapter technologyAdapter);
 
+	/**
+	 * Ensure that the whole binding context (BindingFactory and BindingModel) is bound to an {@link AbstractVirtualModel} using the
+	 * specifications given by a {@link FIBComponentModelSlot}
+	 * 
+	 * @param virtualModel
+	 * @param modelSlot
+	 */
+	public void bindTo(AbstractVirtualModel<?> virtualModel, FIBComponentModelSlot modelSlot);
+
 	public abstract static class GINAFIBComponentImpl extends FlexoObjectImpl implements GINAFIBComponent {
 
 		@Override
@@ -102,10 +122,36 @@ public interface GINAFIBComponent
 			return null;
 		}
 
+		/**
+		 * Ensure that the whole binding context (BindingFactory and BindingModel) is bound to an {@link AbstractVirtualModel} using the
+		 * specifications given by a {@link FIBComponentModelSlot}
+		 * 
+		 * @param virtualModel
+		 * @param modelSlot
+		 */
 		@Override
-		public void setResource(FlexoResource<GINAFIBComponent> aResource) {
-			System.out.println("******* setResource with " + aResource);
-			performSuperSetter(FLEXO_RESOURCE, aResource);
+		public void bindTo(AbstractVirtualModel<?> virtualModel, FIBComponentModelSlot modelSlot) {
+			System.out.println("******* bindTo " + virtualModel + " using " + modelSlot);
+
+			if (getComponent() == null) {
+				return;
+			}
+
+			getComponent().setBindingFactory(new FlexoConceptBindingFactory(virtualModel.getViewPoint()));
+
+			for (VariableAssignment variableAssign : modelSlot.getAssignments()) {
+				FIBVariable<?> returned = getComponent().getVariable(variableAssign.getVariable());
+				if (returned == null) {
+					returned = getComponent().getModelFactory().newFIBVariable(getComponent(), variableAssign.getVariable());
+				}
+				DataBinding<?> value = variableAssign.getValue();
+				if (value != null && value.isSet() && value.isValid()) {
+					System.out.println("Je donne a " + returned.getName() + " le type: " + value.getAnalyzedType());
+					returned.setType(value.getAnalyzedType());
+				}
+			}
+
 		}
+
 	}
 }

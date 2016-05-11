@@ -54,7 +54,7 @@ public abstract class GINAFIBComponentResourceImpl extends PamelaResourceImpl<GI
 			GINAFIBComponentResourceImpl returned = (GINAFIBComponentResourceImpl) factory.newInstance(GINAFIBComponentResource.class);
 			returned.initName(componentFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(componentFile, factory));
-			GINAFactory ginaFactory = new GINAFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
+			GINAFactory ginaFactory = new GINAFactory(returned, technologyContextManager.getServiceManager());
 			returned.setFactory(ginaFactory);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
@@ -77,7 +77,7 @@ public abstract class GINAFIBComponentResourceImpl extends PamelaResourceImpl<GI
 			GINAFIBComponentResourceImpl returned = (GINAFIBComponentResourceImpl) factory.newInstance(GINAFIBComponentResource.class);
 			returned.initName(componentFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(componentFile, factory));
-			GINAFactory ginaFactory = new GINAFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
+			GINAFactory ginaFactory = new GINAFactory(returned, technologyContextManager.getServiceManager());
 			returned.setFactory(ginaFactory);
 			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
 			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());

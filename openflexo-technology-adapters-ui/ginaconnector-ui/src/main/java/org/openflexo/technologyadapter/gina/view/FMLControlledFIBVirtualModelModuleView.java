@@ -26,11 +26,10 @@ import java.io.File;
 import javax.swing.JPanel;
 
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.binding.FlexoConceptBindingFactory;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
+import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.GINAAdapterController;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelNature;
@@ -46,6 +45,7 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 	private final FlexoPerspective perspective;
 	private FIBEditorController editorController;
 	private GINAFIBComponent component;
+	private FIBComponentModelSlot modelSlot;
 
 	/**
 	 * Initialize needed attribute. All are final.
@@ -62,15 +62,10 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 		this.controller = controller;
 		this.representedObject = representedObject;
 		this.perspective = perspective;
+		modelSlot = FMLControlledFIBVirtualModelNature.getFIBComponentModelSlot(representedObject);
 		component = FMLControlledFIBVirtualModelNature.getFIBComponent(representedObject);
 
-		FIBVariable<?> returned = component.getComponent().getVariable("data");
-		if (returned == null) {
-			returned = component.getComponent().getModelFactory().newFIBVariable(component.getComponent(), "data");
-		}
-		returned.setType(representedObject.getInstanceType());
-
-		component.getComponent().setBindingFactory(new FlexoConceptBindingFactory(representedObject.getViewPoint()));
+		component.bindTo(representedObject, modelSlot);
 
 		File f = ((FileFlexoIODelegate) representedObject.getResource().getFlexoIODelegate()).getFile();
 
@@ -95,6 +90,9 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 
 	@Override
 	public void show(FlexoController flexoController, FlexoPerspective flexoPerspective) {
+
+		component.bindTo(representedObject, modelSlot);
+
 		// If you want to add right and left panels to your module view, do it here. Un comment following code with your component.
 		// SwingUtilities.invokeLater(new Runnable() {
 		// @Override

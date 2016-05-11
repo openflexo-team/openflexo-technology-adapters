@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.gina.model;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoObject;
+import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
@@ -49,6 +50,7 @@ import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.model.converter.RelativePathFileConverter;
 import org.openflexo.model.converter.RelativePathResourceConverter;
+import org.openflexo.model.converter.TypeConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
@@ -69,15 +71,19 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 	private IgnoreLoadingEdits ignoreHandler = null;
 	private FlexoUndoManager undoManager = null;
 
-	public GINAFactory(GINAFIBComponentResource resource, EditingContext editingContext) throws ModelDefinitionException {
+	private TypeConverter typeConverter;
+
+	public GINAFactory(GINAFIBComponentResource resource, FlexoServiceManager serviceManager) throws ModelDefinitionException {
 		super(GINAFIBComponent.class);
+
+		addConverter(typeConverter = new TypeConverter(serviceManager.getTechnologyAdapterService().getCustomTypeFactories()));
 
 		if (resource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
 			addConverter(new RelativePathFileConverter(((FileFlexoIODelegate) resource.getFlexoIODelegate()).getFile()));
 		}
 
 		this.resource = resource;
-		setEditingContext(editingContext);
+		setEditingContext(serviceManager.getEditingContext());
 		if (resource != null) {
 			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
 		}
@@ -97,6 +103,11 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 
 	@Override
 	public synchronized void startDeserializing() {
+
+		if (typeConverter != null) {
+			typeConverter.startDeserializing();
+		}
+
 		EditingContext editingContext = getResource().getServiceManager().getEditingContext();
 
 		if (editingContext != null && editingContext.getUndoManager() instanceof FlexoUndoManager) {
@@ -109,6 +120,11 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 
 	@Override
 	public synchronized void stopDeserializing() {
+
+		if (typeConverter != null) {
+			typeConverter.stopDeserializing();
+		}
+
 		if (ignoreHandler != null) {
 			undoManager.removeFromIgnoreHandlers(ignoreHandler);
 			// System.out.println("@@@@@@@@@@@@@@@@ END LOADING RESOURCE " + resource.getURI());

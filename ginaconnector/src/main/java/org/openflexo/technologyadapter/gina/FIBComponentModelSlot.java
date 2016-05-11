@@ -21,8 +21,13 @@
 package org.openflexo.technologyadapter.gina;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
+import org.openflexo.connie.BindingModel;
+import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoProject;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
@@ -32,10 +37,16 @@ import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.model.annotations.Adder;
+import org.openflexo.model.annotations.CloningStrategy;
+import org.openflexo.model.annotations.CloningStrategy.StrategyType;
+import org.openflexo.model.annotations.DeserializationFinalizer;
 import org.openflexo.model.annotations.Getter;
+import org.openflexo.model.annotations.Getter.Cardinality;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
+import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
@@ -62,6 +73,8 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 	public static final String TEMPLATE_COMPONENT_URI_KEY = "templateComponentURI";
 	@PropertyIdentifier(type = FlexoResource.class)
 	public static final String TEMPLATE_RESOURCE_KEY = "templateResource";
+	@PropertyIdentifier(type = VariableAssignment.class, cardinality = Cardinality.LIST)
+	public static final String ASSIGNMENTS_KEY = "assignments";
 
 	@Getter(value = TEMPLATE_COMPONENT_URI_KEY)
 	@XMLAttribute
@@ -75,6 +88,24 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 
 	@Setter(TEMPLATE_RESOURCE_KEY)
 	public void setTemplateResource(GINAFIBComponentResource templateResource);
+
+	@Getter(value = ASSIGNMENTS_KEY, cardinality = Cardinality.LIST, inverse = VariableAssignment.OWNER_KEY)
+	@XMLElement
+	@CloningStrategy(StrategyType.CLONE)
+	public List<VariableAssignment> getAssignments();
+
+	@Setter(ASSIGNMENTS_KEY)
+	public void setAssignments(List<VariableAssignment> assignments);
+
+	@Adder(ASSIGNMENTS_KEY)
+	public void addToAssignments(VariableAssignment aAssignment);
+
+	@Remover(ASSIGNMENTS_KEY)
+	public void removeFromAssignments(VariableAssignment aAssignment);
+
+	public VariableAssignment createAssignment();
+
+	public VariableAssignment deleteAssignment(VariableAssignment assignment);
 
 	@Override
 	public GINATechnologyAdapter getModelSlotTechnologyAdapter();
@@ -158,5 +189,130 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 			}
 		}
 
+		@Override
+		public VariableAssignment createAssignment() {
+			System.out.println("Called createAssignment()");
+			VariableAssignment newAssignment = getFMLModelFactory().newInstance(VariableAssignment.class);
+			newAssignment.setVariable("data" + (getAssignments().size() > 0 ? getAssignments().size() + 1 : ""));
+			addToAssignments(newAssignment);
+			return newAssignment;
+		}
+
+		@Override
+		public VariableAssignment deleteAssignment(VariableAssignment assignment) {
+			System.out.println("Called deleteAssignment() with " + assignment);
+			removeFromAssignments(assignment);
+			return assignment;
+		}
+
 	}
+
+	@ModelEntity
+	@ImplementationClass(VariableAssignment.VariableAssignmentImpl.class)
+	@XMLElement(xmlTag = "VariableAssignment")
+	public static interface VariableAssignment extends FMLObject {
+		@PropertyIdentifier(type = FIBComponentModelSlot.class)
+		public static final String OWNER_KEY = "owner";
+		@PropertyIdentifier(type = String.class)
+		public static final String VARIABLE_KEY = "variable";
+		@PropertyIdentifier(type = DataBinding.class)
+		public static final String VALUE_KEY = "value";
+		@PropertyIdentifier(type = Boolean.class)
+		public static final String MANDATORY_KEY = "mandatory";
+
+		@Getter(value = OWNER_KEY)
+		@CloningStrategy(StrategyType.IGNORE)
+		public FIBComponentModelSlot getOwner();
+
+		@Setter(OWNER_KEY)
+		public void setOwner(FIBComponentModelSlot customColumn);
+
+		@Getter(value = VARIABLE_KEY)
+		@XMLAttribute
+		public String getVariable();
+
+		@Setter(VARIABLE_KEY)
+		public void setVariable(String variable);
+
+		@Getter(value = VALUE_KEY)
+		@XMLAttribute
+		public DataBinding<Object> getValue();
+
+		@Setter(VALUE_KEY)
+		public void setValue(DataBinding<Object> value);
+
+		@Getter(value = MANDATORY_KEY, defaultValue = "false")
+		@XMLAttribute
+		public boolean isMandatory();
+
+		@Setter(MANDATORY_KEY)
+		public void setMandatory(boolean mandatory);
+
+		@Override
+		@DeserializationFinalizer
+		public void finalizeDeserialization();
+
+		public static abstract class VariableAssignmentImpl extends FMLObjectImpl implements VariableAssignment {
+
+			private DataBinding<Object> value;
+
+			@Override
+			public void setOwner(FIBComponentModelSlot referencedComponent) {
+				performSuperSetter(OWNER_KEY, referencedComponent);
+				if (value != null) {
+					value.setOwner(referencedComponent);
+				}
+			}
+
+			@Override
+			public DataBinding<Object> getValue() {
+				if (value == null) {
+					value = new DataBinding<Object>(getOwner(), Object.class, DataBinding.BindingDefinitionType.GET);
+				}
+				return value;
+			}
+
+			@Override
+			public void setValue(DataBinding<Object> value) {
+				if (value != null) {
+					value.setOwner(getOwner()); // Warning, still null while deserializing
+					value.setDeclaredType(Object.class);
+					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+					this.value = value;
+				}
+				else {
+					getValue();
+				}
+			}
+
+			@Override
+			public void finalizeDeserialization() {
+
+				super.finalizeDeserialization();
+
+				if (value != null) {
+					value.setOwner(getOwner());
+					value.decode();
+				}
+			}
+
+			@Override
+			public BindingModel getBindingModel() {
+				if (getOwner() != null) {
+					return getOwner().getBindingModel();
+				}
+				return null;
+			}
+
+			@Override
+			public AbstractVirtualModel<?> getResourceData() {
+				if (getOwner() != null) {
+					return getOwner().getResourceData();
+				}
+				return null;
+			}
+
+		}
+	}
+
 }
