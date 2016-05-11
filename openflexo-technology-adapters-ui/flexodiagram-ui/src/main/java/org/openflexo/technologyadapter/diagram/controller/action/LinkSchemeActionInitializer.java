@@ -73,7 +73,8 @@ public class LinkSchemeActionInitializer
 			@Override
 			public boolean run(EventObject e, LinkSchemeAction action) {
 				getController().willExecute(action);
-				ParametersRetriever<LinkScheme> parameterRetriever = new ParametersRetriever<LinkScheme>(action, getController());
+				ParametersRetriever<LinkScheme> parameterRetriever = new ParametersRetriever<LinkScheme>(action,
+						getController() != null ? getController().getApplicationContext() : null);
 				if (action.escapeParameterRetrievingWhenValid && parameterRetriever.isSkipable()) {
 					return true;
 				}

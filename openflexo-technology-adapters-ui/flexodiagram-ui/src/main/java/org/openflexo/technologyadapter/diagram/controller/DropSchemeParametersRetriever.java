@@ -53,7 +53,7 @@ public class DropSchemeParametersRetriever extends ParametersRetriever<DropSchem
 	protected DiagramPaletteElement paletteElement;
 
 	public DropSchemeParametersRetriever(DropSchemeAction action, FlexoController controller) {
-		super(action, controller);
+		super(action, controller != null ? controller.getApplicationContext() : null);
 		paletteElement = action.getPaletteElement();
 	}
 
