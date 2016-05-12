@@ -47,6 +47,7 @@ import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBViewNature;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
+import org.openflexo.technologyadapter.gina.view.FMLControlledFIBVirtualModelInstanceModuleView;
 import org.openflexo.view.EmptyPanel;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FMLRTNaturePerspective;
@@ -96,7 +97,7 @@ public class FMLRTControlledFIBNaturePerspective extends FMLRTNaturePerspective 
 
 	@Override
 	protected ModuleView<VirtualModelInstance> createModuleViewForVirtualModelInstance(VirtualModelInstance vmInstance) {
-		return new EmptyPanel<VirtualModelInstance>(getController(), this, vmInstance);
+		return new FMLControlledFIBVirtualModelInstanceModuleView(vmInstance, getController(), this);
 	}
 
 	@Override

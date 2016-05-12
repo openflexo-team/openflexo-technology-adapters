@@ -59,7 +59,7 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 
 		File f = ((FileFlexoIODelegate) representedObject.getResource().getFlexoIODelegate()).getFile();
 
-		editorController = getFIBEditor().openFIBComponent(representedObject.getComponent(), representedObject.getResource(),
+		editorController = getFIBEditor(true).openFIBComponent(representedObject.getComponent(), representedObject.getResource(),
 				controller.getFlexoFrame());
 
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);
@@ -71,9 +71,9 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 		return controller.getApplicationContext().getTechnologyAdapterControllerService().getTechnologyAdapterController(ta);
 	}
 
-	public FIBEditor getFIBEditor() {
+	public FIBEditor getFIBEditor(boolean launchInTask) {
 		if (getAdapterController() != null) {
-			return getAdapterController().getFIBEditor();
+			return getAdapterController().getFIBEditor(launchInTask);
 		}
 		return null;
 	}
@@ -90,10 +90,10 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 		// });
 
 		// Sets palette view of editor to be the top right view
-		flexoPerspective.setTopRightView(getFIBEditor().getPalettes());
+		flexoPerspective.setTopRightView(getFIBEditor(false).getPalettes());
 		flexoPerspective.setBottomLeftView(editorController.getEditorBrowser());
 
-		getFIBEditor().activate(editorController);
+		getFIBEditor(false).activate(editorController);
 
 		// getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getEditor());
 		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());

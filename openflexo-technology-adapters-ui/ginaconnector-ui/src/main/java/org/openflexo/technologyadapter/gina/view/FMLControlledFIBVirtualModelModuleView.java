@@ -69,7 +69,7 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 
 		File f = ((FileFlexoIODelegate) representedObject.getResource().getFlexoIODelegate()).getFile();
 
-		editorController = getFIBEditor().openFIBComponent(component.getComponent(), representedObject.getResource(),
+		editorController = getFIBEditor(true).openFIBComponent(component.getComponent(), representedObject.getResource(),
 				controller.getFlexoFrame());
 
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);
@@ -81,9 +81,9 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 		return controller.getApplicationContext().getTechnologyAdapterControllerService().getTechnologyAdapterController(ta);
 	}
 
-	public FIBEditor getFIBEditor() {
+	public FIBEditor getFIBEditor(boolean launchInTask) {
 		if (getAdapterController() != null) {
-			return getAdapterController().getFIBEditor();
+			return getAdapterController().getFIBEditor(launchInTask);
 		}
 		return null;
 	}
@@ -103,10 +103,10 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 		// });
 
 		// Sets palette view of editor to be the top right view
-		flexoPerspective.setTopRightView(getFIBEditor().getPalettes());
+		flexoPerspective.setTopRightView(getFIBEditor(false).getPalettes());
 		flexoPerspective.setBottomLeftView(editorController.getEditorBrowser());
 
-		getFIBEditor().activate(editorController);
+		getFIBEditor(false).activate(editorController);
 
 		// getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getEditor());
 		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());

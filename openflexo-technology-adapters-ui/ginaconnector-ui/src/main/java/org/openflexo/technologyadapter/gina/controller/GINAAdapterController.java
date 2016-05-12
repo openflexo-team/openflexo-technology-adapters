@@ -25,14 +25,18 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.task.FlexoTask;
+import org.openflexo.foundation.task.Progress;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
+import org.openflexo.gina.swing.utils.FIBEditorLoadingProgress;
 import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.utils.InspectorGroup;
+import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.action.CreateGINAFIBComponentInitializer;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
@@ -62,10 +66,12 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	public GINAAdapterController() {
 	}
 
-	public FIBEditor getFIBEditor() {
+	public FIBEditor getFIBEditor(boolean launchInTask) {
 		if (editor == null && getTechnologyAdapter() != null && getTechnologyAdapter().getTechnologyContextManager() != null
 				&& getTechnologyAdapter().getTechnologyContextManager().getFIBLibrary() != null) {
-			editor = new FIBEditor(FIBLibraryImpl.createInstance()) {
+			editor = makeFIBEditor(launchInTask);
+
+			/*editor = new FIBEditor(FIBLibraryImpl.createInstance()) {
 				@Override
 				public boolean activate(FIBEditorController editorController) {
 					// centerPanel.add(controller.getEditorBrowser(), LayoutPosition.BOTTOM_LEFT.name());
@@ -73,7 +79,7 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 					System.out.println("Activated " + editorController.getEditedComponent());
 					return super.activate(editorController);
 				}
-
+			
 				@Override
 				public boolean disactivate(FIBEditorController editorController) {
 					// centerPanel.add(null, LayoutPosition.BOTTOM_LEFT.name());
@@ -82,21 +88,29 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 					return super.disactivate(editorController);
 				}
 			};
-
+			
 			libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary());
 			palette = editor.makePalette();
 			// inspectors = editor.makeInspectors();
-
+			
 			// centerPanel.add(libraryBrowser, LayoutPosition.TOP_LEFT.name());
 			// centerPanel.add(editor.getMainPanel(), LayoutPosition.CENTER.name());
 			// centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
 			// centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
-
+			
 			JFIBInspectorController inspector = editor.makeInspector(FlexoFrame.getActiveFrame());
-			inspector.setVisible(true);
+			inspector.setVisible(true);*/
 
 		}
 		return editor;
+	}
+
+	public FIBLibraryBrowser getLibraryBrowser() {
+		return libraryBrowser;
+	}
+
+	public FIBEditorPalettes getPalette() {
+		return palette;
 	}
 
 	/**
@@ -210,4 +224,77 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	public FMLRTControlledFIBNaturePerspective getFMLRTControlledFIBNaturePerspective() {
 		return fmlRTControlledFIBNaturePerspective;
 	}
+
+	public class LoadFIBEditor extends FlexoTask {
+
+		public LoadFIBEditor() {
+			super(FlexoLocalization.localizedForKey("loading_fib_editor"));
+		}
+
+		@Override
+		public void performTask() throws InterruptedException {
+			setExpectedProgressSteps(10);
+			editor = _makeFIBEditor();
+		}
+
+	}
+
+	private FIBEditor makeFIBEditor(boolean launchInTask) {
+		if (launchInTask && getServiceManager() != null && getServiceManager().getTaskManager() != null) {
+			LoadFIBEditor task = new LoadFIBEditor();
+			getServiceManager().getTaskManager().scheduleExecution(task);
+			getServiceManager().getTaskManager().waitTask(task);
+		}
+		else {
+			editor = _makeFIBEditor();
+		}
+		return editor;
+	}
+
+	private FIBEditor _makeFIBEditor() {
+		if (getTechnologyAdapter() != null && getTechnologyAdapter().getTechnologyContextManager() != null
+				&& getTechnologyAdapter().getTechnologyContextManager().getFIBLibrary() != null) {
+
+			FIBEditorLoadingProgress progress = new FIBEditorLoadingProgress() {
+				@Override
+				public void progress(String stepName) {
+					Progress.progress(stepName);
+				}
+			};
+
+			FIBEditor editor = new FIBEditor(FIBLibraryImpl.createInstance(), progress) {
+				@Override
+				public boolean activate(FIBEditorController editorController) {
+					// centerPanel.add(controller.getEditorBrowser(), LayoutPosition.BOTTOM_LEFT.name());
+					// centerPanel.revalidate();
+					System.out.println("Activated " + editorController.getEditedComponent());
+					return super.activate(editorController);
+				}
+
+				@Override
+				public boolean disactivate(FIBEditorController editorController) {
+					// centerPanel.add(null, LayoutPosition.BOTTOM_LEFT.name());
+					// centerPanel.revalidate();
+					System.out.println("Disactivated " + editorController.getEditedComponent());
+					return super.disactivate(editorController);
+				}
+			};
+
+			libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary());
+			palette = editor.makePalette();
+			// inspectors = editor.makeInspectors();
+
+			// centerPanel.add(libraryBrowser, LayoutPosition.TOP_LEFT.name());
+			// centerPanel.add(editor.getMainPanel(), LayoutPosition.CENTER.name());
+			// centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
+			// centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
+
+			JFIBInspectorController inspector = editor.makeInspector(FlexoFrame.getActiveFrame());
+			inspector.setVisible(true);
+
+			return editor;
+		}
+		return null;
+	}
+
 }
