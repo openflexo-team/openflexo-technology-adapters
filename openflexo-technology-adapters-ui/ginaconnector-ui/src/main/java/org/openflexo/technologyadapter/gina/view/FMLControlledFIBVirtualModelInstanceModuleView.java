@@ -44,6 +44,7 @@ import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot.VariableAssignment;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
+import org.openflexo.technologyadapter.gina.controller.FMLControlledFIBController;
 import org.openflexo.technologyadapter.gina.controller.GINAAdapterController;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
@@ -87,6 +88,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		}
 
 		component.bindTo(getRepresentedObject().getVirtualModel(), modelSlotInstance.getModelSlot());
+		component.getComponent().setControllerClass(FMLControlledFIBController.class);
 
 		componentView = new FIBJPanel<Object>(component.getComponent(), null, FlexoLocalization.getMainLocalizer()) {
 			@Override
@@ -259,6 +261,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	}
 
 	private void updateAsEditMode() {
+		((FMLControlledFIBController) editorController.getController()).setFlexoController(getFlexoController());
 		for (VariableAssignment variableAssignment : modelSlotInstance.getModelSlot().getAssignments()) {
 			try {
 				Object value = variableAssignment.getValue().getBindingValue(getRepresentedObject());
@@ -285,6 +288,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	}
 
 	private void updateAsNormalMode() {
+		((FMLControlledFIBController) componentView.getController()).setFlexoController(getFlexoController());
 		for (VariableAssignment variableAssignment : modelSlotInstance.getModelSlot().getAssignments()) {
 			try {
 				Object value = variableAssignment.getValue().getBindingValue(getRepresentedObject());

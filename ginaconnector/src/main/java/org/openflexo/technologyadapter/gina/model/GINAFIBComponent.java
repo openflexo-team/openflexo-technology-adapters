@@ -47,6 +47,7 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -151,6 +152,17 @@ public interface GINAFIBComponent
 				}
 			}
 
+			recursivelyFinalizeDeserialization(getComponent());
+
+		}
+
+		private void recursivelyFinalizeDeserialization(FIBComponent c) {
+			c.finalizeDeserialization();
+			if (c instanceof FIBContainer) {
+				for (FIBComponent c2 : ((FIBContainer) c).getSubComponents()) {
+					recursivelyFinalizeDeserialization(c2);
+				}
+			}
 		}
 
 	}
