@@ -51,6 +51,14 @@ import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
+/**
+ * A {@link ModuleView} suitable for {@link VirtualModelInstance} that have the {@link FMLControlledFIBVirtualModelInstanceNature}<br>
+ * Display a FIB view bound to {@link VirtualModelInstance} evaluation context.<br>
+ * This view allow to switch beeween normal and edit mode
+ * 
+ * @author sylvain
+ *
+ */
 @SuppressWarnings("serial")
 public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel implements ModuleView<VirtualModelInstance> {
 
@@ -61,13 +69,10 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	private FIBEditorController editorController;
 	private GINAFIBComponent component;
 	private FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> modelSlotInstance;
-	private FIBJPanel componentView;
+	private FIBJPanel<?> componentView;
 
 	public FMLControlledFIBVirtualModelInstanceModuleView(VirtualModelInstance representedObject, FlexoController controller,
 			FlexoPerspective perspective) {
-		// super(representedObject, controller,
-		// FMLControlledFIBVirtualModelInstanceNature.getGINAFIBComponent(representedObject).getComponent(), true);
-
 		super(new BorderLayout());
 
 		this.controller = controller;
@@ -86,18 +91,13 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		componentView = new FIBJPanel<Object>(component.getComponent(), null, FlexoLocalization.getMainLocalizer()) {
 			@Override
 			public void delete() {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
 			public Class<Object> getRepresentedType() {
-				// TODO Auto-generated method stub
 				return Object.class;
 			}
 		};
-
-		// _setTransparent(this);
 
 		add(componentView, BorderLayout.CENTER);
 
@@ -169,7 +169,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 
 	public boolean _switchToEditMode() {
 
-		System.out.println("switchToEditMode, editMode=" + editMode);
+		System.out.println("switchToEditMode, editMode=" + editMode + " thread=" + Thread.currentThread());
 
 		if (editMode) {
 			return false;
@@ -193,6 +193,8 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		editButton.setVisible(false);
 		doneButton.setVisible(true);
 		saveButton.setVisible(true);
+
+		updateAsEditMode();
 
 		revalidate();
 		repaint();
@@ -219,6 +221,8 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		editButton.setVisible(true);
 		doneButton.setVisible(false);
 		saveButton.setVisible(false);
+
+		updateAsNormalMode();
 
 		revalidate();
 		repaint();
@@ -254,9 +258,33 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		return null;
 	}
 
-	@Override
-	public void show(FlexoController flexoController, FlexoPerspective flexoPerspective) {
+	private void updateAsEditMode() {
+		for (VariableAssignment variableAssignment : modelSlotInstance.getModelSlot().getAssignments()) {
+			try {
+				Object value = variableAssignment.getValue().getBindingValue(getRepresentedObject());
+				// System.out.println("> Variable " + variableAssignment.getVariable() + " value=" + value);
+				editorController.getController().setVariableValue(variableAssignment.getVariable(), value);
+			} catch (TypeMismatchException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NullReferenceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		// Sets palette view of editor to be the top right view
+		perspective.setTopRightView(getFIBEditor(false).getPalettes());
+		perspective.setBottomLeftView(editorController.getEditorBrowser());
 
+		controller.getControllerModel().setRightViewVisible(true);
+
+		getFIBEditor(false).activate(editorController);
+	}
+
+	private void updateAsNormalMode() {
 		for (VariableAssignment variableAssignment : modelSlotInstance.getModelSlot().getAssignments()) {
 			try {
 				Object value = variableAssignment.getValue().getBindingValue(getRepresentedObject());
@@ -273,44 +301,20 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 				e.printStackTrace();
 			}
 		}
+		perspective.setTopRightView(null);
+		perspective.setBottomLeftView(null);
+		controller.getControllerModel().setRightViewVisible(false);
+	}
 
-		// Test
-		// JFIBDialog.instanciateAndShowDialog(component.getComponent(), null, getFlexoController().getFlexoFrame(), false);
+	@Override
+	public void show(FlexoController flexoController, FlexoPerspective flexoPerspective) {
 
-		// _setTransparent(this);
-
-		// _setChildTransparent(this);
-
-		// revalidate();
-		// repaint();
-
-		// If you want to add right and left panels to your module view, do it here. Un comment following code with your component.
-		// SwingUtilities.invokeLater(new Runnable() {
-		// @Override
-		// public void run() {
-		// perspective.setTopRightView(customJComponent);
-		// controller.getControllerModel().setRightViewVisible(true);
-		// }
-		// });
-
-		// Sets palette view of editor to be the top right view
-
-		// getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getEditor());
-		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());
-		// getDiagramTechnologyAdapterController(controller).getScaleSelector().attachToEditor(getEditor());
-
-		// perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
-
-		/*SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// Force right view to be visible
-				controller.getControllerModel().setRightViewVisible(true);
-			}
-		});*/
-
-		// controller.getControllerModel().setRightViewVisible(true);
-
+		if (isEditMode()) {
+			updateAsEditMode();
+		}
+		else {
+			updateAsNormalMode();
+		}
 	}
 
 	/**

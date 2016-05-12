@@ -21,23 +21,30 @@
 package org.openflexo.technologyadapter.gina.view;
 
 import java.awt.BorderLayout;
-import java.io.File;
 
 import javax.swing.JPanel;
 
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.GINAAdapterController;
+import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelNature;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
+/**
+ * A {@link ModuleView} suitable for {@link VirtualModel} that have the {@link FMLControlledFIBVirtualModelInstanceNature}<br>
+ * Display an editable FIB view in {@link FIBEditor}
+ * 
+ * @author sylvain
+ *
+ */
+@SuppressWarnings("serial")
 public class FMLControlledFIBVirtualModelModuleView extends JPanel implements ModuleView<VirtualModel> {
 
 	private final FlexoController controller;
@@ -67,9 +74,9 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 
 		component.bindTo(representedObject, modelSlot);
 
-		File f = ((FileFlexoIODelegate) representedObject.getResource().getFlexoIODelegate()).getFile();
-
-		editorController = getFIBEditor(true).openFIBComponent(component.getComponent(), representedObject.getResource(),
+		// TODO: if we set flag to true, a dead-lock happen here.
+		// Please investigate to find an elegant solution
+		editorController = getFIBEditor(false).openFIBComponent(component.getComponent(), representedObject.getResource(),
 				controller.getFlexoFrame());
 
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);

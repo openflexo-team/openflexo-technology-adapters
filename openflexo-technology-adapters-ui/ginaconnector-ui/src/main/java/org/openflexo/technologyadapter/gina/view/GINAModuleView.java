@@ -35,6 +35,12 @@ import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
+/**
+ * A {@link ModuleView} suitable for displaying and edition a {@link GINAFIBComponent}
+ * 
+ * @author sylvain
+ *
+ */
 public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponent> {
 
 	private final FlexoController controller;
