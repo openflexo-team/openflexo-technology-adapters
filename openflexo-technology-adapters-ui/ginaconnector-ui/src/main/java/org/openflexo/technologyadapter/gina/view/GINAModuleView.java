@@ -46,7 +46,7 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 	private final FlexoController controller;
 	private final GINAFIBComponent representedObject;
 	private final FlexoPerspective perspective;
-	private FIBEditorController editorController;
+	private final FIBEditorController editorController;
 
 	/**
 	 * Initialize needed attribute. All are final.
@@ -65,7 +65,7 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 
 		File f = ((FileFlexoIODelegate) representedObject.getResource().getFlexoIODelegate()).getFile();
 
-		editorController = getFIBEditor(true).openFIBComponent(representedObject.getComponent(), representedObject.getResource(),
+		editorController = getFIBEditor(false).openFIBComponent(representedObject.getComponent(), representedObject.getResource(),
 				controller.getFlexoFrame());
 
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);
