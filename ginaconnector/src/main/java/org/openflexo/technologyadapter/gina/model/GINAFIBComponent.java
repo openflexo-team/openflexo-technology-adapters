@@ -38,8 +38,11 @@
 
 package org.openflexo.technologyadapter.gina.model;
 
+import java.lang.reflect.Type;
+
 import org.openflexo.connie.BindingEvaluationContext;
 import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.binding.FlexoConceptBindingFactory;
@@ -147,8 +150,14 @@ public interface GINAFIBComponent
 				}
 				DataBinding<?> value = variableAssign.getValue();
 				if (value != null && value.isSet() && value.isValid()) {
-					System.out.println("Je donne a " + returned.getName() + " le type: " + value.getAnalyzedType());
-					returned.setType(value.getAnalyzedType());
+					Type analyzedType = value.getAnalyzedType();
+					if (TypeUtils.isTypeAssignableFrom(analyzedType, returned.getType())) {
+						// Type is conform, does nothing
+					}
+					else if (!TypeUtils.isTypeAssignableFrom(returned.getType(), analyzedType)) {
+						returned.setType(value.getAnalyzedType());
+						// We force type of variable to be type analyzed from binding
+					}
 				}
 			}
 
