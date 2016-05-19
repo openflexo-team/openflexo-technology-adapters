@@ -39,9 +39,10 @@ public class FIBComponentModelSlotInstanceConfiguration
 		/**
 		 * Use the component given as template in model slot, do not modify it
 		 */
-		ReadOnlyUseFIBComponent, /**
-									 * Use the component given as template in model slot, and allow to dynamically modify it
-									 */
+		ReadOnlyUseFIBComponent,
+		/**
+		 * Use the component given as template in model slot, and allow to dynamically modify it
+		 */
 		ReadWriteFIBComponent;
 
 		@Override
@@ -72,17 +73,19 @@ public class FIBComponentModelSlotInstanceConfiguration
 	protected FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> configureModelSlotInstance(
 			FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> msInstance) {
 
-		System.out.println("C'est parti pour configurer le modelSlot");
+		/*System.out.println("C'est parti pour configurer le modelSlot");
 		System.out.println("option=" + getOption());
+		System.out.println("modelSlot=" + getModelSlot());
+		Thread.dumpStack();
+		System.out.println("getModelSlot().getTemplateResource()=" + getModelSlot().getTemplateResource());*/
 
 		try {
 			if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent) {
 				// In this case, we will use the FIBComponent as read-only
 				// The accessed ResourceData will be the template FIBComponent
 				msInstance.setAccessedResourceData(getModelSlot().getTemplateResource().getResourceData(null));
-				System.out.println("rd=" + msInstance.getAccessedResourceData());
-			}
-			else if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadWriteFIBComponent) {
+				// System.out.println("rd=" + msInstance.getAccessedResourceData());
+			} else if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadWriteFIBComponent) {
 				// In this case, we have to manage a copy of template
 				/*resource = createProjectSpecificEmptyResource(msInstance, getModelSlot());
 				if (getResource() != null) {
@@ -117,8 +120,7 @@ public class FIBComponentModelSlotInstanceConfiguration
 	public boolean isValidConfiguration() {
 		if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent) {
 			return true;
-		}
-		else if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadWriteFIBComponent) {
+		} else if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadWriteFIBComponent) {
 			setErrorMessage(FlexoLocalization.localizedForKey("not_implemented_yet"));
 			return false;
 		}

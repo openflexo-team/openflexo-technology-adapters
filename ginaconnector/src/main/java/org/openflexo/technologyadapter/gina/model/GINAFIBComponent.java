@@ -151,10 +151,10 @@ public interface GINAFIBComponent
 				DataBinding<?> value = variableAssign.getValue();
 				if (value != null && value.isSet() && value.isValid()) {
 					Type analyzedType = value.getAnalyzedType();
+					// returned.setType(value.getAnalyzedType());
 					if (TypeUtils.isTypeAssignableFrom(analyzedType, returned.getType())) {
 						// Type is conform, does nothing
-					}
-					else if (!TypeUtils.isTypeAssignableFrom(returned.getType(), analyzedType)) {
+					} else if (!TypeUtils.isTypeAssignableFrom(returned.getType(), analyzedType)) {
 						returned.setType(value.getAnalyzedType());
 						// We force type of variable to be type analyzed from binding
 					}
