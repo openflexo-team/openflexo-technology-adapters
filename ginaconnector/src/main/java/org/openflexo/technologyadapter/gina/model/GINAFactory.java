@@ -79,7 +79,7 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 		addConverter(typeConverter = new TypeConverter(serviceManager.getTechnologyAdapterService().getCustomTypeFactories()));
 
 		if (resource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-			addConverter(new RelativePathFileConverter(((FileFlexoIODelegate) resource.getFlexoIODelegate()).getFile()));
+			addConverter(new RelativePathFileConverter(((FileFlexoIODelegate) resource.getFlexoIODelegate()).getFile().getParentFile()));
 		}
 
 		this.resource = resource;
@@ -138,8 +138,7 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 		if (newlyCreatedObject instanceof FlexoObject) {
 			if (getResource() != null) {
 				getResource().setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
-			}
-			else {
+			} else {
 				logger.warning("Could not access resource beeing deserialized");
 			}
 		}
