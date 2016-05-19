@@ -27,7 +27,6 @@ import org.openflexo.foundation.doc.fml.FlexoFragmentRole;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
@@ -41,8 +40,8 @@ import org.openflexo.technologyadapter.docx.model.DocXFragment;
 @XMLElement
 public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDocument, DocXTechnologyAdapter> {
 
-	@PropertyIdentifier(type = DocXFragment.class)
-	public static final String FRAGMENT_KEY = "fragment";
+	// @PropertyIdentifier(type = DocXFragment.class)
+	// public static final String FRAGMENT_KEY = "fragment";
 
 	/**
 	 * Return the represented fragment in the template resource<br>
@@ -65,7 +64,7 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 	public void setFragment(DocXFragment fragment);
 
 	public static abstract class DocXFragmentRoleImpl
-			extends FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter>implements DocXFragmentRole {
+			extends FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter> implements DocXFragmentRole {
 
 		@Override
 		public Type getType() {
