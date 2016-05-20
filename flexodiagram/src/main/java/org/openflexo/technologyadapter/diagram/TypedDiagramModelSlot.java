@@ -44,6 +44,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.DrawingGraphicalRepresentation;
+import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoProject;
@@ -306,7 +307,13 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			PR returned = super.makeFlexoRole(flexoRoleClass);
 			if (ShapeRole.class.isAssignableFrom(flexoRoleClass)) {
 				ShapeRole shapeRole = (ShapeRole) returned;
-				shapeRole.setGraphicalRepresentation(getFMLModelFactory().makeShapeGraphicalRepresentation(ShapeType.RECTANGLE));
+				ShapeGraphicalRepresentation gr = getFMLModelFactory().makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
+				gr.setWidth(80);
+				gr.setHeight(50);
+				gr.setX(20);
+				gr.setY(20);
+				gr.setIsFloatingLabel(false);
+				shapeRole.setGraphicalRepresentation(gr);
 			}
 			if (ConnectorRole.class.isAssignableFrom(flexoRoleClass)) {
 				ConnectorRole connectorRole = (ConnectorRole) returned;

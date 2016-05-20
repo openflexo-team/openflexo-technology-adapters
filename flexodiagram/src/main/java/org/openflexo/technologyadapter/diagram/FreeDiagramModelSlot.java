@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.diagram;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoProject;
@@ -90,7 +91,7 @@ import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 @FML("FreeDiagramModelSlot")
 public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramModelSlot {
 
-	public abstract class FreeDiagramModelSlotImpl extends FreeModelSlotImpl<Diagram> implements FreeDiagramModelSlot {
+	public abstract class FreeDiagramModelSlotImpl extends FreeModelSlotImpl<Diagram>implements FreeDiagramModelSlot {
 
 		private static final Logger logger = Logger.getLogger(FreeDiagramModelSlot.class.getPackage().getName());
 
@@ -157,7 +158,13 @@ public interface FreeDiagramModelSlot extends FreeModelSlot<Diagram>, DiagramMod
 			PR returned = super.makeFlexoRole(flexoRoleClass);
 			if (ShapeRole.class.isAssignableFrom(flexoRoleClass)) {
 				ShapeRole shapeRole = (ShapeRole) returned;
-				shapeRole.setGraphicalRepresentation(getFMLModelFactory().makeShapeGraphicalRepresentation(ShapeType.RECTANGLE));
+				ShapeGraphicalRepresentation gr = getFMLModelFactory().makeShapeGraphicalRepresentation(ShapeType.RECTANGLE);
+				gr.setWidth(80);
+				gr.setHeight(50);
+				gr.setX(20);
+				gr.setY(20);
+				gr.setIsFloatingLabel(false);
+				shapeRole.setGraphicalRepresentation(gr);
 			}
 			if (ConnectorRole.class.isAssignableFrom(flexoRoleClass)) {
 				ConnectorRole connectorRole = (ConnectorRole) returned;
