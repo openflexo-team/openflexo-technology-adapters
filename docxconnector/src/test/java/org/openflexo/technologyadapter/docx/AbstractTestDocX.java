@@ -44,14 +44,32 @@ import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 
 public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(AbstractTestDocX.class.getPackage().getName());
+
+	/**
+	 * Instantiate a default {@link FlexoServiceManager} well suited for test purpose<br>
+	 * FML and FML@RT technology adapters are activated in returned {@link FlexoServiceManager}, as well as technology adapters whose
+	 * classes are supplied as varargs arguments
+	 * 
+	 * @param taClasses
+	 * @return a newly created {@link FlexoServiceManager}
+	 */
+	protected static FlexoServiceManager instanciateTestServiceManagerForDocX(IdentifierManagementStrategy idStrategy) {
+		serviceManager = instanciateTestServiceManager();
+		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+		docXTA.setIDStrategy(idStrategy);
+		serviceManager.activateTechnologyAdapter(docXTA);
+		return serviceManager;
+	}
 
 	protected DocXDocumentResource getDocumentResource(String documentName) {
 

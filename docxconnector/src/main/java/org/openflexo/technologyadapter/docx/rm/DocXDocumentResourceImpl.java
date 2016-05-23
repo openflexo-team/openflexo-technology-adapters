@@ -44,20 +44,22 @@ import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.docx.DocXTechnologyContextManager;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFactory;
+import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.toolbox.FileUtils;
 
 public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory>implements DocXDocumentResource {
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceImpl.class.getPackage().getName());
 
 	public static DocXDocumentResource makeDocXDocumentResource(File modelFile, DocXTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter) {
+			FlexoResourceCenter<?> resourceCenter, IdentifierManagementStrategy idStrategy) {
 		try {
 			ModelFactory factory = new ModelFactory(
 					ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, FileFlexoIODelegate.class));
 			DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
 			returned.initName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
+			DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext(),
+					idStrategy);
 			returned.setFactory(docXFactory);
 
 			// returned.setURI(modelURI);
@@ -75,14 +77,15 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 	}
 
 	public static DocXDocumentResource retrieveDocXDocumentResource(File modelFile, DocXTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter) {
+			FlexoResourceCenter<?> resourceCenter, IdentifierManagementStrategy idStrategy) {
 		try {
 			ModelFactory factory = new ModelFactory(
 					ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, FileFlexoIODelegate.class));
 			DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
 			returned.initName(modelFile.getName());
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
+			DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext(),
+					idStrategy);
 			returned.setFactory(docXFactory);
 
 			// returned.setURI(modelFile.toURI().toString());
@@ -109,6 +112,18 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 		} catch (Docx4JException e) {
 			e.printStackTrace();
 			throw new FlexoException(e);
+		}
+	}
+
+	@Override
+	public void stopDeserializing() {
+		super.stopDeserializing();
+
+		if (getFactory().getIDStrategy() == IdentifierManagementStrategy.Bookmark) {
+
+			if (getFactory().someIdHaveBeenGeneratedAccordingToBookmarkManagementStrategy) {
+				getLoadedResourceData().setModified(true);
+			}
 		}
 	}
 
@@ -154,6 +169,12 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 			}
 			getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 			throw new SaveResourceException(getFlexoIODelegate(), e);
+		}
+
+		if (clearIsModified) {
+			if (getFactory().getIDStrategy() == IdentifierManagementStrategy.Bookmark) {
+				getFactory().someIdHaveBeenGeneratedAccordingToBookmarkManagementStrategy = false;
+			}
 		}
 	}
 

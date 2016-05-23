@@ -51,6 +51,7 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
@@ -82,7 +83,7 @@ public class TestDocXResourceUnloading extends AbstractTestDocX {
 		// if FlexoServiceManager is not freed after each iteration
 		while (i < 10) {
 			log("Iteration " + i);
-			instanciateTestServiceManager(DocXTechnologyAdapter.class);
+			instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 			testDocXLoading();
 			log("After docx loading:");
 			debugMemory();

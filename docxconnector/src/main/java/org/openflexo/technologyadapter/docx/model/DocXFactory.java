@@ -63,6 +63,8 @@ import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.model.DocXDocument.DocXDocumentImpl;
+import org.openflexo.technologyadapter.docx.model.DocXParagraph.DocXParagraphImpl;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.toolbox.StringUtils;
 
@@ -77,9 +79,21 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	private static final Logger logger = Logger.getLogger(DocXFactory.class.getPackage().getName());
 
-	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext) throws ModelDefinitionException {
+	public static enum IdentifierManagementStrategy {
+		ParaId, Bookmark
+	}
+
+	private final IdentifierManagementStrategy idStrategy;
+
+	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext, IdentifierManagementStrategy idStrategy)
+			throws ModelDefinitionException {
 		super(ModelContextLibrary.getCompoundModelContext(DocXDocument.class, DocXFragment.class, DocXStyle.class), resource,
 				editingContext);
+		this.idStrategy = idStrategy;
+	}
+
+	public IdentifierManagementStrategy getIDStrategy() {
+		return idStrategy;
 	}
 
 	@Override
@@ -89,7 +103,9 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	@Override
 	protected DocXDocument makeDocument() {
-		return newInstance(DocXDocument.class);
+		DocXDocument returned = newInstance(DocXDocument.class);
+		((DocXDocumentImpl) returned)._factory = this;
+		return returned;
 	}
 
 	public DocXDocument makeNewDocXDocument() {
@@ -119,14 +135,25 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	@Override
 	protected DocXParagraph makeParagraph() {
-		return newInstance(DocXParagraph.class);
+		DocXParagraph returned = newInstance(DocXParagraph.class);
+		((DocXParagraphImpl) returned)._factory = this;
+		return returned;
 	}
+
+	public boolean someIdHaveBeenGeneratedAccordingToBookmarkManagementStrategy = false;
 
 	public DocXParagraph makeNewDocXParagraph(P p) {
 		DocXParagraph returned = makeParagraph();
 		returned.updateFromP(p, this);
 		if (StringUtils.isEmpty(returned.getIdentifier())) {
-			p.setParaId(generateId());
+			switch (getIDStrategy()) {
+				case ParaId:
+					p.setParaId(generateId());
+					break;
+				case Bookmark:
+					((DocXParagraphImpl) returned).createCTBookmarkIdentifier(this);
+					break;
+			}
 		}
 		return returned;
 	}

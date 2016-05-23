@@ -89,6 +89,7 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.LocationSemantics;
 import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
@@ -160,7 +161,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 		log("testInitialize()");
 
-		serviceManager = instanciateTestServiceManager(DocXTechnologyAdapter.class);
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 		repository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);

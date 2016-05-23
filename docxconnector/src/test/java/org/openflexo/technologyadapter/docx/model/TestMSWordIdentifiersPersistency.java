@@ -49,6 +49,7 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.doc.FlexoDocElement;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
+import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -81,7 +82,7 @@ public class TestMSWordIdentifiersPersistency extends AbstractTestDocX {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager(DocXTechnologyAdapter.class);
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 	}
 
 	/*@Test

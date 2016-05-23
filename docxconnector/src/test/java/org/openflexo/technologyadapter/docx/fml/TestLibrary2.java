@@ -130,6 +130,7 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDoc
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXTable;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
+import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
@@ -256,7 +257,7 @@ public class TestLibrary2 extends AbstractTestDocX {
 
 		log("testInitialize()");
 
-		serviceManager = instanciateTestServiceManager(DocXTechnologyAdapter.class);
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 		repository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);

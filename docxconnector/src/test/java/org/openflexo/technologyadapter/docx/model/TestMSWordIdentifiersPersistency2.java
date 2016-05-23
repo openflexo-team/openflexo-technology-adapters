@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
+import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -53,7 +54,7 @@ public class TestMSWordIdentifiersPersistency2 extends AbstractTestDocX {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManager();
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 	}
 	/*
 		@Test
@@ -61,7 +62,7 @@ public class TestMSWordIdentifiersPersistency2 extends AbstractTestDocX {
 		public void testDocXLoading() {
 			DocXTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 					DocXTechnologyAdapter.class);
-
+	
 			for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 				DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
 				assertNotNull(docXRepository);
@@ -85,43 +86,43 @@ public class TestMSWordIdentifiersPersistency2 extends AbstractTestDocX {
 				}
 			}
 		}
-
+	
 		private static DocXDocument step1;
 		private static DocXDocument step2;
-
+	
 		@Test
 		@TestOrder(4)
 		public void testStep1() {
-
+	
 			step1 = getDocument("TestActivityReport/ActivityReport1.docx");
-
+	
 			System.out.println("ActivityReport1.docx:\n" + step1.debugStructuredContents());
-
+	
 			assertEquals(113, step1.getElements().size());
-
+	
 			// DocXParagraph titleParagraph = (DocXParagraph) simpleDocument.getElements().get(0);
-
+	
 		}
-
+	
 		// Same document after a SaveAs in Microsoft Word
 		@Test
 		@TestOrder(5)
 		public void testStep2() {
-
+	
 			step2 = getDocument("TestActivityReport/ActivityReport2.docx");
-
+	
 			System.out.println("ActivityReport2.docx:\n" + step2.debugStructuredContents());
-
+	
 			assertEquals(113, step2.getElements().size());
 			assertEquals(step1.getElements().size(), step2.getElements().size());
-
+	
 			for (int i = 0; i < step1.getElements().size(); i++) {
 				FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element1 = step1.getElements().get(i);
 				FlexoDocElement<DocXDocument, DocXTechnologyAdapter> element2 = step2.getElements().get(i);
 				// This doesn't work: LibreOffice does not persist paraId !!!!
 				// assertEquals(element1.getIdentifier(), element2.getIdentifier());
 			}
-
+	
 		}*/
 
 }

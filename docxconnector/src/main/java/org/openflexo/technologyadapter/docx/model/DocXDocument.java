@@ -127,6 +127,9 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 		private final Map<Object, DocXUnmappedElement<?>> unmappedElements = new HashMap<Object, DocXUnmappedElement<?>>();
 		private final Map<String, DocXElement<?>> elementsForIdentifier = new HashMap<String, DocXElement<?>>();
 
+		// Factory used during initialization of DocXDocument (either new or loaded document)
+		protected DocXFactory _factory;
+
 		@Override
 		public WordprocessingMLPackage getDocXObject() {
 			return getWordprocessingMLPackage();
@@ -414,7 +417,11 @@ public interface DocXDocument extends DocXObject<WordprocessingMLPackage>, Flexo
 
 		@Override
 		public DocXFactory getFactory() {
-			return (DocXFactory) super.getFactory();
+			DocXFactory returned = (DocXFactory) super.getFactory();
+			if (returned == null) {
+				return _factory;
+			}
+			return returned;
 		}
 
 		private DocXDocumentResource resource;

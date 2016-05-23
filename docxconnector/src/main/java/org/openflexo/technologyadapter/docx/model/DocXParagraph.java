@@ -21,6 +21,7 @@
 package org.openflexo.technologyadapter.docx.model;
 
 import java.io.StringWriter;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,6 +32,8 @@ import javax.xml.bind.JAXBElement;
 import org.docx4j.TextUtils;
 import org.docx4j.XmlUtils;
 import org.docx4j.jaxb.Context;
+import org.docx4j.wml.CTBookmark;
+import org.docx4j.wml.CTMarkupRange;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.ObjectFactory;
 import org.docx4j.wml.P;
@@ -66,8 +69,12 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @Imports({ @Import(DocXTextRun.class), @Import(DocXDrawingRun.class) })
 public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> {
 
+	public static final String BOOKMARK_PREFIX = "FLX";
+
 	@PropertyIdentifier(type = P.class)
 	public static final String P_KEY = "p";
+	@PropertyIdentifier(type = CTBookmark.class)
+	public static final String BOOKMARK_KEY = "bookmark";
 
 	@Getter(value = P_KEY, ignoreType = true)
 	// We need to clone (reference) container first, in order to have container not null when executing setP()
@@ -76,6 +83,14 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 
 	@Setter(P_KEY)
 	public void setP(P p);
+
+	@Getter(value = BOOKMARK_KEY, ignoreType = true)
+	// We need to clone (reference) container first, in order to have container not null when executing setP()
+	@CloningStrategy(StrategyType.IGNORE)
+	public CTBookmark getBookmark();
+
+	@Setter(BOOKMARK_KEY)
+	public void setBookmark(CTBookmark bookmark);
 
 	public P cloneP();
 
@@ -96,6 +111,8 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 
 	public DocXRun getRun(R r);
 
+	public DocXFactory getFactory();
+
 	public static abstract class DocXParagraphImpl extends FlexoDocParagraphImpl<DocXDocument, DocXTechnologyAdapter>
 			implements DocXParagraph {
 
@@ -103,6 +120,9 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 				.getLogger(DocXParagraphImpl.class.getPackage().getName());
 
 		private final Map<R, DocXRun> runs = new HashMap<R, DocXRun>();
+
+		// Factory used during initialization of DocXParagraph (either new or loaded document)
+		protected DocXFactory _factory;
 
 		public DocXParagraphImpl() {
 			super();
@@ -178,6 +198,16 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 						currentIndex++;
 					}
 				}
+				else if (o instanceof CTBookmark) {
+					CTBookmark bookmark = (CTBookmark) o;
+					if (bookmark.getName() != null && bookmark.getName().startsWith(BOOKMARK_PREFIX)) {
+						System.out.println("Found CTBookmark : " + bookmark + " name=" + bookmark.getName() + " start="
+								+ bookmark.getColFirst() + " end=" + bookmark.getColLast());
+						setBookmark(bookmark);
+						System.out.println("identifier=" + getIdentifier());
+						System.out.println("strategy=" + getFactory().getIDStrategy());
+					}
+				}
 			}
 
 			for (FlexoDocRun<DocXDocument, DocXTechnologyAdapter> run : runsToRemove) {
@@ -187,20 +217,147 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 
 		}
 
+		/*protected CTBookmark createCTBookmarkIdentifier(DocXFactory factory) {
+			CTBookmark bookmark = new CTBookmark();
+			bookmark.setName(BOOKMARK_PREFIX + factory.generateId());
+			getP().getContent().add(0, bookmark);
+			setBookmark(bookmark);
+			setModified(true);
+			return bookmark;
+		}*/
+
+		/**
+		 * Generate a bookmark carring identifier of paragraph
+		 * 
+		 * @param p
+		 * @param r
+		 * @param name
+		 * @param id
+		 */
+		protected CTBookmark createCTBookmarkIdentifier(DocXFactory docXFactory) {
+
+			ObjectFactory factory = Context.getWmlObjectFactory();
+			BigInteger ID = BigInteger.valueOf(hashCode());
+
+			// Add bookmark end first
+			CTMarkupRange mr = factory.createCTMarkupRange();
+			mr.setId(ID);
+			JAXBElement<CTMarkupRange> bmEnd = factory.createBodyBookmarkEnd(mr);
+			getP().getContent().add(getP().getContent().size(), bmEnd);
+
+			// Next, bookmark start
+			CTBookmark bm = factory.createCTBookmark();
+			bm.setId(ID);
+			bm.setName(BOOKMARK_PREFIX + docXFactory.generateId());
+			JAXBElement<CTBookmark> bmStart = factory.createBodyBookmarkStart(bm);
+			getP().getContent().add(0, bmStart);
+			CTBookmark bookmark = bmStart.getValue();
+			setBookmark(bookmark);
+			setModified(true);
+
+			docXFactory.someIdHaveBeenGeneratedAccordingToBookmarkManagementStrategy = true;
+
+			return bookmark;
+		}
+
+		/**
+		 * Surround the specified r in the specified p with a bookmark (with specified name and id)
+		 * 
+		 * @param p
+		 * @param r
+		 * @param name
+		 * @param id
+		 */
+		public void bookmarkRun(R r, String name, int id) {
+
+			// Find the index
+			int index = getP().getContent().indexOf(r);
+
+			if (index < 0) {
+				System.out.println("P does not contain R!");
+				return;
+			}
+
+			ObjectFactory factory = Context.getWmlObjectFactory();
+			BigInteger ID = BigInteger.valueOf(id);
+
+			// Add bookmark end first
+			CTMarkupRange mr = factory.createCTMarkupRange();
+			mr.setId(ID);
+			JAXBElement<CTMarkupRange> bmEnd = factory.createBodyBookmarkEnd(mr);
+			getP().getContent().add(index + 1, bmEnd); // from 2.7.0, use getContent()
+
+			// Next, bookmark start
+			CTBookmark bm = factory.createCTBookmark();
+			bm.setId(ID);
+			bm.setName(name);
+			JAXBElement<CTBookmark> bmStart = factory.createBodyBookmarkStart(bm);
+			getP().getContent().add(index, bmStart);
+
+		}
+
+		@Override
+		public DocXFactory getFactory() {
+			DocXFactory returned = null;
+			if (getFlexoDocument() != null && getFlexoDocument().getFactory() != null) {
+				returned = getFlexoDocument().getFactory();
+			}
+			if (returned == null) {
+				return _factory;
+			}
+			return returned;
+		}
+
 		@Override
 		public String getIdentifier() {
-			if (getP() != null) {
-				return getP().getParaId();
+			if (getFactory() != null) {
+				switch (getFactory().getIDStrategy()) {
+					case ParaId:
+						if (getP() != null) {
+							return getP().getParaId();
+						}
+						return null;
+					case Bookmark:
+						if (getBookmark() == null) {
+							createCTBookmarkIdentifier(getFactory());
+						}
+						if (getBookmark() != null) {
+							return getBookmark().getName().substring(BOOKMARK_PREFIX.length());
+						}
+						return null;
+					default:
+						return null;
+				}
 			}
-			return null;
+			else {
+				System.out.println("Merde, j'ai pas ma factory");
+				Thread.dumpStack();
+				return null;
+			}
+
 		}
 
 		@Override
 		public void setIdentifier(String identifier) {
-			if (getP() != null) {
-				String oldIdentifier = getIdentifier();
-				getP().setParaId(identifier);
-				((DocXDocumentImpl) getFlexoDocument()).reindexElement(this, oldIdentifier);
+			if (getFactory() != null) {
+				switch (getFactory().getIDStrategy()) {
+					case ParaId:
+						if (getP() != null) {
+							String oldIdentifier = getIdentifier();
+							getP().setParaId(identifier);
+							((DocXDocumentImpl) getFlexoDocument()).reindexElement(this, oldIdentifier);
+						}
+						break;
+					case Bookmark:
+						if (getBookmark() != null) {
+							getBookmark().setName(BOOKMARK_PREFIX + identifier);
+						}
+						break;
+				}
+			}
+			else {
+				System.out.println("Merde aussi, j'ai pas ma factory non plus");
+				Thread.dumpStack();
 			}
 		}
 

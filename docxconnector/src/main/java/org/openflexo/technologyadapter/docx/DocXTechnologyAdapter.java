@@ -43,6 +43,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializatio
 import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElementConverter;
+import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.model.DocXFragmentConverter;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
@@ -67,6 +68,16 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	public static String DOCX_FILE_EXTENSION = ".docx";
 
 	protected static final Logger logger = Logger.getLogger(DocXTechnologyAdapter.class.getPackage().getName());
+
+	private IdentifierManagementStrategy idStrategy = IdentifierManagementStrategy.ParaId;
+
+	public IdentifierManagementStrategy getIDStrategy() {
+		return idStrategy;
+	}
+
+	public void setIDStrategy(IdentifierManagementStrategy idStrategy) {
+		this.idStrategy = idStrategy;
+	}
 
 	public DocXTechnologyAdapter() throws TechnologyAdapterInitializationException {
 	}
@@ -172,7 +183,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		if (returned == null) {
 			if (docXDocumentItem instanceof File) {
 				returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((File) docXDocumentItem, getTechnologyContextManager(),
-						resourceCenter);
+						resourceCenter, getIDStrategy());
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerDocXDocumentResource(returned);
@@ -296,7 +307,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		File docXFile = new File(resourceCenter.getDirectory() + relativePath, filename);
 
 		DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeDocXDocumentResource(docXFile,
-				getTechnologyContextManager(), resourceCenter);
+				getTechnologyContextManager(), resourceCenter, getIDStrategy());
 
 		referenceResource(docXDocumentResource, resourceCenter);
 
