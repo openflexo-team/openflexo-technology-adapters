@@ -78,8 +78,8 @@ import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
 @XMLElement
 public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, ExcelMetaModel> {
 
-	public abstract static class SemanticsExcelModelSlotImpl extends TypeAwareModelSlotImpl<ExcelModel, ExcelMetaModel> implements
-			SemanticsExcelModelSlot {
+	public abstract static class SemanticsExcelModelSlotImpl extends TypeAwareModelSlotImpl<ExcelModel, ExcelMetaModel>
+			implements SemanticsExcelModelSlot {
 
 		private static final Logger logger = Logger.getLogger(SemanticsExcelModelSlot.class.getPackage().getName());
 

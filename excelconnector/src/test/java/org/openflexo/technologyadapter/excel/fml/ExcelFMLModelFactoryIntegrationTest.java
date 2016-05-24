@@ -90,8 +90,8 @@ public class ExcelFMLModelFactoryIntegrationTest extends AbstractModelFactoryInt
 	public void checkExcelTechnologyAdapter() {
 		log("checkExcelTechnologyAdapter()");
 
-		testVirtualModelModelFactoryWithTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				ExcelTechnologyAdapter.class));
+		testVirtualModelModelFactoryWithTechnologyAdapter(
+				serviceManager.getTechnologyAdapterService().getTechnologyAdapter(ExcelTechnologyAdapter.class));
 	}
 
 }
