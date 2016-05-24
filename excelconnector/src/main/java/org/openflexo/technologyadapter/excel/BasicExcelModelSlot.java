@@ -77,6 +77,7 @@ import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelCell;
 import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.AddExcelSheet;
 import org.openflexo.technologyadapter.excel.fml.editionaction.CellStyleAction;
+import org.openflexo.technologyadapter.excel.fml.editionaction.CreateExcelResource;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelCell;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelRow;
 import org.openflexo.technologyadapter.excel.fml.editionaction.SelectExcelSheet;
@@ -93,9 +94,10 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
  */
 @DeclareActorReferences({ ExcelActorReference.class })
 @DeclareFlexoRoles({ ExcelSheetRole.class, ExcelColumnRole.class, ExcelRowRole.class, ExcelCellRole.class })
-@DeclareEditionActions({ AddExcelCell.class, AddExcelRow.class, AddExcelSheet.class, CellStyleAction.class })
+@DeclareEditionActions({ CreateExcelResource.class, AddExcelCell.class, AddExcelRow.class, AddExcelSheet.class, CellStyleAction.class })
 @DeclareFetchRequests({ SelectExcelSheet.class, SelectExcelRow.class, SelectExcelCell.class })
-@DeclareFlexoBehaviourParameters({ ExcelSheetParameter.class, ExcelCellParameter.class, ExcelRowParameter.class, ExcelColumnParameter.class })
+@DeclareFlexoBehaviourParameters({ ExcelSheetParameter.class, ExcelCellParameter.class, ExcelRowParameter.class,
+		ExcelColumnParameter.class })
 @ModelEntity
 @ImplementationClass(BasicExcelModelSlot.BasicExcelModelSlotImpl.class)
 @XMLElement
@@ -125,11 +127,9 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (ExcelCellRole.class.isAssignableFrom(patternRoleClass)) {
 				return "cell";
-			}
-			else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (ExcelRowRole.class.isAssignableFrom(patternRoleClass)) {
 				return "row";
-			}
-			else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
+			} else if (ExcelSheetRole.class.isAssignableFrom(patternRoleClass)) {
 				return "sheet";
 			}
 			return null;
@@ -177,8 +177,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 				ExcelObject o = uriCache.get(builtURI);
 				if (o != null) {
 					return o;
-				}
-				else {
+				} else {
 					TechnologyAdapterResource<ExcelWorkbook, ?> resource = msInstance.getResource();
 					if (!resource.isLoaded()) {
 						resource.loadResourceData(null);

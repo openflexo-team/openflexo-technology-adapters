@@ -47,6 +47,7 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -162,15 +163,13 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 			if (workbook instanceof File) {
 				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File) workbook, getTechnologyContextManager(),
 						resourceCenter);
-			}
-			else if (workbook instanceof InJarResourceImpl) {
+			} else if (workbook instanceof InJarResourceImpl) {
 				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((InJarResourceImpl) workbook,
 						getTechnologyContextManager(), resourceCenter);
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerExcelWorkbook(returned);
-			}
-			else {
+			} else {
 				logger.warning("Cannot retrieve ExcelWorkbook resource for " + workbook);
 			}
 		}
@@ -181,8 +180,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	public boolean isValidWorkbook(Object candidateElement) {
 		if (candidateElement instanceof File && isValidWorkbookFile(((File) candidateElement))) {
 			return true;
-		}
-		else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
+		} else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
 			return true;
 		}
 		return false;
@@ -278,6 +276,30 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 		getTechnologyContextManager().registerResource(workbookResource);
 
 		return workbookResource;
+	}
+
+	/**
+	 * Create empty model.
+	 * 
+	 * @param modelFile
+	 * @param modelUri
+	 * @param metaModelResource
+	 * @param technologyContextManager
+	 * @return
+	 */
+	public ExcelWorkbookResource createNewWorkbook(FlexoResourceCenter<?> resourceCenter, String resourceName, String resourceURI,
+			String relativePath) {
+
+		if (resourceCenter instanceof FileSystemBasedResourceCenter) {
+			File excelFile = ((FileSystemBasedResourceCenter) resourceCenter).retrieveResourceFile(resourceName, relativePath, ".xlsx");
+			System.out.println("create workbook " + excelFile);
+			ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(/*modelUri,*/ excelFile,
+					getTechnologyContextManager(), resourceCenter);
+			getTechnologyContextManager().registerResource(workbookResource);
+			return workbookResource;
+		}
+		return null;
+
 	}
 
 	@Override

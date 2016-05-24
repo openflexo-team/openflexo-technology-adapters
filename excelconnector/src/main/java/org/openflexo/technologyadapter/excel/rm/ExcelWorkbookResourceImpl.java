@@ -80,7 +80,7 @@ import org.openflexo.toolbox.IProgress;
  * @author sguerin
  * 
  */
-public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelWorkbook>implements ExcelWorkbookResource {
+public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelWorkbook> implements ExcelWorkbookResource {
 
 	private static final Logger logger = Logger.getLogger(ExcelWorkbookResourceImpl.class.getPackage().getName());
 
@@ -140,8 +140,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 		try {
 			if (technologyContextManager.getResourceWithURI(modelFile.toURI().toString()) != null) {
 				return (ExcelWorkbookResource) technologyContextManager.getResourceWithURI(modelFile.toURI().toString());
-			}
-			else {
+			} else {
 				ModelFactory factory = new ModelFactory(
 						ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, ExcelWorkbookResource.class));
 				ExcelWorkbookResourceImpl returned = (ExcelWorkbookResourceImpl) factory.newInstance(ExcelWorkbookResource.class);
@@ -209,8 +208,7 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 		try {
 			if (getFlexoIODelegate() instanceof FileFlexoIODelegate) {
 				resourceData = createExcelWorkbook((FileFlexoIODelegate) getFlexoIODelegate());
-			}
-			else {
+			} else {
 				logger.warning("canno't retrieve resource data from serialization artifact " + getFlexoIODelegate().toString());
 				return null;
 			}
@@ -230,11 +228,9 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 		try {
 			if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xls")) {
 				wb = new HSSFWorkbook();
-			}
-			else if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xlsx")) {
+			} else if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xlsx")) {
 				wb = new XSSFWorkbook();
-			}
-			else {
+			} else {
 				wb = WorkbookFactory.create(new FileInputStream(delegate.getFile()));
 			}
 			BasicExcelModelConverter converter = new BasicExcelModelConverter();
