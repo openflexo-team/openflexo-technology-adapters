@@ -47,16 +47,22 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.FileNotFoundException;
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.DataBinding.BindingDefinitionType;
+import org.openflexo.connie.exception.NullReferenceException;
+import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
-import org.openflexo.foundation.doc.FlexoDocRun;
 import org.openflexo.foundation.doc.TextSelection;
+import org.openflexo.foundation.doc.fml.ColumnTableBinding;
+import org.openflexo.foundation.doc.fml.FlexoTableRole.FlexoTableRoleImpl;
 import org.openflexo.foundation.doc.fml.TextBinding;
 import org.openflexo.foundation.fml.ActionScheme;
 import org.openflexo.foundation.fml.CreationScheme;
@@ -65,6 +71,7 @@ import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceParameter;
 import org.openflexo.foundation.fml.FlexoRole;
+import org.openflexo.foundation.fml.GetSetProperty;
 import org.openflexo.foundation.fml.PrimitiveRole.PrimitiveType;
 import org.openflexo.foundation.fml.TextFieldParameter;
 import org.openflexo.foundation.fml.ViewPoint;
@@ -76,6 +83,7 @@ import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviourParameter;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.action.CreateFlexoConceptInstanceRole;
+import org.openflexo.foundation.fml.action.CreateGetSetProperty;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.action.CreatePrimitiveRole;
 import org.openflexo.foundation.fml.action.CreateTechnologyRole;
@@ -105,7 +113,6 @@ import org.openflexo.foundation.fml.rt.editionaction.MatchingCriteria;
 import org.openflexo.foundation.fml.rt.editionaction.SelectFlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
 import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.rm.ResourceLocator;
@@ -117,14 +124,19 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment;
 import org.openflexo.technologyadapter.docx.fml.editionaction.AddDocXFragment.LocationSemantics;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ApplyTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXDocument;
+import org.openflexo.technologyadapter.docx.fml.editionaction.GenerateDocXTable;
 import org.openflexo.technologyadapter.docx.fml.editionaction.ReinjectTextBindings;
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXFragment;
+import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXTable;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
 import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
+import org.openflexo.technologyadapter.docx.model.DocXTable;
+import org.openflexo.technologyadapter.docx.model.DocXTableCell;
 import org.openflexo.technologyadapter.docx.model.DocXTextRun;
+import org.openflexo.technologyadapter.docx.model.DocXUtils;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelNature;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
@@ -133,24 +145,24 @@ import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.StringUtils;
 
+import junit.framework.AssertionFailedError;
+
 /**
  * Test the creation and some manipulations of a {@link VirtualModel} with {@link FMLControlledDocXVirtualModelNature}<br>
  * We create here a {@link VirtualModel} storing a library containing books.<br>
  * We then generate a document where the whole library is described.<br>
- * We test then some manipulations on the model, generated document, and template.<br>
+ * We test then some manipulations on the model, generated document, and template.
  * 
- * Note that this test is the same as the test encoded in TestLibrary.java, except the fact that we use "Bookmarks" identifier management
- * scheme<br>
- * The template docx we use has identifiers encoded as bookmarks, inside the document.
+ * Those tests complete those which are defined in {@link TestLibrary}
  * 
  * @author sylvain
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestLibraryUsingBookmarks extends AbstractTestDocX {
+public class TestLibrary2UsingBookmarks extends AbstractTestDocX {
 
-	private final String VIEWPOINT_NAME = "TestLibraryUsingBookmarksViewPoint";
-	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestLibraryUsingBookmarksViewPoint";
+	private final String VIEWPOINT_NAME = "TestLibraryUsingBookmarksViewPoint2";
+	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestLibraryUsingBookmarksViewPoint2";
 
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository repository;
@@ -173,8 +185,12 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	public static VirtualModel documentVirtualModel;
 	public static FMLRTModelSlot libraryModelSlot;
 	public static DocXModelSlot docXModelSlot;
+
+	public static GetSetProperty<?> allBooksProperty;
+
 	public static DocXFragmentRole introductionFragmentRole;
 	public static DocXFragmentRole booksDescriptionFragmentRole;
+	public static DocXTableRole bookListingTableRole;
 	public static DocXFragmentRole conclusionFragmentRole;
 	public static FlexoConcept bookDescriptionSection;
 	public static CreationScheme bookDescriptionSectionCreationScheme;
@@ -213,8 +229,10 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		documentVirtualModel = null;
 		libraryModelSlot = null;
 		docXModelSlot = null;
+		allBooksProperty = null;
 		introductionFragmentRole = null;
 		booksDescriptionFragmentRole = null;
+		bookListingTableRole = null;
 		conclusionFragmentRole = null;
 		bookDescriptionSection = null;
 		bookDescriptionSectionCreationScheme = null;
@@ -237,7 +255,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	@TestOrder(1)
 	public void testInitialize() {
 
-		log("testInitialize-TestLibrary()");
+		log("testInitialize()");
 
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.Bookmark);
 
@@ -266,14 +284,13 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		log("testLoadTemplate()");
 
-		templateResource = getDocumentResource("ExampleLibraryUsingBookmarks.docx");
+		templateResource = getDocumentResource("ExampleLibrary2UsingBookmarks.docx");
 
 		assertNotNull(templateDocument = templateResource.getResourceData(null));
 
-		System.out.println("template file: " + ((FileFlexoIODelegate) templateResource.getFlexoIODelegate()).getFile());
-		System.out.println("template document:\n" + templateDocument.debugStructuredContents());
+		System.out.println(templateDocument.debugStructuredContents());
 
-		assertEquals(14, templateDocument.getElements().size());
+		assertEquals(50, templateDocument.getElements().size());
 
 	}
 
@@ -290,20 +307,15 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	/*private DocXDocumentResource getDocument(String documentName) throws FileNotFoundException, ResourceLoadingCancelledException,
 			FlexoException {
 	
+		for (FlexoResource<?> r : resourceCenter.getAllResources()) {
+			System.out.println("Resource " + r + " uri=" + r.getURI());
+		}
 	
-		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + "TestResourceCenter" + File.separator + documentName;
+		String documentURI = resourceCenter.getDefaultBaseURI() + File.separator + documentName;
 		System.out.println("Searching " + documentURI);
 	
 		DocXDocumentResource documentResource = (DocXDocumentResource) serviceManager.getResourceManager().getResource(documentURI, null,
 				DocXDocument.class);
-	
-		if (documentResource == null) {
-			System.out.println("Cannot find: " + documentURI);
-			for (FlexoResource r : resourceCenter.getAllResources()) {
-				System.out.println(" > " + r.getURI());
-			}
-		}
-	
 		assertNotNull(documentResource);
 	
 		DocXDocument document = documentResource.getResourceData(null);
@@ -348,7 +360,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	 * We create here a VirtualModel without model slot, but with Book FlexoConcept
 	 * 
 	 * <code>
-	 * VirtualModel LibraryVirtualModel uri="http://openflexo.org/test/TestLibraryViewPoint/LibraryVirtualModel" {
+	 * VirtualModel LibraryVirtualModel type=VirtualModel uri="http://openflexo.org/test/TestLibraryViewPoint/LibraryVirtualModel" {
 	 * 
 	 *   FlexoConcept Book {  
 	 *     FlexoRole title as String cardinality=ZeroOne;  
@@ -513,12 +525,29 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		assertTrue(bookConcept.getCreationSchemes().contains(bookCreationScheme));
 
+		CreateGetSetProperty createAllBooksProperty = CreateGetSetProperty.actionType.makeNewAction(libraryVirtualModel, null, _editor);
+		createAllBooksProperty.setPropertyName("books");
+
+		SelectFlexoConceptInstance selectBooks = bookConcept.getFMLModelFactory().newSelectFlexoConceptInstance();
+		selectBooks.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>("virtualModelInstance"));
+		selectBooks.setFlexoConceptType(bookConcept);
+		createAllBooksProperty.setGetControlGraph(bookConcept.getFMLModelFactory().newReturnStatement(selectBooks));
+
+		createAllBooksProperty.doAction();
+		assertTrue(createAllBooksProperty.hasActionExecutionSucceeded());
+
+		assertTrue(selectBooks.getVirtualModelInstance().isValid());
+
+		allBooksProperty = createAllBooksProperty.getNewFlexoProperty();
+		assertNotNull(allBooksProperty);
+
 		libraryVirtualModel.getResource().save(null);
 
 		System.out.println(libraryVirtualModel.getFMLModelFactory().stringRepresentation(libraryVirtualModel));
 
 		System.out.println("FML:");
 		System.out.println(libraryVirtualModel.getFMLRepresentation());
+
 	}
 
 	/**
@@ -530,6 +559,66 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	 * pointing to the three sections of the document<br>
 	 * We also define an {@link ActionScheme} on the {@link VirtualModel}, which generate the docx document from the template and then add a
 	 * fragment to the end of document
+	 * 
+	 * Following is the verbatim of DocumentVirtualModel
+	 * 
+	 * <code>
+	VirtualModel DocumentVirtualModel type=VirtualModel uri="http://openflexo.org/test/TestLibraryViewPoint2/DocumentVirtualModel" {
+	 
+	  ModelSlot library as FML::FMLRTModelSlot conformTo http://openflexo.org/test/TestLibraryViewPoint2/LibraryVirtualModel required=true readOnly=false;  
+	  ModelSlot document as DOCX::DocXModelSlot conformTo http://openflexo.org/test/TestResourceCenter/ExampleLibrary2.docx required=true readOnly=false;  
+	
+	  FlexoRole introductionSection as DOCX::DocXFragmentRole conformTo DocXFragment(http://openflexo.org/test/TestResourceCenter/ExampleLibrary2.docx:707AC6F7:3D899DD8);
+	  FlexoRole booksDescriptionSection as DOCX::DocXFragmentRole conformTo DocXFragment(http://openflexo.org/test/TestResourceCenter/ExampleLibrary2.docx:78BBD0DD:5052C24D);
+	  FlexoRole bookListingTable as DOCX::DocXTableRole conformTo DocXTable;
+	  FlexoRole conclusionSection as DOCX::DocXFragmentRole conformTo DocXFragment(http://openflexo.org/test/TestResourceCenter/ExampleLibrary2.docx:1A787643:2B774AAC);
+	
+	  FML::ActionScheme generateDocument() {  
+	    document.DOCX::GenerateDocXDocument()    
+	    introductionSection = document.DOCX::SelectGeneratedDocXFragment();    
+	    booksDescriptionSection = document.DOCX::SelectGeneratedDocXFragment();    
+	    conclusionSection = document.DOCX::SelectGeneratedDocXFragment();  
+	  }  
+	
+	  FML::ActionScheme updateDocument() {  
+	    for (book : FML::SelectFlexoConceptInstance from library as Book) {    
+	      FML::MatchFlexoConceptInstance as BookDescriptionSection match (book=book;section=;) using BookDescriptionSection:createBookDescriptionSection(book)    
+	    }    
+	    for (bookSection : FML::SelectFlexoConceptInstance from library as BookDescriptionSection) {    
+	      bookSection.updateBookDescriptionSection()    
+	    }    
+	    bookListingTable.DOCX::GenerateDocXTable()  
+	  }  
+	
+	  FML::ActionScheme reinjectFromDocument() {  
+	    for (bookSection : FML::SelectFlexoConceptInstance from library as BookDescriptionSection) {    
+	      bookSection.reinjectDataFromBookDescriptionSection()    
+	    }  
+	  }  
+	
+	  FlexoConcept BookDescriptionSection {  
+	
+	    FlexoRole book as FlexoConceptInstance conformTo Book;  
+	    FlexoRole section as DOCX::DocXFragmentRole conformTo DocXFragment(http://openflexo.org/test/TestResourceCenter/ExampleLibrary2.docx:2936B416:395C1CE1);  
+	
+	    FML::CreationScheme createBookDescriptionSection(FlexoConceptInstanceType<> aBook) {    
+	      book = parameters.aBook;      
+	      section = document.DOCX::AddDocXFragment();      
+	      section.DOCX::ApplyTextBindings()    
+	    }    
+	
+	    FML::ActionScheme updateBookDescriptionSection() {    
+	      section.DOCX::ApplyTextBindings()    
+	    }    
+	
+	    FML::ActionScheme reinjectDataFromBookDescriptionSection() {    
+	      section.DOCX::ReinjectTextBindings()    
+	    }    
+	
+	  }  
+	
+	}
+	</code>
 	 * 
 	 * @throws FragmentConsistencyException
 	 */
@@ -577,8 +666,8 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		createIntroductionSectionRole.doAction();
 		assertTrue(createIntroductionSectionRole.hasActionExecutionSucceeded());
 		introductionFragmentRole = (DocXFragmentRole) createIntroductionSectionRole.getNewFlexoRole();
-		DocXParagraph startParagraph1 = (DocXParagraph) templateDocument.getElements().get(2);
-		DocXParagraph endParagraph1 = (DocXParagraph) templateDocument.getElements().get(3);
+		DocXParagraph startParagraph1 = (DocXParagraph) templateDocument.getElements().get(7);
+		DocXParagraph endParagraph1 = (DocXParagraph) templateDocument.getElements().get(16);
 		System.out.println("Introduction:");
 		System.out.println("start=" + startParagraph1.getRawText());
 		System.out.println("end=" + endParagraph1.getRawText());
@@ -596,14 +685,70 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		createBooksDescriptionSectionRole.doAction();
 		assertTrue(createBooksDescriptionSectionRole.hasActionExecutionSucceeded());
 		booksDescriptionFragmentRole = (DocXFragmentRole) createBooksDescriptionSectionRole.getNewFlexoRole();
-		DocXParagraph startParagraph2 = (DocXParagraph) templateDocument.getElements().get(4);
-		DocXParagraph endParagraph2 = (DocXParagraph) templateDocument.getElements().get(10);
+		DocXParagraph startParagraph2 = (DocXParagraph) templateDocument.getElements().get(17);
+		DocXParagraph endParagraph2 = (DocXParagraph) templateDocument.getElements().get(32);
 		System.out.println("BooksDescription:");
-		System.out.println("start=" + startParagraph2.getRawText());
-		System.out.println("end=" + endParagraph2.getRawText());
+		System.out.println("start=" + startParagraph2.getIdentifier() + " " + startParagraph2.getRawText());
+		System.out.println("end=" + endParagraph2.getIdentifier() + endParagraph2.getRawText());
+
 		DocXFragment booksDescriptionFragment = (DocXFragment) templateResource.getFactory().makeFragment(startParagraph2, endParagraph2);
 		booksDescriptionFragmentRole.setFragment(booksDescriptionFragment);
 		assertEquals(booksDescriptionFragmentRole.getFragment(), booksDescriptionFragment);
+
+		// We create a role pointing to the book listing table
+		CreateTechnologyRole createTableRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null, _editor);
+		createTableRole.setRoleName("bookListingTable");
+		createTableRole.setFlexoRoleClass(DocXTableRole.class);
+		assertEquals(docXModelSlot, createTableRole.getModelSlot());
+		createTableRole.doAction();
+		assertTrue(createTableRole.hasActionExecutionSucceeded());
+		bookListingTableRole = (DocXTableRole) createTableRole.getNewFlexoRole();
+		DocXTable bookListingTable = (DocXTable) templateDocument.getElements().get(21);
+		System.out.println("bookListingTable=" + DocXUtils.debugStructuredContents(bookListingTable, 2));
+		bookListingTableRole.setTable(bookListingTable);
+		assertEquals(bookListingTableRole.getTable(), bookListingTable);
+
+		bookListingTableRole.setStartIterationIndex(1);
+		bookListingTableRole.setEndIterationIndex(2);
+		bookListingTableRole.setIteration(new DataBinding("library.books"));
+
+		assertTrue(bookListingTableRole.getIteration().isValid());
+
+		// title column
+		ColumnTableBinding<DocXDocument, DocXTechnologyAdapter> titleBinding = bookListingTableRole.getFMLModelFactory()
+				.newInstance(ColumnTableBinding.class);
+		titleBinding.setColumnName("title");
+		titleBinding.setValue(new DataBinding<String>(FlexoTableRoleImpl.ITERATOR_NAME + ".title"));
+		titleBinding.setColumnIndex(0);
+		bookListingTableRole.addToColumnBindings(titleBinding);
+		assertTrue(titleBinding.getValue().isValid());
+
+		// title column
+		ColumnTableBinding<DocXDocument, DocXTechnologyAdapter> authorBinding = bookListingTableRole.getFMLModelFactory()
+				.newInstance(ColumnTableBinding.class);
+		authorBinding.setColumnName("author");
+		authorBinding.setValue(new DataBinding<String>(FlexoTableRoleImpl.ITERATOR_NAME + ".author"));
+		authorBinding.setColumnIndex(1);
+		bookListingTableRole.addToColumnBindings(authorBinding);
+		assertTrue(authorBinding.getValue().isValid());
+
+		// title column
+		ColumnTableBinding<DocXDocument, DocXTechnologyAdapter> editionBinding = bookListingTableRole.getFMLModelFactory()
+				.newInstance(ColumnTableBinding.class);
+		editionBinding.setColumnName("edition");
+		editionBinding.setValue(new DataBinding<String>(FlexoTableRoleImpl.ITERATOR_NAME + ".edition"));
+		editionBinding.setColumnIndex(2);
+		bookListingTableRole.addToColumnBindings(editionBinding);
+		assertTrue(editionBinding.getValue().isValid());
+
+		// title column
+		ColumnTableBinding<DocXDocument, DocXTechnologyAdapter> typeBinding = bookListingTableRole.getFMLModelFactory()
+				.newInstance(ColumnTableBinding.class);
+		typeBinding.setColumnName("type");
+		typeBinding.setValue(new DataBinding<String>(FlexoTableRoleImpl.ITERATOR_NAME + ".type"));
+		typeBinding.setColumnIndex(3);
+		bookListingTableRole.addToColumnBindings(typeBinding);
+		assertTrue(typeBinding.getValue().isValid());
 
 		// We create a role pointing to the third section (conclusion section)
 		CreateTechnologyRole createConclusionSectionRole = CreateTechnologyRole.actionType.makeNewAction(documentVirtualModel, null,
@@ -615,11 +760,12 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		createConclusionSectionRole.doAction();
 		assertTrue(createConclusionSectionRole.hasActionExecutionSucceeded());
 		conclusionFragmentRole = (DocXFragmentRole) createConclusionSectionRole.getNewFlexoRole();
-		DocXParagraph startParagraph3 = (DocXParagraph) templateDocument.getElements().get(12);
-		DocXParagraph endParagraph3 = (DocXParagraph) templateDocument.getElements().get(13);
+		DocXParagraph startParagraph3 = (DocXParagraph) templateDocument.getElements().get(33);
+		DocXParagraph endParagraph3 = (DocXParagraph) templateDocument.getElements().get(49);
 		System.out.println("Conclusion:");
 		System.out.println("start=" + startParagraph3.getRawText());
 		System.out.println("end=" + endParagraph3.getRawText());
+
 		DocXFragment conclusionFragment = (DocXFragment) templateResource.getFactory().makeFragment(startParagraph3, endParagraph3);
 		conclusionFragmentRole.setFragment(conclusionFragment);
 		assertEquals(conclusionFragmentRole.getFragment(), conclusionFragment);
@@ -671,46 +817,55 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		createSectionRole.doAction();
 		assertTrue(createSectionRole.hasActionExecutionSucceeded());
 		DocXFragmentRole sectionRole = (DocXFragmentRole) createSectionRole.getNewFlexoRole();
-		DocXParagraph titleParagraph = (DocXParagraph) templateDocument.getElements().get(6);
-		DocXParagraph authorParagraph = (DocXParagraph) templateDocument.getElements().get(7);
-		DocXParagraph editionParagraph = (DocXParagraph) templateDocument.getElements().get(8);
-		DocXParagraph typeParagraph = (DocXParagraph) templateDocument.getElements().get(9);
-		DocXParagraph descriptionParagraph = (DocXParagraph) templateDocument.getElements().get(10);
+
+		DocXParagraph titleParagraph = (DocXParagraph) templateDocument.getElements().get(23);
+		DocXTable bookDescriptionTable = (DocXTable) templateDocument.getElements().get(25);
+		DocXParagraph descriptionParagraph = (DocXParagraph) templateDocument.getElements().get(27);
+		DocXParagraph descriptionParagraph2 = (DocXParagraph) templateDocument.getElements().get(28);
+
+		System.out.println("titleParagraph=" + titleParagraph.getRawText());
+		System.out.println("bookDescriptionTable=" + bookDescriptionTable);
+		System.out.println("descriptionParagraph=" + descriptionParagraph.getRawText());
+		System.out.println("descriptionParagraph2=" + descriptionParagraph2.getRawText());
 
 		DocXFragment bookDescriptionFragment = (DocXFragment) templateResource.getFactory().makeFragment(titleParagraph,
-				descriptionParagraph);
+				descriptionParagraph2);
 		sectionRole.setFragment(bookDescriptionFragment);
 		assertEquals(sectionRole.getFragment(), bookDescriptionFragment);
 		assertEquals(docXModelSlot, sectionRole.getModelSlot());
 
-		StringBuffer sb = new StringBuffer();
 		for (DocXElement element : bookDescriptionFragment.getElements()) {
-			if (element instanceof DocXParagraph) {
-				DocXParagraph para = (DocXParagraph) element;
-				for (FlexoDocRun run : para.getRuns()) {
-					if (run instanceof DocXTextRun) {
-						sb.append("[" + ((DocXTextRun) run).getText() + "]");
-					}
-				}
-				sb.append("\n");
-			}
+			System.out.println(DocXUtils.debugStructuredContents(element, 2));
 		}
-
-		System.out.println(sb.toString());
 
 		// Here is the structuration of original fragment (bookDescriptionFragment):
 
-		// [Les ][misérables]
-		// [Author][: Victor Hugo]
-		// [Edition][: ][Dunod]
-		// [Type][: Roman]
-		// [Les Misérables est un roman de Victor Hugo paru en 1862...][Verboeckhoven][ et Cie...][...]....
+		// > { (Les )(misérables) }
+		// > { }
+		// > [Auteur] [Victor Hugo]
+		// ..[Edition] [Dunod]
+		// ..[Type] [Roman]
+		// > { }
+		// > { (Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles par les
+		// Éditions Lacroix, )(Verboeckhoven)( et Cie, et le 3 avril de la même année à Paris1).) }
+		// > { (Dans ce roman, un des plus emblématiques de la littérature française, Victor Hugo décrit la vie de misérables dans Paris et
+		// la France provinciale du )(xixe)( siècle et s'attache plus particulièrement aux pas du bagnard Jean )(Valjean)(.) }
+
+		DocXTableCell authorCell = (DocXTableCell) bookDescriptionTable.getCell(0, 1);
+		DocXParagraph authorParagraph = (DocXParagraph) authorCell.getParagraphs().get(0);
+
+		DocXTableCell editionCell = (DocXTableCell) bookDescriptionTable.getCell(1, 1);
+		DocXParagraph editionParagraph = (DocXParagraph) editionCell.getParagraphs().get(0);
+
+		DocXTableCell typeCell = (DocXTableCell) bookDescriptionTable.getCell(2, 1);
+		DocXParagraph typeParagraph = (DocXParagraph) typeCell.getParagraphs().get(0);
 
 		assertEquals(2, titleParagraph.getRuns().size());
-		assertEquals(2, authorParagraph.getRuns().size());
-		assertEquals(3, editionParagraph.getRuns().size());
-		assertEquals(2, typeParagraph.getRuns().size());
-		assertEquals(10, descriptionParagraph.getRuns().size());
+		assertEquals(1, authorParagraph.getRuns().size());
+		assertEquals(2, editionParagraph.getRuns().size());
+		assertEquals(1, typeParagraph.getRuns().size());
+		assertEquals(3, descriptionParagraph.getRuns().size());
+		assertEquals(5, descriptionParagraph2.getRuns().size());
 
 		// Title
 		TextSelection<DocXDocument, DocXTechnologyAdapter> titleSelection = bookDescriptionFragment.makeTextSelection(titleParagraph, 0, 1);
@@ -720,24 +875,23 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertTrue(titleBinding.getValue().isValid());
 
 		// Author
-		TextSelection<DocXDocument, DocXTechnologyAdapter> authorSelection = bookDescriptionFragment.makeTextSelection(authorParagraph, 1,
-				2, 1, -1);
+		TextSelection<DocXDocument, DocXTechnologyAdapter> authorSelection = bookDescriptionFragment.makeTextSelection(authorParagraph, 0,
+				0);
 		assertEquals("Victor Hugo", authorSelection.getRawText());
 		TextBinding<DocXDocument, DocXTechnologyAdapter> authorBinding = sectionRole.makeTextBinding(authorSelection,
 				new DataBinding<String>("book.author"));
 		assertTrue(authorBinding.getValue().isValid());
 
 		// Edition
-		TextSelection<DocXDocument, DocXTechnologyAdapter> editionSelection = bookDescriptionFragment.makeTextSelection(editionParagraph, 2,
-				2);
-		assertEquals("Dunod", editionSelection.getRawText());
+		TextSelection<DocXDocument, DocXTechnologyAdapter> editionSelection = bookDescriptionFragment.makeTextSelection(editionParagraph, 0,
+				1);
+		assertEquals("Editions Dunod", editionSelection.getRawText());
 		TextBinding<DocXDocument, DocXTechnologyAdapter> editionBinding = sectionRole.makeTextBinding(editionSelection,
 				new DataBinding<String>("book.edition"));
 		assertTrue(editionBinding.getValue().isValid());
 
 		// Type
-		TextSelection<DocXDocument, DocXTechnologyAdapter> typeSelection = bookDescriptionFragment.makeTextSelection(typeParagraph, 1, 2, 1,
-				-1);
+		TextSelection<DocXDocument, DocXTechnologyAdapter> typeSelection = bookDescriptionFragment.makeTextSelection(typeParagraph, 0, 0);
 		assertEquals("Roman", typeSelection.getRawText());
 		TextBinding<DocXDocument, DocXTechnologyAdapter> typeBinding = sectionRole.makeTextBinding(typeSelection,
 				new DataBinding<String>("book.type"));
@@ -745,7 +899,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		// Description
 		TextSelection<DocXDocument, DocXTechnologyAdapter> descriptionSelection = bookDescriptionFragment
-				.makeTextSelection(descriptionParagraph);
+				.makeTextSelection(descriptionParagraph, descriptionParagraph2);
 		TextBinding<DocXDocument, DocXTechnologyAdapter> descriptionBinding = sectionRole.makeTextBinding(descriptionSelection,
 				new DataBinding<String>("book.description"), true);
 		assertTrue(descriptionBinding.getValue().isValid());
@@ -880,6 +1034,14 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		AssignationAction<?> action3 = (AssignationAction<?>) createSelectConclusionSection.getNewEditionAction();
 		assertTrue(action3.getAssignation().isValid());
 
+		CreateEditionAction createSelectTable = CreateEditionAction.actionType.makeNewAction(generateDocumentActionScheme.getControlGraph(),
+				null, _editor);
+		createSelectTable.setEditionActionClass(SelectGeneratedDocXTable.class);
+		createSelectTable.setAssignation(new DataBinding<Object>("bookListingTable"));
+		createSelectTable.doAction();
+		AssignationAction<?> action4 = (AssignationAction<?>) createSelectTable.getNewEditionAction();
+		assertTrue(action4.getAssignation().isValid());
+
 		return generateDocumentActionScheme;
 
 	}
@@ -970,6 +1132,15 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		updateExpression.setExpression(new DataBinding("bookSection.updateBookDescriptionSection()"));
 		assertTrue(updateExpression.getExpression().isValid());
 
+		CreateEditionAction generateTableAction = CreateEditionAction.actionType.makeNewAction(updateDocumentActionScheme.getControlGraph(),
+				null, _editor);
+		generateTableAction.setFlexoRole(bookListingTableRole);
+		generateTableAction.setEditionActionClass(GenerateDocXTable.class);
+		generateTableAction.doAction();
+		assertTrue(generateTableAction.hasActionExecutionSucceeded());
+		GenerateDocXTable generateTable = (GenerateDocXTable) generateTableAction.getNewEditionAction();
+		assertNotNull(generateTable);
+
 		return updateDocumentActionScheme;
 	}
 
@@ -1037,10 +1208,15 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	 * Instantiate in _project a VirtualModelInstance conform to the VirtualModel
 	 * 
 	 * @throws SaveResourceException
+	 * @throws InvocationTargetException
+	 * @throws NullReferenceException
+	 * @throws TypeMismatchException
+	 * @throws AssertionFailedError
 	 */
 	@Test
 	@TestOrder(8)
-	public void testInstantiateLibrary() throws SaveResourceException {
+	public void testInstantiateLibrary()
+			throws SaveResourceException, AssertionFailedError, TypeMismatchException, NullReferenceException, InvocationTargetException {
 
 		log("testInstantiateLibrary()");
 
@@ -1116,6 +1292,11 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) libraryVMI.getResource();
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
 
+		DataBinding booksAccess = new DataBinding("books", libraryVMI.getVirtualModel(), Object.class, BindingDefinitionType.GET);
+
+		assertTrue(booksAccess.isValid());
+		assertSameList((List) booksAccess.getBindingValue(libraryVMI), book1, book2, book3);
+
 	}
 
 	/**
@@ -1179,7 +1360,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		FreeModelSlotInstance<DocXDocument, DocXModelSlot> docXMSInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) documentVMI
 				.getModelSlotInstances().get(1);
 		assertNotNull(docXMSInstance);
-		// document is blank but not null
+
 		assertNotNull(docXMSInstance.getAccessedResourceData());
 		assertNotNull(docXMSInstance.getResource());
 
@@ -1208,7 +1389,10 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) documentVMI.getResource();
 
+		// assertTrue(templateResource.isModified());
+		// templateResource.save(null);
 		assertFalse(templateResource.isModified());
+		// assertFalse(libraryVMI.isModified());
 
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
 
@@ -1245,18 +1429,23 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		generatedDocument.getResource().save(null);
 		assertFalse(generatedDocument.isModified());
 
-		assertEquals(9, generatedDocument.getElements().size());
+		assertEquals(44, generatedDocument.getElements().size());
 
-		DocXParagraph introTitle = (DocXParagraph) generatedDocument.getElements().get(2);
-		DocXParagraph introLastPar = (DocXParagraph) generatedDocument.getElements().get(3);
+		DocXParagraph introTitle = (DocXParagraph) generatedDocument.getElements().get(7);
+		DocXParagraph introLastPar = (DocXParagraph) generatedDocument.getElements().get(16);
 		assertEquals(generatedDocument.getFragment(introTitle, introLastPar), documentVMI.getFlexoActor("introductionSection"));
 
-		DocXParagraph booksTitle = (DocXParagraph) generatedDocument.getElements().get(4);
-		DocXParagraph booksLastPar = (DocXParagraph) generatedDocument.getElements().get(5);
+		DocXParagraph booksTitle = (DocXParagraph) generatedDocument.getElements().get(17);
+		DocXParagraph booksLastPar = (DocXParagraph) generatedDocument.getElements().get(26);
+
+		/*DocXFragment booksDescriptionSection = (DocXFragment) documentVMI.getFlexoActor("booksDescriptionSection");
+		System.out.println("start=" + booksDescriptionSection.getStartElement().getIdentifier());
+		System.out.println("end=" + booksDescriptionSection.getEndElement().getIdentifier());*/
+
 		assertEquals(generatedDocument.getFragment(booksTitle, booksLastPar), documentVMI.getFlexoActor("booksDescriptionSection"));
 
-		DocXParagraph conclusionTitle = (DocXParagraph) generatedDocument.getElements().get(7);
-		DocXParagraph conclusionLastPar = (DocXParagraph) generatedDocument.getElements().get(8);
+		DocXParagraph conclusionTitle = (DocXParagraph) generatedDocument.getElements().get(27);
+		DocXParagraph conclusionLastPar = (DocXParagraph) generatedDocument.getElements().get(43);
 		assertEquals(generatedDocument.getFragment(conclusionTitle, conclusionLastPar), documentVMI.getFlexoActor("conclusionSection"));
 
 	}
@@ -1273,18 +1462,15 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		log("testUpdateDocument()");
 
-		System.out.println("template document:\n" + templateDocument.debugStructuredContents());
-
-		DocXParagraph booksTitle = (DocXParagraph) generatedDocument.getElements().get(4);
-		DocXParagraph booksLastPar = (DocXParagraph) generatedDocument.getElements().get(5);
+		DocXParagraph booksTitle = (DocXParagraph) generatedDocument.getElements().get(17);
+		DocXParagraph booksLastPar = (DocXParagraph) generatedDocument.getElements().get(26);
+		System.out.println("booksTitle=" + booksTitle.getIdentifier() + " : " + booksTitle.getRawText());
+		System.out.println("booksLastPar=" + booksLastPar.getIdentifier() + " : " + booksLastPar.getRawText());
 		assertEquals(generatedDocument.getFragment(booksTitle, booksLastPar), documentVMI.getFlexoActor("booksDescriptionSection"));
 
 		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) documentVMI.getResource();
 
 		assertFalse(templateResource.isModified());
-
-		System.out.println("Update scheme:\n");
-		System.out.println(updateDocumentActionScheme.getFMLRepresentation());
 
 		ActionSchemeActionType actionType = new ActionSchemeActionType(updateDocumentActionScheme, documentVMI);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, _editor);
@@ -1320,7 +1506,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		generatedDocument.getResource().save(null);
 		assertFalse(generatedDocument.isModified());
 
-		assertEquals(27, generatedDocument.getElements().size());
+		assertEquals(62, generatedDocument.getElements().size());
 
 		assertEquals(3, documentVMI.getFlexoConceptInstances().size());
 
@@ -1329,84 +1515,91 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		// Here is the structuration of original fragment (bookDescriptionFragment):
 
-		// [Les ][misérables]
-		// [Author][: Victor Hugo]
-		// [Edition][: ][Dunod]
-		// [Type][: Roman]
-		// [Les Misérables est un roman de Victor Hugo paru en 1862...][Verboeckhoven][ et Cie...][...]....
+		// > [2936B416/23] { (Les )(misérables) }
+		// > [0BFF1745/24] { }
+		// > [Table4A82BC28/25][{ (Aut)(eur) } ] [{ (Victor Hugo) } ]
+		// [{ (Edition) } ] [{ (Editions )(Dunod) } ]
+		// [{ (Type) } ] [{ (Roman) } ]
+		// > [05FCD490/26] { }
+		// > [289CEE3E/27] { (Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles
+		// par les Éditions Lacroix, )(Verboeckhoven)( et Cie, et le 3 avril de la même année à Paris1).) }
+		// > [395C1CE1/28] { (Dans ce roman, un des plus emblématiques de la littérature française, Victor Hugo décrit la vie de misérables
+		// dans Paris et la France provinciale du )(xixe)( siècle et s'attache plus particulièrement aux pas du bagnard Jean )(Valjean)(.) }
+		// > [096F50C5/29] { }
+		// > [0E7A4C44/30] { }
+		// > [631A77B5/31] { }
+		// > [5052C24D/32] { }
 
 		// Les misérables
 
-		DocXParagraph titleParagraph3 = (DocXParagraph) generatedDocument.getElements().get(6);
-		DocXParagraph authorParagraph3 = (DocXParagraph) generatedDocument.getElements().get(7);
-		DocXParagraph editionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(8);
-		DocXParagraph typeParagraph3 = (DocXParagraph) generatedDocument.getElements().get(9);
-		DocXParagraph descriptionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(10);
+		DocXParagraph titleParagraph3 = (DocXParagraph) generatedDocument.getElements().get(26);
+		DocXTable table3 = (DocXTable) generatedDocument.getElements().get(28);
+		DocXParagraph authorParagraph3 = (DocXParagraph) table3.getCell(0, 1).getParagraphs().get(0);
+		DocXParagraph editionParagraph3 = (DocXParagraph) table3.getCell(1, 1).getParagraphs().get(0);
+		DocXParagraph typeParagraph3 = (DocXParagraph) table3.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph descriptionParagraph3 = (DocXParagraph) generatedDocument.getElements().get(30);
 		DocXFragment lmFragment = generatedDocument.getFragment(titleParagraph3, descriptionParagraph3);
 
-		// [Les misérables]
-		// [Author][: ][Victor Hugo]
-		// [Edition][: ][Dunod]
-		// [Type][: ][Roman]
-		// [Les Misérables est un roman de Victor Hugo paru en 1862...]
+		// > [39F6DE6E/26] { (Les misérables) }
+		// > [2E0630CF/27] { }
+		// > [Table4D37D9A1/28][{ (Aut)(eur) } ] [{ (Victor Hugo) } ]
+		// [{ (Edition) } ] [{ (Dunod) } ]
+		// [{ (Type) } ] [{ (Roman) } ]
+		// > [62183C48/29] { }
+		// > [2FA6B49E/30] { (Les Misérables est un roman de Victor Hugo paru en 1862 (la première partie est publiée le 30 mars à Bruxelles
+		// par les Éditions Lacroix, Verboeckhoven et Cie, et le 3 avril de la même année à Paris1). Dans ce roman, un des plus
+		// emblématiques de la littérature française, Victor Hugo décrit la vie de misérables dans Paris et la France provinciale du xixe
+		// siècle et s'attache plus particulièrement aux pas du bagnard Jean Valjean.) }
 
 		assertEquals(1, titleParagraph3.getRuns().size());
 		assertEquals("Les misérables", ((DocXTextRun) titleParagraph3.getRuns().get(0)).getText());
 
-		assertEquals(3, authorParagraph3.getRuns().size());
-		assertEquals("Author", ((DocXTextRun) authorParagraph3.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) authorParagraph3.getRuns().get(1)).getText());
-		assertEquals("Victor Hugo", ((DocXTextRun) authorParagraph3.getRuns().get(2)).getText());
+		assertEquals(1, authorParagraph3.getRuns().size());
+		assertEquals("Victor Hugo", ((DocXTextRun) authorParagraph3.getRuns().get(0)).getText());
 
-		assertEquals(3, editionParagraph3.getRuns().size());
-		assertEquals("Edition", ((DocXTextRun) editionParagraph3.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) editionParagraph3.getRuns().get(1)).getText());
-		assertEquals("Dunod", ((DocXTextRun) editionParagraph3.getRuns().get(2)).getText());
+		assertEquals(1, editionParagraph3.getRuns().size());
+		assertEquals("Dunod", ((DocXTextRun) editionParagraph3.getRuns().get(0)).getText());
 
-		assertEquals(3, typeParagraph3.getRuns().size());
-		assertEquals("Type", ((DocXTextRun) typeParagraph3.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) typeParagraph3.getRuns().get(1)).getText());
-		assertEquals("Roman", ((DocXTextRun) typeParagraph3.getRuns().get(2)).getText());
+		assertEquals(1, typeParagraph3.getRuns().size());
+		assertEquals("Roman", ((DocXTextRun) typeParagraph3.getRuns().get(0)).getText());
 
 		assertEquals(1, descriptionParagraph3.getRuns().size());
 		assertEquals(LES_MISERABLES_DESCRIPTION, ((DocXTextRun) descriptionParagraph3.getRuns().get(0)).getText());
 
 		// Germinal
 
-		DocXParagraph titleParagraph2 = (DocXParagraph) generatedDocument.getElements().get(11);
-		DocXParagraph authorParagraph2 = (DocXParagraph) generatedDocument.getElements().get(12);
-		DocXParagraph editionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(13);
-		DocXParagraph typeParagraph2 = (DocXParagraph) generatedDocument.getElements().get(14);
-		DocXParagraph descriptionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(15);
-		DocXParagraph descriptionParagraph2bis = (DocXParagraph) generatedDocument.getElements().get(16);
-		DocXParagraph descriptionParagraph2ter = (DocXParagraph) generatedDocument.getElements().get(17);
-		DocXFragment gFragment = generatedDocument.getFragment(titleParagraph2, descriptionParagraph2ter);
+		DocXParagraph titleParagraph2 = (DocXParagraph) generatedDocument.getElements().get(31);
+		DocXTable table2 = (DocXTable) generatedDocument.getElements().get(33);
+		DocXParagraph authorParagraph2 = (DocXParagraph) table2.getCell(0, 1).getParagraphs().get(0);
+		DocXParagraph editionParagraph2 = (DocXParagraph) table2.getCell(1, 1).getParagraphs().get(0);
+		DocXParagraph typeParagraph2 = (DocXParagraph) table2.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph descriptionParagraph2 = (DocXParagraph) generatedDocument.getElements().get(35);
+		DocXParagraph descriptionParagraph2bis = (DocXParagraph) generatedDocument.getElements().get(36);
+		DocXParagraph descriptionParagraph2ter = (DocXParagraph) generatedDocument.getElements().get(37);
+		DocXFragment gFragment = generatedDocument.getFragment(titleParagraph2, descriptionParagraph2);
 
-		// [Germinal]
-		// [Author][: ][Emile Zola]
-		// [Edition][: ][Gil Blas]
-		// [Type][: ][Roman]
-		// [Germinal est un roman d'Émile Zola publié en 1885.]
-		// [Il s'agit du treizième roman de la série des Rougon-Macquart.]
-		// [Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord...]
+		// > [3827E78E/31] { (Germinal) }
+		// > [4DD64F05/32] { }
+		// > [Table498B6EF9/33][{ (Aut)(eur) } ] [{ (Emile Zola) } ]
+		// [{ (Edition) } ] [{ (Gil Blas) } ]
+		// [{ (Type) } ] [{ (Roman) } ]
+		// > [3E079748/34] { }
+		// > [53105B73/35] { (Germinal est un roman d'Émile Zola publié en 1885.) }
+		// > [78FB1D5A/36] { (Il s'agit du treizième roman de la série des Rougon-Macquart.) }
+		// > [44C3460D/37] { (Écrit d'avril 1884 à janvier 1885, le roman paraît d'abord en feuilleton entre novembre 1884 et février 1885
+		// dans le Gil Blas. Il connaît sa première édition en mars 1885. Depuis il a été publié dans plus d'une centaine de pays.) }
 
 		assertEquals(1, titleParagraph2.getRuns().size());
 		assertEquals("Germinal", ((DocXTextRun) titleParagraph2.getRuns().get(0)).getText());
 
-		assertEquals(3, authorParagraph2.getRuns().size());
-		assertEquals("Author", ((DocXTextRun) authorParagraph2.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) authorParagraph2.getRuns().get(1)).getText());
-		assertEquals("Emile Zola", ((DocXTextRun) authorParagraph2.getRuns().get(2)).getText());
+		assertEquals(1, authorParagraph2.getRuns().size());
+		assertEquals("Emile Zola", ((DocXTextRun) authorParagraph2.getRuns().get(0)).getText());
 
-		assertEquals(3, editionParagraph2.getRuns().size());
-		assertEquals("Edition", ((DocXTextRun) editionParagraph2.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) editionParagraph2.getRuns().get(1)).getText());
-		assertEquals("Gil Blas", ((DocXTextRun) editionParagraph2.getRuns().get(2)).getText());
+		assertEquals(1, editionParagraph2.getRuns().size());
+		assertEquals("Gil Blas", ((DocXTextRun) editionParagraph2.getRuns().get(0)).getText());
 
-		assertEquals(3, typeParagraph2.getRuns().size());
-		assertEquals("Type", ((DocXTextRun) typeParagraph2.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) typeParagraph2.getRuns().get(1)).getText());
-		assertEquals("Roman", ((DocXTextRun) typeParagraph2.getRuns().get(2)).getText());
+		assertEquals(1, typeParagraph2.getRuns().size());
+		assertEquals("Roman", ((DocXTextRun) typeParagraph2.getRuns().get(0)).getText());
 
 		assertEquals(1, descriptionParagraph2.getRuns().size());
 		StringTokenizer st2 = new StringTokenizer(GERMINAL_DESCRIPTION, StringUtils.LINE_SEPARATOR);
@@ -1420,53 +1613,40 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		// La chartreuse de Parme
 
-		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
-		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
-		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
-		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
-		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(38);
+		DocXTable table1 = (DocXTable) generatedDocument.getElements().get(40);
+		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getParagraphs().get(0);
+		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getParagraphs().get(0);
+		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(42);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(43);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// Now the fragment should be this:
 
-		// [La chartreuse de Parme]
-		// [Author][: ][Stendhal]
-		// [Edition][: ][J. Hetzel, 1846]
-		// [Type][: ][Roman]
-		// [La Chartreuse de Parme est un roman publié par Stendhal.]
-		// [Cette œuvre majeure, qui lui valut la célébrité...]
-
-		/*StringBuffer sb = new StringBuffer();
-		for (DocXElement element : cpFragment.getElements()) {
-			if (element instanceof DocXParagraph) {
-				DocXParagraph para = (DocXParagraph) element;
-				for (FlexoDocRun run : para.getRuns()) {
-					sb.append("[" + run.getText() + "]");
-				}
-				sb.append("\n");
-			}
-		}
-		
-		System.out.println(sb.toString());*/
+		// > [79521E07/38] { (La chartreuse de Parme) }
+		// > [4C9B8A7D/39] { }
+		// > [Table6C1DCF68/40][{ (Aut)(eur) } ] [{ (Stendhal) } ]
+		// [{ (Edition) } ] [{ (J. Hetzel, 1846) } ]
+		// [{ (Type) } ] [{ (Roman) } ]
+		// > [533033C3/41] { }
+		// > [3E1623C6/42] { (La Chartreuse de Parme est un roman publié par Stendhal.) }
+		// > [31DCF254/43] { (Cette œuvre majeure, qui lui valut la célébrité, fut publiée en deux volumes en mars 1839, puis refondue en
+		// 1841, soit peu avant la mort de Stendhal, à la suite d'un article fameux de Balzac et prenant de fait un tour plus « balzacien »
+		// : aujourd’hui, c’est le texte stendhalien d’origine que l’on lit encore.) }
+		// > [4A46B077/44] { }
 
 		assertEquals(1, titleParagraph1.getRuns().size());
 		assertEquals("La chartreuse de Parme", ((DocXTextRun) titleParagraph1.getRuns().get(0)).getText());
 
-		assertEquals(3, authorParagraph1.getRuns().size());
-		assertEquals("Author", ((DocXTextRun) authorParagraph1.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) authorParagraph1.getRuns().get(1)).getText());
-		assertEquals("Stendhal", ((DocXTextRun) authorParagraph1.getRuns().get(2)).getText());
+		assertEquals(1, authorParagraph1.getRuns().size());
+		assertEquals("Stendhal", ((DocXTextRun) authorParagraph1.getRuns().get(0)).getText());
 
-		assertEquals(3, editionParagraph1.getRuns().size());
-		assertEquals("Edition", ((DocXTextRun) editionParagraph1.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) editionParagraph1.getRuns().get(1)).getText());
-		assertEquals("J. Hetzel, 1846", ((DocXTextRun) editionParagraph1.getRuns().get(2)).getText());
+		assertEquals(1, editionParagraph1.getRuns().size());
+		assertEquals("J. Hetzel, 1846", ((DocXTextRun) editionParagraph1.getRuns().get(0)).getText());
 
-		assertEquals(3, typeParagraph1.getRuns().size());
-		assertEquals("Type", ((DocXTextRun) typeParagraph1.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) typeParagraph1.getRuns().get(1)).getText());
-		assertEquals("Roman", ((DocXTextRun) typeParagraph1.getRuns().get(2)).getText());
+		assertEquals(1, typeParagraph1.getRuns().size());
+		assertEquals("Roman", ((DocXTextRun) typeParagraph1.getRuns().get(0)).getText());
 
 		assertEquals(1, descriptionParagraph1.getRuns().size());
 		StringTokenizer st = new StringTokenizer(LA_CHARTREUSE_DE_PARME_DESCRIPTION, StringUtils.LINE_SEPARATOR);
@@ -1489,7 +1669,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		
 		System.out.println(sb.toString());*/
 
-		assertEquals(27, generatedDocument.getElements().size());
+		assertEquals(62, generatedDocument.getElements().size());
 
 	}
 
@@ -1502,11 +1682,6 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 	public void testReloadProject() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("testReloadProject()");
-
-		// Template has been modified, because identifier management added some bookmarks in original document
-		assertTrue(templateResource.isModified());
-		templateResource.save(null);
-		assertFalse(templateResource.isModified());
 
 		DocXDocument generatedDocumentBeforeReload = generatedDocument;
 		assertNotNull(generatedDocumentBeforeReload);
@@ -1534,6 +1709,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertNotNull(libraryVirtualModel = newView.getViewPoint().getVirtualModelNamed("LibraryVirtualModel"));
 		assertNotNull(documentVirtualModel = newView.getViewPoint().getVirtualModelNamed("DocumentVirtualModel"));
 		assertNotNull(bookConcept = libraryVirtualModel.getFlexoConcept("Book"));
+		assertNotNull(allBooksProperty = (GetSetProperty<?>) libraryVirtualModel.getAccessibleProperty("books"));
 		assertNotNull(bookCreationScheme = bookConcept.getCreationSchemes().get(0));
 		assertNotNull(titleParam = bookCreationScheme.getParameter("aTitle"));
 		assertNotNull(authorParam = bookCreationScheme.getParameter("anAuthor"));
@@ -1550,6 +1726,16 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 				.getFlexoBehaviour("updateBookDescriptionSection"));
 		assertNotNull(bookDescriptionSectionReinjectScheme = (ActionScheme) bookDescriptionSection
 				.getFlexoBehaviour("reinjectDataFromBookDescriptionSection"));
+		assertNotNull(introductionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleProperty("introductionSection"));
+		assertNotNull(
+				booksDescriptionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleProperty("booksDescriptionSection"));
+		assertNotNull(bookListingTableRole = (DocXTableRole) documentVirtualModel.getAccessibleProperty("bookListingTable"));
+		assertNotNull(conclusionFragmentRole = (DocXFragmentRole) documentVirtualModel.getAccessibleProperty("conclusionSection"));
+
+		assertEquals(documentVirtualModel, introductionFragmentRole.getFlexoConcept());
+		assertEquals(documentVirtualModel, booksDescriptionFragmentRole.getFlexoConcept());
+		assertEquals(documentVirtualModel, bookListingTableRole.getFlexoConcept());
+		assertEquals(documentVirtualModel, conclusionFragmentRole.getFlexoConcept());
 
 		assertEquals(2, newViewResource.getVirtualModelInstanceResources().size());
 
@@ -1592,7 +1778,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		assertNotSame(generatedDocumentBeforeReload, generatedDocument);
 
-		assertEquals(27, generatedDocument.getElements().size());
+		assertEquals(62, generatedDocument.getElements().size());
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
@@ -1615,8 +1801,6 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
 		assertFalse(generatedDocument.isModified());
-
-		System.out.println("template document:\n" + templateDocument.debugStructuredContents());
 
 		System.out.println("AVANT LE ADD: Generated document:\n" + generatedDocument.debugStructuredContents());
 
@@ -1653,7 +1837,6 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(documentVMI, null, _editor);
 		assertNotNull(actionSchemeCreationAction);
 		actionSchemeCreationAction.doAction();
-
 		assertTrue(actionSchemeCreationAction.hasActionExecutionSucceeded());
 
 		for (FlexoConceptInstance fci : documentVMI.getFlexoConceptInstances()) {
@@ -1675,14 +1858,15 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		assertEquals(33, generatedDocument.getElements().size());
+		assertEquals(68, generatedDocument.getElements().size());
 
-		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(24);
-		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(25);
-		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(26);
-		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(27);
-		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(28);
-		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(29);
+		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(44);
+		DocXTable table4 = (DocXTable) generatedDocument.getElements().get(46);
+		DocXParagraph authorParagraph4 = (DocXParagraph) table4.getCell(0, 1).getParagraphs().get(0);
+		DocXParagraph editionParagraph4 = (DocXParagraph) table4.getCell(1, 1).getParagraphs().get(0);
+		DocXParagraph typeParagraph4 = (DocXParagraph) table4.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(48);
+		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(49);
 
 		System.out.println("titleParagraph4=" + titleParagraph4.getRawText());
 		System.out.println("descriptionParagraph4bis=" + descriptionParagraph4bis.getRawText());
@@ -1712,20 +1896,14 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertEquals(1, titleParagraph4.getRuns().size());
 		assertEquals("Le rouge et le noir", ((DocXTextRun) titleParagraph4.getRuns().get(0)).getText());
 
-		assertEquals(3, authorParagraph4.getRuns().size());
-		assertEquals("Author", ((DocXTextRun) authorParagraph4.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) authorParagraph4.getRuns().get(1)).getText());
-		assertEquals("Stendhal", ((DocXTextRun) authorParagraph4.getRuns().get(2)).getText());
+		assertEquals(1, authorParagraph4.getRuns().size());
+		assertEquals("Stendhal", ((DocXTextRun) authorParagraph4.getRuns().get(0)).getText());
 
-		assertEquals(3, editionParagraph4.getRuns().size());
-		assertEquals("Edition", ((DocXTextRun) editionParagraph4.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) editionParagraph4.getRuns().get(1)).getText());
-		assertEquals("Levasseur, 1830", ((DocXTextRun) editionParagraph4.getRuns().get(2)).getText());
+		assertEquals(1, editionParagraph4.getRuns().size());
+		assertEquals("Levasseur, 1830", ((DocXTextRun) editionParagraph4.getRuns().get(0)).getText());
 
-		assertEquals(3, typeParagraph4.getRuns().size());
-		assertEquals("Type", ((DocXTextRun) typeParagraph4.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) typeParagraph4.getRuns().get(1)).getText());
-		assertEquals("Roman", ((DocXTextRun) typeParagraph4.getRuns().get(2)).getText());
+		assertEquals(1, typeParagraph4.getRuns().size());
+		assertEquals("Roman", ((DocXTextRun) typeParagraph4.getRuns().get(0)).getText());
 
 		assertEquals(1, descriptionParagraph4.getRuns().size());
 		StringTokenizer st = new StringTokenizer(LE_ROUGE_ET_LE_NOIR_DESCRIPTION, StringUtils.LINE_SEPARATOR);
@@ -1788,31 +1966,26 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
-		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(24);
-		DocXParagraph authorParagraph4 = (DocXParagraph) generatedDocument.getElements().get(25);
-		DocXParagraph editionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(26);
-		DocXParagraph typeParagraph4 = (DocXParagraph) generatedDocument.getElements().get(27);
-		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(28);
-		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(29);
-		DocXParagraph descriptionParagraph4ter = (DocXParagraph) generatedDocument.getElements().get(30);
+		DocXParagraph titleParagraph4 = (DocXParagraph) generatedDocument.getElements().get(44);
+		DocXTable table4 = (DocXTable) generatedDocument.getElements().get(46);
+		DocXParagraph authorParagraph4 = (DocXParagraph) table4.getCell(0, 1).getParagraphs().get(0);
+		DocXParagraph editionParagraph4 = (DocXParagraph) table4.getCell(1, 1).getParagraphs().get(0);
+		DocXParagraph typeParagraph4 = (DocXParagraph) table4.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph descriptionParagraph4 = (DocXParagraph) generatedDocument.getElements().get(48);
+		DocXParagraph descriptionParagraph4bis = (DocXParagraph) generatedDocument.getElements().get(49);
+		DocXParagraph descriptionParagraph4ter = (DocXParagraph) generatedDocument.getElements().get(50);
 
 		assertEquals(1, titleParagraph4.getRuns().size());
 		assertEquals("Le Rouge et le Noir, Chronique du XIXe siècle", ((DocXTextRun) titleParagraph4.getRuns().get(0)).getText());
 
-		assertEquals(3, authorParagraph4.getRuns().size());
-		assertEquals("Author", ((DocXTextRun) authorParagraph4.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) authorParagraph4.getRuns().get(1)).getText());
-		assertEquals("Stendhal aka Henri Beyle", ((DocXTextRun) authorParagraph4.getRuns().get(2)).getText());
+		assertEquals(1, authorParagraph4.getRuns().size());
+		assertEquals("Stendhal aka Henri Beyle", ((DocXTextRun) authorParagraph4.getRuns().get(0)).getText());
 
-		assertEquals(3, editionParagraph4.getRuns().size());
-		assertEquals("Edition", ((DocXTextRun) editionParagraph4.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) editionParagraph4.getRuns().get(1)).getText());
-		assertEquals("Levasseur", ((DocXTextRun) editionParagraph4.getRuns().get(2)).getText());
+		assertEquals(1, editionParagraph4.getRuns().size());
+		assertEquals("Levasseur", ((DocXTextRun) editionParagraph4.getRuns().get(0)).getText());
 
-		assertEquals(3, typeParagraph4.getRuns().size());
-		assertEquals("Type", ((DocXTextRun) typeParagraph4.getRuns().get(0)).getText());
-		assertEquals(": ", ((DocXTextRun) typeParagraph4.getRuns().get(1)).getText());
-		assertEquals("Roman historique", ((DocXTextRun) typeParagraph4.getRuns().get(2)).getText());
+		assertEquals(1, typeParagraph4.getRuns().size());
+		assertEquals("Roman historique", ((DocXTextRun) typeParagraph4.getRuns().get(0)).getText());
 
 		assertEquals(1, descriptionParagraph4.getRuns().size());
 		assertEquals(1, descriptionParagraph4bis.getRuns().size());
@@ -1854,12 +2027,13 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		// La chartreuse de Parme
 
-		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
-		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
-		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
-		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
-		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(38);
+		DocXTable table1 = (DocXTable) generatedDocument.getElements().get(40);
+		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getParagraphs().get(0);
+		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getParagraphs().get(0);
+		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(42);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(43);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// [La chartreuse de Parme]
@@ -1869,9 +2043,9 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		// [La Chartreuse de Parme est ...]
 
 		((DocXTextRun) titleParagraph1.getRuns().get(0)).setText("La Chartreuse de Parme"); // Added a maj
-		((DocXTextRun) authorParagraph1.getRuns().get(2)).setText("Stendhal (Henri Beyle)"); // Added original name of author
-		((DocXTextRun) editionParagraph1.getRuns().get(2)).setText("Éditions Rencontre, Lausanne, 1967"); // Change for a newer edition
-		((DocXTextRun) typeParagraph1.getRuns().get(2)).setText("Roman historique"); // Change for another type
+		((DocXTextRun) authorParagraph1.getRuns().get(0)).setText("Stendhal (Henri Beyle)"); // Added original name of author
+		((DocXTextRun) editionParagraph1.getRuns().get(0)).setText("Éditions Rencontre, Lausanne, 1967"); // Change for a newer edition
+		((DocXTextRun) typeParagraph1.getRuns().get(0)).setText("Roman historique"); // Change for another type
 
 		System.out.println("Generated document:\n" + generatedDocument.debugStructuredContents());
 
@@ -1927,12 +2101,13 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		// La chartreuse de Parme
 
-		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
-		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
-		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
-		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
-		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(38);
+		DocXTable table1 = (DocXTable) generatedDocument.getElements().get(40);
+		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getParagraphs().get(0);
+		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getParagraphs().get(0);
+		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(42);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(43);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// [La chartreuse de Parme]
@@ -2013,12 +2188,13 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 
 		// La chartreuse de Parme
 
-		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(18);
-		DocXParagraph authorParagraph1 = (DocXParagraph) generatedDocument.getElements().get(19);
-		DocXParagraph editionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(20);
-		DocXParagraph typeParagraph1 = (DocXParagraph) generatedDocument.getElements().get(21);
-		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(22);
-		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(23);
+		DocXParagraph titleParagraph1 = (DocXParagraph) generatedDocument.getElements().get(38);
+		DocXTable table1 = (DocXTable) generatedDocument.getElements().get(40);
+		DocXParagraph authorParagraph1 = (DocXParagraph) table1.getCell(0, 1).getParagraphs().get(0);
+		DocXParagraph editionParagraph1 = (DocXParagraph) table1.getCell(1, 1).getParagraphs().get(0);
+		DocXParagraph typeParagraph1 = (DocXParagraph) table1.getCell(2, 1).getParagraphs().get(0);
+		DocXParagraph descriptionParagraph1 = (DocXParagraph) generatedDocument.getElements().get(42);
+		DocXParagraph descriptionParagraph1bis = (DocXParagraph) generatedDocument.getElements().get(43);
 		DocXFragment cpFragment = generatedDocument.getFragment(titleParagraph1, descriptionParagraph1bis);
 
 		// [La chartreuse de Parme]
