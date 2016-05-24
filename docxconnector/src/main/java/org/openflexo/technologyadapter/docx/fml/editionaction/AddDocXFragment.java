@@ -204,9 +204,13 @@ public interface AddDocXFragment extends TechnologySpecificAction<DocXModelSlot,
 				DocXElement startElement = null;
 				DocXElement endElement = null;
 
-				// System.out.println("BEFORE addDocXFragment");
-				// System.out.println("document=" + document);
-				// System.out.println("contents=\n" + document.debugStructuredContents());
+				System.out.println("BEFORE addDocXFragment");
+				System.out.println("document=" + document);
+				System.out.println("contents=\n" + document.debugStructuredContents());
+				System.out.println("fragment=" + getFragment());
+				System.out.println("getAssignedFlexoProperty()=" + getAssignedFlexoProperty());
+				System.out.println("FML=" + getFMLRepresentation());
+				System.out.println("Owner=" + getOwner().getFMLRepresentation());
 
 				for (DocXElement element : getFragment().getElements()) {
 

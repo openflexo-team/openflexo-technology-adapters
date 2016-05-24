@@ -1494,7 +1494,7 @@ public class TestLibrary extends AbstractTestDocX {
 		DocXDocument generatedDocumentBeforeReload = generatedDocument;
 		assertNotNull(generatedDocumentBeforeReload);
 
-		instanciateTestServiceManager(DocXTechnologyAdapter.class);
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 
 		System.out.println("Project dir = " + _project.getDirectory());
 

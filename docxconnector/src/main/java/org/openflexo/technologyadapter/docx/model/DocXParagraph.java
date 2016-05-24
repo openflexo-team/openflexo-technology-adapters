@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.xml.bind.JAXBElement;
 
@@ -201,11 +202,11 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 				else if (o instanceof CTBookmark) {
 					CTBookmark bookmark = (CTBookmark) o;
 					if (bookmark.getName() != null && bookmark.getName().startsWith(BOOKMARK_PREFIX)) {
-						System.out.println("Found CTBookmark : " + bookmark + " name=" + bookmark.getName() + " start="
-								+ bookmark.getColFirst() + " end=" + bookmark.getColLast());
+						// System.out.println("Found CTBookmark : " + bookmark + " name=" + bookmark.getName() + " start="
+						// + bookmark.getColFirst() + " end=" + bookmark.getColLast());
 						setBookmark(bookmark);
-						System.out.println("identifier=" + getIdentifier());
-						System.out.println("strategy=" + getFactory().getIDStrategy());
+						// System.out.println("identifier=" + getIdentifier());
+						// System.out.println("strategy=" + getFactory().getIDStrategy());
 					}
 				}
 			}
@@ -237,7 +238,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 		protected CTBookmark createCTBookmarkIdentifier(DocXFactory docXFactory) {
 
 			ObjectFactory factory = Context.getWmlObjectFactory();
-			BigInteger ID = BigInteger.valueOf(hashCode());
+			BigInteger ID = BigInteger.valueOf(new Random().nextLong());
 
 			// Add bookmark end first
 			CTMarkupRange mr = factory.createCTMarkupRange();
@@ -330,11 +331,9 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 				}
 			}
 			else {
-				System.out.println("Merde, j'ai pas ma factory");
-				Thread.dumpStack();
+				logger.warning("Unreachable factory");
 				return null;
 			}
-
 		}
 
 		@Override
@@ -356,8 +355,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 				}
 			}
 			else {
-				System.out.println("Merde aussi, j'ai pas ma factory non plus");
-				Thread.dumpStack();
+				logger.warning("Unreachable factory");
 			}
 		}
 
@@ -402,9 +400,35 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 			}
 			P copiedP = XmlUtils.deepCopy(getP());
 
-			String oldId = getP().getParaId();
-			String newId = getFlexoDocument().getFactory().generateId();
-			copiedP.setParaId(newId);
+			if (getFactory() != null) {
+				// Translate ID
+				String newId = getFactory().generateId();
+				switch (getFactory().getIDStrategy()) {
+					case ParaId:
+						String oldId = getP().getParaId();
+						copiedP.setParaId(newId);
+						break;
+					case Bookmark:
+						for (Object o : copiedP.getContent()) {
+							if (o instanceof JAXBElement) {
+								o = ((JAXBElement) o).getValue();
+							}
+							if (o instanceof CTBookmark) {
+								CTBookmark bookmark = (CTBookmark) o;
+								if (bookmark.getName() != null && bookmark.getName().startsWith(BOOKMARK_PREFIX)) {
+									String oldName = bookmark.getName();
+									bookmark.setName(BOOKMARK_PREFIX + newId);
+									BigInteger ID = BigInteger.valueOf(new Random().nextLong());
+									bookmark.setId(ID);
+									System.out.println("Translate CTBookmark ID for " + bookmark + " from name " + oldName + " to name="
+											+ bookmark.getName());
+									// setBookmark(bookmark);
+								}
+							}
+						}
+						break;
+				}
+			}
 
 			// System.out.println("Paragraph [" + getRawTextPreview() + "] changed id from " + oldId + " to " + copiedP.getParaId());
 
