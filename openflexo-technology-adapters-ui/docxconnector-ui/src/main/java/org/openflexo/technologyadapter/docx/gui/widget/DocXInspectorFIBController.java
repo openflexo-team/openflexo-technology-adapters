@@ -76,6 +76,7 @@ public class DocXInspectorFIBController extends FlexoFIBController {
 	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> TextBinding<D, TA> createTextBinding(
 			DocXFragmentRole fragmentRole, TextSelection<D, TA> textSelection) {
 
+		
 		if (textSelection == null) {
 			return null;
 		}
@@ -115,7 +116,7 @@ public class DocXInspectorFIBController extends FlexoFIBController {
 
 	public <D extends FlexoDocument<D, TA>, TA extends TechnologyAdapter> ColumnTableBinding<D, TA> createColumnTableBinding(
 			DocXTableRole tableRole) {
-		System.out.println("createColumnTableBinding for " + tableRole);
+		// System.out.println("createColumnTableBinding for " + tableRole);
 
 		CreateColumnTableBinding createColumnTableBinding = CreateColumnTableBinding.actionType.makeNewAction(tableRole, null, getEditor());
 		createColumnTableBinding.setIndex(tableRole.getColumnBindings().size());

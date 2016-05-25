@@ -182,6 +182,9 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 			if (o instanceof Drawing) {
 				return makeNewDocXDrawingRun(r);
 			}
+			if (o instanceof R.Tab){
+				return makeNewDocXTextRun(r);
+			}
 		}
 
 		return null;

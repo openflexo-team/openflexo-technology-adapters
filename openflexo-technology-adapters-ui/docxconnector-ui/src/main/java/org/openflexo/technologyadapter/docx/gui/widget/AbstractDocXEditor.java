@@ -84,6 +84,8 @@ import org.openflexo.technologyadapter.docx.model.DocXRun;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
 import org.openflexo.toolbox.ToolBox;
 
+import org.jvnet.jaxb2_commons.ppp.Child;
+
 @SuppressWarnings("serial")
 public abstract class AbstractDocXEditor extends JPanel {
 
@@ -200,37 +202,71 @@ public abstract class AbstractDocXEditor extends JPanel {
 			if (docXObject instanceof P) {
 				returned.documentElement = getDocXDocument().getParagraph((P) docXObject);
 			}
+			else if (docXObject instanceof R) {
+				Object parent = ((R) docXObject).getParent();
+				if (  parent instanceof P) {
+					returned.documentElement = getDocXDocument().getParagraph((P) parent);
+				}
+
+				if (returned.documentElement != null){
+					DocXRun docXRun = ((DocXParagraph) returned.documentElement).getRun((R) docXObject);
+					int runIndex = docXRun.getIndex();
+					int characterIndex = pos - paragraphElement.getStartOffset();
+					returned.runIndex = runIndex;
+					returned.characterIndex = characterIndex;
+					if (characterIndex == 0) {
+						returned.firstChar = true;
+					}
+					if (pos == paragraphElement.getEndOffset() - 1) {
+						returned.lastChar = true;
+					}
+					if (runIndex == 0) {
+						returned.firstRun = true;
+					}
+					if (runIndex == ((DocXParagraph) returned.documentElement).getRuns().size() - 1) {
+						returned.lastRun = true;
+					}
+				}
+
+			}
 			else if (docXObject instanceof Tbl) {
 				returned.documentElement = getDocXDocument().getTable((Tbl) docXObject);
 			}
-			else if (docXObject instanceof Text) {
-				// System.out.println("Text= " + docXObject);
-				R run = (R) ((Text) docXObject).getParent();
+			else if (docXObject != null){ // Whatever it is go that way...
+				R run = (R) ((Child) docXObject).getParent();
 				// System.out.println("run=" + run);
 				if (run.getParent() instanceof P) {
 					P p = (P) run.getParent();
 					returned.documentElement = getDocXDocument().getParagraph(p);
 				}
 
-				DocXRun docXRun = ((DocXParagraph) returned.documentElement).getRun(run);
-				int runIndex = docXRun.getIndex();
-				// System.out.println("runIndex=" + runIndex);
-				int characterIndex = pos - paragraphElement.getStartOffset();
-				// System.out.println("characterIndex=" + characterIndex);
+				// XTOF: NPE protection
+				if (returned.documentElement != null){
+					DocXRun docXRun = ((DocXParagraph) returned.documentElement).getRun(run);
+					if (docXRun != null) {
+						int runIndex = docXRun.getIndex();
+						// System.out.println("runIndex=" + runIndex);
+						int characterIndex = pos - paragraphElement.getStartOffset();
+						// System.out.println("characterIndex=" + characterIndex);
 
-				returned.runIndex = runIndex;
-				returned.characterIndex = characterIndex;
-				if (characterIndex == 0) {
-					returned.firstChar = true;
-				}
-				if (pos == paragraphElement.getEndOffset() - 1) {
-					returned.lastChar = true;
-				}
-				if (runIndex == 0) {
-					returned.firstRun = true;
-				}
-				if (runIndex == ((DocXParagraph) returned.documentElement).getRuns().size() - 1) {
-					returned.lastRun = true;
+						returned.runIndex = runIndex;
+						returned.characterIndex = characterIndex;
+						if (characterIndex == 0) {
+							returned.firstChar = true;
+						}
+						if (pos == paragraphElement.getEndOffset() - 1) {
+							returned.lastChar = true;
+						}
+						if (runIndex == 0) {
+							returned.firstRun = true;
+						}
+						if (runIndex == ((DocXParagraph) returned.documentElement).getRuns().size() - 1) {
+							returned.lastRun = true;
+						}
+					}
+					else {
+						logger.warning("Could not Retreive TextMarker @" + pos +" NO RUN FOUND");
+					}
 				}
 			}
 			// System.out.println("returned.documentElement=" + returned.documentElement);
@@ -511,7 +547,7 @@ public abstract class AbstractDocXEditor extends JPanel {
 					selectedElement.setSelected(false);
 				}
 				selectedElement = (DocumentElement) characterElement;
-				
+
 				System.out.println("Paf, on selectionne " + selectedElement);
 				selectedElement.setSelected(true);*/
 
@@ -561,7 +597,7 @@ public abstract class AbstractDocXEditor extends JPanel {
 						System.out.println("Texte=" + ((Text) obj).getValue());
 					}
 				}
-			
+
 			}*/
 
 		}
