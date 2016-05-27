@@ -46,6 +46,7 @@ import java.util.logging.Logger;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -139,7 +140,13 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("FlexoRole " + getName() + " as ShapeSpecification from " + getOwningVirtualModel().getName() + ";", context);
+			AbstractVirtualModel<?> vm = getOwningVirtualModel();
+			if ( vm != null){
+				out.append("FlexoRole " + getName() + " as ShapeSpecification from " + vm.getName() + ";", context);
+			}
+			else {
+				out.append("FlexoRole " + getName()+ " -- NO OWNING MODEL;", context);
+			}
 			return out.toString();
 		}
 
