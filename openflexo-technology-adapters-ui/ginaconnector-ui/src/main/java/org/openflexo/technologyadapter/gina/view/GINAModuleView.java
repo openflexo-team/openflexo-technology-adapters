@@ -65,7 +65,7 @@ public class GINAModuleView extends JPanel implements ModuleView<GINAFIBComponen
 
 		File f = ((FileFlexoIODelegate) representedObject.getResource().getFlexoIODelegate()).getFile();
 
-		editorController = getFIBEditor(false).openFIBComponent(representedObject.getComponent(), representedObject.getResource(),
+		editorController = getFIBEditor(false).openFIBComponent(/*representedObject.getComponent(),*/ representedObject.getResource(), null,
 				controller.getFlexoFrame());
 
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);
