@@ -66,13 +66,13 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
  *
  */
 @ModelEntity
-@ImplementationClass(CreateDocXResource.CreateDocXResourceImpl.class)
+@ImplementationClass(CreateEmptyDocXResource.CreateDocXResourceImpl.class)
 @XMLElement
-@FML("CreateDocXResource")
-public interface CreateDocXResource extends AbstractCreateResource<DocXModelSlot, DocXDocument> {
+@FML("CreateEmptyDocXResource")
+public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXModelSlot, DocXDocument> {
 
 	public static abstract class CreateDocXResourceImpl extends AbstractCreateResourceImpl<DocXModelSlot, DocXDocument>
-			implements CreateDocXResource {
+			implements CreateEmptyDocXResource {
 
 		private static final Logger logger = Logger.getLogger(CreateDocXResourceImpl.class.getPackage().getName());
 
