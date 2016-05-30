@@ -76,8 +76,8 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 
 		// TODO: if we set flag to true, a dead-lock happen here.
 		// Please investigate to find an elegant solution
-		editorController = getFIBEditor(false).openFIBComponent(component.getComponent(), representedObject.getResource(),
-				controller.getFlexoFrame());
+		editorController = getFIBEditor(false).openFIBComponent(/*component.getComponent(),*/
+				component.getResource(), null/*representedObject.getResource()*/, controller.getFlexoFrame());
 
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);
 	}
