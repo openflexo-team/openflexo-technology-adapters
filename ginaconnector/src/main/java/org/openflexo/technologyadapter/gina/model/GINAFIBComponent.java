@@ -161,15 +161,17 @@ public interface GINAFIBComponent
 				}
 			}
 
-			recursivelyFinalizeDeserialization(getComponent());
+			// Bacause type may have changed, we have to revalidate all bindings of the component
+			recursivelyRevalidateBindings(getComponent());
 
 		}
 
-		private void recursivelyFinalizeDeserialization(FIBComponent c) {
-			c.finalizeDeserialization();
+		private void recursivelyRevalidateBindings(FIBComponent c) {
+
+			c.revalidateBindings();
 			if (c instanceof FIBContainer) {
 				for (FIBComponent c2 : ((FIBContainer) c).getSubComponents()) {
-					recursivelyFinalizeDeserialization(c2);
+					recursivelyRevalidateBindings(c2);
 				}
 			}
 		}
