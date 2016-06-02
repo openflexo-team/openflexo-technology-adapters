@@ -145,19 +145,32 @@ public interface GINAFIBComponent
 
 			for (VariableAssignment variableAssign : modelSlot.getAssignments()) {
 				FIBVariable<?> returned = getComponent().getVariable(variableAssign.getVariable());
+
+				System.out.println("On s'occupe de la variable " + returned);
+
 				if (returned == null) {
 					returned = getComponent().getModelFactory().newFIBVariable(getComponent(), variableAssign.getVariable());
 				}
 				DataBinding<?> value = variableAssign.getValue();
+
+				System.out.println("value = " + value + " valid=" + value.isValid() + " reason:" + value.invalidBindingReason());
+
 				if (value != null && value.isSet() && value.isValid()) {
 					Type analyzedType = value.getAnalyzedType();
 					// returned.setType(value.getAnalyzedType());
+
+					System.out.println("analyzedType=" + analyzedType);
+					System.out.println("returned.getType()=" + returned.getType());
+
 					if (TypeUtils.isTypeAssignableFrom(analyzedType, returned.getType())) {
 						// Type is conform, does nothing
-					} else if (!TypeUtils.isTypeAssignableFrom(returned.getType(), analyzedType)) {
-						returned.setType(value.getAnalyzedType());
+						System.out.println("On fait rien");
+					} else /*if (!TypeUtils.isTypeAssignableFrom(returned.getType(), analyzedType))*/ {
+						returned.setType(analyzedType);
 						// We force type of variable to be type analyzed from binding
+						System.out.println("On met le type a " + analyzedType);
 					}
+					// returned.setType(analyzedType);
 				}
 			}
 
