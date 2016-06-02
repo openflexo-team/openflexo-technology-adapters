@@ -51,6 +51,7 @@ import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.gina.fml.FIBComponentRole;
+import org.openflexo.technologyadapter.gina.fml.editionaction.ConfigureGINAFIBComponent;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
 import org.openflexo.toolbox.StringUtils;
@@ -62,7 +63,7 @@ import org.openflexo.toolbox.StringUtils;
  * 
  */
 @DeclareFlexoRoles({ FIBComponentRole.class })
-@DeclareEditionActions({})
+@DeclareEditionActions({ ConfigureGINAFIBComponent.class })
 @DeclareFetchRequests({})
 @ModelEntity
 @ImplementationClass(FIBComponentModelSlot.FIBComponentModelSlotImpl.class)
@@ -110,7 +111,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 	@Override
 	public GINATechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public static abstract class FIBComponentModelSlotImpl extends FreeModelSlotImpl<GINAFIBComponent>implements FIBComponentModelSlot {
+	public static abstract class FIBComponentModelSlotImpl extends FreeModelSlotImpl<GINAFIBComponent> implements FIBComponentModelSlot {
 
 		protected String templateComponentURI;
 		private GINAFIBComponentResource templateResource;
@@ -279,8 +280,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 					value.setDeclaredType(Object.class);
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					this.value = value;
-				}
-				else {
+				} else {
 					getValue();
 				}
 			}

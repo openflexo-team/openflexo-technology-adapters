@@ -21,6 +21,7 @@
 package org.openflexo.technologyadapter.gina;
 
 import java.io.FileNotFoundException;
+import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
@@ -33,6 +34,8 @@ import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
 public class FIBComponentModelSlotInstanceConfiguration
 		extends FreeModelSlotInstanceConfiguration<GINAFIBComponent, FIBComponentModelSlot> {
+
+	private static final Logger logger = Logger.getLogger(FIBComponentModelSlotInstanceConfiguration.class.getPackage().getName());
 
 	public static enum FIBComponentModelSlotInstanceConfigurationOption implements ModelSlotInstanceConfigurationOption {
 
@@ -78,6 +81,11 @@ public class FIBComponentModelSlotInstanceConfiguration
 		System.out.println("modelSlot=" + getModelSlot());
 		Thread.dumpStack();
 		System.out.println("getModelSlot().getTemplateResource()=" + getModelSlot().getTemplateResource());*/
+
+		if (getModelSlot().getTemplateResource() == null) {
+			logger.warning("No template defined for model slot: " + getModelSlot());
+			return msInstance;
+		}
 
 		try {
 			if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent) {
