@@ -38,6 +38,7 @@ import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
+import org.openflexo.technologyadapter.gina.controller.action.CreateFMLControlledFIBVirtualModelInitializer;
 import org.openflexo.technologyadapter.gina.controller.action.CreateGINAFIBComponentInitializer;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.technologyadapter.gina.view.GINAModuleView;
@@ -147,7 +148,10 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	public void initializeActions(ControllerActionInitializer actionInitializer) {
 		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/GIN"));
 
-		// Diagram edition
+		// FML edition
+		new CreateFMLControlledFIBVirtualModelInitializer(actionInitializer);
+
+		// GINA edition
 		new CreateGINAFIBComponentInitializer(actionInitializer);
 
 	}
@@ -164,12 +168,12 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 
 	@Override
 	public ImageIcon getModelIcon() {
-		return GINAIconLibrary.FIB_FILE_ICON;
+		return GINAIconLibrary.FIB_COMPONENT_ICON;
 	}
 
 	@Override
 	public ImageIcon getMetaModelIcon() {
-		return GINAIconLibrary.FIB_FILE_ICON;
+		return GINAIconLibrary.FIB_COMPONENT_ICON;
 	}
 
 	@Override

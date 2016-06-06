@@ -40,9 +40,13 @@ package org.openflexo.technologyadapter.gina.controller;
 
 import java.util.logging.Logger;
 
+import javax.swing.ImageIcon;
+
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.view.GinaViewFactory;
+import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.logging.FlexoLogger;
+import org.openflexo.technologyadapter.gina.fml.action.CreateFMLControlledFIBVirtualModel.GINAFIBComponentAPIEntry;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.FlexoFIBController;
 
@@ -62,6 +66,14 @@ public class GINAFIBController extends FlexoFIBController {
 
 	public GINAFIBController(FIBComponent component, GinaViewFactory<?> viewFactory, FlexoController controller) {
 		super(component, viewFactory, controller);
+	}
+
+	@Override
+	public ImageIcon iconForObject(Object object) {
+		if (object instanceof GINAFIBComponentAPIEntry) {
+			return FMLIconLibrary.FLEXO_CONCEPT_PARAMETER_ICON;
+		}
+		return super.iconForObject(object);
 	}
 
 }

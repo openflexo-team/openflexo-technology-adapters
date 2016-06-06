@@ -20,8 +20,6 @@
 
 package org.openflexo.technologyadapter.gina.controller;
 
-import java.util.logging.Logger;
-
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
@@ -29,15 +27,16 @@ import org.openflexo.rm.ResourceLocator;
 import org.openflexo.toolbox.ImageIconResource;
 
 public class GINAIconLibrary {
-	private static final Logger logger = Logger.getLogger(GINAIconLibrary.class.getPackage().getName());
 
 	public static final ImageIcon GINA_TECHNOLOGY_BIG_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/GinaLogo64x64.png"));
 	public static final ImageIcon GINA_TECHNOLOGY_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/FIBComponent16x16.png"));
-	public static final ImageIcon FIB_FILE_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/FIBComponent16x16.png"));
+	public static final ImageIcon FIB_COMPONENT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/FIBComponent16x16.png"));
+	public static final ImageIcon FIB_COMPONENT_BIG_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/FIBComponent64x64.png"));
 
-	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
+	public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
 		return GINA_TECHNOLOGY_ICON;
 	}
 }

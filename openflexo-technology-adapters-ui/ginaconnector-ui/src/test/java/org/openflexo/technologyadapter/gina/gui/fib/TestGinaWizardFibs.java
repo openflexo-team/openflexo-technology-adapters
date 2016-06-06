@@ -51,8 +51,23 @@ public class TestGinaWizardFibs extends GenericFIBTestCase {
 	}
 
 	@Test
+	public void testCreateNewGINAFIBComponent() {
+		validateFIB("Fib/Wizard/CreateNewGINAFIBComponent.fib");
+	}
+
+	@Test
+	public void testDescribeFMLControlledFIBVirtualModel() {
+		validateFIB("Fib/Wizard/DescribeFMLControlledFIBVirtualModel.fib");
+	}
+
+	@Test
 	public void testDescribeNewComponent() {
 		validateFIB("Fib/Wizard/DescribeNewComponent.fib");
+	}
+
+	@Test
+	public void testUseExistingGINAFIBComponent() {
+		validateFIB("Fib/Wizard/UseExistingGINAFIBComponent.fib");
 	}
 
 }

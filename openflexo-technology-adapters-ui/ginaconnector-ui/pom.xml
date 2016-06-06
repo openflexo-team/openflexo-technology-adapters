@@ -25,5 +25,9 @@
       <classifier>tests</classifier>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.openflexo</groupId>
+      <artifactId>fml-technologyadapter-ui</artifactId>
+    </dependency>
   </dependencies>
 </project>
