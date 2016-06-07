@@ -39,6 +39,7 @@
 package org.openflexo.technologyadapter.gina.fml;
 
 import java.awt.image.BufferedImage;
+import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
@@ -59,6 +60,8 @@ import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
  * 
  */
 public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelInstanceNature, ScreenshotableNature<VirtualModelInstance> {
+
+	static final Logger logger = Logger.getLogger(FMLControlledFIBVirtualModelInstanceNature.class.getPackage().getName());
 
 	public static FMLControlledFIBVirtualModelInstanceNature INSTANCE = new FMLControlledFIBVirtualModelInstanceNature();
 
@@ -112,7 +115,17 @@ public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelI
 	}
 
 	private GINAFIBComponent _getGINAFIBComponent(VirtualModelInstance virtualModelInstance) {
-		return _getModelSlotInstance(virtualModelInstance).getAccessedResourceData();
+
+		FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> modelSlotInstance = _getModelSlotInstance(virtualModelInstance);
+
+		if (modelSlotInstance != null) {
+			return modelSlotInstance.getAccessedResourceData();
+		}
+		else {
+			logger.warning("modelSlotInstance is null for model slot");
+		}
+
+		return null;
 	}
 
 	@Override
