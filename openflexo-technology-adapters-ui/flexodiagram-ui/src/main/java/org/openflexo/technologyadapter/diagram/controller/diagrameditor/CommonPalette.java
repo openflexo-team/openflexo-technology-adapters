@@ -71,7 +71,6 @@ public class CommonPalette extends AbstractDiagramPalette {
 	private static final Resource DEFAULT_IMAGE = ResourceLocator.locateResource("Icons/Diagram.png");
 
 	// private final DiagramEditor editor;
-
 	public CommonPalette(DiagramEditor editor) {
 		super(editor, 200, 200, "default");
 
