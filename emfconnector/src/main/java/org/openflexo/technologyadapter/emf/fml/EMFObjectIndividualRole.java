@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.emf.fml;
 
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.ontology.fml.IndividualRole;
-import org.openflexo.foundation.ontology.fml.IndividualRole.IndividualRoleImpl;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -52,8 +51,8 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @FML("EMFClassClassRole")
 public interface EMFObjectIndividualRole extends IndividualRole<EMFObjectIndividual> {
 
-	public static abstract class EMFObjectIndividualRoleImpl extends IndividualRoleImpl<EMFObjectIndividual> implements
-			EMFObjectIndividualRole {
+	public static abstract class EMFObjectIndividualRoleImpl extends IndividualRoleImpl<EMFObjectIndividual>
+			implements EMFObjectIndividualRole {
 
 		public EMFObjectIndividualRoleImpl() {
 			super();

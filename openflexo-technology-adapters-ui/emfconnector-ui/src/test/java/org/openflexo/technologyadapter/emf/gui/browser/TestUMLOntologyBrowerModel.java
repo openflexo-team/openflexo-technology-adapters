@@ -116,7 +116,7 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			umlModel = umlModelResource.getModel();
 			assertNotNull(umlModel);
 			assertNotNull(umlModel.getMetaModel());
-			assertEquals(umlModel.getMetaModel().getURI(), technologicalAdapter.UML_MM_URI);
+			assertEquals(umlModel.getMetaModel().getURI(), EMFTechnologyAdapter.UML_MM_URI);
 		}
 	}
 

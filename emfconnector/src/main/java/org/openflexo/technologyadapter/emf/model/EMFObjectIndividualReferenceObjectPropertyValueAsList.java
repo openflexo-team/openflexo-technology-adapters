@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.emf.model;
 
 import java.util.ArrayList;
@@ -50,23 +49,17 @@ import java.util.logging.Logger;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.util.EObjectEList;
-import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
-import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
-import org.openflexo.foundation.ontology.IFlexoOntologyObjectPropertyValue;
-import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
-import org.openflexo.technologyadapter.emf.model.io.EMFModelConverter;
 
 /**
  * EMF EObjectEList wrapper
  * 
  * @author xtof
  */
-public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFObjectIndividualReferenceObjectPropertyValue implements List<EMFObjectIndividual> {
+public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFObjectIndividualReferenceObjectPropertyValue
+		implements List<EMFObjectIndividual> {
 
-
-	private static final Logger logger = Logger.getLogger(EMFObjectIndividualReferenceObjectPropertyValueAsList.class.getPackage().getName());
-
+	private static final Logger logger = Logger
+			.getLogger(EMFObjectIndividualReferenceObjectPropertyValueAsList.class.getPackage().getName());
 
 	private EObjectEList referencelist;
 
@@ -75,25 +68,23 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 		this.referencelist = (EObjectEList) refList;
 	}
 
-
-	
 	/********************************************
 	 * Methods so that it acts as a List
 	 */
 
 	@Override
 	public int size() {
-		return ((EObjectEList) referencelist).size();
+		return referencelist.size();
 	}
 
 	@Override
 	public boolean isEmpty() {
-		return ((EObjectEList) referencelist).isEmpty();
+		return referencelist.isEmpty();
 	}
 
 	@Override
 	public boolean contains(Object o) {
-		return ((EObjectEList) referencelist).contains(o);
+		return referencelist.contains(o);
 	}
 
 	@Override
@@ -102,21 +93,23 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 		if (object.eGet(reference) != null) {
 			if (reference.getUpperBound() == 1) {
 				if (ontology.getConverter().getIndividuals().get(object.eGet(reference)) != null) {
-					result = Collections.singletonList((EMFObjectIndividual) (ontology.getConverter().getIndividuals().get(object
-							.eGet(reference))));
-				} else {
+					result = Collections.singletonList((ontology.getConverter().getIndividuals().get(object.eGet(reference))));
+				}
+				else {
 					result = Collections.emptyList();
 				}
-			} else {
+			}
+			else {
 				result = new ArrayList<EMFObjectIndividual>();
 				List<?> valueList = (List<?>) object.eGet(reference);
 				for (Object value : valueList) {
 					if (ontology.getConverter().getIndividuals().get(value) != null) {
-						result.add((EMFObjectIndividual) (ontology.getConverter().getIndividuals().get(value)));
+						result.add((ontology.getConverter().getIndividuals().get(value)));
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			result = Collections.emptyList();
 		}
 		return Collections.unmodifiableList(result).iterator();
@@ -124,22 +117,22 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 
 	@Override
 	public Object[] toArray() {
-		return ((EObjectEList) referencelist).toArray();
+		return referencelist.toArray();
 	}
 
 	@Override
 	public <T> T[] toArray(T[] a) {
-		return (T[]) ((EObjectEList) referencelist).toArray(a);
+		return (T[]) referencelist.toArray(a);
 	}
 
 	@Override
 	public boolean add(EMFObjectIndividual e) {
-		return ((EObjectEList) referencelist).add(e.getObject());
+		return referencelist.add(e.getObject());
 	}
 
 	@Override
 	public boolean remove(Object o) {
-		return ((EObjectEList) referencelist).remove(((EMFObjectIndividual)o).getObject());
+		return referencelist.remove(((EMFObjectIndividual) o).getObject());
 	}
 
 	@Override
@@ -174,13 +167,13 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 
 	@Override
 	public void clear() {
-		((EObjectEList) referencelist).clear();
+		referencelist.clear();
 
 	}
 
 	@Override
 	public EMFObjectIndividual get(int index) {
-		EObject o = (EObject) ((EObjectEList) referencelist).get(index);
+		EObject o = (EObject) referencelist.get(index);
 		EMFObjectIndividual returned = ontology.getConverter().convertObjectIndividual(ontology, o);
 
 		return returned;
@@ -189,25 +182,25 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 	@Override
 	public EMFObjectIndividual set(int index, EMFObjectIndividual element) {
 
-		((EObjectEList) referencelist).set(index, element.getObject());
+		referencelist.set(index, element.getObject());
 		return element;
 	}
 
 	@Override
 	public void add(int index, EMFObjectIndividual element) {
 
-		((EObjectEList) referencelist).add(index, element.getObject());
+		referencelist.add(index, element.getObject());
 	}
 
 	@Override
 	public EMFObjectIndividual remove(int index) {
-		return ontology.getConverter().convertObjectIndividual(ontology, (EObject) ((EObjectEList) referencelist).remove(index));
+		return ontology.getConverter().convertObjectIndividual(ontology, (EObject) referencelist.remove(index));
 	}
 
 	@Override
 	public int indexOf(Object o) {
 		if (o instanceof EMFObjectIndividual) {
-			return ((EObjectEList) referencelist).indexOf( ((EMFObjectIndividual) o).getObject());
+			return referencelist.indexOf(((EMFObjectIndividual) o).getObject());
 		}
 		else
 			return -1;
@@ -217,7 +210,7 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 	@Override
 	public int lastIndexOf(Object o) {
 		if (o instanceof EMFObjectIndividual) {
-			return ((EObjectEList) referencelist).lastIndexOf( ((EMFObjectIndividual) o).getObject());
+			return referencelist.lastIndexOf(((EMFObjectIndividual) o).getObject());
 		}
 		else
 			return -1;

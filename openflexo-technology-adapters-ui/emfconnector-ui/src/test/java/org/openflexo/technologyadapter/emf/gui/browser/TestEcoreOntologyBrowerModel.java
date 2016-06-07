@@ -117,7 +117,7 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			ecoreModel = ecoreModelResource.getModel();
 			assertNotNull(ecoreModel);
 			assertNotNull(ecoreModel.getMetaModel());
-			assertEquals(ecoreModel.getMetaModel().getURI(), technologicalAdapter.ECORE_MM_URI);
+			assertEquals(ecoreModel.getMetaModel().getURI(), EMFTechnologyAdapter.ECORE_MM_URI);
 		}
 	}
 

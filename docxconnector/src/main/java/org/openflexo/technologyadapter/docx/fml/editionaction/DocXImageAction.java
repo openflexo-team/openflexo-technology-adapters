@@ -43,7 +43,6 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
 import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
-import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
 import org.openflexo.technologyadapter.docx.model.DocXDrawingRun;
 
 /**

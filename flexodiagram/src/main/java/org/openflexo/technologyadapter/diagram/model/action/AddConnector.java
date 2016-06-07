@@ -112,11 +112,12 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 				logger.warning("No common ancestors for " + getFromShape() + " and " + getToShape());
 				throw new IllegalArgumentException("No common ancestor");
 			}
-			newConnector = getFocusedObject().getDiagram().getDiagramFactory()
-					.makeNewConnector(getNewConnectorName(), getFromShape(), getToShape(), parent);
+			newConnector = getFocusedObject().getDiagram().getDiagramFactory().makeNewConnector(getNewConnectorName(), getFromShape(),
+					getToShape(), parent);
 			newConnector.setDescription(annotation);
 			parent.addToConnectors(newConnector);
-		} else {
+		}
+		else {
 			if (logger.isLoggable(Level.WARNING)) {
 				logger.warning("Focused property is null !");
 			}
@@ -139,7 +140,7 @@ public class AddConnector extends FlexoAction<AddConnector, DiagramShape, Diagra
 	}
 
 	public void setFromShape(DiagramShape fromShape) {
-		fromShape = fromShape;
+		this.fromShape = fromShape;
 	}
 
 	public DiagramConnector getConnector() {

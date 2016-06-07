@@ -68,7 +68,7 @@ import org.docx4j.fonts.PhysicalFonts;
 import org.docx4j.wml.P;
 import org.docx4j.wml.R;
 import org.docx4j.wml.Tbl;
-import org.docx4j.wml.Text;
+import org.jvnet.jaxb2_commons.ppp.Child;
 import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyException;
 import org.openflexo.foundation.doc.TextSelection;
 import org.openflexo.foundation.doc.TextSelection.TextMarker;
@@ -83,8 +83,6 @@ import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.model.DocXRun;
 import org.openflexo.technologyadapter.docx.model.DocXTable;
 import org.openflexo.toolbox.ToolBox;
-
-import org.jvnet.jaxb2_commons.ppp.Child;
 
 @SuppressWarnings("serial")
 public abstract class AbstractDocXEditor extends JPanel {
@@ -204,11 +202,11 @@ public abstract class AbstractDocXEditor extends JPanel {
 			}
 			else if (docXObject instanceof R) {
 				Object parent = ((R) docXObject).getParent();
-				if (  parent instanceof P) {
+				if (parent instanceof P) {
 					returned.documentElement = getDocXDocument().getParagraph((P) parent);
 				}
 
-				if (returned.documentElement != null){
+				if (returned.documentElement != null) {
 					DocXRun docXRun = ((DocXParagraph) returned.documentElement).getRun((R) docXObject);
 					int runIndex = docXRun.getIndex();
 					int characterIndex = pos - paragraphElement.getStartOffset();
@@ -232,7 +230,7 @@ public abstract class AbstractDocXEditor extends JPanel {
 			else if (docXObject instanceof Tbl) {
 				returned.documentElement = getDocXDocument().getTable((Tbl) docXObject);
 			}
-			else if (docXObject != null){ // Whatever it is go that way...
+			else if (docXObject != null) { // Whatever it is go that way...
 				R run = (R) ((Child) docXObject).getParent();
 				// System.out.println("run=" + run);
 				if (run.getParent() instanceof P) {
@@ -241,7 +239,7 @@ public abstract class AbstractDocXEditor extends JPanel {
 				}
 
 				// XTOF: NPE protection
-				if (returned.documentElement != null){
+				if (returned.documentElement != null) {
 					DocXRun docXRun = ((DocXParagraph) returned.documentElement).getRun(run);
 					if (docXRun != null) {
 						int runIndex = docXRun.getIndex();
@@ -265,7 +263,7 @@ public abstract class AbstractDocXEditor extends JPanel {
 						}
 					}
 					else {
-						logger.warning("Could not Retreive TextMarker @" + pos +" NO RUN FOUND");
+						logger.warning("Could not Retreive TextMarker @" + pos + " NO RUN FOUND");
 					}
 				}
 			}
@@ -547,7 +545,7 @@ public abstract class AbstractDocXEditor extends JPanel {
 					selectedElement.setSelected(false);
 				}
 				selectedElement = (DocumentElement) characterElement;
-
+				
 				System.out.println("Paf, on selectionne " + selectedElement);
 				selectedElement.setSelected(true);*/
 
@@ -597,7 +595,7 @@ public abstract class AbstractDocXEditor extends JPanel {
 						System.out.println("Texte=" + ((Text) obj).getValue());
 					}
 				}
-
+			
 			}*/
 
 		}

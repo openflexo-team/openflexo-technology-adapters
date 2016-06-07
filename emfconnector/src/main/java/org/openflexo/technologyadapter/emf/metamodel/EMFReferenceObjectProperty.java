@@ -51,7 +51,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
@@ -62,8 +61,8 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * 
  * @author gbesancon
  */
-public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReference> implements
-		IFlexoOntologyObjectProperty<EMFTechnologyAdapter> {
+public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReference>
+		implements IFlexoOntologyObjectProperty<EMFTechnologyAdapter> {
 	/**
 	 * Constructor.
 	 */
@@ -145,7 +144,8 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 			for (EAnnotation annotation : object.getEAnnotations()) {
 				result.add(ontology.getConverter().convertAnnotation(ontology, annotation));
 			}
-		} else {
+		}
+		else {
 			result = Collections.emptyList();
 		}
 		return result;
@@ -232,7 +232,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	 */
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getRange() {
-		return ontology.getConverter().convertClass(ontology, object.getEReferenceType(),null);
+		return ontology.getConverter().convertClass(ontology, object.getEReferenceType(), null);
 	}
 
 	/**
@@ -243,7 +243,7 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getDomain() {
 		// FIXME Pas de sens car ce lien ce fait plutot avec l'association (en EMF le lien est 1-1-1 donc pas de soucis.)
-		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(),null);
+		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(), null);
 	}
 
 	/**
@@ -276,8 +276,6 @@ public class EMFReferenceObjectProperty extends AEMFMetaModelObjectImpl<EReferen
 			IFlexoOntology<EMFTechnologyAdapter> context) {
 		return Collections.emptyList();
 	}
-
-
 
 	/**
 	 * Follow the link.

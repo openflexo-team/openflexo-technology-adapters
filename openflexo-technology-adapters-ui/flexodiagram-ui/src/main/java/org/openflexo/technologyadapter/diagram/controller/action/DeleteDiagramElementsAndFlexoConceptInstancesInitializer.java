@@ -51,12 +51,11 @@ import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.fml.action.DeleteDiagramElementsAndFlexoConceptInstances;
-import org.openflexo.technologyadapter.diagram.model.DiagramElement;
-import org.openflexo.technologyadapter.diagram.model.action.DeleteDiagramElements;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class DeleteDiagramElementsAndFlexoConceptInstancesInitializer extends ActionInitializer<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> {
+public class DeleteDiagramElementsAndFlexoConceptInstancesInitializer
+		extends ActionInitializer<DeleteDiagramElementsAndFlexoConceptInstances, FlexoObject, FlexoObject> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 

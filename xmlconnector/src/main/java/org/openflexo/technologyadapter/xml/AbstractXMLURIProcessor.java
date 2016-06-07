@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml;
 
 import java.net.URI;
@@ -127,7 +126,7 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 	public void setMappedXMLType(XMLType mappedType);
 
 	@Setter(MODELSLOT)
-	public void setModelSlot(AbstractXMLModelSlot modelslot);
+	public void setModelSlot(AbstractXMLModelSlot<?> modelslot);
 
 	@Getter(MODELSLOT)
 	public AbstractXMLModelSlot getModelSlot();
@@ -138,9 +137,9 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 	@Setter(BASE_PROPERTY)
 	public void setBasePropertyForURI(XMLDataProperty basePropertyForURI);
 
-	public Object retrieveObjectWithURI(ModelSlotInstance msInstance, String objectURI) throws DuplicateURIException;
+	public Object retrieveObjectWithURI(ModelSlotInstance<?, ?> msInstance, String objectURI) throws DuplicateURIException;
 
-	public String getURIForObject(ModelSlotInstance msInstance, XMLObject xsO);
+	public String getURIForObject(ModelSlotInstance<?, ?> msInstance, XMLObject xsO);
 
 	public void reset();
 
@@ -220,7 +219,8 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 		public String getAttributeName() {
 			if (baseDataPropertyForURI != null) {
 				return baseDataPropertyForURI.getName();
-			} else {
+			}
+			else {
 				return attributeName;
 			}
 		}
@@ -233,11 +233,13 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 				attributeName = aName;
 				if (dataP != null) {
 					baseDataPropertyForURI = (XMLDataProperty) dataP;
-				} else {
-					logger.warning("Unable to set attribute name for uri processor : property not found in XMLType "
-							+ mappedXMLType.getName());
 				}
-			} else
+				else {
+					logger.warning(
+							"Unable to set attribute name for uri processor : property not found in XMLType " + mappedXMLType.getName());
+				}
+			}
+			else
 				logger.warning("Unable to set attribute name for uri processor : null XMLType ");
 
 		}
@@ -256,7 +258,7 @@ public interface AbstractXMLURIProcessor extends VirtualModelObject {
 		}
 
 		// get the right URIProcessor for URI
-		public static String retrieveTypeURI(ModelSlotInstance msInstance, String objectURI) {
+		public static String retrieveTypeURI(ModelSlotInstance<?, ?> msInstance, String objectURI) {
 
 			URI fullURI;
 			StringBuffer typeURIStr = new StringBuffer();

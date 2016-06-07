@@ -49,7 +49,6 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
-import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -132,10 +131,12 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 		if (StringUtils.isEmpty(newPaletteName)) {
 			nameValidityMessage = EMPTY_NAME;
 			return false;
-		} else if (getFocusedObject().getPalette(newPaletteName) != null) {
+		}
+		else if (getFocusedObject().getPalette(newPaletteName) != null) {
 			nameValidityMessage = DUPLICATED_NAME;
 			return false;
-		} else {
+		}
+		else {
 			nameValidityMessage = NAME_IS_VALID;
 			return true;
 		}

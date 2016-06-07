@@ -52,7 +52,6 @@ import org.openflexo.foundation.ontology.IFlexoOntologyAnnotation;
 import org.openflexo.foundation.ontology.IFlexoOntologyConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptContainer;
 import org.openflexo.foundation.ontology.IFlexoOntologyConceptVisitor;
-import org.openflexo.foundation.ontology.IFlexoOntologyFeature;
 import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
 import org.openflexo.foundation.ontology.IFlexoOntologyObjectProperty;
 import org.openflexo.foundation.ontology.IFlexoOntologyStructuralProperty;
@@ -63,8 +62,8 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
  * 
  * @author gbesancon
  */
-public class EMFAttributeObjectProperty extends AEMFMetaModelObjectImpl<EAttribute> implements
-		IFlexoOntologyObjectProperty<EMFTechnologyAdapter> {
+public class EMFAttributeObjectProperty extends AEMFMetaModelObjectImpl<EAttribute>
+		implements IFlexoOntologyObjectProperty<EMFTechnologyAdapter> {
 
 	/**
 	 * Constructor.
@@ -147,7 +146,8 @@ public class EMFAttributeObjectProperty extends AEMFMetaModelObjectImpl<EAttribu
 			for (EAnnotation annotation : object.getEAnnotations()) {
 				annotations.add(ontology.getConverter().convertAnnotation(ontology, annotation));
 			}
-		} else {
+		}
+		else {
 			annotations = Collections.emptyList();
 		}
 		return annotations;
@@ -221,7 +221,7 @@ public class EMFAttributeObjectProperty extends AEMFMetaModelObjectImpl<EAttribu
 	@Override
 	public List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> getReferencingFeatureAssociations() {
 		List<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>> referencingFeatureAssociation = new ArrayList<IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter>>();
-		referencingFeatureAssociation.add(ontology.getConverter().convertAttributeAssociation(ontology, object,null,null));
+		referencingFeatureAssociation.add(ontology.getConverter().convertAttributeAssociation(ontology, object, null, null));
 		return Collections.unmodifiableList(referencingFeatureAssociation);
 	}
 
@@ -242,7 +242,7 @@ public class EMFAttributeObjectProperty extends AEMFMetaModelObjectImpl<EAttribu
 	 */
 	@Override
 	public IFlexoOntologyConcept<EMFTechnologyAdapter> getDomain() {
-		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(),null);
+		return ontology.getConverter().convertClass(ontology, object.getEContainingClass(), null);
 	}
 
 	/**
@@ -275,7 +275,6 @@ public class EMFAttributeObjectProperty extends AEMFMetaModelObjectImpl<EAttribu
 			IFlexoOntology<EMFTechnologyAdapter> context) {
 		return Collections.emptyList();
 	}
-
 
 	/**
 	 * Follow the link.

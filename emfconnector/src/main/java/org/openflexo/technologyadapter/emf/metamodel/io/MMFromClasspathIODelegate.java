@@ -39,20 +39,11 @@
 
 package org.openflexo.technologyadapter.emf.metamodel.io;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.net.URLClassLoader;
-import java.util.Collections;
-import java.util.Properties;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EPackage;
 import org.eclipse.emf.ecore.resource.Resource;
-import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
@@ -61,8 +52,6 @@ import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
-import org.openflexo.toolbox.FileUtils;
-import org.openflexo.toolbox.JarInDirClassLoader;
 
 /**
  * An IO Delegate that loads an EMFMetaModel from ClassPath
@@ -72,19 +61,17 @@ import org.openflexo.toolbox.JarInDirClassLoader;
 
 @ModelEntity
 @XMLElement
-public interface MMFromClasspathIODelegate extends EMFMetaModelIODelegate<String>  {
+public interface MMFromClasspathIODelegate extends EMFMetaModelIODelegate<String> {
 
 	@Implementation
 	public abstract class MMFromClasspathIODelegateImpl extends EMFMetaModelIODelegateImpl<String> implements MMFromClasspathIODelegate {
 
 		protected static final Logger logger = Logger.getLogger(MMFromClasspathIODelegate.class.getPackage().getName());
 
-		
-		public static MMFromClasspathIODelegate makeMMFromClasspathIODelegate( ModelFactory factory) {
+		public static MMFromClasspathIODelegate makeMMFromClasspathIODelegate(ModelFactory factory) {
 			MMFromClasspathIODelegate iodelegate = factory.newInstance(MMFromClasspathIODelegate.class);
 			return iodelegate;
 		}
-
 
 		@Override
 		public String getParentPath() {
@@ -93,13 +80,11 @@ public interface MMFromClasspathIODelegate extends EMFMetaModelIODelegate<String
 
 		@Getter(value = SERIALIZATION_ARTEFACT, ignoreType = true)
 		@Override
-		public String getSerializationArtefact(){
+		public String getSerializationArtefact() {
 			return "EMF MetaModel From Classpath: " + getFlexoResource().getURI();
 		}
 
-
-
-		@Override 
+		@Override
 		public EMFMetaModel loadMetaModel(EMFTechnologyContextManager ctxtManager) {
 
 			EMFMetaModel result = null;
@@ -119,10 +104,11 @@ public interface MMFromClasspathIODelegate extends EMFMetaModelIODelegate<String
 						if (resourceFactoryClass != null) {
 							resource.setEMFResourceFactory((Resource.Factory) resourceFactoryClass.newInstance());
 
-							if (resource.getPackage() != null && resource.getPackage().getNsURI().equalsIgnoreCase(resource.getURI()) && resource.getEMFResourceFactory() != null) {
+							if (resource.getPackage() != null && resource.getPackage().getNsURI().equalsIgnoreCase(resource.getURI())
+									&& resource.getEMFResourceFactory() != null) {
 
 								EMFMetaModelConverter converter = new EMFMetaModelConverter(resource.getTechnologyAdapter());
-								result = converter.convertMetaModel(resource.getPackage());								
+								result = converter.convertMetaModel(resource.getPackage());
 								result.setResource(resource);
 								resource.setResourceData(result);
 							}
@@ -155,11 +141,9 @@ public interface MMFromClasspathIODelegate extends EMFMetaModelIODelegate<String
 			}
 			return null;
 
-
 		}
-		
 
-		/** a Metamodel exists if directory contains jar and an emf.properties file  **/
+		/** a Metamodel exists if directory contains jar and an emf.properties file **/
 		@Override
 		public boolean exists() {
 			return true;
@@ -170,7 +154,6 @@ public interface MMFromClasspathIODelegate extends EMFMetaModelIODelegate<String
 			return "MMFromClasspathIODelegate for " + this.getSerializationArtefact();
 		}
 
-		
 	}
 
 }

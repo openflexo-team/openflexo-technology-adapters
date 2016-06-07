@@ -130,15 +130,15 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 
 		// getFlexoConcept().getViewPoint().getViewpointOntology().loadWhenUnloaded();
 
-		//System.out.println("First i create the FCI with concept " + getFlexoConcept());
+		// System.out.println("First i create the FCI with concept " + getFlexoConcept());
 		flexoConceptInstance = getVirtualModelInstance().makeNewFlexoConceptInstance(getFlexoConcept());
-		//System.out.println("Done. Created " + flexoConceptInstance);
+		// System.out.println("Done. Created " + flexoConceptInstance);
 
-		//System.out.println("Executing " + getLinkScheme().getFMLRepresentation());
+		// System.out.println("Executing " + getLinkScheme().getFMLRepresentation());
 
 		executeControlGraph();
 
-		//System.out.println("new connector = " + getNewConnector());
+		// System.out.println("new connector = " + getNewConnector());
 
 	}
 
@@ -212,7 +212,7 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 		if (variable.getVariableName().equals(LinkSchemeBindingModel.FROM_TARGET) && getLinkScheme().getFromTargetFlexoConcept() != null) {
 			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
 			for (FlexoConceptInstance fci : fcis) {
-				for (ActorReference actor : fci.getActors()) {
+				for (ActorReference<?> actor : fci.getActors()) {
 					Object me = actor.getModellingElement();
 					if (me != null && me.equals(getFromShape()))
 						return fci;
@@ -223,7 +223,7 @@ public class LinkSchemeAction extends DiagramFlexoBehaviourAction<LinkSchemeActi
 		if (variable.getVariableName().equals(LinkSchemeBindingModel.TO_TARGET) && getLinkScheme().getToTargetFlexoConcept() != null) {
 			List<FlexoConceptInstance> fcis = getVirtualModelInstance().getFlexoConceptInstances();
 			for (FlexoConceptInstance fci : fcis) {
-				for (ActorReference actor : fci.getActors()) {
+				for (ActorReference<?> actor : fci.getActors()) {
 					Object me = actor.getModellingElement();
 					if (me != null && me.equals(getToShape()))
 						return fci;

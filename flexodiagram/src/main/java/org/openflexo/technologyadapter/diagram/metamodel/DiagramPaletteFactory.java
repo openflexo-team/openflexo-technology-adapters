@@ -46,7 +46,6 @@ import org.openflexo.fge.ShapeGraphicalRepresentation.LocationConstraints;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
 import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
@@ -132,7 +131,8 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl implements Pamela
 			if (newlyCreatedObject instanceof FlexoObject) {
 				getResource().setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
 			}
-		} else {
+		}
+		else {
 			logger.warning("Could not access resource beeing deserialized");
 		}
 	}
