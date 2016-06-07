@@ -165,10 +165,12 @@ public interface GINAFIBComponent
 					if (TypeUtils.isTypeAssignableFrom(analyzedType, returned.getType())) {
 						// Type is conform, does nothing
 						System.out.println("On fait rien");
-					} else /*if (!TypeUtils.isTypeAssignableFrom(returned.getType(), analyzedType))*/ {
+					}
+					else /*if (!TypeUtils.isTypeAssignableFrom(returned.getType(), analyzedType))*/ {
 						returned.setType(analyzedType);
 						// We force type of variable to be type analyzed from binding
-						System.out.println("On met le type a " + analyzedType);
+						System.out.println("****** On passe le type de " + variableAssign.getVariable() + " de " + returned.getType()
+								+ " a " + analyzedType);
 					}
 					// returned.setType(analyzedType);
 				}
