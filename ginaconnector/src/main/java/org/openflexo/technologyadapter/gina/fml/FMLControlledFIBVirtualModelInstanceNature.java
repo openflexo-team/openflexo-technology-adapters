@@ -39,13 +39,18 @@
 package org.openflexo.technologyadapter.gina.fml;
 
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceNature;
 import org.openflexo.foundation.nature.ScreenshotableNature;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
+import org.openflexo.technologyadapter.gina.FIBComponentModelSlotInstanceConfiguration;
+import org.openflexo.technologyadapter.gina.FIBComponentModelSlotInstanceConfiguration.FIBComponentModelSlotInstanceConfigurationOption;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
 /**
@@ -110,7 +115,33 @@ public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelI
 			VirtualModelInstance virtualModelInstance) {
 		FIBComponentModelSlot fibMS = virtualModelInstance.getVirtualModel().getModelSlots(FIBComponentModelSlot.class).get(0);
 
-		return (FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot>) virtualModelInstance.getModelSlotInstance(fibMS);
+		FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> returned = (FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot>) virtualModelInstance
+				.getModelSlotInstance(fibMS);
+		if (returned == null) {
+			// When, for some reasons, the msi is null or not weel configured, we do it again now
+			FIBComponentModelSlotInstanceConfiguration msiConfig = (FIBComponentModelSlotInstanceConfiguration) fibMS
+					.createConfiguration(virtualModelInstance, virtualModelInstance.getProject());
+			msiConfig.setOption(FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent);
+			returned = msiConfig.createModelSlotInstance(virtualModelInstance, virtualModelInstance.getView());
+			virtualModelInstance.addToModelSlotInstances(returned);
+		}
+
+		if (returned.getAccessedResourceData() == null) {
+			try {
+				returned.setAccessedResourceData(fibMS.getTemplateResource().getResourceData(null));
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ResourceLoadingCancelledException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FlexoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		return returned;
 
 	}
 
