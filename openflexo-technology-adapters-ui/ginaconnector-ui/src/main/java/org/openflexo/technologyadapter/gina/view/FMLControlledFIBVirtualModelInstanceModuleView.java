@@ -87,7 +87,11 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 			System.out.println(component.getComponent().getModelFactory().stringRepresentation(component.getComponent()));
 		}
 
-		component.bindTo(getRepresentedObject().getVirtualModel(), modelSlotInstance.getModelSlot());
+		if (getRepresentedObject() != null && component != null) {
+			component.bindTo(getRepresentedObject().getVirtualModel(),
+					(modelSlotInstance != null ? modelSlotInstance.getModelSlot() : null));
+		}
+
 		if (component.getComponent().getControllerClass() != null
 				&& !FMLControlledFIBController.class.isAssignableFrom(component.getComponent().getControllerClass())) {
 			// If declared controller class is not a subclass of FMLControlledFIBController, force it
