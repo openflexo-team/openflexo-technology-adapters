@@ -48,6 +48,8 @@ import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstanceObject;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.DiagramFlexoBehaviour;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
@@ -71,11 +73,19 @@ public abstract class DiagramFlexoBehaviourAction<A extends FlexoBehaviourAction
 		super(actionType, focusedObject, globalSelection, editor);
 	}
 
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
+	}
+
 	/*@Override
 	public Diagram getVirtualModelInstance() {
 		return (Diagram) super.getVirtualModelInstance();
 	}
-
+	
 	public Diagram getDiagram() {
 		return getVirtualModelInstance();
 	}*/

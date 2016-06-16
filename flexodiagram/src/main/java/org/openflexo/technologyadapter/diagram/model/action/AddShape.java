@@ -48,6 +48,8 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -97,6 +99,14 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 	}
 
 	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
+	}
+
+	@Override
 	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException {
 		logger.info("Add shape");
 
@@ -113,8 +123,8 @@ public class AddShape extends FlexoAction<AddShape, DiagramContainerElement<?>, 
 
 		// System.out.println("GR=" + getGraphicalRepresentation());
 
-		newShape = getFocusedObject().getDiagram().getDiagramFactory()
-				.makeNewShape(getNewShapeName(), getGraphicalRepresentation(), getParent());
+		newShape = getFocusedObject().getDiagram().getDiagramFactory().makeNewShape(getNewShapeName(), getGraphicalRepresentation(),
+				getParent());
 
 		if (getGraphicalRepresentation() != null) {
 			newShape.setGraphicalRepresentation(getGraphicalRepresentation());

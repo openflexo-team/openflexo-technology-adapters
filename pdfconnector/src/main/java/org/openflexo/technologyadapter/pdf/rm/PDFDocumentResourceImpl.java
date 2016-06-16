@@ -38,7 +38,6 @@ import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.Progress;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
@@ -102,7 +101,7 @@ public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocu
 	@Override
 	protected PDFDocument performLoad() throws IOException, Exception {
 
-		Progress.progress(FlexoLocalization.localizedForKey("loading") + " " + getFile().getName());
+		Progress.progress(getLocales().localizedForKey("loading") + " " + getFile().getName());
 		PDDocument document = PDDocument.load(getFile());
 		PDFDocument returned = getFactory().makeNewPDFDocument(document);
 		return returned;

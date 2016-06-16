@@ -52,7 +52,6 @@ import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gina.controller.FIBController.Status;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.action.CreateDiagram;
@@ -89,7 +88,8 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 			public boolean run(EventObject e, CreateDiagram action) {
 				if (action.skipChoosePopup) {
 					return true;
-				} else {
+				}
+				else {
 
 					return instanciateAndShowDialog(action, DiagramCst.CREATE_DIAGRAM_DIALOG_FIB);
 
@@ -105,7 +105,7 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 						} else {
 							ModelSlot configuredModelSlot = action.getVirtualModel().getModelSlots().get(step - 1);
 							// result = configureModelSlot(action, configuredModelSlot);
-
+					
 							//
 							result = instanciateShowDialogAndReturnStatus(action.getModelSlotInstanceConfiguration(configuredModelSlot),
 									getModelSlotInstanceConfigurationFIB(configuredModelSlot.getClass()));
@@ -148,7 +148,7 @@ public class CreateDiagramInitializer extends ActionInitializer<CreateDiagram, R
 			@Override
 			public boolean handleException(FlexoException exception, CreateDiagram action) {
 				if (exception instanceof NotImplementedException) {
-					FlexoController.notify(FlexoLocalization.localizedForKey("not_implemented_yet"));
+					FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
 					return true;
 				}
 				return false;

@@ -48,7 +48,6 @@ import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.fml.action.BlankFlexoConceptFromShapeCreationStrategy;
 import org.openflexo.technologyadapter.diagram.fml.action.DeclareShapeInFlexoConcept;
@@ -67,7 +66,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 	private static final String NEW_SHAPE_ROLE_NAME_IS_NULL = FlexoLocalization.localizedForKey("please_supply_a_valid_role_name");
 	private static final String NEW_SHAPE_ROLE_NAME_ALREADY_EXISTS = FlexoLocalization.localizedForKey("this_role_name_already_exists");
 	private static final String FLEXO_CONCEPT_IS_NULL = FlexoLocalization.localizedForKey("please_choose_flexo_concept");
-
+	
 	private static final String FLEXO_CONCEPT_NAME_IS_NULL = FlexoLocalization.localizedForKey("flexo_concept_name_is_null");
 	// private static final String FOCUSED_OBJECT_IS_NULL = FlexoLocalization.localizedForKey("focused_object_is_null");
 	private static final String INDIVIDUAL_FLEXO_ROLE_NAME_IS_NULL = FlexoLocalization
@@ -89,7 +88,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 	@Override
 	public String getWizardTitle() {
-		return FlexoLocalization.localizedForKey("declare_shape_in_flexo_concept");
+		return getAction().getLocales().localizedForKey("declare_shape_in_flexo_concept");
 	}
 
 	@Override
@@ -116,13 +115,15 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 	@Override
 	public ConfigureCreateNewFlexoConceptFromShapeStep<?> chooseNewFlexoConcept() {
 		if (getAction().getFlexoConceptCreationStrategy() instanceof MapShapeToFlexoConceptlnstanceStrategy) {
-			return new ConfigureMapShapeToFlexoConceptlnstanceStep((MapShapeToFlexoConceptlnstanceStrategy) getAction()
-					.getFlexoConceptCreationStrategy());
-		} else if (getAction().getFlexoConceptCreationStrategy() instanceof MapShapeToIndividualStrategy) {
+			return new ConfigureMapShapeToFlexoConceptlnstanceStep(
+					(MapShapeToFlexoConceptlnstanceStrategy) getAction().getFlexoConceptCreationStrategy());
+		}
+		else if (getAction().getFlexoConceptCreationStrategy() instanceof MapShapeToIndividualStrategy) {
 			return new ConfigureMapShapeToIndividualStep((MapShapeToIndividualStrategy) getAction().getFlexoConceptCreationStrategy());
-		} else if (getAction().getFlexoConceptCreationStrategy() instanceof BlankFlexoConceptFromShapeCreationStrategy) {
-			return new ConfigureBlankFlexoConceptFromShapeCreationStrategyStep((BlankFlexoConceptFromShapeCreationStrategy) getAction()
-					.getFlexoConceptCreationStrategy());
+		}
+		else if (getAction().getFlexoConceptCreationStrategy() instanceof BlankFlexoConceptFromShapeCreationStrategy) {
+			return new ConfigureBlankFlexoConceptFromShapeCreationStrategyStep(
+					(BlankFlexoConceptFromShapeCreationStrategy) getAction().getFlexoConceptCreationStrategy());
 		}
 		return null;
 	}
@@ -148,7 +149,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("choose_which_shape_you_want_to_set_or_replace");
+			return getAction().getLocales().localizedForKey("choose_which_shape_you_want_to_set_or_replace");
 		}
 
 		public FlexoConcept getFlexoConcept() {
@@ -184,7 +185,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 		/*	@Override
 			public boolean isValid() {
-
+		
 				if (getFlexoRole() == null) {
 					setIssueMessage(FlexoLocalization.localizedForKey(FLEXO_ROLE_IS_NULL), IssueMessageType.ERROR);
 					return false;
@@ -221,7 +222,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("create_a_new_shape_role");
+			return getAction().getLocales().localizedForKey("create_a_new_shape_role");
 		}
 
 		public FlexoConcept getFlexoConcept() {
@@ -253,7 +254,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 		/*	@Override
 			public boolean isValid() {
-
+		
 				if (StringUtils.isEmpty(getNewShapeRoleName())) {
 					setIssueMessage(FlexoLocalization.localizedForKey(NEW_SHAPE_ROLE_NAME_IS_NULL), IssueMessageType.ERROR);
 					return false;
@@ -262,7 +263,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 					setIssueMessage(FlexoLocalization.localizedForKey(FLEXO_CONCEPT_IS_NULL), IssueMessageType.ERROR);
 					return false;
 				}
-
+		
 				if (getFlexoConcept().getAccessibleProperty(getNewShapeRoleName()) != null) {
 					setIssueMessage(FlexoLocalization.localizedForKey(NEW_SHAPE_ROLE_NAME_ALREADY_EXISTS), IssueMessageType.ERROR);
 					return false;
@@ -272,8 +273,8 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 	}
 
-	public abstract class ConfigureCreateNewFlexoConceptFromShapeStep<S extends FlexoConceptFromShapeCreationStrategy> extends
-			ConfigureCreateNewFlexoConceptFromDiagramElementStep<S> {
+	public abstract class ConfigureCreateNewFlexoConceptFromShapeStep<S extends FlexoConceptFromShapeCreationStrategy>
+			extends ConfigureCreateNewFlexoConceptFromDiagramElementStep<S> {
 
 		public ConfigureCreateNewFlexoConceptFromShapeStep(S strategy) {
 			super(strategy);
@@ -281,8 +282,8 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureMapShapeToFlexoConceptlnstanceStep.fib")
-	public class ConfigureMapShapeToFlexoConceptlnstanceStep extends
-			ConfigureCreateNewFlexoConceptFromShapeStep<MapShapeToFlexoConceptlnstanceStrategy> {
+	public class ConfigureMapShapeToFlexoConceptlnstanceStep
+			extends ConfigureCreateNewFlexoConceptFromShapeStep<MapShapeToFlexoConceptlnstanceStrategy> {
 
 		public ConfigureMapShapeToFlexoConceptlnstanceStep(MapShapeToFlexoConceptlnstanceStrategy strategy) {
 			super(strategy);
@@ -295,7 +296,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("create_new_flexo_concept_where_shape_is_mapped_to_a_flexo_concept_instance");
+			return getAction().getLocales().localizedForKey("create_new_flexo_concept_where_shape_is_mapped_to_a_flexo_concept_instance");
 		}
 
 		public String getFlexoConceptInstanceRoleName() {
@@ -347,7 +348,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("create_new_flexo_concept_where_shape_is_mapped_to_a_single_individual");
+			return getAction().getLocales().localizedForKey("create_new_flexo_concept_where_shape_is_mapped_to_a_single_individual");
 		}
 
 		public String getIndividualFlexoRoleName() {
@@ -386,8 +387,8 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureBlankFlexoConceptFromShapeCreationStrategyStep.fib")
-	public class ConfigureBlankFlexoConceptFromShapeCreationStrategyStep extends
-			ConfigureCreateNewFlexoConceptFromShapeStep<BlankFlexoConceptFromShapeCreationStrategy> {
+	public class ConfigureBlankFlexoConceptFromShapeCreationStrategyStep
+			extends ConfigureCreateNewFlexoConceptFromShapeStep<BlankFlexoConceptFromShapeCreationStrategy> {
 
 		public ConfigureBlankFlexoConceptFromShapeCreationStrategyStep(BlankFlexoConceptFromShapeCreationStrategy strategy) {
 			super(strategy);
@@ -400,7 +401,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("create_new_flexo_concept_without_any_mapping_to_model");
+			return getAction().getLocales().localizedForKey("create_new_flexo_concept_without_any_mapping_to_model");
 		}
 
 	}

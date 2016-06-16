@@ -41,6 +41,7 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.utils.FIBJPanel;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot.VariableAssignment;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
@@ -72,10 +73,13 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 	private FreeModelSlotInstance<GINAFIBComponent, FIBComponentModelSlot> modelSlotInstance;
 	private FIBJPanel<?> componentView;
 
+	private LocalizedDelegate locales;
+
 	public FMLControlledFIBVirtualModelInstanceModuleView(VirtualModelInstance representedObject, FlexoController controller,
-			FlexoPerspective perspective) {
+			FlexoPerspective perspective, LocalizedDelegate locales) {
 		super(new BorderLayout());
 
+		this.locales = locales;
 		this.controller = controller;
 		this.perspective = perspective;
 		this.virtualModelInstance = representedObject;
@@ -113,7 +117,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 
 		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		editButton = new JButton(FlexoLocalization.localizedForKey("edit"), IconLibrary.EDIT_ICON);
+		editButton = new JButton(locales.localizedForKey("edit"), IconLibrary.EDIT_ICON);
 		editButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -124,7 +128,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		});
 		bottomPanel.add(editButton);
 
-		doneButton = new JButton(FlexoLocalization.localizedForKey("done"), IconLibrary.VALID_ICON);
+		doneButton = new JButton(locales.localizedForKey("done"), IconLibrary.VALID_ICON);
 		doneButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -135,7 +139,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		});
 		bottomPanel.add(doneButton);
 
-		saveButton = new JButton(FlexoLocalization.localizedForKey("save"), IconLibrary.SAVE_ICON);
+		saveButton = new JButton(locales.localizedForKey("save"), IconLibrary.SAVE_ICON);
 		saveButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -187,15 +191,15 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 
 		editMode = true;
 
-		Progress.progress(FlexoLocalization.localizedForKey("switching_to_edit_mode"));
+		Progress.progress(locales.localizedForKey("switching_to_edit_mode"));
 
 		if (editorController == null) {
-			Progress.progress(FlexoLocalization.localizedForKey("loading_fib_editor"));
+			Progress.progress(locales.localizedForKey("loading_fib_editor"));
 			editorController = getFIBEditor(false).openFIBComponent(component.getResource(), component.getComponent(), virtualModelInstance,
 					controller.getFlexoFrame());
 		}
 
-		Progress.progress(FlexoLocalization.localizedForKey("initialize_fib_editor"));
+		Progress.progress(locales.localizedForKey("initialize_fib_editor"));
 
 		remove(componentView);
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);

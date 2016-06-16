@@ -85,7 +85,7 @@ import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.Progress;
-import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot.VariableAssignment;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
@@ -149,6 +149,14 @@ public class CreateFMLControlledFIBVirtualModel
 		apiEntries = new ArrayList<>();
 	}
 
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
+	}
+
 	public GINATechnologyAdapter getGINATechnologyAdapter() {
 		return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
 	}
@@ -198,7 +206,7 @@ public class CreateFMLControlledFIBVirtualModel
 	@Override
 	protected void doAction(Object context) throws IOFlexoException, SaveResourceException {
 
-		Progress.progress(FlexoLocalization.localizedForKey("create_virtual_model"));
+		Progress.progress(getLocales().localizedForKey("create_virtual_model"));
 
 		newVirtualModel = VirtualModelImpl.newVirtualModel(newVirtualModelName, getFocusedObject());
 		newVirtualModel.setDescription(newVirtualModelDescription);
@@ -265,7 +273,7 @@ public class CreateFMLControlledFIBVirtualModel
 		}
 
 		// Create model slot
-		Progress.progress(FlexoLocalization.localizedForKey("create_model_slot") + " " + getFIBModelSlotName());
+		Progress.progress(getLocales().localizedForKey("create_model_slot") + " " + getFIBModelSlotName());
 		CreateModelSlot action = CreateModelSlot.actionType.makeNewEmbeddedAction(getNewVirtualModel(), null, this);
 		action.setModelSlotName(getFIBModelSlotName());
 		action.setTechnologyAdapter(getGINATechnologyAdapter());
@@ -534,10 +542,10 @@ public class CreateFMLControlledFIBVirtualModel
 		public String getConfigurationErrorMessage() {
 
 			if (StringUtils.isEmpty(getName())) {
-				return FlexoLocalization.localizedForKey("please_supply_valid_entry_name");
+				return getLocales().localizedForKey("please_supply_valid_entry_name");
 			}
 			if (getType() == null) {
-				return FlexoLocalization.localizedForKey("no_type_defined_for") + " " + getName();
+				return getLocales().localizedForKey("no_type_defined_for") + " " + getName();
 			}
 
 			return null;
@@ -545,7 +553,7 @@ public class CreateFMLControlledFIBVirtualModel
 
 		public String getConfigurationWarningMessage() {
 			if (!isAPI() && !getValue().isValid()) {
-				return FlexoLocalization.localizedForKey("no_value_defined_for_non_API_entry") + " " + getName();
+				return getLocales().localizedForKey("no_value_defined_for_non_API_entry") + " " + getName();
 			}
 			return null;
 

@@ -44,6 +44,7 @@ import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.view.GinaViewFactory;
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXObject;
 import org.openflexo.view.FIBBrowserView;
@@ -63,7 +64,7 @@ public class FIBDocXDocumentBrowser extends FIBBrowserView<DocXDocument> {
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/Widget/FIBDocXDocumentBrowser.fib");
 
 	public FIBDocXDocumentBrowser(DocXDocument document, FlexoController controller) {
-		super(document, controller, FIB_FILE);
+		super(document, controller, FIB_FILE, controller.getTechnologyAdapter(DocXTechnologyAdapter.class).getLocales());
 		if (getFIBController() instanceof DocXDocumentBrowserFIBController) {
 			((DocXDocumentBrowserFIBController) getFIBController()).setBrowser(this);
 		}

@@ -49,7 +49,6 @@ import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLDiagramPaletteElementBinding;
@@ -58,14 +57,14 @@ import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class CreateFMLDiagramPaletteElementBindingInitializer extends ActionInitializer<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> {
+public class CreateFMLDiagramPaletteElementBindingInitializer
+		extends ActionInitializer<CreateFMLDiagramPaletteElementBinding, TypedDiagramModelSlot, FMLObject> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
 	public CreateFMLDiagramPaletteElementBindingInitializer(ControllerActionInitializer actionInitializer) {
 		super(CreateFMLDiagramPaletteElementBinding.actionType, actionInitializer);
 	}
-
 
 	@Override
 	protected FlexoActionInitializer<CreateFMLDiagramPaletteElementBinding> getDefaultInitializer() {
@@ -93,7 +92,7 @@ public class CreateFMLDiagramPaletteElementBindingInitializer extends ActionInit
 			@Override
 			public boolean handleException(FlexoException exception, CreateFMLDiagramPaletteElementBinding action) {
 				if (exception instanceof NotImplementedException) {
-					FlexoController.notify(FlexoLocalization.localizedForKey("not_implemented_yet"));
+					FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
 					return true;
 				}
 				return false;

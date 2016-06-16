@@ -63,7 +63,8 @@ public class FIBOWLOntologyEditor extends FIBOntologyEditor {
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/FIBOWLOntologyEditor.fib");
 
 	public FIBOWLOntologyEditor(OWLOntology ontology, FlexoController controller) {
-		super(ontology, controller, FIB_FILE);
+		super(ontology, controller, FIB_FILE,
+				ontology != null ? ontology.getTechnologyAdapter().getLocales() : controller.getFlexoLocales());
 	}
 
 	@Override

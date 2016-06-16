@@ -88,6 +88,11 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 		return "Freeplane Technology Adapter";
 	}
 
+	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/FreePlane";
+	}
+
 	/**
 	 * @return FreeplaneTechnologyContextManager
 	 */

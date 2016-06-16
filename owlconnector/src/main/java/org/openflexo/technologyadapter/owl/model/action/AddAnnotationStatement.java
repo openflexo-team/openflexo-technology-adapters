@@ -46,6 +46,8 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 
 public class AddAnnotationStatement extends FlexoAction<AddAnnotationStatement, OWLConcept, OWLConcept> {
@@ -81,6 +83,14 @@ public class AddAnnotationStatement extends FlexoAction<AddAnnotationStatement, 
 
 	AddAnnotationStatement(OWLConcept focusedObject, Vector<OWLConcept> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override

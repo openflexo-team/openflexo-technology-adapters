@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -127,11 +126,11 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 			return false;
 		}
 		if (StringUtils.isEmpty(getDropSchemeName())) {
-			setIssueMessage(FlexoLocalization.localizedForKey(DROP_SCHEME_NAME_UNDEFINED), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey(DROP_SCHEME_NAME_UNDEFINED), IssueMessageType.ERROR);
 			return false;
 		}
 		if (!isTopLevel() && getContainerFlexoConcept() == null) {
-			setIssueMessage(FlexoLocalization.localizedForKey(CONTAINER_CONCEPT_UNDEFINED), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey(CONTAINER_CONCEPT_UNDEFINED), IssueMessageType.ERROR);
 			return false;
 		}
 		return true;
@@ -182,7 +181,8 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 					if (isTopLevel()) {
 						newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(DiagramBehaviourBindingModel.TOP_LEVEL));
 					}
-				} else {
+				}
+				else {
 					newAddShape.setContainer(new DataBinding<DiagramContainerElement<?>>(grFlexoRole.getParentShapeRole().getRoleName()));
 				}
 				mainFlexoRole = false;

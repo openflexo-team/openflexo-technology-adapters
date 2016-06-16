@@ -189,7 +189,7 @@ public class FIBDocXFragmentSelector extends FIBDocFragmentSelector<DocXFragment
 		private FragmentSelectorDetailsPanel panel;
 
 		public LoadDocXEditor(DocXFragment fragment) {
-			super(FlexoLocalization.localizedForKey("opening_docx_editor"));
+			super(FlexoLocalization.getMainLocalizer().localizedForKey("opening_document_editor"));
 			this.fragment = fragment;
 		}
 

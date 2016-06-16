@@ -48,14 +48,14 @@ import org.openflexo.FlexoCst;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.DeleteDiagramElements;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class DeleteExampleDiagramElementsInitializer extends ActionInitializer<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> {
+public class DeleteExampleDiagramElementsInitializer
+		extends ActionInitializer<DeleteDiagramElements, DiagramElement<?>, DiagramElement<?>> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
@@ -69,7 +69,7 @@ public class DeleteExampleDiagramElementsInitializer extends ActionInitializer<D
 		return new FlexoActionInitializer<DeleteDiagramElements>() {
 			@Override
 			public boolean run(EventObject e, DeleteDiagramElements action) {
-				return FlexoController.confirm(FlexoLocalization.localizedForKey("would_you_like_to_delete_those_objects"));
+				return FlexoController.confirm(action.getLocales().localizedForKey("would_you_like_to_delete_those_objects"));
 			}
 		};
 	}

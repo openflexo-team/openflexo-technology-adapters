@@ -37,7 +37,7 @@
     </Tab>
   </TabPanel>
   <LocalizedDictionary>
-    <Localized key="Advanced" lang="French" value="Avancé" />
+    <!--  <Localized key="Advanced" lang="French" value="Avancé" />
     <Localized key="all_ontologic_statements" lang="English" value="All ontologic statements" />
     <Localized key="all_ontologic_statements" lang="French" value="All ontologic statements" />
     <Localized key="all_ontologic_statements" lang="Dutch" value="All ontologic statements" />
@@ -50,7 +50,7 @@
     <Localized key="is_read_only" lang="Dutch" value="Is read only" />
     <Localized key="semantic_statements" lang="English" value="Semantic statements" />
     <Localized key="semantic_statements" lang="French" value="Faits ontologiques" />
-    <Localized key="semantic_statements" lang="Dutch" value="Semantic statements" />
+    <Localized key="semantic_statements" lang="Dutch" value="Semantic statements" />-->
   </LocalizedDictionary>
   <Parameter name="title" value="Ontologic object" />
 </Panel>

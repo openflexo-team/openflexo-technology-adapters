@@ -97,7 +97,8 @@ public class FMLRTControlledFIBNaturePerspective extends FMLRTNaturePerspective 
 
 	@Override
 	protected ModuleView<VirtualModelInstance> createModuleViewForVirtualModelInstance(VirtualModelInstance vmInstance) {
-		return new FMLControlledFIBVirtualModelInstanceModuleView(vmInstance, getController(), this);
+		return new FMLControlledFIBVirtualModelInstanceModuleView(vmInstance, getController(), this,
+				getController().getTechnologyAdapter(GINATechnologyAdapter.class).getLocales());
 	}
 
 	@Override

@@ -52,6 +52,7 @@ import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.factory.ProxyMethodHandler;
 import org.openflexo.technologyadapter.diagram.DiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -59,8 +60,8 @@ import org.openflexo.technologyadapter.diagram.fml.GraphicalElementRole;
 import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
-public abstract class DiagramElementImpl<G extends GraphicalRepresentation> extends FlexoObjectImpl implements DiagramElement<G>,
-		PropertyChangeListener {
+public abstract class DiagramElementImpl<G extends GraphicalRepresentation> extends FlexoObjectImpl
+		implements DiagramElement<G>, PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(DiagramElementImpl.class.getPackage().getName());
 
@@ -73,6 +74,14 @@ public abstract class DiagramElementImpl<G extends GraphicalRepresentation> exte
 			return ((DiagramResource) getDiagram().getResource()).getTechnologyAdapter();
 		}
 		return null;
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getTechnologyAdapter() != null) {
+			return getTechnologyAdapter().getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override

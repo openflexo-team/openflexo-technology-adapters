@@ -54,7 +54,6 @@ import org.openflexo.foundation.action.FlexoGUIAction;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -68,8 +67,8 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
  * @author vincent leilde
  * 
  */
-public class ExportFMLControlledDiagramToImageAction extends
-		FlexoGUIAction<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance> {
+public class ExportFMLControlledDiagramToImageAction
+		extends FlexoGUIAction<ExportFMLControlledDiagramToImageAction, FlexoConceptInstance, FlexoConceptInstance> {
 
 	private static final Logger logger = Logger.getLogger(ExportFMLControlledDiagramToImageAction.class.getPackage().getName());
 
@@ -85,7 +84,8 @@ public class ExportFMLControlledDiagramToImageAction extends
 		public boolean isVisibleForSelection(FlexoConceptInstance object, Vector<FlexoConceptInstance> globalSelection) {
 			if (object instanceof VirtualModelInstance) {
 				return ((VirtualModelInstance) object).hasNature(FMLControlledDiagramVirtualModelInstanceNature.INSTANCE);
-			} else {
+			}
+			else {
 				if (object != null && object.getVirtualModelInstance() instanceof VirtualModelInstance) {
 					VirtualModelInstance vmi = (VirtualModelInstance) object.getVirtualModelInstance();
 					if (vmi != null)
@@ -134,16 +134,16 @@ public class ExportFMLControlledDiagramToImageAction extends
 					int result = JOptionPane.showConfirmDialog(this, "The file exists, overwrite?", "Existing file",
 							JOptionPane.YES_NO_CANCEL_OPTION);
 					switch (result) {
-					case JOptionPane.YES_OPTION:
-						super.approveSelection();
-						return;
-					case JOptionPane.NO_OPTION:
-						return;
-					case JOptionPane.CLOSED_OPTION:
-						return;
-					case JOptionPane.CANCEL_OPTION:
-						cancelSelection();
-						return;
+						case JOptionPane.YES_OPTION:
+							super.approveSelection();
+							return;
+						case JOptionPane.NO_OPTION:
+							return;
+						case JOptionPane.CLOSED_OPTION:
+							return;
+						case JOptionPane.CANCEL_OPTION:
+							cancelSelection();
+							return;
 					}
 				}
 				if (!f.exists() && getDialogType() == SAVE_DIALOG) {
@@ -153,7 +153,7 @@ public class ExportFMLControlledDiagramToImageAction extends
 			}
 		};
 		chooser.setDialogType(JFileChooser.SAVE_DIALOG);
-		chooser.setDialogTitle(FlexoLocalization.localizedForKey("save_as_image", chooser));
+		chooser.setDialogTitle(getLocales().localizedForKey("save_as_image", chooser));
 
 		for (ImageType type : ImageType.values()) {
 			FileNameExtensionFilter filter = new FileNameExtensionFilter(type.name(), type.getExtension());
@@ -177,7 +177,8 @@ public class ExportFMLControlledDiagramToImageAction extends
 		}
 		if (saveScreenshot() != null) {
 			return true;
-		} else {
+		}
+		else {
 			return false;
 		}
 	}
@@ -193,14 +194,16 @@ public class ExportFMLControlledDiagramToImageAction extends
 				.getFMLControlledDiagramElementScreenshotBuilder();
 		if (getFocusedObject() instanceof VirtualModelInstance) {
 			builder.setDrawing(new FMLControlledDiagramEditor((VirtualModelInstance) getFocusedObject(), true, null, null));
-			screenshotImage = builder.getImage(FMLControlledDiagramVirtualModelInstanceNature
-					.getDiagram((VirtualModelInstance) getFocusedObject()));
-		} else if (getFocusedObject() instanceof FlexoConceptInstance) {
+			screenshotImage = builder
+					.getImage(FMLControlledDiagramVirtualModelInstanceNature.getDiagram((VirtualModelInstance) getFocusedObject()));
+		}
+		else if (getFocusedObject() instanceof FlexoConceptInstance) {
 			editor = new FMLControlledDiagramEditor((VirtualModelInstance) getFocusedObject().getVirtualModelInstance(), true, null, null);
 			FMLControlledDiagramElement element = editor.getDrawing().getFMLControlledDiagramElements(getFocusedObject()).get(0);
 			builder.setDrawing(editor);
 			screenshotImage = builder.getImage(element.getDiagramElement());
-		} else {
+		}
+		else {
 			logger.warning("Could not create a screenshot for " + getFocusedObject().getStringRepresentation());
 			return null;
 		}

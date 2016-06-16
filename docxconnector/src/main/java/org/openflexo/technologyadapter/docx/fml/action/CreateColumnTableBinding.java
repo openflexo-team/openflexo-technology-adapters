@@ -50,6 +50,8 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.doc.fml.ColumnTableBinding;
 import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.fml.DocXTableRole;
 
 public class CreateColumnTableBinding extends FlexoAction<CreateColumnTableBinding, DocXTableRole, FMLObject> {
@@ -92,6 +94,14 @@ public class CreateColumnTableBinding extends FlexoAction<CreateColumnTableBindi
 	CreateColumnTableBinding(DocXTableRole focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override

@@ -23,7 +23,6 @@ package org.openflexo.technologyadapter.pdf;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 
 public class PDFModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<PDFDocument, PDFModelSlot> {
@@ -42,7 +41,8 @@ public class PDFModelSlotInstanceConfiguration extends FreeModelSlotInstanceConf
 			return false;
 		}
 		if (!getFilename().endsWith(".pdf")) {
-			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.pdf_suffix"));
+			setErrorMessage(
+					getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("file_name_should_end_with_.pdf_suffix"));
 			return false;
 		}
 		return true;

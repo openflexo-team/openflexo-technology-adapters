@@ -53,7 +53,6 @@ import org.openflexo.foundation.action.FlexoExceptionHandler;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.gina.controller.FIBController.Status;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModelInstance;
@@ -160,7 +159,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceInitializer
 			@Override
 			public boolean handleException(FlexoException exception, CreateFMLControlledDiagramVirtualModelInstance action) {
 				if (exception instanceof NotImplementedException) {
-					FlexoController.notify(FlexoLocalization.localizedForKey("not_implemented_yet"));
+					FlexoController.notify(action.getLocales().localizedForKey("not_implemented_yet"));
 					return true;
 				}
 				return false;

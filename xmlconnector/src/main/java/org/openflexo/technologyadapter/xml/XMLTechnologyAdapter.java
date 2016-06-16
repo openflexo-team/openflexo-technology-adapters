@@ -104,6 +104,11 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return TAName;
 	}
 
+	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/XMLTechnologyAdapter";
+	}
+
 	/**
 	 * Return flag indicating if supplied file represents a valid XSD schema
 	 * 

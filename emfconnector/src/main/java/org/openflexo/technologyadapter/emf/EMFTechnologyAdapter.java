@@ -131,6 +131,11 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		return "EMF technology adapter";
 	}
 
+	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/EMFTechnologyAdapter";
+	}
+
 	/**
 	 * Initialize the supplied resource center with the technology<br>
 	 * ResourceCenter is scanned, ResourceRepositories are created and new technology-specific resources are build and registered.

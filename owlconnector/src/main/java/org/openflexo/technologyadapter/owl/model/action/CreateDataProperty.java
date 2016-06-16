@@ -47,7 +47,8 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.ontology.DuplicateURIException;
-import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLConcept;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
@@ -97,14 +98,22 @@ public class CreateDataProperty extends FlexoAction<CreateDataProperty, OWLObjec
 
 	private OWLDataProperty newProperty;
 
-	private static final String VALID_URI_LABEL = FlexoLocalization.localizedForKey("uri_is_well_formed_and_valid_regarding_its_unicity");
-	private static final String INVALID_URI_LABEL = FlexoLocalization.localizedForKey("uri_is_not_valid_please_choose_another_class_name");
+	private static final String VALID_URI_LABEL = "uri_is_well_formed_and_valid_regarding_its_unicity";
+	private static final String INVALID_URI_LABEL = "uri_is_not_valid_please_choose_another_class_name";
 
 	CreateDataProperty(OWLObject focusedObject, Vector<OWLConcept> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		newPropertyName = "newProperty";
 		parentProperty = null;
 		isValid();
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override
@@ -123,7 +132,7 @@ public class CreateDataProperty extends FlexoAction<CreateDataProperty, OWLObjec
 	@Override
 	public boolean isValid() {
 		boolean returned = !StringUtils.isEmpty(newPropertyName) && getOntology().testValidURI(newPropertyName);
-		validURILabel = returned ? VALID_URI_LABEL : INVALID_URI_LABEL;
+		validURILabel = returned ? getLocales().localizedForKey(VALID_URI_LABEL) : getLocales().localizedForKey(INVALID_URI_LABEL);
 		return returned;
 	}
 

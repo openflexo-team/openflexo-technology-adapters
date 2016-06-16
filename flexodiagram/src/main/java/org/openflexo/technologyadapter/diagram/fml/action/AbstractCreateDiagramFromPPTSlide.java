@@ -103,7 +103,6 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
@@ -258,35 +257,35 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	}
 
 	public String noDiagramSpecificationSelectedMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_type_selected");
+		return getLocales().localizedForKey("no_diagram_type_selected");
 	}
 
 	public String noTitleMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_title_defined");
+		return getLocales().localizedForKey("no_diagram_title_defined");
 	}
 
 	public String noFileMessage() {
-		return FlexoLocalization.localizedForKey("no_ppt_file_defined");
+		return getLocales().localizedForKey("no_ppt_file_defined");
 	}
 
 	public String existingFileMessage() {
-		return FlexoLocalization.localizedForKey("file_already_existing");
+		return getLocales().localizedForKey("file_already_existing");
 	}
 
 	public String noNameMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_name_defined");
+		return getLocales().localizedForKey("no_diagram_name_defined");
 	}
 
 	public String noSlideMessage() {
-		return FlexoLocalization.localizedForKey("no_slide_defined");
+		return getLocales().localizedForKey("no_slide_defined");
 	}
 
 	public String invalidNameMessage() {
-		return FlexoLocalization.localizedForKey("invalid_name_for_new_diagram");
+		return getLocales().localizedForKey("invalid_name_for_new_diagram");
 	}
 
 	public String duplicatedNameMessage() {
-		return FlexoLocalization.localizedForKey("a_diagram_with_that_name_already_exists");
+		return getLocales().localizedForKey("a_diagram_with_that_name_already_exists");
 	}
 
 	public String getDiagramName() {
@@ -354,7 +353,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			selectedSlideShow = new SlideShow(fis);
 			if (currentSlides == null) {
 				currentSlides = new ArrayList<Slide>();
-			} else {
+			}
+			else {
 				currentSlides.clear();
 			}
 			for (Slide slide : selectedSlideShow.getSlides()) {
@@ -540,9 +540,11 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		if (shape instanceof SimpleShape) {
 			diagramElement = transformSimpleShape((SimpleShape) shape);
 
-		} else if (shape instanceof Background) {
+		}
+		else if (shape instanceof Background) {
 			diagramElement = transformBackground((Background) shape);
-		} else if (shape instanceof ShapeGroup) {
+		}
+		else if (shape instanceof ShapeGroup) {
 			diagramElement = transformShapeGroup((ShapeGroup) shape);
 		}
 		return diagramElement;
@@ -552,9 +554,11 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		DiagramElement<?> diagramElement = null;
 		if (shape instanceof Line) {
 			diagramElement = makeDiagramConnector(shape);
-		} else if (shape instanceof Picture) {
+		}
+		else if (shape instanceof Picture) {
 			diagramElement = transformPicture((Picture) shape);
-		} else if (shape instanceof TextShape) {
+		}
+		else if (shape instanceof TextShape) {
 			diagramElement = transformTextShape((TextShape) shape);
 		}
 		return diagramElement;
@@ -569,7 +573,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		DiagramElement<?> diagramElement = null;
 		if (shape instanceof AutoShape) {
 			diagramElement = transformAutoShape((AutoShape) shape);
-		} else if (shape instanceof TextBox) {
+		}
+		else if (shape instanceof TextBox) {
 			diagramElement = makeTextBox((TextBox) shape);
 		}
 		return diagramElement;
@@ -580,7 +585,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		if (isConnector(shape.getShapeType())) {
 			diagramElement = makeDiagramConnector(shape);
 			applySimpleShapeGr(diagramElement.getGraphicalRepresentation(), shape);
-		} else {
+		}
+		else {
 			diagramElement = makeDiagramShape(shape);
 			applyTextShapeGr((ShapeGraphicalRepresentation) diagramElement.getGraphicalRepresentation(), shape);
 		}
@@ -596,7 +602,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		DiagramElement<?> diagramElement = null;
 		if (shape instanceof Table) {
 			diagramElement = makeTable((Table) shape);
-		} else
+		}
+		else
 			diagramElement = makeGroupShape(shape);
 		return diagramElement;
 	}
@@ -619,9 +626,11 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			for (Shape shape : shapeGroup.getShapes()) {
 				if ((shape instanceof TextShape) && (((TextShape) shape).getTextRun() != null)) {
 					textShape = (TextShape) shape;
-				} else if ((shape instanceof TextShape) && (((TextShape) shape).getTextRun() == null)) {
+				}
+				else if ((shape instanceof TextShape) && (((TextShape) shape).getTextRun() == null)) {
 					containerShape = (TextShape) shape;
-				} else if ((shape instanceof SimpleShape)) {
+				}
+				else if ((shape instanceof SimpleShape)) {
 					containerShape = (SimpleShape) shape;
 				}
 			}
@@ -631,10 +640,12 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 				if (isConnector(containerShape.getShapeType())) {
 					shape = makeDiagramConnector(containerShape);
 					applySimpleShapeGr(shape.getGraphicalRepresentation(), containerShape);
-				} else {
+				}
+				else {
 					if (containerShape instanceof Picture) {
 						applyPictureGr((ShapeGraphicalRepresentation) shape.getGraphicalRepresentation(), (Picture) containerShape);
-					} else {
+					}
+					else {
 						applySimpleShapeGr(shape.getGraphicalRepresentation(), containerShape);
 					}
 				}
@@ -684,28 +695,28 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		while (pi.isDone() == false) {
 			int type = pi.currentSegment(coordinates);
 			switch (type) {
-			case PathIterator.SEG_MOVETO:
-				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
-				break;
-			case PathIterator.SEG_LINETO:
-				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
-				break;
-			case PathIterator.SEG_QUADTO:
-				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
-				break;
-			case PathIterator.SEG_CUBICTO:
-				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
-				break;
-			case PathIterator.SEG_CLOSE:
-				ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
-				ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
-				break;
-			default:
-				break;
+				case PathIterator.SEG_MOVETO:
+					ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+					ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+					break;
+				case PathIterator.SEG_LINETO:
+					ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+					ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+					break;
+				case PathIterator.SEG_QUADTO:
+					ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+					ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+					break;
+				case PathIterator.SEG_CUBICTO:
+					ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+					ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+					break;
+				case PathIterator.SEG_CLOSE:
+					ss.addToPoints(new FGEPoint(coordinates[0], coordinates[1]));
+					ss.getPoints().add(new FGEPoint(coordinates[0], coordinates[1]));
+					break;
+				default:
+					break;
 			}
 			pi.next();
 		}
@@ -733,7 +744,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	private String getShapeName(Shape shape) {
 		if (shape != null && shape instanceof TextShape && ((TextShape) shape).getText() != null) {
 			return ((TextShape) shape).getText();
-		} else {
+		}
+		else {
 			return "";
 		}
 	}
@@ -785,7 +797,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 					targetShape = potentialShape;
 				}
 			}
-		} else if (potentialShapes.size() == 1) {
+		}
+		else if (potentialShapes.size() == 1) {
 			targetShape = sourceShape;
 		}
 
@@ -813,59 +826,59 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 	private void setDiagramElementType(GraphicalRepresentation gr, Shape shape) {
 		switch (shape.getShapeType()) {
-		case ShapeTypes.Chevron:
-			((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.CHEVRON);
-			break;
-		case ShapeTypes.Plus:
-			((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.PLUS);
-			break;
-		case ShapeTypes.Rectangle:
-			((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.RECTANGLE);
-			break;
-		case ShapeTypes.RoundRectangle:
-			((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.RECTANGLE);
-			((Rectangle) ((ShapeGraphicalRepresentation) gr).getShapeSpecification()).setIsRounded(true);
-			((Rectangle) ((ShapeGraphicalRepresentation) gr).getShapeSpecification()).setArcSize(20);
-			break;
-		case ShapeTypes.Star:
-			((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.STAR);
-			break;
-		case ShapeTypes.Ellipse:
-			((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.OVAL);
-			break;
-		case ShapeTypes.IsocelesTriangle:
-			((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.TRIANGLE);
-			break;
-		case ShapeTypes.CurvedConnector2:
-			((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
-			break;
-		case ShapeTypes.CurvedConnector3:
-			((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
-			break;
-		case ShapeTypes.CurvedConnector4:
-			((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
-			break;
-		case ShapeTypes.CurvedConnector5:
-			((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
-			break;
-		case ShapeTypes.Line:
-			((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.LINE);
-			break;
-		case ShapeTypes.StraightConnector1:
-			((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.LINE);
-			break;
-		case ShapeTypes.BentConnector2:
-			((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
-			break;
-		case ShapeTypes.BentConnector3:
-			((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
-			break;
-		case ShapeTypes.BentConnector4:
-			((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
-			break;
-		case ShapeTypes.BentConnector5:
-			((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
-			break;
+			case ShapeTypes.Chevron:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.CHEVRON);
+				break;
+			case ShapeTypes.Plus:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.PLUS);
+				break;
+			case ShapeTypes.Rectangle:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.RECTANGLE);
+				break;
+			case ShapeTypes.RoundRectangle:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.RECTANGLE);
+				((Rectangle) ((ShapeGraphicalRepresentation) gr).getShapeSpecification()).setIsRounded(true);
+				((Rectangle) ((ShapeGraphicalRepresentation) gr).getShapeSpecification()).setArcSize(20);
+				break;
+			case ShapeTypes.Star:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.STAR);
+				break;
+			case ShapeTypes.Ellipse:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.OVAL);
+				break;
+			case ShapeTypes.IsocelesTriangle:
+				((ShapeGraphicalRepresentation) gr).setShapeType(ShapeType.TRIANGLE);
+				break;
+			case ShapeTypes.CurvedConnector2:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
+				break;
+			case ShapeTypes.CurvedConnector3:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
+				break;
+			case ShapeTypes.CurvedConnector4:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
+				break;
+			case ShapeTypes.CurvedConnector5:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.CURVE);
+				break;
+			case ShapeTypes.Line:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.LINE);
+				break;
+			case ShapeTypes.StraightConnector1:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.LINE);
+				break;
+			case ShapeTypes.BentConnector2:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
+				break;
+			case ShapeTypes.BentConnector3:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
+				break;
+			case ShapeTypes.BentConnector4:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
+				break;
+			case ShapeTypes.BentConnector5:
+				((ConnectorGraphicalRepresentation) gr).setConnectorType(ConnectorType.RECT_POLYLIN);
+				break;
 		}
 	}
 
@@ -886,7 +899,8 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 			}
 			if (shape.getFillColor() != null) {
 				((ShapeGraphicalRepresentation) gr).setBackground(getDiagramFactory().makeColoredBackground(shape.getFillColor()));
-			} else {
+			}
+			else {
 				((ShapeGraphicalRepresentation) gr).setBackground(getDiagramFactory().makeEmptyBackground());
 			}
 		}
@@ -943,36 +957,36 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		gr.setIsMultilineAllowed(true);
 		try {
 			switch (shape.getVerticalAlignment()) {
-			case TextShape.AnchorTop:
-				gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-				break;
-			case TextShape.AnchorMiddle:
-				gr.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
-				break;
-			case TextShape.AnchorBottom:
-				gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-				break;
-			case TextShape.AnchorTopCentered:
-				gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-				break;
-			case TextShape.AnchorMiddleCentered:
-				gr.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
-				break;
-			case TextShape.AnchorBottomCentered:
-				gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-				break;
-			case TextShape.AnchorTopBaseline:
-				gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-				break;
-			case TextShape.AnchorBottomBaseline:
-				gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-				break;
-			case TextShape.AnchorTopCenteredBaseline:
-				gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
-				break;
-			case TextShape.AnchorBottomCenteredBaseline:
-				gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
-				break;
+				case TextShape.AnchorTop:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorMiddle:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+					break;
+				case TextShape.AnchorBottom:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+				case TextShape.AnchorTopCentered:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorMiddleCentered:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.MIDDLE);
+					break;
+				case TextShape.AnchorBottomCentered:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+				case TextShape.AnchorTopBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorBottomBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
+				case TextShape.AnchorTopCenteredBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.BOTTOM);
+					break;
+				case TextShape.AnchorBottomCenteredBaseline:
+					gr.setVerticalTextAlignment(VerticalTextAlignment.TOP);
+					break;
 			}
 		} catch (Exception e) {
 			// Set by default
@@ -981,22 +995,22 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 
 		try {
 			switch (shape.getHorizontalAlignment()) {
-			case TextShape.AlignLeft:
-				gr.setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
-				gr.setParagraphAlignment(ParagraphAlignment.LEFT);
-				break;
-			case TextShape.AlignCenter:
-				gr.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
-				gr.setParagraphAlignment(ParagraphAlignment.CENTER);
-				break;
-			case TextShape.AlignRight:
-				gr.setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT);
-				gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
-				break;
-			case TextShape.AlignJustify:
-				gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
-				gr.setParagraphAlignment(ParagraphAlignment.JUSTIFY);
-				break;
+				case TextShape.AlignLeft:
+					gr.setHorizontalTextAlignment(HorizontalTextAlignment.LEFT);
+					gr.setParagraphAlignment(ParagraphAlignment.LEFT);
+					break;
+				case TextShape.AlignCenter:
+					gr.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
+					gr.setParagraphAlignment(ParagraphAlignment.CENTER);
+					break;
+				case TextShape.AlignRight:
+					gr.setHorizontalTextAlignment(HorizontalTextAlignment.RIGHT);
+					gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
+					break;
+				case TextShape.AlignJustify:
+					gr.setParagraphAlignment(ParagraphAlignment.RIGHT);
+					gr.setParagraphAlignment(ParagraphAlignment.JUSTIFY);
+					break;
 			}
 		} catch (Exception e) {
 			gr.setHorizontalTextAlignment(HorizontalTextAlignment.CENTER);
@@ -1134,54 +1148,54 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	private DashStyle convertDashLineStyles(int powerpointDashStyle) {
 
 		switch (powerpointDashStyle) {
-		case Line.PEN_DASH:
-			return DashStyle.MEDIUM_DASHES;
-		case Line.PEN_DASHDOT:
-			return DashStyle.DOTS_DASHES;
-		case Line.PEN_DASHDOTDOT:
-			return DashStyle.DOT_LINES_DASHES;
-		case Line.PEN_DASHDOTGEL:
-			return DashStyle.SMALL_DASHES;
-		case Line.PEN_DOT:
-			return DashStyle.DOTS_DASHES;
-		case Line.PEN_DOTGEL:
-			return DashStyle.DOTS_DASHES;
-		case Line.PEN_LONGDASHDOTDOTGEL:
-			return DashStyle.BIG_DASHES;
-		case Line.PEN_LONGDASHDOTGEL:
-			return DashStyle.BIG_DASHES;
-		case Line.PEN_LONGDASHGEL:
-			return DashStyle.BIG_DASHES;
-		case Line.PEN_PS_DASH:
-			return DashStyle.SMALL_DASHES;
-		case Line.PEN_SOLID:
-			return DashStyle.PLAIN_STROKE;
+			case Line.PEN_DASH:
+				return DashStyle.MEDIUM_DASHES;
+			case Line.PEN_DASHDOT:
+				return DashStyle.DOTS_DASHES;
+			case Line.PEN_DASHDOTDOT:
+				return DashStyle.DOT_LINES_DASHES;
+			case Line.PEN_DASHDOTGEL:
+				return DashStyle.SMALL_DASHES;
+			case Line.PEN_DOT:
+				return DashStyle.DOTS_DASHES;
+			case Line.PEN_DOTGEL:
+				return DashStyle.DOTS_DASHES;
+			case Line.PEN_LONGDASHDOTDOTGEL:
+				return DashStyle.BIG_DASHES;
+			case Line.PEN_LONGDASHDOTGEL:
+				return DashStyle.BIG_DASHES;
+			case Line.PEN_LONGDASHGEL:
+				return DashStyle.BIG_DASHES;
+			case Line.PEN_PS_DASH:
+				return DashStyle.SMALL_DASHES;
+			case Line.PEN_SOLID:
+				return DashStyle.PLAIN_STROKE;
 		}
 		return null;
 	}
 
 	private boolean isConnector(int shapeType) {
 		switch (shapeType) {
-		case ShapeTypes.CurvedConnector2:
-			return true;
-		case ShapeTypes.CurvedConnector3:
-			return true;
-		case ShapeTypes.CurvedConnector4:
-			return true;
-		case ShapeTypes.CurvedConnector5:
-			return true;
-		case ShapeTypes.Line:
-			return true;
-		case ShapeTypes.StraightConnector1:
-			return true;
-		case ShapeTypes.BentConnector2:
-			return true;
-		case ShapeTypes.BentConnector3:
-			return true;
-		case ShapeTypes.BentConnector4:
-			return true;
-		case ShapeTypes.BentConnector5:
-			return true;
+			case ShapeTypes.CurvedConnector2:
+				return true;
+			case ShapeTypes.CurvedConnector3:
+				return true;
+			case ShapeTypes.CurvedConnector4:
+				return true;
+			case ShapeTypes.CurvedConnector5:
+				return true;
+			case ShapeTypes.Line:
+				return true;
+			case ShapeTypes.StraightConnector1:
+				return true;
+			case ShapeTypes.BentConnector2:
+				return true;
+			case ShapeTypes.BentConnector3:
+				return true;
+			case ShapeTypes.BentConnector4:
+				return true;
+			case ShapeTypes.BentConnector5:
+				return true;
 		}
 		return false;
 	}

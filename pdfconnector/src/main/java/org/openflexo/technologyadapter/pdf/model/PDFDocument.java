@@ -33,7 +33,7 @@ import org.openflexo.foundation.resource.CannotRenameException;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -115,6 +115,12 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 		private Map<PDPage, PDFDocumentPage> pageMap = new HashMap<PDPage, PDFDocumentPage>();
 
 		@Override
+		public LocalizedDelegate getLocales() {
+			// TODO Auto-generated method stub
+			return super.getLocales();
+		}
+
+		@Override
 		public void setPDDocument(PDDocument document) {
 
 			if ((document == null && getPDDocument() != null) || (document != null && !document.equals(getPDDocument()))) {
@@ -151,7 +157,7 @@ public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, Res
 			int i = 0;
 			for (PDPage page : pdDocument.getPages()) {
 				i++;
-				Progress.progress(FlexoLocalization.localizedForKey("processing_page") + " " + i);
+				Progress.progress(getLocales().localizedForKey("processing_page") + " " + i);
 				// System.out.println("************* >> HERE in PDFDocument with thread: " + Thread.currentThread());
 				PDFDocumentPage pdfPage = pageMap.get(page);
 				if (pdfPage == null) {

@@ -68,8 +68,8 @@ import org.openflexo.technologyadapter.emf.rm.EMFModelResource;
  * 
  * @author gbesancon
  */
-public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements FlexoModel<EMFModel, EMFMetaModel>,
-		IFlexoOntology<EMFTechnologyAdapter> {
+public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
+		implements FlexoModel<EMFModel, EMFMetaModel>, IFlexoOntology<EMFTechnologyAdapter> {
 
 	/** Resource. */
 	protected EMFModelResource modelResource;
@@ -187,8 +187,6 @@ public class EMFModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> impl
 	public void save() throws SaveResourceException {
 		getResource().save(null);
 	}
-
-
 
 	/**
 	 * Getter of metaModel.

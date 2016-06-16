@@ -135,7 +135,8 @@ public class DiagramPaletteEditor extends SelectionManagingDianaEditor<DiagramPa
 	public JTabbedPane getPaletteView() {
 		if (paletteView == null) {
 			paletteView = new JTabbedPane();
-			paletteView.add(FlexoLocalization.localizedForKey("Common", getPalettePalette().getPaletteViewInScrollPane()),
+			paletteView.add(
+					FlexoLocalization.getMainLocalizer().localizedForKey("Common", getPalettePalette().getPaletteViewInScrollPane()),
 					getPalettePalette().getPaletteViewInScrollPane());
 		}
 		return paletteView;

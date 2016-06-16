@@ -70,6 +70,11 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/PDFTechnologyAdapter";
+	}
+
+	@Override
 	public PDFTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new PDFTechnologyContextManager(this, getTechnologyAdapterService().getServiceManager().getResourceCenterService());
 	}

@@ -99,18 +99,24 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 			DocXParagraph paragraph = (DocXParagraph) object;
 			if (paragraph.getStyle() != null && paragraph.getStyle().isLevelled()) {
 				return DocXIconLibrary.SECTION_ICON;
-			} else {
+			}
+			else {
 				return DocXIconLibrary.PARAGRAPH_ICON;
 			}
-		} else if (object instanceof DocXTable) {
+		}
+		else if (object instanceof DocXTable) {
 			return DocXIconLibrary.TABLE_ICON;
-		} else if (object instanceof DocXDrawingRun) {
+		}
+		else if (object instanceof DocXDrawingRun) {
 			return DocXIconLibrary.IMAGE_ICON;
-		} else if (object instanceof DocXFragment) {
+		}
+		else if (object instanceof DocXFragment) {
 			return DocXIconLibrary.FRAGMENT_ICON;
-		} else if (object instanceof TextBinding) {
+		}
+		else if (object instanceof TextBinding) {
 			return DocXIconLibrary.TEXT_BINDING_ICON;
-		} else if (object instanceof ColumnTableBinding) {
+		}
+		else if (object instanceof ColumnTableBinding) {
 			return DocXIconLibrary.COLUMN_BINDING_ICON;
 		}
 		return super.getIconForTechnologyObject(object);
@@ -146,25 +152,35 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
 		if (GenerateDocXDocument.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.DOCX_FILE_ICON, IconLibrary.DUPLICATE);
-		} else if (AddDocXFragment.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (AddDocXFragment.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.FRAGMENT_ICON, IconLibrary.DUPLICATE);
-		} else if (AddDocXParagraph.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (AddDocXParagraph.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.PARAGRAPH_ICON, IconLibrary.DUPLICATE);
-		} else if (ApplyTextBindings.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (ApplyTextBindings.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.FRAGMENT_ICON, IconLibrary.GENERATE);
-		} else if (ReinjectTextBindings.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (ReinjectTextBindings.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.FRAGMENT_ICON, IconLibrary.REINJECT);
-		} else if (SelectGeneratedDocXFragment.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (SelectGeneratedDocXFragment.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.FRAGMENT_ICON, IconLibrary.IMPORT);
-		} else if (GenerateDocXTable.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (GenerateDocXTable.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.TABLE_ICON, IconLibrary.GENERATE);
-		} else if (ReinjectFromDocXTable.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (ReinjectFromDocXTable.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.TABLE_ICON, IconLibrary.REINJECT);
-		} else if (SelectGeneratedDocXTable.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (SelectGeneratedDocXTable.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.TABLE_ICON, IconLibrary.IMPORT);
-		} else if (GenerateDocXImage.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (GenerateDocXImage.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.IMAGE_ICON, IconLibrary.GENERATE);
-		} else if (SelectGeneratedDocXImage.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (SelectGeneratedDocXImage.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(DocXIconLibrary.IMAGE_ICON, IconLibrary.IMPORT);
 		}
 		return super.getIconForEditionAction(editionActionClass);
@@ -215,7 +231,8 @@ public class DocXAdapterController extends TechnologyAdapterController<DocXTechn
 
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
-		docXInspectorGroup = controller.loadInspectorGroup("DocX", getFMLTechnologyAdapterInspectorGroup());
+		docXInspectorGroup = controller.loadInspectorGroup("DocX", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup docXInspectorGroup;

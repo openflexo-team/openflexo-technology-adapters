@@ -51,7 +51,6 @@ import org.openflexo.foundation.action.FlexoUndoManager.FlexoActionCompoundEdit;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.utils.JFIBDialog;
 import org.openflexo.gina.swing.view.SwingViewFactory;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
@@ -144,7 +143,7 @@ public abstract class AbstractDiagramPalette extends DrawingPalette {
 		action.setGraphicalRepresentation(shapeGR);
 		action.setNewShapeName(shapeGR.getText());
 		if (action.getNewShapeName() == null) {
-			action.setNewShapeName(FlexoLocalization.localizedForKey("shape"));
+			action.setNewShapeName(action.getLocales().localizedForKey("shape"));
 		}
 
 		// action.nameSetToNull = true;

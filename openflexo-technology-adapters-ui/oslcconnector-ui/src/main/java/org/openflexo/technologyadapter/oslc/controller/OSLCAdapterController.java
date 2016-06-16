@@ -92,9 +92,8 @@ public class OSLCAdapterController extends TechnologyAdapterController<OSLCTechn
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		oslcInspectorGroup = controller.loadInspectorGroup("oslc", getFMLTechnologyAdapterInspectorGroup());
-		// actionInitializer.getController().getModuleInspectorController()
-		// .loadDirectory(ResourceLocator.locateResource("src/main/resources/Inspectors/oslc"));
+		oslcInspectorGroup = controller.loadInspectorGroup("oslc", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup oslcInspectorGroup;
@@ -143,22 +142,28 @@ public class OSLCAdapterController extends TechnologyAdapterController<OSLCTechn
 	public ImageIcon getIconForEditionAction(Class<? extends EditionAction> editionActionClass) {
 		if (AddOSLCResource.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCResource.class), IconLibrary.DUPLICATE);
-		} else if (AddOSLCRequirement.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (AddOSLCRequirement.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCRequirement.class), IconLibrary.DUPLICATE);
-		} else if (SelectOSLCResource.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (SelectOSLCResource.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCResource.class), IconLibrary.IMPORT);
-		} else if (SelectOSLCRequirement.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (SelectOSLCRequirement.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCRequirement.class), IconLibrary.IMPORT);
-		} else if (SelectOSLCServiceProvider.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (SelectOSLCServiceProvider.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCServiceProvider.class), IconLibrary.IMPORT);
-		} else if (SelectOSLCService.class.isAssignableFrom(editionActionClass)) {
+		}
+		else if (SelectOSLCService.class.isAssignableFrom(editionActionClass)) {
 			return IconFactory.getImageIcon(getIconForTechnologyObject(OSLCService.class), IconLibrary.IMPORT);
 		}
 		return super.getIconForEditionAction(editionActionClass);
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<OSLCTechnologyAdapter> arg0, FlexoController arg1, FlexoPerspective arg2) {
+	public ModuleView<?> createModuleViewForObject(TechnologyObject<OSLCTechnologyAdapter> arg0, FlexoController arg1,
+			FlexoPerspective arg2) {
 		if (arg0 instanceof OSLCServiceProviderCatalog) {
 			return new FIBOSLCCatalog((OSLCResource) arg0, arg1);
 		}

@@ -69,7 +69,8 @@ public class CSVAdapterController extends TechnologyAdapterController<CSVTechnol
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		csvInspectorGroup = controller.loadInspectorGroup("CSV", getFMLTechnologyAdapterInspectorGroup());
+		csvInspectorGroup = controller.loadInspectorGroup("CSV", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 		// actionInitializer.getController().getModuleInspectorController()
 		// .loadDirectory(ResourceLocator.locateResource("Inspectors/CSV"));
 	}

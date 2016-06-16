@@ -82,6 +82,11 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/OSLCTechnologyAdapter";
+	}
+
+	@Override
 	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new OSLCTechnologyContextManager(this, service);
 	}

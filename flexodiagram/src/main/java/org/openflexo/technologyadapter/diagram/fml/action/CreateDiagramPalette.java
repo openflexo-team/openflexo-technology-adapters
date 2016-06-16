@@ -50,7 +50,6 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette.DiagramPaletteImpl;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -117,11 +116,11 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 		return _newPalette;
 	}
 
-	private String nameValidityMessage = EMPTY_NAME;
+	private String nameValidityMessage = null;
 
-	private static final String NAME_IS_VALID = FlexoLocalization.localizedForKey("name_is_valid");
-	private static final String DUPLICATED_NAME = FlexoLocalization.localizedForKey("this_name_is_already_used_please_choose_an_other_one");
-	private static final String EMPTY_NAME = FlexoLocalization.localizedForKey("empty_name");
+	private static final String NAME_IS_VALID = "name_is_valid";
+	private static final String DUPLICATED_NAME = "this_name_is_already_used_please_choose_an_other_one";
+	private static final String EMPTY_NAME = "empty_name";
 
 	public String getNameValidityMessage() {
 		return nameValidityMessage;
@@ -129,15 +128,16 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 
 	public boolean isNameValid() {
 		if (StringUtils.isEmpty(newPaletteName)) {
-			nameValidityMessage = EMPTY_NAME;
+			nameValidityMessage = getLocales().localizedForKey(EMPTY_NAME);
 			return false;
 		}
 		else if (getFocusedObject().getPalette(newPaletteName) != null) {
-			nameValidityMessage = DUPLICATED_NAME;
+			nameValidityMessage = getLocales().localizedForKey(DUPLICATED_NAME);
+			;
 			return false;
 		}
 		else {
-			nameValidityMessage = NAME_IS_VALID;
+			nameValidityMessage = getLocales().localizedForKey(NAME_IS_VALID);
 			return true;
 		}
 	}

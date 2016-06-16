@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml.binding;
 
 import java.lang.reflect.Type;
@@ -74,7 +73,7 @@ public class StatementDisplayableRepresentationPathElement extends SimplePathEle
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		return FlexoLocalization.localizedForKey("owl_property");
+		return FlexoLocalization.getMainLocalizer().localizedForKey("displayable_representation");
 	}
 
 	@Override
@@ -87,8 +86,8 @@ public class StatementDisplayableRepresentationPathElement extends SimplePathEle
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		logger.warning("Please implement me, target=" + target + " context=" + context);
 	}
 

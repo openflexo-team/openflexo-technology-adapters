@@ -117,7 +117,7 @@ public class FIBDocXImageSelector extends FIBDocImageSelector<DocXDrawingRun, Do
 		private ImageSelectorDetailsPanel panel;
 
 		public LoadDocXEditor(DocXDrawingRun drawingRun) {
-			super(FlexoLocalization.localizedForKey("opening_docx_editor"));
+			super(FlexoLocalization.getMainLocalizer().localizedForKey("opening_document_editor"));
 			this.drawingRun = drawingRun;
 		}
 

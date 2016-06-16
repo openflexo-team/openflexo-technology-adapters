@@ -98,7 +98,7 @@ import org.openflexo.technologyadapter.diagram.model.action.LinkSchemeAction;
  * @author sylvain
  *
  */
-public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRectangle> implements PropertyChangeListener {
+public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRectangle>implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramFloatingPalette.class.getPackage().getName());
 
@@ -122,8 +122,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	private static final BackgroundStyle DEFAULT = FGECoreUtils.TOOLS_FACTORY.makeColoredBackground(Color.WHITE);
 	private static final ForegroundStyle NODE_FOREGROUND = FGECoreUtils.TOOLS_FACTORY.makeForegroundStyle(Color.RED, 1.0f);
 	private static final ForegroundStyle EDGE_FOREGROUND = FGECoreUtils.TOOLS_FACTORY.makeForegroundStyle(FGEUtils.NICE_BROWN, 1.0f);
-	private static final BackgroundStyle NODE_BACKGROUND = FGECoreUtils.TOOLS_FACTORY.makeColorGradientBackground(Color.ORANGE,
-			Color.WHITE, ColorGradientDirection.SOUTH_EAST_NORTH_WEST);
+	private static final BackgroundStyle NODE_BACKGROUND = FGECoreUtils.TOOLS_FACTORY.makeColorGradientBackground(Color.ORANGE, Color.WHITE,
+			ColorGradientDirection.SOUTH_EAST_NORTH_WEST);
 
 	static {
 		DEFAULT.setUseTransparency(true);
@@ -178,8 +178,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 			RootNode<Diagram> rootNode = controller.getDrawing().getRoot();
 			// DrawingGraphicalRepresentation<?> drawingGR = controller.getDrawingGraphicalRepresentation();
 			double scale = controller.getScale();
-			FGEPoint nearestOnOutline = fgeShape.getNearestPoint(rootNode.convertLocalViewCoordinatesToRemoteNormalizedPoint(
-					currentDraggingLocationInDrawingView, getNode(), scale));
+			FGEPoint nearestOnOutline = fgeShape.getNearestPoint(
+					rootNode.convertLocalViewCoordinatesToRemoteNormalizedPoint(currentDraggingLocationInDrawingView, getNode(), scale));
 			/*nodeGR.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint, controller.getDrawingGraphicalRepresentation(), controller.getScale())*/
 			Point fromPoint = getNode().convertLocalNormalizedPointToRemoteViewCoordinates(nearestOnOutline, rootNode, scale);
 			Point toPoint = currentDraggingLocationInDrawingView;
@@ -189,15 +189,18 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 					// toPoint = drawingGR.convertRemoteNormalizedPointToLocalViewCoordinates(to.getShape().getShape().getCenter(), to,
 					// scale);
 					g.setColor(OK);
-				} else {
+				}
+				else {
 					g.setColor(Color.RED);
 				}
 				g.drawLine(fromPoint.x, fromPoint.y, toPoint.x, toPoint.y);
 
-			} else {
+			}
+			else {
 				if (isDnd) {
 					g.setColor(OK);
-				} else {
+				}
+				else {
 					g.setColor(Color.RED);
 				}
 				Rectangle rect = new Rectangle(toPoint.x - 10, toPoint.y - 10, 20, 20);
@@ -210,14 +213,16 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 			if (fromPoint.x >= toPoint.x) {
 				x = toPoint.x;
 				w = fromPoint.x - toPoint.x;
-			} else {
+			}
+			else {
 				x = fromPoint.x;
 				w = toPoint.x - fromPoint.x;
 			}
 			if (fromPoint.y >= toPoint.y) {
 				y = toPoint.y;
 				h = fromPoint.y - toPoint.y;
-			} else {
+			}
+			else {
 				y = fromPoint.y;
 				h = toPoint.y - fromPoint.y;
 			}
@@ -230,7 +235,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		mode = null;
 		if (roleRect.contains(startPoint)) {
 			mode = Mode.CREATE_SHAPE_AND_LINK;
-		} else if (edgeRect.contains(startPoint)) {
+		}
+		else if (edgeRect.contains(startPoint)) {
 			mode = Mode.LINK_ONLY;
 		}
 		if (mode != null) {
@@ -238,7 +244,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 			normalizedStartPoint = startPoint;
 			this.controller = (FMLControlledDiagramEditor) controller;
 			this.controller.getDrawingView().setFloatingPalette(this);
-		} else {
+		}
+		else {
 			drawEdge = false;
 		}
 	}
@@ -260,15 +267,16 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 			focusedNode = controller.getDrawingView().getFocusRetriever().getFocusedObject(event);
 			if (focusedNode instanceof ShapeNode && focusedNode != getNode()) {
 				to = (ShapeNode<?>) focusedNode;
-			} else {
+			}
+			else {
 				to = null;
 			}
 
 			currentDraggingLocationInDrawingView = SwingUtilities.convertPoint((Component) event.getSource(), event.getPoint(),
 					controller.getDrawingView());
 			if (!isDnd) {
-				isDnd = getNode().convertLocalNormalizedPointToRemoteViewCoordinates(normalizedStartPoint,
-						getNode().getDrawing().getRoot(), controller.getScale()).distance(currentDraggingLocationInDrawingView) > 5;
+				isDnd = getNode().convertLocalNormalizedPointToRemoteViewCoordinates(normalizedStartPoint, getNode().getDrawing().getRoot(),
+						controller.getScale()).distance(currentDraggingLocationInDrawingView) > 5;
 			}
 
 			// Attempt to repaint relevant zone only
@@ -276,7 +284,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 			Rectangle boundsToRepaint;
 			if (oldBounds != null) {
 				boundsToRepaint = oldBounds.union(newBounds);
-			} else {
+			}
+			else {
 				boundsToRepaint = newBounds;
 			}
 			paintManager.repaint(drawingView, boundsToRepaint);
@@ -321,8 +330,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				}
 				SimplifiedCardinalDirection direction = FGEPoint.getSimplifiedOrientation(
 						new FGEPoint(getNode().convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint,
-								getNode().getDrawing().getRoot(), controller.getScale())), new FGEPoint(
-								currentDraggingLocationInDrawingView));
+								getNode().getDrawing().getRoot(), controller.getScale())),
+						new FGEPoint(currentDraggingLocationInDrawingView));
 				Point dropPoint = currentDraggingLocationInDrawingView;
 				if (dropPoint.x < 0) {
 					dropPoint.x = 0;
@@ -336,18 +345,18 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				// ShapeNode<?> to = null;
 
 				switch (mode) {
-				case CREATE_SHAPE_AND_LINK:
-					askAndApplyDropAndLinkScheme(dropLocation, focused);
-					break;
-				case LINK_ONLY:
-					if (to != null) {
-						// to = this.to.getDrawable();
-						askAndApplyLinkScheme(dropLocation, to);
-					}
-					break;
-				default:
-					logger.warning("Not implemented !!!");
-					break;
+					case CREATE_SHAPE_AND_LINK:
+						askAndApplyDropAndLinkScheme(dropLocation, focused);
+						break;
+					case LINK_ONLY:
+						if (to != null) {
+							// to = this.to.getDrawable();
+							askAndApplyLinkScheme(dropLocation, to);
+						}
+						break;
+					default:
+						logger.warning("Not implemented !!!");
+						break;
 				}
 				if (to == null) {
 					return;
@@ -361,7 +370,8 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				paintManager.invalidate(diagramView.getDrawing().getRoot());
 				paintManager.repaint(diagramView.getDrawing().getRoot());
 			}
-		} else {
+		}
+		else {
 			resetVariables();
 		}
 		super.stopDragging(controller, focusedNode);
@@ -390,13 +400,13 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 			container = (Diagram) focused.getDrawable();
 			containerConcept = null;
 		}
-
+		
 		if (container == null) {
 			return;
 		}*/
 
-		List<DropAndLinkScheme> allDropAndLinkSchemes = getNode().getDrawable().getAvailableDropAndLinkSchemes(
-				parentFlexoConceptInstance != null ? parentFlexoConceptInstance.getFlexoConcept() : null);
+		List<DropAndLinkScheme> allDropAndLinkSchemes = getNode().getDrawable()
+				.getAvailableDropAndLinkSchemes(parentFlexoConceptInstance != null ? parentFlexoConceptInstance.getFlexoConcept() : null);
 
 		if (allDropAndLinkSchemes.size() == 0) {
 			return;
@@ -412,18 +422,18 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				LocalizedDelegate localizedDictionary = dropAndLinkScheme.linkScheme.getViewPoint().getLocalizedDictionary();
 				String linkLabel = dropAndLinkScheme.linkScheme.getLabel() != null ? dropAndLinkScheme.linkScheme.getLabel()
 						: dropAndLinkScheme.linkScheme.getName();
-				String localizedLinkLabel = localizedDictionary.getLocalizedForKeyAndLanguage(linkLabel,
+				String localizedLinkLabel = localizedDictionary.localizedForKeyAndLanguage(linkLabel,
 						FlexoLocalization.getCurrentLanguage());
 				if (localizedLinkLabel == null) {
-					localizedLinkLabel = FlexoLocalization.localizedForKey(linkLabel);
+					localizedLinkLabel = linkLabel;
 				}
 				String dropLabel = dropAndLinkScheme.dropScheme.getFlexoConcept().getName();
-				String localizedDropLabel = localizedDictionary.getLocalizedForKeyAndLanguage(dropLabel,
+				String localizedDropLabel = localizedDictionary.localizedForKeyAndLanguage(dropLabel,
 						FlexoLocalization.getCurrentLanguage());
 				if (localizedDropLabel == null) {
-					localizedDropLabel = FlexoLocalization.localizedForKey(dropLabel);
+					localizedDropLabel = dropLabel;
 				}
-				String withNew = FlexoLocalization.localizedForKey("with_new");
+				String withNew = FlexoLocalization.getMainLocalizer().localizedForKey("with_new");
 				JMenuItem menuItem = new JMenuItem(localizedLinkLabel + " " + withNew + " " + localizedDropLabel);
 				// final DiagramContainerElement<?> finalContainer = container;
 				final FlexoConceptInstance finalParentFlexoConceptInstance = parentFlexoConceptInstance;
@@ -448,36 +458,38 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 
 		if (to.getDrawable() instanceof FMLControlledDiagramShape) {
 			final FMLControlledDiagramShape toShape = (FMLControlledDiagramShape) to.getDrawable();
-			List<LinkScheme> availableLinkSchemes = getNode().getDrawable().getAvailableLinkSchemes(
-					toShape.getFlexoConceptInstance().getFlexoConcept());
+			List<LinkScheme> availableLinkSchemes = getNode().getDrawable()
+					.getAvailableLinkSchemes(toShape.getFlexoConceptInstance().getFlexoConcept());
 
 			if (availableLinkSchemes.size() == 1) {
-				LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(getNode().getDrawable().getFlexoConceptInstance()
-						.getVirtualModelInstance(), null, controller.getFlexoController().getEditor());
+				LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(
+						getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
+						controller.getFlexoController().getEditor());
 				action.setLinkScheme(availableLinkSchemes.get(0));
 				action.setFromShape(getNode().getDrawable().getDiagramElement());
 				action.setToShape(toShape.getDiagramElement());
 				action.escapeParameterRetrievingWhenValid = true;
 				action.doAction();
-			} else if (availableLinkSchemes.size() > 1) {
+			}
+			else if (availableLinkSchemes.size() > 1) {
 				JPopupMenu popup = new JPopupMenu();
 				for (final LinkScheme linkScheme : availableLinkSchemes) {
 					// final CalcPaletteConnector connector = availableConnectors.get(linkScheme);
 					// System.out.println("Available: "+paletteConnector.getEditionPattern().getName());
 					LocalizedDelegate localizedDictionary = linkScheme.getViewPoint().getLocalizedDictionary();
 					String label = linkScheme.getLabel() != null ? linkScheme.getLabel() : linkScheme.getName();
-					String localized = localizedDictionary.getLocalizedForKeyAndLanguage(label, FlexoLocalization.getCurrentLanguage());
+					String localized = localizedDictionary.localizedForKeyAndLanguage(label, FlexoLocalization.getCurrentLanguage());
 					if (localized == null) {
-						localized = FlexoLocalization.localizedForKey(label);
+						localized = label;
 					}
 					JMenuItem menuItem = new JMenuItem(localized);
 					menuItem.addActionListener(new ActionListener() {
 						@Override
 						public void actionPerformed(ActionEvent e) {
 							// System.out.println("Action "+paletteConnector.getEditionPattern().getName());
-							LinkSchemeAction action = LinkSchemeAction.actionType
-									.makeNewAction(getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
-											controller.getFlexoController().getEditor());
+							LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(
+									getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
+									controller.getFlexoController().getEditor());
 							action.setLinkScheme(linkScheme);
 							action.setFromShape(getNode().getDrawable().getDiagramElement());
 							action.setToShape(toShape.getDiagramElement());
@@ -491,10 +503,11 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 				popup.show((Component) controller.getDrawingView().viewForNode(getNode().getParentNode()), (int) dropLocation.x,
 						(int) dropLocation.y);
 			}
-		} else if (to.getDrawable() instanceof DiagramShape) {
+		}
+		else if (to.getDrawable() instanceof DiagramShape) {
 			// Graphical connector only
-			AddConnector action = AddConnector.actionType.makeNewAction(getNode().getDrawable().getDiagramElement(), null, controller
-					.getFlexoController().getEditor());
+			AddConnector action = AddConnector.actionType.makeNewAction(getNode().getDrawable().getDiagramElement(), null,
+					controller.getFlexoController().getEditor());
 			action.setToShape((DiagramShape) to.getDrawable());
 			action.doAction();
 		}
@@ -502,13 +515,13 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	}
 
 	protected void applyDropAndLinkScheme(final DropAndLinkScheme dropAndLinkScheme, final FGEPoint dropLocation,
-	/*DiagramContainerElement<?> container*/FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole) {
+			/*DiagramContainerElement<?> container*/FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole) {
 		applyDropAndLinkScheme(dropAndLinkScheme.dropScheme, dropAndLinkScheme.linkScheme, dropLocation, parentFlexoConceptInstance,
 				parentShapeRole);
 	}
 
 	protected void applyDropAndLinkScheme(DropScheme dropScheme, LinkScheme linkScheme, FGEPoint dropLocation,
-	/*DiagramContainerElement<?> container*/FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole) {
+			/*DiagramContainerElement<?> container*/FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole) {
 
 		logger.info("applyDropAndLinkScheme dropScheme=" + dropScheme + " linkScheme=" + linkScheme + " parentFlexoConceptInstance="
 				+ parentFlexoConceptInstance + " parentShapeRole=" + parentShapeRole);
@@ -531,8 +544,9 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	private FMLControlledDiagramShape createNewShape(FGEPoint dropLocation, /*DiagramContainerElement<?> container*/
 			FlexoConceptInstance parentFlexoConceptInstance, ShapeRole parentShapeRole, DropScheme dropScheme) {
 
-		DropSchemeAction dropSchemeAction = DropSchemeAction.actionType.makeNewAction((VirtualModelInstance) getNode().getDrawable()
-				.getFlexoConceptInstance().getVirtualModelInstance(), null, controller.getFlexoController().getEditor());
+		DropSchemeAction dropSchemeAction = DropSchemeAction.actionType.makeNewAction(
+				(VirtualModelInstance) getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
+				controller.getFlexoController().getEditor());
 		dropSchemeAction.setDropScheme(dropScheme);
 		// dropSchemeAction.setParent(container);
 		dropSchemeAction.setParentInformations(parentFlexoConceptInstance, parentShapeRole);
@@ -547,8 +561,9 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	private FMLControlledDiagramConnector createNewConnector(FMLControlledDiagramShape from, FMLControlledDiagramShape to,
 			LinkScheme linkScheme) {
 
-		LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(getNode().getDrawable().getFlexoConceptInstance()
-				.getVirtualModelInstance(), null, controller.getFlexoController().getEditor());
+		LinkSchemeAction action = LinkSchemeAction.actionType.makeNewAction(
+				getNode().getDrawable().getFlexoConceptInstance().getVirtualModelInstance(), null,
+				controller.getFlexoController().getEditor());
 		action.setLinkScheme(linkScheme);
 		action.setFromShape(getNode().getDrawable().getDiagramElement());
 		action.setToShape(to.getDiagramElement());
@@ -597,46 +612,46 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		// drawingGraphics.useDefaultBackgroundStyle();
 		FGEPoint eastPt, westPt, northPt, southPt;
 		switch (orientation) {
-		case EAST:
-			eastPt = edgeRect.getEastPt();
-			westPt = edgeRect.getWestPt();
-			drawingGraphics.drawLine(westPt.x, westPt.y, eastPt.x - arrowSize, eastPt.y);
-			drawingGraphics.drawLine(eastPt.x - arrowSize, edgeRect.y + 1, eastPt.x - arrowSize, edgeRect.y + ELEMENTS_HEIGHT - 1);
-			drawingGraphics.drawLine(eastPt.x - arrowSize, edgeRect.y + 1, eastPt.x, eastPt.y);
-			drawingGraphics.drawLine(eastPt.x - arrowSize, edgeRect.y + ELEMENTS_HEIGHT - 1, eastPt.x, eastPt.y);
-			break;
-		case WEST:
-			eastPt = edgeRect.getEastPt();
-			westPt = edgeRect.getWestPt();
-			drawingGraphics.drawLine(eastPt.x, eastPt.y, edgeRect.x + arrowSize, eastPt.y);
-			drawingGraphics.drawLine(edgeRect.x + arrowSize, edgeRect.y + 1, edgeRect.x + arrowSize, edgeRect.y + ELEMENTS_HEIGHT - 1);
-			drawingGraphics.drawLine(edgeRect.x + arrowSize, edgeRect.y + 1, westPt.x, westPt.y);
-			drawingGraphics.drawLine(edgeRect.x + arrowSize, edgeRect.y + ELEMENTS_HEIGHT - 1, westPt.x, westPt.y);
-			break;
-		case NORTH:
-			northPt = edgeRect.getNorthPt();
-			southPt = edgeRect.getSouthPt();
-			drawingGraphics.drawLine(southPt.x, southPt.y, southPt.x, edgeRect.y + arrowSize);
-			drawingGraphics.drawLine(edgeRect.x + 2, edgeRect.y + arrowSize, edgeRect.x + ELEMENTS_WIDTH - 2, edgeRect.y + arrowSize);
-			drawingGraphics.drawLine(edgeRect.x + 2, edgeRect.y + arrowSize, northPt.x, northPt.y);
-			drawingGraphics.drawLine(edgeRect.x + ELEMENTS_WIDTH - 2, edgeRect.y + arrowSize, northPt.x, northPt.y);
-			break;
-		case SOUTH:
-			northPt = edgeRect.getNorthPt();
-			southPt = edgeRect.getSouthPt();
-			drawingGraphics.drawLine(northPt.x, northPt.y, northPt.x, southPt.y - arrowSize);
-			drawingGraphics.drawLine(edgeRect.x + 2, southPt.y - arrowSize, edgeRect.x + ELEMENTS_WIDTH - 2, southPt.y - arrowSize);
-			drawingGraphics.drawLine(edgeRect.x + 2, southPt.y - arrowSize, southPt.x, southPt.y);
-			drawingGraphics.drawLine(edgeRect.x + ELEMENTS_WIDTH - 2, southPt.y - arrowSize, southPt.x, southPt.y);
-			break;
+			case EAST:
+				eastPt = edgeRect.getEastPt();
+				westPt = edgeRect.getWestPt();
+				drawingGraphics.drawLine(westPt.x, westPt.y, eastPt.x - arrowSize, eastPt.y);
+				drawingGraphics.drawLine(eastPt.x - arrowSize, edgeRect.y + 1, eastPt.x - arrowSize, edgeRect.y + ELEMENTS_HEIGHT - 1);
+				drawingGraphics.drawLine(eastPt.x - arrowSize, edgeRect.y + 1, eastPt.x, eastPt.y);
+				drawingGraphics.drawLine(eastPt.x - arrowSize, edgeRect.y + ELEMENTS_HEIGHT - 1, eastPt.x, eastPt.y);
+				break;
+			case WEST:
+				eastPt = edgeRect.getEastPt();
+				westPt = edgeRect.getWestPt();
+				drawingGraphics.drawLine(eastPt.x, eastPt.y, edgeRect.x + arrowSize, eastPt.y);
+				drawingGraphics.drawLine(edgeRect.x + arrowSize, edgeRect.y + 1, edgeRect.x + arrowSize, edgeRect.y + ELEMENTS_HEIGHT - 1);
+				drawingGraphics.drawLine(edgeRect.x + arrowSize, edgeRect.y + 1, westPt.x, westPt.y);
+				drawingGraphics.drawLine(edgeRect.x + arrowSize, edgeRect.y + ELEMENTS_HEIGHT - 1, westPt.x, westPt.y);
+				break;
+			case NORTH:
+				northPt = edgeRect.getNorthPt();
+				southPt = edgeRect.getSouthPt();
+				drawingGraphics.drawLine(southPt.x, southPt.y, southPt.x, edgeRect.y + arrowSize);
+				drawingGraphics.drawLine(edgeRect.x + 2, edgeRect.y + arrowSize, edgeRect.x + ELEMENTS_WIDTH - 2, edgeRect.y + arrowSize);
+				drawingGraphics.drawLine(edgeRect.x + 2, edgeRect.y + arrowSize, northPt.x, northPt.y);
+				drawingGraphics.drawLine(edgeRect.x + ELEMENTS_WIDTH - 2, edgeRect.y + arrowSize, northPt.x, northPt.y);
+				break;
+			case SOUTH:
+				northPt = edgeRect.getNorthPt();
+				southPt = edgeRect.getSouthPt();
+				drawingGraphics.drawLine(northPt.x, northPt.y, northPt.x, southPt.y - arrowSize);
+				drawingGraphics.drawLine(edgeRect.x + 2, southPt.y - arrowSize, edgeRect.x + ELEMENTS_WIDTH - 2, southPt.y - arrowSize);
+				drawingGraphics.drawLine(edgeRect.x + 2, southPt.y - arrowSize, southPt.x, southPt.y);
+				drawingGraphics.drawLine(edgeRect.x + ELEMENTS_WIDTH - 2, southPt.y - arrowSize, southPt.x, southPt.y);
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 
 		// drawingGraphics.releaseClonedGraphics(oldGraphics);
-		Rectangle returned = getNode().getDrawing().getRoot()
-				.convertNormalizedRectangleToViewCoordinates(paletteRect.getBoundingBox(), drawingGraphics.getScale());
+		Rectangle returned = getNode().getDrawing().getRoot().convertNormalizedRectangleToViewCoordinates(paletteRect.getBoundingBox(),
+				drawingGraphics.getScale());
 		returned.x = returned.x - 20;
 		returned.y = returned.y - 20;
 		returned.width = returned.width + 40;
@@ -667,43 +682,49 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		if (orientation == SimplifiedCardinalDirection.EAST || orientation == SimplifiedCardinalDirection.WEST) {
 			PALETTE_WIDTH = ELEMENTS_WIDTH + 4;
 			PALETTE_HEIGHT = 2 * ELEMENTS_HEIGHT + 3 * SPACING;
-		} else if (orientation == SimplifiedCardinalDirection.NORTH || orientation == SimplifiedCardinalDirection.SOUTH) {
+		}
+		else if (orientation == SimplifiedCardinalDirection.NORTH || orientation == SimplifiedCardinalDirection.SOUTH) {
 			PALETTE_WIDTH = 2 * ELEMENTS_WIDTH + 3 * SPACING;
 			PALETTE_HEIGHT = ELEMENTS_HEIGHT + 4;
 		}
 
 		switch (orientation) {
-		case EAST:
-			roleRect = (FGERoundRectangle) new FGERoundRectangle(getNode().getWidth() + SPACING + (PALETTE_WIDTH - ELEMENTS_WIDTH) / 2
-					+ 0.5, (getNode().getHeight() - PALETTE_HEIGHT) / 2 + SPACING, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2, 2, Filling.FILLED)
-					.transform(at);
-			edgeRect = (FGERectangle) new FGERectangle(getNode().getWidth() + SPACING + (PALETTE_WIDTH - ELEMENTS_WIDTH) / 2, (getNode()
-					.getHeight() - PALETTE_HEIGHT) / 2 + SPACING + (SPACING + ELEMENTS_HEIGHT), ELEMENTS_WIDTH, ELEMENTS_HEIGHT,
-					Filling.FILLED).transform(at);
-			break;
-		case WEST:
-			roleRect = (FGERoundRectangle) new FGERoundRectangle(-SPACING - ELEMENTS_WIDTH, (getNode().getHeight() - PALETTE_HEIGHT) / 2
-					+ SPACING, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2, 2, Filling.FILLED).transform(at);
-			edgeRect = (FGERectangle) new FGERectangle(-SPACING - ELEMENTS_WIDTH, (getNode().getHeight() - PALETTE_HEIGHT) / 2 + SPACING
-					+ (SPACING + ELEMENTS_HEIGHT), ELEMENTS_WIDTH, ELEMENTS_HEIGHT, Filling.FILLED).transform(at);
-			break;
-		case NORTH:
-			roleRect = (FGERoundRectangle) new FGERoundRectangle((getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING, -SPACING
-					- ELEMENTS_HEIGHT, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2, 2, Filling.FILLED).transform(at);
-			edgeRect = (FGERectangle) new FGERectangle((getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING + (SPACING + ELEMENTS_WIDTH),
-					-SPACING - ELEMENTS_HEIGHT, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, Filling.FILLED).transform(at);
-			break;
-		case SOUTH:
-			roleRect = (FGERoundRectangle) new FGERoundRectangle((getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING, getNode()
-					.getHeight() + SPACING + (PALETTE_HEIGHT - ELEMENTS_HEIGHT) / 2 + 0.5, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2, 2,
-					Filling.FILLED).transform(at);
-			edgeRect = (FGERectangle) new FGERectangle((getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING + (SPACING + ELEMENTS_WIDTH),
-					getNode().getHeight() + SPACING + (PALETTE_HEIGHT - ELEMENTS_HEIGHT) / 2 + 0.5, ELEMENTS_WIDTH, ELEMENTS_HEIGHT,
-					Filling.FILLED).transform(at);
-			break;
+			case EAST:
+				roleRect = (FGERoundRectangle) new FGERoundRectangle(
+						getNode().getWidth() + SPACING + (PALETTE_WIDTH - ELEMENTS_WIDTH) / 2 + 0.5,
+						(getNode().getHeight() - PALETTE_HEIGHT) / 2 + SPACING, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2, 2, Filling.FILLED)
+								.transform(at);
+				edgeRect = (FGERectangle) new FGERectangle(getNode().getWidth() + SPACING + (PALETTE_WIDTH - ELEMENTS_WIDTH) / 2,
+						(getNode().getHeight() - PALETTE_HEIGHT) / 2 + SPACING + (SPACING + ELEMENTS_HEIGHT), ELEMENTS_WIDTH,
+						ELEMENTS_HEIGHT, Filling.FILLED).transform(at);
+				break;
+			case WEST:
+				roleRect = (FGERoundRectangle) new FGERoundRectangle(-SPACING - ELEMENTS_WIDTH,
+						(getNode().getHeight() - PALETTE_HEIGHT) / 2 + SPACING, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2, 2, Filling.FILLED)
+								.transform(at);
+				edgeRect = (FGERectangle) new FGERectangle(-SPACING - ELEMENTS_WIDTH,
+						(getNode().getHeight() - PALETTE_HEIGHT) / 2 + SPACING + (SPACING + ELEMENTS_HEIGHT), ELEMENTS_WIDTH,
+						ELEMENTS_HEIGHT, Filling.FILLED).transform(at);
+				break;
+			case NORTH:
+				roleRect = (FGERoundRectangle) new FGERoundRectangle((getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING,
+						-SPACING - ELEMENTS_HEIGHT, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2, 2, Filling.FILLED).transform(at);
+				edgeRect = (FGERectangle) new FGERectangle(
+						(getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING + (SPACING + ELEMENTS_WIDTH), -SPACING - ELEMENTS_HEIGHT,
+						ELEMENTS_WIDTH, ELEMENTS_HEIGHT, Filling.FILLED).transform(at);
+				break;
+			case SOUTH:
+				roleRect = (FGERoundRectangle) new FGERoundRectangle((getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING,
+						getNode().getHeight() + SPACING + (PALETTE_HEIGHT - ELEMENTS_HEIGHT) / 2 + 0.5, ELEMENTS_WIDTH, ELEMENTS_HEIGHT, 2,
+						2, Filling.FILLED).transform(at);
+				edgeRect = (FGERectangle) new FGERectangle(
+						(getNode().getWidth() - PALETTE_WIDTH) / 2 + SPACING + (SPACING + ELEMENTS_WIDTH),
+						getNode().getHeight() + SPACING + (PALETTE_HEIGHT - ELEMENTS_HEIGHT) / 2 + 0.5, ELEMENTS_WIDTH, ELEMENTS_HEIGHT,
+						Filling.FILLED).transform(at);
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 
 	}
@@ -716,42 +737,43 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		if (orientation == SimplifiedCardinalDirection.EAST || orientation == SimplifiedCardinalDirection.WEST) {
 			PALETTE_WIDTH = ELEMENTS_WIDTH + 4;
 			PALETTE_HEIGHT = 2 * ELEMENTS_HEIGHT + 3 * SPACING;
-		} else if (orientation == SimplifiedCardinalDirection.NORTH || orientation == SimplifiedCardinalDirection.SOUTH) {
+		}
+		else if (orientation == SimplifiedCardinalDirection.NORTH || orientation == SimplifiedCardinalDirection.SOUTH) {
 			PALETTE_WIDTH = 2 * ELEMENTS_WIDTH + 3 * SPACING;
 			PALETTE_HEIGHT = ELEMENTS_HEIGHT + 4;
 		}
 
 		switch (orientation) {
-		case EAST:
-			x = shapeGR.getWidth() + SPACING;
-			y = (shapeGR.getHeight() - PALETTE_HEIGHT) / 2;
-			width = PALETTE_WIDTH;
-			height = PALETTE_HEIGHT;
-			return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(), height
-					/ shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
-		case WEST:
-			x = -SPACING - ELEMENTS_WIDTH;
-			y = (shapeGR.getHeight() - PALETTE_HEIGHT) / 2;
-			width = PALETTE_WIDTH;
-			height = PALETTE_HEIGHT;
-			return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(), height
-					/ shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
-		case NORTH:
-			x = (shapeGR.getWidth() - PALETTE_WIDTH) / 2;
-			y = -SPACING - ELEMENTS_HEIGHT;
-			width = PALETTE_WIDTH;
-			height = PALETTE_HEIGHT;
-			return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(), height
-					/ shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
-		case SOUTH:
-			x = (shapeGR.getWidth() - PALETTE_WIDTH) / 2;
-			y = shapeGR.getHeight() + SPACING;
-			width = PALETTE_WIDTH;
-			height = PALETTE_HEIGHT;
-			return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(), height
-					/ shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
-		default:
-			return null;
+			case EAST:
+				x = shapeGR.getWidth() + SPACING;
+				y = (shapeGR.getHeight() - PALETTE_HEIGHT) / 2;
+				width = PALETTE_WIDTH;
+				height = PALETTE_HEIGHT;
+				return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
+						height / shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
+			case WEST:
+				x = -SPACING - ELEMENTS_WIDTH;
+				y = (shapeGR.getHeight() - PALETTE_HEIGHT) / 2;
+				width = PALETTE_WIDTH;
+				height = PALETTE_HEIGHT;
+				return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
+						height / shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
+			case NORTH:
+				x = (shapeGR.getWidth() - PALETTE_WIDTH) / 2;
+				y = -SPACING - ELEMENTS_HEIGHT;
+				width = PALETTE_WIDTH;
+				height = PALETTE_HEIGHT;
+				return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
+						height / shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
+			case SOUTH:
+				x = (shapeGR.getWidth() - PALETTE_WIDTH) / 2;
+				y = shapeGR.getHeight() + SPACING;
+				width = PALETTE_WIDTH;
+				height = PALETTE_HEIGHT;
+				return new FGERoundRectangle(x / shapeGR.getWidth(), y / shapeGR.getHeight(), width / shapeGR.getWidth(),
+						height / shapeGR.getHeight(), 13.0 / shapeGR.getWidth(), 13.0 / shapeGR.getHeight(), Filling.FILLED);
+			default:
+				return null;
 		}
 	}
 

@@ -57,8 +57,9 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 @SuppressWarnings("serial")
 public class OWLOntologyView extends OntologyView<OWLOntology> {
 
-	public OWLOntologyView(OWLOntology object, FlexoController controller, FlexoPerspective perspective) {
-		super(object, controller, perspective);
+	public OWLOntologyView(OWLOntology ontology, FlexoController controller, FlexoPerspective perspective) {
+		super(ontology, controller, perspective,
+				ontology != null ? ontology.getTechnologyAdapter().getLocales() : controller.getFlexoLocales());
 	}
 
 	@Override

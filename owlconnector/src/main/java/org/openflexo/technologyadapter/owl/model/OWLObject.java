@@ -43,10 +43,11 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.ontology.FlexoOntologyObjectImpl;
 import org.openflexo.foundation.ontology.IFlexoOntologyObject;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 
-public abstract class OWLObject extends FlexoOntologyObjectImpl<OWLTechnologyAdapter> implements
-		IFlexoOntologyObject<OWLTechnologyAdapter>, OWL2URIDefinitions, RDFURIDefinitions, RDFSURIDefinitions {
+public abstract class OWLObject extends FlexoOntologyObjectImpl<OWLTechnologyAdapter>
+		implements IFlexoOntologyObject<OWLTechnologyAdapter>, OWL2URIDefinitions, RDFURIDefinitions, RDFSURIDefinitions {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(OWLObject.class.getPackage().getName());
@@ -73,6 +74,14 @@ public abstract class OWLObject extends FlexoOntologyObjectImpl<OWLTechnologyAda
 
 	public OWLOntologyLibrary getOntologyLibrary() {
 		return getTechnologyAdapter().getOntologyLibrary();
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getTechnologyAdapter() != null) {
+			return getTechnologyAdapter().getLocales();
+		}
+		return super.getLocales();
 	}
 
 }

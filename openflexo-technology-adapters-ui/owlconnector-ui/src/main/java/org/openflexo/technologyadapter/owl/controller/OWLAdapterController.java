@@ -112,7 +112,8 @@ public class OWLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		owlInspectorGroup = controller.loadInspectorGroup("OWL", getFMLTechnologyAdapterInspectorGroup());
+		owlInspectorGroup = controller.loadInspectorGroup("OWL", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup owlInspectorGroup;

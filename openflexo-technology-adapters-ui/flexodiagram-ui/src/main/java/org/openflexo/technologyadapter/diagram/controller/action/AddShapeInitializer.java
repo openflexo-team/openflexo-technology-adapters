@@ -47,7 +47,6 @@ import org.openflexo.fge.Drawing.ShapeNode;
 import org.openflexo.fge.swing.view.JShapeView;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramContainerElement;
@@ -79,7 +78,7 @@ public class AddShapeInitializer extends ActionInitializer<AddShape, DiagramCont
 
 				DiagramElement<?> parent = action.getParent();
 				if (parent != null) {
-					String newName = FlexoController.askForString(FlexoLocalization.localizedForKey("name_for_new_shape"));
+					String newName = FlexoController.askForString(action.getLocales().localizedForKey("name_for_new_shape"));
 					if (newName == null || StringUtils.isEmpty(newName)) {
 						return false;
 					}

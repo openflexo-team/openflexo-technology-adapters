@@ -46,7 +46,6 @@ import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModelInstance;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.FlexoController;
@@ -90,7 +89,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceWizard
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("choose_fml_controlled_diagram_virtual_model");
+			return action.getLocales().localizedForKey("choose_fml_controlled_diagram_virtual_model");
 		}
 
 	}
@@ -106,7 +105,7 @@ public class CreateFMLControlledDiagramVirtualModelInstanceWizard
 
 	@Override
 	public String getWizardTitle() {
-		return FlexoLocalization.localizedForKey("create_fml_controlled_diagram");
+		return action.getLocales().localizedForKey("create_fml_controlled_diagram");
 	}
 
 	@Override

@@ -95,6 +95,11 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		return "OWL technology adapter";
 	}
 
+	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/OWLTechnologyAdapter";
+	}
+
 	/**
 	 * Return the {@link FlexoOntologyTechnologyContextManager} for this technology shared by all {@link FlexoResourceCenter} declared in
 	 * the scope of {@link FlexoResourceCenterService}

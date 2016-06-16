@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.emf;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
@@ -53,9 +52,8 @@ public class EMFModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		super(ms, virtualModelInstance, project);
 		setModelUri(project.getURI() + "/Models/myEMFModel");
 		setRelativePath("/");
-		setFilename("myEMFModel"
-				+ getModelSlot().getModelSlotTechnologyAdapter().getExpectedModelExtension(
-						(EMFMetaModelResource) getModelSlot().getMetaModelResource()));
+		setFilename("myEMFModel" + getModelSlot().getModelSlotTechnologyAdapter()
+				.getExpectedModelExtension((EMFMetaModelResource) getModelSlot().getMetaModelResource()));
 	}
 
 	/*@Override
@@ -86,10 +84,11 @@ public class EMFModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		String expectedSuffix = getModelSlot().getModelSlotTechnologyAdapter().getExpectedModelExtension(
-				(EMFMetaModelResource) getModelSlot().getMetaModelResource());
+		String expectedSuffix = getModelSlot().getModelSlotTechnologyAdapter()
+				.getExpectedModelExtension((EMFMetaModelResource) getModelSlot().getMetaModelResource());
 		if (!getFilename().endsWith(expectedSuffix)) {
-			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_right_suffix" + " : " + expectedSuffix));
+			setErrorMessage(getModelSlot().getModelSlotTechnologyAdapter().getLocales()
+					.localizedForKey("file_name_should_end_with_right_suffix" + " : " + expectedSuffix));
 			return false;
 		}
 		return true;

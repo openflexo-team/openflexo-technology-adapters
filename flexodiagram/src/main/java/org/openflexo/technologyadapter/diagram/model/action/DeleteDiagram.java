@@ -46,6 +46,8 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 
@@ -85,10 +87,18 @@ public class DeleteDiagram extends FlexoAction<DeleteDiagram, Diagram, FlexoObje
 	}
 
 	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
+	}
+
+	@Override
 	protected void doAction(Object context) {
 		logger.info("Delete diagram");
 		DiagramSpecification diagramSpecification = getFocusedObject().getDiagramSpecification();
-		if(diagramSpecification!=null){
+		if (diagramSpecification != null) {
 			diagramSpecification.removeFromExampleDiagrams(getFocusedObject());
 		}
 		if (getFocusedObject().getResource() != null) {

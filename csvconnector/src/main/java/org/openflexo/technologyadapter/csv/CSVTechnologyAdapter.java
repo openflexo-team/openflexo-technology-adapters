@@ -61,6 +61,11 @@ public class CSVTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/CSVTechnologyAdapter";
+	}
+
+	@Override
 	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		// TODO Auto-generated method stub
 		return null;

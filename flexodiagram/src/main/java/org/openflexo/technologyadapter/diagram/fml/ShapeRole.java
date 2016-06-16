@@ -50,7 +50,6 @@ import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.DefineValidationRule;
@@ -75,12 +74,14 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	@PropertyIdentifier(type = ShapeRole.class)
 	public static final String PARENT_SHAPE_PATTERN_ROLE_KEY = "parentShapeRole";
 
+	@Override
 	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
 	@XMLElement
 	public ShapeGraphicalRepresentation getGraphicalRepresentation();
 
+	@Override
 	@Setter(GRAPHICAL_REPRESENTATION_KEY)
 	public void setGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation);
 
@@ -105,8 +106,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	 */
 	public List<ShapeRole> getPossibleParentShapeRoles();
 
-	public static abstract class ShapeRoleImpl extends GraphicalElementRoleImpl<DiagramShape, ShapeGraphicalRepresentation> implements
-			ShapeRole {
+	public static abstract class ShapeRoleImpl extends GraphicalElementRoleImpl<DiagramShape, ShapeGraphicalRepresentation>
+			implements ShapeRole {
 
 		private static final Logger logger = Logger.getLogger(ShapeRole.class.getPackage().getName());
 
@@ -123,9 +124,9 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 			super.initDefaultSpecifications();
 			if (getFMLModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-					//logger.info("[SHAPE:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
-					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
-							GraphicalElementSpecification.class);
+					// logger.info("[SHAPE:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
+					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory()
+							.newInstance(GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
 					newGraphicalElementSpecification.setReadOnly(false);
@@ -141,18 +142,18 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
 			AbstractVirtualModel<?> vm = getOwningVirtualModel();
-			if ( vm != null){
+			if (vm != null) {
 				out.append("FlexoRole " + getName() + " as ShapeSpecification from " + vm.getName() + ";", context);
 			}
 			else {
-				out.append("FlexoRole " + getName()+ " -- NO OWNING MODEL;", context);
+				out.append("FlexoRole " + getName() + " -- NO OWNING MODEL;", context);
 			}
 			return out.toString();
 		}
 
 		@Override
 		public String getTypeDescription() {
-			return FlexoLocalization.localizedForKey("shape");
+			return getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("shape");
 		}
 
 		public void tryToFindAGR() {
@@ -223,7 +224,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 				if (possibleParentPatternRole.size() > 0) {
 					setParentShapeRole(possibleParentPatternRole.get(0));
 				}
-			} else {
+			}
+			else {
 				// System.out.println("setParentShapePatternRole with null");
 				setParentShapeRole(null);
 				// flag = true;

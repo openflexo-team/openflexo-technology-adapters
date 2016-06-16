@@ -93,6 +93,11 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/ExcelTechnologyAdapter";
+	}
+
+	@Override
 	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new ExcelTechnologyContextManager(this, service);
 	}
@@ -163,13 +168,15 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 			if (workbook instanceof File) {
 				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((File) workbook, getTechnologyContextManager(),
 						resourceCenter);
-			} else if (workbook instanceof InJarResourceImpl) {
+			}
+			else if (workbook instanceof InJarResourceImpl) {
 				returned = ExcelWorkbookResourceImpl.retrieveExcelWorkbookResource((InJarResourceImpl) workbook,
 						getTechnologyContextManager(), resourceCenter);
 			}
 			if (returned != null) {
 				getTechnologyContextManager().registerExcelWorkbook(returned);
-			} else {
+			}
+			else {
 				logger.warning("Cannot retrieve ExcelWorkbook resource for " + workbook);
 			}
 		}
@@ -180,7 +187,8 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	public boolean isValidWorkbook(Object candidateElement) {
 		if (candidateElement instanceof File && isValidWorkbookFile(((File) candidateElement))) {
 			return true;
-		} else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
+		}
+		else if (candidateElement instanceof InJarResourceImpl && isValidWorkbookInJar((InJarResourceImpl) candidateElement)) {
 			return true;
 		}
 		return false;

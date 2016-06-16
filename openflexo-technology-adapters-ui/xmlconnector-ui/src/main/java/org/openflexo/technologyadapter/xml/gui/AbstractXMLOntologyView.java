@@ -43,6 +43,7 @@ import javax.swing.ImageIcon;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.ontology.components.widget.OntologyView;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.view.controller.FlexoController;
 import org.openflexo.view.controller.model.FlexoPerspective;
 
@@ -57,7 +58,7 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 public abstract class AbstractXMLOntologyView<T extends FlexoObject & IFlexoOntology> extends OntologyView<T> {
 
 	public AbstractXMLOntologyView(T object, FlexoController controller, FlexoPerspective perspective) {
-		super(object, controller, perspective);
+		super(object, controller, perspective, controller.getTechnologyAdapter(XMLTechnologyAdapter.class).getLocales());
 	}
 
 	@Override

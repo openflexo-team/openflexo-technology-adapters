@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram.gui.view;
 
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.view.FIBModuleView;
@@ -54,7 +55,8 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 public class DiagramSpecificationView extends FIBModuleView<DiagramSpecification> {
 
 	public DiagramSpecificationView(DiagramSpecification flexoConcept, FlexoController controller) {
-		super(flexoConcept, controller, DiagramCst.DIAGRAM_SPECIFICATION_VIEW_FIB);
+		super(flexoConcept, controller, DiagramCst.DIAGRAM_SPECIFICATION_VIEW_FIB,
+				controller.getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales());
 	}
 
 	@Override

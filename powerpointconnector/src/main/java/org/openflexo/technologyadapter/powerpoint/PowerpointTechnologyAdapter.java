@@ -89,6 +89,11 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/PowerPointTechnologyAdapter";
+	}
+
+	@Override
 	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new PowerpointTechnologyContextManager(this, service);
 	}

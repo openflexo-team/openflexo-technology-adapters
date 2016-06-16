@@ -47,7 +47,6 @@ import org.openflexo.components.wizard.WizardStep;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.gina.controller.GINAIconLibrary;
 import org.openflexo.technologyadapter.gina.model.action.CreateGINAFIBComponent;
 import org.openflexo.toolbox.StringUtils;
@@ -70,7 +69,7 @@ public class CreateGINAFIBComponentWizard extends FlexoWizard {
 
 	@Override
 	public String getWizardTitle() {
-		return FlexoLocalization.localizedForKey("create_new_component");
+		return action.getLocales().localizedForKey("create_new_component");
 	}
 
 	@Override
@@ -101,14 +100,14 @@ public class CreateGINAFIBComponentWizard extends FlexoWizard {
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("configure_new_component");
+			return getAction().getLocales().localizedForKey("configure_new_component");
 		}
 
 		@Override
 		public boolean isValid() {
 
 			if (StringUtils.isEmpty(getComponentName())) {
-				setIssueMessage(FlexoLocalization.localizedForKey("no_component_name_defined"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("no_component_name_defined"), IssueMessageType.ERROR);
 				return false;
 			}
 			return true;

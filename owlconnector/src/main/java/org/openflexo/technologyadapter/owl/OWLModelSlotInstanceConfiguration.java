@@ -46,7 +46,6 @@ import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 import org.openflexo.toolbox.StringUtils;
@@ -128,7 +127,8 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 			return false;
 		}
 		if (!getFilename().endsWith(getModelSlot().getModelSlotTechnologyAdapter().getExpectedOntologyExtension())) {
-			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.owl_suffix"));
+			setErrorMessage(
+					getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("file_name_should_end_with_.owl_suffix"));
 			return false;
 		}
 		return true;

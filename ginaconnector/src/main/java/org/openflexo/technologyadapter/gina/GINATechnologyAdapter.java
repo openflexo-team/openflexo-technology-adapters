@@ -65,6 +65,11 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/GINATechnologyAdapter";
+	}
+
+	@Override
 	public GINATechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new GINATechnologyContextManager(this, service);
 	}

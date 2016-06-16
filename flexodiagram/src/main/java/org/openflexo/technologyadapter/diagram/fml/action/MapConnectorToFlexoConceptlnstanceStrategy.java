@@ -42,7 +42,6 @@ import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.JavaUtils;
 
@@ -112,11 +111,11 @@ public class MapConnectorToFlexoConceptlnstanceStrategy extends FlexoConceptFrom
 			return false;
 		}
 		if (!isVirtualModelModelSlot()) {
-			setIssueMessage(FlexoLocalization.localizedForKey(NO_FML_RT_MODEL_SLOT_DEFINED), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey(NO_FML_RT_MODEL_SLOT_DEFINED), IssueMessageType.ERROR);
 			return false;
 		}
 		if (getTypeConcept() == null) {
-			setIssueMessage(FlexoLocalization.localizedForKey(NO_CONCEPT_DEFINED), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey(NO_CONCEPT_DEFINED), IssueMessageType.ERROR);
 			return false;
 		}
 		return true;

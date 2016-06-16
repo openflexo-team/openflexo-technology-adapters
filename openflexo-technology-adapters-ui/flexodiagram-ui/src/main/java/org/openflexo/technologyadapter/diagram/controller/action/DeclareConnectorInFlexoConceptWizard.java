@@ -48,7 +48,6 @@ import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.action.BlankFlexoConceptFromConnectorCreationStrategy;
 import org.openflexo.technologyadapter.diagram.fml.action.ConnectorRoleCreationStrategy;
@@ -61,13 +60,14 @@ import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.controller.FlexoController;
 
-public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagramElementInFlexoConceptWizard<DeclareConnectorInFlexoConcept> {
+public class DeclareConnectorInFlexoConceptWizard
+		extends AbstractDeclareDiagramElementInFlexoConceptWizard<DeclareConnectorInFlexoConcept> {
 
 	/*private static final String FLEXO_ROLE_IS_NULL = FlexoLocalization.localizedForKey("please_choose_flexo_role");
 	private static final String NEW_CONNECTOR_ROLE_NAME_IS_NULL = FlexoLocalization.localizedForKey("please_supply_a_valid_role_name");
 	private static final String NEW_CONNECTOR_ROLE_NAME_ALREADY_EXISTS = FlexoLocalization.localizedForKey("this_role_name_already_exists");
 	private static final String FLEXO_CONCEPT_IS_NULL = FlexoLocalization.localizedForKey("please_choose_flexo_concept");
-
+	
 	private static final String FLEXO_CONCEPT_NAME_IS_NULL = FlexoLocalization.localizedForKey("flexo_concept_name_is_null");
 	// private static final String FOCUSED_OBJECT_IS_NULL = FlexoLocalization.localizedForKey("focused_object_is_null");
 	private static final String INDIVIDUAL_FLEXO_ROLE_NAME_IS_NULL = FlexoLocalization
@@ -89,7 +89,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 
 	@Override
 	public String getWizardTitle() {
-		return FlexoLocalization.localizedForKey("declare_connector_in_flexo_concept");
+		return getAction().getLocales().localizedForKey("declare_connector_in_flexo_concept");
 	}
 
 	@Override
@@ -116,12 +116,14 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 	@Override
 	public ConfigureCreateNewFlexoConceptFromConnectorStep<?> chooseNewFlexoConcept() {
 		if (getAction().getFlexoConceptCreationStrategy() instanceof MapConnectorToFlexoConceptlnstanceStrategy) {
-			return new ConfigureMapConnectorToFlexoConceptlnstanceStep((MapConnectorToFlexoConceptlnstanceStrategy) getAction()
-					.getFlexoConceptCreationStrategy());
-		} else if (getAction().getFlexoConceptCreationStrategy() instanceof MapConnectorToIndividualStrategy) {
-			return new ConfigureMapConnectorToIndividualStep((MapConnectorToIndividualStrategy) getAction()
-					.getFlexoConceptCreationStrategy());
-		} else if (getAction().getFlexoConceptCreationStrategy() instanceof BlankFlexoConceptFromConnectorCreationStrategy) {
+			return new ConfigureMapConnectorToFlexoConceptlnstanceStep(
+					(MapConnectorToFlexoConceptlnstanceStrategy) getAction().getFlexoConceptCreationStrategy());
+		}
+		else if (getAction().getFlexoConceptCreationStrategy() instanceof MapConnectorToIndividualStrategy) {
+			return new ConfigureMapConnectorToIndividualStep(
+					(MapConnectorToIndividualStrategy) getAction().getFlexoConceptCreationStrategy());
+		}
+		else if (getAction().getFlexoConceptCreationStrategy() instanceof BlankFlexoConceptFromConnectorCreationStrategy) {
 			return new ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep(
 					(BlankFlexoConceptFromConnectorCreationStrategy) getAction().getFlexoConceptCreationStrategy());
 		}
@@ -129,8 +131,8 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib")
-	public class ReplaceConnectorInExistingFlexoConcept extends
-			ConfigureGraphicalElementRoleSettingStrategyStep<ConnectorRoleSettingStrategy> {
+	public class ReplaceConnectorInExistingFlexoConcept
+			extends ConfigureGraphicalElementRoleSettingStrategyStep<ConnectorRoleSettingStrategy> {
 
 		public ReplaceConnectorInExistingFlexoConcept(ConnectorRoleSettingStrategy strategy) {
 			super(strategy);
@@ -150,7 +152,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("choose_which_connector_you_want_to_set_or_replace");
+			return getAction().getLocales().localizedForKey("choose_which_connector_you_want_to_set_or_replace");
 		}
 
 		public FlexoConcept getFlexoConcept() {
@@ -186,7 +188,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 
 		/*	@Override
 			public boolean isValid() {
-
+		
 				if (getFlexoRole() == null) {
 					setIssueMessage(FlexoLocalization.localizedForKey(FLEXO_ROLE_IS_NULL), IssueMessageType.ERROR);
 					return false;
@@ -201,8 +203,8 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib")
-	public class CreateConnectorInExistingFlexoConcept extends
-			ConfigureGraphicalElementRoleCreationStrategyStep<ConnectorRoleCreationStrategy> {
+	public class CreateConnectorInExistingFlexoConcept
+			extends ConfigureGraphicalElementRoleCreationStrategyStep<ConnectorRoleCreationStrategy> {
 
 		public CreateConnectorInExistingFlexoConcept(ConnectorRoleCreationStrategy strategy) {
 			super(strategy);
@@ -224,7 +226,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("create_a_new_connector_role");
+			return getAction().getLocales().localizedForKey("create_a_new_connector_role");
 		}
 
 		public FlexoConcept getFlexoConcept() {
@@ -256,7 +258,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 
 		/*	@Override
 			public boolean isValid() {
-
+		
 				if (StringUtils.isEmpty(getNewConnectorRoleName())) {
 					setIssueMessage(FlexoLocalization.localizedForKey(NEW_SHAPE_ROLE_NAME_IS_NULL), IssueMessageType.ERROR);
 					return false;
@@ -265,7 +267,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 					setIssueMessage(FlexoLocalization.localizedForKey(FLEXO_CONCEPT_IS_NULL), IssueMessageType.ERROR);
 					return false;
 				}
-
+		
 				if (getFlexoConcept().getAccessibleProperty(getNewConnectorRoleName()) != null) {
 					setIssueMessage(FlexoLocalization.localizedForKey(NEW_SHAPE_ROLE_NAME_ALREADY_EXISTS), IssueMessageType.ERROR);
 					return false;
@@ -275,8 +277,8 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 
 	}
 
-	public abstract class ConfigureCreateNewFlexoConceptFromConnectorStep<S extends FlexoConceptFromConnectorCreationStrategy> extends
-			ConfigureCreateNewFlexoConceptFromDiagramElementStep<S> {
+	public abstract class ConfigureCreateNewFlexoConceptFromConnectorStep<S extends FlexoConceptFromConnectorCreationStrategy>
+			extends ConfigureCreateNewFlexoConceptFromDiagramElementStep<S> {
 
 		public ConfigureCreateNewFlexoConceptFromConnectorStep(S strategy) {
 			super(strategy);
@@ -284,8 +286,8 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureMapConnectorToFlexoConceptlnstanceStep.fib")
-	public class ConfigureMapConnectorToFlexoConceptlnstanceStep extends
-			ConfigureCreateNewFlexoConceptFromConnectorStep<MapConnectorToFlexoConceptlnstanceStrategy> {
+	public class ConfigureMapConnectorToFlexoConceptlnstanceStep
+			extends ConfigureCreateNewFlexoConceptFromConnectorStep<MapConnectorToFlexoConceptlnstanceStrategy> {
 
 		public ConfigureMapConnectorToFlexoConceptlnstanceStep(MapConnectorToFlexoConceptlnstanceStrategy strategy) {
 			super(strategy);
@@ -298,7 +300,8 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("create_new_flexo_concept_where_connector_is_mapped_to_a_flexo_concept_instance");
+			return getAction().getLocales()
+					.localizedForKey("create_new_flexo_concept_where_connector_is_mapped_to_a_flexo_concept_instance");
 		}
 
 		public String getFlexoConceptInstanceRoleName() {
@@ -337,8 +340,8 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureMapConnectorToIndividualStep.fib")
-	public class ConfigureMapConnectorToIndividualStep extends
-			ConfigureCreateNewFlexoConceptFromConnectorStep<MapConnectorToIndividualStrategy> {
+	public class ConfigureMapConnectorToIndividualStep
+			extends ConfigureCreateNewFlexoConceptFromConnectorStep<MapConnectorToIndividualStrategy> {
 
 		public ConfigureMapConnectorToIndividualStep(MapConnectorToIndividualStrategy strategy) {
 			super(strategy);
@@ -351,7 +354,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("create_new_flexo_concept_where_connector_is_mapped_to_a_single_individual");
+			return getAction().getLocales().localizedForKey("create_new_flexo_concept_where_connector_is_mapped_to_a_single_individual");
 		}
 
 		public String getIndividualFlexoRoleName() {
@@ -390,8 +393,8 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep.fib")
-	public class ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep extends
-			ConfigureCreateNewFlexoConceptFromConnectorStep<BlankFlexoConceptFromConnectorCreationStrategy> {
+	public class ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep
+			extends ConfigureCreateNewFlexoConceptFromConnectorStep<BlankFlexoConceptFromConnectorCreationStrategy> {
 
 		public ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep(BlankFlexoConceptFromConnectorCreationStrategy strategy) {
 			super(strategy);
@@ -404,7 +407,7 @@ public class DeclareConnectorInFlexoConceptWizard extends AbstractDeclareDiagram
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("create_new_flexo_concept_without_any_mapping_to_model");
+			return getAction().getLocales().localizedForKey("create_new_flexo_concept_without_any_mapping_to_model");
 		}
 
 	}

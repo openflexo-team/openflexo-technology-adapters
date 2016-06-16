@@ -48,7 +48,6 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
 import org.openflexo.model.annotations.Embedded;
@@ -78,12 +77,14 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	@PropertyIdentifier(type = ShapeRole.class)
 	public static final String END_SHAPE_PATTERN_ROLE_KEY = "endShapeRole";
 
+	@Override
 	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
 	@CloningStrategy(StrategyType.CLONE)
 	@Embedded
 	@XMLElement
 	public ConnectorGraphicalRepresentation getGraphicalRepresentation();
 
+	@Override
 	@Setter(GRAPHICAL_REPRESENTATION_KEY)
 	public void setGraphicalRepresentation(ConnectorGraphicalRepresentation graphicalRepresentation);
 
@@ -142,9 +143,9 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 			super.initDefaultSpecifications();
 			if (getFMLModelFactory() != null) {
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
-					//logger.info("[CONNECTOR:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
-					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
-							GraphicalElementSpecification.class);
+					// logger.info("[CONNECTOR:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
+					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory()
+							.newInstance(GraphicalElementSpecification.class);
 					newGraphicalElementSpecification.setPatternRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
 					newGraphicalElementSpecification.setReadOnly(false);
@@ -164,7 +165,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public String getTypeDescription() {
-			return FlexoLocalization.localizedForKey("connector");
+			return getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("connector");
 		}
 
 		@Override
@@ -203,8 +204,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		public void setStartShapeRole(ShapeRole startShapeRole) {
 			this.startShapeRole = startShapeRole;
 			setChanged();
-			notifyObservers(new GraphicalRepresentationChanged(this, startShapeRole != null ? startShapeRole.getGraphicalRepresentation()
-					: artifactFromGraphicalRepresentation));
+			notifyObservers(new GraphicalRepresentationChanged(this,
+					startShapeRole != null ? startShapeRole.getGraphicalRepresentation() : artifactFromGraphicalRepresentation));
 		}
 
 		@Override
@@ -216,7 +217,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		public void setStartShapeAsDefinedInAction(boolean flag) {
 			if (!flag && getFlexoConcept().getDeclaredProperties(ShapeRole.class).size() > 0) {
 				setStartShapeRole(getFlexoConcept().getDeclaredProperties(ShapeRole.class).get(0));
-			} else {
+			}
+			else {
 				// System.out.println("setStartShapePatternRole with null");
 				setStartShapeRole(null);
 			}
@@ -231,8 +233,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		public void setEndShapeRole(ShapeRole endShapeRole) {
 			this.endShapeRole = endShapeRole;
 			setChanged();
-			notifyObservers(new GraphicalRepresentationChanged(this, endShapeRole != null ? endShapeRole.getGraphicalRepresentation()
-					: artifactToGraphicalRepresentation));
+			notifyObservers(new GraphicalRepresentationChanged(this,
+					endShapeRole != null ? endShapeRole.getGraphicalRepresentation() : artifactToGraphicalRepresentation));
 		}
 
 		@Override
@@ -244,7 +246,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		public void setEndShapeAsDefinedInAction(boolean flag) {
 			if (!flag && getFlexoConcept().getDeclaredProperties(ShapeRole.class).size() > 0) {
 				setEndShapeRole(getFlexoConcept().getDeclaredProperties(ShapeRole.class).get(0));
-			} else {
+			}
+			else {
 				// System.out.println("setEndShapePatternRole with null");
 				setEndShapeRole(null);
 			}
@@ -264,10 +267,10 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 					}
 				}
 			}
-
+		
 			return null;
 		}
-
+		
 		public ShapeRole getEndShape() {
 			for (FlexoBehaviour es : getFlexoConcept().getEditionSchemes()) {
 				for (EditionAction action : es.getActions()) {
@@ -282,7 +285,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 					}
 				}
 			}
-
+		
 			return null;
 		}*/
 

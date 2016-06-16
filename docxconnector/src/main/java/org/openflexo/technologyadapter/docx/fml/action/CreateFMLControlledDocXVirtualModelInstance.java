@@ -47,6 +47,8 @@ import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.doc.fml.action.CreateFMLControlledDocumentVirtualModelInstance;
 import org.openflexo.foundation.doc.nature.FMLControlledDocumentVirtualModelNature;
 import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXViewNature;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelNature;
 
@@ -71,6 +73,14 @@ public class CreateFMLControlledDocXVirtualModelInstance
 
 	CreateFMLControlledDocXVirtualModelInstance(View focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override

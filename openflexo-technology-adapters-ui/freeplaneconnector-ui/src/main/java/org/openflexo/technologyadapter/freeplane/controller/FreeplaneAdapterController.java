@@ -77,7 +77,8 @@ public class FreeplaneAdapterController extends TechnologyAdapterController<Free
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		freeplaneInspectorGroup = controller.loadInspectorGroup("Freeplane", getFMLTechnologyAdapterInspectorGroup());
+		freeplaneInspectorGroup = controller.loadInspectorGroup("Freeplane", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup freeplaneInspectorGroup;

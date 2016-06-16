@@ -49,7 +49,6 @@ import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
 import org.openflexo.foundation.fml.rt.View;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -90,7 +89,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 
 	public DiagramTechnologyAdapter getDiagramTechnologyAdapter();
 
-	public static abstract class DiagramRoleImpl extends FlexoRoleImpl<Diagram> implements DiagramRole {
+	public static abstract class DiagramRoleImpl extends FlexoRoleImpl<Diagram>implements DiagramRole {
 
 		private static final Logger logger = Logger.getLogger(DiagramRole.class.getPackage().getName());
 
@@ -106,7 +105,7 @@ public interface DiagramRole extends FlexoRole<Diagram> {
 			if (getDiagramSpecification() != null) {
 				return getDiagramSpecification().getName();
 			}
-			return FlexoLocalization.localizedForKey("diagram");
+			return getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("diagram");
 		}
 
 		@Override

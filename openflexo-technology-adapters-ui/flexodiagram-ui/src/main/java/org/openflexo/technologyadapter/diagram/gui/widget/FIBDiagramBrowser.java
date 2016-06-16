@@ -42,6 +42,7 @@ import java.util.logging.Logger;
 
 import org.openflexo.rm.Resource;
 import org.openflexo.rm.ResourceLocator;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.view.FIBBrowserView;
 import org.openflexo.view.controller.FlexoController;
@@ -59,14 +60,14 @@ public class FIBDiagramBrowser extends FIBBrowserView<Diagram> {
 	public static final Resource FIB_FILE = ResourceLocator.locateResource("Fib/Widget/FIBDiagramBrowser.fib");
 
 	public FIBDiagramBrowser(Diagram diagram, FlexoController controller) {
-		super(diagram, controller, FIB_FILE);
+		super(diagram, controller, FIB_FILE, controller.getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales());
 	}
 
 	// Please uncomment this for a live test
 	// Never commit this uncommented since it will not compile on continuous build
 	// To have icon, you need to choose "Test interface" in the editor (otherwise, flexo controller is not insanciated in EDIT mode)
 	/*public static void main(String[] args) {
-
+	
 		try {
 			FlexoLoggingManager.initialize(-1, true, null, Level.INFO, null);
 		} catch (SecurityException e) {
@@ -76,35 +77,35 @@ public class FIBDiagramBrowser extends FIBBrowserView<Diagram> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+	
 		TestApplicationContext testApplicationContext = new TestApplicationContext(
 				new FileResource("src/test/resources/TestResourceCenter"));
 		final ViewPointLibrary viewPointLibrary = testApplicationContext.getViewPointLibrary();
-
+	
 		ViewPointResource vpRes = viewPointLibrary
 				.getViewPointResource("http://www.agilebirds.com/openflexo/ViewPoints/Basic/BasicOntology.owl");
-
+	
 		ExampleDiagramResource edRes = vpRes.getContents(ExampleDiagramResource.class).get(0);
 		final ExampleDiagram exampleDiagram = edRes.getExampleDiagram();
-
+	
 		FIBAbstractEditor editor = new FIBAbstractEditor() {
 			@Override
 			public Object[] getData() {
 				return makeArray(exampleDiagram);
 			}
-
+	
 			@Override
 			public File getFIBFile() {
 				return FIB_FILE;
 			}
-
+	
 			@Override
 			public FIBController makeNewController(FIBComponent component) {
 				return new FlexoFIBController(component);
 			}
 		};
 		editor.launch();
-
+	
 	}*/
 
 }

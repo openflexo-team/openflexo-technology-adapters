@@ -46,7 +46,6 @@ import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 
@@ -73,7 +72,8 @@ public class FreeDiagramModelSlotInstanceConfiguration extends FreeModelSlotInst
 			return false;
 		}
 		if (!getFilename().endsWith(DiagramResource.DIAGRAM_SUFFIX)) {
-			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.diagram_suffix"));
+			setErrorMessage(getModelSlot().getModelSlotTechnologyAdapter().getLocales()
+					.localizedForKey("file_name_should_end_with_.diagram_suffix"));
 			return false;
 		}
 		return true;

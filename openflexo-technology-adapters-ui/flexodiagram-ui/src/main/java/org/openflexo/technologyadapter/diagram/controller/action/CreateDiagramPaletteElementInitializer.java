@@ -49,12 +49,10 @@ import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPaletteElement;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
-import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -76,7 +74,7 @@ public class CreateDiagramPaletteElementInitializer extends ActionInitializer<Cr
 				/*if (action.getNewElementName() != null && (action.getFocusedObject() != null))
 					return true;*/
 
-				action.setNewElementName(FlexoController.askForString(FlexoLocalization.localizedForKey("name_for_new_element")));
+				action.setNewElementName(FlexoController.askForString(action.getLocales().localizedForKey("name_for_new_element")));
 				if (action.getGraphicalRepresentation() == null) {
 					action.setGraphicalRepresentation(makePaletteElementGraphicalRepresentation(ShapeType.RECTANGLE, action));
 				}
@@ -86,7 +84,7 @@ public class CreateDiagramPaletteElementInitializer extends ActionInitializer<Cr
 	}
 
 	protected ShapeGraphicalRepresentation makePaletteElementGraphicalRepresentation(ShapeType st, CreateDiagramPaletteElement action) {
-		DiagramPaletteFactory factory = ((DiagramPaletteResource) action.getFocusedObject().getResource()).getFactory();
+		DiagramPaletteFactory factory = action.getFocusedObject().getResource().getFactory();
 
 		ShapeGraphicalRepresentation gr = factory.makeShapeGraphicalRepresentation(st);
 		gr.setX(100);

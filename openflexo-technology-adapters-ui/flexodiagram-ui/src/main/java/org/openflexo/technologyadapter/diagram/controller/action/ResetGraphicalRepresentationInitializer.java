@@ -46,15 +46,14 @@ import javax.swing.Icon;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.action.ResetGraphicalRepresentations;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
 
-public class ResetGraphicalRepresentationInitializer extends
-		ActionInitializer<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> {
+public class ResetGraphicalRepresentationInitializer
+		extends ActionInitializer<ResetGraphicalRepresentations, DiagramElement<?>, DiagramElement<?>> {
 
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
@@ -67,8 +66,8 @@ public class ResetGraphicalRepresentationInitializer extends
 		return new FlexoActionInitializer<ResetGraphicalRepresentations>() {
 			@Override
 			public boolean run(EventObject e, ResetGraphicalRepresentations action) {
-				return FlexoController.confirm(FlexoLocalization
-						.localizedForKey("really_reset_all_graphical_representations_for_this_view_?"));
+				return FlexoController
+						.confirm(action.getLocales().localizedForKey("really_reset_all_graphical_representations_for_this_view_?"));
 			}
 		};
 	}

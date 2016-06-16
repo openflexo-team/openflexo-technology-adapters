@@ -73,8 +73,8 @@ public class PowerpointAdapterController extends TechnologyAdapterController<Pow
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		pptInspectorGroup = controller.loadInspectorGroup("PowerPoint", getFMLTechnologyAdapterInspectorGroup());
-		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/Excel"));
+		pptInspectorGroup = controller.loadInspectorGroup("PowerPoint", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup pptInspectorGroup;

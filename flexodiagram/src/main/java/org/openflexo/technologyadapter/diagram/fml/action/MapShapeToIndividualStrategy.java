@@ -48,7 +48,6 @@ import org.openflexo.foundation.ontology.fml.IndividualRole;
 import org.openflexo.foundation.ontology.fml.editionaction.AddIndividual;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.JavaUtils;
@@ -106,7 +105,8 @@ public class MapShapeToIndividualStrategy extends FlexoConceptFromShapeCreationS
 	 * @return
 	 */
 	public boolean isFlexoOntologyModelSlot() {
-		return (getTransformationAction() != null && getTransformationAction().getInformationSourceModelSlot() instanceof FlexoOntologyModelSlot);
+		return (getTransformationAction() != null
+				&& getTransformationAction().getInformationSourceModelSlot() instanceof FlexoOntologyModelSlot);
 	}
 
 	@Override
@@ -115,11 +115,11 @@ public class MapShapeToIndividualStrategy extends FlexoConceptFromShapeCreationS
 			return false;
 		}
 		if (!isFlexoOntologyModelSlot()) {
-			setIssueMessage(FlexoLocalization.localizedForKey(NO_FLEXO_ONTOLOGY_MODEL_SLOT_DEFINED), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey(NO_FLEXO_ONTOLOGY_MODEL_SLOT_DEFINED), IssueMessageType.ERROR);
 			return false;
 		}
 		if (getConcept() == null) {
-			setIssueMessage(FlexoLocalization.localizedForKey(NO_CONCEPT_DEFINED), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey(NO_CONCEPT_DEFINED), IssueMessageType.ERROR);
 			return false;
 		}
 		return true;

@@ -36,7 +36,6 @@ import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
 import org.openflexo.gina.swing.utils.FIBEditorLoadingProgress;
 import org.openflexo.gina.swing.utils.JFIBInspectorController;
 import org.openflexo.gina.utils.InspectorGroup;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.action.CreateFMLControlledFIBVirtualModelInitializer;
 import org.openflexo.technologyadapter.gina.controller.action.CreateGINAFIBComponentInitializer;
@@ -122,11 +121,8 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		System.out.println(">>>>>>>>>>>> Hop, on charge les inspecteurs de GINA");
-		System.out.println("getFMLTechnologyAdapterInspectorGroup()=" + getFMLTechnologyAdapterInspectorGroup());
-		ginaInspectorGroup = controller.loadInspectorGroup("Gina", getFMLTechnologyAdapterInspectorGroup());
-
-		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/Excel"));
+		ginaInspectorGroup = controller.loadInspectorGroup("Gina", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	/**
@@ -232,7 +228,7 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	public class LoadFIBEditor extends FlexoTask {
 
 		public LoadFIBEditor() {
-			super(FlexoLocalization.localizedForKey("loading_fib_editor"));
+			super(getLocales().localizedForKey("loading_fib_editor"));
 		}
 
 		@Override

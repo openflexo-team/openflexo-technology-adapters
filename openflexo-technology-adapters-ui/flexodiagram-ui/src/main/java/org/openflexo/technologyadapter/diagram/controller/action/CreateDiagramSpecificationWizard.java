@@ -49,7 +49,6 @@ import org.openflexo.components.wizard.WizardStep;
 import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramSpecification;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -73,7 +72,7 @@ public class CreateDiagramSpecificationWizard extends FlexoWizard {
 
 	@Override
 	public String getWizardTitle() {
-		return FlexoLocalization.localizedForKey("create_new_diagram_specification");
+		return action.getLocales().localizedForKey("create_new_diagram_specification");
 	}
 
 	@Override
@@ -104,33 +103,34 @@ public class CreateDiagramSpecificationWizard extends FlexoWizard {
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("configure_new_diagram_specification");
+			return action.getLocales().localizedForKey("configure_new_diagram_specification");
 		}
 
 		@Override
 		public boolean isValid() {
 
 			if (StringUtils.isEmpty(getNewDiagramSpecificationName())) {
-				setIssueMessage(FlexoLocalization.localizedForKey("no_diagram_specification_name_defined"), IssueMessageType.ERROR);
+				setIssueMessage(action.getLocales().localizedForKey("no_diagram_specification_name_defined"), IssueMessageType.ERROR);
 				return false;
 			}
 
 			if (StringUtils.isEmpty(getNewDiagramSpecificationURI())) {
-				setIssueMessage(FlexoLocalization.localizedForKey("please_supply_valid_diagram_specification_uri"), IssueMessageType.ERROR);
+				setIssueMessage(action.getLocales().localizedForKey("please_supply_valid_diagram_specification_uri"),
+						IssueMessageType.ERROR);
 				return false;
 			}
 			try {
 				new URL(getNewDiagramSpecificationURI());
 			} catch (MalformedURLException e) {
-				setIssueMessage(FlexoLocalization.localizedForKey("malformed_uri"), IssueMessageType.ERROR);
+				setIssueMessage(action.getLocales().localizedForKey("malformed_uri"), IssueMessageType.ERROR);
 				return false;
 			}
 			if (getAction().getFocusedObject().getResourceRepository() == null) {
-				setIssueMessage(FlexoLocalization.localizedForKey("could_not_access_registered_resources"), IssueMessageType.ERROR);
+				setIssueMessage(action.getLocales().localizedForKey("could_not_access_registered_resources"), IssueMessageType.ERROR);
 				return false;
 			}
 			if (getAction().getFocusedObject().getResourceRepository().getResource(getNewDiagramSpecificationURI()) != null) {
-				setIssueMessage(FlexoLocalization.localizedForKey("already_existing_diagram_specification_uri"), IssueMessageType.ERROR);
+				setIssueMessage(action.getLocales().localizedForKey("already_existing_diagram_specification_uri"), IssueMessageType.ERROR);
 				return false;
 			}
 			return true;

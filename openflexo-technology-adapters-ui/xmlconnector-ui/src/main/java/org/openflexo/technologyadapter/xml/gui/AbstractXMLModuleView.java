@@ -53,6 +53,7 @@ import org.openflexo.gina.model.widget.FIBCustom.FIBCustomComponent.CustomCompon
 import org.openflexo.gina.swing.view.widget.JFIBBrowserWidget;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.rm.Resource;
+import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
 import org.openflexo.technologyadapter.xml.metamodel.XMLObject;
 import org.openflexo.toolbox.StringUtils;
 import org.openflexo.view.ModuleView;
@@ -62,14 +63,13 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 
 /**
  * Abstract ModuleView to represent an XML resource, which can be in a federation context or in a free editing context. Inherit from
- * JScrollPane, to contain XML View. 
+ * JScrollPane, to contain XML View.
  * 
  */
 public abstract class AbstractXMLModuleView<T extends XMLObject> extends SelectionSynchronizedFIBView implements ModuleView<T> {
 
+	protected static final Logger logger = Logger.getLogger(AbstractXMLModuleView.class.getPackage().getName());
 
-	protected static final Logger logger          = Logger.getLogger(AbstractXMLModuleView.class.getPackage().getName());
-	
 	protected final FlexoController controller;
 
 	protected T representedObject;
@@ -92,7 +92,7 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 	 * @param perspective
 	 */
 	protected AbstractXMLModuleView(FlexoController controller, T object, FlexoPerspective perspective, Resource fib_file) {
-		super(null, controller, fib_file);
+		super(null, controller, fib_file, controller.getTechnologyAdapter(XMLTechnologyAdapter.class).getLocales());
 		this.controller = controller;
 		this.representedObject = object;
 		this.perspective = perspective;
@@ -100,13 +100,10 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 		matchingValues = new ArrayList<XMLObject>();
 	}
 
-
-	
 	@Override
 	public T getRepresentedObject() {
 		return representedObject;
 	}
-
 
 	/**
 	 * Retrieve the browser widget so that it can be queried
@@ -124,9 +121,6 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 		}
 		return null;
 	}
-
-
-
 
 	/**
 	 * This method is used to retrieve all potential values when implementing completion<br>
@@ -152,7 +146,6 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 		return returned;
 	}
 
-	
 	public String getFilteredName() {
 		return filteredName;
 	}
@@ -165,7 +158,6 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 		return matchingValues;
 	}
 
-	
 	public void search() {
 		if (StringUtils.isNotEmpty(getFilteredName())) {
 			logger.info("Searching " + getFilteredName());
@@ -188,8 +180,6 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 		}
 
 	}
-	
-
 
 	public boolean getAllowsSearch() {
 		return allowsSearch;
@@ -233,9 +223,9 @@ public abstract class AbstractXMLModuleView<T extends XMLObject> extends Selecti
 	public ImageIcon getSearchIcon() {
 		return UtilsIconLibrary.SEARCH_ICON;
 	}
-	
+
 	/**
-	 * Remove ModuleView from controller. 
+	 * Remove ModuleView from controller.
 	 */
 	@Override
 	public void deleteModuleView() {

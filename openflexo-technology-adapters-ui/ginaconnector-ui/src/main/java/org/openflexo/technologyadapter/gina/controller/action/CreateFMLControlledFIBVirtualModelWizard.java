@@ -56,7 +56,6 @@ import org.openflexo.gina.annotation.FIBPanel;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.GINAIconLibrary;
 import org.openflexo.technologyadapter.gina.fml.action.CreateFMLControlledFIBVirtualModel;
@@ -83,7 +82,7 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 
 	@Override
 	public String getWizardTitle() {
-		return FlexoLocalization.localizedForKey("create_screen_virtual_model");
+		return getAction().getLocales().localizedForKey("create_screen_virtual_model");
 	}
 
 	@Override
@@ -122,7 +121,7 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("describe_screen_virtual_model");
+			return getAction().getLocales().localizedForKey("describe_screen_virtual_model");
 		}
 
 		@Override
@@ -156,15 +155,16 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 		public boolean isValid() {
 
 			if (StringUtils.isEmpty(getNewVirtualModelName())) {
-				setIssueMessage(FlexoLocalization.localizedForKey("please_supply_valid_virtual_model_name"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("please_supply_valid_virtual_model_name"), IssueMessageType.ERROR);
 				return false;
 			}
 			else if (getAction().getFocusedObject().getVirtualModelNamed(getNewVirtualModelName()) != null) {
-				setIssueMessage(FlexoLocalization.localizedForKey("duplicated_virtual_model_name"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("duplicated_virtual_model_name"), IssueMessageType.ERROR);
 				return false;
 			}
 			else if (StringUtils.isEmpty(getNewVirtualModelDescription())) {
-				setIssueMessage(FlexoLocalization.localizedForKey("it_is_recommanded_to_describe_virtual_model"), IssueMessageType.WARNING);
+				setIssueMessage(getAction().getLocales().localizedForKey("it_is_recommanded_to_describe_virtual_model"),
+						IssueMessageType.WARNING);
 			}
 
 			return true;
@@ -233,7 +233,7 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("choose_existing_gina_fib_component");
+			return getAction().getLocales().localizedForKey("choose_existing_gina_fib_component");
 		}
 
 		public String getFIBModelSlotName() {
@@ -274,12 +274,13 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 		public boolean isValid() {
 
 			if (StringUtils.isEmpty(getFIBModelSlotName())) {
-				setIssueMessage(FlexoLocalization.localizedForKey("please_supply_a_valid_model_slot_name"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("please_supply_a_valid_model_slot_name"), IssueMessageType.ERROR);
 				return false;
 			}
 
 			if (getTemplateResource() == null) {
-				setIssueMessage(FlexoLocalization.localizedForKey("please_choose_an_existing_gina_fib_component"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("please_choose_an_existing_gina_fib_component"),
+						IssueMessageType.ERROR);
 				return false;
 			}
 
@@ -309,7 +310,7 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 
 		@Override
 		public String getTitle() {
-			return FlexoLocalization.localizedForKey("creates_new_gina_fib_component");
+			return getAction().getLocales().localizedForKey("creates_new_gina_fib_component");
 		}
 
 		public String getFIBModelSlotName() {
@@ -380,29 +381,32 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 		public boolean isValid() {
 
 			if (StringUtils.isEmpty(getFIBModelSlotName())) {
-				setIssueMessage(FlexoLocalization.localizedForKey("please_provide_a_valid_model_slot_name"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("please_provide_a_valid_model_slot_name"), IssueMessageType.ERROR);
 				return false;
 			}
 
 			if (getRepositoryFolder() == null) {
-				setIssueMessage(FlexoLocalization.localizedForKey("please_provide_a_folder_for_the_new_component"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("please_provide_a_folder_for_the_new_component"),
+						IssueMessageType.ERROR);
 				return false;
 			}
 
 			if (StringUtils.isEmpty(getNewComponentName())) {
-				setIssueMessage(FlexoLocalization.localizedForKey("please_provide_a_name_for_the_new_component"), IssueMessageType.ERROR);
+				setIssueMessage(getAction().getLocales().localizedForKey("please_provide_a_name_for_the_new_component"),
+						IssueMessageType.ERROR);
 				return false;
 			}
 			else {
 				if (!getNewComponentName().endsWith(".fib")) {
-					setIssueMessage(FlexoLocalization.localizedForKey("name_for_the_new_component_must_ends_with_.fib"),
+					setIssueMessage(getAction().getLocales().localizedForKey("name_for_the_new_component_must_ends_with_.fib"),
 							IssueMessageType.ERROR);
 					return false;
 				}
 			}
 
 			if (getAction().getAPIEntries().size() == 0) {
-				setIssueMessage(FlexoLocalization.localizedForKey("no_API_entries_defined_for_new_component"), IssueMessageType.WARNING);
+				setIssueMessage(getAction().getLocales().localizedForKey("no_API_entries_defined_for_new_component"),
+						IssueMessageType.WARNING);
 				return true;
 			}
 			else {
@@ -412,7 +416,7 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 					String entryName = entry.getName();
 					for (GINAFIBComponentAPIEntry entry2 : getAPIEntries()) {
 						if ((entry != entry2) && (entry.getName().equals(entry2.getName()))) {
-							setIssueMessage(FlexoLocalization.localizedForKey("duplicated_entry_name") + " : " + entryName,
+							setIssueMessage(getAction().getLocales().localizedForKey("duplicated_entry_name") + " : " + entryName,
 									IssueMessageType.ERROR);
 							return false;
 						}
@@ -434,7 +438,7 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 					}
 				}
 				if (!hasWarnings) {
-					setIssueMessage(FlexoLocalization.localizedForKey("all_API_entries_are_valid"), IssueMessageType.INFO);
+					setIssueMessage(getAction().getLocales().localizedForKey("all_API_entries_are_valid"), IssueMessageType.INFO);
 				}
 				return true;
 			}

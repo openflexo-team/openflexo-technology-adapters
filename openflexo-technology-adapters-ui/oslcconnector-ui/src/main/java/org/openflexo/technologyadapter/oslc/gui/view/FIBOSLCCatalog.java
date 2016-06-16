@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.oslc.gui.view;
 
+import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.controller.OSLCCst;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.view.FIBModuleView;
@@ -54,7 +55,8 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 public class FIBOSLCCatalog extends FIBModuleView<OSLCResource> {
 
 	public FIBOSLCCatalog(OSLCResource oslcResource, FlexoController controller) {
-		super(oslcResource, controller, OSLCCst.OSLC_CATALOG_VIEW_FIB);
+		super(oslcResource, controller, OSLCCst.OSLC_CATALOG_VIEW_FIB,
+				controller.getTechnologyAdapter(OSLCTechnologyAdapter.class).getLocales());
 	}
 
 	@Override

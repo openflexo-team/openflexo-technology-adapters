@@ -116,7 +116,7 @@ public class FIBDocXTableSelector extends FIBDocTableSelector<DocXTable, DocXDoc
 		private TableSelectorDetailsPanel panel;
 
 		public LoadDocXEditor(DocXTable table) {
-			super(FlexoLocalization.localizedForKey("opening_docx_editor"));
+			super(FlexoLocalization.getMainLocalizer().localizedForKey("opening_document_editor"));
 			this.table = table;
 		}
 

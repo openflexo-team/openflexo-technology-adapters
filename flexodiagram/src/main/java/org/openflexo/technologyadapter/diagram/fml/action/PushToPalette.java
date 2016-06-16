@@ -62,7 +62,6 @@ import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.rm.BasicResourceImpl.LocatorNotFoundException;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.Resource;
@@ -210,14 +209,16 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 				gr.setX(xLocation);
 				gr.setY(yLocation);
 				graphicalRepresentation = gr;
-			} else {
+			}
+			else {
 				GraphicalRepresentation gr = getFocusedObject().getGraphicalRepresentation();
 				if (gr instanceof ShapeGraphicalRepresentation) {
 					graphicalRepresentation = factory.makeShapeGraphicalRepresentation();
 					graphicalRepresentation.setsWith(gr);
 					((ShapeGraphicalRepresentation) graphicalRepresentation).setX(xLocation);
 					((ShapeGraphicalRepresentation) graphicalRepresentation).setY(yLocation);
-				} else if (gr instanceof ConnectorGraphicalRepresentation) {
+				}
+				else if (gr instanceof ConnectorGraphicalRepresentation) {
 					graphicalRepresentation = factory.makeConnectorGraphicalRepresentation();
 					((ConnectorGraphicalRepresentation) graphicalRepresentation).setsWith(gr);
 				}
@@ -271,7 +272,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 				}
 			}
 
-		} else {
+		}
+		else {
 			logger.warning("Focused property is null !");
 		}
 	}
@@ -321,23 +323,23 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public String noNameMessage() {
-		return FlexoLocalization.localizedForKey("no_palette_element_name_defined");
+		return getLocales().localizedForKey("no_palette_element_name_defined");
 	}
 
 	public String noPaletteSelectedMessage() {
-		return FlexoLocalization.localizedForKey("no_palette_selected");
+		return getLocales().localizedForKey("no_palette_selected");
 	}
 
 	public String noFlexoConceptSelectedMessage() {
-		return FlexoLocalization.localizedForKey("no_flexo_concept_selected");
+		return getLocales().localizedForKey("no_flexo_concept_selected");
 	}
 
 	public String noDropSchemeSelectedMessage() {
-		return FlexoLocalization.localizedForKey("no_drop_scheme_selected");
+		return getLocales().localizedForKey("no_drop_scheme_selected");
 	}
 
 	public String noVirtualModelSelectedMessage() {
-		return FlexoLocalization.localizedForKey("no_virtual_model_selected");
+		return getLocales().localizedForKey("no_virtual_model_selected");
 	}
 
 	private List<DiagramElementEntry> diagramElementEntries;
@@ -396,7 +398,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		public List<? extends GraphicalElementRole<?, ?>> getAvailablePatternRoles() {
 			if (graphicalObject instanceof DiagramShape) {
 				return flexoConcept.getDeclaredProperties(ShapeRole.class);
-			} else if (graphicalObject instanceof DiagramConnector) {
+			}
+			else if (graphicalObject instanceof DiagramConnector) {
 				return flexoConcept.getDeclaredProperties(ConnectorRole.class);
 			}
 			return null;
@@ -442,14 +445,14 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		diagramElementEntries.clear();
 		int shapeIndex = 1;
 		int connectorIndex = 1;
-		List<? extends DiagramElement<?>> elements = (getFocusedObject() instanceof DiagramContainerElement ? ((DiagramContainerElement<?>) getFocusedObject())
-				.getDescendants() : Collections.singletonList(getFocusedObject()));
+		List<? extends DiagramElement<?>> elements = (getFocusedObject() instanceof DiagramContainerElement
+				? ((DiagramContainerElement<?>) getFocusedObject()).getDescendants() : Collections.singletonList(getFocusedObject()));
 
 		for (DiagramElement<?> o : elements) {
 			if (o instanceof DiagramShape) {
 				DiagramShape shape = (DiagramShape) o;
-				String shapeRoleName = StringUtils.isEmpty(shape.getName()) ? "shape" + (shapeIndex > 1 ? shapeIndex : "") : shape
-						.getName();
+				String shapeRoleName = StringUtils.isEmpty(shape.getName()) ? "shape" + (shapeIndex > 1 ? shapeIndex : "")
+						: shape.getName();
 				diagramElementEntries.add(new DiagramElementEntry(shape, shapeRoleName));
 				shapeIndex++;
 			}

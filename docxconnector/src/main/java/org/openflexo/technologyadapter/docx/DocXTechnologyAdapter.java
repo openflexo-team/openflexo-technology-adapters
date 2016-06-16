@@ -88,6 +88,11 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/DocXTechnologyAdapter";
+	}
+
+	@Override
 	public DocXTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new DocXTechnologyContextManager(this, getTechnologyAdapterService().getServiceManager().getResourceCenterService());
 	}

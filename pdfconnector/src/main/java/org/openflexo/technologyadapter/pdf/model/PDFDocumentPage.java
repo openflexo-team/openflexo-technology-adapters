@@ -38,7 +38,6 @@ import org.openflexo.foundation.InnerResourceData;
 import org.openflexo.foundation.doc.FlexoDocument;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -149,7 +148,7 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 			System.out.println("updateFromPDPage with " + pdPage);
 
-			Progress.progress(FlexoLocalization.localizedForKey("processing_renderer"));
+			Progress.progress(getLocales().localizedForKey("processing_renderer"));
 			try {
 				PDFRenderer pdfRenderer = new FlexoPDFRenderer(pdDocument);
 				BufferedImage originalImage;
@@ -157,7 +156,7 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(),
 						(int) pdPage.getMediaBox().getHeight(), Image.SCALE_SMOOTH);
 
-				Progress.progress(FlexoLocalization.localizedForKey("extract_text"));
+				Progress.progress(getLocales().localizedForKey("extract_text"));
 				PDFTextBoxStripper textBoxStripper = new PDFTextBoxStripper(pdDocument, pdPage);
 				textBoxes = textBoxStripper.extractTextBoxes();
 
@@ -167,7 +166,7 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 			}
 
 			try {
-				Progress.progress(FlexoLocalization.localizedForKey("extract_images"));
+				Progress.progress(getLocales().localizedForKey("extract_images"));
 				PDFImageBoxStripper imageBoxStripper = new PDFImageBoxStripper(pdDocument, pdPage);
 				imageBoxes = imageBoxStripper.extractImageBoxes();
 			} catch (IOException e) {

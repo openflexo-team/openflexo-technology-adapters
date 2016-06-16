@@ -47,7 +47,6 @@ import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
 public class BasicExcelModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<ExcelWorkbook, BasicExcelModelSlot> {
@@ -73,7 +72,8 @@ public class BasicExcelModelSlotInstanceConfiguration extends FreeModelSlotInsta
 			return false;
 		}
 		if (!getFilename().endsWith(".xls") && !getFilename().endsWith(".xlsx")) {
-			setErrorMessage(FlexoLocalization.localizedForKey("file_name_should_end_with_.xls_or_.xlsx_suffix"));
+			setErrorMessage(getModelSlot().getModelSlotTechnologyAdapter().getLocales()
+					.localizedForKey("file_name_should_end_with_.xls_or_.xlsx_suffix"));
 			return false;
 		}
 		return true;

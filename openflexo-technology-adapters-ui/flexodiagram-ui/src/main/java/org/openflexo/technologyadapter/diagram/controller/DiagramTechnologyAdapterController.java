@@ -54,7 +54,6 @@ import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.icon.FMLRTIconLibrary;
 import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.model.undo.CompoundEdit;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.action.AddConnectorInitializer;
@@ -156,7 +155,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		dialogInspectors.getConnectorInspector().setLocation(1000, 700);
 		dialogInspectors.getLocationSizeInspector().setLocation(1000, 50);
 
-		diagramInspectorGroup = controller.loadInspectorGroup("Diagram", getFMLTechnologyAdapterInspectorGroup());
+		diagramInspectorGroup = controller.loadInspectorGroup("Diagram", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup diagramInspectorGroup;
@@ -172,19 +172,19 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		WindowMenu viewMenu = actionInitializer.getController().getMenuBar().getWindowMenu();
 		viewMenu.addSeparator();
 
-		WindowMenuItem foregroundInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("foreground_inspector"),
+		WindowMenuItem foregroundInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("foreground_inspector"),
 				dialogInspectors.getForegroundStyleInspector());
-		WindowMenuItem backgroundInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("background_inspector"),
+		WindowMenuItem backgroundInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("background_inspector"),
 				dialogInspectors.getBackgroundStyleInspector());
-		WindowMenuItem textInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("text_inspector"),
+		WindowMenuItem textInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("text_inspector"),
 				dialogInspectors.getTextStyleInspector());
-		WindowMenuItem shapeInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("shape_inspector"),
+		WindowMenuItem shapeInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("shape_inspector"),
 				dialogInspectors.getShapeInspector());
-		WindowMenuItem connectorInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("connector_inspector"),
+		WindowMenuItem connectorInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("connector_inspector"),
 				dialogInspectors.getConnectorInspector());
-		WindowMenuItem shadowInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("shadow_inspector"),
+		WindowMenuItem shadowInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("shadow_inspector"),
 				dialogInspectors.getShadowStyleInspector());
-		WindowMenuItem locationSizeInspectorItem = viewMenu.new WindowMenuItem(FlexoLocalization.localizedForKey("location_size_inspector"),
+		WindowMenuItem locationSizeInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("location_size_inspector"),
 				dialogInspectors.getLocationSizeInspector());
 
 		viewMenu.add(foregroundInspectorItem);

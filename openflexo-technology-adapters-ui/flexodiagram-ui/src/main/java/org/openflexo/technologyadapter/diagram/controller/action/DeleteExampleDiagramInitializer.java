@@ -46,7 +46,6 @@ import javax.swing.Icon;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.icon.IconLibrary;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.action.DeleteDiagram;
 import org.openflexo.view.controller.ActionInitializer;
@@ -67,7 +66,7 @@ public class DeleteExampleDiagramInitializer extends ActionInitializer<DeleteDia
 		return new FlexoActionInitializer<DeleteDiagram>() {
 			@Override
 			public boolean run(EventObject e, DeleteDiagram action) {
-				return FlexoController.confirm(FlexoLocalization.localizedForKey("would_you_really_like_to_delete_this_diagram"));
+				return FlexoController.confirm(action.getLocales().localizedForKey("would_you_really_like_to_delete_this_diagram"));
 			}
 		};
 	}

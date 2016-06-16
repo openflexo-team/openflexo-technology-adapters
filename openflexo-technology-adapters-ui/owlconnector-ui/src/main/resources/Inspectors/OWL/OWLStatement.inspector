@@ -8,11 +8,11 @@
     </Tab>
   </TabPanel>
   <LocalizedDictionary>
-    <Localized key="Advanced" lang="French" value="Avancé" />
+   <!--  <Localized key="Advanced" lang="French" value="Avancé" />
     <Localized key="Basic" lang="French" value="Basique" />
     <Localized key="name" lang="English" value="Name" />
     <Localized key="name" lang="French" value="Nom" />
-    <Localized key="name" lang="Dutch" value="Name" />
+    <Localized key="name" lang="Dutch" value="Name" />-->
   </LocalizedDictionary>
   <Parameter name="title" value="OWL Statement" />
 </Panel>

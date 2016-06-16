@@ -98,7 +98,8 @@ public class EMFAdapterController extends FlexoOntologyTechnologyAdapterControll
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		emfInspectorGroup = controller.loadInspectorGroup("EMF", getFMLTechnologyAdapterInspectorGroup());
+		emfInspectorGroup = controller.loadInspectorGroup("EMF", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup emfInspectorGroup;

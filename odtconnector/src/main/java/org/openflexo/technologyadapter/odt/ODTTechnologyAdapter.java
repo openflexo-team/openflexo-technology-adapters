@@ -69,6 +69,11 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/ODTTechnologyAdapter";
+	}
+
+	@Override
 	public ODTTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new ODTTechnologyContextManager(this, getTechnologyAdapterService().getServiceManager().getResourceCenterService());
 	}

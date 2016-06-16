@@ -53,6 +53,8 @@ import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.DeletionScheme;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -141,6 +143,14 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 	}
 
 	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
+	}
+
+	@Override
 	protected void doAction(Object context) {
 
 		if (logger.isLoggable(Level.INFO)) {
@@ -188,7 +198,8 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 					logger.info("Try to delete undeleted DiagramConnector " + connector);
 					connector.delete();
 					logger.info("DiagramConnector " + connector + " has been successfully deleted");
-				} else {
+				}
+				else {
 					logger.info("DiagramConnector " + connector + " has already been successfully deleted");
 				}
 			}
@@ -199,7 +210,8 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 			if (!o.isDeleted()) {
 				logger.info("Delete undeleted DiagramElement " + o);
 				o.delete();
-			} else {
+			}
+			else {
 				logger.info("DiagramElement " + o + " has been successfully deleted");
 			}
 		}
@@ -211,7 +223,7 @@ public class DeleteDiagramElements extends FlexoAction<DeleteDiagramElements, Di
 		}
 		return diagramElementsToDelete;
 	}
-
+	
 	private void computeElementsToDelete() {
 		diagramElementsToDelete = (List) getFocusedObject()
 				.getDiagram()

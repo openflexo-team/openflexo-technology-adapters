@@ -44,7 +44,6 @@ import java.util.List;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
@@ -177,15 +176,15 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 			return false;
 		}
 		if (StringUtils.isEmpty(getLinkSchemeName())) {
-			setIssueMessage(FlexoLocalization.localizedForKey(LINK_SCHEME_NAME_UNDEFINED), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey(LINK_SCHEME_NAME_UNDEFINED), IssueMessageType.ERROR);
 			return false;
 		}
 		if (getFromFlexoConcept() == null) {
-			setIssueMessage(FlexoLocalization.localizedForKey(FROM_CONCEPT_UNDEFINED), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey(FROM_CONCEPT_UNDEFINED), IssueMessageType.ERROR);
 			return false;
 		}
 		if (getToFlexoConcept() == null) {
-			setIssueMessage(FlexoLocalization.localizedForKey(TO_CONCEPT_UNDEFINED), IssueMessageType.ERROR);
+			setIssueMessage(getLocales().localizedForKey(TO_CONCEPT_UNDEFINED), IssueMessageType.ERROR);
 			return false;
 		}
 		return true;

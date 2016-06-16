@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.owl.fml.binding;
 
 import java.lang.reflect.Type;
@@ -50,6 +49,7 @@ import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.ontology.IFlexoOntologyIndividual;
 import org.openflexo.foundation.ontology.IndividualOfClass;
 import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.ObjectPropertyStatement;
@@ -73,9 +73,17 @@ public class StatementObjectPathElement extends SimplePathElement {
 		super(parent, OBJECT, null); // Type is dynamically retrieved
 		if (parent.getType() instanceof StatementWithProperty) {
 			property = (OWLObjectProperty) ((StatementWithProperty) parent.getType()).getProperty();
-		} else {
+		}
+		else {
 			logger.warning("Unexpected type: " + parent.getType());
 		}
+	}
+
+	public LocalizedDelegate getLocales() {
+		if (property != null) {
+			return property.getLocales();
+		}
+		return FlexoLocalization.getMainLocalizer();
 	}
 
 	@Override
@@ -95,7 +103,7 @@ public class StatementObjectPathElement extends SimplePathElement {
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		return FlexoLocalization.localizedForKey("owl_property_object");
+		return getLocales().localizedForKey("owl_property_object");
 	}
 
 	@Override
@@ -108,8 +116,8 @@ public class StatementObjectPathElement extends SimplePathElement {
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		logger.warning("Please implement me, target=" + target + " context=" + context);
 	}
 

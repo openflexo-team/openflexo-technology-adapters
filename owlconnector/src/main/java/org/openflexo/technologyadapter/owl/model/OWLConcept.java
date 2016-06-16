@@ -101,7 +101,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 			uri = ontResource.getURI();
 			if (uri != null && uri.indexOf("#") > -1) {
 				name = uri.substring(uri.indexOf("#") + 1);
-			} else {
+			}
+			else {
 				name = uri;
 			}
 		}
@@ -155,7 +156,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		String newURI;
 		if (getURI().indexOf("#") > -1) {
 			newURI = getURI().substring(0, getURI().indexOf("#") + 1) + newName;
-		} else {
+		}
+		else {
 			newURI = newName;
 		}
 		logger.info("Rename object " + getURI() + " to " + newURI);
@@ -224,41 +226,55 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 
 			if (!s.getSubject().equals(anOntResource)) {
 				logger.warning("Inconsistant data: subject is not " + this);
-			} else {
+			}
+			else {
 				Property predicate = s.getPredicate();
 				if (predicate.getURI().equals(TYPE_URI)) {
 					if (s.getObject() instanceof Resource && StringUtils.isNotEmpty(((Resource) s.getObject()).getURI())) {
 						if (((Resource) s.getObject()).getURI().equals(OWL_CLASS_URI)) {
 							newStatement = new IsClassStatement(this, s, getTechnologyAdapter());
-						} else if (((Resource) s.getObject()).getURI().equals(OWL_OBJECT_PROPERTY_URI)) {
+						}
+						else if (((Resource) s.getObject()).getURI().equals(OWL_OBJECT_PROPERTY_URI)) {
 							newStatement = new IsObjectPropertyStatement(this, s, getTechnologyAdapter());
-						} else if (((Resource) s.getObject()).getURI().equals(OWL_DATA_PROPERTY_URI)) {
+						}
+						else if (((Resource) s.getObject()).getURI().equals(OWL_DATA_PROPERTY_URI)) {
 							newStatement = new IsDatatypePropertyStatement(this, s, getTechnologyAdapter());
-						} else {
+						}
+						else {
 							newStatement = new TypeStatement(this, s, getTechnologyAdapter());
 						}
-					} else {
+					}
+					else {
 						newStatement = new TypeStatement(this, s, getTechnologyAdapter());
 					}
-				} else if (predicate.getURI().equals(RDFS_SUB_CLASS_URI)) {
+				}
+				else if (predicate.getURI().equals(RDFS_SUB_CLASS_URI)) {
 					newStatement = new SubClassStatement(this, s, getTechnologyAdapter());
-				} else if (predicate.getURI().equals(RDFS_RANGE_URI)) {
+				}
+				else if (predicate.getURI().equals(RDFS_RANGE_URI)) {
 					newStatement = new RangeStatement(this, s, getTechnologyAdapter());
-				} else if (predicate.getURI().equals(RDFS_DOMAIN_URI)) {
+				}
+				else if (predicate.getURI().equals(RDFS_DOMAIN_URI)) {
 					newStatement = new DomainStatement(this, s, getTechnologyAdapter());
-				} else if (predicate.getURI().equals(OWL_INVERSE_OF_URI)) {
+				}
+				else if (predicate.getURI().equals(OWL_INVERSE_OF_URI)) {
 					newStatement = new InverseOfStatement(this, s, getTechnologyAdapter());
-				} else if (predicate.getURI().equals(RDFS_SUB_PROPERTY_URI)) {
+				}
+				else if (predicate.getURI().equals(RDFS_SUB_PROPERTY_URI)) {
 					newStatement = new SubPropertyStatement(this, s, getTechnologyAdapter());
-				} else if (predicate.getURI().equals(OWL_EQUIVALENT_CLASS_URI)) {
+				}
+				else if (predicate.getURI().equals(OWL_EQUIVALENT_CLASS_URI)) {
 					newStatement = new EquivalentClassStatement(this, s, getTechnologyAdapter());
-				} else {
+				}
+				else {
 					IFlexoOntologyConcept<OWLTechnologyAdapter> predicateProperty = getOntology().getOntologyObject(predicate.getURI());
 					if (predicateProperty instanceof IFlexoOntologyObjectProperty) {
 						newStatement = new ObjectPropertyStatement(this, s, getTechnologyAdapter());
-					} else if (predicateProperty instanceof IFlexoOntologyDataProperty) {
+					}
+					else if (predicateProperty instanceof IFlexoOntologyDataProperty) {
 						newStatement = new DataPropertyStatement(this, s, getTechnologyAdapter());
-					} else {
+					}
+					else {
 						/*OWLOntologyLibrary owlOntologyLibrary = getOntologyLibrary();
 						OWLOntology rdfsOntology = owlOntologyLibrary.getRDFSOntology();
 						System.out.println("Unknown predicate: " + predicate);
@@ -289,10 +305,12 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 				if (newStatement instanceof PropertyStatement && ((PropertyStatement) newStatement).isAnnotationProperty()) {
 					if (((PropertyStatement) newStatement).hasLitteralValue()) {
 						_annotationStatements.add((PropertyStatement) newStatement);
-					} else if (newStatement instanceof ObjectPropertyStatement) {
+					}
+					else if (newStatement instanceof ObjectPropertyStatement) {
 						_annotationObjectsStatements.add((ObjectPropertyStatement) newStatement);
 					}
-				} else {
+				}
+				else {
 					_semanticStatements.add(newStatement);
 				}
 			}
@@ -659,7 +677,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		OWLProperty property = getOntology().getProperty(propertyURI);
 		if (property != null) {
 			return addPropertyStatement(property, "label", Language.ENGLISH);
-		} else {
+		}
+		else {
 			logger.warning("Could not find property " + property);
 			return null;
 		}
@@ -673,7 +692,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		OWLProperty property = getOntology().getProperty(propertyURI);
 		if (property instanceof OWLObjectProperty) {
 			return addPropertyStatement(property, object);
-		} else {
+		}
+		else {
 			logger.warning("Could not find property " + property);
 			return null;
 		}
@@ -724,7 +744,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		if (s != null) {
 			if (s.hasLitteralValue()) {
 				return s.getLiteral().getValue();
-			} else if (s instanceof ObjectPropertyStatement) {
+			}
+			else if (s instanceof ObjectPropertyStatement) {
 				return ((ObjectPropertyStatement) s).getStatementObject();
 			}
 		}
@@ -732,7 +753,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 	}
 
 	/**
-	 * Sets the value defined for supplied property, asserting that current individual defines one and only one assertion for this property.<br>
+	 * Sets the value defined for supplied property, asserting that current individual defines one and only one assertion for this property.
+	 * <br>
 	 * 
 	 * @param property
 	 * @param newValue
@@ -743,15 +765,18 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 			if (s.hasLitteralValue() && newValue instanceof String) {
 				s.setStringValue((String) newValue);
 				return;
-			} else if (s instanceof ObjectPropertyStatement && newValue instanceof OWLConcept) {
+			}
+			else if (s instanceof ObjectPropertyStatement && newValue instanceof OWLConcept) {
 				((ObjectPropertyStatement) s).setStatementObject((OWLConcept<?>) newValue);
 				return;
 			}
-		} else {
+		}
+		else {
 			if (newValue instanceof String) {
 				getOntResource().addProperty(property.getOntProperty(), (String) newValue);
 				updateOntologyStatements();
-			} else if (newValue instanceof OWLConcept) {
+			}
+			else if (newValue instanceof OWLConcept) {
 				getOntResource().addProperty(property.getOntProperty(), ((OWLConcept<?>) newValue).getOntResource());
 				updateOntologyStatements();
 			}
@@ -844,7 +869,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 				updateOntologyStatements();
 				setChanged();
 				return getPropertyStatement(property, (String) value);
-			} else {
+			}
+			else {
 				getOntResource().addLiteral(property.getOntProperty(), value);
 				updateOntologyStatements();
 				setChanged();
@@ -894,26 +920,35 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		if (property instanceof OWLProperty) {
 			if (value instanceof String) {
 				getOntResource().addProperty(property.getOntProperty(), (String) value);
-			} else if (value instanceof LocalizedString) {
+			}
+			else if (value instanceof LocalizedString) {
 				if (!StringUtils.isEmpty(((LocalizedString) value).string)) {
 					getOntResource().addProperty(property.getOntProperty(), ((LocalizedString) value).string,
 							((LocalizedString) value).language.getTag());
 				}
-			} else if (value instanceof Double) {
+			}
+			else if (value instanceof Double) {
 				getOntResource().addLiteral(property.getOntProperty(), ((Double) value).doubleValue());
-			} else if (value instanceof Float) {
+			}
+			else if (value instanceof Float) {
 				getOntResource().addLiteral(property.getOntProperty(), ((Float) value).floatValue());
-			} else if (value instanceof Long) {
+			}
+			else if (value instanceof Long) {
 				getOntResource().addLiteral(property.getOntProperty(), ((Long) value).longValue());
-			} else if (value instanceof Integer) {
+			}
+			else if (value instanceof Integer) {
 				getOntResource().addLiteral(property.getOntProperty(), ((Integer) value).longValue());
-			} else if (value instanceof Short) {
+			}
+			else if (value instanceof Short) {
 				getOntResource().addLiteral(property.getOntProperty(), ((Short) value).longValue());
-			} else if (value instanceof Boolean) {
+			}
+			else if (value instanceof Boolean) {
 				getOntResource().addLiteral(property.getOntProperty(), ((Boolean) value).booleanValue());
-			} else if (value != null) {
+			}
+			else if (value != null) {
 				logger.warning("Unexpected " + value + " of " + value.getClass());
-			} else {
+			}
+			else {
 				// If value is null, just ignore
 			}
 			setChanged();
@@ -953,7 +988,6 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		return propertiesTakingMySelfAsRange;
 	}
 
-	
 	public List<OWLProperty> getPropertiesTakingMySelfAsDomain() {
 		getDeclaredPropertiesTakingMySelfAsDomain(); // Required in some cases: TODO: investigate this
 		if (!domainsAndRangesAreRecursivelyUpToDate) {
@@ -987,8 +1021,8 @@ public abstract class OWLConcept<R extends OntResource> extends OWLObject implem
 		Vector<OWLProperty> allProperties = new Vector<OWLProperty>(getPropertiesTakingMySelfAsDomain());
 		Vector<OWLProperty> returnedProperties = new Vector<OWLProperty>();
 		for (OWLProperty p : allProperties) {
-			boolean takeIt = includeDataProperties && p instanceof OWLDataProperty || includeObjectProperties
-					&& p instanceof OWLObjectProperty || includeAnnotationProperties && p.isAnnotationProperty();
+			boolean takeIt = includeDataProperties && p instanceof OWLDataProperty
+					|| includeObjectProperties && p instanceof OWLObjectProperty || includeAnnotationProperties && p.isAnnotationProperty();
 			if (range != null && p instanceof OWLObjectProperty && !((OWLObjectProperty) p).getRange().isSuperConceptOf(range)) {
 				takeIt = false;
 			}

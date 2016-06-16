@@ -29,7 +29,6 @@ import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
 public class FIBComponentModelSlotInstanceConfiguration
@@ -42,10 +41,9 @@ public class FIBComponentModelSlotInstanceConfiguration
 		/**
 		 * Use the component given as template in model slot, do not modify it
 		 */
-		ReadOnlyUseFIBComponent,
-		/**
-		 * Use the component given as template in model slot, and allow to dynamically modify it
-		 */
+		ReadOnlyUseFIBComponent, /**
+									 * Use the component given as template in model slot, and allow to dynamically modify it
+									 */
 		ReadWriteFIBComponent;
 
 		@Override
@@ -93,7 +91,8 @@ public class FIBComponentModelSlotInstanceConfiguration
 				// The accessed ResourceData will be the template FIBComponent
 				msInstance.setAccessedResourceData(getModelSlot().getTemplateResource().getResourceData(null));
 				// System.out.println("rd=" + msInstance.getAccessedResourceData());
-			} else if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadWriteFIBComponent) {
+			}
+			else if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadWriteFIBComponent) {
 				// In this case, we have to manage a copy of template
 				/*resource = createProjectSpecificEmptyResource(msInstance, getModelSlot());
 				if (getResource() != null) {
@@ -128,8 +127,9 @@ public class FIBComponentModelSlotInstanceConfiguration
 	public boolean isValidConfiguration() {
 		if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent) {
 			return true;
-		} else if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadWriteFIBComponent) {
-			setErrorMessage(FlexoLocalization.localizedForKey("not_implemented_yet"));
+		}
+		else if (getOption() == FIBComponentModelSlotInstanceConfigurationOption.ReadWriteFIBComponent) {
+			setErrorMessage(getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("not_implemented_yet"));
 			return false;
 		}
 		return false;

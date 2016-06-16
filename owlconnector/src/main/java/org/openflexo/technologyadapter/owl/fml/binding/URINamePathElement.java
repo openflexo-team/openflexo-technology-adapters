@@ -64,7 +64,7 @@ public class URINamePathElement extends SimplePathElement {
 
 	@Override
 	public String getTooltipText(Type resultingType) {
-		return FlexoLocalization.localizedForKey("owl_concept_uri_name");
+		return FlexoLocalization.getMainLocalizer().localizedForKey("uri_name");
 	}
 
 	@Override
@@ -77,8 +77,8 @@ public class URINamePathElement extends SimplePathElement {
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		if (target instanceof OWLConcept) {
 			((OWLConcept) target).setName((String) value);
 			return;

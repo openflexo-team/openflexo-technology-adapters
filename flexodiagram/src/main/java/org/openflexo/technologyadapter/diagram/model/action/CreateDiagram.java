@@ -51,7 +51,7 @@ import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.localization.FlexoLocalization;
+import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -113,6 +113,14 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 
 	CreateDiagram(RepositoryFolder focusedObject, Vector<FlexoObject> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
+	}
+
+	@Override
+	public LocalizedDelegate getLocales() {
+		if (getServiceManager() != null) {
+			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class).getLocales();
+		}
+		return super.getLocales();
 	}
 
 	@Override
@@ -224,31 +232,31 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 	}
 
 	public String noDiagramSpecificationSelectedMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_type_selected");
+		return getLocales().localizedForKey("no_diagram_type_selected");
 	}
 
 	public String noTitleMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_title_defined");
+		return getLocales().localizedForKey("no_diagram_title_defined");
 	}
 
 	public String noFileMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_file_defined");
+		return getLocales().localizedForKey("no_diagram_file_defined");
 	}
 
 	public String existingFileMessage() {
-		return FlexoLocalization.localizedForKey("file_already_existing");
+		return getLocales().localizedForKey("file_already_existing");
 	}
 
 	public String noNameMessage() {
-		return FlexoLocalization.localizedForKey("no_diagram_name_defined");
+		return getLocales().localizedForKey("no_diagram_name_defined");
 	}
 
 	public String invalidNameMessage() {
-		return FlexoLocalization.localizedForKey("invalid_name_for_new_diagram");
+		return getLocales().localizedForKey("invalid_name_for_new_diagram");
 	}
 
 	public String duplicatedNameMessage() {
-		return FlexoLocalization.localizedForKey("a_diagram_with_that_name_already_exists");
+		return getLocales().localizedForKey("a_diagram_with_that_name_already_exists");
 	}
 
 	public DiagramSpecification getDiagramSpecification() {

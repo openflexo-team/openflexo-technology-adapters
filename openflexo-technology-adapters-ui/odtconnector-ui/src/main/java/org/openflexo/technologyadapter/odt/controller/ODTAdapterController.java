@@ -74,7 +74,8 @@ public class ODTAdapterController extends TechnologyAdapterController<ODTTechnol
 	}
 
 	@Override
-	public ModuleView<?> createModuleViewForObject(TechnologyObject<ODTTechnologyAdapter> arg0, FlexoController arg1, FlexoPerspective arg2) {
+	public ModuleView<?> createModuleViewForObject(TechnologyObject<ODTTechnologyAdapter> arg0, FlexoController arg1,
+			FlexoPerspective arg2) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -99,7 +100,8 @@ public class ODTAdapterController extends TechnologyAdapterController<ODTTechnol
 
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
-		ODTInspectorGroup = controller.loadInspectorGroup("ODT", getFMLTechnologyAdapterInspectorGroup());
+		ODTInspectorGroup = controller.loadInspectorGroup("ODT", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup ODTInspectorGroup;

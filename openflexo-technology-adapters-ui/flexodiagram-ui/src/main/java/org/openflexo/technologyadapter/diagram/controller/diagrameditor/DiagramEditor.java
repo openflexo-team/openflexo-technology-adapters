@@ -73,7 +73,6 @@ import org.openflexo.gina.FIBLibrary;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.swing.utils.JFIBDialog;
 import org.openflexo.gina.swing.view.SwingViewFactory;
-import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.selection.SelectionManagingDianaEditor;
 import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -251,7 +250,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		action.setGraphicalRepresentation(shapeGR);
 		action.setNewShapeName(shapeGR.getText());
 		if (action.getNewShapeName() == null) {
-			action.setNewShapeName(FlexoLocalization.localizedForKey("shape"));
+			action.setNewShapeName(action.getLocales().localizedForKey("shape"));
 		}
 
 		// action.nameSetToNull = true;
@@ -340,8 +339,7 @@ public abstract class DiagramEditor extends SelectionManagingDianaEditor<Diagram
 		for (DiagramPalette palette : orderedPalettes) {
 			paletteView.add(palette.getName(), contextualPalettes.get(palette).getPaletteViewInScrollPane());
 		}
-		paletteView.add(FlexoLocalization.localizedForKey(getCommonPaletteTitle(), getCommonPalette().getPaletteViewInScrollPane()),
-				getCommonPalette().getPaletteViewInScrollPane());
+		paletteView.add(getCommonPaletteTitle(), getCommonPalette().getPaletteViewInScrollPane());
 		paletteView.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {

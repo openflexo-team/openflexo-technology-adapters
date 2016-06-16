@@ -85,8 +85,8 @@ public class XMLAdapterController extends FlexoOntologyTechnologyAdapterControll
 	@Override
 	protected void initializeInspectors(FlexoController controller) {
 
-		xmlInspectorGroup = controller.loadInspectorGroup("XML", getFMLTechnologyAdapterInspectorGroup());
-		// actionInitializer.getController().getModuleInspectorController().loadDirectory(ResourceLocator.locateResource("Inspectors/XML"));
+		xmlInspectorGroup = controller.loadInspectorGroup("XML", getTechnologyAdapter().getLocales(),
+				getFMLTechnologyAdapterInspectorGroup());
 	}
 
 	private InspectorGroup xmlInspectorGroup;

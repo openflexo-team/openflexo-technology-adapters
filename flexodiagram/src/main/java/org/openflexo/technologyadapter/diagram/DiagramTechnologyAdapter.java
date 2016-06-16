@@ -107,6 +107,11 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
+	public String getLocalizationDirectory() {
+		return "FlexoLocalization/DiagramTechnologyAdapter";
+	}
+
+	@Override
 	public DiagramTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new DiagramTechnologyContextManager(this, service);
 	}
