@@ -72,9 +72,6 @@ public class DiagramFlexoConceptView extends FlexoConceptView<FlexoConcept> {
 	@Override
 	public void show(final FlexoController controller, FlexoPerspective perspective) {
 
-		System.out.println(">>>>>>>>>>> show() for " + this);
-		System.out.println(">>>>>>> Prefered size=" + previewComponent.getPreferredSize());
-
 		// Sets palette view of editor to be the top right view
 		perspective.setTopRightView(previewComponent);
 
