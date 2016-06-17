@@ -173,7 +173,9 @@ public abstract class DiagramSpecificationResourceImpl extends PamelaResourceImp
 			logger.fine("DiagramSpecificationResource " + diagramSpecificationDirectory.getAbsolutePath() + " version "
 					+ returned.getModelVersion());
 
-			returned.exploreInternalResources(returned.getDirectory());
+			if (returned.getDirectory() != null) {
+				returned.exploreInternalResources(returned.getDirectory());
+			}
 
 			return returned;
 		} catch (ModelDefinitionException e) {
