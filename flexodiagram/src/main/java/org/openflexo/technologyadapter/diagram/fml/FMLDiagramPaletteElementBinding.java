@@ -214,7 +214,10 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 
 		@Override
 		public FlexoConcept getFlexoConcept() {
-			return getDiagramModelSlot().getFlexoConcept();
+			if (getDiagramModelSlot() != null) {
+				return getDiagramModelSlot().getFlexoConcept();
+			}
+			return null;
 		}
 
 		@Override
@@ -361,21 +364,21 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		/*public Vector<FMLDiagramPaletteElementBindingParameter> getParameters() {
 			return parameters;
 		}
-
+		
 		public void setParameters(Vector<FMLDiagramPaletteElementBindingParameter> parameters) {
 			this.parameters = parameters;
 		}
-
+		
 		public void addToParameters(FMLDiagramPaletteElementBindingParameter parameter) {
 			parameter.setElementBinding(this);
 			parameters.add(parameter);
 		}
-
+		
 		public void removeFromParameters(FMLDiagramPaletteElementBindingParameter parameter) {
 			parameter.setElementBinding(null);
 			parameters.remove(parameter);
 		}
-
+		
 		public FMLDiagramPaletteElementBindingParameter getParameter(String name) {
 			for (FMLDiagramPaletteElementBindingParameter p : parameters) {
 				if (p.getName().equals(name)) {
@@ -398,7 +401,8 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 					if (parameterInstance != null) {
 						unusedParameterInstances.remove(parameterInstance);
 						parameterInstance.setParameter(parameter);
-					} else if (getOwningVirtualModel() != null) {
+					}
+					else if (getOwningVirtualModel() != null) {
 						FMLModelFactory factory = getFMLModelFactory();
 						parameterInstance = factory.newInstance(FMLDiagramPaletteElementBindingParameter.class);
 						parameterInstance.setParameter(parameter);
@@ -424,11 +428,11 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 		public Vector<OverridingGraphicalRepresentation> getOverridingGraphicalRepresentations() {
 			return overridingGraphicalRepresentations;
 		}
-
+		
 		public void setOverridingGraphicalRepresentations(Vector<OverridingGraphicalRepresentation> overridingGraphicalRepresentations) {
 			this.overridingGraphicalRepresentations.addAll(overridingGraphicalRepresentations);
 		}
-
+		
 		@Override
 		public void addToOverridingGraphicalRepresentations(OverridingGraphicalRepresentation anOverridingGraphicalRepresentation) {
 			overridingGraphicalRepresentations.add(anOverridingGraphicalRepresentation);
@@ -436,7 +440,7 @@ public interface FMLDiagramPaletteElementBinding extends VirtualModelObject {
 			setChanged();
 			notifyObservers();
 		}
-
+		
 		@Override
 		public void removeFromOverridingGraphicalRepresentations(OverridingGraphicalRepresentation anOverridingGraphicalRepresentation) {
 			overridingGraphicalRepresentations.remove(anOverridingGraphicalRepresentation);
