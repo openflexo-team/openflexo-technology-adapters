@@ -121,16 +121,14 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	private VirtualModelResource virtualModelResource;
 
 	public GraphicalRepresentation graphicalRepresentation;
-	public DiagramPalette palette;
+	private DiagramPalette palette;
 	public int xLocation;
 	public int yLocation;;
 	private FlexoConcept flexoConcept;
-	public DropScheme dropScheme;
+	private DropScheme dropScheme;
 	private String newElementName;
-	public boolean takeScreenshotForTopLevelElement = true;
-	public boolean overrideDefaultGraphicalRepresentations = false;
-
-	private String errorMessage;
+	private boolean takeScreenshotForTopLevelElement = true;
+	private boolean overrideDefaultGraphicalRepresentations = false;
 
 	private ScreenshotImage<DiagramShape> screenshot;
 	public int imageWidth;
@@ -148,7 +146,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		CONFIGURE_FML_CONTROL, FREE
 	}
 
-	public PushToPaletteChoices primaryChoice = PushToPaletteChoices.CONFIGURE_FML_CONTROL;
+	private PushToPaletteChoices primaryChoice = PushToPaletteChoices.CONFIGURE_FML_CONTROL;
 
 	protected PushToPalette(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
@@ -293,53 +291,28 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	@Override
 	public boolean isValid() {
 		if (!StringUtils.isNotEmpty(newElementName)) {
-			setErrorMessage(noNameMessage());
 			return false;
 		}
 
 		if (palette == null) {
-			setErrorMessage(noPaletteSelectedMessage());
 			return false;
 		}
 
 		if (primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)) {
 			if (flexoConcept == null) {
-				setErrorMessage(noFlexoConceptSelectedMessage());
 				return false;
 			}
 
 			if (dropScheme == null) {
-				setErrorMessage(noDropSchemeSelectedMessage());
 				return false;
 			}
 
 			if (virtualModel == null) {
-				setErrorMessage(noVirtualModelSelectedMessage());
 				return false;
 			}
 		}
 
 		return true;
-	}
-
-	public String noNameMessage() {
-		return getLocales().localizedForKey("no_palette_element_name_defined");
-	}
-
-	public String noPaletteSelectedMessage() {
-		return getLocales().localizedForKey("no_palette_selected");
-	}
-
-	public String noFlexoConceptSelectedMessage() {
-		return getLocales().localizedForKey("no_flexo_concept_selected");
-	}
-
-	public String noDropSchemeSelectedMessage() {
-		return getLocales().localizedForKey("no_drop_scheme_selected");
-	}
-
-	public String noVirtualModelSelectedMessage() {
-		return getLocales().localizedForKey("no_virtual_model_selected");
 	}
 
 	private List<DiagramElementEntry> diagramElementEntries;
@@ -430,8 +403,12 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public void setFlexoConcept(FlexoConcept flexoConcept) {
-		this.flexoConcept = flexoConcept;
-		updateDrawingObjectEntries();
+		if (flexoConcept != this.flexoConcept) {
+			FlexoConcept oldValue = this.flexoConcept;
+			this.flexoConcept = flexoConcept;
+			updateDrawingObjectEntries();
+			getPropertyChangeSupport().firePropertyChange("flexoConcept", oldValue, flexoConcept);
+		}
 	}
 
 	public List<DropScheme> getAvailableDropSchemes() {
@@ -502,7 +479,11 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	}
 
 	public void setVirtualModel(VirtualModel virtualModel) {
-		this.virtualModel = virtualModel;
+		if (virtualModel != this.virtualModel) {
+			VirtualModel oldValue = this.virtualModel;
+			this.virtualModel = virtualModel;
+			getPropertyChangeSupport().firePropertyChange("virtualModel", oldValue, virtualModel);
+		}
 	}
 
 	public FMLModelFactory getFactory() {
@@ -521,17 +502,6 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		setVirtualModel(virtualModelResource.getVirtualModel());
 	}
 
-	public String getErrorMessage() {
-		isValid();
-		// System.out.println("valid=" + isValid());
-		// System.out.println("errorMessage=" + errorMessage);
-		return errorMessage;
-	}
-
-	public void setErrorMessage(String message) {
-		this.errorMessage = message;
-	}
-
 	public Image getImage() {
 		return image;
 	}
@@ -539,4 +509,65 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 	public void setImage(Image image) {
 		this.image = image;
 	}
+
+	public DiagramPalette getPalette() {
+		return palette;
+	}
+
+	public void setPalette(DiagramPalette palette) {
+		if ((palette == null && this.palette != null) || (palette != null && !palette.equals(this.palette))) {
+			DiagramPalette oldValue = this.palette;
+			this.palette = palette;
+			getPropertyChangeSupport().firePropertyChange("palette", oldValue, palette);
+		}
+	}
+
+	public PushToPaletteChoices getPrimaryChoice() {
+		return primaryChoice;
+	}
+
+	public void setPrimaryChoice(PushToPaletteChoices primaryChoice) {
+		if (primaryChoice != this.primaryChoice) {
+			PushToPaletteChoices oldValue = this.primaryChoice;
+			this.primaryChoice = primaryChoice;
+			getPropertyChangeSupport().firePropertyChange("primaryChoice", oldValue, primaryChoice);
+		}
+	}
+
+	public DropScheme getDropScheme() {
+		return dropScheme;
+	}
+
+	public void setDropScheme(DropScheme dropScheme) {
+		if (dropScheme != this.dropScheme) {
+			DropScheme oldValue = this.dropScheme;
+			this.dropScheme = dropScheme;
+			getPropertyChangeSupport().firePropertyChange("dropScheme", oldValue, dropScheme);
+		}
+	}
+
+	public boolean takeScreenshotForTopLevelElement() {
+		return takeScreenshotForTopLevelElement;
+	}
+
+	public void setTakeScreenshotForTopLevelElement(boolean takeScreenshotForTopLevelElement) {
+		if (takeScreenshotForTopLevelElement != this.takeScreenshotForTopLevelElement) {
+			this.takeScreenshotForTopLevelElement = takeScreenshotForTopLevelElement;
+			getPropertyChangeSupport().firePropertyChange("takeScreenshotForTopLevelElement", !takeScreenshotForTopLevelElement,
+					takeScreenshotForTopLevelElement);
+		}
+	}
+
+	public boolean overrideDefaultGraphicalRepresentations() {
+		return overrideDefaultGraphicalRepresentations;
+	}
+
+	public void setOverrideDefaultGraphicalRepresentations(boolean overrideDefaultGraphicalRepresentations) {
+		if (overrideDefaultGraphicalRepresentations != this.overrideDefaultGraphicalRepresentations) {
+			this.overrideDefaultGraphicalRepresentations = overrideDefaultGraphicalRepresentations;
+			getPropertyChangeSupport().firePropertyChange("overrideDefaultGraphicalRepresentations",
+					!overrideDefaultGraphicalRepresentations, overrideDefaultGraphicalRepresentations);
+		}
+	}
+
 }

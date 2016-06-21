@@ -128,7 +128,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 		return null;
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib")
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib")
 	public class ReplaceShapeInExistingFlexoConcept extends ConfigureGraphicalElementRoleSettingStrategyStep<ShapeRoleSettingStrategy> {
 
 		public ReplaceShapeInExistingFlexoConcept(ShapeRoleSettingStrategy strategy) {
@@ -199,7 +199,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateShapeInExistingFlexoConcept.fib")
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/CreateShapeInExistingFlexoConcept.fib")
 	public class CreateShapeInExistingFlexoConcept extends ConfigureGraphicalElementRoleCreationStrategyStep<ShapeRoleCreationStrategy> {
 
 		public CreateShapeInExistingFlexoConcept(ShapeRoleCreationStrategy strategy) {
@@ -281,7 +281,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 		}
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureMapShapeToFlexoConceptlnstanceStep.fib")
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapShapeToFlexoConceptlnstanceStep.fib")
 	public class ConfigureMapShapeToFlexoConceptlnstanceStep
 			extends ConfigureCreateNewFlexoConceptFromShapeStep<MapShapeToFlexoConceptlnstanceStrategy> {
 
@@ -334,7 +334,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureMapShapeToIndividualStep.fib")
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapShapeToIndividualStep.fib")
 	public class ConfigureMapShapeToIndividualStep extends ConfigureCreateNewFlexoConceptFromShapeStep<MapShapeToIndividualStrategy> {
 
 		public ConfigureMapShapeToIndividualStep(MapShapeToIndividualStrategy strategy) {
@@ -386,7 +386,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureBlankFlexoConceptFromShapeCreationStrategyStep.fib")
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ConfigureBlankFlexoConceptFromShapeCreationStrategyStep.fib")
 	public class ConfigureBlankFlexoConceptFromShapeCreationStrategyStep
 			extends ConfigureCreateNewFlexoConceptFromShapeStep<BlankFlexoConceptFromShapeCreationStrategy> {
 

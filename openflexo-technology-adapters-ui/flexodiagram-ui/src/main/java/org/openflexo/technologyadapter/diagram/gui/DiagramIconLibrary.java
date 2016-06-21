@@ -69,6 +69,8 @@ public class DiagramIconLibrary extends IconLibrary {
 	public static final ImageIconResource DIAGRAM_MEDIUM_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/Diagram_medium.png"));
 
+	public static final ImageIconResource DIAGRAM_PALETTE_BIG_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/DiagramPalette64x64.png"));
 	public static final ImageIconResource DIAGRAM_PALETTE_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/DiagramPalette.png"));
 	public static final ImageIconResource DIAGRAM_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Diagram.png"));
@@ -104,17 +106,23 @@ public class DiagramIconLibrary extends IconLibrary {
 	public static ImageIcon iconForObject(FlexoObject object) {
 		if (object instanceof Diagram) {
 			return DIAGRAM_ICON;
-		} else if (object instanceof DiagramConnector) {
+		}
+		else if (object instanceof DiagramConnector) {
 			return CONNECTOR_ICON;
-		} else if (object instanceof DiagramShape) {
+		}
+		else if (object instanceof DiagramShape) {
 			return SHAPE_ICON;
-		} else if (object instanceof DiagramSpecification) {
+		}
+		else if (object instanceof DiagramSpecification) {
 			return DIAGRAM_SPECIFICATION_ICON;
-		} else if (object instanceof DiagramPalette) {
+		}
+		else if (object instanceof DiagramPalette) {
 			return DIAGRAM_PALETTE_ICON;
-		} else if (object instanceof DiagramPaletteElement) {
+		}
+		else if (object instanceof DiagramPaletteElement) {
 			return SHAPE_ICON;
-		} else if (object instanceof FMLDiagramPaletteElementBinding) {
+		}
+		else if (object instanceof FMLDiagramPaletteElementBinding) {
 			return FML_PALETTE_ELEMENT_BINDING_ICON_16X16;
 		}
 		logger.warning("No icon for " + object.getClass());

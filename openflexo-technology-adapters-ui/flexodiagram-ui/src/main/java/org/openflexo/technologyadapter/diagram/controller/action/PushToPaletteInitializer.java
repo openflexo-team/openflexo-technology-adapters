@@ -43,9 +43,11 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.components.wizard.Wizard;
+import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
-import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
+import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.fml.action.PushToPalette;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
@@ -66,8 +68,16 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 		return new FlexoActionInitializer<PushToPalette>() {
 			@Override
 			public boolean run(EventObject e, PushToPalette action) {
-				action.setImage((DiagramIconLibrary.DIAGRAM_PALETTE_ICON).getImage());
-				return instanciateAndShowDialog(action, DiagramCst.PUSH_TO_PALETTE_DIALOG_FIB);
+				Wizard wizard = new PushToPaletteWizard(action, getController());
+				WizardDialog dialog = new WizardDialog(wizard, getController());
+				dialog.showDialog();
+				if (dialog.getStatus() != Status.VALIDATED) {
+					// Operation cancelled
+					return false;
+				}
+				return true;
+				// action.setImage((DiagramIconLibrary.DIAGRAM_PALETTE_ICON).getImage());
+				// return instanciateAndShowDialog(action, DiagramCst.PUSH_TO_PALETTE_DIALOG_FIB);
 			}
 		};
 	}
@@ -77,7 +87,7 @@ public class PushToPaletteInitializer extends ActionInitializer<PushToPalette, D
 		return new FlexoActionFinalizer<PushToPalette>() {
 			@Override
 			public boolean run(EventObject e, PushToPalette action) {
-				getController().setCurrentEditedObjectAsModuleView(action.palette);
+				getController().setCurrentEditedObjectAsModuleView(action.getPalette());
 				getController().getSelectionManager().setSelectedObject(action.getNewPaletteElement());
 				return true;
 			}

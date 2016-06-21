@@ -130,7 +130,7 @@ public class DeclareConnectorInFlexoConceptWizard
 		return null;
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib")
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ReplaceConnectorInExistingFlexoConcept.fib")
 	public class ReplaceConnectorInExistingFlexoConcept
 			extends ConfigureGraphicalElementRoleSettingStrategyStep<ConnectorRoleSettingStrategy> {
 
@@ -202,7 +202,7 @@ public class DeclareConnectorInFlexoConceptWizard
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib")
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/CreateConnectorInExistingFlexoConcept.fib")
 	public class CreateConnectorInExistingFlexoConcept
 			extends ConfigureGraphicalElementRoleCreationStrategyStep<ConnectorRoleCreationStrategy> {
 
@@ -285,7 +285,7 @@ public class DeclareConnectorInFlexoConceptWizard
 		}
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureMapConnectorToFlexoConceptlnstanceStep.fib")
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapConnectorToFlexoConceptlnstanceStep.fib")
 	public class ConfigureMapConnectorToFlexoConceptlnstanceStep
 			extends ConfigureCreateNewFlexoConceptFromConnectorStep<MapConnectorToFlexoConceptlnstanceStrategy> {
 
@@ -339,7 +339,7 @@ public class DeclareConnectorInFlexoConceptWizard
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureMapConnectorToIndividualStep.fib")
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapConnectorToIndividualStep.fib")
 	public class ConfigureMapConnectorToIndividualStep
 			extends ConfigureCreateNewFlexoConceptFromConnectorStep<MapConnectorToIndividualStrategy> {
 
@@ -392,7 +392,7 @@ public class DeclareConnectorInFlexoConceptWizard
 
 	}
 
-	@FIBPanel("Fib/Wizard/DeclareDiagramElementInFlexoConcept/ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep.fib")
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep.fib")
 	public class ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep
 			extends ConfigureCreateNewFlexoConceptFromConnectorStep<BlankFlexoConceptFromConnectorCreationStrategy> {
 

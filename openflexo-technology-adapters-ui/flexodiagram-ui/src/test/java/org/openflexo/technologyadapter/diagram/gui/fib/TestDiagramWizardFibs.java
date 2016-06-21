@@ -115,4 +115,9 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib");
 	}
 
+	@Test
+	public void testPushToPaletteOptions() {
+		validateFIB("Fib/Wizard/PushToPalette/PushToPaletteOptions.fib");
+	}
+
 }
