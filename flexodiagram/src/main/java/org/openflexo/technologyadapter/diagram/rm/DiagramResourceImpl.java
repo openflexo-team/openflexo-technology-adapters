@@ -82,7 +82,7 @@ import org.openflexo.toolbox.StringUtils;
  * @author Sylvain
  * 
  */
-public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, DiagramFactory> implements DiagramResource {
+public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, DiagramFactory>implements DiagramResource {
 
 	static final Logger logger = Logger.getLogger(DiagramResourceImpl.class.getPackage().getName());
 
@@ -95,8 +95,8 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			DiagramSpecificationResource diagramSpecificationResource, FlexoResourceCenter<?> resourceCenter,
 			FlexoServiceManager serviceManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					DiagramResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, DiagramResource.class));
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramFile, factory));
 			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
@@ -121,8 +121,8 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 	public static DiagramResource retrieveDiagramResource(File diagramFile, FlexoResourceCenter<?> resourceCenter,
 			FlexoServiceManager serviceManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					DiagramResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, DiagramResource.class));
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramFile, factory));
 			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
@@ -143,12 +143,18 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			}
 			returned.setURI(info.uri);
 			if (StringUtils.isNotEmpty(info.diagramSpecificationURI)) {
-				DiagramTechnologyAdapter ta = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-						DiagramTechnologyAdapter.class);
-				// System.out.println("diagramSpecificationURI=" + info.diagramSpecificationURI);
-				DiagramSpecificationResource dsResource = (DiagramSpecificationResource) ta.getTechnologyContextManager()
-						.getResourceWithURI(info.diagramSpecificationURI);
-				returned.setMetaModelResource(dsResource);
+				DiagramTechnologyAdapter ta = serviceManager.getTechnologyAdapterService()
+						.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+				DiagramSpecificationResource dsResource = (DiagramSpecificationResource) ta.getTechnologyAdapterService()
+						.getServiceManager().getResourceManager().getResource(info.diagramSpecificationURI);
+				if (dsResource == null) {
+					// DiagramSpecificationResource not found yet, but give a chance to lookup later
+					// We stored the URI of DiagramSpecification
+					returned.diagramSpecificationURI = info.diagramSpecificationURI;
+				}
+				else {
+					returned.setMetaModelResource(dsResource);
+				}
 			}
 			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(serviceManager);
@@ -162,8 +168,8 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 	public static DiagramResource retrieveDiagramResource(InJarResourceImpl inJarResource, FlexoResourceCenter<?> resourceCenter,
 			FlexoServiceManager serviceManager) {
 		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(InJarFlexoIODelegate.class,
-					DiagramResource.class));
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(InJarFlexoIODelegate.class, DiagramResource.class));
 			DiagramResourceImpl returned = (DiagramResourceImpl) factory.newInstance(DiagramResource.class);
 			returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(inJarResource, factory));
 			DiagramFactory diagramFactory = new DiagramFactory(returned, serviceManager.getEditingContext());
@@ -176,12 +182,18 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			}
 			returned.setURI(info.uri);
 			if (StringUtils.isNotEmpty(info.diagramSpecificationURI)) {
-				DiagramTechnologyAdapter ta = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-						DiagramTechnologyAdapter.class);
-				// System.out.println("diagramSpecificationURI=" + info.diagramSpecificationURI);
-				DiagramSpecificationResource dsResource = (DiagramSpecificationResource) ta.getTechnologyContextManager()
-						.getResourceWithURI(info.diagramSpecificationURI);
-				returned.setMetaModelResource(dsResource);
+				DiagramTechnologyAdapter ta = serviceManager.getTechnologyAdapterService()
+						.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+				DiagramSpecificationResource dsResource = (DiagramSpecificationResource) ta.getTechnologyAdapterService()
+						.getServiceManager().getResourceManager().getResource(info.diagramSpecificationURI);
+				if (dsResource == null) {
+					// DiagramSpecificationResource not found yet, but give a chance to lookup later
+					// We stored the URI of DiagramSpecification
+					returned.diagramSpecificationURI = info.diagramSpecificationURI;
+				}
+				else {
+					returned.setMetaModelResource(dsResource);
+				}
 			}
 			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(serviceManager);
@@ -190,6 +202,28 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	private String diagramSpecificationURI = null;
+	private DiagramSpecificationResource diagramSpecificationResource = null;
+
+	@Override
+	public DiagramSpecificationResource getMetaModelResource() {
+		if (diagramSpecificationResource == null && StringUtils.isNotEmpty(diagramSpecificationURI)) {
+			// DiagramSpecificationResource not set yet, but URI is available, try to lookup it now
+			diagramSpecificationResource = (DiagramSpecificationResource) getTechnologyAdapter().getTechnologyAdapterService()
+					.getServiceManager().getResourceManager().getResource(diagramSpecificationURI);
+			// System.out.println("****** Retrieved and found later: " + diagramSpecificationResource);
+		}
+		return diagramSpecificationResource;
+	}
+
+	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource) {
+		if (diagramSpecificationResource != this.diagramSpecificationResource) {
+			DiagramSpecificationResource oldValue = this.diagramSpecificationResource;
+			this.diagramSpecificationResource = diagramSpecificationResource;
+			getPropertyChangeSupport().firePropertyChange("diagramSpecificationResource", oldValue, diagramSpecificationResource);
+		}
 	}
 
 	@Override
@@ -266,19 +300,24 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 					if (at.getName().equals("uri")) {
 						logger.fine("Returned " + at.getValue());
 						returned.uri = at.getValue();
-					} else if (at.getName().equals("title")) {
+					}
+					else if (at.getName().equals("title")) {
 						logger.fine("Returned " + at.getValue());
 						returned.title = at.getValue();
-					} else if (at.getName().equals("name")) {
+					}
+					else if (at.getName().equals("name")) {
 						logger.fine("Returned " + at.getValue());
 						returned.name = at.getValue();
-					} else if (at.getName().equals("version")) {
+					}
+					else if (at.getName().equals("version")) {
 						logger.fine("Returned " + at.getValue());
 						returned.version = at.getValue();
-					} else if (at.getName().equals("modelVersion")) {
+					}
+					else if (at.getName().equals("modelVersion")) {
 						logger.fine("Returned " + at.getValue());
 						returned.modelVersion = at.getValue();
-					} else if (at.getName().equals(Diagram.DIAGRAM_SPECIFICATION_URI)) {
+					}
+					else if (at.getName().equals(Diagram.DIAGRAM_SPECIFICATION_URI)) {
 						logger.fine("Returned " + at.getValue());
 						returned.diagramSpecificationURI = at.getValue();
 					}
