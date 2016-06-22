@@ -106,9 +106,9 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 	@Setter(READ_ONLY_KEY)
 	public void setReadOnly(boolean readOnly);
 
-	public GraphicalElementRole<?, GR> getPatternRole();
+	public GraphicalElementRole<?, GR> getFlexoRole();
 
-	public void setPatternRole(GraphicalElementRole<?, GR> patternRole);
+	public void setFlexoRole(GraphicalElementRole<?, GR> flexoRole);
 
 	public boolean getMandatory();
 
@@ -132,8 +132,8 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 			super();
 		}
 
-		public GraphicalElementSpecificationImpl(GraphicalElementRole<?, GR> patternRole, GraphicalFeature<T, GR> feature,
-				boolean readOnly, boolean mandatory) {
+		public GraphicalElementSpecificationImpl(GraphicalElementRole<?, GR> patternRole, GraphicalFeature<T, GR> feature, boolean readOnly,
+				boolean mandatory) {
 			super();
 			this.patternRole = patternRole;
 			this.feature = feature;
@@ -224,18 +224,18 @@ public interface GraphicalElementSpecification<T, GR extends GraphicalRepresenta
 		}
 
 		@Override
-		public GraphicalElementRole<?, GR> getPatternRole() {
+		public GraphicalElementRole<?, GR> getFlexoRole() {
 			return patternRole;
 		}
 
 		@Override
-		public void setPatternRole(GraphicalElementRole<?, GR> patternRole) {
+		public void setFlexoRole(GraphicalElementRole<?, GR> patternRole) {
 			this.patternRole = patternRole;
 		}
 
 		@Override
 		public FlexoConcept getFlexoConcept() {
-			return getPatternRole() != null ? getPatternRole().getFlexoConcept() : null;
+			return getFlexoRole() != null ? getFlexoRole().getFlexoConcept() : null;
 		}
 
 		@Override

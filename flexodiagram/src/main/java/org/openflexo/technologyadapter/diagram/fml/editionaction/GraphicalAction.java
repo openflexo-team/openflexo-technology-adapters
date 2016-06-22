@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.diagram.fml.editionaction;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.logging.Level;
@@ -50,6 +51,8 @@ import org.openflexo.connie.DataBinding.BindingDefinitionType;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.connie.type.TypeUtils;
+import org.openflexo.foundation.fml.FMLRepresentationContext;
+import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
 import org.openflexo.foundation.fml.rt.action.FlexoBehaviourAction;
@@ -171,7 +174,8 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 		@Override
 		public GraphicalFeature<?, ?> getGraphicalFeature() {
 			if (graphicalFeature == null) {
-				if (_graphicalFeatureName != null) {
+				// System.out.println("Attempt to lookup " + _graphicalFeatureName + " from " + getAvailableGraphicalFeatures());
+				if (_graphicalFeatureName != null && getAvailableGraphicalFeatures() != null) {
 					for (GraphicalFeature<?, ?> GF : getAvailableGraphicalFeatures()) {
 						if (GF.getName().equals(_graphicalFeatureName)) {
 							return GF;
@@ -189,41 +193,25 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 
 		private List<GraphicalFeature<?, ?>> availableFeatures = null;
 
-		/*@Override
-		public GraphicalElementRole getPatternRole() {
-			try {
-				return super.getPatternRole();
-			} catch (ClassCastException e) {
-				logger.warning("Unexpected pattern property type");
-				setPatternRole(null);
-				return null;
-			}
-		}
-
-		@Override
-		public void setPatternRole(GraphicalElementRole patternRole) {
-			System.out.println("set pattern property with " + patternRole);
-			super.setPatternRole(patternRole);
-			availableFeatures = null;
-		}*/
-
 		@Override
 		public List<GraphicalFeature<?, ?>> getAvailableGraphicalFeatures() {
 			if (availableFeatures == null) {
-				availableFeatures = new Vector<GraphicalFeature<?, ?>>();
+				// System.out.println("On calcule la liste des features, subject=" + getSubject());
 				if (getSubject().isSet() && getSubject().isValid()) {
 					Class<?> accessedClass = TypeUtils.getBaseClass(getSubject().getAnalyzedType());
+					// System.out.println("What about: " + accessedClass + " from " + getSubject().getAnalyzedType());
 					if (DiagramElement.class.isAssignableFrom(accessedClass)) {
+						availableFeatures = new ArrayList<GraphicalFeature<?, ?>>();
 						for (GraphicalFeature<?, ?> GF : GraphicalElementRole.AVAILABLE_FEATURES) {
 							availableFeatures.add(GF);
 						}
 						if (DiagramShape.class.isAssignableFrom(accessedClass)) {
-							for (GraphicalFeature<?, ?> GF : ShapeRole.AVAILABLE_FEATURES) {
+							for (GraphicalFeature<?, ?> GF : ShapeRole.AVAILABLE_SHAPE_FEATURES) {
 								availableFeatures.add(GF);
 							}
 						}
 						if (DiagramConnector.class.isAssignableFrom(accessedClass)) {
-							for (GraphicalFeature<?, ?> GF : ConnectorRole.AVAILABLE_FEATURES) {
+							for (GraphicalFeature<?, ?> GF : ConnectorRole.AVAILABLE_CONNECTOR_FEATURES) {
 								availableFeatures.add(GF);
 							}
 						}
@@ -288,18 +276,20 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 			super.notifiedBindingChanged(binding);
 			if (binding == getSubject()) {
 				availableFeatures = null;
+				System.out.println("OK, on change les features disponibles, et on trouve: " + getAvailableGraphicalFeatures());
+				getPropertyChangeSupport().firePropertyChange("availableGraphicalFeatures", null, getAvailableGraphicalFeatures());
 			}
-		}
-
-		@Override
-		public String getStringRepresentation() {
-			return getClass().getSimpleName() + " (" + getSubject() + "." + _getGraphicalFeatureName() + "=" + getValue() + ")";
 		}
 
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		@Override
 		public DiagramElement<?> execute(RunTimeEvaluationContext evaluationContext) {
 			logger.info("Perform graphical action " + evaluationContext);
+			if (getGraphicalFeature() == null) {
+				logger.warning("No graphical feature supplied, aborting");
+				return null;
+			}
+
 			DiagramElement<?> graphicalElement = getSubject(evaluationContext);
 			Object value = null;
 			try {
@@ -328,6 +318,22 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 			return DiagramElement.class;
 		}
 
+		@Override
+		public String getFMLRepresentation(FMLRepresentationContext context) {
+			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
+			out.append((getSubject() != null ? getSubject().toString() : "?") + "."
+					+ (getGraphicalFeature() != null ? getGraphicalFeature().getName() : "?") + "="
+					+ (getValue() != null ? getValue().toString() : "?"), context);
+			return out.toString();
+		}
+
+		@Override
+		public String getStringRepresentation() {
+			return getHeaderContext() + (getSubject() != null ? getSubject().toString() : "?") + "."
+					+ (getGraphicalFeature() != null ? getGraphicalFeature().getName() : "?") + "="
+					+ (getValue() != null ? getValue().toString() : "?");
+		}
+
 	}
 
 	@DefineValidationRule
@@ -340,7 +346,8 @@ public interface GraphicalAction extends DiagramAction<TypedDiagramModelSlot, Di
 		public ValidationIssue<GraphicalActionMustHaveASubject, GraphicalAction> applyValidation(GraphicalAction graphicalAction) {
 			if (graphicalAction.getSubject().isSet() && graphicalAction.getSubject().isValid()) {
 				return null;
-			} else {
+			}
+			else {
 				Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>> v = new Vector<FixProposal<GraphicalActionMustHaveASubject, GraphicalAction>>();
 				for (ShapeRole pr : graphicalAction.getFlexoConcept().getDeclaredProperties(ShapeRole.class)) {
 					v.add(new SetsFlexoRoleForSubject(pr));

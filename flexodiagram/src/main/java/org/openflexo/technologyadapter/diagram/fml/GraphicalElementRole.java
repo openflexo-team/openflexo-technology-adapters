@@ -76,8 +76,8 @@ import org.openflexo.technologyadapter.diagram.model.dm.GraphicalRepresentationM
 
 @ModelEntity(isAbstract = true)
 @ImplementationClass(GraphicalElementRole.GraphicalElementRoleImpl.class)
-public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends FlexoRole<T>,
-		Bindable {
+public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
+		extends FlexoRole<T>, Bindable {
 
 	public static GraphicalFeature<String, GraphicalRepresentation> LABEL_FEATURE = new HackClassInit();
 
@@ -200,8 +200,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 
 	public GraphicalElementAction deleteAction(GraphicalElementAction anAction);
 
-	public static abstract class GraphicalElementRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation> extends
-			FlexoRoleImpl<T> implements GraphicalElementRole<T, GR> {
+	public static abstract class GraphicalElementRoleImpl<T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
+			extends FlexoRoleImpl<T>implements GraphicalElementRole<T, GR> {
 
 		@SuppressWarnings("unused")
 		private static final Logger logger = Logger.getLogger(GraphicalElementRole.class.getPackage().getName());
@@ -243,9 +243,9 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 				for (GraphicalFeature<?, ?> GF : AVAILABLE_FEATURES) {
 					// logger.info("[COMMON:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
-					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory().newInstance(
-							GraphicalElementSpecification.class);
-					newGraphicalElementSpecification.setPatternRole(this);
+					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory()
+							.newInstance(GraphicalElementSpecification.class);
+					newGraphicalElementSpecification.setFlexoRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
 					newGraphicalElementSpecification.setReadOnly(false);
 					newGraphicalElementSpecification.setMandatory(true);
@@ -313,7 +313,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 				getGraphicalRepresentation().setsWith(graphicalRepresentation);
 				setChanged();
 				notifyObservers(new GraphicalRepresentationModified(this, graphicalRepresentation));
-			} else {
+			}
+			else {
 				setGraphicalRepresentation(graphicalRepresentation);
 			}
 		}
@@ -331,7 +332,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					public DataBinding.BindingDefinitionType getBindingDefinitionType() {
 						if (getReadOnlyLabel()) {
 							return DataBinding.BindingDefinitionType.GET;
-						} else {
+						}
+						else {
 							return DataBinding.BindingDefinitionType.GET_SET;
 						}
 					}
@@ -505,7 +507,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		public List<GraphicalElementSpecification<?, GR>> getGrSpecifications() {
 			if (grSpecifications == null && getFMLModelFactory() != null) {
 				initDefaultSpecifications();
-			} else if (grSpecifications == null) {
+			}
+			else if (grSpecifications == null) {
 				grSpecifications = new ArrayList<GraphicalElementSpecification<?, GR>>();
 			}
 			return grSpecifications;
@@ -550,11 +553,12 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 		}
 
 		private <T2> void registerGRSpecification(GraphicalElementSpecification<T2, GR> aSpec) {
-			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(aSpec
-					.getFeatureName());
+			GraphicalElementSpecification<T2, GR> existingSpec = (GraphicalElementSpecification<T2, GR>) getGraphicalElementSpecification(
+					aSpec.getFeatureName());
 			if (existingSpec == null) {
 				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
-			} else {
+			}
+			else {
 				existingSpec.setValue(aSpec.getValue());
 				existingSpec.setReadOnly(aSpec.getReadOnly());
 			}
@@ -568,7 +572,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 					// Factory is not accessible yet, and thus, GRSpecs not available yet
 					// We store it in pendingGRSpecs for future use
 					pendingGRSpecs.add(aSpec);
-				} else {
+				}
+				else {
 					registerGRSpecification(aSpec);
 				}
 			}
@@ -579,7 +584,8 @@ public abstract interface GraphicalElementRole<T extends DiagramElement<GR>, GR 
 			GraphicalElementSpecification<?, ?> existingSpec = getGraphicalElementSpecification(aSpec.getFeatureName());
 			if (existingSpec == null) {
 				logger.warning("Cannot find any GraphicalElementSpecification matching " + aSpec.getFeatureName() + ". Ignoring...");
-			} else {
+			}
+			else {
 				existingSpec.setValue(null);
 			}
 		}

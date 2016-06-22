@@ -77,6 +77,8 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	@PropertyIdentifier(type = ShapeRole.class)
 	public static final String END_SHAPE_PATTERN_ROLE_KEY = "endShapeRole";
 
+	public static GraphicalFeature<?, ?>[] AVAILABLE_CONNECTOR_FEATURES = {};
+
 	@Override
 	@Getter(value = GRAPHICAL_REPRESENTATION_KEY)
 	@CloningStrategy(StrategyType.CLONE)
@@ -146,7 +148,7 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 					// logger.info("[CONNECTOR:" + getRoleName() + "] Nouvelle GraphicalElementSpecification for " + GF);
 					GraphicalElementSpecification newGraphicalElementSpecification = getFMLModelFactory()
 							.newInstance(GraphicalElementSpecification.class);
-					newGraphicalElementSpecification.setPatternRole(this);
+					newGraphicalElementSpecification.setFlexoRole(this);
 					newGraphicalElementSpecification.setFeature(GF);
 					newGraphicalElementSpecification.setReadOnly(false);
 					newGraphicalElementSpecification.setMandatory(true);
@@ -293,8 +295,6 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		public Type getType() {
 			return DiagramConnector.class;
 		}
-
-		public static GraphicalFeature<?, ?>[] AVAILABLE_FEATURES = {};
 
 		@Override
 		public List<ShapeRole> getAvailableShapeRoles() {

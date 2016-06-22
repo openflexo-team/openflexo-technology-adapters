@@ -118,7 +118,7 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 	@Override
 	public ConnectorRole getAssignedFlexoProperty();
 
-	public static abstract class AddConnectorImpl extends AddDiagramElementActionImpl<DiagramConnector> implements AddConnector {
+	public static abstract class AddConnectorImpl extends AddDiagramElementActionImpl<DiagramConnector>implements AddConnector {
 
 		private static final Logger logger = Logger.getLogger(LinkSchemeAction.class.getPackage().getName());
 
@@ -132,8 +132,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			/*if (getAssignation().isSet()) {
 				out.append(getAssignation().toString() + " = (", context);
 			}*/
-			out.append(getClass().getSimpleName() + " conformTo ConnectorSpecification from " + getModelSlot().getName() + " {"
-					+ StringUtils.LINE_SEPARATOR, context);
+			out.append(getClass().getSimpleName() + " conformTo ConnectorSpecification from "
+					+ (getModelSlot() != null ? getModelSlot().getName() : "null") + " {" + StringUtils.LINE_SEPARATOR, context);
 			out.append(getGraphicalElementSpecificationFMLRepresentation(context), context);
 			out.append("}", context);
 			/*if (getAssignation().isSet()) {
@@ -155,7 +155,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 			FlexoRole superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof ConnectorRole) {
 				return (ConnectorRole) superFlexoRole;
-			} else if (superFlexoRole != null) {
+			}
+			else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -169,7 +170,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 						.getFlexoActor(getAssignedFlexoProperty().getStartShapeRole());
 				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
 						.getFlexoActor(getAssignedFlexoProperty().getStartShapeRole());
-			} else {
+			}
+			else {
 				try {
 					return getFromShape().getBindingValue(evaluationContext);
 				} catch (TypeMismatchException e) {
@@ -188,7 +190,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 					&& !getAssignedFlexoProperty().getEndShapeAsDefinedInAction()) {
 				return ((FlexoBehaviourAction<?, ?, ?>) evaluationContext).getFlexoConceptInstance()
 						.getFlexoActor(getAssignedFlexoProperty().getEndShapeRole());
-			} else {
+			}
+			else {
 				try {
 					return getToShape().getBindingValue(evaluationContext);
 				} catch (TypeMismatchException e) {
@@ -301,25 +304,32 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				newConnector.setStartShape(fromShape);
 				newConnector.setEndShape(toShape);
 
-				// If no GR is defined for this shape, create a default one
-				if (getAssignedFlexoProperty().getGraphicalRepresentation() == null) {
-					getAssignedFlexoProperty()
-							.setGraphicalRepresentation(getFMLModelFactory().makeConnectorGraphicalRepresentation(ConnectorType.LINE));
-				}
+				ConnectorGraphicalRepresentation grToUse = null;
 
-				ConnectorGraphicalRepresentation grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
+				if (getAssignedFlexoProperty() != null) {
 
-				ConnectorGraphicalRepresentation newGR = factory.makeConnectorGraphicalRepresentation();
-				newGR.setsWith(grToUse);
-				newConnector.setGraphicalRepresentation(newGR);
+					// If no GR is defined for this shape, create a default one
+					if (getAssignedFlexoProperty().getGraphicalRepresentation() == null) {
+						System.out.println("No GR, creating ");
+						grToUse = getFMLModelFactory().makeConnectorGraphicalRepresentation(ConnectorType.LINE);
+						System.out.println("Creating " + grToUse);
+						getAssignedFlexoProperty().setGraphicalRepresentation(grToUse);
+					}
 
-				// Handle default ShapeSpecification when not set
-				if (newGR.getConnectorSpecification() == null) {
-					newGR.setConnectorSpecification(factory.makeConnector(ConnectorType.LINE));
-				}
-				// Handle default Foreground when not set
-				if (newGR.getForeground() == null) {
-					newGR.setForeground(factory.makeDefaultForegroundStyle());
+					grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
+
+					ConnectorGraphicalRepresentation newGR = factory.makeConnectorGraphicalRepresentation();
+					newGR.setsWith(grToUse);
+					newConnector.setGraphicalRepresentation(newGR);
+
+					// Handle default ShapeSpecification when not set
+					if (newGR.getConnectorSpecification() == null) {
+						newGR.setConnectorSpecification(factory.makeConnector(ConnectorType.LINE));
+					}
+					// Handle default Foreground when not set
+					if (newGR.getForeground() == null) {
+						newGR.setForeground(factory.makeDefaultForegroundStyle());
+					}
 				}
 
 				DiagramContainerElement<?> parent = DiagramElementImpl.getFirstCommonAncestor(fromShape, toShape);
@@ -334,7 +344,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 					if (fr.getGraphicalRepresentation() != null) {
 						grToUse = getAssignedFlexoProperty().getGraphicalRepresentation();
 					}
-				} else {
+				}
+				else {
 					logger.warning("INVESTIGATE your ViewPoint, No FlexoRole defined for action " + this.getName());
 				}
 
@@ -364,7 +375,8 @@ public interface AddConnector extends AddDiagramElementAction<DiagramConnector> 
 				newConnector.getParent().getPropertyChangeSupport().firePropertyChange("invalidate", null, newConnector.getParent());
 
 				return newConnector;
-			} else {
+			}
+			else {
 				logger.warning("AddConnector failed due to null source or target shape");
 				return null;
 			}
