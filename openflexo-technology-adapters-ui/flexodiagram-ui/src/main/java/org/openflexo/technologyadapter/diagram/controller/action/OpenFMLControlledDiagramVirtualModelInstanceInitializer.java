@@ -47,6 +47,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
+import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.fml.action.OpenFMLControlledDiagramVirtualModelInstance;
@@ -69,6 +70,17 @@ public class OpenFMLControlledDiagramVirtualModelInstanceInitializer
 		return new FlexoActionInitializer<OpenFMLControlledDiagramVirtualModelInstance>() {
 			@Override
 			public boolean run(EventObject e, OpenFMLControlledDiagramVirtualModelInstance action) {
+				DiagramTechnologyAdapter diagramTA = action.getServiceManager().getTechnologyAdapterService()
+						.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+				if (diagramTA == null) {
+					return false;
+				}
+				if (!diagramTA.isActivated()) {
+					FlexoTask loadDiagramTA = action.getServiceManager().activateTechnologyAdapter(diagramTA);
+					if (loadDiagramTA != null) {
+						action.getServiceManager().getTaskManager().waitTask(loadDiagramTA);
+					}
+				}
 				return true;
 			}
 
