@@ -131,7 +131,7 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 
 	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource);
 
-	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram> implements CreateDiagram {
+	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram>implements CreateDiagram {
 
 		private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
@@ -149,9 +149,11 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			/*if (getAssignation().isSet()) {
 				out.append(getAssignation().toString() + " = (", context);
 			}*/
-			out.append(getClass().getSimpleName()
-					+ (getDiagramSpecification() != null ? " conformTo " + getDiagramSpecification().getURI() : "")
-					+ (getModelSlot() != null ? " from " + getModelSlot().getName() : "") + " {" + StringUtils.LINE_SEPARATOR, context);
+			out.append(
+					getClass().getSimpleName()
+							+ (getDiagramSpecification() != null ? " conformTo " + getDiagramSpecification().getURI() : "")
+							+ (getModelSlot() != null ? " from " + getModelSlot().getName() : "") + " {" + StringUtils.LINE_SEPARATOR,
+					context);
 			out.append("}", context);
 			/*if (getAssignation().isSet()) {
 				out.append(")", context);
@@ -164,7 +166,8 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			FlexoProperty<?> superFlexoRole = super.getAssignedFlexoProperty();
 			if (superFlexoRole instanceof DiagramRole) {
 				return (DiagramRole) superFlexoRole;
-			} else if (superFlexoRole != null) {
+			}
+			else if (superFlexoRole != null) {
 				// logger.warning("Unexpected pattern property of type " + superPatternRole.getClass().getSimpleName());
 				return null;
 			}
@@ -312,18 +315,16 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 		@Override
 		public Diagram execute(RunTimeEvaluationContext evaluationContext) {
 
-			// TODO: reimplement this
-			logger.warning("AddDiagram not implemented yet");
-
-			System.out.println("DiagSpec = " + getDiagramSpecification());
+			/*System.out.println("DiagSpec = " + getDiagramSpecification());
 			System.out.println("name=" + getDiagramName(evaluationContext));
 			System.out.println("uri=" + getDiagramURI(evaluationContext));
 			System.out.println("rc=" + getResourceCenter(evaluationContext));
-
+			 */
+			
 			FlexoResourceCenter<?> resourceCenter = getResourceCenter(evaluationContext);
 
-			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(
-					DiagramTechnologyAdapter.class);
+			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
 			File newFile = null;
 			if (resourceCenter instanceof FileSystemBasedResourceCenter) {
@@ -348,47 +349,6 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 				}
 
 			}
-
-			/*Diagram initialDiagram = (Diagram) action.retrieveVirtualModelInstance();
-			ViewResource viewResource = initialDiagram.getView().getResource();
-			org.openflexo.technologyadapter.diagram.model.action.CreateDiagram addDiagramAction = org.openflexo.technologyadapter.diagram.model.action.CreateDiagram.actionType
-					.makeNewEmbeddedAction(initialDiagram.getView(), null, action);
-			addDiagramAction.setNewVirtualModelInstanceName(getDiagramName(action));
-			addDiagramAction.setDiagramSpecification(getPatternRole().getDiagramSpecification());
-			addDiagramAction.skipChoosePopup = true;
-			addDiagramAction.doAction();*/
-			// if (addDiagramAction.hasActionExecutionSucceeded() && addDiagramAction.getNewDiagram() != null) {
-			// Diagram newDiagram = addDiagramAction.getNewDiagram();
-			/*ShapeRole shapePatternRole = action.getShapePatternRole();
-			if (shapePatternRole == null) {
-				logger.warning("Sorry, shape pattern property is undefined");
-				return newShema;
-			}
-			// logger.info("ShapeSpecification pattern property: " + shapePatternRole);
-			FlexoConceptInstance newFlexoConceptInstance = getProject().makeNewFlexoConceptInstance(getFlexoConcept());
-			DiagramShape newShape = new DiagramShape(newShema);
-			if (getFlexoConceptInstance().getPatternActor(shapePatternRole) instanceof DiagramShape) {
-				DiagramShape primaryShape = (DiagramShape) getFlexoConceptInstance().getPatternActor(shapePatternRole);
-				newShape.setGraphicalRepresentation(primaryShape.getGraphicalRepresentation());
-			} else if (shapePatternRole.getGraphicalRepresentation() != null) {
-				newShape.setGraphicalRepresentation(shapePatternRole.getGraphicalRepresentation());
-			}
-			// Register reference
-			newShape.registerFlexoConceptReference(newFlexoConceptInstance, shapePatternRole);
-			newShema.addToChilds(newShape);
-			newFlexoConceptInstance.setObjectForPatternRole(newShape, shapePatternRole);
-			// Duplicates all other pattern roles
-			for (FlexoRole property : getFlexoConcept().getPatternRoles()) {
-				if (property != action.getPatternRole() && property != shapePatternRole) {
-					FlexoModelObject patternActor = getFlexoConceptInstance().getPatternActor(property);
-					logger.info("Duplicate pattern actor for property " + property + " value=" + patternActor);
-					newFlexoConceptInstance.setObjectForPatternRole(patternActor, property);
-					patternActor.registerFlexoConceptReference(newFlexoConceptInstance, property);
-				}
-			}*/
-
-			// return newDiagram;
-			// }
 
 			logger.warning("Cannot create Diagram !");
 

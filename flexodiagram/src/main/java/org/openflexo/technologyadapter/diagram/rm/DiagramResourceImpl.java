@@ -65,11 +65,13 @@ import org.openflexo.foundation.resource.InJarFlexoIODelegate;
 import org.openflexo.foundation.resource.InJarFlexoIODelegate.InJarFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.toolbox.IProgress;
@@ -218,11 +220,13 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 		return diagramSpecificationResource;
 	}
 
-	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource) {
+	@Override
+	public void setMetaModelResource(
+			FlexoMetaModelResource<Diagram, DiagramSpecification, DiagramTechnologyAdapter> diagramSpecificationResource) {
 		if (diagramSpecificationResource != this.diagramSpecificationResource) {
 			DiagramSpecificationResource oldValue = this.diagramSpecificationResource;
-			this.diagramSpecificationResource = diagramSpecificationResource;
-			getPropertyChangeSupport().firePropertyChange("diagramSpecificationResource", oldValue, diagramSpecificationResource);
+			this.diagramSpecificationResource = (DiagramSpecificationResource) diagramSpecificationResource;
+			getPropertyChangeSupport().firePropertyChange("metaModelResource", oldValue, diagramSpecificationResource);
 		}
 	}
 
