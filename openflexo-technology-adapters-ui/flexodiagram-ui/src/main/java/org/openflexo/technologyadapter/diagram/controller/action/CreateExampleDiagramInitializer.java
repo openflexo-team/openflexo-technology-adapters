@@ -43,10 +43,12 @@ import java.util.logging.Logger;
 
 import javax.swing.Icon;
 
+import org.openflexo.components.wizard.Wizard;
+import org.openflexo.components.wizard.WizardDialog;
 import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.technologyadapter.diagram.controller.DiagramCst;
+import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagram;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -67,8 +69,15 @@ public class CreateExampleDiagramInitializer extends ActionInitializer<CreateExa
 		return new FlexoActionInitializer<CreateExampleDiagram>() {
 			@Override
 			public boolean run(EventObject e, CreateExampleDiagram action) {
-
-				return instanciateAndShowDialog(action, DiagramCst.CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB);
+				Wizard wizard = new CreateExampleDiagramWizard(action, getController());
+				WizardDialog dialog = new WizardDialog(wizard, getController());
+				dialog.showDialog();
+				if (dialog.getStatus() != Status.VALIDATED) {
+					// Operation cancelled
+					return false;
+				}
+				return true;
+				// return instanciateAndShowDialog(action, DiagramCst.CREATE_EXAMPLE_DIAGRAM_DIALOG_FIB);
 			}
 		};
 	}

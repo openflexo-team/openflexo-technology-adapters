@@ -66,6 +66,11 @@ public class TestDiagramWizardFibs extends GenericFIBTestCase {
 	}
 
 	@Test
+	public void testDescribeExampleDiagram() {
+		validateFIB("Fib/Wizard/CreateElement/DescribeExampleDiagram.fib");
+	}
+
+	@Test
 	public void testConfigureBlankFlexoConceptFromConnectorCreationStrategyStep() {
 		validateFIB("Fib/Wizard/DeclareInFlexoConcept/ConfigureBlankFlexoConceptFromConnectorCreationStrategyStep.fib");
 	}

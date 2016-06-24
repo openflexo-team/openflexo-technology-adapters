@@ -119,67 +119,26 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 
 	}
 
-	private String errorMessage;
-
-	public String getErrorMessage() {
-		isValid();
-		// System.out.println("valid=" + isValid());
-		// System.out.println("errorMessage=" + errorMessage);
-		return errorMessage;
-	}
-
 	@Override
 	public boolean isValid() {
-		/*if (diagramSpecification == null) {
-			errorMessage = noDiagramSpecificationSelectedMessage();
-			return false;
-		}*/
-		if (StringUtils.isEmpty(newDiagramName)) {
-			errorMessage = noNameMessage();
+		if (StringUtils.isEmpty(getNewDiagramName())) {
 			return false;
 		}
 
-		if (!newDiagramName.equals(JavaUtils.getClassName(newDiagramName))
-				&& !newDiagramName.equals(JavaUtils.getVariableName(newDiagramName))) {
-			errorMessage = invalidNameMessage();
+		if (!getNewDiagramName().equals(JavaUtils.getClassName(getNewDiagramName()))
+				&& !getNewDiagramName().equals(JavaUtils.getVariableName(getNewDiagramName()))) {
 			return false;
 		}
 
 		if (StringUtils.isEmpty(newDiagramTitle)) {
-			errorMessage = noTitleMessage();
 			return false;
 		}
 
-		// TODO: handle duplicated name and uri
+		if (getFocusedObject().getExampleDiagram(getNewDiagramName()) != null) {
+			return false;
+		}
+
 		return true;
-	}
-
-	public String noDiagramSpecificationSelectedMessage() {
-		return getLocales().localizedForKey("no_diagram_type_selected");
-	}
-
-	public String noTitleMessage() {
-		return getLocales().localizedForKey("no_diagram_title_defined");
-	}
-
-	public String noFileMessage() {
-		return getLocales().localizedForKey("no_diagram_file_defined");
-	}
-
-	public String existingFileMessage() {
-		return getLocales().localizedForKey("file_already_existing");
-	}
-
-	public String noNameMessage() {
-		return getLocales().localizedForKey("no_diagram_name_defined");
-	}
-
-	public String invalidNameMessage() {
-		return getLocales().localizedForKey("invalid_name_for_new_diagram");
-	}
-
-	public String duplicatedNameMessage() {
-		return getLocales().localizedForKey("a_diagram_with_that_name_already_exists");
 	}
 
 	public Diagram getNewDiagram() {
@@ -191,7 +150,12 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 	}
 
 	public void setNewDiagramName(String newDiagramName) {
-		this.newDiagramName = newDiagramName;
+		if ((newDiagramName == null && this.newDiagramName != null)
+				|| (newDiagramName != null && !newDiagramName.equals(this.newDiagramName))) {
+			String oldValue = this.newDiagramName;
+			this.newDiagramName = newDiagramName;
+			getPropertyChangeSupport().firePropertyChange("newDiagramName", oldValue, newDiagramName);
+		}
 	}
 
 	public String getNewDiagramTitle() {
@@ -199,7 +163,12 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 	}
 
 	public void setNewDiagramTitle(String newDiagramTitle) {
-		this.newDiagramTitle = newDiagramTitle;
+		if ((newDiagramTitle == null && this.newDiagramTitle != null)
+				|| (newDiagramTitle != null && !newDiagramTitle.equals(this.newDiagramTitle))) {
+			String oldValue = this.newDiagramTitle;
+			this.newDiagramTitle = newDiagramTitle;
+			getPropertyChangeSupport().firePropertyChange("newDiagramTitle", oldValue, newDiagramTitle);
+		}
 	}
 
 	public String getDescription() {
@@ -207,7 +176,11 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		if ((description == null && this.description != null) || (description != null && !description.equals(this.description))) {
+			String oldValue = this.description;
+			this.description = description;
+			getPropertyChangeSupport().firePropertyChange("description", oldValue, description);
+		}
 	}
 
 }
