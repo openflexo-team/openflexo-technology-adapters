@@ -98,7 +98,7 @@ import org.openflexo.technologyadapter.diagram.model.action.LinkSchemeAction;
  * @author sylvain
  *
  */
-public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRectangle>implements PropertyChangeListener {
+public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRectangle> implements PropertyChangeListener {
 
 	private static final Logger logger = Logger.getLogger(FMLControlledDiagramFloatingPalette.class.getPackage().getName());
 
@@ -529,7 +529,12 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 		FMLControlledDiagramShape newShape = createNewShape(dropLocation, parentFlexoConceptInstance, parentShapeRole, dropScheme);
 
 		if (newShape != null) {
-			createNewConnector(getNode().getDrawable(), newShape, linkScheme);
+			if (linkScheme.getInverseDirectionWhenComposed()) {
+				createNewConnector(newShape, getNode().getDrawable(), linkScheme);
+			}
+			else {
+				createNewConnector(getNode().getDrawable(), newShape, linkScheme);
+			}
 			controller.setSelectedObject(controller.getDrawing().getDrawingTreeNode(newShape));
 		}
 	}
