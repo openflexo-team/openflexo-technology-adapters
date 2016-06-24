@@ -84,7 +84,7 @@ import org.openflexo.toolbox.StringUtils;
  * @author Sylvain
  * 
  */
-public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, DiagramFactory>implements DiagramResource {
+public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, DiagramFactory> implements DiagramResource {
 
 	static final Logger logger = Logger.getLogger(DiagramResourceImpl.class.getPackage().getName());
 
@@ -262,12 +262,7 @@ public abstract class DiagramResourceImpl extends PamelaResourceImpl<Diagram, Di
 	@Override
 	public Diagram loadResourceData(IProgress progress) throws FlexoFileNotFoundException, IOFlexoException, InvalidXMLException,
 			InconsistentDataException, InvalidModelDefinitionException {
-
 		Diagram returned = super.loadResourceData(progress);
-		/*if (returned.isSynchronizable()) {
-			returned.synchronize(null);
-		}
-		getContainer().getView().addToVirtualModelInstances(returned);*/
 		returned.clearIsModified();
 		return returned;
 	}
