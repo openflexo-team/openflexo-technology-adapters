@@ -39,11 +39,14 @@
 
 package org.openflexo.technologyadapter.emf.metamodel.io;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.CannotRenameException;
 import org.openflexo.foundation.resource.FileWritingLock;
 import org.openflexo.foundation.resource.FlexoIODelegate;
+import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -106,6 +109,13 @@ public interface EMFMetaModelIODelegate<I> extends FlexoIODelegate<I> {
 		public void rename() throws CannotRenameException {
 			throw new CannotRenameException(getFlexoResource());
 		}
+
+		@Override
+		public RepositoryFolder<?> getRepositoryFolder(ResourceRepository<?> resourceRepository, boolean createWhenNonExistent)
+				throws IOException {
+			return resourceRepository.getRootFolder();
+		}
+
 	}
 
 }

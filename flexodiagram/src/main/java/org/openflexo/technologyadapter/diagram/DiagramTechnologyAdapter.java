@@ -52,7 +52,9 @@ import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -151,6 +153,11 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 			diagramRepository = createDiagramRepository(resourceCenter);
 		}
 
+		/*ResourceRepository<?> globalRepository = resourceCenter.getGlobalRepository(this);
+		if (globalRepository == null) {
+			globalRepository = createGlobalRepository(resourceCenter);
+		}*/
+
 		// First pass on meta-models only
 		Iterator<I> it = resourceCenter.iterator();
 
@@ -171,7 +178,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		}
 
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		notifyRepositoryStructureChanged();
 	}
 
 	/**
@@ -182,6 +189,15 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		resourceCenter.registerRepository(returned, DiagramRepository.class, this);
 		return returned;
 	}
+
+	/**
+	 * Creates and return thr global repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
+	 */
+	/*public TechnologyAdapterGlobalRepository createGlobalRepository(FlexoResourceCenter<?> resourceCenter) {
+		TechnologyAdapterGlobalRepository returned = new TechnologyAdapterGlobalRepository(this, resourceCenter);
+		resourceCenter.registerGlobalRepository(returned, this);
+		return returned;
+	}*/
 
 	/**
 	 * Creates and return a diagram specification repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
@@ -291,7 +307,21 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		return returned;
 	}
 
+	@Override
+	protected void registerResourceInGlobalRepository(FlexoResource<?> resource, FlexoResourceCenter<?> resourceCenter) {
+		// Hook to avoid to register DiagramResource in DiagramSpecificationResource folder in global repository
+		if (resource instanceof DiagramResource && resource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+			File f = ((FileFlexoIODelegate) resource.getFlexoIODelegate()).getFile();
+			if (f.getParentFile().getName().endsWith(DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX)) {
+				// No need to register in global repository a diagram resource in a DiagramSpecificationResource
+				return;
+			}
+		}
+		super.registerResourceInGlobalRepository(resource, resourceCenter);
+	}
+
 	protected DiagramResource tryToLookupDiagram(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
+
 		DiagramTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		// DiagramSpecificationRepository dsRepository; // = resourceCenter.getRepository(DiagramSpecificationRepository.class, this);
 		DiagramRepository diagramRepository = resourceCenter.getRepository(DiagramRepository.class, this);

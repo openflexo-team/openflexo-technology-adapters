@@ -129,7 +129,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		}
 
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		notifyRepositoryStructureChanged();
 	}
 
 	protected DocXDocumentResource tryToLookupDocX(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
