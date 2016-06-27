@@ -61,6 +61,9 @@ import org.openflexo.technologyadapter.pdf.rm.PDFDocumentResource;
 @XMLElement
 public interface PDFDocument extends TechnologyObject<PDFTechnologyAdapter>, ResourceData<PDFDocument> {
 
+	public static final float DEFAULT_GENERAL_RENDERING_DPI = 300f; // 300 pixels per inch
+	public static final float DEFAULT_IMAGE_RENDERING_DPI = 100f; // 100 pixels per inch
+
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
 	@PropertyIdentifier(type = PDDocument.class)

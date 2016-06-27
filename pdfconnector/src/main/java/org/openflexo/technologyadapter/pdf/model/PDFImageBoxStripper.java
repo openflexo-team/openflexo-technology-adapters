@@ -49,80 +49,85 @@ import org.jdom2.filter.Filters;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.xpath.XPathExpression;
 import org.jdom2.xpath.XPathFactory;
+import org.openflexo.foundation.task.Progress;
 
 public class PDFImageBoxStripper {
 
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
+			.getLogger(PDFImageBoxStripper.class.getPackage().getName());
+
 	private PDDocument document;
 	private PDPage page;
-	
+
 	// Sax parser used to build Metadata document (unparsable with DomXmpParser from pdfbox..)
 	// TODO: evolve to DomXmpParser when needed
 	private SAXBuilder sb;
 	private XPathFactory xpathFactory;
-	
+
 	private List<ImageBox> imageBoxes;
 
-	
 	// List of static field for Metadata field processing
 
-	private HashMap<String,XPathExpression> metadataExpr;
+	private HashMap<String, XPathExpression> metadataExpr;
 	static final String altTitlefilter = "//dc:title";
 
 	public PDFImageBoxStripper(PDDocument document, PDPage page) {
 		super();
 		this.document = document;
 		this.page = page;
-		sb= new SAXBuilder();
+		sb = new SAXBuilder();
 		xpathFactory = XPathFactory.instance();
 		// fill the exp HashMap
-		metadataExpr = new HashMap<String,XPathExpression>();
-		metadataExpr.put(altTitlefilter, xpathFactory.compile(altTitlefilter, Filters.element(),null,
-		        Namespace.getNamespace("dc", "http://purl.org/dc/elements/1.1/")));
+		metadataExpr = new HashMap<String, XPathExpression>();
+		metadataExpr.put(altTitlefilter, xpathFactory.compile(altTitlefilter, Filters.element(), null,
+				Namespace.getNamespace("dc", "http://purl.org/dc/elements/1.1/")));
 	}
 
-	private void listEmbeddedXObjects( PDResources resources) throws IOException{
+	private void listEmbeddedXObjects(PDResources resources) throws IOException {
 		PDMetadata md = null;
 		PDRectangle rect = null;
 
 		Iterable<COSName> xobjectNames = resources.getXObjectNames();
 
 		// TODO Find a way to identify resources, boxes and limits of elements in metadata
-		
-		for (COSName name : xobjectNames){
+
+		for (COSName name : xobjectNames) {
 			PDXObject localXObject = resources.getXObject(name);
 			System.out.println("XTOF: found some XObjects : " + name.getName() + " .. " + localXObject.getClass().getCanonicalName());
 
-			if (localXObject instanceof PDImageXObject){
+			if (localXObject instanceof PDImageXObject) {
 				md = ((PDImageXObject) localXObject).getMetadata();
-				
-				System.out.println("\t XTOF: its some image:" + name.getName() + " ..   : " + md.toString() );
+
+				System.out.println("\t XTOF: its some image:" + name.getName() + " ..   : " + md.toString());
 			}
-			else if (localXObject instanceof PDTransparencyGroup){
-				
-				listEmbeddedXObjects(((PDTransparencyGroup)localXObject ).getResources());
-				
-				rect = ((PDTransparencyGroup)localXObject ).getBBox();
-				md =((PDTransparencyGroup)localXObject ).getStream().getMetadata();
-				
-				System.out.println("\t XTOF: its some TransparencyGroup:" + name.getName() + " BBox :" + rect.toString() );
+			else if (localXObject instanceof PDTransparencyGroup) {
+
+				listEmbeddedXObjects(((PDTransparencyGroup) localXObject).getResources());
+
+				rect = ((PDTransparencyGroup) localXObject).getBBox();
+				md = ((PDTransparencyGroup) localXObject).getStream().getMetadata();
+
+				System.out.println("\t XTOF: its some TransparencyGroup:" + name.getName() + " BBox :" + rect.toString());
 			}
 
 		}
 	}
 
-
-	private void decodeMetadata (String content,ImageBox imgBox) {
+	private void decodeMetadata(String content, ImageBox imgBox) {
 		try {
 
 			Document doc = sb.build(new StringReader(content));
 
 			// Alt Title for images
 			List<Element> lstAlt = metadataExpr.get(altTitlefilter).evaluate(doc);
-			for (Element el : lstAlt){
-				//System.out.println ("\t\t XTOF: " + el.getChild("Alt",Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")).getChildText("li",Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")));
-				imgBox.setAltTitleText(el.getChild("Alt",Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")).getChildText("li",Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")).trim());
+			for (Element el : lstAlt) {
+				// System.out.println ("\t\t XTOF: " + el.getChild("Alt",Namespace.getNamespace("rdf",
+				// "http://www.w3.org/1999/02/22-rdf-syntax-ns#")).getChildText("li",Namespace.getNamespace("rdf",
+				// "http://www.w3.org/1999/02/22-rdf-syntax-ns#")));
+				imgBox.setAltTitleText(el.getChild("Alt", Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#"))
+						.getChildText("li", Namespace.getNamespace("rdf", "http://www.w3.org/1999/02/22-rdf-syntax-ns#")).trim());
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -133,25 +138,34 @@ public class PDFImageBoxStripper {
 		imageBoxes = new ArrayList<ImageBox>();
 
 		PDResources resources = page.getResources();
-		
+
 		// TODO: figure out howthis can be useful
 		// listEmbeddedXObjects(resources); No need for now.
 
 		for (COSName name : resources.getPropertiesNames()) {
 
+			Progress.progress("extracting_image" + " " + name);
+
+			// System.out.println("Extracting image " + name + " " + ToolBox.memoryInfo());
+
+			/*PDRectangle cropbBox = page.getCropBox();
+			float widthPt = cropbBox.getWidth();
+			float heightPt = cropbBox.getHeight();
 			
-			// System.out.println("Property: " + name.getName());
+			System.out.println("Trying to create image with size " + widthPt + "x" + heightPt);*/
 
 			ImageStripperRenderer imageRenderer = new ImageStripperRenderer(document, name);
-			BufferedImage originalImage = imageRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
-			/*Image image = originalImage.getScaledInstance((int) page.getMediaBox().getWidth(), (int) page.getMediaBox().getHeight(),
-					Image.SCALE_SMOOTH);*/
 
-			/*JFrame newFrame = new JFrame();
-			newFrame.getContentPane().add(new JLabel(new ImageIcon(image)));
-			newFrame.validate();
-			newFrame.pack();
-			newFrame.show();*/
+			BufferedImage originalImage = null;
+			float resolution = PDFDocument.DEFAULT_IMAGE_RENDERING_DPI;
+			while (originalImage == null) {
+				try {
+					originalImage = imageRenderer.renderImageWithDPI(0, resolution, ImageType.RGB);
+				} catch (OutOfMemoryError e) {
+					logger.warning("Not enough memory to process PDF page rendering for resolution: " + resolution + " dpi");
+					resolution = resolution / 2;
+				}
+			}
 
 			Rectangle cropRectangle = cropImage(originalImage);
 			// System.out.println("Cropping image " + originalImage.getWidth() + "x" + originalImage.getHeight() + " to " + cropRectangle);
@@ -173,15 +187,15 @@ public class PDFImageBoxStripper {
 				cropRectangle.height = (int) (cropRectangle.height * page.getMediaBox().getHeight() / originalImage.getHeight());
 
 				ImageBox imageBox = new ImageBox(image, cropRectangle);
-				
-				//System.out.println("\t XTOF: its some IMAGE CROPPED:" + name.getName() + " BBox :" + cropRectangle.toString() );
-				
+
+				// System.out.println("\t XTOF: its some IMAGE CROPPED:" + name.getName() + " BBox :" + cropRectangle.toString() );
+
 				// set AltTitle Metadata
 
-				COSDictionary cd =  resources.getProperties(name).getCOSObject();
+				COSDictionary cd = resources.getProperties(name).getCOSObject();
 				COSStream md = (COSStream) cd.getDictionaryObject("Metadata");
-				decodeMetadata(md.toTextString(),imageBox);
-				
+				decodeMetadata(md.toTextString(), imageBox);
+
 				imageBoxes.add(imageBox);
 			}
 
