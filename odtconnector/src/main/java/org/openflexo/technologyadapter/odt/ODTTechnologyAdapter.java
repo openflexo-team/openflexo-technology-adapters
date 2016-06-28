@@ -109,7 +109,7 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 		}
 
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		notifyRepositoryStructureChanged();
 	}
 
 	protected <I> ODTDocumentResource tryToLookupODT(FlexoResourceCenter<I> resourceCenter, I candidateElement) {

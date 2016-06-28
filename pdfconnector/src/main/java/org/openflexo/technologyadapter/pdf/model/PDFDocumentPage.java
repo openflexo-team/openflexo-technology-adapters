@@ -151,8 +151,16 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 			Progress.progress(getLocales().localizedForKey("processing_renderer"));
 			try {
 				PDFRenderer pdfRenderer = new FlexoPDFRenderer(pdDocument);
-				BufferedImage originalImage;
-				originalImage = pdfRenderer.renderImageWithDPI(0, 300, ImageType.RGB);
+				BufferedImage originalImage = null;
+				float resolution = PDFDocument.DEFAULT_GENERAL_RENDERING_DPI;
+				while (originalImage == null) {
+					try {
+						originalImage = pdfRenderer.renderImageWithDPI(0, resolution, ImageType.RGB);
+					} catch (OutOfMemoryError e) {
+						logger.warning("Not enough memory to process PDF page rendering for resolution: " + resolution + " dpi");
+						resolution = resolution / 2;
+					}
+				}
 				renderingImage = originalImage.getScaledInstance((int) pdPage.getMediaBox().getWidth(),
 						(int) pdPage.getMediaBox().getHeight(), Image.SCALE_SMOOTH);
 
@@ -176,6 +184,7 @@ public interface PDFDocumentPage extends TechnologyObject<PDFTechnologyAdapter>,
 
 			performSuperSetter(PD_PAGE_KEY, pdPage);
 
+			System.out.println("DONE updateFromPDPage with " + pdPage);
 		}
 
 		@Override

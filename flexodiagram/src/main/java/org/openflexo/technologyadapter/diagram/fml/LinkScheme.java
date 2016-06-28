@@ -72,6 +72,8 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 	@PropertyIdentifier(type = boolean.class)
 	public static final String IS_AVAILABLE_WITH_FLOATING_PALETTE_KEY = "isAvailableWithFloatingPalette";
 	@PropertyIdentifier(type = boolean.class)
+	public static final String INVERSE_DIRECTION_WHEN_COMPOSED_KEY = "inverseDirectionWhenComposed";
+	@PropertyIdentifier(type = boolean.class)
 	public static final String NORTH_DIRECTION_SUPPORTED_KEY = "northDirectionSupported";
 	@PropertyIdentifier(type = boolean.class)
 	public static final String EAST_DIRECTION_SUPPORTED_KEY = "eastDirectionSupported";
@@ -105,6 +107,13 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 
 	@Setter(IS_AVAILABLE_WITH_FLOATING_PALETTE_KEY)
 	public void setIsAvailableWithFloatingPalette(boolean isAvailableWithFloatingPalette);
+
+	@Getter(value = INVERSE_DIRECTION_WHEN_COMPOSED_KEY, defaultValue = "false")
+	@XMLAttribute
+	public boolean getInverseDirectionWhenComposed();
+
+	@Setter(INVERSE_DIRECTION_WHEN_COMPOSED_KEY)
+	public void setInverseDirectionWhenComposed(boolean inverseDirectionWhenComposed);
 
 	@Getter(value = NORTH_DIRECTION_SUPPORTED_KEY, defaultValue = "false")
 	@XMLAttribute
@@ -247,7 +256,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 						.getFlexoConceptInstanceType(getFromTargetFlexoConcept())));
 			}
 		}
-
+		
 		private void appendToTargetBindingVariable(BindingModel bindingModel) {
 			if (getToTargetFlexoConcept() != null) {
 				bindingModel.addToBindingVariables(new BindingVariable(LinkSchemeBindingModel.TO_TARGET, FlexoConceptInstanceType
@@ -292,7 +301,7 @@ public interface LinkScheme extends AbstractCreationScheme, DiagramFlexoBehaviou
 			}
 			return super.getBindingModel();
 		}
-
+		
 		@Override
 		protected void rebuildActionsBindingModel() {
 			if (!bindingModelNeedToBeRecomputed) {

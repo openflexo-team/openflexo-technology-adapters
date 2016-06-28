@@ -149,7 +149,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		getTechnologyContextManager().init();
 
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		notifyRepositoryStructureChanged();
 	}
 
 	protected OWLOntologyResource tryToLookupOntology(FlexoResourceCenter<?> resourceCenter, File candidateFile) {

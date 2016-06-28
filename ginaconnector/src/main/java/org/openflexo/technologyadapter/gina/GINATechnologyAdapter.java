@@ -100,7 +100,7 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 		}
 
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		notifyRepositoryStructureChanged();
 
 	}
 
@@ -182,10 +182,6 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	private GINAResourceRepository createNewGINAResourceRepository(final FlexoResourceCenter<?> resourceCenter) {
 		final GINAResourceRepository repo = new GINAResourceRepository(this, resourceCenter);
 		resourceCenter.registerRepository(repo, GINAResourceRepository.class, this);
-
-		System.out.println("******** Created GINAResourceRepository " + repo + " for " + resourceCenter);
-		System.out.println("getAllRepositories()=" + getAllRepositories());
-
 		return repo;
 	}
 

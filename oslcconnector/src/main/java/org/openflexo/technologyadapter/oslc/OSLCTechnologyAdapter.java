@@ -114,7 +114,7 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 			}
 		}
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		notifyRepositoryStructureChanged();
 	}
 
 	protected OSLCResourceResource tryToLookupOSLCResources(FlexoResourceCenter<File> resourceCenter, File candidateFile) {
@@ -188,7 +188,7 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 			returned = (tryToLookupOSLCResources((FlexoResourceCenter<File>) resourceCenter, candidateFile) != null);
 		}
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		notifyRepositoryStructureChanged();
 		return returned;
 	}
 

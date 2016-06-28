@@ -111,7 +111,7 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 		}
 
 		// Call it to update the current repositories
-		getPropertyChangeSupport().firePropertyChange("getAllRepositories()", null, resourceCenter);
+		notifyRepositoryStructureChanged();
 	}
 
 	protected PDFDocumentResource tryToLookupPDF(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
