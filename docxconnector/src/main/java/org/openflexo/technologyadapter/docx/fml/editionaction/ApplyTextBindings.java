@@ -66,9 +66,17 @@ public interface ApplyTextBindings extends DocXFragmentAction {
 			FragmentActorReference<DocXFragment> actorReference = (FragmentActorReference<DocXFragment>) evaluationContext
 					.getFlexoConceptInstance().getActorReference(getFlexoRole());
 
-			actorReference.applyDataToDocument();
+			if (actorReference != null){
+				actorReference.applyDataToDocument();
 
-			return actorReference.getModellingElement();
+				return actorReference.getModellingElement();
+			}
+			else {
+				logger.warning("INVESTIGATE: Found a null actorReference for Role :" + getFlexoRole().getName() + " of Concept: " + evaluationContext
+						.getFlexoConceptInstance().getFlexoConcept().getName() + "... WHY?");
+				return null;
+			}
+
 		}
 	}
 }

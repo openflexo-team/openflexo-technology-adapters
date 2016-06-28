@@ -69,7 +69,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 
 	protected static final Logger logger = Logger.getLogger(DocXTechnologyAdapter.class.getPackage().getName());
 
-	private IdentifierManagementStrategy idStrategy = IdentifierManagementStrategy.ParaId;
+	private IdentifierManagementStrategy idStrategy = IdentifierManagementStrategy.Bookmark;
 
 	public IdentifierManagementStrategy getIDStrategy() {
 		return idStrategy;
