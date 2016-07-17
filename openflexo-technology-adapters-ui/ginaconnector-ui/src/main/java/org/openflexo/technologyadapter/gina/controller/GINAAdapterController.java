@@ -34,7 +34,7 @@ import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
 import org.openflexo.gina.swing.utils.FIBEditorLoadingProgress;
-import org.openflexo.gina.swing.utils.JFIBInspectorController;
+import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
 import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.action.CreateFMLControlledFIBVirtualModelInitializer;
@@ -289,7 +289,7 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 			// centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
 			// centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
 
-			JFIBInspectorController inspector = editor.makeInspector(FlexoFrame.getActiveFrame());
+			JFIBDialogInspectorController inspector = editor.makeInspector(FlexoFrame.getActiveFrame());
 			inspector.setVisible(true);
 
 			return editor;
