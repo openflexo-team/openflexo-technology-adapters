@@ -50,7 +50,6 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.model.FIBComponent;
-import org.openflexo.gina.model.FIBContainer;
 import org.openflexo.gina.model.FIBVariable;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -179,18 +178,8 @@ public interface GINAFIBComponent
 			}
 
 			// Bacause type may have changed, we have to revalidate all bindings of the component
-			recursivelyRevalidateBindings(getComponent());
+			getComponent().revalidateBindings();
 
-		}
-
-		private void recursivelyRevalidateBindings(FIBComponent c) {
-
-			c.revalidateBindings();
-			if (c instanceof FIBContainer) {
-				for (FIBComponent c2 : ((FIBContainer) c).getSubComponents()) {
-					recursivelyRevalidateBindings(c2);
-				}
-			}
 		}
 
 	}
