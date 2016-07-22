@@ -634,7 +634,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 	@TestOrder(10)
 	public void testLoadViewPointAndVirtualModelFromJar() {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		JarResourceCenter.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(),
+		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(),
 				"testdiagram_vp-1.1");
 		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
 		assertNotNull(vpLib);

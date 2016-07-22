@@ -123,7 +123,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 	@TestOrder(1)
 	public void testLoadViewPoint() {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		JarResourceCenter.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(),
+		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(),
 				"testdiagram_vp-1.1");
 
 		for (FlexoResourceCenter rc : getFlexoServiceManager().getResourceCenterService().getResourceCenters()) {
@@ -326,7 +326,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		log("testReloadProject()");
 
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		JarResourceCenter.addNamedJarFromClassPathResourceCenters(getFlexoServiceManager().getResourceCenterService(),
+		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(),
 				"testdiagram_vp-1.1");
 
 		editor = reloadProject(project.getDirectory());
