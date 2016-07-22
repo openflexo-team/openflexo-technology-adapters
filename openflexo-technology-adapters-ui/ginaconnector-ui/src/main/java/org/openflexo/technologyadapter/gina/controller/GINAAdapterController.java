@@ -31,10 +31,10 @@ import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.gina.FIBLibrary.FIBLibraryImpl;
 import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
+import org.openflexo.gina.swing.editor.inspector.FIBEditorInspectorController;
 import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
 import org.openflexo.gina.swing.utils.FIBEditorLoadingProgress;
-import org.openflexo.gina.swing.utils.JFIBDialogInspectorController;
 import org.openflexo.gina.utils.InspectorGroup;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.action.CreateFMLControlledFIBVirtualModelInitializer;
@@ -42,7 +42,6 @@ import org.openflexo.technologyadapter.gina.controller.action.CreateGINAFIBCompo
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.technologyadapter.gina.view.GINAModuleView;
 import org.openflexo.view.EmptyPanel;
-import org.openflexo.view.FlexoFrame;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.ControllerActionInitializer;
 import org.openflexo.view.controller.FlexoController;
@@ -57,6 +56,7 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	private FIBLibraryBrowser libraryBrowser;
 	private FIBEditorPalettes palette;
 	private InspectorGroup ginaInspectorGroup;
+	private FIBEditorInspectorController inspectors;
 
 	private FMLControlledFIBNaturePerspective fmlControlledFIBNaturePerspective;
 	private FMLRTControlledFIBNaturePerspective fmlRTControlledFIBNaturePerspective;
@@ -282,19 +282,23 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 
 			libraryBrowser = new FIBLibraryBrowser(editor.getFIBLibrary());
 			palette = editor.makePalette();
-			// inspectors = editor.makeInspectors();
+			inspectors = editor.makeInspectors();
 
 			// centerPanel.add(libraryBrowser, LayoutPosition.TOP_LEFT.name());
 			// centerPanel.add(editor.getMainPanel(), LayoutPosition.CENTER.name());
 			// centerPanel.add(palette, LayoutPosition.TOP_RIGHT.name());
 			// centerPanel.add(inspectors.getPanelGroup(), LayoutPosition.BOTTOM_RIGHT.name());
 
-			JFIBDialogInspectorController inspector = editor.makeInspector(FlexoFrame.getActiveFrame());
-			inspector.setVisible(true);
+			// JFIBDialogInspectorController inspector = editor.makeInspector(FlexoFrame.getActiveFrame());
+			// inspector.setVisible(true);
 
 			return editor;
 		}
 		return null;
+	}
+
+	public FIBEditorInspectorController getInspectors() {
+		return inspectors;
 	}
 
 }

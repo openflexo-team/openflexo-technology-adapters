@@ -102,7 +102,8 @@ public class CreateFMLControlledFIBVirtualModel
 	private static final Logger logger = Logger.getLogger(CreateFMLControlledFIBVirtualModel.class.getPackage().getName());
 
 	public static FlexoActionType<CreateFMLControlledFIBVirtualModel, ViewPoint, FMLObject> actionType = new FlexoActionType<CreateFMLControlledFIBVirtualModel, ViewPoint, FMLObject>(
-			"create_screen_virtual_model", FlexoActionType.newMenu, FlexoActionType.defaultGroup, FlexoActionType.ADD_ACTION_TYPE) {
+			"create_screen_virtual_model", FlexoActionType.newVirtualModelMenu, FlexoActionType.defaultGroup,
+			FlexoActionType.ADD_ACTION_TYPE) {
 
 		/**
 		 * Factory method

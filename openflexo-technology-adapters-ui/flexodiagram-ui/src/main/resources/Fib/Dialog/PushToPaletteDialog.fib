@@ -1,89 +1,249 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Panel id="0" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED" useScrollBar="true" protectContent="false" height="550" opaque="false" layout="gridbag" controllerClassName="org.openflexo.view.controller.FlexoFIBController" border="empty" trackViewPortWidth="true" width="650" dataClassName="org.openflexo.technologyadapter.diagram.fml.action.PushToPalette" trackViewPortHeight="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">
-  <LocalizedDictionary id="1" />
-  <Panel layout="flow" hGap="5" vGap="5" flowAlignment="CENTER" borderTitle="Panel" darkLevel="0" index="0" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=12;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)" name="title">
-    <Image imageFile="" data="data.image" sizeAdjustment="OriginalSize" align="left" imageWidth="32" imageHeight="32" index="0" constraints="flow(index=0;location=west)" localize="true"/>
-    <Label label="push_to_palette" align="center" index="1" constraints="flow(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=20;insetsLeft=0;insetsRight=0;insetsTop=20;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)" font="Lucida Grande,1,15" localize="true" />
-  </Panel>
-  <!--<Label id="4" manageDynamicModel="false" useScrollBar="false" index="0" localize="true" font="Lucida Grande,1,15" align="center" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=0;gridY=0;index=0;insetsBottom=20;insetsLeft=0;insetsRight=0;insetsTop=20;padX=0;padY=0;weightX=1.0;weightY=0.0)" label="push_to_palette" readOnly="false" />-->
-  <Label id="5" manageDynamicModel="false" useScrollBar="false" index="1" localize="true" align="left" constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=1;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="palette" readOnly="false">
-    <LocalizedDictionary id="6" />
-  </Label>
-  <DropDown id="7" manageDynamicModel="false" useScrollBar="false" data="data.palette" showReset="false" autoSelectFirstRow="true" name="paletteDropDown" index="2" localize="false" constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" list="data.diagramSpecification.palettes" format="object.name" showText="true" readOnly="false" iteratorClassName="org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette" showIcon="false" />
-  <Label id="8" manageDynamicModel="false" useScrollBar="false" index="3" localize="true" align="left" constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=2;index=3;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="name_for_new_element" readOnly="false" />
-  <TextField id="9" passwd="false" manageDynamicModel="false" useScrollBar="false" data="data.newElementName" columns="20" name="PaletteElementNameTextField" text="TextField" index="4" localize="true" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=2;index=4;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)" readOnly="false" validateOnReturn="false" />
-  <Label id="2" manageDynamicModel="false" useScrollBar="false" localize="true" align="left" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="mode" readOnly="false" />
-  <RadioButtonList id="3" manageDynamicModel="true" columns="2" localize="true" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" format="object.name" showText="true" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.PushToPalette$PushToPaletteChoices" vGap="-2" showIcon="false" useScrollBar="false" data="data.primaryChoice" autoSelectFirstRow="true" name="PaletteRadioButtonList" hGap="0" readOnly="false" />
-  <Panel id="10" darkLevel="0" visible="(PaletteRadioButtonList.selectedIndex = 0)" useScrollBar="false" borderLeft="0" protectContent="false" opaque="false" layout="twocols" borderRight="0" border="rounded3d" trackViewPortWidth="true" index="3" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=1;gridY=4;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)" borderBottom="2" borderTitle="" dataClassName="org.openflexo.technologyadapter.diagram.fml.action.PushToPalette" borderTop="2" trackViewPortHeight="true">
-    <Dependancy id="11" componentName="PaletteRadioButtonList" />
-    <Label id="12" manageDynamicModel="false" useScrollBar="false" index="5" localize="true" align="left" constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=0;gridX=0;gridY=0;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="virtual_model" readOnly="false" />
-    <Custom id="13" manageDynamicModel="true" useScrollBar="false" data="data.virtualModelResource" componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FIBFMLControlledVirtualModelSelector" name="virtualModelSelector" index="6" localize="true" constraints="twocols(anchor=center;expandHorizontally=true;fill=horizontal;gridHeight=1;gridWidth=0;gridX=0;gridY=1;index=6;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)" readOnly="false">
-      <Assignment id="14" mandatory="true" value="data.editor.serviceManager.viewPointLibrary" variable="component.viewPointLibrary" />
-      <Assignment id="15" mandatory="true" value="data.diagramSpecification" variable="component.diagramSpecification" />
-    </Custom>
-    <Label id="16" manageDynamicModel="false" useScrollBar="false" index="7" localize="true" align="left" constraints="twocols(anchor=east;expandHorizontally=false;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=0;index=7;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="flexo_concept" readOnly="false">
-      <LocalizedDictionary id="17" />
-    </Label>
-    <DropDown id="18" manageDynamicModel="false" useScrollBar="false" data="data.flexoConcept" showReset="false" autoSelectFirstRow="true" name="flexoConceptDropDown" index="8" localize="false" constraints="twocols(anchor=center;expandHorizontally=true;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=1;index=8;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)" list="data.virtualModel.flexoConcepts" format="object.name" showText="true" readOnly="false" iteratorClassName="org.openflexo.foundation.fml.FlexoConcept" showIcon="false">
-      <Dependancy id="19" componentName="virtualModelSelector" />
-    </DropDown>
-    <Label id="20" manageDynamicModel="false" useScrollBar="false" index="9" localize="true" align="left" constraints="twocols(anchor=east;expandHorizontally=false;fill=none;gridHeight=1;gridWidth=1;gridX=2;gridY=0;index=9;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="drop_scheme" readOnly="false" />
-    <DropDown id="21" manageDynamicModel="false" useScrollBar="false" data="data.dropScheme" showReset="false" staticList="" autoSelectFirstRow="true" name="dropSchemeDropDown" index="10" localize="false" constraints="twocols(anchor=center;expandHorizontally=true;fill=horizontal;gridHeight=1;gridWidth=0;gridX=2;gridY=1;index=10;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)" list="data.availableDropSchemes" format="object.name" showText="true" readOnly="false" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.DropScheme" showIcon="false">
-      <Dependancy id="22" componentName="flexoConceptDropDown" />
-    </DropDown>
-  </Panel>
-  <Label id="23" manageDynamicModel="false" useScrollBar="false" index="11" localize="true" align="left" constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=5;index=11;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="" readOnly="false" />
-  <Panel id="24" darkLevel="0" useScrollBar="false" protectContent="false" opaque="false" layout="gridbag" borderRight="0" border="rounded3d" trackViewPortWidth="true" index="11" constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=5;index=12;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)" borderBottom="2" borderTitle="" borderTop="2" trackViewPortHeight="true">
-    <CheckBox id="25" manageDynamicModel="false" useScrollBar="false" data="data.takeScreenshotForTopLevelElement" selected="true" name="useScreenshotCB" index="0" negate="false" localize="true" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=0;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" readOnly="false" />
-    <Label id="26" manageDynamicModel="false" useScrollBar="false" index="1" localize="true" align="left" constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=2;gridX=1;gridY=0;index=1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)" label="use_screenshot_as_top_level_representation" readOnly="false" />
-    <Label id="28" visible="data.takeScreenshotForTopLevelElement" manageDynamicModel="false" useScrollBar="false" index="4" localize="true" align="left" constraints="gridbag(anchor=north_east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=1;index=4;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)" label="width" readOnly="false" >
-    	<Dependancy componentName="useScreenshotCB" />
-    </Label>
-    <Number id="27" visible="data.takeScreenshotForTopLevelElement" manageDynamicModel="false" minValue="-2147483648" useScrollBar="false" columns="3" data="data.imageWidth" name="Integer" maxValue="2147483647" increment="1" index="3" localize="true" constraints="gridbag(anchor=south_west;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=1;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" allowsNull="false" numberType="IntegerType" readOnly="false" validateOnReturn="false" >
-    	<Dependancy componentName="useScreenshotCB" />
-    </Number>
-    <Label id="28" visible="data.takeScreenshotForTopLevelElement" manageDynamicModel="false" useScrollBar="false" index="4" localize="true" align="left" constraints="gridbag(anchor=north_east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=2;index=4;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)" label="height" readOnly="false" >
-    	<Dependancy componentName="useScreenshotCB" />
-    </Label>
-    <Number id="29" visible="data.takeScreenshotForTopLevelElement" manageDynamicModel="false" minValue="-2147483648" useScrollBar="false" columns="3" data="data.imageHeight" name="Integer" maxValue="2147483647" increment="1" index="5" localize="true" constraints="gridbag(anchor=north_west;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=2;index=5;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" allowsNull="false" numberType="IntegerType" readOnly="false" validateOnReturn="false" >
-    	<Dependancy componentName="useScreenshotCB" />
-    </Number>
-    <Image id="30" visible="data.takeScreenshotForTopLevelElement" manageDynamicModel="false" useScrollBar="false" data="data.screenshot.image" sizeAdjustment="OriginalSize" imageHeight="80" index="6" localize="true" align="right" constraints="gridbag(anchor=west;fill=both;gridHeight=3;gridWidth=1;gridX=2;gridY=0;index=6;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)" readOnly="false" imageWidth="32" >
-    	<Dependancy componentName="useScreenshotCB" />
-    </Image>
-  </Panel>
-  <Label id="31" manageDynamicModel="false" useScrollBar="false" index="11" localize="true" align="left" constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=11;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="" readOnly="false" />
-  <Panel id="32" darkLevel="0" useScrollBar="false" protectContent="false" opaque="false" layout="gridbag" borderRight="0" border="rounded3d" trackViewPortWidth="true" index="12" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=12;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)" borderBottom="2" borderTitle="" borderTop="2" trackViewPortHeight="true">
-    <Panel id="33" darkLevel="0" vGap="5" useScrollBar="false" protectContent="false" hGap="0" opaque="false" layout="flow" border="empty" flowAlignment="LEADING" trackViewPortWidth="true" index="0" constraints="gridbag(anchor=north_west;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)" borderTitle="Panel" trackViewPortHeight="true">
-      <Label id="34" manageDynamicModel="false" useScrollBar="false" index="1" localize="true" align="left" constraints="flow(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)" label="override_default_graphical_representations" readOnly="false" />
-      <CheckBox id="35" manageDynamicModel="true" useScrollBar="false" data="data.overrideDefaultGraphicalRepresentations" selected="true" name="OverrideDefaultGRCB" index="0" negate="false" localize="true" constraints="flow(index=0)" readOnly="false" />
-    </Panel>
-    <Table id="36" showFooter="false" manageDynamicModel="true" enable="OverrideDefaultGRCB.data" selectionMode="MultipleIntervalSelection" boundToSelectionManager="false" index="1" localize="true" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)" visibleRowCount="3" createNewRowOnClick="false" rowHeight="18" textSelectionColor="255,255,255" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.PushToPalette$DiagramElementEntry" backgroundSelectionColor="41,90,209" useScrollBar="false" backgroundNonSelectionColor="255,255,255" data="data.diagramElementEntries" autoSelectFirstRow="false" textNonSelectionColor="0,0,0" readOnly="false" backgroundSecondarySelectionColor="173,215,255">
-      <CheckBoxColumn id="37" data="iterator.selectThis" displayTitle="false" title="checkbox" name="checkbox" columnWidth="20" resizable="false" />
-      <IconColumn id="38" data="controller.iconForObject(iterator.graphicalObject)" displayTitle="false" title="icon" name="icon" columnWidth="20" resizable="false" />
-      <LabelColumn id="39" data="iterator.elementName" displayTitle="true" title="element_name" name="label" columnWidth="50" resizable="true" />
-      <LabelColumn id="40" data="iterator.parentEntry.elementName" displayTitle="true" title="parent" name="label" columnWidth="50" resizable="true" />
-      <LabelColumn id="41" data="iterator.graphicalObject.graphicalRepresentation.toString" displayTitle="true" title="description" name="label" columnWidth="200" resizable="true" />
-      <DropDownColumn id="42" data="iterator.patternRole" list="iterator.availablePatternRoles" displayTitle="true" title="assign_to_role" name="dropdown" columnWidth="100" resizable="true" />
-      <Dependancy id="43" componentName="flexoConceptDropDown" />
-    </Table>
-  </Panel>
-  <Label id="44" visible="(!(data.isValid))" manageDynamicModel="true" useScrollBar="false" data="data.errorMessage" foregroundColor="255,0,0" index="17" localize="true" font="Dialog,2,10" align="right" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)" label="" readOnly="false">
-    <Dependancy id="45" componentName="PaletteElementNameTextField" />
-    <Dependancy id="46" componentName="paletteDropDown" />
-    <Dependancy id="47" componentName="virtualModelSelector" />
-    <Dependancy id="48" componentName="flexoConceptDropDown" />
-    <Dependancy id="49" componentName="dropSchemeDropDown" />
-    <LocalizedDictionary id="50" />
-  </Label>
-  <Panel id="51" darkLevel="0" vGap="5" useScrollBar="false" protectContent="false" hGap="5" opaque="false" layout="flow" border="empty" flowAlignment="CENTER" trackViewPortWidth="true" index="13" font="LucidaGrande,0,13" constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=13;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=10;padX=0;padY=0;weightX=1.0;weightY=0.0)" borderTitle="Panel" titleFont="LucidaGrande,0,13" trackViewPortHeight="true">
-    <Button id="52" manageDynamicModel="false" useScrollBar="false" enable="data.isValid" buttonType="Trigger" action="controller.validateAndDispose()" index="0" localize="true" constraints="flow(index=0)" label="validate" readOnly="false">
-      <Dependancy id="53" componentName="PaletteElementNameTextField" />
-      <Dependancy id="54" componentName="paletteDropDown" />
-      <Dependancy id="55" componentName="virtualModelSelector" />
-      <Dependancy id="56" componentName="flexoConceptDropDown" />
-      <Dependancy id="57" componentName="dropSchemeDropDown" />
-    </Button>
-    <Button id="58" manageDynamicModel="false" useScrollBar="false" buttonType="Trigger" action="controller.cancelAndDispose()" index="1" localize="true" constraints="flow(index=1)" label="cancel" readOnly="false" />
-  </Panel>
+<Panel id="0" darkLevel="0" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+	useScrollBar="true" protectContent="false" height="550" opaque="false"
+	layout="gridbag" controllerClassName="org.openflexo.view.controller.FlexoFIBController"
+	border="empty" trackViewPortWidth="true" width="650"
+	dataClassName="org.openflexo.technologyadapter.diagram.fml.action.PushToPalette"
+	trackViewPortHeight="true" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED">
+	<LocalizedDictionary id="1" />
+	<Panel layout="flow" hGap="5" vGap="5" flowAlignment="CENTER"
+		borderTitle="Panel" darkLevel="0" index="0"
+		constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=12;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)"
+		name="title">
+		<Image imageFile="" data="data.image" sizeAdjustment="OriginalSize"
+			align="left" imageWidth="32" imageHeight="32" index="0"
+			constraints="flow(index=0;location=west)" localize="true" />
+		<Label label="push_to_palette" align="center" index="1"
+			constraints="flow(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=20;insetsLeft=0;insetsRight=0;insetsTop=20;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+			font="Lucida Grande,1,15" localize="true" />
+	</Panel>
+	<!--<Label id="4" manageDynamicModel="false" useScrollBar="false" index="0" 
+		localize="true" font="Lucida Grande,1,15" align="center" constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=0;gridY=0;index=0;insetsBottom=20;insetsLeft=0;insetsRight=0;insetsTop=20;padX=0;padY=0;weightX=1.0;weightY=0.0)" 
+		label="push_to_palette" readOnly="false" /> -->
+	<Label id="5" manageDynamicModel="false" useScrollBar="false"
+		index="1" localize="true" align="left"
+		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=1;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		label="palette" readOnly="false">
+		<LocalizedDictionary id="6" />
+	</Label>
+	<DropDown id="7" manageDynamicModel="false" useScrollBar="false"
+		data="data.palette" showReset="false" autoSelectFirstRow="true"
+		name="paletteDropDown" index="2" localize="false"
+		constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=1;index=2;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		list="data.diagramSpecification.palettes" format="object.name"
+		showText="true" readOnly="false"
+		iteratorClassName="org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette"
+		showIcon="false" />
+	<Label id="8" manageDynamicModel="false" useScrollBar="false"
+		index="3" localize="true" align="left"
+		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=2;index=3;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		label="name_for_new_element" readOnly="false" />
+	<TextField id="9" passwd="false" manageDynamicModel="false"
+		useScrollBar="false" data="data.newElementName" columns="20"
+		name="PaletteElementNameTextField" text="TextField" index="4"
+		localize="true"
+		constraints="gridbag(anchor=center;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=2;index=4;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+		readOnly="false" validateOnReturn="false" />
+	<Label id="2" manageDynamicModel="false" useScrollBar="false"
+		localize="true" align="left"
+		constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		label="mode" readOnly="false" />
+	<RadioButtonList id="3" manageDynamicModel="true"
+		columns="2" localize="true"
+		constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		format="object.name" showText="true"
+		iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.PushToPalette$PushToPaletteChoices"
+		vGap="-2" showIcon="false" useScrollBar="false" data="data.primaryChoice"
+		autoSelectFirstRow="true" name="PaletteRadioButtonList" hGap="0"
+		readOnly="false" />
+	<Panel id="10" darkLevel="0"
+		visible="(PaletteRadioButtonList.selectedIndex = 0)" useScrollBar="false"
+		borderLeft="0" protectContent="false" opaque="false" layout="twocols"
+		borderRight="0" border="rounded3d" trackViewPortWidth="true" index="3"
+		constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=1;gridY=4;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)"
+		borderBottom="2" borderTitle=""
+		dataClassName="org.openflexo.technologyadapter.diagram.fml.action.PushToPalette"
+		borderTop="2" trackViewPortHeight="true">
+		<Dependancy id="11" componentName="PaletteRadioButtonList" />
+		<Label id="12" manageDynamicModel="false" useScrollBar="false"
+			index="5" localize="true" align="left"
+			constraints="twocols(anchor=east;expandHorizontally=false;expandVertically=false;fill=none;gridHeight=1;gridWidth=0;gridX=0;gridY=0;index=1;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+			label="virtual_model" readOnly="false" />
+		<Custom id="13" manageDynamicModel="true" useScrollBar="false"
+			data="data.virtualModelResource"
+			componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FIBFMLControlledVirtualModelSelector"
+			name="virtualModelSelector" index="6" localize="true"
+			constraints="twocols(anchor=center;expandHorizontally=true;fill=horizontal;gridHeight=1;gridWidth=0;gridX=0;gridY=1;index=6;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=right;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+			readOnly="false">
+			<Assignment id="14" mandatory="true"
+				value="data.editor.serviceManager.viewPointLibrary" variable="component.viewPointLibrary" />
+			<Assignment id="15" mandatory="true" value="data.diagramSpecification"
+				variable="component.diagramSpecification" />
+		</Custom>
+		<Label id="16" manageDynamicModel="false" useScrollBar="false"
+			index="7" localize="true" align="left"
+			constraints="twocols(anchor=east;expandHorizontally=false;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=0;index=7;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+			label="flexo_concept" readOnly="false">
+			<LocalizedDictionary id="17" />
+		</Label>
+		<DropDown id="18" manageDynamicModel="false" useScrollBar="false"
+			data="data.flexoConcept" showReset="false" autoSelectFirstRow="true"
+			name="flexoConceptDropDown" index="8" localize="false"
+			constraints="twocols(anchor=center;expandHorizontally=true;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=1;index=8;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+			list="data.virtualModel.flexoConcepts" format="object.name" showText="true"
+			readOnly="false" iteratorClassName="org.openflexo.foundation.fml.FlexoConcept"
+			showIcon="false">
+			<Dependancy id="19" componentName="virtualModelSelector" />
+		</DropDown>
+		<Label id="20" manageDynamicModel="false" useScrollBar="false"
+			index="9" localize="true" align="left"
+			constraints="twocols(anchor=east;expandHorizontally=false;fill=none;gridHeight=1;gridWidth=1;gridX=2;gridY=0;index=9;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;location=left;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+			label="drop_scheme" readOnly="false" />
+		<DropDown id="21" manageDynamicModel="false" useScrollBar="false"
+			data="data.dropScheme" showReset="false" staticList=""
+			autoSelectFirstRow="true" name="dropSchemeDropDown" index="10"
+			localize="false"
+			constraints="twocols(anchor=center;expandHorizontally=true;fill=horizontal;gridHeight=1;gridWidth=0;gridX=2;gridY=1;index=10;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+			list="data.availableDropSchemes" format="object.name" showText="true"
+			readOnly="false" iteratorClassName="org.openflexo.technologyadapter.diagram.fml.DropScheme"
+			showIcon="false">
+			<Dependancy id="22" componentName="flexoConceptDropDown" />
+		</DropDown>
+	</Panel>
+	<Label id="23" manageDynamicModel="false" useScrollBar="false"
+		index="11" localize="true" align="left"
+		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=5;index=11;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		label="" readOnly="false" />
+	<Panel id="24" darkLevel="0" useScrollBar="false" protectContent="false"
+		opaque="false" layout="gridbag" borderRight="0" border="rounded3d"
+		trackViewPortWidth="true" index="11"
+		constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=0;gridX=1;gridY=5;index=12;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+		borderBottom="2" borderTitle="" borderTop="2" trackViewPortHeight="true">
+		<CheckBox id="25" manageDynamicModel="false" useScrollBar="false"
+			data="data.takeScreenshotForTopLevelElement" selected="true"
+			name="useScreenshotCB" index="0" negate="false" localize="true"
+			constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=0;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+			readOnly="false" />
+		<Label id="26" manageDynamicModel="false" useScrollBar="false"
+			index="1" localize="true" align="left"
+			constraints="gridbag(anchor=west;fill=horizontal;gridHeight=1;gridWidth=2;gridX=1;gridY=0;index=1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+			label="use_screenshot_as_top_level_representation" readOnly="false" />
+		<Label id="28" visible="data.takeScreenshotForTopLevelElement"
+			manageDynamicModel="false" useScrollBar="false" index="4" localize="true"
+			align="left"
+			constraints="gridbag(anchor=north_east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=1;index=4;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=1.0)"
+			label="width" readOnly="false">
+			<Dependancy componentName="useScreenshotCB" />
+		</Label>
+		<Number id="27" visible="data.takeScreenshotForTopLevelElement"
+			manageDynamicModel="false" minValue="-2147483648" useScrollBar="false"
+			columns="3" data="data.imageWidth" name="Integer" maxValue="2147483647"
+			increment="1" index="3" localize="true"
+			constraints="gridbag(anchor=south_west;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=1;index=3;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+			allowsNull="false" numberType="IntegerType" readOnly="false"
+			validateOnReturn="false">
+			<Dependancy componentName="useScreenshotCB" />
+		</Number>
+		<Label id="28" visible="data.takeScreenshotForTopLevelElement"
+			manageDynamicModel="false" useScrollBar="false" index="4" localize="true"
+			align="left"
+			constraints="gridbag(anchor=north_east;fill=none;gridHeight=1;gridWidth=1;gridX=0;gridY=2;index=4;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)"
+			label="height" readOnly="false">
+			<Dependancy componentName="useScreenshotCB" />
+		</Label>
+		<Number id="29" visible="data.takeScreenshotForTopLevelElement"
+			manageDynamicModel="false" minValue="-2147483648" useScrollBar="false"
+			columns="3" data="data.imageHeight" name="Integer" maxValue="2147483647"
+			increment="1" index="5" localize="true"
+			constraints="gridbag(anchor=north_west;fill=none;gridHeight=1;gridWidth=1;gridX=1;gridY=2;index=5;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+			allowsNull="false" numberType="IntegerType" readOnly="false"
+			validateOnReturn="false">
+			<Dependancy componentName="useScreenshotCB" />
+		</Number>
+		<Image id="30" visible="data.takeScreenshotForTopLevelElement"
+			manageDynamicModel="false" useScrollBar="false" data="data.screenshot.image"
+			sizeAdjustment="OriginalSize" imageHeight="80" index="6" localize="true"
+			align="right"
+			constraints="gridbag(anchor=west;fill=both;gridHeight=3;gridWidth=1;gridX=2;gridY=0;index=6;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)"
+			readOnly="false" imageWidth="32">
+			<Dependancy componentName="useScreenshotCB" />
+		</Image>
+	</Panel>
+	<Label id="31" manageDynamicModel="false" useScrollBar="false"
+		index="11" localize="true" align="left"
+		constraints="gridbag(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=11;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+		label="" readOnly="false" />
+	<Panel id="32" darkLevel="0" useScrollBar="false" protectContent="false"
+		opaque="false" layout="gridbag" borderRight="0" border="rounded3d"
+		trackViewPortWidth="true" index="12"
+		constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=12;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=1.0)"
+		borderBottom="2" borderTitle="" borderTop="2" trackViewPortHeight="true">
+		<Panel id="33" darkLevel="0" vGap="5" useScrollBar="false"
+			protectContent="false" hGap="0" opaque="false" layout="flow" border="empty"
+			flowAlignment="LEADING" trackViewPortWidth="true" index="0"
+			constraints="gridbag(anchor=north_west;fill=horizontal;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+			borderTitle="Panel" trackViewPortHeight="true">
+			<Label id="34" manageDynamicModel="false" useScrollBar="false"
+				index="1" localize="true" align="left"
+				constraints="flow(anchor=center;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+				label="override_default_graphical_representations" readOnly="false" />
+			<CheckBox id="35" manageDynamicModel="true" useScrollBar="false"
+				data="data.overrideDefaultGraphicalRepresentations" selected="true"
+				name="OverrideDefaultGRCB" index="0" negate="false" localize="true"
+				constraints="flow(index=0)" readOnly="false" />
+		</Panel>
+		<Table id="36" showFooter="false" manageDynamicModel="true"
+			enable="OverrideDefaultGRCB.value" selectionMode="MultipleIntervalSelection"
+			boundToSelectionManager="false" index="1" localize="true"
+			constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=1;insetsBottom=0;insetsLeft=0;insetsRight=20;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)"
+			visibleRowCount="3" createNewRowOnClick="false" rowHeight="18"
+			textSelectionColor="255,255,255"
+			iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.PushToPalette$DiagramElementEntry"
+			backgroundSelectionColor="41,90,209" useScrollBar="false"
+			backgroundNonSelectionColor="255,255,255" data="data.diagramElementEntries"
+			autoSelectFirstRow="false" textNonSelectionColor="0,0,0" readOnly="false"
+			backgroundSecondarySelectionColor="173,215,255">
+			<CheckBoxColumn id="37" data="iterator.selectThis"
+				displayTitle="false" title="checkbox" name="checkbox" columnWidth="20"
+				resizable="false" />
+			<IconColumn id="38"
+				data="controller.iconForObject(iterator.graphicalObject)"
+				displayTitle="false" title="icon" name="icon" columnWidth="20"
+				resizable="false" />
+			<LabelColumn id="39" data="iterator.elementName"
+				displayTitle="true" title="element_name" name="label" columnWidth="50"
+				resizable="true" />
+			<LabelColumn id="40" data="iterator.parentEntry.elementName"
+				displayTitle="true" title="parent" name="label" columnWidth="50"
+				resizable="true" />
+			<LabelColumn id="41"
+				data="iterator.graphicalObject.graphicalRepresentation.toString"
+				displayTitle="true" title="description" name="label" columnWidth="200"
+				resizable="true" />
+			<DropDownColumn id="42" data="iterator.patternRole"
+				list="iterator.availablePatternRoles" displayTitle="true" title="assign_to_role"
+				name="dropdown" columnWidth="100" resizable="true" />
+			<Dependancy id="43" componentName="flexoConceptDropDown" />
+		</Table>
+	</Panel>
+	<Panel id="51" darkLevel="0" vGap="5" useScrollBar="false"
+		protectContent="false" hGap="5" opaque="false" layout="flow" border="empty"
+		flowAlignment="CENTER" trackViewPortWidth="true" index="13"
+		font="LucidaGrande,0,13"
+		constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=13;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=10;padX=0;padY=0;weightX=1.0;weightY=0.0)"
+		borderTitle="Panel" titleFont="LucidaGrande,0,13" trackViewPortHeight="true">
+		<Button id="52" manageDynamicModel="false" useScrollBar="false"
+			enable="data.isValid" buttonType="Trigger" action="controller.validateAndDispose()"
+			index="0" localize="true" constraints="flow(index=0)" label="validate"
+			readOnly="false">
+			<Dependancy id="53" componentName="PaletteElementNameTextField" />
+			<Dependancy id="54" componentName="paletteDropDown" />
+			<Dependancy id="55" componentName="virtualModelSelector" />
+			<Dependancy id="56" componentName="flexoConceptDropDown" />
+			<Dependancy id="57" componentName="dropSchemeDropDown" />
+		</Button>
+		<Button id="58" manageDynamicModel="false" useScrollBar="false"
+			buttonType="Trigger" action="controller.cancelAndDispose()" index="1"
+			localize="true" constraints="flow(index=1)" label="cancel" readOnly="false" />
+	</Panel>
 </Panel>
