@@ -36,7 +36,7 @@
  * 
  */
 
-package org.openflexo.technologyadapter.gina.controller.action;
+package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.util.EventObject;
 import java.util.logging.Logger;
@@ -52,27 +52,27 @@ import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
-import org.openflexo.technologyadapter.gina.controller.GINAIconLibrary;
-import org.openflexo.technologyadapter.gina.fml.action.CreateFMLControlledFIBVirtualModel;
+import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModel;
+import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
 
-public class CreateFMLControlledFIBVirtualModelInitializer
-		extends ActionInitializer<CreateFMLControlledFIBVirtualModel, ViewPoint, FMLObject> {
+public class CreateFMLControlledDiagramVirtualModelInitializer
+		extends ActionInitializer<CreateFMLControlledDiagramVirtualModel, ViewPoint, FMLObject> {
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(ControllerActionInitializer.class.getPackage().getName());
 
-	public CreateFMLControlledFIBVirtualModelInitializer(ControllerActionInitializer actionInitializer) {
-		super(CreateFMLControlledFIBVirtualModel.actionType, actionInitializer);
+	public CreateFMLControlledDiagramVirtualModelInitializer(ControllerActionInitializer actionInitializer) {
+		super(CreateFMLControlledDiagramVirtualModel.actionType, actionInitializer);
 	}
 
 	@Override
-	protected FlexoActionInitializer<CreateFMLControlledFIBVirtualModel> getDefaultInitializer() {
-		return new FlexoActionInitializer<CreateFMLControlledFIBVirtualModel>() {
+	protected FlexoActionInitializer<CreateFMLControlledDiagramVirtualModel> getDefaultInitializer() {
+		return new FlexoActionInitializer<CreateFMLControlledDiagramVirtualModel>() {
 			@Override
-			public boolean run(EventObject e, CreateFMLControlledFIBVirtualModel action) {
-				Wizard wizard = new CreateFMLControlledFIBVirtualModelWizard(action, getController());
+			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModel action) {
+				Wizard wizard = new CreateFMLControlledDiagramVirtualModelWizard(action, getController());
 				WizardDialog dialog = new WizardDialog(wizard, getController());
 				dialog.showDialog();
 				if (dialog.getStatus() != Status.VALIDATED) {
@@ -86,10 +86,10 @@ public class CreateFMLControlledFIBVirtualModelInitializer
 	}
 
 	@Override
-	protected FlexoActionFinalizer<CreateFMLControlledFIBVirtualModel> getDefaultFinalizer() {
-		return new FlexoActionFinalizer<CreateFMLControlledFIBVirtualModel>() {
+	protected FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModel> getDefaultFinalizer() {
+		return new FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModel>() {
 			@Override
-			public boolean run(EventObject e, CreateFMLControlledFIBVirtualModel action) {
+			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModel action) {
 				getController().selectAndFocusObject(action.getNewVirtualModel());
 				return true;
 			}
@@ -98,7 +98,7 @@ public class CreateFMLControlledFIBVirtualModelInitializer
 
 	@Override
 	protected Icon getEnabledIcon() {
-		return IconFactory.getImageIcon(GINAIconLibrary.FIB_COMPONENT_ICON, FMLIconLibrary.VIRTUAL_MODEL_MARKER);
+		return IconFactory.getImageIcon(DiagramIconLibrary.DIAGRAM_ICON, FMLIconLibrary.VIRTUAL_MODEL_MARKER);
 	}
 
 }

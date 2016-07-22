@@ -66,6 +66,7 @@ import org.openflexo.technologyadapter.diagram.controller.action.CreateDiagramSp
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramFromPPTSlideInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateExampleDiagramInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramPaletteElementInitializer;
+import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramVirtualModelInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLControlledDiagramVirtualModelInstanceInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingFromDiagramPaletteElementInitializer;
 import org.openflexo.technologyadapter.diagram.controller.action.CreateFMLDiagramPaletteElementBindingInitializer;
@@ -212,6 +213,8 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		new DeleteDiagramPaletteInitializer(actionInitializer);
 		new CreateDiagramPaletteElementInitializer(actionInitializer);
 		new DeleteDiagramPaletteElementInitializer(actionInitializer);
+
+		new CreateFMLControlledDiagramVirtualModelInitializer(actionInitializer);
 
 		new CreateFMLControlledDiagramVirtualModelInstanceInitializer(actionInitializer);
 		new OpenFMLControlledDiagramVirtualModelInstanceInitializer(actionInitializer);

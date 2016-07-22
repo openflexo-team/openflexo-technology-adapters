@@ -292,13 +292,14 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		}
 		// Sets palette view of editor to be the top right view
 		perspective.setTopRightView(getFIBEditor(false).getPalettes());
+		perspective.setBottomRightView(getFIBEditor(false).getInspectors().getPanelGroup());
 		perspective.setBottomLeftView(editorController.getEditorBrowser());
 
 		controller.getControllerModel().setRightViewVisible(true);
 
 		getFIBEditor(false).activate(editorController);
 
-		getFIBEditor(false).getInspector().setVisible(true);
+		// getFIBEditor(false).getInspector().setVisible(true);
 	}
 
 	private void updateAsNormalMode() {

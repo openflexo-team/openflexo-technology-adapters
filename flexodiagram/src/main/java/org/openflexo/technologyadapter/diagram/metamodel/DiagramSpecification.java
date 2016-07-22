@@ -65,6 +65,7 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceImpl;
 import org.openflexo.toolbox.ChainedCollection;
@@ -186,6 +187,14 @@ public interface DiagramSpecification
 			DiagramSpecification diagramSpecification = dsRes.getFactory().newInstance(DiagramSpecification.class);
 			dsRes.setResourceData(diagramSpecification);
 			diagramSpecification.setResource(dsRes);
+
+			DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			DiagramSpecificationRepository dsRepository = folder.getResourceRepository().getResourceCenter()
+					.getRepository(DiagramSpecificationRepository.class, diagramTA);
+			dsRepository.registerResource(dsRes);
+			diagramTA.referenceResource(dsRes, folder.getResourceRepository().getResourceCenter());
+
 			try {
 				dsRes.save(null);
 			} catch (SaveResourceException e) {
@@ -201,6 +210,7 @@ public interface DiagramSpecification
 			palettes = null;
 		}
 
+		@Override
 		public FlexoServiceManager getServiceManager() {
 			return getResource().getServiceManager();
 		}
