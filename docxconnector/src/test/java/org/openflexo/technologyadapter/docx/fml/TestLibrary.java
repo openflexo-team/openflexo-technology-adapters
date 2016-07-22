@@ -120,10 +120,10 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.ReinjectTextBindin
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElement;
-import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.model.DocXFragment;
 import org.openflexo.technologyadapter.docx.model.DocXParagraph;
 import org.openflexo.technologyadapter.docx.model.DocXTextRun;
+import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModelNature;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;

@@ -47,7 +47,7 @@ import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.docx.DocXTechnologyContextManager;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFactory;
-import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
+import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
 import org.openflexo.toolbox.FileUtils;
 
 public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory>implements DocXDocumentResource {

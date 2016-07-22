@@ -28,7 +28,7 @@
 				constraints="twocols(expandHorizontally=false;expandVertically=false;index=15;location=right)"
 				name="IdStrategyDD" format="object.stringRepresentation"
 				localize="false"
-				iteratorClassName="org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy"
+				iteratorClassName="org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy"
 				autoSelectFirstRow="false" showReset="false" />
 		</Tab>
 		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"

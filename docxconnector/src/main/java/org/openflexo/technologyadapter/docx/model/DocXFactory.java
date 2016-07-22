@@ -79,10 +79,6 @@ public class DocXFactory extends DocumentFactory<DocXDocument, DocXTechnologyAda
 
 	private static final Logger logger = Logger.getLogger(DocXFactory.class.getPackage().getName());
 
-	public static enum IdentifierManagementStrategy {
-		ParaId, Bookmark
-	}
-
 	private final IdentifierManagementStrategy idStrategy;
 
 	public DocXFactory(DocXDocumentResource resource, EditingContext editingContext, IdentifierManagementStrategy idStrategy)

@@ -62,7 +62,7 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDoc
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXImage;
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXTable;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
-import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
+import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.toolbox.StringUtils;
 

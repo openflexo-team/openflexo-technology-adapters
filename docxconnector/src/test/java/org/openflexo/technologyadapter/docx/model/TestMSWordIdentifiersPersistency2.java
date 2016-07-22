@@ -43,7 +43,6 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
-import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 

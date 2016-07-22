@@ -5,7 +5,6 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 import org.openflexo.model.exceptions.MissingImplementationException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 
 public class TestDocXModelFactory {
 
