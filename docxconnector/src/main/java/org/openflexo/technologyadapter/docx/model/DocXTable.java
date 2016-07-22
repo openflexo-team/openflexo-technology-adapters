@@ -20,14 +20,17 @@
 
 package org.openflexo.technologyadapter.docx.model;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.xml.bind.JAXBElement;
 
 import org.docx4j.XmlUtils;
+import org.docx4j.wml.CTBookmark;
 import org.docx4j.wml.ContentAccessor;
 import org.docx4j.wml.P;
 import org.docx4j.wml.Tbl;
@@ -91,12 +94,17 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 
 	public DocXParagraph getParagraph(P p);
 
-	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter>implements DocXTable {
+	public DocXFactory getFactory();
+
+	public static abstract class DocXTableImpl extends FlexoTableImpl<DocXDocument, DocXTechnologyAdapter> implements DocXTable {
 
 		private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
 				.getLogger(DocXTableImpl.class.getPackage().getName());
 
 		private final Map<Tr, DocXTableRow> rows = new HashMap<Tr, DocXTableRow>();
+
+		// Factory used during initialization of DocXParagraph (either new or loaded document)
+		protected DocXFactory _factory;
 
 		public DocXTableImpl() {
 			super();
@@ -105,6 +113,18 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 		@Override
 		public Tbl getDocXObject() {
 			return getTbl();
+		}
+
+		@Override
+		public DocXFactory getFactory() {
+			DocXFactory returned = null;
+			if (getFlexoDocument() != null && getFlexoDocument().getFactory() != null) {
+				returned = getFlexoDocument().getFactory();
+			}
+			if (returned == null) {
+				return _factory;
+			}
+			return returned;
 		}
 
 		@Override
@@ -217,18 +237,46 @@ public interface DocXTable extends DocXElement<Tbl>, FlexoDocTable<DocXDocument,
 								if (o3 instanceof JAXBElement) {
 									o3 = ((JAXBElement) o3).getValue();
 								}
+								// TODO Add a parameter to ModelSlot to set identification strategy in ModelSlotInstance
 								if (o3 instanceof P) {
 									P paragraph = (P) o3;
-									String oldId = paragraph.getParaId();
-									String newId = getFlexoDocument().getFactory().generateId();
-									paragraph.setParaId(newId);
-									System.out.println("Change P id from " + oldId + " to " + newId);
+
+									if (getFactory() != null) {
+										// Translate ID
+										String newId = getFactory().generateId();
+										switch (getFactory().getIDStrategy()) {
+										case ParaId:
+											String oldId = paragraph.getParaId();
+											paragraph.setParaId(newId);
+											System.out.println("Change P id from " + oldId + " to " + newId);
+											break;
+										case Bookmark:
+											for (Object o4 : paragraph.getContent()) {
+												if (o4 instanceof JAXBElement) {
+													o4 = ((JAXBElement) o4).getValue();
+												}
+												if (o4 instanceof CTBookmark) {
+													CTBookmark bookmark = (CTBookmark) o4;
+													if (bookmark.getName() != null && bookmark.getName().startsWith(BOOKMARK_PREFIX)) {
+														String oldName = bookmark.getName();
+														bookmark.setName(BOOKMARK_PREFIX + newId);
+														BigInteger ID = BigInteger.valueOf(new Random().nextLong());
+														bookmark.setId(ID);
+														System.out.println("Translate CTBookmark ID for " + bookmark + " from name " + oldName + " to name="
+																+ bookmark.getName());
+														// setBookmark(bookmark);
+													}
+												}
+											}
+											break;
+										}
+									}
 								}
 							}
 						}
 					}
 				}
-			}
+			}	
 
 			return copiedTbl;
 		}

@@ -70,8 +70,6 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @Imports({ @Import(DocXTextRun.class), @Import(DocXDrawingRun.class) })
 public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDocument, DocXTechnologyAdapter> {
 
-	public static final String BOOKMARK_PREFIX = "FLX";
-
 	@PropertyIdentifier(type = P.class)
 	public static final String P_KEY = "p";
 	@PropertyIdentifier(type = CTBookmark.class)

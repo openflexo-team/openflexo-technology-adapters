@@ -21,6 +21,15 @@
 				<Assignment variable="component.technologyAdapter" value="data.modelSlotTechnologyAdapter" />
 				<Assignment variable="component.resourceDataClass" value="data.type" />
 			</Custom>
+			<Label label="id_strategy" index="14"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=14;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
+				name="IdStrategy" localize="true" />
+			<DropDown index="15" data="data.cardinality"
+				constraints="twocols(expandHorizontally=false;expandVertically=false;index=15;location=right)"
+				name="IdStrategyDD" format="object.stringRepresentation"
+				localize="false"
+				iteratorClassName="org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy"
+				autoSelectFirstRow="false" showReset="false" />
 		</Tab>
 		<Tab title="Advanced" layout="twocols" titleFont="SansSerif,0,11"
 			darkLevel="0" index="2" font="SansSerif,0,11" useScrollBar="true"

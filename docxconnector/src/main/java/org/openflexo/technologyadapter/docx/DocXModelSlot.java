@@ -36,11 +36,13 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
@@ -60,6 +62,7 @@ import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDoc
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXImage;
 import org.openflexo.technologyadapter.docx.fml.editionaction.SelectGeneratedDocXTable;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.toolbox.StringUtils;
 
@@ -82,12 +85,25 @@ import org.openflexo.toolbox.StringUtils;
 @XMLElement
 public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 
+	@PropertyIdentifier(type = FlexoResource.class)
+	public static final String TEMPLATE_RESOURCE_KEY = "templateResource";
+	
+	@PropertyIdentifier(type = IdentifierManagementStrategy.class)
+	public static final String ID_STRATEGY_KEY = "idStrategy";
+
+
 	@Override
 	@Getter(TEMPLATE_RESOURCE_KEY)
 	public DocXDocumentResource getTemplateResource();
 
 	@Setter(TEMPLATE_RESOURCE_KEY)
 	public void setTemplateResource(DocXDocumentResource templateResource);
+
+	@Getter(ID_STRATEGY_KEY)
+	public IdentifierManagementStrategy getIdStrategy();
+
+	@Setter(ID_STRATEGY_KEY)
+	public void setIdStrategy(IdentifierManagementStrategy idStrat);
 
 	// Implem
 	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument> implements DocXModelSlot {
@@ -166,6 +182,15 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 			// TODO
 			logger.warning("Could not create docx in this kind of ResourceCenter");
 			return null;
+		}
+		@Override
+		// returns default value to paraId when none specified, because it is less intrusive (templage management)
+		public IdentifierManagementStrategy getIdStrategy(){
+			IdentifierManagementStrategy val = (IdentifierManagementStrategy) this.performSuperGetter(ID_STRATEGY_KEY);
+			if (val == null){
+				val = IdentifierManagementStrategy.ParaId;
+			}
+			return val;
 		}
 	}
 }

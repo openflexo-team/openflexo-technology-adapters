@@ -41,6 +41,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.rm.InJarResourceImpl;
+import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElementConverter;
 import org.openflexo.technologyadapter.docx.model.DocXFactory.IdentifierManagementStrategy;
@@ -69,7 +70,9 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 
 	protected static final Logger logger = Logger.getLogger(DocXTechnologyAdapter.class.getPackage().getName());
 
-	private IdentifierManagementStrategy idStrategy = IdentifierManagementStrategy.Bookmark;
+	// TODO Default Id Strategy from Preferences + ModelSlot Config
+	// TODO check while tests id TestLibrary2UsingBookmarks fail when Stratégy is not the same
+	private IdentifierManagementStrategy idStrategy = IdentifierManagementStrategy.ParaId;
 
 	public IdentifierManagementStrategy getIDStrategy() {
 		return idStrategy;
@@ -184,18 +187,20 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 */
 	public DocXDocumentResource retrieveDocXResource(Object docXDocumentItem, FlexoResourceCenter<?> resourceCenter) {
 
-		DocXDocumentResource returned = null; // getTechnologyContextManager().getExcelWorkbookResource(workbook);
-		if (returned == null) {
-			if (docXDocumentItem instanceof File) {
-				returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((File) docXDocumentItem, getTechnologyContextManager(),
-						resourceCenter, getIDStrategy());
-			}
-			if (returned != null) {
-				getTechnologyContextManager().registerDocXDocumentResource(returned);
-			}
-			else {
-				logger.warning("Cannot retrieve DocXDocumentResource resource for " + docXDocumentItem);
-			}
+		DocXDocumentResource returned = null;
+		if (docXDocumentItem instanceof File) {
+			returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((File) docXDocumentItem, getTechnologyContextManager(),
+					resourceCenter, getIDStrategy());
+		}
+		else if (docXDocumentItem instanceof InJarResourceImpl) {
+			returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource( (InJarResourceImpl) docXDocumentItem, getTechnologyContextManager(),
+					resourceCenter, getIDStrategy());
+		}
+		if (returned != null) {
+			getTechnologyContextManager().registerDocXDocumentResource(returned);
+		}
+		else {
+			logger.warning("Cannot retrieve DocXDocumentResource resource for " + docXDocumentItem);
 		}
 
 		return returned;
