@@ -16,7 +16,7 @@
 				enterPressedAction="" valueChangedAction="" valueTransform=""
 				valueValidator="" />
 			<Panel layout="gridbag" hGap="5" vGap="5" flowAlignment="LEADING"
-				borderTitle="Panel" darkLevel="0" index="3" data=""
+				borderTitle="Panel" darkLevel="0" index="3" 
 				constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 				visible="">
 				<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"

@@ -34,16 +34,6 @@
 		columns="40" text="TextField" editable="">
 		<Dependancy componentName="DiagramSpecificationNameTextField" />
 	</TextField>
-	<Label label="label" index="5" data="data.errorMessage"
-		constraints="gridbag(anchor=east;fill=none;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=5;insetsBottom=0;insetsLeft=0;insetsRight=24;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
-		visible="(!(data.isValid()))" font="Dialog,2,10" foregroundColor="255,0,0"
-		format="" icon="" tooltip="" localize="true" enable="" clickAction=""
-		doubleClickAction="" rightClickAction="" enterPressedAction=""
-		valueChangedAction="">
-		<Dependancy componentName="DiagramSpecificationNameTextField" />
-		<Dependancy componentName="DiagramSpecificationURITextField" />
-		<LocalizedDictionary />
-	</Label>
 	<Label label="description" align="right" index="12" data=""
 		constraints="gridbag(anchor=north_east;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=12;insetsBottom=0;insetsLeft=20;insetsRight=10;insetsTop=0;padX=0;padY=0;weightX=0.0;weightY=0.0)"
 		visible="" format="" icon="" tooltip="" localize="true" enable=""
