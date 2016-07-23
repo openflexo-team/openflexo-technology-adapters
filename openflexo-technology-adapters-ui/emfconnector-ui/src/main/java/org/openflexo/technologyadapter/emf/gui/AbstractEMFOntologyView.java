@@ -58,7 +58,8 @@ import org.openflexo.view.controller.model.FlexoPerspective;
 public abstract class AbstractEMFOntologyView<T extends FlexoObject & IFlexoOntology> extends OntologyView<T> {
 
 	public AbstractEMFOntologyView(T object, FlexoController controller, FlexoPerspective perspective) {
-		super(object, controller, perspective, controller.getTechnologyAdapter(EMFTechnologyAdapter.class).getLocales());
+		super(object, controller, perspective,
+				controller != null ? controller.getTechnologyAdapter(EMFTechnologyAdapter.class).getLocales() : null);
 	}
 
 	@Override
