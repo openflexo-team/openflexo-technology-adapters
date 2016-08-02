@@ -41,10 +41,9 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.OntClass;
+import org.apache.jena.ontology.SomeValuesFromRestriction;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.ontology.OntClass;
-import com.hp.hpl.jena.ontology.SomeValuesFromRestriction;
 
 public class SomeValuesFromRestrictionClass extends OWLRestriction {
 
@@ -67,7 +66,8 @@ public class SomeValuesFromRestrictionClass extends OWLRestriction {
 		if (restriction.getSomeValuesFrom() != null) {
 			if (restriction.getSomeValuesFrom().canAs(OntClass.class)) {
 				object = getOntology().retrieveOntologyClass(restriction.getSomeValuesFrom().as(OntClass.class));
-			} else {
+			}
+			else {
 				dataRange = getTechnologyAdapter().getOntologyLibrary().getDataType(restriction.getSomeValuesFrom().getURI());
 			}
 		}

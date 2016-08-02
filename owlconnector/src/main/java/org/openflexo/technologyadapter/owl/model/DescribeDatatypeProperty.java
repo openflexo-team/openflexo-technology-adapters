@@ -65,8 +65,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import com.hp.hpl.jena.ontology.DatatypeProperty;
-import com.hp.hpl.jena.ontology.OntResource;
+import org.apache.jena.ontology.DatatypeProperty;
+import org.apache.jena.ontology.OntResource;
 
 /**
  * <p>

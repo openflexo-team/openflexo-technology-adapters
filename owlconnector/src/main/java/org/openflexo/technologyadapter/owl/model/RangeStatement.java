@@ -41,10 +41,9 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
 
 public class RangeStatement extends OWLStatement {
 
@@ -67,7 +66,8 @@ public class RangeStatement extends OWLStatement {
 			if (range == null && ((Resource) s.getObject()).getURI() != null) {
 				dataType = getTechnologyAdapter().getOntologyLibrary().getDataType(((Resource) s.getObject()).getURI());
 			}
-		} else {
+		}
+		else {
 			logger.warning("RangeStatement: object is not a Resource !");
 		}
 	}

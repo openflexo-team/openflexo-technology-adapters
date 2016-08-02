@@ -41,10 +41,9 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
 
 public class SubClassStatement extends OWLStatement {
 
@@ -57,7 +56,8 @@ public class SubClassStatement extends OWLStatement {
 		// System.out.println("s.getObject() is a " + s.getObject().getClass().getName() + " : " + s.getObject());
 		if (s.getObject() instanceof Resource) {
 			parent = getOntology().retrieveOntologyObject((Resource) s.getObject());
-		} else {
+		}
+		else {
 			logger.warning("SubClassStatement: object is not a Resource !");
 		}
 	}

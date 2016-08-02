@@ -45,6 +45,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.rdf.model.RDFWriter;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
@@ -63,16 +65,13 @@ import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 import org.openflexo.toolbox.IProgress;
 
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.rdf.model.RDFWriter;
-
 /**
  * Represents the resource associated to a {@link OWLOntology}
  * 
  * @author sguerin
  * 
  */
-public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntology>implements OWLOntologyResource {
+public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntology> implements OWLOntologyResource {
 
 	private static final Logger logger = Logger.getLogger(OWLOntologyResourceImpl.class.getPackage().getName());
 

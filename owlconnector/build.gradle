@@ -1,0 +1,17 @@
+dependencies {
+  // openflexo dep
+  compile group: "org.openflexo", name: "flexo-foundation", version: "1.+"
+  compile group: "org.openflexo", name: "flexo-ontology", version: "1.+"
+  // external dep
+  compile 'org.apache.jena:jena-core:3.1.0'
+//   compile group: 'org.freeplane', name: 'freeplaneviewer', version: '201406221527'
+//   compile group: 'org.freeplane', name: 'freeplaneeditor', version: '201406221527'
+//   compile 'com.github.insubstantial:flamingo:7.3'
+  //  compile 'org.eclipse.lyo.oslc4j.core:oslc4j-core:2.0.0'
+  // testing dep
+//   testCompile group: "org.openflexo", name: "gina-test", version: "1.+"
+     testCompile group: "org.openflexo", name: "testutils", version: "1.+"
+     testCompile group: "org.openflexo", name: "flexo-foundation-test", version: "1.+"
+//   testCompile group: "org.openflexo", name: "gina-swing-editor-test", version: "1.+"
+//   testCompile relativeProject(':flexo-test-resources')
+}

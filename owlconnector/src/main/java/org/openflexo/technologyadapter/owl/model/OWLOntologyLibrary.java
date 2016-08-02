@@ -50,6 +50,18 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import org.apache.jena.graph.GraphMaker;
+import org.apache.jena.graph.impl.SimpleGraphMaker;
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.ModelMaker;
+import org.apache.jena.rdf.model.ModelReader;
+import org.apache.jena.rdf.model.impl.ModelCom;
+import org.apache.jena.shared.AlreadyExistsException;
+import org.apache.jena.shared.DoesNotExistException;
+import org.apache.jena.util.iterator.ExtendedIterator;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.converter.OntologyObjectConverter;
 import org.openflexo.foundation.ontology.OntologyUtils;
@@ -68,18 +80,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
-import com.hp.hpl.jena.graph.GraphMaker;
-import com.hp.hpl.jena.graph.impl.SimpleGraphMaker;
-import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
-import com.hp.hpl.jena.rdf.model.Model;
-import com.hp.hpl.jena.rdf.model.ModelFactory;
-import com.hp.hpl.jena.rdf.model.ModelMaker;
-import com.hp.hpl.jena.rdf.model.ModelReader;
-import com.hp.hpl.jena.rdf.model.impl.ModelCom;
-import com.hp.hpl.jena.shared.AlreadyExistsException;
-import com.hp.hpl.jena.shared.DoesNotExistException;
-import com.hp.hpl.jena.util.iterator.ExtendedIterator;
 
 /**
  * The {@link OWLOntologyLibrary} works in conjunction with a {@link FlexoResourceCenterService}. It provides the mechanism to keep
@@ -88,8 +88,8 @@ import com.hp.hpl.jena.util.iterator.ExtendedIterator;
  * @author sylvain
  * 
  */
-public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OWLTechnologyAdapter> implements ModelMaker,
-		RemovalListener<OWLOntology, Set<OWLOntology>> {
+public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OWLTechnologyAdapter>
+		implements ModelMaker, RemovalListener<OWLOntology, Set<OWLOntology>> {
 
 	private static final Logger logger = Logger.getLogger(OWLOntologyLibrary.class.getPackage().getName());
 
@@ -112,7 +112,8 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 	public StatementWithProperty getStatementWithProperty(OWLProperty aProperty) {
 		if (statementsWithProperty.get(aProperty) != null) {
 			return statementsWithProperty.get(aProperty);
-		} else {
+		}
+		else {
 			StatementWithProperty returned = new StatementWithProperty(aProperty);
 			statementsWithProperty.put(aProperty, returned);
 			return returned;
@@ -297,7 +298,8 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 			return newOntology.getOntModel();*/
 			logger.warning("Not implemented yet !!!");
 			return null;
-		} else {
+		}
+		else {
 			throw new DoesNotExistException(name);
 		}
 	}

@@ -41,10 +41,9 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.util.logging.Logger;
 
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Statement;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-
-import com.hp.hpl.jena.rdf.model.Resource;
-import com.hp.hpl.jena.rdf.model.Statement;
 
 public class EquivalentClassStatement extends OWLStatement {
 
@@ -56,7 +55,8 @@ public class EquivalentClassStatement extends OWLStatement {
 		super(subject, s, adapter);
 		if (s.getObject() instanceof Resource) {
 			equivalentObject = getOntology().retrieveOntologyObject((Resource) s.getObject());
-		} else {
+		}
+		else {
 			logger.warning("EquivalentClassStatement: object is not a Resource !");
 		}
 	}
@@ -67,10 +67,8 @@ public class EquivalentClassStatement extends OWLStatement {
 
 	@Override
 	public String toString() {
-		return getSubject().getName()
-				+ " is equivalent to "
-				+ (getEquivalentObject() != null ? getEquivalentObject().getDisplayableDescription() : "<NOT_FOUND:"
-						+ getStatement().getObject() + ">");
+		return getSubject().getName() + " is equivalent to " + (getEquivalentObject() != null
+				? getEquivalentObject().getDisplayableDescription() : "<NOT_FOUND:" + getStatement().getObject() + ">");
 	}
 
 }

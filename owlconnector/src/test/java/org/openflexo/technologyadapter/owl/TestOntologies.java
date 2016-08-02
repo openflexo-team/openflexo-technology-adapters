@@ -48,7 +48,7 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.OpenflexoTestCase;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.Language;
 import org.openflexo.technologyadapter.owl.model.OWL2URIDefinitions;
