@@ -53,11 +53,11 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -266,7 +266,6 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
 		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
-
 
 		try {
 			File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),

@@ -55,7 +55,6 @@ import org.openflexo.fge.shapes.Rectangle;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceType;
@@ -79,6 +78,7 @@ import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.JarResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -634,8 +634,7 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 	@TestOrder(10)
 	public void testLoadViewPointAndVirtualModelFromJar() {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(),
-				"testdiagram_vp-1.1");
+		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
 		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
 		assertNotNull(vpLib);
 		viewPoint = vpLib.getViewPoint("http://openflexo.org/test/TestControlledDiagramViewPoint2");

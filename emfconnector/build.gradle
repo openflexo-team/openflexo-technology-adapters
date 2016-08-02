@@ -1,0 +1,18 @@
+dependencies {
+  // openflexo dep
+  compile group: "org.openflexo", name: "flexo-foundation", version: "1.+"
+  compile group: "org.openflexo", name: "flexoutils", version: "1.+"
+  compile group: "org.openflexo", name: "flexo-ontology", version: "1.+"
+  // external dep
+  compile group: 'org.eclipse.uml2', name: 'uml-resources', version: '5.0.1'
+  compile 'org.eclipse.xtext:org.eclipse.xtext.xtext:2.10.0'
+  compile group: 'org.eclipse.uml2', name: 'common', version: '2.0.1'
+  compile group: 'org.eclipse.uml2', name: 'uml', version: '5.0.1'
+
+  // testing dep
+//   testCompile group: "org.openflexo", name: "gina-test", version: "1.+"
+  testCompile group: "org.openflexo", name: "testutils", version: "1.+"
+  testCompile group: "org.openflexo", name: "flexo-foundation-test", version: "1.+"
+//   testCompile group: "org.openflexo", name: "gina-swing-editor-test", version: "1.+"
+//   testCompile relativeProject(':flexo-test-resources')
+}

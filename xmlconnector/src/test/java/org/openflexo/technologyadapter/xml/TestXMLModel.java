@@ -46,8 +46,8 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
@@ -64,11 +64,11 @@ import org.openflexo.test.TestOrder;
 @RunWith(OrderedRunner.class)
 public class TestXMLModel extends OpenflexoTestCase {
 
-	protected static final Logger         logger = Logger.getLogger(TestXMLModel.class.getPackage().getName());
+	protected static final Logger logger = Logger.getLogger(TestXMLModel.class.getPackage().getName());
 
 	private static final void dumpIndividual(XMLIndividual indiv, String prefix) {
 
-		System.out.println(prefix + "Indiv : " +  indiv.getName() + "  [" + indiv.getUUID() + "]");
+		System.out.println(prefix + "Indiv : " + indiv.getName() + "  [" + indiv.getUUID() + "]");
 		for (XMLProperty a : indiv.getType().getProperties()) {
 			System.out.println(prefix + "    * attr: " + a.getName() + " = " + indiv.getPropertyStringValue(a));
 		}
@@ -85,7 +85,6 @@ public class TestXMLModel extends OpenflexoTestCase {
 
 	}
 
-
 	@Test
 	@TestOrder(1)
 	public void test0createXMLModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
@@ -97,47 +96,44 @@ public class TestXMLModel extends OpenflexoTestCase {
 
 		assertNotNull(MMF);
 		assertNotNull(MF);
-		
+
 		XMLMetaModel metamodel = MMF.newInstance(XMLMetaModel.class);
 		metamodel.setReadOnly(false);
 
-
 		metamodel.setURI("http://www.openflexo.org/aTestModel");
-		
-		assertNotNull(metamodel);
-		
 
-		XMLModel model = MF.newInstance(XMLModel.class,metamodel);
+		assertNotNull(metamodel);
+
+		XMLModel model = MF.newInstance(XMLModel.class, metamodel);
 
 		assertNotNull(model);
 
-		
 		model.setMetaModel(metamodel);
 
-		XMLSimpleType ts =  (XMLSimpleType) metamodel.createNewType(XMLMetaModel.STR_SIMPLETYPE_URI, "BASIC_STRING",true);
-		
-		XMLComplexType t = (XMLComplexType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Fleumeu", "Fleumeu",false);
-		t.createProperty("TOTO", ts);
-		
-		t = (XMLComplexType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Flouk", "Flouk",false);
-		t.createProperty("TOTO", ts);
-		
+		XMLSimpleType ts = (XMLSimpleType) metamodel.createNewType(XMLMetaModel.STR_SIMPLETYPE_URI, "BASIC_STRING", true);
 
-		XMLIndividual xmind = (XMLIndividual) model.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Fleumeu"));
-		
+		XMLComplexType t = (XMLComplexType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Fleumeu", "Fleumeu", false);
+		t.createProperty("TOTO", ts);
+
+		t = (XMLComplexType) metamodel.createNewType("http://www.openflexo.org/aTestModel#Flouk", "Flouk", false);
+		t.createProperty("TOTO", ts);
+
+		XMLIndividual xmind = (XMLIndividual) model
+				.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Fleumeu"));
+
 		model.setRoot(xmind);
 
 		xmind.addPropertyValue("TOTO", "Freumeuleu");
 
-		XMLIndividual xmind2 = (XMLIndividual) model.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Flouk"));
+		XMLIndividual xmind2 = (XMLIndividual) model
+				.addNewIndividual(metamodel.getTypeFromURI("http://www.openflexo.org/aTestModel#Flouk"));
 
 		xmind.addChild(xmind2);
-		
+
 		xmind2.addPropertyValue("TOTO", "Flagada");
 		xmind2.addPropertyValue("TUTU", "Zogloubi");
-		
-		dumpIndividual(xmind," -- ");
-	}
 
+		dumpIndividual(xmind, " -- ");
+	}
 
 }

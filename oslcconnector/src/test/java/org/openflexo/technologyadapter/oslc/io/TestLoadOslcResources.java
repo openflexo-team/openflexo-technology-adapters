@@ -1,7 +1,7 @@
 package org.openflexo.technologyadapter.oslc.io;
 
 import org.junit.Test;
-import org.openflexo.foundation.OpenflexoTestCase;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.test.TestOrder;
 
 public class TestLoadOslcResources extends OpenflexoTestCase {
@@ -18,7 +18,7 @@ public class TestLoadOslcResources extends OpenflexoTestCase {
 		log("testLoadOSLCResources()");
 		OSLCTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
 				OSLCTechnologyAdapter.class);
-
+	
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 			OSLCRepository repository = resourceCenter.getRepository(OSLCRepository.class, technologicalAdapter);
 			assertNotNull(repository);

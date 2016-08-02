@@ -39,71 +39,32 @@
 package org.openflexo.technologyadapter.diagram.fml;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-
-import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
-import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSymbol.EndSymbolType;
-import org.openflexo.fge.shapes.Rectangle;
-import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.OpenflexoTestCase;
-import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
-import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.ViewPointLibrary;
 import org.openflexo.foundation.fml.ViewType;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
-import org.openflexo.foundation.fml.action.CreateEditionAction;
-import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
-import org.openflexo.foundation.fml.action.CreateTechnologyRole;
-import org.openflexo.foundation.fml.binding.FlexoBehaviourBindingModel;
-import org.openflexo.foundation.fml.binding.FlexoConceptBindingModel;
 import org.openflexo.foundation.fml.binding.ViewPointBindingModel;
 import org.openflexo.foundation.fml.binding.VirtualModelBindingModel;
-import org.openflexo.foundation.fml.rm.ViewPointResource;
-import org.openflexo.foundation.fml.rm.VirtualModelResource;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.JarResourceCenter;
-import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
-import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
-import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramSpecification;
-import org.openflexo.technologyadapter.diagram.fml.binding.DiagramBehaviourBindingModel;
-import org.openflexo.technologyadapter.diagram.fml.binding.DropSchemeBindingModel;
-import org.openflexo.technologyadapter.diagram.fml.binding.LinkSchemeBindingModel;
-import org.openflexo.technologyadapter.diagram.fml.editionaction.AddConnector;
-import org.openflexo.technologyadapter.diagram.fml.editionaction.AddShape;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
-import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.model.DiagramType;
-import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
-import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
-import org.openflexo.toolbox.FileUtils;
 
 /**
  * Test the BindingModel management of some diagram-specific features
@@ -114,19 +75,16 @@ import org.openflexo.toolbox.FileUtils;
 @RunWith(OrderedRunner.class)
 public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 
-
 	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestControlledDiagramViewPoint";
 	private final String BASIC_CONCEPT_NAME = "TestConcept";
 	private final String LINK_CONCEPT_NAME = "TestLink";
 	private final String CONNECTOR_ROLE_NAME = "connector";
-
 
 	public static DiagramTechnologyAdapter technologicalAdapter;
 	public static FlexoServiceManager applicationContext;
 	public static FlexoResourceCenter<?> resourceCenter;
 	public static DiagramSpecificationRepository repository;
 	public static FlexoEditor editor;
-
 
 	public static ViewPoint viewPoint;
 	public static TypedDiagramModelSlot typedDiagramModelSlot;
@@ -158,7 +116,6 @@ public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 		assertNotNull(repository);
 	}
 
-	
 	/**
 	 * Retrieve the ViewPoint
 	 */
@@ -175,7 +132,6 @@ public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 		assertNotNull(virtualModel);
 		assertTrue(virtualModel.hasNature(FMLControlledDiagramVirtualModelNature.INSTANCE));
 
-		
 		assertNotNull(virtualModel.getBindingModel());
 		assertEquals(6, virtualModel.getBindingModel().getBindingVariablesCount());
 		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(ViewPointBindingModel.PROJECT_PROPERTY));
@@ -204,7 +160,7 @@ public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 	@Test
 	@TestOrder(3)
 	public void testVirtualModelBindingModel() {
-				
+
 		assertNotNull(virtualModel.getBindingModel());
 		assertEquals(6, virtualModel.getBindingModel().getBindingVariablesCount());
 		assertNotNull(virtualModel.getBindingModel().bindingVariableNamed(ViewPointBindingModel.PROJECT_PROPERTY));
@@ -233,7 +189,6 @@ public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 	@Test
 	@TestOrder(4)
 	public void testRetrieveConcept() {
-				
 
 		flexoConcept = virtualModel.getFlexoConcepts().get(0);
 		assertNotNull(flexoConcept);
@@ -242,9 +197,9 @@ public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 		linkConcept = virtualModel.getFlexoConcept(LINK_CONCEPT_NAME);
 		assertNotNull(linkConcept);
 		assertTrue(linkConcept.getName().equals(LINK_CONCEPT_NAME));
-		
+
 		assertNotNull(flexoConcept.getBindingModel());
-		
+
 		dropScheme = (DropScheme) flexoConcept.getFlexoBehaviours().get(0);
 		assertNotNull(dropScheme);
 
@@ -256,21 +211,16 @@ public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 	@Test
 	@TestOrder(5)
 	public void testConnectorRole() {
-				
+
 		FlexoRole<?> role = linkConcept.getAccessibleRole(CONNECTOR_ROLE_NAME);
 		assertNotNull(role);
-		
-		assertTrue (role instanceof ConnectorRole);
-		
+
+		assertTrue(role instanceof ConnectorRole);
+
 		ConnectorRole connectorRole = (ConnectorRole) role;
 		ConnectorGraphicalRepresentation grRep = connectorRole.getGraphicalRepresentation();
-		assertTrue (grRep.getConnectorSpecification().getEndSymbol() == EndSymbolType.ARROW);
-				
-		
+		assertTrue(grRep.getConnectorSpecification().getEndSymbol() == EndSymbolType.ARROW);
+
 	}
-
-
-
-
 
 }

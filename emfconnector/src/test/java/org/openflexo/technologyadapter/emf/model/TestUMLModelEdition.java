@@ -50,7 +50,6 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
@@ -70,6 +69,7 @@ import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.Def
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.EMFModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;

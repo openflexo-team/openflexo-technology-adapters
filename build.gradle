@@ -34,7 +34,11 @@ subprojects {
   
   repositories {
     jcenter()
-  }
+
+    maven {
+      url "https://maven.openflexo.org/artifactory/openflexo-deps"
+    }
+}
  
   dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.+'

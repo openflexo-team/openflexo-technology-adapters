@@ -1,0 +1,12 @@
+dependencies {
+  // openflexo dep
+  compile group: "org.openflexo", name: "flexo-foundation", version: "1.+"
+  // external dep
+  compile 'org.eclipse.lyo.oslc4j.core:oslc4j-wink:2.1.0'
+  compile 'javax.servlet:servlet-api:2.5'
+  compile 'net.oauth.core:oauth-httpclient4:20090913'
+  compile group: 'org.eclipse.lyo.clients', name: 'oslc-java-client', version: '3.0.0-20150202.133917-1'
+  // testing dep
+    testCompile group: "org.openflexo", name: "testutils", version: "1.+"
+    testCompile group: "org.openflexo", name: "flexo-foundation-test", version: "1.+"
+}

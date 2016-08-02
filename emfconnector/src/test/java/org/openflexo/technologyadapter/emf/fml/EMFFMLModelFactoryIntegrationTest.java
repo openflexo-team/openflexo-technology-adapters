@@ -45,10 +45,10 @@ import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.fml.AbstractModelFactoryIntegrationTestCase;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
+import org.openflexo.foundation.test.fml.AbstractModelFactoryIntegrationTestCase;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.test.OrderedRunner;
@@ -90,8 +90,8 @@ public class EMFFMLModelFactoryIntegrationTest extends AbstractModelFactoryInteg
 	public void checkEMFFMLTechnologyAdapter() {
 		log("checkEMFFMLTechnologyAdapter()");
 
-		testVirtualModelModelFactoryWithTechnologyAdapter(serviceManager.getTechnologyAdapterService().getTechnologyAdapter(
-				EMFTechnologyAdapter.class));
+		testVirtualModelModelFactoryWithTechnologyAdapter(
+				serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class));
 	}
 
 }

@@ -1,7 +1,7 @@
 package org.openflexo.technologyadapter.oslc.io;
 
 import org.junit.Test;
-import org.openflexo.foundation.OpenflexoTestCase;
+import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.test.TestOrder;
 
 public class TestFlexoOslcClient extends OpenflexoTestCase {

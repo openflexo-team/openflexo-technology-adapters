@@ -53,7 +53,6 @@ import org.openflexo.fge.geom.FGEPoint;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewPointLibrary;
@@ -74,6 +73,7 @@ import org.openflexo.foundation.resource.JarResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
+import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
@@ -123,8 +123,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 	@TestOrder(1)
 	public void testLoadViewPoint() {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(),
-				"testdiagram_vp-1.1");
+		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
 
 		for (FlexoResourceCenter rc : getFlexoServiceManager().getResourceCenterService().getResourceCenters()) {
 			if (rc instanceof JarResourceCenter) {
@@ -326,8 +325,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		log("testReloadProject()");
 
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(),
-				"testdiagram_vp-1.1");
+		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
 
 		editor = reloadProject(project.getDirectory());
 		project = editor.getProject();
