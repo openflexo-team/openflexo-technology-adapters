@@ -88,7 +88,7 @@ public class TestDocXFragmentConverter extends AbstractTestDocX {
 
 		assertEquals(13, document.getElements().size());
 
-		assertEquals(11, document.getStyles().size());
+		assertEquals(12, document.getStyles().size());
 
 	}
 
