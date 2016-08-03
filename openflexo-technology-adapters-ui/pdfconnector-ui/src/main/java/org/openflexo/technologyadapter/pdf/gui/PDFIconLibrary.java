@@ -24,8 +24,8 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 public class PDFIconLibrary {
 	private static final Logger logger = Logger.getLogger(PDFIconLibrary.class.getPackage().getName());

@@ -39,7 +39,7 @@
 package org.openflexo.technologyadapter.emf.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.gina.utils.GenericFIBInspectorTestCase;
+import org.openflexo.gina.test.GenericFIBInspectorTestCase;
 import org.openflexo.rm.FileResourceImpl;
 import org.openflexo.rm.ResourceLocator;
 
@@ -54,7 +54,6 @@ public class TestEMFInspectors extends GenericFIBInspectorTestCase {
 		System.out.println(generateInspectorTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Inspectors/EMF")).getFile(),
 				"Inspectors/EMF/"));
 	}
-
 
 	@Test
 	public void testAddEMFObjectIndividualInspector() {

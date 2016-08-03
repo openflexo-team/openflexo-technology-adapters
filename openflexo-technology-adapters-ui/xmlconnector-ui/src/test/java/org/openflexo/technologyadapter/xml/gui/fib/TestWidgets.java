@@ -36,11 +36,10 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.xml.gui.fib;
 
 import org.junit.Test;
-import org.openflexo.gina.utils.GenericFIBTestCase;
+import org.openflexo.gina.test.GenericFIBTestCase;
 
 public class TestWidgets extends GenericFIBTestCase {
 
@@ -53,5 +52,5 @@ public class TestWidgets extends GenericFIBTestCase {
 	public void testTypeSelector() {
 		validateFIB("Fib/widgets/FIBXMLTypeSelector.fib");
 	}
-	
+
 }

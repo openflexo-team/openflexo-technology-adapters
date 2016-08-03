@@ -44,12 +44,12 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.excel.model.ExcelCell;
 import org.openflexo.technologyadapter.excel.model.ExcelRow;
 import org.openflexo.technologyadapter.excel.model.ExcelSheet;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
-import org.openflexo.toolbox.ImageIconResource;
 
 public class ExcelIconLibrary {
 
@@ -76,11 +76,14 @@ public class ExcelIconLibrary {
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
 		if (ExcelWorkbook.class.isAssignableFrom(objectClass)) {
 			return EXCEL_TECHNOLOGY_ICON;
-		} else if (ExcelCell.class.isAssignableFrom(objectClass)) {
+		}
+		else if (ExcelCell.class.isAssignableFrom(objectClass)) {
 			return EXCEL_CELL_ICON;
-		} else if (ExcelSheet.class.isAssignableFrom(objectClass)) {
+		}
+		else if (ExcelSheet.class.isAssignableFrom(objectClass)) {
 			return EXCEL_SHEET_ICON;
-		} else if (ExcelRow.class.isAssignableFrom(objectClass)) {
+		}
+		else if (ExcelRow.class.isAssignableFrom(objectClass)) {
 			return EXCEL_ROW_ICON;
 		}
 		logger.warning("No icon for " + objectClass);

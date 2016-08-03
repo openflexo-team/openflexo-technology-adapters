@@ -1,0 +1,9 @@
+dependencies {
+  // openflexo dep
+   compile group: "org.openflexo", name: "flexo-ui", version: "1.+"
+   compile group: "org.openflexo", name: "csvconnector", version: "1.+"
+//    compile group: "org.openflexo", name: "fml-technologyadapter-ui", version: "1.+"
+//    compile group: "org.openflexo", name: "fml-rt-technologyadapter-ui", version: "1.+"
+  // external dep
+  // testing dep
+}

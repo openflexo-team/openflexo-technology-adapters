@@ -43,6 +43,7 @@ import java.util.logging.Logger;
 
 import javax.swing.ImageIcon;
 
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.owl.model.OWLClass;
 import org.openflexo.technologyadapter.owl.model.OWLDataProperty;
@@ -51,39 +52,51 @@ import org.openflexo.technologyadapter.owl.model.OWLObject;
 import org.openflexo.technologyadapter.owl.model.OWLObjectProperty;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLStatement;
-import org.openflexo.toolbox.ImageIconResource;
 
 public class OWLIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(OWLIconLibrary.class.getPackage().getName());
-	
 
-	public static final ImageIconResource ONTOLOGY_LIBRARY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/32x32/OntologyLibrary.png"));
+	public static final ImageIconResource ONTOLOGY_LIBRARY_BIG_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/32x32/OntologyLibrary.png"));
 
 	public static final ImageIconResource ONTOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/Ontology.png"));
-	public static final ImageIconResource ONTOLOGY_LIBRARY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyLibrary.png"));
-	public static final ImageIconResource ONTOLOGY_CLASS_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyClass.png"));
-	public static final ImageIconResource ONTOLOGY_INDIVIDUAL_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyIndividual.png"));
-	public static final ImageIconResource ONTOLOGY_OBJECT_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyObjectProperty.png"));
-	public static final ImageIconResource ONTOLOGY_DATA_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyDataProperty.png"));
-	public static final ImageIconResource ONTOLOGY_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyProperty.png"));
-	public static final ImageIconResource ONTOLOGY_ANNOTATION_PROPERTY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyAnnotationProperty.png"));
-	public static final ImageIconResource ONTOLOGY_STATEMENT_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/OntologyStatement.png"));
+	public static final ImageIconResource ONTOLOGY_LIBRARY_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OntologyLibrary.png"));
+	public static final ImageIconResource ONTOLOGY_CLASS_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OntologyClass.png"));
+	public static final ImageIconResource ONTOLOGY_INDIVIDUAL_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OntologyIndividual.png"));
+	public static final ImageIconResource ONTOLOGY_OBJECT_PROPERTY_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OntologyObjectProperty.png"));
+	public static final ImageIconResource ONTOLOGY_DATA_PROPERTY_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OntologyDataProperty.png"));
+	public static final ImageIconResource ONTOLOGY_PROPERTY_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OntologyProperty.png"));
+	public static final ImageIconResource ONTOLOGY_ANNOTATION_PROPERTY_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OntologyAnnotationProperty.png"));
+	public static final ImageIconResource ONTOLOGY_STATEMENT_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/OntologyStatement.png"));
 
 	public static ImageIcon iconForObject(Class<? extends OWLObject> objectClass) {
 		if (OWLOntology.class.isAssignableFrom(objectClass)) {
 			return ONTOLOGY_ICON;
-		} else if (OWLClass.class.isAssignableFrom(objectClass)) {
+		}
+		else if (OWLClass.class.isAssignableFrom(objectClass)) {
 			return ONTOLOGY_CLASS_ICON;
-		} else if (OWLIndividual.class.isAssignableFrom(objectClass)) {
+		}
+		else if (OWLIndividual.class.isAssignableFrom(objectClass)) {
 			return ONTOLOGY_INDIVIDUAL_ICON;
-		}/* else if (object instanceof IFlexoOntologyStructuralProperty && ((IFlexoOntologyStructuralProperty) object).isAnnotationProperty()) {
-			return ONTOLOGY_ANNOTATION_PROPERTY_ICON;
-			}*/else if (OWLObjectProperty.class.isAssignableFrom(objectClass)) {
+		}
+		/* else if (object instanceof IFlexoOntologyStructuralProperty && ((IFlexoOntologyStructuralProperty) object).isAnnotationProperty()) {
+		return ONTOLOGY_ANNOTATION_PROPERTY_ICON;
+		}*/else if (OWLObjectProperty.class.isAssignableFrom(objectClass)) {
 			return ONTOLOGY_OBJECT_PROPERTY_ICON;
-		} else if (OWLDataProperty.class.isAssignableFrom(objectClass)) {
+		}
+		else if (OWLDataProperty.class.isAssignableFrom(objectClass)) {
 			return ONTOLOGY_DATA_PROPERTY_ICON;
-		} else if (OWLStatement.class.isAssignableFrom(objectClass)) {
+		}
+		else if (OWLStatement.class.isAssignableFrom(objectClass)) {
 			return ONTOLOGY_STATEMENT_ICON;
 		}
 		logger.warning("No icon for " + objectClass);

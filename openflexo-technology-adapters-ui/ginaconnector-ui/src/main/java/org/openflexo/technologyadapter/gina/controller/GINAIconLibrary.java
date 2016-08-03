@@ -23,8 +23,8 @@ package org.openflexo.technologyadapter.gina.controller;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
-import org.openflexo.toolbox.ImageIconResource;
 
 public class GINAIconLibrary {
 

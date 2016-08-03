@@ -1,0 +1,10 @@
+dependencies {
+  // openflexo dep
+  compile group: "org.openflexo", name: "flexo-foundation", version: "1.+"
+  compile group: "org.openflexo", name: "flexo-documentation", version: "1.+"
+  // external dep
+  compile 'org.apache.pdfbox:pdfbox:2.0.2'
+  // testing dep
+  testCompile group: "org.openflexo", name: "testutils", version: "1.+"
+  testCompile group: "org.openflexo", name: "flexo-foundation-test", version: "1.+"
+}

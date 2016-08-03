@@ -55,9 +55,9 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
+import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.rm.ResourceLocator;
@@ -132,8 +132,8 @@ public class TestFreePlaneModuleView extends OpenflexoTestCaseWithGUI {
 
 	@Test
 	public void testInitModuleView() throws InvocationTargetException, InterruptedException {
-		final MapModel loadedMap = FreeplaneBasicAdapter.getInstance().loadMapFromFile(
-				ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm")));
+		final MapModel loadedMap = FreeplaneBasicAdapter.getInstance()
+				.loadMapFromFile(ResourceLocator.retrieveResourceAsFile(ResourceLocator.locateResource("TestResourceCenter/FPTest.mm")));
 		final FreeplaneMapImpl map = (FreeplaneMapImpl) this.factory.newInstance(IFreeplaneMap.class);
 		map.setTechnologyAdapter(fpTA);
 		map.setMapModel(loadedMap);

@@ -45,6 +45,7 @@ import javax.swing.ImageIcon;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.IconMarker;
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.fml.FMLDiagramPaletteElementBinding;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
@@ -53,7 +54,6 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
-import org.openflexo.toolbox.ImageIconResource;
 
 /**
  * Utility class containing all icons used in context of VEModule

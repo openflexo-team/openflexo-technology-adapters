@@ -44,30 +44,31 @@ import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
+import org.openflexo.icon.ImageIconResource;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointShape;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
-import org.openflexo.toolbox.ImageIconResource;
 
 public class PowerpointIconLibrary {
 
 	private static final Logger logger = Logger.getLogger(PowerpointIconLibrary.class.getPackage().getName());
 
-	
-
-	public static final ImageIconResource POWERPOINT_TECHNOLOGY_BIG_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/powerpoint_big.png"));
-	public static final ImageIconResource POWERPOINT_TECHNOLOGY_ICON = new ImageIconResource(ResourceLocator.locateResource("Icons/powerpoint_small.png"));
+	public static final ImageIconResource POWERPOINT_TECHNOLOGY_BIG_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/powerpoint_big.png"));
+	public static final ImageIconResource POWERPOINT_TECHNOLOGY_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/powerpoint_small.png"));
 
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject> objectClass) {
 		if (PowerpointSlideshow.class.isAssignableFrom(objectClass)) {
 			return POWERPOINT_TECHNOLOGY_ICON;
-		} 
+		}
 		else if (PowerpointShape.class.isAssignableFrom(objectClass)) {
 			return POWERPOINT_TECHNOLOGY_ICON;
-		} else if (PowerpointSlide.class.isAssignableFrom(objectClass)) {
+		}
+		else if (PowerpointSlide.class.isAssignableFrom(objectClass)) {
 			return POWERPOINT_TECHNOLOGY_ICON;
-		} 
+		}
 		logger.warning("No icon for " + objectClass);
 		return null;
 	}

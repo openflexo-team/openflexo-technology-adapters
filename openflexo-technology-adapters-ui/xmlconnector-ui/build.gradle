@@ -1,0 +1,11 @@
+dependencies {
+  // openflexo dep
+  compile group: "org.openflexo", name: "flexo-ui", version: "1.+"
+  compile group: "org.openflexo", name: "xmlconnector", version: "1.+"
+  compile group: "org.openflexo", name: "flexo-ontology-ui", version: "1.+"
+  // external dep
+  // testing dep
+//    testCompile group: "org.openflexo", name: "testutils", version: "1.+"
+//    testCompile group: "org.openflexo", name: "gina-test", version: "1.+"
+    testCompile group: "org.openflexo", name: "flexo-ui-test", version: "1.+"
+}

@@ -45,9 +45,9 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
-import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.pdf.PDFTechnologyAdapter;
 import org.openflexo.technologyadapter.pdf.rm.PDFDocumentResource;
 
