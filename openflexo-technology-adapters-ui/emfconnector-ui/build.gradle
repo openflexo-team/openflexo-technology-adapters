@@ -6,5 +6,6 @@ dependencies {
   compile group: "org.openflexo", name: "flexo-ontology-ui", version: "1.+"
   // external dep
   // testing dep
-    testCompile group: "org.openflexo", name: "flexo-ui-test", version: "1.+"
+  testCompile group: "org.openflexo", name: "flexo-ui-test", version: "1.+"
+  testRuntime group: "org.openflexo", name: "flexo-test-resources", version: "1.+"
 }
