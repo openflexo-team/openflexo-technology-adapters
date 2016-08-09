@@ -44,6 +44,7 @@ import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
+import org.openflexo.model.annotations.XMLAttribute;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.docx.fml.DocXFragmentRole;
 import org.openflexo.technologyadapter.docx.fml.DocXImageRole;
@@ -100,6 +101,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 	public void setTemplateResource(DocXDocumentResource templateResource);
 
 	@Getter(ID_STRATEGY_KEY)
+	@XMLAttribute
 	public IdentifierManagementStrategy getIdStrategy();
 
 	@Setter(ID_STRATEGY_KEY)
