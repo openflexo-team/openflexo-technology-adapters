@@ -111,13 +111,14 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
 							+ umlModelResourceRelativeURI);
 
-			assertNotNull(umlModelResource);
-
-			umlModel = umlModelResource.getModel();
-			assertNotNull(umlModel);
-			assertNotNull(umlModel.getMetaModel());
-			assertEquals(umlModel.getMetaModel().getURI(), EMFTechnologyAdapter.UML_MM_URI);
 		}
+
+		assertNotNull(umlModelResource);
+
+		umlModel = umlModelResource.getModel();
+		assertNotNull(umlModel);
+		assertNotNull(umlModel.getMetaModel());
+		assertEquals(umlModel.getMetaModel().getURI(), EMFTechnologyAdapter.UML_MM_URI);
 	}
 
 	@Test

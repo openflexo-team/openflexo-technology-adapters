@@ -93,8 +93,15 @@ public class TestFIBOWLOntologyBrowser extends OpenflexoTestCaseWithGUI {
 
 		List<ResourceRepository<?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlTA);
 
-		ResourceRepository<OWLOntologyResource> ontologyRepository = (ResourceRepository<OWLOntologyResource>) owlRepositories.get(0);
 
+		ResourceRepository<OWLOntologyResource> ontologyRepository = null;
+		for ( ResourceRepository<?> rep : owlRepositories){
+			if (rep.getSize() > 0 ){
+				ontologyRepository = (ResourceRepository<OWLOntologyResource>) rep;
+				break;
+			}
+		}
+		
 		assertNotNull(ontologyRepository);
 
 		// ontologyResource = ontologyRepository.getResource("http://www.agilebirds.com/openflexo/ViewPoints/BasicOntology.owl");

@@ -130,20 +130,17 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
 			assertNotNull(modelRepository);
 
-			System.out.println("Loading "
-					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
-					+ archimateModelResourceRelativeURI);
 
 			archimateModelResource = modelRepository.getResource(
 					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
 							+ archimateModelResourceRelativeURI);
-
-			assertNotNull(archimateModelResource);
-
-			archimateModel = archimateModelResource.getModel();
-			assertNotNull(archimateModel);
-			assertNotNull(archimateModel.getMetaModel());
 		}
+
+		assertNotNull(archimateModelResource);
+
+		archimateModel = archimateModelResource.getModel();
+		assertNotNull(archimateModel);
+		assertNotNull(archimateModel.getMetaModel());
 	}
 
 	@Test

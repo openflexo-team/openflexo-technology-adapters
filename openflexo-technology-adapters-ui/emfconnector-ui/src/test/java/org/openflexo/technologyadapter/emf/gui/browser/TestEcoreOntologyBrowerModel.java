@@ -102,23 +102,19 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
 			assertNotNull(modelRepository);
-			;
 
-			System.out.println("Loading : "
-					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
-					+ ecoreModelResourceRelativeURI);
 
 			ecoreModelResource = modelRepository.getResource(
 					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
 							+ ecoreModelResourceRelativeURI);
-
-			assertNotNull(ecoreModelResource);
-
-			ecoreModel = ecoreModelResource.getModel();
-			assertNotNull(ecoreModel);
-			assertNotNull(ecoreModel.getMetaModel());
-			assertEquals(ecoreModel.getMetaModel().getURI(), EMFTechnologyAdapter.ECORE_MM_URI);
 		}
+
+		assertNotNull(ecoreModelResource);
+
+		ecoreModel = ecoreModelResource.getModel();
+		assertNotNull(ecoreModel);
+		assertNotNull(ecoreModel.getMetaModel());
+		assertEquals(ecoreModel.getMetaModel().getURI(), EMFTechnologyAdapter.ECORE_MM_URI);
 	}
 
 	@Test
