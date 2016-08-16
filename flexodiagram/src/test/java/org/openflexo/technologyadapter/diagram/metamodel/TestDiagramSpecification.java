@@ -55,6 +55,7 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -69,6 +70,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
@@ -113,14 +115,23 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
+		// Looks for the first FileSystemBasedResourceCenter
+		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters() ){
+			if (rc instanceof DirectoryResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()){
+				resourceCenter = (DirectoryResourceCenter) rc;
+				break;
+			}
+		}
+		assertNotNull(resourceCenter);
+
 		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
+		
+		assertNotNull(repository);
+
 		editor = new FlexoTestEditor(null, applicationContext);
 
 		assertNotNull(applicationContext);
 		assertNotNull(technologicalAdapter);
-		assertNotNull(resourceCenter);
-		assertNotNull(repository);
 	}
 
 	/**

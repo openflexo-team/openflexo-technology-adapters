@@ -75,6 +75,7 @@ import org.openflexo.foundation.fml.binding.ViewPointBindingModel;
 import org.openflexo.foundation.fml.binding.VirtualModelBindingModel;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.JarResourceCenter;
@@ -154,8 +155,20 @@ public class TestDiagramFeaturesBindingModelManagement extends OpenflexoTestCase
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
+
+		// Looks for the first FileSystemBasedResourceCenter
+		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters() ){
+			if (rc instanceof DirectoryResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()){
+				resourceCenter = (DirectoryResourceCenter) rc;
+				break;
+			}
+		}
+		assertNotNull(resourceCenter);
+
 		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
+
+		assertNotNull(repository);
+		
 		editor = new FlexoTestEditor(null, applicationContext);
 
 		assertNotNull(applicationContext);
