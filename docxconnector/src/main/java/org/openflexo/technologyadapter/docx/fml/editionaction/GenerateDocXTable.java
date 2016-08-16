@@ -66,9 +66,15 @@ public interface GenerateDocXTable extends DocXTableAction {
 			TableActorReference<DocXTable> actorReference = (TableActorReference<DocXTable>) evaluationContext.getFlexoConceptInstance()
 					.getActorReference(getFlexoRole());
 
+			if (actorReference != null){
 			actorReference.applyDataToDocument();
 
 			return actorReference.getModellingElement();
+			}
+			else {
+				logger.warning("INVESTIGATE: could not found actorReference for Role " +this.getFlexoRole() + " On " + evaluationContext.getFlexoConceptInstance());
+				return null;
+			}
 		}
 	}
 }
