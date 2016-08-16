@@ -51,6 +51,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
@@ -90,16 +91,30 @@ public class TestLoadGINAFIBComponent extends OpenflexoTestCase {
 
 		applicationContext = instanciateTestServiceManager(GINATechnologyAdapter.class);
 
+		assertNotNull(applicationContext);
+		
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
-		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
+
+		assertNotNull(technologicalAdapter);
+		
+		// Looks for the first FileSystemBasedResourceCenter
+		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters() ){
+			if (rc instanceof FileSystemBasedResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()){
+				resourceCenter = rc;
+				break;
+			}
+		}
+		
+		assertNotNull(resourceCenter);
+		
 		repository = resourceCenter.getRepository(GINAResourceRepository.class, technologicalAdapter);
 
-		assertNotNull(applicationContext);
-		assertNotNull(technologicalAdapter);
-		assertNotNull(resourceCenter);
 		assertNotNull(repository);
+		
 
 		editor = new FlexoTestEditor(null, applicationContext);
+
+		assertNotNull(editor);
 
 		System.out.println("RC=" + resourceCenter);
 		System.out.println("resources: " + resourceCenter.getAllResources(null));
@@ -122,6 +137,7 @@ public class TestLoadGINAFIBComponent extends OpenflexoTestCase {
 		GINAFIBComponentResource componentResource = repository.getResource(TEST_RESOURCE_CENTER_URI + "/TestResourceCenter/Test.fib");
 
 		assertNotNull(componentResource);
+		
 		assertTrue(componentResource.getFlexoIODelegate() instanceof FileFlexoIODelegate);
 		assertTrue(((FileFlexoIODelegate) componentResource.getFlexoIODelegate()).getFile().exists());
 

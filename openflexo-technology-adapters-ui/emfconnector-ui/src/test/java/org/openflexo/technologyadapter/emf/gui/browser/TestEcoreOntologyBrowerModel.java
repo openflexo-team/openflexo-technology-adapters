@@ -97,16 +97,20 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	public void TestLoadECOREModel() {
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
-			assertNotNull(metaModelRepository);
+			// Select only resourceCenter on FileSystem
+			if (resourceCenter instanceof FileSystemBasedResourceCenter ) {
 
-			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
-			assertNotNull(modelRepository);
+				EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+				assertNotNull(metaModelRepository);
+
+				EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
+				assertNotNull(modelRepository);
 
 
-			ecoreModelResource = modelRepository.getResource(
-					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
-							+ ecoreModelResourceRelativeURI);
+				ecoreModelResource = modelRepository.getResource(
+						((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
+						+ ecoreModelResourceRelativeURI);
+			}
 		}
 
 		assertNotNull(ecoreModelResource);

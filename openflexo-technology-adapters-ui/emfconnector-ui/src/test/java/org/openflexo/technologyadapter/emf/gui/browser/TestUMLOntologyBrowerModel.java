@@ -97,19 +97,22 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	public void TestLoadUMLEMFModel() {
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
-			assertNotNull(metaModelRepository);
+			// Select only resourceCenter on FileSystem
+			if (resourceCenter instanceof FileSystemBasedResourceCenter ) {
+				EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+				assertNotNull(metaModelRepository);
 
-			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
-			assertNotNull(modelRepository);
+				EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
+				assertNotNull(modelRepository);
 
-			System.out.println("Loading :"
-					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
-					+ umlModelResourceRelativeURI);
+				System.out.println("Loading :"
+						+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
+						+ umlModelResourceRelativeURI);
 
-			umlModelResource = modelRepository.getResource(
-					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
-							+ umlModelResourceRelativeURI);
+				umlModelResource = modelRepository.getResource(
+						((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
+						+ umlModelResourceRelativeURI);
+			}
 
 		}
 

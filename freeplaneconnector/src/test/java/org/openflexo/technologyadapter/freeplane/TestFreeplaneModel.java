@@ -53,6 +53,8 @@ import org.junit.Test;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.DirectoryResourceCenter;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.rm.ResourceLocator;
@@ -74,7 +76,15 @@ public class TestFreeplaneModel extends OpenflexoTestCase {
     public static void sotupBeforeClass() {
         applicationContext = instanciateTestServiceManager();
         fpTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
-        resourceCenter = (DirectoryResourceCenter) applicationContext.getResourceCenterService().getResourceCenters().get(0);
+
+		// Looks for the first FileSystemBasedResourceCenter
+		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters() ){
+			if (rc instanceof DirectoryResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()){
+				resourceCenter = (DirectoryResourceCenter) rc;
+				break;
+			}
+		}
+		
         Assume.assumeNotNull(applicationContext, fpTA, resourceCenter);
     }
 

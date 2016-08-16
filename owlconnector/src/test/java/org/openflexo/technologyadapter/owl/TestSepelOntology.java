@@ -85,9 +85,6 @@ public class TestSepelOntology extends OpenflexoTestCase {
 		instanciateTestServiceManager(true, OWLTechnologyAdapter.class);
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
-		List<ResourceRepository<?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlAdapter);
-		ontologyRepository = (ResourceRepository<OWLOntologyResource>) owlRepositories.get(0);
-		assertNotNull(ontologyRepository);
 	}
 
 	private static OWLOntology mappingSpecification;
@@ -97,8 +94,21 @@ public class TestSepelOntology extends OpenflexoTestCase {
 	@TestOrder(1)
 	public void instanciateOntologies() {
 
-		OWLOntologyResource mappingSpecificationResource = ontologyRepository
-				.getResource("http://www.thalesgroup.com/ViewPoints/sepel-ng/MappingSpecification.owl");
+		List<ResourceRepository<?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlAdapter);
+		OWLOntologyResource mappingSpecificationResource = null;
+				
+		for (ResourceRepository<?> ontoRepo : owlRepositories){
+			 mappingSpecificationResource = (OWLOntologyResource) ontoRepo.getResource("http://www.thalesgroup.com/ViewPoints/sepel-ng/MappingSpecification.owl");
+			 
+			 if (mappingSpecificationResource != null){
+				 ontologyRepository = (ResourceRepository<OWLOntologyResource>) ontoRepo;
+			 }
+		}
+
+		assertNotNull(ontologyRepository);
+
+		assertNotNull(mappingSpecificationResource);
+		
 		try {
 			mappingSpecificationResource.loadResourceData(null);
 		} catch (FileNotFoundException e) {

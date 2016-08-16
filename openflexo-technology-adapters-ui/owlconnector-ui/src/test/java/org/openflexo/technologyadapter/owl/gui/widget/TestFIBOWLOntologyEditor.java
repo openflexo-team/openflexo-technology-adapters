@@ -87,7 +87,14 @@ public class TestFIBOWLOntologyEditor extends OpenflexoTestCaseWithGUI {
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
 		List<ResourceRepository<?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlAdapter);
-		ontologyRepository = (ResourceRepository<OWLOntologyResource>) owlRepositories.get(0);
+		for (ResourceRepository<?> ontoRep : owlRepositories ) {
+			// Look for the one containing needed ontologies
+			OWLOntologyResource skosResource = (OWLOntologyResource) ontoRep.getResource("http://www.w3.org/2004/02/skos/core");
+			if (skosResource != null){
+			ontologyRepository = (ResourceRepository<OWLOntologyResource>) ontoRep;
+			break;
+			}
+		}
 		assertNotNull(ontologyRepository);
 
 		initGUI();
