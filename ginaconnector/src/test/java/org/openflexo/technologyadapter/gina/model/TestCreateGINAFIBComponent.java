@@ -48,6 +48,7 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.action.AddRepositoryFolder;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
@@ -88,8 +89,19 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 		applicationContext = instanciateTestServiceManager(GINATechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
-		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
+		// Looks for the first FileSystemBasedResourceCenter
+		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters() ){
+			if (rc instanceof FileSystemBasedResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()){
+				resourceCenter = rc;
+				break;
+			}
+		}
+		
+		assertNotNull(resourceCenter);
+		
 		repository = resourceCenter.getRepository(GINAResourceRepository.class, technologicalAdapter);
+
+		assertNotNull(repository);
 
 		assertNotNull(applicationContext);
 		assertNotNull(technologicalAdapter);

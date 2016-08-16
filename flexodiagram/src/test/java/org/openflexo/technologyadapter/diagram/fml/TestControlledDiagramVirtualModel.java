@@ -317,8 +317,20 @@ public class TestControlledDiagramVirtualModel extends OpenflexoTestCase {
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
+		
+		// Looks for the first FileSystemBasedResourceCenter
+		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters() ){
+			if (rc instanceof FileSystemBasedResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()){
+				resourceCenter = rc;
+				break;
+			}
+		}
+		
+		assertNotNull(resourceCenter);
+		
 		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
+
+		assertNotNull(repository);
 
 		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), "CopyFromPreviousRC");
 		newDirectory.mkdirs();
