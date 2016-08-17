@@ -68,23 +68,24 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 
 	public static String DOCX_FILE_EXTENSION = ".docx";
 
+	// Sets default idStrategy when no modelSlot is used
+	private IdentifierManagementStrategy defaultIdStrategy = IdentifierManagementStrategy.ParaId;
+
+	
 	protected static final Logger logger = Logger.getLogger(DocXTechnologyAdapter.class.getPackage().getName());
 
-	// TODO Default Id Strategy from Preferences + ModelSlot Config
-	// TODO check while tests id TestLibrary2UsingBookmarks fail when Stratégy is not the same
-	private IdentifierManagementStrategy idStrategy = IdentifierManagementStrategy.ParaId;
-
-	public IdentifierManagementStrategy getIDStrategy() {
-		return idStrategy;
-	}
-
-	public void setIDStrategy(IdentifierManagementStrategy idStrategy) {
-		this.idStrategy = idStrategy;
-	}
 
 	public DocXTechnologyAdapter() throws TechnologyAdapterInitializationException {
 	}
 
+	public IdentifierManagementStrategy getDefaultIDStrategy() {
+		return defaultIdStrategy;
+	}
+
+	public void setDefaultIDStrategy(IdentifierManagementStrategy idStrategy) {
+		this.defaultIdStrategy = idStrategy;
+	}
+	
 	@Override
 	public String getName() {
 		return new String("DocX Technology Adapter");
@@ -138,7 +139,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	protected DocXDocumentResource tryToLookupDocX(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
 		DocXTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidDocX(candidateElement)) {
-			DocXDocumentResource docXDocumentResource = retrieveDocXResource(candidateElement, resourceCenter);
+			DocXDocumentResource docXDocumentResource = retrieveDocXResource(candidateElement, resourceCenter,defaultIdStrategy);
 			referenceResource(docXDocumentResource, resourceCenter);
 			/*DocXDocumentRepository docXDocumentRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
 			if (docXDocumentResource != null) {
@@ -185,16 +186,16 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public DocXDocumentResource retrieveDocXResource(Object docXDocumentItem, FlexoResourceCenter<?> resourceCenter) {
+	public DocXDocumentResource retrieveDocXResource(Object docXDocumentItem, FlexoResourceCenter<?> resourceCenter, IdentifierManagementStrategy idStrategy) {
 
 		DocXDocumentResource returned = null;
 		if (docXDocumentItem instanceof File) {
 			returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((File) docXDocumentItem, getTechnologyContextManager(),
-					resourceCenter, getIDStrategy());
+					resourceCenter, idStrategy);
 		}
 		else if (docXDocumentItem instanceof InJarResourceImpl) {
 			returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource( (InJarResourceImpl) docXDocumentItem, getTechnologyContextManager(),
-					resourceCenter, getIDStrategy());
+					resourceCenter, idStrategy);
 		}
 		if (returned != null) {
 			getTechnologyContextManager().registerDocXDocumentResource(returned);
@@ -290,9 +291,9 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 *            empty
 	 * @return
 	 */
-	public DocXDocumentResource createNewDocXDocumentResource(FlexoProject project, String filename, boolean createEmptyDocument) {
+	public DocXDocumentResource createNewDocXDocumentResource(FlexoProject project, String filename, boolean createEmptyDocument, IdentifierManagementStrategy idStrategy) {
 
-		return createNewDocXDocumentResource(project, File.separator + "DocX", filename, createEmptyDocument);
+		return createNewDocXDocumentResource(project, File.separator + "DocX", filename, createEmptyDocument, idStrategy);
 
 	}
 
@@ -308,7 +309,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 * @return
 	 */
 	public DocXDocumentResource createNewDocXDocumentResource(FileSystemBasedResourceCenter resourceCenter, String relativePath,
-			String filename, boolean createEmptyDocument) {
+			String filename, boolean createEmptyDocument, IdentifierManagementStrategy idStrategy) {
 
 		if (!relativePath.startsWith(File.separator)) {
 			relativePath = File.separator + relativePath;
@@ -317,7 +318,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		File docXFile = new File(resourceCenter.getDirectory() + relativePath, filename);
 
 		DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeDocXDocumentResource(docXFile,
-				getTechnologyContextManager(), resourceCenter, getIDStrategy());
+				getTechnologyContextManager(), resourceCenter, idStrategy);
 
 		referenceResource(docXDocumentResource, resourceCenter);
 

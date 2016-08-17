@@ -171,7 +171,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		@Override
 		public TechnologyAdapterResource<DocXDocument, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
 
-			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getProject(), filename, true);
+			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getProject(), filename, true, getIdStrategy());
 		}
 
 		@Override
@@ -179,7 +179,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 				String relativePath, String filename, String modelUri) {
 			if (resourceCenter instanceof FileSystemBasedResourceCenter) {
 				return getModelSlotTechnologyAdapter().createNewDocXDocumentResource((FileSystemBasedResourceCenter) resourceCenter,
-						relativePath, filename, false);
+						relativePath, filename, false, getIdStrategy());
 			}
 			// TODO
 			logger.warning("Could not create docx in this kind of ResourceCenter");

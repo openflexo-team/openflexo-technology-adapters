@@ -71,8 +71,8 @@ import org.openflexo.toolbox.FileUtils;
  *
  */
 @RunWith(OrderedRunner.class)
-public class TestCreateBasicDocXDocument extends AbstractTestDocX {
-	protected static final Logger logger = Logger.getLogger(TestCreateBasicDocXDocument.class.getPackage().getName());
+public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX {
+	protected static final Logger logger = Logger.getLogger(TestCreateBasicDocXDocumentBookmarkScheme.class.getPackage().getName());
 
 	private static DocXTechnologyAdapter technologicalAdapter;
 
@@ -94,7 +94,7 @@ public class TestCreateBasicDocXDocument extends AbstractTestDocX {
 	@Test
 	@TestOrder(1)
 	public void testInitializeServiceManager() throws Exception {
-		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.Bookmark);
 	}
 
 	@Test
@@ -105,7 +105,7 @@ public class TestCreateBasicDocXDocument extends AbstractTestDocX {
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-		newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX", "TestBasicDocument.docx", true);
+		newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX", "TestBasicDocument.docx", true, technologicalAdapter.getDefaultIDStrategy() );
 		newDocument = null;
 
 		System.out.println("uri=" + newDocResource.getURI());

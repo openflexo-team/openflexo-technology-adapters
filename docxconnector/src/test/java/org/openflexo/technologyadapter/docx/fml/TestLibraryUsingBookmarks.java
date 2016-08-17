@@ -564,6 +564,7 @@ public class TestLibraryUsingBookmarks extends AbstractTestDocX {
 		assertTrue(createDocumentModelSlot.hasActionExecutionSucceeded());
 		assertNotNull(docXModelSlot = (DocXModelSlot) createDocumentModelSlot.getNewModelSlot());
 		docXModelSlot.setTemplateResource(templateResource);
+		docXModelSlot.setIdStrategy(IdentifierManagementStrategy.Bookmark);
 
 		assertTrue(documentVirtualModel.getModelSlots().size() == 2);
 

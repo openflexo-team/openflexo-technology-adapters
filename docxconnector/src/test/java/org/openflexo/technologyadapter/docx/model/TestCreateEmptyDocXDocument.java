@@ -90,7 +90,7 @@ public class TestCreateEmptyDocXDocument extends AbstractTestDocX {
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 		DocXDocumentResource newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX",
-				"TestBlankDocument.docx", true);
+				"TestBlankDocument.docx", true, technologicalAdapter.getDefaultIDStrategy());
 		DocXDocument newDocument = null;
 
 		System.out.println("uri=" + newDocResource.getURI());

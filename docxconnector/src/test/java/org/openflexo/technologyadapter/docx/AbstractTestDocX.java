@@ -66,7 +66,7 @@ public abstract class AbstractTestDocX extends OpenflexoProjectAtRunTimeTestCase
 	protected static FlexoServiceManager instanciateTestServiceManagerForDocX(IdentifierManagementStrategy idStrategy) {
 		serviceManager = instanciateTestServiceManager();
 		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
-		docXTA.setIDStrategy(idStrategy);
+		docXTA.setDefaultIDStrategy(idStrategy);
 		serviceManager.activateTechnologyAdapter(docXTA);
 		return serviceManager;
 	}
