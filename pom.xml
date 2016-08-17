@@ -22,7 +22,7 @@
 		<flexodocresourcecenter.version>1.8.0-RC1</flexodocresourcecenter.version>
 		<flexodocresourcemanager.version>1.8.0-RC1</flexodocresourcemanager.version>
 		<flexocore.version>1.8.0-RC1</flexocore.version>
-		<poi.version>3.14</poi.version>
+		<poi.version>3.12</poi.version>
 		<ta.logo>https://media.openflexo.org/images/ta_logo64x64.png</ta.logo>
 	    <sitedeploy.dir>/home/www/sites/openflexo-ta</sitedeploy.dir>
 	</properties>
