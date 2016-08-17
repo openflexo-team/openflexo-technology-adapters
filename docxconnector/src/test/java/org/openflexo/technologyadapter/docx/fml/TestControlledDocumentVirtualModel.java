@@ -521,8 +521,8 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		DocXDocument generatedDocumentBeforeReload = generatedDocument;
 		assertNotNull(generatedDocumentBeforeReload);
 
-		instanciateTestServiceManager(DocXTechnologyAdapter.class);
-
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+		
 		System.out.println("Project dir = " + _project.getDirectory());
 
 		_editor = reloadProject(_project.getDirectory());
@@ -572,6 +572,10 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		System.out.println("Generated fragment = " + generatedFragment);
 		System.out.println("ActorReference = " + actorReference);
 
+		assertNotNull(templatefragment);
+		assertNotNull(generatedFragment);
+		assertNotNull(actorReference);
+		
 		// OK, generatedFragment is supposed to be generated from template fragment
 		// Perform some checks
 

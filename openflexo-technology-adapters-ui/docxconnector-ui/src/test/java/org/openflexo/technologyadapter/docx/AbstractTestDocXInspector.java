@@ -50,12 +50,14 @@ import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.utils.OpenflexoFIBInspectorTestCase;
 import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.docx.gui.TestDocX4allEditor;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.test.OrderedRunner;
 
@@ -71,7 +73,23 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 	protected static SwingGraphicalContextDelegate gcDelegate;
 	protected static Resource fibResource;
 	protected static FlexoEditor editor;
-
+	
+	/**
+	 * Instantiate a default {@link FlexoServiceManager} well suited for test purpose<br>
+	 * FML and FML@RT technology adapters are activated in returned {@link FlexoServiceManager}, as well as technology adapters whose
+	 * classes are supplied as varargs arguments
+	 * 
+	 * @param taClasses
+	 * @return a newly created {@link FlexoServiceManager}
+	 */
+	protected static FlexoServiceManager instanciateTestServiceManagerForDocX(IdentifierManagementStrategy idStrategy) {
+		serviceManager = instanciateTestServiceManager();
+		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
+		docXTA.setDefaultIDStrategy(idStrategy);
+		serviceManager.activateTechnologyAdapter(docXTA);
+		return serviceManager;
+	}
+	
 	protected DocXDocumentResource getDocumentResource(String documentName) {
 
 		String documentURI = resourceCenter.getDefaultBaseURI() + (resourceCenter.getDefaultBaseURI().endsWith("/") ? "" : "/")
@@ -119,7 +137,7 @@ public abstract class AbstractTestDocXInspector extends OpenflexoFIBInspectorTes
 
 	@BeforeClass
 	public static void setupClass() {
-		instanciateTestServiceManager(DocXTechnologyAdapter.class);
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 		initGUI();
 	}
 
