@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.openflexo</groupId>
 		<artifactId>openflexo-technology-adapters-ui</artifactId>
-		<version>1.8.0-SNAPSHOT</version>
+		<version>1.8.0-RC1</version>
 	</parent>
 	<artifactId>xmlconnector-ui</artifactId>
 	<name>XML technology connector UI</name>
