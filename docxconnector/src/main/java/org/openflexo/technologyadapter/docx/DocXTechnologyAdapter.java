@@ -69,7 +69,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	public static String DOCX_FILE_EXTENSION = ".docx";
 
 	// Sets default idStrategy when no modelSlot is used
-	private IdentifierManagementStrategy defaultIdStrategy = IdentifierManagementStrategy.ParaId;
+	private IdentifierManagementStrategy defaultIdStrategy = IdentifierManagementStrategy.Bookmark;
 
 	
 	protected static final Logger logger = Logger.getLogger(DocXTechnologyAdapter.class.getPackage().getName());
