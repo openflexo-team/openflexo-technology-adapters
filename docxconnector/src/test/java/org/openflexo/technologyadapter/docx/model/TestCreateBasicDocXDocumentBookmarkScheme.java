@@ -105,7 +105,8 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-		newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX", "TestBasicDocument.docx", true, technologicalAdapter.getDefaultIDStrategy() );
+		newDocResource = technologicalAdapter.createNewDocXDocumentResource(resourceCenter, "DocX", "TestBasicDocument.docx", true,
+				technologicalAdapter.getDefaultIDStrategy());
 		newDocument = null;
 
 		System.out.println("uri=" + newDocResource.getURI());
@@ -250,7 +251,7 @@ public class TestCreateBasicDocXDocumentBookmarkScheme extends AbstractTestDocX 
 		}
 
 		assertNotNull(newDocResource = (DocXDocumentResource) serviceManager.getResourceManager()
-				.getResource("http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx", null));
+				.getResource("http://openflexo.org/test/TestResourceCenter/DocX/TestBasicDocument.docx"));
 
 		newDocument = newDocResource.getDocument();
 		assertNotSame(documentBeforeReload, newDocument);

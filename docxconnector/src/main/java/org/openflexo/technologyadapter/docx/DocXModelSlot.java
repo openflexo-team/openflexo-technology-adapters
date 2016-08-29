@@ -80,7 +80,8 @@ import org.openflexo.toolbox.StringUtils;
 @DeclareEditionActions({ GenerateDocXDocument.class, AddDocXFragment.class, AddDocXParagraph.class, ApplyTextBindings.class,
 		ReinjectTextBindings.class, SelectGeneratedDocXFragment.class, GenerateDocXTable.class, ReinjectFromDocXTable.class,
 		SelectGeneratedDocXTable.class, GenerateDocXImage.class, SelectGeneratedDocXImage.class, CreateEmptyDocXResource.class })
-@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class, ImageActorReference.class })
+@DeclareActorReferences({ FragmentActorReference.class, TableActorReference.class, ParagraphActorReference.class,
+		ImageActorReference.class })
 @ModelEntity
 @ImplementationClass(DocXModelSlot.DocXModelSlotImpl.class)
 @XMLElement
@@ -88,10 +89,9 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 
 	@PropertyIdentifier(type = FlexoResource.class)
 	public static final String TEMPLATE_RESOURCE_KEY = "templateResource";
-	
+
 	@PropertyIdentifier(type = IdentifierManagementStrategy.class)
 	public static final String ID_STRATEGY_KEY = "idStrategy";
-
 
 	@Override
 	@Getter(TEMPLATE_RESOURCE_KEY)
@@ -108,7 +108,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 	public void setIdStrategy(IdentifierManagementStrategy idStrat);
 
 	// Implem
-	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument> implements DocXModelSlot {
+	public static abstract class DocXModelSlotImpl extends FlexoDocumentModelSlotImpl<DocXDocument>implements DocXModelSlot {
 
 		private static final Logger logger = Logger.getLogger(DocXModelSlot.class.getPackage().getName());
 
@@ -148,9 +148,10 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 
 		@Override
 		public DocXDocumentResource getTemplateResource() {
-			if (templateResource == null && StringUtils.isNotEmpty(templateDocumentURI) && getServiceManager().getResourceManager() != null) {
+			if (templateResource == null && StringUtils.isNotEmpty(templateDocumentURI)
+					&& getServiceManager().getResourceManager() != null) {
 				// System.out.println("Looking up " + templateDocumentURI);
-				templateResource = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI, null);
+				templateResource = (DocXDocumentResource) getServiceManager().getResourceManager().getResource(templateDocumentURI);
 				// System.out.println("templateResource = " + returned);
 				// for (FlexoResource r : getServiceManager().getResourceManager().getRegisteredResources()) {
 				// System.out.println("> " + r.getURI());
@@ -185,11 +186,12 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 			logger.warning("Could not create docx in this kind of ResourceCenter");
 			return null;
 		}
+
 		@Override
 		// returns default value to paraId when none specified, because it is less intrusive (templage management)
-		public IdentifierManagementStrategy getIdStrategy(){
+		public IdentifierManagementStrategy getIdStrategy() {
 			IdentifierManagementStrategy val = (IdentifierManagementStrategy) this.performSuperGetter(ID_STRATEGY_KEY);
-			if (val == null){
+			if (val == null) {
 				val = IdentifierManagementStrategy.ParaId;
 			}
 			return val;
