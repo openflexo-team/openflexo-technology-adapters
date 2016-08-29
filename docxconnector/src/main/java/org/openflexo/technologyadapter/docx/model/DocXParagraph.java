@@ -235,6 +235,10 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 		 */
 		protected CTBookmark createCTBookmarkIdentifier(DocXFactory docXFactory) {
 
+			if (getP() == null) {
+				return null;
+			}
+
 			ObjectFactory factory = Context.getWmlObjectFactory();
 			BigInteger ID = BigInteger.valueOf(new Random().nextLong());
 
