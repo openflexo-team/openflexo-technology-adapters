@@ -291,9 +291,15 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 *            empty
 	 * @return
 	 */
-	public DocXDocumentResource createNewDocXDocumentResource(FlexoProject project, String filename, boolean createEmptyDocument, IdentifierManagementStrategy idStrategy) {
+	public DocXDocumentResource createNewDocXDocumentResource(FlexoResourceCenter<?> rc, String filename, boolean createEmptyDocument, IdentifierManagementStrategy idStrategy) {
 
-		return createNewDocXDocumentResource(project, File.separator + "DocX", filename, createEmptyDocument, idStrategy);
+		if (rc instanceof FileSystemBasedResourceCenter){
+			return createNewDocXDocumentResource((FileSystemBasedResourceCenter )rc, File.separator + "DocX", filename, createEmptyDocument, idStrategy);
+		}
+		else {
+			logger.warning("INVESTIGATE: not implemented yet, not able to create a DocX file in a Rc that is not fileBased: " + rc.toString());
+			return null;
+		}
 
 	}
 
