@@ -158,8 +158,8 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		 */
 		@Override
 		public OWLModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new OWLModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new OWLModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
