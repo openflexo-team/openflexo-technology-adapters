@@ -46,7 +46,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
@@ -56,6 +55,7 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -101,8 +101,8 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		 */
 		@Override
 		public FreeplaneModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new FreeplaneModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new FreeplaneModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
@@ -154,7 +154,7 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 		@Override
 		public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createProjectSpecificEmptyResource(final View view,
 				final String filename, final String modelUri) {
-			return getModelSlotTechnologyAdapter().createNewFreeplaneMap(view.getProject(), filename);
+			return getModelSlotTechnologyAdapter().createNewFreeplaneMap(view.getResourceCenter(), filename);
 		}
 	}
 }

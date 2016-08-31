@@ -52,7 +52,7 @@ public class DocXModelSlotInstanceConfiguration extends FreeModelSlotInstanceCon
 	public String getResourceUri() {
 		String returned = super.getResourceUri();
 		if (returned == null && getOption() == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource) {
-			return getProject().getURI() + getRelativePath() + getFilename();
+			return getResourceCenter().getURI() + getRelativePath() + getFilename();
 		}
 		return returned;
 	}

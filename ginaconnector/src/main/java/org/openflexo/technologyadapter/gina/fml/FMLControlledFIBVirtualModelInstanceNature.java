@@ -120,7 +120,7 @@ public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelI
 		if (returned == null) {
 			// When, for some reasons, the msi is null or not weel configured, we do it again now
 			FIBComponentModelSlotInstanceConfiguration msiConfig = (FIBComponentModelSlotInstanceConfiguration) fibMS
-					.createConfiguration(virtualModelInstance, virtualModelInstance.getProject());
+					.createConfiguration(virtualModelInstance, virtualModelInstance.getResourceCenter());
 			msiConfig.setOption(FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent);
 			returned = msiConfig.createModelSlotInstance(virtualModelInstance, virtualModelInstance.getView());
 			virtualModelInstance.addToModelSlotInstances(returned);

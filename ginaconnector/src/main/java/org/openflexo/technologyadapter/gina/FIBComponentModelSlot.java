@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoRole;
@@ -35,6 +34,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Adder;
@@ -126,8 +126,8 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 		 */
 		@Override
 		public ModelSlotInstanceConfiguration<? extends FreeModelSlot<GINAFIBComponent>, GINAFIBComponent> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoProject project) {
-			return new FIBComponentModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
+			return new FIBComponentModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override

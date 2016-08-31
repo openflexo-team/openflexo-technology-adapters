@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.xml;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
@@ -133,7 +132,7 @@ public interface XMLMetaModelSlot extends FreeModelSlot<XMLMetaModel> {
 
 		@Override
 		public ModelSlotInstanceConfiguration<? extends FreeModelSlot<XMLMetaModel>, XMLMetaModel> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoProject project) {
+				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
 			// TODO
 			return null;
 		}

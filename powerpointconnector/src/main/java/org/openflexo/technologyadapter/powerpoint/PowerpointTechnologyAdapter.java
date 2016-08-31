@@ -237,18 +237,24 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	 * @param technologyContextManager
 	 * @return
 	 */
-	public PowerpointSlideshowResource createNewSlideshow(FlexoProject project, String pptFilename, String modelUri) {
+	public PowerpointSlideshowResource createNewSlideshow(FlexoResourceCenter<?> rc, String pptFilename, String modelUri) {
 
-		File pptFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), pptFilename);
+		if (rc instanceof FlexoProject){
+		File pptFile = new File(FlexoProject.getProjectSpecificModelsDirectory((FlexoProject) rc), pptFilename);
 
 		modelUri = pptFile.toURI().toString();
 
 		PowerpointSlideshowResource slideshowResource = PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(modelUri, pptFile,
-				getTechnologyContextManager(), project);
+				getTechnologyContextManager(), rc);
 
 		getTechnologyContextManager().registerResource(slideshowResource);
 
 		return slideshowResource;
+		}
+		else {
+			logger.warning("UNABLE TO CREATE NEW FILE => not a FlexoProject: " + rc.toString());
+			return null;
+		}
 	}
 
 	@Override

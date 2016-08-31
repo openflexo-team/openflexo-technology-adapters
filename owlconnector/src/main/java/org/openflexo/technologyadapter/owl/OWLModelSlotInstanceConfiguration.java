@@ -59,7 +59,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		super(ms, virtualModelInstance, project);
 		// options.add(DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel);
 		if (virtualModelInstance != null) {
-			setModelUri(virtualModelInstance.getProject().getURI() + "/Models/myOntology");
+			setModelUri(virtualModelInstance.getResourceCenter().getURI() + "/Models/myOntology");
 		}
 		setRelativePath("/");
 		setFilename("myOntology" + getModelSlot().getModelSlotTechnologyAdapter().getExpectedOntologyExtension());
