@@ -30,8 +30,6 @@ import org.openflexo.technologyadapter.docx.model.DocXFactory;
 @ModelEntity
 @ImplementationClass(DocXDocumentResourceImpl.class)
 public abstract interface DocXDocumentResource extends FlexoDocumentResource<DocXDocument, DocXTechnologyAdapter, DocXFactory> {
-	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
-
 	@Override
 	public DocXDocument getDocument();
 
