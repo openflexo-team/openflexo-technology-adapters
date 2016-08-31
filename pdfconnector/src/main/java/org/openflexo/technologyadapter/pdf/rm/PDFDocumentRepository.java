@@ -21,11 +21,11 @@
 package org.openflexo.technologyadapter.pdf.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.pdf.PDFTechnologyAdapter;
 import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 
-public class PDFDocumentRepository extends TechnologyAdapterFileResourceRepository<PDFDocumentResource, PDFTechnologyAdapter, PDFDocument> {
+public class PDFDocumentRepository extends TechnologyAdapterResourceRepository<PDFDocumentResource, PDFTechnologyAdapter, PDFDocument> {
 
 	public PDFDocumentRepository(PDFTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
 		super(adapter, resourceCenter);

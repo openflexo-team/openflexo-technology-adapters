@@ -57,8 +57,7 @@ public abstract class DocXDocumentResourceFactory
 
 	@Override
 	public DocXDocument makeEmptyResourceData(DocXDocumentResource resource) {
-		// TODO Auto-generated method stub
-		return null;
+		return resource.getFactory().makeNewDocXDocument();
 	}
 
 	@Override
@@ -66,4 +65,15 @@ public abstract class DocXDocumentResourceFactory
 		return resourceCenter.retrieveName(serializationArtefact).endsWith(DOCX_FILE_EXTENSION);
 	}
 
+	@Override
+	protected <I> DocXDocumentResource registerResource(DocXDocumentResource resource, FlexoResourceCenter<I> resourceCenter,
+			TechnologyContextManager<DocXTechnologyAdapter> technologyContextManager) {
+		super.registerResource(resource, resourceCenter, technologyContextManager);
+
+		// Register the resource in the DocXDocumentRepository of supplied resource center
+		registerResourceInResourceRepository(resource,
+				technologyContextManager.getTechnologyAdapter().getDocXDocumentRepository(resourceCenter));
+
+		return resource;
+	}
 }

@@ -40,7 +40,7 @@
 package org.openflexo.technologyadapter.powerpoint.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 
@@ -51,7 +51,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
  * 
  */
 public class PowerpointSlideShowRepository extends
-		TechnologyAdapterFileResourceRepository<PowerpointSlideshowResource, PowerpointTechnologyAdapter, PowerpointSlideshow> {
+		TechnologyAdapterResourceRepository<PowerpointSlideshowResource, PowerpointTechnologyAdapter, PowerpointSlideshow> {
 
 	public PowerpointSlideShowRepository(PowerpointTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
 		super(adapter, resourceCenter);

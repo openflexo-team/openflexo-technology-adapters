@@ -39,12 +39,12 @@
 package org.openflexo.technologyadapter.oslc.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
 public class OSLCRepository extends
-		TechnologyAdapterFileResourceRepository<OSLCResourceResource, OSLCTechnologyAdapter, OSLCServiceProviderCatalog> {
+		TechnologyAdapterResourceRepository<OSLCResourceResource, OSLCTechnologyAdapter, OSLCServiceProviderCatalog> {
 
 	public OSLCRepository(OSLCTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
 		super(adapter, resourceCenter);

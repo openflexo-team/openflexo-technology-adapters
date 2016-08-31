@@ -21,11 +21,11 @@
 package org.openflexo.technologyadapter.odt.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.odt.ODTTechnologyAdapter;
 import org.openflexo.technologyadapter.odt.model.ODTDocument;
 
-public class ODTDocumentRepository extends TechnologyAdapterFileResourceRepository<ODTDocumentResource, ODTTechnologyAdapter, ODTDocument> {
+public class ODTDocumentRepository extends TechnologyAdapterResourceRepository<ODTDocumentResource, ODTTechnologyAdapter, ODTDocument> {
 
 	public ODTDocumentRepository(ODTTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
 		super(adapter, resourceCenter);

@@ -21,8 +21,6 @@
 package org.openflexo.technologyadapter.docx;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
@@ -31,21 +29,12 @@ import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
-import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.FlexoResourceFactory;
-import org.openflexo.foundation.resource.RepositoryFolder;
-import org.openflexo.foundation.resource.ResourceData;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.foundation.technologyadapter.TechnologyObject;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXElementConverter;
@@ -114,52 +103,6 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		return null;
 	}
 
-	@Override
-	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
-
-		DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, this);
-		if (docXRepository == null) {
-			docXRepository = createDocXDocumentRepository(resourceCenter);
-		}
-
-		Iterator<I> it = resourceCenter.iterator();
-
-		while (it.hasNext()) {
-			I serializationArtefact = it.next();
-
-			if (!isIgnorable(resourceCenter, serializationArtefact)) {
-				for (FlexoResourceFactory<?, ?, ?> resourceFactory : getResourceFactories()) {
-					tryToLookupResource(resourceFactory, resourceCenter, serializationArtefact);
-				}
-			}
-
-			// DocXDocumentResource wbRes = tryToLookupDocX(resourceCenter, serializationArtefact);
-		}
-
-		// Call it to update the current repositories
-		notifyRepositoryStructureChanged();
-	}
-
-	protected <RF extends FlexoResourceFactory<R, RD, TA>, R extends TechnologyAdapterResource<RD, TA>, RD extends ResourceData<RD> & TechnologyObject<TA>, TA extends TechnologyAdapter, I> R tryToLookupResource(
-			RF resourceFactory, FlexoResourceCenter<I> resourceCenter, I serializationArtefact) {
-
-		TechnologyContextManager<TA> technologyContextManager = (TechnologyContextManager<TA>) getTechnologyContextManager();
-		if (resourceFactory.isValidArtefact(serializationArtefact, resourceCenter)) {
-			R returned;
-			try {
-				returned = resourceFactory.retrieveResource(serializationArtefact, resourceCenter, technologyContextManager);
-				if (returned != null) {
-					referenceResource(returned, resourceCenter);
-					return returned;
-				}
-			} catch (ModelDefinitionException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		return null;
-	}
-
 	/*protected DocXDocumentResource tryToLookupDocX(FlexoResourceCenter<?> resourceCenter, Object candidateElement) {
 		DocXTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidDocX(candidateElement)) {
@@ -181,15 +124,15 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		return null;
 	}*/
 
-	@Override
+	/*@Override
 	public void referenceResource(FlexoResource<?> resource, FlexoResourceCenter<?> resourceCenter) {
 		super.referenceResource(resource, resourceCenter);
 		if (resource instanceof DocXDocumentResource) {
 			registerInDocXDocumentRepository((DocXDocumentResource) resource, resourceCenter);
 		}
-	}
+	}*/
 
-	private void registerInDocXDocumentRepository(DocXDocumentResource docXDocumentResource, FlexoResourceCenter<?> resourceCenter) {
+	/*private void registerInDocXDocumentRepository(DocXDocumentResource docXDocumentResource, FlexoResourceCenter<?> resourceCenter) {
 		if (docXDocumentResource == null) {
 			return;
 		}
@@ -204,12 +147,13 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 				e1.printStackTrace();
 			}
 		}
-	}
+	}*/
 
 	/**
 	 * Instantiate new workbook resource stored in supplied model file<br>
-	 * *
+	 *
 	 */
+	@Deprecated
 	public DocXDocumentResource retrieveDocXResource(Object docXDocumentItem, FlexoResourceCenter<?> resourceCenter,
 			IdentifierManagementStrategy idStrategy) {
 
@@ -266,32 +210,45 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		return false;
 	}
 
-	@Override
-	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-		if (contents instanceof File) {
-			File candidateFile = (File) contents;
-			DocXDocumentResource docXRes = tryToLookupDocX(resourceCenter, candidateFile);
-			return docXRes != null;
+	/*@Override
+	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I serializationArtefact) {
+		boolean hasBeenLookedUp = false;
+		if (!isIgnorable(resourceCenter, serializationArtefact)) {
+			for (FlexoResourceFactory<?, ?, ?> resourceFactory : getResourceFactories()) {
+				FlexoResource<?> resource = tryToLookupResource(resourceFactory, resourceCenter, serializationArtefact);
+				if (resource != null) {
+					hasBeenLookedUp = true;
+				}
+			}
 		}
-		return false;
-	}
+		return hasBeenLookedUp;
+	}*/
 
-	@Override
+	/*@Override
 	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
 		// TODO Auto-generated method stub
 		return false;
+	}*/
+
+	public <I> DocXDocumentRepository<I> getDocXDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
+		DocXDocumentRepository<I> returned = resourceCenter.getRepository(DocXDocumentRepository.class, this);
+		if (returned == null) {
+			returned = new DocXDocumentRepository<I>(this, resourceCenter);
+			resourceCenter.registerRepository(returned, DocXDocumentRepository.class, this);
+		}
+		return returned;
 	}
 
 	/**
@@ -299,11 +256,11 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 * Create a {@link DocXDocumentRepository} for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
 	 * 
 	 */
-	public DocXDocumentRepository createDocXDocumentRepository(FlexoResourceCenter<?> resourceCenter) {
+	/*public DocXDocumentRepository createDocXDocumentRepository(FlexoResourceCenter<?> resourceCenter) {
 		DocXDocumentRepository returned = new DocXDocumentRepository(this, resourceCenter);
 		resourceCenter.registerRepository(returned, DocXDocumentRepository.class, this);
 		return returned;
-	}
+	}*/
 
 	/**
 	 * Create a new {@link DocXDocumentResource} using supplied configuration options<br>
@@ -316,6 +273,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 *            empty
 	 * @return
 	 */
+	@Deprecated
 	public DocXDocumentResource createNewDocXDocumentResource(FlexoProject project, String filename, boolean createEmptyDocument,
 			IdentifierManagementStrategy idStrategy) {
 
@@ -334,6 +292,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 *            empty
 	 * @return
 	 */
+	@Deprecated
 	public DocXDocumentResource createNewDocXDocumentResource(FileSystemBasedResourceCenter resourceCenter, String relativePath,
 			String filename, boolean createEmptyDocument, IdentifierManagementStrategy idStrategy) {
 
@@ -346,7 +305,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeDocXDocumentResource(docXFile,
 				getTechnologyContextManager(), resourceCenter, idStrategy);
 
-		referenceResource(docXDocumentResource, resourceCenter);
+		// referenceResource(docXDocumentResource, resourceCenter);
 
 		if (createEmptyDocument) {
 			DocXDocument document = docXDocumentResource.getFactory().makeNewDocXDocument();
