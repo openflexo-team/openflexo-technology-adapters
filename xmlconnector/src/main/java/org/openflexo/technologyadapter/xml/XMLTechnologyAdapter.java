@@ -274,7 +274,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
-
+					referenceResource(mmRes, resourceCenter);
 					return mmRes;
 				}
 			}
@@ -317,7 +317,8 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-
+				referenceResource(mRes, resourceCenter);
+				
 				// then find the MetaModel
 
 				if (mmURI != null && mmURI.length() > 0) {
