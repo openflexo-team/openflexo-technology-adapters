@@ -37,7 +37,7 @@ import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
  * @author sylvain
  *
  */
-public abstract class DocXDocumentResourceFactory
+public class DocXDocumentResourceFactory
 		extends PamelaResourceFactory<DocXDocumentResource, DocXDocument, DocXTechnologyAdapter, DocXFactory> {
 
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceFactory.class.getPackage().getName());

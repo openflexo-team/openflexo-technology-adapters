@@ -40,14 +40,15 @@ package org.openflexo.technologyadapter.xml;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 public class FreeXMLModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<XMLModel, FreeXMLModelSlot> {
 
 	protected FreeXMLModelSlotInstanceConfiguration(FreeXMLModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
 	}
 
 }

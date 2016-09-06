@@ -249,9 +249,9 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		}
 		if (candidateElement instanceof InJarResourceImpl && ((InJarResourceImpl) candidateElement).getRelativePath().endsWith(".xml")
 				&& ((InJarResourceImpl) candidateElement).getRelativePath()
-						.endsWith(FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath())
-								+ DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX + "/"
-								+ FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath()) + ".xml")) {
+				.endsWith(FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath())
+						+ DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX + "/"
+						+ FilenameUtils.getBaseName(((InJarResourceImpl) candidateElement).getRelativePath()) + ".xml")) {
 			// System.out.println("Found valid candidate for DiagramSpecification: " + ((InJarResourceImpl)candidateElement));
 			return true;
 		}
@@ -395,13 +395,21 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		return false;
 	}
 
-	public DiagramResource createNewDiagram(FlexoProject project, String filename, String diagramUri,
+	public DiagramResource createNewDiagram(FlexoResourceCenter<?> rc, String filename, String diagramUri,
 			DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
-		File diagramFile = new File(getProjectSpecificDiagramsDirectory(project), filename);
-		DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource, project);
-		DiagramRepository diagramRepository = project.getRepository(DiagramRepository.class, this);
-		diagramRepository.registerResource(returned);
-		return returned;
+		if  (rc instanceof FlexoProject){
+
+			File diagramFile = new File(getProjectSpecificDiagramsDirectory((FlexoProject)rc), filename);
+			DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource, rc);
+			DiagramRepository diagramRepository = rc.getRepository(DiagramRepository.class, this);
+			diagramRepository.registerResource(returned);
+			return returned;
+
+		}
+		else {
+			logger.warning("INVESTIGATE: UNABLE TO CREATE FILE, Not a Project: " + rc.toString());
+			return null;
+		}
 	}
 
 	public DiagramResource createNewDiagram(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,

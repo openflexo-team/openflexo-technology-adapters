@@ -42,7 +42,6 @@ package org.openflexo.technologyadapter.emf;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
@@ -119,8 +118,8 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 		 */
 		@Override
 		public EMFModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new EMFModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new EMFModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
@@ -167,9 +166,9 @@ public interface EMFModelSlot extends FlexoOntologyModelSlot<EMFModel, EMFMetaMo
 		}
 
 		@Override
-		public EMFModelResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
+		public EMFModelResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String modelUri,
 				FlexoMetaModelResource<EMFModel, EMFMetaModel, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewEMFModel(project, filename, modelUri, (EMFMetaModelResource) metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewEMFModel(rc, filename, modelUri, (EMFMetaModelResource) metaModelResource);
 		}
 
 		@Override

@@ -101,7 +101,7 @@ public interface ConfigureGINAFIBComponent extends TechnologySpecificAction<FIBC
 					ModelSlotInstance<FIBComponentModelSlot, GINAFIBComponent> msi = vmi.getModelSlotInstance(modelSlot);
 					if (msi == null) {
 						FIBComponentModelSlotInstanceConfiguration msiConfig = (FIBComponentModelSlotInstanceConfiguration) modelSlot
-								.createConfiguration(vmi, vmi.getProject());
+								.createConfiguration(vmi, vmi.getResourceCenter());
 						msiConfig.setOption(FIBComponentModelSlotInstanceConfigurationOption.ReadOnlyUseFIBComponent);
 						msi = msiConfig.createModelSlotInstance(vmi, vmi.getView());
 						vmi.addToModelSlotInstances(msi);

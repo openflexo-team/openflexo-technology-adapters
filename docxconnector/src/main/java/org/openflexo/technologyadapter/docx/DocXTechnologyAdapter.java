@@ -23,7 +23,6 @@ package org.openflexo.technologyadapter.docx;
 import java.io.File;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
@@ -32,11 +31,11 @@ import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatur
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.rm.InJarResourceImpl;
-import org.openflexo.technologyadapter.docx.model.DocXDocument;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.docx.model.DocXElementConverter;
 import org.openflexo.technologyadapter.docx.model.DocXFragmentConverter;
 import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
@@ -44,7 +43,6 @@ import org.openflexo.technologyadapter.docx.nature.FMLControlledDocXVirtualModel
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentRepository;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceFactory;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceImpl;
 
 /**
  * This class defines and implements the DOCX technology adapter, which allows to manage .docx documents (format used in MS/Office)<br>
@@ -153,10 +151,10 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 *
 	 */
-	@Deprecated
+	/*@Deprecated
 	public DocXDocumentResource retrieveDocXResource(Object docXDocumentItem, FlexoResourceCenter<?> resourceCenter,
 			IdentifierManagementStrategy idStrategy) {
-
+	
 		DocXDocumentResource returned = null;
 		if (docXDocumentItem instanceof File) {
 			returned = DocXDocumentResourceImpl.retrieveDocXDocumentResource((File) docXDocumentItem, getTechnologyContextManager(),
@@ -172,9 +170,9 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		else {
 			logger.warning("Cannot retrieve DocXDocumentResource resource for " + docXDocumentItem);
 		}
-
+	
 		return returned;
-	}
+	}*/
 
 	/*public boolean isValidDocX(Object candidateElement) {
 		if (candidateElement instanceof File && isValidDocXFile(((File) candidateElement))) {
@@ -274,10 +272,18 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	 * @return
 	 */
 	@Deprecated
-	public DocXDocumentResource createNewDocXDocumentResource(FlexoProject project, String filename, boolean createEmptyDocument,
+	public DocXDocumentResource createNewDocXDocumentResource(FlexoResourceCenter<?> rc, String filename, boolean createEmptyDocument,
 			IdentifierManagementStrategy idStrategy) {
 
-		return createNewDocXDocumentResource(project, File.separator + "DocX", filename, createEmptyDocument, idStrategy);
+		if (rc instanceof FileSystemBasedResourceCenter) {
+			return createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, File.separator + "DocX", filename, createEmptyDocument,
+					idStrategy);
+		}
+		else {
+			logger.warning(
+					"INVESTIGATE: not implemented yet, not able to create a DocX file in a Rc that is not fileBased: " + rc.toString());
+			return null;
+		}
 
 	}
 
@@ -302,17 +308,29 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 
 		File docXFile = new File(resourceCenter.getDirectory() + relativePath, filename);
 
-		DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeDocXDocumentResource(docXFile,
-				getTechnologyContextManager(), resourceCenter, idStrategy);
+		DocXDocumentResource docXDocumentResource = null;
+		try {
+			docXDocumentResource = getDocXDocumentResourceFactory().makeResource(docXFile, resourceCenter, getTechnologyContextManager(),
+					true);
+		} catch (SaveResourceException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ModelDefinitionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// DocXDocumentResource docXDocumentResource = DocXDocumentResourceImpl.makeDocXDocumentResource(docXFile,
+		// getTechnologyContextManager(), resourceCenter, idStrategy);
 
 		// referenceResource(docXDocumentResource, resourceCenter);
 
-		if (createEmptyDocument) {
+		/*if (createEmptyDocument) {
 			DocXDocument document = docXDocumentResource.getFactory().makeNewDocXDocument();
 			document.setResource(docXDocumentResource);
 			docXDocumentResource.setResourceData(document);
 			docXDocumentResource.setModified(true);
-		}
+		}*/
 
 		return docXDocumentResource;
 	}
@@ -328,6 +346,10 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public String getIdentifier() {
 		return "DOCX";
+	}
+
+	public DocXDocumentResourceFactory getDocXDocumentResourceFactory() {
+		return getResourceFactory(DocXDocumentResourceFactory.class);
 	}
 
 }

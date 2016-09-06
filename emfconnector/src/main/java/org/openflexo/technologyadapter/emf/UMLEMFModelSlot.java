@@ -40,13 +40,13 @@ package org.openflexo.technologyadapter.emf;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -120,8 +120,8 @@ public interface UMLEMFModelSlot extends EMFModelSlot {
 		 */
 		@Override
 		public UMLEMFModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new UMLEMFModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new UMLEMFModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override

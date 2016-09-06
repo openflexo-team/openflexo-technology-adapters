@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.oslc;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
@@ -97,8 +96,8 @@ public interface OSLCRMModelSlot extends FreeModelSlot<OSLCServiceProviderCatalo
 		 */
 		@Override
 		public OSLCRMModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new OSLCRMModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new OSLCRMModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
