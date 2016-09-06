@@ -235,15 +235,18 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 
 	}
 
-	public OWLOntologyResource createNewOntology(FlexoProject project, String filename, String modelUri,
+	public OWLOntologyResource createNewOntology(FlexoResourceCenter<?> rc, String filename, String modelUri,
 			FlexoResource<OWLOntology> metaModel) {
 		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("createNewOWLModel(), project=" + project);
+			logger.fine("createNewOWLModel(), resourceCenter=" + rc);
 		}
-		logger.info("-------------> Create ontology for " + project.getProjectName());
+		
+		if (rc instanceof FlexoProject){
+		
+		logger.info("-------------> Create ontology for " + ((FlexoProject)rc).getProjectName());
 
-		File owlFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-		OWLOntologyResource returned = OWLOntologyResourceImpl.makeOWLOntologyResource(modelUri, owlFile, getOntologyLibrary(), project);
+		File owlFile = new File(FlexoProject.getProjectSpecificModelsDirectory(((FlexoProject)rc)), filename);
+		OWLOntologyResource returned = OWLOntologyResourceImpl.makeOWLOntologyResource(modelUri, owlFile, getOntologyLibrary(), rc);
 		OWLOntology ontology = returned.getModel();
 		if (metaModel != null) {
 			try {
@@ -273,6 +276,12 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		}
 
 		return returned;
+		
+		}
+		else {
+			logger.warning("NOT IMPLEMENTED: can not yet create an ontology in a RC that is not a FlexoProject" + rc.toString());
+			return null;
+		}
 	}
 
 	public OWLOntologyResource createNewOntology(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,

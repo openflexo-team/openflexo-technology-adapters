@@ -158,8 +158,8 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		 */
 		@Override
 		public OWLModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new OWLModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new OWLModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
@@ -214,9 +214,9 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		}
 
 		@Override
-		public OWLOntologyResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
+		public OWLOntologyResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String modelUri,
 				FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewOntology(project, filename, modelUri, metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewOntology(rc, filename, modelUri, metaModelResource);
 		}
 
 		@Override

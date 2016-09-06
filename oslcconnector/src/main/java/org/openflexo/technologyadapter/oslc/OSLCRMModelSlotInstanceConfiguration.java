@@ -38,16 +38,16 @@
 
 package org.openflexo.technologyadapter.oslc;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
 public class OSLCRMModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<OSLCServiceProviderCatalog, OSLCRMModelSlot> {
 
 	protected OSLCRMModelSlotInstanceConfiguration(OSLCRMModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
 	}
 
 	@Override

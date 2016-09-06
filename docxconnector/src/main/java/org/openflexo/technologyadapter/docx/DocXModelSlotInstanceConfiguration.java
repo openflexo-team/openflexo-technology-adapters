@@ -24,14 +24,15 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 
 public class DocXModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<DocXDocument, DocXModelSlot> {
 
 	protected DocXModelSlotInstanceConfiguration(DocXModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
 		/*setResourceUri(getAction().getFocusedObject().getProject().getURI() + "/DocX/MyDocument");
 		setRelativePath("/");
 		setFilename("MyDocument.docx");*/
@@ -52,7 +53,7 @@ public class DocXModelSlotInstanceConfiguration extends FreeModelSlotInstanceCon
 	public String getResourceUri() {
 		String returned = super.getResourceUri();
 		if (returned == null && getOption() == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewResource) {
-			return getProject().getURI() + getRelativePath() + getFilename();
+			return getResourceCenter().getDefaultBaseURI() + getRelativePath() + getFilename();
 		}
 		return returned;
 	}

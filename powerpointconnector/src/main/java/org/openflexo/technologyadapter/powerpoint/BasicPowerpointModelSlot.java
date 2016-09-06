@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.powerpoint;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
@@ -117,8 +116,8 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 
 		@Override
 		public ModelSlotInstanceConfiguration<BasicPowerpointModelSlot, PowerpointSlideshow> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoProject project) {
-			return new BasicPowerpointModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
+			return new BasicPowerpointModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
@@ -149,7 +148,7 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 
 		@Override
 		public PowerpointSlideshowResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getModelSlotTechnologyAdapter().createNewSlideshow(view.getProject(), filename, modelUri);
+			return getModelSlotTechnologyAdapter().createNewSlideshow(view.getResourceCenter(), filename, modelUri);
 		}
 
 		@Override

@@ -469,10 +469,16 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 * @param technologyContextManager
 	 * @return
 	 */
-	public EMFModelResource createNewEMFModel(FlexoProject project, String filename, String modelUri,
+	public EMFModelResource createNewEMFModel(FlexoResourceCenter<?> rc, String filename, String modelUri,
 			EMFMetaModelResource metaModelResource) {
-		File modelFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-		return createNewEMFModel(modelFile, modelUri, metaModelResource, project);
+		if (rc instanceof FlexoProject) {
+		File modelFile = new File(FlexoProject.getProjectSpecificModelsDirectory((FlexoProject) rc), filename);
+		return createNewEMFModel(modelFile, modelUri, metaModelResource, rc);
+		}
+		else {
+			logger.warning("INVESTIGATE: not implemented yet, cannot create an EMFModel in a non FlexoProject" + rc.toString());
+			return null;
+		}
 	}
 
 	/**

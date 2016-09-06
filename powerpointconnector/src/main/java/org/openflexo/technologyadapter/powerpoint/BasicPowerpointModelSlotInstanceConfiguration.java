@@ -60,9 +60,9 @@ public class BasicPowerpointModelSlotInstanceConfiguration extends
 	protected PowerpointSlideshowResource modelResource;
 
 	protected BasicPowerpointModelSlotInstanceConfiguration(BasicPowerpointModelSlot ms,
-			AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoProject project) {
-		super(ms, virtualModelInstance, project);
-		setResourceUri(project.getURI() + "/Models/myPowerpointModel");
+			AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
+		setResourceUri(rc.getDefaultBaseURI() + "/Models/myPowerpointModel");
 		setRelativePath("/");
 		setFilename("myPowerpointResource.ppt");
 	}

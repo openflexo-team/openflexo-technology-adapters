@@ -47,7 +47,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
@@ -142,8 +141,8 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
 		@Override
 		public ModelSlotInstanceConfiguration<BasicExcelModelSlot, ExcelWorkbook> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoProject project) {
-			return new BasicExcelModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
+			return new BasicExcelModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
@@ -206,7 +205,7 @@ public interface BasicExcelModelSlot extends FreeModelSlot<ExcelWorkbook> {
 
 		@Override
 		public ExcelWorkbookResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getModelSlotTechnologyAdapter().createNewWorkbook(view.getProject(), filename/*, modelUri*/);
+			return getModelSlotTechnologyAdapter().createNewWorkbook(view.getResourceCenter(), filename/*, modelUri*/);
 		}
 
 		@Override

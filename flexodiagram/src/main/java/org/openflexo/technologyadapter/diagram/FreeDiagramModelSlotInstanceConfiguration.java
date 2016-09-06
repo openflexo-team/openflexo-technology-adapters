@@ -59,9 +59,9 @@ public class FreeDiagramModelSlotInstanceConfiguration extends FreeModelSlotInst
 	protected DiagramResource diagramResource;
 
 	protected FreeDiagramModelSlotInstanceConfiguration(FreeDiagramModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
-		setResourceUri(project.getURI() + "/Diagrams/myDiagram");
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
+		setResourceUri(rc.getDefaultBaseURI() + "/Diagrams/myDiagram");
 		setRelativePath("/");
 		setFilename("myDiagram.diagram");
 	}
