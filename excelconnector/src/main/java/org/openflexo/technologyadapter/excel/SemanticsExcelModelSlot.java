@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.excel;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
@@ -108,13 +107,13 @@ public interface SemanticsExcelModelSlot extends TypeAwareModelSlot<ExcelModel, 
 
 		@Override
 		public ModelSlotInstanceConfiguration<SemanticsExcelModelSlot, ExcelModel> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoProject project) {
+				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
 			// TODO Auto-generated method stub
 			return null;
 		}
 
 		@Override
-		public FlexoModelResource<ExcelModel, ExcelMetaModel, ?, ?> createProjectSpecificEmptyModel(FlexoProject project, String filename,
+		public FlexoModelResource<ExcelModel, ExcelMetaModel, ?, ?> createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename,
 				String modelUri, FlexoMetaModelResource<ExcelModel, ExcelMetaModel, ?> metaModelResource) {
 			// TODO Auto-generated method stub
 			return null;

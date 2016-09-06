@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.diagram;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -58,8 +59,8 @@ public class TypedDiagramModelSlotInstanceConfiguration
 		extends TypeAwareModelSlotInstanceConfiguration<Diagram, DiagramSpecification, TypedDiagramModelSlot> {
 
 	protected TypedDiagramModelSlotInstanceConfiguration(TypedDiagramModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
 	}
 
 	@Override
@@ -67,7 +68,7 @@ public class TypedDiagramModelSlotInstanceConfiguration
 			org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
-			modelUri = getProject().getURI() + "/Diagrams/myDiagram";
+			modelUri = getResourceCenter().getDefaultBaseURI() + "/Diagrams/myDiagram";
 			relativePath = "/Diagram/";
 			filename = "myDiagram" + DiagramResource.DIAGRAM_SUFFIX;
 		}

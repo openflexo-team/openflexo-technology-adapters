@@ -272,18 +272,23 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	 * @param technologyContextManager
 	 * @return
 	 */
-	public ExcelWorkbookResource createNewWorkbook(FlexoProject project, String excelFilename/*, String modelUri*/) {
+	public ExcelWorkbookResource createNewWorkbook(FlexoResourceCenter<?> rc, String excelFilename/*, String modelUri*/) {
 
-		File excelFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), excelFilename);
 
-		// modelUri = excelFile.toURI().toString();
+		if (rc instanceof FlexoProject) {
+			File excelFile = new File(FlexoProject.getProjectSpecificModelsDirectory((FlexoProject) rc), excelFilename);
 
-		ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(/*modelUri,*/ excelFile,
-				getTechnologyContextManager(), project);
+			ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(/*modelUri,*/ excelFile,
+					getTechnologyContextManager(), rc);
 
-		getTechnologyContextManager().registerResource(workbookResource);
+			getTechnologyContextManager().registerResource(workbookResource);
 
-		return workbookResource;
+			return workbookResource;
+		}
+		else{
+			logger.warning("NOT IMPLEMENTED: not able to create an excelfile in a RC that is not a FlexoProject" + rc.toString());
+			return null;
+		}
 	}
 
 	/**

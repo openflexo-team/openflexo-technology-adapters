@@ -282,8 +282,8 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		 */
 		@Override
 		public XMLModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new XMLModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new XMLModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
@@ -297,14 +297,22 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		}
 
 		@Override
-		public XMLFileResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
+		public XMLFileResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String modelUri,
 				FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
 
-			File xmlFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
+			XMLModelRepository modelRepository = rc.getRepository(XMLModelRepository.class, getModelSlotTechnologyAdapter());
+			
+			if (rc instanceof FlexoProject){
+			
+			File xmlFile = new File(FlexoProject.getProjectSpecificModelsDirectory((FlexoProject) rc), filename);
 
-			XMLModelRepository modelRepository = project.getRepository(XMLModelRepository.class, getModelSlotTechnologyAdapter());
 
 			return createEmptyXMLFileResource(xmlFile, modelRepository, (XSDMetaModelResource) metaModelResource);
+			}
+			else {
+				logger.warning("UNABLE TO CREATE NEW XML FILE => not a FlexoProject: " + rc.toString());
+				return null;
+			}
 		}
 
 		@Override

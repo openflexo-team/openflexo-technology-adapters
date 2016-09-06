@@ -47,7 +47,6 @@ import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
@@ -211,16 +210,16 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 		@Override
 		public TypedDiagramModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new TypedDiagramModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new TypedDiagramModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
-		public DiagramResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String diagramUri,
+		public DiagramResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String diagramUri,
 				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 
 			try {
-				DiagramResource returned = getModelSlotTechnologyAdapter().createNewDiagram(project, filename, diagramUri,
+				DiagramResource returned = getModelSlotTechnologyAdapter().createNewDiagram(rc, filename, diagramUri,
 						(DiagramSpecificationResource) metaModelResource);
 				return returned;
 

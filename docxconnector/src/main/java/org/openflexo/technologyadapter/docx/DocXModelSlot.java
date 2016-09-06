@@ -23,7 +23,6 @@ package org.openflexo.technologyadapter.docx;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.doc.fml.FlexoDocumentModelSlot;
 import org.openflexo.foundation.doc.fml.FragmentActorReference;
 import org.openflexo.foundation.doc.fml.ImageActorReference;
@@ -122,8 +121,8 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		 */
 		@Override
 		public DocXModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new DocXModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new DocXModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
@@ -172,7 +171,7 @@ public interface DocXModelSlot extends FlexoDocumentModelSlot<DocXDocument> {
 		@Override
 		public TechnologyAdapterResource<DocXDocument, ?> createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
 
-			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getProject(), filename, true, getIdStrategy());
+			return getModelSlotTechnologyAdapter().createNewDocXDocumentResource(view.getResourceCenter(), filename, true, getIdStrategy());
 		}
 
 		@Override

@@ -40,6 +40,7 @@ package org.openflexo.technologyadapter.emf;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
@@ -48,9 +49,9 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 public class EMFModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<EMFModel, EMFMetaModel, EMFModelSlot> {
 
 	protected EMFModelSlotInstanceConfiguration(EMFModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
-		setModelUri(project.getURI() + "/Models/myEMFModel");
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
+		setModelUri(rc.getDefaultBaseURI() + "/Models/myEMFModel");
 		setRelativePath("/");
 		setFilename("myEMFModel" + getModelSlot().getModelSlotTechnologyAdapter()
 				.getExpectedModelExtension((EMFMetaModelResource) getModelSlot().getMetaModelResource()));

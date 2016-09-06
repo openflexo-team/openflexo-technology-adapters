@@ -243,28 +243,33 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 		return repo;
 	}
 
-	public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createNewFreeplaneMap(final FlexoProject project,
+	public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createNewFreeplaneMap(final FlexoResourceCenter<?> rc,
 			final String filename) {
+		if (rc instanceof FlexoProject){
+			File freeplaneFile = new File(FlexoProject.getProjectSpecificModelsDirectory((FlexoProject) rc), filename);
+			String modelUri = freeplaneFile.toURI().toString();
+			IFreeplaneResource returned = FreeplaneResourceImpl.makeFreeplaneResource(modelUri, freeplaneFile, getTechnologyContextManager(),
+					rc);
 
-		File freeplaneFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-		String modelUri = freeplaneFile.toURI().toString();
-		IFreeplaneResource returned = FreeplaneResourceImpl.makeFreeplaneResource(modelUri, freeplaneFile, getTechnologyContextManager(),
-				project);
+			// Maybe noi initialized yet
+			FreeplaneBasicAdapter.getInstance();
+			final MapModel newMap = new MapModel();
+			final NodeModel root = new NodeModel(filename, newMap);
+			newMap.setRoot(root);
 
-		// Maybe noi initialized yet
-		FreeplaneBasicAdapter.getInstance();
-		final MapModel newMap = new MapModel();
-		final NodeModel root = new NodeModel(filename, newMap);
-		newMap.setRoot(root);
-
-		Controller.getCurrentModeController().getMapController().fireMapCreated(newMap);
-		Controller.getCurrentModeController().getMapController().newMapView(newMap);
-		try {
-			((MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class)).writeToFile(newMap, freeplaneFile);
-		} catch (IOException e) {
-			LOGGER.log(Level.SEVERE, "Exception raised during empty map creation", e);
+			Controller.getCurrentModeController().getMapController().fireMapCreated(newMap);
+			Controller.getCurrentModeController().getMapController().newMapView(newMap);
+			try {
+				((MMapIO) Controller.getCurrentModeController().getExtension(MapIO.class)).writeToFile(newMap, freeplaneFile);
+			} catch (IOException e) {
+				LOGGER.log(Level.SEVERE, "Exception raised during empty map creation", e);
+			}
+			return returned;
 		}
-		return returned;
+		else {
+			LOGGER.warning("INVESTIGATE: NOT ABLE TO CREATE A NEW FREEPLANE RESOURCE => not a project: " + rc.toString());
+			return null;
+		}
 	}
 
 	@Override
