@@ -397,19 +397,12 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	public DiagramResource createNewDiagram(FlexoResourceCenter<?> rc, String filename, String diagramUri,
 			DiagramSpecificationResource diagramSpecificationResource) throws SaveResourceException {
-		if  (rc instanceof FlexoProject){
 
 			File diagramFile = new File(getProjectSpecificDiagramsDirectory((FlexoProject)rc), filename);
 			DiagramResource returned = createNewDiagram(diagramFile.getName(), diagramUri, diagramFile, diagramSpecificationResource, rc);
 			DiagramRepository diagramRepository = rc.getRepository(DiagramRepository.class, this);
 			diagramRepository.registerResource(returned);
 			return returned;
-
-		}
-		else {
-			logger.warning("INVESTIGATE: UNABLE TO CREATE FILE, Not a Project: " + rc.toString());
-			return null;
-		}
 	}
 
 	public DiagramResource createNewDiagram(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
