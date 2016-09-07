@@ -109,12 +109,12 @@ public class TestFIBOWLClassSelector extends OpenflexoTestCaseWithGUI {
 
 		assertNotNull(owlTA);
 
-		List<ResourceRepository<?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlTA);
+		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlTA);
 
-		ResourceRepository<OWLOntologyResource> ontologyRepository = null;
-		for ( ResourceRepository<?> rep : owlRepositories){
-			if (rep.getSize() > 0 ){
-				ontologyRepository = (ResourceRepository<OWLOntologyResource>) rep;
+		ResourceRepository<OWLOntologyResource, ?> ontologyRepository = null;
+		for (ResourceRepository<?, ?> rep : owlRepositories) {
+			if (rep.getSize() > 0) {
+				ontologyRepository = (ResourceRepository<OWLOntologyResource, ?>) rep;
 				break;
 			}
 		}

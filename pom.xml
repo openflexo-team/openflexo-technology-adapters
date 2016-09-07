@@ -35,6 +35,7 @@
 		<module>flexodiagram</module>
 		<module>ginaconnector</module>
 		<module>owlconnector</module>
+		<module>owlconnector-rc</module>
 		<module>emfconnector</module>
 		<module>csvconnector</module>
 		<module>excelconnector</module>

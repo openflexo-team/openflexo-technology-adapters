@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.owl.model;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -88,8 +89,8 @@ import com.hp.hpl.jena.util.iterator.ExtendedIterator;
  * @author sylvain
  * 
  */
-public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OWLTechnologyAdapter> implements ModelMaker,
-		RemovalListener<OWLOntology, Set<OWLOntology>> {
+public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OWLTechnologyAdapter>
+		implements ModelMaker, RemovalListener<OWLOntology, Set<OWLOntology>> {
 
 	private static final Logger logger = Logger.getLogger(OWLOntologyLibrary.class.getPackage().getName());
 
@@ -112,7 +113,8 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 	public StatementWithProperty getStatementWithProperty(OWLProperty aProperty) {
 		if (statementsWithProperty.get(aProperty) != null) {
 			return statementsWithProperty.get(aProperty);
-		} else {
+		}
+		else {
 			StatementWithProperty returned = new StatementWithProperty(aProperty);
 			statementsWithProperty.put(aProperty, returned);
 			return returned;
@@ -135,9 +137,11 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 	private boolean defaultOntologiesLoaded = false;
 
 	public void init() {
+
 		if (defaultOntologiesLoaded) {
 			return;
 		}
+
 		logger.info("Instantiating OWLOntologyLibrary Done. Trying to load some ontologies...");
 
 		logger.info("ontologies=" + ontologies);
@@ -145,10 +149,10 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 		logger.info("rcService=" + getServiceManager().getResourceCenterService());
 		logger.info("resources centers: " + getServiceManager().getResourceCenterService().getResourceCenters());
 
-		// logger.info("getRDFSOntology()=" + getRDFSOntology());
-		// logger.info("getRDFOntology()=" + getRDFOntology());
-		// logger.info("getOWLOntology()=" + getOWLOntology());
-		// logger.info("getFlexoConceptOntology()=" + getFlexoConceptOntology());
+		logger.info("getRDFSOntology()=" + getRDFSOntology());
+		logger.info("getRDFOntology()=" + getRDFOntology());
+		logger.info("getOWLOntology()=" + getOWLOntology());
+		logger.info("getFlexoConceptOntology()=" + getFlexoConceptOntology());
 
 		FlexoResource<OWLOntology> rdfsOntologyResource = ontologies.get(RDFSURIDefinitions.RDFS_ONTOLOGY_URI);
 		logger.info("rdfsOntologyResource=" + rdfsOntologyResource);
@@ -173,7 +177,7 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 
 	@Override
 	public OWLTechnologyAdapter getTechnologyAdapter() {
-		return (OWLTechnologyAdapter) super.getTechnologyAdapter();
+		return super.getTechnologyAdapter();
 	}
 
 	public OWLDataType getDataType(String dataTypeURI) {
@@ -261,6 +265,10 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 		return getOntology(OWL2URIDefinitions.OWL_ONTOLOGY_URI);
 	}
 
+	public Collection<OWLOntologyResource> getRegisteredOntologies() {
+		return ontologies.values();
+	}
+
 	@Override
 	public GraphMaker getGraphMaker() {
 		return graphMaker;
@@ -297,7 +305,8 @@ public class OWLOntologyLibrary extends FlexoOntologyTechnologyContextManager<OW
 			return newOntology.getOntModel();*/
 			logger.warning("Not implemented yet !!!");
 			return null;
-		} else {
+		}
+		else {
 			throw new DoesNotExistException(name);
 		}
 	}
