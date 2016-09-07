@@ -1233,8 +1233,8 @@ public class TestLibrary extends AbstractTestDocX {
 
 		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) documentVMI.getResource();
 
-		// template resource has been modified because in "Bookmark" mode, bookmarks have been inserted
-		assertTrue(templateResource.isModified());
+		// template resource should not be modified in "ParaId" mode
+		assertFalse(templateResource.isModified());
 		// assertFalse(libraryVMI.isModified());
 
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
