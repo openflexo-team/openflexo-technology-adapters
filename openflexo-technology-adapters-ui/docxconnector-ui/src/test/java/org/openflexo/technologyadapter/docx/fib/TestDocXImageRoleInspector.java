@@ -48,17 +48,18 @@ import java.util.logging.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.ViewPointLibrary;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
+import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.gina.swing.utils.FIBJPanel;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.AbstractTestDocXInspector;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
@@ -83,9 +84,10 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 	private final String VIEWPOINT_NAME = "TestDocXImageRoleInspectorViewPoint";
 	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestDocXImageRoleInspectorViewPoint";
+	private static final String DOCUMENT_VIRTUAL_MODEL_NAME = "DocumentVirtualModel";
 
 	/*private static SwingGraphicalContextDelegate gcDelegate;
-
+	
 	private static Resource fibResource;*/
 
 	public static DocXTechnologyAdapter technologicalAdapter;
@@ -118,16 +120,24 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 
 	@Test
 	@TestOrder(3)
-	public void loadConcepts() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void loadConcepts() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException, ModelDefinitionException {
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 		ViewPointLibrary vpLib = serviceManager.getViewPointLibrary();
 		assertNotNull(vpLib);
 
-		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, resourceCenter.getDirectory(),
-				serviceManager.getViewPointLibrary(), resourceCenter);
-		viewPointResource = (ViewPointResource) viewPoint.getResource();
+		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(FMLTechnologyAdapter.class);
+		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
+
+		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
+				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		viewPoint = viewPointResource.getLoadedResourceData();
+		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, resourceCenter.getDirectory(),
+		// serviceManager.getViewPointLibrary(), resourceCenter);
+		// viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
 		assertTrue(viewPointResource.getFlexoIODelegate().exists());
@@ -138,7 +148,10 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 		assertEquals(19, templateDocument.getElements().size());
 
 		// We create a VM
-		documentVirtualModel = VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);
+		VirtualModelResource newVMResource = factory.getVirtualModelResourceFactory().makeVirtualModelResource(DOCUMENT_VIRTUAL_MODEL_NAME,
+				viewPoint.getViewPointResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		documentVirtualModel = newVMResource.getLoadedResourceData();
+		// documentVirtualModel = VirtualModelImpl.newVirtualModel("DocumentVirtualModel", viewPoint);
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) documentVirtualModel.getResource()).getDirectory())
 				.exists());
 		assertTrue(((VirtualModelResource) documentVirtualModel.getResource()).getFlexoIODelegate().exists());
@@ -181,17 +194,17 @@ public class TestDocXImageRoleInspector extends AbstractTestDocXInspector {
 	/*public static void initGUI() {
 		gcDelegate = new SwingGraphicalContextDelegate(TestDocXImageRoleInspector.class.getSimpleName());
 	}
-
+	
 	@AfterClass
 	public static void waitGUI() {
 		gcDelegate.waitGUI();
 	}
-
+	
 	@Before
 	public void setUp() {
 		gcDelegate.setUp();
 	}
-
+	
 	@Override
 	@After
 	public void tearDown() throws Exception {
