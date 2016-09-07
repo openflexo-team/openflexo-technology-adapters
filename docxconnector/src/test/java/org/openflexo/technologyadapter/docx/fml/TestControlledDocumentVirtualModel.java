@@ -112,7 +112,7 @@ import org.openflexo.test.TestOrder;
 public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 	private final String VIEWPOINT_NAME = "TestViewPointControlledDocument";
-	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestViewPointControlledDocument";
+	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestViewPointControlledDocument.viewpoint";
 	public static final String VIRTUAL_MODEL_NAME = "TestVirtualModel";
 
 	public static DocXTechnologyAdapter technologicalAdapter;
@@ -275,6 +275,7 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
 		assertTrue(viewPointResource.getFlexoIODelegate().exists());
+
 	}
 
 	/**
@@ -558,10 +559,17 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		assertNotNull(generatedDocumentBeforeReload);
 
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+		reloadResourceCenter(viewPointResource.getDirectory());
 
 		System.out.println("Project dir = " + _project.getDirectory());
 
 		_editor = reloadProject(_project.getDirectory());
+
+		/*System.out.println("Registered resources:");
+		for (FlexoResource<?> r : serviceManager.getResourceManager().getRegisteredResources()) {
+			System.out.println(" > " + r.getURI());
+		}*/
+
 		_project = _editor.getProject();
 		assertNotNull(_editor);
 		assertNotNull(_project);
@@ -570,9 +578,16 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		// System.out.println("All resources=" + _project.getAllResources());
 		assertNotNull(_project.getResource(newView.getURI()));
 
+		System.out.println("viewPoint.getURI()=" + viewPoint.getURI());
+		System.out.println("viewPointResource.getURI()=" + viewPointResource.getURI());
+
 		ViewResource newViewResource = _project.getViewLibrary().getView(newView.getURI());
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
+
+		System.out.println("newViewResource.getURI()=" + newViewResource.getURI());
+		System.out.println("newViewResource.getViewPointResource().getURI()=" + newViewResource.getViewPointResource().getURI());
+
 		newViewResource.loadResourceData(null);
 		assertNotNull(newView = newViewResource.getView());
 

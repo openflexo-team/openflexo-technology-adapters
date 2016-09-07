@@ -31,13 +31,8 @@ import org.apache.commons.io.IOUtils;
 import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.IOFlexoException;
-import org.openflexo.foundation.InconsistentDataException;
-import org.openflexo.foundation.InvalidModelDefinitionException;
-import org.openflexo.foundation.InvalidXMLException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoFileNotFoundException;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -45,9 +40,8 @@ import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFactory;
 import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
 import org.openflexo.toolbox.FileUtils;
-import org.openflexo.toolbox.IProgress;
 
-public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory> implements DocXDocumentResource {
+public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory>implements DocXDocumentResource {
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceImpl.class.getPackage().getName());
 
 	/*public static DocXDocumentResource makeDocXDocumentResource(File modelFile, DocXTechnologyContextManager technologyContextManager,
@@ -275,16 +269,6 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 
 	public FileFlexoIODelegate getFileFlexoIODelegate() {
 		return (FileFlexoIODelegate) getFlexoIODelegate();
-	}
-
-	@Override
-	public DocXDocument loadResourceData(IProgress progress) throws FlexoFileNotFoundException, IOFlexoException, InvalidXMLException,
-			InconsistentDataException, InvalidModelDefinitionException {
-		System.out.println("Juste avant de charger: isModified=" + isModified());
-		DocXDocument returned = super.loadResourceData(progress);
-		System.out.println("Juste apres avoir charge: isModified=" + isModified());
-		System.out.println("getLoadedResourceData().isModified()=" + getLoadedResourceData().isModified());
-		return returned;
 	}
 
 }

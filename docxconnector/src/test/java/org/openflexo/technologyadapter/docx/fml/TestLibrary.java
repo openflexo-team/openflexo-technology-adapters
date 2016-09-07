@@ -1233,7 +1233,8 @@ public class TestLibrary extends AbstractTestDocX {
 
 		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) documentVMI.getResource();
 
-		assertFalse(templateResource.isModified());
+		// template resource has been modified because in "Bookmark" mode, bookmarks have been inserted
+		assertTrue(templateResource.isModified());
 		// assertFalse(libraryVMI.isModified());
 
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
@@ -1528,6 +1529,7 @@ public class TestLibrary extends AbstractTestDocX {
 		assertNotNull(generatedDocumentBeforeReload);
 
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+		reloadResourceCenter(viewPointResource.getDirectory());
 
 		System.out.println("Project dir = " + _project.getDirectory());
 
@@ -1536,11 +1538,18 @@ public class TestLibrary extends AbstractTestDocX {
 		assertNotNull(_editor);
 		assertNotNull(_project);
 
-		assertEquals(3, _project.getAllResources().size());
+		System.out.println(" _project.getAllResources()=" + _project.getAllResources());
+		System.out.println(" RM.getAllResources()=" + serviceManager.getResourceManager().getRegisteredResources());
+		assertEquals(4, _project.getAllResources().size());
 		// System.out.println("All resources=" + _project.getAllResources());
 		assertNotNull(_project.getResource(newView.getURI()));
 
 		ViewResource newViewResource = _project.getViewLibrary().getView(newView.getURI());
+		if (newViewResource.getVirtualModelResource() == null) {
+			System.out.println("pas normal ca !!!");
+			System.exit(-1);
+		}
+
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
 		newViewResource.loadResourceData(null);
@@ -1627,6 +1636,9 @@ public class TestLibrary extends AbstractTestDocX {
 	public void testAddNewBook() throws FragmentConsistencyException, SaveResourceException {
 
 		log("testAddNewBook()");
+
+		// System.out.println("rc=" + resourceCenter);
+		// System.out.println("pdir=" + _projectDirectory);
 
 		assertFalse(libraryVMI.isModified());
 		assertFalse(documentVMI.isModified());
