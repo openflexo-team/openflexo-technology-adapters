@@ -80,9 +80,10 @@ public class TestLoadPDFDocuments extends AbstractTestPDF {
 				.getTechnologyAdapter(PDFTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			PDFDocumentRepository docXRepository = resourceCenter.getRepository(PDFDocumentRepository.class, technologicalAdapter);
-			assertNotNull(docXRepository);
-			Collection<PDFDocumentResource> documents = docXRepository.getAllResources();
+			// PDFDocumentRepository docXRepository = resourceCenter.getRepository(PDFDocumentRepository.class, technologicalAdapter);
+			PDFDocumentRepository pdfRepository = technologicalAdapter.getPDFDocumentRepository(resourceCenter);
+			assertNotNull(pdfRepository);
+			Collection<PDFDocumentResource> documents = pdfRepository.getAllResources();
 			for (PDFDocumentResource docResource : documents) {
 				/*try {
 					docResource.loadResourceData(null);
