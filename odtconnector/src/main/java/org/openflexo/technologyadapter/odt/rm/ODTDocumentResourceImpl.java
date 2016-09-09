@@ -34,66 +34,16 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.odt.ODTTechnologyContextManager;
 import org.openflexo.technologyadapter.odt.model.ODTDocument;
 import org.openflexo.toolbox.IProgress;
 
 public abstract class ODTDocumentResourceImpl extends FlexoResourceImpl<ODTDocument>implements ODTDocumentResource {
 	private static final Logger logger = Logger.getLogger(ODTDocumentResourceImpl.class.getPackage().getName());
-
-	public static ODTDocumentResource makeODTDocumentResource(String modelURI, File modelFile,
-			ODTTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(ODTDocumentResource.class, FileFlexoIODelegate.class));
-			ODTDocumentResourceImpl returned = (ODTDocumentResourceImpl) factory.newInstance(ODTDocumentResource.class);
-			returned.initName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-
-			returned.setURI(modelURI);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static ODTDocumentResource retrieveODTDocumentResource(File modelFile, ODTTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(ODTDocumentResource.class, FileFlexoIODelegate.class));
-			ODTDocumentResourceImpl returned = (ODTDocumentResourceImpl) factory.newInstance(ODTDocumentResource.class);
-			returned.initName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			returned.setURI(modelFile.toURI().toString());
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	@Override
 	public ODTDocument loadResourceData(IProgress progress)

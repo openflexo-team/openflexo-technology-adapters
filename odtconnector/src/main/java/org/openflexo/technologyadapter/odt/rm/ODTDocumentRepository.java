@@ -25,9 +25,10 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepos
 import org.openflexo.technologyadapter.odt.ODTTechnologyAdapter;
 import org.openflexo.technologyadapter.odt.model.ODTDocument;
 
-public class ODTDocumentRepository extends TechnologyAdapterResourceRepository<ODTDocumentResource, ODTTechnologyAdapter, ODTDocument> {
+public class ODTDocumentRepository<I>
+		extends TechnologyAdapterResourceRepository<ODTDocumentResource, ODTTechnologyAdapter, ODTDocument, I> {
 
-	public ODTDocumentRepository(ODTTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public ODTDocumentRepository(ODTTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 
