@@ -64,8 +64,7 @@ import org.openflexo.toolbox.IProgress;
  * @author vincent,sguerin
  * 
  */
-public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<PowerpointSlideshow>
-		implements PowerpointSlideshowResource {
+public abstract class PowerpointSlideshowResourceImpl extends FlexoResourceImpl<PowerpointSlideshow>implements PowerpointSlideshowResource {
 
 	private static final Logger logger = Logger.getLogger(PowerpointSlideshowResourceImpl.class.getPackage().getName());
 
