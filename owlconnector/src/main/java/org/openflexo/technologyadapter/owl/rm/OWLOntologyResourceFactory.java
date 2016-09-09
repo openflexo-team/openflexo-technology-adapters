@@ -24,19 +24,15 @@ import java.io.File;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
-import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
-import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 
 /**
- * Implementation of PamelaResourceFactory for {@link DocXDocumentResource}
+ * Implementation of ResourceFactory for {@link OWLOntologyResource}
  * 
  * @author sylvain
  *
@@ -100,7 +96,7 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 	 * @param ontologyLibrary
 	 * @return
 	 */
-	public static OWLOntologyResource makeOWLOntologyResource(String ontologyURI, File owlFile, OWLOntologyLibrary ontologyLibrary,
+	/*public static OWLOntologyResource makeOWLOntologyResource(String ontologyURI, File owlFile, OWLOntologyLibrary ontologyLibrary,
 			FlexoResourceCenter<?> resourceCenter) {
 		try {
 			ModelFactory factory = new ModelFactory(
@@ -110,16 +106,16 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 			returned.setOntologyLibrary(ontologyLibrary);
 			returned.initName(owlFile.getName());
 			// returned.setFile(owlFile);
-
+	
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
-
+	
 			returned.setURI(ontologyURI);
 			// Register the ontology
 			ontologyLibrary.registerResource(returned);
-
+	
 			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(ontologyLibrary.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-
+	
 			// Creates the ontology
 			returned.setResourceData(
 					OWLOntology.createOWLEmptyOntology(ontologyURI, owlFile, ontologyLibrary, ontologyLibrary.getTechnologyAdapter()));
@@ -128,7 +124,7 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 			e.printStackTrace();
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * Instanciates a new {@link OWLOntologyResource} asserting we are about to built a resource matching an existing file in the file
@@ -139,7 +135,7 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 	 * @param ontologyLibrary
 	 * @return
 	 */
-	public static OWLOntologyResource retrieveOWLOntologyResource(File owlFile, OWLOntologyLibrary ontologyLibrary,
+	/*public static OWLOntologyResource retrieveOWLOntologyResource(File owlFile, OWLOntologyLibrary ontologyLibrary,
 			FlexoResourceCenter<?> resourceCenter) {
 		try {
 			ModelFactory factory = new ModelFactory(
@@ -148,9 +144,9 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
 			returned.setOntologyLibrary(ontologyLibrary);
 			returned.initName(OWLOntology.findOntologyName(owlFile));
-
+	
 			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
-
+	
 			returned.setURI(OWLOntology.findOntologyURI(owlFile));
 			returned.setResourceCenter(resourceCenter);
 			returned.setServiceManager(ontologyLibrary.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
@@ -161,6 +157,6 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 			e.printStackTrace();
 		}
 		return null;
-	}
+	}*/
 
 }

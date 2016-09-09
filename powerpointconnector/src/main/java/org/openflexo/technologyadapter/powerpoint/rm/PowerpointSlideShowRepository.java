@@ -50,10 +50,10 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
  * @author sylvain, vincent
  * 
  */
-public class PowerpointSlideShowRepository extends
-		TechnologyAdapterResourceRepository<PowerpointSlideshowResource, PowerpointTechnologyAdapter, PowerpointSlideshow> {
+public class PowerpointSlideShowRepository<I>
+		extends TechnologyAdapterResourceRepository<PowerpointSlideshowResource, PowerpointTechnologyAdapter, PowerpointSlideshow, I> {
 
-	public PowerpointSlideShowRepository(PowerpointTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public PowerpointSlideShowRepository(PowerpointTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 
