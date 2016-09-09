@@ -55,18 +55,12 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.IOUtils;
 import org.eclipse.lyo.oslc4j.core.model.AbstractResource;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.oslc.OSLCTechnologyContextManager;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCResource;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 import org.openflexo.technologyadapter.oslc.model.io.FlexoOslcAdaptorConfiguration;
@@ -87,53 +81,6 @@ public abstract class OSLCResourceResourceImpl extends FlexoResourceImpl<OSLCSer
 
 	public void setConverter(OSLCModelConverter converter) {
 		this.converter = converter;
-	}
-
-	public static OSLCResourceResource makeOSLCResource(String modelURI, File modelFile,
-			OSLCTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, OSLCResourceResource.class));
-			OSLCResourceResourceImpl returned = (OSLCResourceResourceImpl) factory.newInstance(OSLCResourceResource.class);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(modelFile);
-			returned.initName(modelFile.getName());
-			returned.setURI(modelURI);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static OSLCResourceResource retrieveOSLCResource(File oslcFile, OSLCTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, OSLCResourceResource.class));
-			OSLCResourceResourceImpl returned = (OSLCResourceResourceImpl) factory.newInstance(OSLCResourceResource.class);
-			FileFlexoIODelegate fileIODelegate = factory.newInstance(FileFlexoIODelegate.class);
-			returned.setFlexoIODelegate(fileIODelegate);
-			fileIODelegate.setFile(oslcFile);
-			returned.initName(oslcFile.getName());
-			returned.setURI(oslcFile.toURI().toString());
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
 	}
 
 	@Override
