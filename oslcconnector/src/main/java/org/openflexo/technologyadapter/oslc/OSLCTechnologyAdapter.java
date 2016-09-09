@@ -42,12 +42,14 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.technologyadapter.oslc.rm.OSLCRepository;
+import org.openflexo.technologyadapter.oslc.rm.OSLCResourceFactory;
 import org.openflexo.technologyadapter.oslc.virtualmodel.bindings.OSLCBindingFactory;
 
 /**
@@ -59,6 +61,7 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.bindings.OSLCBindingFac
 
 @DeclareModelSlots({ OSLCCoreModelSlot.class, OSLCRMModelSlot.class })
 @DeclareRepositoryType({ OSLCRepository.class })
+@DeclareResourceTypes({ OSLCResourceFactory.class })
 public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	private static String OSLC_FILE_EXTENSION = ".oslc";
 
