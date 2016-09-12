@@ -115,7 +115,7 @@ public abstract class CSVModelResourceImpl extends FlexoResourceImpl<CSVModel>im
 
 	@Override
 	public CSVModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-		CSVModel returned = new CSVModel(getURI(), getFile(), getTechnologyAdapter());
+		CSVModel returned = new CSVModel(getURI(), getTechnologyAdapter());
 		returned.loadWhenUnloaded();
 		return returned;
 	}

@@ -45,10 +45,9 @@ import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
+import org.openflexo.technologyadapter.csv.rm.CSVModelResourceRepository;
 
 public class CSVTechnologyAdapter extends TechnologyAdapter {
-	private static String CSV_FILE_EXTENSION = ".csv";
 
 	protected static final Logger logger = Logger.getLogger(CSVTechnologyAdapter.class.getPackage().getName());
 
@@ -66,9 +65,8 @@ public class CSVTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
-		// TODO Auto-generated method stub
-		return null;
+	public CSVTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
+		return new CSVTechnologyContextManager(this, service);
 	}
 
 	@Override
@@ -78,37 +76,7 @@ public class CSVTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -116,6 +84,15 @@ public class CSVTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	public String getIdentifier() {
 		return "CSV";
+	}
+
+	public <I> CSVModelResourceRepository<I> getCSVModelResourceRepository(FlexoResourceCenter<I> resourceCenter) {
+		CSVModelResourceRepository<I> returned = resourceCenter.getRepository(CSVModelResourceRepository.class, this);
+		if (returned == null) {
+			returned = new CSVModelResourceRepository<I>(this, resourceCenter);
+			resourceCenter.registerRepository(returned, CSVModelResourceRepository.class, this);
+		}
+		return returned;
 	}
 
 }
