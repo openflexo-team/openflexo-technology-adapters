@@ -50,8 +50,8 @@ import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
  * 
  * @author sylvain
  */
-public class ExcelMetaModelRepository extends
-		MetaModelRepository<ExcelMetaModelResource, ExcelModel, ExcelMetaModel, ExcelTechnologyAdapter> {
+public class ExcelMetaModelRepository<I>
+		extends MetaModelRepository<ExcelMetaModelResource, ExcelModel, ExcelMetaModel, ExcelTechnologyAdapter, I> {
 
 	/**
 	 * Constructor.
@@ -59,7 +59,7 @@ public class ExcelMetaModelRepository extends
 	 * @param adapter
 	 * @param resourceCenter
 	 */
-	public ExcelMetaModelRepository(ExcelTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public ExcelMetaModelRepository(ExcelTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 

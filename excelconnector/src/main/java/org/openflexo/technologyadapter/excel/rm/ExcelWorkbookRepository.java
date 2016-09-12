@@ -50,10 +50,10 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
  * @author sylvain
  * 
  */
-public class ExcelWorkbookRepository extends
-		TechnologyAdapterResourceRepository<ExcelWorkbookResource, ExcelTechnologyAdapter, ExcelWorkbook> {
+public class ExcelWorkbookRepository<I>
+		extends TechnologyAdapterResourceRepository<ExcelWorkbookResource, ExcelTechnologyAdapter, ExcelWorkbook, I> {
 
-	public ExcelWorkbookRepository(ExcelTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public ExcelWorkbookRepository(ExcelTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 

@@ -92,8 +92,7 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 			ExcelTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
 					.getTechnologyAdapter(ExcelTechnologyAdapter.class);
 			for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-				ExcelWorkbookRepository excelWorkbookRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class,
-						technologicalAdapter);
+				ExcelWorkbookRepository<?> excelWorkbookRepository = technologicalAdapter.getExcelWorkbookRepository(resourceCenter);
 				assertNotNull(excelWorkbookRepository);
 				if (excelWorkbookRepository.getResource(baseUrl + "TestResourceCenter/Excel/Workbook3.xlsx") != null) {
 					workbook = excelWorkbookRepository.getResource(baseUrl + "TestResourceCenter/Excel/Workbook3.xlsx");

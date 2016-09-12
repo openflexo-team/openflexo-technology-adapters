@@ -51,10 +51,10 @@ import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
  * @author sylvain
  * 
  */
-public class ExcelModelRepository extends
-		ModelRepository<ExcelModelResource, ExcelModel, ExcelMetaModel, ExcelTechnologyAdapter, ExcelTechnologyAdapter> {
+public class ExcelModelRepository<I>
+		extends ModelRepository<ExcelModelResource, ExcelModel, ExcelMetaModel, ExcelTechnologyAdapter, ExcelTechnologyAdapter, I> {
 
-	public ExcelModelRepository(ExcelTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public ExcelModelRepository(ExcelTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 
