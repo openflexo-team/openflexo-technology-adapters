@@ -74,8 +74,8 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 	private static final String LIB_BOOKS_URI = "http://www.example.org/Library/LibraryType#books";
 
 	private static XMLTechnologyAdapter xmlAdapter;
-	private static XSDMetaModelRepository mmRepository;
-	private static XMLModelRepository modelRepository;
+	private static XSDMetaModelRepository<?> mmRepository;
+	private static XMLModelRepository<?> modelRepository;
 	private static String baseUrl;
 
 	/**

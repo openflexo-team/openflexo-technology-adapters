@@ -61,7 +61,6 @@ import org.openflexo.technologyadapter.xml.metamodel.XMLType;
 import org.openflexo.technologyadapter.xml.model.XMLIndividual;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
 import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
-import org.openflexo.technologyadapter.xml.rm.XMLFileResourceImpl;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
@@ -72,7 +71,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestXML.class.getPackage().getName());
 
 	private static XMLTechnologyAdapter xmlAdapter;
-	private static XMLModelRepository modelRepository;
+	private static XMLModelRepository<?> modelRepository;
 	private static String baseUrl;
 
 	/**
@@ -195,8 +194,11 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		File xmlFile = new File(fileURI);
 
-		XMLFileResource modelRes = XMLFileResourceImpl.makeXMLFileResource(xmlFile,
-				(XMLTechnologyContextManager) xmlAdapter.getTechnologyContextManager(), modelRepository.getResourceCenter());
+		XMLFileResource modelRes = xmlAdapter.getXMLFileResourceFactory().makeResource(xmlFile, resourceCenter,
+				xmlAdapter.getTechnologyContextManager(), true);
+
+		// XMLFileResource modelRes = XMLFileResourceImpl.makeXMLFileResource(xmlFile,
+		// (XMLTechnologyContextManager) xmlAdapter.getTechnologyContextManager(), modelRepository.getResourceCenter());
 
 		XMLModel aModel = modelRes.getModel();
 		aModel.setNamespace("http://montest.com", "tst");

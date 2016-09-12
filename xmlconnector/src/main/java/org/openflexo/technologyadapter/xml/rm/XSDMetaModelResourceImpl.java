@@ -44,13 +44,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.metamodel.XMLComplexType;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLType;
@@ -72,7 +67,7 @@ import com.sun.xml.xsom.XSType;
  * 
  */
 
-public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMetaModel> implements XSDMetaModelResource {
+public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMetaModel>implements XSDMetaModelResource {
 
 	private static final Logger logger = Logger.getLogger(XSDMetaModelResourceImpl.class.getPackage().getName());
 
@@ -84,24 +79,6 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 	private boolean isLoaded = false;
 	private boolean isLoading = false;
 	private boolean isReadOnly = true;
-
-	public static XSDMetaModelResource makeXSDMetaModelResource(File xsdMetaModelFile, String uri,
-			XMLTechnologyContextManager technologyContextManager) {
-		try {
-			ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-					XSDMetaModelResource.class));
-			XSDMetaModelResource returned = factory.newInstance(XSDMetaModelResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setURI(uri);
-			returned.initName("Unnamed");
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xsdMetaModelFile, factory));
-
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	@Override
 	public XMLMetaModel getMetaModelData() {
@@ -180,7 +157,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					}
 				}
 			}
-		} else {
+		}
+		else {
 			logger.warning("Cannot load Types as MetaModel (resourceData) is NULL");
 		}
 	}
@@ -199,10 +177,12 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 						// TODO: better manage types
 						((XMLComplexType) owner).createProperty(element.getName(),
 								resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-					} else {
+					}
+					else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
-				} else {
+				}
+				else {
 					logger.warning("unable to find an owner for : " + uri);
 				}
 
@@ -221,10 +201,12 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 					// TODO: better manage types
 					((XMLComplexType) owner).createProperty(attribute.getName(),
 							resourceData.getTypeFromURI(XMLMetaModel.STR_SIMPLETYPE_URI));
-				} else {
+				}
+				else {
 					logger.warning("unable to find an owner type for attribute: " + uri);
 				}
-			} else {
+			}
+			else {
 				logger.warning("unable to find an owner for : " + uri);
 			}
 		}
@@ -249,7 +231,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 
 						// TODO: better manage types
 						((XMLComplexType) owner).createProperty(name, t);
-					} else {
+					}
+					else {
 						logger.warning("unable to find an owner type for attribute: " + uri);
 					}
 				}
@@ -280,7 +263,8 @@ public abstract class XSDMetaModelResourceImpl extends FlexoResourceImpl<XMLMeta
 			loadDataProperties();
 			loadObjectProperties();
 			isLoaded = true;
-		} else
+		}
+		else
 			logger.info("I've not been able to parse the file" + getFile());
 		isLoading = false;
 		return isLoaded;

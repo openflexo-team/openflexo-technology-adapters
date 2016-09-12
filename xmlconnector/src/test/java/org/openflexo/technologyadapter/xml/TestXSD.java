@@ -61,8 +61,8 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestXSD.class.getPackage().getName());
 
 	private static XMLTechnologyAdapter xmlAdapter;
-	private static XSDMetaModelRepository mmRepository;
-	private static XMLModelRepository modelRepository;
+	private static XSDMetaModelRepository<?> mmRepository;
+	private static XMLModelRepository<?> modelRepository;
 	private static String baseUrl = null;
 
 	/**

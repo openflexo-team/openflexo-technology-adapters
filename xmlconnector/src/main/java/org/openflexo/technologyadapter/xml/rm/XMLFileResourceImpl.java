@@ -50,18 +50,13 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.xml.XMLTechnologyAdapter;
-import org.openflexo.technologyadapter.xml.XMLTechnologyContextManager;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModelImpl;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
@@ -83,48 +78,6 @@ public abstract class XMLFileResourceImpl extends FlexoResourceImpl<XMLModel>imp
 	// Properties
 
 	private boolean isLoaded = false;
-
-	/**
-	 * 
-	 * @param modelURI
-	 * @param xmlFile
-	 * @param technologyContextManager
-	 * @return
-	 */
-	public static XMLFileResource makeXMLFileResource(File xmlFile, XMLTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, XMLFileResource.class));
-			XMLFileResourceImpl returned = (XMLFileResourceImpl) factory.newInstance(XMLFileResource.class);
-			returned.initName(xmlFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(xmlFile, factory));
-
-			returned.setURI(xmlFile.toURI().toString());
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-
-			technologyContextManager.registerResource(returned);
-
-			if (!xmlFile.exists()) {
-
-				if (returned.resourceData == null) {
-					returned.resourceData = XMLModelImpl.getModelFactory().newInstance(XMLModel.class);
-					returned.resourceData.setResource(returned);
-				}
-
-				returned.isLoaded = true;
-				returned.save(null);
-			}
-
-			return returned;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	/*
 	 * (non-Javadoc)

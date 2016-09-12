@@ -38,12 +38,12 @@
 
 package org.openflexo.technologyadapter.xml;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.xml.metamodel.XMLMetaModel;
 import org.openflexo.technologyadapter.xml.model.XMLModel;
+import org.openflexo.technologyadapter.xml.rm.XMLFileResourceFactory;
 
 public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<XMLModel, XMLMetaModel, XMLModelSlot> {
 
@@ -52,8 +52,10 @@ public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		super(ms, virtualModelInstance, rc);
 		setModelUri(rc.getDefaultBaseURI() + "/Models/myXMLFile");
 		setRelativePath("/");
-		setFilename("myXMLFile" + ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter())
-				.getExpectedModelExtension(getModelSlot().getMetaModelResource()));
+		setFilename("myXMLFile" + XMLFileResourceFactory.XML_EXTENSION);
+
+		// ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter())
+		// .getExpectedModelExtension(getModelSlot().getMetaModelResource()));
 	}
 
 	/*@Override
@@ -84,8 +86,9 @@ public class XMLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		String expectedSuffix = ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter())
-				.getExpectedModelExtension(getModelSlot().getMetaModelResource());
+		String expectedSuffix = XMLFileResourceFactory.XML_EXTENSION;
+		// ((XMLTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter())
+		// .getExpectedModelExtension(getModelSlot().getMetaModelResource());
 		if (!getFilename().endsWith(expectedSuffix)) {
 			setErrorMessage(
 					getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("file_name_should_end_with_right_suffix")

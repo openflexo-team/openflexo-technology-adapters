@@ -63,8 +63,8 @@ public class TestXSDResource extends OpenflexoTestCase {
 	protected static final Logger logger = Logger.getLogger(TestXSDResource.class.getPackage().getName());
 
 	private static XMLTechnologyAdapter xmlAdapter;
-	private static XMLModelRepository modelRepository;
-	private static XSDMetaModelRepository mmRepository;
+	private static XMLModelRepository<?> modelRepository;
+	private static XSDMetaModelRepository<?> mmRepository;
 	private static String baseUrl;
 
 	/**
@@ -107,6 +107,10 @@ public class TestXSDResource extends OpenflexoTestCase {
 	public void test1LoadLibraryMetamodel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		XSDMetaModelResource mmRes = mmRepository.getResource("http://www.example.org/Library");
+
+		for (XSDMetaModelResource r : mmRepository.getAllResources()) {
+			System.out.println("> Resource: " + r.getURI());
+		}
 
 		assertNotNull(mmRes);
 		assertFalse(mmRes.isLoaded());

@@ -51,8 +51,11 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoTestCase;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.technologyadapter.xml.rm.XMLFileResource;
 import org.openflexo.technologyadapter.xml.rm.XMLModelRepository;
 import org.openflexo.technologyadapter.xml.rm.XMLResource;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelRepository;
+import org.openflexo.technologyadapter.xml.rm.XSDMetaModelResource;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -62,7 +65,8 @@ public class TestXMLResource extends OpenflexoTestCase {
 	protected static final Logger logger = Logger.getLogger(TestXMLResource.class.getPackage().getName());
 
 	private static XMLTechnologyAdapter xmlAdapter;
-	private static XMLModelRepository modelRepository;
+	private static XMLModelRepository<?> modelRepository;
+	private static XSDMetaModelRepository<?> metaModelRepository;
 	private static String baseUrl;
 
 	/**
@@ -77,10 +81,21 @@ public class TestXMLResource extends OpenflexoTestCase {
 
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
+		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
+		metaModelRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
 		baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
 		assertNotNull(modelRepository);
+
+		for (XMLFileResource r : modelRepository.getAllResources()) {
+			System.out.println(" > " + r.getURI() + " mm=" + r.getMetaModelResource());
+		}
+
+		for (XSDMetaModelResource r : metaModelRepository.getAllResources()) {
+			System.out.println(" >> " + r.getURI());
+		}
+
 		assertTrue(modelRepository.getAllResources().size() > 4);
+
 	}
 
 	@Test

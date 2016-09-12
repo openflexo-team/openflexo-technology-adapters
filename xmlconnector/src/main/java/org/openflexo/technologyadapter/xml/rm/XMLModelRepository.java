@@ -49,8 +49,8 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 // FIXME : when we have discussed about FileBase....
 
 //public class XMLModelRepository extends TechnologyAdapterResourceRepository<XMLResource,  XMLTechnologyAdapter, XMLModel> {
-public class XMLModelRepository extends
-		ModelRepository<XMLFileResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter, XMLTechnologyAdapter> {
+public class XMLModelRepository<I>
+		extends ModelRepository<XMLFileResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter, XMLTechnologyAdapter, I> {
 	public XMLModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
 		super(adapter, resourceCenter);
 	}
