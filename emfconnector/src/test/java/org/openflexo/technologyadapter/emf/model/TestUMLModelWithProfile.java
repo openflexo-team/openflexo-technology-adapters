@@ -52,6 +52,8 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
@@ -132,12 +134,13 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 
 	@Test
 	@TestOrder(5)
-	public void createUMLModel() {
-		RepositoryFolder<FlexoResource<?>> folder = project.createNewFolder("Models");
-		File umlFile = new File(folder.getFile(), UML_MODEL_NAME);
-		assertNotNull(umlFile);
-		EMFModelResource umlModelResource = technologicalAdapter.createNewEMFModel(umlFile, umlFile.getAbsolutePath(), umlMetaModelResource,
-				resourceCenter);
+	public void createUMLModel() throws SaveResourceException, ModelDefinitionException {
+
+		RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
+		File serializationArtefact = new File(modelFolder.getSerializationArtefact(), UML_MODEL_NAME);
+		EMFModelResource umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
+				umlMetaModelResource, resourceCenter, technologicalAdapter.getTechnologyContextManager(), "myURI", true);
+
 		assertNotNull(umlModelResource);
 		EMFModel umlModel = umlModelResource.getModel();
 		assertNotNull(umlModel);

@@ -45,10 +45,10 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.model.EMFModel;
 
-public class EMFModelRepository extends
-		ModelRepository<EMFModelResource, EMFModel, EMFMetaModel, EMFTechnologyAdapter, EMFTechnologyAdapter> {
+public class EMFModelRepository<I>
+		extends ModelRepository<EMFModelResource, EMFModel, EMFMetaModel, EMFTechnologyAdapter, EMFTechnologyAdapter, I> {
 
-	public EMFModelRepository(EMFTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public EMFModelRepository(EMFTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 

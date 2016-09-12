@@ -53,6 +53,7 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
@@ -97,23 +98,22 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 			ExcelTechnologyAdapter excelTA = getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(ExcelTechnologyAdapter.class);
 
-			ExcelWorkbookResource newResource = excelTA.createNewWorkbook(rc, resourceName, resourceURI, getRelativePath());
-
-			System.out.println("New resource: " + newResource);
-
-			if (newResource != null) {
-				ExcelWorkbook returned;
-				try {
-					returned = newResource.getResourceData(null);
-					System.out.println("Return " + returned);
-					return returned;
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ResourceLoadingCancelledException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			ExcelWorkbookResource newResource;
+			try {
+				newResource = excelTA.createNewWorkbook(rc, resourceName, resourceURI, getRelativePath());
+				System.out.println("New resource: " + newResource);
+				ExcelWorkbook returned = newResource.getResourceData(null);
+				System.out.println("Return " + returned);
+				return returned;
+			} catch (ModelDefinitionException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ResourceLoadingCancelledException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 
 			logger.warning("Cannot create ExcelWorkbookResource !");

@@ -50,7 +50,6 @@ import org.openflexo.foundation.resource.ResourceRepository;
 import org.openflexo.model.annotations.Implementation;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.rm.Resource;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 
@@ -115,11 +114,6 @@ public interface EMFMetaModelIODelegate<I> extends FlexoIODelegate<I> {
 		public RepositoryFolder<?, I> getRepositoryFolder(ResourceRepository<?, I> resourceRepository, boolean createWhenNonExistent)
 				throws IOException {
 			return resourceRepository.getRootFolder();
-		}
-
-		@Override
-		public Resource getSerializationArtefactAsResource() {
-			return null;
 		}
 
 	}
