@@ -78,8 +78,7 @@ public class XMLFileResourceFactory extends FlexoResourceFactory<XMLFileResource
 		if (xmlRootElementInfo != null) {
 			String mmURI = xmlRootElementInfo.getURI();
 			if (StringUtils.isNotEmpty(mmURI)) {
-				XMLTechnologyAdapter ta = technologyContextManager.getTechnologyAdapter();
-				XSDMetaModelResource mmRes = ta.getXSDMetaModelRepository(resourceCenter).getResource(mmURI);
+				XSDMetaModelResource mmRes = (XSDMetaModelResource) technologyContextManager.getResourceWithURI(mmURI);
 				returned.setMetaModelResource(mmRes);
 			}
 		}
