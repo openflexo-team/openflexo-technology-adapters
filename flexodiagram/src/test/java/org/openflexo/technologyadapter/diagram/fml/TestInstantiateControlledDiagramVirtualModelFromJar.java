@@ -123,8 +123,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 	@TestOrder(1)
 	public void testLoadViewPoint() {
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(),
-				"testdiagram_vp-1.1");
+		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
 
 		for (FlexoResourceCenter rc : getFlexoServiceManager().getResourceCenterService().getResourceCenters()) {
 			if (rc instanceof JarResourceCenter) {
@@ -148,7 +147,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 
 		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-		DiagramSpecificationRepository repository = (DiagramSpecificationRepository) jarResourceCenter
+		DiagramSpecificationRepository<?> repository = (DiagramSpecificationRepository) jarResourceCenter
 				.getRepository(DiagramSpecificationRepository.class, diagramTA);
 		DiagramSpecificationResource diagramSpecificationResource = repository
 				.getResource("http://openflexo.org/test/TestDiagramSpecification2");
@@ -326,8 +325,7 @@ public class TestInstantiateControlledDiagramVirtualModelFromJar extends Openfle
 		log("testReloadProject()");
 
 		instanciateTestServiceManager(DiagramTechnologyAdapter.class);
-		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(),
-				"testdiagram_vp-1.1");
+		JarResourceCenter.addNamedJarFromClassPath(getFlexoServiceManager().getResourceCenterService(), "testdiagram_vp-1.1");
 
 		editor = reloadProject(project.getDirectory());
 		project = editor.getProject();

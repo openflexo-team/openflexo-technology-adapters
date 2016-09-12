@@ -45,13 +45,9 @@ import java.util.logging.Logger;
 
 import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.CannotRenameException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
@@ -60,7 +56,6 @@ import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
 
 /**
  * Default implementation for a diagram in Openflexo build-in diagram technology<br>
@@ -76,24 +71,24 @@ public abstract class DiagramImpl extends DiagramContainerElementImpl<DrawingGra
 	private ScreenshotImage<Diagram> screenshotImage;
 	private File expectedScreenshotImageFile = null;
 
-	public static DiagramResource newDiagramResource(String diagramName, String diagramTitle, String uri, File diagramFile,
+	/*public static DiagramResource newDiagramResource(String diagramName, String diagramTitle, String uri, File diagramFile,
 			DiagramSpecification diagramSpecification, FlexoResourceCenter<?> resourceCenter, FlexoServiceManager serviceManager)
 					throws InvalidFileNameException, SaveResourceException {
-
+	
 		DiagramResource newDiagramResource = DiagramResourceImpl.makeDiagramResource(diagramName, uri, diagramFile,
 				diagramSpecification.getResource(), resourceCenter, serviceManager);
-
+	
 		Diagram newDiagram = newDiagramResource.getFactory().makeNewDiagram(diagramSpecification);
 		newDiagramResource.setResourceData(newDiagram);
 		newDiagram.setResource(newDiagramResource);
 		// diagramSpecification.addToExampleDiagrams(newDiagram);
-
+	
 		newDiagram.setTitle(diagramTitle);
-
+	
 		newDiagramResource.save(null);
-
+	
 		return newDiagramResource;
-	}
+	}*/
 
 	@Override
 	public DiagramSpecification getMetaModel() {

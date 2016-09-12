@@ -38,22 +38,23 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.foundation.resource.InvalidFileNameException;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 
 public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide<CreateDiagramFromPPTSlide, RepositoryFolder> {
 
@@ -95,18 +96,25 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 	}
 
 	@Override
-	protected void doAction(Object context)
-			throws NotImplementedException, InvalidParameterException, SaveResourceException, InvalidFileNameException {
+	protected void doAction(Object context) throws InvalidParameterException, FlexoException {
 		logger.info("Add diagram from ppt slide");
 
 		if (getDiagram() == null) {
-			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
-					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			DiagramResource newDiagramResource;
+			try {
+				newDiagramResource = _makeDiagram();
+			} catch (ModelDefinitionException e) {
+				throw new FlexoException(e);
+			}
+			setDiagramResource(newDiagramResource);
 
+			/*DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			
 			setDiagramResource(diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(), null,
 					getFocusedObject().getResourceRepository().getResourceCenter()));
 			getFocusedObject().addToResources(getDiagramResource());
-			getDiagramResource().save(null);
+			getDiagramResource().save(null);*/
 		}
 
 		if (getSlide() != null) {
@@ -115,6 +123,23 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		else {
 			System.out.println("Error: no Slide");
 		}
+	}
+
+	protected <I> DiagramResource _makeDiagram() throws SaveResourceException, ModelDefinitionException {
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+
+		FlexoResourceCenter<I> rc = getFocusedObject().getResourceRepository().getResourceCenter();
+
+		String artefactName = getDiagramName().endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? getDiagramName()
+				: getDiagramName() + DiagramResourceFactory.DIAGRAM_SUFFIX;
+
+		I serializationArtefact = rc.createEntry(artefactName, (I) getFocusedObject().getSerializationArtefact());
+
+		DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc,
+				diagramTA.getTechnologyContextManager(), getDiagramURI(), true);
+
+		return newDiagramResource;
 	}
 
 	@Override
@@ -126,13 +151,13 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		return getFocusedObject().getResourceRepository().generateURI(getDiagramName());
 	}
 
-	@Override
+	/*@Override
 	public File getDiagramFile() {
 		return getDefaultDiagramFile();
 	}
-
+	
 	public File getDefaultDiagramFile() {
 		return new File(getFocusedObject().getFile(), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
-	}
+	}*/
 
 }

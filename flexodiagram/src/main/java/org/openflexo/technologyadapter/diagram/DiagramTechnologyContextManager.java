@@ -62,21 +62,21 @@ public class DiagramTechnologyContextManager extends TechnologyContextManager<Di
 
 	@Override
 	public DiagramTechnologyAdapter getTechnologyAdapter() {
-		return (DiagramTechnologyAdapter) super.getTechnologyAdapter();
+		return super.getTechnologyAdapter();
 	}
 
-	public DiagramSpecificationResource getDiagramSpecificationResource(Object diagramSpecification) {
-		return diagramSpecifications.get(diagramSpecification);
+	public DiagramSpecificationResource getDiagramSpecificationResource(String diagramSpecificationURI) {
+		return diagramSpecifications.get(diagramSpecificationURI);
 	}
 
 	public DiagramResource getDiagramResource(File diagramFile) {
-		for(Entry<String,DiagramResource> entry :diagrams.entrySet()){
-			 if(entry.getValue().getFlexoIODelegate() instanceof FileFlexoIODelegate){
-				 FileFlexoIODelegate delegate = (FileFlexoIODelegate)entry.getValue().getFlexoIODelegate();
-				 if(delegate.getFile().equals(diagramFile)){
-					 return entry.getValue();
-				 }
-			 }
+		for (Entry<String, DiagramResource> entry : diagrams.entrySet()) {
+			if (entry.getValue().getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+				FileFlexoIODelegate delegate = (FileFlexoIODelegate) entry.getValue().getFlexoIODelegate();
+				if (delegate.getFile().equals(diagramFile)) {
+					return entry.getValue();
+				}
+			}
 		}
 		return diagrams.get(diagramFile);
 	}

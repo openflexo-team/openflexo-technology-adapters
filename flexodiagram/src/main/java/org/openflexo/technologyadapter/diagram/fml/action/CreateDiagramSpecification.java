@@ -44,15 +44,20 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification.DiagramSpecificationImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceFactory;
 import org.openflexo.toolbox.StringUtils;
 
 public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecification, RepositoryFolder, FMLObject> {
@@ -101,14 +106,52 @@ public class CreateDiagramSpecification extends FlexoAction<CreateDiagramSpecifi
 	}
 
 	@Override
-	protected void doAction(Object context) throws IOFlexoException {
+	protected void doAction(Object context) throws FlexoException {
 
+		DiagramSpecificationResource newDSResource;
+		try {
+			newDSResource = _makeDiagramSpecification();
+		} catch (SaveResourceException e) {
+			throw new FlexoException(e);
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
+		}
+
+		newDiagramSpecification = newDSResource.getLoadedResourceData();
+		newDiagramSpecification.setDescription(newDiagramSpecificationDescription);
+
+		/*
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+		
+		DiagramSpecificationResource newDSResource = diagramTA.getDiagramSpecificationResourceFactory().makeResource(serializationArtefact, resourceCenter, technologyContextManager, createEmptyContents);
+		(newPaletteName, getFocusedObject().getResource(), diagramTA.getTechnologyContextManager(),
+						true);
+		
+		
 		newDiagramSpecification = DiagramSpecificationImpl.newDiagramSpecification(newDiagramSpecificationURI, newDiagramSpecificationName,
 				getFocusedObject(), getServiceManager());
 		newDiagramSpecification.setDescription(newDiagramSpecificationDescription);
 		// getFocusedObject().addToVirtualModels(newDiagramSpecification);
 		// getFocusedObject().getResourceRepository().registerResource(newDiagramSpecification.getResource());
-		getFocusedObject().addToResources(newDiagramSpecification.getResource());
+		getFocusedObject().addToResources(newDiagramSpecification.getResource());*/
+	}
+
+	protected <I> DiagramSpecificationResource _makeDiagramSpecification() throws SaveResourceException, ModelDefinitionException {
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+
+		FlexoResourceCenter<I> rc = getFocusedObject().getResourceRepository().getResourceCenter();
+		I parentDirectory = (I) getFocusedObject().getSerializationArtefact();
+		String artefactName = newDiagramSpecificationName.endsWith(DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX)
+				? newDiagramSpecificationName
+				: newDiagramSpecificationName + DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX;
+		I serializationArtefact = rc.createEntry(artefactName, parentDirectory);
+
+		DiagramSpecificationResource newDSResource = diagramTA.getDiagramSpecificationResourceFactory().makeResource(serializationArtefact,
+				rc, diagramTA.getTechnologyContextManager(), newDiagramSpecificationURI, true);
+
+		return newDSResource;
 	}
 
 	public boolean isNewDiagramSpecificationNameValid() {

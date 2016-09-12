@@ -49,7 +49,6 @@ import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.ScreenshotBuilder;
 import org.openflexo.foundation.resource.ScreenshotBuilder.ScreenshotImage;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterService;
@@ -68,7 +67,6 @@ import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResourceImpl;
 
 @ModelEntity
 @ImplementationClass(DiagramPalette.DiagramPaletteImpl.class)
@@ -134,7 +132,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 		private ScreenshotImage<DiagramPalette> screenshotImage;
 		private File expectedScreenshotImageFile = null;
 
-		public static DiagramPaletteResource newDiagramPalette(DiagramSpecification diagramSpecification, String diagramPaletteName,
+		/*public static DiagramPaletteResource newDiagramPalette(DiagramSpecification diagramSpecification, String diagramPaletteName,
 				DrawingGraphicalRepresentation graphicalRepresentation, FlexoServiceManager serviceManager) {
 			DiagramPaletteResource diagramPaletteResource = DiagramPaletteResourceImpl.makeDiagramPaletteResource(
 					diagramSpecification.getResource(), diagramPaletteName, serviceManager);
@@ -149,7 +147,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 				e.printStackTrace();
 			}
 			return diagramPaletteResource;
-		}
+		}*/
 
 		// private DiagramPaletteFactory factory;
 
@@ -159,6 +157,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			//_elements = new Vector<DiagramPaletteElement>();
 		}*/
 
+		@Override
 		public FlexoServiceManager getServiceManager() {
 			return getResource().getServiceManager();
 		}
@@ -254,12 +253,12 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			public Vector<DiagramPaletteElement> getElements() {
 				return _elements;
 			}
-
+		
 			@Override
 			public void setElements(Vector<DiagramPaletteElement> elements) {
 				_elements = elements;
 			}
-
+		
 			@Override
 			public void addToElements(DiagramPaletteElement obj) {
 				obj.setPalette(this);
@@ -267,7 +266,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 				setChanged();
 				notifyObservers(new DiagramPaletteElementInserted(obj, this));
 			}
-
+		
 			@Override
 			public boolean removeFromElements(DiagramPaletteElement obj) {
 				obj.setPalette(null);
@@ -281,7 +280,7 @@ public interface DiagramPalette extends DiagramPaletteObject, ResourceData<Diagr
 			public DrawingGraphicalRepresentation getGraphicalRepresentation() {
 				return graphicalRepresentation;
 			}
-
+		
 			@Override
 			public void setGraphicalRepresentation(DrawingGraphicalRepresentation graphicalRepresentation) {
 				this.graphicalRepresentation = graphicalRepresentation;

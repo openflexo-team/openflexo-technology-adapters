@@ -103,6 +103,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.swing.ImageUtils;
 import org.openflexo.swing.ImageUtils.ImageType;
@@ -127,7 +128,7 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 	private String diagramTitle;
 	private String diagramURI;
 	private DiagramResource diagramResource;
-	private File diagramFile;
+	// private File diagramFile;
 	private Diagram diagram;
 
 	private SlideShow selectedSlideShow;
@@ -331,13 +332,13 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		this.diagramURI = diagramURI;
 	}
 
-	public File getDiagramFile() {
+	/*public File getDiagramFile() {
 		return diagramFile;
 	}
-
+	
 	public void setDiagramFile(File diagramFile) {
 		this.diagramFile = diagramFile;
-	}
+	}*/
 
 	/*
 	 * PPT Configuration
@@ -439,15 +440,30 @@ public abstract class AbstractCreateDiagramFromPPTSlide<A extends AbstractCreate
 		return null;
 	}
 
-	public File saveImageFile(BufferedImage image, String name) {
-		File imageFile = new File(getDiagramFile().getParent(), JavaUtils.getClassName(name) + ".diagram-element" + ".png");
+	public <I> I saveImageFile(BufferedImage image, String name) {
+		FlexoResourceCenter<I> rc = (FlexoResourceCenter<I>) getDiagramResource().getResourceCenter();
+		I serializationArtefact = rc.createEntry(JavaUtils.getClassName(name) + ".diagram-element" + ".png",
+				rc.getContainer((I) getDiagramResource().getFlexoIODelegate().getSerializationArtefact()));
+
+		if (serializationArtefact instanceof File) {
+			try {
+				ImageUtils.saveImageToFile(image, (File) serializationArtefact, ImageType.PNG);
+				return serializationArtefact;
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+
+		/*File imageFile = new File(getDiagramFile().getParent(), JavaUtils.getClassName(name) + ".diagram-element" + ".png");
 		try {
 			ImageUtils.saveImageToFile(image, imageFile, ImageType.PNG);
 			return imageFile;
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
-		}
+		}*/
+		return null;
 	}
 
 	private HashMap<DiagramShape, Shape> shapesMap;

@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +56,6 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
@@ -72,6 +72,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramNavigationScheme;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
@@ -88,7 +89,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramType;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 
 /**
  * Implementation of the ModelSlot class for the Openflexo built-in diagram technology adapter<br>
@@ -218,30 +219,54 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		public DiagramResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String diagramUri,
 				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 
-			try {
-				DiagramResource returned = getModelSlotTechnologyAdapter().createNewDiagram(rc, filename, diagramUri,
-						(DiagramSpecificationResource) metaModelResource);
-				return returned;
+			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			DiagramResourceFactory factory = getModelSlotTechnologyAdapter().getDiagramResourceFactory();
+			String artefactName = filename.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? filename
+					: filename + DiagramResourceFactory.DIAGRAM_SUFFIX;
 
+			Object serializationArtefact = ((FlexoResourceCenter) rc).createEntry(artefactName, rc.getBaseArtefact());
+
+			DiagramResource newDiagramResource;
+			try {
+				newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, (FlexoResourceCenter) rc,
+						diagramTA.getTechnologyContextManager(), diagramUri, true);
+				newDiagramResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
+				return newDiagramResource;
 			} catch (SaveResourceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				return null;
+			} catch (ModelDefinitionException e) {
+				e.printStackTrace();
 			}
+			return null;
 
 		}
 
 		@Override
-		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
-				String diagramUri, FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
+		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> rc, String relativePath, String filename, String diagramUri,
+				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
+
+			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			DiagramResourceFactory factory = getModelSlotTechnologyAdapter().getDiagramResourceFactory();
+			String artefactName = filename.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? filename
+					: filename + DiagramResourceFactory.DIAGRAM_SUFFIX;
+
+			Object serializationArtefact = ((FlexoResourceCenter) rc).createEntry(relativePath + File.separator + artefactName,
+					rc.getBaseArtefact());
+
+			DiagramResource newDiagramResource;
 			try {
-				return getModelSlotTechnologyAdapter().createNewDiagram((FileSystemBasedResourceCenter) resourceCenter, relativePath,
-						filename, diagramUri, (DiagramSpecificationResource) metaModelResource);
+				newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, (FlexoResourceCenter) rc,
+						diagramTA.getTechnologyContextManager(), diagramUri, true);
+				newDiagramResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
+				return newDiagramResource;
 			} catch (SaveResourceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				return null;
+			} catch (ModelDefinitionException e) {
+				e.printStackTrace();
 			}
+			return null;
 		}
 
 		@Override

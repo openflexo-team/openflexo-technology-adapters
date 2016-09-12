@@ -38,24 +38,23 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
-import java.io.File;
 import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.fml.FMLObject;
-import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.rm.ResourceLocator;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.model.DiagramImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
@@ -103,11 +102,16 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 	}
 
 	@Override
-	protected void doAction(Object context)
-			throws NotImplementedException, InvalidParameterException, SaveResourceException, InvalidFileNameException {
+	protected void doAction(Object context) throws InvalidParameterException, FlexoException {
 		logger.info("Add example diagram");
 
-		String newDiagramURI = getFocusedObject().getURI() + "/" + newDiagramName;
+		try {
+			newDiagramResource = _makeDiagram();
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
+		}
+
+		/*String newDiagramURI = getFocusedObject().getURI() + "/" + newDiagramName;
 		File newDiagramFile = new File(ResourceLocator.retrieveResourceAsFile(getFocusedObject().getResource().getDirectory()),
 				newDiagramName + DiagramResource.DIAGRAM_SUFFIX);
 		newDiagramResource = DiagramImpl.newDiagramResource(newDiagramName, newDiagramTitle, newDiagramURI, newDiagramFile,
@@ -115,8 +119,21 @@ public class CreateExampleDiagram extends FlexoAction<CreateExampleDiagram, Diag
 		getFocusedObject().getResource().addToContents(newDiagramResource);
 		getFocusedObject().addToExampleDiagrams(newDiagramResource.getDiagram());
 		newDiagramResource.getDiagram().setDescription(description);
-		newDiagramResource.save(null);
+		newDiagramResource.save(null);*/
 
+	}
+
+	protected DiagramResource _makeDiagram() throws SaveResourceException, ModelDefinitionException {
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+
+		String diagramName = getNewDiagramName().endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? getNewDiagramName()
+				: getNewDiagramName() + DiagramResourceFactory.DIAGRAM_SUFFIX;
+
+		DiagramResource newDiagramResource = diagramTA.getDiagramSpecificationResourceFactory().getExampleDiagramsResourceFactory()
+				.makeExampleDiagramResource(diagramName, getFocusedObject().getResource(), diagramTA.getTechnologyContextManager(), true);
+
+		return newDiagramResource;
 	}
 
 	@Override

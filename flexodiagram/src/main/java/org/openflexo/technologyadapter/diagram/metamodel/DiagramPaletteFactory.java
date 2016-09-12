@@ -67,7 +67,7 @@ public class DiagramPaletteFactory extends FGEModelFactoryImpl implements Pamela
 	private IgnoreLoadingEdits ignoreHandler = null;
 	private FlexoUndoManager undoManager = null;
 
-	public DiagramPaletteFactory(EditingContext editingContext, DiagramPaletteResource paletteResource) throws ModelDefinitionException {
+	public DiagramPaletteFactory(DiagramPaletteResource paletteResource, EditingContext editingContext) throws ModelDefinitionException {
 		super(DiagramPalette.class, DiagramPaletteElement.class);
 		if (paletteResource != null) {
 			addConverter(new RelativePathResourceConverter(paletteResource.getFlexoIODelegate().getParentPath()));

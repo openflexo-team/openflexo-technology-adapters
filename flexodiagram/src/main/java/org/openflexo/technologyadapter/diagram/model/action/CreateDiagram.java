@@ -43,20 +43,22 @@ import java.util.Vector;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.InvalidArgumentException;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.resource.InvalidFileNameException;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 import org.openflexo.toolbox.JavaUtils;
 import org.openflexo.toolbox.StringUtils;
 
@@ -124,74 +126,46 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 	}
 
 	@Override
-	protected void doAction(Object context) throws InvalidFileNameException, SaveResourceException, InvalidArgumentException {
+	protected void doAction(Object context) throws FlexoException {
 
-		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+		/*DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-
+		
+		FlexoResourceCenter<?> rc = getFocusedObject().getResourceRepository().getResourceCenter();
+		
+		diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, resourceCenter, technologyContextManager, createEmptyContents)
+		
 		diagramResource = diagramTA.createNewDiagram(getDiagramName(), getDiagramURI(), getDiagramFile(),
 				getDiagramSpecification() != null ? getDiagramSpecification().getResource() : null,
 				getFocusedObject().getResourceRepository().getResourceCenter());
-
+		
 		getFocusedObject().addToResources(diagramResource);
+		
+		diagramResource.save(null);*/
 
-		diagramResource.save(null);
-
-		/*	newVirtualModelInstanceName = JavaUtils.getClassName(newVirtualModelInstanceName);
-		
-			if (StringUtils.isNotEmpty(newVirtualModelInstanceName) && StringUtils.isEmpty(newVirtualModelInstanceTitle)) {
-				newVirtualModelInstanceTitle = newVirtualModelInstanceName;
-			}
-		
-			if (StringUtils.isEmpty(newVirtualModelInstanceName)) {
-				throw new InvalidParameterException("virtual model instance name is undefined");
-			}
-		
-			int index = 1;
-			String baseName = newVirtualModelInstanceName;
-			while (!getFocusedObject().isValidVirtualModelName(newVirtualModelInstanceName)) {
-				newVirtualModelInstanceName = baseName + index;
-				index++;
-			}
-		
-			VirtualModelInstanceResource newVirtualModelInstanceResource = makeVirtualModelInstanceResource();
-		
-			newVirtualModelInstance = newVirtualModelInstanceResource.getVirtualModelInstance();
-		
-			logger.info("Added virtual model instance " + newVirtualModelInstance + " in view " + getFocusedObject());
-		
-			System.out.println("OK, we have created the file " + newVirtualModelInstanceResource.getFile().getAbsolutePath());
-		
-			for (ModelSlot ms : virtualModel.getModelSlots()) {
-				ModelSlotInstanceConfiguration<?, ?> configuration = getModelSlotInstanceConfiguration(ms);
-				if (configuration.isValidConfiguration()) {
-					newVirtualModelInstance.addToModelSlotInstances(configuration.createModelSlotInstance(newVirtualModelInstance));
-				} else {
-					throw new InvalidArgumentException("Wrong configuration for model slot " + configuration.getModelSlot() + " configuration="
-							+ configuration);
-				}
-			}
-		
-			if (creationSchemeAction != null) {
-				creationSchemeAction.initWithFlexoConceptInstance(newVirtualModelInstance);
-				creationSchemeAction.doAction();
-			}
-		
-			System.out.println("Now, we try to synchronize the new virtual model instance");
-		
-			if (newVirtualModelInstance.isSynchronizable()) {
-				System.out.println("Go for it");
-				newVirtualModelInstance.synchronize(null);
-			}
-		
-			System.out.println("Saving file again...");
-			newVirtualModelInstanceResource.save(null);*/
+		try {
+			diagramResource = _makeDiagram();
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
+		}
 	}
 
-	/*public DiagramResource makeDiagramResource() throws InvalidFileNameException, SaveResourceException {
-		return DiagramImpl.newDiagramResource(getDiagramName(), getDiagramTitle(), getDiagramURI(), getDiagramFile(),
-				getDiagramSpecification(), getServiceManager());
-	}*/
+	private <I> DiagramResource _makeDiagram() throws SaveResourceException, ModelDefinitionException {
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+
+		FlexoResourceCenter<I> rc = getFocusedObject().getResourceRepository().getResourceCenter();
+
+		String artefactName = getDiagramName().endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? getDiagramName()
+				: getDiagramName() + DiagramResourceFactory.DIAGRAM_SUFFIX;
+
+		I serializationArtefact = rc.createEntry(artefactName, (I) getFocusedObject().getSerializationArtefact());
+
+		DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc,
+				diagramTA.getTechnologyContextManager(), true);
+
+		return newDiagramResource;
+	}
 
 	private String errorMessage;
 
@@ -223,9 +197,9 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 			return false;
 		}
 
-		if (getDiagramFile() == null) {
-
-		}
+		/*if (getDiagramFile() == null) {
+		
+		}*/
 
 		// TODO: handle duplicated name and uri
 		return true;
@@ -317,20 +291,20 @@ public class CreateDiagram extends FlexoAction<CreateDiagram, RepositoryFolder, 
 		return getFocusedObject().getResourceRepository().generateURI(getDiagramName());
 	}
 
-	public File getDiagramFile() {
+	/*public File getDiagramFile() {
 		if (diagramFile == null) {
 			return getDefaultDiagramFile();
 		}
 		return diagramFile;
 	}
-
+	
 	public void setDiagramFile(File diagramFile) {
 		this.diagramFile = diagramFile;
 	}
-
+	
 	public File getDefaultDiagramFile() {
 		return new File(getFocusedObject().getFile(), getDiagramName() + DiagramResource.DIAGRAM_SUFFIX);
-	}
+	}*/
 
 	public String getDescription() {
 		return description;
