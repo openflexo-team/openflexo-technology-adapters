@@ -67,4 +67,48 @@ public class CSVModelResourceFactory extends FlexoResourceFactory<CSVModelResour
 		return resource;
 	}
 
+	/*public static CSVModelResource makeCSVModelResource(String modelURI, File modelFile,
+			CSVTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
+		try {
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, CSVModelResource.class));
+			CSVModelResourceImpl returned = (CSVModelResourceImpl) factory.newInstance(CSVModelResource.class);
+			returned.initName(modelFile.getName());
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+	
+			returned.setURI(modelURI);
+			returned.setResourceCenter(resourceCenter);
+			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
+			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+			returned.setTechnologyContextManager(technologyContextManager);
+			technologyContextManager.registerResource(returned);
+	
+			return returned;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public static CSVModelResource retrieveCSVModelResource(File modelFile, CSVTechnologyContextManager technologyContextManager,
+			FlexoResourceCenter<?> resourceCenter) {
+		try {
+			ModelFactory factory = new ModelFactory(
+					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, CSVModelResource.class));
+			CSVModelResourceImpl returned = (CSVModelResourceImpl) factory.newInstance(CSVModelResource.class);
+			returned.initName(modelFile.getName());
+			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
+			returned.setURI(modelFile.toURI().toString());
+			returned.setResourceCenter(resourceCenter);
+			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
+			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
+			returned.setTechnologyContextManager(technologyContextManager);
+			technologyContextManager.registerResource(returned);
+			return returned;
+		} catch (ModelDefinitionException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}*/
+
 }
