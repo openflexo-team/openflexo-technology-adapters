@@ -123,7 +123,8 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 		}
 		assertNotNull(resourceCenter);
 
-		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
+		// repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
+		repository = technologicalAdapter.getDiagramSpecificationRepository(resourceCenter);
 
 		assertNotNull(repository);
 
@@ -154,6 +155,8 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 
 		assertNotNull(diagramSpecificationResource);
 		assertTrue(diagramSpecificationResource.getFlexoIODelegate().exists());
+
+		assertEquals(diagramSpecificationURI, diagramSpecificationResource.getURI());
 
 	}
 

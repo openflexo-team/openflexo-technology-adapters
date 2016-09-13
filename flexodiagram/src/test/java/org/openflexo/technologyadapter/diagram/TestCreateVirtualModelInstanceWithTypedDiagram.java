@@ -43,7 +43,9 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,6 +55,7 @@ import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.ViewPoint;
+import org.openflexo.foundation.fml.ViewPointRepository;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.action.CreateVirtualModel;
@@ -66,12 +69,14 @@ import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateViewInFolder;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.DefaultModelSlotInstanceConfigurationOption;
 import org.openflexo.foundation.fml.rt.rm.ViewResource;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
+import org.openflexo.toolbox.FileUtils;
 
 /**
  * This unit test is intented to test VirtualModelInstance using a {@link TypedDiagramModelSlot}
@@ -86,6 +91,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	public static final String VIEWPOINT_URI = "http://openflexo.org/test/TestViewPoint";
 	public static final String VIRTUAL_MODEL_NAME = "TestVirtualModel";
 
+	private static ViewPointResource newViewPointResource;
 	private static ViewPoint newViewPoint;
 	private static VirtualModel newVirtualModel;
 	private static FlexoEditor editor;
@@ -108,7 +114,7 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 				.getTechnologyAdapter(FMLTechnologyAdapter.class);
 		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
 
-		ViewPointResource newViewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+		newViewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
 				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
 		newViewPoint = newViewPointResource.getLoadedResourceData();
@@ -262,13 +268,35 @@ public class TestCreateVirtualModelInstanceWithTypedDiagram extends OpenflexoPro
 	public void testReloadProject() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		instanciateTestServiceManager();
+		File directory = ResourceLocator.retrieveResourceAsFile(newViewPointResource.getDirectory());
+		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(), directory.getName());
+		newDirectory.mkdirs();
+
+		try {
+			FileUtils.copyContentDirToDir(directory, newDirectory);
+			// We wait here for the thread monitoring ResourceCenters to detect new files
+			((FileSystemBasedResourceCenter) resourceCenter).performDirectoryWatchingNow();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		editor = reloadProject(project.getDirectory());
 		project = editor.getProject();
 		assertNotNull(editor);
 		assertNotNull(project);
 		ViewResource newViewResource = project.getViewLibrary().getView(newView.getURI());
 		assertNotNull(newViewResource);
+
+		System.out.println("view in " + newViewResource.getFlexoIODelegate().getSerializationArtefact());
+
+		ViewPointRepository<?> vpRep = resourceCenter.getViewPointRepository();
+		for (ViewPointResource r : vpRep.getAllResources()) {
+			System.out.println("> " + r.getURI());
+		}
+
 		assertNull(newViewResource.getLoadedResourceData());
+
 		newViewResource.loadResourceData(null);
 		assertNotNull(newViewResource.getLoadedResourceData());
 		newView = newViewResource.getLoadedResourceData();

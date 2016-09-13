@@ -311,8 +311,8 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertNotNull(editor);
 		assertNotNull(project);
 
-		assertEquals(2, project.getAllResources().size());
 		System.out.println("All resources=" + project.getAllResources());
+		assertEquals(3, project.getAllResources().size());
 		assertNotNull(project.getResource(newView.getURI()));
 
 		ViewResource newViewResource = project.getViewLibrary().getView(newView.getURI());

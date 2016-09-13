@@ -153,6 +153,7 @@ public class DiagramSpecificationResourceFactory extends
 
 		DiagramSpecificationInfo vpi = findDiagramSpecificationInfo(returned, resourceCenter);
 		if (vpi != null) {
+
 			returned.setURI(vpi.uri);
 			if (StringUtils.isNotEmpty(vpi.version)) {
 				returned.setVersion(new FlexoVersion(vpi.version));

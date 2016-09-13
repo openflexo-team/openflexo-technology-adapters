@@ -353,13 +353,13 @@ public class CreateFMLControlledDiagramVirtualModelWizard extends AbstractCreate
 			}
 		}
 
-		public RepositoryFolder<DiagramSpecificationResource> getRepositoryFolder() {
+		public RepositoryFolder<DiagramSpecificationResource, ?> getRepositoryFolder() {
 			return getAction().getRepositoryFolder();
 		}
 
-		public void setRepositoryFolder(RepositoryFolder<DiagramSpecificationResource> repositoryFolder) {
+		public void setRepositoryFolder(RepositoryFolder<DiagramSpecificationResource, ?> repositoryFolder) {
 			if (repositoryFolder != getRepositoryFolder()) {
-				RepositoryFolder<DiagramSpecificationResource> oldValue = getRepositoryFolder();
+				RepositoryFolder<DiagramSpecificationResource, ?> oldValue = getRepositoryFolder();
 				getAction().setRepositoryFolder(repositoryFolder);
 				getPropertyChangeSupport().firePropertyChange("repositoryFolder", oldValue, repositoryFolder);
 				checkValidity();

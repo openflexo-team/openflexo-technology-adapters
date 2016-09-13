@@ -84,7 +84,7 @@ public interface DiagramSpecification
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
 	@PropertyIdentifier(type = String.class)
-	public static final String URI_KEY = "URI";
+	public static final String URI_KEY = "uri";
 	@PropertyIdentifier(type = DiagramPalette.class, cardinality = Cardinality.LIST)
 	public static final String PALETTES_KEY = "palettes";
 	@PropertyIdentifier(type = Diagram.class, cardinality = Cardinality.LIST)
