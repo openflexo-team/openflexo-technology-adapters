@@ -41,6 +41,8 @@ package org.openflexo.technologyadapter.gina.model;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
@@ -70,8 +72,8 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 	public static GINATechnologyAdapter technologicalAdapter;
 	public static FlexoServiceManager applicationContext;
 	public static FlexoResourceCenter<?> resourceCenter;
-	public static GINAResourceRepository repository;
-	public static RepositoryFolder<GINAFIBComponentResource> componentFolder;
+	public static GINAResourceRepository<?> repository;
+	public static RepositoryFolder<GINAFIBComponentResource, ?> componentFolder;
 
 	public static FlexoEditor editor;
 
@@ -90,16 +92,16 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
 		// Looks for the first FileSystemBasedResourceCenter
-		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters() ){
-			if (rc instanceof FileSystemBasedResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()){
+		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters()) {
+			if (rc instanceof FileSystemBasedResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()) {
 				resourceCenter = rc;
 				break;
 			}
 		}
-		
+
 		assertNotNull(resourceCenter);
-		
-		repository = resourceCenter.getRepository(GINAResourceRepository.class, technologicalAdapter);
+
+		repository = technologicalAdapter.getGINAResourceRepository(resourceCenter);
 
 		assertNotNull(repository);
 
@@ -126,7 +128,7 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 		addRepositoryFolder.doAction();
 		assertTrue(addRepositoryFolder.hasActionExecutionSucceeded());
 		componentFolder = addRepositoryFolder.getNewFolder();
-		assertTrue(componentFolder.getFile().exists());
+		assertTrue(((File) componentFolder.getSerializationArtefact()).exists());
 	}
 
 	/**

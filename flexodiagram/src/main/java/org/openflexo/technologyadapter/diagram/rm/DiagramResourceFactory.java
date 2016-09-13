@@ -80,7 +80,7 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 
 		I serializationArtefact = rc.createEntry(artefactName, folder.getSerializationArtefact());
 
-		DiagramResource newDiagramResource = makeResource(serializationArtefact, rc, technologyContextManager, true);
+		DiagramResource newDiagramResource = makeResource(serializationArtefact, rc, technologyContextManager, uri, true);
 
 		return newDiagramResource;
 	}

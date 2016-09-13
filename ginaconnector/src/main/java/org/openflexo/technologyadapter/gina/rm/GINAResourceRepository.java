@@ -25,10 +25,10 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepos
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
-public class GINAResourceRepository
-		extends TechnologyAdapterResourceRepository<GINAFIBComponentResource, GINATechnologyAdapter, GINAFIBComponent> {
+public class GINAResourceRepository<I>
+		extends TechnologyAdapterResourceRepository<GINAFIBComponentResource, GINATechnologyAdapter, GINAFIBComponent, I> {
 
-	public GINAResourceRepository(GINATechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public GINAResourceRepository(GINATechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 

@@ -340,13 +340,13 @@ public class CreateFMLControlledFIBVirtualModelWizard extends AbstractCreateVirt
 			}
 		}
 
-		public RepositoryFolder<GINAFIBComponentResource> getRepositoryFolder() {
+		public RepositoryFolder<GINAFIBComponentResource, ?> getRepositoryFolder() {
 			return getAction().getRepositoryFolder();
 		}
 
-		public void setRepositoryFolder(RepositoryFolder<GINAFIBComponentResource> repositoryFolder) {
+		public void setRepositoryFolder(RepositoryFolder<GINAFIBComponentResource, ?> repositoryFolder) {
 			if (repositoryFolder != getRepositoryFolder()) {
-				RepositoryFolder<GINAFIBComponentResource> oldValue = getRepositoryFolder();
+				RepositoryFolder<GINAFIBComponentResource, ?> oldValue = getRepositoryFolder();
 				getAction().setRepositoryFolder(repositoryFolder);
 				getPropertyChangeSupport().firePropertyChange("repositoryFolder", oldValue, repositoryFolder);
 				checkValidity();

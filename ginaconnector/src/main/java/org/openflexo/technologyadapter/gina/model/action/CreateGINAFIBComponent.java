@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.gina.model.action;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Vector;
 import java.util.logging.Logger;
@@ -47,18 +46,16 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.InvalidArgumentException;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.resource.InvalidFileNameException;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.gina.model.FIBComponent;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
-import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResourceImpl;
 import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
 import org.openflexo.toolbox.StringUtils;
 
@@ -113,26 +110,39 @@ public class CreateGINAFIBComponent extends FlexoAction<CreateGINAFIBComponent, 
 	}
 
 	@Override
-	protected void doAction(Object context) throws InvalidFileNameException, SaveResourceException, InvalidArgumentException {
+	protected void doAction(Object context) throws FlexoException {
 
-		GINATechnologyAdapter ginaTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
+		try {
+			componentResource = _makeGINAFIBComponentResource();
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
+		}
 
+		/*GINATechnologyAdapter ginaTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
+		
 		if (!componentName.endsWith(GINATechnologyAdapter.GINA_COMPONENT_EXTENSION)
 				&& !componentName.endsWith(GINATechnologyAdapter.GINA_INSPECTOR_EXTENSION)) {
 			componentName = componentName + GINATechnologyAdapter.GINA_COMPONENT_EXTENSION;
 		}
-
+		
 		File componentFile = new File(getFocusedObject().getFile(), componentName);
-
+		
 		componentResource = GINAFIBComponentResourceImpl.makeComponentResource(componentFile, ginaTA.getTechnologyContextManager());
-
+		
 		getFocusedObject().addToResources(componentResource);
-
+		
 		GINAFIBComponent component = componentResource.getFactory().makeNewGINAFIBComponent();
 		componentResource.setResourceData(component);
 		component.setResource(componentResource);
-		componentResource.save(null);
+		componentResource.save(null);*/
 
+	}
+
+	private <I> GINAFIBComponentResource _makeGINAFIBComponentResource() throws SaveResourceException, ModelDefinitionException {
+		GINATechnologyAdapter ginaTA = getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
+
+		return ginaTA.getGINAFIBComponentResourceFactory().makeGINAFIBComponentResource(getComponentName(), getFocusedObject(),
+				ginaTA.getTechnologyContextManager(), true);
 	}
 
 	@Override
