@@ -38,32 +38,18 @@
 
 package org.openflexo.technologyadapter.freeplane;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.freeplane.features.map.MapModel;
-import org.freeplane.features.map.NodeModel;
-import org.freeplane.features.mapio.MapIO;
-import org.freeplane.features.mapio.mindmapmode.MMapIO;
-import org.freeplane.features.mode.Controller;
-import org.freeplane.main.application.FreeplaneBasicAdapter;
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
-import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
-import org.openflexo.technologyadapter.freeplane.rm.FreeplaneResourceImpl;
+import org.openflexo.technologyadapter.freeplane.rm.FreeplaneResourceFactory;
 import org.openflexo.technologyadapter.freeplane.rm.FreeplaneResourceRepository;
-import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 
 /**
  * This class defines and implements the Freeplane technology adapter
@@ -73,10 +59,8 @@ import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 
 @DeclareModelSlots({ FreeplaneModelSlot.class })
 @DeclareRepositoryType({ FreeplaneResourceRepository.class })
-@DeclareResourceTypes({ IFreeplaneResource.class })
+@DeclareResourceTypes({ FreeplaneResourceFactory.class })
 public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
-
-	public static final String FREEPLANE_FILE_EXTENSION = ".mm";
 
 	private static final Logger LOGGER = Logger.getLogger(FreeplaneTechnologyAdapter.class.getPackage().getName());
 
@@ -116,14 +100,14 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 		return null;
 	}
 
-	@Override
+	/*@Override
 	public <I> void performInitializeResourceCenter(final FlexoResourceCenter<I> resourceCenter) {
 		// TODO Auto-generated method stub
 		FreeplaneResourceRepository currentRepository = resourceCenter.getRepository(FreeplaneResourceRepository.class, this);
 		if (currentRepository == null) {
 			this.createNewFreeplaneRepository(resourceCenter);
 		}
-
+	
 		for (final I item : resourceCenter) {
 			if (item instanceof File) {
 				this.initializeFreeplaneFile(resourceCenter, (File) item);
@@ -131,7 +115,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 		}
 		// Call it to update the current repositories
 		notifyRepositoryStructureChanged();
-	}
+	}*/
 
 	/**
 	 * Refactoring for readability. Register file if it is a freeplane file, and reference resource to <code>this</code>
@@ -139,7 +123,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 * @param candidateFile
 	 */
-	private <I> IFreeplaneResource initializeFreeplaneFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
+	/*private <I> IFreeplaneResource initializeFreeplaneFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
 		if (!this.isValidFreeplaneFile(candidateFile)) {
 			return null;
 		}
@@ -158,15 +142,15 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 			return freeplaneResourceFile;
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * @param candidateFile
 	 * @return true if extension of file match <code>FREEPLANE_FILE_EXTENSION</code>
 	 */
-	private boolean isValidFreeplaneFile(final File candidateFile) {
+	/*private boolean isValidFreeplaneFile(final File candidateFile) {
 		return candidateFile.getName().endsWith(FREEPLANE_FILE_EXTENSION);
-	}
+	}*/
 
 	/**
 	 * Don't know what it is used for, let default value
@@ -183,13 +167,13 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	/* (non-Javadoc)
 	 * @see org.openflexo.foundation.technologyadapter.TechnologyAdapter#contentsAdded(org.openflexo.foundation.resource.FlexoResourceCenter, java.lang.Object)
 	 */
-	@Override
+	/*@Override
 	public <I> boolean contentsAdded(final FlexoResourceCenter<I> resourceCenter, final I contents) {
 		if (contents instanceof File) {
 			return (initializeFreeplaneFile(resourceCenter, (File) contents) != null);
 		}
 		return false;
-	}
+	}*/
 
 	/**
 	 * Nothing done. Maybe an unregister should be called.
@@ -197,23 +181,23 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 * @param contents
 	 */
-	@Override
+	/*@Override
 	public <I> boolean contentsDeleted(final FlexoResourceCenter<I> resourceCenter, final I contents) {
 		// Noting particular to implement
 		return false;
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
 		// TODO Auto-generated method stub
 		return false;
-	}
+	}*/
 
 	/**
 	 * Create a FreeplaneResource from a .mm file, given a FlexoProject.
@@ -223,13 +207,13 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	 * @param modelUri
 	 * @return FreeplaneResourceImpl
 	 */
-	public IFreeplaneResource createNewFreeplaneModel(final FlexoProject project, final String filename, final String modelUri) {
+	/*public IFreeplaneResource createNewFreeplaneModel(final FlexoProject project, final String filename, final String modelUri) {
 		final File file = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
 		final FreeplaneResourceImpl freeplaneResourceFile = (FreeplaneResourceImpl) FreeplaneResourceImpl.makeFreeplaneResource(modelUri,
 				file, this.getTechnologyContextManager(), project);
 		this.getTechnologyContextManager().registerResource(freeplaneResourceFile);
 		return freeplaneResourceFile;
-	}
+	}*/
 
 	/**
 	 * Create a new FreeplaneResourceRepository and register it in the given resource center.
@@ -237,26 +221,35 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 * @return the repository
 	 */
-	private FreeplaneResourceRepository createNewFreeplaneRepository(final FlexoResourceCenter<?> resourceCenter) {
+	/*private FreeplaneResourceRepository createNewFreeplaneRepository(final FlexoResourceCenter<?> resourceCenter) {
 		final FreeplaneResourceRepository repo = new FreeplaneResourceRepository(this, resourceCenter);
 		resourceCenter.registerRepository(repo, FreeplaneResourceRepository.class, this);
 		return repo;
+	}*/
+
+	public <I> FreeplaneResourceRepository<I> getFreeplaneResourceRepository(FlexoResourceCenter<I> resourceCenter) {
+		FreeplaneResourceRepository<I> returned = resourceCenter.getRepository(FreeplaneResourceRepository.class, this);
+		if (returned == null) {
+			returned = new FreeplaneResourceRepository<I>(this, resourceCenter);
+			resourceCenter.registerRepository(returned, FreeplaneResourceRepository.class, this);
+		}
+		return returned;
 	}
 
-	public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createNewFreeplaneMap(final FlexoResourceCenter<?> rc,
+	/*public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createNewFreeplaneMap(final FlexoResourceCenter<?> rc,
 			final String filename) {
-		if (rc instanceof FlexoProject){
+		if (rc instanceof FlexoProject) {
 			File freeplaneFile = new File(FlexoProject.getProjectSpecificModelsDirectory((FlexoProject) rc), filename);
 			String modelUri = freeplaneFile.toURI().toString();
-			IFreeplaneResource returned = FreeplaneResourceImpl.makeFreeplaneResource(modelUri, freeplaneFile, getTechnologyContextManager(),
-					rc);
-
+			IFreeplaneResource returned = FreeplaneResourceImpl.makeFreeplaneResource(modelUri, freeplaneFile,
+					getTechnologyContextManager(), rc);
+	
 			// Maybe noi initialized yet
 			FreeplaneBasicAdapter.getInstance();
 			final MapModel newMap = new MapModel();
 			final NodeModel root = new NodeModel(filename, newMap);
 			newMap.setRoot(root);
-
+	
 			Controller.getCurrentModeController().getMapController().fireMapCreated(newMap);
 			Controller.getCurrentModeController().getMapController().newMapView(newMap);
 			try {
@@ -270,11 +263,15 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 			LOGGER.warning("INVESTIGATE: NOT ABLE TO CREATE A NEW FREEPLANE RESOURCE => not a project: " + rc.toString());
 			return null;
 		}
-	}
+	}*/
 
 	@Override
 	public String getIdentifier() {
 		return "FRP";
+	}
+
+	public FreeplaneResourceFactory getFreeplaneResourceFactory() {
+		return getResourceFactory(FreeplaneResourceFactory.class);
 	}
 
 }
