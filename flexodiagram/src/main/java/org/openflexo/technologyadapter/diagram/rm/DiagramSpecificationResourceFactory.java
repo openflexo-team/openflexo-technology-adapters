@@ -26,6 +26,8 @@ import org.openflexo.foundation.fml.rm.ViewPointResource;
 import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.PamelaResourceFactory;
+import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -85,7 +87,7 @@ public class DiagramSpecificationResourceFactory extends
 		if (resourceCenter.exists(serializationArtefact) && resourceCenter.isDirectory(serializationArtefact)
 				&& resourceCenter.canRead(serializationArtefact)
 				&& (resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SPECIFICATION_SUFFIX)
-		/*|| resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SPECIFICATION_SUFFIX + "/")*/)) {
+				/*|| resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SPECIFICATION_SUFFIX + "/")*/)) {
 			/*final String baseName = candidateFile.getName().substring(0,
 					candidateFile.getName().length() - ViewPointResource.DIAGRAM_SPECIFICATION_SUFFIX.length());
 			final File xmlFile = new File(candidateFile, baseName + ".xml");
@@ -93,6 +95,19 @@ public class DiagramSpecificationResourceFactory extends
 			return true;
 		}
 		return false;
+	}
+
+	public <I> DiagramSpecificationResource makeDiagramSpecificationResourceResource(String baseName, String uri,
+			RepositoryFolder<DiagramSpecificationResource, I> folder,
+			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)
+			throws SaveResourceException, ModelDefinitionException {
+
+		FlexoResourceCenter<I> resourceCenter = folder.getResourceRepository().getResourceCenter();
+
+		String artefactName = baseName.endsWith(DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX) ? baseName
+				: baseName + DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX;
+		I serializationArtefact = resourceCenter.createDirectory(artefactName, folder.getSerializationArtefact());
+		return makeResource(serializationArtefact, resourceCenter, technologyContextManager, uri, createEmptyContents);
 	}
 
 	@Override

@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.diagram.metamodel;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.io.File;
@@ -67,13 +66,9 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramFactory;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResourceImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResourceImpl;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceImpl;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 import org.openflexo.toolbox.FileUtils;
@@ -137,59 +132,46 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 
 	/**
 	 * Test Create diagram specification resource
+	 * 
+	 * @throws ModelDefinitionException
+	 * @throws SaveResourceException
 	 */
 	@Test
 	@TestOrder(2)
-	public void testCreateDiagramSpecificationResource() {
+	public void testCreateDiagramSpecificationResource() throws ModelDefinitionException, SaveResourceException {
 
 		log("testCreateDiagramSpecificationResource()");
 
-		try {
-			DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
-					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-
-			diagramSpecificationResource = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(diagramSpecificationName,
-					repository.getRootFolder(), diagramSpecificationURI, resourceCenter, applicationContext);
-
-			repository.registerResource(diagramSpecificationResource);
-
-			/*File diagramRep = new File(repository.getDirectory() + "/" + diagramFileName);
-			File diagramFile = new File(diagramRep + "/" + diagramFileName + DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX);
-			diagramSpecificationResource = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(diagramSpecificationURI,
-					diagramRep, diagramFile, applicationContext);*/
-
-			diagramSpecificationResource.save(null);
-			assertTrue(diagramSpecificationResource.getFlexoIODelegate().exists());
-
-		} catch (SaveResourceException e) {
-			fail(e.getMessage());
-		}
-
-	}
-
-	private <I> DiagramResource _makeDiagram() throws SaveResourceException, ModelDefinitionException {
-		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		FlexoResourceCenter<I> rc = getFocusedObject().getResourceRepository().getResourceCenter();
+		diagramSpecificationResource = diagramTA.getDiagramSpecificationResourceFactory().makeDiagramSpecificationResourceResource(
+				diagramSpecificationName, diagramSpecificationURI, repository.getRootFolder(), diagramTA.getTechnologyContextManager(),
+				true);
 
-		String artefactName = getDiagramName().endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? getDiagramName()
-				: getDiagramName() + DiagramResourceFactory.DIAGRAM_SUFFIX;
+		// diagramSpecificationResource = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(diagramSpecificationName,
+		// repository.getRootFolder(), diagramSpecificationURI, resourceCenter, applicationContext);
 
-		I serializationArtefact = rc.createEntry(artefactName, (I) getFocusedObject().getSerializationArtefact());
+		// repository.registerResource(diagramSpecificationResource);
 
-		DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc,
-				diagramTA.getTechnologyContextManager(), true);
+		/*File diagramRep = new File(repository.getDirectory() + "/" + diagramFileName);
+		File diagramFile = new File(diagramRep + "/" + diagramFileName + DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX);
+		diagramSpecificationResource = DiagramSpecificationResourceImpl.makeDiagramSpecificationResource(diagramSpecificationURI,
+				diagramRep, diagramFile, applicationContext);*/
 
-		return newDiagramResource;
+		// diagramSpecificationResource.save(null);
+		assertTrue(diagramSpecificationResource.getFlexoIODelegate().exists());
+
 	}
 
 	/**
 	 * Reload the DiagramSpecification, tests that uri and name are persistent
+	 * 
+	 * @throws ModelDefinitionException
 	 */
 	@Test
 	@TestOrder(3)
-	public void testLoadDiagramSpecification() {
+	public void testLoadDiagramSpecification() throws ModelDefinitionException {
 
 		log("testLoadDiagramSpecification()");
 
@@ -200,9 +182,16 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
 		*/
 
-		DiagramSpecificationResource reloadedResource = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(
-				ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), repository.getRootFolder(),
-				resourceCenter, applicationContext);
+		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+
+		DiagramSpecificationResource reloadedResource = diagramTA.getDiagramSpecificationResourceFactory().retrieveResource(
+				ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()),
+				(FlexoResourceCenter<File>) resourceCenter, diagramTA.getTechnologyContextManager());
+
+		// DiagramSpecificationResource reloadedResource = DiagramSpecificationResourceImpl.retrieveDiagramSpecificationResource(
+		// ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()), repository.getRootFolder(),
+		// resourceCenter, applicationContext);
 
 		assertNotNull(reloadedResource);
 		assertEquals(diagramSpecificationURI, reloadedResource.getURI());
@@ -216,73 +205,81 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 
 	/**
 	 * Test palettes
+	 * 
+	 * @throws ModelDefinitionException
+	 * @throws SaveResourceException
 	 */
 	@Test
 	@TestOrder(4)
-	public void testPalette() {
+	public void testPalette() throws SaveResourceException, ModelDefinitionException {
 
 		log("testPalette()");
 
-		try {
-			paletteResource = DiagramPaletteResourceImpl.makeDiagramPaletteResource(diagramSpecificationResource, paletteName,
-					applicationContext);
+		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-			DiagramPaletteElement diagramPaletteElement = paletteResource.getFactory().makeDiagramPaletteElement();
-			ShapeGraphicalRepresentation shapeGR = paletteResource.getFactory().makeShapeGraphicalRepresentation();
-			diagramPaletteElement.setGraphicalRepresentation(shapeGR);
-			paletteResource.getDiagramPalette().addToElements(diagramPaletteElement);
+		paletteResource = diagramTA.getDiagramSpecificationResourceFactory().getPaletteResourceFactory()
+				.makeDiagramPaletteResource(paletteName, diagramSpecificationResource, diagramTA.getTechnologyContextManager(), true);
 
-			paletteResource.save(null);
-			assertTrue(paletteResource.getFlexoIODelegate().exists());
-			diagramSpecificationResource.save(null);
-			assertTrue(diagramSpecificationResource.getDiagramPaletteResources().contains(paletteResource));
+		// paletteResource = DiagramPaletteResourceImpl.makeDiagramPaletteResource(diagramSpecificationResource, paletteName,
+		// applicationContext);
 
-			assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
+		DiagramPaletteElement diagramPaletteElement = paletteResource.getFactory().makeDiagramPaletteElement();
+		ShapeGraphicalRepresentation shapeGR = paletteResource.getFactory().makeShapeGraphicalRepresentation();
+		diagramPaletteElement.setGraphicalRepresentation(shapeGR);
+		paletteResource.getDiagramPalette().addToElements(diagramPaletteElement);
 
-		} catch (SaveResourceException e) {
-			fail(e.getMessage());
-		}
+		paletteResource.save(null);
+		assertTrue(paletteResource.getFlexoIODelegate().exists());
+		diagramSpecificationResource.save(null);
+		assertTrue(diagramSpecificationResource.getDiagramPaletteResources().contains(paletteResource));
+
+		assertEquals(1, diagramSpecificationResource.getDiagramSpecification().getPalettes().size());
 
 	}
 
 	/**
 	 * Test example diagrams
+	 * 
+	 * @throws ModelDefinitionException
+	 * @throws SaveResourceException
 	 */
 	@Test
 	@TestOrder(5)
-	public void testExampleDiagrams() {
+	public void testExampleDiagrams() throws SaveResourceException, ModelDefinitionException {
 
 		log("testExampleDiagrams()");
 
-		try {
-			File exampleDiagramFile = new File(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()),
-					"exampleDiagram1.diagram");
-			exampleDiagramResource = DiagramResourceImpl.makeDiagramResource("exampleDiagram1", "http://myExampleDiagram",
-					exampleDiagramFile, diagramSpecificationResource, resourceCenter, applicationContext);
+		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-			// Edit example diagram
-			DiagramFactory factory = exampleDiagramResource.getFactory();
-			Diagram diagram = exampleDiagramResource.getDiagram();
+		exampleDiagramResource = diagramTA.getDiagramSpecificationResourceFactory().getExampleDiagramsResourceFactory()
+				.makeExampleDiagramResource("exampleDiagram1", diagramSpecificationResource, diagramTA.getTechnologyContextManager(), true);
 
-			DiagramShape shape1 = factory.makeNewShape("Shape1a", ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);
-			shape1.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.RED));
-			shape1.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.BLUE));
-			DiagramShape shape2 = factory.makeNewShape("Shape2a", ShapeType.RECTANGLE, new FGEPoint(200, 100), diagram);
-			shape2.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.BLUE));
-			shape2.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.WHITE));
-			DiagramConnector connector1 = factory.makeNewConnector("Connector", shape1, shape2, diagram);
-			diagram.addToShapes(shape1);
-			diagram.addToShapes(shape2);
-			diagram.addToConnectors(connector1);
+		/*File exampleDiagramFile = new File(ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()),
+				"exampleDiagram1.diagram");
+		exampleDiagramResource = DiagramResourceImpl.makeDiagramResource("exampleDiagram1", "http://myExampleDiagram",
+				exampleDiagramFile, diagramSpecificationResource, resourceCenter, applicationContext);*/
 
-			diagramSpecificationResource.addToContents(exampleDiagramResource);
-			diagramSpecificationResource.getDiagramSpecification().addToExampleDiagrams(diagram);
-			diagramSpecificationResource.save(null);
-			exampleDiagramResource.save(null);
+		// Edit example diagram
+		DiagramFactory factory = exampleDiagramResource.getFactory();
+		Diagram diagram = exampleDiagramResource.getDiagram();
 
-		} catch (SaveResourceException e) {
-			fail(e.getMessage());
-		}
+		DiagramShape shape1 = factory.makeNewShape("Shape1a", ShapeType.RECTANGLE, new FGEPoint(100, 100), diagram);
+		shape1.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.RED));
+		shape1.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.BLUE));
+		DiagramShape shape2 = factory.makeNewShape("Shape2a", ShapeType.RECTANGLE, new FGEPoint(200, 100), diagram);
+		shape2.getGraphicalRepresentation().setForeground(factory.makeForegroundStyle(Color.BLUE));
+		shape2.getGraphicalRepresentation().setBackground(factory.makeColoredBackground(Color.WHITE));
+		DiagramConnector connector1 = factory.makeNewConnector("Connector", shape1, shape2, diagram);
+		diagram.addToShapes(shape1);
+		diagram.addToShapes(shape2);
+		diagram.addToConnectors(connector1);
+
+		diagramSpecificationResource.addToContents(exampleDiagramResource);
+		diagramSpecificationResource.getDiagramSpecification().addToExampleDiagrams(diagram);
+		diagramSpecificationResource.save(null);
+		exampleDiagramResource.save(null);
 
 	}
 

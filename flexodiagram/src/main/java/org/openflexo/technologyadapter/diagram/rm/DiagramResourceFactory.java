@@ -24,6 +24,8 @@ import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.PamelaResourceFactory;
+import org.openflexo.foundation.resource.RepositoryFolder;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
@@ -65,6 +67,22 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 	@Override
 	public <I> boolean isValidArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 		return resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SUFFIX);
+	}
+
+	public <I> DiagramResource makeDiagramResource(String baseName, String uri, RepositoryFolder<DiagramResource, I> folder,
+			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)
+			throws SaveResourceException, ModelDefinitionException {
+
+		FlexoResourceCenter<I> rc = folder.getResourceRepository().getResourceCenter();
+
+		String artefactName = baseName.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? baseName
+				: baseName + DiagramResourceFactory.DIAGRAM_SUFFIX;
+
+		I serializationArtefact = rc.createEntry(artefactName, folder.getSerializationArtefact());
+
+		DiagramResource newDiagramResource = makeResource(serializationArtefact, rc, technologyContextManager, true);
+
+		return newDiagramResource;
 	}
 
 	@Override
