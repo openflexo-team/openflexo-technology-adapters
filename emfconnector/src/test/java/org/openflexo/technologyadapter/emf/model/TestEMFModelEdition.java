@@ -168,7 +168,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = factory.makeVirtualModelResource(VIRTUAL_MODEL_NAME, newViewPoint.getViewPointResource(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
-		VirtualModel newVirtualModel = newVMResource.getLoadedResourceData();
+		newVirtualModel = newVMResource.getLoadedResourceData();
 
 		// newVirtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
 		// assertTrue(((VirtualModelResource) newVirtualModel.getResource()).getDirectory().exists());
@@ -296,7 +296,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			/* EMFObjectIndividual intParameter = createIntParameter(emfModelResource, emfMetaModelResource, "IntParameter Name",
 					Integer.valueOf(12), newVirtualModel.getFMLModelFactory());
 			assertNotNull(intParameter);
-			*/
+			 */
 			/*
 			EMFObjectIndividual doubleParameter = createDoubleParameter(emfModelResource, emfMetaModelResource, "DoubleParameter Name",
 					Double.valueOf(42.12), newVirtualModel.getFMLModelFactory());
@@ -593,5 +593,5 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 				"http://www.thalesgroup.com/parameters/1.0/StringParameterValue/value", value, factory);
 		return result;
 	}
-	*/
+	 */
 }

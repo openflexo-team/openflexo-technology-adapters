@@ -162,7 +162,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
 		VirtualModelResource newVMResource = factory.makeVirtualModelResource(VIRTUAL_MODEL_NAME, newViewPoint.getViewPointResource(),
 				fmlTechnologyAdapter.getTechnologyContextManager(), true);
-		VirtualModel newVirtualModel = newVMResource.getLoadedResourceData();
+		newVirtualModel = newVMResource.getLoadedResourceData();
 
 		// newVirtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
