@@ -257,7 +257,7 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 
 		assertNotNull(resourceCenter);
 
-		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
+		repository = technologicalAdapter.getDiagramSpecificationRepository(resourceCenter);
 
 		assertNotNull(repository);
 

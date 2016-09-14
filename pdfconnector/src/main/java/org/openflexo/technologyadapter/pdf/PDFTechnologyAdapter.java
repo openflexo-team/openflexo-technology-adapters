@@ -232,7 +232,7 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 	*/
 
 	public <I> PDFDocumentRepository<I> getPDFDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
-		PDFDocumentRepository<I> returned = resourceCenter.getRepository(PDFDocumentRepository.class, this);
+		PDFDocumentRepository<I> returned = resourceCenter.retrieveRepository(PDFDocumentRepository.class, this);
 		if (returned == null) {
 			returned = new PDFDocumentRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, PDFDocumentRepository.class, this);

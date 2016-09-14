@@ -83,8 +83,8 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 			e.printStackTrace();
 		}
 
-		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
-		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
+		mmRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
+		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
 		assertNotNull(mmRepository);
 		assertNotNull(modelRepository);
 		assertEquals(3, mmRepository.getAllResources().size());

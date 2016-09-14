@@ -75,8 +75,8 @@ public class TestPowerpointModelGit extends OpenFlexoTestCaseWithGit {
 		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		assertNotNull(powerpointAdapter);
 		for (FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
-			if (rc.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter) != null) {
-				modelRepository = (PowerpointSlideShowRepository) rc.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter);
+			if (powerpointAdapter.getPowerpointSlideShowRepository(rc) != null) {
+				modelRepository = powerpointAdapter.getPowerpointSlideShowRepository(rc);
 			}
 			if (rc instanceof GitResourceCenter) {
 				gitResourceCenter = (GitResourceCenter) rc;

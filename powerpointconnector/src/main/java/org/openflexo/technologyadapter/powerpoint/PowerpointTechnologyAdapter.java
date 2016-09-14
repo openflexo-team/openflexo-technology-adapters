@@ -228,7 +228,7 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> PowerpointSlideShowRepository<I> getPowerpointSlideShowRepository(FlexoResourceCenter<I> resourceCenter) {
-		PowerpointSlideShowRepository<I> returned = resourceCenter.getRepository(PowerpointSlideShowRepository.class, this);
+		PowerpointSlideShowRepository<I> returned = resourceCenter.retrieveRepository(PowerpointSlideShowRepository.class, this);
 		if (returned == null) {
 			returned = new PowerpointSlideShowRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, PowerpointSlideShowRepository.class, this);

@@ -228,7 +228,7 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> FreeplaneResourceRepository<I> getFreeplaneResourceRepository(FlexoResourceCenter<I> resourceCenter) {
-		FreeplaneResourceRepository<I> returned = resourceCenter.getRepository(FreeplaneResourceRepository.class, this);
+		FreeplaneResourceRepository<I> returned = resourceCenter.retrieveRepository(FreeplaneResourceRepository.class, this);
 		if (returned == null) {
 			returned = new FreeplaneResourceRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, FreeplaneResourceRepository.class, this);

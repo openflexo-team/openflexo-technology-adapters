@@ -87,7 +87,7 @@ public class CSVTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	public <I> CSVModelResourceRepository<I> getCSVModelResourceRepository(FlexoResourceCenter<I> resourceCenter) {
-		CSVModelResourceRepository<I> returned = resourceCenter.getRepository(CSVModelResourceRepository.class, this);
+		CSVModelResourceRepository<I> returned = resourceCenter.retrieveRepository(CSVModelResourceRepository.class, this);
 		if (returned == null) {
 			returned = new CSVModelResourceRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, CSVModelResourceRepository.class, this);

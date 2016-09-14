@@ -215,7 +215,7 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> ODTDocumentRepository<I> getODTDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
-		ODTDocumentRepository<I> returned = resourceCenter.getRepository(ODTDocumentRepository.class, this);
+		ODTDocumentRepository<I> returned = resourceCenter.retrieveRepository(ODTDocumentRepository.class, this);
 		if (returned == null) {
 			returned = new ODTDocumentRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, ODTDocumentRepository.class, this);

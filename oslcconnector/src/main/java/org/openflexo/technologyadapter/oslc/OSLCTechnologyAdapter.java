@@ -160,7 +160,7 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> OSLCRepository<I> getOSLCRepository(FlexoResourceCenter<I> resourceCenter) {
-		OSLCRepository<I> returned = resourceCenter.getRepository(OSLCRepository.class, this);
+		OSLCRepository<I> returned = resourceCenter.retrieveRepository(OSLCRepository.class, this);
 		if (returned == null) {
 			returned = new OSLCRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, OSLCRepository.class, this);

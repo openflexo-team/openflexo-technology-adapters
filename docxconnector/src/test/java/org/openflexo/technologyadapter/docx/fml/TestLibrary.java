@@ -240,7 +240,7 @@ public class TestLibrary extends AbstractTestDocX {
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
-		repository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
+		repository = technologicalAdapter.getDocXDocumentRepository(resourceCenter);
 		_editor = new FlexoTestEditor(null, serviceManager);
 
 		assertNotNull(serviceManager);

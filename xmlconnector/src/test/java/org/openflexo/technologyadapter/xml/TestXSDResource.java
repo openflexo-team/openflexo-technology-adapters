@@ -79,8 +79,8 @@ public class TestXSDResource extends OpenflexoTestCase {
 
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
-		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
+		mmRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
+		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
 		baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
 		assertNotNull(modelRepository);
 		assertTrue(modelRepository.getAllResources().size() > 4);

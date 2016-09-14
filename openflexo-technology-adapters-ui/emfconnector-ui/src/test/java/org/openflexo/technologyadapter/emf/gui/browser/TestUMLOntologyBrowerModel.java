@@ -99,11 +99,9 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			// Select only resourceCenter on FileSystem
 			if (resourceCenter instanceof FileSystemBasedResourceCenter) {
-				EMFMetaModelRepository<?> metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class,
-						technologicalAdapter);
+				EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
 				assertNotNull(metaModelRepository);
-
-				EMFModelRepository<?> modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
+				EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
 				assertNotNull(modelRepository);
 
 				System.out.println("Loading :" + ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString()

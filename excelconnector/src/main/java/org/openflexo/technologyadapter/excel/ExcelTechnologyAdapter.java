@@ -261,7 +261,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> ExcelWorkbookRepository<I> getExcelWorkbookRepository(FlexoResourceCenter<I> resourceCenter) {
-		ExcelWorkbookRepository<I> returned = resourceCenter.getRepository(ExcelWorkbookRepository.class, this);
+		ExcelWorkbookRepository<I> returned = resourceCenter.retrieveRepository(ExcelWorkbookRepository.class, this);
 		if (returned == null) {
 			returned = new ExcelWorkbookRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, ExcelWorkbookRepository.class, this);

@@ -90,8 +90,8 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
-		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
+		mmRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
+		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
 		baseUrl = resourceCenter.getDirectory().getCanonicalPath();
 		try {
 			baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();

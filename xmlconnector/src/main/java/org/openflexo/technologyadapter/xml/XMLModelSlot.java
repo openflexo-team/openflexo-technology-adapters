@@ -305,7 +305,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 		public XMLFileResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String modelUri,
 				FlexoMetaModelResource<XMLModel, XMLMetaModel, ?> metaModelResource) {
 
-			XMLModelRepository modelRepository = rc.getRepository(XMLModelRepository.class, getModelSlotTechnologyAdapter());
+			XMLModelRepository<?> modelRepository = ((XMLTechnologyAdapter) getModelSlotTechnologyAdapter()).getXMLModelRepository(rc);
 
 			if (rc instanceof FlexoProject) {
 
@@ -341,8 +341,8 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 				modelUri = xmlFile.toURI().toString();
 
-				XMLModelRepository modelRepository = resourceCenter.getRepository(XMLModelRepository.class,
-						getModelSlotTechnologyAdapter());
+				XMLModelRepository<?> modelRepository = ((XMLTechnologyAdapter) getModelSlotTechnologyAdapter())
+						.getXMLModelRepository(resourceCenter);
 
 				try {
 					return createEmptyXMLFileResource(xmlFile, modelRepository, (XSDMetaModelResource) metaModelResource);

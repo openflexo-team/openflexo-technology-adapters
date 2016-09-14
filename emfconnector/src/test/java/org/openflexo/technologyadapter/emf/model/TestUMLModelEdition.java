@@ -150,7 +150,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(2)
 	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException {
 
-		EMFMetaModelRepository emfMetaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+		EMFMetaModelRepository<?> emfMetaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
 
 		umlMetaModelResource = technologicalAdapter.getTechnologyContextManager()
 				.getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);

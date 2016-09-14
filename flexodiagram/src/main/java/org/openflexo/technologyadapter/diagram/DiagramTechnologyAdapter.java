@@ -174,7 +174,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> DiagramRepository<I> getDiagramRepository(FlexoResourceCenter<I> resourceCenter) {
-		DiagramRepository<I> returned = resourceCenter.getRepository(DiagramRepository.class, this);
+		DiagramRepository<I> returned = resourceCenter.retrieveRepository(DiagramRepository.class, this);
 		if (returned == null) {
 			returned = new DiagramRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, DiagramRepository.class, this);
@@ -201,7 +201,7 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> DiagramSpecificationRepository<I> getDiagramSpecificationRepository(FlexoResourceCenter<I> resourceCenter) {
-		DiagramSpecificationRepository<I> returned = resourceCenter.getRepository(DiagramSpecificationRepository.class, this);
+		DiagramSpecificationRepository<I> returned = resourceCenter.retrieveRepository(DiagramSpecificationRepository.class, this);
 		if (returned == null) {
 			returned = new DiagramSpecificationRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, DiagramSpecificationRepository.class, this);

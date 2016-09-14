@@ -157,7 +157,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	@TestOrder(2)
 	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException {
 
-		EMFMetaModelRepository<?> emfMetaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+		EMFMetaModelRepository<?> emfMetaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
 
 		emfMetaModelResource = emfMetaModelRepository.getResource("http://www.thalesgroup.com/parameters/1.0");
 

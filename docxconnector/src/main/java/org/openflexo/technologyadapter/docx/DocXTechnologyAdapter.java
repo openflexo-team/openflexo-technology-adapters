@@ -241,7 +241,7 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> DocXDocumentRepository<I> getDocXDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
-		DocXDocumentRepository<I> returned = resourceCenter.getRepository(DocXDocumentRepository.class, this);
+		DocXDocumentRepository<I> returned = resourceCenter.retrieveRepository(DocXDocumentRepository.class, this);
 		if (returned == null) {
 			returned = new DocXDocumentRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, DocXDocumentRepository.class, this);

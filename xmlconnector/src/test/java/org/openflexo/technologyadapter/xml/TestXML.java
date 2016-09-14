@@ -86,7 +86,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
+		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
 		baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
 		assertNotNull(modelRepository);
 		assertTrue(modelRepository.getAllResources().size() > 3);

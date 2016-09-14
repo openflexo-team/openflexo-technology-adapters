@@ -113,7 +113,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	public <I> OWLOntologyRepository<I> getOWLOntologyRepository(FlexoResourceCenter<I> resourceCenter) {
-		OWLOntologyRepository<I> returned = resourceCenter.getRepository(OWLOntologyRepository.class, this);
+		OWLOntologyRepository<I> returned = resourceCenter.retrieveRepository(OWLOntologyRepository.class, this);
 		if (returned == null) {
 			returned = new OWLOntologyRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, OWLOntologyRepository.class, this);

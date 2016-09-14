@@ -426,7 +426,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> XSDMetaModelRepository<I> getXSDMetaModelRepository(FlexoResourceCenter<I> resourceCenter) {
-		XSDMetaModelRepository<I> returned = resourceCenter.getRepository(XSDMetaModelRepository.class, this);
+		XSDMetaModelRepository<I> returned = resourceCenter.retrieveRepository(XSDMetaModelRepository.class, this);
 		if (returned == null) {
 			returned = new XSDMetaModelRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, XSDMetaModelRepository.class, this);
@@ -435,7 +435,7 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	public <I> XMLModelRepository<I> getXMLModelRepository(FlexoResourceCenter<I> resourceCenter) {
-		XMLModelRepository<I> returned = resourceCenter.getRepository(XMLModelRepository.class, this);
+		XMLModelRepository<I> returned = resourceCenter.retrieveRepository(XMLModelRepository.class, this);
 		if (returned == null) {
 			returned = new XMLModelRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, XMLModelRepository.class, this);

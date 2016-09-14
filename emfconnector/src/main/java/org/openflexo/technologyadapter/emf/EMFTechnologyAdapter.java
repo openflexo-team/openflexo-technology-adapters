@@ -305,7 +305,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> EMFMetaModelRepository<I> getEMFMetaModelRepository(FlexoResourceCenter<I> resourceCenter) {
-		EMFMetaModelRepository<I> returned = resourceCenter.getRepository(EMFMetaModelRepository.class, this);
+		EMFMetaModelRepository<I> returned = resourceCenter.retrieveRepository(EMFMetaModelRepository.class, this);
 		if (returned == null) {
 			returned = new EMFMetaModelRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, EMFMetaModelRepository.class, this);
@@ -370,7 +370,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	}*/
 
 	public <I> EMFModelRepository<I> getEMFModelRepository(FlexoResourceCenter<I> resourceCenter) {
-		EMFModelRepository<I> returned = resourceCenter.getRepository(EMFModelRepository.class, this);
+		EMFModelRepository<I> returned = resourceCenter.retrieveRepository(EMFModelRepository.class, this);
 		if (returned == null) {
 			returned = new EMFModelRepository<I>(this, resourceCenter);
 			resourceCenter.registerRepository(returned, EMFModelRepository.class, this);
