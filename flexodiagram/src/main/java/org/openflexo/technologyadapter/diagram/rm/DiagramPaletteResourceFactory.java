@@ -166,6 +166,9 @@ public class DiagramPaletteResourceFactory
 		PaletteInfo returned = new PaletteInfo();
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter
 				.getXMLRootElementInfo((I) resource.getFlexoIODelegate().getSerializationArtefact());
+		if (xmlRootElementInfo == null) {
+			return null;
+		}
 		if (xmlRootElementInfo.getName().equals("DiagramPalette")) {
 			returned.name = xmlRootElementInfo.getAttribute(Diagram.NAME);
 			returned.version = xmlRootElementInfo.getAttribute("version");

@@ -124,7 +124,7 @@ public class TestDiagramResource extends OpenflexoTestCase {
 		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 
-		diagramResource = diagramTA.getDiagramResourceFactory().makeDiagramResource("exampleDiagram1", "http://myExampleDiagram",
+		diagramResource = diagramTA.getDiagramResourceFactory().makeDiagramResource("exampleDiagram1", "http://myExampleDiagram", null,
 				repository.getRootFolder(), diagramTA.getTechnologyContextManager(), true);
 
 		/*File diagramFile = new File(repository.getDirectory(), "myDiagram.diagram");

@@ -133,8 +133,7 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 
 	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource);
 
-	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram>
-			implements CreateDiagram {
+	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram>implements CreateDiagram {
 
 		private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
@@ -397,6 +396,7 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 
 			DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc,
 					diagramTA.getTechnologyContextManager(), true);
+			newDiagramResource.setMetaModelResource(getDiagramSpecificationResource());
 
 			return newDiagramResource;
 		}

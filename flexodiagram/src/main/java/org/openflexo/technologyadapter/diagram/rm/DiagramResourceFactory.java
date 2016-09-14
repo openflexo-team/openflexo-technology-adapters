@@ -69,9 +69,9 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 		return resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SUFFIX);
 	}
 
-	public <I> DiagramResource makeDiagramResource(String baseName, String uri, RepositoryFolder<DiagramResource, I> folder,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)
-					throws SaveResourceException, ModelDefinitionException {
+	public <I> DiagramResource makeDiagramResource(String baseName, String uri, DiagramSpecificationResource diagramSpecificationResource,
+			RepositoryFolder<DiagramResource, I> folder, TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager,
+			boolean createEmptyContents) throws SaveResourceException, ModelDefinitionException {
 
 		FlexoResourceCenter<I> rc = folder.getResourceRepository().getResourceCenter();
 
@@ -81,6 +81,7 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 		I serializationArtefact = rc.createEntry(artefactName, folder.getSerializationArtefact());
 
 		DiagramResource newDiagramResource = makeResource(serializationArtefact, rc, technologyContextManager, baseName, uri, true);
+		newDiagramResource.setMetaModelResource(diagramSpecificationResource);
 
 		return newDiagramResource;
 	}
@@ -156,6 +157,9 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 		DiagramInfo returned = new DiagramInfo();
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter
 				.getXMLRootElementInfo((I) resource.getFlexoIODelegate().getSerializationArtefact());
+		if (xmlRootElementInfo == null) {
+			return null;
+		}
 		if (xmlRootElementInfo.getName().equals("Diagram")) {
 			returned.name = xmlRootElementInfo.getAttribute(Diagram.NAME);
 			returned.title = xmlRootElementInfo.getAttribute(Diagram.TITLE);

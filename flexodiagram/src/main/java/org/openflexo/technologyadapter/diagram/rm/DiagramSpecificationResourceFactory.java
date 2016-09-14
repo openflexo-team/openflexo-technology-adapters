@@ -233,6 +233,9 @@ public class DiagramSpecificationResourceFactory extends
 		DiagramSpecificationInfo returned = new DiagramSpecificationInfo();
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter
 				.getXMLRootElementInfo((I) resource.getFlexoIODelegate().getSerializationArtefact());
+		if (xmlRootElementInfo == null) {
+			return null;
+		}
 		if (xmlRootElementInfo.getName().equals("DiagramSpecification")) {
 			returned.name = xmlRootElementInfo.getAttribute(DiagramSpecification.NAME_KEY);
 			returned.uri = xmlRootElementInfo.getAttribute(DiagramSpecification.URI_KEY);
