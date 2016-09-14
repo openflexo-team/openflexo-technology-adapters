@@ -90,7 +90,7 @@ import org.openflexo.technologyadapter.freeplane.rm.IFreeplaneResource;
 @FML("FreeplaneModelSlot")
 public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 
-	public abstract static class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap> implements FreeplaneModelSlot {
+	public abstract static class FreeplaneModelSlotImpl extends FreeModelSlotImpl<IFreeplaneMap>implements FreeplaneModelSlot {
 
 		private static final Logger LOGGER = Logger.getLogger(FreeplaneModelSlot.class.getPackage().getName());
 		private final Map<String, IFreeplaneMap> uriCache = new HashMap<String, IFreeplaneMap>();
@@ -157,7 +157,7 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 
 		@Override
 		public TechnologyAdapterResource<IFreeplaneMap, FreeplaneTechnologyAdapter> createProjectSpecificEmptyResource(final View view,
-				final String filename, final String modelUri) {
+				final String modelName, final String modelUri) {
 
 			FreeplaneTechnologyAdapter freeplaneTA = getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
@@ -165,15 +165,15 @@ public interface FreeplaneModelSlot extends FreeModelSlot<IFreeplaneMap> {
 			FlexoResourceCenter<?> rc = view.getResourceCenter();
 			FreeplaneResourceFactory factory = getModelSlotTechnologyAdapter().getFreeplaneResourceFactory();
 
-			String artefactName = filename.endsWith(FreeplaneResourceFactory.FREEPLANE_FILE_EXTENSION) ? filename
-					: filename + FreeplaneResourceFactory.FREEPLANE_FILE_EXTENSION;
+			String artefactName = modelName.endsWith(FreeplaneResourceFactory.FREEPLANE_FILE_EXTENSION) ? modelName
+					: modelName + FreeplaneResourceFactory.FREEPLANE_FILE_EXTENSION;
 
 			Object serializationArtefact = ((FlexoResourceCenter) rc).createEntry(artefactName, rc.getBaseArtefact());
 
 			IFreeplaneResource newFreeplaneResource;
 			try {
 				newFreeplaneResource = freeplaneTA.getFreeplaneResourceFactory().makeResource(serializationArtefact,
-						(FlexoResourceCenter) rc, freeplaneTA.getTechnologyContextManager(), modelUri, true);
+						(FlexoResourceCenter) rc, freeplaneTA.getTechnologyContextManager(), modelName, modelUri, true);
 				return newFreeplaneResource;
 			} catch (SaveResourceException e) {
 				e.printStackTrace();

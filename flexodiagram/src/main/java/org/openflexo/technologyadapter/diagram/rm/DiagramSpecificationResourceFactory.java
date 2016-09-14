@@ -87,7 +87,7 @@ public class DiagramSpecificationResourceFactory extends
 		if (resourceCenter.exists(serializationArtefact) && resourceCenter.isDirectory(serializationArtefact)
 				&& resourceCenter.canRead(serializationArtefact)
 				&& (resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SPECIFICATION_SUFFIX)
-				/*|| resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SPECIFICATION_SUFFIX + "/")*/)) {
+		/*|| resourceCenter.retrieveName(serializationArtefact).endsWith(DIAGRAM_SPECIFICATION_SUFFIX + "/")*/)) {
 			/*final String baseName = candidateFile.getName().substring(0,
 					candidateFile.getName().length() - ViewPointResource.DIAGRAM_SPECIFICATION_SUFFIX.length());
 			final File xmlFile = new File(candidateFile, baseName + ".xml");
@@ -100,14 +100,14 @@ public class DiagramSpecificationResourceFactory extends
 	public <I> DiagramSpecificationResource makeDiagramSpecificationResourceResource(String baseName, String uri,
 			RepositoryFolder<DiagramSpecificationResource, I> folder,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)
-			throws SaveResourceException, ModelDefinitionException {
+					throws SaveResourceException, ModelDefinitionException {
 
 		FlexoResourceCenter<I> resourceCenter = folder.getResourceRepository().getResourceCenter();
 
 		String artefactName = baseName.endsWith(DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX) ? baseName
 				: baseName + DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX;
 		I serializationArtefact = resourceCenter.createDirectory(artefactName, folder.getSerializationArtefact());
-		return makeResource(serializationArtefact, resourceCenter, technologyContextManager, uri, createEmptyContents);
+		return makeResource(serializationArtefact, resourceCenter, technologyContextManager, baseName, uri, createEmptyContents);
 	}
 
 	@Override
@@ -128,9 +128,10 @@ public class DiagramSpecificationResourceFactory extends
 
 	@Override
 	protected <I> DiagramSpecificationResource initResourceForCreation(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, String uri) throws ModelDefinitionException {
+			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, String name, String uri)
+					throws ModelDefinitionException {
 		DiagramSpecificationResource returned = super.initResourceForCreation(serializationArtefact, resourceCenter,
-				technologyContextManager, uri);
+				technologyContextManager, name, uri);
 
 		returned.setVersion(INITIAL_REVISION);
 		returned.setModelVersion(CURRENT_MODEL_VERSION);

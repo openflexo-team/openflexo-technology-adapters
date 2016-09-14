@@ -98,7 +98,7 @@ public class DiagramPaletteResourceFactory
 				(name.endsWith(DIAGRAM_PALETTE_SUFFIX) ? name : (name + DIAGRAM_PALETTE_SUFFIX)),
 				resourceCenter.getContainer((I) dsResource.getFlexoIODelegate().getSerializationArtefact()));
 
-		DiagramPaletteResource returned = initResourceForCreation(serializationArtefact, resourceCenter, technologyContextManager,
+		DiagramPaletteResource returned = initResourceForCreation(serializationArtefact, resourceCenter, technologyContextManager, name,
 				dsResource.getURI() + "/" + (name.endsWith(DIAGRAM_PALETTE_SUFFIX) ? name : (name + DIAGRAM_PALETTE_SUFFIX)));
 
 		dsResource.addToContents(returned);

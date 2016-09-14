@@ -202,7 +202,7 @@ public class TestEMFModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
 			File serializationArtefact = new File(modelFolder.getSerializationArtefact(), "coucou.emf");
 			emfModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
-					emfMetaModelResource, resourceCenter, technologicalAdapter.getTechnologyContextManager(), "myURI", true);
+					emfMetaModelResource, resourceCenter, technologicalAdapter.getTechnologyContextManager(), "coucou.emf", "myURI", true);
 
 			/*try {
 				RepositoryFolder<FlexoResource<?>,?> modelFolder = project.createNewFolder("Models");

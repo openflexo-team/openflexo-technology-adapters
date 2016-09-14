@@ -194,7 +194,7 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 			RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
 			File serializationArtefact = new File(modelFolder.getSerializationArtefact(), "coucou.uml");
 			umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
-					umlMetaModelResource, resourceCenter, technologicalAdapter.getTechnologyContextManager(), "myURI", true);
+					umlMetaModelResource, resourceCenter, technologicalAdapter.getTechnologyContextManager(), "coucou.uml", "myURI", true);
 			/*try {
 				RepositoryFolder<FlexoResource<?>> modelFolder = project.createNewFolder("Models");
 				umlModelResource = technologicalAdapter.createNewEMFModel(new File(modelFolder.getFile(), "coucou.uml"), "myURI",

@@ -71,7 +71,7 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 
 	public <I> DiagramResource makeDiagramResource(String baseName, String uri, RepositoryFolder<DiagramResource, I> folder,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, boolean createEmptyContents)
-			throws SaveResourceException, ModelDefinitionException {
+					throws SaveResourceException, ModelDefinitionException {
 
 		FlexoResourceCenter<I> rc = folder.getResourceRepository().getResourceCenter();
 
@@ -80,7 +80,7 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 
 		I serializationArtefact = rc.createEntry(artefactName, folder.getSerializationArtefact());
 
-		DiagramResource newDiagramResource = makeResource(serializationArtefact, rc, technologyContextManager, uri, true);
+		DiagramResource newDiagramResource = makeResource(serializationArtefact, rc, technologyContextManager, baseName, uri, true);
 
 		return newDiagramResource;
 	}

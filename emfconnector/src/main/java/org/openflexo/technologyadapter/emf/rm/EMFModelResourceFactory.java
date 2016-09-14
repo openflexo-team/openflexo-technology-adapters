@@ -59,10 +59,10 @@ public class EMFModelResourceFactory extends FlexoResourceFactory<EMFModelResour
 	}
 
 	public <I> EMFModelResource makeEMFModelResource(I serializationArtefact, EMFMetaModelResource metaModelResource,
-			FlexoResourceCenter<I> resourceCenter, TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager, String uri,
-			boolean createEmptyContents) throws SaveResourceException, ModelDefinitionException {
+			FlexoResourceCenter<I> resourceCenter, TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager, String name,
+			String uri, boolean createEmptyContents) throws SaveResourceException, ModelDefinitionException {
 
-		EMFModelResource returned = initResourceForCreation(serializationArtefact, resourceCenter, technologyContextManager, uri);
+		EMFModelResource returned = initResourceForCreation(serializationArtefact, resourceCenter, technologyContextManager, name, uri);
 		returned.setMetaModelResource(metaModelResource);
 		registerResource(returned, resourceCenter, technologyContextManager);
 

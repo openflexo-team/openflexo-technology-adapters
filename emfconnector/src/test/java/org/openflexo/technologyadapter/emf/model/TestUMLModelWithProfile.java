@@ -139,7 +139,7 @@ public class TestUMLModelWithProfile extends OpenflexoProjectAtRunTimeTestCase {
 		RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
 		File serializationArtefact = new File(modelFolder.getSerializationArtefact(), UML_MODEL_NAME);
 		EMFModelResource umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
-				umlMetaModelResource, resourceCenter, technologicalAdapter.getTechnologyContextManager(), "myURI", true);
+				umlMetaModelResource, resourceCenter, technologicalAdapter.getTechnologyContextManager(), UML_MODEL_NAME, "myURI", true);
 
 		assertNotNull(umlModelResource);
 		EMFModel umlModel = umlModelResource.getModel();

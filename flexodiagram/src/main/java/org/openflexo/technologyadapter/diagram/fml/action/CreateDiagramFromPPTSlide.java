@@ -137,7 +137,7 @@ public class CreateDiagramFromPPTSlide extends AbstractCreateDiagramFromPPTSlide
 		I serializationArtefact = rc.createEntry(artefactName, (I) getFocusedObject().getSerializationArtefact());
 
 		DiagramResource newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, rc,
-				diagramTA.getTechnologyContextManager(), getDiagramURI(), true);
+				diagramTA.getTechnologyContextManager(), getDiagramName(), getDiagramURI(), true);
 
 		return newDiagramResource;
 	}

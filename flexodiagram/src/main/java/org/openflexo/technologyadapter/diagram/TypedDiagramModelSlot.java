@@ -216,21 +216,21 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public DiagramResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String diagramUri,
+		public DiagramResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String diagramName, String diagramUri,
 				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 
 			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 			DiagramResourceFactory factory = getModelSlotTechnologyAdapter().getDiagramResourceFactory();
-			String artefactName = filename.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? filename
-					: filename + DiagramResourceFactory.DIAGRAM_SUFFIX;
+			String artefactName = diagramName.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? diagramName
+					: diagramName + DiagramResourceFactory.DIAGRAM_SUFFIX;
 
 			Object serializationArtefact = ((FlexoResourceCenter) rc).createEntry(artefactName, rc.getBaseArtefact());
 
 			DiagramResource newDiagramResource;
 			try {
-				newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, (FlexoResourceCenter) rc,
-						diagramTA.getTechnologyContextManager(), diagramUri, true);
+				newDiagramResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc,
+						diagramTA.getTechnologyContextManager(), diagramName, diagramUri, true);
 				newDiagramResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
 				return newDiagramResource;
 			} catch (SaveResourceException e) {
@@ -243,14 +243,14 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 		}
 
 		@Override
-		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> rc, String relativePath, String filename, String diagramUri,
+		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> rc, String relativePath, String diagramName, String diagramUri,
 				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 
 			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 			DiagramResourceFactory factory = getModelSlotTechnologyAdapter().getDiagramResourceFactory();
-			String artefactName = filename.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? filename
-					: filename + DiagramResourceFactory.DIAGRAM_SUFFIX;
+			String artefactName = diagramName.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? diagramName
+					: diagramName + DiagramResourceFactory.DIAGRAM_SUFFIX;
 
 			Object serializationArtefact = ((FlexoResourceCenter) rc).createEntry(relativePath + File.separator + artefactName,
 					rc.getBaseArtefact());
@@ -258,7 +258,7 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 			DiagramResource newDiagramResource;
 			try {
 				newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, (FlexoResourceCenter) rc,
-						diagramTA.getTechnologyContextManager(), diagramUri, true);
+						diagramTA.getTechnologyContextManager(), diagramName, diagramUri, true);
 				newDiagramResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
 				return newDiagramResource;
 			} catch (SaveResourceException e) {
