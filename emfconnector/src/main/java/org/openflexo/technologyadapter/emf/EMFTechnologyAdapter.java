@@ -39,7 +39,6 @@
 
 package org.openflexo.technologyadapter.emf;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
@@ -53,18 +52,13 @@ import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.emf.fml.binding.EMFBindingFactory;
-import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate;
-import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate.MMFromJarsInDirIODelegateImpl;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResourceFactory;
 import org.openflexo.technologyadapter.emf.rm.EMFModelRepository;
 import org.openflexo.technologyadapter.emf.rm.EMFModelResourceFactory;
-import org.openflexo.technologyadapter.emf.rm.XtextEMFMetaModelResource;
 
 /**
  * This class defines and implements the EMF technology adapter
@@ -400,35 +394,35 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 * @see org.openflexo.foundation.technologyadapter.TechnologyAdapter#retrieveMetaModelResource(java.io.File,
 	 *      org.openflexo.foundation.resource.FlexoResourceCenter)
 	 */
-	public EMFMetaModelResource retrieveMetaModelResource(final File aMetaModelFile, FlexoResourceCenter<?> resourceCenter) {
-
+	/*public EMFMetaModelResource retrieveMetaModelResource(final File aMetaModelFile, FlexoResourceCenter<?> resourceCenter) {
+	
 		EMFMetaModelResource metaModelResource = null;
-
+	
 		ModelFactory factory;
 		try {
-
+	
 			factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(MMFromJarsInDirIODelegate.class,
 					EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
-
+	
 			MMFromJarsInDirIODelegate iodelegate = MMFromJarsInDirIODelegateImpl.makeMMFromJarsInDirIODelegate(aMetaModelFile, factory);
-
+	
 			metaModelResource = iodelegate.retrieveMetaModelResource(aMetaModelFile, factory, this.getTechnologyContextManager());
-
+	
 			metaModelResource.setTechnologyAdapter(this);
 			metaModelResource.setFlexoIODelegate(iodelegate);
 			metaModelResource.setResourceCenter(resourceCenter);
 			metaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
-
+	
 			return metaModelResource;
-
+	
 		} catch (ModelDefinitionException e) {
 			logger.warning("Unable to Create EMF Metamodel from directory: " + aMetaModelFile);
 			e.printStackTrace();
 		}
-
+	
 		return null;
-
-	}
+	
+	}*/
 
 	/**
 	 * Return flag indicating if supplied file represents a valid model conform to supplied meta-model
