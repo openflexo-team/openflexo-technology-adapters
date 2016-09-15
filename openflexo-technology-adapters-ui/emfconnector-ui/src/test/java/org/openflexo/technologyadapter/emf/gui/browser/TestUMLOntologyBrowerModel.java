@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.emf.gui.browser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -52,6 +51,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.ontology.components.widget.OntologyBrowserModel;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
@@ -103,8 +103,19 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			System.out.println("Loading :" + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
 
-			umlModelResource = modelRepository
+			EMFModelResource modelResource = modelRepository
 					.getResource(resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
+
+			if (modelResource != null) {
+				umlModelResource = modelResource;
+				System.out.println("Found resource " + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
+			}
+			else {
+				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
+				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
+					System.out.println(" > " + r.getURI());
+				}
+			}
 		}
 
 		assertNotNull(umlModelResource);
