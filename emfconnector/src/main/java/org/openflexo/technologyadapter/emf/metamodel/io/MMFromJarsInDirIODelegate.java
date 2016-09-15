@@ -91,7 +91,7 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 			EMFTechnologyContextManager contextManager);
 
 	@Implementation
-	public abstract class MMFromJarsInDirIODelegateImpl extends EMFMetaModelIODelegateImpl<File> implements MMFromJarsInDirIODelegate {
+	public abstract class MMFromJarsInDirIODelegateImpl extends EMFMetaModelIODelegateImpl<File>implements MMFromJarsInDirIODelegate {
 
 		protected static final Logger logger = Logger.getLogger(MMFromJarsInDirIODelegate.class.getPackage().getName());
 
@@ -114,7 +114,8 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 			if (mmType != null && mmType.equals(TYPE_XTEXT)) {
 				metaModelResource = factory.newInstance(XtextEMFMetaModelResource.class);
 
-			} else {
+			}
+			else {
 				metaModelResource = factory.newInstance(EMFMetaModelResource.class);
 			}
 			setFlexoResource(metaModelResource);
@@ -161,7 +162,8 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 						Class<?> resourceFactoryClass = classLoader.loadClass(resource.getEMFResourceFactoryClassName());
 						if (resourceFactoryClass != null) {
 							resource.setEMFResourceFactory((Resource.Factory) resourceFactoryClass.newInstance());
-						} else {
+						}
+						else {
 							logger.warning("I will not be able to initialize EMF Model Factory for: " + resource.getURI());
 						}
 					}
@@ -210,7 +212,8 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 		public String getParentPath() {
 			if (getSerializationArtefact() != null) {
 				return getSerializationArtefact().getParent();
-			} else
+			}
+			else
 				return "";
 		}
 
@@ -224,7 +227,8 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 		public String stringRepresentation() {
 			if (getSerializationArtefact() != null) {
 				return "MMFromJarsInDirIODelegate for directory " + getSerializationArtefact().getAbsolutePath();
-			} else {
+			}
+			else {
 				return "MMFromJarsInDirIODelegate for NO directory";
 			}
 		}
@@ -285,10 +289,13 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 					String ePackageClassName = emfProperties.getProperty("PACKAGE");
 					String resourceFactoryClassName = emfProperties.getProperty("RESOURCE_FACTORY");
 
-					return (uri != null && extension != null && ePackageClassName != null && resourceFactoryClassName != null && jarFiles.length > 0);
-				} else
+					return (uri != null && extension != null && ePackageClassName != null && resourceFactoryClassName != null
+							&& jarFiles.length > 0);
+				}
+				else
 					return false;
-			} else {
+			}
+			else {
 				return false;
 			}
 		}

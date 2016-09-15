@@ -130,7 +130,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
 			assertNotNull(modelRepository);
 
-			System.out.println("Loading from RC :" + resourceCenter + "" + resourceCenter.getDefaultBaseURI() + File.separator
+			System.out.println("Loading from RC :" + resourceCenter + " " + resourceCenter.getDefaultBaseURI() + File.separator
 					+ archimateModelResourceRelativeURI);
 
 			EMFModelResource modelResource = modelRepository

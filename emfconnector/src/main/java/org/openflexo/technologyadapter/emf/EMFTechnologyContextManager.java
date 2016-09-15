@@ -82,7 +82,7 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 
 	@Override
 	public EMFTechnologyAdapter getTechnologyAdapter() {
-		return (EMFTechnologyAdapter) super.getTechnologyAdapter();
+		return super.getTechnologyAdapter();
 	}
 
 	public EMFModelResource getModel(File modelFile) {
@@ -102,12 +102,15 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 			metamodels.put(mmURI, newMetaModelResource);
 			EMFExtensionToFactoryMap.put(newMetaModelResource.getModelFileExtension(), newMetaModelResource.getEMFResourceFactory());
 			EPackage ePackage = newMetaModelResource.getPackage();
+			System.out.println("******* Register " + newMetaModelResource + " rc=" + newMetaModelResource.getResourceCenter());
 			if (!EMFPackageRegistry.containsKey(mmURI) && ePackage != null) {
-				EMFPackageRegistry.put(newMetaModelResource.getURI(), ePackage);
-			} else {
+				EMFPackageRegistry.put(mmURI, ePackage);
+			}
+			else {
 				logger.warning("EMF MEtamodel already exists in registry : " + newMetaModelResource.getURI());
 			}
-		} else {
+		}
+		else {
 			// TODO : xtof, manage duplicate URIs
 			logger.warning(" There already exists a MM with that URI => I will not register this one!");
 		}
@@ -128,10 +131,12 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 			if (!EMFPackageRegistry.containsKey(mmURI) && ePackage != null) {
 				EMFPackageRegistry.put(newMetaModelResource.getURI(), ePackage);
 				EMFPackageRegistry.put(ePackage.getNsPrefix(), ePackage);
-			} else {
+			}
+			else {
 				logger.warning("UML Profile already exists in registry : " + newMetaModelResource.getURI());
 			}
-		} else {
+		}
+		else {
 			// TODO : xtof, manage duplicate URIs
 			logger.warning(" There already exists a MM with that URI => I will not register this one!");
 		}

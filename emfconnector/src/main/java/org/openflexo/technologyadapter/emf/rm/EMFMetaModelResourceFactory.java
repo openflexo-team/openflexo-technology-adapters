@@ -57,6 +57,8 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 	@Override
 	public <I> boolean isValidArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 
+		// System.out.println("On se demande si l'artefact est bon: " + serializationArtefact);
+
 		if (serializationArtefact instanceof File) {
 			boolean returned = MMFromJarsInDirIODelegateImpl.isValidMetaModelFile((File) serializationArtefact);
 			if (returned) {
