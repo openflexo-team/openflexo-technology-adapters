@@ -101,10 +101,10 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 			EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
 			assertNotNull(modelRepository);
 
-			System.out.println("Loading :" + resourceCenter.getDefaultBaseURI() + File.separator + umlModelResourceRelativeURI);
+			System.out.println("Loading :" + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
 
 			umlModelResource = modelRepository
-					.getResource(resourceCenter.getDefaultBaseURI() + File.separator + umlModelResourceRelativeURI);
+					.getResource(resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
 		}
 
 		assertNotNull(umlModelResource);
