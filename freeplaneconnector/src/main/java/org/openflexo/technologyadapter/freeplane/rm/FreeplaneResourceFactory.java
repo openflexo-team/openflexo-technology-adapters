@@ -118,7 +118,7 @@ public class FreeplaneResourceFactory extends FlexoResourceFactory<IFreeplaneRes
 
 	@Override
 	protected <I> IFreeplaneResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<FreeplaneTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+			TechnologyContextManager<FreeplaneTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
 		IFreeplaneResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
 		return returned;
 	}

@@ -40,9 +40,6 @@
 package org.openflexo.technologyadapter.emf.metamodel.io;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.Properties;
@@ -59,7 +56,6 @@ import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
 import org.openflexo.technologyadapter.emf.rm.XtextEMFMetaModelResource;
-import org.openflexo.toolbox.FileUtils;
 import org.openflexo.toolbox.JarInDirClassLoader;
 
 import com.google.inject.Injector;
@@ -220,7 +216,8 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 		/** a Metamodel exists if directory contains jar and an emf.properties file **/
 		@Override
 		public boolean exists() {
-			return isValidMetaModelFile(getSerializationArtefact());
+			// return isValidMetaModelFile(getSerializationArtefact());
+			return true;
 		}
 
 		@Override
@@ -239,7 +236,7 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 		 * @return String
 		 */
 
-		@Override
+		/*@Override
 		public String getProperty(String name) {
 			if (emfproperties == null) {
 				emfproperties = getEmfProperties(getSerializationArtefact());
@@ -248,14 +245,14 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 				return emfproperties.getProperty(name);
 			}
 			return null;
-		}
+		}*/
 
 		/**
 		 * Return EMF Property file of MetaModel Directory.
 		 * 
 		 * @return
 		 */
-		static public Properties getEmfProperties(File MetaModelDirectory) {
+		/*static public Properties getEmfProperties(File MetaModelDirectory) {
 			Properties emfProperties = null;
 			if (MetaModelDirectory != null && MetaModelDirectory.isDirectory()) {
 				// Read emf.properties file.
@@ -272,23 +269,23 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 				}
 			}
 			return emfProperties;
-		}
+		}*/
 
 		/**
 		 * Verifies that all is ok for a MetaModel to be found
 		 */
 
-		static public boolean isValidMetaModelFile(File aMetaModelFile) {
+		/*static public boolean isValidMetaModelFile(File aMetaModelFile) {
 			if (aMetaModelFile != null && aMetaModelFile.isDirectory()) {
 				File[] jarFiles = aMetaModelFile.listFiles(FileUtils.JARFileNameFilter);
-
+		
 				Properties emfProperties = MMFromJarsInDirIODelegateImpl.getEmfProperties(aMetaModelFile);
 				if (emfProperties != null) {
 					String uri = emfProperties.getProperty("URI");
 					String extension = emfProperties.getProperty("EXTENSION");
 					String ePackageClassName = emfProperties.getProperty("PACKAGE");
 					String resourceFactoryClassName = emfProperties.getProperty("RESOURCE_FACTORY");
-
+		
 					return (uri != null && extension != null && ePackageClassName != null && resourceFactoryClassName != null
 							&& jarFiles.length > 0);
 				}
@@ -298,7 +295,7 @@ public interface MMFromJarsInDirIODelegate extends EMFMetaModelIODelegate<File> 
 			else {
 				return false;
 			}
-		}
+		}*/
 	}
 
 }

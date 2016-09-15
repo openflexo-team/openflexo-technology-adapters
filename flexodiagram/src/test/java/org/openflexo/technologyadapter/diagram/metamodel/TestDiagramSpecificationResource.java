@@ -168,10 +168,11 @@ public class TestDiagramSpecificationResource extends OpenflexoTestCase {
 	 * Reload the DiagramSpecification, tests that uri and name are persistent
 	 * 
 	 * @throws ModelDefinitionException
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(3)
-	public void testLoadDiagramSpecification() throws ModelDefinitionException {
+	public void testLoadDiagramSpecification() throws ModelDefinitionException, IOException {
 
 		log("testLoadDiagramSpecification()");
 

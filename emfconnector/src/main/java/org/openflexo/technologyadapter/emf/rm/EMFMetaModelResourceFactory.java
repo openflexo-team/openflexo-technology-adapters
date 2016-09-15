@@ -20,9 +20,13 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
-import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 import java.util.logging.Logger;
 
+import org.openflexo.foundation.resource.ClassLoaderIODelegate;
 import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceFactory;
@@ -31,8 +35,7 @@ import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.EMFTechnologyContextManager;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
-import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate;
-import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate.MMFromJarsInDirIODelegateImpl;
+import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource.EMFMetaModelType;
 
 /**
  * Implementation of ResourceFactory for {@link EMFMetaModelResource}
@@ -44,8 +47,21 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 
 	private static final Logger logger = Logger.getLogger(EMFMetaModelResourceFactory.class.getPackage().getName());
 
+	public static final String PROPERTIES_SUFFIX = ".properties";
+
+	public static final String URI_KEY = "URI";
+	public static final String EXTENSION_KEY = "EXTENSION";
+	public static final String PACKAGE_KEY = "PACKAGE";
+	public static final String RESOURCE_FACTORY_KEY = "RESOURCE_FACTORY";
+
+	public static String PROPERTY_TYPE = "TYPE";
+	public static String TYPE_METAMODEL = "standard";
+	public static String TYPE_PROFILE = "profile";
+	public static String TYPE_XTEXT = "xtext";
+	public static String PROPERTY_XTEXT_STANDALONE_SETUP = "XTEXT_STANDALONE_SETUP";
+
 	public EMFMetaModelResourceFactory() throws ModelDefinitionException {
-		super(EMFMetaModelResource.class, MMFromJarsInDirIODelegate.class, XtextEMFMetaModelResource.class);
+		super(EMFMetaModelResource.class, XtextEMFMetaModelResource.class);
 	}
 
 	@Override
@@ -57,17 +73,40 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 	@Override
 	public <I> boolean isValidArtefact(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 
-		// System.out.println("On se demande si l'artefact est bon: " + serializationArtefact);
-
-		if (serializationArtefact instanceof File) {
-			boolean returned = MMFromJarsInDirIODelegateImpl.isValidMetaModelFile((File) serializationArtefact);
-			if (returned) {
-				System.out.println("Found valid EMF metamodel: " + serializationArtefact);
-			}
-			return returned;
+		if (!resourceCenter.isDirectory(serializationArtefact)) {
+			return false;
 		}
-		// TODO: other kind of artefacts
-		return false;
+
+		Properties properties;
+		try {
+			properties = resourceCenter.getProperties(serializationArtefact);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		if (properties == null) {
+			return false;
+		}
+
+		String uri = properties.getProperty(URI_KEY);
+		String extension = properties.getProperty(EXTENSION_KEY);
+		String ePackageClassName = properties.getProperty(PACKAGE_KEY);
+		String resourceFactoryClassName = properties.getProperty(RESOURCE_FACTORY_KEY);
+
+		List<I> jarEntries = new ArrayList<>();
+		for (I content : resourceCenter.getContents(serializationArtefact)) {
+			if (resourceCenter.retrieveName(content).endsWith(".jar")) {
+				jarEntries.add(content);
+			}
+		}
+
+		if (uri != null && extension != null && ePackageClassName != null && resourceFactoryClassName != null && jarEntries.size() > 0) {
+			System.out.println("Found valid EMF metamodel: " + serializationArtefact);
+		}
+
+		return (uri != null && extension != null && ePackageClassName != null && resourceFactoryClassName != null && jarEntries.size() > 0);
+
 	}
 
 	@Override
@@ -75,53 +114,100 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) {
 		super.registerResource(resource, resourceCenter, technologyContextManager);
 
+		// Depending on the MM Type, you must do different things
+
+		if (resource.getMetaModelType() == EMFMetaModelType.Profile) {
+			((EMFTechnologyContextManager) technologyContextManager).registerProfile(resource);
+		}
+		else {
+			((EMFTechnologyContextManager) technologyContextManager).registerMetaModel(resource);
+		}
+
 		// Register the resource in the EMFMetaModelRepository of supplied resource center
-		registerResourceInResourceRepository(resource,
-				technologyContextManager.getTechnologyAdapter().getEMFMetaModelRepository(resourceCenter));
+		if (resourceCenter != null) {
+			registerResourceInResourceRepository(resource,
+					technologyContextManager.getTechnologyAdapter().getEMFMetaModelRepository(resourceCenter));
+		}
 
 		return resource;
 	}
 
-	/*@Override
-	protected <I> EMFMetaModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
-		EMFMetaModelResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
-	
+	public <I> EMFMetaModelResource retrieveResourceFromClassPath(String metaModelName, String metaModelURI, String metaModelExtension,
+			String pkgClassName, String factoryClassName, TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager)
+					throws ModelDefinitionException {
+
+		FlexoResourceCenter<I> resourceCenter = null;
+
+		EMFMetaModelResource returned = newInstance(EMFMetaModelResource.class);
+		returned.setMetaModelType(EMFMetaModelType.Standard);
+
+		returned.setResourceCenter(resourceCenter);
+		returned.initName(metaModelName);
+		returned.setURI(metaModelURI);
+
+		returned.setModelFileExtension(metaModelExtension);
+		returned.setPackageClassName(pkgClassName);
+		returned.setResourceFactoryClassName(factoryClassName);
+
+		ClassLoaderIODelegate ioDelegate = newInstance(ClassLoaderIODelegate.class);
+		ioDelegate.setSerializationArtefact(getClass().getClassLoader());
+
+		returned.setFlexoIODelegate(ioDelegate);
+
+		registerResource(returned, resourceCenter, technologyContextManager);
 		return returned;
-	}*/
+	}
 
-	// Life-cyle is not managed the same way as usual: some methods are overriden here
-	// The IO delegate is instantiated first, then used as a factory to retrieve the resource
-	// TODO: it should be nice to refactor this to conform to usual procedure
 	@Override
-	public <I> EMFMetaModelResource retrieveResource(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+	protected <I> EMFMetaModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
+			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
+		EMFMetaModelResource returned = null;
 
-		if (serializationArtefact instanceof File) {
-			File aMetaModelFile = (File) serializationArtefact;
-			MMFromJarsInDirIODelegate iodelegate = MMFromJarsInDirIODelegateImpl.makeMMFromJarsInDirIODelegate(aMetaModelFile, this);
+		Properties properties = resourceCenter.getProperties(serializationArtefact);
 
-			EMFMetaModelResource returned = iodelegate.retrieveMetaModelResource(aMetaModelFile, this,
-					(EMFTechnologyContextManager) technologyContextManager);
-			returned.setResourceCenter(resourceCenter);
-			returned.initName(resourceCenter.retrieveName(serializationArtefact));
-			returned.setFlexoIODelegate(iodelegate);
+		String uri = properties.getProperty(URI_KEY);
+		String extension = properties.getProperty(EXTENSION_KEY);
+		String ePackageClassName = properties.getProperty(PACKAGE_KEY);
+		String resourceFactoryClassName = properties.getProperty(RESOURCE_FACTORY_KEY);
 
-			registerResource(returned, resourceCenter, technologyContextManager);
-			return returned;
+		String mmType = properties.getProperty(PROPERTY_TYPE);
+
+		if (mmType != null && mmType.equals(TYPE_XTEXT)) {
+			returned = newInstance(XtextEMFMetaModelResource.class);
+			returned.setMetaModelType(EMFMetaModelType.XText);
+			((XtextEMFMetaModelResource) returned).setStandaloneSetupClassName(properties.getProperty(PROPERTY_XTEXT_STANDALONE_SETUP));
+		}
+		else if (mmType != null && mmType.equals(TYPE_PROFILE)) {
+			returned = newInstance(EMFMetaModelResource.class);
+			returned.setMetaModelType(EMFMetaModelType.Profile);
+		}
+		else /*if (mmType != null && mmType.equals(TYPE_METAMODEL))*/ {
+			returned = newInstance(EMFMetaModelResource.class);
+			returned.setMetaModelType(EMFMetaModelType.Standard);
 		}
 
-		return super.retrieveResource(serializationArtefact, resourceCenter, technologyContextManager);
+		returned.setResourceCenter(resourceCenter);
+		returned.initName(resourceCenter.retrieveName(serializationArtefact));
+		returned.setURI(uri);
+
+		returned.setModelFileExtension(extension);
+		returned.setPackageClassName(ePackageClassName);
+		returned.setResourceFactoryClassName(resourceFactoryClassName);
+
+		returned.setFlexoIODelegate(makeFlexoIODelegate(serializationArtefact, resourceCenter));
+
+		return returned;
 	}
 
 	@Override
 	protected <I> FlexoIODelegate<I> makeFlexoIODelegate(I serializationArtefact, FlexoResourceCenter<I> resourceCenter) {
 
-		if (serializationArtefact instanceof File) {
+		/*if (serializationArtefact instanceof File) {
 			return (FlexoIODelegate<I>) MMFromJarsInDirIODelegateImpl.makeMMFromJarsInDirIODelegate((File) serializationArtefact, this);
 		}
-		return super.makeFlexoIODelegate(serializationArtefact, resourceCenter);
+		return super.makeFlexoIODelegate(serializationArtefact, resourceCenter);*/
 
+		return resourceCenter.makeDirectoryBasedFlexoIODelegate(serializationArtefact, "", PROPERTIES_SUFFIX, this);
 	}
 
 }

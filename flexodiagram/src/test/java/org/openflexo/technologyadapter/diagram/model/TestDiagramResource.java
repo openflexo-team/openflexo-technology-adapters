@@ -46,6 +46,7 @@ import static org.junit.Assert.fail;
 
 import java.awt.Color;
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -184,10 +185,11 @@ public class TestDiagramResource extends OpenflexoTestCase {
 	 * Reload the diagram
 	 * 
 	 * @throws ModelDefinitionException
+	 * @throws IOException
 	 */
 	@Test
 	@TestOrder(4)
-	public void testReloadDiagram() throws ModelDefinitionException {
+	public void testReloadDiagram() throws ModelDefinitionException, IOException {
 
 		log("testReloadDiagram()");
 

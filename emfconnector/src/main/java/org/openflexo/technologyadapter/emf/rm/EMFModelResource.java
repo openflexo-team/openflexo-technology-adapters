@@ -71,4 +71,5 @@ public interface EMFModelResource extends FlexoModelResource<EMFModel, EMFMetaMo
 	public void setTechnologyContextManager(EMFTechnologyContextManager technologyContextManager);
 
 	public Resource getEMFResource();
+
 }

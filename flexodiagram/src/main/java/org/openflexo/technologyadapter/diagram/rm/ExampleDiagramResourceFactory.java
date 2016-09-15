@@ -20,6 +20,7 @@
 
 package org.openflexo.technologyadapter.diagram.rm;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -45,7 +46,7 @@ public class ExampleDiagramResourceFactory extends DiagramResourceFactory {
 
 	public <I> DiagramResource retrieveExampleDiagramResource(I serializationArtefact,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, DiagramSpecificationResource dsResource)
-					throws ModelDefinitionException {
+					throws ModelDefinitionException, IOException {
 
 		FlexoResourceCenter<I> resourceCenter = (FlexoResourceCenter<I>) dsResource.getResourceCenter();
 		String name = resourceCenter.retrieveName(serializationArtefact);

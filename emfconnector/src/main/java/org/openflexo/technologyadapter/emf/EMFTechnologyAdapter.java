@@ -49,7 +49,6 @@ import org.eclipse.uml2.uml.internal.resource.UMLResourceFactoryImpl;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
@@ -58,8 +57,6 @@ import org.openflexo.model.ModelContextLibrary;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.emf.fml.binding.EMFBindingFactory;
-import org.openflexo.technologyadapter.emf.metamodel.io.MMFromClasspathIODelegate;
-import org.openflexo.technologyadapter.emf.metamodel.io.MMFromClasspathIODelegate.MMFromClasspathIODelegateImpl;
 import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate;
 import org.openflexo.technologyadapter.emf.metamodel.io.MMFromJarsInDirIODelegate.MMFromJarsInDirIODelegateImpl;
 import org.openflexo.technologyadapter.emf.rm.EMFMetaModelRepository;
@@ -318,9 +315,15 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	 */
 	private void registerClasspathMetaModels() throws ModelDefinitionException {
 
-		ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
-				MMFromClasspathIODelegate.class, EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
+		ecoreMetaModelResource = getEMFMetaModelResourceFactory().retrieveResourceFromClassPath(ECORE_MM_NAME, ECORE_MM_URI, ECORE_MM_EXT,
+				ECORE_MM_PKGCLSNAME, ECORE_MM_FACTORYCLSNAME, getTechnologyContextManager());
 
+		umlMetaModelResource = getEMFMetaModelResourceFactory().retrieveResourceFromClassPath(UML_MM_NAME, UML_MM_URI, UML_MM_EXT,
+				UML_MM_PKGCLSNAME, UML_MM_FACTORYCLSNAME, getTechnologyContextManager());
+
+		/*ModelFactory factory = new ModelFactory(ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class,
+				MMFromClasspathIODelegate.class, EMFMetaModelResource.class, XtextEMFMetaModelResource.class));
+		
 		if (ecoreMetaModelResource == null) {
 			// register ecore MM once for all resource centers
 			MMFromClasspathIODelegate iodelegate = MMFromClasspathIODelegateImpl.makeMMFromClasspathIODelegate(factory);
@@ -337,7 +340,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			ecoreMetaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
 			getTechnologyContextManager().registerMetaModel(ecoreMetaModelResource);
 		}
-
+		
 		if (umlMetaModelResource == null) {
 			// register ecore MM once for all resource centers
 			MMFromClasspathIODelegate iodelegate = MMFromClasspathIODelegateImpl.makeMMFromClasspathIODelegate(factory);
@@ -353,7 +356,7 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 			// This resource has no resource center because it will never been serialized
 			umlMetaModelResource.setServiceManager(getTechnologyAdapterService().getServiceManager());
 			getTechnologyContextManager().registerMetaModel(umlMetaModelResource);
-		}
+		}*/
 
 	}
 

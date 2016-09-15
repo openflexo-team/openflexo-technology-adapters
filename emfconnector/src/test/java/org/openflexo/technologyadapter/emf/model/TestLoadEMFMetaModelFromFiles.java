@@ -45,7 +45,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.io.FileNotFoundException;
-import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -87,12 +86,27 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 	@TestOrder(2)
 	public void testConvertAllEMFMetaModel() {
 
-		Collection<EMFMetaModelResource> metaModelResources = technologicalAdapter.getTechnologyContextManager().getAllMetaModelResources();
+		// Collection<EMFMetaModelResource> metaModelResources =
+		// technologicalAdapter.getTechnologyContextManager().getAllMetaModelResources();
 
-		for (EMFMetaModelResource mmResource : metaModelResources) {
+		for (EMFMetaModelResource mmResource : technologicalAdapter.getEMFMetaModelRepository(resourceCenter).getAllResources()) {
 
 			System.out.println("\t Loading and Converting " + mmResource.getURI());
 			long startTime = System.currentTimeMillis();
+
+			System.out.println("mmResource=" + mmResource);
+			/*try {
+				mmResource.loadResourceData(null);
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ResourceLoadingCancelledException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (FlexoException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 
 			EMFMetaModel metamodel = mmResource.getMetaModelData();
 
@@ -175,6 +189,63 @@ public class TestLoadEMFMetaModelFromFiles extends OpenflexoTestCase {
 		assertEquals(1, appartmentClass.getDeclaredFeatureAssociations().size());
 		assertEquals(3, cityClass.getDeclaredFeatureAssociations().size());
 
+	}
+
+	@Test
+	@TestOrder(6)
+	public void testArchiMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+
+		EMFMetaModelResource archiMMRes = technologicalAdapter.getEMFMetaModelRepository(resourceCenter)
+				.getResource("http://www.bolton.ac.uk/archimate");
+		assertNotNull(archiMMRes);
+
+		EMFMetaModel archiMM = archiMMRes.loadResourceData(null);
+		assertNotNull(archiMM);
+
+		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : archiMM.getClasses()) {
+			System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
+			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
+				System.out.println("    > " + fa);
+			}
+		}
+	}
+
+	@Test
+	@TestOrder(7)
+	public void testParametersMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+
+		EMFMetaModelResource parametersMMRes = technologicalAdapter.getEMFMetaModelRepository(resourceCenter)
+				.getResource("http://www.thalesgroup.com/parameters/1.0");
+		assertNotNull(parametersMMRes);
+
+		EMFMetaModel parametersMM = parametersMMRes.loadResourceData(null);
+		assertNotNull(parametersMM);
+
+		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : parametersMM.getClasses()) {
+			System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
+			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
+				System.out.println("    > " + fa);
+			}
+		}
+	}
+
+	@Test
+	@TestOrder(8)
+	public void testSysMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+
+		EMFMetaModelResource sysMLMMRes = technologicalAdapter.getEMFMetaModelRepository(resourceCenter)
+				.getResource("http://www.eclipse.org/papyrus/0.7.0/SysML");
+		assertNotNull(sysMLMMRes);
+
+		EMFMetaModel sysMLMM = sysMLMMRes.loadResourceData(null);
+		assertNotNull(sysMLMM);
+
+		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : sysMLMM.getClasses()) {
+			System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
+			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
+				System.out.println("    > " + fa);
+			}
+		}
 	}
 
 }

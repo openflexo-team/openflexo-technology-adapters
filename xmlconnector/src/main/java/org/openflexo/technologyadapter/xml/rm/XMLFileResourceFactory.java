@@ -20,6 +20,7 @@
 
 package org.openflexo.technologyadapter.xml.rm;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -72,7 +73,7 @@ public class XMLFileResourceFactory extends FlexoResourceFactory<XMLFileResource
 
 	@Override
 	protected <I> XMLFileResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<XMLTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+			TechnologyContextManager<XMLTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
 		XMLFileResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
 		XMLRootElementInfo xmlRootElementInfo = resourceCenter.getXMLRootElementInfo(serializationArtefact);
 		if (xmlRootElementInfo != null) {

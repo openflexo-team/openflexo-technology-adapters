@@ -20,6 +20,7 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -88,7 +89,7 @@ public class EMFModelResourceFactory extends FlexoResourceFactory<EMFModelResour
 
 	@Override
 	public <I> EMFModelResource retrieveResource(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
 
 		for (EMFMetaModelResource mmRes : ((EMFTechnologyContextManager) technologyContextManager).getAllMetaModelResources()) {
 			if (isValidSerializationArtefact(serializationArtefact, resourceCenter, mmRes)) {
@@ -123,7 +124,7 @@ public class EMFModelResourceFactory extends FlexoResourceFactory<EMFModelResour
 
 	@Override
 	protected <I> EMFModelResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+			TechnologyContextManager<EMFTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
 		EMFModelResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
 
 		// TODO: uri management ???

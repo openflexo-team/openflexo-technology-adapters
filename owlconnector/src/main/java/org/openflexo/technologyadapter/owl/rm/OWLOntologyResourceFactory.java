@@ -21,6 +21,7 @@
 package org.openflexo.technologyadapter.owl.rm;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
@@ -78,7 +79,7 @@ public class OWLOntologyResourceFactory extends FlexoResourceFactory<OWLOntology
 
 	@Override
 	protected <I> OWLOntologyResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<OWLTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+			TechnologyContextManager<OWLTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
 		OWLOntologyResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
 		if (serializationArtefact instanceof File) {
 			returned.setURI(OWLOntology.findOntologyURI((File) serializationArtefact));

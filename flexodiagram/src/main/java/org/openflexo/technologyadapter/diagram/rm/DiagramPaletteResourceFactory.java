@@ -20,6 +20,7 @@
 
 package org.openflexo.technologyadapter.diagram.rm;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -73,7 +74,7 @@ public class DiagramPaletteResourceFactory
 
 	public <I> DiagramPaletteResource retrievePaletteResource(I serializationArtefact,
 			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager, DiagramSpecificationResource dsResource)
-					throws ModelDefinitionException {
+					throws ModelDefinitionException, IOException {
 
 		FlexoResourceCenter<I> resourceCenter = (FlexoResourceCenter<I>) dsResource.getResourceCenter();
 		String name = resourceCenter.retrieveName(serializationArtefact);
@@ -131,7 +132,7 @@ public class DiagramPaletteResourceFactory
 
 	@Override
 	protected <I> DiagramPaletteResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
 		DiagramPaletteResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
 
 		PaletteInfo vmiInfo = findPaletteInfo(returned, resourceCenter);

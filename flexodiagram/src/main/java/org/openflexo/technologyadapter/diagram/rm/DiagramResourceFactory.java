@@ -20,6 +20,7 @@
 
 package org.openflexo.technologyadapter.diagram.rm;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -100,7 +101,7 @@ public class DiagramResourceFactory extends PamelaResourceFactory<DiagramResourc
 
 	@Override
 	protected <I> DiagramResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
 		DiagramResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter, technologyContextManager);
 
 		DiagramInfo vmiInfo = findDiagramInfo(returned, resourceCenter);

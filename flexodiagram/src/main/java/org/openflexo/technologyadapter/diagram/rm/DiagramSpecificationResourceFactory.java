@@ -20,6 +20,7 @@
 
 package org.openflexo.technologyadapter.diagram.rm;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.rm.ViewPointResource;
@@ -141,7 +142,7 @@ public class DiagramSpecificationResourceFactory extends
 
 	@Override
 	protected <I> DiagramSpecificationResource initResourceForRetrieving(I serializationArtefact, FlexoResourceCenter<I> resourceCenter,
-			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) throws ModelDefinitionException {
+			TechnologyContextManager<DiagramTechnologyAdapter> technologyContextManager) throws ModelDefinitionException, IOException {
 
 		DiagramSpecificationResource returned = super.initResourceForRetrieving(serializationArtefact, resourceCenter,
 				technologyContextManager);
@@ -206,6 +207,9 @@ public class DiagramSpecificationResourceFactory extends
 				} catch (ModelDefinitionException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 			else if (getPaletteResourceFactory().isValidArtefact(child, resourceCenter)) {
@@ -213,6 +217,9 @@ public class DiagramSpecificationResourceFactory extends
 					DiagramPaletteResource paletteRes = getPaletteResourceFactory().retrievePaletteResource(child, technologyContextManager,
 							dsResource);
 				} catch (ModelDefinitionException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
