@@ -51,6 +51,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.OpenflexoTestCaseWithGUI;
 import org.openflexo.fib.swing.utils.SwingGraphicalContextDelegate;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.ontology.components.widget.OntologyBrowserModel;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
@@ -137,6 +138,14 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			if (modelResource != null) {
 				archimateModelResource = modelResource;
+				System.out.println(
+						"Found resource " + resourceCenter.getDefaultBaseURI() + File.separator + archimateModelResourceRelativeURI);
+			}
+			else {
+				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + File.separator + archimateModelResourceRelativeURI);
+				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
+					System.out.println(" > " + r.getURI());
+				}
 			}
 
 		}
