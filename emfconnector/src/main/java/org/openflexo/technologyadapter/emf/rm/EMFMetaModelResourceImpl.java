@@ -100,6 +100,9 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 			// Retrieve class loader to be used
 			classLoader = getFlexoIODelegate().retrieveClassLoader();
 
+			System.out.println("Reading EMF metamodel from " + getFlexoIODelegate());
+			System.out.println("ClassLoader=" + classLoader);
+
 			ePackageClass = classLoader.loadClass(getPackageClassName());
 			if (ePackageClass != null) {
 				Field ePackageField = ePackageClass.getField("eINSTANCE");
