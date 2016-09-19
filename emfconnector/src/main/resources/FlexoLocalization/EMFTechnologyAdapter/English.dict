@@ -13,6 +13,7 @@ datatype_properties=Datatype properties
 done=Done
 hierarchic_presentation=Hierarchic presentation
 individuals=Individuals
+initializing_adapter=Initializing adapter
 lower=Lower
 metamodel=Metamodel
 name=Name

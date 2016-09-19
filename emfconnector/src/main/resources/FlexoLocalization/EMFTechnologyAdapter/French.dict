@@ -13,6 +13,7 @@ datatype_properties=datatype_properties
 done=Effectu\u00E9
 hierarchic_presentation=hierarchic_presentation
 individuals=individuals
+initializing_adapter=initializing_adapter
 lower=lower
 metamodel=M\u00E9tamod\u00E8le
 name=Nom
