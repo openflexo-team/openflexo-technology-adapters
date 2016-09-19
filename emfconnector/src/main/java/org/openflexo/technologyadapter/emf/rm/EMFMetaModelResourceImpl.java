@@ -39,8 +39,16 @@
 
 package org.openflexo.technologyadapter.emf.rm;
 
+import java.io.Closeable;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.EPackage;
@@ -49,6 +57,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
+import org.openflexo.foundation.resource.InJarFlexoIODelegate;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
 import org.openflexo.technologyadapter.emf.metamodel.io.EMFMetaModelConverter;
@@ -180,10 +189,64 @@ public abstract class EMFMetaModelResourceImpl extends FlexoResourceImpl<EMFMeta
 	 */
 	@Override
 	public Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate) {
-		// TODO : refactor with proper IODelegate Support
-		return getEMFResourceFactory().createResource(
-				org.eclipse.emf.common.util.URI.createFileURI(((FileFlexoIODelegate) flexoIODelegate).getFile().getAbsolutePath()));
 
+		// TODO: refactor this with IODelegate
+
+		if (flexoIODelegate instanceof FileFlexoIODelegate) {
+			return getEMFResourceFactory().createResource(
+					org.eclipse.emf.common.util.URI.createFileURI(((FileFlexoIODelegate) flexoIODelegate).getFile().getAbsolutePath()));
+		}
+
+		if (flexoIODelegate instanceof InJarFlexoIODelegate) {
+			try {
+				InJarFlexoIODelegate inJarIODelegate = (InJarFlexoIODelegate) flexoIODelegate;
+				JarEntry entry = inJarIODelegate.getInJarResource().getEntry();
+				JarFile jarFile = inJarIODelegate.getInJarResource().getJarResource().getJarfile();
+				File copiedFile = jarEntryAsFile(jarFile, entry);
+				return getEMFResourceFactory().createResource(org.eclipse.emf.common.util.URI.createFileURI(copiedFile.getAbsolutePath()));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		// not implemented
+		logger.warning("createEMFModelResource() for " + flexoIODelegate + " : not implemented");
+
+		return null;
+	}
+
+	private static File jarEntryAsFile(JarFile jarFile, JarEntry jarEntry) throws IOException {
+		InputStream input = null;
+		OutputStream output = null;
+		try {
+			String name = jarEntry.getName().replace('/', '_');
+			int i = name.lastIndexOf(".");
+			String extension = i > -1 ? name.substring(i) : "";
+			File file = File.createTempFile(name.substring(0, name.length() - extension.length()) + ".", extension);
+			file.deleteOnExit();
+			input = jarFile.getInputStream(jarEntry);
+			output = new FileOutputStream(file);
+			int readCount;
+			byte[] buffer = new byte[4096];
+			while ((readCount = input.read(buffer)) != -1) {
+				output.write(buffer, 0, readCount);
+			}
+			return file;
+		} finally {
+			close(input);
+			close(output);
+		}
+	}
+
+	private static void close(Closeable closeable) {
+		if (closeable != null) {
+			try {
+				closeable.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }
