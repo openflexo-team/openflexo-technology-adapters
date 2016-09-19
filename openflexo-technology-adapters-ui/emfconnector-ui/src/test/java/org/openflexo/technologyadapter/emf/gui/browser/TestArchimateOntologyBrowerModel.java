@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.emf.gui.browser;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -138,8 +137,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 
 			if (modelResource != null) {
 				archimateModelResource = modelResource;
-				System.out.println(
-						"Found resource " + resourceCenter.getDefaultBaseURI() + "/" + archimateModelResourceRelativeURI);
+				System.out.println("Found resource " + resourceCenter.getDefaultBaseURI() + "/" + archimateModelResourceRelativeURI);
 			}
 			else {
 				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + archimateModelResourceRelativeURI);
