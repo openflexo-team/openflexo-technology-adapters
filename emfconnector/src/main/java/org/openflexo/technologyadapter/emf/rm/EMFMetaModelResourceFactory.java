@@ -102,7 +102,7 @@ public class EMFMetaModelResourceFactory extends FlexoResourceFactory<EMFMetaMod
 		}
 
 		if (uri != null && extension != null && ePackageClassName != null && resourceFactoryClassName != null && jarEntries.size() > 0) {
-			System.out.println("Found valid EMF metamodel: " + serializationArtefact);
+			logger.info("Found valid EMF metamodel: " + serializationArtefact);
 		}
 
 		return (uri != null && extension != null && ePackageClassName != null && resourceFactoryClassName != null && jarEntries.size() > 0);

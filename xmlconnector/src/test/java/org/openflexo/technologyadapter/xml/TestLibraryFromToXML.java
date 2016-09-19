@@ -44,7 +44,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -92,13 +91,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
 		mmRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
 		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
-		baseUrl = resourceCenter.getDirectory().getCanonicalPath();
-		try {
-			baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		baseUrl = resourceCenter.getDefaultBaseURI();
 
 		assertNotNull(modelRepository);
 		assertNotNull(mmRepository);
@@ -120,7 +113,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("BaseDir: " + baseUrl);
 
-		String resourceURI = baseUrl + "TestResourceCenter/XML/example_library_1.xml";
+		String resourceURI = baseUrl + "/TestResourceCenter/XML/example_library_1.xml";
 		System.out.println("ResourceURI: " + resourceURI);
 
 		XMLFileResource libraryRes = modelRepository.getResource(resourceURI);

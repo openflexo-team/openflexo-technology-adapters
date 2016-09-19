@@ -46,7 +46,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -87,7 +86,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
 		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
-		baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
+		baseUrl = resourceCenter.getDefaultBaseURI();
 		assertNotNull(modelRepository);
 		assertTrue(modelRepository.getAllResources().size() > 3);
 	}
@@ -100,7 +99,8 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_0.xml");
+		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_0.xml");
+
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -123,7 +123,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_1.xml");
+		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_1.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -146,7 +146,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_2.xml");
+		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_2.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -168,7 +168,7 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		assertNotNull(modelRepository);
 
-		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "TestResourceCenter/XML/example_library_3.xml");
+		XMLFileResource modelRes = modelRepository.getResource(baseUrl + "/TestResourceCenter/XML/example_library_3.xml");
 		assertNotNull(modelRes);
 		assertFalse(modelRes.isLoaded());
 		assertNotNull(modelRes.getModelData());
@@ -190,9 +190,12 @@ public class TestXML extends OpenflexoProjectAtRunTimeTestCase {
 		assertNotNull(modelRepository);
 
 		String fileUUID = UUID.randomUUID().toString();
-		URI fileURI = new URI(baseUrl + "TestResourceCenter/GenXML/example_File_" + fileUUID + ".xml");
+		// URI fileURI = new URI(baseUrl + "/TestResourceCenter/GenXML/example_File_" + fileUUID + ".xml");
 
-		File xmlFile = new File(fileURI);
+		File xmlFile = new File(resourceCenter.getDirectory(), "/TestResourceCenter/GenXML/example_File_" + fileUUID + ".xml");
+		System.out.println("xmlFile=" + xmlFile);
+
+		// File xmlFile = new File(fileURI);
 
 		XMLFileResource modelRes = xmlAdapter.getXMLFileResourceFactory().makeResource(xmlFile, resourceCenter,
 				xmlAdapter.getTechnologyContextManager(), true);

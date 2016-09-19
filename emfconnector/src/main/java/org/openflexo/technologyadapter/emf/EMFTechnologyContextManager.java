@@ -102,7 +102,7 @@ public class EMFTechnologyContextManager extends FlexoOntologyTechnologyContextM
 			metamodels.put(mmURI, newMetaModelResource);
 			EMFExtensionToFactoryMap.put(newMetaModelResource.getModelFileExtension(), newMetaModelResource.getEMFResourceFactory());
 			EPackage ePackage = newMetaModelResource.getPackage();
-			System.out.println("******* Register " + newMetaModelResource + " rc=" + newMetaModelResource.getResourceCenter());
+			//System.out.println("******* Register " + newMetaModelResource + " rc=" + newMetaModelResource.getResourceCenter());
 			if (!EMFPackageRegistry.containsKey(mmURI) && ePackage != null) {
 				EMFPackageRegistry.put(mmURI, ePackage);
 			}
