@@ -77,7 +77,7 @@ public class TestLoadExcelDocuments extends AbstractTestExcel {
 				.getTechnologyAdapter(ExcelTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			ExcelWorkbookRepository workbookRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class, technologicalAdapter);
+			ExcelWorkbookRepository<?> workbookRepository = technologicalAdapter.getExcelWorkbookRepository(resourceCenter);
 			assertNotNull(workbookRepository);
 			Collection<ExcelWorkbookResource> documents = workbookRepository.getAllResources();
 			for (ExcelWorkbookResource docResource : documents) {

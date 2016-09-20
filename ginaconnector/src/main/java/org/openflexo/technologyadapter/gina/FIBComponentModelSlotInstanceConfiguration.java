@@ -27,6 +27,7 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
@@ -53,8 +54,8 @@ public class FIBComponentModelSlotInstanceConfiguration
 	}
 
 	protected FIBComponentModelSlotInstanceConfiguration(FIBComponentModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
 	}
 
 	@Override

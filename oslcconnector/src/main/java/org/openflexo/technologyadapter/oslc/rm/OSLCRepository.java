@@ -39,18 +39,18 @@
 package org.openflexo.technologyadapter.oslc.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.core.OSLCServiceProviderCatalog;
 
-public class OSLCRepository extends
-		TechnologyAdapterFileResourceRepository<OSLCResourceResource, OSLCTechnologyAdapter, OSLCServiceProviderCatalog> {
+public class OSLCRepository<I>
+		extends TechnologyAdapterResourceRepository<OSLCResourceResource, OSLCTechnologyAdapter, OSLCServiceProviderCatalog, I> {
 
-	public OSLCRepository(OSLCTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public OSLCRepository(OSLCTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/CDLTechnologyAdapter/Models";
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/OSLC";
 
 	@Override
 	public String getDefaultBaseURI() {

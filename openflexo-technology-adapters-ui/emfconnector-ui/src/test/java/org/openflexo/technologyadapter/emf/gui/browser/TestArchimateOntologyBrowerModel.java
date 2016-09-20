@@ -40,7 +40,6 @@ package org.openflexo.technologyadapter.emf.gui.browser;
 
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -49,7 +48,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
@@ -103,7 +102,7 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 				.getTechnologyAdapter(EMFTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
 			assertNotNull(metaModelRepository);
 
 			EMFMetaModelResource metaModelResource = metaModelRepository.getResource(ARCHIMATE_URI);
@@ -122,28 +121,38 @@ public class TestArchimateOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	@Test
 	@TestOrder(2)
 	public void TestLoadArchimateEMFModel() {
+
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
 			assertNotNull(metaModelRepository);
-
-			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
+			EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
 			assertNotNull(modelRepository);
 
-			System.out.println("Loading "
-					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
+			System.out.println("Loading from RC :" + resourceCenter + " " + resourceCenter.getDefaultBaseURI() + "/"
 					+ archimateModelResourceRelativeURI);
 
-			archimateModelResource = modelRepository.getResource(
-					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
-							+ archimateModelResourceRelativeURI);
+			EMFModelResource modelResource = modelRepository
+					.getResource(resourceCenter.getDefaultBaseURI() + "/" + archimateModelResourceRelativeURI);
 
-			assertNotNull(archimateModelResource);
+			if (modelResource != null) {
+				archimateModelResource = modelResource;
+				System.out.println("Found resource " + resourceCenter.getDefaultBaseURI() + "/" + archimateModelResourceRelativeURI);
+			}
+			else {
+				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + archimateModelResourceRelativeURI);
+				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
+					System.out.println(" > " + r.getURI());
+				}
+			}
 
-			archimateModel = archimateModelResource.getModel();
-			assertNotNull(archimateModel);
-			assertNotNull(archimateModel.getMetaModel());
 		}
+
+		assertNotNull(archimateModelResource);
+
+		archimateModel = archimateModelResource.getModel();
+		assertNotNull(archimateModel);
+		assertNotNull(archimateModel.getMetaModel());
 	}
 
 	@Test

@@ -38,38 +38,19 @@
 
 package org.openflexo.technologyadapter.diagram.rm;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
-import org.jdom2.Attribute;
-import org.jdom2.Document;
-import org.jdom2.Element;
-import org.jdom2.JDOMException;
 import org.openflexo.foundation.DataModification;
 import org.openflexo.foundation.FlexoException;
-import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.InconsistentDataException;
 import org.openflexo.foundation.InvalidModelDefinitionException;
 import org.openflexo.foundation.InvalidXMLException;
-import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FlexoFileNotFoundException;
-import org.openflexo.foundation.resource.InJarFlexoIODelegate;
-import org.openflexo.foundation.resource.InJarFlexoIODelegate.InJarFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.AccessibleProxyObject;
-import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.rm.InJarResourceImpl;
-import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
@@ -79,98 +60,6 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 		implements DiagramPaletteResource, AccessibleProxyObject {
 
 	static final Logger logger = Logger.getLogger(DiagramPaletteResourceImpl.class.getPackage().getName());
-
-	public static DiagramPaletteResource makeDiagramPaletteResource(DiagramSpecificationResource dsResource, String diagramPaletteName,
-			FlexoServiceManager serviceManager) {
-		try {
-			File diagramPaletteFile = new File(ResourceLocator.retrieveResourceAsFile(dsResource.getDirectory()),
-					diagramPaletteName + ".palette");
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, DiagramPaletteResource.class));
-			DiagramPaletteResourceImpl returned = (DiagramPaletteResourceImpl) factory.newInstance(DiagramPaletteResource.class);
-			returned.initName(diagramPaletteFile.getName());
-			// returned.setFile(diagramPaletteFile);
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramPaletteFile, factory));
-
-			returned.setURI(dsResource.getURI() + "/" + diagramPaletteFile.getName());
-			returned.setResourceCenter(dsResource.getResourceCenter());
-			returned.setServiceManager(serviceManager);
-			returned.setFactory(new DiagramPaletteFactory(serviceManager.getEditingContext(), returned));
-			dsResource.addToContents(returned);
-			DiagramPalette newPalette = returned.getFactory().makeNewDiagramPalette();
-			newPalette.setResource(returned);
-			returned.setResourceData(newPalette);
-			dsResource.getDiagramSpecification().addToPalettes(newPalette);
-			dsResource.getDiagramPaletteResources().add(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static DiagramPaletteResource retrieveDiagramPaletteResource(DiagramSpecificationResource dsResource, File diagramPaletteFile,
-			FlexoServiceManager serviceManager) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, DiagramPaletteResource.class));
-			DiagramPaletteResourceImpl returned = (DiagramPaletteResourceImpl) factory.newInstance(DiagramPaletteResource.class);
-			returned.initName(diagramPaletteFile.getName());
-			// returned.setFile(diagramPaletteFile);
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(diagramPaletteFile, factory));
-
-			PaletteInfo info = null;
-			try {
-				info = findPaletteInfo(new FileInputStream(diagramPaletteFile));
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			if (info == null) {
-				// Unable to retrieve infos, just abort
-				logger.warning("Cannot retrieve info for palette " + diagramPaletteFile);
-				return null;
-			}
-			// TODO: we already have set the name ???
-			returned.initName(info.name);
-
-			returned.setURI(dsResource.getURI() + "/" + diagramPaletteFile.getName());
-			returned.setResourceCenter(dsResource.getResourceCenter());
-			returned.setServiceManager(serviceManager);
-			returned.setFactory(new DiagramPaletteFactory(serviceManager.getEditingContext(), returned));
-			dsResource.addToContents(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static DiagramPaletteResource retrieveDiagramPaletteResource(DiagramSpecificationResource dsResource,
-			InJarResourceImpl diagramPaletteInJarResource, FlexoServiceManager serviceManager) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(InJarFlexoIODelegate.class, DiagramPaletteResource.class));
-			DiagramPaletteResourceImpl returned = (DiagramPaletteResourceImpl) factory.newInstance(DiagramPaletteResource.class);
-			// returned.setFile(diagramPaletteFile);
-			returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(diagramPaletteInJarResource, factory));
-			PaletteInfo info = findPaletteInfo(diagramPaletteInJarResource.openInputStream());
-			if (info == null) {
-				return null;
-			}
-			returned.initName(info.name);
-
-			returned.setURI(dsResource.getURI() + "/" + returned.getName() + ".palette");
-			returned.setResourceCenter(dsResource.getResourceCenter());
-			returned.setServiceManager(serviceManager);
-			returned.setFactory(new DiagramPaletteFactory(serviceManager.getEditingContext(), returned));
-			dsResource.addToContents(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	@Override
 	public Class<DiagramPalette> getResourceDataClass() {
@@ -192,41 +81,6 @@ public abstract class DiagramPaletteResourceImpl extends PamelaResourceImpl<Diag
 		} catch (FlexoException e) {
 			e.printStackTrace();
 		}
-		return null;
-	}
-
-	private static class PaletteInfo {
-		public String name;
-	}
-
-	private static PaletteInfo findPaletteInfo(InputStream paletteInputStream) {
-		Document document;
-		try {
-			// if (diagramFile.exists()) {
-
-			document = readXMLInputStream(paletteInputStream);
-			Element root = getElement(document, "DiagramPalette");
-			if (root != null) {
-				PaletteInfo returned = new PaletteInfo();
-				Iterator<Attribute> it = root.getAttributes().iterator();
-				while (it.hasNext()) {
-					Attribute at = it.next();
-					if (at.getName().equals("name")) {
-						logger.fine("Returned " + at.getValue());
-						returned.name = at.getValue();
-					}
-				}
-				return returned;
-			}
-			/*} else {
-				logger.warning("While analysing diagram candidate cannot find file " + diagramFile.getAbsolutePath());
-			}*/
-		} catch (JDOMException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		logger.fine("Returned null");
 		return null;
 	}
 

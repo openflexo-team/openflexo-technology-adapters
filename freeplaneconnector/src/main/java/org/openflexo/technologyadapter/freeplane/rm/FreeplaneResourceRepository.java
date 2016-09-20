@@ -39,21 +39,22 @@
 package org.openflexo.technologyadapter.freeplane.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.freeplane.FreeplaneTechnologyAdapter;
 import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 
-public class FreeplaneResourceRepository extends TechnologyAdapterFileResourceRepository<IFreeplaneResource, FreeplaneTechnologyAdapter, IFreeplaneMap> {
+public class FreeplaneResourceRepository<I>
+		extends TechnologyAdapterResourceRepository<IFreeplaneResource, FreeplaneTechnologyAdapter, IFreeplaneMap, I> {
 
-    private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/FreeplaneTechnologyAdapter/Maps";
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/FreeplaneTechnologyAdapter/Maps";
 
-    public FreeplaneResourceRepository(final FreeplaneTechnologyAdapter technologyAdapter, final FlexoResourceCenter<?> resourceCenter) {
-        super(technologyAdapter, resourceCenter);
-    }
+	public FreeplaneResourceRepository(final FreeplaneTechnologyAdapter technologyAdapter, final FlexoResourceCenter<I> resourceCenter) {
+		super(technologyAdapter, resourceCenter);
+	}
 
-    @Override
-    public String getDefaultBaseURI() {
-        return DEFAULT_BASE_URI;
-    }
+	@Override
+	public String getDefaultBaseURI() {
+		return DEFAULT_BASE_URI;
+	}
 
 }

@@ -135,7 +135,7 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 
 		DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
 				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
-		DiagramSpecificationRepository repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, diagramTA);
+		DiagramSpecificationRepository<?> repository = diagramTA.getDiagramSpecificationRepository(resourceCenter);
 		DiagramSpecificationResource diagramSpecificationResource = repository
 				.getResource("http://openflexo.org/test/TestDiagramSpecification");
 		assertNotNull(diagramSpecificationResource);
@@ -311,8 +311,8 @@ public class TestInstantiateControlledDiagramVirtualModel extends OpenflexoProje
 		assertNotNull(editor);
 		assertNotNull(project);
 
-		assertEquals(2, project.getAllResources().size());
 		System.out.println("All resources=" + project.getAllResources());
+		assertEquals(3, project.getAllResources().size());
 		assertNotNull(project.getResource(newView.getURI()));
 
 		ViewResource newViewResource = project.getViewLibrary().getView(newView.getURI());

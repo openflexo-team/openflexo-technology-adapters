@@ -1,8 +1,9 @@
 /**
  * 
- * Copyright (c) 2014, Openflexo
+ * Copyright (c) 2013-2014, Openflexo
+ * Copyright (c) 2011-2012, AgileBirds
  * 
- * This file is part of Owlconnector, a component of the software infrastructure 
+ * This file is part of Powerpointconnector, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,20 +37,26 @@
  * 
  */
 
-package org.openflexo.technologyadapter.owl.model;
+package org.openflexo.technologyadapter.csv.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.MetaModelRepository;
-import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
-import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
+import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
+import org.openflexo.technologyadapter.csv.model.CSVModel;
 
-public class OWLOntologyAsMetaModelRepository extends MetaModelRepository<OWLOntologyResource, OWLOntology, OWLOntology, OWLTechnologyAdapter> {
+/**
+ * CSV resource repository
+ * 
+ * @author sylvain
+ * 
+ */
+public class CSVModelResourceRepository<I> extends TechnologyAdapterResourceRepository<CSVModelResource, CSVTechnologyAdapter, CSVModel, I> {
 
-	public OWLOntologyAsMetaModelRepository(OWLTechnologyAdapter adapter, FlexoResourceCenter<?> rc) {
-		super(adapter, rc);
+	public CSVModelResourceRepository(CSVTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
+		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/OWLTechnologyAdapter";
+	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/CSV";
 
 	@Override
 	public String getDefaultBaseURI() {

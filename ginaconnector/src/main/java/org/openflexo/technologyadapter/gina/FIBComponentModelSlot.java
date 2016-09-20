@@ -25,7 +25,6 @@ import java.util.List;
 
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.FlexoRole;
@@ -35,6 +34,7 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.model.annotations.Adder;
@@ -111,7 +111,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 	@Override
 	public GINATechnologyAdapter getModelSlotTechnologyAdapter();
 
-	public static abstract class FIBComponentModelSlotImpl extends FreeModelSlotImpl<GINAFIBComponent> implements FIBComponentModelSlot {
+	public static abstract class FIBComponentModelSlotImpl extends FreeModelSlotImpl<GINAFIBComponent>implements FIBComponentModelSlot {
 
 		protected String templateComponentURI;
 		private GINAFIBComponentResource templateResource;
@@ -126,8 +126,8 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 		 */
 		@Override
 		public ModelSlotInstanceConfiguration<? extends FreeModelSlot<GINAFIBComponent>, GINAFIBComponent> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoProject project) {
-			return new FIBComponentModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
+			return new FIBComponentModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
@@ -171,8 +171,7 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 			if (templateResource == null && StringUtils.isNotEmpty(templateComponentURI)
 					&& getServiceManager().getResourceManager() != null) {
 				// System.out.println("Looking up " + templateDocumentURI);
-				templateResource = (GINAFIBComponentResource) getServiceManager().getResourceManager().getResource(templateComponentURI,
-						null);
+				templateResource = (GINAFIBComponentResource) getServiceManager().getResourceManager().getResource(templateComponentURI);
 				// System.out.println("templateResource = " + returned);
 				// for (FlexoResource r : getServiceManager().getResourceManager().getRegisteredResources()) {
 				// System.out.println("> " + r.getURI());
@@ -280,7 +279,8 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 					value.setDeclaredType(Object.class);
 					value.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
 					this.value = value;
-				} else {
+				}
+				else {
 					getValue();
 				}
 			}

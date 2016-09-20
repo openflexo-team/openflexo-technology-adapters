@@ -98,7 +98,7 @@ public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXMode
 			DocXTechnologyAdapter docxTA = getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-			DocXDocumentResource newResource = docxTA.createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, getRelativePath(), resourceName, true);
+			DocXDocumentResource newResource = docxTA.createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, getRelativePath(), resourceName, true, getModelSlot().getIdStrategy());
 
 			System.out.println("New resource: " + newResource);
 

@@ -43,7 +43,6 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
@@ -219,8 +218,8 @@ public interface FreeXMLModelSlot extends FreeModelSlot<XMLModel>, AbstractXMLMo
 
 		@Override
 		public ModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new FreeXMLModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new FreeXMLModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override

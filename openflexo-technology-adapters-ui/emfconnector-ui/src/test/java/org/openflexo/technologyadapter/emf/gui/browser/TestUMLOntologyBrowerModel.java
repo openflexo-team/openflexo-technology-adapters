@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.emf.gui.browser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -50,7 +49,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
@@ -95,29 +94,36 @@ public class TestUMLOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	@Test
 	@TestOrder(1)
 	public void TestLoadUMLEMFModel() {
+
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
 			assertNotNull(metaModelRepository);
-
-			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
+			EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
 			assertNotNull(modelRepository);
 
-			System.out.println("Loading :"
-					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
-					+ umlModelResourceRelativeURI);
+			System.out.println("Loading :" + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
 
-			umlModelResource = modelRepository.getResource(
-					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
-							+ umlModelResourceRelativeURI);
+			EMFModelResource modelResource = modelRepository
+					.getResource(resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
 
-			assertNotNull(umlModelResource);
-
-			umlModel = umlModelResource.getModel();
-			assertNotNull(umlModel);
-			assertNotNull(umlModel.getMetaModel());
-			assertEquals(umlModel.getMetaModel().getURI(), EMFTechnologyAdapter.UML_MM_URI);
+			if (modelResource != null) {
+				umlModelResource = modelResource;
+				System.out.println("Found resource " + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
+			}
+			else {
+				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + umlModelResourceRelativeURI);
+				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
+					System.out.println(" > " + r.getURI());
+				}
+			}
 		}
+
+		assertNotNull(umlModelResource);
+
+		umlModel = umlModelResource.getModel();
+		assertNotNull(umlModel);
+		assertNotNull(umlModel.getMetaModel());
+		assertEquals(umlModel.getMetaModel().getURI(), EMFTechnologyAdapter.UML_MM_URI);
 	}
 
 	@Test

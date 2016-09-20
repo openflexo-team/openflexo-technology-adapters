@@ -41,13 +41,13 @@ package org.openflexo.technologyadapter.diagram;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 
 public class FreeDiagramModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<Diagram, FreeDiagramModelSlot> {
 
@@ -59,9 +59,9 @@ public class FreeDiagramModelSlotInstanceConfiguration extends FreeModelSlotInst
 	protected DiagramResource diagramResource;
 
 	protected FreeDiagramModelSlotInstanceConfiguration(FreeDiagramModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
-		setResourceUri(project.getURI() + "/Diagrams/myDiagram");
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
+		setResourceUri(rc.getDefaultBaseURI() + "/Diagrams/myDiagram");
 		setRelativePath("/");
 		setFilename("myDiagram.diagram");
 	}
@@ -71,7 +71,7 @@ public class FreeDiagramModelSlotInstanceConfiguration extends FreeModelSlotInst
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		if (!getFilename().endsWith(DiagramResource.DIAGRAM_SUFFIX)) {
+		if (!getFilename().endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX)) {
 			setErrorMessage(getModelSlot().getModelSlotTechnologyAdapter().getLocales()
 					.localizedForKey("file_name_should_end_with_.diagram_suffix"));
 			return false;

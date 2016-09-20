@@ -38,23 +38,18 @@
 
 package org.openflexo.technologyadapter.oslc;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.technologyadapter.oslc.rm.OSLCRepository;
-import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResource;
-import org.openflexo.technologyadapter.oslc.rm.OSLCResourceResourceImpl;
+import org.openflexo.technologyadapter.oslc.rm.OSLCResourceFactory;
 import org.openflexo.technologyadapter.oslc.virtualmodel.bindings.OSLCBindingFactory;
 
 /**
@@ -66,6 +61,7 @@ import org.openflexo.technologyadapter.oslc.virtualmodel.bindings.OSLCBindingFac
 
 @DeclareModelSlots({ OSLCCoreModelSlot.class, OSLCRMModelSlot.class })
 @DeclareRepositoryType({ OSLCRepository.class })
+@DeclareResourceTypes({ OSLCResourceFactory.class })
 public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	private static String OSLC_FILE_EXTENSION = ".oslc";
 
@@ -87,7 +83,7 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	}
 
 	@Override
-	public TechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
+	public OSLCTechnologyContextManager createTechnologyContextManager(FlexoResourceCenterService service) {
 		return new OSLCTechnologyContextManager(this, service);
 	}
 
@@ -96,15 +92,15 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 		return BINDING_FACTORY;
 	}
 
-	@Override
+	/*@Override
 	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 		OSLCRepository oslcRepository = resourceCenter.getRepository(OSLCRepository.class, this);
 		if (oslcRepository == null) {
 			oslcRepository = createOSLCRepository(resourceCenter);
 		}
-
+	
 		Iterator<I> it = resourceCenter.iterator();
-
+	
 		while (it.hasNext()) {
 			I item = it.next();
 			if (item instanceof File) {
@@ -115,9 +111,9 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 		}
 		// Call it to update the current repositories
 		notifyRepositoryStructureChanged();
-	}
+	}*/
 
-	protected OSLCResourceResource tryToLookupOSLCResources(FlexoResourceCenter<File> resourceCenter, File candidateFile) {
+	/*protected OSLCResourceResource tryToLookupOSLCResources(FlexoResourceCenter<File> resourceCenter, File candidateFile) {
 		if (isValidOSLCFile(candidateFile)) {
 			OSLCResourceResource oslcRes = retrieveOSLCResource(candidateFile, resourceCenter);
 			OSLCRepository oslcRepository = resourceCenter.getRepository(OSLCRepository.class, this);
@@ -134,32 +130,41 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public <I> OSLCResourceResource retrieveOSLCResource(I cdlFile, FlexoResourceCenter<I> resourceCenter) {
+	/*public <I> OSLCResourceResource retrieveOSLCResource(I cdlFile, FlexoResourceCenter<I> resourceCenter) {
 		OSLCResourceResource oslcResource = null;
-
+	
 		// TODO: try to look-up already found file
 		if (cdlFile instanceof File) {
 			oslcResource = OSLCResourceResourceImpl.retrieveOSLCResource((File) cdlFile, getTechnologyContextManager(), resourceCenter);
-
+	
 			return oslcResource;
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * 
 	 * Create a cdl unit repository for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
 	 * 
 	 */
-	public OSLCRepository createOSLCRepository(FlexoResourceCenter<?> resourceCenter) {
+	/*public OSLCRepository createOSLCRepository(FlexoResourceCenter<?> resourceCenter) {
 		OSLCRepository returned = new OSLCRepository(this, resourceCenter);
 		resourceCenter.registerRepository(returned, OSLCRepository.class, this);
+		return returned;
+	}*/
+
+	public <I> OSLCRepository<I> getOSLCRepository(FlexoResourceCenter<I> resourceCenter) {
+		OSLCRepository<I> returned = resourceCenter.retrieveRepository(OSLCRepository.class, this);
+		if (returned == null) {
+			returned = new OSLCRepository<I>(this, resourceCenter);
+			resourceCenter.registerRepository(returned, OSLCRepository.class, this);
+		}
 		return returned;
 	}
 
@@ -170,9 +175,9 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 	 * 
 	 * @return
 	 */
-	public boolean isValidOSLCFile(File candidateFile) {
+	/*public boolean isValidOSLCFile(File candidateFile) {
 		return candidateFile.getName().endsWith(OSLC_FILE_EXTENSION);
-	}
+	}*/
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
@@ -180,7 +185,7 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 		return false;
 	}
 
-	@Override
+	/*@Override
 	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		boolean returned = false;
 		if (contents instanceof File) {
@@ -191,28 +196,27 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 		notifyRepositoryStructureChanged();
 		return returned;
 	}
-
+	
 	@Override
 	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
 		// TODO Auto-generated method stub
 		return false;
-	}
+	}*/
 
 	@Override
 	public OSLCTechnologyContextManager getTechnologyContextManager() {
-		// TODO Auto-generated method stub
 		return (OSLCTechnologyContextManager) super.getTechnologyContextManager();
 	}
 

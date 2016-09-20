@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.powerpoint;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -52,31 +51,37 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoServiceManager;
+import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
+import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
+import org.openflexo.foundation.fml.rm.VirtualModelResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideShowRepository;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
-import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResourceImpl;
+import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResourceFactory;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
 @RunWith(OrderedRunner.class)
 public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 
+	private static final String VIEWPOINT_NAME = "TestPPTViewPoint";
+	private static final String VIEWPOINT_URI = "http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint";
+	private static final String VIRTUAL_MODEL_NAME = "TestPPTVirtualModel";
+
 	protected static final Logger logger = Logger.getLogger(TestPowerpointModel.class.getPackage().getName());
 
 	private static FlexoServiceManager testApplicationContext;
 	private static PowerpointTechnologyAdapter powerpointAdapter;
-	private static PowerpointSlideShowRepository modelRepository;
+	private static PowerpointSlideShowRepository<?> modelRepository;
 	private static File resourceCenterDirectory;
 
 	/**
@@ -93,8 +98,8 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		powerpointAdapter = testApplicationContext.getTechnologyAdapterService().getTechnologyAdapter(PowerpointTechnologyAdapter.class);
 		assertNotNull(powerpointAdapter);
 		for (FlexoResourceCenter rc : testApplicationContext.getResourceCenterService().getResourceCenters()) {
-			if (rc.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter) != null) {
-				modelRepository = (PowerpointSlideShowRepository) rc.getRepository(PowerpointSlideShowRepository.class, powerpointAdapter);
+			if (powerpointAdapter.getPowerpointSlideShowRepository(rc) != null) {
+				modelRepository = powerpointAdapter.getPowerpointSlideShowRepository(rc);
 			}
 		}
 		assertNotNull(modelRepository);
@@ -121,39 +126,53 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 	 * Instanciate powerpoint viewpoint
 	 * 
 	 * @throws IOException
+	 * @throws ModelDefinitionException
+	 * @throws SaveResourceException
 	 */
 	@Test
 	@TestOrder(2)
-	public void testCreatePowerpointViewpoint() throws IOException {
+	public void testCreatePowerpointViewpoint() throws IOException, SaveResourceException, ModelDefinitionException {
 		logger.info("testCreatePowerpointViewpoint()");
 
 		System.out.println("resourceCenterDirectory=" + resourceCenterDirectory);
 
-		ViewPoint newViewPoint = ViewPointImpl.newViewPoint("TestPPTViewPoint",
-				"http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint", resourceCenterDirectory,
-				testApplicationContext.getViewPointLibrary(), resourceCenter);
+		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(FMLTechnologyAdapter.class);
+		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
 
-		assertNotNull(
-				testApplicationContext.getViewPointLibrary().getViewPoint("http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint"));
+		ViewPointResource viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
+				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		ViewPoint newViewPoint = viewPointResource.getLoadedResourceData();
 
-		VirtualModel newVirtualModel = null;
-		try {
-			newVirtualModel = VirtualModelImpl.newVirtualModel("TestPPTVirtualModel", newViewPoint);
-			FlexoConcept newFlexoConcept = newVirtualModel.getFMLModelFactory().newFlexoConcept();
-			newVirtualModel.addToFlexoConcepts(newFlexoConcept);
-			if (powerpointAdapter.getAvailableModelSlotTypes() != null) {
-				for (Class msType : powerpointAdapter.getAvailableModelSlotTypes()) {
-					ModelSlot modelSlot = powerpointAdapter.makeModelSlot(msType, newVirtualModel);
-					modelSlot.setName("powerpointBasicModelSlot");
-					assertNotNull(modelSlot);
-					newVirtualModel.addToModelSlots(modelSlot);
-				}
+		// ViewPoint newViewPoint = ViewPointImpl.newViewPoint("TestPPTViewPoint",
+		// "http://openflexo.org/test/TestResourceCenter/TestPPTViewPoint", resourceCenterDirectory,
+		// testApplicationContext.getViewPointLibrary(), resourceCenter);
+
+		assertNotNull(testApplicationContext.getViewPointLibrary().getViewPoint(VIEWPOINT_URI));
+
+		VirtualModelResource newVMResource = factory.getVirtualModelResourceFactory().makeVirtualModelResource(VIRTUAL_MODEL_NAME,
+				viewPointResource, fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		VirtualModel newVirtualModel = newVMResource.getLoadedResourceData();
+
+		// VirtualModel newVirtualModel = null;
+		// try {
+		// newVirtualModel = VirtualModelImpl.newVirtualModel("TestPPTVirtualModel", newViewPoint);
+		FlexoConcept newFlexoConcept = newVirtualModel.getFMLModelFactory().newFlexoConcept();
+		newVirtualModel.addToFlexoConcepts(newFlexoConcept);
+		if (powerpointAdapter.getAvailableModelSlotTypes() != null) {
+			for (Class msType : powerpointAdapter.getAvailableModelSlotTypes()) {
+				ModelSlot modelSlot = powerpointAdapter.makeModelSlot(msType, newVirtualModel);
+				modelSlot.setName("powerpointBasicModelSlot");
+				assertNotNull(modelSlot);
+				newVirtualModel.addToModelSlots(modelSlot);
 			}
-			newViewPoint.getResource().save(null);
-			newVirtualModel.getResource().save(null);
-		} catch (SaveResourceException e) {
-			fail(e.getMessage());
 		}
+		newViewPoint.getResource().save(null);
+		newVirtualModel.getResource().save(null);
+		/*} catch (SaveResourceException e) {
+			fail(e.getMessage());
+		}*/
 
 		assertNotNull(newVirtualModel);
 
@@ -188,8 +207,14 @@ public class TestPowerpointModel extends OpenflexoProjectAtRunTimeTestCase {
 		assertTrue(generationDir.exists());
 
 		File pptFile = new File(generationDir, "generated_File.ppt");
-		modelRes = PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(pptFile.getAbsolutePath(), pptFile,
-				powerpointAdapter.getTechnologyContextManager(), resourceCenter);
+
+		PowerpointTechnologyAdapter pptTechnologyAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(PowerpointTechnologyAdapter.class);
+		PowerpointSlideshowResourceFactory factory = pptTechnologyAdapter.getPowerpointSlideshowResourceFactory();
+
+		modelRes = factory.makeResource(pptFile, resourceCenter, pptTechnologyAdapter.getTechnologyContextManager(), true);
+		// modelRes = PowerpointSlideshowResourceImpl.makePowerpointSlideshowResource(pptFile.getAbsolutePath(), pptFile,
+		// powerpointAdapter.getTechnologyContextManager(), resourceCenter);
 		modelRes.save(null);
 		assertTrue(pptFile.exists());
 

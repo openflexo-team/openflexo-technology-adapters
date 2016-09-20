@@ -88,7 +88,7 @@ public class TestParagraphCloningBookmarkScheme extends AbstractTestDocX {
 				.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
+			DocXDocumentRepository docXRepository = technologicalAdapter.getDocXDocumentRepository(resourceCenter);
 			assertNotNull(docXRepository);
 			Collection<DocXDocumentResource> documents = docXRepository.getAllResources();
 			for (DocXDocumentResource docResource : documents) {

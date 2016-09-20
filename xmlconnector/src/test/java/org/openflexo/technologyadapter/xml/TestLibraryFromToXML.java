@@ -44,7 +44,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -74,8 +73,8 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 	private static final String LIB_BOOKS_URI = "http://www.example.org/Library/LibraryType#books";
 
 	private static XMLTechnologyAdapter xmlAdapter;
-	private static XSDMetaModelRepository mmRepository;
-	private static XMLModelRepository modelRepository;
+	private static XSDMetaModelRepository<?> mmRepository;
+	private static XMLModelRepository<?> modelRepository;
 	private static String baseUrl;
 
 	/**
@@ -90,15 +89,9 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		log("test0LoadTestResourceCenter()");
 		xmlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(XMLTechnologyAdapter.class);
-		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
-		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
-		baseUrl = resourceCenter.getDirectory().getCanonicalPath();
-		try {
-			baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		mmRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
+		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
+		baseUrl = resourceCenter.getDefaultBaseURI();
 
 		assertNotNull(modelRepository);
 		assertNotNull(mmRepository);
@@ -120,7 +113,7 @@ public class TestLibraryFromToXML extends OpenflexoProjectAtRunTimeTestCase {
 
 		System.out.println("BaseDir: " + baseUrl);
 
-		String resourceURI = baseUrl + "TestResourceCenter/XML/example_library_1.xml";
+		String resourceURI = baseUrl + "/TestResourceCenter/XML/example_library_1.xml";
 		System.out.println("ResourceURI: " + resourceURI);
 
 		XMLFileResource libraryRes = modelRepository.getResource(resourceURI);

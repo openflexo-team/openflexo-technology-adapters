@@ -22,15 +22,16 @@ package org.openflexo.technologyadapter.pdf;
 
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 
 public class PDFModelSlotInstanceConfiguration extends FreeModelSlotInstanceConfiguration<PDFDocument, PDFModelSlot> {
 
 	protected PDFModelSlotInstanceConfiguration(PDFModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
-		setResourceUri(project.getURI() + "/Models/myPDF");
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
+		setResourceUri(rc.getDefaultBaseURI() + "/Models/myPDF");
 		setRelativePath("/");
 		setFilename("myPDF.pdf");
 	}

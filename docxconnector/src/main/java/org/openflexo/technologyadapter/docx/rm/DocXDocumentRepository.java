@@ -21,14 +21,14 @@
 package org.openflexo.technologyadapter.docx.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 
-public class DocXDocumentRepository
-		extends TechnologyAdapterFileResourceRepository<DocXDocumentResource, DocXTechnologyAdapter, DocXDocument> {
+public class DocXDocumentRepository<I>
+		extends TechnologyAdapterResourceRepository<DocXDocumentResource, DocXTechnologyAdapter, DocXDocument, I> {
 
-	public DocXDocumentRepository(DocXTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public DocXDocumentRepository(DocXTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 

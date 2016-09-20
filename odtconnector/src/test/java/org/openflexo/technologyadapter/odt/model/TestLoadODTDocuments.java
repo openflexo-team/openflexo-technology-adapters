@@ -89,7 +89,7 @@ public class TestLoadODTDocuments extends OpenflexoProjectAtRunTimeTestCase {
 				.getTechnologyAdapter(ODTTechnologyAdapter.class);
 
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-			ODTDocumentRepository odtRepository = resourceCenter.getRepository(ODTDocumentRepository.class, technologicalAdapter);
+			ODTDocumentRepository odtRepository = technologicalAdapter.getODTDocumentRepository(resourceCenter);
 			assertNotNull(odtRepository);
 			Collection<ODTDocumentResource> documents = odtRepository.getAllResources();
 			for (ODTDocumentResource doc : documents) {

@@ -50,15 +50,20 @@ import com.google.inject.Injector;
 @ImplementationClass(XtextEMFMetaModelResourceImpl.class)
 @XMLElement
 public interface XtextEMFMetaModelResource extends EMFMetaModelResource {
-	
-	public static String INJECTOR_KEY="injector";
-	
+
+	public static String INJECTOR_KEY = "injector";
+	public static String STANDALONE_SET_UP_CLASS_NAME_KEY = "standaloneSetupClassName";
+
 	@Setter(value = INJECTOR_KEY)
 	void setInjector(Injector injector);
-	
+
 	@Getter(value = INJECTOR_KEY, ignoreType = true)
 	Injector getInjector();
 
+	@Getter(STANDALONE_SET_UP_CLASS_NAME_KEY)
+	String getStandaloneSetupClassName();
 
+	@Setter(STANDALONE_SET_UP_CLASS_NAME_KEY)
+	void setStandaloneSetupClassName(String standaloneSetup);
 
 }

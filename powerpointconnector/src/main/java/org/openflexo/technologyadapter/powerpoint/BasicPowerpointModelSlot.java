@@ -38,10 +38,10 @@
 
 package org.openflexo.technologyadapter.powerpoint;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
@@ -52,10 +52,12 @@ import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.powerpoint.fml.PowerpointShapeRole;
 import org.openflexo.technologyadapter.powerpoint.fml.PowerpointSlideRole;
 import org.openflexo.technologyadapter.powerpoint.fml.editionaction.AddPowerpointShape;
@@ -81,8 +83,8 @@ import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource
 @FML("BasicPowerpointModelSlot")
 public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlideshow>, PowerpointModelSlot {
 
-	public static abstract class BasicPowerpointModelSlotImpl extends FreeModelSlotImpl<PowerpointSlideshow> implements
-			BasicPowerpointModelSlot {
+	public static abstract class BasicPowerpointModelSlotImpl extends FreeModelSlotImpl<PowerpointSlideshow>
+			implements BasicPowerpointModelSlot {
 
 		private static final Logger logger = Logger.getLogger(BasicPowerpointModelSlot.class.getPackage().getName());
 
@@ -104,7 +106,8 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (PowerpointSlideRole.class.isAssignableFrom(patternRoleClass)) {
 				return "slide";
-			} else if (PowerpointShapeRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (PowerpointShapeRole.class.isAssignableFrom(patternRoleClass)) {
 				return "shape";
 			}
 			return null;
@@ -117,8 +120,8 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 
 		@Override
 		public ModelSlotInstanceConfiguration<BasicPowerpointModelSlot, PowerpointSlideshow> createConfiguration(
-				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoProject project) {
-			return new BasicPowerpointModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
+			return new BasicPowerpointModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
@@ -149,7 +152,17 @@ public interface BasicPowerpointModelSlot extends FreeModelSlot<PowerpointSlides
 
 		@Override
 		public PowerpointSlideshowResource createProjectSpecificEmptyResource(View view, String filename, String modelUri) {
-			return getModelSlotTechnologyAdapter().createNewSlideshow(view.getProject(), filename, modelUri);
+			try {
+				return getModelSlotTechnologyAdapter().createNewSlideshow((FlexoResourceCenter<File>) view.getResourceCenter(), filename,
+						modelUri);
+			} catch (SaveResourceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ModelDefinitionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
 		}
 
 		@Override

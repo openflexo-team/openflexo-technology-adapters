@@ -47,12 +47,13 @@ import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.FGEModelFactory;
 import org.openflexo.fge.FGEModelFactoryImpl;
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.CheckboxParameter;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConceptInstanceParameter;
@@ -61,13 +62,15 @@ import org.openflexo.foundation.fml.FloatParameter;
 import org.openflexo.foundation.fml.TextFieldParameter;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.action.AbstractCreateVirtualModel;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviourParameter;
 import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
+import org.openflexo.foundation.fml.rm.ViewPointResource;
+import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
@@ -128,7 +131,7 @@ public class CreateFMLControlledDiagramVirtualModel
 	}
 
 	private DiagramSpecificationResource diagramSpecificationResource;
-	private RepositoryFolder<DiagramSpecificationResource> repositoryFolder;
+	private RepositoryFolder<DiagramSpecificationResource, ?> repositoryFolder;
 	private String newDiagramSpecificationName;
 	private String newDiagramSpecificationURI;
 
@@ -192,12 +195,27 @@ public class CreateFMLControlledDiagramVirtualModel
 	}
 
 	@Override
-	protected void doAction(Object context) throws IOFlexoException, SaveResourceException {
+	protected void doAction(Object context) throws FlexoException {
 
 		Progress.progress(getLocales().localizedForKey("create_virtual_model"));
 
-		newVirtualModel = VirtualModelImpl.newVirtualModel(newVirtualModelName, getFocusedObject());
-		newVirtualModel.setDescription(newVirtualModelDescription);
+		FMLTechnologyAdapter fmlTechnologyAdapter = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(FMLTechnologyAdapter.class);
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+
+		try {
+			VirtualModelResource vmResource = factory.makeVirtualModelResource(getNewVirtualModelName(),
+					(ViewPointResource) getFocusedObject().getResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+			newVirtualModel = vmResource.getLoadedResourceData();
+			newVirtualModel.setDescription(newVirtualModelDescription);
+		} catch (SaveResourceException e) {
+			throw new SaveResourceException(null);
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
+		}
+
+		// newVirtualModel = VirtualModelImpl.newVirtualModel(newVirtualModelName, getFocusedObject());
+		// newVirtualModel.setDescription(newVirtualModelDescription);
 
 		if (getChoice() == DiagramSpecificationChoice.CreateNewDiagramSpecification) {
 			CreateDiagramSpecification createDiagramSpecification = CreateDiagramSpecification.actionType
@@ -372,14 +390,14 @@ public class CreateFMLControlledDiagramVirtualModel
 		}
 	}
 
-	public RepositoryFolder<DiagramSpecificationResource> getRepositoryFolder() {
+	public RepositoryFolder<DiagramSpecificationResource, ?> getRepositoryFolder() {
 		return repositoryFolder;
 	}
 
-	public void setRepositoryFolder(RepositoryFolder<DiagramSpecificationResource> repositoryFolder) {
+	public void setRepositoryFolder(RepositoryFolder<DiagramSpecificationResource, ?> repositoryFolder) {
 		if ((repositoryFolder == null && this.repositoryFolder != null)
 				|| (repositoryFolder != null && !repositoryFolder.equals(this.repositoryFolder))) {
-			RepositoryFolder<DiagramSpecificationResource> oldValue = this.repositoryFolder;
+			RepositoryFolder<DiagramSpecificationResource, ?> oldValue = this.repositoryFolder;
 			this.repositoryFolder = repositoryFolder;
 			getPropertyChangeSupport().firePropertyChange("repositoryFolder", oldValue, repositoryFolder);
 		}

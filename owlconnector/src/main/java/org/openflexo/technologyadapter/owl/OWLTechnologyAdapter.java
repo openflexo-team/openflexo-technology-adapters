@@ -41,8 +41,6 @@ package org.openflexo.technologyadapter.owl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,23 +51,22 @@ import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareTechnologySpecificTypes;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyTechnologyContextManager;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.owl.fml.binding.OWLBindingFactory;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.model.OWLOntology.OntologyNotFoundException;
-import org.openflexo.technologyadapter.owl.model.OWLOntologyAsMetaModelRepository;
-import org.openflexo.technologyadapter.owl.model.OWLOntologyAsModelRepository;
 import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
+import org.openflexo.technologyadapter.owl.model.OWLOntologyRepository;
 import org.openflexo.technologyadapter.owl.model.StatementWithProperty;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
-import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceImpl;
+import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceFactory;
 
 /**
  * This class defines and implements the OWL technology adapter
@@ -78,9 +75,9 @@ import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceImpl;
  * 
  */
 @DeclareModelSlots({ OWLModelSlot.class })
-@DeclareRepositoryType({ OWLOntologyAsModelRepository.class })
+@DeclareRepositoryType({ OWLOntologyRepository.class })
 @DeclareTechnologySpecificTypes({ StatementWithProperty.class })
-@DeclareResourceTypes({ OWLOntologyResource.class })
+@DeclareResourceTypes({ OWLOntologyResourceFactory.class })
 public class OWLTechnologyAdapter extends TechnologyAdapter {
 
 	private static final Logger logger = Logger.getLogger(OWLTechnologyAdapter.class.getPackage().getName());
@@ -115,18 +112,43 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		return getTechnologyContextManager();
 	}
 
+	public <I> OWLOntologyRepository<I> getOWLOntologyRepository(FlexoResourceCenter<I> resourceCenter) {
+		OWLOntologyRepository<I> returned = resourceCenter.retrieveRepository(OWLOntologyRepository.class, this);
+		if (returned == null) {
+			returned = new OWLOntologyRepository<I>(this, resourceCenter);
+			resourceCenter.registerRepository(returned, OWLOntologyRepository.class, this);
+		}
+		return returned;
+	}
+
+	/*@Override
+	public void activate() {
+		if (!isActivated()) {
+			super.activate();
+			getTechnologyContextManager().init();
+		}
+	}*/
+
+	@Override
+	protected void resourceCenterHasBeenInitialized(FlexoResourceCenter<?> rc) {
+		if (rc.getDefaultBaseURI().equals("http://openflexo.org/owl")) {
+			getTechnologyContextManager().init();
+		}
+		super.resourceCenterHasBeenInitialized(rc);
+	}
+
 	/**
 	 * Initialize the supplied resource center with the technology<br>
 	 * ResourceCenter is scanned, ResourceRepositories are created and new technology-specific resources are build and registered.
 	 * 
 	 * @param resourceCenter
 	 */
-	@Override
+	/*@Override
 	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
-
+	
 		OWLOntologyLibrary ontologyLibrary = getOntologyLibrary();
-
-		OWLOntologyAsModelRepository ontModelRepository = resourceCenter.getRepository(OWLOntologyAsModelRepository.class, this);
+	
+		OWLOntologyRepository ontModelRepository = resourceCenter.getRepository(OWLOntologyRepository.class, this);
 		OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter.getRepository(OWLOntologyAsMetaModelRepository.class,
 				this);
 		if (ontModelRepository == null) {
@@ -135,9 +157,9 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		if (ontMetaModelRepository == null) {
 			ontMetaModelRepository = createOntologyAsMetaModelRepository(resourceCenter);
 		}
-
+	
 		Iterator<I> it = resourceCenter.iterator();
-
+	
 		while (it.hasNext()) {
 			I item = it.next();
 			if (item instanceof File) {
@@ -145,17 +167,17 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 				OWLOntologyResource ontRes = tryToLookupOntology(resourceCenter, candidateFile);
 			}
 		}
-
+	
 		getTechnologyContextManager().init();
-
+	
 		// Call it to update the current repositories
 		notifyRepositoryStructureChanged();
-	}
+	}*/
 
-	protected OWLOntologyResource tryToLookupOntology(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
+	/*protected OWLOntologyResource tryToLookupOntology(FlexoResourceCenter<?> resourceCenter, File candidateFile) {
 		if (isValidOntologyFile(candidateFile)) {
 			OWLOntologyResource ontRes = retrieveOntologyResource(candidateFile, resourceCenter);
-			OWLOntologyAsModelRepository ontModelRepository = resourceCenter.getRepository(OWLOntologyAsModelRepository.class, this);
+			OWLOntologyRepository ontModelRepository = resourceCenter.getRepository(OWLOntologyRepository.class, this);
 			OWLOntologyAsMetaModelRepository ontMetaModelRepository = resourceCenter.getRepository(OWLOntologyAsMetaModelRepository.class,
 					this);
 			if (ontRes != null) {
@@ -173,7 +195,7 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
@@ -185,13 +207,15 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 	 * 
 	 * @param aMetaModelFile
 	 * @return
+	 * @throws ModelDefinitionException
+	 * @throws SaveResourceException
 	 */
-	public boolean isValidOntologyFile(File aMetaModelFile) {
+	/*public boolean isValidOntologyFile(File aMetaModelFile) {
 		// TODO: also check that file is valid
 		return aMetaModelFile.isFile() && aMetaModelFile.getName().endsWith(OWLOntologyResource.OWL_SUFFIX);
-	}
+	}*/
 
-	@Override
+	/*@Override
 	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
 			File candidateFile = (File) contents;
@@ -202,105 +226,117 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
 			System.out
-					.println("File DELETED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
+			.println("File DELETED " + ((File) contents).getName() + " in " + ((File) contents).getParentFile().getAbsolutePath());
 		}
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
 		// TODO Auto-generated method stub
 		return false;
-	}
+	}*/
 
-	public OWLOntologyResource retrieveOntologyResource(File owlFile, FlexoResourceCenter<?> resourceCenter) {
-
+	/*public OWLOntologyResource retrieveOntologyResource(File owlFile, FlexoResourceCenter<?> resourceCenter) {
+	
 		// logger.info("Retrieving OWL MetaModelResource for " + aMetaModelFile.getAbsolutePath());
-
+	
 		OWLOntologyResource ontologyResource = OWLOntologyResourceImpl.retrieveOWLOntologyResource(owlFile, getOntologyLibrary(),
 				resourceCenter);
 		logger.fine("Found OWL ontology " + ontologyResource.getURI() + " file:" + owlFile.getAbsolutePath());
 		return ontologyResource;
+	
+	}*/
 
-	}
-
-	public OWLOntologyResource createNewOntology(FlexoProject project, String filename, String modelUri,
-			FlexoResource<OWLOntology> metaModel) {
+	@Deprecated
+	public OWLOntologyResource createNewOntology(FlexoResourceCenter<File> rc, String filename, String modelUri,
+			FlexoResource<OWLOntology> metaModel) throws SaveResourceException, ModelDefinitionException {
 		if (logger.isLoggable(Level.FINE)) {
-			logger.fine("createNewOWLModel(), project=" + project);
+			logger.fine("createNewOWLModel(), resourceCenter=" + rc);
 		}
-		logger.info("-------------> Create ontology for " + project.getProjectName());
 
-		File owlFile = new File(FlexoProject.getProjectSpecificModelsDirectory(project), filename);
-		OWLOntologyResource returned = OWLOntologyResourceImpl.makeOWLOntologyResource(modelUri, owlFile, getOntologyLibrary(), project);
-		OWLOntology ontology = returned.getModel();
-		if (metaModel != null) {
+		if (rc instanceof FlexoProject) {
+
+			logger.info("-------------> Create ontology for " + ((FlexoProject) rc).getProjectName());
+
+			File owlFile = new File(FlexoProject.getProjectSpecificModelsDirectory(((FlexoProject) rc)), filename);
+			OWLOntologyResource returned = getOWLOntologyResourceFactory().makeResource(owlFile, rc, getTechnologyContextManager(), true);
+			// makeOWLOntologyResource(modelUri, owlFile, getOntologyLibrary(), rc);
+			OWLOntology ontology = returned.getModel();
+			if (metaModel != null) {
+				try {
+					ontology.importOntology(metaModel.getResourceData(null));
+				} catch (FileNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (OntologyNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ResourceLoadingCancelledException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (FlexoException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			try {
-				ontology.importOntology(metaModel.getResourceData(null));
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (OntologyNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (ResourceLoadingCancelledException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (FlexoException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				returned.save(null);
+			} catch (Exception e1) {
+				// Warns about the exception
+				if (logger.isLoggable(Level.WARNING)) {
+					logger.warning("Exception raised: " + e1.getClass().getName() + ". See console for details.");
+				}
+				e1.printStackTrace();
 			}
-		}
-		try {
-			returned.save(null);
-		} catch (Exception e1) {
-			// Warns about the exception
-			if (logger.isLoggable(Level.WARNING)) {
-				logger.warning("Exception raised: " + e1.getClass().getName() + ". See console for details.");
-			}
-			e1.printStackTrace();
-		}
 
-		return returned;
+			return returned;
+
+		}
+		else {
+			logger.warning("NOT IMPLEMENTED: can not yet create an ontology in a RC that is not a FlexoProject" + rc.toString());
+			return null;
+		}
 	}
 
-	public OWLOntologyResource createNewOntology(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
+	@Deprecated
+	public OWLOntologyResource createNewOntology(FlexoResourceCenter<File> resourceCenter, String relativePath, String filename,
 			String modelUri, OWLOntologyResource metaModelResource) {
 		logger.warning("Not implemented yet");
 		return null;
 	}
 
-	public OWLOntologyAsModelRepository createOntologyAsModelRepository(FlexoResourceCenter resourceCenter) {
-		OWLOntologyAsModelRepository returned = new OWLOntologyAsModelRepository(this, resourceCenter);
-		resourceCenter.registerRepository(returned, OWLOntologyAsModelRepository.class, this);
+	/*public OWLOntologyRepository createOntologyAsModelRepository(FlexoResourceCenter resourceCenter) {
+		OWLOntologyRepository returned = new OWLOntologyRepository(this, resourceCenter);
+		resourceCenter.registerRepository(returned, OWLOntologyRepository.class, this);
 		return returned;
 	}
-
+	
 	public OWLOntologyAsMetaModelRepository createOntologyAsMetaModelRepository(FlexoResourceCenter resourceCenter) {
 		OWLOntologyAsMetaModelRepository returned = new OWLOntologyAsMetaModelRepository(this, resourceCenter);
 		resourceCenter.registerRepository(returned, OWLOntologyAsMetaModelRepository.class, this);
 		return returned;
-	}
+	}*/
 
 	@Override
 	public OWLOntologyLibrary createTechnologyContextManager(FlexoResourceCenterService resourceCenterService) {
 		return new OWLOntologyLibrary(this, resourceCenterService);
 	}
 
-	public String retrieveModelURI(File aModelFile, FlexoResource<OWLOntology> metaModelResource) {
+	/*public String retrieveModelURI(File aModelFile, FlexoResource<OWLOntology> metaModelResource) {
 		return OWLOntology.findOntologyURI(aModelFile);
-	}
+	}*/
 
 	/**
 	 * Provides a hook to finalize initialization of a TechnologyAdapter.<br>
@@ -330,13 +366,17 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		return BINDING_FACTORY;
 	}
 
-	public String getExpectedOntologyExtension() {
+	/*public String getExpectedOntologyExtension() {
 		return OWLOntologyResource.OWL_SUFFIX;
-	}
+	}*/
 
 	@Override
 	public String getIdentifier() {
 		return "OWL";
+	}
+
+	public OWLOntologyResourceFactory getOWLOntologyResourceFactory() {
+		return getResourceFactory(OWLOntologyResourceFactory.class);
 	}
 
 }

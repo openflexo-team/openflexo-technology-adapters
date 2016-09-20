@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.diagram;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +48,6 @@ import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.fge.connectors.ConnectorSpecification.ConnectorType;
 import org.openflexo.fge.shapes.ShapeSpecification.ShapeType;
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareEditionActions;
 import org.openflexo.foundation.fml.annotations.DeclareFetchRequests;
@@ -56,7 +56,6 @@ import org.openflexo.foundation.fml.annotations.DeclareFlexoRoles;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
@@ -73,6 +72,7 @@ import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Remover;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
 import org.openflexo.technologyadapter.diagram.fml.DiagramNavigationScheme;
 import org.openflexo.technologyadapter.diagram.fml.DiagramRole;
@@ -89,7 +89,7 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.model.DiagramType;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 
 /**
  * Implementation of the ModelSlot class for the Openflexo built-in diagram technology adapter<br>
@@ -211,38 +211,62 @@ public interface TypedDiagramModelSlot extends TypeAwareModelSlot<Diagram, Diagr
 
 		@Override
 		public TypedDiagramModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new TypedDiagramModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new TypedDiagramModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
-		public DiagramResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String diagramUri,
+		public DiagramResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String diagramName, String diagramUri,
 				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
 
-			try {
-				DiagramResource returned = getModelSlotTechnologyAdapter().createNewDiagram(project, filename, diagramUri,
-						(DiagramSpecificationResource) metaModelResource);
-				return returned;
+			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			DiagramResourceFactory factory = getModelSlotTechnologyAdapter().getDiagramResourceFactory();
+			String artefactName = diagramName.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? diagramName
+					: diagramName + DiagramResourceFactory.DIAGRAM_SUFFIX;
 
+			Object serializationArtefact = ((FlexoResourceCenter) rc).createEntry(artefactName, rc.getBaseArtefact());
+
+			DiagramResource newDiagramResource;
+			try {
+				newDiagramResource = factory.makeResource(serializationArtefact, (FlexoResourceCenter) rc,
+						diagramTA.getTechnologyContextManager(), diagramName, diagramUri, true);
+				newDiagramResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
+				return newDiagramResource;
 			} catch (SaveResourceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				return null;
+			} catch (ModelDefinitionException e) {
+				e.printStackTrace();
 			}
+			return null;
 
 		}
 
 		@Override
-		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
-				String diagramUri, FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
+		public DiagramResource createSharedEmptyModel(FlexoResourceCenter<?> rc, String relativePath, String diagramName, String diagramUri,
+				FlexoMetaModelResource<Diagram, DiagramSpecification, ?> metaModelResource) {
+
+			DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+			DiagramResourceFactory factory = getModelSlotTechnologyAdapter().getDiagramResourceFactory();
+			String artefactName = diagramName.endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX) ? diagramName
+					: diagramName + DiagramResourceFactory.DIAGRAM_SUFFIX;
+
+			Object serializationArtefact = ((FlexoResourceCenter) rc).createEntry(relativePath + File.separator + artefactName,
+					rc.getBaseArtefact());
+
+			DiagramResource newDiagramResource;
 			try {
-				return getModelSlotTechnologyAdapter().createNewDiagram((FileSystemBasedResourceCenter) resourceCenter, relativePath,
-						filename, diagramUri, (DiagramSpecificationResource) metaModelResource);
+				newDiagramResource = diagramTA.getDiagramResourceFactory().makeResource(serializationArtefact, (FlexoResourceCenter) rc,
+						diagramTA.getTechnologyContextManager(), diagramName, diagramUri, true);
+				newDiagramResource.setMetaModelResource((FlexoMetaModelResource) metaModelResource);
+				return newDiagramResource;
 			} catch (SaveResourceException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
-				return null;
+			} catch (ModelDefinitionException e) {
+				e.printStackTrace();
 			}
+			return null;
 		}
 
 		@Override

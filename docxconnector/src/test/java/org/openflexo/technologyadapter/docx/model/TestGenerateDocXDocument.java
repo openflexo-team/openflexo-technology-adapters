@@ -54,10 +54,10 @@ import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
-import org.openflexo.technologyadapter.docx.rm.DocXDocumentResourceImpl;
 import org.openflexo.test.OrderedRunner;
 import org.openflexo.test.TestOrder;
 
@@ -135,15 +135,19 @@ public class TestGenerateDocXDocument extends AbstractTestDocX {
 
 	@Test
 	@TestOrder(5)
-	public void testDocumentGenerating() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+	public void testDocumentGenerating()
+			throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException, ModelDefinitionException {
 
 		DocXDocumentResource templateResource = (DocXDocumentResource) templateDocument.getResource();
 
 		File f = new File(((FileFlexoIODelegate) templateResource.getFlexoIODelegate()).getFile().getParent(), "Generated.docx");
 
 		System.out.println("Generating " + f);
-		FlexoResource<DocXDocument> generatedResource = DocXDocumentResourceImpl.makeDocXDocumentResource(f,
-				technologicalAdapter.getTechnologyContextManager(), resourceCenter, IdentifierManagementStrategy.ParaId);
+		technologicalAdapter.setDefaultIDStrategy(IdentifierManagementStrategy.ParaId);
+		FlexoResource<DocXDocument> generatedResource = technologicalAdapter.getDocXDocumentResourceFactory().makeResource(f,
+				resourceCenter, technologicalAdapter.getTechnologyContextManager(), false);
+		// FlexoResource<DocXDocument> generatedResource = DocXDocumentResourceImpl.makeDocXDocumentResource(f,
+		// technologicalAdapter.getTechnologyContextManager(), resourceCenter, IdentifierManagementStrategy.ParaId);
 
 		WordprocessingMLPackage generatedPackage = new WordprocessingMLPackage();
 

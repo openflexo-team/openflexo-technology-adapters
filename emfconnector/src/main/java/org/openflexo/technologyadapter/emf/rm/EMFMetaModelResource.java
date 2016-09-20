@@ -56,13 +56,15 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
 @ModelEntity
 @ImplementationClass(EMFMetaModelResourceImpl.class)
 @XMLElement
-public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter>, TechnologyAdapterResource<EMFMetaModel,EMFTechnologyAdapter> {
+public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, EMFMetaModel, EMFTechnologyAdapter>,
+		TechnologyAdapterResource<EMFMetaModel, EMFTechnologyAdapter> {
 
 	public static final String EXTENSION = "extension";
 	public static final String PACKAGE_CLASSNAME = "package.classname";
 	public static final String PACKAGE = "package";
 	public static final String EMFRESOURCE_FACTORY_CLASSNAME = "resourcefactory.classname";
 	public static final String EMFRESOURCE_FACTORY = "resourcefactory";
+	public static final String META_MODEL_TYPE = "EMFMetaModelType";
 
 	/**
 	 * Setter of extension for model files related to this MtaModel.
@@ -154,8 +156,30 @@ public interface EMFMetaModelResource extends FlexoMetaModelResource<EMFModel, E
 
 	/**
 	 * Creates a new ModelResource, for EMF, MetaModel decides wich type of serialization you should use!
+	 * 
 	 * @param flexoIODelegate
 	 * @return
 	 */
 	Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate);
+
+	/**
+	 * Getter of type of this MetaModel
+	 * 
+	 * @return
+	 */
+	@Getter(META_MODEL_TYPE)
+	EMFMetaModelType getMetaModelType();
+
+	/**
+	 * Setter of type of this MetaModel.
+	 * 
+	 * @return
+	 */
+	@Setter(META_MODEL_TYPE)
+	void setMetaModelType(EMFMetaModelType mmType);
+
+	public static enum EMFMetaModelType {
+		Standard, Profile, XText
+	}
+
 }

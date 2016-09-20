@@ -32,19 +32,10 @@ import org.docx4j.openpackaging.exceptions.Docx4JException;
 import org.docx4j.openpackaging.packages.WordprocessingMLPackage;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.resource.InJarFlexoIODelegate;
-import org.openflexo.foundation.resource.InJarFlexoIODelegate.InJarFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.rm.InJarResourceImpl;
-import org.openflexo.technologyadapter.docx.DocXTechnologyContextManager;
 import org.openflexo.technologyadapter.docx.model.DocXDocument;
 import org.openflexo.technologyadapter.docx.model.DocXFactory;
 import org.openflexo.technologyadapter.docx.model.IdentifierManagementStrategy;
@@ -52,83 +43,6 @@ import org.openflexo.toolbox.FileUtils;
 
 public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDocument, DocXFactory>implements DocXDocumentResource {
 	private static final Logger logger = Logger.getLogger(DocXDocumentResourceImpl.class.getPackage().getName());
-
-	public static DocXDocumentResource makeDocXDocumentResource(File modelFile, DocXTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter, IdentifierManagementStrategy idStrategy) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, FileFlexoIODelegate.class));
-			DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
-			returned.initName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext(),
-					idStrategy);
-			returned.setFactory(docXFactory);
-
-			// returned.setURI(modelURI);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static DocXDocumentResource retrieveDocXDocumentResource(File modelFile, DocXTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter, IdentifierManagementStrategy idStrategy) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, FileFlexoIODelegate.class));
-			DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
-			returned.initName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext(),
-					idStrategy);
-			returned.setFactory(docXFactory);
-
-			// returned.setURI(modelFile.toURI().toString());
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	// TODO : have more optimized code between methods referring to different kind of resources
-	public static DocXDocumentResource retrieveDocXDocumentResource(InJarResourceImpl jarResource,
-			DocXTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter,
-			IdentifierManagementStrategy idStrategy) {	try {
-				ModelFactory factory = new ModelFactory(
-						ModelContextLibrary.getCompoundModelContext(DocXDocumentResource.class, InJarFlexoIODelegate.class));
-				DocXDocumentResourceImpl returned = (DocXDocumentResourceImpl) factory.newInstance(DocXDocumentResource.class);
-				returned.initName(jarResource.getURL().getFile());
-				returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(jarResource, factory));
-				DocXFactory docXFactory = new DocXFactory(returned, technologyContextManager.getServiceManager().getEditingContext(),
-						idStrategy);
-				returned.setFactory(docXFactory);
-
-				System.out.println("J'initialise le RC!!");
-				returned.setResourceCenter(resourceCenter);
-				returned.setServiceManager(technologyContextManager.getServiceManager());
-				returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-				returned.setTechnologyContextManager(technologyContextManager);
-				technologyContextManager.registerResource(returned);
-				return returned;
-			} catch (ModelDefinitionException e) {
-				e.printStackTrace();
-			}
-			return null;
-	}
 
 	@Override
 	protected DocXDocument performLoad() throws IOException, Exception {
@@ -279,6 +193,5 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 	public FileFlexoIODelegate getFileFlexoIODelegate() {
 		return (FileFlexoIODelegate) getFlexoIODelegate();
 	}
-
 
 }

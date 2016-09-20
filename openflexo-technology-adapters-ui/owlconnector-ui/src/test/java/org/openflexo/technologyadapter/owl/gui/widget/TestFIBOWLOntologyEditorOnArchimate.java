@@ -102,9 +102,15 @@ public class TestFIBOWLOntologyEditorOnArchimate extends OpenflexoTestCaseWithGU
 
 		assertNotNull(owlTA);
 
-		List<ResourceRepository<?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlTA);
+		List<ResourceRepository<?, ?>> owlRepositories = serviceManager.getResourceManager().getAllRepositories(owlTA);
 
-		ResourceRepository<OWLOntologyResource> ontologyRepository = (ResourceRepository<OWLOntologyResource>) owlRepositories.get(0);
+		ResourceRepository<OWLOntologyResource, ?> ontologyRepository = null;
+		for (ResourceRepository<?, ?> rep : owlRepositories) {
+			if (rep.getSize() > 0) {
+				ontologyRepository = (ResourceRepository<OWLOntologyResource, ?>) rep;
+				break;
+			}
+		}
 
 		assertNotNull(ontologyRepository);
 

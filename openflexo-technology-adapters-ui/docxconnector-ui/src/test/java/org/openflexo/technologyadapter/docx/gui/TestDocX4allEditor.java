@@ -114,7 +114,7 @@ public class TestDocX4allEditor extends AbstractTestDocX {
 		DocXTechnologyAdapter docXTA = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
 		assertNotNull(docXTA);
 
-		DocXDocumentRepository docXRepository = resourceCenter.getRepository(DocXDocumentRepository.class, docXTA);
+		DocXDocumentRepository docXRepository = docXTA.getDocXDocumentRepository(resourceCenter);
 		assertNotNull(docXRepository);
 
 	}

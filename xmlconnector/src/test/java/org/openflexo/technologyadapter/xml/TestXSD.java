@@ -61,8 +61,8 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestXSD.class.getPackage().getName());
 
 	private static XMLTechnologyAdapter xmlAdapter;
-	private static XSDMetaModelRepository mmRepository;
-	private static XMLModelRepository modelRepository;
+	private static XSDMetaModelRepository<?> mmRepository;
+	private static XMLModelRepository<?> modelRepository;
 	private static String baseUrl = null;
 
 	/**
@@ -83,8 +83,8 @@ public class TestXSD extends OpenflexoProjectAtRunTimeTestCase {
 			e.printStackTrace();
 		}
 
-		mmRepository = resourceCenter.getRepository(XSDMetaModelRepository.class, xmlAdapter);
-		modelRepository = resourceCenter.getRepository(XMLModelRepository.class, xmlAdapter);
+		mmRepository = xmlAdapter.getXSDMetaModelRepository(resourceCenter);
+		modelRepository = xmlAdapter.getXMLModelRepository(resourceCenter);
 		assertNotNull(mmRepository);
 		assertNotNull(modelRepository);
 		assertEquals(3, mmRepository.getAllResources().size());

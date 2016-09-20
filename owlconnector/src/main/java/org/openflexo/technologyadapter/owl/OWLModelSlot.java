@@ -39,12 +39,12 @@
 
 package org.openflexo.technologyadapter.owl;
 
+import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.DeclareActorReferences;
@@ -66,8 +66,8 @@ import org.openflexo.foundation.ontology.fml.inspector.ObjectPropertyInspectorEn
 import org.openflexo.foundation.ontology.fml.inspector.PropertyInspectorEntry;
 import org.openflexo.foundation.ontology.fml.rt.ConceptActorReference;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyModelSlot;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlot;
 import org.openflexo.model.ModelContextLibrary;
@@ -158,27 +158,34 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		 */
 		@Override
 		public OWLModelSlotInstanceConfiguration createConfiguration(AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-				FlexoProject project) {
-			return new OWLModelSlotInstanceConfiguration(this, virtualModelInstance, project);
+				FlexoResourceCenter<?> rc) {
+			return new OWLModelSlotInstanceConfiguration(this, virtualModelInstance, rc);
 		}
 
 		@Override
 		public <PR extends FlexoRole<?>> String defaultFlexoRoleName(Class<PR> patternRoleClass) {
 			if (OWLClassRole.class.isAssignableFrom(patternRoleClass)) {
 				return "class";
-			} else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (OWLIndividualRole.class.isAssignableFrom(patternRoleClass)) {
 				return "individual";
-			} else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (OWLPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "property";
-			} else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (OWLDataPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "dataProperty";
-			} else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (OWLObjectPropertyRole.class.isAssignableFrom(patternRoleClass)) {
 				return "objectProperty";
-			} else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (DataPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
-			} else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (ObjectPropertyStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
-			} else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
+			}
+			else if (SubClassStatementRole.class.isAssignableFrom(patternRoleClass)) {
 				return "fact";
 			}
 			return null;
@@ -214,16 +221,26 @@ public interface OWLModelSlot extends FlexoOntologyModelSlot<OWLOntology, OWLOnt
 		}
 
 		@Override
-		public OWLOntologyResource createProjectSpecificEmptyModel(FlexoProject project, String filename, String modelUri,
+		public OWLOntologyResource createProjectSpecificEmptyModel(FlexoResourceCenter<?> rc, String filename, String modelUri,
 				FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewOntology(project, filename, modelUri, metaModelResource);
+			try {
+				return getModelSlotTechnologyAdapter().createNewOntology((FlexoResourceCenter<File>) rc, filename, modelUri,
+						(OWLOntologyResource) metaModelResource);
+			} catch (SaveResourceException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ModelDefinitionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
 		}
 
 		@Override
 		public OWLOntologyResource createSharedEmptyModel(FlexoResourceCenter<?> resourceCenter, String relativePath, String filename,
 				String modelUri, FlexoMetaModelResource<OWLOntology, OWLOntology, ?> metaModelResource) {
-			return getModelSlotTechnologyAdapter().createNewOntology((FileSystemBasedResourceCenter) resourceCenter, relativePath,
-					filename, modelUri, (OWLOntologyResource) metaModelResource);
+			return getModelSlotTechnologyAdapter().createNewOntology((FlexoResourceCenter<File>) resourceCenter, relativePath, filename,
+					modelUri, (OWLOntologyResource) metaModelResource);
 		}
 
 		/**

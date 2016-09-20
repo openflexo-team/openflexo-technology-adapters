@@ -87,12 +87,14 @@ public class TestOntologies extends OpenflexoTestCase {
 		// .locateResource("TestResourceCenter/Ontologies")));
 		owlAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(OWLTechnologyAdapter.class);
 		ontologyLibrary = (OWLOntologyLibrary) serviceManager.getTechnologyAdapterService().getTechnologyContextManager(owlAdapter);
+
 	}
 
 	@Test
 	@TestOrder(2)
 	public void test1AssertRDFOntologyPresentAndLoaded() {
 		log("test1AssertRDFOntologyPresentAndLoaded()");
+
 		OWLOntology rdfOntology = ontologyLibrary.getRDFOntology();
 		assertNotNull(rdfOntology);
 		assertTrue(rdfOntology.isLoaded());

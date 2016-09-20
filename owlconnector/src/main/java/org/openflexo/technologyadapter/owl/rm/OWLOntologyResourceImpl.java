@@ -49,20 +49,14 @@ import org.apache.jena.ontology.OntModel;
 import org.apache.jena.rdf.model.RDFWriter;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModelResource;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
-import org.openflexo.technologyadapter.owl.model.OWLOntologyLibrary;
 import org.openflexo.toolbox.IProgress;
 
 /**
@@ -74,79 +68,6 @@ import org.openflexo.toolbox.IProgress;
 public abstract class OWLOntologyResourceImpl extends FlexoResourceImpl<OWLOntology> implements OWLOntologyResource {
 
 	private static final Logger logger = Logger.getLogger(OWLOntologyResourceImpl.class.getPackage().getName());
-
-	/**
-	 * Creates a new {@link OWLOntologyResource} asserting this is an explicit creation: no file is present on file system<br>
-	 * This method should not be used to retrieve the resource from a file in the file system, use
-	 * {@link #retrieveOWLOntologyResource(File, OWLOntologyLibrary)} instead
-	 * 
-	 * @param ontologyURI
-	 * @param owlFile
-	 * @param ontologyLibrary
-	 * @return
-	 */
-	public static OWLOntologyResource makeOWLOntologyResource(String ontologyURI, File owlFile, OWLOntologyLibrary ontologyLibrary,
-			FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, OWLOntologyResource.class));
-			OWLOntologyResourceImpl returned = (OWLOntologyResourceImpl) factory.newInstance(OWLOntologyResource.class);
-			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
-			returned.setOntologyLibrary(ontologyLibrary);
-			returned.initName(owlFile.getName());
-			// returned.setFile(owlFile);
-
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
-
-			returned.setURI(ontologyURI);
-			// Register the ontology
-			ontologyLibrary.registerResource(returned);
-
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(ontologyLibrary.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-
-			// Creates the ontology
-			returned.setResourceData(
-					OWLOntology.createOWLEmptyOntology(ontologyURI, owlFile, ontologyLibrary, ontologyLibrary.getTechnologyAdapter()));
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	/**
-	 * Instanciates a new {@link OWLOntologyResource} asserting we are about to built a resource matching an existing file in the file
-	 * system<br>
-	 * This method should not be used to explicitely build a new ontology
-	 * 
-	 * @param owlFile
-	 * @param ontologyLibrary
-	 * @return
-	 */
-	public static OWLOntologyResource retrieveOWLOntologyResource(File owlFile, OWLOntologyLibrary ontologyLibrary,
-			FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, OWLOntologyResource.class));
-			OWLOntologyResourceImpl returned = (OWLOntologyResourceImpl) factory.newInstance(OWLOntologyResource.class);
-			returned.setTechnologyAdapter(ontologyLibrary.getTechnologyAdapter());
-			returned.setOntologyLibrary(ontologyLibrary);
-			returned.initName(OWLOntology.findOntologyName(owlFile));
-
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(owlFile, factory));
-
-			returned.setURI(OWLOntology.findOntologyURI(owlFile));
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(ontologyLibrary.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			// Register the ontology
-			ontologyLibrary.registerOntology(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	/**
 	 * Load the &quot;real&quot; load resource data of this resource.

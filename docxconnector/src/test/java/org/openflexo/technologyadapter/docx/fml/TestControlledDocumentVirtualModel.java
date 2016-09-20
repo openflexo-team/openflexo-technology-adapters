@@ -57,16 +57,17 @@ import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyExceptio
 import org.openflexo.foundation.doc.fml.FragmentActorReference;
 import org.openflexo.foundation.doc.fml.FragmentActorReference.ElementReference;
 import org.openflexo.foundation.fml.ActionScheme;
+import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateTechnologyRole;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
+import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
@@ -80,6 +81,7 @@ import org.openflexo.foundation.fml.rt.rm.ViewResource;
 import org.openflexo.foundation.fml.rt.rm.VirtualModelInstanceResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.rm.ResourceLocator;
 import org.openflexo.technologyadapter.docx.AbstractTestDocX;
 import org.openflexo.technologyadapter.docx.DocXModelSlot;
@@ -110,7 +112,8 @@ import org.openflexo.test.TestOrder;
 public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 	private final String VIEWPOINT_NAME = "TestViewPointControlledDocument";
-	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestViewPointControlledDocument";
+	private final String VIEWPOINT_URI = "http://openflexo.org/test/TestViewPointControlledDocument.viewpoint";
+	public static final String VIRTUAL_MODEL_NAME = "TestVirtualModel";
 
 	public static DocXTechnologyAdapter technologicalAdapter;
 	public static DocXDocumentRepository repository;
@@ -164,7 +167,10 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(DocXTechnologyAdapter.class);
-		repository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
+		// repository = resourceCenter.getRepository(DocXDocumentRepository.class, technologicalAdapter);
+
+		repository = technologicalAdapter.getDocXDocumentRepository(resourceCenter);
+
 		_editor = new FlexoTestEditor(null, serviceManager);
 
 		assertNotNull(serviceManager);
@@ -243,19 +249,33 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 
 	/**
 	 * Creates a new empty ViewPoint in the _project
+	 * 
+	 * @throws ModelDefinitionException
+	 * @throws SaveResourceException
 	 */
 	@Test
 	@TestOrder(5)
-	public void testCreateViewPoint() {
+	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException {
 
 		log("testCreateViewPoint()");
 
-		viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, _project.getDirectory(), serviceManager.getViewPointLibrary(),
-				resourceCenter);
-		viewPointResource = (ViewPointResource) viewPoint.getResource();
+		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(FMLTechnologyAdapter.class);
+		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
+
+		viewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
+				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		viewPoint = viewPointResource.getLoadedResourceData();
+
+		// viewPoint = ViewPointImpl.newViewPoint(VIEWPOINT_NAME, VIEWPOINT_URI, _project.getDirectory(),
+		// serviceManager.getViewPointLibrary(),
+		// resourceCenter);
+		// viewPointResource = (ViewPointResource) viewPoint.getResource();
 		// assertTrue(viewPointResource.getDirectory().exists());
 		assertTrue(viewPointResource.getDirectory() != null);
 		assertTrue(viewPointResource.getFlexoIODelegate().exists());
+
 	}
 
 	/**
@@ -266,14 +286,22 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	 * fragment to the end of document
 	 * 
 	 * @throws FragmentConsistencyException
+	 * @throws ModelDefinitionException
 	 */
 	@Test
 	@TestOrder(6)
-	public void testCreateVirtualModel() throws SaveResourceException, FragmentConsistencyException {
+	public void testCreateVirtualModel() throws SaveResourceException, FragmentConsistencyException, ModelDefinitionException {
 
 		log("testCreateVirtualModel()");
 
-		virtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", viewPoint);
+		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(FMLTechnologyAdapter.class);
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResource newVMResource = factory.makeVirtualModelResource(VIRTUAL_MODEL_NAME, viewPoint.getViewPointResource(),
+				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		virtualModel = newVMResource.getLoadedResourceData();
+
+		// virtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", viewPoint);
 		assertTrue(ResourceLocator.retrieveResourceAsFile(((VirtualModelResource) virtualModel.getResource()).getDirectory()).exists());
 		assertTrue(((VirtualModelResource) virtualModel.getResource()).getFlexoIODelegate().exists());
 
@@ -346,6 +374,8 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		assertTrue(virtualModel.hasNature(FMLControlledDocXVirtualModelNature.INSTANCE));
 		assertEquals(docXModelSlot, FMLControlledDocXVirtualModelNature.getDocumentModelSlot(virtualModel));
 
+		System.out.println("VirtualModel ***************************");
+		System.out.println(virtualModel.getFMLRepresentation());
 	}
 
 	/**
@@ -434,20 +464,27 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 	/**
 	 * Try to generate the document in VirtualModelInstance
 	 * 
-	 * @throws SaveResourceException
+	 * @throws FlexoException
+	 * @throws ResourceLoadingCancelledException
+	 * @throws FileNotFoundException
 	 */
 	@Test
 	@TestOrder(9)
-	public void testGenerateDocument() throws SaveResourceException {
+	public void testGenerateDocument() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
 		log("testGenerateDocument()");
 
 		VirtualModelInstanceResource vmiRes = (VirtualModelInstanceResource) newVirtualModelInstance.getResource();
 
-		assertFalse(templateResource.isModified());
+		System.out.println("Template:\n" + templateResource.getResourceData(null).debugStructuredContents());
+
+		// assertFalse(templateResource.isModified());
 		assertFalse(newVirtualModelInstance.isModified());
 
 		System.out.println(vmiRes.getFactory().stringRepresentation(vmiRes.getLoadedResourceData()));
+
+		System.out.println("Executing FML:");
+		System.out.println(actionScheme.getFMLRepresentation());
 
 		ActionSchemeActionType actionType = new ActionSchemeActionType(actionScheme, newVirtualModelInstance);
 		ActionSchemeAction actionSchemeCreationAction = actionType.makeNewAction(newVirtualModelInstance, null, _editor);
@@ -521,11 +558,18 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		DocXDocument generatedDocumentBeforeReload = generatedDocument;
 		assertNotNull(generatedDocumentBeforeReload);
 
-		instanciateTestServiceManager(DocXTechnologyAdapter.class);
+		instanciateTestServiceManagerForDocX(IdentifierManagementStrategy.ParaId);
+		reloadResourceCenter(viewPointResource.getDirectory());
 
 		System.out.println("Project dir = " + _project.getDirectory());
 
 		_editor = reloadProject(_project.getDirectory());
+
+		/*System.out.println("Registered resources:");
+		for (FlexoResource<?> r : serviceManager.getResourceManager().getRegisteredResources()) {
+			System.out.println(" > " + r.getURI());
+		}*/
+
 		_project = _editor.getProject();
 		assertNotNull(_editor);
 		assertNotNull(_project);
@@ -534,9 +578,16 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		// System.out.println("All resources=" + _project.getAllResources());
 		assertNotNull(_project.getResource(newView.getURI()));
 
+		System.out.println("viewPoint.getURI()=" + viewPoint.getURI());
+		System.out.println("viewPointResource.getURI()=" + viewPointResource.getURI());
+
 		ViewResource newViewResource = _project.getViewLibrary().getView(newView.getURI());
 		assertNotNull(newViewResource);
 		assertNull(newViewResource.getLoadedResourceData());
+
+		System.out.println("newViewResource.getURI()=" + newViewResource.getURI());
+		System.out.println("newViewResource.getViewPointResource().getURI()=" + newViewResource.getViewPointResource().getURI());
+
 		newViewResource.loadResourceData(null);
 		assertNotNull(newView = newViewResource.getView());
 
@@ -571,6 +622,10 @@ public class TestControlledDocumentVirtualModel extends AbstractTestDocX {
 		System.out.println("Template fragment = " + templatefragment);
 		System.out.println("Generated fragment = " + generatedFragment);
 		System.out.println("ActorReference = " + actorReference);
+
+		assertNotNull(templatefragment);
+		assertNotNull(generatedFragment);
+		assertNotNull(actorReference);
 
 		// OK, generatedFragment is supposed to be generated from template fragment
 		// Perform some checks

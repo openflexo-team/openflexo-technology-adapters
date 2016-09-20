@@ -42,16 +42,16 @@ import java.security.InvalidParameterException;
 import java.util.Vector;
 import java.util.logging.Logger;
 
-import org.openflexo.fge.DrawingGraphicalRepresentation;
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.action.FlexoActionType;
-import org.openflexo.foundation.action.NotImplementedException;
 import org.openflexo.foundation.resource.SaveResourceException;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
-import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette.DiagramPaletteImpl;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.toolbox.StringUtils;
@@ -99,17 +99,35 @@ public class CreateDiagramPalette extends FlexoAction<CreateDiagramPalette, Diag
 	}
 
 	@Override
-	protected void doAction(Object context) throws NotImplementedException, InvalidParameterException, SaveResourceException {
+	protected void doAction(Object context) throws InvalidParameterException, FlexoException {
 		logger.info("Add diagram palette to diagram specification");
 
-		DiagramPaletteResource paletteResource = DiagramPaletteImpl.newDiagramPalette(getFocusedObject(), newPaletteName,
-				(DrawingGraphicalRepresentation) graphicalRepresentation, getServiceManager());
+		// DiagramPaletteResource paletteResource = DiagramPaletteImpl.newDiagramPalette(getFocusedObject(), newPaletteName,
+		// (DrawingGraphicalRepresentation) graphicalRepresentation, getServiceManager());
+
+		DiagramPaletteResource paletteResource;
+		try {
+			paletteResource = _makeDiagramPalette();
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
+		}
 
 		_newPalette = paletteResource.getDiagramPalette();
 		_newPalette.setDescription(description);
 		getFocusedObject().addToPalettes(_newPalette);
 		_newPalette.getResource().save(null);
 
+	}
+
+	protected DiagramPaletteResource _makeDiagramPalette() throws SaveResourceException, ModelDefinitionException {
+		DiagramTechnologyAdapter diagramTA = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(DiagramTechnologyAdapter.class);
+
+		DiagramPaletteResource newPaletteResource = diagramTA.getDiagramSpecificationResourceFactory().getPaletteResourceFactory()
+				.makeDiagramPaletteResource(newPaletteName, getFocusedObject().getResource(), diagramTA.getTechnologyContextManager(),
+						true);
+
+		return newPaletteResource;
 	}
 
 	public DiagramPalette getNewPalette() {

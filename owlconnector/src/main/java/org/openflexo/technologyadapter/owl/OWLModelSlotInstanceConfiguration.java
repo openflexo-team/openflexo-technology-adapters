@@ -40,14 +40,15 @@ package org.openflexo.technologyadapter.owl;
 
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.TypeAwareModelSlotInstance;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.owl.model.OWLOntology;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
+import org.openflexo.technologyadapter.owl.rm.OWLOntologyResourceFactory;
 import org.openflexo.toolbox.StringUtils;
 
 public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanceConfiguration<OWLOntology, OWLOntology, OWLModelSlot> {
@@ -55,14 +56,14 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 	private static final Logger logger = Logger.getLogger(TypeAwareModelSlotInstanceConfiguration.class.getPackage().getName());
 
 	protected OWLModelSlotInstanceConfiguration(OWLModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
 		// options.add(DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel);
 		if (virtualModelInstance != null) {
-			setModelUri(virtualModelInstance.getProject().getURI() + "/Models/myOntology");
+			setModelUri(virtualModelInstance.getResourceCenter().getDefaultBaseURI() + "/Models/myOntology");
 		}
 		setRelativePath("/");
-		setFilename("myOntology" + getModelSlot().getModelSlotTechnologyAdapter().getExpectedOntologyExtension());
+		setFilename("myOntology" + OWLOntologyResourceFactory.OWL_FILE_EXTENSION);
 	}
 
 	@Override
@@ -126,7 +127,7 @@ public class OWLModelSlotInstanceConfiguration extends TypeAwareModelSlotInstanc
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		if (!getFilename().endsWith(getModelSlot().getModelSlotTechnologyAdapter().getExpectedOntologyExtension())) {
+		if (!getFilename().endsWith(OWLOntologyResourceFactory.OWL_FILE_EXTENSION)) {
 			setErrorMessage(
 					getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("file_name_should_end_with_.owl_suffix"));
 			return false;

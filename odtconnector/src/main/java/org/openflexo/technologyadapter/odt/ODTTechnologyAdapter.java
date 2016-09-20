@@ -20,26 +20,18 @@
 
 package org.openflexo.technologyadapter.odt;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Iterator;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
 import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
-import org.openflexo.rm.InJarResourceImpl;
 import org.openflexo.technologyadapter.odt.rm.ODTDocumentRepository;
-import org.openflexo.technologyadapter.odt.rm.ODTDocumentResource;
-import org.openflexo.technologyadapter.odt.rm.ODTDocumentResourceImpl;
+import org.openflexo.technologyadapter.odt.rm.ODTDocumentResourceFactory;
 
 /**
  * This class defines and implements the ODT technology adapter, which allows to manage .odt documents (OpenDocument format, which is the
@@ -53,10 +45,8 @@ import org.openflexo.technologyadapter.odt.rm.ODTDocumentResourceImpl;
 
 @DeclareModelSlots({ ODTModelSlot.class })
 @DeclareRepositoryType({ ODTDocumentRepository.class })
-@DeclareResourceTypes({ ODTDocumentResource.class })
+@DeclareResourceTypes({ ODTDocumentResourceFactory.class })
 public class ODTTechnologyAdapter extends TechnologyAdapter {
-
-	private static String ODT_FILE_EXTENSION = ".odt";
 
 	protected static final Logger logger = Logger.getLogger(ODTTechnologyAdapter.class.getPackage().getName());
 
@@ -89,16 +79,16 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 		return null;
 	}
 
-	@Override
+	/*@Override
 	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
-
+	
 		ODTDocumentRepository odtRepository = resourceCenter.getRepository(ODTDocumentRepository.class, this);
 		if (odtRepository == null) {
 			odtRepository = createODTDocumentRepository(resourceCenter);
 		}
-
+	
 		Iterator<I> it = resourceCenter.iterator();
-
+	
 		while (it.hasNext()) {
 			I item = it.next();
 			// if (item instanceof File) {
@@ -107,12 +97,12 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 			ODTDocumentResource wbRes = tryToLookupODT(resourceCenter, item);
 			// }
 		}
-
+	
 		// Call it to update the current repositories
 		notifyRepositoryStructureChanged();
-	}
+	}*/
 
-	protected <I> ODTDocumentResource tryToLookupODT(FlexoResourceCenter<I> resourceCenter, I candidateElement) {
+	/*protected <I> ODTDocumentResource tryToLookupODT(FlexoResourceCenter<I> resourceCenter, I candidateElement) {
 		ODTTechnologyContextManager technologyContextManager = getTechnologyContextManager();
 		if (isValidODT(candidateElement)) {
 			ODTDocumentResource wbRes = retrieveODTResource(candidateElement, resourceCenter);
@@ -130,14 +120,14 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 			}
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * Instantiate new workbook resource stored in supplied model file<br>
 	 * *
 	 */
-	public ODTDocumentResource retrieveODTResource(Object odtDocumentItem, FlexoResourceCenter<?> resourceCenter) {
-
+	/*public ODTDocumentResource retrieveODTResource(Object odtDocumentItem, FlexoResourceCenter<?> resourceCenter) {
+	
 		ODTDocumentResource returned = null; // getTechnologyContextManager().getExcelWorkbookResource(workbook);
 		if (returned == null) {
 			if (odtDocumentItem instanceof File) {
@@ -151,11 +141,11 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 				logger.warning("Cannot retrieve ODTDocumentResource resource for " + odtDocumentItem);
 			}
 		}
-
+	
 		return returned;
-	}
+	}*/
 
-	public boolean isValidODT(Object candidateElement) {
+	/*public boolean isValidODT(Object candidateElement) {
 		if (candidateElement instanceof File && isValidODTFile(((File) candidateElement))) {
 			return true;
 		}
@@ -163,7 +153,7 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 	/**
 	 * Return flag indicating if supplied file appears as a valid workbook
@@ -172,16 +162,16 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 	 * 
 	 * @return
 	 */
-	public boolean isValidODTFile(File candidateFile) {
+	/*public boolean isValidODTFile(File candidateFile) {
 		return candidateFile.getName().endsWith(ODT_FILE_EXTENSION);
-	}
+	}*/
 
-	public boolean isValidODTInJar(InJarResourceImpl candidateInJar) {
+	/*public boolean isValidODTInJar(InJarResourceImpl candidateInJar) {
 		if (candidateInJar.getRelativePath().endsWith(ODT_FILE_EXTENSION)) {
 			return true;
 		}
 		return false;
-	}
+	}*/
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
@@ -189,51 +179,60 @@ public class ODTTechnologyAdapter extends TechnologyAdapter {
 		return false;
 	}
 
-	@Override
+	/*@Override
 	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
 		// TODO Auto-generated method stub
 		return false;
-	}
+	}*/
 
 	/**
 	 * 
 	 * Create a {@link ODTDocumentRepository} for current {@link TechnologyAdapter} and supplied {@link FlexoResourceCenter}
 	 * 
 	 */
-	public ODTDocumentRepository createODTDocumentRepository(FlexoResourceCenter<?> resourceCenter) {
+	/*public ODTDocumentRepository createODTDocumentRepository(FlexoResourceCenter<?> resourceCenter) {
 		ODTDocumentRepository returned = new ODTDocumentRepository(this, resourceCenter);
 		resourceCenter.registerRepository(returned, ODTDocumentRepository.class, this);
 		return returned;
+	}*/
+
+	public <I> ODTDocumentRepository<I> getODTDocumentRepository(FlexoResourceCenter<I> resourceCenter) {
+		ODTDocumentRepository<I> returned = resourceCenter.retrieveRepository(ODTDocumentRepository.class, this);
+		if (returned == null) {
+			returned = new ODTDocumentRepository<I>(this, resourceCenter);
+			resourceCenter.registerRepository(returned, ODTDocumentRepository.class, this);
+		}
+		return returned;
 	}
 
-	public ODTDocumentResource createNewODTDocument(FlexoProject project, String filename, String modelUri) {
+	/*public ODTDocumentResource createNewODTDocument(FlexoProject project, String filename, String modelUri) {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	
 	public ODTDocumentResource createNewODTDocument(FileSystemBasedResourceCenter resourceCenter, String relativePath, String filename,
 			String modelUri) {
 		// TODO Auto-generated method stub
 		return null;
-	}
+	}*/
 
 	@Override
 	public String getIdentifier() {

@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<parent>
+		<groupId>org.openflexo</groupId>
+		<artifactId>openflexo-root-pom</artifactId>
+       		<version>0.4-SNAPSHOT</version>
+	</parent>
+
+	<groupId>org.openflexo.rc</groupId>
+	<artifactId>owlconnector-rc</artifactId>
+	<version>1.8.0-SNAPSHOT</version>
+
+	<name>OWLRC</name>
+	<description>OWL Resource Center</description>
+
+<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>META-INF/**/*</include>
+				</includes>
+			</resource>
+		</resources>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-jar-plugin</artifactId>
+					<executions>
+						<execution>
+						    <id>default-jar</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+							<configuration>
+							     <skipIfEmpty>true</skipIfEmpty>
+							</configuration>
+						</execution>
+						<execution>
+							<goals>
+								<goal>test-jar</goal>
+							</goals>
+							<configuration>
+							     <skipIfEmpty>true</skipIfEmpty>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<profiles>
+		<profile>
+			<id>build-installers</id>
+			<build>
+			<!--  override profile to empty it => nothing to do -->
+			</build>
+		</profile>
+	</profiles>
+</project>

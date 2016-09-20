@@ -50,8 +50,8 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
  * @author sylvain
  * 
  */
-public class DiagramSpecificationRepository extends
-		MetaModelRepository<DiagramSpecificationResource, Diagram, DiagramSpecification, DiagramTechnologyAdapter> {
+public class DiagramSpecificationRepository<I>
+		extends MetaModelRepository<DiagramSpecificationResource, Diagram, DiagramSpecification, DiagramTechnologyAdapter, I> {
 
 	/**
 	 * Constructor.
@@ -59,7 +59,7 @@ public class DiagramSpecificationRepository extends
 	 * @param adapter
 	 * @param resourceCenter
 	 */
-	public DiagramSpecificationRepository(DiagramTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public DiagramSpecificationRepository(DiagramTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 

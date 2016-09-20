@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.emf.gui.browser;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import org.junit.After;
@@ -50,7 +49,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
+import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.gina.test.OpenflexoTestCaseWithGUI;
 import org.openflexo.gina.test.SwingGraphicalContextDelegate;
@@ -97,28 +96,35 @@ public class TestEcoreOntologyBrowerModel extends OpenflexoTestCaseWithGUI {
 	public void TestLoadECOREModel() {
 		for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
 
-			EMFMetaModelRepository metaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+			EMFMetaModelRepository<?> metaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
 			assertNotNull(metaModelRepository);
-
-			EMFModelRepository modelRepository = resourceCenter.getRepository(EMFModelRepository.class, technologicalAdapter);
+			EMFModelRepository<?> modelRepository = technologicalAdapter.getEMFModelRepository(resourceCenter);
 			assertNotNull(modelRepository);
-			;
 
-			System.out.println("Loading : "
-					+ ((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
-					+ ecoreModelResourceRelativeURI);
+			System.out.println("Loading :" + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
 
-			ecoreModelResource = modelRepository.getResource(
-					((FileSystemBasedResourceCenter) resourceCenter).getRootDirectory().toURI().toString().replace(File.separator, "/")
-							+ ecoreModelResourceRelativeURI);
+			EMFModelResource modelResource = modelRepository
+					.getResource(resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
 
-			assertNotNull(ecoreModelResource);
+			if (modelResource != null) {
+				ecoreModelResource = modelResource;
+				System.out.println("Found resource " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+			}
+			else {
+				System.out.println("Not found: " + resourceCenter.getDefaultBaseURI() + "/" + ecoreModelResourceRelativeURI);
+				for (FlexoResource<?> r : resourceCenter.getAllResources(null)) {
+					System.out.println(" > " + r.getURI());
+				}
+			}
 
-			ecoreModel = ecoreModelResource.getModel();
-			assertNotNull(ecoreModel);
-			assertNotNull(ecoreModel.getMetaModel());
-			assertEquals(ecoreModel.getMetaModel().getURI(), EMFTechnologyAdapter.ECORE_MM_URI);
 		}
+
+		assertNotNull(ecoreModelResource);
+
+		ecoreModel = ecoreModelResource.getModel();
+		assertNotNull(ecoreModel);
+		assertNotNull(ecoreModel.getMetaModel());
+		assertEquals(ecoreModel.getMetaModel().getURI(), EMFTechnologyAdapter.ECORE_MM_URI);
 	}
 
 	@Test

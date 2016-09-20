@@ -20,23 +20,19 @@
 
 package org.openflexo.technologyadapter.gina;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
 import org.openflexo.foundation.fml.annotations.DeclareRepositoryType;
+import org.openflexo.foundation.fml.annotations.DeclareResourceTypes;
 import org.openflexo.foundation.fml.annotations.DeclareVirtualModelInstanceNatures;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenterService;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterBindingFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyAdapterInitializationException;
 import org.openflexo.technologyadapter.gina.fml.FMLControlledFIBVirtualModelInstanceNature;
-import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResource;
-import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResourceImpl;
+import org.openflexo.technologyadapter.gina.rm.GINAFIBComponentResourceFactory;
 import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
 
 /**
@@ -49,10 +45,8 @@ import org.openflexo.technologyadapter.gina.rm.GINAResourceRepository;
 @DeclareModelSlots({ FIBComponentModelSlot.class })
 @DeclareRepositoryType({ GINAResourceRepository.class })
 @DeclareVirtualModelInstanceNatures({ FMLControlledFIBVirtualModelInstanceNature.class })
+@DeclareResourceTypes({ GINAFIBComponentResourceFactory.class })
 public class GINATechnologyAdapter extends TechnologyAdapter {
-
-	public static String GINA_COMPONENT_EXTENSION = ".fib";
-	public static String GINA_INSPECTOR_EXTENSION = ".inspector";
 
 	private static final Logger LOGGER = Logger.getLogger(GINATechnologyAdapter.class.getPackage().getName());
 
@@ -86,23 +80,23 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 		return null;
 	}
 
-	@Override
+	/*@Override
 	public <I> void performInitializeResourceCenter(FlexoResourceCenter<I> resourceCenter) {
 		GINAResourceRepository currentRepository = resourceCenter.getRepository(GINAResourceRepository.class, this);
 		if (currentRepository == null) {
 			currentRepository = createNewGINAResourceRepository(resourceCenter);
 		}
-
+	
 		for (final I item : resourceCenter) {
 			if (item instanceof File) {
 				this.initializeGINAFile(resourceCenter, (File) item);
 			}
 		}
-
+	
 		// Call it to update the current repositories
 		notifyRepositoryStructureChanged();
-
-	}
+	
+	}*/
 
 	/**
 	 * Register file if it is a GIN file, and reference resource to <code>this</code>
@@ -110,7 +104,7 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 * @param candidateFile
 	 */
-	private <I> GINAFIBComponentResource initializeGINAFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
+	/*private <I> GINAFIBComponentResource initializeGINAFile(final FlexoResourceCenter<I> resourceCenter, final File candidateFile) {
 		if (!isValidGINAComponent(candidateFile)) {
 			return null;
 		}
@@ -129,16 +123,16 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 			return ginaconnectorResourceFile;
 		}
 		return null;
-	}
+	}*/
 
 	/**
 	 * 
 	 * @param candidateFile
 	 * @return true if extension of file match <code>GINA_FILE_EXTENSION</code>
 	 */
-	public boolean isValidGINAComponent(final File candidateFile) {
+	/*public boolean isValidGINAComponent(final File candidateFile) {
 		return candidateFile.getName().endsWith(GINA_COMPONENT_EXTENSION) || candidateFile.getName().endsWith(GINA_INSPECTOR_EXTENSION);
-	}
+	}*/
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
@@ -146,7 +140,7 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 		return false;
 	}
 
-	@Override
+	/*@Override
 	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		if (contents instanceof File) {
@@ -154,24 +148,24 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 		}
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsDeleted(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsModified(FlexoResourceCenter<I> resourceCenter, I contents) {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 	@Override
 	public <I> boolean contentsRenamed(FlexoResourceCenter<I> resourceCenter, I contents, String oldName, String newName) {
 		// TODO Auto-generated method stub
 		return false;
-	}
+	}*/
 
 	/**
 	 * Create a new GINAResourceRepository and register it in the given resource center.
@@ -179,15 +173,28 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 	 * @param resourceCenter
 	 * @return the repository
 	 */
-	private GINAResourceRepository createNewGINAResourceRepository(final FlexoResourceCenter<?> resourceCenter) {
+	/*private GINAResourceRepository createNewGINAResourceRepository(final FlexoResourceCenter<?> resourceCenter) {
 		final GINAResourceRepository repo = new GINAResourceRepository(this, resourceCenter);
 		resourceCenter.registerRepository(repo, GINAResourceRepository.class, this);
 		return repo;
+	}*/
+
+	public <I> GINAResourceRepository<I> getGINAResourceRepository(FlexoResourceCenter<I> resourceCenter) {
+		GINAResourceRepository<I> returned = resourceCenter.retrieveRepository(GINAResourceRepository.class, this);
+		if (returned == null) {
+			returned = new GINAResourceRepository<I>(this, resourceCenter);
+			resourceCenter.registerRepository(returned, GINAResourceRepository.class, this);
+		}
+		return returned;
 	}
 
 	@Override
 	public String getIdentifier() {
 		return "GINA";
+	}
+
+	public GINAFIBComponentResourceFactory getGINAFIBComponentResourceFactory() {
+		return getResourceFactory(GINAFIBComponentResourceFactory.class);
 	}
 
 }

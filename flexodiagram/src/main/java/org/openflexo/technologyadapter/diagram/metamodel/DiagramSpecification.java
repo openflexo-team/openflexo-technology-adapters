@@ -46,9 +46,7 @@ import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.resource.FlexoResource;
-import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.ResourceData;
-import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.TechnologyObject;
 import org.openflexo.model.annotations.Adder;
@@ -65,9 +63,7 @@ import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramPaletteResource;
 import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationRepository;
 import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResource;
-import org.openflexo.technologyadapter.diagram.rm.DiagramSpecificationResourceImpl;
 import org.openflexo.toolbox.ChainedCollection;
 
 /**
@@ -88,7 +84,7 @@ public interface DiagramSpecification
 	@PropertyIdentifier(type = String.class)
 	public static final String NAME_KEY = "name";
 	@PropertyIdentifier(type = String.class)
-	public static final String URI_KEY = "URI";
+	public static final String URI_KEY = "uri";
 	@PropertyIdentifier(type = DiagramPalette.class, cardinality = Cardinality.LIST)
 	public static final String PALETTES_KEY = "palettes";
 	@PropertyIdentifier(type = Diagram.class, cardinality = Cardinality.LIST)
@@ -178,7 +174,7 @@ public interface DiagramSpecification
 		 * @param viewPoint
 		 * @return
 		 */
-		public static DiagramSpecification newDiagramSpecification(String uri, String baseName, RepositoryFolder<?> folder,
+		/*public static DiagramSpecification newDiagramSpecification(String uri, String baseName, RepositoryFolder<?> folder,
 				FlexoServiceManager serviceManager) {
 			// File diagramSpecificationXMLFile = new File(diagramSpecificationDirectory, baseName +
 			// DiagramSpecificationResource.DIAGRAM_SPECIFICATION_SUFFIX);
@@ -187,21 +183,21 @@ public interface DiagramSpecification
 			DiagramSpecification diagramSpecification = dsRes.getFactory().newInstance(DiagramSpecification.class);
 			dsRes.setResourceData(diagramSpecification);
 			diagramSpecification.setResource(dsRes);
-
+		
 			DiagramTechnologyAdapter diagramTA = serviceManager.getTechnologyAdapterService()
 					.getTechnologyAdapter(DiagramTechnologyAdapter.class);
 			DiagramSpecificationRepository dsRepository = folder.getResourceRepository().getResourceCenter()
 					.getRepository(DiagramSpecificationRepository.class, diagramTA);
 			dsRepository.registerResource(dsRes);
 			diagramTA.referenceResource(dsRes, folder.getResourceRepository().getResourceCenter());
-
+		
 			try {
 				dsRes.save(null);
 			} catch (SaveResourceException e) {
 				e.printStackTrace();
 			}
 			return diagramSpecification;
-		}
+		}*/
 
 		// Used during deserialization, do not use it
 		public DiagramSpecificationImpl() {

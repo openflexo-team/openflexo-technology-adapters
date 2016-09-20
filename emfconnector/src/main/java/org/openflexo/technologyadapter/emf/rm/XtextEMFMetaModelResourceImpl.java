@@ -39,12 +39,13 @@
 package org.openflexo.technologyadapter.emf.rm;
 
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.xtext.ISetup;
 import org.eclipse.xtext.resource.XtextResource;
 import org.eclipse.xtext.resource.XtextResourceSet;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoIODelegate;
 
-
+import com.google.inject.Injector;
 
 /**
  * IO Delegate to load a MetaModelResource from Directory in FileSystem
@@ -52,15 +53,24 @@ import org.openflexo.foundation.resource.FlexoIODelegate;
  * @author xtof
  */
 public abstract class XtextEMFMetaModelResourceImpl extends EMFMetaModelResourceImpl implements XtextEMFMetaModelResource {
-		
+
+	@Override
+	protected void performLoadMetaModel(ClassLoader classLoader)
+			throws ClassNotFoundException, InstantiationException, IllegalAccessException {
+		Class<?> standaloneSetupClass = classLoader.loadClass(getStandaloneSetupClassName());
+		ISetup standaloneSetup = ((ISetup) standaloneSetupClass.newInstance());
+		Injector injector = standaloneSetup.createInjectorAndDoEMFRegistration();
+		setInjector(injector);
+	}
 
 	/**
 	 * Creates a new ModelResource, for EMF, MetaModel decides wich type of serialization you should use!
+	 * 
 	 * @param flexoIODelegate
 	 * @return
-	 */	
+	 */
 	@Override
-	public 	Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate){
+	public Resource createEMFModelResource(FlexoIODelegate<?> flexoIODelegate) {
 
 		// TODO : refactor with proper IODelegate Support
 
@@ -68,11 +78,11 @@ public abstract class XtextEMFMetaModelResourceImpl extends EMFMetaModelResource
 
 		resourceSet.addLoadOption(XtextResource.OPTION_RESOLVE_ALL, Boolean.TRUE);
 
-		Resource resource = resourceSet.createResource(org.eclipse.emf.common.util.URI.createFileURI(((FileFlexoIODelegate)flexoIODelegate).getFile().getAbsolutePath())); 
-		
+		Resource resource = resourceSet.createResource(
+				org.eclipse.emf.common.util.URI.createFileURI(((FileFlexoIODelegate) flexoIODelegate).getFile().getAbsolutePath()));
+
 		return resource;
-		
-	}
-	
+
 	}
 
+}

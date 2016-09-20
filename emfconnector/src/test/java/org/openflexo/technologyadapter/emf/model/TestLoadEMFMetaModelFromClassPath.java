@@ -43,11 +43,16 @@ package org.openflexo.technologyadapter.emf.model;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.io.FileNotFoundException;
 import java.util.Collection;
 import java.util.logging.Logger;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openflexo.foundation.FlexoException;
+import org.openflexo.foundation.ontology.IFlexoOntologyClass;
+import org.openflexo.foundation.ontology.IFlexoOntologyFeatureAssociation;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoTestCase;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFMetaModel;
@@ -62,8 +67,8 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestLoadEMFMetaModel extends OpenflexoTestCase {
-	protected static final Logger logger = Logger.getLogger(TestLoadEMFMetaModel.class.getPackage().getName());
+public class TestLoadEMFMetaModelFromClassPath extends OpenflexoTestCase {
+	protected static final Logger logger = Logger.getLogger(TestLoadEMFMetaModelFromClassPath.class.getPackage().getName());
 
 	private static EMFTechnologyAdapter technologicalAdapter;
 
@@ -95,6 +100,50 @@ public class TestLoadEMFMetaModel extends OpenflexoTestCase {
 
 			System.out.println("\t\t MetaModel Conversion  took " + (endTime - startTime) + " milliseconds");
 
+		}
+	}
+
+	@Test
+	@TestOrder(3)
+	public void testECoreMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+
+		// EMFMetaModelResource eCoreRes = technologicalAdapter.getEMFMetaModelRepository(resourceCenter)
+		// .getResource("http://www.eclipse.org/emf/2002/Ecore");
+
+		EMFMetaModelResource eCoreRes = technologicalAdapter.getTechnologyContextManager()
+				.getMetaModelResourceByURI(EMFTechnologyAdapter.ECORE_MM_URI);
+		assertNotNull(eCoreRes);
+
+		EMFMetaModel eCoreMM = eCoreRes.loadResourceData(null);
+		assertNotNull(eCoreMM);
+
+		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : eCoreMM.getClasses()) {
+			System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
+			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
+				System.out.println("    > " + fa);
+			}
+		}
+	}
+
+	@Test
+	@TestOrder(4)
+	public void testUMLMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+
+		// EMFMetaModelResource eCoreRes = technologicalAdapter.getEMFMetaModelRepository(resourceCenter)
+		// .getResource("http://www.eclipse.org/emf/2002/Ecore");
+
+		EMFMetaModelResource eCoreRes = technologicalAdapter.getTechnologyContextManager()
+				.getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
+		assertNotNull(eCoreRes);
+
+		EMFMetaModel eCoreMM = eCoreRes.loadResourceData(null);
+		assertNotNull(eCoreMM);
+
+		for (IFlexoOntologyClass<EMFTechnologyAdapter> emfClass : eCoreMM.getClasses()) {
+			System.out.println("* " + emfClass + " uri=" + emfClass.getURI());
+			for (IFlexoOntologyFeatureAssociation<EMFTechnologyAdapter> fa : emfClass.getStructuralFeatureAssociations()) {
+				System.out.println("    > " + fa);
+			}
 		}
 	}
 

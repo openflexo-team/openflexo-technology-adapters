@@ -50,7 +50,7 @@ import org.openflexo.technologyadapter.emf.model.EMFModel;
  * 
  * @author gbesancon
  */
-public class EMFMetaModelRepository extends MetaModelRepository<EMFMetaModelResource, EMFModel, EMFMetaModel, EMFTechnologyAdapter> {
+public class EMFMetaModelRepository<I> extends MetaModelRepository<EMFMetaModelResource, EMFModel, EMFMetaModel, EMFTechnologyAdapter, I> {
 
 	/**
 	 * Constructor.
@@ -58,7 +58,7 @@ public class EMFMetaModelRepository extends MetaModelRepository<EMFMetaModelReso
 	 * @param adapter
 	 * @param resourceCenter
 	 */
-	public EMFMetaModelRepository(EMFTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public EMFMetaModelRepository(EMFTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 

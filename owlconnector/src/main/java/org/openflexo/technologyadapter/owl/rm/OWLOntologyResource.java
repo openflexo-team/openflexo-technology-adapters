@@ -62,8 +62,6 @@ public interface OWLOntologyResource extends FlexoModelResource<OWLOntology, OWL
 
 	public static final String ONTOLOGY_LIBRARY = "ontologyLibrary";
 
-	public static final String OWL_SUFFIX = ".owl";
-
 	@Getter(value = ONTOLOGY_LIBRARY, ignoreType = true)
 	public OWLOntologyLibrary getOntologyLibrary();
 

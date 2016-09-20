@@ -21,14 +21,14 @@
 package org.openflexo.technologyadapter.gina.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.model.GINAFIBComponent;
 
-public class GINAResourceRepository
-		extends TechnologyAdapterFileResourceRepository<GINAFIBComponentResource, GINATechnologyAdapter, GINAFIBComponent> {
+public class GINAResourceRepository<I>
+		extends TechnologyAdapterResourceRepository<GINAFIBComponentResource, GINATechnologyAdapter, GINAFIBComponent, I> {
 
-	public GINAResourceRepository(GINATechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public GINAResourceRepository(GINATechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 

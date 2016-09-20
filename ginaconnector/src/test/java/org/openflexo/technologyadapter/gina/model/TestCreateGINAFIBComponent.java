@@ -41,12 +41,15 @@ package org.openflexo.technologyadapter.gina.model;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.action.AddRepositoryFolder;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.test.OpenflexoTestCase;
@@ -69,8 +72,8 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 	public static GINATechnologyAdapter technologicalAdapter;
 	public static FlexoServiceManager applicationContext;
 	public static FlexoResourceCenter<?> resourceCenter;
-	public static GINAResourceRepository repository;
-	public static RepositoryFolder<GINAFIBComponentResource> componentFolder;
+	public static GINAResourceRepository<?> repository;
+	public static RepositoryFolder<GINAFIBComponentResource, ?> componentFolder;
 
 	public static FlexoEditor editor;
 
@@ -88,8 +91,19 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 		applicationContext = instanciateTestServiceManager(GINATechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(GINATechnologyAdapter.class);
-		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
-		repository = resourceCenter.getRepository(GINAResourceRepository.class, technologicalAdapter);
+		// Looks for the first FileSystemBasedResourceCenter
+		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters()) {
+			if (rc instanceof FileSystemBasedResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()) {
+				resourceCenter = rc;
+				break;
+			}
+		}
+
+		assertNotNull(resourceCenter);
+
+		repository = technologicalAdapter.getGINAResourceRepository(resourceCenter);
+
+		assertNotNull(repository);
 
 		assertNotNull(applicationContext);
 		assertNotNull(technologicalAdapter);
@@ -114,7 +128,7 @@ public class TestCreateGINAFIBComponent extends OpenflexoTestCase {
 		addRepositoryFolder.doAction();
 		assertTrue(addRepositoryFolder.hasActionExecutionSucceeded());
 		componentFolder = addRepositoryFolder.getNewFolder();
-		assertTrue(componentFolder.getFile().exists());
+		assertTrue(((File) componentFolder.getSerializationArtefact()).exists());
 	}
 
 	/**

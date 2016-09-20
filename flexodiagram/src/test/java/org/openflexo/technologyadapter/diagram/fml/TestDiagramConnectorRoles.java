@@ -107,7 +107,9 @@ public class TestDiagramConnectorRoles extends OpenflexoTestCase {
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
 		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
-		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
+
+		repository = technologicalAdapter.getDiagramSpecificationRepository(resourceCenter);
+
 		editor = new FlexoTestEditor(null, applicationContext);
 
 		assertNotNull(applicationContext);

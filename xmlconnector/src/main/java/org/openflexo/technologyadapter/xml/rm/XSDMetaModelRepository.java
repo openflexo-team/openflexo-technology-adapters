@@ -46,7 +46,7 @@ import org.openflexo.technologyadapter.xml.model.XMLModel;
 
 // FIXME when we have discussed about File repo issues
 // public class XSDMetaModelRepository extends TechnologyAdapterResourceRepository<XSDMetaModelResource, XMLTechnologyAdapter,  XMLMetaModel > {
-public class XSDMetaModelRepository extends MetaModelRepository<XSDMetaModelResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter > {
+public class XSDMetaModelRepository<I> extends MetaModelRepository<XSDMetaModelResource, XMLModel, XMLMetaModel, XMLTechnologyAdapter, I> {
 	public XSDMetaModelRepository(XMLTechnologyAdapter adapter, FlexoResourceCenter resourceCenter) {
 		super(adapter, resourceCenter);
 	}

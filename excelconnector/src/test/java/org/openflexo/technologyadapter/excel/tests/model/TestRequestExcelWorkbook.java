@@ -43,7 +43,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
-import java.net.MalformedURLException;
 import java.util.logging.Logger;
 
 import org.junit.Test;
@@ -51,7 +50,6 @@ import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
@@ -82,27 +80,19 @@ public class TestRequestExcelWorkbook extends OpenflexoProjectAtRunTimeTestCase 
 	@Test
 	@TestOrder(2)
 	public void testCreateProject() {
-		try {
-			editor = createProject("TestProject");
-			project = editor.getProject();
-			System.out.println("Created project " + project.getProjectDirectory());
-			assertTrue(project.getProjectDirectory().exists());
-			assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
-			baseUrl = resourceCenter.getDirectory().toURI().toURL().toExternalForm();
-			ExcelTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
-					.getTechnologyAdapter(ExcelTechnologyAdapter.class);
-			for (FlexoResourceCenter<?> resourceCenter : serviceManager.getResourceCenterService().getResourceCenters()) {
-				ExcelWorkbookRepository excelWorkbookRepository = resourceCenter.getRepository(ExcelWorkbookRepository.class,
-						technologicalAdapter);
-				assertNotNull(excelWorkbookRepository);
-				if (excelWorkbookRepository.getResource(baseUrl + "TestResourceCenter/Excel/Workbook3.xlsx") != null) {
-					workbook = excelWorkbookRepository.getResource(baseUrl + "TestResourceCenter/Excel/Workbook3.xlsx");
-				}
-			}
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		editor = createProject("TestProject");
+		project = editor.getProject();
+		System.out.println("Created project " + project.getProjectDirectory());
+		assertTrue(project.getProjectDirectory().exists());
+		assertTrue(project.getProjectDataResource().getFlexoIODelegate().exists());
+		baseUrl = resourceCenter.getDefaultBaseURI();
+		ExcelTechnologyAdapter technologicalAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(ExcelTechnologyAdapter.class);
+
+		ExcelWorkbookRepository<?> excelWorkbookRepository = technologicalAdapter.getExcelWorkbookRepository(resourceCenter);
+		assertNotNull(excelWorkbookRepository);
+		workbook = excelWorkbookRepository.getResource(baseUrl + "/TestResourceCenter/Excel/Workbook3.xlsx");
+		assertNotNull(workbook);
 	}
 
 	@Test

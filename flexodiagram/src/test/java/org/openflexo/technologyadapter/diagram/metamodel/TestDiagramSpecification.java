@@ -54,6 +54,7 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoServiceManager;
 import org.openflexo.foundation.action.FlexoAction;
 import org.openflexo.foundation.fml.VirtualModel;
+import org.openflexo.foundation.resource.DirectoryResourceCenter;
 import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.SaveResourceException;
@@ -92,7 +93,7 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 	public static DiagramTechnologyAdapter technologicalAdapter;
 	public static FlexoServiceManager applicationContext;
 	public static FlexoResourceCenter<?> resourceCenter;
-	public static DiagramSpecificationRepository repository;
+	public static DiagramSpecificationRepository<?> repository;
 	public static FlexoEditor editor;
 
 	public static DiagramSpecificationResource diagramSpecificationResource;
@@ -113,14 +114,24 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
-		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
+		// Looks for the first FileSystemBasedResourceCenter
+		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters()) {
+			if (rc instanceof DirectoryResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()) {
+				resourceCenter = rc;
+				break;
+			}
+		}
+		assertNotNull(resourceCenter);
+
+		// repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
+		repository = technologicalAdapter.getDiagramSpecificationRepository(resourceCenter);
+
+		assertNotNull(repository);
+
 		editor = new FlexoTestEditor(null, applicationContext);
 
 		assertNotNull(applicationContext);
 		assertNotNull(technologicalAdapter);
-		assertNotNull(resourceCenter);
-		assertNotNull(repository);
 	}
 
 	/**
@@ -144,6 +155,8 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 
 		assertNotNull(diagramSpecificationResource);
 		assertTrue(diagramSpecificationResource.getFlexoIODelegate().exists());
+
+		assertEquals(diagramSpecificationURI, diagramSpecificationResource.getURI());
 
 	}
 
@@ -233,8 +246,20 @@ public class TestDiagramSpecification extends OpenflexoTestCase {
 		applicationContext = instanciateTestServiceManager(DiagramTechnologyAdapter.class);
 
 		technologicalAdapter = applicationContext.getTechnologyAdapterService().getTechnologyAdapter(DiagramTechnologyAdapter.class);
-		resourceCenter = applicationContext.getResourceCenterService().getResourceCenters().get(0);
-		repository = resourceCenter.getRepository(DiagramSpecificationRepository.class, technologicalAdapter);
+
+		// Looks for the first FileSystemBasedResourceCenter
+		for (FlexoResourceCenter rc : applicationContext.getResourceCenterService().getResourceCenters()) {
+			if (rc instanceof FileSystemBasedResourceCenter && !rc.getResourceCenterEntry().isSystemEntry()) {
+				resourceCenter = rc;
+				break;
+			}
+		}
+
+		assertNotNull(resourceCenter);
+
+		repository = technologicalAdapter.getDiagramSpecificationRepository(resourceCenter);
+
+		assertNotNull(repository);
 
 		File newDirectory = new File(((FileSystemBasedResourceCenter) resourceCenter).getDirectory(),
 				ResourceLocator.retrieveResourceAsFile(diagramSpecificationResource.getDirectory()).getName());

@@ -13,6 +13,7 @@ datatype_properties=Datatype properties
 done=Klaar
 hierarchic_presentation=Hierarchic presentation
 individuals=Individuals
+initializing_adapter=initializing_adapter
 lower=Lower
 metamodel=metamodel
 name=Naam

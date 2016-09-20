@@ -40,7 +40,7 @@
 package org.openflexo.technologyadapter.excel.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 
@@ -50,10 +50,10 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
  * @author sylvain
  * 
  */
-public class ExcelWorkbookRepository extends
-		TechnologyAdapterFileResourceRepository<ExcelWorkbookResource, ExcelTechnologyAdapter, ExcelWorkbook> {
+public class ExcelWorkbookRepository<I>
+		extends TechnologyAdapterResourceRepository<ExcelWorkbookResource, ExcelTechnologyAdapter, ExcelWorkbook, I> {
 
-	public ExcelWorkbookRepository(ExcelTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+	public ExcelWorkbookRepository(ExcelTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
 	}
 

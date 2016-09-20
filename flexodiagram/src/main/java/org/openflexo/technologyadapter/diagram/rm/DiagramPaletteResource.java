@@ -50,8 +50,8 @@ import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteFactory;
 @ModelEntity
 @ImplementationClass(DiagramPaletteResourceImpl.class)
 @XMLElement
-public interface DiagramPaletteResource extends PamelaResource<DiagramPalette, DiagramPaletteFactory> ,
-TechnologyAdapterResource<DiagramPalette, DiagramTechnologyAdapter>{
+public interface DiagramPaletteResource
+		extends PamelaResource<DiagramPalette, DiagramPaletteFactory>, TechnologyAdapterResource<DiagramPalette, DiagramTechnologyAdapter> {
 
 	/**
 	 * Return diagram palette stored by this resource<br>
@@ -69,7 +69,5 @@ TechnologyAdapterResource<DiagramPalette, DiagramTechnologyAdapter>{
 
 	@Override
 	public DiagramSpecificationResource getContainer();
-	
-	public static final String DIAGRAM_PALETTE_SUFFIX = ".palette";
 
 }

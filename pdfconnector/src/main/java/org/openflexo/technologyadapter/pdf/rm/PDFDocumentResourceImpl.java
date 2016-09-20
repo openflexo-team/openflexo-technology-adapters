@@ -31,72 +31,17 @@ import org.apache.commons.io.IOUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
-import org.openflexo.foundation.resource.FileFlexoIODelegate.FileFlexoIODelegateImpl;
 import org.openflexo.foundation.resource.FileWritingLock;
-import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.PamelaResourceImpl;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.Progress;
-import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.exceptions.ModelDefinitionException;
-import org.openflexo.model.factory.ModelFactory;
-import org.openflexo.technologyadapter.pdf.PDFTechnologyContextManager;
 import org.openflexo.technologyadapter.pdf.model.PDFDocument;
 import org.openflexo.technologyadapter.pdf.model.PDFFactory;
 import org.openflexo.toolbox.FileUtils;
 
 public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocument, PDFFactory>implements PDFDocumentResource {
 	private static final Logger logger = Logger.getLogger(PDFDocumentResourceImpl.class.getPackage().getName());
-
-	public static PDFDocumentResource makePDFDocumentResource(File modelFile, PDFTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(PDFDocumentResource.class, FileFlexoIODelegate.class));
-			PDFDocumentResourceImpl returned = (PDFDocumentResourceImpl) factory.newInstance(PDFDocumentResource.class);
-			returned.initName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			PDFFactory docXFactory = new PDFFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
-			returned.setFactory(docXFactory);
-
-			// returned.setURI(modelURI);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static PDFDocumentResource retrievePDFDocumentResource(File modelFile, PDFTechnologyContextManager technologyContextManager,
-			FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(PDFDocumentResource.class, FileFlexoIODelegate.class));
-			PDFDocumentResourceImpl returned = (PDFDocumentResourceImpl) factory.newInstance(PDFDocumentResource.class);
-			returned.initName(modelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-			PDFFactory docXFactory = new PDFFactory(returned, technologyContextManager.getServiceManager().getEditingContext());
-			returned.setFactory(docXFactory);
-
-			// returned.setURI(modelFile.toURI().toString());
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getServiceManager());
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			technologyContextManager.registerResource(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	@Override
 	protected PDFDocument performLoad() throws IOException, Exception {

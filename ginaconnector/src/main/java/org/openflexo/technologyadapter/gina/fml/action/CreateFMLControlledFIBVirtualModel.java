@@ -49,12 +49,13 @@ import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.FlexoEditor;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
-import org.openflexo.foundation.IOFlexoException;
 import org.openflexo.foundation.action.FlexoActionType;
 import org.openflexo.foundation.fml.CheckboxParameter;
 import org.openflexo.foundation.fml.CreationScheme;
 import org.openflexo.foundation.fml.FMLObject;
+import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoBehaviourParameter;
 import org.openflexo.foundation.fml.FlexoConceptInstanceParameter;
@@ -69,7 +70,6 @@ import org.openflexo.foundation.fml.TextFieldParameter;
 import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.foundation.fml.ViewType;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.VirtualModelInstanceType;
 import org.openflexo.foundation.fml.action.AbstractCreateVirtualModel;
 import org.openflexo.foundation.fml.action.CreateEditionAction;
@@ -80,12 +80,16 @@ import org.openflexo.foundation.fml.action.CreateModelSlot;
 import org.openflexo.foundation.fml.action.CreatePrimitiveRole;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.editionaction.ExpressionAction;
+import org.openflexo.foundation.fml.rm.ViewPointResource;
+import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.task.Progress;
 import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot.VariableAssignment;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
@@ -142,7 +146,7 @@ public class CreateFMLControlledFIBVirtualModel
 	}
 
 	private GINAFIBComponentResource templateResource;
-	private RepositoryFolder<GINAFIBComponentResource> repositoryFolder;
+	private RepositoryFolder<GINAFIBComponentResource, ?> repositoryFolder;
 	private String newComponentName;
 
 	CreateFMLControlledFIBVirtualModel(ViewPoint focusedObject, Vector<FMLObject> globalSelection, FlexoEditor editor) {
@@ -205,12 +209,24 @@ public class CreateFMLControlledFIBVirtualModel
 	}
 
 	@Override
-	protected void doAction(Object context) throws IOFlexoException, SaveResourceException {
+	protected void doAction(Object context) throws FlexoException {
 
 		Progress.progress(getLocales().localizedForKey("create_virtual_model"));
 
-		newVirtualModel = VirtualModelImpl.newVirtualModel(newVirtualModelName, getFocusedObject());
-		newVirtualModel.setDescription(newVirtualModelDescription);
+		FMLTechnologyAdapter fmlTechnologyAdapter = getServiceManager().getTechnologyAdapterService()
+				.getTechnologyAdapter(FMLTechnologyAdapter.class);
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+
+		try {
+			VirtualModelResource vmResource = factory.makeVirtualModelResource(getNewVirtualModelName(),
+					(ViewPointResource) getFocusedObject().getResource(), fmlTechnologyAdapter.getTechnologyContextManager(), true);
+			newVirtualModel = vmResource.getLoadedResourceData();
+			newVirtualModel.setDescription(newVirtualModelDescription);
+		} catch (SaveResourceException e) {
+			throw new SaveResourceException(null);
+		} catch (ModelDefinitionException e) {
+			throw new FlexoException(e);
+		}
 
 		if (getChoice() == FIBComponentChoice.CreateNewComponent) {
 			CreateGINAFIBComponent createNewComponent = CreateGINAFIBComponent.actionType.makeNewEmbeddedAction(getRepositoryFolder(), null,
@@ -434,20 +450,20 @@ public class CreateFMLControlledFIBVirtualModel
 		}
 	}
 
-	public RepositoryFolder<GINAFIBComponentResource> getRepositoryFolder() {
+	public RepositoryFolder<GINAFIBComponentResource, ?> getRepositoryFolder() {
 		return repositoryFolder;
 	}
 
-	public void setRepositoryFolder(RepositoryFolder<GINAFIBComponentResource> repositoryFolder) {
+	public void setRepositoryFolder(RepositoryFolder<GINAFIBComponentResource, ?> repositoryFolder) {
 		if ((repositoryFolder == null && this.repositoryFolder != null)
 				|| (repositoryFolder != null && !repositoryFolder.equals(this.repositoryFolder))) {
-			RepositoryFolder<GINAFIBComponentResource> oldValue = this.repositoryFolder;
+			RepositoryFolder<GINAFIBComponentResource, ?> oldValue = this.repositoryFolder;
 			this.repositoryFolder = repositoryFolder;
 			getPropertyChangeSupport().firePropertyChange("repositoryFolder", oldValue, repositoryFolder);
 		}
 	}
 
-	private List<GINAFIBComponentAPIEntry> apiEntries;
+	private final List<GINAFIBComponentAPIEntry> apiEntries;
 
 	public List<GINAFIBComponentAPIEntry> getAPIEntries() {
 		return apiEntries;

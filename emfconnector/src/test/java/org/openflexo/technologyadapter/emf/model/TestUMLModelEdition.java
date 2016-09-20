@@ -51,15 +51,16 @@ import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.CreationScheme;
+import org.openflexo.foundation.fml.FMLTechnologyAdapter;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.ViewPoint;
-import org.openflexo.foundation.fml.ViewPoint.ViewPointImpl;
 import org.openflexo.foundation.fml.VirtualModel;
-import org.openflexo.foundation.fml.VirtualModel.VirtualModelImpl;
 import org.openflexo.foundation.fml.action.CreateFlexoBehaviour;
 import org.openflexo.foundation.fml.action.CreateFlexoConcept;
 import org.openflexo.foundation.fml.rm.ViewPointResource;
+import org.openflexo.foundation.fml.rm.ViewPointResourceFactory;
 import org.openflexo.foundation.fml.rm.VirtualModelResource;
+import org.openflexo.foundation.fml.rm.VirtualModelResourceFactory;
 import org.openflexo.foundation.fml.rt.View;
 import org.openflexo.foundation.fml.rt.VirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.CreateBasicVirtualModelInstance;
@@ -70,6 +71,7 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.RepositoryFolder;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.test.OpenflexoProjectAtRunTimeTestCase;
+import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.emf.EMFModelSlot;
 import org.openflexo.technologyadapter.emf.EMFModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
@@ -90,6 +92,10 @@ import org.openflexo.test.TestOrder;
 public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 	protected static final Logger logger = Logger.getLogger(TestEMFModelEdition.class.getPackage().getName());
 
+	public static final String VIEWPOINT_NAME = "TestViewPoint";
+	public static final String VIEWPOINT_URI = "http://openflexo.org/test/TestViewPoint";
+	public static final String VIRTUAL_MODEL_NAME = "TestVirtualModel";
+
 	static FlexoEditor editor;
 	static EMFTechnologyAdapter technologicalAdapter;
 	static ViewPoint newViewPoint;
@@ -107,17 +113,28 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	/**
 	 * Test the VP creation
+	 * 
+	 * @throws ModelDefinitionException
+	 * @throws SaveResourceException
 	 */
 	@Test
 	@TestOrder(1)
-	public void testCreateViewPoint() {
+	public void testCreateViewPoint() throws SaveResourceException, ModelDefinitionException {
 		instanciateTestServiceManager(EMFTechnologyAdapter.class);
 
 		technologicalAdapter = serviceManager.getTechnologyAdapterService().getTechnologyAdapter(EMFTechnologyAdapter.class);
 
-		System.out.println("ResourceCenter= " + resourceCenter);
-		newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestUMLViewPoint",
-				resourceCenter.getDirectory(), serviceManager.getViewPointLibrary(), resourceCenter);
+		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(FMLTechnologyAdapter.class);
+		ViewPointResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory();
+
+		ViewPointResource newViewPointResource = factory.makeViewPointResource(VIEWPOINT_NAME, VIEWPOINT_URI,
+				fmlTechnologyAdapter.getGlobalRepository(resourceCenter).getRootFolder(),
+				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		newViewPoint = newViewPointResource.getLoadedResourceData();
+
+		// newViewPoint = ViewPointImpl.newViewPoint("TestViewPoint", "http://openflexo.org/test/TestUMLViewPoint",
+		// resourceCenter.getDirectory(), serviceManager.getViewPointLibrary(), resourceCenter);
 		// assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory().exists());
 		// assertTrue(((ViewPointResource) newViewPoint.getResource()).getFile().exists());
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
@@ -126,19 +143,28 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	/**
 	 * Test the VirtualModel creation
+	 * 
+	 * @throws ModelDefinitionException
 	 */
 	@Test
 	@TestOrder(2)
-	public void testCreateVirtualModel() throws SaveResourceException {
+	public void testCreateVirtualModel() throws SaveResourceException, ModelDefinitionException {
 
-		EMFMetaModelRepository emfMetaModelRepository = resourceCenter.getRepository(EMFMetaModelRepository.class, technologicalAdapter);
+		EMFMetaModelRepository<?> emfMetaModelRepository = technologicalAdapter.getEMFMetaModelRepository(resourceCenter);
 
 		umlMetaModelResource = technologicalAdapter.getTechnologyContextManager()
 				.getMetaModelResourceByURI(EMFTechnologyAdapter.UML_MM_URI);
 
 		assertNotNull(umlMetaModelResource);
 
-		newVirtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
+		FMLTechnologyAdapter fmlTechnologyAdapter = serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(FMLTechnologyAdapter.class);
+		VirtualModelResourceFactory factory = fmlTechnologyAdapter.getViewPointResourceFactory().getVirtualModelResourceFactory();
+		VirtualModelResource newVMResource = factory.makeVirtualModelResource(VIRTUAL_MODEL_NAME, newViewPoint.getViewPointResource(),
+				fmlTechnologyAdapter.getTechnologyContextManager(), true);
+		newVirtualModel = newVMResource.getLoadedResourceData();
+
+		// newVirtualModel = VirtualModelImpl.newVirtualModel("TestVirtualModel", newViewPoint);
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getDirectory() != null);
 		assertTrue(((ViewPointResource) newViewPoint.getResource()).getFlexoIODelegate().exists());
 		newModelSlot = technologicalAdapter.makeModelSlot(UMLEMFModelSlot.class, newVirtualModel);
@@ -160,18 +186,22 @@ public class TestUMLModelEdition extends OpenflexoProjectAtRunTimeTestCase {
 
 	@Test
 	@TestOrder(4)
-	public void testCreateEMFModel() {
+	public void testCreateEMFModel() throws ModelDefinitionException {
 		try {
 
 			assertNotNull(umlMetaModelResource);
 
-			try {
+			RepositoryFolder<FlexoResource<?>, File> modelFolder = project.createNewFolder("Models");
+			File serializationArtefact = new File(modelFolder.getSerializationArtefact(), "coucou.uml");
+			umlModelResource = technologicalAdapter.getEMFModelResourceFactory().makeEMFModelResource(serializationArtefact,
+					umlMetaModelResource, resourceCenter, technologicalAdapter.getTechnologyContextManager(), "coucou.uml", "myURI", true);
+			/*try {
 				RepositoryFolder<FlexoResource<?>> modelFolder = project.createNewFolder("Models");
 				umlModelResource = technologicalAdapter.createNewEMFModel(new File(modelFolder.getFile(), "coucou.uml"), "myURI",
 						umlMetaModelResource, resourceCenter);
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
+			}*/
 
 			assertNotNull(umlModelResource);
 

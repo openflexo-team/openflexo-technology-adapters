@@ -38,14 +38,13 @@
 
 package org.openflexo.technologyadapter.diagram;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
-import org.openflexo.foundation.resource.ResourceRepository;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.TypeAwareModelSlotInstanceConfiguration;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.technologyadapter.diagram.rm.DiagramRepository;
-import org.openflexo.technologyadapter.diagram.rm.DiagramResource;
+import org.openflexo.technologyadapter.diagram.rm.DiagramResourceFactory;
 
 /**
  * This class is used to stored the configuration of a {@link TypedDiagramModelSlot} which has to be instantiated
@@ -58,8 +57,8 @@ public class TypedDiagramModelSlotInstanceConfiguration
 		extends TypeAwareModelSlotInstanceConfiguration<Diagram, DiagramSpecification, TypedDiagramModelSlot> {
 
 	protected TypedDiagramModelSlotInstanceConfiguration(TypedDiagramModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
-			FlexoProject project) {
-		super(ms, virtualModelInstance, project);
+			FlexoResourceCenter<?> rc) {
+		super(ms, virtualModelInstance, rc);
 	}
 
 	@Override
@@ -67,14 +66,14 @@ public class TypedDiagramModelSlotInstanceConfiguration
 			org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		super.setOption(option);
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
-			modelUri = getProject().getURI() + "/Diagrams/myDiagram";
+			modelUri = getResourceCenter().getDefaultBaseURI() + "/Diagrams/myDiagram";
 			relativePath = "/Diagram/";
-			filename = "myDiagram" + DiagramResource.DIAGRAM_SUFFIX;
+			filename = "myDiagram" + DiagramResourceFactory.DIAGRAM_SUFFIX;
 		}
 		else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
 			modelUri = "ResourceCenter/Models/";
 			relativePath = "/Diagram/";
-			filename = "myDiagram" + DiagramResource.DIAGRAM_SUFFIX;
+			filename = "myDiagram" + DiagramResourceFactory.DIAGRAM_SUFFIX;
 		}
 	}
 
@@ -85,8 +84,8 @@ public class TypedDiagramModelSlotInstanceConfiguration
 
 	@Override
 	public String getModelUri() {
-		ResourceRepository<?> repository = getResourceCenter().getRepository(DiagramRepository.class,
-				getModelSlot().getModelSlotTechnologyAdapter());
+		DiagramTechnologyAdapter ta = (DiagramTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter();
+		DiagramRepository<?> repository = ta.getDiagramRepository(getResourceCenter());
 		String generatedUri = repository.generateURI(getFilename());
 		if (repository != null) {
 			while (repository.getResource(generatedUri) != null) {
@@ -102,7 +101,7 @@ public class TypedDiagramModelSlotInstanceConfiguration
 		if (!super.checkValidFileName()) {
 			return false;
 		}
-		if (!getFilename().endsWith(DiagramResource.DIAGRAM_SUFFIX)) {
+		if (!getFilename().endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX)) {
 			setErrorMessage(getModelSlot().getModelSlotTechnologyAdapter().getLocales()
 					.localizedForKey("file_name_should_end_with_.diagram_suffix"));
 			return false;

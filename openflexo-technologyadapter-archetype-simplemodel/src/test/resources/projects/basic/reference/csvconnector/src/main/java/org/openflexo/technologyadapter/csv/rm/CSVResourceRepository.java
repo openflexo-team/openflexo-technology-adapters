@@ -40,11 +40,11 @@
 package org.openflexo.technologyadapter.csv.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterFileResourceRepository;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
 import org.openflexo.technologyadapter.csv.CSVTechnologyAdapter;
 import org.openflexo.technologyadapter.csv.model.CSVModel;
 
-public class CSVResourceRepository extends TechnologyAdapterFileResourceRepository<CSVResource, CSVTechnologyAdapter, CSVModel> {
+public class CSVResourceRepository extends TechnologyAdapterResourceRepository<CSVResource, CSVTechnologyAdapter, CSVModel> {
 
     public CSVResourceRepository(CSVTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
         super(adapter, resourceCenter);
