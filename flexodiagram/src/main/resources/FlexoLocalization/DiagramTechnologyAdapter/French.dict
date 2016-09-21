@@ -37,6 +37,7 @@ flexo_id=OpenFlexo ID
 foreground_inspector=Inspecteur d'avant-plan
 hash=hash
 index=Index
+initializing_adapter=initializing_adapter
 invalid_name_for_new_diagram=invalid_name_for_new_diagram
 invalid_role=invalid_role
 invalid_uri_for_the_new_diagram_specification=invalid_uri_for_the_new_diagram_specification
