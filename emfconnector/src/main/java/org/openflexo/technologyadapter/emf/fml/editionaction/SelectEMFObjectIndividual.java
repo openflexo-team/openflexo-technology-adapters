@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.TreeIterator;
+import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -73,8 +74,8 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @FML("SelectEMFObjectIndividual")
 public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot, EMFObjectIndividual> {
 
-	public static abstract class SelectEMFObjectIndividualImpl extends SelectIndividualImpl<EMFModelSlot, EMFObjectIndividual> implements
-			SelectEMFObjectIndividual {
+	public static abstract class SelectEMFObjectIndividualImpl extends SelectIndividualImpl<EMFModelSlot, EMFObjectIndividual>
+			implements SelectEMFObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(SelectEMFObjectIndividual.class.getPackage().getName());
 
@@ -111,6 +112,7 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 					/*selectedEMFIndividuals.addAll(EcoreUtility.getAllContents(eObject, ((EMFClassClass) flexoOntologyClass).getObject()
 							.getClass()));*/
 					EMFClassClass emfObjectIndividualType = emfModel.getMetaModel().getConverter().getClasses().get(eObject.eClass());
+
 					if (emfObjectIndividualType.equals(flexoOntologyClass)
 							|| ((EMFClassClass) flexoOntologyClass).isSuperClassOf(emfObjectIndividualType)) {
 						selectedEMFIndividuals.add(eObject);
@@ -119,9 +121,10 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 						selectedEMFIndividuals.add(eObject);
 					}*/
 				}
-			} else if (flexoOntologyClass instanceof EMFEnumClass) {
-				System.err.println("We shouldn't browse enum individuals of type "
-						+ ((EMFEnumClass) flexoOntologyClass).getObject().getName() + ".");
+			}
+			else if (flexoOntologyClass instanceof EMFEnumClass) {
+				System.err.println(
+						"We shouldn't browse enum individuals of type " + ((EMFEnumClass) flexoOntologyClass).getObject().getName() + ".");
 			}
 
 			// System.out.println("selectedEMFIndividuals=" + selectedEMFIndividuals);
@@ -130,9 +133,10 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 				EMFObjectIndividual emfObjectIndividual = emfModel.getConverter().getIndividuals().get(eObject);
 				if (emfObjectIndividual != null) {
 					selectedIndividuals.add(emfObjectIndividual);
-				} else {
-					logger.warning("It's weird there shoud be an existing OpenFlexo wrapper existing for EMF Object : "
-							+ eObject.toString());
+				}
+				else {
+					logger.warning(
+							"It's weird there shoud be an existing OpenFlexo wrapper existing for EMF Object : " + eObject.toString());
 					selectedIndividuals.add(emfModel.getConverter().convertObjectIndividual(emfModel, eObject));
 				}
 			}
