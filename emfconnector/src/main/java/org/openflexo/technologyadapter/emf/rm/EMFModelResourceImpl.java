@@ -81,11 +81,9 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>im
 	@Override
 	public EMFModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
 
-		// SGU: i commented out this statement which seems to me unecessary and is the cause of many issues
-		// getEMFResource().load(null);
-
 		EMFModelConverter converter = new EMFModelConverter();
-		EMFModel resourceData = converter.convertModel(getMetaModelResource().getMetaModelData(), getEMFResource());
+		EMFModel resourceData;
+		resourceData = converter.convertModel(getMetaModelResource().getMetaModelData(), getEMFResource());
 		setResourceData(resourceData);
 		return resourceData;
 	}
