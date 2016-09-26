@@ -7,4 +7,5 @@ dependencies {
   // testing dep
      testCompile group: "org.openflexo", name: "testutils", version: "1.+"
      testCompile group: "org.openflexo", name: "flexo-foundation-test", version: "1.+"
+     testRuntime group: "org.openflexo", name: "owlconnector-rc", version: "1.+"
 }
