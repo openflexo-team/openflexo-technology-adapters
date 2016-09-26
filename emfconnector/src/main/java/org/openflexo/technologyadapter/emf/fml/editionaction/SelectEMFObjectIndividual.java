@@ -43,7 +43,6 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.TreeIterator;
-import org.eclipse.emf.ecore.EClass;
 import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -94,11 +93,17 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 				return null;
 			}
 
-			// System.out.println("Selecting EMFObjectIndividuals in " + getModelSlotInstance(action).getModel() + " with type=" +
-			// getType());
+			System.out.println(
+					"Selecting EMFObjectIndividuals in " + getModelSlotInstance(evaluationContext).getModel() + " with type=" + getType());
 			List<EMFObjectIndividual> selectedIndividuals = new ArrayList<EMFObjectIndividual>(0);
 			EMFModel emfModel = getModelSlotInstance(evaluationContext).getAccessedResourceData();
 			Resource resource = emfModel.getEMFResource();
+			/*try {
+				resource.load(null);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 			IFlexoOntologyClass flexoOntologyClass = getType();
 			List<EObject> selectedEMFIndividuals = new ArrayList<EObject>();
 			if (flexoOntologyClass instanceof EMFClassClass) {
@@ -112,6 +117,9 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 					/*selectedEMFIndividuals.addAll(EcoreUtility.getAllContents(eObject, ((EMFClassClass) flexoOntologyClass).getObject()
 							.getClass()));*/
 					EMFClassClass emfObjectIndividualType = emfModel.getMetaModel().getConverter().getClasses().get(eObject.eClass());
+
+					System.out.println("*** Found " + eObject + " type=" + emfObjectIndividualType + " flexoOntologyClass="
+							+ flexoOntologyClass + " equals=" + (emfObjectIndividualType.equals(flexoOntologyClass)));
 
 					if (emfObjectIndividualType.equals(flexoOntologyClass)
 							|| ((EMFClassClass) flexoOntologyClass).isSuperClassOf(emfObjectIndividualType)) {
@@ -143,8 +151,7 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 
 			List<EMFObjectIndividual> returned = filterWithConditions(selectedIndividuals, evaluationContext);
 
-			// System.out.println("SelectEMFObjectIndividual, without filtering =" + selectedIndividuals + " after filtering=" +
-			// returned);
+			System.out.println("SelectEMFObjectIndividual, without filtering =" + selectedIndividuals + " after filtering=" + returned);
 
 			return returned;
 

@@ -193,6 +193,6 @@ public class EMFModelResourceFactory extends FlexoResourceFactory<EMFModelResour
 		}
 		return null;
 	}
-	*/
+	 */
 
 }
