@@ -80,15 +80,14 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>im
 	 */
 	@Override
 	public EMFModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-		try {
-			getEMFResource().load(null);
-			EMFModelConverter converter = new EMFModelConverter();
-			EMFModel resourceData = converter.convertModel(getMetaModelResource().getMetaModelData(), getEMFResource());
-			setResourceData(resourceData);
-			return resourceData;
-		} catch (IOException e) {
-			throw new FlexoException(e);
-		}
+
+		// SGU: i commented out this statement which seems to me unecessary and is the cause of many issues
+		// getEMFResource().load(null);
+
+		EMFModelConverter converter = new EMFModelConverter();
+		EMFModel resourceData = converter.convertModel(getMetaModelResource().getMetaModelData(), getEMFResource());
+		setResourceData(resourceData);
+		return resourceData;
 	}
 
 	/**
@@ -172,6 +171,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>im
 	 * 
 	 * @return the modelResource value
 	 */
+	@Override
 	public Resource getEMFResource() {
 		if (modelResource == null) {
 			EMFMetaModelResource mmResource = (EMFMetaModelResource) getMetaModelResource();
