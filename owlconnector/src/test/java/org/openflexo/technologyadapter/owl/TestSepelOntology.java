@@ -163,7 +163,7 @@ public class TestSepelOntology extends OpenflexoTestCase {
 	}
 
 	@Test
-	@TestOrder(1)
+	@TestOrder(2)
 	public void testRedefinition() {
 
 		OWLClass rootClassForInputModel1InMS = mappingSpecification
