@@ -38,12 +38,15 @@
 
 package org.openflexo.technologyadapter.emf.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.TreeIterator;
@@ -53,6 +56,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.OpenflexoTestCase;
+import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.technologyadapter.emf.EMFTechnologyAdapter;
 import org.openflexo.technologyadapter.emf.metamodel.EMFClassClass;
@@ -69,13 +73,14 @@ import org.openflexo.test.TestOrder;
  * 
  */
 @RunWith(OrderedRunner.class)
-public class TestLoadCity1MetaModel extends OpenflexoTestCase {
-	protected static final Logger logger = Logger.getLogger(TestLoadCity1MetaModel.class.getPackage().getName());
+public class TestLoadCity1 extends OpenflexoTestCase {
+	protected static final Logger logger = Logger.getLogger(TestLoadCity1.class.getPackage().getName());
 
 	private static EMFMetaModelResource city1MMRes;
 	private static EMFModelResource city1Res;
 
-	private static EMFModel emfModel;
+	private static EMFMetaModel metaModel;
+	private static EMFModel city1Model;
 
 	@Test
 	@TestOrder(1)
@@ -120,42 +125,65 @@ public class TestLoadCity1MetaModel extends OpenflexoTestCase {
 		assertFalse(city1Res.isLoaded());
 		assertFalse(city1MMRes.isLoaded());
 
-		emfModel = city1Res.getResourceData(null);
-		assertNotNull(emfModel);
+		city1Model = city1Res.getResourceData(null);
+		assertNotNull(city1Model);
 
 		assertTrue(city1Res.isLoaded());
 		assertTrue(city1MMRes.isLoaded());
 
+		metaModel = city1MMRes.getLoadedResourceData();
+		assertNotNull(metaModel);
 	}
 
 	@Test
 	@TestOrder(5)
 	public void performSomeTests() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
 
-		Resource resource = emfModel.getEMFResource();
+		Resource resource = city1Model.getEMFResource();
 
 		TreeIterator<EObject> iterator = resource.getAllContents();
 		while (iterator.hasNext()) {
 			EObject eObject = iterator.next();
-			EMFClassClass emfClassClass = emfModel.getMetaModel().getConverter().getClasses().get(eObject.eClass());
+			EMFClassClass emfClassClass = city1Model.getMetaModel().getConverter().getClasses().get(eObject.eClass());
 			assertNotNull(emfClassClass);
-
-			/*if (emfObjectIndividualType == null) {
-				System.out.println("Zut alors je cherche " + eObject.eClass());
-				System.out.println("emfModel=" + emfModel + " uri=" + emfModel.getURI());
-				for (EClass c : emfModel.getMetaModel().getConverter().getClasses().keySet()) {
-					System.out.println("> for " + c + " " + emfModel.getMetaModel().getConverter().getClasses().get(c));
-				}
-			
-				System.out.println("classes=" + emfModel.getMetaModel().getConverter().getClasses());
-				System.exit(-1);
-			}*/
-
-			/*if (emfObjectIndividualType.equals(flexoOntologyClass)
-					|| ((EMFClassClass) flexoOntologyClass).isSuperClassOf(emfObjectIndividualType)) {
-				selectedEMFIndividuals.add(eObject);
-			}*/
 		}
+
+	}
+
+	@Test
+	@TestOrder(6)
+	public void performSomeOtherTests() {
+
+		for (IFlexoOntologyClass<EMFTechnologyAdapter> c : metaModel.getAccessibleClasses()) {
+			System.out.println("> class " + c.getURI());
+		}
+
+		EMFClassClass cityClass = (EMFClassClass) metaModel.getClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City");
+		assertNotNull(cityClass);
+
+		// assertSame(cityClass, metaModel.getDeclaredClass("http://www.thalesgroup.com/openflexo/emf/model/city1/City"));
+
+		Resource resource = city1Model.getEMFResource();
+		/*try {
+			city1Model.getEMFResource().load(null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
+		List<EObject> selectedEMFIndividuals = new ArrayList<EObject>();
+		TreeIterator<EObject> iterator = resource.getAllContents();
+		while (iterator.hasNext()) {
+			EObject eObject = iterator.next();
+			System.out.println("Found " + eObject);
+			EMFClassClass eObjectType = city1Model.getMetaModel().getConverter().getClasses().get(eObject.eClass());
+			if (eObjectType.equals(cityClass) || cityClass.isSuperClassOf(eObjectType)) {
+				selectedEMFIndividuals.add(eObject);
+			}
+		}
+
+		System.out.println("selectedEMFIndividuals=" + selectedEMFIndividuals);
+
+		assertEquals(4, selectedEMFIndividuals.size());
 
 	}
 
