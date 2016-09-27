@@ -118,16 +118,13 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 							.getClass()));*/
 					EMFClassClass emfObjectIndividualType = emfModel.getMetaModel().getConverter().getClasses().get(eObject.eClass());
 
-					System.out.println("*** Found " + eObject + " type=" + emfObjectIndividualType + " flexoOntologyClass="
-							+ flexoOntologyClass + " equals=" + (emfObjectIndividualType.equals(flexoOntologyClass)));
+					// System.out.println("*** Found " + eObject + " type=" + emfObjectIndividualType + " flexoOntologyClass="
+					// + flexoOntologyClass + " equals=" + (emfObjectIndividualType.equals(flexoOntologyClass)));
 
 					if (emfObjectIndividualType.equals(flexoOntologyClass)
 							|| ((EMFClassClass) flexoOntologyClass).isSuperClassOf(emfObjectIndividualType)) {
 						selectedEMFIndividuals.add(eObject);
 					}
-					/*if (eObject.eClass().equals(((EMFClassClass) flexoOntologyClass).getObject())) {
-						selectedEMFIndividuals.add(eObject);
-					}*/
 				}
 			}
 			else if (flexoOntologyClass instanceof EMFEnumClass) {
