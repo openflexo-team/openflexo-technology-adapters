@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.csv.rm;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -46,15 +45,8 @@ import org.openflexo.technologyadapter.csv.model.CSVModel;
 
 public class CSVResourceRepository extends TechnologyAdapterResourceRepository<CSVResource, CSVTechnologyAdapter, CSVModel> {
 
-    public CSVResourceRepository(CSVTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
-        super(adapter, resourceCenter);
-    }
-
-    private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/CSVTechnologyAdapter/Models";
-
-    @Override
-    public String getDefaultBaseURI() {
-        return DEFAULT_BASE_URI;
-    }
+	public CSVResourceRepository(CSVTechnologyAdapter adapter, FlexoResourceCenter<?> resourceCenter) {
+		super(adapter, resourceCenter);
+	}
 
 }

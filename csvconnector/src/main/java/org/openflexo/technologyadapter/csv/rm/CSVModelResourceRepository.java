@@ -50,17 +50,11 @@ import org.openflexo.technologyadapter.csv.model.CSVModel;
  * @author sylvain
  * 
  */
-public class CSVModelResourceRepository<I> extends TechnologyAdapterResourceRepository<CSVModelResource, CSVTechnologyAdapter, CSVModel, I> {
+public class CSVModelResourceRepository<I>
+		extends TechnologyAdapterResourceRepository<CSVModelResource, CSVTechnologyAdapter, CSVModel, I> {
 
 	public CSVModelResourceRepository(CSVTechnologyAdapter adapter, FlexoResourceCenter<I> resourceCenter) {
 		super(adapter, resourceCenter);
-	}
-
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/CSV";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
 	}
 
 }

@@ -46,10 +46,10 @@ import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
+import org.openflexo.foundation.resource.RelativePathResourceConverter;
 import org.openflexo.gina.model.FIBModelFactory;
 import org.openflexo.gina.model.container.FIBPanel;
 import org.openflexo.model.converter.RelativePathFileConverter;
-import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.converter.TypeConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
@@ -85,7 +85,7 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 		this.resource = resource;
 		setEditingContext(serviceManager.getEditingContext());
 		if (resource != null) {
-			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
+			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate()));
 		}
 	}
 
@@ -138,7 +138,8 @@ public class GINAFactory extends FIBModelFactory implements PamelaResourceModelF
 		if (newlyCreatedObject instanceof FlexoObject) {
 			if (getResource() != null) {
 				getResource().setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
-			} else {
+			}
+			else {
 				logger.warning("Could not access resource beeing deserialized");
 			}
 		}

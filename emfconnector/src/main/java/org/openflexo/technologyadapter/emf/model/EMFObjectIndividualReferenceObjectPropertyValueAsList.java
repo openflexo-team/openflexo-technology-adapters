@@ -117,7 +117,14 @@ public class EMFObjectIndividualReferenceObjectPropertyValueAsList extends EMFOb
 
 	@Override
 	public Object[] toArray() {
-		return referencelist.toArray();
+		// Argh!!! This method is WRONG !!!!!!!!!!
+		// return referencelist.toArray();
+		Object[] returned = new Object[size()];
+		for (int i = 0; i < size(); i++) {
+			returned[i] = get(i);
+		}
+		return returned;
+
 	}
 
 	@Override

@@ -32,11 +32,4 @@ public class ODTDocumentRepository<I>
 		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/ODTTechnologyAdapter/Documents";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
-	}
-
 }

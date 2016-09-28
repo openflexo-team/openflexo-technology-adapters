@@ -37,6 +37,7 @@ flexo_id=OpenFlexo ID
 foreground_inspector=foreground_inspector
 hash=hash
 index=Index
+initializing_adapter=initializing_adapter
 invalid_name_for_new_diagram=invalid_name_for_new_diagram
 invalid_role=Invalid role
 invalid_uri_for_the_new_diagram_specification=Invalid uri for the new diagram specification

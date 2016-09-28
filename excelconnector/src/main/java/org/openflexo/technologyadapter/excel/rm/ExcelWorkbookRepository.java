@@ -57,11 +57,4 @@ public class ExcelWorkbookRepository<I>
 		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/ExcelTechnologyAdapter/Workbooks";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
-	}
-
 }

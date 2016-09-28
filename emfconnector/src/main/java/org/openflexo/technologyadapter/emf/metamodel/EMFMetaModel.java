@@ -66,8 +66,8 @@ import org.openflexo.technologyadapter.emf.rm.EMFMetaModelResource;
  * 
  * @author gbesancon
  */
-public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter> implements FlexoMetaModel<EMFMetaModel>,
-IFlexoOntology<EMFTechnologyAdapter> {
+public class EMFMetaModel extends FlexoOntologyObjectImpl<EMFTechnologyAdapter>
+		implements FlexoMetaModel<EMFMetaModel>, IFlexoOntology<EMFTechnologyAdapter> {
 	/** MetaModel Resource. */
 	protected EMFMetaModelResource metaModelResource;
 	/** Adapter. */
@@ -84,6 +84,7 @@ IFlexoOntology<EMFTechnologyAdapter> {
 		this.adapter = adapter;
 		this.ePackage = ePackage;
 		this.converter = converter;
+
 	}
 
 	/**
@@ -264,7 +265,8 @@ IFlexoOntology<EMFTechnologyAdapter> {
 			for (EAnnotation annotation : ePackage.getEAnnotations()) {
 				annotations.add(this.getConverter().convertAnnotation(this, annotation));
 			}
-		} else {
+		}
+		else {
 			annotations = Collections.emptyList();
 		}
 		return annotations;
@@ -330,7 +332,8 @@ IFlexoOntology<EMFTechnologyAdapter> {
 			if (aClass.getURI().equalsIgnoreCase(classURI)) {
 				result = aClass;
 			}
-			if (result != null) break;
+			if (result != null)
+				break;
 		}
 		return result;
 	}
@@ -457,7 +460,8 @@ IFlexoOntology<EMFTechnologyAdapter> {
 		for (IFlexoOntologyDataProperty<EMFTechnologyAdapter> dataProperty : getDataProperties()) {
 			if (dataProperty.getURI().equalsIgnoreCase(propertyURI)) {
 				result = dataProperty;
-				if (result != null) break;
+				if (result != null)
+					break;
 			}
 		}
 		return result;

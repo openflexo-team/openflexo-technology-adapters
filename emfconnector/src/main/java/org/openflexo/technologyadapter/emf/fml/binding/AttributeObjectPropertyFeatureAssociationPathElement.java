@@ -36,7 +36,6 @@
  * 
  */
 
-
 package org.openflexo.technologyadapter.emf.fml.binding;
 
 import java.lang.reflect.Type;
@@ -84,7 +83,8 @@ public class AttributeObjectPropertyFeatureAssociationPathElement extends Simple
 				return IndividualOfClass.getIndividualOfClass((IFlexoOntologyClass) getObjectProperty().getRange());
 			}
 			return Object.class;
-		} else {
+		}
+		else {
 			if (getObjectProperty().getRange() instanceof IFlexoOntologyClass) {
 				return new ParameterizedTypeImpl(List.class,
 						IndividualOfClass.getIndividualOfClass((IFlexoOntologyClass) getObjectProperty().getRange()));
@@ -105,19 +105,28 @@ public class AttributeObjectPropertyFeatureAssociationPathElement extends Simple
 
 	@Override
 	public Object getBindingValue(Object target, BindingEvaluationContext context) throws TypeMismatchException, NullReferenceException {
-		EMFModel model = ((EMFObjectIndividual) target).getFlexoOntology();
-		EObject object = ((EMFObjectIndividual) target).getObject();
-		Object emfAnswer = object.eGet(objectProperty.getObject());
-		Object returned = model.getConverter().convertObjectIndividual(model, object);
-		//Object returned = model.getConverter().convertObjectIndividualAttributeObjectPropertyValue(model,object,(EAttribute)emfAnswer);
-		// System.out.println("AttributeObjectPropertyFeatureAssociationPathElement, Je retourne " + returned + " of " + (returned != null ?
-		// returned.getClass() : null));
-		return returned;
+
+		if (target instanceof EMFObjectIndividual) {
+			EMFModel model = ((EMFObjectIndividual) target).getFlexoOntology();
+			EObject object = ((EMFObjectIndividual) target).getObject();
+			Object emfAnswer = object.eGet(objectProperty.getObject());
+			Object returned = model.getConverter().convertObjectIndividual(model, object);
+			// Object returned =
+			// model.getConverter().convertObjectIndividualAttributeObjectPropertyValue(model,object,(EAttribute)emfAnswer);
+			// System.out.println("AttributeObjectPropertyFeatureAssociationPathElement, Je retourne " + returned + " of " + (returned !=
+			// null ?
+			// returned.getClass() : null));
+			return returned;
+		}
+		else {
+			logger.warning("Unexpected target " + target + " in AttributeObjectPropertyFeatureAssociationPathElement");
+			return null;
+		}
 	}
 
 	@Override
-	public void setBindingValue(Object value, Object target, BindingEvaluationContext context) throws TypeMismatchException,
-			NullReferenceException {
+	public void setBindingValue(Object value, Object target, BindingEvaluationContext context)
+			throws TypeMismatchException, NullReferenceException {
 		((EMFObjectIndividual) target).getObject().eSet(objectProperty.getObject(), value);
 	}
 }

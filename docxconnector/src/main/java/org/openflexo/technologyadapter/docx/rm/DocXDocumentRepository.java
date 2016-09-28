@@ -32,11 +32,4 @@ public class DocXDocumentRepository<I>
 		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/DOCXTechnologyAdapter/Documents";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
-	}
-
 }

@@ -50,7 +50,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
-import org.openflexo.model.converter.RelativePathResourceConverter;
+import org.openflexo.foundation.resource.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -75,8 +75,8 @@ public class DiagramFactory extends FGEModelFactoryImpl implements PamelaResourc
 		super(Diagram.class, DiagramShape.class, DiagramConnector.class);
 		this.resource = resource;
 		setEditingContext(editingContext);
-		if(resource!=null){
-			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
+		if (resource != null) {
+			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate()));
 		}
 	}
 
@@ -162,7 +162,8 @@ public class DiagramFactory extends FGEModelFactoryImpl implements PamelaResourc
 		if (newlyCreatedObject instanceof FlexoObject) {
 			if (getResource() != null) {
 				getResource().setLastID(((FlexoObject) newlyCreatedObject).getFlexoID());
-			} else {
+			}
+			else {
 				logger.warning("Could not access resource beeing deserialized");
 			}
 		}

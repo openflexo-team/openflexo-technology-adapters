@@ -51,11 +51,4 @@ public class XSDMetaModelRepository<I> extends MetaModelRepository<XSDMetaModelR
 		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/XMLTechnologyAdapter/MetaModels";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
-	}
-
 }

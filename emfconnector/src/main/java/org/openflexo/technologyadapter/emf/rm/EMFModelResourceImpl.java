@@ -80,15 +80,12 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>im
 	 */
 	@Override
 	public EMFModel loadResourceData(IProgress progress) throws ResourceLoadingCancelledException, FileNotFoundException, FlexoException {
-		try {
-			getEMFResource().load(null);
-			EMFModelConverter converter = new EMFModelConverter();
-			EMFModel resourceData = converter.convertModel(getMetaModelResource().getMetaModelData(), getEMFResource());
-			setResourceData(resourceData);
-			return resourceData;
-		} catch (IOException e) {
-			throw new FlexoException(e);
-		}
+
+		EMFModelConverter converter = new EMFModelConverter();
+		EMFModel resourceData;
+		resourceData = converter.convertModel(getMetaModelResource().getMetaModelData(), getEMFResource());
+		setResourceData(resourceData);
+		return resourceData;
 	}
 
 	/**
@@ -172,6 +169,7 @@ public abstract class EMFModelResourceImpl extends FlexoResourceImpl<EMFModel>im
 	 * 
 	 * @return the modelResource value
 	 */
+	@Override
 	public Resource getEMFResource() {
 		if (modelResource == null) {
 			EMFMetaModelResource mmResource = (EMFMetaModelResource) getMetaModelResource();

@@ -73,8 +73,8 @@ import org.openflexo.technologyadapter.emf.model.EMFObjectIndividual;
 @FML("SelectEMFObjectIndividual")
 public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot, EMFObjectIndividual> {
 
-	public static abstract class SelectEMFObjectIndividualImpl extends SelectIndividualImpl<EMFModelSlot, EMFObjectIndividual> implements
-			SelectEMFObjectIndividual {
+	public static abstract class SelectEMFObjectIndividualImpl extends SelectIndividualImpl<EMFModelSlot, EMFObjectIndividual>
+			implements SelectEMFObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(SelectEMFObjectIndividual.class.getPackage().getName());
 
@@ -93,11 +93,17 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 				return null;
 			}
 
-			// System.out.println("Selecting EMFObjectIndividuals in " + getModelSlotInstance(action).getModel() + " with type=" +
-			// getType());
+			// System.out.println(
+			// "Selecting EMFObjectIndividuals in " + getModelSlotInstance(evaluationContext).getModel() + " with type=" + getType());
 			List<EMFObjectIndividual> selectedIndividuals = new ArrayList<EMFObjectIndividual>(0);
 			EMFModel emfModel = getModelSlotInstance(evaluationContext).getAccessedResourceData();
 			Resource resource = emfModel.getEMFResource();
+			/*try {
+				resource.load(null);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
 			IFlexoOntologyClass flexoOntologyClass = getType();
 			List<EObject> selectedEMFIndividuals = new ArrayList<EObject>();
 			if (flexoOntologyClass instanceof EMFClassClass) {
@@ -111,17 +117,19 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 					/*selectedEMFIndividuals.addAll(EcoreUtility.getAllContents(eObject, ((EMFClassClass) flexoOntologyClass).getObject()
 							.getClass()));*/
 					EMFClassClass emfObjectIndividualType = emfModel.getMetaModel().getConverter().getClasses().get(eObject.eClass());
+
+					// System.out.println("*** Found " + eObject + " type=" + emfObjectIndividualType + " flexoOntologyClass="
+					// + flexoOntologyClass + " equals=" + (emfObjectIndividualType.equals(flexoOntologyClass)));
+
 					if (emfObjectIndividualType.equals(flexoOntologyClass)
 							|| ((EMFClassClass) flexoOntologyClass).isSuperClassOf(emfObjectIndividualType)) {
 						selectedEMFIndividuals.add(eObject);
 					}
-					/*if (eObject.eClass().equals(((EMFClassClass) flexoOntologyClass).getObject())) {
-						selectedEMFIndividuals.add(eObject);
-					}*/
 				}
-			} else if (flexoOntologyClass instanceof EMFEnumClass) {
-				System.err.println("We shouldn't browse enum individuals of type "
-						+ ((EMFEnumClass) flexoOntologyClass).getObject().getName() + ".");
+			}
+			else if (flexoOntologyClass instanceof EMFEnumClass) {
+				System.err.println(
+						"We shouldn't browse enum individuals of type " + ((EMFEnumClass) flexoOntologyClass).getObject().getName() + ".");
 			}
 
 			// System.out.println("selectedEMFIndividuals=" + selectedEMFIndividuals);
@@ -130,17 +138,17 @@ public interface SelectEMFObjectIndividual extends SelectIndividual<EMFModelSlot
 				EMFObjectIndividual emfObjectIndividual = emfModel.getConverter().getIndividuals().get(eObject);
 				if (emfObjectIndividual != null) {
 					selectedIndividuals.add(emfObjectIndividual);
-				} else {
-					logger.warning("It's weird there shoud be an existing OpenFlexo wrapper existing for EMF Object : "
-							+ eObject.toString());
+				}
+				else {
+					logger.warning(
+							"It's weird there shoud be an existing OpenFlexo wrapper existing for EMF Object : " + eObject.toString());
 					selectedIndividuals.add(emfModel.getConverter().convertObjectIndividual(emfModel, eObject));
 				}
 			}
 
 			List<EMFObjectIndividual> returned = filterWithConditions(selectedIndividuals, evaluationContext);
 
-			// System.out.println("SelectEMFObjectIndividual, without filtering =" + selectedIndividuals + " after filtering=" +
-			// returned);
+			// System.out.println("SelectEMFObjectIndividual, without filtering =" + selectedIndividuals + " after filtering=" + returned);
 
 			return returned;
 
