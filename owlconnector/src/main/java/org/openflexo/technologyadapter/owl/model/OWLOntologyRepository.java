@@ -50,11 +50,4 @@ public class OWLOntologyRepository<I>
 		super(adapter, rc);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/OWLTechnologyAdapter";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
-	}
-
 }

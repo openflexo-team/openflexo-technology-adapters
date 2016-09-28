@@ -46,15 +46,8 @@ import org.openflexo.technologyadapter.freeplane.model.IFreeplaneMap;
 public class FreeplaneResourceRepository<I>
 		extends TechnologyAdapterResourceRepository<IFreeplaneResource, FreeplaneTechnologyAdapter, IFreeplaneMap, I> {
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/FreeplaneTechnologyAdapter/Maps";
-
 	public FreeplaneResourceRepository(final FreeplaneTechnologyAdapter technologyAdapter, final FlexoResourceCenter<I> resourceCenter) {
 		super(technologyAdapter, resourceCenter);
-	}
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
 	}
 
 }

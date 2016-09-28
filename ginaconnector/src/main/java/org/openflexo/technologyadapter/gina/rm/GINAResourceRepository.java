@@ -32,9 +32,4 @@ public class GINAResourceRepository<I>
 		super(adapter, resourceCenter);
 	}
 
-	@Override
-	public String getDefaultBaseURI() {
-		return getResourceCenter().getDefaultBaseURI();
-	}
-
 }

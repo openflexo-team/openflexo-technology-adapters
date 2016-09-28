@@ -63,11 +63,4 @@ public class DiagramSpecificationRepository<I>
 		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/DiagramTechnologyAdapter/DiagramSpecifications";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
-	}
-
 }

@@ -62,11 +62,4 @@ public class EMFMetaModelRepository<I> extends MetaModelRepository<EMFMetaModelR
 		super(adapter, resourceCenter);
 	}
 
-	private static final String DEFAULT_BASE_URI = "http://www.openflexo.org/EMFTechnologyAdapter/MetaModels";
-
-	@Override
-	public String getDefaultBaseURI() {
-		return DEFAULT_BASE_URI;
-	}
-
 }
