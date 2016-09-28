@@ -46,8 +46,8 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
+import org.openflexo.foundation.resource.RelativePathResourceConverter;
 import org.openflexo.model.ModelContextLibrary;
-import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.model.factory.ModelFactory;
@@ -73,7 +73,7 @@ public class PDFFactory extends ModelFactory implements PamelaResourceModelFacto
 		this.resource = resource;
 		setEditingContext(editingContext);
 		if (resource != null) {
-			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate().getParentPath()));
+			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate()));
 		}
 	}
 
@@ -104,7 +104,7 @@ public class PDFFactory extends ModelFactory implements PamelaResourceModelFacto
 	public PDFDocument makeNewPDFDocument(PDDocument document) {
 		PDFDocument returned = makeDocument();
 		returned.updateFromPDDocument(document, this);
-		// TODO : this might be dangerous! We do this to avoid  Performance issue for ArchWater
+		// TODO : this might be dangerous! We do this to avoid Performance issue for ArchWater
 		try {
 			document.close();
 		} catch (IOException e) {
