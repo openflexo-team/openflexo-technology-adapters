@@ -46,8 +46,8 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
-import org.openflexo.foundation.resource.RelativePathResourceConverter;
 import org.openflexo.model.ModelContextLibrary;
+import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.model.factory.ModelFactory;
@@ -68,12 +68,17 @@ public class PDFFactory extends ModelFactory implements PamelaResourceModelFacto
 	private IgnoreLoadingEdits ignoreHandler = null;
 	private FlexoUndoManager undoManager = null;
 
+	private RelativePathResourceConverter relativePathResourceConverter;
+
 	public PDFFactory(PDFDocumentResource resource, EditingContext editingContext) throws ModelDefinitionException {
 		super(ModelContextLibrary.getCompoundModelContext(PDFDocument.class));
 		this.resource = resource;
 		setEditingContext(editingContext);
-		if (resource != null) {
-			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate()));
+		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
+		if (resource != null && resource.getFlexoIODelegate() != null
+				&& resource.getFlexoIODelegate().getSerializationArtefactAsResource() != null) {
+			relativePathResourceConverter
+					.setContainerResource(resource.getFlexoIODelegate().getSerializationArtefactAsResource().getContainer());
 		}
 	}
 

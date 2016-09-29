@@ -50,7 +50,7 @@ import org.openflexo.foundation.FlexoObject;
 import org.openflexo.foundation.PamelaResourceModelFactory;
 import org.openflexo.foundation.action.FlexoUndoManager;
 import org.openflexo.foundation.resource.PamelaResourceImpl.IgnoreLoadingEdits;
-import org.openflexo.foundation.resource.RelativePathResourceConverter;
+import org.openflexo.model.converter.RelativePathResourceConverter;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.model.factory.EditingContext;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -71,12 +71,17 @@ public class DiagramFactory extends FGEModelFactoryImpl implements PamelaResourc
 	private IgnoreLoadingEdits ignoreHandler = null;
 	private FlexoUndoManager undoManager = null;
 
+	private RelativePathResourceConverter relativePathResourceConverter;
+
 	public DiagramFactory(DiagramResource resource, EditingContext editingContext) throws ModelDefinitionException {
 		super(Diagram.class, DiagramShape.class, DiagramConnector.class);
 		this.resource = resource;
 		setEditingContext(editingContext);
-		if (resource != null) {
-			addConverter(new RelativePathResourceConverter(resource.getFlexoIODelegate()));
+		addConverter(relativePathResourceConverter = new RelativePathResourceConverter(null));
+		if (resource != null && resource.getFlexoIODelegate() != null
+				&& resource.getFlexoIODelegate().getSerializationArtefactAsResource() != null) {
+			relativePathResourceConverter
+					.setContainerResource(resource.getFlexoIODelegate().getSerializationArtefactAsResource().getContainer());
 		}
 	}
 
