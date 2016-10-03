@@ -29,6 +29,7 @@ import java.lang.reflect.InvocationTargetException;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import org.openflexo.Flexo;
 import org.openflexo.connie.exception.NullReferenceException;
 import org.openflexo.connie.exception.TypeMismatchException;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
@@ -158,7 +159,9 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		doneButton.setVisible(false);
 		saveButton.setVisible(false);
 
-		add(bottomPanel, BorderLayout.SOUTH);
+		if (Flexo.isDev) {
+			add(bottomPanel, BorderLayout.SOUTH);
+		}
 	}
 
 	private JButton editButton;
