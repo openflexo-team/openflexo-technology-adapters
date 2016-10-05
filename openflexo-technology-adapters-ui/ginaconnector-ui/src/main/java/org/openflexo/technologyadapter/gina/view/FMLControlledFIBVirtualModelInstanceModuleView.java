@@ -41,6 +41,7 @@ import org.openflexo.gina.swing.editor.FIBEditor;
 import org.openflexo.gina.swing.editor.controller.FIBEditorController;
 import org.openflexo.gina.swing.utils.FIBJPanel;
 import org.openflexo.icon.IconLibrary;
+import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
@@ -118,6 +119,29 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 
 		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
+		localizeButton = new JButton(locales.localizedForKey("localize"), UtilsIconLibrary.UK_FLAG);
+		localizeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (isEditMode()) {
+					getFIBEditor(false).localizeFIB(editorController.getEditedComponent(), getFlexoController().getFlexoFrame());
+				}
+			}
+		});
+		bottomPanel.add(localizeButton);
+
+		/*localizedItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("localized_editor"));
+		localizedItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (FIBEditorMenuBar.this.fibEditor.localizedEditor == null) {
+					FIBEditorMenuBar.this.fibEditor.localizedEditor = new LocalizedEditor(frame, "localized_editor",
+							FIBEditor.EDITOR_LOCALIZATION, FIBEditor.EDITOR_LOCALIZATION, true, false);
+				}
+				FIBEditorMenuBar.this.fibEditor.localizedEditor.setVisible(true);
+			}
+		});*/
+
 		editButton = new JButton(locales.localizedForKey("edit"), IconLibrary.EDIT_ICON);
 		editButton.addActionListener(new ActionListener() {
 			@Override
@@ -156,6 +180,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		});
 		bottomPanel.add(saveButton);
 
+		localizeButton.setVisible(false);
 		doneButton.setVisible(false);
 		saveButton.setVisible(false);
 
@@ -164,6 +189,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		}
 	}
 
+	private JButton localizeButton;
 	private JButton editButton;
 	private JButton doneButton;
 	private JButton saveButton;
@@ -208,6 +234,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		add(editorController.getEditorPanel(), BorderLayout.CENTER);
 
 		editButton.setVisible(false);
+		localizeButton.setVisible(true);
 		doneButton.setVisible(true);
 		saveButton.setVisible(true);
 
@@ -236,6 +263,7 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		add(componentView, BorderLayout.CENTER);
 
 		editButton.setVisible(true);
+		localizeButton.setVisible(false);
 		doneButton.setVisible(false);
 		saveButton.setVisible(false);
 
