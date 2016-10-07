@@ -38,20 +38,23 @@
 
 package org.openflexo.technologyadapter.excel.fml.editionaction;
 
+import java.io.FileNotFoundException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.annotations.FML;
-import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
 import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
+import org.openflexo.model.exceptions.ModelDefinitionException;
+import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
+import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
 
 @ModelEntity
 @ImplementationClass(GenerateExcelResource.GenerateDocXDocumentImpl.class)
@@ -76,38 +79,57 @@ public interface GenerateExcelResource extends CreateExcelResource {
 		@Override
 		public ExcelWorkbook execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
-			ExcelWorkbook generatedDocument = null;
+			ExcelWorkbookResource templateResource = getModelSlot().getTemplateResource();
+			if (templateResource == null) {
+				return super.execute(evaluationContext);
+			}
 
+			System.out.println("OK, on cree un fichier excel avec un template");
+
+			String resourceName = getResourceName(evaluationContext);
+			String resourceURI = getResourceURI(evaluationContext);
+			FlexoResourceCenter<?> rc = getResourceCenter(evaluationContext);
+
+			System.out.println("name=" + resourceName);
+			System.out.println("uri=" + resourceURI);
+			System.out.println("relative path=" + getRelativePath());
+			System.out.println("rc=" + rc);
+
+			ExcelTechnologyAdapter excelTA = getServiceManager().getTechnologyAdapterService()
+					.getTechnologyAdapter(ExcelTechnologyAdapter.class);
+
+			ExcelWorkbookResource newResource;
 			try {
 
-				ExcelWorkbookResource templateResource = getModelSlot().getTemplateResource();
 				ExcelWorkbook templateDocument = templateResource.getResourceData(null);
 
-				FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> msInstance = (FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot>) getModelSlotInstance(
-						evaluationContext);
+				newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(),
+						".xlsx", false);
+				System.out.println("Return new excel workbook resource: " + newResource);
 
-				FlexoResource<ExcelWorkbook> generatedResource = msInstance.getResource();
+				newResource.setResourceData(templateDocument);
+				newResource.save(null);
+				newResource.unloadResourceData(false);
+				newResource.loadResourceData(null);
 
-				System.out.println("-------------> generating document " + generatedResource);
-
-				generatedResource.setResourceData(templateDocument);
-				generatedResource.save(null);
-				generatedResource.unloadResourceData(false);
-				generatedResource.loadResourceData(null);
-
-				generatedDocument = generatedResource.getResourceData(null);
+				ExcelWorkbook generatedDocument = newResource.getResourceData(null);
 
 				// Very important: we must now set ModelSlotInstance !
 				((ModelSlotInstance) getModelSlotInstance(evaluationContext)).setAccessedResourceData(generatedDocument);
 
+				System.out.println("Return " + generatedDocument);
+				return generatedDocument;
+			} catch (ModelDefinitionException e) {
+				new FlexoException(e);
+			} catch (FileNotFoundException e) {
+				new FlexoException(e);
+			} catch (ResourceLoadingCancelledException e) {
+				new FlexoException(e);
 			}
 
-			catch (Exception e) {
-				e.printStackTrace();
-				throw new FlexoException(e);
-			}
+			logger.warning("Could not create resource!");
+			return null;
 
-			return generatedDocument;
 		}
 	}
 }

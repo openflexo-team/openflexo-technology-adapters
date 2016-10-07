@@ -146,15 +146,16 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	 * @throws SaveResourceException
 	 */
 	private void writeToFile(Workbook workbook) throws SaveResourceException {
-		logger.info("Wrote " + getFlexoIODelegate().toString());
+		logger.info("Wrote " + getFlexoIODelegate().getSerializationArtefact());
 		FileOutputStream fileOut;
 
 		try {
 			FileFlexoIODelegate delegate = (FileFlexoIODelegate) getFlexoIODelegate();
+			willWrite(delegate.getFile());
 			fileOut = new FileOutputStream(delegate.getFile());
 			workbook.write(fileOut);
 			fileOut.close();
-
+			hasWritten(delegate.getFile());
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

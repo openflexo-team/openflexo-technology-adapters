@@ -47,7 +47,6 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.EditionAction;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
-import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext.ReturnException;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.model.annotations.ImplementationClass;
@@ -83,7 +82,7 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 		}
 
 		@Override
-		public ExcelWorkbook execute(RunTimeEvaluationContext evaluationContext) throws ReturnException, FlexoException {
+		public ExcelWorkbook execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
 			System.out.println("OK, on cree un fichier excel ");
 
