@@ -20,14 +20,23 @@
 
 package org.openflexo.technologyadapter.excel.rm;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.logging.Logger;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
+import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
 
 /**
  * Implementation of ResourceFactory for {@link ExcelWorkbookResource}
@@ -48,7 +57,39 @@ public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWork
 
 	@Override
 	public ExcelWorkbook makeEmptyResourceData(ExcelWorkbookResource resource) {
-		return new ExcelWorkbook(resource.getTechnologyAdapter());
+		return createExcelWorkbook(resource);
+	}
+
+	protected static ExcelWorkbook createExcelWorkbook(ExcelWorkbookResource resource) {
+		Workbook wb = null;
+		ExcelWorkbook newWorkbook = null;
+
+		if (resource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+			FileFlexoIODelegate delegate = (FileFlexoIODelegate) resource.getFlexoIODelegate();
+			try {
+				if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xls")) {
+					wb = new HSSFWorkbook();
+				}
+				else if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xlsx")) {
+					wb = new XSSFWorkbook();
+				}
+				else {
+					wb = WorkbookFactory.create(new FileInputStream(delegate.getFile()));
+				}
+				BasicExcelModelConverter converter = new BasicExcelModelConverter();
+				newWorkbook = converter.convertExcelWorkbook(wb, resource.getTechnologyAdapter());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else {
+			logger.warning("Create workbook for a non-file is not implemented");
+		}
+		return newWorkbook;
 	}
 
 	@Override

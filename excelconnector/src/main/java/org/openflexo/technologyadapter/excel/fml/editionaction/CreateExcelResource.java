@@ -58,6 +58,7 @@ import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
+import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
 
 /**
  * {@link EditionAction} used to create an empty Excel resource
@@ -69,10 +70,10 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 @ImplementationClass(CreateExcelResource.CreateExcelResourceImpl.class)
 @XMLElement
 @FML("CreateExcelResource")
-public interface CreateExcelResource extends AbstractCreateResource<BasicExcelModelSlot, ExcelWorkbook> {
+public interface CreateExcelResource extends AbstractCreateResource<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter> {
 
-	public static abstract class CreateExcelResourceImpl extends AbstractCreateResourceImpl<BasicExcelModelSlot, ExcelWorkbook>
-			implements CreateExcelResource {
+	public static abstract class CreateExcelResourceImpl
+			extends AbstractCreateResourceImpl<BasicExcelModelSlot, ExcelWorkbook, ExcelTechnologyAdapter>implements CreateExcelResource {
 
 		private static final Logger logger = Logger.getLogger(CreateExcelResourceImpl.class.getPackage().getName());
 
@@ -100,24 +101,23 @@ public interface CreateExcelResource extends AbstractCreateResource<BasicExcelMo
 
 			ExcelWorkbookResource newResource;
 			try {
-				newResource = excelTA.createNewWorkbook(rc, resourceName, resourceURI, getRelativePath());
-				System.out.println("New resource: " + newResource);
-				ExcelWorkbook returned = newResource.getResourceData(null);
-				System.out.println("Return " + returned);
-				return returned;
-			} catch (ModelDefinitionException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				newResource = createResource(excelTA, ExcelWorkbookResourceFactory.class, rc, resourceName, resourceURI, getRelativePath(),
+						".xlsx", true);
+				System.out.println("Return new excel workbook resource: " + newResource);
+
+				ExcelWorkbook workbook = newResource.getResourceData(null);
+
+				System.out.println("Return " + workbook);
+				return workbook;
+			} catch (ModelDefinitionException e) {
+				new FlexoException(e);
 			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				new FlexoException(e);
 			} catch (ResourceLoadingCancelledException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				new FlexoException(e);
 			}
 
-			logger.warning("Cannot create ExcelWorkbookResource !");
-
+			logger.warning("Could not create resource!");
 			return null;
 
 		}

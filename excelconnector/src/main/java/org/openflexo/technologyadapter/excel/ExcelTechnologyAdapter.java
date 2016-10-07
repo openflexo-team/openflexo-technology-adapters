@@ -304,7 +304,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 					(FlexoResourceCenter<File>) resourceCenter, getTechnologyContextManager(), true);
 			// ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(/*modelUri,*/ excelFile,
 			// getTechnologyContextManager(), resourceCenter);
-			getTechnologyContextManager().registerResource(workbookResource);
+			// getTechnologyContextManager().registerResource(workbookResource);
 			return workbookResource;
 		}
 		return null;
