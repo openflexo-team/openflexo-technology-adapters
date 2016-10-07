@@ -63,8 +63,8 @@ public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocu
 
 		try {
 			File dir = getFile().getParentFile();
+			willWrite(dir);
 			if (!dir.exists()) {
-				willWrite(dir);
 				dir.mkdirs();
 			}
 			willWrite(getFile());
@@ -94,6 +94,9 @@ public abstract class PDFDocumentResourceImpl extends PamelaResourceImpl<PDFDocu
 			}
 			getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 			throw new SaveResourceException(getFlexoIODelegate(), e);
+		} finally {
+			hasWritten(getFile());
+			hasWritten(getFile().getParentFile());
 		}
 	}
 
