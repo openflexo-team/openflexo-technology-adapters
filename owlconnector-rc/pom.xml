@@ -64,6 +64,58 @@
 			<build>
 			<!--  override profile to empty it => nothing to do -->
 			</build>
-		</profile>
-	</profiles>
+		</profile>   
+   <!-- ************
+   Specific profiles used to differentiate between snapshot release and release-candidates and official-releases
+   -->
+        <profile>
+            <id>snapshot-profile</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <!-- ************
+   		Places where to upload files for component Maven site
+   		-->
+            <distributionManagement>
+                <site>
+                    <id>openflexo-ta.website</id>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>RC-profile</id>
+            <activation>
+                <property>
+                    <name>performRC</name>
+                </property>
+            </activation>
+            <!-- ************
+   		Places where to upload files for component Maven site
+		   -->
+            <distributionManagement>
+                <site>
+                    <id>openflexo-ta.website</id>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/SNAPSHOT/</url>
+                </site>
+            </distributionManagement>
+        </profile>
+        <profile>
+            <id>release-profile</id>
+            <activation>
+                <property>
+                    <name>performRelease</name>
+                </property>
+            </activation>
+            <!-- ************
+   		Places where to upload files for component Maven site
+		   -->
+            <distributionManagement>
+                <site>
+                    <id>openflexo-ta.website</id>
+                    <url>scp://server-one.openflexo.org${sitedeploy.dir}/${project.version}/</url>
+                </site>
+            </distributionManagement>
+        </profile>
+    </profiles>
 </project>
