@@ -55,7 +55,7 @@ public interface DiagramAction<MS extends DiagramModelSlot, T> extends Technolog
 
 		@Override
 		public DiagramModelSlot getModelSlot() {
-			DiagramModelSlot returned = super.getModelSlot();
+			DiagramModelSlot returned = (DiagramModelSlot) performSuperGetter(TechnologySpecificAction.MODEL_SLOT_KEY);
 			if (returned == null) {
 				if (getOwningVirtualModel() != null && getOwningVirtualModel().getModelSlots(DiagramModelSlot.class).size() > 0) {
 					return getOwningVirtualModel().getModelSlots(DiagramModelSlot.class).get(0);
