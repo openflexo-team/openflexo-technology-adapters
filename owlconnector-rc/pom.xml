@@ -41,6 +41,15 @@
 		</resources>
 		<pluginManagement>
 			<plugins>
+				<!-- skip maven site for this module -->
+			       <plugin>
+				  <groupId>org.apache.maven.plugins</groupId>
+				  <artifactId>maven-site-plugin</artifactId>
+				  <configuration>
+					<skip>true</skip>
+					<skipDeploy>true</skipDeploy>
+				  </configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
