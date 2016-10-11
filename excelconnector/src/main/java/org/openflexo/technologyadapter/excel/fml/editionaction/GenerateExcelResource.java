@@ -115,7 +115,9 @@ public interface GenerateExcelResource extends CreateExcelResource {
 				ExcelWorkbook generatedDocument = newResource.getResourceData(null);
 
 				// Very important: we must now set ModelSlotInstance !
-				((ModelSlotInstance) getModelSlotInstance(evaluationContext)).setAccessedResourceData(generatedDocument);
+				if (getModelSlotInstance(evaluationContext) != null) {
+					((ModelSlotInstance) getModelSlotInstance(evaluationContext)).setAccessedResourceData(generatedDocument);
+				}
 
 				System.out.println("Return " + generatedDocument);
 				return generatedDocument;
