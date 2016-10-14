@@ -57,7 +57,7 @@ import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResource;
 import org.openflexo.technologyadapter.excel.rm.ExcelWorkbookResourceFactory;
 
 @ModelEntity
-@ImplementationClass(GenerateExcelResource.GenerateDocXDocumentImpl.class)
+@ImplementationClass(GenerateExcelResource.GenerateExcelResourceImpl.class)
 @XMLElement
 @FML("GenerateDocXDocument")
 public interface GenerateExcelResource extends CreateExcelResource {
@@ -72,7 +72,7 @@ public interface GenerateExcelResource extends CreateExcelResource {
 	@Setter(FILE_KEY)
 	public void setFile(File aFile);*/
 
-	public static abstract class GenerateDocXDocumentImpl extends CreateExcelResourceImpl implements GenerateExcelResource {
+	public static abstract class GenerateExcelResourceImpl extends CreateExcelResourceImpl implements GenerateExcelResource {
 
 		private static final Logger logger = Logger.getLogger(GenerateExcelResource.class.getPackage().getName());
 
