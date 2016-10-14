@@ -137,8 +137,8 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 
 	public List<CellType> getAvailableCellTypes();
 
-	public static abstract class AddExcelCellImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell> implements
-			AddExcelCell {
+	public static abstract class AddExcelCellImpl extends TechnologySpecificActionImpl<BasicExcelModelSlot, ExcelCell>
+			implements AddExcelCell {
 
 		private static final Logger logger = Logger.getLogger(AddExcelCell.class.getPackage().getName());
 
@@ -171,7 +171,7 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 			ExcelCell excelCell = null;
 
 			FreeModelSlotInstance<ExcelWorkbook, BasicExcelModelSlot> modelSlotInstance = getModelSlotInstance(evaluationContext);
-			if (modelSlotInstance.getResourceData() != null) {
+			if (modelSlotInstance != null && modelSlotInstance.getResourceData() != null) {
 
 				try {
 					ExcelRow excelRow = null;
@@ -180,13 +180,16 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 						ExcelSheet excelSheet = getSheet().getBindingValue(evaluationContext);
 						if (excelSheet != null && rowIndex != null) {
 							excelRow = excelSheet.getRowAt(rowIndex);
-						} else if (excelSheet == null) {
+						}
+						else if (excelSheet == null) {
 							logger.severe("Excel sheet is not defined.");
-						} else if (rowIndex == null) {
+						}
+						else if (rowIndex == null) {
 							logger.severe("Row index is not defined.");
 						}
 
-					} else {
+					}
+					else {
 						excelRow = getRow().getBindingValue(evaluationContext);
 					}
 
@@ -199,21 +202,25 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 							// If this cell exists, just get it
 							if (excelRow.getCellAt(columnIndex) != null) {
 								excelCell = excelRow.getCellAt(columnIndex);
-							} else {
+							}
+							else {
 								cell = excelRow.getRow().createCell(columnIndex);
-								excelCell = modelSlotInstance.getAccessedResourceData().getConverter()
-										.convertExcelCellToCell(cell, excelRow, null);
+								excelCell = modelSlotInstance.getAccessedResourceData().getConverter().convertExcelCellToCell(cell,
+										excelRow, null);
 							}
 							if (value != null) {
 								excelCell.setCellValue(value);
-							} else {
+							}
+							else {
 								logger.warning("Create a cell requires a value.");
 							}
 							modelSlotInstance.getResourceData().setIsModified();
-						} else {
+						}
+						else {
 							logger.warning("Create a cell requires a row.");
 						}
-					} else {
+					}
+					else {
 						logger.warning("Create a cell requires a column index.");
 					}
 				} catch (TypeMismatchException e) {
@@ -227,7 +234,8 @@ public interface AddExcelCell extends ExcelAction<ExcelCell> {
 					e.printStackTrace();
 				}
 
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}
