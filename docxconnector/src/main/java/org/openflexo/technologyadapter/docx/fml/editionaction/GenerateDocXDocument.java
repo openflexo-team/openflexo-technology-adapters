@@ -83,28 +83,32 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 	@Setter(FILE_KEY)
 	public void setFile(File aFile);*/
 
-	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument>implements GenerateDocXDocument {
+	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument> implements GenerateDocXDocument {
 
 		private static final Logger logger = Logger.getLogger(GenerateDocXDocument.class.getPackage().getName());
 
 		private void appendElementsToIgnore(FlexoConcept concept, List<DocXElement> elementsToIgnore) {
 			for (FlexoBehaviour behaviour : concept.getFlexoBehaviours()) {
 				// TODO handle deep action
-				for (FMLControlGraph cg : behaviour.getControlGraph().getFlattenedSequence()) {
-					if (cg instanceof AddDocXFragment) {
-						for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
-							elementsToIgnore.add(e);
-						}
-					}
-					else if (cg instanceof AssignationAction && ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
-						if (((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment() != null) {
-							for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment()
-									.getElements()) {
+				if (behaviour.getControlGraph() != null) {
+					for (FMLControlGraph cg : behaviour.getControlGraph().getFlattenedSequence()) {
+						if (cg instanceof AddDocXFragment) {
+							for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
 								elementsToIgnore.add(e);
+							}
+						}
+						else if (cg instanceof AssignationAction
+								&& ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
+							if (((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment() != null) {
+								for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment()
+										.getElements()) {
+									elementsToIgnore.add(e);
+								}
 							}
 						}
 					}
 				}
+
 			}
 
 			if (concept instanceof AbstractVirtualModel) {
@@ -135,8 +139,7 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				DocXDocumentResource templateResource = getModelSlot().getTemplateResource();
 				DocXDocument templateDocument = templateResource.getResourceData(null);
 
-				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
-						evaluationContext);
+				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(evaluationContext);
 
 				FlexoResource<DocXDocument> generatedResource = msInstance.getResource();
 
