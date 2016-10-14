@@ -51,8 +51,13 @@ public class TestExcelInspectors extends GenericFIBInspectorTestCase {
 	 */
 
 	public static void main(String[] args) {
-		System.out.println(generateInspectorTestCaseClass(
-				((FileResourceImpl) ResourceLocator.locateResource("Inspectors/Excel")).getFile(), "Inspectors/Excel/"));
+		System.out.println(generateInspectorTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Inspectors/Excel")).getFile(),
+				"Inspectors/Excel/"));
+	}
+
+	@Test
+	public void testBasicExcelModelSlotInspector() {
+		validateFIB("Inspectors/Excel/BasicExcelModelSlot.inspector");
 	}
 
 	@Test
@@ -73,6 +78,11 @@ public class TestExcelInspectors extends GenericFIBInspectorTestCase {
 	@Test
 	public void testCellStyleActionInspector() {
 		validateFIB("Inspectors/Excel/EditionAction/CellStyleAction.inspector");
+	}
+
+	@Test
+	public void testCreateExcelResourceInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/CreateExcelResource.inspector");
 	}
 
 	@Test
