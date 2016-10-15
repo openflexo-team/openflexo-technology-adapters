@@ -340,13 +340,12 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 
 		@Override
 		public void setIdentifier(String identifier) {
+			String oldIdentifier = getIdentifier();
 			if (getFactory() != null) {
 				switch (getFactory().getIDStrategy()) {
 					case ParaId:
 						if (getP() != null) {
-							String oldIdentifier = getIdentifier();
 							getP().setParaId(identifier);
-							((DocXDocumentImpl) getFlexoDocument()).reindexElement(this, oldIdentifier);
 						}
 						break;
 					case Bookmark:
@@ -355,6 +354,7 @@ public interface DocXParagraph extends DocXElement<P>, FlexoDocParagraph<DocXDoc
 						}
 						break;
 				}
+				((DocXDocumentImpl) getFlexoDocument()).reindexElement(this, oldIdentifier);
 			}
 			else {
 				logger.warning("Unreachable factory");
