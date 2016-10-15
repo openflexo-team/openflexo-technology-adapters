@@ -88,21 +88,25 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 		private void appendElementsToIgnore(FlexoConcept concept, List<DocXElement> elementsToIgnore) {
 			for (FlexoBehaviour behaviour : concept.getFlexoBehaviours()) {
 				// TODO handle deep action
-				for (FMLControlGraph cg : behaviour.getControlGraph().getFlattenedSequence()) {
-					if (cg instanceof AddDocXFragment) {
-						for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
-							elementsToIgnore.add(e);
-						}
-					}
-					else if (cg instanceof AssignationAction && ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
-						if (((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment() != null) {
-							for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment()
-									.getElements()) {
+				if (behaviour.getControlGraph() != null) {
+					for (FMLControlGraph cg : behaviour.getControlGraph().getFlattenedSequence()) {
+						if (cg instanceof AddDocXFragment) {
+							for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
 								elementsToIgnore.add(e);
+							}
+						}
+						else if (cg instanceof AssignationAction
+								&& ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
+							if (((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment() != null) {
+								for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment()
+										.getElements()) {
+									elementsToIgnore.add(e);
+								}
 							}
 						}
 					}
 				}
+
 			}
 
 			if (concept instanceof AbstractVirtualModel) {
@@ -135,6 +139,7 @@ public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSl
 
 				DocXDocumentResource templateResource = getModelSlot().getTemplateResource();
 				DocXDocument templateDocument = templateResource.getResourceData(null);
+
 				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
 						evaluationContext);
 
