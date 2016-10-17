@@ -383,20 +383,14 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 		return this.perspective;
 	}
 
-	/**
-	 * Nothing done on this ModuleView
-	 */
-	@Override
-	public void willShow() {
-		// Nothing to implement by default, empty body
-	}
-
-	/**
-	 * Nothing done on this ModuleView
-	 */
 	@Override
 	public void willHide() {
-		// Nothing to implement by default, empty body
+		setVisible(false);
+	}
+
+	@Override
+	public void willShow() {
+		setVisible(true);
 	}
 
 	public GINAFIBComponent getGINAFIBComponent() {
