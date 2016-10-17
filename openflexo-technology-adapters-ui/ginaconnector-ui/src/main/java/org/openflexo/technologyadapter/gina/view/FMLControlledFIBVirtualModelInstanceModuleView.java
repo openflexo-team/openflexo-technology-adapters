@@ -25,6 +25,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -44,6 +45,7 @@ import org.openflexo.icon.IconLibrary;
 import org.openflexo.icon.UtilsIconLibrary;
 import org.openflexo.localization.FlexoLocalization;
 import org.openflexo.localization.LocalizedDelegate;
+import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot;
 import org.openflexo.technologyadapter.gina.FIBComponentModelSlot.VariableAssignment;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
@@ -65,6 +67,9 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  */
 @SuppressWarnings("serial")
 public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel implements ModuleView<VirtualModelInstance> {
+
+	protected static final Logger logger = FlexoLogger
+			.getLogger(FMLControlledFIBVirtualModelInstanceModuleView.class.getPackage().getName());
 
 	private final FlexoController controller;
 	private final FlexoPerspective perspective;
@@ -98,94 +103,99 @@ public class FMLControlledFIBVirtualModelInstanceModuleView extends JPanel imple
 					(modelSlotInstance != null ? modelSlotInstance.getModelSlot() : null));
 		}
 
-		if (component.getComponent().getControllerClass() != null
-				&& !FMLControlledFIBController.class.isAssignableFrom(component.getComponent().getControllerClass())) {
-			// If declared controller class is not a subclass of FMLControlledFIBController, force it
-			component.getComponent().setControllerClass(FMLControlledFIBController.class);
-		}
-
-		componentView = new FIBJPanel<Object>(component.getComponent(), null, FlexoLocalization.getMainLocalizer()) {
-			@Override
-			public void delete() {
+		if (component != null) {
+			if (component.getComponent().getControllerClass() != null
+					&& !FMLControlledFIBController.class.isAssignableFrom(component.getComponent().getControllerClass())) {
+				// If declared controller class is not a subclass of FMLControlledFIBController, force it
+				component.getComponent().setControllerClass(FMLControlledFIBController.class);
 			}
 
-			@Override
-			public Class<Object> getRepresentedType() {
-				return Object.class;
-			}
-		};
-
-		add(componentView, BorderLayout.CENTER);
-
-		JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-
-		localizeButton = new JButton(locales.localizedForKey("localize"), UtilsIconLibrary.UK_FLAG);
-		localizeButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (isEditMode()) {
-					getFIBEditor(false).localizeFIB(editorController.getEditedComponent(), getFlexoController().getFlexoFrame());
+			componentView = new FIBJPanel<Object>(component.getComponent(), null, FlexoLocalization.getMainLocalizer()) {
+				@Override
+				public void delete() {
 				}
-			}
-		});
-		bottomPanel.add(localizeButton);
 
-		/*localizedItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("localized_editor"));
-		localizedItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (FIBEditorMenuBar.this.fibEditor.localizedEditor == null) {
-					FIBEditorMenuBar.this.fibEditor.localizedEditor = new LocalizedEditor(frame, "localized_editor",
-							FIBEditor.EDITOR_LOCALIZATION, FIBEditor.EDITOR_LOCALIZATION, true, false);
+				@Override
+				public Class<Object> getRepresentedType() {
+					return Object.class;
 				}
-				FIBEditorMenuBar.this.fibEditor.localizedEditor.setVisible(true);
-			}
-		});*/
+			};
 
-		editButton = new JButton(locales.localizedForKey("edit"), IconLibrary.EDIT_ICON);
-		editButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (!isEditMode()) {
-					switchToEditMode();
-				}
-			}
-		});
-		bottomPanel.add(editButton);
+			add(componentView, BorderLayout.CENTER);
 
-		doneButton = new JButton(locales.localizedForKey("done"), IconLibrary.VALID_ICON);
-		doneButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (isEditMode()) {
-					switchToNormalMode();
-				}
-			}
-		});
-		bottomPanel.add(doneButton);
+			JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
-		saveButton = new JButton(locales.localizedForKey("save"), IconLibrary.SAVE_ICON);
-		saveButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (isEditMode()) {
-					try {
-						saveEditedComponent();
-					} catch (SaveResourceException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+			localizeButton = new JButton(locales.localizedForKey("localize"), UtilsIconLibrary.UK_FLAG);
+			localizeButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (isEditMode()) {
+						getFIBEditor(false).localizeFIB(editorController.getEditedComponent(), getFlexoController().getFlexoFrame());
 					}
 				}
+			});
+			bottomPanel.add(localizeButton);
+
+			/*localizedItem = new JMenuItem(FIBEditor.EDITOR_LOCALIZATION.localizedForKey("localized_editor"));
+			localizedItem.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (FIBEditorMenuBar.this.fibEditor.localizedEditor == null) {
+						FIBEditorMenuBar.this.fibEditor.localizedEditor = new LocalizedEditor(frame, "localized_editor",
+								FIBEditor.EDITOR_LOCALIZATION, FIBEditor.EDITOR_LOCALIZATION, true, false);
+					}
+					FIBEditorMenuBar.this.fibEditor.localizedEditor.setVisible(true);
+				}
+			});*/
+
+			editButton = new JButton(locales.localizedForKey("edit"), IconLibrary.EDIT_ICON);
+			editButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (!isEditMode()) {
+						switchToEditMode();
+					}
+				}
+			});
+			bottomPanel.add(editButton);
+
+			doneButton = new JButton(locales.localizedForKey("done"), IconLibrary.VALID_ICON);
+			doneButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (isEditMode()) {
+						switchToNormalMode();
+					}
+				}
+			});
+			bottomPanel.add(doneButton);
+
+			saveButton = new JButton(locales.localizedForKey("save"), IconLibrary.SAVE_ICON);
+			saveButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (isEditMode()) {
+						try {
+							saveEditedComponent();
+						} catch (SaveResourceException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+					}
+				}
+			});
+			bottomPanel.add(saveButton);
+
+			localizeButton.setVisible(false);
+			doneButton.setVisible(false);
+			saveButton.setVisible(false);
+
+			if (Flexo.isDev) {
+				add(bottomPanel, BorderLayout.SOUTH);
 			}
-		});
-		bottomPanel.add(saveButton);
-
-		localizeButton.setVisible(false);
-		doneButton.setVisible(false);
-		saveButton.setVisible(false);
-
-		if (Flexo.isDev) {
-			add(bottomPanel, BorderLayout.SOUTH);
+		}
+		else {
+			logger.warning("Unable to create module view as component is null for: " + representedObject);
 		}
 	}
 
