@@ -111,7 +111,15 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 
 	@Override
 	public String getName() {
-		return "cell." + "row" + cell.getRowIndex() + "." + "col_" + cell.getColumnIndex();
+
+		if (cell != null) {
+			return "cell." + "row" + cell.getRowIndex() + "." + "col_" + cell.getColumnIndex();
+		}
+		else {
+			// This happens when the cell is empty (without any value)
+			// TODO: there is a risk for major issues here
+			return "EmpyCell";
+		}
 	}
 
 	public void merge(CellRangeAddress cellRange) {
@@ -451,8 +459,8 @@ public class ExcelCell extends ExcelObject implements ExcelStyleObject {
 				|| (cellValueAsString != null && !cellValueAsString.equals(getCellValueAsString()))) {
 			String oldValue = getCellValueAsString();
 			createCellWhenNonExistant();
-			//System.out.println(
-			//		"*********** Setting new cell value: " + cellValueAsString + " at row=" + getRowIndex() + " col=" + getColumnIndex());
+			// System.out.println(
+			// "*********** Setting new cell value: " + cellValueAsString + " at row=" + getRowIndex() + " col=" + getColumnIndex());
 			cell.setCellValue(cellValueAsString);
 			getExcelSheet().getEvaluator().clearAllCachedResultValues();
 			getPropertyChangeSupport().firePropertyChange("cellValueAsString", oldValue, cellValueAsString);
