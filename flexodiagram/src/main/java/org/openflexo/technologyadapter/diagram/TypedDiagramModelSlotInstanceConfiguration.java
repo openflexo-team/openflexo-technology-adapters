@@ -103,7 +103,6 @@ public class TypedDiagramModelSlotInstanceConfiguration
 			}
 			if (generatedUri != modelUri) {
 				modelUri = generatedUri;
-				getPropertyChangeSupport().firePropertyChange("modelUri", null, generatedUri);
 			}
 
 			return generatedUri;
