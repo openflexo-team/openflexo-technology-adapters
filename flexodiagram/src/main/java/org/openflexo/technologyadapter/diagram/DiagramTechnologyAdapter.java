@@ -121,7 +121,8 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	@Override
 	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
 		super.foundFolder(resourceCenter, folder);
-		if (resourceCenter.isDirectory(folder)) {
+		if (resourceCenter.isDirectory(folder) && !isContainedInDirectoryWithSuffix(resourceCenter, folder,
+				DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX)) {
 			getDiagramRepository(resourceCenter).getRepositoryFolder(folder, true);
 			getDiagramSpecificationRepository(resourceCenter).getRepositoryFolder(folder, true);
 		}
