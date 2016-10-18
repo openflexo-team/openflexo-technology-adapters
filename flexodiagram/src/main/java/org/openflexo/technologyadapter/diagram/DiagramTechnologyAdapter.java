@@ -39,6 +39,7 @@
 package org.openflexo.technologyadapter.diagram;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.FGEModelFactoryImpl;
@@ -115,6 +116,22 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 	public TechnologyAdapterBindingFactory getTechnologyAdapterBindingFactory() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getDiagramRepository(resourceCenter).getRepositoryFolder(folder, true);
+			getDiagramSpecificationRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}
+
+	@Override
+	public void ensureAllRepositoriesAreCreated(FlexoResourceCenter<?> rc) {
+		super.ensureAllRepositoriesAreCreated(rc);
+		getDiagramRepository(rc);
+		getDiagramSpecificationRepository(rc);
 	}
 
 	/**

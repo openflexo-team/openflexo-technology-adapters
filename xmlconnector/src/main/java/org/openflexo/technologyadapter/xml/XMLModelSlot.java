@@ -373,7 +373,7 @@ public interface XMLModelSlot extends TypeAwareModelSlot<XMLModel, XMLMetaModel>
 
 			RepositoryFolder<XMLFileResource, ?> folder;
 			try {
-				folder = modelRepository.getRepositoryFolder(xmlFile, true);
+				folder = modelRepository.getParentRepositoryFolder(xmlFile, true);
 				if (folder != null) {
 					modelRepository.registerResource(returned, folder);
 				}

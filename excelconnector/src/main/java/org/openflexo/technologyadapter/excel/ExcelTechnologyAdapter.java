@@ -39,6 +39,7 @@
 package org.openflexo.technologyadapter.excel;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
@@ -318,6 +319,14 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 
 	public ExcelWorkbookResourceFactory getExcelWorkbookResourceFactory() {
 		return getResourceFactory(ExcelWorkbookResourceFactory.class);
+	}
+
+	@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getExcelWorkbookRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
 	}
 
 }

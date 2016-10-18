@@ -38,6 +38,7 @@
 
 package org.openflexo.technologyadapter.freeplane;
 
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
@@ -272,6 +273,14 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 
 	public FreeplaneResourceFactory getFreeplaneResourceFactory() {
 		return getResourceFactory(FreeplaneResourceFactory.class);
+	}
+
+	@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getFreeplaneResourceRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
 	}
 
 }

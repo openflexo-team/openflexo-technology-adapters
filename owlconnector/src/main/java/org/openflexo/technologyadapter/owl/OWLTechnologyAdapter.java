@@ -41,6 +41,7 @@ package org.openflexo.technologyadapter.owl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -377,6 +378,14 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 
 	public OWLOntologyResourceFactory getOWLOntologyResourceFactory() {
 		return getResourceFactory(OWLOntologyResourceFactory.class);
+	}
+
+	@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getOWLOntologyRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
 	}
 
 }

@@ -39,6 +39,7 @@
 package org.openflexo.technologyadapter.powerpoint;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
@@ -279,6 +280,14 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 
 	public PowerpointSlideshowResourceFactory getPowerpointSlideshowResourceFactory() {
 		return getResourceFactory(PowerpointSlideshowResourceFactory.class);
+	}
+
+	@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getPowerpointSlideShowRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
 	}
 
 }
