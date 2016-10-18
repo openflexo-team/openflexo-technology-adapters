@@ -51,6 +51,7 @@ public class DiagramCst {
 	// UI components
 	// public static Resource DIAGRAM_FLEXO_CONCEPT_VIEW_FIB = ResourceLocator.locateResource("Fib/DiagramFlexoConceptView.fib");
 	public static Resource DIAGRAM_SPECIFICATION_VIEW_FIB = ResourceLocator.locateResource("Fib/DiagramSpecificationView.fib");
+	public static Resource FML_CONTROLLED_VIRTUAL_MODEL_VIEW_FIB = ResourceLocator.locateResource("Fib/FMLControlledVirtualModelView.fib");
 
 	// Dialog components
 	public static Resource CREATE_DIAGRAM_DIALOG_FIB = ResourceLocator.locateResource("Fib/Dialog/CreateDiagramDialog.fib");
