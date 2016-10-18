@@ -59,22 +59,25 @@ public class TypedDiagramModelSlotInstanceConfiguration
 	protected TypedDiagramModelSlotInstanceConfiguration(TypedDiagramModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
 			FlexoResourceCenter<?> rc) {
 		super(ms, virtualModelInstance, rc);
+		setModelUri(null);
+		setRelativePath("/Diagram");
+		setFilename("myDiagram" + DiagramResourceFactory.DIAGRAM_SUFFIX);
 	}
 
 	@Override
 	public void setOption(
 			org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
-		super.setOption(option);
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
-			modelUri = getResourceCenter().getDefaultBaseURI() + "/Diagrams/myDiagram";
-			relativePath = "/Diagram/";
-			filename = "myDiagram" + DiagramResourceFactory.DIAGRAM_SUFFIX;
+			setTargetResourceCenter(this.getResourceCenter());
+			setRelativePath("/Diagram/");
+			setFilename("myDiagram" + DiagramResourceFactory.DIAGRAM_SUFFIX);
 		}
 		else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
-			modelUri = "ResourceCenter/Models/";
-			relativePath = "/Diagram/";
-			filename = "myDiagram" + DiagramResourceFactory.DIAGRAM_SUFFIX;
+			setRelativePath("/Diagram/");
+			setFilename("myDiagram" + DiagramResourceFactory.DIAGRAM_SUFFIX);
 		}
+
+		super.setOption(option);
 	}
 
 	@Override
@@ -85,15 +88,27 @@ public class TypedDiagramModelSlotInstanceConfiguration
 	@Override
 	public String getModelUri() {
 		DiagramTechnologyAdapter ta = (DiagramTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter();
-		DiagramRepository<?> repository = ta.getDiagramRepository(getResourceCenter());
-		String generatedUri = repository.generateURI(getFilename());
+		DiagramRepository<?> repository;
+		if (getTargetResourceCenter() != null) {
+			repository = ta.getDiagramRepository(getTargetResourceCenter());
+		}
+		else {
+			repository = ta.getDiagramRepository(getResourceCenter());
+		}
+		String generatedUri = null;
 		if (repository != null) {
+			generatedUri = repository.generateURI(getFilename());
 			while (repository.getResource(generatedUri) != null) {
 				generatedUri = repository.generateURI(getFilename());
 			}
-		}
+			if (generatedUri != modelUri) {
+				modelUri = generatedUri;
+			}
 
-		return generatedUri;
+			return generatedUri;
+		}
+		return super.getModelUri();
+
 	}
 
 	@Override
