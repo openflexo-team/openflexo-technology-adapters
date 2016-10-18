@@ -39,7 +39,6 @@
 
 package org.openflexo.technologyadapter.emf;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.eclipse.emf.ecore.impl.EcorePackageImpl;
@@ -581,13 +580,13 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(EMFMetaModelResourceFactory.class);
 	}
 
-	@Override
+	/*@Override
 	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
 		super.foundFolder(resourceCenter, folder);
 		if (resourceCenter.isDirectory(folder)) {
 			getEMFModelRepository(resourceCenter).getRepositoryFolder(folder, true);
 			getEMFModelRepository(resourceCenter).getRepositoryFolder(folder, true);
 		}
-	}
+	}*/
 
 }

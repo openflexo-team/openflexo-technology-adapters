@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.diagram;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.fge.FGEModelFactoryImpl;
@@ -118,15 +117,14 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 		return null;
 	}
 
-	@Override
+	/*@Override
 	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
 		super.foundFolder(resourceCenter, folder);
-		if (resourceCenter.isDirectory(folder) && !isContainedInDirectoryWithSuffix(resourceCenter, folder,
-				DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX)) {
+		if (resourceCenter.isDirectory(folder) && !isIgnorable(resourceCenter, folder)) {
 			getDiagramRepository(resourceCenter).getRepositoryFolder(folder, true);
 			getDiagramSpecificationRepository(resourceCenter).getRepositoryFolder(folder, true);
 		}
-	}
+	}*/
 
 	@Override
 	public void ensureAllRepositoriesAreCreated(FlexoResourceCenter<?> rc) {
@@ -373,6 +371,26 @@ public class DiagramTechnologyAdapter extends TechnologyAdapter {
 
 	@Override
 	public <I> boolean isIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
+		// We ignore .diagram files inside a .DIAGRAM_SPECIFICATION_SUFFIX
+		// Otherwise, both factories will register the same URI > URI clash !!!
+		if (resourceCenter.retrieveName(contents).endsWith(DiagramResourceFactory.DIAGRAM_SUFFIX)) {
+			if (isContainedInDirectoryWithSuffix(resourceCenter, contents,
+					DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	@Override
+	public <I> boolean isFolderIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
+		if (resourceCenter.isDirectory(contents)) {
+			if (isContainedInDirectoryWithSuffix(resourceCenter, contents,
+					DiagramSpecificationResourceFactory.DIAGRAM_SPECIFICATION_SUFFIX)) {
+				return true;
+			}
+		}
 		return false;
 	}
 

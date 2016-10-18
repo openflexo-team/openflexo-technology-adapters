@@ -21,7 +21,6 @@
 package org.openflexo.technologyadapter.docx;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.FMLModelFactory;
@@ -353,12 +352,12 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(DocXDocumentResourceFactory.class);
 	}
 
-	@Override
+	/*@Override
 	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
 		super.foundFolder(resourceCenter, folder);
 		if (resourceCenter.isDirectory(folder)) {
 			getDocXDocumentRepository(resourceCenter).getRepositoryFolder(folder, true);
 		}
-	}
+	}*/
 
 }

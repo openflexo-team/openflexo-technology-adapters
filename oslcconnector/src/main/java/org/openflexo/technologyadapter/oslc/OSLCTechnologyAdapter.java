@@ -38,7 +38,6 @@
 
 package org.openflexo.technologyadapter.oslc;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
@@ -226,12 +225,12 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 		return "OSLC";
 	}
 
-	@Override
+	/*@Override
 	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
 		super.foundFolder(resourceCenter, folder);
 		if (resourceCenter.isDirectory(folder)) {
 			getOSLCRepository(resourceCenter).getRepositoryFolder(folder, true);
 		}
-	}
+	}*/
 
 }

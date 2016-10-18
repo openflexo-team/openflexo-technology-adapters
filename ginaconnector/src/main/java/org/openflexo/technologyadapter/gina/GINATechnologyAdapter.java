@@ -20,7 +20,6 @@
 
 package org.openflexo.technologyadapter.gina;
 
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.annotations.DeclareModelSlots;
@@ -198,12 +197,12 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(GINAFIBComponentResourceFactory.class);
 	}
 
-	@Override
+	/*@Override
 	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
 		super.foundFolder(resourceCenter, folder);
 		if (resourceCenter.isDirectory(folder)) {
 			getGINAResourceRepository(resourceCenter).getRepositoryFolder(folder, true);
 		}
-	}
+	}*/
 
 }

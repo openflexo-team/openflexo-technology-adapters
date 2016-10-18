@@ -21,7 +21,6 @@
 package org.openflexo.technologyadapter.pdf;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.FlexoProject;
@@ -329,12 +328,12 @@ public class PDFTechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(PDFDocumentResourceFactory.class);
 	}
 
-	@Override
+	/*@Override
 	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
 		super.foundFolder(resourceCenter, folder);
 		if (resourceCenter.isDirectory(folder)) {
 			getPDFDocumentRepository(resourceCenter).getRepositoryFolder(folder, true);
 		}
-	}
+	}*/
 
 }

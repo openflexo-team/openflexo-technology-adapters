@@ -39,7 +39,6 @@
 package org.openflexo.technologyadapter.xml;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -488,13 +487,13 @@ public class XMLTechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(XSDMetaModelResourceFactory.class);
 	}
 
-	@Override
+	/*@Override
 	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
 		super.foundFolder(resourceCenter, folder);
 		if (resourceCenter.isDirectory(folder)) {
 			getXMLModelRepository(resourceCenter).getRepositoryFolder(folder, true);
 			getXSDMetaModelRepository(resourceCenter).getRepositoryFolder(folder, true);
 		}
-	}
+	}*/
 
 }
