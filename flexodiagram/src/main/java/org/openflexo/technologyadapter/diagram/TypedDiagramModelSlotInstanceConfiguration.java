@@ -68,13 +68,11 @@ public class TypedDiagramModelSlotInstanceConfiguration
 	public void setOption(
 			org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration.ModelSlotInstanceConfigurationOption option) {
 		if (option == DefaultModelSlotInstanceConfigurationOption.CreatePrivateNewModel) {
-			setModelUri(null);
+			setTargetResourceCenter(this.getResourceCenter());
 			setRelativePath("/Diagram/");
 			setFilename("myDiagram" + DiagramResourceFactory.DIAGRAM_SUFFIX);
 		}
 		else if (option == DefaultModelSlotInstanceConfigurationOption.CreateSharedNewModel) {
-			this.setResourceCenter(resourceCenter);
-			setModelUri(null);
 			setRelativePath("/Diagram/");
 			setFilename("myDiagram" + DiagramResourceFactory.DIAGRAM_SUFFIX);
 		}
@@ -88,18 +86,30 @@ public class TypedDiagramModelSlotInstanceConfiguration
 	}
 
 	@Override
-	// TODO => Fix tooling for creating new models
 	public String getModelUri() {
 		DiagramTechnologyAdapter ta = (DiagramTechnologyAdapter) getModelSlot().getModelSlotTechnologyAdapter();
-		DiagramRepository<?> repository = ta.getDiagramRepository(getResourceCenter());
-		String generatedUri = repository.generateURI(getFilename());
+		DiagramRepository<?> repository;
+		if (getTargetResourceCenter() != null) {
+			repository = ta.getDiagramRepository(getTargetResourceCenter());
+		}
+		else {
+			repository = ta.getDiagramRepository(getResourceCenter());
+		}
+		String generatedUri = null;
 		if (repository != null) {
+			generatedUri = repository.generateURI(getFilename());
 			while (repository.getResource(generatedUri) != null) {
 				generatedUri = repository.generateURI(getFilename());
 			}
-		}
+			if (generatedUri != modelUri) {
+				modelUri = generatedUri;
+				getPropertyChangeSupport().firePropertyChange("modelUri", null, generatedUri);
+			}
 
-		return generatedUri;
+			return generatedUri;
+		}
+		return super.getModelUri();
+
 	}
 
 	@Override
