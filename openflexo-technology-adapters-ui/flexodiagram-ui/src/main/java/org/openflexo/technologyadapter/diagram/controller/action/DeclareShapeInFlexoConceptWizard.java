@@ -113,7 +113,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 	}
 
 	@Override
-	public ConfigureCreateNewFlexoConceptFromShapeStep<?> chooseNewFlexoConcept() {
+	public ConfigureCreateNewFlexoConceptFromShapeStep<?> configureConceptCreationStrategy() {
 		if (getAction().getFlexoConceptCreationStrategy() instanceof MapShapeToFlexoConceptlnstanceStrategy) {
 			return new ConfigureMapShapeToFlexoConceptlnstanceStep(
 					(MapShapeToFlexoConceptlnstanceStrategy) getAction().getFlexoConceptCreationStrategy());

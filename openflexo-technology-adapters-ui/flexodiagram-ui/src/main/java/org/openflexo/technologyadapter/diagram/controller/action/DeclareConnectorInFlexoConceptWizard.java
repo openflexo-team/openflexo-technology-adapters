@@ -114,7 +114,7 @@ public class DeclareConnectorInFlexoConceptWizard
 	}
 
 	@Override
-	public ConfigureCreateNewFlexoConceptFromConnectorStep<?> chooseNewFlexoConcept() {
+	public ConfigureCreateNewFlexoConceptFromConnectorStep<?> configureConceptCreationStrategy() {
 		if (getAction().getFlexoConceptCreationStrategy() instanceof MapConnectorToFlexoConceptlnstanceStrategy) {
 			return new ConfigureMapConnectorToFlexoConceptlnstanceStep(
 					(MapConnectorToFlexoConceptlnstanceStrategy) getAction().getFlexoConceptCreationStrategy());
