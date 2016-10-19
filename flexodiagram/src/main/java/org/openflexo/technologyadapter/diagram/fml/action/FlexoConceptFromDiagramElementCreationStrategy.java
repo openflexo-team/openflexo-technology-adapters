@@ -87,7 +87,7 @@ public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends D
 
 		newGraphicalElementRoles = new LinkedHashMap<DrawingObjectEntry, GraphicalElementRole<?, ?>>();
 
-		for (DrawingObjectEntry entry : getTransformationAction().drawingObjectEntries) {
+		for (DrawingObjectEntry entry : getTransformationAction().getDrawingObjectEntries()) {
 			if (entry.getSelectThis()) {
 				if (entry.graphicalObject instanceof DiagramShape) {
 					DiagramShape grShape = (DiagramShape) entry.graphicalObject;
@@ -103,7 +103,9 @@ public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends D
 						newShapeRole.setLabel(new DataBinding<String>("\"" + entry.graphicalObject.getName() + "\""));
 					}
 					// }
-					newShapeRole.setExampleLabel(grShape.getGraphicalRepresentation().getText());
+
+					// newShapeRole.setExampleLabel(grShape.getGraphicalRepresentation().getText());
+					newShapeRole.setExampleLabel(grShape.getName());
 					// We clone here the GR (fixed unfocusable GR bug)
 					newShapeRole.setGraphicalRepresentation((ShapeGraphicalRepresentation) grShape.getGraphicalRepresentation().clone());
 					// Forces GR to be displayed in view

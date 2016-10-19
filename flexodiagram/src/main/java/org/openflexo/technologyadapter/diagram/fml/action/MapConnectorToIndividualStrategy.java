@@ -305,4 +305,14 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 	
 	 */
 
+	@Override
+	public String getPresentationName() {
+		return "map_connector_to_individual";
+	}
+
+	@Override
+	public String getDescriptionKey() {
+		return "<html>build_a_new_concept_representing_an_individual</html>";
+	}
+
 }

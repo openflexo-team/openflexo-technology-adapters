@@ -305,4 +305,14 @@ public class MapShapeToIndividualStrategy extends FlexoConceptFromShapeCreationS
 	
 	 */
 
+	@Override
+	public String getPresentationName() {
+		return "map_shape_to_individual";
+	}
+
+	@Override
+	public String getDescriptionKey() {
+		return "<html>build_a_new_concept_representing_an_individual</html>";
+	}
+
 }

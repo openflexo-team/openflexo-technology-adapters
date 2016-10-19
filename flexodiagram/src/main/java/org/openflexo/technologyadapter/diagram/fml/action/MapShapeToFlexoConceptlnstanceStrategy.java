@@ -139,4 +139,15 @@ public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShap
 	public FlexoConceptInstanceRole getFlexoConceptInstanceRole() {
 		return flexoConceptInstanceRole;
 	}
+
+	@Override
+	public String getPresentationName() {
+		return "map_shape_to_flexo_concept_instance";
+	}
+
+	@Override
+	public String getDescriptionKey() {
+		return "<html>build_a_new_concept_representing_a_flexo_concept_instance</html>";
+	}
+
 }

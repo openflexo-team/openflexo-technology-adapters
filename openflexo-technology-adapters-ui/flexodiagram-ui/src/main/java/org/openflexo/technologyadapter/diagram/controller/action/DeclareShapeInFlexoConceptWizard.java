@@ -321,7 +321,8 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 				FlexoConcept oldValue = getTypeConcept();
 				getStrategy().setTypeConcept(typeConcept);
 				getPropertyChangeSupport().firePropertyChange("typeConcept", oldValue, typeConcept);
-				getPropertyChangeSupport().firePropertyChange("flexoConceptInstanceRoleName", null, getFlexoConceptName());
+				getPropertyChangeSupport().firePropertyChange("flexoConceptInstanceRoleName", null,
+						getAction().getFlexoConceptCreationStrategy().getFlexoConceptName());
 				checkValidity();
 			}
 		}

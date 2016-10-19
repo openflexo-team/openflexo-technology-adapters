@@ -38,13 +38,17 @@
 
 package org.openflexo.technologyadapter.diagram.controller.action;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.VirtualModel;
 import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.gina.annotation.FIBPanel;
+import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.action.DeclareDiagramElementInFlexoConcept;
+import org.openflexo.technologyadapter.diagram.fml.action.DeclareDiagramElementInFlexoConcept.DrawingObjectEntry;
 import org.openflexo.technologyadapter.diagram.fml.action.FlexoConceptFromDiagramElementCreationStrategy;
 import org.openflexo.technologyadapter.diagram.fml.action.GraphicalElementRoleCreationStrategy;
 import org.openflexo.technologyadapter.diagram.fml.action.GraphicalElementRoleSettingStrategy;
@@ -66,19 +70,6 @@ public abstract class AbstractDeclareDiagramElementInFlexoConceptWizard<A extend
 
 		public ConfigureCreateNewFlexoConceptFromDiagramElementStep(S strategy) {
 			super(strategy);
-		}
-
-		public String getFlexoConceptName() {
-			return getStrategy().getFlexoConceptName();
-		}
-
-		public void setFlexoConceptName(String flexoConceptName) {
-			if (!flexoConceptName.equals(getFlexoConceptName())) {
-				String oldValue = getFlexoConceptName();
-				getStrategy().setFlexoConceptName(flexoConceptName);
-				getPropertyChangeSupport().firePropertyChange("flexoConceptName", oldValue, flexoConceptName);
-				checkValidity();
-			}
 		}
 
 		public FlexoMetaModel<?> getAdressedFlexoMetaModel() {
@@ -128,6 +119,52 @@ public abstract class AbstractDeclareDiagramElementInFlexoConceptWizard<A extend
 
 		public VirtualModel getVirtualModel() {
 			return getAction().getVirtualModel();
+		}
+
+	}
+
+	@Override
+	public ChooseNewConceptCreationStrategy chooseNewConceptCreationStrategy() {
+		return new ChooseNewConceptCreationStrategy();
+	}
+
+	/**
+	 * This step is used to select new concept creation strategy
+	 * 
+	 * @author sylvain
+	 *
+	 */
+	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ChooseCreationStrategy.fib")
+	public class ChooseNewConceptCreationStrategy extends AbstractChooseNewConceptCreationStrategy {
+
+		public TypedDiagramModelSlot getDiagramModelSlot() {
+			return getAction().getDiagramModelSlot();
+		}
+
+		public void setDiagramModelSlot(TypedDiagramModelSlot modelSlot) {
+			if (modelSlot != getDiagramModelSlot()) {
+				TypedDiagramModelSlot oldValue = getDiagramModelSlot();
+				getAction().setDiagramModelSlot(modelSlot);
+				getPropertyChangeSupport().firePropertyChange("diagramModelSlot", oldValue, modelSlot);
+				checkValidity();
+			}
+		}
+
+		public List<TypedDiagramModelSlot> getAvailableDiagramModelSlots() {
+			return getAction().getVirtualModel().getModelSlots(TypedDiagramModelSlot.class);
+		}
+
+		public List<DrawingObjectEntry> getDrawingObjectEntries() {
+			return (List) getAction().getDrawingObjectEntries();
+		}
+
+		@Override
+		public boolean isValid() {
+			if (getDiagramModelSlot() == null) {
+				setIssueMessage(getAction().getLocales().localizedForKey("please_choose_a_diagram_model_slot"), IssueMessageType.ERROR);
+				return false;
+			}
+			return super.isValid();
 		}
 
 	}

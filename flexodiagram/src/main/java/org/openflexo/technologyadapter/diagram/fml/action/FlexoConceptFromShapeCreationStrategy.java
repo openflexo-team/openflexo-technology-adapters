@@ -143,6 +143,7 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 		// Create new drop scheme
 		newDropScheme = getTransformationAction().getFactory().newInstance(DropScheme.class);
 		newDropScheme.setName(getDropSchemeName());
+		newDropScheme.setControlGraph(getTransformationAction().getFactory().newEmptyControlGraph());
 
 		// Add new drop scheme
 		newFlexoConcept.addToFlexoBehaviours(newDropScheme);
@@ -170,9 +171,10 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 			if (graphicalElementRole instanceof ShapeRole) {
 				ShapeRole grFlexoRole = (ShapeRole) graphicalElementRole;
 				// Add shape action
-				AddShape newAddShape;
+				AddShape newAddShape = getTransformationAction().getFactory().newInstance(AddShape.class);
+				newAddShape.setModelSlot(getTransformationAction().getDiagramModelSlot());
 				AssignationAction<DiagramShape> assignationAction = getTransformationAction().getFactory()
-						.newAssignationAction(newAddShape = getTransformationAction().getFactory().newInstance(AddShape.class));
+						.newAssignationAction(newAddShape);
 				assignationAction.setAssignation(new DataBinding<Object>(graphicalElementRole.getRoleName()));
 
 				newDropScheme.getControlGraph().sequentiallyAppend(assignationAction);

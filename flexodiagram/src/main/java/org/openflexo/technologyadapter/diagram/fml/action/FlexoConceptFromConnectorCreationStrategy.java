@@ -196,6 +196,7 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 
 		newLinkScheme = getTransformationAction().getFactory().newInstance(LinkScheme.class);
 		newLinkScheme.setName(getLinkSchemeName());
+		newLinkScheme.setControlGraph(getTransformationAction().getFactory().newEmptyControlGraph());
 		newLinkScheme.setFromTargetFlexoConcept(fromFlexoConcept);
 		newLinkScheme.setToTargetFlexoConcept(toFlexoConcept);
 
