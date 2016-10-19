@@ -45,11 +45,15 @@ import org.openflexo.fml.controller.FMLFIBController;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.gina.model.FIBComponent;
 import org.openflexo.gina.view.GinaViewFactory;
+import org.openflexo.gina.view.widget.FIBCustomWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
+import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
+import org.openflexo.technologyadapter.diagram.gui.widget.DiagramEditorComponent;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
+import org.openflexo.view.controller.TechnologyAdapterControllerService;
 
 /**
  * Represents the controller of a FIBInspector (FIBComponent) in the context of FML
@@ -60,6 +64,9 @@ import org.openflexo.technologyadapter.diagram.model.Diagram;
 public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 
 	private static final Logger logger = FlexoLogger.getLogger(FMLControlledDiagramFMLFIBController.class.getPackage().getName());
+
+	private Diagram selectedDiagram;
+	private FMLControlledDiagramVirtualModelView moduleView;
 
 	public FMLControlledDiagramFMLFIBController(FIBComponent component, GinaViewFactory<?> viewFactory) {
 		super(component, viewFactory);
@@ -72,8 +79,6 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 		}
 		return null;
 	}
-
-	private Diagram selectedDiagram;
 
 	public Diagram getSelectedDiagram() {
 		return selectedDiagram;
@@ -88,7 +93,67 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 			Diagram oldValue = this.selectedDiagram;
 			this.selectedDiagram = selectedDiagram;
 			getPropertyChangeSupport().firePropertyChange("selectedDiagram", oldValue, selectedDiagram);
+
+			if (selectedDiagram != null && getModuleView() != null && getDiagramEditorComponent() != null) {
+				// getModuleView().getPerspective().setTopRightView(new JLabel("TopRight"));
+				// getModuleView().getPerspective().setMiddleRightView(new JLabel("MiddleRight"));
+				System.out.println("perspective=" + getModuleView().getPerspective());
+				System.out.println("diagramEditorWidget=" + getDiagramEditorWidget());
+				System.out.println("getDiagramEditorComponent=" + getDiagramEditorComponent());
+				System.out.println("getDiagramTechnologyAdapterController=" + getDiagramTechnologyAdapterController());
+				getModuleView().getPerspective().setMiddleRightView(getDiagramEditorComponent().getDiagramEditor().getPaletteView());
+				// getDiagramEditorComponent().getDiagramEditor().getPaletteView().setPreferredSize(new Dimension(200, 400));
+				getModuleView().getPerspective()
+						.setBottomRightView(getDiagramTechnologyAdapterController().getInspectors().getPanelGroup());
+				getDiagramTechnologyAdapterController().getInspectors().attachToEditor(getDiagramEditorComponent().getDiagramEditor());
+				System.out.println("donc:");
+				System.out.println("top right: " + getModuleView().getPerspective().getTopRightView());
+				System.out.println("middle right: " + getModuleView().getPerspective().getMiddleRightView());
+				System.out.println("bottom right: " + getModuleView().getPerspective().getBottomRightView());
+				getModuleView().revalidate();
+				getModuleView().repaint();
+			}
 		}
+
+		// Sets palette view of editor to be the top right view
+		// perspective.setTopRightView(previewComponent);
+
+		// getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(previewComponent.getPreviewController());
+		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(previewComponent.getPreviewController());
+
+		// perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
+
+		// controller.getControllerModel().setRightViewVisible(true);
+
+	}
+
+	public DiagramTechnologyAdapterController getDiagramTechnologyAdapterController() {
+		if (getFlexoController() != null) {
+			TechnologyAdapterControllerService tacService = getFlexoController().getApplicationContext()
+					.getTechnologyAdapterControllerService();
+			return tacService.getTechnologyAdapterController(DiagramTechnologyAdapterController.class);
+		}
+		return null;
+	}
+
+	public FIBCustomWidget<?, DiagramEditorComponent, Diagram> getDiagramEditorWidget() {
+		return (FIBCustomWidget<?, DiagramEditorComponent, Diagram>) viewForComponent("DiagramEditorComponent");
+	}
+
+	public DiagramEditorComponent getDiagramEditorComponent() {
+		FIBCustomWidget<?, DiagramEditorComponent, Diagram> diagramEditorWidget = getDiagramEditorWidget();
+		if (diagramEditorWidget != null) {
+			return diagramEditorWidget.getCustomComponent();
+		}
+		return null;
+	}
+
+	public FMLControlledDiagramVirtualModelView getModuleView() {
+		return moduleView;
+	}
+
+	public void setModuleView(FMLControlledDiagramVirtualModelView moduleView) {
+		this.moduleView = moduleView;
 	}
 
 	/*public void addCustomProperty(FlexoObject object) {

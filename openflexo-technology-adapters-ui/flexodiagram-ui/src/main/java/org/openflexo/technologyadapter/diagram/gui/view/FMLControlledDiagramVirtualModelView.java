@@ -77,24 +77,13 @@ public class FMLControlledDiagramVirtualModelView extends VirtualModelView {
 
 		System.out.println("getFIBController=" + getFIBController());
 
-		if (getFIBController() != null) {
-			if (getFIBController().getSelectedDiagram() == null) {
-				if (getFIBController().getDiagramSpecification(getRepresentedObject()) != null
-						&& getFIBController().getDiagramSpecification(getRepresentedObject()).getExampleDiagrams().size() > 0) {
-					getFIBController().setSelectedDiagram(
-							getFIBController().getDiagramSpecification(getRepresentedObject()).getExampleDiagrams().get(0));
-				}
-
-			}
-		}
-
 		// Sets palette view of editor to be the top right view
 		// perspective.setTopRightView(previewComponent);
 
 		// getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(previewComponent.getPreviewController());
 		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(previewComponent.getPreviewController());
 
-		perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
+		// perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
 
 		/*SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -104,10 +93,29 @@ public class FMLControlledDiagramVirtualModelView extends VirtualModelView {
 			}
 		});*/
 
-		controller.getControllerModel().setRightViewVisible(true);
+		System.out.println("*************** SHOW dans FMLControlledDiagramVirtualModelView");
+		System.out.println("top right: " + perspective.getTopRightView());
+		System.out.println("middle right: " + perspective.getMiddleRightView());
+		System.out.println("bottom right: " + perspective.getBottomRightView());
+
+		if (getFIBController() != null) {
+			getFIBController().setModuleView(this);
+			if (getFIBController().getSelectedDiagram() == null) {
+				if (getFIBController().getDiagramSpecification(getRepresentedObject()) != null
+						&& getFIBController().getDiagramSpecification(getRepresentedObject()).getExampleDiagrams().size() > 0) {
+					getFIBController().setSelectedDiagram(
+							getFIBController().getDiagramSpecification(getRepresentedObject()).getExampleDiagrams().get(0));
+				}
+
+			}
+			if (getFIBController().getSelectedDiagram() != null) {
+				controller.getControllerModel().setRightViewVisible(true);
+			}
+		}
 
 		revalidate();
 		repaint();
+
 	}
 
 	@Override

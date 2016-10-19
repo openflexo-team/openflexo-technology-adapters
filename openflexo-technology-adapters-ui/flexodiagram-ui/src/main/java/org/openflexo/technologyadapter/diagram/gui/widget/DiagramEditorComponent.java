@@ -68,6 +68,7 @@ import org.openflexo.view.controller.FlexoController;
  * @author sylvain
  *
  */
+@SuppressWarnings("serial")
 public class DiagramEditorComponent extends JPanel implements FIBCustomComponent<Diagram>, FIBSelectable<DiagramElement<?>> {
 
 	@SuppressWarnings("unused")

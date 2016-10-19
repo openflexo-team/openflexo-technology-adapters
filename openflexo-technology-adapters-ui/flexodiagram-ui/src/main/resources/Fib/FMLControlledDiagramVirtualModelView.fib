@@ -9,7 +9,7 @@
 		<Custom id="2" manageDynamicModel="true"
 			dataClassForComponent="org.openflexo.technologyadapter.diagram.model.Diagram"
 			componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.DiagramEditorComponent"
-			name="PreviewComponent" data="controller.selectedDiagram" index="0"
+			name="DiagramEditorComponent" data="controller.selectedDiagram" index="0"
 			localize="true"
 			constraints="split(index=0;location=top_right;splitIdentifier=top_right)">
 			<Assignment id="3" mandatory="true" value="controller.flexoController"
