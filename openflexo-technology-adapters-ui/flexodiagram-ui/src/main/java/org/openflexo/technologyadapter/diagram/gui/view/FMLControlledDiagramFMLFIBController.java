@@ -39,8 +39,13 @@
 
 package org.openflexo.technologyadapter.diagram.gui.view;
 
+import java.awt.Component;
 import java.util.logging.Logger;
 
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+
+import org.openflexo.fge.swing.view.JDrawingView;
 import org.openflexo.fml.controller.FMLFIBController;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.gina.model.FIBComponent;
@@ -49,6 +54,7 @@ import org.openflexo.gina.view.widget.FIBCustomWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
+import org.openflexo.technologyadapter.diagram.controller.diagrameditor.AbstractDiagramPalette;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.gui.widget.DiagramEditorComponent;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -91,8 +97,34 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 		if ((selectedDiagram == null && this.selectedDiagram != null)
 				|| (selectedDiagram != null && !selectedDiagram.equals(this.selectedDiagram))) {
 			Diagram oldValue = this.selectedDiagram;
+
+			System.out.println("On editait le diagramme " + oldValue);
+			System.out.println("DiagramEditor=" + getDiagramEditorComponent().getDiagramEditor());
+
 			this.selectedDiagram = selectedDiagram;
-			getPropertyChangeSupport().firePropertyChange("selectedDiagram", oldValue, selectedDiagram);
+			// getPropertyChangeSupport().firePropertyChange("selectedDiagram", oldValue, selectedDiagram);
+
+			System.out.println("On edite maintenant le diagramme " + selectedDiagram);
+			System.out.println("DiagramEditor=" + getDiagramEditorComponent().getDiagramEditor());
+
+			System.out.println("PaletteView was: " + getModuleView().getPerspective().getMiddleRightView());
+			if (getModuleView().getPerspective().getMiddleRightView() instanceof JTabbedPane) {
+				JTabbedPane tabbedPane = (JTabbedPane) getModuleView().getPerspective().getMiddleRightView();
+				for (int i = 0; i < tabbedPane.getComponentCount(); i++) {
+					Component tab = tabbedPane.getComponentAt(i);
+					if (tab instanceof JScrollPane) {
+						Component c = ((JScrollPane) tab).getViewport().getView();
+						System.out.println(" >> " + c + " of " + (c != null ? c.getClass() : "<null>"));
+						if (c instanceof JDrawingView) {
+							JDrawingView dv = (JDrawingView) c;
+							if (dv.getDrawable() instanceof AbstractDiagramPalette) {
+								AbstractDiagramPalette palette = (AbstractDiagramPalette) dv.getDrawable();
+								System.out.println("palette: " + palette + " editor=" + palette.getEditor());
+							}
+						}
+					}
+				}
+			}
 
 			if (selectedDiagram != null && getModuleView() != null && getDiagramEditorComponent() != null) {
 				// getModuleView().getPerspective().setTopRightView(new JLabel("TopRight"));
@@ -101,8 +133,39 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 				System.out.println("diagramEditorWidget=" + getDiagramEditorWidget());
 				System.out.println("getDiagramEditorComponent=" + getDiagramEditorComponent());
 				System.out.println("getDiagramTechnologyAdapterController=" + getDiagramTechnologyAdapterController());
+
+				getDiagramEditorComponent().setEditedObject(selectedDiagram);
+
+				/*if (oldValue != null) {
+					getModuleView().getPerspective().setMiddleRightView(new JLabel("Un autre diagramme"));
+				}
+				else {*/
+				// getModuleView().getPerspective().setMiddleRightView(new JLabel("Premier diagramme"));
 				getModuleView().getPerspective().setMiddleRightView(getDiagramEditorComponent().getDiagramEditor().getPaletteView());
+				// }
 				// getDiagramEditorComponent().getDiagramEditor().getPaletteView().setPreferredSize(new Dimension(200, 400));
+				System.out.println("PaletteView is now: " + getModuleView().getPerspective().getMiddleRightView());
+				if (getModuleView().getPerspective().getMiddleRightView() instanceof JTabbedPane) {
+					JTabbedPane tabbedPane = (JTabbedPane) getModuleView().getPerspective().getMiddleRightView();
+					for (int i = 0; i < tabbedPane.getComponentCount(); i++) {
+						Component tab = tabbedPane.getComponentAt(i);
+						if (tab instanceof JScrollPane) {
+							Component c = ((JScrollPane) tab).getViewport().getView();
+							System.out.println(" >> " + c + " of " + (c != null ? c.getClass() : "<null>"));
+							if (c instanceof JDrawingView) {
+								JDrawingView dv = (JDrawingView) c;
+								if (dv.getDrawable() instanceof AbstractDiagramPalette) {
+									AbstractDiagramPalette palette = (AbstractDiagramPalette) dv.getDrawable();
+									System.out.println("palette: " + palette + " editor=" + palette.getEditor());
+								}
+							}
+						}
+					}
+				}
+
+				getDiagramEditorComponent().getDiagramEditor().getCommonPalette()
+						.attachToEditor(getDiagramEditorComponent().getDiagramEditor());
+
 				getModuleView().getPerspective()
 						.setBottomRightView(getDiagramTechnologyAdapterController().getInspectors().getPanelGroup());
 				getDiagramTechnologyAdapterController().getInspectors().attachToEditor(getDiagramEditorComponent().getDiagramEditor());
@@ -113,6 +176,7 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 				getModuleView().revalidate();
 				getModuleView().repaint();
 			}
+
 		}
 
 		// Sets palette view of editor to be the top right view
@@ -154,6 +218,23 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 
 	public void setModuleView(FMLControlledDiagramVirtualModelView moduleView) {
 		this.moduleView = moduleView;
+	}
+
+	@Override
+	public void singleClick(Object object) {
+		System.out.println("singleClick with " + object);
+		super.singleClick(object);
+	}
+
+	@Override
+	public void doubleClick(Object object) {
+		System.out.println("doubleClick with " + object);
+		if (object instanceof Diagram) {
+			setSelectedDiagram((Diagram) object);
+		}
+		else {
+			super.doubleClick(object);
+		}
 	}
 
 	/*public void addCustomProperty(FlexoObject object) {

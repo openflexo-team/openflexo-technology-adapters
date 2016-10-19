@@ -114,6 +114,9 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 
 	@Override
 	public void setEditedObject(Diagram object) {
+
+		logger.info("************************** setEditedObject with " + object);
+
 		if (object != diagram) {
 			logger.fine("DiagramEditorComponent: setEditedObject: " + object);
 			diagram = object;
@@ -121,6 +124,7 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 				if (diagramEditor.getDrawingView() != null) {
 					remove(diagramEditor.getDrawingView());
 				}
+				removeAll();
 				diagramEditor.delete();
 				diagramEditor = null;
 			}
