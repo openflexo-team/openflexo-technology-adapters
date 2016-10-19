@@ -100,29 +100,50 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 			Diagram oldDiagram = this.selectedDiagram;
 			this.selectedDiagram = selectedDiagram;
 
-			if (selectedDiagram != null && getModuleView() != null && getDiagramEditorComponent() != null) {
-
+			updateModuleViewTooling();
+			/*if (selectedDiagram != null && getModuleView() != null && getDiagramEditorComponent() != null) {
+			
 				// We "tell" diagram editor component that the diagram has changed
 				// This component will then display the "right" diagram
 				getDiagramEditorComponent().setEditedObject(selectedDiagram);
-
+			
 				// We set new palette view
-				getModuleView().getPerspective().setMiddleRightView(getDiagramEditorComponent().getDiagramEditor().getPaletteView());
-
+				getModuleView().getPerspective().setTopRightView(getDiagramEditorComponent().getDiagramEditor().getPaletteView());
+			
 				// getDiagramEditorComponent().getDiagramEditor().getCommonPalette()
 				// .attachToEditor(getDiagramEditorComponent().getDiagramEditor());
-
+			
 				// We also set inspectors, and attach them to new new editor
 				getModuleView().getPerspective()
 						.setBottomRightView(getDiagramTechnologyAdapterController().getInspectors().getPanelGroup());
 				getDiagramTechnologyAdapterController().getInspectors().attachToEditor(getDiagramEditorComponent().getDiagramEditor());
-
+			
 				getModuleView().revalidate();
 				getModuleView().repaint();
-			}
-
+			}*/
 		}
+	}
 
+	protected void updateModuleViewTooling() {
+		if (selectedDiagram != null && getModuleView() != null && getDiagramEditorComponent() != null) {
+
+			// We "tell" diagram editor component that the diagram has changed
+			// This component will then display the "right" diagram
+			getDiagramEditorComponent().setEditedObject(selectedDiagram);
+
+			// We set new palette view
+			getModuleView().getPerspective().setTopRightView(getDiagramEditorComponent().getDiagramEditor().getPaletteView());
+
+			// getDiagramEditorComponent().getDiagramEditor().getCommonPalette()
+			// .attachToEditor(getDiagramEditorComponent().getDiagramEditor());
+
+			// We also set inspectors, and attach them to new new editor
+			getModuleView().getPerspective().setBottomRightView(getDiagramTechnologyAdapterController().getInspectors().getPanelGroup());
+			getDiagramTechnologyAdapterController().getInspectors().attachToEditor(getDiagramEditorComponent().getDiagramEditor());
+
+			getModuleView().revalidate();
+			getModuleView().repaint();
+		}
 	}
 
 	public DiagramTechnologyAdapterController getDiagramTechnologyAdapterController() {

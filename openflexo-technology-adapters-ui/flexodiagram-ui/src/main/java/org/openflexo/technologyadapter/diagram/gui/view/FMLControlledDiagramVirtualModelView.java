@@ -111,6 +111,7 @@ public class FMLControlledDiagramVirtualModelView extends VirtualModelView {
 			if (getFIBController().getSelectedDiagram() != null) {
 				controller.getControllerModel().setRightViewVisible(true);
 			}
+			getFIBController().updateModuleViewTooling();
 		}
 
 		revalidate();
