@@ -47,14 +47,15 @@ import org.openflexo.foundation.doc.FlexoDocFragment.FragmentConsistencyExceptio
 import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.task.FlexoTask;
 import org.openflexo.model.StringConverterLibrary.Converter;
 import org.openflexo.model.factory.ModelFactory;
 import org.openflexo.technologyadapter.docx.DocXTechnologyAdapter;
 
 public class DocXFragmentConverter extends Converter<DocXFragment> {
 
-	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger
-			.getLogger(DocXFragmentConverter.class.getPackage().getName());
+	private static final java.util.logging.Logger logger = org.openflexo.logging.FlexoLogger.getLogger(DocXFragmentConverter.class
+			.getPackage().getName());
 
 	private FlexoServiceManager serviceManager;
 
@@ -87,11 +88,15 @@ public class DocXFragmentConverter extends Converter<DocXFragment> {
 			FlexoResource<DocXDocument> documentResource = null;
 
 			if (serviceManager != null) {
+				activateDocXTechnologyAdapter();
 				documentResource = serviceManager.getResourceManager().getResource(documentURI, null, DocXDocument.class);
+
 			}
 			if (factory instanceof FMLModelFactory) {
-				documentResource = ((FMLModelFactory) factory).getServiceManager().getResourceManager().getResource(documentURI, null,
-						DocXDocument.class);
+				serviceManager = ((FMLModelFactory) factory).getServiceManager();
+				activateDocXTechnologyAdapter();
+				documentResource = ((FMLModelFactory) factory).getServiceManager().getResourceManager()
+						.getResource(documentURI, null, DocXDocument.class);
 			}
 
 			if (documentResource != null) {
@@ -141,5 +146,16 @@ public class DocXFragmentConverter extends Converter<DocXFragment> {
 		sb.append(":" + fragment.getStartElement().getIdentifier());
 		sb.append(":" + fragment.getEndElement().getIdentifier());
 		return sb.toString();
+	}
+
+	/**
+	 * Activate the Docx technology adapter in order to retrieve docx resources. Wait until the docx technology adapter is activated.
+	 */
+	private void activateDocXTechnologyAdapter() {
+		FlexoTask activateDocX = serviceManager.activateTechnologyAdapter(serviceManager.getTechnologyAdapterService()
+				.getTechnologyAdapter(DocXTechnologyAdapter.class));
+		if (activateDocX != null) {
+			serviceManager.getTaskManager().waitTask(activateDocX);
+		}
 	}
 }
