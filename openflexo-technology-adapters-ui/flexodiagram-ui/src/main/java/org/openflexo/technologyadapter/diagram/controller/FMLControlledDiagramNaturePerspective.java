@@ -52,7 +52,7 @@ import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramViewPoint
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelInstanceNature;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
 import org.openflexo.technologyadapter.diagram.gui.view.DiagramFlexoConceptView;
-import org.openflexo.technologyadapter.diagram.gui.view.DiagramVirtualModelView;
+import org.openflexo.technologyadapter.diagram.gui.view.FMLControlledDiagramVirtualModelView;
 import org.openflexo.view.ModuleView;
 import org.openflexo.view.controller.FMLNaturePerspective;
 import org.openflexo.view.controller.FlexoController;
@@ -102,7 +102,7 @@ public class FMLControlledDiagramNaturePerspective extends FMLNaturePerspective 
 
 	@Override
 	protected ModuleView<VirtualModel> createModuleViewForVirtualModel(VirtualModel virtualModel) {
-		return new DiagramVirtualModelView(virtualModel, getController(), this);
+		return new FMLControlledDiagramVirtualModelView(virtualModel, getController(), this);
 	}
 
 	@Override

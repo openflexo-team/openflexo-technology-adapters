@@ -52,12 +52,12 @@ import org.openflexo.view.controller.model.FlexoPerspective;
  * @author sguerin
  * 
  */
-public class DiagramVirtualModelView extends VirtualModelView {
+public class FMLControlledDiagramVirtualModelView extends VirtualModelView {
 
 	// private final FlexoConceptPreviewComponent previewComponent;
 
-	public DiagramVirtualModelView(VirtualModel virtualModel, FlexoController controller, FlexoPerspective perspective) {
-		super(virtualModel, DiagramCst.FML_CONTROLLED_VIRTUAL_MODEL_VIEW_FIB, controller, perspective);
+	public FMLControlledDiagramVirtualModelView(VirtualModel virtualModel, FlexoController controller, FlexoPerspective perspective) {
+		super(virtualModel, DiagramCst.FML_CONTROLLED_DIAGRAM_VIRTUAL_MODEL_VIEW_FIB, controller, perspective);
 		// previewComponent = new FlexoConceptPreviewComponent(flexoConcept);
 		// previewComponent.setSelectionManager(controller.getSelectionManager());
 	}
@@ -68,7 +68,25 @@ public class DiagramVirtualModelView extends VirtualModelView {
 	}
 
 	@Override
+	public FMLControlledDiagramFMLFIBController getFIBController() {
+		return (FMLControlledDiagramFMLFIBController) super.getFIBController();
+	}
+
+	@Override
 	public void show(final FlexoController controller, FlexoPerspective perspective) {
+
+		System.out.println("getFIBController=" + getFIBController());
+
+		if (getFIBController() != null) {
+			if (getFIBController().getSelectedDiagram() == null) {
+				if (getFIBController().getDiagramSpecification(getRepresentedObject()) != null
+						&& getFIBController().getDiagramSpecification(getRepresentedObject()).getExampleDiagrams().size() > 0) {
+					getFIBController().setSelectedDiagram(
+							getFIBController().getDiagramSpecification(getRepresentedObject()).getExampleDiagrams().get(0));
+				}
+
+			}
+		}
 
 		// Sets palette view of editor to be the top right view
 		// perspective.setTopRightView(previewComponent);
