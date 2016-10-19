@@ -299,6 +299,12 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 			return getAction().getLocales().localizedForKey("create_new_flexo_concept_where_shape_is_mapped_to_a_flexo_concept_instance");
 		}
 
+		@Override
+		public boolean isValid() {
+			// TODO Auto-generated method stub
+			return super.isValid();
+		}
+
 		public String getFlexoConceptInstanceRoleName() {
 			return getStrategy().getFlexoConceptInstanceRoleName();
 		}
@@ -327,11 +333,11 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 			}
 		}
 
-		@Override
+		/*@Override
 		public void setModelSlot(ModelSlot<?> modelSlot) {
 			super.setModelSlot(modelSlot);
 			getPropertyChangeSupport().firePropertyChange("typeConcept", null, getTypeConcept());
-		}
+		}*/
 
 	}
 

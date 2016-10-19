@@ -283,6 +283,33 @@ public class DeclareConnectorInFlexoConceptWizard
 		public ConfigureCreateNewFlexoConceptFromConnectorStep(S strategy) {
 			super(strategy);
 		}
+
+		public FlexoConcept getFromFlexoConcept() {
+			return getStrategy().getFromFlexoConcept();
+		}
+
+		public void setFromFlexoConcept(FlexoConcept fromFlexoConcept) {
+			if (fromFlexoConcept != getFromFlexoConcept()) {
+				FlexoConcept oldValue = getFromFlexoConcept();
+				getStrategy().setFromFlexoConcept(fromFlexoConcept);
+				getPropertyChangeSupport().firePropertyChange("fromFlexoConcept", oldValue, fromFlexoConcept);
+				checkValidity();
+			}
+		}
+
+		public FlexoConcept getToFlexoConcept() {
+			return getStrategy().getToFlexoConcept();
+		}
+
+		public void setToFlexoConcept(FlexoConcept toFlexoConcept) {
+			if (toFlexoConcept != getToFlexoConcept()) {
+				FlexoConcept oldValue = getToFlexoConcept();
+				getStrategy().setToFlexoConcept(toFlexoConcept);
+				getPropertyChangeSupport().firePropertyChange("toFlexoConcept", oldValue, toFlexoConcept);
+				checkValidity();
+			}
+		}
+
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapConnectorToFlexoConceptlnstanceStep.fib")
@@ -332,11 +359,11 @@ public class DeclareConnectorInFlexoConceptWizard
 			}
 		}
 
-		@Override
+		/*@Override
 		public void setModelSlot(ModelSlot<?> modelSlot) {
 			super.setModelSlot(modelSlot);
 			getPropertyChangeSupport().firePropertyChange("typeConcept", null, getTypeConcept());
-		}
+		}*/
 
 	}
 

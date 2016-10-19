@@ -38,24 +38,39 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
+import java.lang.reflect.Type;
+
+import org.apache.commons.lang3.StringUtils;
+import org.openflexo.connie.Bindable;
+import org.openflexo.connie.BindingFactory;
+import org.openflexo.connie.BindingModel;
+import org.openflexo.connie.DataBinding;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
+import org.openflexo.foundation.fml.FMLModelFactory;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.FlexoConceptInstanceRole;
+import org.openflexo.foundation.fml.VirtualModelInstanceType;
+import org.openflexo.foundation.fml.editionaction.AssignationAction;
+import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.FMLRTModelSlot;
+import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.fml.rt.editionaction.AddFlexoConceptInstance;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.toolbox.JavaUtils;
 
 /**
  * Encodes a {@link FlexoConcept} creation strategy, using a {@link DiagramShape}<br>
- * We create a new {@link FlexoConcept} implementing the mapping between some diagram elements and a single individual
+ * We create a new {@link FlexoConcept} implementing the mapping between some diagram elements and a single {@link FlexoConceptInstance}
  * 
  * @author sylvain
  *
  */
-public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShapeCreationStrategy {
+public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShapeCreationStrategy implements Bindable {
 
-	private static final String NO_FML_RT_MODEL_SLOT_DEFINED = "please_select_a_valid_model_slot";
-	private static final String NO_CONCEPT_DEFINED = "no_concept_defined_as_type_of_flexo_concept_instance";
+	private static final String NO_CONCEPT_DEFINED = "please_select_a_valid_flexo_concept";
+	private static final String NO_ROLE_NAME = "please_enter_a_valid_role_name";
 
 	private FlexoConcept typeConcept;
 	private String flexoConceptInstanceRoleName;
@@ -84,6 +99,36 @@ public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShap
 		}
 	}
 
+	private DataBinding<AbstractVirtualModelInstance> virtualModelInstance;
+
+	public DataBinding<AbstractVirtualModelInstance> getVirtualModelInstance() {
+		if (virtualModelInstance == null) {
+			virtualModelInstance = new DataBinding<>(this, AbstractVirtualModelInstance.class, DataBinding.BindingDefinitionType.GET);
+			virtualModelInstance.setBindingName("virtualModelInstance");
+		}
+		return virtualModelInstance;
+	}
+
+	public void setVirtualModelInstance(DataBinding<AbstractVirtualModelInstance> aVirtualModelInstance) {
+		if (aVirtualModelInstance != null) {
+			aVirtualModelInstance.setOwner(this);
+			aVirtualModelInstance.setBindingName("virtualModelInstance");
+			aVirtualModelInstance.setDeclaredType(AbstractVirtualModelInstance.class);
+			aVirtualModelInstance.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+		}
+		this.virtualModelInstance = aVirtualModelInstance;
+	}
+
+	public AbstractVirtualModel<?> getVirtualModelType() {
+		if (getVirtualModelInstance().isSet() && getVirtualModelInstance().isValid()) {
+			Type type = getVirtualModelInstance().getAnalyzedType();
+			if (type instanceof VirtualModelInstanceType) {
+				return ((VirtualModelInstanceType) type).getVirtualModel();
+			}
+		}
+		return null;
+	}
+
 	public FlexoConcept getTypeConcept() {
 		return typeConcept;
 	}
@@ -101,6 +146,7 @@ public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShap
 	 * 
 	 * @return
 	 */
+	@Deprecated
 	public boolean isVirtualModelModelSlot() {
 		return (getTransformationAction() != null && getTransformationAction().isVirtualModelModelSlot());
 	}
@@ -110,12 +156,12 @@ public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShap
 		if (!super.isValid()) {
 			return false;
 		}
-		if (!isVirtualModelModelSlot()) {
-			setIssueMessage(getLocales().localizedForKey(NO_FML_RT_MODEL_SLOT_DEFINED), IssueMessageType.ERROR);
-			return false;
-		}
 		if (getTypeConcept() == null) {
 			setIssueMessage(getLocales().localizedForKey(NO_CONCEPT_DEFINED), IssueMessageType.ERROR);
+			return false;
+		}
+		if (StringUtils.isEmpty(getFlexoConceptInstanceRoleName())) {
+			setIssueMessage(getLocales().localizedForKey(NO_ROLE_NAME), IssueMessageType.ERROR);
 			return false;
 		}
 		return true;
@@ -125,15 +171,34 @@ public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShap
 	public FlexoConcept performStrategy() {
 		FlexoConcept newFlexoConcept = super.performStrategy();
 
-		if (isVirtualModelModelSlot()) {
-
-			FMLRTModelSlot virtualModelModelSlot = (FMLRTModelSlot) getTransformationAction().getInformationSourceModelSlot();
-			flexoConceptInstanceRole = virtualModelModelSlot.makeFlexoConceptInstanceRole(getTypeConcept());
-			flexoConceptInstanceRole.setRoleName(getFlexoConceptInstanceRoleName());
-			newFlexoConcept.addToFlexoProperties(flexoConceptInstanceRole);
-		}
+		FMLModelFactory factory = getTransformationAction().getFactory();
+		flexoConceptInstanceRole = factory.newInstance(FlexoConceptInstanceRole.class);
+		flexoConceptInstanceRole.setRoleName(getFlexoConceptInstanceRoleName());
+		flexoConceptInstanceRole
+				.setVirtualModelInstance(new DataBinding<AbstractVirtualModelInstance<?, ?>>(getVirtualModelInstance().toString()));
+		flexoConceptInstanceRole.setFlexoConceptType(getTypeConcept());
+		newFlexoConcept.addToFlexoProperties(flexoConceptInstanceRole);
 
 		return getNewFlexoConcept();
+	}
+
+	@Override
+	protected void initializeDropScheme(DropScheme newDropScheme) {
+		super.initializeDropScheme(newDropScheme);
+
+		// AddFlexoConceptInstance action
+		AddFlexoConceptInstance<?> newAddFCI = getTransformationAction().getFactory().newInstance(AddFlexoConceptInstance.class);
+		newAddFCI.setVirtualModelInstance(new DataBinding(getVirtualModelInstance().toString()));
+		newAddFCI.setFlexoConceptType(getTypeConcept());
+		if (getTypeConcept() != null && getTypeConcept().getCreationSchemes().size() > 0) {
+			newAddFCI.setCreationScheme(getTypeConcept().getCreationSchemes().get(0));
+		}
+
+		AssignationAction<FlexoConceptInstance> assignationAction = getTransformationAction().getFactory().newAssignationAction(newAddFCI);
+		assignationAction.setAssignation(new DataBinding<Object>(getFlexoConceptInstanceRoleName()));
+
+		newDropScheme.getControlGraph().sequentiallyAppend(assignationAction);
+
 	}
 
 	public FlexoConceptInstanceRole getFlexoConceptInstanceRole() {
@@ -148,6 +213,29 @@ public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShap
 	@Override
 	public String getDescriptionKey() {
 		return "<html>build_a_new_concept_representing_a_flexo_concept_instance</html>";
+	}
+
+	@Override
+	public BindingModel getBindingModel() {
+		return getTransformationAction().getVirtualModel().getBindingModel();
+	}
+
+	@Override
+	public BindingFactory getBindingFactory() {
+		return getTransformationAction().getVirtualModel().getBindingFactory();
+	}
+
+	@Override
+	public void notifiedBindingChanged(DataBinding<?> dataBinding) {
+		if (dataBinding == virtualModelInstance) {
+			getPropertyChangeSupport().firePropertyChange("virtualModelInstance", null, getVirtualModelInstance());
+			getPropertyChangeSupport().firePropertyChange("virtualModelType", null, getVirtualModelType());
+		}
+	}
+
+	@Override
+	public void notifiedBindingDecoded(DataBinding<?> dataBinding) {
+		// TODO Auto-generated method stub
 	}
 
 }

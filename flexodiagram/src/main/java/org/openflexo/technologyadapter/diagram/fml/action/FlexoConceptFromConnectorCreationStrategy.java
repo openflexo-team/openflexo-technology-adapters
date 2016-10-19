@@ -200,6 +200,9 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 		newLinkScheme.setFromTargetFlexoConcept(fromFlexoConcept);
 		newLinkScheme.setToTargetFlexoConcept(toFlexoConcept);
 
+		// Add new link scheme
+		newFlexoConcept.addToFlexoBehaviours(newLinkScheme);
+
 		initializeLinkScheme(newLinkScheme);
 
 		return newFlexoConcept;
@@ -212,10 +215,10 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 			ConnectorRole newConnectorRole = (ConnectorRole) primaryRepresentationRole;
 
 			// Add connector action
-			AddConnector newAddConnector;
+			AddConnector newAddConnector = getTransformationAction().getFactory().newInstance(AddConnector.class);
+			newAddConnector.setModelSlot(getTransformationAction().getDiagramModelSlot());
 			AssignationAction<DiagramConnector> assignationAction = getTransformationAction().getFactory()
-					.newAssignationAction(newAddConnector = getTransformationAction().getFactory().newInstance(AddConnector.class));
-			// AddConnector newAddConnector = getFactory().newInstance(AddConnector.class);
+					.newAssignationAction(newAddConnector);
 			assignationAction.setAssignation(new DataBinding<Object>(newConnectorRole.getRoleName()));
 			ShapeRole fromPatternRole = null;
 			ShapeRole toPatternRole = null;
