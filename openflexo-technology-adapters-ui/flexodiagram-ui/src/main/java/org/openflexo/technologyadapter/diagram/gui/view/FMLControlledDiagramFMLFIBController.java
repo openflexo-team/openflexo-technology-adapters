@@ -39,13 +39,8 @@
 
 package org.openflexo.technologyadapter.diagram.gui.view;
 
-import java.awt.Component;
 import java.util.logging.Logger;
 
-import javax.swing.JScrollPane;
-import javax.swing.JTabbedPane;
-
-import org.openflexo.fge.swing.view.JDrawingView;
 import org.openflexo.fml.controller.FMLFIBController;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.gina.model.FIBComponent;
@@ -54,8 +49,9 @@ import org.openflexo.gina.view.widget.FIBCustomWidget;
 import org.openflexo.logging.FlexoLogger;
 import org.openflexo.technologyadapter.diagram.TypedDiagramModelSlot;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.AbstractDiagramPalette;
 import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualModelNature;
+import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
+import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagram;
 import org.openflexo.technologyadapter.diagram.gui.widget.DiagramEditorComponent;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
@@ -90,104 +86,42 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 		return selectedDiagram;
 	}
 
+	/**
+	 * Called to select a new example diagram Tricky method: modify with caution
+	 * 
+	 * @param selectedDiagram
+	 */
 	public void setSelectedDiagram(Diagram selectedDiagram) {
 
-		System.out.println("Hop, on selectionne le diagramme: " + selectedDiagram);
+		System.out.println("Select diagram: " + selectedDiagram);
 
 		if ((selectedDiagram == null && this.selectedDiagram != null)
 				|| (selectedDiagram != null && !selectedDiagram.equals(this.selectedDiagram))) {
-			Diagram oldValue = this.selectedDiagram;
-
-			System.out.println("On editait le diagramme " + oldValue);
-			System.out.println("DiagramEditor=" + getDiagramEditorComponent().getDiagramEditor());
-
+			Diagram oldDiagram = this.selectedDiagram;
 			this.selectedDiagram = selectedDiagram;
-			// getPropertyChangeSupport().firePropertyChange("selectedDiagram", oldValue, selectedDiagram);
-
-			System.out.println("On edite maintenant le diagramme " + selectedDiagram);
-			System.out.println("DiagramEditor=" + getDiagramEditorComponent().getDiagramEditor());
-
-			System.out.println("PaletteView was: " + getModuleView().getPerspective().getMiddleRightView());
-			if (getModuleView().getPerspective().getMiddleRightView() instanceof JTabbedPane) {
-				JTabbedPane tabbedPane = (JTabbedPane) getModuleView().getPerspective().getMiddleRightView();
-				for (int i = 0; i < tabbedPane.getComponentCount(); i++) {
-					Component tab = tabbedPane.getComponentAt(i);
-					if (tab instanceof JScrollPane) {
-						Component c = ((JScrollPane) tab).getViewport().getView();
-						System.out.println(" >> " + c + " of " + (c != null ? c.getClass() : "<null>"));
-						if (c instanceof JDrawingView) {
-							JDrawingView dv = (JDrawingView) c;
-							if (dv.getDrawable() instanceof AbstractDiagramPalette) {
-								AbstractDiagramPalette palette = (AbstractDiagramPalette) dv.getDrawable();
-								System.out.println("palette: " + palette + " editor=" + palette.getEditor());
-							}
-						}
-					}
-				}
-			}
 
 			if (selectedDiagram != null && getModuleView() != null && getDiagramEditorComponent() != null) {
-				// getModuleView().getPerspective().setTopRightView(new JLabel("TopRight"));
-				// getModuleView().getPerspective().setMiddleRightView(new JLabel("MiddleRight"));
-				System.out.println("perspective=" + getModuleView().getPerspective());
-				System.out.println("diagramEditorWidget=" + getDiagramEditorWidget());
-				System.out.println("getDiagramEditorComponent=" + getDiagramEditorComponent());
-				System.out.println("getDiagramTechnologyAdapterController=" + getDiagramTechnologyAdapterController());
 
+				// We "tell" diagram editor component that the diagram has changed
+				// This component will then display the "right" diagram
 				getDiagramEditorComponent().setEditedObject(selectedDiagram);
 
-				/*if (oldValue != null) {
-					getModuleView().getPerspective().setMiddleRightView(new JLabel("Un autre diagramme"));
-				}
-				else {*/
-				// getModuleView().getPerspective().setMiddleRightView(new JLabel("Premier diagramme"));
+				// We set new palette view
 				getModuleView().getPerspective().setMiddleRightView(getDiagramEditorComponent().getDiagramEditor().getPaletteView());
-				// }
-				// getDiagramEditorComponent().getDiagramEditor().getPaletteView().setPreferredSize(new Dimension(200, 400));
-				System.out.println("PaletteView is now: " + getModuleView().getPerspective().getMiddleRightView());
-				if (getModuleView().getPerspective().getMiddleRightView() instanceof JTabbedPane) {
-					JTabbedPane tabbedPane = (JTabbedPane) getModuleView().getPerspective().getMiddleRightView();
-					for (int i = 0; i < tabbedPane.getComponentCount(); i++) {
-						Component tab = tabbedPane.getComponentAt(i);
-						if (tab instanceof JScrollPane) {
-							Component c = ((JScrollPane) tab).getViewport().getView();
-							System.out.println(" >> " + c + " of " + (c != null ? c.getClass() : "<null>"));
-							if (c instanceof JDrawingView) {
-								JDrawingView dv = (JDrawingView) c;
-								if (dv.getDrawable() instanceof AbstractDiagramPalette) {
-									AbstractDiagramPalette palette = (AbstractDiagramPalette) dv.getDrawable();
-									System.out.println("palette: " + palette + " editor=" + palette.getEditor());
-								}
-							}
-						}
-					}
-				}
 
-				getDiagramEditorComponent().getDiagramEditor().getCommonPalette()
-						.attachToEditor(getDiagramEditorComponent().getDiagramEditor());
+				// getDiagramEditorComponent().getDiagramEditor().getCommonPalette()
+				// .attachToEditor(getDiagramEditorComponent().getDiagramEditor());
 
+				// We also set inspectors, and attach them to new new editor
 				getModuleView().getPerspective()
 						.setBottomRightView(getDiagramTechnologyAdapterController().getInspectors().getPanelGroup());
 				getDiagramTechnologyAdapterController().getInspectors().attachToEditor(getDiagramEditorComponent().getDiagramEditor());
-				System.out.println("donc:");
-				System.out.println("top right: " + getModuleView().getPerspective().getTopRightView());
-				System.out.println("middle right: " + getModuleView().getPerspective().getMiddleRightView());
-				System.out.println("bottom right: " + getModuleView().getPerspective().getBottomRightView());
+
 				getModuleView().revalidate();
 				getModuleView().repaint();
 			}
 
 		}
-
-		// Sets palette view of editor to be the top right view
-		// perspective.setTopRightView(previewComponent);
-
-		// getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(previewComponent.getPreviewController());
-		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(previewComponent.getPreviewController());
-
-		// perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
-
-		// controller.getControllerModel().setRightViewVisible(true);
 
 	}
 
@@ -235,6 +169,16 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 		else {
 			super.doubleClick(object);
 		}
+	}
+
+	public void createNewExampleDiagram(DiagramSpecification diagramSpecification) {
+		CreateExampleDiagram action = CreateExampleDiagram.actionType.makeNewAction(diagramSpecification, null, getEditor());
+		action.doAction();
+	}
+
+	public void createNewPalette(DiagramSpecification diagramSpecification) {
+		CreateDiagramPalette action = CreateDiagramPalette.actionType.makeNewAction(diagramSpecification, null, getEditor());
+		action.doAction();
 	}
 
 	/*public void addCustomProperty(FlexoObject object) {

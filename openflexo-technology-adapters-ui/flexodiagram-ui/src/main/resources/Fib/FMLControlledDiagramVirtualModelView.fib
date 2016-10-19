@@ -36,6 +36,10 @@
 				name="diagramSpec" isEditable="false">
 				<Children id="7" name="diagrams" data="diagramSpec.exampleDiagrams" />
 				<Children id="8" name="palettes" data="diagramSpec.palettes" />
+				<BrowserAddAction 
+					name="add_example_diagram" method="controller.createNewExampleDiagram(selected)" />
+				<BrowserAddAction 
+					name="add_palette" method="controller.createNewPalette(selected)" />
 			</BrowserElement>
 			<BrowserElement id="9" editableLabel="diagram.name"
 				icon="controller.iconForObject(diagram)" label="diagram.name"
