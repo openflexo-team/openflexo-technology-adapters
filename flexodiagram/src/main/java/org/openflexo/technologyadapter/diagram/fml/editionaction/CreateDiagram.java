@@ -133,12 +133,16 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 
 	public void setDiagramSpecificationResource(DiagramSpecificationResource diagramSpecificationResource);
 
-	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram>implements CreateDiagram {
+	public static abstract class CreateDiagramImpl extends TechnologySpecificActionImpl<DiagramModelSlot, Diagram>
+			implements CreateDiagram {
 
 		private static final Logger logger = Logger.getLogger(CreateDiagram.class.getPackage().getName());
 
 		private DiagramSpecificationResource diagramSpecificationResource;
 		private String diagramSpecificationURI;
+		private DataBinding<String> diagramName;
+		private DataBinding<String> diagramURI;
+		private DataBinding<FlexoResourceCenter<?>> resourceCenter;
 
 		@Override
 		public DiagramTechnologyAdapter getModelSlotTechnologyAdapter() {
@@ -217,8 +221,6 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			return null;
 		}
 
-		private DataBinding<String> diagramName;
-
 		@Override
 		public DataBinding<String> getDiagramName() {
 			if (diagramName == null) {
@@ -239,7 +241,25 @@ public interface CreateDiagram extends DiagramAction<DiagramModelSlot, Diagram> 
 			this.diagramName = diagramName;
 		}
 
-		private DataBinding<FlexoResourceCenter<?>> resourceCenter;
+		@Override
+		public DataBinding<String> getDiagramURI() {
+			if (diagramURI == null) {
+				diagramURI = new DataBinding<String>(this, String.class, DataBinding.BindingDefinitionType.GET);
+				diagramURI.setBindingName("diagramURI");
+			}
+			return diagramURI;
+		}
+
+		@Override
+		public void setDiagramURI(DataBinding<String> diagramURI) {
+			if (diagramURI != null) {
+				diagramURI.setOwner(this);
+				diagramURI.setDeclaredType(String.class);
+				diagramURI.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+				diagramURI.setBindingName("diagramURI");
+			}
+			this.diagramURI = diagramURI;
+		}
 
 		@Override
 		public DataBinding<FlexoResourceCenter<?>> getResourceCenter() {
