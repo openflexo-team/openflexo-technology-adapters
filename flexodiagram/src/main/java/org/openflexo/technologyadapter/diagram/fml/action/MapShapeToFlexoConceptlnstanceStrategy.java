@@ -41,9 +41,6 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 import java.lang.reflect.Type;
 
 import org.apache.commons.lang3.StringUtils;
-import org.openflexo.connie.Bindable;
-import org.openflexo.connie.BindingFactory;
-import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
 import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLModelFactory;
@@ -67,7 +64,7 @@ import org.openflexo.toolbox.JavaUtils;
  * @author sylvain
  *
  */
-public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShapeCreationStrategy implements Bindable {
+public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShapeCreationStrategy {
 
 	private static final String NO_CONCEPT_DEFINED = "please_select_a_valid_flexo_concept";
 	private static final String NO_ROLE_NAME = "please_enter_a_valid_role_name";
@@ -75,6 +72,7 @@ public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShap
 	private FlexoConcept typeConcept;
 	private String flexoConceptInstanceRoleName;
 	private FlexoConceptInstanceRole flexoConceptInstanceRole;
+	private DataBinding<AbstractVirtualModelInstance> virtualModelInstance;
 
 	public MapShapeToFlexoConceptlnstanceStrategy(DeclareShapeInFlexoConcept transformationAction) {
 		super(transformationAction);
@@ -98,8 +96,6 @@ public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShap
 			getPropertyChangeSupport().firePropertyChange("flexoConceptInstanceRoleName", oldValue, flexoConceptInstanceRoleName);
 		}
 	}
-
-	private DataBinding<AbstractVirtualModelInstance> virtualModelInstance;
 
 	public DataBinding<AbstractVirtualModelInstance> getVirtualModelInstance() {
 		if (virtualModelInstance == null) {
@@ -216,26 +212,12 @@ public class MapShapeToFlexoConceptlnstanceStrategy extends FlexoConceptFromShap
 	}
 
 	@Override
-	public BindingModel getBindingModel() {
-		return getTransformationAction().getVirtualModel().getBindingModel();
-	}
-
-	@Override
-	public BindingFactory getBindingFactory() {
-		return getTransformationAction().getVirtualModel().getBindingFactory();
-	}
-
-	@Override
 	public void notifiedBindingChanged(DataBinding<?> dataBinding) {
+		super.notifiedBindingChanged(dataBinding);
 		if (dataBinding == virtualModelInstance) {
 			getPropertyChangeSupport().firePropertyChange("virtualModelInstance", null, getVirtualModelInstance());
 			getPropertyChangeSupport().firePropertyChange("virtualModelType", null, getVirtualModelType());
 		}
-	}
-
-	@Override
-	public void notifiedBindingDecoded(DataBinding<?> dataBinding) {
-		// TODO Auto-generated method stub
 	}
 
 }

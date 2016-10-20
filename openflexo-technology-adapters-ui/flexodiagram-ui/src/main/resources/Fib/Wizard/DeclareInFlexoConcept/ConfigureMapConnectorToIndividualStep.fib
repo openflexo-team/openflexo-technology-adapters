@@ -6,29 +6,21 @@
 	dataClassName="org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptWizard$ConfigureMapConnectorToIndividualStep"
 	trackViewPortHeight="true">
 	<LocalizedDictionary id="1" />
-	<Label id="7"
-		manageDynamicModel="false" useScrollBar="false"
-		controllerClassName="org.openflexo.gina.controller.FIBController"
+	<Label id="7" manageDynamicModel="false" useScrollBar="false"
 		index="3" localize="true" align="left"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-		label="model_slot" readOnly="false" />
-	<DropDown id="11"
-		manageDynamicModel="false" useScrollBar="false" data="data.modelSlot"
-		showReset="false" autoSelectFirstRow="true" name="ontologyModelSlotDD"
-		controllerClassName="org.openflexo.gina.controller.FIBController"
-		icon="controller.iconForObject(object)"
-		index="4" localize="true"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
-		list="data.action.typeAwareModelSlots" format="object.name" showText="true"
-		readOnly="false" iteratorClassName="org.openflexo.foundation.technologyadapter.ModelSlot"
-		showIcon="true">
-	</DropDown>
+		label="model" readOnly="false" />
+	<Custom componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
+		localize="true" manageDynamicModel="true" opaque="false" index="9"
+		data="data.strategy.model"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
+	</Custom>
 	<Label id="16" 
 		manageDynamicModel="false" useScrollBar="false"
 		controllerClassName="org.openflexo.gina.controller.FIBController"
 		index="5" localize="true" align="left"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-		label="ontologic_concept" readOnly="false">
+		label="concept" readOnly="false">
 		<LocalizedDictionary id="17" />
 	</Label>
 	<Custom id="27" 
@@ -48,29 +40,15 @@
 		<Assignment id="36" mandatory="true" variable="component.serviceManager" />
 		<Assignment id="37" mandatory="true"
 			variable="component.selectableCondition" />
-		<Assignment id="38" mandatory="true" value="data.adressedFlexoMetaModel"
+		<Assignment id="38" mandatory="true" value="data.strategy.metaModelOntology"
 			variable="component.context" />
 	</Custom>
-	<Label id="39" manageDynamicModel="false" useScrollBar="false"
-		controllerClassName="org.openflexo.gina.controller.FIBController"
-		index="7" localize="true" align="left"
-		constraints="twocols(expandHorizontally=false;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-		label="new_flexo_concept_name" readOnly="false">
-		<LocalizedDictionary id="40" />
-	</Label>
-	<TextField id="41" passwd="false" manageDynamicModel="false"
-		useScrollBar="false" data="data.flexoConceptName" columns="7"
-		name="newFlexoConceptName" controllerClassName="org.openflexo.gina.controller.FIBController"
-		text="TextField" index="8" localize="true"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-		readOnly="false" validateOnReturn="false">
-	</TextField>
 	<Label id="44"
 		manageDynamicModel="false" useScrollBar="false"
 		controllerClassName="org.openflexo.gina.controller.FIBController"
 		index="9" localize="true" align="left"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=9;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-		label="individual_flexo_role_name" readOnly="false">
+		label="instance_role_name" readOnly="false">
 	</Label>
 	<TextField id="48" passwd="false" 
 		manageDynamicModel="false" useScrollBar="false" data="data.individualFlexoRoleName"
@@ -79,6 +57,37 @@
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=10;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
 		readOnly="false" validateOnReturn="false">
 	</TextField>
+	
+	<Label id="101" name="FromTargetLabel" align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
+		label="from_target" />
+	<Custom id="102" 
+		manageDynamicModel="true" useScrollBar="false" data="data.fromFlexoConcept"
+		componentClassName="org.openflexo.fml.controller.widget.FIBFlexoConceptSelector"
+		name="fromConceptSelector"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		readOnly="false">
+		<Assignment id="125" mandatory="true"
+			variable="component.selectableCondition" />
+		<Assignment id="126" mandatory="true" value="data.action.virtualModel"
+			variable="component.virtualModel" />
+	</Custom>
+	<Label id="103" name="ToTargetLabel" align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
+		label="to_target" />
+	<Custom id="104" 
+		manageDynamicModel="true" useScrollBar="false" data="data.toFlexoConcept"
+		componentClassName="org.openflexo.fml.controller.widget.FIBFlexoConceptSelector"
+		name="toConceptSelector"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		readOnly="false">
+		<Assignment id="127" mandatory="true"
+			variable="component.selectableCondition" />
+		<Assignment id="128" mandatory="true" value="data.action.virtualModel"
+			variable="component.virtualModel" />
+	</Custom>
+	
+	
 	<Label id="52" manageDynamicModel="false" useScrollBar="false"
 		controllerClassName="org.openflexo.gina.controller.FIBController"
 		index="11" localize="true" align="left"

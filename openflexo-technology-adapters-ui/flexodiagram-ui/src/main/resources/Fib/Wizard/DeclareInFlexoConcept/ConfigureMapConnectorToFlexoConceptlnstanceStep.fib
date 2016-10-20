@@ -43,7 +43,7 @@
 		readOnly="false" validateOnReturn="false">
 	</TextField>
 	
-		<Label id="101" name="FromTargetLabel" align="left"
+	<Label id="101" name="FromTargetLabel" align="left"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
 		label="from_target" />
 	<Custom id="102" 
