@@ -93,7 +93,7 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 	private static final BackgroundStyle DEFAULT = FGECoreUtils.TOOLS_FACTORY.makeColoredBackground(Color.WHITE);
 	private static final ForegroundStyle NODE_FOREGROUND = FGECoreUtils.TOOLS_FACTORY.makeForegroundStyle(Color.BLACK, 1.0f);
 	private static final BackgroundStyle NODE_BACKGROUND = FGECoreUtils.TOOLS_FACTORY.makeColorGradientBackground(Color.DARK_GRAY,
-			Color.WHITE, ColorGradientDirection.SOUTH_EAST_NORTH_WEST);
+			Color.WHITE, ColorGradientDirection.NORTH_WEST_SOUTH_EAST);
 
 	static {
 		DEFAULT.setUseTransparency(true);
@@ -102,7 +102,8 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 		NODE_BACKGROUND.setTransparencyLevel(0.7f);
 	}
 
-	public CircularFloatingPalette(ShapeNode<DiagramElement<?>> shapeNode, DiagramElement<?> target, SimplifiedCardinalDirection orientation) {
+	public CircularFloatingPalette(ShapeNode<DiagramElement<?>> shapeNode, DiagramElement<?> target,
+			SimplifiedCardinalDirection orientation) {
 		super(shapeNode, makeRoundRect(shapeNode));
 		this.shapeNode = shapeNode;
 		this.target = target;
@@ -133,8 +134,8 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 			FGEPoint nearestOnOutline = fgeShape.getNearestPoint(controller.getDrawing().getRoot()
 					.convertLocalViewCoordinatesToRemoteNormalizedPoint(currentDraggingLocationInDrawingView, shapeNode, scale));
 			/*nodeGR.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint, controller.getDrawingGraphicalRepresentation(), controller.getScale())*/
-			Point fromPoint = shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(nearestOnOutline, controller.getDrawing()
-					.getRoot(), scale);
+			Point fromPoint = shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(nearestOnOutline,
+					controller.getDrawing().getRoot(), scale);
 			Point toPoint = currentDraggingLocationInDrawingView;
 
 			g.drawLine(fromPoint.x, fromPoint.y, toPoint.x, toPoint.y);
@@ -142,14 +143,16 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 			if (fromPoint.x >= toPoint.x) {
 				x = toPoint.x;
 				w = fromPoint.x - toPoint.x;
-			} else {
+			}
+			else {
 				x = fromPoint.x;
 				w = toPoint.x - fromPoint.x;
 			}
 			if (fromPoint.y >= toPoint.y) {
 				y = toPoint.y;
 				h = fromPoint.y - toPoint.y;
-			} else {
+			}
+			else {
 				y = fromPoint.y;
 				h = toPoint.y - fromPoint.y;
 			}
@@ -179,12 +182,13 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 			focusedNode = drawingView.getFocusRetriever().getFocusedObject(event);
 			if (focusedNode instanceof ShapeNode && focusedNode != shapeNode) {
 				to = (ShapeNode<?>) focusedNode;
-			} else {
+			}
+			else {
 				to = null;
 			}
 
-			currentDraggingLocationInDrawingView = SwingUtilities
-					.convertPoint((Component) event.getSource(), event.getPoint(), drawingView);
+			currentDraggingLocationInDrawingView = SwingUtilities.convertPoint((Component) event.getSource(), event.getPoint(),
+					drawingView);
 			if (!isDnd) {
 				isDnd = shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(normalizedStartPoint,
 						controller.getDrawing().getRoot(), controller.getScale()).distance(currentDraggingLocationInDrawingView) > 5;
@@ -195,7 +199,8 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 			Rectangle boundsToRepaint;
 			if (oldBounds != null) {
 				boundsToRepaint = oldBounds.union(newBounds);
-			} else {
+			}
+			else {
 				boundsToRepaint = newBounds;
 			}
 			paintManager.repaint(drawingView, boundsToRepaint);
@@ -243,8 +248,9 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 					focusedNode = controller.getDrawing().getRoot();
 				}
 				SimplifiedCardinalDirection direction = FGEPoint.getSimplifiedOrientation(
-						new FGEPoint(shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint, controller
-								.getDrawing().getRoot(), controller.getScale())), new FGEPoint(currentDraggingLocationInDrawingView));
+						new FGEPoint(shapeNode.convertLocalNormalizedPointToRemoteViewCoordinates(this.normalizedStartPoint,
+								controller.getDrawing().getRoot(), controller.getScale())),
+						new FGEPoint(currentDraggingLocationInDrawingView));
 				Point dropPoint = currentDraggingLocationInDrawingView;
 				if (dropPoint.x < 0) {
 					dropPoint.x = 0;
@@ -264,7 +270,8 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 				paintManager.invalidate(drawingView.getDrawing().getRoot());
 				paintManager.repaint(drawingView.getDrawing().getRoot());
 			}
-		} else {
+		}
+		else {
 		}
 		super.stopDragging(controller, focusedNode);
 	}
@@ -280,14 +287,14 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 		dropSchemeAction.setDropScheme(dropScheme);
 		dropSchemeAction.escapeParameterRetrievingWhenValid = true;
 		dropSchemeAction.doAction();
-
+		
 		if (dropSchemeAction.getPrimaryShape() != null) {
-
+		
 			DrawingTreeNode<?, ?> targetGR = controller.getDrawing().getDrawingTreeNode(target);
-
+		
 			ShapeNode<?> shapeNode = controller.getDrawing().getShapeNode(dropSchemeAction.getPrimaryShape());
 			ShapeGraphicalRepresentation gr = shapeNode.getGraphicalRepresentation();
-
+		
 			double xOffset = 0;
 			double yOffset = 0;
 			if (gr != null) {
@@ -300,7 +307,7 @@ public class CircularFloatingPalette extends ControlArea<FGEArea> implements Pro
 				gr.setX(dropLocation.x + xOffset);
 				gr.setY(dropLocation.y + yOffset);
 			}
-
+		
 		}
 		return dropSchemeAction.getPrimaryShape();*/
 	}

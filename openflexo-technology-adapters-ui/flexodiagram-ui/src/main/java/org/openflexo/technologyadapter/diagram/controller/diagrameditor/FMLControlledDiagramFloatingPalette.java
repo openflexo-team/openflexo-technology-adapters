@@ -123,7 +123,7 @@ public class FMLControlledDiagramFloatingPalette extends ControlArea<FGERoundRec
 	private static final ForegroundStyle NODE_FOREGROUND = FGECoreUtils.TOOLS_FACTORY.makeForegroundStyle(Color.RED, 1.0f);
 	private static final ForegroundStyle EDGE_FOREGROUND = FGECoreUtils.TOOLS_FACTORY.makeForegroundStyle(FGEUtils.NICE_BROWN, 1.0f);
 	private static final BackgroundStyle NODE_BACKGROUND = FGECoreUtils.TOOLS_FACTORY.makeColorGradientBackground(Color.ORANGE, Color.WHITE,
-			ColorGradientDirection.SOUTH_EAST_NORTH_WEST);
+			ColorGradientDirection.NORTH_WEST_SOUTH_EAST);
 
 	static {
 		DEFAULT.setUseTransparency(true);
