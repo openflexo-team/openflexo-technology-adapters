@@ -128,7 +128,9 @@ public class FMLControlledFIBVirtualModelInstanceNature implements VirtualModelI
 
 		if (returned.getAccessedResourceData() == null) {
 			try {
-				returned.setAccessedResourceData(fibMS.getTemplateResource().getResourceData(null));
+				// NPE Protection, in some cases getTemplateResource might be null
+				if (fibMS.getTemplateResource() != null)
+					returned.setAccessedResourceData(fibMS.getTemplateResource().getResourceData(null));
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

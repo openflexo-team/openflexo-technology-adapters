@@ -52,6 +52,7 @@ import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.fml.action.DeclareShapeInFlexoConcept;
+import org.openflexo.technologyadapter.diagram.gui.view.FMLControlledDiagramVirtualModelView;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
 import org.openflexo.view.controller.ActionInitializer;
@@ -74,8 +75,14 @@ public class DeclareShapeInFlexoConceptInitializer extends ActionInitializer<Dec
 
 				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramModuleView) {
 					FMLControlledDiagramModuleView moduleView = (FMLControlledDiagramModuleView) getController().getCurrentModuleView();
-					action.setVirtualModelResource((VirtualModelResource) moduleView.getEditor().getVirtualModelInstance()
-							.getVirtualModel().getResource());
+					action.setVirtualModelResource(
+							(VirtualModelResource) moduleView.getEditor().getVirtualModelInstance().getVirtualModel().getResource());
+				}
+
+				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView) {
+					FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
+							.getCurrentModuleView();
+					action.setVirtualModelResource((VirtualModelResource) moduleView.getRepresentedObject().getResource());
 				}
 
 				Wizard wizard = new DeclareShapeInFlexoConceptWizard(action, getController());

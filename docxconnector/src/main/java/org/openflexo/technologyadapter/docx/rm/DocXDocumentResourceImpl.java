@@ -81,8 +81,8 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 
 		try {
 			File dir = getFile().getParentFile();
+			willWrite(dir);
 			if (!dir.exists()) {
-				willWrite(dir);
 				dir.mkdirs();
 			}
 			willWrite(getFile());
@@ -112,8 +112,10 @@ public abstract class DocXDocumentResourceImpl extends PamelaResourceImpl<DocXDo
 			}
 			getFlexoIOStreamDelegate().hasWrittenOnDisk(lock);
 			throw new SaveResourceException(getFlexoIODelegate(), e);
+		} finally {
+			hasWritten(getFile());
+			hasWritten(getFile().getParentFile());
 		}
-
 		if (clearIsModified) {
 			if (getFactory().getIDStrategy() == IdentifierManagementStrategy.Bookmark) {
 				getFactory().someIdHaveBeenGeneratedAccordingToBookmarkManagementStrategy = false;

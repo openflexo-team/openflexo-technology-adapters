@@ -43,6 +43,7 @@ import org.openflexo.foundation.technologyadapter.TechnologyAdapterResource;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
+import org.openflexo.model.annotations.PropertyIdentifier;
 import org.openflexo.model.annotations.Setter;
 import org.openflexo.model.annotations.XMLElement;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
@@ -54,6 +55,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
 @XMLElement
 public interface ExcelWorkbookResource extends TechnologyAdapterResource<ExcelWorkbook, ExcelTechnologyAdapter> {
 
+	@PropertyIdentifier(type = ExcelTechnologyContextManager.class)
 	public static final String TECHNOLOGY_CONTEXT_MANAGER = "technologyContextManager";
 
 	@Getter(value = TECHNOLOGY_CONTEXT_MANAGER, ignoreType = true)

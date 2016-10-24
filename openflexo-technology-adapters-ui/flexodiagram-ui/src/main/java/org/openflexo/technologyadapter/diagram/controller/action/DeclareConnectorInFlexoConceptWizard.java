@@ -39,9 +39,12 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.awt.Image;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
@@ -114,7 +117,7 @@ public class DeclareConnectorInFlexoConceptWizard
 	}
 
 	@Override
-	public ConfigureCreateNewFlexoConceptFromConnectorStep<?> chooseNewFlexoConcept() {
+	public ConfigureCreateNewFlexoConceptFromConnectorStep<?> configureConceptCreationStrategy() {
 		if (getAction().getFlexoConceptCreationStrategy() instanceof MapConnectorToFlexoConceptlnstanceStrategy) {
 			return new ConfigureMapConnectorToFlexoConceptlnstanceStep(
 					(MapConnectorToFlexoConceptlnstanceStrategy) getAction().getFlexoConceptCreationStrategy());
@@ -134,15 +137,29 @@ public class DeclareConnectorInFlexoConceptWizard
 	public class ReplaceConnectorInExistingFlexoConcept
 			extends ConfigureGraphicalElementRoleSettingStrategyStep<ConnectorRoleSettingStrategy> {
 
+		private final Map<ConnectorRole, ConnectorGraphicalRepresentation> initialRepresentations;
+
 		public ReplaceConnectorInExistingFlexoConcept(ConnectorRoleSettingStrategy strategy) {
 			super(strategy);
+
+			initialRepresentations = new HashMap<>();
 			if (getAction().getFlexoConcept() == null && getAction().getVirtualModel() != null
 					&& getAction().getVirtualModel().getFlexoConcepts().size() > 0) {
-				getAction().setFlexoConcept(getAction().getVirtualModel().getFlexoConcepts().get(0));
+				setFlexoConcept(getAction().getVirtualModel().getFlexoConcepts().get(0));
 			}
+
 			if (getStrategy().getFlexoRole() == null && getAction().getFlexoConcept() != null && getAvailableFlexoRoles().size() > 0) {
-				getStrategy().setFlexoRole(getAvailableFlexoRoles().get(0));
+				setFlexoRole(getAvailableFlexoRoles().get(0));
 			}
+		}
+
+		@Override
+		public void cancelled() {
+			super.cancelled();
+			if (getFlexoConcept() != null && getFlexoRole() != null) {
+				getFlexoRole().updateGraphicalRepresentation(initialRepresentations.get(getFlexoRole()));
+			}
+			initialRepresentations.clear();
 		}
 
 		@Override
@@ -163,6 +180,12 @@ public class DeclareConnectorInFlexoConceptWizard
 			if (flexoConcept != getFlexoConcept()) {
 				FlexoConcept oldValue = getFlexoConcept();
 				getAction().setFlexoConcept(flexoConcept);
+				initialRepresentations.clear();
+				if (flexoConcept != null) {
+					for (ConnectorRole r : flexoConcept.getAccessibleProperties(ConnectorRole.class)) {
+						initialRepresentations.put(r, (ConnectorGraphicalRepresentation) r.getGraphicalRepresentation().clone());
+					}
+				}
 				getPropertyChangeSupport().firePropertyChange("flexoConcept", oldValue, flexoConcept);
 				getPropertyChangeSupport().firePropertyChange("availableFlexoRoles", null, getAvailableFlexoRoles());
 				checkValidity();
@@ -180,7 +203,15 @@ public class DeclareConnectorInFlexoConceptWizard
 		public void setFlexoRole(ConnectorRole connectorRole) {
 			if (connectorRole != getFlexoRole()) {
 				ConnectorRole oldValue = getFlexoRole();
+				if (oldValue != null) {
+					oldValue.updateGraphicalRepresentation(initialRepresentations.get(oldValue));
+				}
 				getStrategy().setFlexoRole(connectorRole);
+				if (connectorRole != null) {
+					connectorRole.updateGraphicalRepresentation((ConnectorGraphicalRepresentation) getStrategy().getTransformationAction()
+							.getFocusedObject().getGraphicalRepresentation().clone());
+					getStrategy().normalizeGraphicalRepresentation(connectorRole);
+				}
 				getPropertyChangeSupport().firePropertyChange("connectorRole", oldValue, connectorRole);
 				checkValidity();
 			}
@@ -214,9 +245,20 @@ public class DeclareConnectorInFlexoConceptWizard
 			}
 
 			if (StringUtils.isEmpty(getStrategy().getNewRoleName()) && getFlexoConcept() != null) {
-				getStrategy().setNewRoleName(getFlexoConcept().getAvailablePropertyName(getStrategy().getDefaultRoleName()));
+				String newRoleName = getFlexoConcept().getAvailablePropertyName(getStrategy().getDefaultRoleName());
+				getStrategy().setNewRoleName(newRoleName);
 			}
 
+			// We always create new role
+			// when wizard is cancelled, dismiss new flexo role
+			getStrategy().createNewFlexoRole();
+
+		}
+
+		@Override
+		public void cancelled() {
+			getStrategy().dismissNewFlexoRole();
+			super.cancelled();
 		}
 
 		@Override
@@ -236,11 +278,17 @@ public class DeclareConnectorInFlexoConceptWizard
 		public void setFlexoConcept(FlexoConcept flexoConcept) {
 			if (flexoConcept != getFlexoConcept()) {
 				FlexoConcept oldValue = getFlexoConcept();
+				getStrategy().dismissNewFlexoRole();
 				getAction().setFlexoConcept(flexoConcept);
+				getStrategy().createNewFlexoRole();
 				getPropertyChangeSupport().firePropertyChange("flexoConcept", oldValue, flexoConcept);
 				getPropertyChangeSupport().firePropertyChange("newConnectorRoleName", null, getNewConnectorRoleName());
 				checkValidity();
 			}
+		}
+
+		public ConnectorRole getNewFlexoRole() {
+			return getStrategy().getNewFlexoRole();
 		}
 
 		public String getNewConnectorRoleName() {
@@ -256,25 +304,6 @@ public class DeclareConnectorInFlexoConceptWizard
 			}
 		}
 
-		/*	@Override
-			public boolean isValid() {
-		
-				if (StringUtils.isEmpty(getNewConnectorRoleName())) {
-					setIssueMessage(FlexoLocalization.localizedForKey(NEW_SHAPE_ROLE_NAME_IS_NULL), IssueMessageType.ERROR);
-					return false;
-				}
-				if (getFlexoConcept() == null) {
-					setIssueMessage(FlexoLocalization.localizedForKey(FLEXO_CONCEPT_IS_NULL), IssueMessageType.ERROR);
-					return false;
-				}
-		
-				if (getFlexoConcept().getAccessibleProperty(getNewConnectorRoleName()) != null) {
-					setIssueMessage(FlexoLocalization.localizedForKey(NEW_SHAPE_ROLE_NAME_ALREADY_EXISTS), IssueMessageType.ERROR);
-					return false;
-				}
-				return true;
-			}*/
-
 	}
 
 	public abstract class ConfigureCreateNewFlexoConceptFromConnectorStep<S extends FlexoConceptFromConnectorCreationStrategy>
@@ -283,6 +312,33 @@ public class DeclareConnectorInFlexoConceptWizard
 		public ConfigureCreateNewFlexoConceptFromConnectorStep(S strategy) {
 			super(strategy);
 		}
+
+		public FlexoConcept getFromFlexoConcept() {
+			return getStrategy().getFromFlexoConcept();
+		}
+
+		public void setFromFlexoConcept(FlexoConcept fromFlexoConcept) {
+			if (fromFlexoConcept != getFromFlexoConcept()) {
+				FlexoConcept oldValue = getFromFlexoConcept();
+				getStrategy().setFromFlexoConcept(fromFlexoConcept);
+				getPropertyChangeSupport().firePropertyChange("fromFlexoConcept", oldValue, fromFlexoConcept);
+				checkValidity();
+			}
+		}
+
+		public FlexoConcept getToFlexoConcept() {
+			return getStrategy().getToFlexoConcept();
+		}
+
+		public void setToFlexoConcept(FlexoConcept toFlexoConcept) {
+			if (toFlexoConcept != getToFlexoConcept()) {
+				FlexoConcept oldValue = getToFlexoConcept();
+				getStrategy().setToFlexoConcept(toFlexoConcept);
+				getPropertyChangeSupport().firePropertyChange("toFlexoConcept", oldValue, toFlexoConcept);
+				checkValidity();
+			}
+		}
+
 	}
 
 	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ConfigureMapConnectorToFlexoConceptlnstanceStep.fib")
@@ -326,16 +382,17 @@ public class DeclareConnectorInFlexoConceptWizard
 				FlexoConcept oldValue = getTypeConcept();
 				getStrategy().setTypeConcept(typeConcept);
 				getPropertyChangeSupport().firePropertyChange("typeConcept", oldValue, typeConcept);
-				getPropertyChangeSupport().firePropertyChange("flexoConceptInstanceRoleName", null, getFlexoConceptName());
+				getPropertyChangeSupport().firePropertyChange("flexoConceptInstanceRoleName", null,
+						getAction().getFlexoConceptCreationStrategy().getFlexoConceptName());
 				checkValidity();
 			}
 		}
 
-		@Override
+		/*@Override
 		public void setModelSlot(ModelSlot<?> modelSlot) {
 			super.setModelSlot(modelSlot);
 			getPropertyChangeSupport().firePropertyChange("typeConcept", null, getTypeConcept());
-		}
+		}*/
 
 	}
 

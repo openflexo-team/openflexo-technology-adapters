@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ViewPoint id="0" userID="FLX" modelVersion="1.0" version="0.1" flexoID="3" name="TestGenerateExcelViewPoint" uri="http://hop">
+  <Inspector id="1" flexoID="2" userID="FLX" inspectorTitle="TestGeneralExcelViewPoint" />
+  <ModelSlot_BasicExcelModelSlot id="2" userID="FLX" cloningStrategy="Reference" flexoID="6" isRequired="true" name="ExcelModelSlot" templateWorkbookURI="http://www.openflexo.org/test/excel/Excel/Genealogy.xlsx" cardinality="ZeroOne">
+    <BasicExcelModelSlot idref="2" />
+  </ModelSlot_BasicExcelModelSlot>
+  <CreationScheme id="3" userID="FLX" width="800" label="create" height="600" flexoID="10" name="create">
+    <BehaviourControlGraph_EmptyControlGraph id="4" flexoID="16" userID="FLX" />
+  </CreationScheme>
+  <ActionScheme id="5" userID="FLX" width="800" label="createEmptyWorkbook" height="600" flexoID="11" name="createEmptyWorkbook">
+    <BehaviourControlGraph_AssignationAction id="6" userID="FLX" flexoID="15" assign="ExcelModelSlot">
+      <AssignableAction_CreateExcelResource id="7" relativePath="test/excel" userID="FLX" flexoID="14" resourceName="&quot;coucou&quot;" resourceCenter="project">
+        <BasicExcelModelSlot idref="2" />
+      </AssignableAction_CreateExcelResource>
+    </BehaviourControlGraph_AssignationAction>
+  </ActionScheme>
+  <ActionScheme id="8" userID="FLX" width="800" label="generateWorkbookUsingTemplate" height="600" flexoID="20" name="generateWorkbookUsingTemplate">
+    <BehaviourControlGraph_AssignationAction id="9" userID="FLX" flexoID="30" assign="ExcelModelSlot">
+      <AssignableAction_GenerateExcelResource id="10" relativePath="test/excel" userID="FLX" flexoID="29" resourceName="&quot;coucou2&quot;" resourceCenter="project">
+        <BasicExcelModelSlot idref="2" />
+      </AssignableAction_GenerateExcelResource>
+    </BehaviourControlGraph_AssignationAction>
+  </ActionScheme>
+</ViewPoint>

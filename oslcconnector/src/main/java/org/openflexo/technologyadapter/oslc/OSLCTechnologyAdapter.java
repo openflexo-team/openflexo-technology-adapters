@@ -225,4 +225,12 @@ public class OSLCTechnologyAdapter extends TechnologyAdapter {
 		return "OSLC";
 	}
 
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getOSLCRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
+
 }

@@ -86,6 +86,8 @@ public class ExampleDiagramResourceFactory extends DiagramResourceFactory {
 			returned.save(null);
 		}
 
+		dsResource.getDiagramSpecification().addToExampleDiagrams(returned.getDiagram());
+
 		return returned;
 	}
 

@@ -50,11 +50,13 @@ import org.openflexo.foundation.fml.FlexoBehaviour;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.controlgraph.FMLControlGraph;
+import org.openflexo.foundation.fml.editionaction.AbstractCreateResource;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.foundation.fml.rt.FreeModelSlotInstance;
-import org.openflexo.foundation.fml.rt.ModelSlotInstance;
 import org.openflexo.foundation.fml.rt.RunTimeEvaluationContext;
+import org.openflexo.foundation.resource.FileSystemBasedResourceCenter;
 import org.openflexo.foundation.resource.FlexoResource;
+import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -71,40 +73,40 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ImplementationClass(GenerateDocXDocument.GenerateDocXDocumentImpl.class)
 @XMLElement
 @FML("GenerateDocXDocument")
-public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
+public interface GenerateDocXDocument extends AbstractCreateResource<DocXModelSlot, DocXDocument, DocXTechnologyAdapter> {
 
-	/*@PropertyIdentifier(type = File.class)
-	public static final String FILE_KEY = "file";
-	
-	@Getter(value = FILE_KEY)
-	@XMLAttribute
-	public File getFile();
-	
-	@Setter(FILE_KEY)
-	public void setFile(File aFile);*/
-
-	public static abstract class GenerateDocXDocumentImpl extends DocXActionImpl<DocXDocument>implements GenerateDocXDocument {
+	public static abstract class GenerateDocXDocumentImpl
+			extends AbstractCreateResourceImpl<DocXModelSlot, DocXDocument, DocXTechnologyAdapter> implements GenerateDocXDocument {
 
 		private static final Logger logger = Logger.getLogger(GenerateDocXDocument.class.getPackage().getName());
 
+		/**
+		 * 
+		 * @param concept
+		 * @param elementsToIgnore
+		 */
 		private void appendElementsToIgnore(FlexoConcept concept, List<DocXElement> elementsToIgnore) {
 			for (FlexoBehaviour behaviour : concept.getFlexoBehaviours()) {
 				// TODO handle deep action
-				for (FMLControlGraph cg : behaviour.getControlGraph().getFlattenedSequence()) {
-					if (cg instanceof AddDocXFragment) {
-						for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
-							elementsToIgnore.add(e);
-						}
-					}
-					else if (cg instanceof AssignationAction && ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
-						if (((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment() != null) {
-							for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment()
-									.getElements()) {
+				if (behaviour.getControlGraph() != null) {
+					for (FMLControlGraph cg : behaviour.getControlGraph().getFlattenedSequence()) {
+						if (cg instanceof AddDocXFragment) {
+							for (DocXElement e : ((AddDocXFragment) cg).getFragment().getElements()) {
 								elementsToIgnore.add(e);
+							}
+						}
+						else if (cg instanceof AssignationAction
+								&& ((AssignationAction) cg).getAssignableAction() instanceof AddDocXFragment) {
+							if (((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment() != null) {
+								for (DocXElement e : ((AddDocXFragment) ((AssignationAction) cg).getAssignableAction()).getFragment()
+										.getElements()) {
+									elementsToIgnore.add(e);
+								}
 							}
 						}
 					}
 				}
+
 			}
 
 			if (concept instanceof AbstractVirtualModel) {
@@ -119,6 +121,9 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 			return DocXDocument.class;
 		}
 
+		/**
+		 * Main action
+		 */
 		@Override
 		public DocXDocument execute(RunTimeEvaluationContext evaluationContext) throws FlexoException {
 
@@ -138,7 +143,26 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				FreeModelSlotInstance<DocXDocument, DocXModelSlot> msInstance = (FreeModelSlotInstance<DocXDocument, DocXModelSlot>) getModelSlotInstance(
 						evaluationContext);
 
-				FlexoResource<DocXDocument> generatedResource = msInstance.getResource();
+				FlexoResource<DocXDocument> generatedResource = null;
+
+				// get resource from msInstance if not null
+				if (msInstance != null) {
+					generatedResource = msInstance.getResource();
+				}
+				// else create a new resource
+				else {
+
+					String resourceName = getResourceName(evaluationContext);
+					String resourceURI = getResourceURI(evaluationContext);
+					FlexoResourceCenter<?> rc = getResourceCenter(evaluationContext);
+
+					DocXTechnologyAdapter docxTA = getServiceManager().getTechnologyAdapterService()
+							.getTechnologyAdapter(DocXTechnologyAdapter.class);
+
+					generatedResource = docxTA.createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, getRelativePath(),
+							resourceName, true, getModelSlot().getIdStrategy());
+
+				}
 
 				// System.out.println("-------------> generating document " + generatedResource);
 
@@ -206,7 +230,10 @@ public interface GenerateDocXDocument extends DocXAction<DocXDocument> {
 				}
 
 				// Very important: we must now set ModelSlotInstance !
-				((ModelSlotInstance) getModelSlotInstance(evaluationContext)).setAccessedResourceData(generatedDocument);
+				// TODO: need to check why this is so important...
+				if (msInstance != null) {
+					msInstance.setAccessedResourceData(generatedDocument);
+				}
 
 			}
 

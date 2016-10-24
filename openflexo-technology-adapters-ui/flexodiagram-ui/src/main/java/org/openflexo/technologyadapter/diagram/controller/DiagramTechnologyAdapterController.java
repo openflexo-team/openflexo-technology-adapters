@@ -149,7 +149,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		// inspectors.getPanelGroup().setMinimumSize(new Dimension(500, 500));
 
 		dialogInspectors.getForegroundStyleInspector().setLocation(1000, 100);
-		dialogInspectors.getTextStyleInspector().setLocation(1000, 300);
+		dialogInspectors.getTextPropertiesInspector().setLocation(1000, 300);
 		dialogInspectors.getShadowStyleInspector().setLocation(1000, 400);
 		dialogInspectors.getBackgroundStyleInspector().setLocation(1000, 500);
 		dialogInspectors.getShapeInspector().setLocation(1000, 600);
@@ -178,7 +178,7 @@ public class DiagramTechnologyAdapterController extends TechnologyAdapterControl
 		WindowMenuItem backgroundInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("background_inspector"),
 				dialogInspectors.getBackgroundStyleInspector());
 		WindowMenuItem textInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("text_inspector"),
-				dialogInspectors.getTextStyleInspector());
+				dialogInspectors.getTextPropertiesInspector());
 		WindowMenuItem shapeInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("shape_inspector"),
 				dialogInspectors.getShapeInspector());
 		WindowMenuItem connectorInspectorItem = viewMenu.new WindowMenuItem(getLocales().localizedForKey("connector_inspector"),

@@ -379,4 +379,12 @@ public class OWLTechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(OWLOntologyResourceFactory.class);
 	}
 
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getOWLOntologyRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
+
 }

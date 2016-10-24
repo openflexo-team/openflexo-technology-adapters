@@ -54,4 +54,14 @@ public class BlankFlexoConceptFromShapeCreationStrategy extends FlexoConceptFrom
 		super(transformationAction);
 	}
 
+	@Override
+	public String getPresentationName() {
+		return "blank_flexo_concept";
+	}
+
+	@Override
+	public String getDescriptionKey() {
+		return "<html>build_a_new_concept_without_connexion_to_any_data_source</html>";
+	}
+
 }

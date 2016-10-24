@@ -72,7 +72,7 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	@PropertyIdentifier(type = GraphicalRepresentation.class)
 	public static final String GRAPHICAL_REPRESENTATION_KEY = "graphicalRepresentation";
 	@PropertyIdentifier(type = ShapeRole.class)
-	public static final String PARENT_SHAPE_PATTERN_ROLE_KEY = "parentShapeRole";
+	public static final String PARENT_SHAPE_ROLE_KEY = "parentShapeRole";
 
 	public static GraphicalFeature<Double, ShapeGraphicalRepresentation> POS_X_FEATURE = new GraphicalFeature<Double, ShapeGraphicalRepresentation>(
 			"x", ShapeGraphicalRepresentation.X) {
@@ -192,11 +192,11 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	@Setter(GRAPHICAL_REPRESENTATION_KEY)
 	public void setGraphicalRepresentation(ShapeGraphicalRepresentation graphicalRepresentation);
 
-	@Getter(value = PARENT_SHAPE_PATTERN_ROLE_KEY)
+	@Getter(value = PARENT_SHAPE_ROLE_KEY)
 	@XMLElement(context = "Parent")
 	public ShapeRole getParentShapeRole();
 
-	@Setter(PARENT_SHAPE_PATTERN_ROLE_KEY)
+	@Setter(PARENT_SHAPE_ROLE_KEY)
 	public void setParentShapeRole(ShapeRole parentShapeRole);
 
 	public boolean isContainedIn(ShapeRole container);
@@ -206,8 +206,8 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 	public void setParentShapeAsDefinedInAction(boolean flag);
 
 	/**
-	 * Get the list of shape pattern roles that can be set as parent shape pattern property. This list contains all other shape pattern
-	 * roles of current flexo concept which are not already in the containment subtree
+	 * Get the list of shape roles that can be set as parent shape pattern property. This list contains all other shape pattern roles of
+	 * current flexo concept which are not already in the containment subtree
 	 * 
 	 * @return
 	 */
@@ -308,11 +308,25 @@ public interface ShapeRole extends GraphicalElementRole<DiagramShape, ShapeGraph
 					logger.warning("Detecting a loop in parent shape pattern property definition. Resetting parent shape pattern property");
 					this.parentShapeRole = null;
 				}
+
+				// center the shape in the parent
+				if (parentShapeRole != null) {
+					getGraphicalRepresentation()
+							.setX((parentShapeRole.getGraphicalRepresentation().getWidth() - getGraphicalRepresentation().getWidth()) / 2);
+					getGraphicalRepresentation().setY(
+							(parentShapeRole.getGraphicalRepresentation().getHeight() - getGraphicalRepresentation().getHeight()) / 2);
+				}
+				else {
+					// Center shape in preview
+					getGraphicalRepresentation().setX((250 - getGraphicalRepresentation().getWidth()) / 2);
+					getGraphicalRepresentation().setY((200 - getGraphicalRepresentation().getHeight()) / 2);
+				}
 				// setChanged();
 				// notifyObservers();
-				getPropertyChangeSupport().firePropertyChange(PARENT_SHAPE_PATTERN_ROLE_KEY, oldParentShapeRole, parentShapeRole);
+				getPropertyChangeSupport().firePropertyChange(PARENT_SHAPE_ROLE_KEY, oldParentShapeRole, parentShapeRole);
+				getPropertyChangeSupport().firePropertyChange("parentShapeAsDefinedInAction", oldParentShapeRole, parentShapeRole);
 				if (getFlexoConcept() != null) {
-					getFlexoConcept().getPropertyChangeSupport().firePropertyChange(PARENT_SHAPE_PATTERN_ROLE_KEY, oldParentShapeRole,
+					getFlexoConcept().getPropertyChangeSupport().firePropertyChange(PARENT_SHAPE_ROLE_KEY, oldParentShapeRole,
 							parentShapeRole);
 				}
 			}

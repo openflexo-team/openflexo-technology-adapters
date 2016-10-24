@@ -69,10 +69,10 @@ import org.openflexo.technologyadapter.docx.rm.DocXDocumentResource;
 @ImplementationClass(CreateEmptyDocXResource.CreateDocXResourceImpl.class)
 @XMLElement
 @FML("CreateEmptyDocXResource")
-public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXModelSlot, DocXDocument> {
+public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXModelSlot, DocXDocument, DocXTechnologyAdapter> {
 
-	public static abstract class CreateDocXResourceImpl extends AbstractCreateResourceImpl<DocXModelSlot, DocXDocument>
-			implements CreateEmptyDocXResource {
+	public static abstract class CreateDocXResourceImpl
+			extends AbstractCreateResourceImpl<DocXModelSlot, DocXDocument, DocXTechnologyAdapter>implements CreateEmptyDocXResource {
 
 		private static final Logger logger = Logger.getLogger(CreateDocXResourceImpl.class.getPackage().getName());
 
@@ -98,7 +98,8 @@ public interface CreateEmptyDocXResource extends AbstractCreateResource<DocXMode
 			DocXTechnologyAdapter docxTA = getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(DocXTechnologyAdapter.class);
 
-			DocXDocumentResource newResource = docxTA.createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, getRelativePath(), resourceName, true, getModelSlot().getIdStrategy());
+			DocXDocumentResource newResource = docxTA.createNewDocXDocumentResource((FileSystemBasedResourceCenter) rc, getRelativePath(),
+					resourceName, true, getModelSlot().getIdStrategy());
 
 			System.out.println("New resource: " + newResource);
 

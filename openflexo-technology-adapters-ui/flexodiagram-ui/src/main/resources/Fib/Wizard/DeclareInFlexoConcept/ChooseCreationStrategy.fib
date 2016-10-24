@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Panel id="0" darkLevel="0" useScrollBar="false" protectContent="false"
+	height="400" opaque="false" layout="twocols"
+	controllerClassName="org.openflexo.view.controller.FlexoFIBController"
+	border="empty" trackViewPortWidth="true" width="600"
+	dataClassName="org.openflexo.technologyadapter.diagram.controller.action.AbstractDeclareDiagramElementInFlexoConceptWizard$ChooseNewConceptCreationStrategy"
+	trackViewPortHeight="true" font="Lucida Grande,0,11">
+	<LocalizedDictionary id="1" />
+	<Label id="7"
+		manageDynamicModel="false" useScrollBar="false"
+		controllerClassName="org.openflexo.gina.controller.FIBController"
+		index="3" localize="true" align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		label="model_slot" readOnly="false" />
+	<DropDown id="11"
+		manageDynamicModel="false" useScrollBar="false" data="data.diagramModelSlot"
+		showReset="false" autoSelectFirstRow="true" name="DiagramModelSlotDD"
+		controllerClassName="org.openflexo.gina.controller.FIBController"
+		icon="controller.iconForObject(object)"
+		index="4"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
+		list="data.availableDiagramModelSlots" format="object.name" showText="true"
+		readOnly="false" iteratorClassName="org.openflexo.foundation.technologyadapter.ModelSlot"
+		showIcon="true">
+	</DropDown>
+	<Label id="39" manageDynamicModel="false" useScrollBar="false"
+		controllerClassName="org.openflexo.gina.controller.FIBController"
+		index="7" localize="true" align="left"
+		constraints="twocols(expandHorizontally=false;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		label="new_flexo_concept_name" readOnly="false">
+		<LocalizedDictionary id="40" />
+	</Label>
+	<TextField id="41" passwd="false" manageDynamicModel="false"
+		useScrollBar="false" data="data.flexoConceptName" columns="7"
+		name="newFlexoConceptName" controllerClassName="org.openflexo.gina.controller.FIBController"
+		text="TextField" index="8" localize="true"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		readOnly="false" validateOnReturn="false">
+	</TextField>
+		<Label id="126" manageDynamicModel="false" useScrollBar="false"
+		index="9" localize="true" align="center"
+		constraints="twocols(expandHorizontally=false;expandVertically=false;index=5;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		label="creation_strategy" readOnly="false" />
+	<RadioButtonList id="127" manageDynamicModel="true"
+		columns="1"
+		index="10" localize="true"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=6;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		format="object.presentationName" showText="true"
+		iteratorClassName="org.openflexo.foundation.action.transformation.FlexoConceptCreationStrategy"
+		list="data.availableFlexoConceptCreationStrategies"
+		vGap="0" showIcon="false" useScrollBar="false" data="data.creationStrategy"
+		autoSelectFirstRow="true" name="RadioButtonList" hGap="0"
+		readOnly="false">
+	</RadioButtonList>
+	
+		<Panel id="130" darkLevel="0" useScrollBar="false" protectContent="false"
+		layout="border" controllerClassName="org.openflexo.gina.controller.FIBController"
+		border="empty" trackViewPortWidth="true"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;insetsBottom=10;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)"
+		titleFont="Lucida Grande,0,11" trackViewPortHeight="true">
+		<Label id="131" manageDynamicModel="false" useScrollBar="false"
+			data="data.creationStrategy.descriptionKey"
+			controllerClassName="org.openflexo.gina.controller.FIBController"
+			localize="true" font="LucidaGrande,2,11" align="left"
+			constraints="border(location=center)" readOnly="false" />
+	</Panel>
+	
+	<Label id="52" manageDynamicModel="false" useScrollBar="false"
+		controllerClassName="org.openflexo.gina.controller.FIBController"
+		index="11" localize="true" align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=11;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
+		label="graphical_elements" readOnly="false">
+		<LocalizedDictionary id="53" />
+	</Label>
+	<Table id="54" showFooter="false" verticalScrollbarPolicy="VERTICAL_SCROLLBAR_AS_NEEDED"
+		manageDynamicModel="true" selectionMode="MultipleIntervalSelection"
+		boundToSelectionManager="false" controllerClassName="org.openflexo.gina.controller.FIBController"
+		index="11" localize="true"
+		constraints="twocols(expandHorizontally=true;expandVertically=true;index=12;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
+		visibleRowCount="3" createNewRowOnClick="false" rowHeight="18"
+		textSelectionColor="255,255,255" horizontalScrollbarPolicy="HORIZONTAL_SCROLLBAR_AS_NEEDED"
+		iteratorClassName="org.openflexo.technologyadapter.diagram.fml.action.DeclareDiagramElementInFlexoConcept$DrawingObjectEntry"
+		backgroundSelectionColor="41,90,209" useScrollBar="true"
+		backgroundNonSelectionColor="255,255,255" data="data.drawingObjectEntries"
+		autoSelectFirstRow="false" name="drawingObjectEntriesTable"
+		textNonSelectionColor="0,0,0" readOnly="false"
+		backgroundSecondarySelectionColor="173,215,255">
+		<CheckBoxColumn id="55" data="iterator.selectThis"
+			displayTitle="false" title="checkbox" name="checkbox" columnWidth="20"
+			resizable="false" showIcon="false" />
+		<TextFieldColumn id="56" data="iterator.flexoRoleName"
+			displayTitle="true" title="role_name" columnWidth="50" resizable="true"
+			showIcon="false" />
+		<LabelColumn id="57" data="iterator.parentEntry.flexoRoleName"
+			displayTitle="true" title="parent" name="label" columnWidth="50"
+			resizable="true" showIcon="false" />
+		<TextFieldColumn id="58"
+			data="iterator.graphicalObject.graphicalRepresentation.toString"
+			displayTitle="true" title="graphical_representation" columnWidth="300"
+			resizable="true" showIcon="false" />
+		<LocalizedDictionary id="59" />
+	</Table>
+</Panel>

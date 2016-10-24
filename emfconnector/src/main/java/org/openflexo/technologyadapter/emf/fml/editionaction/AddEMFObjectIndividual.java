@@ -94,8 +94,8 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 	@Setter(CONTAINER_KEY)
 	public void setContainer(DataBinding<List> containerReference);
 
-	public static abstract class AddEMFObjectIndividualImpl extends AddIndividualImpl<EMFModelSlot, EMFObjectIndividual> implements
-			AddEMFObjectIndividual {
+	public static abstract class AddEMFObjectIndividualImpl extends AddIndividualImpl<EMFModelSlot, EMFObjectIndividual>
+			implements AddEMFObjectIndividual {
 
 		private static final Logger logger = Logger.getLogger(AddEMFObjectIndividual.class.getPackage().getName());
 
@@ -125,7 +125,8 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 		public EMFObjectIndividual execute(RunTimeEvaluationContext evaluationContext) {
 			EMFObjectIndividual result = null;
 			List<EMFObjectIndividual> container = null;
-			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(evaluationContext);
+			TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot> modelSlotInstance = (TypeAwareModelSlotInstance<EMFModel, EMFMetaModel, EMFModelSlot>) getModelSlotInstance(
+					evaluationContext);
 			if (modelSlotInstance.getResourceData() != null) {
 				IFlexoOntologyClass aClass = getOntologyClass();
 				if (aClass instanceof EMFClassClass) {
@@ -153,7 +154,8 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 					// Put it in its container
 					if (container == null) {
 						modelSlotInstance.getAccessedResourceData().getEMFResource().getContents().add(eObject);
-					} else {
+					}
+					else {
 						// TODO This needs strong testing
 						container.add(result);
 						result.setContainPropertyValue((EMFObjectIndividualReferenceObjectPropertyValueAsList) container);
@@ -196,10 +198,12 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 								// Set Data Attribute in EMF
 								if (value instanceof AEMFMetaModelObjectImpl) {
 									result.getObject().eSet(property.getObject(), ((AEMFMetaModelObjectImpl<?>) value).getObject());
-								} else {
+								}
+								else {
 									result.getObject().eSet(property.getObject(), value);
 								}
-							} else if (objectPropertyAssertion.getOntologyProperty() instanceof EMFReferenceObjectProperty) {
+							}
+							else if (objectPropertyAssertion.getOntologyProperty() instanceof EMFReferenceObjectProperty) {
 								EMFReferenceObjectProperty property = (EMFReferenceObjectProperty) objectPropertyAssertion
 										.getOntologyProperty();
 								logger.info("Property=" + property);
@@ -208,29 +212,32 @@ public interface AddEMFObjectIndividual extends AddIndividual<EMFModelSlot, EMFO
 								// Set Data Attribute in EMF
 								if (value instanceof AEMFMetaModelObjectImpl) {
 									result.getObject().eSet(property.getObject(), ((AEMFMetaModelObjectImpl<?>) value).getObject());
-								} else {
+								}
+								else {
 									if (value instanceof EMFObjectIndividual) {
 										result.getObject().eSet(property.getObject(), ((EMFObjectIndividual) value).getObject());
-									} else {
+									}
+									else {
 										result.getObject().eSet(property.getObject(), value);
 									}
 								}
-							} else {
-								logger.warning("Unexpected "
-										+ objectPropertyAssertion.getOntologyProperty()
-										+ " of "
-										+ (objectPropertyAssertion.getOntologyProperty() != null ? objectPropertyAssertion
-												.getOntologyProperty().getClass() : null));
+							}
+							else {
+								logger.warning("Unexpected " + objectPropertyAssertion.getOntologyProperty() + " of "
+										+ (objectPropertyAssertion.getOntologyProperty() != null
+												? objectPropertyAssertion.getOntologyProperty().getClass() : null));
 							}
 						}
 					}
 					modelSlotInstance.getResourceData().setIsModified();
 					logger.info("********* Added individual " + result.getName() + " as " + aClass.getName());
-				} else {
+				}
+				else {
 					logger.warning("Not allowed to create new Enum values. getOntologyClass()=" + getOntologyClass());
 					return null;
 				}
-			} else {
+			}
+			else {
 				logger.warning("Model slot not correctly initialised : model is null");
 				return null;
 			}

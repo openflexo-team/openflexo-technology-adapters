@@ -49,11 +49,13 @@ import org.openflexo.foundation.action.FlexoActionFinalizer;
 import org.openflexo.foundation.action.FlexoActionInitializer;
 import org.openflexo.foundation.fml.FMLObject;
 import org.openflexo.gina.controller.FIBController.Status;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagram;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.view.controller.ActionInitializer;
 import org.openflexo.view.controller.ControllerActionInitializer;
+import org.openflexo.view.controller.TechnologyPerspective;
 
 public class CreateExampleDiagramInitializer extends ActionInitializer<CreateExampleDiagram, DiagramSpecification, FMLObject> {
 
@@ -87,7 +89,11 @@ public class CreateExampleDiagramInitializer extends ActionInitializer<CreateExa
 		return new FlexoActionFinalizer<CreateExampleDiagram>() {
 			@Override
 			public boolean run(EventObject e, CreateExampleDiagram action) {
-				getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
+				if (getController().getCurrentPerspective() instanceof TechnologyPerspective
+						&& ((TechnologyPerspective) getController().getCurrentPerspective())
+								.getTechnologyAdapter() instanceof DiagramTechnologyAdapter) {
+					getController().setCurrentEditedObjectAsModuleView(action.getNewDiagram());
+				}
 				return true;
 			}
 		};

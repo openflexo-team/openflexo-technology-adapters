@@ -281,4 +281,12 @@ public class PowerpointTechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(PowerpointSlideshowResourceFactory.class);
 	}
 
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getPowerpointSlideShowRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
+
 }

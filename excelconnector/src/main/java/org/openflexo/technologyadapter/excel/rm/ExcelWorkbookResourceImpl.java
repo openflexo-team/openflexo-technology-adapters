@@ -38,19 +38,14 @@
 
 package org.openflexo.technologyadapter.excel.rm;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FileWritingLock;
@@ -59,7 +54,6 @@ import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
 import org.openflexo.foundation.resource.SaveResourceException;
 import org.openflexo.foundation.resource.SaveResourcePermissionDeniedException;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
-import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
 import org.openflexo.technologyadapter.excel.model.semantics.ExcelModel;
 import org.openflexo.toolbox.IProgress;
 
@@ -91,46 +85,20 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 
 		ExcelWorkbook resourceData = null;
 		try {
-			if (getFlexoIODelegate() instanceof FileFlexoIODelegate) {
-				resourceData = createExcelWorkbook((FileFlexoIODelegate) getFlexoIODelegate());
-			}
-			else {
-				logger.warning("canno't retrieve resource data from serialization artifact " + getFlexoIODelegate().toString());
-				return null;
-			}
+			resourceData = ExcelWorkbookResourceFactory.createExcelWorkbook(this);
 		} catch (OfficeXmlFileException e) {
 			throw new InvalidExcelFormatException(this, e);
+		}
+
+		if (resourceData == null) {
+			logger.warning("canno't retrieve resource data from serialization artifact " + getFlexoIODelegate().toString());
+			return null;
 		}
 
 		resourceData.setResource(this);
 		setResourceData(resourceData);
 
 		return resourceData;
-	}
-
-	private ExcelWorkbook createExcelWorkbook(FileFlexoIODelegate delegate) {
-		Workbook wb = null;
-		ExcelWorkbook newWorkbook = null;
-		try {
-			if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xls")) {
-				wb = new HSSFWorkbook();
-			}
-			else if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xlsx")) {
-				wb = new XSSFWorkbook();
-			}
-			else {
-				wb = WorkbookFactory.create(new FileInputStream(delegate.getFile()));
-			}
-			BasicExcelModelConverter converter = new BasicExcelModelConverter();
-			newWorkbook = converter.convertExcelWorkbook(wb, getTechnologyAdapter());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidFormatException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return newWorkbook;
 	}
 
 	/**
@@ -178,15 +146,16 @@ public abstract class ExcelWorkbookResourceImpl extends FlexoResourceImpl<ExcelW
 	 * @throws SaveResourceException
 	 */
 	private void writeToFile(Workbook workbook) throws SaveResourceException {
-		logger.info("Wrote " + getFlexoIODelegate().toString());
+		logger.info("Wrote " + getFlexoIODelegate().getSerializationArtefact());
 		FileOutputStream fileOut;
 
 		try {
 			FileFlexoIODelegate delegate = (FileFlexoIODelegate) getFlexoIODelegate();
+			willWrite(delegate.getFile());
 			fileOut = new FileOutputStream(delegate.getFile());
 			workbook.write(fileOut);
 			fileOut.close();
-
+			hasWritten(delegate.getFile());
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

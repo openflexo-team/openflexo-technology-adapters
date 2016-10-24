@@ -197,4 +197,12 @@ public class GINATechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(GINAFIBComponentResourceFactory.class);
 	}
 
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getGINAResourceRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
+
 }

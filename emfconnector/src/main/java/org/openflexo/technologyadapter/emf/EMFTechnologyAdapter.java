@@ -238,6 +238,18 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 		return false;
 	}
 
+	@Override
+	public <I> boolean isFolderIgnorable(FlexoResourceCenter<I> resourceCenter, I contents) {
+		if (resourceCenter.isDirectory(contents)) {
+			for (I c : resourceCenter.getContents(contents)) {
+				if (resourceCenter.retrieveName(c).endsWith(EMFMetaModelResourceFactory.PROPERTIES_SUFFIX)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	/*@Override
 	public <I> boolean contentsAdded(FlexoResourceCenter<I> resourceCenter, I contents) {
 		if (contents instanceof File) {
@@ -579,5 +591,14 @@ public class EMFTechnologyAdapter extends TechnologyAdapter {
 	public EMFMetaModelResourceFactory getEMFMetaModelResourceFactory() {
 		return getResourceFactory(EMFMetaModelResourceFactory.class);
 	}
+
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getEMFModelRepository(resourceCenter).getRepositoryFolder(folder, true);
+			getEMFModelRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
 
 }

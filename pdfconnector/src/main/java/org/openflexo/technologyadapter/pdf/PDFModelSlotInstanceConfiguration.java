@@ -20,7 +20,6 @@
 
 package org.openflexo.technologyadapter.pdf;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfiguration;
@@ -31,9 +30,7 @@ public class PDFModelSlotInstanceConfiguration extends FreeModelSlotInstanceConf
 	protected PDFModelSlotInstanceConfiguration(PDFModelSlot ms, AbstractVirtualModelInstance<?, ?> virtualModelInstance,
 			FlexoResourceCenter<?> rc) {
 		super(ms, virtualModelInstance, rc);
-		setResourceUri(rc.getDefaultBaseURI() + "/Models/myPDF");
-		setRelativePath("/");
-		setFilename("myPDF.pdf");
+		setRelativePath("/PDF");
 	}
 
 	@Override

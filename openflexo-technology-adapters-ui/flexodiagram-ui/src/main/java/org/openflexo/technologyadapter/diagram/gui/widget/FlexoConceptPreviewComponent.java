@@ -126,6 +126,7 @@ public class FlexoConceptPreviewComponent extends JPanel
 		return selectionManager;
 	}
 
+	@CustomComponentParameter(name = "selectionManager", type = CustomComponentParameter.Type.OPTIONAL)
 	public void setSelectionManager(SelectionManager selectionManager) {
 		this.selectionManager = selectionManager;
 		if (previewController != null) {

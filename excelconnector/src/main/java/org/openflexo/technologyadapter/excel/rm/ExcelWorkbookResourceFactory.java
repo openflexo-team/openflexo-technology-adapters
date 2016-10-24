@@ -20,14 +20,23 @@
 
 package org.openflexo.technologyadapter.excel.rm;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.logging.Logger;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openflexo.foundation.resource.FileFlexoIODelegate;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.resource.FlexoResourceFactory;
 import org.openflexo.foundation.technologyadapter.TechnologyContextManager;
 import org.openflexo.model.exceptions.ModelDefinitionException;
 import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelWorkbook;
+import org.openflexo.technologyadapter.excel.model.io.BasicExcelModelConverter;
 
 /**
  * Implementation of ResourceFactory for {@link ExcelWorkbookResource}
@@ -48,7 +57,41 @@ public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWork
 
 	@Override
 	public ExcelWorkbook makeEmptyResourceData(ExcelWorkbookResource resource) {
-		return new ExcelWorkbook(resource.getTechnologyAdapter());
+		return createExcelWorkbook(resource);
+	}
+
+	protected static ExcelWorkbook createExcelWorkbook(ExcelWorkbookResource resource) {
+		Workbook wb = null;
+		ExcelWorkbook newWorkbook = null;
+
+		if (resource.getFlexoIODelegate() instanceof FileFlexoIODelegate) {
+			FileFlexoIODelegate delegate = (FileFlexoIODelegate) resource.getFlexoIODelegate();
+			try {
+				if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xls")) {
+					wb = new HSSFWorkbook();
+					wb.createSheet("Default");
+				}
+				else if (!delegate.exists() && delegate.getFile().getAbsolutePath().endsWith(".xlsx")) {
+					wb = new XSSFWorkbook();
+					wb.createSheet("Default");
+				}
+				else {
+					wb = WorkbookFactory.create(new FileInputStream(delegate.getFile()));
+				}
+				BasicExcelModelConverter converter = new BasicExcelModelConverter();
+				newWorkbook = converter.convertExcelWorkbook(wb, resource.getTechnologyAdapter());
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		else {
+			logger.warning("Create workbook for a non-file is not implemented");
+		}
+		return newWorkbook;
 	}
 
 	@Override
@@ -70,93 +113,4 @@ public class ExcelWorkbookResourceFactory extends FlexoResourceFactory<ExcelWork
 		return resource;
 	}
 
-	/*
-	
-	public static ExcelWorkbookResource makeExcelWorkbookResource(File excelFile,
-			ExcelTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, ExcelWorkbookResource.class));
-			ExcelWorkbookResourceImpl returned = (ExcelWorkbookResourceImpl) factory.newInstance(ExcelWorkbookResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			returned.initName(excelFile.getName());
-			returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(excelFile, factory));
-			// returned.setURI(modelURI);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			// technologyContextManager.registerResource(returned);
-			try {
-				ExcelWorkbook resourceData = returned.loadResourceData(null);
-				returned.setResourceData(resourceData);
-				resourceData.setResource(returned);
-				returned.save(null);
-				returned.isLoaded = true;
-			} catch (SaveResourceException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (InvalidExcelFormatException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static ExcelWorkbookResource retrieveExcelWorkbookResource(File modelFile,
-			ExcelTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			if (technologyContextManager.getResourceWithURI(modelFile.toURI().toString()) != null) {
-				return (ExcelWorkbookResource) technologyContextManager.getResourceWithURI(modelFile.toURI().toString());
-			} else {
-				ModelFactory factory = new ModelFactory(
-						ModelContextLibrary.getCompoundModelContext(FileFlexoIODelegate.class, ExcelWorkbookResource.class));
-				ExcelWorkbookResourceImpl returned = (ExcelWorkbookResourceImpl) factory.newInstance(ExcelWorkbookResource.class);
-				returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-				returned.setTechnologyContextManager(technologyContextManager);
-				returned.initName(modelFile.getName());
-				returned.setFlexoIODelegate(FileFlexoIODelegateImpl.makeFileFlexoIODelegate(modelFile, factory));
-				// returned.setURI(modelFile.toURI().toString());
-				returned.setResourceCenter(resourceCenter);
-				returned.setServiceManager(
-						technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-				// technologyContextManager.registerResource(returned);
-				return returned;
-			}
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static ExcelWorkbookResource retrieveExcelWorkbookResource(InJarResourceImpl workbookInJar,
-			ExcelTechnologyContextManager technologyContextManager, FlexoResourceCenter<?> resourceCenter) {
-		try {
-			ModelFactory factory = new ModelFactory(
-					ModelContextLibrary.getCompoundModelContext(InJarFlexoIODelegate.class, ExcelWorkbookResource.class));
-			ExcelWorkbookResourceImpl returned = (ExcelWorkbookResourceImpl) factory.newInstance(ExcelWorkbookResource.class);
-			returned.setTechnologyAdapter(technologyContextManager.getTechnologyAdapter());
-			returned.setTechnologyContextManager(technologyContextManager);
-			String name = FilenameUtils.getBaseName(workbookInJar.getURL().getFile());
-			String uri = workbookInJar.getURI();
-			returned.initName(name);
-	
-			returned.setFlexoIODelegate(InJarFlexoIODelegateImpl.makeInJarFlexoIODelegate(workbookInJar, factory));
-	
-			returned.setURI(uri);
-			returned.setResourceCenter(resourceCenter);
-			returned.setServiceManager(technologyContextManager.getTechnologyAdapter().getTechnologyAdapterService().getServiceManager());
-			// technologyContextManager.registerResource(returned);
-			return returned;
-		} catch (ModelDefinitionException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	
-	 */
 }

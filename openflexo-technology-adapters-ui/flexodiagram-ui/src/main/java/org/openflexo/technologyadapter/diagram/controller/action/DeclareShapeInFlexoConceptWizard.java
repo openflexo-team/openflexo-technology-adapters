@@ -39,9 +39,12 @@
 package org.openflexo.technologyadapter.diagram.controller.action;
 
 import java.awt.Image;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
+import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
@@ -77,7 +80,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 	private static final String VIRTUAL_MODEL_FLEXO_ROLE_NAME_IS_NULL = FlexoLocalization
 			.localizedForKey("virtual_model_flexo_role_name_is_null");
 	private static final String VIRTUAL_MODEL_CONCEPT_IS_NULL = FlexoLocalization.localizedForKey("virtual_model_concept_is_null");
-	*/
+	 */
 
 	@SuppressWarnings("unused")
 	private static final Logger logger = Logger.getLogger(DeclareShapeInFlexoConceptWizard.class.getPackage().getName());
@@ -113,7 +116,7 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 	}
 
 	@Override
-	public ConfigureCreateNewFlexoConceptFromShapeStep<?> chooseNewFlexoConcept() {
+	public ConfigureCreateNewFlexoConceptFromShapeStep<?> configureConceptCreationStrategy() {
 		if (getAction().getFlexoConceptCreationStrategy() instanceof MapShapeToFlexoConceptlnstanceStrategy) {
 			return new ConfigureMapShapeToFlexoConceptlnstanceStep(
 					(MapShapeToFlexoConceptlnstanceStrategy) getAction().getFlexoConceptCreationStrategy());
@@ -131,15 +134,29 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 	@FIBPanel("Fib/Wizard/DeclareInFlexoConcept/ReplaceShapeInExistingFlexoConcept.fib")
 	public class ReplaceShapeInExistingFlexoConcept extends ConfigureGraphicalElementRoleSettingStrategyStep<ShapeRoleSettingStrategy> {
 
+		private final Map<ShapeRole, ShapeGraphicalRepresentation> initialRepresentations;
+
 		public ReplaceShapeInExistingFlexoConcept(ShapeRoleSettingStrategy strategy) {
 			super(strategy);
+
+			initialRepresentations = new HashMap<>();
 			if (getAction().getFlexoConcept() == null && getAction().getVirtualModel() != null
 					&& getAction().getVirtualModel().getFlexoConcepts().size() > 0) {
-				getAction().setFlexoConcept(getAction().getVirtualModel().getFlexoConcepts().get(0));
+				setFlexoConcept(getAction().getVirtualModel().getFlexoConcepts().get(0));
 			}
+
 			if (getStrategy().getFlexoRole() == null && getAction().getFlexoConcept() != null && getAvailableFlexoRoles().size() > 0) {
-				getStrategy().setFlexoRole(getAvailableFlexoRoles().get(0));
+				setFlexoRole(getAvailableFlexoRoles().get(0));
 			}
+		}
+
+		@Override
+		public void cancelled() {
+			super.cancelled();
+			if (getFlexoConcept() != null && getFlexoRole() != null) {
+				getFlexoRole().updateGraphicalRepresentation(initialRepresentations.get(getFlexoRole()));
+			}
+			initialRepresentations.clear();
 		}
 
 		@Override
@@ -160,6 +177,12 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 			if (flexoConcept != getFlexoConcept()) {
 				FlexoConcept oldValue = getFlexoConcept();
 				getAction().setFlexoConcept(flexoConcept);
+				initialRepresentations.clear();
+				if (flexoConcept != null) {
+					for (ShapeRole r : flexoConcept.getAccessibleProperties(ShapeRole.class)) {
+						initialRepresentations.put(r, (ShapeGraphicalRepresentation) r.getGraphicalRepresentation().clone());
+					}
+				}
 				getPropertyChangeSupport().firePropertyChange("flexoConcept", oldValue, flexoConcept);
 				getPropertyChangeSupport().firePropertyChange("availableFlexoRoles", null, getAvailableFlexoRoles());
 				checkValidity();
@@ -177,25 +200,20 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 		public void setFlexoRole(ShapeRole shapeRole) {
 			if (shapeRole != getFlexoRole()) {
 				ShapeRole oldValue = getFlexoRole();
+				if (oldValue != null) {
+					oldValue.updateGraphicalRepresentation(initialRepresentations.get(oldValue));
+				}
 				getStrategy().setFlexoRole(shapeRole);
+				if (shapeRole != null) {
+					shapeRole.updateGraphicalRepresentation((ShapeGraphicalRepresentation) getStrategy().getTransformationAction()
+							.getFocusedObject().getGraphicalRepresentation().clone());
+					getStrategy().normalizeGraphicalRepresentation(shapeRole);
+				}
 				getPropertyChangeSupport().firePropertyChange("shapeRole", oldValue, shapeRole);
 				checkValidity();
 			}
 		}
 
-		/*	@Override
-			public boolean isValid() {
-		
-				if (getFlexoRole() == null) {
-					setIssueMessage(FlexoLocalization.localizedForKey(FLEXO_ROLE_IS_NULL), IssueMessageType.ERROR);
-					return false;
-				}
-				if (getFlexoConcept() == null) {
-					setIssueMessage(FlexoLocalization.localizedForKey(FLEXO_CONCEPT_IS_NULL), IssueMessageType.ERROR);
-					return false;
-				}
-				return true;
-			}*/
 
 	}
 
@@ -210,9 +228,19 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 			}
 
 			if (StringUtils.isEmpty(getStrategy().getNewRoleName()) && getFlexoConcept() != null) {
-				getStrategy().setNewRoleName(getFlexoConcept().getAvailablePropertyName(getStrategy().getDefaultRoleName()));
+				String newRoleName = getFlexoConcept().getAvailablePropertyName(getStrategy().getDefaultRoleName());
+				getStrategy().setNewRoleName(newRoleName);
 			}
 
+			// We always create new role
+			// when wizard is cancelled, dismiss new flexo role
+			getStrategy().createNewFlexoRole();
+		}
+
+		@Override
+		public void cancelled() {
+			getStrategy().dismissNewFlexoRole();
+			super.cancelled();
 		}
 
 		@Override
@@ -232,11 +260,17 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 		public void setFlexoConcept(FlexoConcept flexoConcept) {
 			if (flexoConcept != getFlexoConcept()) {
 				FlexoConcept oldValue = getFlexoConcept();
+				getStrategy().dismissNewFlexoRole();
 				getAction().setFlexoConcept(flexoConcept);
+				getStrategy().createNewFlexoRole();
 				getPropertyChangeSupport().firePropertyChange("flexoConcept", oldValue, flexoConcept);
 				getPropertyChangeSupport().firePropertyChange("newShapeRoleName", null, getNewShapeRoleName());
 				checkValidity();
 			}
+		}
+
+		public ShapeRole getNewFlexoRole() {
+			return getStrategy().getNewFlexoRole();
 		}
 
 		public String getNewShapeRoleName() {
@@ -251,25 +285,6 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 				checkValidity();
 			}
 		}
-
-		/*	@Override
-			public boolean isValid() {
-		
-				if (StringUtils.isEmpty(getNewShapeRoleName())) {
-					setIssueMessage(FlexoLocalization.localizedForKey(NEW_SHAPE_ROLE_NAME_IS_NULL), IssueMessageType.ERROR);
-					return false;
-				}
-				if (getFlexoConcept() == null) {
-					setIssueMessage(FlexoLocalization.localizedForKey(FLEXO_CONCEPT_IS_NULL), IssueMessageType.ERROR);
-					return false;
-				}
-		
-				if (getFlexoConcept().getAccessibleProperty(getNewShapeRoleName()) != null) {
-					setIssueMessage(FlexoLocalization.localizedForKey(NEW_SHAPE_ROLE_NAME_ALREADY_EXISTS), IssueMessageType.ERROR);
-					return false;
-				}
-				return true;
-			}*/
 
 	}
 
@@ -299,6 +314,12 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 			return getAction().getLocales().localizedForKey("create_new_flexo_concept_where_shape_is_mapped_to_a_flexo_concept_instance");
 		}
 
+		@Override
+		public boolean isValid() {
+			// TODO Auto-generated method stub
+			return super.isValid();
+		}
+
 		public String getFlexoConceptInstanceRoleName() {
 			return getStrategy().getFlexoConceptInstanceRoleName();
 		}
@@ -321,16 +342,17 @@ public class DeclareShapeInFlexoConceptWizard extends AbstractDeclareDiagramElem
 				FlexoConcept oldValue = getTypeConcept();
 				getStrategy().setTypeConcept(typeConcept);
 				getPropertyChangeSupport().firePropertyChange("typeConcept", oldValue, typeConcept);
-				getPropertyChangeSupport().firePropertyChange("flexoConceptInstanceRoleName", null, getFlexoConceptName());
+				getPropertyChangeSupport().firePropertyChange("flexoConceptInstanceRoleName", null,
+						getAction().getFlexoConceptCreationStrategy().getFlexoConceptName());
 				checkValidity();
 			}
 		}
 
-		@Override
+		/*@Override
 		public void setModelSlot(ModelSlot<?> modelSlot) {
 			super.setModelSlot(modelSlot);
 			getPropertyChangeSupport().firePropertyChange("typeConcept", null, getTypeConcept());
-		}
+		}*/
 
 	}
 

@@ -61,7 +61,11 @@ public abstract class GraphicalElementRoleSettingStrategy<A extends DeclareDiagr
 	public R performStrategy() {
 		if (getFlexoRole() != null) {
 			getFlexoRole().updateGraphicalRepresentation(getTransformationAction().getFocusedObject().getGraphicalRepresentation());
+			normalizeGraphicalRepresentation(getFlexoRole());
 		}
 		return getFlexoRole();
 	}
+
+	public abstract void normalizeGraphicalRepresentation(R role);
+
 }

@@ -56,6 +56,11 @@ public class TestExcelInspectors extends GenericFIBInspectorTestCase {
 	}
 
 	@Test
+	public void testBasicExcelModelSlotInspector() {
+		validateFIB("Inspectors/Excel/BasicExcelModelSlot.inspector");
+	}
+
+	@Test
 	public void testAddExcelCellInspector() {
 		validateFIB("Inspectors/Excel/EditionAction/AddExcelCell.inspector");
 	}
@@ -73,6 +78,11 @@ public class TestExcelInspectors extends GenericFIBInspectorTestCase {
 	@Test
 	public void testCellStyleActionInspector() {
 		validateFIB("Inspectors/Excel/EditionAction/CellStyleAction.inspector");
+	}
+
+	@Test
+	public void testCreateExcelResourceInspector() {
+		validateFIB("Inspectors/Excel/EditionAction/CreateExcelResource.inspector");
 	}
 
 	@Test

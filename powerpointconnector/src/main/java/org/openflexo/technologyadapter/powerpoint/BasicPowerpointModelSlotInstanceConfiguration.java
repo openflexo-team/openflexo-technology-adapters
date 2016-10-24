@@ -41,7 +41,6 @@ package org.openflexo.technologyadapter.powerpoint;
 import java.util.List;
 import java.util.logging.Logger;
 
-import org.openflexo.foundation.FlexoProject;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstance;
 import org.openflexo.foundation.fml.rt.action.ModelSlotInstanceConfiguration;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
@@ -49,8 +48,8 @@ import org.openflexo.foundation.technologyadapter.FreeModelSlotInstanceConfigura
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlideshow;
 import org.openflexo.technologyadapter.powerpoint.rm.PowerpointSlideshowResource;
 
-public class BasicPowerpointModelSlotInstanceConfiguration extends
-		FreeModelSlotInstanceConfiguration<PowerpointSlideshow, BasicPowerpointModelSlot> {
+public class BasicPowerpointModelSlotInstanceConfiguration
+		extends FreeModelSlotInstanceConfiguration<PowerpointSlideshow, BasicPowerpointModelSlot> {
 
 	private static final Logger logger = Logger.getLogger(ModelSlotInstanceConfiguration.class.getPackage().getName());
 
@@ -62,8 +61,7 @@ public class BasicPowerpointModelSlotInstanceConfiguration extends
 	protected BasicPowerpointModelSlotInstanceConfiguration(BasicPowerpointModelSlot ms,
 			AbstractVirtualModelInstance<?, ?> virtualModelInstance, FlexoResourceCenter<?> rc) {
 		super(ms, virtualModelInstance, rc);
-		setResourceUri(rc.getDefaultBaseURI() + "/Models/myPowerpointModel");
-		setRelativePath("/");
+		setRelativePath("/Models");
 		setFilename("myPowerpointResource.ppt");
 	}
 

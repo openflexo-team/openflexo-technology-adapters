@@ -95,4 +95,12 @@ public class CSVTechnologyAdapter extends TechnologyAdapter {
 		return returned;
 	}
 
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getCSVModelResourceRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
+
 }

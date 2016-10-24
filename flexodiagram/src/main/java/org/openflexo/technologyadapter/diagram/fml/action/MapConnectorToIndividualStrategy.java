@@ -38,15 +38,27 @@
 
 package org.openflexo.technologyadapter.diagram.fml.action;
 
+import java.io.FileNotFoundException;
+
+import org.apache.commons.lang3.StringUtils;
 import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.binding.BindingPathElement;
+import org.openflexo.connie.expr.BindingValue;
+import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.URIParameter;
+import org.openflexo.foundation.fml.binding.ModelSlotBindingVariable;
+import org.openflexo.foundation.fml.binding.VirtualModelModelSlotPathElement;
 import org.openflexo.foundation.fml.editionaction.AssignableAction;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
+import org.openflexo.foundation.ontology.IFlexoOntology;
 import org.openflexo.foundation.ontology.IFlexoOntologyClass;
 import org.openflexo.foundation.ontology.fml.IndividualRole;
 import org.openflexo.foundation.ontology.fml.editionaction.AddIndividual;
 import org.openflexo.foundation.ontology.technologyadapter.FlexoOntologyModelSlot;
+import org.openflexo.foundation.resource.ResourceLoadingCancelledException;
+import org.openflexo.foundation.technologyadapter.FlexoMetaModel;
+import org.openflexo.foundation.technologyadapter.FlexoModel;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
 import org.openflexo.technologyadapter.diagram.fml.LinkScheme;
 import org.openflexo.technologyadapter.diagram.model.DiagramShape;
@@ -61,12 +73,13 @@ import org.openflexo.toolbox.JavaUtils;
  */
 public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorCreationStrategy {
 
-	private static final String NO_FLEXO_ONTOLOGY_MODEL_SLOT_DEFINED = "please_select_a_valid_model_slot";
-	private static final String NO_CONCEPT_DEFINED = "no_concept_defined_as_type_of_individual";
+	private static final String NO_CONCEPT_DEFINED = "please_select_a_valid_concept_as_type_of_mapped_instance";
+	private static final String NO_ROLE_NAME = "please_enter_a_valid_role_name";
 
 	private IFlexoOntologyClass<?> concept;
 	private String individualFlexoRoleName;
 	private IndividualRole<?> individualFlexoRole;
+	private DataBinding<FlexoModel> model;
 
 	public MapConnectorToIndividualStrategy(DeclareConnectorInFlexoConcept transformationAction) {
 		super(transformationAction);
@@ -87,6 +100,71 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 		}
 	}
 
+	public DataBinding<FlexoModel> getModel() {
+		if (model == null) {
+			model = new DataBinding<>(this, FlexoModel.class, DataBinding.BindingDefinitionType.GET);
+			model.setBindingName("model");
+		}
+		return model;
+	}
+
+	public void setModel(DataBinding<FlexoModel> aModel) {
+		if (aModel != null) {
+			aModel.setOwner(this);
+			aModel.setBindingName("model");
+			aModel.setDeclaredType(FlexoModel.class);
+			aModel.setBindingDefinitionType(DataBinding.BindingDefinitionType.GET);
+		}
+		this.model = aModel;
+	}
+
+	public FlexoOntologyModelSlot<?, ?, ?> getFlexoOntologyModelSlot() {
+		if (getModel().isSet() && getModel().isValid()) {
+			if (getModel().isBindingValue()) {
+				BindingValue bv = (BindingValue) getModel().getExpression();
+				BindingPathElement bpe = bv.getLastBindingPathElement();
+				ModelSlot<?> ms = null;
+				if (bpe instanceof ModelSlotBindingVariable) {
+					ms = ((ModelSlotBindingVariable) bpe).getModelSlot();
+				}
+				else if (bpe instanceof VirtualModelModelSlotPathElement) {
+					ms = ((VirtualModelModelSlotPathElement) bpe).getModelSlot();
+				}
+				if (ms instanceof FlexoOntologyModelSlot) {
+					return (FlexoOntologyModelSlot<?, ?, ?>) ms;
+				}
+			}
+		}
+		return null;
+	}
+
+	public FlexoMetaModel<?> getMetaModel() throws FileNotFoundException, ResourceLoadingCancelledException, FlexoException {
+		if (getFlexoOntologyModelSlot() != null) {
+			return getFlexoOntologyModelSlot().getMetaModelResource().getResourceData(null);
+		}
+		return null;
+	}
+
+	public IFlexoOntology<?> getMetaModelOntology() {
+		FlexoMetaModel<?> metaMododel;
+		try {
+			metaMododel = getMetaModel();
+			if (metaMododel instanceof IFlexoOntology) {
+				return (IFlexoOntology<?>) metaMododel;
+			}
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ResourceLoadingCancelledException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (FlexoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public IFlexoOntologyClass<?> getConcept() {
 		return concept;
 	}
@@ -99,27 +177,17 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 		}
 	}
 
-	/**
-	 * Return flag indicating if currently selected {@link ModelSlot} is a {@link FlexoOntologyModelSlot}
-	 * 
-	 * @return
-	 */
-	public boolean isFlexoOntologyModelSlot() {
-		return (getTransformationAction() != null
-				&& getTransformationAction().getInformationSourceModelSlot() instanceof FlexoOntologyModelSlot);
-	}
-
 	@Override
 	public boolean isValid() {
 		if (!super.isValid()) {
 			return false;
 		}
-		if (!isFlexoOntologyModelSlot()) {
-			setIssueMessage(getLocales().localizedForKey(NO_FLEXO_ONTOLOGY_MODEL_SLOT_DEFINED), IssueMessageType.ERROR);
-			return false;
-		}
 		if (getConcept() == null) {
 			setIssueMessage(getLocales().localizedForKey(NO_CONCEPT_DEFINED), IssueMessageType.ERROR);
+			return false;
+		}
+		if (StringUtils.isEmpty(getIndividualFlexoRoleName())) {
+			setIssueMessage(getLocales().localizedForKey(NO_ROLE_NAME), IssueMessageType.ERROR);
 			return false;
 		}
 		return true;
@@ -128,19 +196,18 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 	@Override
 	public FlexoConcept performStrategy() {
 
-		if (isFlexoOntologyModelSlot()) {
-			FlexoOntologyModelSlot<?, ?, ?> flexoOntologyModelSlot = (FlexoOntologyModelSlot<?, ?, ?>) getTransformationAction()
-					.getInformationSourceModelSlot();
+		FlexoConcept newFlexoConcept = super.performStrategy();
+
+		FlexoOntologyModelSlot<?, ?, ?> flexoOntologyModelSlot = getFlexoOntologyModelSlot();
+
+		if (flexoOntologyModelSlot != null) {
 			individualFlexoRole = flexoOntologyModelSlot.makeIndividualRole(getConcept());
 			individualFlexoRole.setRoleName(getIndividualFlexoRoleName());
 			individualFlexoRole.setOntologicType(getConcept());
+			newFlexoConcept.addToFlexoProperties(individualFlexoRole);
 		}
 
-		FlexoConcept newFlexoConcept = super.performStrategy();
-
-		newFlexoConcept.addToFlexoProperties(individualFlexoRole);
-
-		return getNewFlexoConcept();
+		return newFlexoConcept;
 	}
 
 	public IndividualRole<?> getIndividualFlexoRole() {
@@ -149,101 +216,22 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 
 	@Override
 	protected void initializeLinkScheme(LinkScheme newLinkScheme) {
-		if (isFlexoOntologyModelSlot()) {
-			FlexoOntologyModelSlot<?, ?, ?> flexoOntologyModelSlot = (FlexoOntologyModelSlot<?, ?, ?>) getTransformationAction()
-					.getInformationSourceModelSlot();
-			// Vector<PropertyEntry> candidates = new Vector<PropertyEntry>();
-			/*for (PropertyEntry e : propertyEntries) {
-				if (e != null && e.selectEntry) {
-					FlexoBehaviourParameter newParameter = null;
-					if (e.property instanceof IFlexoOntologyDataProperty) {
-						switch (((IFlexoOntologyDataProperty) e.property).getRange().getBuiltInDataType()) {
-						case Boolean:
-							newParameter = new CheckboxParameter(builder);
-							newParameter.setName(e.property.getName());
-							newParameter.setLabel(e.label);
-							break;
-						case Byte:
-						case Integer:
-						case Long:
-						case Short:
-							newParameter = new IntegerParameter(builder);
-							newParameter.setName(e.property.getName());
-							newParameter.setLabel(e.label);
-							break;
-						case Double:
-						case Float:
-							newParameter = new FloatParameter(builder);
-							newParameter.setName(e.property.getName());
-							newParameter.setLabel(e.label);
-							break;
-						case String:
-							newParameter = new TextFieldParameter(builder);
-							newParameter.setName(e.property.getName());
-							newParameter.setLabel(e.label);
-							break;
-						default:
-							break;
-						}
-					} else if (e.property instanceof IFlexoOntologyObjectProperty) {
-						IFlexoOntologyConcept range = ((IFlexoOntologyObjectProperty) e.property).getRange();
-						if (range instanceof IFlexoOntologyClass) {
-							newParameter = new IndividualParameter(builder);
-							newParameter.setName(e.property.getName());
-							newParameter.setLabel(e.label);
-							((IndividualParameter) newParameter).setConcept((IFlexoOntologyClass) range);
-						}
-					}
-					if (newParameter != null) {
-						newDropScheme.addToParameters(newParameter);
-					}
-				}
-			}*/
 
+		FlexoOntologyModelSlot<?, ?, ?> flexoOntologyModelSlot = getFlexoOntologyModelSlot();
+
+		if (flexoOntologyModelSlot != null) {
 			URIParameter uriParameter = getTransformationAction().getFactory().newURIParameter();
 			uriParameter.setName("uri");
 			uriParameter.setLabel("uri");
-			/*if (mainPropertyDescriptor != null) {
-				uriParameter.setBaseURI(new DataBinding<String>(mainPropertyDescriptor.property.getName()));
-			}*/
 			newLinkScheme.addToParameters(uriParameter);
-
-			// Declare pattern property
-			/*for (IndividualRole r : otherRoles) {
-				DeclareFlexoRole action = new DeclareFlexoRole(builder);
-				action.setAssignation(new DataBinding<Object>(r.getRoleName()));
-				action.setObject(new DataBinding<Object>("parameters." + r.getName()));
-				newDropScheme.addToActions(action);
-			}*/
 
 			// Add individual action
 			AddIndividual<?, ?> newAddIndividual = flexoOntologyModelSlot.makeAddIndividualAction(individualFlexoRole, newLinkScheme);
-
-			/*AddIndividual newAddIndividual = new AddIndividual(builder);
-			newAddIndividual.setAssignation(new ViewPointDataBinding(individualFlexoRole.getRoleName()));
-			newAddIndividual.setIndividualName(new ViewPointDataBinding("parameters.uri"));
-			for (PropertyEntry e : propertyEntries) {
-				if (e.selectEntry) {
-					if (e.property instanceof IFlexoOntologyObjectProperty) {
-						IFlexoOntologyConcept range = ((IFlexoOntologyObjectProperty) e.property).getRange();
-						if (range instanceof IFlexoOntologyClass) {
-							ObjectPropertyAssertion propertyAssertion = new ObjectPropertyAssertion(builder);
-							propertyAssertion.setOntologyProperty(e.property);
-							propertyAssertion.setObject(new ViewPointDataBinding("parameters." + e.property.getName()));
-							newAddIndividual.addToObjectAssertions(propertyAssertion);
-						}
-					} else if (e.property instanceof IFlexoOntologyDataProperty) {
-						DataPropertyAssertion propertyAssertion = new DataPropertyAssertion(builder);
-						propertyAssertion.setOntologyProperty(e.property);
-						propertyAssertion.setValue(new ViewPointDataBinding("parameters." + e.property.getName()));
-						newAddIndividual.addToDataAssertions(propertyAssertion);
-					}
-				}
-			}*/
+			newAddIndividual.setOntologyClass(getConcept());
 
 			AssignationAction<?> newAssignationAction = getTransformationAction().getFactory().newAssignationAction();
 			newAssignationAction.setAssignableAction((AssignableAction) newAddIndividual);
-			newAssignationAction.setAssignation(new DataBinding(individualFlexoRole.getRoleName()));
+			newAssignationAction.setAssignation(new DataBinding(getIndividualFlexoRoleName()));
 
 			newLinkScheme.getControlGraph().sequentiallyAppend(newAssignationAction);
 
@@ -253,56 +241,23 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 
 	}
 
-	/*public class PropertyEntry {
-	
-	public IFlexoOntologyStructuralProperty property;
-	public String label;
-	public boolean selectEntry = false;
-	
-	public PropertyEntry(IFlexoOntologyStructuralProperty property) {
-		this.property = property;
-		if (StringUtils.isNotEmpty(property.getDescription())) {
-			label = property.getDescription();
-		} else {
-			label = property.getName() + "_of_" + getIndividualFlexoRoleName();
+	@Override
+	public String getPresentationName() {
+		return "map_connector_to_individual";
+	}
+
+	@Override
+	public String getDescriptionKey() {
+		return "<html>build_a_new_concept_representing_an_individual</html>";
+	}
+
+	@Override
+	public void notifiedBindingChanged(DataBinding<?> dataBinding) {
+		super.notifiedBindingChanged(dataBinding);
+		if (dataBinding == model) {
+			getPropertyChangeSupport().firePropertyChange("model", null, getModel());
+			getPropertyChangeSupport().firePropertyChange("metaModelOntology", null, getMetaModelOntology());
 		}
 	}
-	
-	public String getRange() {
-		return property.getRange().getName();
-	}
-	}*/
-
-	/*private PropertyEntry selectBestEntryForURIBaseName() {
-	Vector<PropertyEntry> candidates = new Vector<PropertyEntry>();
-	for (PropertyEntry e : propertyEntries) {
-		if (e.selectEntry && e.property instanceof IFlexoOntologyDataProperty
-				&& ((IFlexoOntologyDataProperty) e.property).getRange().getBuiltInDataType() == BuiltInDataType.String) {
-			candidates.add(e);
-		}
-	}
-	if (candidates.size() > 0) {
-		return candidates.firstElement();
-	}
-	return null;
-	}*/
-
-	/*public PropertyEntry createPropertyEntry() {
-	PropertyEntry newPropertyEntry = new PropertyEntry(null);
-	propertyEntries.add(newPropertyEntry);
-	return newPropertyEntry;
-	}
-	
-	public PropertyEntry deletePropertyEntry(PropertyEntry aPropertyEntry) {
-	propertyEntries.remove(aPropertyEntry);
-	return aPropertyEntry;
-	}
-	
-	public void selectAllProperties() {
-	for (PropertyEntry e : propertyEntries) {
-		e.selectEntry = true;
-	}
-	
-	 */
 
 }

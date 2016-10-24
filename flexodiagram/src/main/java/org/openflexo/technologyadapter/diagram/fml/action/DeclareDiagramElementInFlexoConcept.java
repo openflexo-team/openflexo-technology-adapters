@@ -155,7 +155,11 @@ public abstract class DeclareDiagramElementInFlexoConcept<A extends DeclareDiagr
 
 	// public abstract List<? extends GraphicalElementRole<T, ?>> getAvailableFlexoRoles();
 
-	public Vector<DrawingObjectEntry> drawingObjectEntries;
+	private final List<DrawingObjectEntry> drawingObjectEntries;
+
+	public List<DrawingObjectEntry> getDrawingObjectEntries() {
+		return drawingObjectEntries;
+	}
 
 	public int getSelectedEntriesCount() {
 		int returned = 0;
@@ -184,7 +188,8 @@ public abstract class DeclareDiagramElementInFlexoConcept<A extends DeclareDiagr
 		if (getVirtualModel().getModelSlots(TypedDiagramModelSlot.class) != null
 				&& getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).size() > 0) {
 			return getVirtualModel().getModelSlots(TypedDiagramModelSlot.class).get(0);
-		} else {
+		}
+		else {
 			;
 			DiagramTechnologyAdapter diagramTechnologyAdapter = getEditor().getServiceManager().getTechnologyAdapterService()
 					.getTechnologyAdapter(DiagramTechnologyAdapter.class);

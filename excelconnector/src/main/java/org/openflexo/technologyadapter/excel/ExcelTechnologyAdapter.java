@@ -304,7 +304,7 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 					(FlexoResourceCenter<File>) resourceCenter, getTechnologyContextManager(), true);
 			// ExcelWorkbookResource workbookResource = ExcelWorkbookResourceImpl.makeExcelWorkbookResource(/*modelUri,*/ excelFile,
 			// getTechnologyContextManager(), resourceCenter);
-			getTechnologyContextManager().registerResource(workbookResource);
+			// getTechnologyContextManager().registerResource(workbookResource);
 			return workbookResource;
 		}
 		return null;
@@ -319,5 +319,13 @@ public class ExcelTechnologyAdapter extends TechnologyAdapter {
 	public ExcelWorkbookResourceFactory getExcelWorkbookResourceFactory() {
 		return getResourceFactory(ExcelWorkbookResourceFactory.class);
 	}
+
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getExcelWorkbookRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
 
 }

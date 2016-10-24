@@ -78,11 +78,11 @@ public interface ExcelCellRole extends FlexoRole<ExcelCell> {
 			// TODO Auto-generated method stub
 			return false;
 		}
-
+		
 		@Override
 		public void setIsPrimaryRole(boolean isPrimary) {
 			// TODO Auto-generated method stub
-
+		
 		}*/
 
 		/**

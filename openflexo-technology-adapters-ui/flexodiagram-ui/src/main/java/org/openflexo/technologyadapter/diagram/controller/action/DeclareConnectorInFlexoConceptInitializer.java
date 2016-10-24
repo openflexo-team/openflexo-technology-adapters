@@ -53,6 +53,7 @@ import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FMLControlledDiagramModuleView;
 import org.openflexo.technologyadapter.diagram.fml.action.DeclareConnectorInFlexoConcept;
+import org.openflexo.technologyadapter.diagram.gui.view.FMLControlledDiagramVirtualModelView;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 import org.openflexo.view.controller.ActionInitializer;
@@ -78,6 +79,12 @@ public class DeclareConnectorInFlexoConceptInitializer
 					FMLControlledDiagramModuleView moduleView = (FMLControlledDiagramModuleView) getController().getCurrentModuleView();
 					action.setVirtualModelResource(
 							(VirtualModelResource) moduleView.getEditor().getVirtualModelInstance().getVirtualModel().getResource());
+				}
+
+				if (getController().getCurrentModuleView() instanceof FMLControlledDiagramVirtualModelView) {
+					FMLControlledDiagramVirtualModelView moduleView = (FMLControlledDiagramVirtualModelView) getController()
+							.getCurrentModuleView();
+					action.setVirtualModelResource((VirtualModelResource) moduleView.getRepresentedObject().getResource());
 				}
 
 				Wizard wizard = new DeclareConnectorInFlexoConceptWizard(action, getController());

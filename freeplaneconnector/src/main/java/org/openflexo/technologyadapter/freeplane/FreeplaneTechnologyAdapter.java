@@ -274,4 +274,12 @@ public class FreeplaneTechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(FreeplaneResourceFactory.class);
 	}
 
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getFreeplaneResourceRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
+
 }

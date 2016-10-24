@@ -352,4 +352,12 @@ public class DocXTechnologyAdapter extends TechnologyAdapter {
 		return getResourceFactory(DocXDocumentResourceFactory.class);
 	}
 
+	/*@Override
+	protected <I> void foundFolder(FlexoResourceCenter<I> resourceCenter, I folder) throws IOException {
+		super.foundFolder(resourceCenter, folder);
+		if (resourceCenter.isDirectory(folder)) {
+			getDocXDocumentRepository(resourceCenter).getRepositoryFolder(folder, true);
+		}
+	}*/
+
 }
