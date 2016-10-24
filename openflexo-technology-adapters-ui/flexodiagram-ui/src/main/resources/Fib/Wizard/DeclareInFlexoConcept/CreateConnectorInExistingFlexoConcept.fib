@@ -5,41 +5,101 @@
 	border="empty" trackViewPortWidth="true" width="600"
 	dataClassName="org.openflexo.technologyadapter.diagram.controller.action.DeclareConnectorInFlexoConceptWizard$CreateConnectorInExistingFlexoConcept"
 	trackViewPortHeight="true">
-	<LocalizedDictionary id="1" />
-	<Label id="13" manageDynamicModel="false" useScrollBar="false"
-		index="1" localize="true" align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=50;insetsRight=2;insetsTop=5;location=left)"
-		label="flexo_concept" readOnly="false">
-	</Label>
-	<DropDown id="15" manageDynamicModel="false" useScrollBar="false"
-		data="data.flexoConcept" showReset="false" staticList=""
-		autoSelectFirstRow="true" name="flexoConceptDropdown" index="2"
-		localize="true"
-		constraints="twocols(expandHorizontally=false;expandVertically=false;index=2;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-		list="data.virtualModel.flexoConcepts" format="object.name"
-		showText="true" readOnly="false" iteratorClassName="org.openflexo.foundation.fml.FlexoConcept"
-		showIcon="false">
-	</DropDown>
-	<Label id="18" manageDynamicModel="false" useScrollBar="false"
-		index="3" localize="true" align="left"
+	<LocalizedDictionary />
+	<Label name="FlexoConceptLabel" index="1" localize="true" align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=1;insetsBottom=0;insetsLeft=50;insetsRight=2;insetsTop=3;location=left)"
+		label="flexo_concept" />
+	<Custom manageDynamicModel="true"
+		dataClassForComponent="org.openflexo.foundation.fml.FlexoConcept"
+		componentClassName="org.openflexo.fml.controller.widget.FIBFlexoConceptSelector"
+		name="conceptSelector" data="data.flexoConcept" index="4"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=20;insetsTop=0;location=right)">
+		<Assignment id="3" mandatory="true" variable="component.viewPoint" />
+		<Assignment id="4" mandatory="true" variable="component.viewPointLibrary" />
+		<Assignment id="5" mandatory="true" variable="component.serviceManager" />
+		<Assignment id="6" mandatory="true" variable="component.flexoController" />
+		<Assignment id="7" mandatory="true"
+			variable="component.selectableCondition" />
+		<Assignment id="8" mandatory="true" value="data.action.virtualModel"
+			variable="component.virtualModel" />
+	</Custom>
+	<Label manageDynamicModel="false" useScrollBar="false" index="3"
+		localize="true" align="left"
 		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
 		label="flexo_role" readOnly="false">
 	</Label>
 	<TextField index="20" data="data.newConnectorRoleName"
 		constraints="twocols(expandHorizontally=false;expandVertically=false;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)"
-		localize="true" columns="7" />
-	<Label manageDynamicModel="false" useScrollBar="false" localize="true"
-		align="left"
-		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=5;location=left)"
-		label="preview" readOnly="false">
-	</Label>
-	<Custom
-		componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FlexoConceptPreviewComponent"
-		localize="true" manageDynamicModel="true" name="PreviewComponent"
-		index="0" data="data.flexoConcept"
-		constraints="twocols(expandHorizontally=true;expandVertically=true;index=4;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=0;location=right)">
-		<!-- <Assignment variable="component.selectionManager" value="controller.selectionManager" 
-			/> -->
-	</Custom>
+		columns="7" />
+	<Label label="from_shape" index="10"
+		constraints="twocols(expandHorizontally=false;expandVertically=false;index=10;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
+		localize="true" />
+	<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
+		borderTitle="Panel" titleFont="SansSerif,0,11" darkLevel="0" index="11"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=11;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
+		<DropDown index="0" data="data.newFlexoRole.startShapeRole" localized="false"
+			constraints="flow(anchor=west;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+			visible="((!(StartShapeCheckbox.value)) &amp; (data.newFlexoRole.availableShapeRoles.size &gt; 0))"
+			name="dropdown" localize="true" format="object.name" list="data.newFlexoRole.availableShapeRoles"
+			iteratorClassName="org.openflexo.technologyadapter.diagram.fml.ShapeRole"
+			autoSelectFirstRow="true">
+		</DropDown>
+		<CheckBox selected="true" index="1"
+			data="data.newFlexoRole.startShapeAsDefinedInAction" constraints="flow(index=1)"
+			name="StartShapeCheckbox" localize="false" manageDynamicModel="true" />
+		<Label label="as_described_in_action" index="2" constraints="flow(index=2)"
+			localize="true">
+		</Label>
+	</Panel>
+	<Label label="to_shape" index="12"
+		constraints="twocols(expandHorizontally=false;expandVertically=false;index=12;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=left)"
+		localize="true" />
+	<Panel layout="flow" hGap="0" vGap="0" flowAlignment="LEADING"
+		borderTitle="Panel" titleFont="SansSerif,0,11" darkLevel="0" index="13"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=13;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=right)">
+		<DropDown index="0" data="data.newFlexoRole.endShapeRole" localized="false"
+			constraints="flow(anchor=west;fill=none;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=0.0;weightY=0.0)"
+			visible="((!(EndShapeCheckbox.value)) &amp; (data.newFlexoRole.availableShapeRoles.size &gt; 0))"
+			name="dropdown" localize="true" format="object.name" list="data.newFlexoRole.availableShapeRoles"
+			iteratorClassName="org.openflexo.technologyadapter.diagram.fml.ShapeRole"
+			autoSelectFirstRow="true">
+		</DropDown>
+		<CheckBox selected="true" index="1"
+			data="data.newFlexoRole.endShapeAsDefinedInAction" constraints="flow(index=1)"
+			name="EndShapeCheckbox" localize="true" manageDynamicModel="true" />
+		<Label label="as_described_in_action" index="2" constraints="flow(index=2)"
+			localize="true">
+		</Label>
+	</Panel>
+	<Label name="PreviewLabel" index="10" localize="true" align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=false;index=3;insetsBottom=0;insetsLeft=2;insetsRight=2;insetsTop=3;location=left)"
+		label="preview" />
+	<Panel borderLeft="0" sizeAdjustment="OriginalSize" borderRight="0"
+		border="empty" trackViewPortWidth="true" align="left"
+		constraints="twocols(expandHorizontally=true;expandVertically=true;insetsBottom=20;insetsLeft=0;insetsRight=20;insetsTop=0;location=right)"
+		borderBottom="0" borderTop="0" trackViewPortHeight="true" layout="border"
+		name="FIBPanel2">
+		<Custom manageDynamicModel="true"
+			dataClassForComponent="org.openflexo.foundation.fml.FlexoConcept"
+			componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.FlexoConceptPreviewComponent"
+			name="PreviewComponent" data="data.flexoConcept" index="11" localize="true"
+			constraints="border(expandHorizontally=true;expandVertically=true;index=4;insetsBottom=20;insetsLeft=2;insetsRight=20;insetsTop=0;location=right;x=0;y=0)">
+			<Assignment id="20" mandatory="true"
+				value="controller.localSelectionManager" variable="component.selectionManager" />
+		</Custom>
+		<Table showFooter="true" manageDynamicModel="true"
+			selectionMode="MultipleIntervalSelection" data="data.flexoConcept.accessibleRoles"
+			boundToSelectionManager="true" constraints="border(location=west)"
+			visibleRowCount="3" rowHeight="18" iteratorClassName="java.lang.Object"
+			backgroundNonSelectionColor="255,255,255" name="Table"
+			backgroundSecondarySelectionColor="178,215,255">
+			<IconColumn id="22" data="controller.iconForObject(iterator)"
+				displayTitle="false" title="icon" name="icon" columnWidth="20"
+				resizable="false" showIcon="false" />
+			<LabelColumn id="23" data="iterator.name" displayTitle="true"
+				title="element" name="label" columnWidth="100" resizable="true"
+				showIcon="false" />
+		</Table>
+	</Panel>
 
 </Panel>

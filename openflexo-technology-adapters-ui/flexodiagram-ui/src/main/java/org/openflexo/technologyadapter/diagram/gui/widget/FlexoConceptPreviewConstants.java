@@ -44,8 +44,8 @@ import java.awt.Font;
 public interface FlexoConceptPreviewConstants {
 
 	public static final Font DEFAULT_FONT = new Font("SansSerif", Font.BOLD, 11);
-	public static final double WIDTH = 400;
-	public static final double HEIGHT = 130;
+	public static final double WIDTH = 250;
+	public static final double HEIGHT = 200;
 	public static final double DEFAULT_SHAPE_WIDTH = 80;
 	public static final double DEFAULT_SHAPE_HEIGHT = 50;
 

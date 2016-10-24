@@ -45,6 +45,7 @@ import java.util.logging.Logger;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
+import org.openflexo.foundation.fml.AbstractVirtualModel;
 import org.openflexo.foundation.fml.FMLRepresentationContext;
 import org.openflexo.foundation.fml.FMLRepresentationContext.FMLRepresentationOutput;
 import org.openflexo.foundation.fml.annotations.FML;
@@ -73,9 +74,9 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	@PropertyIdentifier(type = ShapeGraphicalRepresentation.class)
 	public static final String ARTIFACT_TO_GRAPHICAL_REPRESENTATION_KEY = "artifactToGraphicalRepresentation";
 	@PropertyIdentifier(type = ShapeRole.class)
-	public static final String START_SHAPE_PATTERN_ROLE_KEY = "startShapeRole";
+	public static final String START_SHAPE_ROLE_KEY = "startShapeRole";
 	@PropertyIdentifier(type = ShapeRole.class)
-	public static final String END_SHAPE_PATTERN_ROLE_KEY = "endShapeRole";
+	public static final String END_SHAPE_ROLE_KEY = "endShapeRole";
 
 	public static GraphicalFeature<?, ?>[] AVAILABLE_CONNECTOR_FEATURES = {};
 
@@ -104,18 +105,18 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 	@Setter(ARTIFACT_TO_GRAPHICAL_REPRESENTATION_KEY)
 	public void setArtifactToGraphicalRepresentation(ShapeGraphicalRepresentation artifactToGraphicalRepresentation);
 
-	@Getter(value = START_SHAPE_PATTERN_ROLE_KEY)
+	@Getter(value = START_SHAPE_ROLE_KEY)
 	@XMLElement(context = "StartShape_")
 	public ShapeRole getStartShapeRole();
 
-	@Setter(START_SHAPE_PATTERN_ROLE_KEY)
+	@Setter(START_SHAPE_ROLE_KEY)
 	public void setStartShapeRole(ShapeRole startShapeRole);
 
-	@Getter(value = END_SHAPE_PATTERN_ROLE_KEY)
+	@Getter(value = END_SHAPE_ROLE_KEY)
 	@XMLElement(context = "EndShape_")
 	public ShapeRole getEndShapeRole();
 
-	@Setter(END_SHAPE_PATTERN_ROLE_KEY)
+	@Setter(END_SHAPE_ROLE_KEY)
 	public void setEndShapeRole(ShapeRole endShapeRole);
 
 	public boolean getStartShapeAsDefinedInAction();
@@ -161,12 +162,22 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		@Override
 		public String getFMLRepresentation(FMLRepresentationContext context) {
 			FMLRepresentationOutput out = new FMLRepresentationOutput(context);
-			out.append("FlexoRole " + getName() + " as ConnectorSpecification from " + getOwningVirtualModel().getName() + ";", context);
+			AbstractVirtualModel<?> vm = getOwningVirtualModel();
+			if (vm != null) {
+				out.append("FlexoRole " + getName() + " as ConnectorSpecification from " + getOwningVirtualModel().getName() + ";",
+						context);
+			}
+			else {
+				out.append("FlexoRole " + getName() + " -- NO OWNING MODEL;", context);
+			}
 			return out.toString();
 		}
 
 		@Override
 		public String getTypeDescription() {
+			if (getModelSlot() == null) {
+				return null;
+			}
 			return getModelSlot().getModelSlotTechnologyAdapter().getLocales().localizedForKey("connector");
 		}
 
@@ -194,20 +205,22 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 			notifyObservers(new GraphicalRepresentationChanged(this, artifactToGraphicalRepresentation));
 		}
 
-		private ShapeRole startShapeRole;
-		private ShapeRole endShapeRole;
-
 		@Override
-		public ShapeRole getStartShapeRole() {
-			return startShapeRole;
+		public void setStartShapeRole(ShapeRole startShapeRole) {
+			ShapeRole oldValue = getStartShapeRole();
+			performSuperSetter(START_SHAPE_ROLE_KEY, startShapeRole);
+			if (getFlexoConcept() != null) {
+				getFlexoConcept().getPropertyChangeSupport().firePropertyChange(START_SHAPE_ROLE_KEY, oldValue, startShapeRole);
+			}
 		}
 
 		@Override
-		public void setStartShapeRole(ShapeRole startShapeRole) {
-			this.startShapeRole = startShapeRole;
-			setChanged();
-			notifyObservers(new GraphicalRepresentationChanged(this,
-					startShapeRole != null ? startShapeRole.getGraphicalRepresentation() : artifactFromGraphicalRepresentation));
+		public void setEndShapeRole(ShapeRole endShapeRole) {
+			ShapeRole oldValue = getEndShapeRole();
+			performSuperSetter(END_SHAPE_ROLE_KEY, endShapeRole);
+			if (getFlexoConcept() != null) {
+				getFlexoConcept().getPropertyChangeSupport().firePropertyChange(END_SHAPE_ROLE_KEY, oldValue, endShapeRole);
+			}
 		}
 
 		@Override
@@ -227,19 +240,6 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 		}
 
 		@Override
-		public ShapeRole getEndShapeRole() {
-			return endShapeRole;
-		}
-
-		@Override
-		public void setEndShapeRole(ShapeRole endShapeRole) {
-			this.endShapeRole = endShapeRole;
-			setChanged();
-			notifyObservers(new GraphicalRepresentationChanged(this,
-					endShapeRole != null ? endShapeRole.getGraphicalRepresentation() : artifactToGraphicalRepresentation));
-		}
-
-		@Override
 		public boolean getEndShapeAsDefinedInAction() {
 			return getEndShapeRole() == null;
 		}
@@ -255,42 +255,6 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 			}
 		}
 
-		/*public ShapeRole getStartShape() {
-			for (FlexoBehaviour es : getFlexoConcept().getEditionSchemes()) {
-				for (EditionAction action : es.getActions()) {
-					if ((action.getPatternRole() == this) && (action instanceof AddConnector)) {
-						AddConnector addConnector = (AddConnector) action;
-						for (FlexoRole r : getFlexoConcept().getPatternRoles()) {
-							if ((r instanceof ShapeRole) && (addConnector.getFromShape() != null)
-									&& addConnector.getFromShape().toString().equals(r.getPatternRoleName())) {
-								return (ShapeRole) r;
-							}
-						}
-					}
-				}
-			}
-		
-			return null;
-		}
-		
-		public ShapeRole getEndShape() {
-			for (FlexoBehaviour es : getFlexoConcept().getEditionSchemes()) {
-				for (EditionAction action : es.getActions()) {
-					if ((action.getPatternRole() == this) && (action instanceof AddConnector)) {
-						AddConnector addConnector = (AddConnector) action;
-						for (FlexoRole r : getFlexoConcept().getPatternRoles()) {
-							if ((r instanceof ShapeRole) && (addConnector.getToShape() != null)
-									&& addConnector.getToShape().toString().equals(r.getPatternRoleName())) {
-								return (ShapeRole) r;
-							}
-						}
-					}
-				}
-			}
-		
-			return null;
-		}*/
-
 		@Override
 		public Type getType() {
 			return DiagramConnector.class;
@@ -298,7 +262,10 @@ public interface ConnectorRole extends GraphicalElementRole<DiagramConnector, Co
 
 		@Override
 		public List<ShapeRole> getAvailableShapeRoles() {
-			return getFlexoConcept().getDeclaredProperties(ShapeRole.class);
+			if (getFlexoConcept() != null) {
+				return getFlexoConcept().getDeclaredProperties(ShapeRole.class);
+			}
+			return null;
 		}
 	}
 }

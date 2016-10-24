@@ -77,7 +77,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 	// private Hashtable<FlexoRole, FlexoConceptPreviewConnectorGR> connectorsGR;
 
 	/*static FGEModelFactory PREVIEW_FACTORY;
-
+	
 	static {
 		try {
 			PREVIEW_FACTORY = new FGEModelFactoryImpl();
@@ -107,16 +107,16 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 
 		final DrawingGRBinding<FlexoConcept> drawingBinding = bindDrawing(FlexoConcept.class, "flexoConcept",
 				new DrawingGRProvider<FlexoConcept>() {
-			@Override
-			public DrawingGraphicalRepresentation provideGR(FlexoConcept drawable, FGEModelFactory factory) {
-				DrawingGraphicalRepresentation returned = factory.makeDrawingGraphicalRepresentation();
-				returned.setWidth(WIDTH);
-				returned.setHeight(HEIGHT);
-				returned.setBackgroundColor(BACKGROUND_COLOR);
-				returned.setDrawWorkingArea(false);
-				return returned;
-			}
-		});
+					@Override
+					public DrawingGraphicalRepresentation provideGR(FlexoConcept drawable, FGEModelFactory factory) {
+						DrawingGraphicalRepresentation returned = factory.makeDrawingGraphicalRepresentation();
+						returned.setWidth(WIDTH);
+						returned.setHeight(HEIGHT);
+						returned.setBackgroundColor(BACKGROUND_COLOR);
+						returned.setDrawWorkingArea(true);
+						return returned;
+					}
+				});
 		final ShapeGRBinding<ShapeRole> shapeBinding = bindShape(ShapeRole.class, "shapePatternRole", new ShapeGRProvider<ShapeRole>() {
 			@Override
 			public ShapeGraphicalRepresentation provideGR(ShapeRole drawable, FGEModelFactory factory) {
@@ -128,30 +128,30 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 		});
 		final ConnectorGRBinding<ConnectorRole> connectorBinding = bindConnector(ConnectorRole.class, "connector", shapeBinding,
 				shapeBinding, new ConnectorGRProvider<ConnectorRole>() {
-			@Override
-			public ConnectorGraphicalRepresentation provideGR(ConnectorRole drawable, FGEModelFactory factory) {
-				if (drawable.getGraphicalRepresentation() == null) {
-					drawable.setGraphicalRepresentation(makeDefaultConnectorGR());
-				}
-				return drawable.getGraphicalRepresentation();
-			}
-		});
+					@Override
+					public ConnectorGraphicalRepresentation provideGR(ConnectorRole drawable, FGEModelFactory factory) {
+						if (drawable.getGraphicalRepresentation() == null) {
+							drawable.setGraphicalRepresentation(makeDefaultConnectorGR());
+						}
+						return drawable.getGraphicalRepresentation();
+					}
+				});
 		final ShapeGRBinding<ConnectorFromArtifact> fromArtefactBinding = bindShape(ConnectorFromArtifact.class, "fromArtifact",
 				new ShapeGRProvider<ConnectorFromArtifact>() {
-			@Override
-			public ShapeGraphicalRepresentation provideGR(ConnectorFromArtifact drawable, FGEModelFactory factory) {
-				return makeFromArtefactGR();
-			}
+					@Override
+					public ShapeGraphicalRepresentation provideGR(ConnectorFromArtifact drawable, FGEModelFactory factory) {
+						return makeFromArtefactGR();
+					}
 
-		});
+				});
 		final ShapeGRBinding<ConnectorToArtifact> toArtefactBinding = bindShape(ConnectorToArtifact.class, "toArtifact",
 				new ShapeGRProvider<ConnectorToArtifact>() {
-			@Override
-			public ShapeGraphicalRepresentation provideGR(ConnectorToArtifact drawable, FGEModelFactory factory) {
-				return makeToArtefactGR();
-			}
+					@Override
+					public ShapeGraphicalRepresentation provideGR(ConnectorToArtifact drawable, FGEModelFactory factory) {
+						return makeToArtefactGR();
+					}
 
-		});
+				});
 
 		drawingBinding.addToWalkers(new GRStructureVisitor<FlexoConcept>() {
 
@@ -164,7 +164,8 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 							drawShape(shapeBinding, (ShapeRole) role, getFlexoConcept());
 							// System.out.println("Add shape " + property.getRoleName() + " under FlexoConcept");
 						}
-					} else if (role instanceof ConnectorRole) {
+					}
+					else if (role instanceof ConnectorRole) {
 						ConnectorRole connectorRole = (ConnectorRole) role;
 						ShapeGRBinding fromBinding;
 						ShapeGRBinding toBinding;
@@ -175,7 +176,8 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 							fromBinding = fromArtefactBinding;
 							fromDrawable = getFromArtifact(connectorRole);
 							// System.out.println("Add From artifact under FlexoConcept");
-						} else {
+						}
+						else {
 							fromBinding = shapeBinding;
 							fromDrawable = connectorRole.getStartShapeRole();
 						}
@@ -184,11 +186,12 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 							// System.out.println("Add To artifact under FlexoConcept");
 							toBinding = toArtefactBinding;
 							toDrawable = getToArtifact(connectorRole);
-						} else {
+						}
+						else {
 							toBinding = shapeBinding;
 							toDrawable = connectorRole.getEndShapeRole();
 						}
-						// System.out.println("Add connector " + property.getPatternRoleName() + " under FlexoConcept");
+
 						drawConnector(connectorBinding, connectorRole, fromBinding, fromDrawable, toBinding, toDrawable);
 					}
 				}
@@ -204,7 +207,7 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 				// NPE Protection - no impact at this stage
 
 				FlexoConcept concept = parentRole.getFlexoConcept();
-				if (concept != null){
+				if (concept != null) {
 					for (FlexoProperty<?> role : concept.getFlexoProperties()) {
 						if (role instanceof ShapeRole) {
 							if (((ShapeRole) role).getParentShapeRole() == parentRole) {
@@ -282,8 +285,8 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 
 	private ShapeGraphicalRepresentation makeFromArtefactGR() {
 		ShapeGraphicalRepresentation returned = factory.makeShapeGraphicalRepresentation(ShapeType.CIRCLE);
-		returned.setX(80);
-		returned.setY(80);
+		returned.setX(10);
+		returned.setY(HEIGHT / 2 - 10);
 		returned.setWidth(20);
 		returned.setHeight(20);
 		returned.setForeground(factory.makeForegroundStyle(new Color(255, 204, 0)));
@@ -295,8 +298,8 @@ public class FlexoConceptPreviewRepresentation extends DrawingImpl<FlexoConcept>
 
 	private ShapeGraphicalRepresentation makeToArtefactGR() {
 		ShapeGraphicalRepresentation returned = factory.makeShapeGraphicalRepresentation(ShapeType.CIRCLE);
-		returned.setX(350);
-		returned.setY(80);
+		returned.setX(WIDTH - 30);
+		returned.setY(HEIGHT / 2 - 10);
 		returned.setWidth(20);
 		returned.setHeight(20);
 		returned.setForeground(factory.makeForegroundStyle(new Color(255, 204, 0)));

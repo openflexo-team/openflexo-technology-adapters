@@ -49,8 +49,7 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
  * @author sylvain
  *
  */
-public class ConnectorRoleSettingStrategy
-		extends
+public class ConnectorRoleSettingStrategy extends
 		GraphicalElementRoleSettingStrategy<DeclareConnectorInFlexoConcept, ConnectorRole, DiagramConnector, ConnectorGraphicalRepresentation> {
 
 	public ConnectorRoleSettingStrategy(DeclareConnectorInFlexoConcept transformationAction) {
@@ -62,4 +61,8 @@ public class ConnectorRoleSettingStrategy
 		return ConnectorRole.class;
 	}
 
+	@Override
+	public void normalizeGraphicalRepresentation(ConnectorRole role) {
+		// TODO Auto-generated method stub
+	}
 }

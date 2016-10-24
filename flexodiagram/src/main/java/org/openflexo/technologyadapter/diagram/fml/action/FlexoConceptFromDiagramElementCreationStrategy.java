@@ -127,7 +127,7 @@ public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends D
 					if (StringUtils.isNotEmpty(entry.graphicalObject.getName())) {
 						newConnectorRole.setLabel(new DataBinding<String>("\"" + entry.graphicalObject.getName() + "\""));
 					}
-					newConnectorRole.setExampleLabel(grConnector.getGraphicalRepresentation().getText());
+					newConnectorRole.setExampleLabel(grConnector.getName());
 					newConnectorRole.setGraphicalRepresentation(
 							(ConnectorGraphicalRepresentation) grConnector.getGraphicalRepresentation().clone());
 					newFlexoConcept.addToFlexoProperties(newConnectorRole);

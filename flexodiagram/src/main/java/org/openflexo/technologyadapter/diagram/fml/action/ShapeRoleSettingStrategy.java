@@ -49,8 +49,8 @@ import org.openflexo.technologyadapter.diagram.model.DiagramShape;
  * @author sylvain
  *
  */
-public class ShapeRoleSettingStrategy extends
-		GraphicalElementRoleSettingStrategy<DeclareShapeInFlexoConcept, ShapeRole, DiagramShape, ShapeGraphicalRepresentation> {
+public class ShapeRoleSettingStrategy
+		extends GraphicalElementRoleSettingStrategy<DeclareShapeInFlexoConcept, ShapeRole, DiagramShape, ShapeGraphicalRepresentation> {
 
 	public ShapeRoleSettingStrategy(DeclareShapeInFlexoConcept transformationAction) {
 		super(transformationAction);
@@ -59,6 +59,16 @@ public class ShapeRoleSettingStrategy extends
 	@Override
 	public Class<ShapeRole> getRoleType() {
 		return ShapeRole.class;
+	}
+
+	@Override
+	public void normalizeGraphicalRepresentation(ShapeRole role) {
+		ShapeGraphicalRepresentation gr = role.getGraphicalRepresentation();
+		// Center shape in preview
+		gr.setX((250 - gr.getWidth()) / 2);
+		gr.setY((200 - gr.getHeight()) / 2);
+		// Forces GR to be displayed in view
+		gr.setAllowToLeaveBounds(false);
 	}
 
 }

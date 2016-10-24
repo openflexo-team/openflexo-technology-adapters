@@ -40,7 +40,9 @@ package org.openflexo.technologyadapter.diagram.fml.action;
 
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
 import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
+import org.openflexo.technologyadapter.diagram.fml.ShapeRole;
 import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
 
 /**
@@ -50,11 +52,13 @@ import org.openflexo.technologyadapter.diagram.model.DiagramConnector;
  * @author sylvain
  *
  */
-public class ConnectorRoleCreationStrategy
-		extends
+public class ConnectorRoleCreationStrategy extends
 		GraphicalElementRoleCreationStrategy<DeclareConnectorInFlexoConcept, ConnectorRole, DiagramConnector, ConnectorGraphicalRepresentation> {
 
 	private static final String DEFAULT_ROLE_NAME = "connector";
+
+	private FlexoConcept fromFlexoConcept;
+	private FlexoConcept toFlexoConcept;
 
 	public ConnectorRoleCreationStrategy(DeclareConnectorInFlexoConcept transformationAction) {
 		super(transformationAction);
@@ -72,8 +76,51 @@ public class ConnectorRoleCreationStrategy
 
 	@Override
 	public ConnectorRole createNewFlexoRole() {
-		ConnectorRole returned = super.performStrategy();
+		ConnectorRole returned = super.createNewFlexoRole();
 		return returned;
+	}
+
+	@Override
+	public void normalizeGraphicalRepresentation(ConnectorRole role) {
+		// TODO Auto-generated method stub
+	}
+
+	public FlexoConcept getFromFlexoConcept() {
+		return fromFlexoConcept;
+	}
+
+	public void setFromFlexoConcept(FlexoConcept fromFlexoConcept) {
+		if ((fromFlexoConcept == null && this.fromFlexoConcept != null)
+				|| (fromFlexoConcept != null && !fromFlexoConcept.equals(this.fromFlexoConcept))) {
+			FlexoConcept oldValue = this.fromFlexoConcept;
+			this.fromFlexoConcept = fromFlexoConcept;
+			System.out.println("On change le from de " + oldValue + " a " + fromFlexoConcept);
+			if (getNewFlexoRole() != null && fromFlexoConcept.getAccessibleProperties(ShapeRole.class).size() > 0) {
+				ShapeRole startShapeRole = fromFlexoConcept.getAccessibleProperties(ShapeRole.class).get(0);
+				System.out.println("new startShapeRole=" + startShapeRole);
+				getNewFlexoRole().setStartShapeRole(startShapeRole);
+			}
+			getPropertyChangeSupport().firePropertyChange("fromFlexoConcept", oldValue, fromFlexoConcept);
+		}
+	}
+
+	public FlexoConcept getToFlexoConcept() {
+		return toFlexoConcept;
+	}
+
+	public void setToFlexoConcept(FlexoConcept toFlexoConcept) {
+		if ((toFlexoConcept == null && this.toFlexoConcept != null)
+				|| (toFlexoConcept != null && !toFlexoConcept.equals(this.toFlexoConcept))) {
+			FlexoConcept oldValue = this.toFlexoConcept;
+			this.toFlexoConcept = toFlexoConcept;
+			System.out.println("On change le to de " + oldValue + " a " + toFlexoConcept);
+			if (getNewFlexoRole() != null && toFlexoConcept.getAccessibleProperties(ShapeRole.class).size() > 0) {
+				ShapeRole endShapeRole = toFlexoConcept.getAccessibleProperties(ShapeRole.class).get(0);
+				System.out.println("new endShapeRole=" + endShapeRole);
+				getNewFlexoRole().setEndShapeRole(endShapeRole);
+			}
+			getPropertyChangeSupport().firePropertyChange("toFlexoConcept", oldValue, toFlexoConcept);
+		}
 	}
 
 }

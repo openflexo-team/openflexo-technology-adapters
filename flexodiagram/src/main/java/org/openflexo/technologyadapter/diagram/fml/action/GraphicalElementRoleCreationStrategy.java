@@ -53,19 +53,37 @@ import org.openflexo.technologyadapter.diagram.model.DiagramElement;
 public abstract class GraphicalElementRoleCreationStrategy<A extends DeclareDiagramElementInFlexoConcept<A, T>, R extends GraphicalElementRole<T, GR>, T extends DiagramElement<GR>, GR extends GraphicalRepresentation>
 		extends FlexoRoleCreationStrategy<A, R, T, DiagramElement<?>> {
 
+	private R newRole;
+
 	public GraphicalElementRoleCreationStrategy(A transformationAction) {
 		super(transformationAction);
 	}
 
 	@Override
 	public R createNewFlexoRole() {
-		R newRole = getTransformationAction().getFactory().newInstance(getRoleType());
-		newRole.setRoleName(getNewRoleName());
+		String newRoleName = getNewRoleName();
+		newRole = getTransformationAction().getFactory().newInstance(getRoleType());
+		newRole.setRoleName(newRoleName);
 		newRole.setModelSlot(getTransformationAction().getTypedDiagramModelSlot());
 		newRole.setReadOnlyLabel(true);
-		newRole.setExampleLabel(getTransformationAction().getFocusedObject().getGraphicalRepresentation().getText());
+		newRole.setExampleLabel(getTransformationAction().getFocusedObject().getName());
 		newRole.setGraphicalRepresentation((GR) getTransformationAction().getFocusedObject().getGraphicalRepresentation().clone());
 		getTransformationAction().getFlexoConcept().addToFlexoProperties(newRole);
+		normalizeGraphicalRepresentation(newRole);
+		return newRole;
+	}
+
+	public abstract void normalizeGraphicalRepresentation(R role);
+
+	public void dismissNewFlexoRole() {
+		if (getNewFlexoRole() != null) {
+			getTransformationAction().getFlexoConcept().removeFromFlexoProperties(newRole);
+			newRole = null;
+		}
+	}
+
+	@Override
+	public R getNewFlexoRole() {
 		return newRole;
 	}
 
