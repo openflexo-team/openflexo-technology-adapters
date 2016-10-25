@@ -52,6 +52,8 @@ import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
+import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
+import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateFMLControlledDiagramVirtualModel;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.view.controller.ActionInitializer;
@@ -90,6 +92,9 @@ public class CreateFMLControlledDiagramVirtualModelInitializer
 		return new FlexoActionFinalizer<CreateFMLControlledDiagramVirtualModel>() {
 			@Override
 			public boolean run(EventObject e, CreateFMLControlledDiagramVirtualModel action) {
+				DiagramTechnologyAdapterController diagramTAController = (DiagramTechnologyAdapterController) getController()
+						.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
+				getController().switchToPerspective(diagramTAController.getFMLControlledDiagramNaturePerspective());
 				getController().selectAndFocusObject(action.getNewVirtualModel());
 				return true;
 			}
