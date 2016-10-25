@@ -69,16 +69,16 @@ public class ShapeRoleCreationStrategy
 		return ShapeRole.class;
 	}
 
-	@Override
-	public ShapeRole createNewFlexoRole() {
-		ShapeRole returned = super.createNewFlexoRole();
-		// Center shape in preview
-		returned.getGraphicalRepresentation().setX((250 - returned.getGraphicalRepresentation().getWidth()) / 2);
-		returned.getGraphicalRepresentation().setY((200 - returned.getGraphicalRepresentation().getHeight()) / 2);
-		// Forces GR to be displayed in view
-		returned.getGraphicalRepresentation().setAllowToLeaveBounds(false);
-		return returned;
-	}
+	/*	@Override
+		public ShapeRole createNewFlexoRole() {
+			ShapeRole returned = super.createNewFlexoRole();
+			// Center shape in preview
+			//returned.getGraphicalRepresentation().setX((250 - returned.getGraphicalRepresentation().getWidth()) / 2);
+			//returned.getGraphicalRepresentation().setY((200 - returned.getGraphicalRepresentation().getHeight()) / 2);
+			// Forces GR to be displayed in view
+			//returned.getGraphicalRepresentation().setAllowToLeaveBounds(false);
+			return returned;
+		}*/
 
 	@Override
 	public void normalizeGraphicalRepresentation(ShapeRole role) {

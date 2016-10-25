@@ -42,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.openflexo.connie.DataBinding;
+import org.openflexo.fge.ConnectorGraphicalRepresentation;
+import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.technologyadapter.diagram.fml.ConnectorRole;
@@ -81,6 +83,14 @@ public abstract class FlexoConceptFromConnectorCreationStrategy
 	@Override
 	public String getDefaultRoleName() {
 		return DEFAULT_ROLE_NAME;
+	}
+
+	@Override
+	public void normalizeGraphicalRepresentation(GraphicalRepresentation gr) {
+		if (gr instanceof ConnectorGraphicalRepresentation) {
+			ConnectorGraphicalRepresentation connectorGR = (ConnectorGraphicalRepresentation) gr;
+			// Anything to do ???
+		}
 	}
 
 	public String getLinkSchemeName() {
