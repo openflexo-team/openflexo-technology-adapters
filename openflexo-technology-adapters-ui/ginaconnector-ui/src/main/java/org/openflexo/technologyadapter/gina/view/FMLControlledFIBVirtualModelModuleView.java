@@ -119,8 +119,6 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());
 		// getDiagramTechnologyAdapterController(controller).getScaleSelector().attachToEditor(getEditor());
 
-		// perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
-
 		/*SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -128,6 +126,8 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 				controller.getControllerModel().setRightViewVisible(true);
 			}
 		});*/
+
+		perspective.setBottomRightView(getFIBEditor(false).getInspectors().getPanelGroup());
 
 		controller.getControllerModel().setRightViewVisible(true);
 
@@ -149,20 +149,14 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 		return this.perspective;
 	}
 
-	/**
-	 * Nothing done on this ModuleView
-	 */
-	@Override
-	public void willShow() {
-		// Nothing to implement by default, empty body
-	}
-
-	/**
-	 * Nothing done on this ModuleView
-	 */
 	@Override
 	public void willHide() {
-		// Nothing to implement by default, empty body
+		setVisible(false);
+	}
+
+	@Override
+	public void willShow() {
+		setVisible(true);
 	}
 
 	@Override

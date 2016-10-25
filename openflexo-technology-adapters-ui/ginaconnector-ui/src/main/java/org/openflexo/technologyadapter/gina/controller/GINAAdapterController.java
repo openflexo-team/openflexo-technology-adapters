@@ -240,6 +240,10 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	}
 
 	private FIBEditor makeFIBEditor(boolean launchInTask) {
+
+		System.out.println("************ makeFIBEditor launchInTask=" + launchInTask);
+		Thread.dumpStack();
+
 		if (launchInTask && getServiceManager() != null && getServiceManager().getTaskManager() != null) {
 			LoadFIBEditor task = new LoadFIBEditor();
 			getServiceManager().getTaskManager().scheduleExecution(task);
