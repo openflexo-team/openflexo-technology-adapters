@@ -44,6 +44,7 @@ import java.util.List;
 
 import org.openflexo.connie.DataBinding;
 import org.openflexo.fge.ConnectorGraphicalRepresentation;
+import org.openflexo.fge.GraphicalRepresentation;
 import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.action.transformation.FlexoConceptCreationStrategy;
 import org.openflexo.foundation.fml.FlexoBehaviour;
@@ -109,6 +110,8 @@ public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends D
 					// We clone here the GR (fixed unfocusable GR bug)
 					newShapeRole.setGraphicalRepresentation((ShapeGraphicalRepresentation) grShape.getGraphicalRepresentation().clone());
 					// Forces GR to be displayed in view
+					normalizeGraphicalRepresentation(newShapeRole.getGraphicalRepresentation());
+
 					newShapeRole.getGraphicalRepresentation().setAllowToLeaveBounds(false);
 					newFlexoConcept.addToFlexoProperties(newShapeRole);
 					if (entry.getParentEntry() != null) {
@@ -195,6 +198,8 @@ public abstract class FlexoConceptFromDiagramElementCreationStrategy<A extends D
 
 		return newFlexoConcept;
 	}
+
+	public abstract void normalizeGraphicalRepresentation(GraphicalRepresentation gr);
 
 	private ArrayList<FlexoBehaviourConfiguration> flexoBehaviours;
 
