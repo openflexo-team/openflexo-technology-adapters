@@ -53,7 +53,6 @@ import org.openflexo.icon.IconFactory;
 import org.openflexo.icon.IconLibrary;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
 import org.openflexo.technologyadapter.diagram.fml.action.PushToPalette;
-import org.openflexo.technologyadapter.diagram.fml.action.PushToPalette.PushToPaletteChoices;
 import org.openflexo.technologyadapter.diagram.gui.DiagramIconLibrary;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
@@ -113,17 +112,12 @@ public class PushToPaletteWizard extends FlexoWizard {
 
 		@Override
 		public boolean isValid() {
-			if (StringUtils.isEmpty(getNewElementName())) {
-				setIssueMessage(noNameMessage(), IssueMessageType.ERROR);
-				return false;
-			}
-
 			if (getPalette() == null) {
 				setIssueMessage(noPaletteSelectedMessage(), IssueMessageType.ERROR);
 				return false;
 			}
 
-			if (getPrimaryChoice().equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)) {
+			if (getConfigureFMLControls()) {
 				if (getVirtualModel() == null) {
 					setIssueMessage(noVirtualModelSelectedMessage(), IssueMessageType.ERROR);
 					return false;
@@ -138,6 +132,11 @@ public class PushToPaletteWizard extends FlexoWizard {
 					return false;
 				}
 
+			}
+
+			if (StringUtils.isEmpty(getNewElementName())) {
+				setIssueMessage(noNameMessage(), IssueMessageType.ERROR);
+				return false;
 			}
 
 			return true;
@@ -169,15 +168,14 @@ public class PushToPaletteWizard extends FlexoWizard {
 			}
 		}
 
-		public PushToPaletteChoices getPrimaryChoice() {
-			return action.getPrimaryChoice();
+		public boolean getConfigureFMLControls() {
+			return action.getConfigureFMLControls();
 		}
 
-		public void setPrimaryChoice(PushToPaletteChoices primaryChoice) {
-			if (primaryChoice != getPrimaryChoice()) {
-				PushToPaletteChoices oldValue = getPrimaryChoice();
-				action.setPrimaryChoice(primaryChoice);
-				getPropertyChangeSupport().firePropertyChange("primaryChoice", oldValue, primaryChoice);
+		public void setConfigureFMLControls(boolean configureFMLControls) {
+			if (configureFMLControls != getConfigureFMLControls()) {
+				action.setConfigureFMLControls(configureFMLControls);
+				getPropertyChangeSupport().firePropertyChange("configureFMLControls", !configureFMLControls, configureFMLControls);
 				checkValidity();
 			}
 		}
@@ -191,6 +189,7 @@ public class PushToPaletteWizard extends FlexoWizard {
 				FlexoConcept oldValue = getFlexoConcept();
 				action.setFlexoConcept(flexoConcept);
 				getPropertyChangeSupport().firePropertyChange("flexoConcept", oldValue, flexoConcept);
+				getPropertyChangeSupport().firePropertyChange("newElementName", null, getNewElementName());
 				getPropertyChangeSupport().firePropertyChange("availableDropSchemes", null, getAvailableDropSchemes());
 				checkValidity();
 			}

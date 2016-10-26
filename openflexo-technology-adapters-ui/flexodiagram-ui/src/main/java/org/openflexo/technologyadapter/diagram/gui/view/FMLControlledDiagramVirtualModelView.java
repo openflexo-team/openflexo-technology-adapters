@@ -100,7 +100,7 @@ public class FMLControlledDiagramVirtualModelView extends VirtualModelView {
 
 		if (getFIBController() != null) {
 			getFIBController().setModuleView(this);
-			if (getFIBController().getSelectedDiagram() == null) {
+			if (getFIBController().getSelectedDiagram() == null && getFIBController().getSelectedPalette() == null) {
 				if (getFIBController().getDiagramSpecification(getRepresentedObject()) != null
 						&& getFIBController().getDiagramSpecification(getRepresentedObject()).getExampleDiagrams().size() > 0) {
 					getFIBController().setSelectedDiagram(
@@ -108,7 +108,7 @@ public class FMLControlledDiagramVirtualModelView extends VirtualModelView {
 				}
 
 			}
-			if (getFIBController().getSelectedDiagram() != null) {
+			if (getFIBController().getSelectedDiagram() != null || getFIBController().getSelectedPalette() != null) {
 				controller.getControllerModel().setRightViewVisible(true);
 			}
 			getFIBController().updateModuleViewTooling();

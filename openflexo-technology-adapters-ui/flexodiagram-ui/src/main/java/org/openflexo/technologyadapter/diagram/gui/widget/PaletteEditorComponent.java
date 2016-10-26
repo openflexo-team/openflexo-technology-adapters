@@ -57,32 +57,32 @@ import org.openflexo.selection.SelectionManager;
 import org.openflexo.swing.CustomPopup.ApplyCancelListener;
 import org.openflexo.technologyadapter.diagram.DiagramTechnologyAdapter;
 import org.openflexo.technologyadapter.diagram.controller.DiagramTechnologyAdapterController;
-import org.openflexo.technologyadapter.diagram.controller.diagrameditor.FreeDiagramEditor;
-import org.openflexo.technologyadapter.diagram.model.Diagram;
-import org.openflexo.technologyadapter.diagram.model.DiagramElement;
+import org.openflexo.technologyadapter.diagram.controller.paletteeditor.DiagramPaletteEditor;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPaletteElement;
 import org.openflexo.view.controller.FlexoController;
 
 /**
- * An implementation of a FIBCustomComponent for a {@link Diagram} editor, this JComponent embed a FreeDiagramEditor
+ * An implementation of a FIBCustomComponent for a {@link DiagramPalette} editor, this JComponent embed a {@link DiagramPaletteEditor}
  * 
  * @author sylvain
  *
  */
 @SuppressWarnings("serial")
-public class DiagramEditorComponent extends JPanel implements FIBCustomComponent<Diagram>, FIBSelectable<DiagramElement<?>> {
+public class PaletteEditorComponent extends JPanel implements FIBCustomComponent<DiagramPalette>, FIBSelectable<DiagramPaletteElement> {
 
 	@SuppressWarnings("unused")
-	private static final Logger logger = Logger.getLogger(DiagramEditorComponent.class.getPackage().getName());
+	private static final Logger logger = Logger.getLogger(PaletteEditorComponent.class.getPackage().getName());
 
-	private Diagram diagram;
+	private DiagramPalette diagramPalette;
 
 	private SelectionManager selectionManager;
-	private FreeDiagramEditor diagramEditor;
+	private DiagramPaletteEditor diagramPaletteEditor;
 	private final Vector<ApplyCancelListener> applyCancelListener;
 
 	private final JLabel EMPTY_LABEL = new JLabel("<empty>");
 
-	public DiagramEditorComponent() {
+	public PaletteEditorComponent() {
 		super();
 		setLayout(new BorderLayout());
 		// add(EMPTY_LABEL,BorderLayout.CENTER);
@@ -91,14 +91,14 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 
 	@Override
 	public void delete() {
-		if (diagramEditor != null) {
-			diagramEditor.delete();
+		if (diagramPaletteEditor != null) {
+			diagramPaletteEditor.delete();
 		}
 	}
 
-	public DiagramEditorComponent(Diagram diagram) {
+	public PaletteEditorComponent(DiagramPalette diagramPalette) {
 		this();
-		setEditedObject(diagram);
+		setEditedObject(diagramPalette);
 	}
 
 	@Override
@@ -106,48 +106,42 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 	}
 
 	@Override
-	public Diagram getEditedObject() {
-		return diagram;
+	public DiagramPalette getEditedObject() {
+		return diagramPalette;
 	}
 
-	// private FlexoController flexoController
-
-	/**
-	 * Sets (update if different) edited diagram
-	 */
 	@Override
-	public void setEditedObject(Diagram diagramToRepresent) {
+	public void setEditedObject(DiagramPalette diagramPaletteToRepresent) {
 
-		if (diagramToRepresent != diagram || getDiagramEditor() == null) {
-			updateEditedObject(diagramToRepresent);
+		if ((diagramPaletteToRepresent != diagramPalette) || (getPaletteEditor() == null)) {
+			logger.fine("PaletteEditorComponent: setEditedObject: " + diagramPaletteToRepresent);
+			updateEditedObject(diagramPaletteToRepresent);
 		}
 	}
 
 	/**
-	 * Force update edited Diagram<br>
+	 * Force update edited DiagramPalette<br>
 	 * 
-	 * @param diagramToRepresent
+	 * @param diagramPaletteToRepresent
 	 */
-	private void updateEditedObject(Diagram diagramToRepresent) {
-
-		logger.fine("DiagramEditorComponent: setEditedObject: " + diagramToRepresent);
-		diagram = diagramToRepresent;
-		if (diagramEditor != null && diagramToRepresent != null) {
-			if (diagramEditor.getDrawingView() != null) {
-				remove(diagramEditor.getDrawingView());
+	private void updateEditedObject(DiagramPalette diagramPaletteToRepresent) {
+		diagramPalette = diagramPaletteToRepresent;
+		if (diagramPaletteEditor != null && diagramPaletteToRepresent != null) {
+			if (diagramPaletteEditor.getDrawingView() != null) {
+				remove(diagramPaletteEditor.getDrawingView());
 			}
 			removeAll();
-			diagramEditor.delete();
-			diagramEditor = null;
+			diagramPaletteEditor.delete();
+			diagramPaletteEditor = null;
 		}
-		if (diagramToRepresent != null && getFlexoController() != null) {
+		if (diagramPaletteToRepresent != null && getFlexoController() != null) {
 			// What about the selection manager ???
+			System.out.println("flexoController=" + getFlexoController());
 			DiagramTechnologyAdapterController tac = (DiagramTechnologyAdapterController) getFlexoController()
 					.getTechnologyAdapterController(DiagramTechnologyAdapter.class);
-			diagramEditor = new FreeDiagramEditor(diagramToRepresent, false, getFlexoController(), tac.getToolFactory());
+			diagramPaletteEditor = new DiagramPaletteEditor(diagramPaletteToRepresent, false, getFlexoController(), tac.getToolFactory());
 
-			add(diagramEditor.getToolsPanel(), BorderLayout.NORTH);
-			add(new JScrollPane(diagramEditor.getDrawingView()), BorderLayout.CENTER);
+			add(new JScrollPane(diagramPaletteEditor.getDrawingView()), BorderLayout.CENTER);
 
 		}
 		revalidate();
@@ -161,8 +155,8 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 	@CustomComponentParameter(name = "selectionManager", type = CustomComponentParameter.Type.OPTIONAL)
 	public void setSelectionManager(SelectionManager selectionManager) {
 		this.selectionManager = selectionManager;
-		if (diagramEditor != null) {
-			diagramEditor.setSelectionManager(selectionManager);
+		if (diagramPaletteEditor != null) {
+			diagramPaletteEditor.setSelectionManager(selectionManager);
 		}
 	}
 
@@ -175,21 +169,20 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 	@CustomComponentParameter(name = "flexoController", type = CustomComponentParameter.Type.OPTIONAL)
 	public void setFlexoController(FlexoController flexoController) {
 		this.flexoController = flexoController;
-		System.out.println("---------- YES ! setFlexoController with " + flexoController);
 	}
 
 	@Override
-	public Class<Diagram> getRepresentedType() {
-		return Diagram.class;
+	public Class<DiagramPalette> getRepresentedType() {
+		return DiagramPalette.class;
 	}
 
 	@Override
-	public Diagram getRevertValue() {
-		return diagram;
+	public DiagramPalette getRevertValue() {
+		return diagramPalette;
 	}
 
 	@Override
-	public void setRevertValue(Diagram object) {
+	public void setRevertValue(DiagramPalette object) {
 	}
 
 	@Override
@@ -203,13 +196,13 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 	}
 
 	@Override
-	public DiagramElement<?> getSelected() {
-		if (diagramEditor != null) {
-			if (diagramEditor.getSelectedObjects() == null) {
+	public DiagramPaletteElement getSelected() {
+		if (diagramPaletteEditor != null) {
+			if (diagramPaletteEditor.getSelectedObjects() == null) {
 				return null;
 			}
-			if (diagramEditor.getSelectedObjects().size() > 0) {
-				return (DiagramElement<?>) diagramEditor.getSelectedObjects().get(0).getDrawable();
+			if (diagramPaletteEditor.getSelectedObjects().size() > 0) {
+				return (DiagramPaletteElement) diagramPaletteEditor.getSelectedObjects().get(0).getDrawable();
 			}
 			return null;
 		}
@@ -217,16 +210,16 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 	}
 
 	@Override
-	public List<DiagramElement<?>> getSelection() {
-		if (diagramEditor != null) {
-			if (diagramEditor.getSelectedObjects() == null) {
+	public List<DiagramPaletteElement> getSelection() {
+		if (diagramPaletteEditor != null) {
+			if (diagramPaletteEditor.getSelectedObjects() == null) {
 				return null;
 			}
 		}
-		if (diagramEditor.getSelectedObjects().size() > 0) {
-			List<DiagramElement<?>> returned = new ArrayList<>();
-			for (DrawingTreeNode<?, ?> dtn : diagramEditor.getSelectedObjects()) {
-				returned.add((DiagramElement<?>) dtn.getDrawable());
+		if (diagramPaletteEditor.getSelectedObjects().size() > 0) {
+			List<DiagramPaletteElement> returned = new ArrayList<>();
+			for (DrawingTreeNode<?, ?> dtn : diagramPaletteEditor.getSelectedObjects()) {
+				returned.add((DiagramPaletteElement) dtn.getDrawable());
 			}
 			return returned;
 		}
@@ -234,50 +227,49 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 	}
 
 	@Override
-	public boolean mayRepresent(DiagramElement<?> o) {
-		// return o instanceof FlexoRole && ((FlexoRole) o).getFlexoConcept() == diagram;
+	public boolean mayRepresent(DiagramPaletteElement o) {
 		return false;
 	}
 
 	@Override
-	public void objectAddedToSelection(DiagramElement<?> o) {
-		if (diagramEditor != null) {
-			diagramEditor.fireObjectSelected(o);
+	public void objectAddedToSelection(DiagramPaletteElement o) {
+		if (diagramPaletteEditor != null) {
+			diagramPaletteEditor.fireObjectSelected(o);
 		}
 	}
 
 	@Override
-	public void objectRemovedFromSelection(DiagramElement<?> o) {
-		if (diagramEditor != null) {
-			diagramEditor.fireObjectDeselected(o);
+	public void objectRemovedFromSelection(DiagramPaletteElement o) {
+		if (diagramPaletteEditor != null) {
+			diagramPaletteEditor.fireObjectDeselected(o);
 		}
 	}
 
 	@Override
 	public void selectionResetted() {
-		if (diagramEditor != null) {
-			diagramEditor.fireResetSelection();
+		if (diagramPaletteEditor != null) {
+			diagramPaletteEditor.fireResetSelection();
 		}
 	}
 
 	@Override
-	public void addToSelection(DiagramElement<?> o) {
-		if (diagramEditor != null) {
-			diagramEditor.addToSelectedObjects(diagramEditor.getDrawing().getDrawingTreeNode(o));
+	public void addToSelection(DiagramPaletteElement o) {
+		if (diagramPaletteEditor != null) {
+			diagramPaletteEditor.addToSelectedObjects(diagramPaletteEditor.getDrawing().getDrawingTreeNode(o));
 		}
 	}
 
 	@Override
-	public void removeFromSelection(DiagramElement<?> o) {
-		if (diagramEditor != null) {
-			diagramEditor.removeFromSelectedObjects(diagramEditor.getDrawing().getDrawingTreeNode(o));
+	public void removeFromSelection(DiagramPaletteElement o) {
+		if (diagramPaletteEditor != null) {
+			diagramPaletteEditor.removeFromSelectedObjects(diagramPaletteEditor.getDrawing().getDrawingTreeNode(o));
 		}
 	}
 
 	@Override
 	public void resetSelection() {
-		if (diagramEditor != null) {
-			diagramEditor.clearSelection();
+		if (diagramPaletteEditor != null) {
+			diagramPaletteEditor.clearSelection();
 		}
 	}
 
@@ -286,8 +278,8 @@ public class DiagramEditorComponent extends JPanel implements FIBCustomComponent
 		return true;
 	}
 
-	public FreeDiagramEditor getDiagramEditor() {
-		return diagramEditor;
+	public DiagramPaletteEditor getPaletteEditor() {
+		return diagramPaletteEditor;
 	}
 
 }
