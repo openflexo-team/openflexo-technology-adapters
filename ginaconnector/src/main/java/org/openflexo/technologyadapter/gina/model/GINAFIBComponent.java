@@ -134,7 +134,7 @@ public interface GINAFIBComponent
 		 */
 		@Override
 		public void bindTo(AbstractVirtualModel<?> virtualModel, FIBComponentModelSlot modelSlot) {
-			//System.out.println("******* bindTo " + virtualModel + " using " + modelSlot);
+			// System.out.println("******* bindTo " + virtualModel + " using " + modelSlot);
 
 			if (getComponent() == null) {
 				return;
@@ -154,8 +154,8 @@ public interface GINAFIBComponent
 					if (value != null && value.isSet() && value.isValid()) {
 						Type analyzedType = value.getAnalyzedType();
 
-						//System.out.println("analyzedType=" + analyzedType);
-						//System.out.println("returned.getType()=" + returned.getType());
+						// System.out.println("analyzedType=" + analyzedType);
+						// System.out.println("returned.getType()=" + returned.getType());
 
 						if (TypeUtils.isTypeAssignableFrom(analyzedType, returned.getType())) {
 							// Type is conform, does nothing
@@ -163,8 +163,8 @@ public interface GINAFIBComponent
 						else /*if (!TypeUtils.isTypeAssignableFrom(returned.getType(), analyzedType))*/ {
 							returned.setType(analyzedType);
 							// We force type of variable to be type analyzed from binding
-							//System.out.println("****** Force type from " + variableAssign.getVariable() + " to " + returned.getType()
-							//		+ " a " + analyzedType);
+							// System.out.println("****** Force type from " + variableAssign.getVariable() + " to " + returned.getType()
+							// + " a " + analyzedType);
 						}
 						// returned.setType(analyzedType);
 					}
@@ -180,5 +180,12 @@ public interface GINAFIBComponent
 
 		}
 
+		@Override
+		public boolean isModified() {
+			if (getComponent() != null) {
+				return getComponent().isModified();
+			}
+			return false;
+		}
 	}
 }
