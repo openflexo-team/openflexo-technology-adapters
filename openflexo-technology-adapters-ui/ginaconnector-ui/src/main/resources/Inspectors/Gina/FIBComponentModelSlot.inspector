@@ -32,15 +32,24 @@
 				localize="true" manageDynamicModel="true" name="AssignmentsTable"
 				data="data.assignments"
 				constraints="twocols(expandHorizontally=true;expandVertically=true;location=right)">
+      			<IconColumn data="controller.iconForObject(iterator)" displayTitle="false" title="icon" name="icon" columnWidth="20" resizable="false" showIcon="false" />
 				<TextFieldColumn data="iterator.variable" title="variable"
 					columnWidth="80" resizable="false" displayTitle="true" />
 				<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 					customRendering="false" disableTerminateEditOnFocusLost="false"
-					data="iterator.value" title="Value" columnWidth="120" resizable="true"
+					data="iterator.value" title="Value" columnWidth="80" resizable="true"
 					displayTitle="true">
 					<ColumnAssignment variable="component.bindable"
 						value="data" />
 				</CustomColumn>
+						<CustomColumn componentClassName="org.openflexo.components.widget.TypeSelector"
+			customRendering="false" disableTerminateEditOnFocusLost="false"
+			data="iterator.variableType" format="" title="type" columnWidth="80"
+			resizable="true" displayTitle="true" name="type">
+			<ColumnAssignment variable="component.serviceManager"
+				value="controller.serviceManager" />
+		</CustomColumn>
+				
 				<AddAction method="data.createAssignment()" name="new_assignment" />
 				<RemoveAction method="data.deleteAssignment(selected)"
 					name="delete_assignment" />

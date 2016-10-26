@@ -302,6 +302,7 @@ public class CreateFMLControlledFIBVirtualModel
 			if (apiEntry.getType() != null) {
 				VariableAssignment assign = uiModelSlot.createAssignment();
 				assign.setVariable(apiEntry.getName());
+				assign.setVariableType(apiEntry.getType());
 				if (apiEntry.isAPI()) {
 					assign.setValue(new DataBinding<Object>(apiEntry.getName()));
 				}

@@ -36,6 +36,9 @@ public class GINAIconLibrary {
 	public static final ImageIcon FIB_COMPONENT_BIG_ICON = new ImageIconResource(
 			ResourceLocator.locateResource("Icons/FIBComponent64x64.png"));
 
+	public static final ImageIcon VARIABLE_ASSIGNMENT_ICON = new ImageIconResource(
+			ResourceLocator.locateResource("Icons/VariableAssignment_16x16.png"));
+
 	public static ImageIcon iconForObject(Class<? extends TechnologyObject<?>> objectClass) {
 		return GINA_TECHNOLOGY_ICON;
 	}

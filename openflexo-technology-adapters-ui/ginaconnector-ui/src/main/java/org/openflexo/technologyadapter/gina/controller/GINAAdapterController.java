@@ -36,6 +36,7 @@ import org.openflexo.gina.swing.editor.palette.FIBEditorPalettes;
 import org.openflexo.gina.swing.editor.widget.FIBLibraryBrowser;
 import org.openflexo.gina.swing.utils.FIBEditorLoadingProgress;
 import org.openflexo.gina.utils.InspectorGroup;
+import org.openflexo.technologyadapter.gina.FIBComponentModelSlot.VariableAssignment;
 import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
 import org.openflexo.technologyadapter.gina.controller.action.CreateFMLControlledFIBVirtualModelInitializer;
 import org.openflexo.technologyadapter.gina.controller.action.CreateGINAFIBComponentInitializer;
@@ -174,6 +175,9 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 
 	@Override
 	public ImageIcon getIconForTechnologyObject(final Class<? extends TechnologyObject<?>> objectClass) {
+		if (VariableAssignment.class.isAssignableFrom(objectClass)) {
+			return GINAIconLibrary.VARIABLE_ASSIGNMENT_ICON;
+		}
 		return GINAIconLibrary.GINA_TECHNOLOGY_ICON;
 	}
 
@@ -240,9 +244,6 @@ public class GINAAdapterController extends TechnologyAdapterController<GINATechn
 	}
 
 	private FIBEditor makeFIBEditor(boolean launchInTask) {
-
-		System.out.println("************ makeFIBEditor launchInTask=" + launchInTask);
-		Thread.dumpStack();
 
 		if (launchInTask && getServiceManager() != null && getServiceManager().getTaskManager() != null) {
 			LoadFIBEditor task = new LoadFIBEditor();

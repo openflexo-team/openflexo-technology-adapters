@@ -37,6 +37,8 @@ import org.openflexo.foundation.resource.FlexoResource;
 import org.openflexo.foundation.resource.FlexoResourceCenter;
 import org.openflexo.foundation.technologyadapter.FreeModelSlot;
 import org.openflexo.foundation.technologyadapter.ModelSlot;
+import org.openflexo.foundation.technologyadapter.ModelSlotObject;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.Adder;
 import org.openflexo.model.annotations.CloningStrategy;
 import org.openflexo.model.annotations.CloningStrategy.StrategyType;
@@ -210,11 +212,13 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 	@ModelEntity
 	@ImplementationClass(VariableAssignment.VariableAssignmentImpl.class)
 	@XMLElement(xmlTag = "VariableAssignment")
-	public static interface VariableAssignment extends FMLObject {
+	public static interface VariableAssignment extends FMLObject, ModelSlotObject<GINAFIBComponent> {
 		@PropertyIdentifier(type = FIBComponentModelSlot.class)
 		public static final String OWNER_KEY = "owner";
 		@PropertyIdentifier(type = String.class)
 		public static final String VARIABLE_KEY = "variable";
+		@PropertyIdentifier(type = String.class)
+		public static final String VARIABLE_TYPE_KEY = "variableType";
 		@PropertyIdentifier(type = DataBinding.class)
 		public static final String VALUE_KEY = "value";
 		@PropertyIdentifier(type = Boolean.class)
@@ -233,6 +237,13 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 
 		@Setter(VARIABLE_KEY)
 		public void setVariable(String variable);
+
+		@Getter(value = VARIABLE_TYPE_KEY, isStringConvertable = true)
+		@XMLAttribute
+		public Type getVariableType();
+
+		@Setter(VARIABLE_TYPE_KEY)
+		public void setVariableType(Type type);
 
 		@Getter(value = VALUE_KEY)
 		@XMLAttribute
@@ -310,6 +321,16 @@ public interface FIBComponentModelSlot extends FreeModelSlot<GINAFIBComponent> {
 					return getOwner().getResourceData();
 				}
 				return null;
+			}
+
+			@Override
+			public ModelSlot<GINAFIBComponent> getModelSlot() {
+				return getOwner();
+			}
+
+			@Override
+			public TechnologyAdapter getModelSlotTechnologyAdapter() {
+				return getOwner().getModelSlotTechnologyAdapter();
 			}
 
 		}
