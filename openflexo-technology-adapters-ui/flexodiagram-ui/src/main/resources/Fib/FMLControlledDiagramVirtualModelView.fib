@@ -137,7 +137,7 @@
 					method="controller.deleteFlexoConceptObject(selected)" />
 			</BrowserElement>
 			<BrowserElement id="37" editableLabel="flexoBehaviour.name"
-				icon="controller.iconForObject(flexoBehaviour)" label="flexoBehaviour.name"
+				icon="controller.iconForObject(flexoBehaviour)" label="flexoBehaviour.signature"
 				dataClassName="org.openflexo.foundation.fml.FlexoBehaviour" name="flexoBehaviour"
 				isEditable="false">
 				<Children id="38" name="children"
