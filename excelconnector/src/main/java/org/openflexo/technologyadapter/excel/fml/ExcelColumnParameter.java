@@ -53,8 +53,8 @@ import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 @XMLElement
 public interface ExcelColumnParameter extends InnerModelSlotParameter<BasicExcelModelSlot> {
 
-	public static abstract class ExcelColumnParameterImpl extends InnerModelSlotParameterImpl<BasicExcelModelSlot> implements
-			ExcelColumnParameter {
+	public static abstract class ExcelColumnParameterImpl extends InnerModelSlotParameterImpl<BasicExcelModelSlot>
+			implements ExcelColumnParameter {
 
 		public ExcelColumnParameterImpl() {
 			super();
@@ -62,7 +62,8 @@ public interface ExcelColumnParameter extends InnerModelSlotParameter<BasicExcel
 
 		@Override
 		public WidgetType getWidget() {
-			return WidgetType.TECHNOLOGY_OBJECT;
+			// return WidgetType.TECHNOLOGY_OBJECT;
+			return WidgetType.CUSTOM_WIDGET;
 		}
 
 		@Override

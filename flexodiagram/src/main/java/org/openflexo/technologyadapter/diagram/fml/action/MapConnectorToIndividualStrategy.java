@@ -222,7 +222,6 @@ public class MapConnectorToIndividualStrategy extends FlexoConceptFromConnectorC
 		if (flexoOntologyModelSlot != null) {
 			URIParameter uriParameter = getTransformationAction().getFactory().newURIParameter();
 			uriParameter.setName("uri");
-			uriParameter.setLabel("uri");
 			newLinkScheme.addToParameters(uriParameter);
 
 			// Add individual action

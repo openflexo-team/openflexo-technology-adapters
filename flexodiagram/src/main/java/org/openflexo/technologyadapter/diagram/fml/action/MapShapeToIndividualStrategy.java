@@ -222,7 +222,6 @@ public class MapShapeToIndividualStrategy extends FlexoConceptFromShapeCreationS
 		if (flexoOntologyModelSlot != null) {
 			URIParameter uriParameter = getTransformationAction().getFactory().newURIParameter();
 			uriParameter.setName("uri");
-			uriParameter.setLabel("uri");
 			newDropScheme.addToParameters(uriParameter);
 
 			// Add individual action
