@@ -96,12 +96,12 @@
 		<TextFieldColumn id="48" data="iterator.name"
 			displayTitle="true" title="name" name="textfield" columnWidth="100"
 			resizable="true" showIcon="false" />
-		<CustomColumn componentClassName="org.openflexo.components.widget.TypeSelector"
+		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
 			customRendering="false" disableTerminateEditOnFocusLost="false"
 			data="iterator.type" format="" title="type" columnWidth="100"
 			resizable="true" displayTitle="true" name="type">
-			<ColumnAssignment variable="component.serviceManager"
-				value="data.serviceManager" />
+		<ColumnAssignment variable="component.customTypeManager" value="data.serviceManager.technologyAdapterService" />
+		<ColumnAssignment variable="component.customTypeEditorProvider" value="data.serviceManager.technologyAdapterControllerService" />
 		</CustomColumn>
 		<CustomColumn componentClassName="org.openflexo.gina.swing.utils.BindingSelector"
 			customRendering="false" disableTerminateEditOnFocusLost="false"

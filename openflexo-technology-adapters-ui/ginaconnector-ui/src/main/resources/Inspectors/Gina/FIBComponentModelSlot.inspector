@@ -42,12 +42,12 @@
 					<ColumnAssignment variable="component.bindable"
 						value="data" />
 				</CustomColumn>
-						<CustomColumn componentClassName="org.openflexo.components.widget.TypeSelector"
+						<CustomColumn componentClassName="org.openflexo.gina.swing.utils.TypeSelector"
 			customRendering="false" disableTerminateEditOnFocusLost="false"
 			data="iterator.variableType" format="" title="type" columnWidth="80"
 			resizable="true" displayTitle="true" name="type">
-			<ColumnAssignment variable="component.serviceManager"
-				value="controller.serviceManager" />
+		<ColumnAssignment variable="component.customTypeManager" value="controller.serviceManager.technologyAdapterService" />
+		<ColumnAssignment variable="component.customTypeEditorProvider" value="controller.serviceManager.technologyAdapterControllerService" />
 		</CustomColumn>
 				
 				<AddAction method="data.createAssignment()" name="new_assignment" />
