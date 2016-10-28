@@ -228,6 +228,11 @@ public class CreateFMLControlledFIBVirtualModel
 			throw new FlexoException(e);
 		}
 
+		performSetParentConcepts();
+		performCreateProperties();
+		performCreateBehaviours();
+		performCreateInspectors();
+
 		if (getChoice() == FIBComponentChoice.CreateNewComponent) {
 			CreateGINAFIBComponent createNewComponent = CreateGINAFIBComponent.actionType.makeNewEmbeddedAction(getRepositoryFolder(), null,
 					this);

@@ -214,6 +214,11 @@ public class CreateFMLControlledDiagramVirtualModel
 			throw new FlexoException(e);
 		}
 
+		performSetParentConcepts();
+		performCreateProperties();
+		performCreateBehaviours();
+		performCreateInspectors();
+
 		// newVirtualModel = VirtualModelImpl.newVirtualModel(newVirtualModelName, getFocusedObject());
 		// newVirtualModel.setDescription(newVirtualModelDescription);
 
