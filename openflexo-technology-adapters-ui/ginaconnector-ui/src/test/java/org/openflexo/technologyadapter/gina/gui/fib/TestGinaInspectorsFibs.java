@@ -1,8 +1,8 @@
 /**
  * 
- * Copyright (c) 2014-2015, Openflexo
+ * Copyright (c) 2014, Openflexo
  * 
- * This file is part of Flexo-foundation, a component of the software infrastructure 
+ * This file is part of Openflexo-technology-adapters-ui, a component of the software infrastructure 
  * developed at Openflexo.
  * 
  * 
@@ -36,45 +36,27 @@
  * 
  */
 
-package org.openflexo.technologyadapter.excel.fml;
+package org.openflexo.technologyadapter.gina.gui.fib;
 
-import java.lang.reflect.Type;
-import java.util.List;
+import org.junit.Test;
+import org.openflexo.gina.utils.GenericFIBInspectorTestCase;
+import org.openflexo.rm.FileResourceImpl;
+import org.openflexo.rm.ResourceLocator;
 
-import org.openflexo.foundation.fml.InnerModelSlotParameter;
-import org.openflexo.model.annotations.ImplementationClass;
-import org.openflexo.model.annotations.ModelEntity;
-import org.openflexo.model.annotations.XMLElement;
-import org.openflexo.technologyadapter.excel.BasicExcelModelSlot;
-import org.openflexo.technologyadapter.excel.model.ExcelColumn;
+public class TestGinaInspectorsFibs extends GenericFIBInspectorTestCase {
 
-@ModelEntity
-@ImplementationClass(ExcelColumnParameter.ExcelColumnParameterImpl.class)
-@XMLElement
-public interface ExcelColumnParameter extends InnerModelSlotParameter<BasicExcelModelSlot> {
-
-	public static abstract class ExcelColumnParameterImpl extends InnerModelSlotParameterImpl<BasicExcelModelSlot>
-			implements ExcelColumnParameter {
-
-		public ExcelColumnParameterImpl() {
-			super();
-		}
-
-		@Override
-		public WidgetType getWidget() {
-			// return WidgetType.TECHNOLOGY_OBJECT;
-			return WidgetType.CUSTOM_WIDGET;
-		}
-
-		@Override
-		public Type getType() {
-			return ExcelColumn.class;
-		};
-
-		@SuppressWarnings("rawtypes")
-		@Override
-		public List<BasicExcelModelSlot> getAccessibleModelSlots() {
-			return getOwningVirtualModel().getModelSlots(BasicExcelModelSlot.class);
-		}
+	/*
+	 * Use this method to print all
+	 * Then copy-paste 
+	 */
+	public static void main(String[] args) {
+		System.out.println(generateInspectorTestCaseClass(((FileResourceImpl) ResourceLocator.locateResource("Inspectors/Gina")).getFile(),
+				"Inspectors/Gina/"));
 	}
+
+	@Test
+	public void testFIBComponentModelSlotInspector() {
+		validateFIB("Inspectors/Gina/FIBComponentModelSlot.inspector");
+	}
+
 }

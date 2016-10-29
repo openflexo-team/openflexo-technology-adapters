@@ -1,4 +1,12 @@
+all_API_entries_are_valid=All API entries are valid
 create_screen_virtual_model=Create screen virtual model
+creates_new_gina_fib_component=Creates new gina fib component
 describe_screen_virtual_model=Describe screen virtual model
 initializing_adapter=initializing_adapter
+name_for_the_new_component_must_ends_with_.fib=Name for the new component must ends with .fib
+no_API_entries_defined_for_new_component=No API entries defined for new component
+no_type_defined_for=No type defined for
+no_value_defined_for_non_API_entry=No value defined for non API entry
+please_provide_a_folder_for_the_new_component=Please provide a folder for the new component
+please_provide_a_name_for_the_new_component=Please provide a name for the new component
 please_supply_valid_virtual_model_name=please_supply_valid_virtual_model_name

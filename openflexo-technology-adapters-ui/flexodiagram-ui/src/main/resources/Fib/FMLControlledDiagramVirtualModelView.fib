@@ -6,18 +6,37 @@
 	borderTop="10" trackViewPortHeight="true" layout="border" name="main">
 	<SplitPanel id="1" name="FIBSplitPanel" index="0"
 		constraints="border(anchor=center;fill=both;gridHeight=1;gridWidth=0;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=center;padX=0;padY=0;weightX=1.0;weightY=1.0)">
-		<Custom id="2" manageDynamicModel="true"
-			dataClassForComponent="org.openflexo.technologyadapter.diagram.model.Diagram"
-			componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.DiagramEditorComponent"
-			name="DiagramEditorComponent" data="controller.selectedDiagram" index="0"
-			localize="true"
-			constraints="split(index=0;location=top_right;splitIdentifier=top_right)">
-			<Assignment id="3" mandatory="true" value="controller.flexoController"
-				variable="component.flexoController" />
-			<Assignment id="4" mandatory="true" value="controller.selectionManager"
-				variable="component.selectionManager" />
-		</Custom>
-		<Browser id="5" showFooter="true" showRootsHandle="true"
+		<Panel id="2" borderLeft="0" sizeAdjustment="OriginalSize"
+			borderRight="0" border="empty" trackViewPortWidth="true" index="0"
+			align="left" constraints="split(index=0;location=top_right;splitIdentifier=top_right)"
+			borderBottom="0" titleFont="SansSerif,0,12" borderTop="0"
+			trackViewPortHeight="true" layout="gridbag" name="FIBPanel">
+			<Custom id="3" visible="(controller.selectedDiagram != null)"
+				manageDynamicModel="true"
+				dataClassForComponent="org.openflexo.technologyadapter.diagram.model.Diagram"
+				componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.DiagramEditorComponent"
+				name="DiagramEditorComponent" data="controller.selectedDiagram"
+				index="0" localize="true"
+				constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=top_right;padX=0;padY=0;splitIdentifier=top_right;weightX=1.0;weightY=1.0)">
+				<Assignment id="4" mandatory="true" value="controller.flexoController"
+					variable="component.flexoController" />
+				<Assignment id="5" mandatory="true"
+					value="controller.selectionManager" variable="component.selectionManager" />
+			</Custom>
+			<Custom id="6" visible="(controller.selectedPalette != null)"
+				manageDynamicModel="true"
+				dataClassForComponent="org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette"
+				componentClassName="org.openflexo.technologyadapter.diagram.gui.widget.PaletteEditorComponent"
+				name="PaletteEditorComponent" data="controller.selectedPalette"
+				index="0" localize="true"
+				constraints="gridbag(anchor=center;fill=both;gridHeight=1;gridWidth=1;gridX=-1;gridY=-1;index=0;insetsBottom=0;insetsLeft=0;insetsRight=0;insetsTop=0;location=top_right;padX=0;padY=0;splitIdentifier=top_right;weightX=1.0;weightY=1.0)">
+				<Assignment id="7" mandatory="true" value="controller.flexoController"
+					variable="component.flexoController" />
+				<Assignment id="8" mandatory="true"
+					value="controller.selectionManager" variable="component.selectionManager" />
+			</Custom>
+		</Panel>
+		<Browser id="9" showFooter="true" showRootsHandle="true"
 			root="controller.getDiagramSpecification(data)" manageDynamicModel="true"
 			doubleClickAction="controller.doubleClick(DiagramElementTable.selected)"
 			selectionMode="DiscontiguousTreeSelection"
@@ -30,32 +49,32 @@
 			clickAction="controller.singleClick(DiagramElementTable.selected)"
 			name="DiagramElementTable" textNonSelectionColor="0,0,0" rootVisible="true"
 			backgroundSecondarySelectionColor="178,215,255">
-			<BrowserElement id="6" editableLabel="diagramSpec.name"
+			<BrowserElement id="10" editableLabel="diagramSpec.name"
 				icon="controller.iconForObject(diagramSpec)" label="diagramSpec.name"
 				dataClassName="org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification"
 				name="diagramSpec" isEditable="false">
-				<Children id="7" name="diagrams" data="diagramSpec.exampleDiagrams" />
-				<Children id="8" name="palettes" data="diagramSpec.palettes" />
-				<BrowserAddAction 
-					name="add_example_diagram" method="controller.createNewExampleDiagram(selected)" />
-				<BrowserAddAction 
-					name="add_palette" method="controller.createNewPalette(selected)" />
+				<Children id="11" name="diagrams" data="diagramSpec.exampleDiagrams" />
+				<Children id="12" name="palettes" data="diagramSpec.palettes" />
+				<BrowserAddAction id="13" name="add_example_diagram"
+					method="controller.createNewExampleDiagram(selected)" />
+				<BrowserAddAction id="14" name="add_palette"
+					method="controller.createNewPalette(selected)" />
 			</BrowserElement>
-			<BrowserElement id="9" editableLabel="diagram.name"
+			<BrowserElement id="15" editableLabel="diagram.name"
 				icon="controller.iconForObject(diagram)" label="diagram.name"
 				dataClassName="org.openflexo.technologyadapter.diagram.model.Diagram"
 				name="diagram" isEditable="false" />
-			<BrowserElement id="10" editableLabel="palette.name"
+			<BrowserElement id="16" editableLabel="palette.name"
 				icon="controller.iconForObject(palette)" label="palette.name"
 				dataClassName="org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette"
 				name="palette" isEditable="false" />
 		</Browser>
-		<Browser id="11" showFooter="true" showRootsHandle="true"
+		<Browser id="17" showFooter="true" showRootsHandle="true"
 			root="data" manageDynamicModel="true"
 			doubleClickAction="controller.doubleClick(FlexoConceptBrowser.selected)"
 			selectionMode="DiscontiguousTreeSelection"
 			rightClickAction="controller.rightClick(FlexoConceptBrowser.selected,event)"
-			boundToSelectionManager="true" index="0" localize="true" 
+			boundToSelectionManager="true" index="0" localize="true"
 			constraints="split(index=0;location=north;splitIdentifier=left)"
 			visibleRowCount="5" deepExploration="true" rowHeight="18"
 			textSelectionColor="255,255,255" iteratorClassName="java.lang.Object"
@@ -63,233 +82,233 @@
 			clickAction="controller.singleClick(FlexoConceptBrowser.selected)"
 			name="FlexoConceptBrowser" textNonSelectionColor="0,0,0" rootVisible="true"
 			backgroundSecondarySelectionColor="178,215,255">
-			<BrowserElement id="12" editableLabel="virtualModel.name"
+			<BrowserElement id="18" editableLabel="virtualModel.name"
 				icon="controller.iconForObject(virtualModel)" label="virtualModel.name"
 				dataClassName="org.openflexo.foundation.fml.VirtualModel" name="virtualModel"
 				isEditable="false">
-				<Children id="13" name="inspector" data="virtualModel.inspector" />
-				<Children id="14" name="structural" data="virtualModel.structuralFacet" />
-				<Children id="15" name="behavioural" data="virtualModel.behaviouralFacet" />
-				<Children id="16" name="innerConcepts" data="virtualModel.innerConceptsFacet" />
+				<Children id="19" name="inspector" data="virtualModel.inspector" />
+				<Children id="20" name="structural" data="virtualModel.structuralFacet" />
+				<Children id="21" name="behavioural" data="virtualModel.behaviouralFacet" />
+				<Children id="22" name="innerConcepts" data="virtualModel.innerConceptsFacet" />
 			</BrowserElement>
-			<BrowserElement id="17" editableLabel="modelSlot.name"
+			<BrowserElement id="23" editableLabel="modelSlot.name"
 				icon="controller.iconForObject(modelSlot)"
 				label="((((&quot;[ModelSlot] &quot; + modelSlot.name) + &quot; (&quot;) + modelSlot.cardinality.stringRepresentation) + &quot;)&quot;)"
 				dataClassName="org.openflexo.foundation.technologyadapter.ModelSlot"
 				name="modelSlot" isEditable="false">
-				<BrowserRemoveAction id="18" name="remove_flexo_concept"
+				<BrowserRemoveAction id="24" name="remove_flexo_concept"
 					method="controller.deleteFlexoConceptObject(selected)" />
 			</BrowserElement>
-			<BrowserElement id="19" editableLabel="flexoRole.name"
+			<BrowserElement id="25" editableLabel="flexoRole.name"
 				icon="controller.iconForObject(flexoRole)"
 				label="(((flexoRole.name + &quot; (&quot;) + flexoRole.cardinality.stringRepresentation) + &quot;)&quot;)"
 				dataClassName="org.openflexo.foundation.fml.FlexoRole" name="flexoRole"
 				isEditable="false">
-				<BrowserRemoveAction id="20" name="remove_flexo_concept"
+				<BrowserRemoveAction id="26" name="remove_flexo_concept"
 					method="controller.deleteFlexoConceptObject(selected)" />
 			</BrowserElement>
-			<BrowserElement id="21" editableLabel="flexoProperty.name"
+			<BrowserElement id="27" editableLabel="flexoProperty.name"
 				icon="controller.iconForObject(flexoProperty)" label="flexoProperty.name"
 				dataClassName="org.openflexo.foundation.fml.AbstractProperty" name="flexoProperty"
 				isEditable="false">
-				<BrowserRemoveAction id="22" name="remove_flexo_concept"
+				<BrowserRemoveAction id="28" name="remove_flexo_concept"
 					method="controller.deleteFlexoConceptObject(selected)" />
 			</BrowserElement>
-			<BrowserElement id="23" editableLabel="flexoProperty.name"
+			<BrowserElement id="29" editableLabel="flexoProperty.name"
 				icon="controller.iconForObject(flexoProperty)" label="flexoProperty.name"
 				dataClassName="org.openflexo.foundation.fml.ExpressionProperty"
 				name="flexoProperty" isEditable="false">
-				<BrowserRemoveAction id="24" name="remove_flexo_concept"
-					method="controller.deleteFlexoConceptObject(selected)" />
-			</BrowserElement>
-			<BrowserElement id="25" editableLabel="flexoProperty.name"
-				icon="controller.iconForObject(flexoProperty)" label="flexoProperty.name"
-				dataClassName="org.openflexo.foundation.fml.GetSetProperty" name="flexoProperty"
-				isEditable="false">
-				<Children id="26" name="getChildren"
-					data="flexoProperty.getControlGraph.flattenedSequence" />
-				<Children id="27" name="setChildren"
-					data="flexoProperty.setControlGraph.flattenedSequence" />
-				<BrowserAddAction id="28"
-					name="add_action_in_GET_control_graph" method="controller.createEditionActionInGetControlGraph(selected)" />
-				<BrowserAddAction id="29"
-					name="add_action_in_SET_control_graph" method="controller.createEditionActionInSetControlGraph(selected)" />
 				<BrowserRemoveAction id="30" name="remove_flexo_concept"
 					method="controller.deleteFlexoConceptObject(selected)" />
 			</BrowserElement>
-			<BrowserElement id="31" editableLabel="flexoBehaviour.name"
-				icon="controller.iconForObject(flexoBehaviour)" label="flexoBehaviour.name"
-				dataClassName="org.openflexo.foundation.fml.FlexoBehaviour" name="flexoBehaviour"
+			<BrowserElement id="31" editableLabel="flexoProperty.name"
+				icon="controller.iconForObject(flexoProperty)" label="flexoProperty.name"
+				dataClassName="org.openflexo.foundation.fml.GetSetProperty" name="flexoProperty"
 				isEditable="false">
-				<Children id="32" name="children"
-					data="flexoBehaviour.controlGraph.flattenedSequence" />
-				<BrowserAddAction id="33" name="add_action"
-					method="controller.createEditionAction(selected.controlGraph)" />
-				<BrowserRemoveAction id="34" name="remove_flexo_concept"
+				<Children id="32" name="getChildren"
+					data="flexoProperty.getControlGraph.flattenedSequence" />
+				<Children id="33" name="setChildren"
+					data="flexoProperty.setControlGraph.flattenedSequence" />
+				<BrowserAddAction id="34"
+					name="add_action_in_GET_control_graph" method="controller.createEditionActionInGetControlGraph(selected)" />
+				<BrowserAddAction id="35"
+					name="add_action_in_SET_control_graph" method="controller.createEditionActionInSetControlGraph(selected)" />
+				<BrowserRemoveAction id="36" name="remove_flexo_concept"
 					method="controller.deleteFlexoConceptObject(selected)" />
 			</BrowserElement>
-			<BrowserElement id="35"
+			<BrowserElement id="37" editableLabel="flexoBehaviour.name"
+				icon="controller.iconForObject(flexoBehaviour)" label="flexoBehaviour.signature"
+				dataClassName="org.openflexo.foundation.fml.FlexoBehaviour" name="flexoBehaviour"
+				isEditable="false">
+				<Children id="38" name="children"
+					data="flexoBehaviour.controlGraph.flattenedSequence" />
+				<BrowserAddAction id="39" name="add_action"
+					method="controller.createEditionAction(selected.controlGraph)" />
+				<BrowserRemoveAction id="40" name="remove_flexo_concept"
+					method="controller.deleteFlexoConceptObject(selected)" />
+			</BrowserElement>
+			<BrowserElement id="41"
 				icon="controller.iconForObject(iterationAction)" label="iterationAction.stringRepresentation"
 				dataClassName="org.openflexo.foundation.fml.controlgraph.IterationAction"
 				name="iterationAction" isEditable="false">
-				<Children id="36" name="children"
+				<Children id="42" name="children"
 					data="iterationAction.controlGraph.flattenedSequence" />
-				<BrowserRemoveAction id="37" name="delete_action"
+				<BrowserRemoveAction id="43" name="delete_action"
 					method="controller.deleteFlexoConceptObject(selected)" />
-				<BrowserAddAction id="38" name="add_action"
+				<BrowserAddAction id="44" name="add_action"
 					method="controller.createEditionAction(selected)" />
-				<BrowserAddAction id="39" name="add_action_inside_iteration"
+				<BrowserAddAction id="45" name="add_action_inside_iteration"
 					method="controller.createEditionActionInIteration(selected)" />
 			</BrowserElement>
-			<BrowserElement id="40"
+			<BrowserElement id="46"
 				icon="controller.iconForObject(whileAction)" label="whileAction.stringRepresentation"
 				dataClassName="org.openflexo.foundation.fml.controlgraph.WhileAction"
 				name="whileAction" isEditable="false">
-				<Children id="41" name="children"
+				<Children id="47" name="children"
 					data="whileAction.controlGraph.flattenedSequence" />
-				<BrowserRemoveAction id="42" name="delete_action"
+				<BrowserRemoveAction id="48" name="delete_action"
 					method="controller.deleteFlexoConceptObject(selected)" />
-				<BrowserAddAction id="43" name="add_action"
+				<BrowserAddAction id="49" name="add_action"
 					method="controller.createEditionAction(selected)" />
-				<BrowserAddAction id="44" name="add_action_inside_iteration"
+				<BrowserAddAction id="50" name="add_action_inside_iteration"
 					method="controller.createEditionActionInWhileAction(selected)" />
 			</BrowserElement>
-			<BrowserElement id="45"
+			<BrowserElement id="51"
 				icon="controller.iconForObject(incrementalIterationAction)" label="incrementalIterationAction.stringRepresentation"
 				dataClassName="org.openflexo.foundation.fml.controlgraph.IncrementalIterationAction"
 				name="incrementalIterationAction" isEditable="false">
-				<Children id="46" name="children"
+				<Children id="52" name="children"
 					data="incrementalIterationAction.controlGraph.flattenedSequence" />
-				<BrowserRemoveAction id="47" name="delete_action"
-					method="controller.deleteFlexoConceptObject(selected)" />
-				<BrowserAddAction id="48" name="add_action"
-					method="controller.createEditionAction(selected)" />
-				<BrowserAddAction id="49" name="add_action_inside_iteration"
-					method="controller.createEditionActionInIncrementalIterationAction(selected)" />
-			</BrowserElement>
-			<BrowserElement id="50"
-				icon="controller.iconForObject(conditionalAction)" label="conditionalAction.stringRepresentation"
-				dataClassName="org.openflexo.foundation.fml.controlgraph.ConditionalAction"
-				name="conditionalAction" isEditable="false">
-				<Children id="51" name="thenChildren"
-					data="conditionalAction.thenControlGraph.flattenedSequence" />
-				<Children id="52" name="elseChildren"
-					data="conditionalAction.elseControlGraph.flattenedSequence" />
 				<BrowserRemoveAction id="53" name="delete_action"
 					method="controller.deleteFlexoConceptObject(selected)" />
 				<BrowserAddAction id="54" name="add_action"
 					method="controller.createEditionAction(selected)" />
-				<BrowserAddAction id="55"
+				<BrowserAddAction id="55" name="add_action_inside_iteration"
+					method="controller.createEditionActionInIncrementalIterationAction(selected)" />
+			</BrowserElement>
+			<BrowserElement id="56"
+				icon="controller.iconForObject(conditionalAction)" label="conditionalAction.stringRepresentation"
+				dataClassName="org.openflexo.foundation.fml.controlgraph.ConditionalAction"
+				name="conditionalAction" isEditable="false">
+				<Children id="57" name="thenChildren"
+					data="conditionalAction.thenControlGraph.flattenedSequence" />
+				<Children id="58" name="elseChildren"
+					data="conditionalAction.elseControlGraph.flattenedSequence" />
+				<BrowserRemoveAction id="59" name="delete_action"
+					method="controller.deleteFlexoConceptObject(selected)" />
+				<BrowserAddAction id="60" name="add_action"
+					method="controller.createEditionAction(selected)" />
+				<BrowserAddAction id="61"
 					name="add_action_in_then_control_graph" method="controller.createEditionActionInThenControlGraph(selected)" />
-				<BrowserAddAction id="56"
+				<BrowserAddAction id="62"
 					name="add_action_in_else_control_graph" method="controller.createEditionActionInElseControlGraph(selected)" />
 			</BrowserElement>
-			<BrowserElement id="57"
+			<BrowserElement id="63"
 				icon="controller.iconForObject(editionAction)" label="editionAction.stringRepresentation"
 				dataClassName="org.openflexo.foundation.fml.editionaction.EditionAction"
 				name="editionAction" isEditable="false">
-				<BrowserAddAction id="58" name="add_action"
+				<BrowserAddAction id="64" name="add_action"
 					method="controller.createEditionAction(selected)" />
-				<BrowserRemoveAction id="59" name="delete_action"
+				<BrowserRemoveAction id="65" name="delete_action"
 					method="controller.deleteFlexoConceptObject(selected)" />
 			</BrowserElement>
-			<BrowserElement id="60"
+			<BrowserElement id="66"
 				icon="controller.iconForObject(inspector)" label="&quot;Inspector&quot;"
 				dataClassName="org.openflexo.foundation.fml.inspector.FlexoConceptInspector"
 				name="inspector" isEditable="false">
-				<Children id="61" name="entries" data="inspector.entries" />
-				<BrowserAddAction id="62" name="add_inspector_entry"
+				<Children id="67" name="entries" data="inspector.entries" />
+				<BrowserAddAction id="68" name="add_inspector_entry"
 					method="controller.createInspectorEntry(data)" />
 			</BrowserElement>
-			<BrowserElement id="63" editableLabel="inspectorEntry.name"
+			<BrowserElement id="69" editableLabel="inspectorEntry.name"
 				icon="controller.iconForObject(inspectorEntry)" label="inspectorEntry.name"
 				dataClassName="org.openflexo.foundation.fml.inspector.InspectorEntry"
 				name="inspectorEntry" isEditable="false" />
-			<BrowserElement id="64"
+			<BrowserElement id="70"
 				icon="controller.iconForObject(controlStructureAction)"
 				dataClassName="org.openflexo.foundation.fml.controlgraph.ControlStructureAction"
 				name="controlStructureAction" isEditable="false">
-				<Children id="65" name="children" data="controlStructureAction.actions" />
+				<Children id="71" name="children" data="controlStructureAction.actions" />
 			</BrowserElement>
-			<BrowserElement id="66"
+			<BrowserElement id="72"
 				icon="controller.iconForObject(flexoConceptStructuralFacet)" label="&quot;Structural&quot;"
 				dataClassName="org.openflexo.foundation.fml.FlexoConceptStructuralFacet"
 				name="flexoConceptStructuralFacet" isEditable="false">
-				<Children id="67" name="flexoProperties"
+				<Children id="73" name="flexoProperties"
 					data="flexoConceptStructuralFacet.properties" />
-				<BrowserAddAction id="68" name="new_model_slot"
+				<BrowserAddAction id="74" name="new_model_slot"
 					method="controller.createModelSlot(selected.flexoConcept)" />
-				<BrowserAddAction id="69" name="new_technology_role"
+				<BrowserAddAction id="75" name="new_technology_role"
 					method="controller.createTechnologyRole(selected.flexoConcept)" />
-				<BrowserAddAction id="70"
+				<BrowserAddAction id="76"
 					name="new_flexo_concept_instance_role"
 					method="controller.createFlexoConceptInstanceRole(selected.flexoConcept)" />
-				<BrowserAddAction id="71" name="new_primitive_role"
+				<BrowserAddAction id="77" name="new_primitive_role"
 					method="controller.createPrimitiveRole(selected.flexoConcept)" />
-				<BrowserAddAction id="72" name="new_abstract_property"
+				<BrowserAddAction id="78" name="new_abstract_property"
 					method="controller.createAbstractProperty(selected.flexoConcept)" />
-				<BrowserAddAction id="73" name="new_expression_property"
+				<BrowserAddAction id="79" name="new_expression_property"
 					method="controller.createExpressionProperty(selected.flexoConcept)" />
-				<BrowserAddAction id="74" name="new_get_set_property"
+				<BrowserAddAction id="80" name="new_get_set_property"
 					method="controller.createGetSetProperty(selected.flexoConcept)" />
-				<BrowserRemoveAction id="75" name="delete"
+				<BrowserRemoveAction id="81" name="delete"
 					method="controller.deleteFlexoProperty(data,selected)" />
 			</BrowserElement>
-			<BrowserElement id="76"
+			<BrowserElement id="82"
 				icon="controller.iconForObject(flexoConceptBehaviouralFacet)" label="&quot;Behavioural&quot;"
 				dataClassName="org.openflexo.foundation.fml.FlexoConceptBehaviouralFacet"
 				name="flexoConceptBehaviouralFacet" isEditable="false">
-				<Children id="77" name="flexoBehaviours"
+				<Children id="83" name="flexoBehaviours"
 					data="flexoConceptBehaviouralFacet.flexoConcept.flexoBehaviours" />
-				<BrowserAddAction id="78" name="new_behaviour"
+				<BrowserAddAction id="84" name="new_behaviour"
 					method="controller.createAdvancedScheme(selected.flexoConcept)" />
 			</BrowserElement>
-			<BrowserElement id="79"
+			<BrowserElement id="85"
 				icon="controller.iconForObject(innerConceptsFacet)" label="&quot;Inner concepts&quot;"
 				dataClassName="org.openflexo.foundation.fml.InnerConceptsFacet"
 				name="innerConceptsFacet" isEditable="false">
-				<Children id="80" name="children"
+				<Children id="86" name="children"
 					data="innerConceptsFacet.inheritanceRootFlexoConcepts" />
-				<BrowserAddAction id="81" name="add_flexo_concept"
+				<BrowserAddAction id="87" name="add_flexo_concept"
 					method="controller.createFlexoConcept(selected.virtualModel)" />
-				<BrowserRemoveAction id="82" name="remove_flexo_concept"
+				<BrowserRemoveAction id="88" name="remove_flexo_concept"
 					method="controller.deleteFlexoConcept(selected.virtualModel)" />
 			</BrowserElement>
-			<BrowserElement id="83" editableLabel="flexoConcept.name"
+			<BrowserElement id="89" editableLabel="flexoConcept.name"
 				icon="controller.iconForObject(flexoConcept)" label="flexoConcept.name"
 				dataClassName="org.openflexo.foundation.fml.FlexoConcept" name="flexoConcept"
 				isEditable="false">
-				<Children id="84" name="children" data="flexoConcept.childFlexoConcepts" />
-				<BrowserAddAction id="85" name="add_flexo_concept"
+				<Children id="90" name="children" data="flexoConcept.childFlexoConcepts" />
+				<BrowserAddAction id="91" name="add_flexo_concept"
 					method="controller.createFlexoConcept(selected)" />
-				<BrowserRemoveAction id="86" name="remove_flexo_concept"
+				<BrowserRemoveAction id="92" name="remove_flexo_concept"
 					method="controller.deleteFlexoConcept(selected)" />
 			</BrowserElement>
 		</Browser>
-		<FIBReferencedComponent id="87"
+		<FIBReferencedComponent id="93"
 			manageDynamicModel="true"
 			dynamicComponent="controller.inspectorForObject(FlexoConceptBrowser.selected)"
 			opaque="false" name="InspectedWidget" data="FlexoConceptBrowser.selected"
 			index="15" localize="true"
 			constraints="split(index=0;location=north;splitIdentifier=right)">
-			<ReferenceAssignment id="88" mandatory="true"
+			<ReferenceAssignment id="94" mandatory="true"
 				value="controller.flexoController" variable="controller.flexoController" />
 		</FIBReferencedComponent>
-		<ColSplit id="89" weight="0.0" name="ColSplit">
-			<RowSplit id="90" weight="0.0" name="TopRowSplit">
-				<Leaf id="91" weight="0.0" name="top_left" />
-				<Divider id="92" />
-				<Leaf id="93" weight="0.7" name="top_right" />
+		<ColSplit id="95" weight="0.0" name="ColSplit">
+			<RowSplit id="96" weight="0.0" name="TopRowSplit">
+				<Leaf id="97" weight="0.0" name="top_left" />
+				<Divider id="98" />
+				<Leaf id="99" weight="0.7" name="top_right" />
 			</RowSplit>
-			<Divider id="94" />
-			<RowSplit id="95" weight="0.5" name="RowSplit">
-				<Leaf id="96" weight="0.3" name="left" />
-				<Divider id="97" />
-				<Leaf id="98" weight="0.7" name="right" />
+			<Divider id="100" />
+			<RowSplit id="101" weight="0.0" name="RowSplit">
+				<Leaf id="102" weight="0.3" name="left" />
+				<Divider id="103" />
+				<Leaf id="104" weight="0.7" name="right" />
 			</RowSplit>
 		</ColSplit>
 	</SplitPanel>
-	<FIBVariable id="99" name="data"
+	<FIBVariable id="105" name="data"
 		type="org.openflexo.foundation.fml.VirtualModel" />
-	<LocalizedDictionary id="100" />
+	<LocalizedDictionary id="106" />
 </Panel>

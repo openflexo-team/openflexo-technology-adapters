@@ -53,6 +53,8 @@ import org.openflexo.technologyadapter.diagram.fml.FMLControlledDiagramVirtualMo
 import org.openflexo.technologyadapter.diagram.fml.action.CreateDiagramPalette;
 import org.openflexo.technologyadapter.diagram.fml.action.CreateExampleDiagram;
 import org.openflexo.technologyadapter.diagram.gui.widget.DiagramEditorComponent;
+import org.openflexo.technologyadapter.diagram.gui.widget.PaletteEditorComponent;
+import org.openflexo.technologyadapter.diagram.metamodel.DiagramPalette;
 import org.openflexo.technologyadapter.diagram.metamodel.DiagramSpecification;
 import org.openflexo.technologyadapter.diagram.model.Diagram;
 import org.openflexo.view.controller.TechnologyAdapterControllerService;
@@ -68,6 +70,7 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 	private static final Logger logger = FlexoLogger.getLogger(FMLControlledDiagramFMLFIBController.class.getPackage().getName());
 
 	private Diagram selectedDiagram;
+	private DiagramPalette selectedPalette;
 	private FMLControlledDiagramVirtualModelView moduleView;
 
 	public FMLControlledDiagramFMLFIBController(FIBComponent component, GinaViewFactory<?> viewFactory) {
@@ -82,56 +85,91 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 		return null;
 	}
 
+	/**
+	 * Return selected example diagram, null if no diagram selected (or a palette for example)
+	 * 
+	 * @return
+	 */
 	public Diagram getSelectedDiagram() {
 		return selectedDiagram;
 	}
 
 	/**
-	 * Called to select a new example diagram Tricky method: modify with caution
+	 * Called to select a new example diagram
 	 * 
 	 * @param selectedDiagram
 	 */
 	public void setSelectedDiagram(Diagram selectedDiagram) {
 
-		System.out.println("Select diagram: " + selectedDiagram);
-
 		if ((selectedDiagram == null && this.selectedDiagram != null)
 				|| (selectedDiagram != null && !selectedDiagram.equals(this.selectedDiagram))) {
+			boolean notifySelectedPaletteChange = false;
+			if (selectedDiagram != null && selectedPalette != null) {
+				selectedPalette = null;
+				notifySelectedPaletteChange = true;
+			}
 			Diagram oldDiagram = this.selectedDiagram;
 			this.selectedDiagram = selectedDiagram;
-
+			getPropertyChangeSupport().firePropertyChange("selectedDiagram", oldDiagram, selectedDiagram);
+			if (notifySelectedPaletteChange) {
+				getPropertyChangeSupport().firePropertyChange("selectedPalette", true, false);
+			}
 			updateModuleViewTooling();
-			/*if (selectedDiagram != null && getModuleView() != null && getDiagramEditorComponent() != null) {
-			
-				// We "tell" diagram editor component that the diagram has changed
-				// This component will then display the "right" diagram
-				getDiagramEditorComponent().setEditedObject(selectedDiagram);
-			
-				// We set new palette view
-				getModuleView().getPerspective().setTopRightView(getDiagramEditorComponent().getDiagramEditor().getPaletteView());
-			
-				// getDiagramEditorComponent().getDiagramEditor().getCommonPalette()
-				// .attachToEditor(getDiagramEditorComponent().getDiagramEditor());
-			
-				// We also set inspectors, and attach them to new new editor
-				getModuleView().getPerspective()
-						.setBottomRightView(getDiagramTechnologyAdapterController().getInspectors().getPanelGroup());
-				getDiagramTechnologyAdapterController().getInspectors().attachToEditor(getDiagramEditorComponent().getDiagramEditor());
-			
-				getModuleView().revalidate();
-				getModuleView().repaint();
-			}*/
 		}
 	}
 
+	/**
+	 * Return selected palette diagram
+	 * 
+	 * @return
+	 */
+	public DiagramPalette getSelectedPalette() {
+		return selectedPalette;
+	}
+
+	/**
+	 * Called to select a new palette diagram
+	 * 
+	 * @param selectedDiagram
+	 */
+	public void setSelectedPalette(DiagramPalette selectedPalette) {
+
+		if ((selectedPalette == null && this.selectedPalette != null)
+				|| (selectedPalette != null && !selectedPalette.equals(this.selectedPalette))) {
+
+			boolean notifySelectedDiagramChange = false;
+			if (selectedPalette != null && selectedDiagram != null) {
+				selectedDiagram = null;
+				notifySelectedDiagramChange = true;
+			}
+			DiagramPalette oldPalette = this.selectedPalette;
+			this.selectedPalette = selectedPalette;
+			getPropertyChangeSupport().firePropertyChange("selectedPalette", oldPalette, selectedPalette);
+			if (notifySelectedDiagramChange) {
+				getPropertyChangeSupport().firePropertyChange("selectedDiagram", true, false);
+			}
+			updateModuleViewTooling();
+
+		}
+	}
+
+	/**
+	 * Called to update module view tooling (when an example diagram or a palette is selected)
+	 */
 	protected void updateModuleViewTooling() {
+
+		System.out.println("updateModuleViewTooling()");
+		System.out.println("selectedDiagram=" + selectedDiagram);
+		System.out.println("getDiagramEditorComponent()=" + getDiagramEditorComponent());
+
 		if (selectedDiagram != null && getModuleView() != null && getDiagramEditorComponent() != null) {
 
 			// We "tell" diagram editor component that the diagram has changed
 			// This component will then display the "right" diagram
+			getDiagramEditorComponent().setFlexoController(getFlexoController());
 			getDiagramEditorComponent().setEditedObject(selectedDiagram);
 
-			// We set new palette view
+			System.out.println("getDiagramEditorComponent().getDiagramEditor()=" + getDiagramEditorComponent().getDiagramEditor());
 			getModuleView().getPerspective().setTopRightView(getDiagramEditorComponent().getDiagramEditor().getPaletteView());
 
 			// getDiagramEditorComponent().getDiagramEditor().getCommonPalette()
@@ -140,6 +178,27 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 			// We also set inspectors, and attach them to new new editor
 			getModuleView().getPerspective().setBottomRightView(getDiagramTechnologyAdapterController().getInspectors().getPanelGroup());
 			getDiagramTechnologyAdapterController().getInspectors().attachToEditor(getDiagramEditorComponent().getDiagramEditor());
+
+			getModuleView().revalidate();
+			getModuleView().repaint();
+		}
+
+		if (selectedPalette != null && getModuleView() != null && getPaletteEditorComponent() != null) {
+
+			// We "tell" diagram editor component that the diagram has changed
+			// This component will then display the "right" diagram
+			getPaletteEditorComponent().setFlexoController(getFlexoController());
+			getPaletteEditorComponent().setEditedObject(selectedPalette);
+
+			// We set new palette view
+			getModuleView().getPerspective().setTopRightView(getPaletteEditorComponent().getPaletteEditor().getPaletteView());
+
+			// getDiagramEditorComponent().getDiagramEditor().getCommonPalette()
+			// .attachToEditor(getDiagramEditorComponent().getDiagramEditor());
+
+			// We also set inspectors, and attach them to new new editor
+			getModuleView().getPerspective().setBottomRightView(getDiagramTechnologyAdapterController().getInspectors().getPanelGroup());
+			getDiagramTechnologyAdapterController().getInspectors().attachToEditor(getPaletteEditorComponent().getPaletteEditor());
 
 			getModuleView().revalidate();
 			getModuleView().repaint();
@@ -159,10 +218,22 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 		return (FIBCustomWidget<?, DiagramEditorComponent, Diagram>) viewForComponent("DiagramEditorComponent");
 	}
 
+	public FIBCustomWidget<?, PaletteEditorComponent, DiagramPalette> getPaletteEditorWidget() {
+		return (FIBCustomWidget<?, PaletteEditorComponent, DiagramPalette>) viewForComponent("PaletteEditorComponent");
+	}
+
 	public DiagramEditorComponent getDiagramEditorComponent() {
 		FIBCustomWidget<?, DiagramEditorComponent, Diagram> diagramEditorWidget = getDiagramEditorWidget();
 		if (diagramEditorWidget != null) {
 			return diagramEditorWidget.getCustomComponent();
+		}
+		return null;
+	}
+
+	public PaletteEditorComponent getPaletteEditorComponent() {
+		FIBCustomWidget<?, PaletteEditorComponent, DiagramPalette> paletteEditorWidget = getPaletteEditorWidget();
+		if (paletteEditorWidget != null) {
+			return paletteEditorWidget.getCustomComponent();
 		}
 		return null;
 	}
@@ -186,6 +257,9 @@ public class FMLControlledDiagramFMLFIBController extends FMLFIBController {
 		System.out.println("doubleClick with " + object);
 		if (object instanceof Diagram) {
 			setSelectedDiagram((Diagram) object);
+		}
+		else if (object instanceof DiagramPalette) {
+			setSelectedPalette((DiagramPalette) object);
 		}
 		else {
 			super.doubleClick(object);

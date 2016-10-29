@@ -48,6 +48,7 @@ import org.openflexo.connie.Bindable;
 import org.openflexo.connie.BindingFactory;
 import org.openflexo.connie.BindingModel;
 import org.openflexo.connie.DataBinding;
+import org.openflexo.connie.type.PrimitiveType;
 import org.openflexo.foundation.FlexoEditor;
 import org.openflexo.foundation.FlexoException;
 import org.openflexo.foundation.FlexoObject.FlexoObjectImpl;
@@ -64,7 +65,6 @@ import org.openflexo.foundation.fml.FlexoConceptInstanceType;
 import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.FloatParameter;
 import org.openflexo.foundation.fml.PrimitiveRole;
-import org.openflexo.foundation.fml.PrimitiveRole.PrimitiveType;
 import org.openflexo.foundation.fml.PropertyCardinality;
 import org.openflexo.foundation.fml.TextFieldParameter;
 import org.openflexo.foundation.fml.ViewPoint;
@@ -228,6 +228,11 @@ public class CreateFMLControlledFIBVirtualModel
 			throw new FlexoException(e);
 		}
 
+		performSetParentConcepts();
+		performCreateProperties();
+		performCreateBehaviours();
+		performCreateInspectors();
+
 		if (getChoice() == FIBComponentChoice.CreateNewComponent) {
 			CreateGINAFIBComponent createNewComponent = CreateGINAFIBComponent.actionType.makeNewEmbeddedAction(getRepositoryFolder(), null,
 					this);
@@ -302,6 +307,7 @@ public class CreateFMLControlledFIBVirtualModel
 			if (apiEntry.getType() != null) {
 				VariableAssignment assign = uiModelSlot.createAssignment();
 				assign.setVariable(apiEntry.getName());
+				assign.setVariableType(apiEntry.getType());
 				if (apiEntry.isAPI()) {
 					assign.setValue(new DataBinding<Object>(apiEntry.getName()));
 				}

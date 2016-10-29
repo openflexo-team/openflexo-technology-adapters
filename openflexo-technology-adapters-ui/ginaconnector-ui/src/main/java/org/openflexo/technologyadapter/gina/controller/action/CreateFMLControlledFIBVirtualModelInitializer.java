@@ -52,6 +52,8 @@ import org.openflexo.foundation.fml.ViewPoint;
 import org.openflexo.gina.controller.FIBController.Status;
 import org.openflexo.icon.FMLIconLibrary;
 import org.openflexo.icon.IconFactory;
+import org.openflexo.technologyadapter.gina.GINATechnologyAdapter;
+import org.openflexo.technologyadapter.gina.controller.GINAAdapterController;
 import org.openflexo.technologyadapter.gina.controller.GINAIconLibrary;
 import org.openflexo.technologyadapter.gina.fml.action.CreateFMLControlledFIBVirtualModel;
 import org.openflexo.view.controller.ActionInitializer;
@@ -90,6 +92,10 @@ public class CreateFMLControlledFIBVirtualModelInitializer
 		return new FlexoActionFinalizer<CreateFMLControlledFIBVirtualModel>() {
 			@Override
 			public boolean run(EventObject e, CreateFMLControlledFIBVirtualModel action) {
+
+				GINAAdapterController diagramTAController = (GINAAdapterController) getController()
+						.getTechnologyAdapterController(GINATechnologyAdapter.class);
+				getController().switchToPerspective(diagramTAController.getFMLControlledFIBNaturePerspective());
 				getController().selectAndFocusObject(action.getNewVirtualModel());
 				return true;
 			}

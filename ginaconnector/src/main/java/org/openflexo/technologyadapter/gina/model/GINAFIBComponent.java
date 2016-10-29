@@ -134,7 +134,7 @@ public interface GINAFIBComponent
 		 */
 		@Override
 		public void bindTo(AbstractVirtualModel<?> virtualModel, FIBComponentModelSlot modelSlot) {
-			System.out.println("******* bindTo " + virtualModel + " using " + modelSlot);
+			// System.out.println("******* bindTo " + virtualModel + " using " + modelSlot);
 
 			if (getComponent() == null) {
 				return;
@@ -146,33 +146,31 @@ public interface GINAFIBComponent
 				for (VariableAssignment variableAssign : modelSlot.getAssignments()) {
 					FIBVariable<?> returned = getComponent().getVariable(variableAssign.getVariable());
 
-					System.out.println("On s'occupe de la variable " + returned);
-
 					if (returned == null) {
 						returned = getComponent().getModelFactory().newFIBVariable(getComponent(), variableAssign.getVariable());
 					}
 					DataBinding<?> value = variableAssign.getValue();
 
-					System.out.println("value = " + value + " valid=" + value.isValid() + " reason:" + value.invalidBindingReason());
-
 					if (value != null && value.isSet() && value.isValid()) {
 						Type analyzedType = value.getAnalyzedType();
-						// returned.setType(value.getAnalyzedType());
 
-						System.out.println("analyzedType=" + analyzedType);
-						System.out.println("returned.getType()=" + returned.getType());
+						// System.out.println("analyzedType=" + analyzedType);
+						// System.out.println("returned.getType()=" + returned.getType());
 
 						if (TypeUtils.isTypeAssignableFrom(analyzedType, returned.getType())) {
 							// Type is conform, does nothing
-							System.out.println("On fait rien");
 						}
 						else /*if (!TypeUtils.isTypeAssignableFrom(returned.getType(), analyzedType))*/ {
 							returned.setType(analyzedType);
 							// We force type of variable to be type analyzed from binding
-							System.out.println("****** On passe le type de " + variableAssign.getVariable() + " de " + returned.getType()
-									+ " a " + analyzedType);
+							// System.out.println("****** Force type from " + variableAssign.getVariable() + " to " + returned.getType()
+							// + " a " + analyzedType);
 						}
 						// returned.setType(analyzedType);
+					}
+
+					else {
+						returned.setType(variableAssign.getVariableType());
 					}
 				}
 			}
@@ -182,5 +180,12 @@ public interface GINAFIBComponent
 
 		}
 
+		@Override
+		public boolean isModified() {
+			if (getComponent() != null) {
+				return getComponent().isModified();
+			}
+			return false;
+		}
 	}
 }

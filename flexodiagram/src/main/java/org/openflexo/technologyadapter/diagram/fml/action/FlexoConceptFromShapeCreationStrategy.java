@@ -39,6 +39,8 @@
 package org.openflexo.technologyadapter.diagram.fml.action;
 
 import org.openflexo.connie.DataBinding;
+import org.openflexo.fge.GraphicalRepresentation;
+import org.openflexo.fge.ShapeGraphicalRepresentation;
 import org.openflexo.foundation.fml.FlexoConcept;
 import org.openflexo.foundation.fml.editionaction.AssignationAction;
 import org.openflexo.technologyadapter.diagram.fml.DropScheme;
@@ -87,6 +89,18 @@ public abstract class FlexoConceptFromShapeCreationStrategy
 		if (isTopLevel != this.isTopLevel) {
 			this.isTopLevel = isTopLevel;
 			getPropertyChangeSupport().firePropertyChange("isTopLevel", !isTopLevel, isTopLevel);
+		}
+	}
+
+	@Override
+	public void normalizeGraphicalRepresentation(GraphicalRepresentation gr) {
+		if (gr instanceof ShapeGraphicalRepresentation) {
+			ShapeGraphicalRepresentation shapeGR = (ShapeGraphicalRepresentation) gr;
+			// Center shape in preview
+			shapeGR.setX((250 - shapeGR.getWidth()) / 2);
+			shapeGR.setY((200 - shapeGR.getHeight()) / 2);
+			// Forces GR to be displayed in view
+			shapeGR.setAllowToLeaveBounds(false);
 		}
 	}
 

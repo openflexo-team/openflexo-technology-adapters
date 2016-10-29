@@ -100,34 +100,13 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 
 		component.bindTo(representedObject, modelSlot);
 
-		// If you want to add right and left panels to your module view, do it here. Un comment following code with your component.
-		// SwingUtilities.invokeLater(new Runnable() {
-		// @Override
-		// public void run() {
-		// perspective.setTopRightView(customJComponent);
-		// controller.getControllerModel().setRightViewVisible(true);
-		// }
-		// });
-
 		// Sets palette view of editor to be the top right view
 		flexoPerspective.setTopRightView(getFIBEditor(false).getPalettes());
 		flexoPerspective.setBottomLeftView(editorController.getEditorBrowser());
 
 		getFIBEditor(false).activate(editorController);
 
-		// getDiagramTechnologyAdapterController(controller).getInspectors().attachToEditor(getEditor());
-		// getDiagramTechnologyAdapterController(controller).getDialogInspectors().attachToEditor(getEditor());
-		// getDiagramTechnologyAdapterController(controller).getScaleSelector().attachToEditor(getEditor());
-
-		// perspective.setBottomRightView(getDiagramTechnologyAdapterController(controller).getInspectors().getPanelGroup());
-
-		/*SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				// Force right view to be visible
-				controller.getControllerModel().setRightViewVisible(true);
-			}
-		});*/
+		perspective.setBottomRightView(getFIBEditor(false).getInspectors().getPanelGroup());
 
 		controller.getControllerModel().setRightViewVisible(true);
 
@@ -149,20 +128,14 @@ public class FMLControlledFIBVirtualModelModuleView extends JPanel implements Mo
 		return this.perspective;
 	}
 
-	/**
-	 * Nothing done on this ModuleView
-	 */
-	@Override
-	public void willShow() {
-		// Nothing to implement by default, empty body
-	}
-
-	/**
-	 * Nothing done on this ModuleView
-	 */
 	@Override
 	public void willHide() {
-		// Nothing to implement by default, empty body
+		setVisible(false);
+	}
+
+	@Override
+	public void willShow() {
+		setVisible(true);
 	}
 
 	@Override

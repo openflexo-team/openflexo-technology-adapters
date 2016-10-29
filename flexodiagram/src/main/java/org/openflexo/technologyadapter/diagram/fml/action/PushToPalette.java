@@ -39,6 +39,7 @@
 package org.openflexo.technologyadapter.diagram.fml.action;
 
 import java.awt.Image;
+import java.awt.Point;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -122,12 +123,12 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 	public GraphicalRepresentation graphicalRepresentation;
 	private DiagramPalette palette;
-	public int xLocation;
-	public int yLocation;;
+	// private int xLocation;
+	// private int yLocation;;
 	private FlexoConcept flexoConcept;
 	private DropScheme dropScheme;
 	private String newElementName;
-	private boolean takeScreenshotForTopLevelElement = true;
+	private boolean takeScreenshotForTopLevelElement = false;
 	private boolean overrideDefaultGraphicalRepresentations = false;
 
 	private ScreenshotImage<DiagramShape> screenshot;
@@ -142,16 +143,12 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		FlexoObjectImpl.addActionForClass(PushToPalette.actionType, DiagramShape.class);
 	}
 
-	public static enum PushToPaletteChoices {
-		CONFIGURE_FML_CONTROL, FREE
-	}
-
-	private PushToPaletteChoices primaryChoice = PushToPaletteChoices.CONFIGURE_FML_CONTROL;
+	private boolean configureFMLControls = true;
 
 	protected PushToPalette(DiagramShape focusedObject, Vector<DiagramElement<?>> globalSelection, FlexoEditor editor) {
 		super(actionType, focusedObject, globalSelection, editor);
 		diagramElementEntries = new Vector<DiagramElementEntry>();
-		updateDrawingObjectEntries();
+		updateDiagramElementsEntries();
 	}
 
 	/**
@@ -177,6 +174,17 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		this.diagramModelSlot = diagramModelSlot;
 	}*/
 
+	public boolean getConfigureFMLControls() {
+		return configureFMLControls;
+	}
+
+	public void setConfigureFMLControls(boolean configureFMLControls) {
+		if (configureFMLControls != this.configureFMLControls) {
+			this.configureFMLControls = configureFMLControls;
+			getPropertyChangeSupport().firePropertyChange("configureFMLControls", !configureFMLControls, configureFMLControls);
+		}
+	}
+
 	@Override
 	protected void doAction(Object context) {
 		logger.info("Push to palette");
@@ -184,6 +192,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		if (getFocusedObject() != null && palette != null) {
 
 			DiagramPaletteFactory factory = palette.getFactory();
+
+			Point location = retrieveNextAvailableLocation();
 
 			if (takeScreenshotForTopLevelElement) {
 				Resource screenshotFile = null;
@@ -204,8 +214,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 				gr.setHeight(imageHeight);
 				gr.setDimensionConstraints(DimensionConstraints.UNRESIZABLE);
 				gr.setIsFloatingLabel(false);
-				gr.setX(xLocation);
-				gr.setY(yLocation);
+				gr.setX(location.x);
+				gr.setY(location.y);
 				graphicalRepresentation = gr;
 			}
 			else {
@@ -213,8 +223,8 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 				if (gr instanceof ShapeGraphicalRepresentation) {
 					graphicalRepresentation = factory.makeShapeGraphicalRepresentation();
 					graphicalRepresentation.setsWith(gr);
-					((ShapeGraphicalRepresentation) graphicalRepresentation).setX(xLocation);
-					((ShapeGraphicalRepresentation) graphicalRepresentation).setY(yLocation);
+					((ShapeGraphicalRepresentation) graphicalRepresentation).setX(location.x);
+					((ShapeGraphicalRepresentation) graphicalRepresentation).setY(location.y);
 				}
 				else if (gr instanceof ConnectorGraphicalRepresentation) {
 					graphicalRepresentation = factory.makeConnectorGraphicalRepresentation();
@@ -223,9 +233,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			}
 
 			((ShapeGraphicalRepresentation) graphicalRepresentation).setLocationConstraints(LocationConstraints.FREELY_MOVABLE);
-			_newPaletteElement = palette.addPaletteElement(newElementName, graphicalRepresentation);
+			_newPaletteElement = palette.addPaletteElement(getNewElementName(), graphicalRepresentation);
 
-			if (primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)) {
+			if (getConfigureFMLControls()) {
 				FMLDiagramPaletteElementBinding newBinding = getFactory().newInstance(FMLDiagramPaletteElementBinding.class);
 				newBinding.setPaletteElement(_newPaletteElement);
 				newBinding.setDiagramModelSlot(getDiagramModelSlot());
@@ -249,7 +259,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 						else{
 							grs=new ArrayList();
 						}
-						
+			
 					}
 				}
 			}*/
@@ -276,29 +286,58 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		}
 	}
 
+	public static final int X_OFFSET = 10;
+	public static final int Y_OFFSET = 10;
+
+	protected Point retrieveNextAvailableLocation() {
+		if (getPalette() != null) {
+			if (getPalette().getElements().size() > 0) {
+				DiagramPaletteElement lastElement = getPalette().getElements().get(getPalette().getElements().size() - 1);
+				if (lastElement.getGraphicalRepresentation().getX() + lastElement.getGraphicalRepresentation().getWidth()
+						+ X_OFFSET < 200) {
+					return new Point((int) (lastElement.getGraphicalRepresentation().getX()
+							+ lastElement.getGraphicalRepresentation().getWidth() + X_OFFSET),
+							(int) lastElement.getGraphicalRepresentation().getY());
+				}
+				else {
+					return new Point((X_OFFSET), (int) (lastElement.getGraphicalRepresentation().getY()
+							+ lastElement.getGraphicalRepresentation().getHeight() + Y_OFFSET));
+				}
+			}
+			else {
+				return new Point(X_OFFSET, Y_OFFSET);
+			}
+		}
+		return new Point(0, 0);
+	}
+
 	public DiagramPaletteElement getNewPaletteElement() {
 		return _newPaletteElement;
 	}
 
 	public String getNewElementName() {
+		if (newElementName == null && getFlexoConcept() != null) {
+			return JavaUtils.getClassName(getFlexoConcept().getName());
+		}
 		return newElementName;
 	}
 
 	public void setNewElementName(String newElementName) {
-		this.newElementName = newElementName;
+		if ((newElementName == null && this.newElementName != null)
+				|| (newElementName != null && !newElementName.equals(this.newElementName))) {
+			String oldValue = this.newElementName;
+			this.newElementName = newElementName;
+			getPropertyChangeSupport().firePropertyChange("newElementName", oldValue, newElementName);
+		}
 	}
 
 	@Override
 	public boolean isValid() {
-		if (!StringUtils.isNotEmpty(newElementName)) {
-			return false;
-		}
-
 		if (palette == null) {
 			return false;
 		}
 
-		if (primaryChoice.equals(PushToPaletteChoices.CONFIGURE_FML_CONTROL)) {
+		if (getConfigureFMLControls()) {
 			if (flexoConcept == null) {
 				return false;
 			}
@@ -310,6 +349,10 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			if (virtualModel == null) {
 				return false;
 			}
+		}
+
+		if (StringUtils.isEmpty(getNewElementName())) {
+			return false;
 		}
 
 		return true;
@@ -329,16 +372,13 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		private boolean selectThis;
 		public DiagramElement<?> graphicalObject;
 		public String elementName;
-		public GraphicalElementRole<?, ?> patternRole;
+		public GraphicalElementRole<?, ?> flexoRole;
 
 		public DiagramElementEntry(DiagramElement<?> graphicalObject, String elementName) {
 			super();
 			this.graphicalObject = graphicalObject;
 			this.elementName = elementName;
 			this.selectThis = isMainEntry();
-			/*if (isMainEntry() && flexoConcept != null) {
-				patternRole = flexoConcept.getDefaultPrimaryRepresentationRole();
-			}*/
 		}
 
 		public boolean isMainEntry() {
@@ -354,11 +394,11 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 
 		public void setSelectThis(boolean aFlag) {
 			selectThis = aFlag;
-			if (patternRole == null && graphicalObject instanceof DiagramShape && flexoConcept != null) {
-				GraphicalElementRole<?, ?> parentEntryPatternRole = getParentEntry().patternRole;
+			if (flexoRole == null && graphicalObject instanceof DiagramShape && flexoConcept != null) {
+				GraphicalElementRole<?, ?> parentEntryPatternRole = getParentEntry().flexoRole;
 				for (ShapeRole r : flexoConcept.getDeclaredProperties(ShapeRole.class)) {
-					if (r.getParentShapeRole() == parentEntryPatternRole && patternRole == null) {
-						patternRole = r;
+					if (r.getParentShapeRole() == parentEntryPatternRole && flexoRole == null) {
+						flexoRole = r;
 					}
 				}
 			}
@@ -368,12 +408,14 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			return getEntry(graphicalObject.getParent());
 		}
 
-		public List<? extends GraphicalElementRole<?, ?>> getAvailablePatternRoles() {
-			if (graphicalObject instanceof DiagramShape) {
-				return flexoConcept.getDeclaredProperties(ShapeRole.class);
-			}
-			else if (graphicalObject instanceof DiagramConnector) {
-				return flexoConcept.getDeclaredProperties(ConnectorRole.class);
+		public List<? extends GraphicalElementRole<?, ?>> getAvailableFlexoRoles() {
+			if (flexoConcept != null) {
+				if (graphicalObject instanceof DiagramShape) {
+					return flexoConcept.getDeclaredProperties(ShapeRole.class);
+				}
+				else if (graphicalObject instanceof DiagramConnector) {
+					return flexoConcept.getDeclaredProperties(ConnectorRole.class);
+				}
 			}
 			return null;
 		}
@@ -406,8 +448,9 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		if (flexoConcept != this.flexoConcept) {
 			FlexoConcept oldValue = this.flexoConcept;
 			this.flexoConcept = flexoConcept;
-			updateDrawingObjectEntries();
+			updateDiagramElementsEntries();
 			getPropertyChangeSupport().firePropertyChange("flexoConcept", oldValue, flexoConcept);
+			getPropertyChangeSupport().firePropertyChange("elementName", null, getNewElementName());
 		}
 	}
 
@@ -418,7 +461,7 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 		return null;
 	}
 
-	private void updateDrawingObjectEntries() {
+	private void updateDiagramElementsEntries() {
 		diagramElementEntries.clear();
 		int shapeIndex = 1;
 		int connectorIndex = 1;
@@ -519,18 +562,6 @@ public class PushToPalette extends FlexoAction<PushToPalette, DiagramShape, Diag
 			DiagramPalette oldValue = this.palette;
 			this.palette = palette;
 			getPropertyChangeSupport().firePropertyChange("palette", oldValue, palette);
-		}
-	}
-
-	public PushToPaletteChoices getPrimaryChoice() {
-		return primaryChoice;
-	}
-
-	public void setPrimaryChoice(PushToPaletteChoices primaryChoice) {
-		if (primaryChoice != this.primaryChoice) {
-			PushToPaletteChoices oldValue = this.primaryChoice;
-			this.primaryChoice = primaryChoice;
-			getPropertyChangeSupport().firePropertyChange("primaryChoice", oldValue, primaryChoice);
 		}
 	}
 
