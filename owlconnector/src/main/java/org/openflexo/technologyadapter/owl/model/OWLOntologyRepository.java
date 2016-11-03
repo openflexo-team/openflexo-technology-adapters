@@ -39,12 +39,13 @@
 package org.openflexo.technologyadapter.owl.model;
 
 import org.openflexo.foundation.resource.FlexoResourceCenter;
-import org.openflexo.foundation.technologyadapter.TechnologyAdapterResourceRepository;
+import org.openflexo.foundation.technologyadapter.MetaModelRepository;
 import org.openflexo.technologyadapter.owl.OWLTechnologyAdapter;
 import org.openflexo.technologyadapter.owl.rm.OWLOntologyResource;
 
 public class OWLOntologyRepository<I>
-		extends TechnologyAdapterResourceRepository<OWLOntologyResource, OWLTechnologyAdapter, OWLOntology, I> {
+		/*extends TechnologyAdapterResourceRepository<OWLOntologyResource, OWLTechnologyAdapter, OWLOntology, I>*/
+		extends MetaModelRepository<OWLOntologyResource, OWLOntology, OWLOntology, OWLTechnologyAdapter, I> {
 
 	public OWLOntologyRepository(OWLTechnologyAdapter adapter, FlexoResourceCenter<I> rc) {
 		super(adapter, rc);
