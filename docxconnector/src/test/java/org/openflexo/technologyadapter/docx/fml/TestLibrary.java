@@ -525,6 +525,7 @@ public class TestLibrary extends AbstractTestDocX {
 		AssignationAction<?> action5 = (AssignationAction<?>) createEditionAction5.getNewEditionAction();
 		((ExpressionAction) action5.getAssignableAction()).setExpression(new DataBinding<Object>("parameters.aDescription"));
 		action5.setName("action5");
+
 		assertTrue(action5.getAssignation().isValid());
 		assertTrue(((ExpressionAction) action5.getAssignableAction()).getExpression().isValid());
 

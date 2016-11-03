@@ -45,9 +45,11 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelRow;
 
 @ModelEntity
@@ -56,7 +58,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelRow;
 @FML("ExcelRowRole")
 public interface ExcelRowRole extends FlexoRole<ExcelRow> {
 
-	public static abstract class ExcelRowRoleImpl extends FlexoRoleImpl<ExcelRow> implements ExcelRowRole {
+	public static abstract class ExcelRowRoleImpl extends FlexoRoleImpl<ExcelRow>implements ExcelRowRole {
 
 		public ExcelRowRoleImpl() {
 			super();
@@ -78,11 +80,11 @@ public interface ExcelRowRole extends FlexoRole<ExcelRow> {
 			// TODO Auto-generated method stub
 			return false;
 		}
-
+		
 		@Override
 		public void setIsPrimaryRole(boolean isPrimary) {
 			// TODO Auto-generated method stub
-
+		
 		}*/
 
 		/**
@@ -109,6 +111,11 @@ public interface ExcelRowRole extends FlexoRole<ExcelRow> {
 			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);
 			return returned;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return ExcelTechnologyAdapter.class;
 		}
 
 	}

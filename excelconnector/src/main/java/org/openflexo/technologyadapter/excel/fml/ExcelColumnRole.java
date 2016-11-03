@@ -45,9 +45,11 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 
 @ModelEntity
@@ -56,7 +58,7 @@ import org.openflexo.technologyadapter.excel.model.ExcelColumn;
 @FML("ExcelColumnRole")
 public interface ExcelColumnRole extends FlexoRole<ExcelColumn> {
 
-	public abstract static class ExcelColumnRoleImpl extends FlexoRoleImpl<ExcelColumn> implements ExcelColumnRole {
+	public abstract static class ExcelColumnRoleImpl extends FlexoRoleImpl<ExcelColumn>implements ExcelColumnRole {
 
 		@Override
 		public Type getType() {
@@ -92,6 +94,11 @@ public interface ExcelColumnRole extends FlexoRole<ExcelColumn> {
 			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);
 			return returned;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return ExcelTechnologyAdapter.class;
 		}
 
 	}

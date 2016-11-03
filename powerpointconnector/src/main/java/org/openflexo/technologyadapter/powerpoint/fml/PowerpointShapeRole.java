@@ -45,9 +45,11 @@ import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.powerpoint.PowerpointTechnologyAdapter;
 import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 
 @ModelEntity
@@ -56,7 +58,7 @@ import org.openflexo.technologyadapter.powerpoint.model.PowerpointSlide;
 @FML("PowerpointShapeRole")
 public interface PowerpointShapeRole extends FlexoRole<PowerpointSlide> {
 
-	public static abstract class PowerpointShapePatternRoleImpl extends FlexoRoleImpl<PowerpointSlide> implements PowerpointShapeRole {
+	public static abstract class PowerpointShapePatternRoleImpl extends FlexoRoleImpl<PowerpointSlide>implements PowerpointShapeRole {
 
 		@Override
 		public Type getType() {
@@ -91,6 +93,11 @@ public interface PowerpointShapeRole extends FlexoRole<PowerpointSlide> {
 			returned.setFlexoConceptInstance(fci);
 			returned.setModellingElement(object);
 			return returned;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return PowerpointTechnologyAdapter.class;
 		}
 
 	}

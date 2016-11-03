@@ -46,9 +46,11 @@ import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.oslc.OSLCTechnologyAdapter;
 import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 
 @ModelEntity
@@ -57,7 +59,7 @@ import org.openflexo.technologyadapter.oslc.model.rm.OSLCRequirement;
 @FML("OSLCRequirementRole")
 public interface OSLCRequirementRole extends FlexoRole<OSLCRequirement> {
 
-	public static abstract class OSLCRequirementRoleImpl extends FlexoRoleImpl<OSLCRequirement> implements OSLCRequirementRole {
+	public static abstract class OSLCRequirementRoleImpl extends FlexoRoleImpl<OSLCRequirement>implements OSLCRequirementRole {
 
 		@Override
 		public Type getType() {
@@ -94,5 +96,11 @@ public interface OSLCRequirementRole extends FlexoRole<OSLCRequirement> {
 			// TODO Auto-generated method stub
 			return false;
 		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return OSLCTechnologyAdapter.class;
+		}
+
 	}
 }

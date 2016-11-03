@@ -46,6 +46,7 @@ import org.openflexo.foundation.fml.rt.AbstractVirtualModelInstanceModelFactory;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
 import org.openflexo.foundation.fml.rt.ModelObjectActorReference;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -61,7 +62,7 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
 
 	public FreeplaneTechnologyAdapter getFreePlaneTechnologyAdapter();
 
-	public abstract static class FreeplaneMapRoleImpl extends FlexoRoleImpl<IFreeplaneMap> implements IFreeplaneMapRole {
+	public abstract static class FreeplaneMapRoleImpl extends FlexoRoleImpl<IFreeplaneMap>implements IFreeplaneMapRole {
 
 		public FreeplaneMapRoleImpl() {
 			super();
@@ -120,5 +121,11 @@ public interface IFreeplaneMapRole extends FlexoRole<IFreeplaneMap> {
 		public FreeplaneTechnologyAdapter getFreePlaneTechnologyAdapter() {
 			return getServiceManager().getTechnologyAdapterService().getTechnologyAdapter(FreeplaneTechnologyAdapter.class);
 		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return FreeplaneTechnologyAdapter.class;
+		}
+
 	}
 }

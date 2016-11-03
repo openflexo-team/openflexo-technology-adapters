@@ -23,6 +23,7 @@ package org.openflexo.technologyadapter.docx.fml;
 import java.lang.reflect.Type;
 
 import org.openflexo.foundation.doc.fml.FlexoParagraphRole;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
@@ -51,6 +52,11 @@ public interface DocXParagraphRole extends FlexoParagraphRole<DocXParagraph, Doc
 		@Override
 		public RoleCloningStrategy defaultCloningStrategy() {
 			return RoleCloningStrategy.Clone;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return DocXTechnologyAdapter.class;
 		}
 
 	}

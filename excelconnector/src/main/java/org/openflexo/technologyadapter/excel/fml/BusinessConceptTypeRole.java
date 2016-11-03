@@ -44,9 +44,11 @@ import org.openflexo.foundation.fml.FlexoRole;
 import org.openflexo.foundation.fml.annotations.FML;
 import org.openflexo.foundation.fml.rt.ActorReference;
 import org.openflexo.foundation.fml.rt.FlexoConceptInstance;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
 import org.openflexo.model.annotations.XMLElement;
+import org.openflexo.technologyadapter.excel.ExcelTechnologyAdapter;
 import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptType;
 
 @ModelEntity
@@ -55,7 +57,7 @@ import org.openflexo.technologyadapter.excel.model.semantics.BusinessConceptType
 @FML("BusinessConceptTypeRole")
 public interface BusinessConceptTypeRole extends FlexoRole<BusinessConceptType> {
 
-	public static abstract class BusinessConceptTypeRoleImpl extends FlexoRoleImpl<BusinessConceptType> implements BusinessConceptTypeRole {
+	public static abstract class BusinessConceptTypeRoleImpl extends FlexoRoleImpl<BusinessConceptType>implements BusinessConceptTypeRole {
 
 		@Override
 		public Type getType() {
@@ -89,6 +91,11 @@ public interface BusinessConceptTypeRole extends FlexoRole<BusinessConceptType> 
 		public ActorReference<BusinessConceptType> makeActorReference(BusinessConceptType object, FlexoConceptInstance epi) {
 			// TODO Auto-generated method stub
 			return null;
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return ExcelTechnologyAdapter.class;
 		}
 
 	}

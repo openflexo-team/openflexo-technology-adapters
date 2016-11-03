@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 
 import org.openflexo.connie.type.TypeUtils;
 import org.openflexo.foundation.doc.fml.FlexoFragmentRole;
+import org.openflexo.foundation.technologyadapter.TechnologyAdapter;
 import org.openflexo.model.annotations.Getter;
 import org.openflexo.model.annotations.ImplementationClass;
 import org.openflexo.model.annotations.ModelEntity;
@@ -64,7 +65,7 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 	public void setFragment(DocXFragment fragment);
 
 	public static abstract class DocXFragmentRoleImpl
-			extends FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter> implements DocXFragmentRole {
+			extends FlexoDocumentFragmentRoleImpl<DocXFragment, DocXDocument, DocXTechnologyAdapter>implements DocXFragmentRole {
 
 		@Override
 		public Type getType() {
@@ -101,6 +102,11 @@ public interface DocXFragmentRole extends FlexoFragmentRole<DocXFragment, DocXDo
 			} catch (InvalidDataException e) {
 				return super.getTypeDescription();
 			}
+		}
+
+		@Override
+		public Class<? extends TechnologyAdapter> getRoleTechnologyAdapterClass() {
+			return DocXTechnologyAdapter.class;
 		}
 
 	}
